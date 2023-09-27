@@ -42,21 +42,9 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                 setError(undefined);
 
                 try {
-                    let folders = await api.security.fetchContainers({
-                        containerPath: isAppHomeFolder(container_, moduleContext)
-                            ? container_.path
-                            : container_.parentPath,
-                        includeEffectivePermissions: true,
-                        includeStandardProperties: true, // needed to get the container title
-                        includeWorkbookChildren: false,
-                        includeSubfolders: true,
-                        depth: 1,
-                    });
+                    let folders = await api.folder.getProjects(container_, moduleContext, true, true, true);
 
                     const excludedFolders = await api.folder.getDataTypeExcludedProjects(dataType, dataTypeRowId);
-
-                    // if user doesn't have permissions to the parent/project, the response will come back with an empty Container object
-                    folders = folders.filter(c => c !== undefined && c.id !== '');
 
                     // filter to folders that the user has InsertPermissions
                     folders = folders.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Insert) > -1);

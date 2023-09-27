@@ -38,7 +38,7 @@ import { ServerContext } from '../base/ServerContext';
 import { TEST_LKS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 
 import { ProductMenuButton } from './ProductMenu';
-import { UserMenu } from './UserMenu';
+import { UserMenuGroup } from './UserMenuGroup';
 import { NavigationBar } from './NavigationBar';
 
 describe('NavigationBar', () => {
@@ -63,7 +63,7 @@ describe('NavigationBar', () => {
     function validate(wrapper: ReactWrapper, compCounts: Record<string, number> = {}): void {
         expect(wrapper.find('.project-name')).toHaveLength(compCounts.ProjectName ?? 0);
         expect(wrapper.find(ProductMenuButton)).toHaveLength(compCounts.ProductMenu ?? 1);
-        expect(wrapper.find(UserMenu)).toHaveLength(compCounts.UserMenu ?? 0);
+        expect(wrapper.find(UserMenuGroup)).toHaveLength(compCounts.UserMenu ?? 0);
         expect(wrapper.find(SearchBox)).toHaveLength(compCounts.SearchBox ?? 0);
         expect(wrapper.find('.navbar__xs-search-icon')).toHaveLength(compCounts.SearchBox ?? 0);
         expect(wrapper.find(ServerNotifications)).toHaveLength(compCounts.ServerNotifications ?? 0);

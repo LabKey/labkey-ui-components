@@ -8,6 +8,9 @@ import { ActionURL, Ajax, Filter, Security, Utils } from '@labkey/api';
 
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
 
+import { Container } from '../base/models/Container';
+import { FetchContainerOptions } from '../security/APIWrapper';
+
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 
 export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
@@ -125,6 +128,38 @@ export function fetchContainerSecurityPolicy(
     });
 }
 
+function recurseContainerHierarchy(data: Security.ContainerHierarchy, container: Container): Container[] {
+    return (data.children ?? []).reduce(
+        (containers, c) => containers.concat(recurseContainerHierarchy(c, new Container(c))),
+        [container]
+    );
+}
+
+export function fetchContainers(options: FetchContainerOptions): Promise<Container[]> {
+    // NK: By default the server processes "includeSubfolders=false" as setting the
+    // depth to 1. When the depth is set to 1 the results will include the first level of
+    // subfolders negating the desire to not include subfolders. This endpoint wrapper
+    // works around this by altering requests for "includeSubfolders=false" to be
+    // "includeSubfolders=true&depth=0" so that subfolders are not included.
+    if (options?.includeSubfolders === false && options.depth === undefined) {
+        options.includeSubfolders = true;
+        options.depth = 0;
+    }
+
+    return new Promise((resolve, reject) => {
+        Security.getContainers({
+            ...options,
+            success: (data: Security.ContainerHierarchy) => {
+                resolve(recurseContainerHierarchy(data, new Container(data)));
+            },
+            failure: error => {
+                console.error('Failed to fetch containers', error);
+                reject(error);
+            },
+        });
+    });
+}
+
 export type UserLimitSettings = {
     activeUsers: number;
     messageHtml: string;
@@ -134,10 +169,10 @@ export type UserLimitSettings = {
     userLimitLevel: number;
 };
 
-export function getUserLimitSettings(): Promise<UserLimitSettings> {
+export function getUserLimitSettings(containerPath?: string): Promise<UserLimitSettings> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('user', 'getuserLimitSettings.api'),
+            url: ActionURL.buildURL('user', 'getuserLimitSettings.api', containerPath),
             method: 'GET',
             scope: this,
             success: Utils.getCallbackWrapper(settings => {

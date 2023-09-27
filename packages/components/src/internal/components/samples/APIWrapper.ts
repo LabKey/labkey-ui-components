@@ -59,7 +59,7 @@ export interface SamplesAPIWrapper {
         useSnapshotSelection?: boolean
     ) => Promise<OperationConfirmationData>;
 
-    getSampleStatuses: (includeInUse?: boolean) => Promise<SampleState[]>;
+    getSampleStatuses: (includeInUse?: boolean, containerPath?: string) => Promise<SampleState[]>;
 
     getSampleStorageId: (sampleRowId: number) => Promise<number>;
 

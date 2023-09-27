@@ -83,7 +83,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
             <ExpandableContainer
                 clause={this.generateClause()}
                 links={this.generateLinks()}
-                iconFaCls="users fa-3x"
+                iconFaCls="unlock-alt fa-3x"
                 useGreyTheme={true}
                 isExpandable={true}
                 initExpanded={initExpanded}

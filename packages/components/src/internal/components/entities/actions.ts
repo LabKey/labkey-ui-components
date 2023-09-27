@@ -445,7 +445,7 @@ export async function getProjectConfigurableEntityTypeOptions(
                     description: caseInsensitive(row, 'Description').value,
                     type: entityDataType.projectConfigurableDataType as ProjectConfigurableDataType,
                     lsid: caseInsensitive(row, 'LSID').value,
-                } as DataTypeEntity)
+                }) as DataTypeEntity
         )
         .sort(naturalSortByProperty('label'));
 
@@ -948,7 +948,7 @@ export const initParentOptionsSelects = (
     });
 };
 
-export const getFolderExcludedDataTypes = (dataType: string, excludedContainer?: string): Promise<number[]> => {
+export const getFolderDataTypeExclusions = (excludedContainer?: string): Promise<{ [key: string]: number[] }> => {
     if (!hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName)) {
         return Promise.resolve(undefined);
     }
@@ -961,8 +961,7 @@ export const getFolderExcludedDataTypes = (dataType: string, excludedContainer?:
     }
 
     if (isCurrentContainer) {
-        const excludedDataTypeRowIds = getProjectDataExclusion()?.[dataType];
-        return new Promise(resolve => resolve(excludedDataTypeRowIds));
+        return new Promise(resolve => resolve(getProjectDataExclusion()));
     }
 
     return new Promise((resolve, reject) => {
@@ -973,10 +972,20 @@ export const getFolderExcludedDataTypes = (dataType: string, excludedContainer?:
                 excludedContainer,
             },
             success: Utils.getCallbackWrapper(response => {
-                resolve(response['excludedDataTypes']?.[dataType]);
+                resolve(response['excludedDataTypes']);
             }),
             failure: handleRequestFailure(reject, 'Failed to get excluded data types'),
         });
+    });
+};
+
+export const getFolderExcludedDataTypes = (dataType: string, excludedContainer?: string): Promise<number[]> => {
+    return new Promise((resolve, reject) => {
+        getFolderDataTypeExclusions(excludedContainer)
+            .then(exclusions => {
+                resolve(exclusions?.[dataType]);
+            })
+            .catch(error => reject(error));
     });
 };
 

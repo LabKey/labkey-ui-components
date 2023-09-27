@@ -14,7 +14,7 @@ exports[`<PermissionsRole/> not editable 1`] = `
       className="container-expandable-child__img"
     >
       <i
-        className="fa fa-users fa-3x"
+        className="fa fa-unlock-alt fa-3x"
         style={
           {
             "padding": "5px",
@@ -142,7 +142,7 @@ exports[`<PermissionsRole/> showing a selected and disabled principal 1`] = `
       className="container-expandable-child__img"
     >
       <i
-        className="fa fa-users fa-3x"
+        className="fa fa-unlock-alt fa-3x"
         style={
           {
             "padding": "5px",
@@ -433,7 +433,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
       className="container-expandable-child__img"
     >
       <i
-        className="fa fa-users fa-3x"
+        className="fa fa-unlock-alt fa-3x"
         style={
           {
             "padding": "5px",
@@ -716,7 +716,7 @@ exports[`<PermissionsRole/> without assignments 1`] = `
       className="container-expandable-child__img"
     >
       <i
-        className="fa fa-users fa-3x"
+        className="fa fa-unlock-alt fa-3x"
         style={
           {
             "padding": "5px",

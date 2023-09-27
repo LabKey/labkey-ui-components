@@ -1,56 +1,45 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
-import { getServerContext } from '@labkey/api';
-
-import classNames from 'classnames';
+import React, { FC, useCallback } from 'react';
 
 import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
 import { useServerContext } from '../base/ServerContext';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
-import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
 
 import { ActiveUserLimit } from '../settings/ActiveUserLimit';
 import { NameIdSettings } from '../settings/NameIdSettings';
 import { ManageSampleStatusesPanel } from '../samples/ManageSampleStatusesPanel';
 import {
     biologicsIsPrimaryApp,
-    getProjectDataExclusion,
-    isAppHomeFolder,
+    getAppHomeFolderPath,
+    hasModule,
     isELNEnabled,
-    isProductProjectsEnabled,
+    isProtectedDataEnabled,
     isSampleStatusEnabled,
 } from '../../app/utils';
-import { ProjectSettings } from '../project/ProjectSettings';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 
 import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
 
-import { Alert } from '../base/Alert';
-
-import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
 import { AppContext, useAppContext } from '../../AppContext';
 
 import { ProjectLookAndFeelForm } from '../project/ProjectLookAndFeelForm';
 
+import { useContainerUser } from '../container/actions';
+
+import { LoadingPage } from '../base/LoadingPage';
+
 import { useAdminAppContext } from './useAdminAppContext';
-import { showPremiumFeatures } from './utils';
-import { BasePermissions } from './BasePermissions';
-import { SITE_SECURITY_ROLES } from './constants';
+import { ProtectedDataSettingsPanel } from './ProtectedDataSettingsPanel';
+import { RequestsSettingsPanel } from './RequestsSettingsPanel';
 
 // export for jest testing
 export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
-    const { setIsDirty, getIsDirty, children } = props;
-    const [error, setError] = useState<string>();
-    const { moduleContext, user, project, container } = useServerContext();
+    const { setIsDirty, getIsDirty } = props;
+    const { moduleContext, container } = useServerContext();
+    const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
     const { createNotification, dismissNotifications } = useNotificationsContext();
-    const { NotebookProjectSettingsComponent, projectDataTypes, ProjectFreezerSelectionComponent } =
-        useAdminAppContext();
+    const { NotebookProjectSettingsComponent } = useAdminAppContext();
     const { api } = useAppContext<AppContext>();
-
-    const disabledTypesMap = getProjectDataExclusion(moduleContext);
-
-    const onError = useCallback((e: string) => {
-        setError(e);
-    }, []);
+    const homeProjectContainer = useContainerUser(homeFolderPath, { includeStandardProperties: true });
 
     const onSettingsChange = useCallback(() => {
         setIsDirty(true);
@@ -70,103 +59,43 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         createNotification('Successfully updated BarTender configuration.');
     }, [createNotification, dismissNotifications, setIsDirty]);
 
-    const lkVersion = useCallback(() => {
-        return (
-            <span
-                className={classNames('gray-text', 'admin-settings-version', {
-                    'margin-right': !showPremiumFeatures(moduleContext),
-                })}
-            >
-                Version: {getServerContext().versionString}
-            </span>
-        );
-    }, [moduleContext]);
+    if (!homeProjectContainer.isLoaded) return <LoadingPage title="Application Settings" />;
 
-    const commonSettings = useMemo((): React.ReactNode => {
-        return (
-            <>
-                <ActiveUserLimit />
-                {isProductProjectsEnabled(moduleContext) && (
-                    <ProjectSettings onChange={onSettingsChange} onSuccess={onSettingsSuccess} onPageError={onError} />
-                )}
-                {isAppHomeFolder(container, moduleContext) && (
-                    <ProjectLookAndFeelForm
-                        api={api.folder}
-                        onChange={onSettingsChange}
-                        onSuccess={onSettingsSuccess}
-                    />
-                )}
-                {isProductProjectsEnabled(moduleContext) && !isAppHomeFolder(container, moduleContext) && (
-                    <>
-                        <ProjectDataTypeSelections
-                            entityDataTypes={projectDataTypes}
-                            projectId={container.id}
-                            key={container.id}
-                            updateDataTypeExclusions={onSettingsChange}
-                            disabledTypesMap={disabledTypesMap}
-                            api={api.folder}
-                            onSuccess={onSettingsSuccess}
-                        />
-                        {!!ProjectFreezerSelectionComponent && (
-                            <ProjectFreezerSelectionComponent
-                                projectId={container.id}
-                                updateDataTypeExclusions={onSettingsChange}
-                                disabledTypesMap={disabledTypesMap}
-                                onSuccess={onSettingsSuccess}
-                            />
-                        )}
-                    </>
-                )}
+    return (
+        <>
+            <BasePermissionsCheckPage
+                user={homeProjectContainer.user}
+                title="Application Settings"
+                description={undefined}
+                hasPermission={homeProjectContainer.user.isAdmin}
+            >
+                <ActiveUserLimit user={homeProjectContainer.user} container={homeProjectContainer.container} />
+                <ProjectLookAndFeelForm
+                    api={api.folder}
+                    onChange={onSettingsChange}
+                    onSuccess={onSettingsSuccess}
+                    container={homeProjectContainer.container}
+                />
                 {biologicsIsPrimaryApp(moduleContext) && isELNEnabled(moduleContext) && (
-                    <NotebookProjectSettingsComponent />
+                    <NotebookProjectSettingsComponent containerPath={homeProjectContainer.container.path} />
                 )}
                 <BarTenderSettingsForm
                     onChange={onSettingsChange}
                     onSuccess={onBarTenderSuccess}
+                    container={homeProjectContainer.container}
                     setIsDirty={setIsDirty}
                     getIsDirty={getIsDirty}
                 />
-                <NameIdSettings {...props} />
-                {isSampleStatusEnabled(moduleContext) && <ManageSampleStatusesPanel {...props} />}
-                {children}
-            </>
-        );
-    }, [moduleContext, projectDataTypes, disabledTypesMap, container]);
-
-    const _title = isAppHomeFolder(container, moduleContext) ? 'Settings' : 'Project Settings';
-
-    if (!user.isAdmin) {
-        return <InsufficientPermissionsPage title={_title} />;
-    }
-
-    if (!showPremiumFeatures(moduleContext)) {
-        return (
-            <BasePermissions
-                pageTitle={_title}
-                panelTitle="Site Roles and Assignments"
-                containerId={project.rootId}
-                hasPermission={user.isAdmin}
-                rolesMap={SITE_SECURITY_ROLES}
-                showDetailsPanel={false}
-                disableRemoveSelf
-                lkVersion={lkVersion}
-            >
-                {commonSettings}
-            </BasePermissions>
-        );
-    }
-
-    return (
-        <>
-            {error && <Alert className="admin-settings-error"> {error} </Alert>}
-            <BasePermissionsCheckPage
-                user={user}
-                title={_title}
-                description={!isAppHomeFolder(container, moduleContext) ? container.path : undefined}
-                hasPermission={user.isAdmin}
-                renderButtons={lkVersion}
-            >
-                {commonSettings}
+                <NameIdSettings {...props} container={homeProjectContainer.container} isAppHome={true} />
+                {isSampleStatusEnabled(moduleContext) && (
+                    <ManageSampleStatusesPanel {...props} container={homeProjectContainer.container} />
+                )}
+                {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) && (
+                    <ProtectedDataSettingsPanel containerPath={homeProjectContainer.container.path} />
+                )}
+                {biologicsIsPrimaryApp(moduleContext) && hasModule('assayRequest', moduleContext) && (
+                    <RequestsSettingsPanel />
+                )}
             </BasePermissionsCheckPage>
         </>
     );

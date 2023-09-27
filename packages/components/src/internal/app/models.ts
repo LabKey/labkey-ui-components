@@ -69,14 +69,18 @@ interface ReferencingNotebooksComponentProps {
 
 export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentProps>;
 
+interface ContainerPathProp {
+    containerPath: string;
+}
+
 export type NotebookNotificationSettings = ComponentType;
-export type NotebookProjectSettings = ComponentType;
+export type NotebookProjectSettings = ComponentType<ContainerPathProp>;
 export type WorkflowNotificationSettings = ComponentType;
 
 interface ProjectFreezerSelectionProps {
     disabledTypesMap?: { [key: string]: number[] };
     onSuccess?: () => void;
-    projectId?: string;
+    project?: Container;
     updateDataTypeExclusions?: (dataType: any, exclusions: number[]) => void;
 }
 

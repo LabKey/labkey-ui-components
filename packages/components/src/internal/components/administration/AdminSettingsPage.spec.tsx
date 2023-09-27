@@ -3,9 +3,12 @@ import { ReactWrapper } from 'enzyme';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
-import { TEST_FOLDER_CONTAINER, TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
-import { ProjectSettings } from '../project/ProjectSettings';
-import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
+import {
+    TEST_FOLDER_CONTAINER,
+    TEST_PROJECT,
+    TEST_PROJECT_CONTAINER,
+    TEST_PROJECT_CONTAINER_ADMIN,
+} from '../../containerFixtures';
 
 import { ActiveUserLimit } from '../settings/ActiveUserLimit';
 import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
@@ -30,7 +33,6 @@ import { AdminAppContext, AppContext } from '../../AppContext';
 
 import { ServerContext } from '../base/ServerContext';
 
-import { BasePermissions } from './BasePermissions';
 import { AdminSettingsPageImpl } from './AdminSettingsPage';
 
 const TEST_POLICY = SecurityPolicy.create(policyJSON);
@@ -45,6 +47,17 @@ describe('AdminSettingsPageImpl', () => {
         api: getTestAPIWrapper(jest.fn, {
             security: getSecurityTestAPIWrapper(jest.fn, {
                 fetchPolicy: jest.fn().mockResolvedValue(TEST_POLICY),
+                fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER_ADMIN]),
+            }),
+        }),
+    };
+
+    const APP_CONTEXT_NOT_ADMIN: Partial<AppContext> = {
+        admin: {} as AdminAppContext,
+        api: getTestAPIWrapper(jest.fn, {
+            security: getSecurityTestAPIWrapper(jest.fn, {
+                fetchPolicy: jest.fn().mockResolvedValue(TEST_POLICY),
+                fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER]),
             }),
         }),
     };
@@ -56,16 +69,8 @@ describe('AdminSettingsPageImpl', () => {
         moduleContext: TEST_LKS_STARTER_MODULE_CONTEXT,
     };
 
-    function validatePremium(
-        wrapper: ReactWrapper,
-        projectSettingsCount = 0,
-        manageSampleStatusCount = 1,
-        projectDataTypeCount = 0
-    ): void {
+    function validatePremium(wrapper: ReactWrapper, manageSampleStatusCount = 1): void {
         expect(wrapper.find(InsufficientPermissionsPage)).toHaveLength(0);
-        expect(wrapper.find(ProjectSettings)).toHaveLength(projectSettingsCount);
-        expect(wrapper.find(ProjectDataTypeSelections)).toHaveLength(projectDataTypeCount);
-        expect(wrapper.find(BasePermissions)).toHaveLength(0);
         expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(1);
         expect(wrapper.find(ActiveUserLimit)).toHaveLength(1);
         expect(wrapper.find(BarTenderSettingsForm)).toHaveLength(1);
@@ -75,9 +80,6 @@ describe('AdminSettingsPageImpl', () => {
 
     function validateNonPremium(wrapper: ReactWrapper): void {
         expect(wrapper.find(InsufficientPermissionsPage)).toHaveLength(0);
-        expect(wrapper.find(ProjectSettings)).toHaveLength(0);
-        expect(wrapper.find(ProjectDataTypeSelections)).toHaveLength(0);
-        expect(wrapper.find(BasePermissions)).toHaveLength(1);
         expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(1);
         expect(wrapper.find(ActiveUserLimit)).toHaveLength(1);
         expect(wrapper.find(BarTenderSettingsForm)).toHaveLength(1);
@@ -97,7 +99,7 @@ describe('AdminSettingsPageImpl', () => {
         );
         await waitForLifecycle(wrapper, 50);
         validatePremium(wrapper);
-        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Settings');
+        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Application Settings');
         expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBeUndefined();
         wrapper.unmount();
     });
@@ -109,7 +111,7 @@ describe('AdminSettingsPageImpl', () => {
         });
         await waitForLifecycle(wrapper, 50);
         validatePremium(wrapper);
-        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Settings');
+        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Application Settings');
         expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBeUndefined();
         wrapper.unmount();
     });
@@ -121,7 +123,7 @@ describe('AdminSettingsPageImpl', () => {
         });
         await waitForLifecycle(wrapper, 50);
         validateNonPremium(wrapper);
-        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Settings');
+        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Application Settings');
         expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBeUndefined();
         wrapper.unmount();
     });
@@ -133,8 +135,8 @@ describe('AdminSettingsPageImpl', () => {
             moduleContext: { ...TEST_LKS_STARTER_MODULE_CONTEXT, query: { isProductProjectsEnabled: true } },
         });
         await waitForLifecycle(wrapper, 50);
-        validatePremium(wrapper, 1);
-        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Settings');
+        validatePremium(wrapper);
+        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Application Settings');
         expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBeUndefined();
         wrapper.unmount();
     });
@@ -145,11 +147,9 @@ describe('AdminSettingsPageImpl', () => {
             moduleContext: { ...TEST_LKS_STARTER_MODULE_CONTEXT, query: { isProductProjectsEnabled: true } },
         });
         await waitForLifecycle(wrapper, 50);
-        validatePremium(wrapper, 1, 1, 1);
-        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Project Settings');
-        expect(wrapper.find(BasePermissionsCheckPage).prop('description')).toBe(
-            '/TestProjectContainer/TestFolderContainer'
-        );
+        validatePremium(wrapper, 1);
+        expect(wrapper.find(BasePermissionsCheckPage).prop('title')).toBe('Application Settings');
+
         wrapper.unmount();
     });
 
@@ -162,19 +162,7 @@ describe('AdminSettingsPageImpl', () => {
             },
         });
         await waitForLifecycle(wrapper, 50);
-        validatePremium(wrapper, 0, 0);
-        wrapper.unmount();
-    });
-
-    test('non admin', async () => {
-        const wrapper = mountWithAppServerContext(<AdminSettingsPageImpl {...defaultProps()} />, APP_CONTEXT, {
-            ...SERVER_CONTEXT,
-            user: TEST_USER_EDITOR,
-        });
-        await waitForLifecycle(wrapper, 50);
-        expect(wrapper.find(InsufficientPermissionsPage)).toHaveLength(1);
-        expect(wrapper.find(BasePermissions)).toHaveLength(0);
-        expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(0);
+        validatePremium(wrapper, 0);
         wrapper.unmount();
     });
 });

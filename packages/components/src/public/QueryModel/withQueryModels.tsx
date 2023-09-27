@@ -230,6 +230,14 @@ export function withQueryModels<Props>(
 
         componentDidMount(): void {
             if (this.props.autoLoad) {
+                // N.B. This is currently not an ideal solution in terms of performance as it causes us to
+                // (a) load selections for all models when we likely want or need it for only the "active" model and
+                // (b) load selections for models that aren't associated with the grid (e.g., on details pages).
+                // This change was introduced to eliminate some redundant model data querying we had been doing as a
+                // result of having both autoLoad true here and loadOnMount set to true for the GridPanel (Issue 48319)
+                // Getting selections is now cheaper than getting the query data itself, so we're leaving this as is
+                // for now. Attempts to coordinate better between these two settings have thus far not been successful
+                // (or have seemed too invasive to be attractive). See Issue 48758.
                 this.loadAllModels(!!this.props.modelLoader.loadSelections);
             }
         }

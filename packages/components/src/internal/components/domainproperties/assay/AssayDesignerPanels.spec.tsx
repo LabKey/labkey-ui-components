@@ -269,9 +269,9 @@ describe('AssayDesignerPanels', () => {
         expect(wrapper.find('.domain-form-add-btn').hostNodes()).toHaveLength(0);
         expect(wrapper.find('.domain-form-manual-btn').hostNodes()).toHaveLength(3);
         expect(wrapper.find(FileAttachmentForm)).toHaveLength(3);
-        expect(wrapper.find('.domain-designer-buttons').hostNodes()).toHaveLength(1);
-        expect(wrapper.find('.btn-success')).toHaveLength(1);
-        expect(wrapper.find('.btn-success').props().disabled).toBe(false);
+        expect(wrapper.find('.form-buttons')).toHaveLength(1);
+        expect(wrapper.find('.save-button')).toHaveLength(1);
+        expect(wrapper.find('.save-button').props().disabled).toBe(false);
         wrapper.unmount();
     });
 
@@ -342,7 +342,7 @@ describe('AssayDesignerPanels', () => {
 
         // Open Sample Fields panel body
         wrapper
-            .find('.panel-heading')
+            .find('.domain-panel-header')
             .filterWhere(n => n.text().indexOf('Sample Fields') === 0)
             .simulate('click');
         expect(wrapper.find('#' + _appHeaderId)).toHaveLength(1);

@@ -370,7 +370,9 @@ describe('DomainForm', () => {
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_NAME, 0, 0), value: 'newfieldname' });
         domain = clearFieldDetails(domain);
 
-        const form = mount(<DomainForm api={API} domain={domain} key="domainForm" onChange={jest.fn()} testMode={true} />);
+        const form = mount(
+            <DomainForm api={API} domain={domain} key="domainForm" onChange={jest.fn()} testMode={true} />
+        );
         await waitForLifecycle(form);
 
         expect(form).toMatchSnapshot();
@@ -464,7 +466,14 @@ describe('DomainForm', () => {
         });
 
         const form = mount(
-            <DomainForm api={API} domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} testMode={true} />
+            <DomainForm
+                api={API}
+                domain={domain}
+                collapsible={false}
+                initCollapsed={true}
+                onChange={jest.fn()}
+                testMode={true}
+            />
         );
         await waitForLifecycle(form);
 
@@ -492,7 +501,14 @@ describe('DomainForm', () => {
         });
 
         const form = mount(
-            <DomainForm api={API} domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} testMode={true} />
+            <DomainForm
+                api={API}
+                domain={domain}
+                collapsible={false}
+                initCollapsed={true}
+                onChange={jest.fn()}
+                testMode={true}
+            />
         );
         await waitForLifecycle(form);
 
@@ -702,32 +718,25 @@ describe('DomainForm', () => {
         });
 
         const wrapper = mount(
-            <DomainForm
-                api={API}
-                domain={domain}
-                onChange={jest.fn}
-                collapsible={true}
-                controlledCollapse={true}
-                testMode={true}
-            />
+            <DomainForm api={API} domain={domain} onChange={jest.fn} collapsible controlledCollapse testMode />
         );
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(1);
         expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(0);
-        expect(wrapper.find('.panel-heading').text()).toBe(name + '1 Field Defined');
+        expect(wrapper.find('.domain-panel-header').text()).toBe(name + '1 Field Defined');
 
         // first click will collapse the panel, but header text shouldn't change
-        wrapper.find('.panel-heading').simulate('click');
+        wrapper.find('.domain-panel-header').simulate('click');
         expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(0);
         expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').text()).toBe(name + '1 Field Defined');
+        expect(wrapper.find('.domain-panel-header').text()).toBe(name + '1 Field Defined');
 
         // second click will re-expand the panel, but header text shouldn't change
-        wrapper.find('.panel-heading').simulate('click');
+        wrapper.find('.domain-panel-header').simulate('click');
         expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(1);
         expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(0);
-        expect(wrapper.find('.panel-heading').text()).toBe(name + '1 Field Defined');
+        expect(wrapper.find('.domain-panel-header').text()).toBe(name + '1 Field Defined');
         wrapper.unmount();
     });
 

@@ -166,3 +166,5 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
         </div>
     );
 });
+
+BaseDomainDesigner.displayName = 'BaseDomainDesigner';

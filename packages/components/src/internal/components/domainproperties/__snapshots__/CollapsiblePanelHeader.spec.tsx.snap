@@ -61,17 +61,11 @@ exports[`<CollapsiblePanelHeader/> invalid, iconHelpMsg, and expanded 1`] = `
   onClick={[MockFunction]}
 >
   <span
-    className="label-help-target"
-    onMouseOut={[Function]}
-    onMouseOver={[Function]}
+    className="domain-panel-status-icon"
   >
     <span
-      className="domain-panel-status-icon"
-    >
-      <span
-        className="fa fa-exclamation-circle"
-      />
-    </span>
+      className="fa fa-check-circle"
+    />
   </span>
   <span
     className="domain-panel-title"
@@ -115,20 +109,6 @@ exports[`<CollapsiblePanelHeader/> not controlledCollapse 1`] = `
       className="fa fa-check-circle"
     />
   </span>
-  <span
-    className="domain-panel-title"
-  >
-    Test Title
-  </span>
-</div>
-`;
-
-exports[`<CollapsiblePanelHeader/> not useTheme 1`] = `
-<div
-  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
-  id="test-id"
-  onClick={[MockFunction]}
->
   <span
     className="domain-panel-title"
   >

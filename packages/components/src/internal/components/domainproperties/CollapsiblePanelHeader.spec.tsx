@@ -79,24 +79,6 @@ describe('<CollapsiblePanelHeader/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('not useTheme', () => {
-        const component = (
-            <CollapsiblePanelHeader
-                id="test-id"
-                title="Test Title"
-                collapsed={false}
-                collapsible={false}
-                controlledCollapse={false}
-                panelStatus="NONE"
-                isValid
-                togglePanel={jest.fn()}
-            />
-        );
-
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
-    });
-
     test('invalid, iconHelpMsg, and expanded', () => {
         const component = (
             <CollapsiblePanelHeader

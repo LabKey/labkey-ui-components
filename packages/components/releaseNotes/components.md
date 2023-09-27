@@ -5,6 +5,27 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update help text for alias fields in support of defaulting to using the aliases as parents when inserting entities
 
+### version 2.373.0
+*Released*: 27 September 2023
+- Projects Administration Improvements
+   - Changed UserMenu to UserMenuGroup: split user items to into help, admin and user sections.
+   - Admin page header and navbar updates
+     - updated style, removed notification and search, removed folder menu, updated subnav
+   - Added WithDirtyCheckLink and VerticalScrollPanel component to support side by side panels
+   - AdminSettingsPage updates
+     - Removed project level settings: name/label, data type exclusion, freezer exclusion
+     - Add support for viewing/updating Home level application setting from child project
+   - ProjectManagementPage updates
+     - Added ProjectListing component and related utils to support project selection
+     - Allow cross folder project setting view/update
+     - Support project settings as well as certain application setting folder override
+   - PermissionManagementPage updates
+     - Removed BasePermission
+     - Updated ProjectManagementPage from grid to side to side project/setting layout and support cross folder view/update
+     - Support ApplicationAdminPermission update on the same panel with project level permissions.
+   - Moved ProtectedDataSettingsPanel and RequestsSettingsPanel from Biologics to components
+- Issue 48623: LKSM: revert to initial sampleCount or rootSampleCount when updating fails
+
 ### version 2.372.0
 *Released*: 27 September 2023
 - Add container filter to `PROJECT_AUDIT_QUERY` configuration and filter by `projectId` to get desired results.

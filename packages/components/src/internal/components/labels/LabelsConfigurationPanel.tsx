@@ -26,7 +26,7 @@ import { useServerContext } from '../base/ServerContext';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
-import { isAppHomeFolder } from '../../app/utils';
+import { Container } from '../base/models/Container';
 
 import { LabelTemplate } from './models';
 import { LABEL_TEMPLATE_SQ } from './constants';
@@ -39,6 +39,7 @@ const SAVING_LOCKED_TITLE = 'Saving';
 interface LabelTemplatesPanelProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
     defaultLabel?: number;
+    container: Container;
 }
 
 interface LabelTemplatesListProps {
@@ -57,6 +58,7 @@ interface LabelTemplateDetailsProps {
     onChange: () => void;
     onDefaultChanged: (newDefault: number) => void;
     template: LabelTemplate;
+    container: Container;
 }
 
 export const LabelTemplatesList: FC<LabelTemplatesListProps> = memo(props => {
@@ -112,7 +114,17 @@ const canBeDefault = (template: LabelTemplate): boolean => {
 };
 
 export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props => {
-    const { api, template, isNew, onChange, onActionCompleted, defaultLabel, onDefaultChanged, isDefaultable } = props;
+    const {
+        api,
+        template,
+        isNew,
+        onChange,
+        onActionCompleted,
+        defaultLabel,
+        onDefaultChanged,
+        isDefaultable,
+        container,
+    } = props;
     const [updatedTemplate, setUpdateTemplate] = useState<LabelTemplate>();
     // TODO is this needed since the Dirty state is tracked in the parent component?
     const [dirty, setDirty] = useState<boolean>();
@@ -205,6 +217,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                 const response = await api.query.insertRows({
                     schemaQuery: LABEL_TEMPLATE_SQ,
                     rows: List([templateToSave]),
+                    containerPath: container.path,
                 });
 
                 rowId = response?.rows[0]?.rowId;
@@ -347,21 +360,20 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
 });
 
 export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props => {
-    const { api, setIsDirty, defaultLabel } = props;
-    const { user, container, moduleContext } = useServerContext();
+    const { api, setIsDirty, defaultLabel, container } = props;
+    const { user } = useServerContext();
     const [templates, setTemplates] = useState<LabelTemplate[]>([]);
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
     const [newDefaultLabel, setNewDefaultLabel] = useState<number>(defaultLabel);
     const addNew = useMemo(() => selected === NEW_LABEL_INDEX, [selected]);
-    const showAdd = isAppHomeFolder(container, moduleContext);
 
     const queryLabelTemplates = useCallback(
         (newLabelTemplate?: number) => {
             setError(undefined);
 
             api.labelprinting
-                .ensureLabelTemplatesList(user)
+                .ensureLabelTemplatesList(user, container.path)
                 .then(labelTemplates => {
                     setTemplates(labelTemplates ?? []);
                     if (newLabelTemplate) {
@@ -427,9 +439,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                                 onSelect={onSetSelected}
                                 defaultLabel={newDefaultLabel}
                             />
-                            {showAdd && (
-                                <AddEntityButton onClick={onAddLabel} entity="New Label Template" disabled={addNew} />
-                            )}
+                            <AddEntityButton onClick={onAddLabel} entity="New Label Template" disabled={addNew} />
                         </div>
                         <div className="col-lg-8 col-md-6">
                             <LabelTemplateDetails
@@ -442,6 +452,7 @@ export const LabelsConfigurationPanel: FC<LabelTemplatesPanelProps> = memo(props
                                 api={api}
                                 onDefaultChanged={onDefaultChanged}
                                 isDefaultable={canBeDefault(template)}
+                                container={container}
                             />
                         </div>
                     </div>

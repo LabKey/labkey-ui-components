@@ -118,3 +118,30 @@ export function withRouteLeave<T>(
 
     return withRouter(wrapped) as FC<T & WrappedRouteLeaveProps>;
 }
+
+export interface WithDirtyCheckLinkProps {
+    className?: string;
+    leaveMsg?: string;
+    onClick: () => void;
+}
+
+export const WithDirtyCheckLink: FC<WithDirtyCheckLinkProps & InjectedRouteLeaveProps> = props => {
+    const { className, onClick, children, setIsDirty, getIsDirty, leaveMsg } = props;
+
+    const handleOnClick = useCallback(() => {
+        const dirty = getIsDirty();
+        if (dirty) {
+            const result = confirm(leaveMsg ?? CONFIRM_MESSAGE);
+            if (!result) return;
+
+            setIsDirty(false);
+        }
+        onClick();
+    }, [setIsDirty, getIsDirty, onClick, leaveMsg]);
+
+    return (
+        <a className={className} onClick={handleOnClick}>
+            {children}
+        </a>
+    );
+};

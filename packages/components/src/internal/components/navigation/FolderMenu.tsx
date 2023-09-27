@@ -40,7 +40,7 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
                     const adminURL = createProductUrl(
                         primaryProductId,
                         currentProductId,
-                        AppURL.create('admin', 'settings'),
+                        AppURL.create('admin', 'projects'),
                         item.path
                     );
 

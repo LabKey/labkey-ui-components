@@ -3,7 +3,7 @@ import React, { FC, memo, useCallback, useEffect, useReducer } from 'react';
 import { PermissionTypes } from '@labkey/api';
 import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 
-import { biologicsIsPrimaryApp, isAppHomeFolder, sampleManagerIsPrimaryApp } from '../../app/utils';
+import { biologicsIsPrimaryApp, sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { invalidateFullQueryDetailsCache } from '../../query/api';
 
@@ -22,18 +22,26 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { HelpLink } from '../../util/helpLinks';
 import { SAMPLE_TYPE_NAME_EXPRESSION_TOPIC } from '../samples/constants';
 
+import { Container } from '../base/models/Container';
+
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
 
 const TITLE = 'ID/Name Settings';
 
 interface NameIdSettingsFormProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
-    loadNameExpressionOptions: () => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
-    saveNameExpressionOptions: (key: string, value: string | boolean) => Promise<void>;
+    container: Container;
+    isAppHome?: boolean;
+    loadNameExpressionOptions: (
+        containerPath?: string
+    ) => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
+    saveNameExpressionOptions: (key: string, value: string | boolean, containerPath?: string) => Promise<void>;
 }
 
 interface NameIdSettingsProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
+    container: Container;
+    isAppHome?: boolean;
 }
 
 interface State {
@@ -52,12 +60,12 @@ interface State {
     loading: boolean;
     newRootSampleCount?: number;
     newSampleCount?: number;
+    prefix: string;
+    rootSampleCount?: number;
+    sampleCount?: number;
     savingAllowUserSpecifiedNames: boolean;
     savingPrefix: boolean;
     updatingCounter?: boolean;
-    rootSampleCount?: number;
-    sampleCount?: number;
-    prefix: string;
 }
 
 const initialState: State = {
@@ -74,12 +82,12 @@ const initialState: State = {
 };
 
 export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
-    const { api, loadNameExpressionOptions, saveNameExpressionOptions, setIsDirty } = props;
+    const { api, loadNameExpressionOptions, saveNameExpressionOptions, setIsDirty, isAppHome, container } = props;
     const [state, setState] = useReducer(
         (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
         initialState
     );
-    const { container, moduleContext } = useServerContext();
+    const { moduleContext } = useServerContext();
 
     const {
         loading,
@@ -106,25 +114,34 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
 
     const initialize = async (): Promise<void> => {
         try {
-            const payload = await loadNameExpressionOptions();
-            const sampleCount = await api.samples.getSampleCounter('sampleCount'); // show the next value
-            const rootSampleCount = await api.samples.getSampleCounter('rootSampleCount');
-            let hasRootSamples = false,
-                hasSamples = false;
-            if (sampleCount > 0) hasSamples = await api.samples.hasExistingSamples(false);
-            if (rootSampleCount > 0) hasRootSamples = await api.samples.hasExistingSamples(true);
+            const payload = await loadNameExpressionOptions(container.path);
 
-            setState({
-                prefix: payload.prefix ?? '',
-                allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
-                loading: false,
-                sampleCount,
-                rootSampleCount,
-                newSampleCount: sampleCount,
-                newRootSampleCount: rootSampleCount,
-                hasSamples,
-                hasRootSamples,
-            });
+            if (isAppHome) {
+                const sampleCount = await api.samples.getSampleCounter('sampleCount'); // show the next value
+                const rootSampleCount = await api.samples.getSampleCounter('rootSampleCount');
+                let hasRootSamples = false,
+                    hasSamples = false;
+                if (sampleCount > 0) hasSamples = await api.samples.hasExistingSamples(false);
+                if (rootSampleCount > 0) hasRootSamples = await api.samples.hasExistingSamples(true);
+
+                setState({
+                    prefix: payload.prefix ?? '',
+                    allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
+                    loading: false,
+                    sampleCount,
+                    rootSampleCount,
+                    newSampleCount: sampleCount,
+                    newRootSampleCount: rootSampleCount,
+                    hasSamples,
+                    hasRootSamples,
+                });
+            } else {
+                setState({
+                    prefix: payload.prefix ?? '',
+                    allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
+                    loading: false,
+                });
+            }
         } catch (err) {
             setState({ error: err.exception, loading: false });
         }
@@ -132,7 +149,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
 
     useEffect(() => {
         initialize();
-    }, []);
+    }, [isAppHome, container]);
 
     const displayError = (err): void => {
         setState({
@@ -145,7 +162,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         setState({ savingAllowUserSpecifiedNames: true });
 
         try {
-            await saveNameExpressionOptions('allowUserSpecifiedNames', !allowUserSpecifiedNames);
+            await saveNameExpressionOptions('allowUserSpecifiedNames', !allowUserSpecifiedNames, container.path);
 
             // Issue 44250: the sample type and data class queryInfo details for the name column will set the
             // setShownInInsertView based on this allowUserSpecifiedNames setting so we need to invalidate the cache
@@ -159,19 +176,19 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         } catch (err) {
             displayError(err);
         }
-    }, [allowUserSpecifiedNames, saveNameExpressionOptions]);
+    }, [allowUserSpecifiedNames, saveNameExpressionOptions, container.path]);
 
     const savePrefix = useCallback(async () => {
         setState({ savingPrefix: true });
 
         try {
-            await saveNameExpressionOptions('prefix', prefix);
+            await saveNameExpressionOptions('prefix', prefix, container.path);
         } catch (err) {
             displayError(err);
         }
         setState({ savingPrefix: false, confirmModalOpen: false, hasPrefixChange: false });
         setIsDirty(false);
-    }, [prefix, saveNameExpressionOptions, setIsDirty]);
+    }, [prefix, saveNameExpressionOptions, setIsDirty, container.path]);
 
     const prefixOnChange = useCallback(
         (evt: any) => {
@@ -243,17 +260,27 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                 });
             setIsDirty(false);
         } catch (error) {
-            setState({
-                error,
-                confirmCounterModalOpen: false,
-            });
+            if (isRoot) {
+                setState({
+                    error,
+                    confirmCounterModalOpen: false,
+                    newRootSampleCount: rootSampleCount,
+                });
+            } else {
+                setState({
+                    error,
+                    confirmCounterModalOpen: false,
+                    newSampleCount: sampleCount,
+                });
+            }
         }
-    }, [isRoot, isReset, newRootSampleCount, newSampleCount, setIsDirty]);
+    }, [isRoot, isReset, newRootSampleCount, newSampleCount, setIsDirty, rootSampleCount, sampleCount]);
 
     return (
         <div className="name-id-settings-panel panel panel-default">
             <div className="panel-heading">{TITLE}</div>
             <div className="panel-body">
+                {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
                 <div className="name-id-setting__setting-section">
                     <div className="list__bold-text margin-bottom">User-defined IDs/Names</div>
 
@@ -346,7 +373,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     </div>
                 )}
 
-                {isAppHomeFolder(container, moduleContext) && (
+                {isAppHome && (
                     <div className="sample-counter__setting-section margin-top">
                         <div className="list__bold-text margin-bottom">Naming Pattern Elements/Tokens</div>
                         <div>
@@ -464,8 +491,6 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         )}
                     </div>
                 )}
-
-                {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
             </div>
         </div>
     );

@@ -1,6 +1,5 @@
 import React, { ChangeEventHandler, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { PermissionTypes } from '@labkey/api';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -8,13 +7,14 @@ import { Progress } from '../base/Progress';
 
 import { useServerContext } from '../base/ServerContext';
 import { AppURL, createProductUrl } from '../../url/AppURL';
-import { getCurrentAppProperties, getPrimaryAppProperties, getProjectPath } from '../../app/utils';
+import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
 import { useAppContext } from '../../AppContext';
 import { Summary } from '../security/APIWrapper';
 import { Alert } from '../base/Alert';
+import { Container } from '../base/models/Container';
 
 interface CommentAreaProps {
     comment: string;
@@ -108,9 +108,7 @@ export const BodyDeleting: FC<BodyDeletingProps> = memo(({ totalCountFromSummari
 
     return (
         <Modal.Body>
-            <div className="deleting-project-modal-text">
-                Please don't close this page until deletion is complete.
-            </div>
+            <div className="deleting-project-modal-text">Please don't close this page until deletion is complete.</div>
             <Progress delay={0} estimate={totalCountFromSummaries * 15} toggle={toggle} />
         </Modal.Body>
     );
@@ -118,12 +116,13 @@ export const BodyDeleting: FC<BodyDeletingProps> = memo(({ totalCountFromSummari
 
 interface Props {
     onCancel: () => void;
+    onDeleteSuccess: () => void;
     onError: (e: string) => void;
-    projectName: string;
+    project: Container;
 }
 
 export const DeleteProjectModal: FC<Props> = memo(props => {
-    const { projectName, onCancel, onError } = props;
+    const { project, onCancel, onError, onDeleteSuccess } = props;
     const [summaries, setSummaries] = useState<Summary[]>([]);
     const [comment, setComment] = useState<string>(undefined);
     const [error, setError] = useState<string>(undefined);
@@ -132,6 +131,8 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
 
     const { api } = useAppContext();
     const { container } = useServerContext();
+
+    const projectName = project?.name;
 
     useEffect(() => {
         (async () => {
@@ -158,36 +159,16 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
     const onDeleteProject = useCallback(async () => {
         setIsDeleting(true);
         try {
-            await api.security.deleteContainer({ comment });
+            await api.security.deleteContainer({
+                comment,
+                containerPath: project.path,
+            });
 
-            const successMsg = projectName;
-            const adminProjectsHref = createProductUrl(
-                getPrimaryAppProperties()?.productId,
-                getCurrentAppProperties()?.productId,
-                AppURL.create('admin', 'projects').addParam('successMsg', successMsg).toHref(),
-                container.parentPath
-            ).toString();
-
-            const homeHref = createProductUrl(
-                getPrimaryAppProperties()?.productId,
-                getCurrentAppProperties()?.productId,
-                AppURL.create('home').addParam('successMsg', successMsg).toHref(),
-                container.parentPath
-            ).toString();
-
-            try {
-                // 'Project' in below var names refers to the top-level folder
-                const projectPerms = await api.security.getUserPermissions({ containerPath: getProjectPath() });
-                const isProjectAdmin = projectPerms.includes(PermissionTypes.Admin);
-                window.location.href = isProjectAdmin ? adminProjectsHref : homeHref;
-            } catch (e) {
-                // If something goes wrong with retrieving user permissions but deletion was successful, we opt to send user to project home
-                window.location.href = homeHref;
-            }
+            onDeleteSuccess();
         } catch (e) {
             onError(resolveErrorMessage(e) ?? `${projectName} could not be deleted. Please try again.`);
         }
-    }, [api.security, comment, container.parentPath, onError, projectName]);
+    }, [api.security, comment, container.parentPath, onError, projectName, onDeleteSuccess]);
 
     const totalCountFromSummaries = useMemo(
         () =>

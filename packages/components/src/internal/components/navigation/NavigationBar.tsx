@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 import classNames from 'classnames';
-import React, { Children, FC, memo, ReactNode, useCallback } from 'react';
+import React, { Children, FC, memo, ReactNode, useCallback, useMemo } from 'react';
 import { List, Map } from 'immutable';
+
+import { WithRouterProps } from 'react-router';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
@@ -34,8 +36,10 @@ import { User } from '../base/models/User';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { ProductMenuButton } from './ProductMenu';
-import { UserMenu, UserMenuProps } from './UserMenu';
+import { withRouteLeave } from '../../util/RouteLeave';
+
+import { isAdminRoute, ProductMenuButton } from './ProductMenu';
+import { UserMenuGroup, UserMenuProps } from './UserMenuGroup';
 import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
 import { useFolderMenuContext } from './hooks';
@@ -55,9 +59,9 @@ interface NavigationBarProps {
     user?: User;
 }
 
-type Props = NavigationBarProps & UserMenuProps;
+type Props = NavigationBarProps & UserMenuProps & WithRouterProps;
 
-export const NavigationBar: FC<Props> = memo(props => {
+export const NavigationBarImpl: FC<Props> = memo(props => {
     const {
         brand,
         children,
@@ -77,6 +81,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         showSearchBox,
         signOutUrl,
         user,
+        routes,
     } = props;
 
     const { moduleContext } = useServerContext();
@@ -84,6 +89,10 @@ export const NavigationBar: FC<Props> = memo(props => {
     const onSearchIconClick = useCallback(() => {
         onSearch('');
     }, [onSearch]);
+
+    const isAdminPage = useMemo(() => {
+        return isAdminRoute(routes?.[1]?.path);
+    }, [routes]);
 
     const _searchPlaceholder =
         searchPlaceholder ?? getPrimaryAppProperties(moduleContext)?.searchPlaceholder ?? SEARCH_PLACEHOLDER;
@@ -93,12 +102,17 @@ export const NavigationBar: FC<Props> = memo(props => {
 
     return (
         <div className={classNames('app-navigation', { 'with-sub-nav': hasSubNav })}>
-            <nav className="main-nav navbar navbar-container test-loc-nav-header">
+            <nav
+                className={classNames('main-nav navbar test-loc-nav-header', {
+                    'navbar-container': !isAdminPage,
+                    'admin-navbar-container': isAdminPage,
+                })}
+            >
                 <div className="container">
                     <div className="row">
-                        <div className="navbar-left col-xs-8 col-md-7">
+                        <div className="navbar-left col-xs-6 col-md-6">
                             <span className="navbar-item navbar-left-icon pull-left">{brand}</span>
-                            {showNavMenu && (
+                            {showNavMenu && !isAdminPage && (
                                 <span className="navbar-item navbar-left-menu">
                                     <ProductMenuButton
                                         key={folderMenuContext.key} // re-render and reload folderItems when project added
@@ -107,21 +121,20 @@ export const NavigationBar: FC<Props> = memo(props => {
                                     />
                                 </span>
                             )}
+                            {isAdminPage && <div className="navbar-left-sub">Administration</div>}
                         </div>
-                        <div className="navbar-right col-xs-4 col-md-5">
+                        <div className="navbar-right col-xs-6 col-md-6">
                             {!!user && (
-                                <div className="navbar-item pull-right">
-                                    <UserMenu
-                                        extraDevItems={extraDevItems}
-                                        extraUserItems={extraUserItems}
-                                        onSignIn={onSignIn}
-                                        onSignOut={onSignOut}
-                                        signOutUrl={signOutUrl}
-                                        user={user}
-                                    />
-                                </div>
+                                <UserMenuGroup
+                                    extraDevItems={extraDevItems}
+                                    extraUserItems={extraUserItems}
+                                    onSignIn={onSignIn}
+                                    onSignOut={onSignOut}
+                                    signOutUrl={signOutUrl}
+                                    user={user}
+                                />
                             )}
-                            {_showNotifications && (
+                            {_showNotifications && !isAdminPage && (
                                 <div className="navbar-item pull-right navbar-item-notification">
                                     <ServerNotifications {...notificationsConfig} />
                                 </div>
@@ -131,7 +144,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                                     <ProductNavigation />
                                 </div>
                             )}
-                            {showSearchBox && (
+                            {showSearchBox && !isAdminPage && (
                                 <div className="navbar-item pull-right">
                                     <div className="hidden-md hidden-sm hidden-xs">
                                         <SearchBox
@@ -169,7 +182,9 @@ export const NavigationBar: FC<Props> = memo(props => {
     );
 });
 
-NavigationBar.defaultProps = {
+export const NavigationBar = withRouteLeave(NavigationBarImpl);
+
+NavigationBarImpl.defaultProps = {
     showFolderMenu: false,
     showNavMenu: true,
     showNotifications: true,
@@ -177,4 +192,4 @@ NavigationBar.defaultProps = {
     showSearchBox: false,
 };
 
-NavigationBar.displayName = 'NavigationBar';
+NavigationBarImpl.displayName = 'NavigationBar';

@@ -183,3 +183,45 @@
     padding: 10px;
     line-height: 40px;
 }
+
+.listing-content-title-medium {
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px 0 10px 0;
+}
+
+.project-listing-left{
+    list-style-type: none;
+    padding-left: 0;
+
+    hr {
+        margin: 0 0 0 10px;
+        border-top-color: $brand-primary;
+        height: 1px;
+        background-color: $light-gray;
+        border: none;
+    }
+
+    li a {
+        display: block;
+        padding: 10px 6px;
+        margin-left: 10px;
+
+        &:focus, &:hover {
+            color: $link-hover-color;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    }
+
+    li.active {
+        a {
+            background-color: $white;
+            color: $text-color;
+
+            &:focus, &:hover {
+                cursor: default;
+            }
+        }
+    }
+}

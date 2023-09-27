@@ -17,6 +17,8 @@ import React, { FC, useRef, useState, useCallback, useEffect, memo } from 'react
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
+import { getServerContext } from '@labkey/api';
+
 import { useServerContext } from '../base/ServerContext';
 
 import { hasPremiumModule, hasProductProjects } from '../../app/utils';
@@ -28,11 +30,13 @@ import { useSubNavContext } from './hooks';
 interface Props {
     noun?: ITab;
     tabs: List<ITab>;
+    showLKVersion?: boolean;
 }
 
-export const SubNav: FC<Props> = ({ noun, tabs }) => {
+export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
     const scrollable = useRef<HTMLDivElement>();
     const { container, moduleContext } = useServerContext();
+    const { versionString } = getServerContext();
     const showCurrentContainer = hasPremiumModule(moduleContext) && !hasProductProjects(moduleContext);
     const [isScrollable, setIsScrollable] = useState<boolean>(false);
     const scroll = useCallback(offset => {
@@ -84,16 +88,20 @@ export const SubNav: FC<Props> = ({ noun, tabs }) => {
     return (
         <nav className="navbar navbar-inverse sub-nav">
             <div className="sub-nav-container">
-                {noun && <ParentNavItem to={noun.url}>{noun.text}</ParentNavItem>}
+                {noun && (
+                    <ParentNavItem to={noun.url} onClick={noun.onClick}>
+                        {noun.text}
+                    </ParentNavItem>
+                )}
 
                 <div className="tab-scroll-ct" ref={scrollable}>
                     <ul className="nav navbar-nav">
                         {tabs
                             .filter(tab => !!tab.text)
-                            .map(({ text, url }, i) => (
+                            .map(({ text, url, onClick }, i) => (
                                 // neither "text" nor "url" are consistently unique
                                 // eslint-disable-next-line react/no-array-index-key
-                                <NavItem key={i} to={url} onActive={onItemActivate}>
+                                <NavItem key={i} to={url} onActive={onItemActivate} onClick={onClick}>
                                     {text}
                                 </NavItem>
                             ))}
@@ -116,6 +124,14 @@ export const SubNav: FC<Props> = ({ noun, tabs }) => {
                         <span className="fa fa-folder-open" />
                         <span className="container-nav__name" title={container.name}>
                             {container.name}
+                        </span>
+                    </div>
+                )}
+
+                {showLKVersion && (
+                    <div className="lk-version-nav">
+                        <span className="lk-version-nav__label" title={versionString}>
+                            Version: {versionString}
                         </span>
                     </div>
                 )}

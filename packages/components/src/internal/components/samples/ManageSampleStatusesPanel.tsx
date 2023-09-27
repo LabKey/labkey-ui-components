@@ -23,10 +23,9 @@ import { DisableableButton } from '../buttons/DisableableButton';
 
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
-import { useServerContext } from '../base/ServerContext';
-import { isProductProjectsEnabled } from '../../app/utils';
-
 import { useAppContext } from '../../AppContext';
+
+import { Container } from '../base/models/Container';
 
 import { SampleState } from './models';
 import { getSampleStatusLockedMessage } from './utils';
@@ -39,6 +38,7 @@ const SAMPLE_STATUS_LOCKED_TITLE = 'Sample Status Locked';
 
 interface SampleStatusDetailProps {
     addNew: boolean;
+    container?: Container;
     onActionComplete: (newStatusLabel?: string, isDelete?: boolean) => void;
     onChange: () => void;
     state: SampleState;
@@ -46,7 +46,7 @@ interface SampleStatusDetailProps {
 
 // exported for jest testing
 export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
-    const { state, addNew, onActionComplete, onChange } = props;
+    const { state, addNew, onActionComplete, onChange, container } = props;
     const [typeOptions, setTypeOptions] = useState<Array<Record<string, any>>>();
     const [updatedState, setUpdatedState] = useState<SampleState>();
     const [dirty, setDirty] = useState<boolean>();
@@ -58,7 +58,11 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     useEffect(() => {
         (async () => {
             try {
-                const response = await api.query.selectRows({ columns: 'RowId,Value', schemaQuery: STATE_TYPE_SQ });
+                const response = await api.query.selectRows({
+                    columns: 'RowId,Value',
+                    schemaQuery: STATE_TYPE_SQ,
+                    containerPath: container?.path,
+                });
 
                 const options = response.rows.reduce((options_, row) => {
                     options_.push({ value: caseInsensitive(row, 'Value').value });
@@ -69,7 +73,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                 setTypeOptions(DEFAULT_TYPE_OPTIONS);
             }
         })();
-    }, [api]);
+    }, [api, container?.path]);
 
     const resetState = useCallback(() => {
         setSaving(false);
@@ -123,6 +127,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                 .updateRows({
                     schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
                     rows: [stateToSave],
+                    containerPath: container?.path,
                 })
                 .then(() => {
                     onActionComplete(stateToSave.label);
@@ -136,6 +141,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                 .insertRows({
                     schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
                     rows: List([stateToSave]),
+                    containerPath: container?.path,
                 })
                 .then(() => {
                     onActionComplete(stateToSave.label);
@@ -145,7 +151,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     setSaving(false);
                 });
         }
-    }, [api, updatedState, onActionComplete]);
+    }, [api, updatedState, onActionComplete, container?.path]);
 
     const onToggleDeleteConfirm = useCallback(() => setShowDeleteConfirm(!showDeleteConfirm), [showDeleteConfirm]);
     const onDeleteConfirm = useCallback(() => {
@@ -317,23 +323,22 @@ SampleStatusesList.displayName = 'SampleStatusesList';
 
 interface ManageSampleStatusesPanelProps extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
+    container?: Container;
 }
 
 export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = memo(props => {
-    const { api, setIsDirty } = props;
+    const { api, setIsDirty, container } = props;
     const [states, setStates] = useState<SampleState[]>();
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
     const addNew = useMemo(() => selected === NEW_STATUS_INDEX, [selected]);
-    const { container } = useServerContext();
-    const showAdd = container.isProject || !isProductProjectsEnabled();
 
     const querySampleStatuses = useCallback(
         (newStatusLabel?: string) => {
             setError(undefined);
 
             api.samples
-                .getSampleStatuses(true)
+                .getSampleStatuses(true, container.path)
                 .then(statuses => {
                     setStates(statuses);
                     if (newStatusLabel) setSelected(statuses.findIndex(state => state.label === newStatusLabel));
@@ -343,7 +348,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                     setError('Error: Unable to load sample statuses.');
                 });
         },
-        [api]
+        [api, container]
     );
 
     useEffect(() => {
@@ -381,7 +386,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                     <div className="row choices-container">
                         <div className="col-lg-4 col-md-6 choices-container-left-panel">
                             <SampleStatusesList states={states} selected={selected} onSelect={onSetSelected} />
-                            {showAdd && <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />}
+                            <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />
                         </div>
                         <div className="col-lg-8 col-md-6">
                             <SampleStatusDetail
@@ -390,6 +395,7 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                                 addNew={addNew}
                                 onActionComplete={onActionComplete}
                                 onChange={onChange}
+                                container={container}
                             />
                         </div>
                     </div>

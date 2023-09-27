@@ -277,33 +277,31 @@ describe('domain properties actions', () => {
     });
 
     test('getDomainPanelClass', () => {
-        // TODO: mock isApp to test the lk-border-theme-light stuff. Alternately put the arg back in and just pass isApp() to it
-        expect(getDomainPanelClass(true, true)).toBe('domain-form-panel');
-        expect(getDomainPanelClass(true, true)).toBe('domain-form-panel');
-        expect(getDomainPanelClass(true, false)).toBe('domain-form-panel');
-        expect(getDomainPanelClass(true, false)).toBe('domain-form-panel');
-        expect(getDomainPanelClass(false, true)).toBe('domain-form-panel lk-border-theme-light');
-        expect(getDomainPanelClass(false, true)).toBe('domain-form-panel domain-panel-no-theme');
-        expect(getDomainPanelClass(false, false)).toBe('domain-form-panel');
-        expect(getDomainPanelClass(false, false)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(true, true, false)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(true, true, true)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(true, false, false)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(true, false, true)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(false, true, false)).toBe('domain-form-panel lk-border-theme-light');
+        expect(getDomainPanelClass(false, true, true)).toBe('domain-form-panel domain-panel-no-theme');
+        expect(getDomainPanelClass(false, false, false)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(false, false, true)).toBe('domain-form-panel');
     });
 
     test('getDomainAlertClasses', () => {
-        // TODO: mock isApp to test for lk-border-theme-light stuff
-        expect(getDomainAlertClasses(true, true)).toBe('domain-bottom-alert panel-default');
-        expect(getDomainAlertClasses(true, false)).toBe('domain-bottom-alert panel-default');
-        expect(getDomainAlertClasses(true, true)).toBe('domain-bottom-alert panel-default');
-        expect(getDomainAlertClasses(true, false)).toBe('domain-bottom-alert panel-default');
-        expect(getDomainAlertClasses(false, true)).toBe(
+        expect(getDomainAlertClasses(true, true, false)).toBe('domain-bottom-alert panel-default');
+        expect(getDomainAlertClasses(true, false, false)).toBe('domain-bottom-alert panel-default');
+        expect(getDomainAlertClasses(true, true, true)).toBe('domain-bottom-alert panel-default');
+        expect(getDomainAlertClasses(true, false, true)).toBe('domain-bottom-alert panel-default');
+        expect(getDomainAlertClasses(false, true, false)).toBe(
             'domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top'
         );
-        expect(getDomainAlertClasses(false, true)).toBe(
+        expect(getDomainAlertClasses(false, true, true)).toBe(
             'domain-bottom-alert panel-default domain-bottom-alert-expanded domain-bottom-alert-top'
         );
-        expect(getDomainAlertClasses(false, false)).toBe(
+        expect(getDomainAlertClasses(false, false, false)).toBe(
             'domain-bottom-alert panel-default domain-bottom-alert-top'
         );
-        expect(getDomainAlertClasses(false, false)).toBe(
+        expect(getDomainAlertClasses(false, false, true)).toBe(
             'domain-bottom-alert panel-default domain-bottom-alert-top'
         );
     });

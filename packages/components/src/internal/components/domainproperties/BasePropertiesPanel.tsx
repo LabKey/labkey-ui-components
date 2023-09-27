@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Panel } from 'react-bootstrap';
+import { isApp } from '../../app/utils';
 
 import { Alert } from '../base/Alert';
 
@@ -65,10 +66,11 @@ export class BasePropertiesPanel extends React.PureComponent<Props> {
             warning,
             todoIconHelpMsg,
         } = this.props;
+        const isApp_ = isApp();
 
         return (
             <>
-                <Panel className={getDomainPanelClass(collapsed, true)} expanded={!collapsed} onToggle={noop}>
+                <Panel className={getDomainPanelClass(collapsed, true, isApp_)} expanded={!collapsed} onToggle={noop}>
                     <CollapsiblePanelHeader
                         id={headerId}
                         title={title}
@@ -85,12 +87,12 @@ export class BasePropertiesPanel extends React.PureComponent<Props> {
                     <Panel.Body collapsible={collapsible || controlledCollapse}>{children}</Panel.Body>
                 </Panel>
                 {!isValid && (
-                    <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true)}>
+                    <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true, isApp_)}>
                         <Alert bsStyle="danger">{PROPERTIES_PANEL_ERROR_MSG}</Alert>
                     </div>
                 )}
                 {isValid && warning && (
-                    <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true)}>
+                    <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true, isApp_)}>
                         <Alert bsStyle="warning">{warning}</Alert>
                     </div>
                 )}

@@ -33,7 +33,7 @@ import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 
 import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
-import { hasModule } from '../../app/utils';
+import { hasModule, isApp } from '../../app/utils';
 
 import { ConfirmModal } from '../base/ConfirmModal';
 
@@ -1071,15 +1071,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderDetailedFieldView = (): ReactNode => {
-        const {
-            domain,
-            helpNoun,
-            appPropertiesOnly,
-            domainIndex,
-            domainFormDisplayOptions,
-            schemaName,
-            queryName,
-        } = this.props;
+        const { domain, helpNoun, appPropertiesOnly, domainIndex, domainFormDisplayOptions, schemaName, queryName } =
+            this.props;
         const {
             expandedRowIndex,
             expandTransition,
@@ -1236,13 +1229,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             !hasFields && !systemFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
         const disableExport = !hasFields || fields.filter(f => f.visible).size < 1;
         const hasException = domain.hasException();
+        const isApp_ = isApp();
 
         return (
             <>
                 {confirmDeleteRowIndex !== undefined && this.renderFieldRemoveConfirm()}
                 {bulkDeleteConfirmInfo && this.renderBulkFieldDeleteConfirm()}
                 <Panel
-                    className={getDomainPanelClass(collapsed, controlledCollapse)}
+                    className={getDomainPanelClass(collapsed, controlledCollapse, isApp_)}
                     expanded={this.isPanelExpanded()}
                     onToggle={function () {}}
                 >
@@ -1402,7 +1396,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     </Panel.Body>
                 </Panel>
                 {hasException && domain.domainException.severity === SEVERITY_LEVEL_ERROR && (
-                    <div onClick={this.togglePanel} className={getDomainAlertClasses(collapsed, controlledCollapse)}>
+                    <div
+                        onClick={this.togglePanel}
+                        className={getDomainAlertClasses(collapsed, controlledCollapse, isApp_)}
+                    >
                         <Alert bsStyle="danger">{domain.domainException.exception}</Alert>
                     </div>
                 )}

@@ -111,7 +111,7 @@ exports[`DataClassDesigner custom properties 1`] = `
     onRemoveParentAlias={[Function]}
     onToggle={[Function]}
     panelStatus="NONE"
-    parentAliasHelpText="Column headings used during import to set a source's parentage."
+    parentAliasHelpText="Column headings used during import to set a source's parentage. The referenced type will also be added as a parent type by default when adding sources manually."
     updateDupeParentAliases={[Function]}
     useTheme={true}
     validate={true}
@@ -372,7 +372,7 @@ exports[`DataClassDesigner default properties 1`] = `
     onRemoveParentAlias={[Function]}
     onToggle={[Function]}
     panelStatus="NONE"
-    parentAliasHelpText="Column headings used during import to set a data class's parentage."
+    parentAliasHelpText="Column headings used during import to set a data class's parentage. The referenced type will also be added as a parent type by default when adding data classes manually."
     updateDupeParentAliases={[Function]}
     validate={true}
   />
@@ -1157,7 +1157,7 @@ exports[`DataClassDesigner initModel 1`] = `
     onRemoveParentAlias={[Function]}
     onToggle={[Function]}
     panelStatus="COMPLETE"
-    parentAliasHelpText="Column headings used during import to set a data class's parentage."
+    parentAliasHelpText="Column headings used during import to set a data class's parentage. The referenced type will also be added as a parent type by default when adding data classes manually."
     updateDupeParentAliases={[Function]}
     validate={true}
   />

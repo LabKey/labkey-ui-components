@@ -99,7 +99,7 @@ const AuditQueriesListingPageBody: FC<InjectedQueryModels & OwnProps> = memo(pro
         return (
             <Row>
                 <Col xs={12} md={8}>
-                    <GridPanel actions={actions} highlightLastSelectedRow key={eventType} model={model} />
+                    <GridPanel actions={actions} highlightLastSelectedRow model={model} />
                 </Col>
                 <Col xs={12} md={4}>
                     <AuditDetails
@@ -117,7 +117,7 @@ const AuditQueriesListingPageBody: FC<InjectedQueryModels & OwnProps> = memo(pro
         );
     }
 
-    return <GridPanel actions={actions} key={eventType} model={model} />;
+    return <GridPanel actions={actions} model={model} />;
 });
 
 const AuditQueriesListingBodyWithModels = withQueryModels<OwnProps>(AuditQueriesListingPageBody);

@@ -24,8 +24,6 @@ import { SCHEMAS } from '../../schemas';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
-import { isAppHomeFolder } from '../../app/utils';
-
 import { User } from '../base/models/User';
 
 import { getAuditQueries } from './utils';
@@ -127,7 +125,7 @@ const AuditQueriesListingBodyWithModels = withQueryModels<OwnProps>(AuditQueries
 export const AuditQueriesListingPage: FC<WithRouterProps> = memo(({ location, router }) => {
     const locationEventType = location.query?.eventType;
     const [eventType, setEventType] = useState<string>(() => locationEventType ?? SAMPLE_TIMELINE_AUDIT_QUERY.value);
-    const { container, moduleContext, project, user } = useServerContext();
+    const { moduleContext, project, user } = useServerContext();
     const auditQueries = useMemo(() => getAuditQueries(moduleContext), [moduleContext]);
     const selectedQuery = useMemo(() => auditQueries.find(q => q.value === eventType), [auditQueries, eventType]);
     const queryConfigs = useMemo<QueryConfigMap>(() => {
@@ -137,10 +135,6 @@ export const AuditQueriesListingPage: FC<WithRouterProps> = memo(({ location, ro
         if (PROJECT_AUDIT_QUERY.value === value) {
             // Issue 47512: App audit log filters out container events for deleted containers
             baseFilters.push(Filter.create('projectId', project.id));
-
-            if (!isAppHomeFolder(container, moduleContext)) {
-                baseFilters.push(Filter.create('container', container.id));
-            }
         }
 
         return {
@@ -155,7 +149,7 @@ export const AuditQueriesListingPage: FC<WithRouterProps> = memo(({ location, ro
                 useSavedSettings: false,
             },
         };
-    }, [container, moduleContext, project.id, selectedQuery]);
+    }, [project.id, selectedQuery]);
 
     useEffect(() => {
         if (locationEventType) {

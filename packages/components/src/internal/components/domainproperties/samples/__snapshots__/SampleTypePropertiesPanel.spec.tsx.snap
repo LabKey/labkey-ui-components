@@ -1655,7 +1655,7 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
     onParentAliasChange={[Function]}
     onRemoveParentAlias={[Function]}
     panelStatus="NONE"
-    parentAliasHelpText="Column headings used during import to set a sample's parentage."
+    parentAliasHelpText="Column headings used during import to set a sample's parentage. The referenced type will also be added as a parent type by default when adding samples manually."
     parentOptions={[]}
     sampleAliasCaption="Sample Alias"
     sampleTypeCaption="Sample Type"
@@ -1748,7 +1748,7 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
       onParentAliasChange={[Function]}
       onRemoveParentAlias={[Function]}
       panelStatus="NONE"
-      parentAliasHelpText="Column headings used during import to set a sample's parentage."
+      parentAliasHelpText="Column headings used during import to set a sample's parentage. The referenced type will also be added as a parent type by default when adding samples manually."
       parentOptions={[]}
       sampleAliasCaption="Sample Alias"
       sampleTypeCaption="Sample Type"
@@ -2295,7 +2295,7 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                     addEntityHelp={
                       <React.Fragment>
                         <p>
-                          Column headings used during import to set a sample's parentage.
+                          Column headings used during import to set a sample's parentage. The referenced type will also be added as a parent type by default when adding samples manually.
                         </p>
                         <p>
                           <HelpLink
@@ -2388,7 +2388,7 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                     onParentAliasChange={[Function]}
                     onRemoveParentAlias={[Function]}
                     panelStatus="NONE"
-                    parentAliasHelpText="Column headings used during import to set a sample's parentage."
+                    parentAliasHelpText="Column headings used during import to set a sample's parentage. The referenced type will also be added as a parent type by default when adding samples manually."
                     parentOptions={[]}
                     sampleAliasCaption="Sample Alias"
                     sampleTypeCaption="Sample Type"
@@ -2429,7 +2429,7 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                                 helperBody={
                                   <React.Fragment>
                                     <p>
-                                      Column headings used during import to set a sample's parentage.
+                                      Column headings used during import to set a sample's parentage. The referenced type will also be added as a parent type by default when adding samples manually.
                                     </p>
                                     <p>
                                       <HelpLink
@@ -2447,7 +2447,7 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                                   helperBody={
                                     <React.Fragment>
                                       <p>
-                                        Column headings used during import to set a sample's parentage.
+                                        Column headings used during import to set a sample's parentage. The referenced type will also be added as a parent type by default when adding samples manually.
                                       </p>
                                       <p>
                                         <HelpLink

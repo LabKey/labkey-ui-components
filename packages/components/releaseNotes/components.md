@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.373.1
+*Released*: 29 September 2023
+* Update help text for alias fields in support of defaulting to using the aliases as parents when inserting entities
+
 ### version 2.373.0
 *Released*: 27 September 2023
 - Projects Administration Improvements
@@ -19,7 +23,7 @@ Components, models, actions, and utility functions for LabKey applications and p
      - Removed BasePermission
      - Updated ProjectManagementPage from grid to side to side project/setting layout and support cross folder view/update
      - Support ApplicationAdminPermission update on the same panel with project level permissions.
-   - Moved ProtectedDataSettingsPanel and RequestsSettignsPanel from Biologics to components
+   - Moved ProtectedDataSettingsPanel and RequestsSettingsPanel from Biologics to components
 - Issue 48623: LKSM: revert to initial sampleCount or rootSampleCount when updating fails
 
 ### version 2.372.0

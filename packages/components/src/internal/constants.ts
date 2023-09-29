@@ -183,7 +183,9 @@ export const SAMPLE_UNIQUE_FIELD_KEY = 'Name';
 export const DATA_CLASS_UNIQUE_FIELD_KEY = 'Name';
 
 export const NO_UPDATES_MESSAGE = 'No changes were made because the provided values match the existing values.';
-export const PARENT_ALIAS_HELPER_TEXT = "Column headings used during import to set a sample's parentage.";
+export const PARENT_ALIAS_HELPER_TEXT =
+    "Column headings used during import to set a sample's parentage. " +
+    'The referenced type will also be added as a parent type by default when adding samples manually.';
 
 export enum DataViewInfoTypes {
     AutomaticPlot = 'Automatic Plot',

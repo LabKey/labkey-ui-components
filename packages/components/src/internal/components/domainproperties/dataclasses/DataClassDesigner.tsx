@@ -494,7 +494,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                     onAddParentAlias={this.addParentAlias}
                     onRemoveParentAlias={this.removeParentAlias}
                     updateDupeParentAliases={this.updateDupes}
-                    parentAliasHelpText={`Column headings used during import to set a ${nounSingular.toLowerCase()}'s parentage.`}
+                    parentAliasHelpText={`Column headings used during import to set a ${nounSingular.toLowerCase()}'s parentage. The referenced type will also be added as a parent type by default when adding ${nounPlural.toLowerCase()} manually.`}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}

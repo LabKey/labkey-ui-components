@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X 2023
+* Show SourceID on SourceEvents Audit Table
+  * Added DATACLASS_DATA_UPDATE_AUDIT_QUERY for Biologic audit logs
+
 ### version 2.373.1
 *Released*: 29 September 2023
 * Update help text for alias fields in support of defaulting to using the aliases as parents when inserting entities

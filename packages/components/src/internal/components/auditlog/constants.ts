@@ -15,9 +15,16 @@ export const DOMAIN_PROPERTY_AUDIT_QUERY: AuditQuery = {
 };
 export const DATA_UPDATE_AUDIT_QUERY: AuditQuery = {
     hasDetail: true,
-    label: 'Data Update Events',
+    label: 'Query Update Events',
     value: 'queryupdateauditevent',
 };
+
+export const DATACLASS_DATA_UPDATE_AUDIT_QUERY: AuditQuery = {
+    hasDetail: true,
+    label: 'Data Update Events',
+    value: 'dataclassdataauditevent',
+};
+
 export const INVENTORY_AUDIT_QUERY: AuditQuery = {
     hasDetail: true,
     label: 'Storage Management Events',

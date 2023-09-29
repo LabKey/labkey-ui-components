@@ -31,42 +31,41 @@ export const ProjectListing: FC<Props> = memo(props => {
                     let projectTitle = project.path === homeFolderPath ? 'Application' : project.title;
                     if (!projectTitle) projectTitle = project.name;
                     return (
-                        <>
+                        <Fragment key={project.id}>
                             {ind === dividerInd && (
-                                <li>
+                                <li key={project.id + '_divider'}>
                                     <div className="row">
                                         <hr />
                                     </div>
                                 </li>
                             )}
-                            <Fragment key={project.id}>
-                                <li
-                                    className={classNames('menu-section-item', {
-                                        active: project.id === selectedProject?.id,
-                                    })}
-                                >
-                                    <div className="row">
-                                        <div className="col menu-folder-body">
-                                            <WithDirtyCheckLink
-                                                className="menu-folder-item"
-                                                onClick={() => setSelectedProject(project)}
-                                                getIsDirty={getIsDirty}
-                                                setIsDirty={setIsDirty}
-                                            >
-                                                {showInherited && (
-                                                    <SVGIcon
-                                                        iconSrc="inherited-arrow"
-                                                        className="label-help-target"
-                                                        alt="inherited"
-                                                    />
-                                                )}
-                                                <span>{projectTitle}</span>
-                                            </WithDirtyCheckLink>
-                                        </div>
+                            <li
+                                key={project.id}
+                                className={classNames('menu-section-item', {
+                                    active: project.id === selectedProject?.id,
+                                })}
+                            >
+                                <div className="row">
+                                    <div className="col menu-folder-body">
+                                        <WithDirtyCheckLink
+                                            className="menu-folder-item"
+                                            onClick={() => setSelectedProject(project)}
+                                            getIsDirty={getIsDirty}
+                                            setIsDirty={setIsDirty}
+                                        >
+                                            {showInherited && (
+                                                <SVGIcon
+                                                    iconSrc="inherited-arrow"
+                                                    className="label-help-target"
+                                                    alt="inherited"
+                                                />
+                                            )}
+                                            <span>{projectTitle}</span>
+                                        </WithDirtyCheckLink>
                                     </div>
-                                </li>
-                            </Fragment>
-                        </>
+                                </div>
+                            </li>
+                        </Fragment>
                     );
                 })}
             </ul>

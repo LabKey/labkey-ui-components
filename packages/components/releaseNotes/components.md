@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### veresion TBD
+*Released*: RBD
+* add some keys to Fragments to get rid of warnings about missing keys
+
 ### version 2.373.1
 *Released*: 29 September 2023
 * Update help text for alias fields in support of defaulting to using the aliases as parents when inserting entities

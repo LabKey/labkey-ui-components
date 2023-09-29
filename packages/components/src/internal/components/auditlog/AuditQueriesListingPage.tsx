@@ -107,7 +107,8 @@ const AuditQueriesListingPageImpl: FC<InjectedQueryModels & OwnProps> = memo(pro
         (async () => {
             try {
                 const { value } = selectedQuery;
-                const isQueryDataUpdate = value === SOURCE_AUDIT_QUERY.value || value === DATACLASS_DATA_UPDATE_AUDIT_QUERY.value;
+                const isQueryDataUpdate =
+                    value === SOURCE_AUDIT_QUERY.value || value === DATACLASS_DATA_UPDATE_AUDIT_QUERY.value;
                 const auditEventType = isQueryDataUpdate ? DATA_UPDATE_AUDIT_QUERY.value : value;
                 const detail_ = await getAuditDetail(lastSelectedId, auditEventType);
                 setDetail(detail_.merge({ rowId: lastSelectedId }) as AuditDetailsModel);

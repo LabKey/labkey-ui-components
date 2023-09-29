@@ -30,7 +30,8 @@ import {
     PROJECT_AUDIT_QUERY,
     REGISTRY_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
-    WORKFLOW_AUDIT_QUERY, DATACLASS_DATA_UPDATE_AUDIT_QUERY,
+    WORKFLOW_AUDIT_QUERY,
+    DATACLASS_DATA_UPDATE_AUDIT_QUERY,
 } from './constants';
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {

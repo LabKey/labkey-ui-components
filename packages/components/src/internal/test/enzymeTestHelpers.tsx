@@ -6,7 +6,7 @@ import { AppContext } from '../AppContext';
 
 import { NotificationsContextState } from '../components/notifications/NotificationsContext';
 import { ServerContext, ServerContextProvider } from '../components/base/ServerContext';
-import { LabelPrintingProviderProps } from '../components/labels/LabelPrintingContextProvider';
+import { LabelPrintingContext } from '../components/labels/LabelPrintingContextProvider';
 
 import { AppContextTestProvider, sleep } from './testHelpers';
 
@@ -26,7 +26,7 @@ export const mountWithAppServerContextOptions = (
     serverContext?: Partial<ServerContext>,
     notificationContext?: Partial<NotificationsContextState>,
     options?: MountRendererProps,
-    printLabelsContext?: Partial<LabelPrintingProviderProps>
+    printLabelsContext?: Partial<LabelPrintingContext>
 ): MountRendererProps => {
     return {
         wrappingComponent: AppContextTestProvider,
@@ -58,7 +58,7 @@ export const mountWithAppServerContext = (
     serverContext?: Partial<ServerContext>,
     notificationContext?: Partial<NotificationsContextState>,
     options?: MountRendererProps,
-    printLabelsContext?: Partial<LabelPrintingProviderProps>
+    printLabelsContext?: Partial<LabelPrintingContext>
 ): ReactWrapper => {
     return mount(
         node,

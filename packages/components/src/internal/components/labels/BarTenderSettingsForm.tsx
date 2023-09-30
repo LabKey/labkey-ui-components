@@ -20,19 +20,16 @@ import { useServerContext } from '../base/ServerContext';
 import { Container } from '../base/models/Container';
 
 import { BarTenderConfiguration, BarTenderResponse } from './models';
-import { withLabelPrintingContext, LabelPrintingProviderProps } from './LabelPrintingContextProvider';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE } from './constants';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
 
-interface OwnProps extends InjectedRouteLeaveProps {
+interface Props extends InjectedRouteLeaveProps {
     api?: ComponentsAPIWrapper;
     container: Container;
     onChange: () => void;
     onSuccess: () => void;
     title?: string;
 }
-
-type Props = LabelPrintingProviderProps & OwnProps;
 
 const SUCCESSFUL_NOTIFICATION_MESSAGE = 'Successfully connected to BarTender web service.';
 const FAILED_NOTIFICATION_MESSAGE = 'Failed to connect to BarTender web service.';
@@ -109,8 +106,8 @@ const btTestConnectionTemplate = (): string => {
 };
 
 // exported for jest testing
-export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
-    const { api, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess, container } = props;
+export const BarTenderSettingsForm: FC<Props> = memo(props => {
+    const { api, container, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
     const [btServiceURL, setBtServiceURL] = useState<string>();
     const [defaultLabel, setDefaultLabel] = useState<number>();
     const { moduleContext } = useServerContext();
@@ -132,7 +129,7 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
             .catch(reason => {
                 setFailureMessage(reason);
             });
-    }, [api?.labelprinting, container?.path]);
+    }, [api, container?.path]);
 
     const onChangeHandler = useCallback(
         (name: string, value: string): void => {
@@ -253,8 +250,8 @@ export const BarTenderSettingsFormImpl: FC<Props> = memo(props => {
     );
 });
 
-BarTenderSettingsFormImpl.defaultProps = {
+BarTenderSettingsForm.defaultProps = {
     api: getDefaultAPIWrapper(),
 };
 
-export const BarTenderSettingsForm = withLabelPrintingContext(BarTenderSettingsFormImpl);
+BarTenderSettingsForm.displayName = 'BarTenderSettingsForm';

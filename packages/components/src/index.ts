@@ -657,11 +657,7 @@ import {
 import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
 import { BarTenderConfiguration } from './internal/components/labels/models';
-import {
-    LabelPrintingProvider,
-    useLabelPrintingContext,
-    withLabelPrintingContext,
-} from './internal/components/labels/LabelPrintingContextProvider';
+import { useLabelPrintingContext } from './internal/components/labels/LabelPrintingContextProvider';
 import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal';
 
 import {
@@ -992,6 +988,8 @@ const Hooks = {
     useAppContext,
     useContainerUser,
     useEnterEscape,
+    useLabelPrintingContext,
+    useNotificationsContext,
     useRouteLeave,
     useServerContext,
     useUserProperties,
@@ -1671,8 +1669,6 @@ export {
     BarTenderConfiguration,
     BarTenderSettingsForm,
     PrintLabelsModal,
-    LabelPrintingProvider,
-    withLabelPrintingContext,
     useLabelPrintingContext,
     usePortalRef,
     ExtendedMap,
@@ -1790,7 +1786,7 @@ export type { HorizontalBarData } from './internal/components/chart/HorizontalBa
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
 export type { InjectedLineage } from './internal/components/lineage/withLineage';
 export type {
-    LabelPrintingProviderProps,
+    LabelPrintingContext,
     LabelPrintingContextProps,
 } from './internal/components/labels/LabelPrintingContextProvider';
 export type { SamplesEditableGridProps } from './internal/sampleModels';

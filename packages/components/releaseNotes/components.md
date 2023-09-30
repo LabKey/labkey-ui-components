@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.373.2
+*Released*: 29 September 2023
+* AuditQueriesListingPage: load via withQueryModels
+
 ### version 2.373.1
 *Released*: 29 September 2023
 * Update help text for alias fields in support of defaulting to using the aliases as parents when inserting entities
@@ -33,10 +37,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Display dropdown indicator on date cells in `EditableGrid`.
 - Update `DatePickerInput` to expose `onCalendarClose` and use to handle selecting a date cell after the calendar has closed.
 - Update `UserLink` to not attempt to fetch details for negative `userId` values (as you might find in the audit log)
-
-### version 2.371.1
-*Released*: 29 September 2023
-* AuditQueriesListingPage: load via withQueryModels
 
 ### version 2.371.0
 *Released*: 25 September 2023

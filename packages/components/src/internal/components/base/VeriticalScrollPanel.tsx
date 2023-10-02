@@ -1,4 +1,8 @@
-import React, { FC, useState, useEffect, memo } from 'react';
+import React, { FC, useState, useEffect, memo, useCallback } from 'react';
+
+// We have padding at the bottom of our pages that we need to account for or we'll end up with double scrollbars on the
+// page which looks bad
+const PADDING = 45;
 
 interface Props {
     cls?: string;
@@ -10,14 +14,19 @@ interface Props {
 export const VerticalScrollPanel: FC<Props> = memo(props => {
     const { ratio, offset, children, cls } = props;
     const [height, setHeight] = useState<number>(0);
+    const resize = useCallback(() => {
+        if (offset) setHeight(window.innerHeight - offset - PADDING);
+        else setHeight(window.innerHeight * ratio);
+    }, [offset, ratio]);
 
     useEffect(() => {
-        if (offset) setHeight(window.innerHeight - offset);
-        else setHeight(window.innerHeight * ratio);
-    }, []);
+        resize();
+        window.addEventListener('resize', resize);
+        return () => window.removeEventListener('resize', resize);
+    }, [resize]);
 
     return (
-        <div style={{ height: height + 'px', overflowY: 'scroll' }} className={cls}>
+        <div style={{ height: height + 'px' }} className={'vertical-scroll-panel ' + cls}>
             {children}
         </div>
     );

@@ -6,15 +6,18 @@ import { useServerContext } from '../base/ServerContext';
 
 import { isSampleManagerEnabled } from '../../app/utils';
 
+import { resolveErrorMessage } from '../../util/messaging';
+
 import { userCanPrintLabels } from './utils';
 
 export interface LabelPrintingContext {
     canPrintLabels: boolean;
     defaultLabel: number;
+    error?: string;
     printServiceUrl: string;
 }
 
-export type LabelPrintingContextProps = Omit<LabelPrintingContext, 'canPrintLabels'>;
+export type LabelPrintingContextProps = Omit<LabelPrintingContext, 'canPrintLabels' | 'error'>;
 
 interface LabelPrintingContextProviderProps {
     initialContext?: LabelPrintingContextProps;
@@ -39,18 +42,29 @@ export const LabelPrintingContextProvider: FC<LabelPrintingContextProviderProps>
     useEffect(() => {
         if (!userCanPrintLabels(user) || !isSampleManagerEnabled(moduleContext)) return;
 
-        // TODO: This needs to handle errors
-        Promise.all([
-            api.labelprinting.fetchBarTenderConfiguration(),
-            api.labelprinting.ensureLabelTemplatesList(user),
-        ]).then(responses => {
-            const [btConfiguration, templates] = responses;
-            setLabelContext({
-                canPrintLabels: !!btConfiguration.serviceURL && templates?.length > 0,
-                defaultLabel: btConfiguration.defaultLabel,
-                printServiceUrl: btConfiguration.serviceURL,
-            });
-        });
+        (async () => {
+            try {
+                const [btConfiguration, templates] = await Promise.all([
+                    api.labelprinting.fetchBarTenderConfiguration(),
+                    api.labelprinting.ensureLabelTemplatesList(user),
+                ]);
+
+                setLabelContext({
+                    canPrintLabels: !!btConfiguration.serviceURL && templates?.length > 0,
+                    defaultLabel: btConfiguration.defaultLabel,
+                    printServiceUrl: btConfiguration.serviceURL,
+                });
+            } catch (e) {
+                setLabelContext({
+                    canPrintLabels: false,
+                    defaultLabel: undefined,
+                    error: `Failed to initialize label printing context: "${
+                        resolveErrorMessage(e) ?? 'Unknown error'
+                    }"`,
+                    printServiceUrl: undefined,
+                });
+            }
+        })();
     }, [api, moduleContext, user]);
 
     return <Context.Provider value={labelContext}>{children}</Context.Provider>;

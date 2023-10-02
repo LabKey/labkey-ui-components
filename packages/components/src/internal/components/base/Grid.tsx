@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, PureComponent, ReactNode, RefObject, useEffect, useRef } from 'react';
+import React, { FC, Fragment, memo, PureComponent, ReactNode, RefObject, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 
@@ -279,7 +279,7 @@ class GridBody extends PureComponent<GridBodyProps> {
             >
                 {columns.map((column: GridColumn, c: number) =>
                     column.tableCell ? (
-                        column.cell(row.get(column.index), row, column, r, c)
+                        <Fragment key={column.index}>{column.cell(row.get(column.index), row, column, r, c)}</Fragment>
                     ) : (
                         <td key={column.index} style={{ textAlign: column.align || 'left' } as any}>
                             {column.cell(row.get(column.index), row, column, r, c)}

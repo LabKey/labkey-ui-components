@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### veresion TBD
-*Released*: RBD
+### version 2.373.3
+*Released*: 2 Octoeber 2023
 * add some keys to Fragments to get rid of warnings about missing keys
 
 ### version 2.373.2

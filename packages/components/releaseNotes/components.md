@@ -1,8 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 48709: Choose date on month change instead of just highlighting it
+
 ### version 2.373.3
-*Released*: 2 Octoeber 2023
+*Released*: 2 October 2023
 * add some keys to Fragments to get rid of warnings about missing keys
 
 ### version 2.373.2

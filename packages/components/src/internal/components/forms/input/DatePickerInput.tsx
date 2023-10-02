@@ -150,10 +150,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         }
     };
 
-    onMonthChange = (month: Date): void => {
-        this.onChange(month);
-    };
-
     getDateFormat(): string {
         const { dateFormat, queryColumn, hideTime } = this.props;
         return getColDateFormat(queryColumn, hideTime ? 'Date' : dateFormat);
@@ -199,7 +195,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 onChange={this.onChange}
                 onChangeRaw={allowRelativeInput ? this.onChangeRaw : undefined}
                 onKeyDown={onKeyDown}
-                onMonthChange={this.onMonthChange}
+                onMonthChange={this.onChange}
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
                 selected={selectedDate}
                 showTimeSelect={!hideTime && isDateTimeCol(queryColumn)}

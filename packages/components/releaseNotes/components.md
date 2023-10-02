@@ -6,6 +6,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Show SourceID on SourceEvents Audit Table
   * Added DATACLASS_DATA_UPDATE_AUDIT_QUERY for Biologic audit logs
 
+### version 2.374.0
+*Released*: 2 October 2023
+* Add FormButtons component
+* BaseDomainDesigner: use FormButtons
+* Domain Designer components: remove useTheme and successBsStyle props
+* Add isApp and getSubmitButtonClass util methods
+
+### version 2.373.3
+*Released*: 2 October 2023
+* add some keys to Fragments to get rid of warnings about missing keys
+
+### version 2.373.2
+*Released*: 29 September 2023
+* AuditQueriesListingPage: load via withQueryModels
+
 ### version 2.373.1
 *Released*: 29 September 2023
 * Update help text for alias fields in support of defaulting to using the aliases as parents when inserting entities
@@ -28,7 +43,7 @@ Components, models, actions, and utility functions for LabKey applications and p
      - Removed BasePermission
      - Updated ProjectManagementPage from grid to side to side project/setting layout and support cross folder view/update
      - Support ApplicationAdminPermission update on the same panel with project level permissions.
-   - Moved ProtectedDataSettingsPanel and RequestsSettingsPanel from Biologics to components
+   - Moved ProtectedDataSettingsPanel and RequestsSettignsPanel from Biologics to components
 - Issue 48623: LKSM: revert to initial sampleCount or rootSampleCount when updating fails
 
 ### version 2.372.0

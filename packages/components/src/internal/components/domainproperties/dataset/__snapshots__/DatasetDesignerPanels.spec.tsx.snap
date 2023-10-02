@@ -1379,7 +1379,6 @@ exports[`Dataset Designer New dataset 1`] = `
   name={null}
   onCancel={[MockFunction]}
   onFinish={[Function]}
-  saveBtnText="Save"
   submitting={false}
   visitedPanels={Immutable.List []}
 >

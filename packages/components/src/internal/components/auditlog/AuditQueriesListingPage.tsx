@@ -11,25 +11,27 @@ import { WithRouterProps } from 'react-router';
 
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 
-import { getLocation, replaceParameters } from '../../util/URL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Page } from '../base/Page';
 import { PageHeader } from '../base/PageHeader';
 import { SelectInput, SelectInputChange } from '../forms/input/SelectInput';
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { useServerContext } from '../base/ServerContext';
 
 import { SCHEMAS } from '../../schemas';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
+import { User } from '../base/models/User';
+
 import { getAuditQueries } from './utils';
 import { getAuditDetail } from './actions';
 import { AuditDetailsModel } from './models';
 import { AuditDetails } from './AuditDetails';
 import {
+    AuditQuery,
     AUDIT_EVENT_TYPE_PARAM,
     SAMPLE_TIMELINE_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
@@ -39,70 +41,29 @@ import {
 } from './constants';
 
 interface OwnProps {
-    eventType?: string;
-    onChange: (eventType: string) => void;
+    eventType: string;
+    selectedQuery: AuditQuery;
+    user: User;
 }
 
-const AuditQueriesListingPageImpl: FC<InjectedQueryModels & OwnProps> = memo(props => {
-    const { actions, onChange, queryModels } = props;
-    const { moduleContext, project, user } = useServerContext();
+const AuditQueriesListingPageBody: FC<InjectedQueryModels & OwnProps> = memo(props => {
+    const { actions, eventType, queryModels, selectedQuery, user } = props;
+    const { hasDetail } = selectedQuery;
+    const model = queryModels[eventType];
 
     const [detail, setDetail] = useState<AuditDetailsModel>();
     const [error, setError] = useState<string>();
-    const [eventType, setEventType] = useState<string>(() => props.eventType ?? SAMPLE_TIMELINE_AUDIT_QUERY.value);
-    const [selectedRowId, setSelectedRowId] = useState<number>();
-    const auditQueries = useMemo(() => getAuditQueries(moduleContext), [moduleContext]);
-    const selectedQuery = useMemo(() => auditQueries.find(q => q.value === eventType), [auditQueries, eventType]);
-    const id = useMemo<string>(
-        () => (selectedQuery ? `audit-log-querymodel-${selectedQuery.value}` : undefined),
-        [selectedQuery]
-    );
-    const model = queryModels[id];
-    const lastSelectedId = useMemo<number>(() => {
-        if (!model?.selections) return undefined;
+    const selectedRowId = useMemo<number>(() => {
+        if (model.isLoading || model.hasLoadErrors || !model.selections) return undefined;
         return parseInt(Array.from(model.selections).pop(), 10);
-    }, [model?.selections]);
+    }, [model]);
 
     useEffect(() => {
-        if (props.eventType) {
-            setEventType(props.eventType);
+        if (!selectedRowId || !selectedQuery.hasDetail) {
+            setError(undefined);
+            setDetail(undefined);
+            return;
         }
-    }, [props.eventType]);
-
-    useEffect(() => {
-        if (!selectedQuery) return undefined;
-        const { value } = selectedQuery;
-
-        if (!queryModels[id]) {
-            // Issue 47512: App audit log filters out container events for deleted containers
-            const baseFilters: Filter.IFilter[] = [];
-            if (PROJECT_AUDIT_QUERY.value === value) {
-                baseFilters.push(Filter.create('projectId', project.id));
-            }
-
-            actions.addModel(
-                {
-                    baseFilters,
-                    // only bind first model to URL so that it can pick up any filters passed from the caller
-                    bindURL: Object.keys(queryModels).length === 0,
-                    containerFilter: selectedQuery.containerFilter,
-                    id,
-                    includeTotalCount: true,
-                    schemaQuery: new SchemaQuery(SCHEMAS.AUDIT_TABLES.SCHEMA, value),
-                },
-                true,
-                true
-            );
-        }
-    }, [actions, id, project, queryModels, selectedQuery]);
-
-    useEffect(() => {
-        setSelectedRowId(lastSelectedId);
-        setDetail(detail_ => (lastSelectedId === detail_?.rowId ? detail_ : undefined));
-    }, [lastSelectedId]);
-
-    useEffect(() => {
-        if (!lastSelectedId || selectedQuery?.hasDetail !== true) return;
 
         (async () => {
             try {
@@ -110,23 +71,14 @@ const AuditQueriesListingPageImpl: FC<InjectedQueryModels & OwnProps> = memo(pro
                 const isQueryDataUpdate =
                     value === SOURCE_AUDIT_QUERY.value || value === DATACLASS_DATA_UPDATE_AUDIT_QUERY.value;
                 const auditEventType = isQueryDataUpdate ? DATA_UPDATE_AUDIT_QUERY.value : value;
-                const detail_ = await getAuditDetail(lastSelectedId, auditEventType);
-                setDetail(detail_.merge({ rowId: lastSelectedId }) as AuditDetailsModel);
+                const detail_ = await getAuditDetail(selectedRowId, auditEventType);
+                setDetail(detail_.merge({ rowId: selectedRowId }) as AuditDetailsModel);
                 setError(undefined);
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to load audit details');
             }
         })();
-    }, [lastSelectedId, selectedQuery]);
-
-    const onSelectionChange = useCallback<SelectInputChange>(
-        (_, eventType_) => {
-            setEventType(eventType_);
-            setSelectedRowId(undefined);
-            onChange(eventType_);
-        },
-        [onChange]
-    );
+    }, [selectedQuery, selectedRowId]);
 
     const gridData = useMemo(() => {
         if (!detail) return undefined;
@@ -146,61 +98,115 @@ const AuditQueriesListingPageImpl: FC<InjectedQueryModels & OwnProps> = memo(pro
         return fromJS(rows);
     }, [detail]);
 
-    const hasDetailView = selectedQuery?.hasDetail === true;
-    const title = 'Audit Logs';
+    if (hasDetail) {
+        return (
+            <Row>
+                <Col xs={12} md={8}>
+                    <GridPanel actions={actions} highlightLastSelectedRow model={model} />
+                </Col>
+                <Col xs={12} md={4}>
+                    <AuditDetails
+                        changeDetails={detail}
+                        gridData={gridData}
+                        rowId={selectedRowId}
+                        summary={detail?.comment}
+                        user={user}
+                    >
+                        {error && <Alert>{error}</Alert>}
+                        {!!selectedRowId && !detail && !error && <LoadingSpinner />}
+                    </AuditDetails>
+                </Col>
+            </Row>
+        );
+    }
 
+    return <GridPanel actions={actions} model={model} />;
+});
+
+const AuditQueriesListingBodyWithModels = withQueryModels<OwnProps>(AuditQueriesListingPageBody);
+
+export const AuditQueriesListingPage: FC<WithRouterProps> = memo(({ location, router }) => {
+    const locationEventType = location.query?.eventType;
+    const [eventType, setEventType] = useState<string>(() => locationEventType ?? SAMPLE_TIMELINE_AUDIT_QUERY.value);
+    const { moduleContext, project, user } = useServerContext();
+    const auditQueries = useMemo(() => getAuditQueries(moduleContext), [moduleContext]);
+    const selectedQuery = useMemo(() => auditQueries.find(q => q.value === eventType), [auditQueries, eventType]);
+    const queryConfigs = useMemo<QueryConfigMap>(() => {
+        if (!selectedQuery) return undefined;
+        const { value } = selectedQuery;
+        const baseFilters: Filter.IFilter[] = [];
+        if (PROJECT_AUDIT_QUERY.value === value) {
+            // Issue 47512: App audit log filters out container events for deleted containers
+            baseFilters.push(Filter.create('projectId', project.id));
+        }
+
+        return {
+            [value]: {
+                baseFilters,
+                bindURL: true,
+                containerFilter: selectedQuery.containerFilter,
+                id: value,
+                includeTotalCount: true,
+                schemaQuery: new SchemaQuery(SCHEMAS.AUDIT_TABLES.SCHEMA, value),
+                // Not using saved settings here since we reuse the same urlPrefix for all models
+                useSavedSettings: false,
+            },
+        };
+    }, [project.id, selectedQuery]);
+
+    useEffect(() => {
+        if (locationEventType) {
+            setEventType(locationEventType);
+        }
+    }, [locationEventType]);
+
+    const onChange = useCallback<SelectInputChange>(
+        (_, eventType_) => {
+            if (eventType_ === eventType) return;
+            const query = Object.keys(location.query).reduce((query_, key) => {
+                // remove query parameters from next model event type
+                if (!key.startsWith('query.')) {
+                    if (key === AUDIT_EVENT_TYPE_PARAM) {
+                        query_[key] = eventType_;
+                    } else {
+                        query_[key] = location.query[key];
+                    }
+                }
+
+                return query_;
+            }, {});
+            router.replace({ ...location, query });
+            setEventType(eventType_);
+        },
+        [eventType, location, router]
+    );
+
+    const title = 'Audit Logs';
     return (
         <Page hasHeader title={title}>
             <PageHeader title={title} />
             <SelectInput
+                clearable={false}
                 inputClass="col-xs-6"
                 key="audit-log-query-select"
                 name="audit-log-query-select"
-                onChange={onSelectionChange}
+                onChange={onChange}
                 options={auditQueries}
                 placeholder="Select an audit event type..."
-                value={eventType}
+                value={selectedQuery ? eventType : undefined}
             />
-            {hasDetailView && model && (
-                <Row>
-                    <Col xs={12} md={8}>
-                        <GridPanel actions={actions} highlightLastSelectedRow model={model} />
-                    </Col>
-                    <Col xs={12} md={4}>
-                        <AuditDetails
-                            changeDetails={detail}
-                            gridData={gridData}
-                            rowId={selectedRowId}
-                            summary={detail?.comment}
-                            user={user}
-                        >
-                            {error && <Alert>{error}</Alert>}
-                            {!!selectedRowId && !detail && !error && <LoadingSpinner />}
-                        </AuditDetails>
-                    </Col>
-                </Row>
+            {!selectedQuery && eventType && (
+                <Alert>Audit Event Type "{eventType}" Not Found. Please select an audit event type above.</Alert>
             )}
-            {!hasDetailView && model && <GridPanel actions={actions} model={model} />}
+            {selectedQuery && (
+                <AuditQueriesListingBodyWithModels
+                    eventType={eventType}
+                    key={eventType}
+                    queryConfigs={queryConfigs}
+                    selectedQuery={selectedQuery}
+                    user={user}
+                />
+            )}
         </Page>
     );
-});
-
-const AuditQueriesListingPageWithModels = withQueryModels<OwnProps>(AuditQueriesListingPageImpl);
-
-export const AuditQueriesListingPage: FC<WithRouterProps> = memo(({ location }) => {
-    const onChange = useCallback(eventType => {
-        const location_ = getLocation();
-        const paramUpdates = location_.query.map((value: string, key: string) => {
-            if (key.startsWith('query')) {
-                return undefined; // get rid of filtering parameters that are likely not applicable to this new audit log
-            } else if (key === AUDIT_EVENT_TYPE_PARAM) {
-                return eventType;
-            } else {
-                return value;
-            }
-        });
-        replaceParameters(location_, paramUpdates);
-    }, []);
-
-    return <AuditQueriesListingPageWithModels eventType={location.query?.eventType} onChange={onChange} />;
 });

@@ -32,7 +32,6 @@ interface OwnProps {
     api?: IssuesAPIWrapper;
     model: IssuesListDefModel;
     onChange: (model: IssuesListDefModel) => void;
-    successBsStyle?: string;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps;

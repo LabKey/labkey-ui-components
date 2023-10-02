@@ -33,7 +33,7 @@ import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 
 import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
-import { hasModule } from '../../app/utils';
+import { hasModule, isApp } from '../../app/utils';
 
 import { ConfirmModal } from '../base/ConfirmModal';
 
@@ -143,11 +143,9 @@ interface IDomainFormInput {
     // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     setFileImportData?: (file: File, shouldImportData: boolean) => void;
     showHeader?: boolean;
-    successBsStyle?: string;
     systemFields?: SystemField[];
     testMode?: boolean;
     todoIconHelpMsg?: string;
-    useTheme?: boolean;
     validate?: boolean;
 }
 
@@ -188,7 +186,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         isNew: false,
         appPropertiesOnly: false,
         domainIndex: 0,
-        successBsStyle: 'success',
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
         testMode: false,
     };
@@ -1074,16 +1071,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderDetailedFieldView = (): ReactNode => {
-        const {
-            domain,
-            helpNoun,
-            appPropertiesOnly,
-            domainIndex,
-            successBsStyle,
-            domainFormDisplayOptions,
-            schemaName,
-            queryName,
-        } = this.props;
+        const { domain, helpNoun, appPropertiesOnly, domainIndex, domainFormDisplayOptions, schemaName, queryName } =
+            this.props;
         const {
             expandedRowIndex,
             expandTransition,
@@ -1178,7 +1167,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                             defaultDefaultValueType={domain.defaultDefaultValueType}
                                             defaultValueOptions={domain.defaultValueOptions}
                                             appPropertiesOnly={appPropertiesOnly}
-                                            successBsStyle={successBsStyle}
                                             isDragDisabled={
                                                 !valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
                                             }
@@ -1215,7 +1203,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             helpTopic,
             modelDomains,
             panelStatus,
-            useTheme,
             setFileImportData,
             showHeader,
             systemFields,
@@ -1242,13 +1229,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             !hasFields && !systemFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
         const disableExport = !hasFields || fields.filter(f => f.visible).size < 1;
         const hasException = domain.hasException();
+        const isApp_ = isApp();
 
         return (
             <>
                 {confirmDeleteRowIndex !== undefined && this.renderFieldRemoveConfirm()}
                 {bulkDeleteConfirmInfo && this.renderBulkFieldDeleteConfirm()}
                 <Panel
-                    className={getDomainPanelClass(collapsed, controlledCollapse, useTheme)}
+                    className={getDomainPanelClass(collapsed, controlledCollapse, isApp_)}
                     expanded={this.isPanelExpanded()}
                     onToggle={function () {}}
                 >
@@ -1263,7 +1251,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             todoIconHelpMsg={todoIconHelpMsg}
                             panelStatus={panelStatus}
                             togglePanel={this.togglePanel}
-                            useTheme={useTheme}
                             isValid={!hasException}
                             iconHelpMsg={hasException ? domain.domainException.exception : undefined}
                         >
@@ -1411,7 +1398,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 {hasException && domain.domainException.severity === SEVERITY_LEVEL_ERROR && (
                     <div
                         onClick={this.togglePanel}
-                        className={getDomainAlertClasses(collapsed, controlledCollapse, useTheme)}
+                        className={getDomainAlertClasses(collapsed, controlledCollapse, isApp_)}
                     >
                         <Alert bsStyle="danger">{domain.domainException.exception}</Alert>
                     </div>

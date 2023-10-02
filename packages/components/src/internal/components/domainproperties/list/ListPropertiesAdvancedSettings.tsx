@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, FormEventHandler, memo, ReactNode, useCallback, useState } from 'react';
 import classNames from 'classnames';
 import { Button, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
+import { getSubmitButtonClass } from '../../../app/utils';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
@@ -382,7 +383,6 @@ const SettingsContainer: FC<SettingsContainerProps> = memo(({ children, title, t
 interface AdvancedSettingsProps {
     applyAdvancedProperties: (advancedSettingsForm: AdvancedSettingsForm) => void;
     model: ListModel;
-    successBsStyle?: string;
     title: string;
 }
 
@@ -487,15 +487,13 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             entireListBodyTemplate,
             eachItemBodyTemplate,
         } = this.state;
-        const { title, model, successBsStyle } = this.props;
-
+        const { title, model } = this.props;
         const entireListIndexSettings = {
             entireListTitleTemplate,
             entireListIndexSetting,
             entireListBodySetting,
             entireListBodyTemplate,
         };
-
         const eachItemIndexSettings = {
             eachItemTitleTemplate,
             eachItemBodySetting,
@@ -554,7 +552,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                         <Button
                             onClick={this.applyChanges}
-                            bsStyle={successBsStyle || 'success'}
+                            bsStyle={getSubmitButtonClass()}
                             className="domain-adv-footer domain-adv-apply-btn"
                         >
                             Apply

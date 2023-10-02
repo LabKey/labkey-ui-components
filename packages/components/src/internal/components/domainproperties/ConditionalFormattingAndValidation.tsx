@@ -60,7 +60,6 @@ interface Props {
     index: number;
     onChange: (string, any) => void;
     showingModal: (boolean) => void;
-    successBsStyle?: string;
 }
 
 interface State {
@@ -200,7 +199,7 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
     };
 
     render() {
-        const { index, field, domainFormDisplayOptions, successBsStyle } = this.props;
+        const { index, field, domainFormDisplayOptions } = this.props;
         const { showCondFormat, showRegex, showRange } = this.state;
         const showCondFormatSection = !domainFormDisplayOptions.hideConditionalFormatting;
         const showRegexSection = !domainFormDisplayOptions.hideValidators && DomainField.hasRegExValidation(field);
@@ -241,7 +240,6 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
                                 dataType={field.dataType}
                                 onHide={this.showHideConditionalFormat}
                                 onApply={this.onApply}
-                                successBsStyle={successBsStyle}
                             />
                         )}
                         {showRegex && (
@@ -256,7 +254,6 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
                                 dataType={field.dataType}
                                 onHide={this.showHideRegexValidator}
                                 onApply={this.onApply}
-                                successBsStyle={successBsStyle}
                             />
                         )}
                         {showRange && (
@@ -271,7 +268,6 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
                                 dataType={field.dataType}
                                 onHide={this.showHideRangeValidator}
                                 onApply={this.onApply}
-                                successBsStyle={successBsStyle}
                             />
                         )}
                     </Col>

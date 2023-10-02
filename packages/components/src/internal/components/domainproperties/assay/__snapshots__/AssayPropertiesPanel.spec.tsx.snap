@@ -131,7 +131,6 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
   }
   onChange={[Function]}
   panelStatus="NONE"
-  useTheme={false}
   validate={false}
 >
   <Component
@@ -265,7 +264,6 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
     onChange={[Function]}
     panelStatus="NONE"
     togglePanel={[Function]}
-    useTheme={false}
     validate={false}
   >
     <AssayPropertiesForm
@@ -1242,7 +1240,6 @@ exports[`AssayPropertiesPanel default properties 1`] = `
   }
   onChange={[Function]}
   panelStatus="NONE"
-  useTheme={false}
   validate={false}
 >
   <Component
@@ -1376,7 +1373,6 @@ exports[`AssayPropertiesPanel default properties 1`] = `
     onChange={[Function]}
     panelStatus="NONE"
     togglePanel={[Function]}
-    useTheme={false}
     validate={false}
   >
     <BasePropertiesPanel
@@ -1514,16 +1510,15 @@ exports[`AssayPropertiesPanel default properties 1`] = `
       title="Assay Properties"
       togglePanel={[Function]}
       updateValidStatus={[Function]}
-      useTheme={false}
       validate={false}
     >
       <ForwardRef
-        className="domain-form-panel domain-panel-no-theme"
+        className="domain-form-panel lk-border-theme-light"
         expanded={true}
         onToggle={[Function]}
       >
         <Uncontrolled(Panel)
-          className="domain-form-panel domain-panel-no-theme"
+          className="domain-form-panel lk-border-theme-light"
           expanded={true}
           innerRef={null}
           onToggle={[Function]}
@@ -1531,12 +1526,12 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           <Panel
             bsClass="panel"
             bsStyle="default"
-            className="domain-form-panel domain-panel-no-theme"
+            className="domain-form-panel lk-border-theme-light"
             expanded={true}
             onToggle={[Function]}
           >
             <div
-              className="domain-form-panel domain-panel-no-theme panel panel-default"
+              className="domain-form-panel lk-border-theme-light panel panel-default"
             >
               <CollapsiblePanelHeader
                 collapsed={false}
@@ -1547,10 +1542,9 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                 panelStatus="NONE"
                 title="Assay Properties"
                 togglePanel={[Function]}
-                useTheme={false}
               >
                 <div
-                  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+                  className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >
@@ -2610,7 +2604,6 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
   }
   onChange={[Function]}
   panelStatus="NONE"
-  useTheme={false}
   validate={false}
 >
   <Component
@@ -2744,7 +2737,6 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
     onChange={[Function]}
     panelStatus="NONE"
     togglePanel={[Function]}
-    useTheme={false}
     validate={false}
   >
     <BasePropertiesPanel
@@ -2882,16 +2874,15 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
       title="Assay Properties"
       togglePanel={[Function]}
       updateValidStatus={[Function]}
-      useTheme={false}
       validate={false}
     >
       <ForwardRef
-        className="domain-form-panel domain-panel-no-theme"
+        className="domain-form-panel lk-border-theme-light"
         expanded={true}
         onToggle={[Function]}
       >
         <Uncontrolled(Panel)
-          className="domain-form-panel domain-panel-no-theme"
+          className="domain-form-panel lk-border-theme-light"
           expanded={true}
           innerRef={null}
           onToggle={[Function]}
@@ -2899,12 +2890,12 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
           <Panel
             bsClass="panel"
             bsStyle="default"
-            className="domain-form-panel domain-panel-no-theme"
+            className="domain-form-panel lk-border-theme-light"
             expanded={true}
             onToggle={[Function]}
           >
             <div
-              className="domain-form-panel domain-panel-no-theme panel panel-default"
+              className="domain-form-panel lk-border-theme-light panel panel-default"
             >
               <CollapsiblePanelHeader
                 collapsed={false}
@@ -2915,10 +2906,9 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                 panelStatus="NONE"
                 title="Assay Properties"
                 togglePanel={[Function]}
-                useTheme={false}
               >
                 <div
-                  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+                  className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >
@@ -3893,7 +3883,6 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
   }
   onChange={[Function]}
   panelStatus="NONE"
-  useTheme={false}
   validate={false}
 >
   <Component
@@ -3942,7 +3931,6 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
     onChange={[Function]}
     panelStatus="NONE"
     togglePanel={[Function]}
-    useTheme={false}
     validate={false}
   >
     <BasePropertiesPanel
@@ -3995,16 +3983,15 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
       title="Assay Properties"
       togglePanel={[Function]}
       updateValidStatus={[Function]}
-      useTheme={false}
       validate={false}
     >
       <ForwardRef
-        className="domain-form-panel domain-panel-no-theme"
+        className="domain-form-panel lk-border-theme-light"
         expanded={true}
         onToggle={[Function]}
       >
         <Uncontrolled(Panel)
-          className="domain-form-panel domain-panel-no-theme"
+          className="domain-form-panel lk-border-theme-light"
           expanded={true}
           innerRef={null}
           onToggle={[Function]}
@@ -4012,12 +3999,12 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
           <Panel
             bsClass="panel"
             bsStyle="default"
-            className="domain-form-panel domain-panel-no-theme"
+            className="domain-form-panel lk-border-theme-light"
             expanded={true}
             onToggle={[Function]}
           >
             <div
-              className="domain-form-panel domain-panel-no-theme panel panel-default"
+              className="domain-form-panel lk-border-theme-light panel panel-default"
             >
               <CollapsiblePanelHeader
                 collapsed={false}
@@ -4028,10 +4015,9 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                 panelStatus="NONE"
                 title="Assay Properties"
                 togglePanel={[Function]}
-                useTheme={false}
               >
                 <div
-                  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+                  className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >
@@ -4753,7 +4739,6 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
   }
   onChange={[Function]}
   panelStatus="NONE"
-  useTheme={false}
   validate={false}
 >
   <Component
@@ -4887,7 +4872,6 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
     onChange={[Function]}
     panelStatus="NONE"
     togglePanel={[Function]}
-    useTheme={false}
     validate={false}
   >
     <BasePropertiesPanel
@@ -5025,16 +5009,15 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
       title="Assay Properties"
       togglePanel={[Function]}
       updateValidStatus={[Function]}
-      useTheme={false}
       validate={false}
     >
       <ForwardRef
-        className="domain-form-panel domain-panel-no-theme"
+        className="domain-form-panel lk-border-theme-light"
         expanded={true}
         onToggle={[Function]}
       >
         <Uncontrolled(Panel)
-          className="domain-form-panel domain-panel-no-theme"
+          className="domain-form-panel lk-border-theme-light"
           expanded={true}
           innerRef={null}
           onToggle={[Function]}
@@ -5042,12 +5025,12 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
           <Panel
             bsClass="panel"
             bsStyle="default"
-            className="domain-form-panel domain-panel-no-theme"
+            className="domain-form-panel lk-border-theme-light"
             expanded={true}
             onToggle={[Function]}
           >
             <div
-              className="domain-form-panel domain-panel-no-theme panel panel-default"
+              className="domain-form-panel lk-border-theme-light panel panel-default"
             >
               <CollapsiblePanelHeader
                 collapsed={false}
@@ -5058,10 +5041,9 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                 panelStatus="NONE"
                 title="Assay Properties"
                 togglePanel={[Function]}
-                useTheme={false}
               >
                 <div
-                  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+                  className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
                   id="assay-properties-hdr"
                   onClick={[Function]}
                 >

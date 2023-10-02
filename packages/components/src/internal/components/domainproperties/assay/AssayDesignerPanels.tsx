@@ -40,9 +40,7 @@ export interface AssayDesignerPanelsProps {
     onChange?: (model: AssayProtocolModel) => void;
     onComplete: (model: AssayProtocolModel) => void;
     saveBtnText?: string;
-    successBsStyle?: string;
     testMode?: boolean;
-    useTheme?: boolean;
 }
 
 type Props = AssayDesignerPanelsProps & InjectedBaseDomainDesignerProps;
@@ -198,8 +196,6 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
             appPropertiesOnly,
             hideAdvancedProperties,
             domainFormDisplayOptions,
-            useTheme,
-            successBsStyle,
             currentPanelIndex,
             validatePanel,
             visitedPanels,
@@ -223,7 +219,6 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
-                successBsStyle={successBsStyle}
             >
                 <AssayPropertiesPanel
                     model={protocolModel}
@@ -241,7 +236,6 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback);
                     }}
-                    useTheme={useTheme}
                 />
                 {protocolModel.domains.map((domain, i) => {
                     // optionally hide the Batch Fields domain from the UI
@@ -294,9 +288,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             }}
                             appDomainHeaderRenderer={appDomainHeaderRenderer}
                             modelDomains={protocolModel.domains}
-                            useTheme={useTheme}
                             appPropertiesOnly={hideAdvancedProperties}
-                            successBsStyle={successBsStyle}
                             testMode={testMode}
                             domainFormDisplayOptions={{
                                 ...domainFormDisplayOptions,

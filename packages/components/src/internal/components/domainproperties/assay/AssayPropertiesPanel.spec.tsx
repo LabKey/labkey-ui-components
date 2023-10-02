@@ -39,7 +39,6 @@ const SERVER_CONTEXT = {
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,
     validate: false,
-    useTheme: false,
     controlledCollapse: false,
     initCollapsed: false,
     collapsed: false,

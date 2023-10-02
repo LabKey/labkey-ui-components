@@ -3,6 +3,8 @@ import { List } from 'immutable';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
+import { getSubmitButtonClass } from '../../app/utils';
+
 import {
     ADVANCED_FIELD_EDITOR_TOPIC,
     CHART_MEASURES_AND_DIMENSIONS_TOPIC,
@@ -52,7 +54,6 @@ interface AdvancedSettingsProps {
     onHide: () => any;
     show: boolean;
     showDefaultValueSettings: boolean;
-    successBsStyle?: string;
 }
 
 interface AdvancedSettingsState {
@@ -475,7 +476,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     render() {
-        const { show, label, successBsStyle } = this.props;
+        const { show, label } = this.props;
 
         return (
             <Modal show={show} onHide={this.handleClose} onEnter={this.initializeState}>
@@ -500,7 +501,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     )}
                     <Button
                         onClick={this.handleApply}
-                        bsStyle={successBsStyle || 'success'}
+                        bsStyle={getSubmitButtonClass()}
                         className="domain-adv-footer domain-adv-apply-btn"
                     >
                         Apply

@@ -38,7 +38,6 @@ exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
   name="Issues List For Jest"
   onCancel={[MockFunction]}
   onFinish={[Function]}
-  saveBtnText="Save"
   submitting={false}
   visitedPanels={Immutable.List []}
 >

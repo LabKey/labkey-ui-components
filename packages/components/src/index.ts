@@ -520,7 +520,7 @@ import { CHART_GROUPS } from './internal/components/chart/configs';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
 import {
     ASSAY_AUDIT_QUERY,
-    DATA_UPDATE_AUDIT_QUERY,
+    QUERY_UPDATE_AUDIT_QUERY,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     GROUP_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
@@ -1606,7 +1606,7 @@ export {
     makeTestActions,
     makeTestQueryModel,
     // AuditLog and Timeline
-    DATA_UPDATE_AUDIT_QUERY,
+    QUERY_UPDATE_AUDIT_QUERY,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     GROUP_AUDIT_QUERY,
     ASSAY_AUDIT_QUERY,

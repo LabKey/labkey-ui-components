@@ -1,8 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.373.4
+*Released*: 2 October 2023
+* Issue 48781: LKSM/LKB: Groups using wrong icon
+
 ### version 2.373.3
-*Released*: 2 Octoeber 2023
+*Released*: 2 October 2023
 * add some keys to Fragments to get rid of warnings about missing keys
 
 ### version 2.373.2

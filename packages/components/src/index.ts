@@ -654,7 +654,6 @@ import {
     deletePicklists,
     updatePicklist,
 } from './internal/components/picklist/actions';
-import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
 import { BarTenderConfiguration } from './internal/components/labels/models';
 import { useLabelPrintingContext } from './internal/components/labels/LabelPrintingContextProvider';
@@ -1667,7 +1666,6 @@ export {
     SubNavWithContext,
     // BarTender
     BarTenderConfiguration,
-    BarTenderSettingsForm,
     PrintLabelsModal,
     useLabelPrintingContext,
     usePortalRef,

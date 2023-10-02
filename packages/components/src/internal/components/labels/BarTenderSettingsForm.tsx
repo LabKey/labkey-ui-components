@@ -19,7 +19,9 @@ import { useServerContext } from '../base/ServerContext';
 
 import { Container } from '../base/models/Container';
 
-import { BarTenderConfiguration, BarTenderResponse } from './models';
+import { resolveErrorMessage } from '../../util/messaging';
+
+import { BarTenderConfiguration } from './models';
 import { BAR_TENDER_TOPIC, BARTENDER_CONFIGURATION_TITLE } from './constants';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
 
@@ -109,6 +111,7 @@ const btTestConnectionTemplate = (): string => {
 export const BarTenderSettingsForm: FC<Props> = memo(props => {
     const { api, container, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
     const [btServiceURL, setBtServiceURL] = useState<string>();
+    const [error, setError] = useState<string>();
     const [defaultLabel, setDefaultLabel] = useState<number>();
     const { moduleContext } = useServerContext();
     const [dirty, setDirty] = useState<boolean>(false);
@@ -117,19 +120,22 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
     const [connectionValidated, setConnectionValidated] = useState<boolean>();
     const [failureMessage, setFailureMessage] = useState<string>();
     const [loading, setLoading] = useState<boolean>(true);
+    const containerPath = container?.path;
 
     useEffect(() => {
-        api.labelprinting
-            .fetchBarTenderConfiguration(container?.path)
-            .then(btConfiguration => {
+        (async () => {
+            try {
+                const btConfiguration = await api.labelprinting.fetchBarTenderConfiguration(containerPath);
                 setBtServiceURL(btConfiguration.serviceURL);
                 setDefaultLabel(btConfiguration.defaultLabel);
+                setError(undefined);
+            } catch (e) {
+                setError(resolveErrorMessage(e) ?? 'Failed to load BarTender configuration.');
+            } finally {
                 setLoading(false);
-            })
-            .catch(reason => {
-                setFailureMessage(reason);
-            });
-    }, [api, container?.path]);
+            }
+        })();
+    }, [api, containerPath]);
 
     const onChangeHandler = useCallback(
         (name: string, value: string): void => {
@@ -141,39 +147,35 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
         [onChange]
     );
 
-    const onSave = useCallback((): void => {
+    const onSave = useCallback(async () => {
         setSubmitting(true);
         setFailureMessage(undefined); // Will update with new message if still needed.
         const config = new BarTenderConfiguration({ serviceURL: btServiceURL });
 
-        api.labelprinting
-            .saveBarTenderURLConfiguration(config, container?.path)
-            .then((btConfig: BarTenderConfiguration): void => {
-                setBtServiceURL(btConfig.serviceURL);
-                setDirty(false);
-                setSubmitting(false);
+        try {
+            const btConfig = await api.labelprinting.saveBarTenderURLConfiguration(config, containerPath);
+            setBtServiceURL(btConfig.serviceURL);
+            setDirty(false);
+            onSuccess?.();
+        } catch (e) {
+            setFailureMessage(FAILED_TO_SAVE_MESSAGE);
+        } finally {
+            setSubmitting(false);
+        }
+    }, [api, btServiceURL, containerPath, onSuccess]);
 
-                onSuccess?.();
-            })
-            .catch((reason: string) => {
-                console.error(reason);
-                setSubmitting(false);
-                setFailureMessage(FAILED_TO_SAVE_MESSAGE);
-            });
-    }, [api, btServiceURL, onSuccess, container?.path]);
-
-    const onConnectionFailure = (message: string): void => {
+    const onConnectionFailure = useCallback((message: string): void => {
         setTesting(false);
         setConnectionValidated(false);
         setFailureMessage(message);
-    };
+    }, []);
 
     const onVerifyBarTenderConfiguration = useCallback((): void => {
         setTesting(true);
 
         api.labelprinting
             .printBarTenderLabels(btTestConnectionTemplate(), btServiceURL)
-            .then((btResponse: BarTenderResponse) => {
+            .then(btResponse => {
                 if (btResponse.ranToCompletion()) {
                     setTesting(false);
                     setConnectionValidated(true);
@@ -187,11 +189,7 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
             .catch(() => {
                 onConnectionFailure(FAILED_NOTIFICATION_MESSAGE);
             });
-    }, [api, btServiceURL]);
-
-    const isBlank = !btServiceURL || btServiceURL.trim() === '';
-
-    if (loading) return <LoadingSpinner />;
+    }, [api, btServiceURL, onConnectionFailure]);
 
     return (
         <Row>
@@ -199,49 +197,60 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
                 <Panel title={title}>
                     <Panel.Heading>{title}</Panel.Heading>
                     <Panel.Body>
-                        {connectionValidated && (
-                            <div>
-                                <Alert bsStyle="success">{SUCCESSFUL_NOTIFICATION_MESSAGE}</Alert>
-                            </div>
-                        )}
-                        {connectionValidated === false && <Alert bsStyle="danger">{failureMessage}</Alert>}
+                        {error && <Alert>{error}</Alert>}
+                        {loading && <LoadingSpinner />}
+                        {!loading && (
+                            <>
+                                {connectionValidated && (
+                                    <div>
+                                        <Alert bsStyle="success">{SUCCESSFUL_NOTIFICATION_MESSAGE}</Alert>
+                                    </div>
+                                )}
+                                {connectionValidated === false && <Alert>{failureMessage}</Alert>}
 
-                        <SettingsInput
-                            description="URL of the BarTender service to use when printing labels."
-                            label="BarTender Web Service URL"
-                            name="btServiceURL"
-                            onChange={onChangeHandler}
-                            type="url"
-                            value={btServiceURL}
-                        >
-                            <div className="pull-right">
-                                <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">
-                                    Learn more about BarTender
-                                </HelpLink>
-                            </div>
-                        </SettingsInput>
+                                <SettingsInput
+                                    description="URL of the BarTender service to use when printing labels."
+                                    label="BarTender Web Service URL"
+                                    name="btServiceURL"
+                                    onChange={onChangeHandler}
+                                    type="url"
+                                    value={btServiceURL}
+                                >
+                                    <div className="pull-right">
+                                        <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">
+                                            Learn more about BarTender
+                                        </HelpLink>
+                                    </div>
+                                </SettingsInput>
 
-                        <div className="bt-service-buttons">
-                            <SaveButton dirty={dirty} onSave={onSave} submitting={submitting} testing={testing} />
+                                <div className="bt-service-buttons">
+                                    <SaveButton
+                                        dirty={dirty}
+                                        onSave={onSave}
+                                        submitting={submitting}
+                                        testing={testing}
+                                    />
 
-                            <Button
-                                className="button-right-spacing pull-right"
-                                bsStyle="default"
-                                disabled={isBlank}
-                                onClick={onVerifyBarTenderConfiguration}
-                            >
-                                Test Connection
-                            </Button>
-                        </div>
-                        {isAppHomeFolder(container, moduleContext) && (
-                            <div className="label-templates-panel">
-                                <LabelsConfigurationPanel
-                                    {...props}
-                                    api={api}
-                                    defaultLabel={defaultLabel}
-                                    container={container}
-                                />
-                            </div>
+                                    <Button
+                                        className="button-right-spacing pull-right"
+                                        bsStyle="default"
+                                        disabled={!btServiceURL || btServiceURL.trim() === ''}
+                                        onClick={onVerifyBarTenderConfiguration}
+                                    >
+                                        Test Connection
+                                    </Button>
+                                </div>
+                                {isAppHomeFolder(container, moduleContext) && (
+                                    <div className="label-templates-panel">
+                                        <LabelsConfigurationPanel
+                                            {...props}
+                                            api={api}
+                                            defaultLabel={defaultLabel}
+                                            container={container}
+                                        />
+                                    </div>
+                                )}
+                            </>
                         )}
                     </Panel.Body>
                 </Panel>

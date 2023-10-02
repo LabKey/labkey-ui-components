@@ -188,6 +188,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                     onBlur={onBlur}
                     onKeyDown={onKeyDown}
                     onChange={onDateChange}
+                    onMonthChange={onDateChange}
                     placeholderText={placeholder}
                     selected={dateValue}
                     showTimeSelect={!!column}

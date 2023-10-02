@@ -132,7 +132,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
     onChange = (date: Date): void => {
         this.setState({ selectedDate: date, invalid: false });
-
         this.props.onChange?.(this.state.relativeInputValue ? this.state.relativeInputValue : date);
 
         // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
@@ -196,6 +195,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 onChange={this.onChange}
                 onChangeRaw={allowRelativeInput ? this.onChangeRaw : undefined}
                 onKeyDown={onKeyDown}
+                onMonthChange={this.onChange}
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
                 selected={selectedDate}
                 showTimeSelect={!hideTime && isDateTimeCol(queryColumn)}

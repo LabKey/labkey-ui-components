@@ -283,7 +283,7 @@
     padding-bottom: 16px;
     height: 100%;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .menu-section-header {
       font-family: FontAwesome, $font-family-sans-serif;

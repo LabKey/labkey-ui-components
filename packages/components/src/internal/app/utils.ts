@@ -246,6 +246,18 @@ export function getCurrentAppProperties(): AppProperties {
     return undefined;
 }
 
+export function isApp(): boolean {
+    return getCurrentAppProperties() !== undefined;
+}
+
+/**
+ * In LKS we use the 'primary' bootstrap class for submit buttons, but in our apps we use 'success', this helper method
+ * returns the correct class for you.
+ */
+export function getSubmitButtonClass(): string {
+    return isApp() ? 'success' : 'primary';
+}
+
 export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppProperties {
     // Issue 47390: when URL is in the LKB or LKSM controller, then that should be considered the primary app
     //              it is the LKFM app case when we want to determine the primary app based on enabled modules

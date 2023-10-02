@@ -970,17 +970,21 @@ export function getDomainBottomErrorMessage(
     return undefined;
 }
 
-export function getDomainPanelClass(collapsed: boolean, controlledCollapse: boolean, useTheme: boolean): string {
+// TODO: instead of setting a class based on isApp we should have generic collapsed/expanded classes and do all of the
+//  app/LKS specific stuff in CSS, not JS. We can set a top level modifier class on BaseDomainDesigner indicate we're in
+//  an app/LKS e.g. domain-designer--app, domain-designer--lks, then we can get rid of these methods and use the same
+//  classNames everywhere
+export function getDomainPanelClass(collapsed: boolean, controlledCollapse: boolean, isApp: boolean): string {
     return classNames('domain-form-panel', {
-        'lk-border-theme-light': !collapsed && controlledCollapse && useTheme,
-        'domain-panel-no-theme': !collapsed && controlledCollapse && !useTheme,
+        'lk-border-theme-light': !collapsed && controlledCollapse && !isApp,
+        'domain-panel-no-theme': !collapsed && controlledCollapse && isApp,
     });
 }
 
-export function getDomainAlertClasses(collapsed: boolean, controlledCollapse: boolean, useTheme: boolean): string {
+export function getDomainAlertClasses(collapsed: boolean, controlledCollapse: boolean, isApp: boolean): string {
     return classNames('domain-bottom-alert panel-default', {
-        'lk-border-theme-light': !collapsed && controlledCollapse && useTheme,
-        'domain-bottom-alert-expanded': !collapsed && controlledCollapse && !useTheme,
+        'lk-border-theme-light': !collapsed && controlledCollapse && !isApp,
+        'domain-bottom-alert-expanded': !collapsed && controlledCollapse && isApp,
         'domain-bottom-alert-top': !collapsed,
     });
 }

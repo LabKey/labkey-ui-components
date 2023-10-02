@@ -20,7 +20,6 @@ import { DataClassPropertiesPanelImpl } from './DataClassPropertiesPanel';
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,
     validate: false,
-    useTheme: false,
     controlledCollapse: false,
     initCollapsed: false,
     collapsed: false,
@@ -61,7 +60,6 @@ describe('DataClassPropertiesPanel', () => {
                 nameExpressionInfoUrl="https://www.labkey.org/Documentation"
                 nameExpressionPlaceholder="name expression placeholder test"
                 headerText="header text test"
-                useTheme={true}
                 appPropertiesOnly={true}
                 panelStatus="COMPLETE"
             />

@@ -3,7 +3,9 @@ import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap'
 
 import { getServerContext } from '@labkey/api';
 
-import { helpLinkNode, DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
+import { getSubmitButtonClass } from '../../../app/utils';
+
+import { DATASET_PROPERTIES_TOPIC, HelpLink } from '../../../util/helpLinks';
 
 import { SectionHeading } from '../SectionHeading';
 
@@ -119,7 +121,6 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
 interface AdvancedSettingsProps {
     applyAdvancedProperties: (datasetAdvancedSettingsForm: DatasetAdvancedSettingsForm) => void;
     model: DatasetModel;
-    successBsStyle?: string;
     title: string;
     visitDatePropertyIndex?: number;
 }
@@ -185,10 +186,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         }
     };
 
-    onCheckboxChange = (name, checked) => {
-        this.setState(() => ({ showByDefault: !checked }));
-    };
-
     onInputChange = e => {
         const id = e.target.id;
         let value = e.target.value;
@@ -229,7 +226,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     render() {
         const { modalOpen, datasetId, cohortId, tag, showByDefault, dataSharing, availableCohorts } = this.state;
 
-        const { model, title, successBsStyle } = this.props;
+        const { model, title } = this.props;
 
         const showDataspace = model.definitionIsShared && model.getDataRowSetting() === 0;
         const showDataspaceCls = showDataspace ? 'dataset_data_row_element_show' : 'dataset_data_row_element_hide';
@@ -341,15 +338,13 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 Cancel
                             </Button>
 
-                            {helpLinkNode(
-                                DATASET_PROPERTIES_TOPIC,
-                                'Get help with dataset settings',
-                                'domain-adv-footer domain-adv-link'
-                            )}
+                            <HelpLink topic={DATASET_PROPERTIES_TOPIC} className="domain-adv-footer domain-adv-link">
+                                Get help with dataset settings
+                            </HelpLink>
 
                             <Button
                                 onClick={this.applyChanges}
-                                bsStyle={successBsStyle || 'success'}
+                                bsStyle={getSubmitButtonClass()}
                                 className="domain-adv-footer domain-adv-apply-btn"
                             >
                                 Apply

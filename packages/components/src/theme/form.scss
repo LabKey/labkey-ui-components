@@ -313,3 +313,26 @@ textarea.form-control {
 .inline-confirmation__label {
     font-style: italic;
 }
+
+.form-buttons {
+    display: flex;
+    width: 100%;
+}
+.form-buttons--sticky {
+    background-color: $white;
+    border-top: 1px solid #E5E5E5;
+    bottom: 0;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.25);
+    left: 0;
+    margin: 0;
+    padding: 16px 22px;
+    position: fixed;
+    z-index: 10;
+}
+.form-buttons__left {
+    flex: 1;
+}
+.form-buttons__right {
+    display: flex;
+    gap: 8px;
+}

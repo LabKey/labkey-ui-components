@@ -41,7 +41,6 @@ exports[`SampleTypeDesigner custom properties 1`] = `
   onFinish={[Function]}
   saveBtnText="Finish it up"
   submitting={false}
-  successBsStyle="primary"
   visitedPanels={Immutable.List []}
 >
   <ComponentWithDomainPropertiesPanelCollapse
@@ -149,7 +148,6 @@ exports[`SampleTypeDesigner custom properties 1`] = `
     updateDupeParentAliases={[Function]}
     updateModel={[Function]}
     useSeparateDataClassesAliasMenu={false}
-    useTheme={true}
     validate={true}
   />
   <DomainForm
@@ -246,9 +244,7 @@ exports[`SampleTypeDesigner custom properties 1`] = `
     onChange={[Function]}
     onToggle={[Function]}
     panelStatus="TODO"
-    successBsStyle="primary"
     testMode={true}
-    useTheme={true}
     validate={false}
   />
   <NameExpressionValidationModal
@@ -298,7 +294,6 @@ exports[`SampleTypeDesigner default properties 1`] = `
   hasValidProperties={false}
   onCancel={[MockFunction]}
   onFinish={[Function]}
-  saveBtnText="Save"
   submitting={false}
   visitedPanels={Immutable.List []}
 >
@@ -404,7 +399,6 @@ exports[`SampleTypeDesigner default properties 1`] = `
     updateDupeParentAliases={[Function]}
     updateModel={[Function]}
     useSeparateDataClassesAliasMenu={false}
-    useTheme={false}
     validate={true}
   />
   <DomainForm
@@ -502,7 +496,6 @@ exports[`SampleTypeDesigner default properties 1`] = `
     onToggle={[Function]}
     panelStatus="TODO"
     testMode={true}
-    useTheme={false}
     validate={false}
   />
   <ComponentWithDomainPropertiesPanelCollapse
@@ -704,7 +697,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
   name="Test Name"
   onCancel={[MockFunction]}
   onFinish={[Function]}
-  saveBtnText="Save"
   submitting={false}
   visitedPanels={Immutable.List []}
 >
@@ -900,7 +892,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     updateDupeParentAliases={[Function]}
     updateModel={[Function]}
     useSeparateDataClassesAliasMenu={false}
-    useTheme={false}
     validate={true}
   />
   <DomainForm
@@ -1077,7 +1068,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     onToggle={[Function]}
     panelStatus="TODO"
     testMode={true}
-    useTheme={false}
     validate={false}
   />
   <ComponentWithDomainPropertiesPanelCollapse

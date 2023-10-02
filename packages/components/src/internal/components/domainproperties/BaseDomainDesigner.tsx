@@ -1,7 +1,8 @@
-import React, { PureComponent, ComponentType } from 'react';
+import React, { PureComponent, ComponentType, FC, memo } from 'react';
 import { List } from 'immutable';
 
-import { Button } from 'react-bootstrap';
+import { getSubmitButtonClass, isApp } from '../../app/utils';
+import { FormButtons } from '../../FormButtons';
 
 import { Alert } from '../base/Alert';
 
@@ -121,58 +122,49 @@ interface BaseDomainDesignerProps {
     onFinish: () => void;
     saveBtnText?: string;
     submitting: boolean;
-    successBsStyle?: string;
     visitedPanels: List<number>;
 }
 
-export class BaseDomainDesigner extends PureComponent<BaseDomainDesignerProps> {
-    static defaultProps = {
-        saveBtnText: 'Save',
-    };
+export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
+    const {
+        children,
+        domains,
+        exception,
+        name,
+        visitedPanels,
+        submitting,
+        onFinish,
+        onCancel,
+        hasValidProperties,
+        saveBtnText = 'Save',
+    } = props;
 
-    render() {
-        const {
-            children,
-            domains,
-            exception,
-            name,
-            visitedPanels,
-            successBsStyle,
-            submitting,
-            onFinish,
-            onCancel,
-            hasValidProperties,
-            saveBtnText,
-        } = this.props;
+    // get a list of the domain names that have errors
+    const errorDomains = domains
+        .filter(domain => domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR)
+        .map(domain => getDomainHeaderName(domain.name, undefined, name))
+        .toList();
+    const bottomErrorMsg = getDomainBottomErrorMessage(exception, errorDomains, hasValidProperties, visitedPanels);
+    const submitClassname = `save-button btn btn-${getSubmitButtonClass()}`;
 
-        // get a list of the domain names that have errors
-        const errorDomains = domains
-            .filter(domain => domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR)
-            .map(domain => getDomainHeaderName(domain.name, undefined, name))
-            .toList();
-
-        const bottomErrorMsg = getDomainBottomErrorMessage(exception, errorDomains, hasValidProperties, visitedPanels);
-
-        return (
-            <>
-                {children}
-                {bottomErrorMsg && (
-                    <div className="domain-form-panel">
-                        <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
-                    </div>
-                )}
-                <div className="domain-form-panel domain-designer-buttons">
-                    <Button onClick={onCancel}>Cancel</Button>
-                    <Button
-                        className="pull-right"
-                        bsStyle={successBsStyle || 'success'}
-                        disabled={submitting}
-                        onClick={onFinish}
-                    >
-                        {saveBtnText}
-                    </Button>
+    return (
+        <div className="domain-designer">
+            {children}
+            {bottomErrorMsg && (
+                <div className="domain-form-panel">
+                    <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
                 </div>
-            </>
-        );
-    }
-}
+            )}
+            <FormButtons sticky={isApp()}>
+                <button className="cancel-button btn btn-default" onClick={onCancel} type="button">
+                    Cancel
+                </button>
+                <button className={submitClassname} disabled={submitting} onClick={onFinish} type="button">
+                    {saveBtnText}
+                </button>
+            </FormButtons>
+        </div>
+    );
+});
+
+BaseDomainDesigner.displayName = 'BaseDomainDesigner';

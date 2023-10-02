@@ -14,7 +14,6 @@ interface OntologyConceptAnnotationProps {
     field: DomainField;
     id: string;
     onChange: (id: string, value: any) => void;
-    successBsStyle?: string;
 }
 
 export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = memo(props => {

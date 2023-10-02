@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.373.4-datePickerOnMonthChange.0",
+  "version": "2.374.1-datePickerOnMonthChange.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

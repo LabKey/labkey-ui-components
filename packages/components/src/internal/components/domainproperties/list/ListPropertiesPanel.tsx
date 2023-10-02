@@ -22,7 +22,6 @@ const PROPERTIES_HEADER_ID = 'list-properties-hdr';
 interface OwnProps {
     model: ListModel;
     onChange: (model: ListModel) => void;
-    successBsStyle?: string;
 }
 
 type Props = OwnProps & BasePropertiesPanelProps;
@@ -95,7 +94,7 @@ export class ListPropertiesPanelImpl extends React.PureComponent<
     };
 
     render() {
-        const { model, successBsStyle } = this.props;
+        const { model } = this.props;
         const { isValid } = this.state;
 
         return (
@@ -119,7 +118,6 @@ export class ListPropertiesPanelImpl extends React.PureComponent<
                         title="Advanced Settings"
                         model={model}
                         applyAdvancedProperties={this.applyAdvancedProperties}
-                        successBsStyle={successBsStyle}
                     />
                 </Form>
             </BasePropertiesPanel>

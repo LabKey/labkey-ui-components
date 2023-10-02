@@ -64,7 +64,6 @@ describe('AdvancedSettings', () => {
             DOMAIN_NON_EDITABLE_DEFAULT,
         ]),
         helpNoun: 'domain',
-        successBsStyle: 'primary',
     };
 
     test('Advanced Settings Modal', () => {

@@ -61,9 +61,7 @@ interface Props {
     onChange?: (model: DatasetModel) => void;
     onComplete: (model: DatasetModel) => void;
     saveBtnText?: string;
-    successBsStyle?: string;
     testMode?: boolean;
-    useTheme?: boolean;
 }
 
 interface State {
@@ -484,7 +482,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     render(): ReactNode {
         const {
             api,
-            useTheme,
             onTogglePanel,
             visitedPanels,
             submitting,
@@ -492,7 +489,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             currentPanelIndex,
             firstState,
             validatePanel,
-            successBsStyle,
             saveBtnText,
             testMode,
         } = this.props;
@@ -510,7 +506,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
-                successBsStyle={successBsStyle}
             >
                 <DatasetPropertiesPanel
                     initCollapsed={currentPanelIndex !== 0}
@@ -519,7 +514,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     visitDatePropertyIndex={visitDatePropertyIndex}
                     onIndexChange={this.onIndexChange}
                     controlledCollapse={true}
-                    useTheme={useTheme}
                     panelStatus={
                         model.isNew()
                             ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState)
@@ -530,7 +524,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                         onTogglePanel(0, collapsed, callback);
                     }}
                     onChange={this.onPropertiesChange}
-                    successBsStyle={successBsStyle}
                 />
                 <DomainForm
                     api={api}
@@ -553,9 +546,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(1, collapsed, callback);
                     }}
-                    useTheme={useTheme}
                     fieldsAdditionalRenderer={this.renderColumnMappingSection}
-                    successBsStyle={successBsStyle}
                     domainFormDisplayOptions={{
                         isDragDisabled: model.isFromLinkedSource(),
                         hideAddFieldsButton: model.isFromLinkedSource(),

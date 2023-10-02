@@ -40,7 +40,6 @@ describe('Dataset Properties Panel', () => {
     const BASE_PROPS = {
         panelStatus: 'NONE' as DomainPanelStatus,
         validate: false,
-        useTheme: false,
         controlledCollapse: false,
         initCollapsed: false,
         collapsed: false,
@@ -55,7 +54,6 @@ describe('Dataset Properties Panel', () => {
                 initCollapsed={false}
                 model={newDatasetModel}
                 controlledCollapse={true}
-                useTheme={true}
                 panelStatus="COMPLETE"
                 validate={false}
                 onToggle={(collapsed, callback) => {}}
@@ -73,10 +71,9 @@ describe('Dataset Properties Panel', () => {
                 initCollapsed={false}
                 model={populatedDatasetModel}
                 controlledCollapse={true}
-                useTheme={true}
                 panelStatus="COMPLETE"
                 validate={false}
-                onToggle={(collapsed, callback) => {}}
+                onToggle={jest.fn()}
                 onChange={jest.fn()}
             />
         );

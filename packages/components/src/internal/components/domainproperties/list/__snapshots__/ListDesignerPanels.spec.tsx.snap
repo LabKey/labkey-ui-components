@@ -1298,7 +1298,6 @@ exports[`ListDesignerPanel existing list 1`] = `
   name="NIMHDemographics"
   onCancel={[MockFunction]}
   onFinish={[Function]}
-  saveBtnText="Save"
   submitting={false}
   visitedPanels={Immutable.List []}
 >
@@ -3997,7 +3996,6 @@ exports[`ListDesignerPanel new list 1`] = `
   name={null}
   onCancel={[MockFunction]}
   onFinish={[Function]}
-  saveBtnText="Save"
   submitting={false}
   visitedPanels={Immutable.List []}
 >

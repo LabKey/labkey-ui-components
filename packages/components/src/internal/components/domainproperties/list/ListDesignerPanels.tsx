@@ -27,9 +27,7 @@ interface Props {
     onChange: (model: ListModel) => void;
     onComplete: (model: ListModel) => void;
     saveBtnText?: string;
-    successBsStyle?: string;
     testMode?: boolean;
-    useTheme?: boolean;
 }
 
 interface State {
@@ -241,8 +239,6 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
     render() {
         const {
             onCancel,
-            useTheme,
-            successBsStyle,
             visitedPanels,
             currentPanelIndex,
             firstState,
@@ -264,7 +260,6 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
-                successBsStyle={successBsStyle}
             >
                 <ListPropertiesPanel
                     model={model}
@@ -278,8 +273,6 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
                     }
                     validate={validatePanel === 0}
                     onToggle={this.toggleListPropertiesPanel}
-                    useTheme={useTheme}
-                    successBsStyle={successBsStyle}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}
@@ -300,8 +293,6 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
                             : 'COMPLETE'
                     }
                     onToggle={this.toggleDomainForm}
-                    useTheme={useTheme}
-                    successBsStyle={successBsStyle}
                     appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}
                     testMode={testMode}
                 />

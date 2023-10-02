@@ -23,7 +23,6 @@ describe('IssuesListDefPropertiesPanel', () => {
         api: getIssuesTestAPIWrapper(jest.fn),
         panelStatus: 'NONE' as DomainPanelStatus,
         validate: false,
-        useTheme: false,
         controlledCollapse: false,
         initCollapsed: false,
         collapsed: false,

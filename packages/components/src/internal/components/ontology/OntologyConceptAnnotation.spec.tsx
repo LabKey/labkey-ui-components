@@ -14,7 +14,6 @@ const DEFAULT_PROPS = {
     id: 'testId',
     field: new DomainField(),
     onChange: jest.fn,
-    successBsStyle: 'success',
     error: undefined,
 };
 
@@ -74,7 +73,6 @@ describe('OntologyConceptAnnotation', () => {
         expect(wrapper.find(OntologyBrowserModal)).toHaveLength(1);
         expect(wrapper.find(OntologyBrowserModal).prop('title')).toBe('Select Concept');
         expect(wrapper.find(OntologyBrowserModal).prop('initOntologyId')).toBe(TEST_FIELD.sourceOntology);
-        expect(wrapper.find(OntologyBrowserModal).prop('successBsStyle')).toBe(DEFAULT_PROPS.successBsStyle);
         wrapper.unmount();
     });
 });

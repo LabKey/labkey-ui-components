@@ -16,7 +16,7 @@ export const StandardAssayPanel: FC<StandardAssayPanelProps> = memo(props => {
                 <Col xs={6}>
                     <div className="margin-bottom">
                         <b>Standard Assay</b>
-                        <span className={"gray-text"}> (Recommended)</span>
+                        <span className="gray-text"> (Recommended)</span>
                     </div>
                     <p>
                         Standard assays are the most flexible choice for working with experimental data. Use this assay

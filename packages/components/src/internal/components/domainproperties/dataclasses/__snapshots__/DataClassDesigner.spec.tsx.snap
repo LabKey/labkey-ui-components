@@ -39,7 +39,6 @@ exports[`DataClassDesigner custom properties 1`] = `
   onFinish={[Function]}
   saveBtnText="Finish it up"
   submitting={false}
-  successBsStyle="primary"
   visitedPanels={Immutable.List []}
 >
   <ComponentWithDomainPropertiesPanelCollapse
@@ -113,7 +112,6 @@ exports[`DataClassDesigner custom properties 1`] = `
     panelStatus="NONE"
     parentAliasHelpText="Column headings used during import to set a source's parentage. The referenced type will also be added as a parent type by default when adding sources manually."
     updateDupeParentAliases={[Function]}
-    useTheme={true}
     validate={true}
   />
   <DomainForm
@@ -188,7 +186,6 @@ exports[`DataClassDesigner custom properties 1`] = `
     onChange={[Function]}
     onToggle={[Function]}
     panelStatus="TODO"
-    successBsStyle="primary"
     systemFields={
       [
         {
@@ -210,7 +207,6 @@ exports[`DataClassDesigner custom properties 1`] = `
       ]
     }
     testMode={true}
-    useTheme={true}
     validate={false}
   />
   <ComponentWithDomainPropertiesPanelCollapse
@@ -303,7 +299,6 @@ exports[`DataClassDesigner default properties 1`] = `
   hasValidProperties={false}
   onCancel={[MockFunction]}
   onFinish={[Function]}
-  saveBtnText="Save"
   submitting={false}
   visitedPanels={Immutable.List []}
 >
@@ -798,7 +793,6 @@ exports[`DataClassDesigner initModel 1`] = `
   name="test1"
   onCancel={[MockFunction]}
   onFinish={[Function]}
-  saveBtnText="Save"
   submitting={false}
   visitedPanels={Immutable.List []}
 >

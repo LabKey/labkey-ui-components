@@ -94,7 +94,6 @@ describe('OntologyConceptSelectButton', () => {
                         sourceOntology: 'Test Source',
                     })
                 }
-                successBsStyle="testBs"
             />
         );
         wrapper.find(Button).simulate('click');
@@ -102,7 +101,6 @@ describe('OntologyConceptSelectButton', () => {
         const modal = wrapper.find(OntologyBrowserModal);
         expect(modal.prop('title')).toBe('Button Title');
         expect(modal.prop('initOntologyId')).toBe(undefined);
-        expect(modal.prop('successBsStyle')).toBe('testBs');
         wrapper.unmount();
     });
 

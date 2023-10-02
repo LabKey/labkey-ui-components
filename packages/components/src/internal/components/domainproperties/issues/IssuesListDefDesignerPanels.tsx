@@ -20,9 +20,7 @@ interface Props {
     onChange?: (model: IssuesListDefModel) => void;
     onComplete: (model: IssuesListDefModel) => void;
     saveBtnText?: string;
-    successBsStyle?: string;
     testMode?: boolean;
-    useTheme?: boolean;
 }
 
 interface State {
@@ -149,8 +147,6 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
         const {
             api,
             onCancel,
-            useTheme,
-            successBsStyle,
             visitedPanels,
             currentPanelIndex,
             firstState,
@@ -173,7 +169,6 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
                 onCancel={onCancel}
                 onFinish={this.onFinish}
                 saveBtnText={saveBtnText}
-                successBsStyle={successBsStyle}
             >
                 <IssuesListDefPropertiesPanel
                     api={api}
@@ -190,8 +185,6 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(0, collapsed, callback);
                     }}
-                    useTheme={useTheme}
-                    successBsStyle={successBsStyle}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}
@@ -212,8 +205,6 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(1, collapsed, callback);
                     }}
-                    useTheme={useTheme}
-                    successBsStyle={successBsStyle}
                     domainFormDisplayOptions={{
                         isDragDisabled: model.domain.isSharedDomain(),
                         hideAddFieldsButton: model.domain.isSharedDomain(),

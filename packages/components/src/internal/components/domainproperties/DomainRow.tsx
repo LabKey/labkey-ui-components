@@ -95,7 +95,6 @@ export interface DomainRowProps {
     queryName?: string;
     schemaName?: string;
     showDefaultValueSettings: boolean;
-    successBsStyle?: string;
 }
 
 interface DomainRowState {
@@ -460,7 +459,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             defaultDefaultValueType,
             defaultValueOptions,
             appPropertiesOnly,
-            successBsStyle,
             domainFormDisplayOptions,
             getDomainFields,
             domainContainerPath,
@@ -497,7 +495,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                 showDefaultValueSettings={showDefaultValueSettings}
                                 defaultDefaultValueType={defaultDefaultValueType}
                                 defaultValueOptions={defaultValueOptions}
-                                successBsStyle={successBsStyle}
                                 domainFormDisplayOptions={domainFormDisplayOptions}
                             />
                             <div
@@ -558,7 +555,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     onChange={this.onSingleFieldChange}
                                     showingModal={this.showingModal}
                                     appPropertiesOnly={appPropertiesOnly}
-                                    successBsStyle={successBsStyle}
                                     domainFormDisplayOptions={domainFormDisplayOptions}
                                     domainContainerPath={domainContainerPath}
                                     schemaName={schemaName}

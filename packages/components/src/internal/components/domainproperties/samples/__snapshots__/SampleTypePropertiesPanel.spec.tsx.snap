@@ -2,10 +2,10 @@
 
 exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
 <div
-  className="domain-form-panel domain-panel-no-theme panel panel-default"
+  className="domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
-    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+    className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -244,10 +244,10 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
 
 exports[`SampleTypePropertiesPanel default props 1`] = `
 <div
-  className="domain-form-panel domain-panel-no-theme panel panel-default"
+  className="domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
-    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+    className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -431,10 +431,10 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
 
 exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] = `
 <div
-  className="domain-form-panel domain-panel-no-theme panel panel-default"
+  className="domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
-    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+    className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -655,10 +655,10 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
 
 exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
 <div
-  className="domain-form-panel domain-panel-no-theme panel panel-default"
+  className="domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
-    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+    className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -932,10 +932,10 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
 
 exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
 <div
-  className="domain-form-panel domain-panel-no-theme panel panel-default"
+  className="domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
-    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+    className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -1315,10 +1315,10 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
 
 exports[`SampleTypePropertiesPanel nameExpressionInfoUrl 1`] = `
 <div
-  className="domain-form-panel domain-panel-no-theme panel panel-default"
+  className="domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
-    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+    className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
     id="sample-type-properties-hdr"
     onClick={[Function]}
   >
@@ -1571,7 +1571,6 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
   panelStatus="NONE"
   parentOptions={[]}
   updateModel={[Function]}
-  useTheme={false}
   validate={false}
 >
   <SampleTypePropertiesPanelImpl
@@ -1662,7 +1661,6 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
     showLinkToStudy={true}
     togglePanel={[Function]}
     updateModel={[Function]}
-    useTheme={false}
     validate={false}
   >
     <BasePropertiesPanel
@@ -1757,16 +1755,15 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
       togglePanel={[Function]}
       updateModel={[Function]}
       updateValidStatus={[Function]}
-      useTheme={false}
       validate={false}
     >
       <ForwardRef
-        className="domain-form-panel domain-panel-no-theme"
+        className="domain-form-panel lk-border-theme-light"
         expanded={true}
         onToggle={[Function]}
       >
         <Uncontrolled(Panel)
-          className="domain-form-panel domain-panel-no-theme"
+          className="domain-form-panel lk-border-theme-light"
           expanded={true}
           innerRef={null}
           onToggle={[Function]}
@@ -1774,12 +1771,12 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
           <Panel
             bsClass="panel"
             bsStyle="default"
-            className="domain-form-panel domain-panel-no-theme"
+            className="domain-form-panel lk-border-theme-light"
             expanded={true}
             onToggle={[Function]}
           >
             <div
-              className="domain-form-panel domain-panel-no-theme panel panel-default"
+              className="domain-form-panel lk-border-theme-light panel panel-default"
             >
               <CollapsiblePanelHeader
                 collapsed={false}
@@ -1790,10 +1787,9 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                 panelStatus="NONE"
                 title="Sample Type Properties"
                 togglePanel={[Function]}
-                useTheme={false}
               >
                 <div
-                  className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+                  className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
                   id="sample-type-properties-hdr"
                   onClick={[Function]}
                 >
@@ -2397,7 +2393,6 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                     showLinkToStudy={true}
                     togglePanel={[Function]}
                     updateModel={[Function]}
-                    useTheme={false}
                     validate={false}
                   >
                     <Row

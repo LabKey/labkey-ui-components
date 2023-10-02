@@ -48,7 +48,6 @@ interface Props {
     queryName?: string;
     schemaName?: string;
     showingModal: (boolean) => void;
-    successBsStyle?: string;
 }
 
 export class DomainRowExpandedOptions extends React.Component<Props> {
@@ -253,7 +252,6 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             showingModal,
             appPropertiesOnly,
             domainIndex,
-            successBsStyle,
             domainFormDisplayOptions,
         } = this.props;
 
@@ -296,7 +294,6 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                                 field={field}
                                 onChange={onChange}
                                 showingModal={showingModal}
-                                successBsStyle={successBsStyle}
                                 domainFormDisplayOptions={domainFormDisplayOptions}
                             />
                         </Col>

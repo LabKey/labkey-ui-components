@@ -2,10 +2,10 @@
 
 exports[`ListPropertiesPanel existing list 1`] = `
 <div
-  className="domain-form-panel domain-panel-no-theme panel panel-default"
+  className="domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
-    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+    className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
     id="list-properties-hdr"
     onClick={[Function]}
   >
@@ -202,10 +202,10 @@ exports[`ListPropertiesPanel existing list 1`] = `
 
 exports[`ListPropertiesPanel list with error 1`] = `
 <div
-  className="domain-form-panel domain-panel-no-theme panel panel-default"
+  className="domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
-    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+    className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
     id="list-properties-hdr"
     onClick={[Function]}
   >
@@ -408,10 +408,10 @@ exports[`ListPropertiesPanel list with error 1`] = `
 
 exports[`ListPropertiesPanel new list 1`] = `
 <div
-  className="domain-form-panel domain-panel-no-theme panel panel-default"
+  className="domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
-    className="domain-panel-header panel-heading domain-panel-header-expanded domain-panel-header-no-theme"
+    className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
     id="list-properties-hdr"
     onClick={[Function]}
   >

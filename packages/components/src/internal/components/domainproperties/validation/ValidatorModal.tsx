@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 import { Button, Modal } from 'react-bootstrap';
 
+import { getSubmitButtonClass } from '../../../app/utils';
+
 import { ConditionalFormat, PropertyValidator } from '../models';
 import { PropDescType } from '../PropDescType';
 import {
@@ -22,7 +24,6 @@ export interface ValidatorModalProps {
     onApply: (validators: List<PropertyValidator | ConditionalFormat>, type: string) => void;
     onHide: () => void;
     show: boolean;
-    successBsStyle?: string;
     title: string;
     type: string;
     validators: List<PropertyValidator | ConditionalFormat>;
@@ -123,7 +124,7 @@ export function ValidatorModal(WrappedComponent: any) {
         };
 
         render(): ReactNode {
-            const { show, title, onHide, addName, index, dataType, mvEnabled, successBsStyle } = this.props;
+            const { show, title, onHide, addName, index, dataType, mvEnabled } = this.props;
             const { expanded, validators } = this.state;
 
             return (
@@ -163,7 +164,7 @@ export function ValidatorModal(WrappedComponent: any) {
                                 Cancel
                             </Button>
                             <Button
-                                bsStyle={successBsStyle || 'success'}
+                                bsStyle={getSubmitButtonClass()}
                                 onClick={this.handleApply}
                                 className="domain-adv-footer domain-adv-apply-btn"
                                 disabled={!this.isValid(validators)}

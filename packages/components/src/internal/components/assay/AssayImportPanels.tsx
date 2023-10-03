@@ -16,7 +16,6 @@
 import { AssayDOM, Filter, Utils } from '@labkey/api';
 import { Map, OrderedMap } from 'immutable';
 import React, { Component, FC, ReactNode, useMemo } from 'react';
-import { Button } from 'react-bootstrap';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
 import { LoadingState } from '../../../public/LoadingState';
@@ -32,6 +31,7 @@ import { isPlatesEnabled, isPremiumProductEnabled } from '../../app/utils';
 import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
 
 import { AssayUploadTabs } from '../../constants';
+import { FormButtons } from '../../FormButtons';
 import { getQueryDetails } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
 import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
@@ -43,7 +43,6 @@ import { Container } from '../base/models/Container';
 import { User } from '../base/models/User';
 import { Progress } from '../base/Progress';
 import { useServerContext } from '../base/ServerContext';
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { AssayProtocolModel } from '../domainproperties/assay/models';
 import { EditorModel } from '../editable/models';
 import { getSampleOperationConfirmationData } from '../entities/actions';
@@ -516,13 +515,17 @@ class AssayImportPanelsBody extends Component<Props, State> {
             });
     };
 
-    onSaveClick = (importAgain: boolean): void => {
+    save = (importAgain: boolean): void => {
         if (this.state.model.isFilesTab(this.props.currentStep)) {
             this.checkForDuplicateFiles(importAgain);
         } else {
             this.onFinish(importAgain);
         }
     };
+
+    onImport = () => this.save(false);
+
+    onSaveAndImportAgain = () => this.save(true);
 
     getBackgroundJobDescription = (options: AssayDOM.ImportRunOptions): string => {
         const { assayDefinition } = this.props;
@@ -767,21 +770,24 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     setIsDirty={setIsDirty}
                 />
                 <Alert>{this.state.error}</Alert>
-                <WizardNavButtons cancel={onCancel} containerClassName="" includeNext={false}>
+                <FormButtons>
+                    <button className="btn btn-default" onClick={onCancel} type="button">
+                        Cancel
+                    </button>
                     {showSaveAgainBtn && (
-                        <Button type="submit" onClick={this.onSaveClick.bind(this, true)} disabled={disabledSave}>
+                        <button
+                            className="btn btn-default"
+                            type="submit"
+                            onClick={this.onSaveAndImportAgain}
+                            disabled={disabledSave}
+                        >
                             {model.isSubmitting ? 'Saving...' : 'Save and Import Another Run'}
-                        </Button>
+                        </button>
                     )}
-                    <Button
-                        type="submit"
-                        bsStyle="success"
-                        onClick={this.onSaveClick.bind(this, false)}
-                        disabled={disabledSave}
-                    >
+                    <button type="submit" className="btn btn-success" onClick={this.onImport} disabled={disabledSave}>
                         {model.isSubmitting ? 'Importing...' : isReimport ? 'Re-Import' : 'Import'}
-                    </Button>
-                </WizardNavButtons>
+                    </button>
+                </FormButtons>
                 <Progress
                     estimate={this.getProgressSizeEstimate()}
                     modal={true}

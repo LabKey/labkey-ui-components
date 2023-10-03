@@ -3,6 +3,8 @@ import { Checkbox, Modal } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
+import { ModalButtons } from '../../ModalButtons';
+
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 
 import { Alert } from '../base/Alert';
@@ -141,7 +143,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         });
     };
 
-    const onSavePicklist = async (): Promise<void> => {
+    const onSavePicklist = useCallback(async (): Promise<void> => {
         setIsSubmitting(true);
         try {
             let updatedList;
@@ -170,7 +172,23 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
             setPicklistError(resolveErrorMessage(e));
             setIsSubmitting(false);
         }
-    };
+    }, [
+        api.query,
+        createSuccessNotification,
+        description,
+        isUpdate,
+        metricFeatureArea,
+        name,
+        onFinish,
+        picklist.Container,
+        picklist.listId,
+        sampleIds,
+        selectionKey,
+        shared,
+        showNotification,
+        statusData,
+        useSnapshotSelection,
+    ]);
 
     let title;
     if (isUpdate) {
@@ -227,16 +245,13 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
             </Modal.Body>
 
             <Modal.Footer>
-                <WizardNavButtons
-                    cancel={onHide}
-                    cancelText="Cancel"
-                    canFinish={!!name}
-                    containerClassName=""
-                    isFinishing={isSubmitting}
-                    isFinishingText={finishingVerb + ' Picklist...'}
-                    finish
-                    finishText={finishVerb + ' Picklist'}
-                    nextStep={onSavePicklist}
+                <ModalButtons
+                    canConfirm={!!name}
+                    confirmText={finishVerb + ' Picklist'}
+                    confirmingText={finishingVerb + ' Picklist...'}
+                    isConfirming={isSubmitting}
+                    onCancel={onHide}
+                    onConfirm={onSavePicklist}
                 />
             </Modal.Footer>
         </Modal>

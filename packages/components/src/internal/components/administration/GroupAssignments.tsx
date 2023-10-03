@@ -3,6 +3,8 @@ import { Button, Col, Panel, Row } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import { InjectedRouter } from 'react-router';
 
+import { FormButtons } from '../../FormButtons';
+
 import { Alert } from '../base/Alert';
 
 import { Principal, SecurityPolicy, SecurityRole } from '../permissions/models';
@@ -44,7 +46,6 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         getAuditLogData,
         getIsDirty,
         groupMembership,
-        showDetailsPanel = true,
         policy,
         rolesByUniqueName,
         principalsById,
@@ -147,7 +148,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
 
     return (
         <Row>
-            <Col xs={12} md={showDetailsPanel ? 8 : 12}>
+            <Col xs={12} md={8}>
                 <Panel>
                     <Panel.Heading> Application Groups and Assignments </Panel.Heading>
                     <Panel.Body className="permissions-groups-assignment-panel group-assignment-panel">
@@ -184,44 +185,49 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                             />
                         ))}
 
-                        <div className="group-assignment-panel__footer">
-                            {errorMsg && <Alert>{errorMsg}</Alert>}
-                            <Button
-                                className="pull-right alert-button group-management-save-btn"
-                                bsStyle="success"
+                        <div className="group-assignment-panel__footer">{errorMsg && <Alert>{errorMsg}</Alert>}</div>
+
+                        <FormButtons>
+                            {router && (
+                                <button className="btn btn-default" onClick={onCancel} type="button">
+                                    Cancel
+                                </button>
+                            )}
+
+                            <button
+                                className="btn btn-success alert-button group-management-save-btn"
                                 disabled={submitting || !getIsDirty()}
                                 onClick={onSave}
+                                type="button"
                             >
                                 Save
-                            </Button>
-                            {router && <Button onClick={onCancel}>Cancel</Button>}
-                        </div>
+                            </button>
+                        </FormButtons>
                     </Panel.Body>
                 </Panel>
             </Col>
-            {showDetailsPanel && (
-                <Col xs={12} md={4}>
-                    {selectedPrincipal?.type === MemberType.group ? (
-                        <GroupDetailsPanel
-                            principal={selectedPrincipal}
-                            policy={policy}
-                            rolesByUniqueName={rolesByUniqueName}
-                            members={groupMembership[selectedPrincipal?.userId]?.members}
-                            isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
-                            getAuditLogData={getAuditLogData}
-                            displayCounts={userIsAppAdmin}
-                        />
-                    ) : (
-                        <UserDetailsPanel
-                            currentUser={user}
-                            userId={selectedPrincipalId}
-                            policy={policy}
-                            rolesByUniqueName={rolesByUniqueName}
-                            showGroupListLinks={false}
-                        />
-                    )}
-                </Col>
-            )}
+
+            <Col xs={12} md={4}>
+                {selectedPrincipal?.type === MemberType.group ? (
+                    <GroupDetailsPanel
+                        principal={selectedPrincipal}
+                        policy={policy}
+                        rolesByUniqueName={rolesByUniqueName}
+                        members={groupMembership[selectedPrincipal?.userId]?.members}
+                        isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
+                        getAuditLogData={getAuditLogData}
+                        displayCounts={userIsAppAdmin}
+                    />
+                ) : (
+                    <UserDetailsPanel
+                        currentUser={user}
+                        userId={selectedPrincipalId}
+                        policy={policy}
+                        rolesByUniqueName={rolesByUniqueName}
+                        showGroupListLinks={false}
+                    />
+                )}
+            </Col>
         </Row>
     );
 });

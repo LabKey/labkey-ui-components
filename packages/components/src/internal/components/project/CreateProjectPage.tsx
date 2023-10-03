@@ -2,6 +2,8 @@ import React, { FC, memo, useCallback, useState } from 'react';
 import { WithRouterProps } from 'react-router';
 import { ActionURL } from '@labkey/api';
 
+import { FormButtons } from '../../FormButtons';
+
 import { Page } from '../base/Page';
 import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
 import { Alert } from '../base/Alert';
@@ -114,20 +116,14 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                 {ProjectFreezerSelectionComponent && (
                     <ProjectFreezerSelectionComponent updateDataTypeExclusions={updateDataTypeExclusions} />
                 )}
-                <div className="form-group no-margin-bottom">
-                    <div className="pull-left">
-                        <button className="project-cancel-button btn btn-default" onClick={onCancel} type="button">
-                            Cancel
-                        </button>
-                    </div>
-                    <div className="pull-right">
-                        <span className="gridbar-button-spacer">
-                            <button className="create-project-button btn btn-success" disabled={isSaving} type="submit">
-                                {isSaving ? 'Creating Project' : 'Create Project'}
-                            </button>
-                        </span>
-                    </div>
-                </div>
+                <FormButtons>
+                    <button className="project-cancel-button btn btn-default" onClick={onCancel} type="button">
+                        Cancel
+                    </button>
+                    <button className="create-project-button btn btn-success" disabled={isSaving} type="submit">
+                        {isSaving ? 'Creating Project' : 'Create Project'}
+                    </button>
+                </FormButtons>
             </form>
         </div>
     );

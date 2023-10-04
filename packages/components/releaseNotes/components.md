@@ -12,6 +12,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Domain Designer components: remove useTheme and successBsStyle props
 * Add isApp and getSubmitButtonClass util methods
 
+### version 2.373.4
+*Released*: 2 October 2023
+* Issue 48781: LKSM/LKB: Groups using wrong icon
+
 ### version 2.373.3
 *Released*: 2 October 2023
 * add some keys to Fragments to get rid of warnings about missing keys

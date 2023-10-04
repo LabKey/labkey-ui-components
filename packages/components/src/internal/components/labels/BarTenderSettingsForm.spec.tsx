@@ -9,7 +9,7 @@ import { Container } from '../base/models/Container';
 
 import { getLabelPrintingTestAPIWrapper } from './APIWrapper';
 
-import { BarTenderSettingsFormImpl } from './BarTenderSettingsForm';
+import { BarTenderSettingsForm } from './BarTenderSettingsForm';
 import { BarTenderConfiguration } from './models';
 import { LabelsConfigurationPanel } from './LabelsConfigurationPanel';
 
@@ -45,7 +45,7 @@ describe('BarTenderSettingsForm', () => {
 
     test('default props, home project', async () => {
         const wrapper = mountWithAppServerContext(
-            <BarTenderSettingsFormImpl {...DEFAULT_PROPS} container={new Container({ path: '/Test' })} />
+            <BarTenderSettingsForm {...DEFAULT_PROPS} container={new Container({ path: '/Test' })} />
         );
         await waitForLifecycle(wrapper);
         validate(wrapper);
@@ -55,7 +55,7 @@ describe('BarTenderSettingsForm', () => {
 
     test('default props, product project', async () => {
         const wrapper = mountWithAppServerContext(
-            <BarTenderSettingsFormImpl
+            <BarTenderSettingsForm
                 {...DEFAULT_PROPS}
                 container={new Container({ path: '/Test/Folder', type: 'folder' })}
             />,
@@ -75,7 +75,7 @@ describe('BarTenderSettingsForm', () => {
 
     test('default props, subfolder without projects', async () => {
         const wrapper = mountWithAppServerContext(
-            <BarTenderSettingsFormImpl
+            <BarTenderSettingsForm
                 {...DEFAULT_PROPS}
                 container={new Container({ path: '/Test/Folder', type: 'folder' })}
             />,
@@ -95,17 +95,14 @@ describe('BarTenderSettingsForm', () => {
 
     test('with initial form values', async () => {
         const wrapper = mountWithAppServerContext(
-            <BarTenderSettingsFormImpl
+            <BarTenderSettingsForm
                 {...DEFAULT_PROPS}
                 container={new Container({ path: '/Test' })}
                 api={getTestAPIWrapper(jest.fn, {
                     labelprinting: getLabelPrintingTestAPIWrapper(jest.fn, {
-                        fetchBarTenderConfiguration: () =>
-                            Promise.resolve(
-                                new BarTenderConfiguration({
-                                    serviceURL: 'testServerURL',
-                                })
-                            ),
+                        fetchBarTenderConfiguration: jest
+                            .fn()
+                            .mockResolvedValue(new BarTenderConfiguration({ serviceURL: 'testServerURL' })),
                     }),
                 })}
             />

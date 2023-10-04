@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.375.0
+*Released*: 4 October 2023
+- Rename `LabelPrintingProviderProps` to `LabelPrintingContext`. Rename `LabelPrintingProvider` to `LabelPrintingContextProvider`.
+- Add `createLabelTemplateList` to APIWrapper
+- Streamline request creation and error handling in APIWrapper
+- Add error handling to `LabelPrintingContextProvider`
+- Update `BarTenderSettingsForm` to no longer use `withLabelPrintingContext` as this component does not rely on label context. Improve loading/error rendering.
+- Remove `withLabelPrintingContext`
+
 ### version 2.374.2
 *Released*: 4 October 2023
 * Merge release23.10-SNAPSHOT to develop:

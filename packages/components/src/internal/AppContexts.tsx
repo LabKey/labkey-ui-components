@@ -7,7 +7,7 @@ import { AppContextProvider, ExtendableAppContext } from './AppContext';
 import { GlobalStateContextProvider } from './GlobalStateContext';
 import { ServerContextProvider, withAppUser } from './components/base/ServerContext';
 import { NotificationsContextProvider } from './components/notifications/NotificationsContext';
-import { LabelPrintingProvider } from './components/labels/LabelPrintingContextProvider';
+import { LabelPrintingContextProvider } from './components/labels/LabelPrintingContextProvider';
 
 interface Props<T = {}> {
     history: any;
@@ -28,11 +28,11 @@ export const AppContexts: FC<Props> = props => {
             <AppContextProvider initialContext={initialAppContext}>
                 <GlobalStateContextProvider>
                     <NotificationsContextProvider>
-                        <LabelPrintingProvider>
+                        <LabelPrintingContextProvider>
                             <Provider store={store}>
                                 <Router history={history}>{children}</Router>
                             </Provider>
-                        </LabelPrintingProvider>
+                        </LabelPrintingContextProvider>
                     </NotificationsContextProvider>
                 </GlobalStateContextProvider>
             </AppContextProvider>

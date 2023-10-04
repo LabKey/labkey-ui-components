@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, memo, useContext, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useContext, useEffect, useState } from 'react';
 
 import { useAppContext } from '../../AppContext';
 
@@ -6,62 +6,66 @@ import { useServerContext } from '../base/ServerContext';
 
 import { isSampleManagerEnabled } from '../../app/utils';
 
-import { userCanPrintLabels } from './utils';
-import { BarTenderConfiguration, LabelTemplate } from './models';
+import { resolveErrorMessage } from '../../util/messaging';
 
-export interface LabelPrintingProviderProps {
+import { userCanPrintLabels } from './utils';
+
+export interface LabelPrintingContext {
     canPrintLabels: boolean;
     defaultLabel: number;
+    error?: string;
     printServiceUrl: string;
 }
 
-export type LabelPrintingContextProps = Omit<LabelPrintingProviderProps, 'canPrintLabels'>;
+export type LabelPrintingContextProps = Omit<LabelPrintingContext, 'canPrintLabels' | 'error'>;
 
-interface OwnProps {
+interface LabelPrintingContextProviderProps {
     initialContext?: LabelPrintingContextProps;
 }
 
-const LabelPrintingContext = React.createContext<LabelPrintingProviderProps>(undefined);
+const Context = React.createContext<LabelPrintingContext>(undefined);
 
-export const useLabelPrintingContext = (): LabelPrintingProviderProps => {
-    return useContext(LabelPrintingContext);
+export const useLabelPrintingContext = (): LabelPrintingContext => {
+    return useContext(Context);
 };
 
-// TODO: move implementation to GlobalStateContextProvider
-export const LabelPrintingProvider: FC<OwnProps> = memo(({ children, initialContext }) => {
-    const { user } = useServerContext();
+export const LabelPrintingContextProvider: FC<LabelPrintingContextProviderProps> = memo(props => {
+    const { children, initialContext } = props;
+    const { moduleContext, user } = useServerContext();
     const { api } = useAppContext();
-    const { fetchBarTenderConfiguration, ensureLabelTemplatesList } = api.labelprinting;
-    const [canPrintLabels, setCanPrintLabels] = useState<boolean>(() => userCanPrintLabels(user));
-    const [printServiceUrl, setPrintServiceUrl] = useState<string>(initialContext?.printServiceUrl);
-    const [defaultLabel, setDefaultLabel] = useState<number>(initialContext?.defaultLabel);
+    const [labelContext, setLabelContext] = useState<LabelPrintingContext>(() => ({
+        canPrintLabels: userCanPrintLabels(user),
+        defaultLabel: initialContext?.defaultLabel,
+        printServiceUrl: initialContext?.printServiceUrl,
+    }));
 
     useEffect(() => {
-        if (userCanPrintLabels(user) && isSampleManagerEnabled()) {
-            Promise.all([fetchBarTenderConfiguration(), ensureLabelTemplatesList(user)]).then(
-                (responses: [BarTenderConfiguration, LabelTemplate[]]) => {
-                    const [btConfiguration, templates] = responses;
-                    setCanPrintLabels(!!btConfiguration.serviceURL && templates?.length > 0);
-                    setPrintServiceUrl(btConfiguration.serviceURL);
-                    setDefaultLabel(btConfiguration.defaultLabel);
-                }
-            );
-        }
-    }, [fetchBarTenderConfiguration, ensureLabelTemplatesList, user]);
+        if (!userCanPrintLabels(user) || !isSampleManagerEnabled(moduleContext)) return;
 
-    const labelContext = useMemo<LabelPrintingProviderProps>(
-        () => ({ printServiceUrl, canPrintLabels, defaultLabel }),
-        [printServiceUrl, canPrintLabels, defaultLabel]
-    );
+        (async () => {
+            try {
+                const [btConfiguration, templates] = await Promise.all([
+                    api.labelprinting.fetchBarTenderConfiguration(),
+                    api.labelprinting.ensureLabelTemplatesList(user),
+                ]);
 
-    return <LabelPrintingContext.Provider value={labelContext}>{children}</LabelPrintingContext.Provider>;
+                setLabelContext({
+                    canPrintLabels: !!btConfiguration.serviceURL && templates?.length > 0,
+                    defaultLabel: btConfiguration.defaultLabel,
+                    printServiceUrl: btConfiguration.serviceURL,
+                });
+            } catch (e) {
+                setLabelContext({
+                    canPrintLabels: false,
+                    defaultLabel: undefined,
+                    error: `Failed to initialize label printing context: "${
+                        resolveErrorMessage(e) ?? 'Unknown error'
+                    }"`,
+                    printServiceUrl: undefined,
+                });
+            }
+        })();
+    }, [api, moduleContext, user]);
+
+    return <Context.Provider value={labelContext}>{children}</Context.Provider>;
 });
-
-export function withLabelPrintingContext<T>(
-    Component: ComponentType<T & LabelPrintingProviderProps>
-): ComponentType<T> {
-    return props => {
-        const context = useLabelPrintingContext();
-        return <Component {...props} {...context} />;
-    };
-}

@@ -10,7 +10,10 @@ import {
     NotificationsContextState,
 } from '../components/notifications/NotificationsContext';
 import { ServerContext, ServerContextProvider } from '../components/base/ServerContext';
-import { LabelPrintingContextProps, LabelPrintingProvider } from '../components/labels/LabelPrintingContextProvider';
+import {
+    LabelPrintingContextProps,
+    LabelPrintingContextProvider,
+} from '../components/labels/LabelPrintingContextProvider';
 import { GlobalStateContextProvider } from '../GlobalStateContext';
 import { URL_MAPPERS, URLService } from '../url/URLResolver';
 
@@ -34,9 +37,9 @@ export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => 
             <AppContextProvider initialContext={initialAppContext}>
                 <GlobalStateContextProvider>
                     <NotificationsContextProvider initialContext={notificationContext as NotificationsContextState}>
-                        <LabelPrintingProvider initialContext={printLabelsContext as LabelPrintingContextProps}>
+                        <LabelPrintingContextProvider initialContext={printLabelsContext as LabelPrintingContextProps}>
                             {children}
-                        </LabelPrintingProvider>
+                        </LabelPrintingContextProvider>
                     </NotificationsContextProvider>
                 </GlobalStateContextProvider>
             </AppContextProvider>

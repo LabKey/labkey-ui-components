@@ -113,7 +113,7 @@ describe('FilterExpressionView', () => {
         firstInputValue?: any,
         secondInputValue?: any,
         disabled?: boolean
-    ) {
+    ): void {
         expect(wrapper.find(SelectInput)).toHaveLength(numFilters);
         validateFilterTypeDropdown(wrapper, operators, filterIndex, selectedOp);
 
@@ -137,12 +137,12 @@ describe('FilterExpressionView', () => {
         operators: string[],
         filterIndex: number,
         selectedOp?: string
-    ) {
+    ): void {
         const selectInput = wrapper.find(SelectInput).at(filterIndex);
         const options = selectInput.props()['options'];
         const selectedFilter = selectInput.props()['value'];
         if (selectedOp) expect(selectedFilter).toEqual(selectedOp);
-        else expect(selectedFilter).toEqual("contains");
+        else expect(selectedFilter).toEqual('contains');
 
         const ops = [];
         options.map(op => ops.push(op['value']));
@@ -157,7 +157,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('string field, equals operator', async () => {
+    test('string field, equals operator', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={stringField}
@@ -169,7 +169,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('int field, between operator', async () => {
+    test('int field, between operator', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={intField}
@@ -181,7 +181,19 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('double field, greater than operator', async () => {
+    test('int field, no filter selected',  () => {
+        const wrapper = mount(
+            <FilterExpressionView
+                field={intField}
+                fieldFilters={null}
+            />
+        );
+
+        validateFilterTypeDropdown(wrapper, Ops, 0, Ops[0]);
+        wrapper.unmount();
+    });
+
+    test('double field, greater than operator', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={doubleField}
@@ -193,7 +205,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('date field, not equal', async () => {
+    test('date field, not equal', () => {
         const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Los_Angeles
         const testDate = new Date(datePOSIX);
 
@@ -208,7 +220,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('boolean field, equal', async () => {
+    test('boolean field, equal', () => {
         const wrapper = mount(
             <FilterExpressionView field={booleanField} fieldFilters={[Filter.create('BooleanField', 'true')]} />
         );
@@ -227,7 +239,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('not sole filter, without value', async () => {
+    test('not sole filter, without value', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={doubleField}
@@ -238,7 +250,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('between filter missing all values', async () => {
+    test('between filter missing all values', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={intField}
@@ -250,7 +262,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('between filter missing one value', async () => {
+    test('between filter missing one value', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={intField}
@@ -262,7 +274,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('multiple filters with values', async () => {
+    test('multiple filters with values', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={doubleField}
@@ -296,7 +308,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('multiple filters, no input required', async () => {
+    test('multiple filters, no input required', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={doubleField}
@@ -307,7 +319,7 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('int field, between operator, disabled', async () => {
+    test('int field, between operator, disabled', () => {
         const wrapper = mount(
             <FilterExpressionView
                 field={intField}

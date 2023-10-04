@@ -409,6 +409,10 @@ export function getFilterSelections(
             filters.push({
                 filterType: filterOption,
             });
+        } else {
+            filters.push({
+               filterType: filterOptions[0]
+            });
         }
     }
     return filters;

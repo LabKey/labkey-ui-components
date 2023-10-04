@@ -88,6 +88,7 @@ import {
 } from './models';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
+import { getQueryDetails } from '../../query/api';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -469,8 +470,27 @@ export function createNewDomainField(domain: DomainDesign, fieldConfig: Partial<
     return DomainField.create(fieldConfig, true);
 }
 
-export function mergeDomainFields(domain: DomainDesign, newFields: List<DomainField>): DomainDesign {
-    return domain.set('fields', domain.fields.concat(newFields)) as DomainDesign;
+export async function mergeDomainFields(domain: DomainDesign, newFields: List<DomainField>): Promise<DomainDesign> {
+    const newFields_ = [];
+    for (let i = 0; i < newFields.size; i++) {
+        const field = newFields.get(i);
+        if (field.lookupQuery) {
+            try {
+                // Issue 48240: lookupIsValid during JSON fields import if we can find the queryDetails, otherwise set to false in catch
+                await getQueryDetails({
+                    containerPath: field.lookupContainer,
+                    schemaQuery: new SchemaQuery(field.lookupSchema, field.lookupQuery),
+                });
+                newFields_.push(field.merge({ lookupIsValid: true }) as DomainField);
+            } catch (e) {
+                newFields_.push(field.merge({ lookupIsValid: false }) as DomainField);
+            }
+        } else {
+            newFields_.push(field);
+        }
+    }
+
+    return domain.set('fields', domain.fields.concat(newFields_)) as DomainDesign;
 }
 
 export function processJsonImport(content: string, domain: DomainDesign): SimpleResponse {

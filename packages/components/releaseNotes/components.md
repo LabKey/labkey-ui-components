@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD October 2023
+- Issue 48240: Assay Result field creation using JSON file results in lookup failure
+
 ### version 2.375.0
 *Released*: 4 October 2023
 - Rename `LabelPrintingProviderProps` to `LabelPrintingContext`. Rename `LabelPrintingProvider` to `LabelPrintingContextProvider`.

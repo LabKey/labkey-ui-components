@@ -51,6 +51,7 @@ interface LabelTemplatesListProps {
 
 interface LabelTemplateDetailsProps {
     api?: ComponentsAPIWrapper;
+    container: Container;
     defaultLabel?: number;
     isDefaultable: boolean;
     isNew: boolean;
@@ -58,7 +59,6 @@ interface LabelTemplateDetailsProps {
     onChange: () => void;
     onDefaultChanged: (newDefault: number) => void;
     template: LabelTemplate;
-    container: Container;
 }
 
 export const LabelTemplatesList: FC<LabelTemplatesListProps> = memo(props => {
@@ -242,7 +242,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
         } finally {
             setSaving(false);
         }
-    }, [api, defaultLabel, isDefault, onActionCompleted, onDefaultChanged, updatedTemplate]);
+    }, [api, container.path, defaultLabel, isDefault, onActionCompleted, onDefaultChanged, updatedTemplate]);
 
     return (
         <>

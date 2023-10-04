@@ -11,38 +11,19 @@ import { selectRows } from '../../query/selectRows';
 
 import { User } from '../base/models/User';
 
+import { handleRequestFailure } from '../../util/utils';
+
 import { LABEL_TEMPLATE_SQ } from './constants';
 import { BarTenderConfiguration, BarTenderResponse, LabelTemplate } from './models';
 
-function handleBarTenderConfigurationResponse(response: any): BarTenderConfiguration {
-    // Separate the BarTender configuration object from the success response
-    const { btConfiguration } = response;
-    return BarTenderConfiguration.create(btConfiguration);
-}
-
-function createLabelTemplateList(containerPath?: string): Promise<LabelTemplate[]> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL(
-                SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
-                'ensureLabelTemplateList.api',
-                containerPath,
-                {
-                    returnUrl: false,
-                }
-            ),
-            method: 'POST',
-            success: () => {
-                resolve([]);
-            },
-            failure: reason => {
-                reject(reason);
-            },
-        });
-    });
+function handleBarTenderConfigurationResponse(
+    resolve: (value: BarTenderConfiguration | PromiseLike<BarTenderConfiguration>) => void
+): Ajax.AjaxHandler {
+    return Utils.getCallbackWrapper(({ btConfiguration }) => resolve(BarTenderConfiguration.create(btConfiguration)));
 }
 
 export interface LabelPrintingAPIWrapper {
+    createLabelTemplateList: (containerPath?: string) => Promise<LabelTemplate[]>;
     ensureLabelTemplatesList: (user: User, containerPath?: string) => Promise<LabelTemplate[]>;
     fetchBarTenderConfiguration: (containerPath?: string) => Promise<BarTenderConfiguration>;
     getLabelTemplates: () => Promise<LabelTemplate[]>;
@@ -61,9 +42,50 @@ export interface LabelPrintingAPIWrapper {
 }
 
 export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
-    /**
-     * Retrieve the BarTender web service configuration from the server
-     */
+    createLabelTemplateList = (containerPath?: string): Promise<LabelTemplate[]> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: buildURL(
+                    SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
+                    'ensureLabelTemplateList.api',
+                    containerPath
+                ),
+                method: 'POST',
+                success: () => {
+                    resolve([]);
+                },
+                failure: handleRequestFailure(reject, 'Failed to ensure label template list'),
+            });
+        });
+    };
+
+    // TODO: This endpoint handler does too much
+    ensureLabelTemplatesList = async (user: User, containerPath?: string): Promise<LabelTemplate[]> => {
+        try {
+            return await this.getLabelTemplates(containerPath);
+        } catch (reason) {
+            if (reason.status !== 404) {
+                return undefined;
+            }
+
+            if (!user.isAppAdmin()) {
+                console.error(
+                    'User has insufficient permissions to create the template list. Please contact administrator'
+                );
+                return undefined;
+            }
+        }
+
+        try {
+            // try to create list
+            return await this.createLabelTemplateList(containerPath);
+        } catch (reason) {
+            console.error(reason);
+            return undefined;
+        }
+    };
+
+    /** Retrieve the BarTender web service configuration from the server */
     fetchBarTenderConfiguration = (containerPath?: string): Promise<BarTenderConfiguration> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
@@ -72,12 +94,8 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
                     'getBarTenderConfiguration.api',
                     containerPath
                 ),
-                method: 'GET',
-                success: Utils.getCallbackWrapper(response => resolve(handleBarTenderConfigurationResponse(response))),
-                failure: Utils.getCallbackWrapper(resp => {
-                    console.error(resp);
-                    reject('There was a problem getting the BarTender configuration.');
-                }),
+                success: handleBarTenderConfigurationResponse(resolve),
+                failure: handleRequestFailure(reject, 'There was a problem getting the BarTender configuration.'),
             });
         });
     };
@@ -91,7 +109,6 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
         return new Promise((resolve, reject) => {
             // Due to CORS conflicts we can't use the normal Ajax.request utility method. BT service doesn't currently support preflight OPTIONS checks to properly support CORS request.
             // So we use a custom xhr and headers, to make "simple" request. This also prevents sharing the normal custom LabKey headers.
-            const data = btxml;
             const xhr = new XMLHttpRequest();
             xhr.withCredentials = false; // If true, will cause the CORS policy to be triggered and we are not currently supporting auth
 
@@ -105,8 +122,7 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
 
             xhr.open('POST', serviceURL);
             xhr.setRequestHeader('Content-Type', 'text/plain'); // This won't trigger the CORS requirements
-
-            xhr.send(data);
+            xhr.send(btxml);
         });
     };
 
@@ -123,28 +139,21 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
         numCopies: number,
         serverURL: string
     ): Promise<BarTenderResponse> => {
-        // We override the showRows value because of the strange default behavior for grid export that
-        // exports all rows if you can have selections but have selected no items in the grid
-        const params = getQueryModelExportParams(sampleModel, EXPORT_TYPES.LABEL, {
-            ...SAMPLE_EXPORT_CONFIG,
-            'query.showRows': ['SELECTED'],
-            labelFormat,
-            numCopies,
-        });
         return new Promise((resolve, reject) => {
             Ajax.request({
-                url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'printBarTenderLabels.api', undefined, {
-                    returnUrl: false,
+                url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'printBarTenderLabels.api'),
+                params: getQueryModelExportParams(sampleModel, EXPORT_TYPES.LABEL, {
+                    ...SAMPLE_EXPORT_CONFIG,
+                    labelFormat,
+                    numCopies,
+                    // We override the showRows value because of the strange default behavior for grid export that
+                    // exports all rows if you can have selections but have selected no items in the grid
+                    'query.showRows': ['SELECTED'],
                 }),
-                method: 'GET',
-                params,
-                success: (request: XMLHttpRequest) => {
-                    const btxml = request.response;
-                    this.printBarTenderLabels(btxml, serverURL).then(resolve).catch(reject);
+                success: request => {
+                    this.printBarTenderLabels(request.response, serverURL).then(resolve).catch(reject);
                 },
-                failure: Utils.getCallbackWrapper(response => {
-                    reject(response);
-                }),
+                failure: handleRequestFailure(reject, 'Failed to print BarTender labels'),
             });
         });
     };
@@ -157,8 +166,6 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
         containerPath?: string
     ): Promise<BarTenderConfiguration> => {
         return new Promise((resolve, reject) => {
-            const params = { serviceURL: btConfig.serviceURL };
-
             Ajax.request({
                 url: ActionURL.buildURL(
                     SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
@@ -166,75 +173,31 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
                     containerPath
                 ),
                 method: 'POST',
-                jsonData: params,
-                success: Utils.getCallbackWrapper(response => resolve(handleBarTenderConfigurationResponse(response))),
-                failure: Utils.getCallbackWrapper(resp => {
-                    console.error(resp);
-                    reject('Error saving BarTender service URL');
-                }),
+                jsonData: { serviceURL: btConfig.serviceURL },
+                success: handleBarTenderConfigurationResponse(resolve),
+                failure: handleRequestFailure(reject, 'Error saving BarTender service URL'),
             });
         });
     };
 
     saveDefaultLabelConfiguration = (btConfig: { defaultLabel: number }): Promise<BarTenderConfiguration> => {
         return new Promise((resolve, reject) => {
-            const params = { defaultLabel: btConfig.defaultLabel };
-
             Ajax.request({
                 url: ActionURL.buildURL(
                     SAMPLE_MANAGER_APP_PROPERTIES.controllerName,
                     'saveDefaultLabelConfiguration.api'
                 ),
                 method: 'POST',
-                jsonData: params,
-                success: Utils.getCallbackWrapper(response => resolve(handleBarTenderConfigurationResponse(response))),
-                failure: Utils.getCallbackWrapper(resp => {
-                    console.error(resp);
-                    reject('Error saving the Default Label selection');
-                }),
+                jsonData: { defaultLabel: btConfig.defaultLabel },
+                success: handleBarTenderConfigurationResponse(resolve),
+                failure: handleRequestFailure(reject, 'Error saving the Default Label selection'),
             });
         });
     };
 
-    ensureLabelTemplatesList = (user: User, containerPath?: string): Promise<LabelTemplate[]> => {
-        return new Promise<LabelTemplate[]>(resolve => {
-            this.getLabelTemplates(containerPath)
-                .then((templates: LabelTemplate[]) => resolve(templates))
-                .catch(reason => {
-                    if (reason.status !== 404) {
-                        resolve(undefined);
-                    } else {
-                        if (!user.isAppAdmin()) {
-                            console.error(
-                                'User has insufficient permissions to create the template list. Please contact administrator'
-                            );
-                            resolve(undefined);
-                            return;
-                        }
-
-                        // try to create list
-                        createLabelTemplateList(containerPath)
-                            .then(result => resolve(result))
-                            .catch(createReason => {
-                                console.error(createReason);
-                                resolve(undefined);
-                            });
-                    }
-                });
-        });
-    };
-
-    getLabelTemplates = (containerPath?: string): Promise<LabelTemplate[]> => {
-        return new Promise<LabelTemplate[]>((resolve, reject) => {
-            selectRows({ schemaQuery: LABEL_TEMPLATE_SQ, containerPath })
-                .then(response => {
-                    resolve(response?.rows?.map(row => LabelTemplate.create(row)) ?? []);
-                })
-                .catch(reason => {
-                    console.error(reason);
-                    reject(reason);
-                });
-        });
+    getLabelTemplates = async (containerPath?: string): Promise<LabelTemplate[]> => {
+        const result = await selectRows({ containerPath, schemaQuery: LABEL_TEMPLATE_SQ });
+        return result.rows.map(row => LabelTemplate.create(row));
     };
 }
 
@@ -246,6 +209,7 @@ export function getLabelPrintingTestAPIWrapper(
     overrides: Partial<LabelPrintingAPIWrapper> = {}
 ): LabelPrintingAPIWrapper {
     return {
+        createLabelTemplateList: mockFn(),
         ensureLabelTemplatesList: () => Promise.resolve([]),
         fetchBarTenderConfiguration: () =>
             Promise.resolve(

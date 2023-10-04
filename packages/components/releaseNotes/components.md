@@ -6,6 +6,20 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Show SourceID on SourceEvents Audit Table
   * Added DATACLASS_DATA_UPDATE_AUDIT_QUERY for Biologic audit logs
 
+### version 2.375.0
+*Released*: 4 October 2023
+- Rename `LabelPrintingProviderProps` to `LabelPrintingContext`. Rename `LabelPrintingProvider` to `LabelPrintingContextProvider`.
+- Add `createLabelTemplateList` to APIWrapper
+- Streamline request creation and error handling in APIWrapper
+- Add error handling to `LabelPrintingContextProvider`
+- Update `BarTenderSettingsForm` to no longer use `withLabelPrintingContext` as this component does not rely on label context. Improve loading/error rendering.
+- Remove `withLabelPrintingContext`
+
+### version 2.374.2
+*Released*: 4 October 2023
+* Merge release23.10-SNAPSHOT to develop:
+    * includes changes from 2.373.4
+
 ### version 2.374.1
 *Released*: 2 October 2023
 * Issue 48709: Choose date on month change instead of just highlighting it
@@ -16,6 +30,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * BaseDomainDesigner: use FormButtons
 * Domain Designer components: remove useTheme and successBsStyle props
 * Add isApp and getSubmitButtonClass util methods
+
+### version 2.373.4
+*Released*: 2 October 2023
+* Issue 48781: LKSM/LKB: Groups using wrong icon
 
 ### version 2.373.3
 *Released*: 2 October 2023

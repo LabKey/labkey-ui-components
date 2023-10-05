@@ -16,6 +16,7 @@ import {
 import { getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from './utils';
 import {
     ASSAY_AUDIT_QUERY,
+    DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
     NOTEBOOK_AUDIT_QUERY,
     NOTEBOOK_REVIEW_AUDIT_QUERY,
@@ -68,13 +69,14 @@ describe('getAuditQueries', () => {
             },
         };
         const auditQueries = getAuditQueries(moduleContext);
-        expect(auditQueries.length).toBe(15);
-        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(13);
+        expect(auditQueries.length).toBe(16);
+        expect(auditQueries.findIndex(entry => entry === INVENTORY_AUDIT_QUERY)).toBe(14);
         expect(auditQueries.findIndex(entry => entry === ASSAY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === WORKFLOW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === NOTEBOOK_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === NOTEBOOK_REVIEW_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === REGISTRY_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
+        expect(auditQueries.findIndex(entry => entry === DATACLASS_DATA_UPDATE_AUDIT_QUERY)).toBeGreaterThanOrEqual(0);
         expect(auditQueries.findIndex(entry => entry === SOURCE_AUDIT_QUERY)).toBe(-1);
     });
 });

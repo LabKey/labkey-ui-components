@@ -35,7 +35,8 @@ import {
     AUDIT_EVENT_TYPE_PARAM,
     SAMPLE_TIMELINE_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
-    DATA_UPDATE_AUDIT_QUERY,
+    QUERY_UPDATE_AUDIT_QUERY,
+    DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     PROJECT_AUDIT_QUERY,
 } from './constants';
 
@@ -67,7 +68,9 @@ const AuditQueriesListingPageBody: FC<InjectedQueryModels & OwnProps> = memo(pro
         (async () => {
             try {
                 const { value } = selectedQuery;
-                const auditEventType = value === SOURCE_AUDIT_QUERY.value ? DATA_UPDATE_AUDIT_QUERY.value : value;
+                const isQueryDataUpdate =
+                    value === SOURCE_AUDIT_QUERY.value || value === DATACLASS_DATA_UPDATE_AUDIT_QUERY.value;
+                const auditEventType = isQueryDataUpdate ? QUERY_UPDATE_AUDIT_QUERY.value : value;
                 const detail_ = await getAuditDetail(selectedRowId, auditEventType);
                 setDetail(detail_.merge({ rowId: selectedRowId }) as AuditDetailsModel);
                 setError(undefined);

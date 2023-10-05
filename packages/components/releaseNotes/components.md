@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Choose a default filter for field types that don't offer text choices
 
+### version 2.375.1
+*Released*: 4 October 2023
+* Show SourceID on SourceEvents Audit Table
+  * Added DATACLASS_DATA_UPDATE_AUDIT_QUERY for Biologic audit logs
+
 ### version 2.375.0
 *Released*: 4 October 2023
 - Rename `LabelPrintingProviderProps` to `LabelPrintingContext`. Rename `LabelPrintingProvider` to `LabelPrintingContextProvider`.

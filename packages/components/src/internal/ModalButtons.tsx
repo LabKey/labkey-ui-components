@@ -30,7 +30,7 @@ export const ModalButtons: FC<Props> = memo(props => {
                 <button className="btn btn-default" onClick={onCancel} type="button">
                     {cancelText}
                 </button>
-                <button className="btn btn-success" onClick={onConfirm} type="button" disabled={!canConfirm}>
+                <button className="btn btn-success" onClick={onConfirm} type="button" disabled={isConfirming || !canConfirm}>
                     {isConfirming ? confirmingText : confirmText}
                 </button>
             </FormButtons>

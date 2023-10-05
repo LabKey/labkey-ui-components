@@ -153,12 +153,12 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
             reset();
 
             if (showNotification) {
-                const href = getPicklistUrl(picklist.listId, picklistProductId, currentProductId);
+                const href = getPicklistUrl(updatedList.listId, picklistProductId, currentProductId);
                 const noun = validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples';
                 createNotification({
                     message: (
                         <>
-                            Successfully created "{picklist.name}" with {noun}. <a href={href}>View picklist</a>.
+                            Successfully created "{updatedList.name}" with {noun}. <a href={href}>View picklist</a>.
                         </>
                     ),
                     alertClass: 'success',

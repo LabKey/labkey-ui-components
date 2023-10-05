@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 48287: Improve behavior for Picklist buttons
+  * Don't check sample status before adding to picklists since there is no restriction for picklists
+  * Limit the number of samples that can be added at one time
+
 ### version 2.375.1
 *Released*: 4 October 2023
 * Show SourceID on SourceEvents Audit Table

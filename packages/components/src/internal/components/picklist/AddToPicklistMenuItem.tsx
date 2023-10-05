@@ -12,6 +12,7 @@ import { User } from '../base/models/User';
 
 import { PicklistEditModal } from './PicklistEditModal';
 import { ChoosePicklistModal } from './ChoosePicklistModal';
+import { MAX_SELECTIONS_PER_ADD } from './constants';
 
 interface Props {
     currentProductId?: string;
@@ -81,6 +82,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                     text={itemText}
                     onClick={onClick}
                     queryModel={queryModel}
+                    maxSelection={MAX_SELECTIONS_PER_ADD}
                     nounPlural="samples"
                 />
             ) : (

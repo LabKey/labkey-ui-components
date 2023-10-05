@@ -106,28 +106,12 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
 
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [picklistError, setPicklistError] = useState<string>(undefined);
-    const [validCount, setValidCount] = useState<number>(selectedQuantity ? selectedQuantity : sampleIds?.length);
-    const [statusData, setStatusData] = useState<OperationConfirmationData>(undefined);
 
     useEffect(() => {
         (async () => {
             if (useSnapshotSelection) await setSnapshotSelections(selectionKey, [...queryModel.selections]);
-            api.samples
-                .getSampleOperationConfirmationData(
-                    SampleOperation.AddToPicklist,
-                    sampleIds,
-                    selectionKey,
-                    useSnapshotSelection
-                )
-                .then(data => {
-                    setStatusData(data);
-                    setValidCount(data.allowed.length);
-                })
-                .catch(reason => {
-                    setPicklistError(reason);
-                });
         })();
-    }, [api, selectionKey, sampleIds]);
+    }, [useSnapshotSelection, selectionKey, queryModel.selections]);
 
     const isUpdate = picklist !== undefined;
     let finishVerb, finishingVerb;
@@ -157,7 +141,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
             message: (
                 <>
                     Successfully created "{picklist.name}" with{' '}
-                    {validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples'}.&nbsp;
+                    {sampleIds ? Utils.pluralize(sampleIds.length, 'sample', 'samples') : ' no samples'}.&nbsp;
                     <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>.
                 </>
             ),
@@ -181,15 +165,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
                     })
                 );
             } else {
-                updatedList = await createPicklist(
-                    trimmedName,
-                    description,
-                    shared,
-                    statusData,
-                    selectionKey,
-                    useSnapshotSelection,
-                    sampleIds
-                );
+                updatedList = await createPicklist(trimmedName, description, shared, selectionKey, useSnapshotSelection, sampleIds);
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
             reset();
@@ -205,6 +181,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
     };
 
     let title;
+    const validCount = sampleIds ? sampleIds.length : 0;
     if (isUpdate) {
         title = 'Update Picklist Data';
     } else {
@@ -229,9 +206,6 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
 
             <Modal.Body>
                 <Alert>{picklistError}</Alert>
-                <Alert bsStyle="warning">
-                    {getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}
-                </Alert>
                 <form>
                     <div className="form-group">
                         <label className="control-label">Name *</label>

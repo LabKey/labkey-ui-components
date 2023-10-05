@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.375.2
+*Released*: 5 October 2023
+- Choose a default filter for field types that don't offer text choices
+
 ### version 2.375.1
 *Released*: 4 October 2023
 * Show SourceID on SourceEvents Audit Table

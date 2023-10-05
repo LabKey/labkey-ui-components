@@ -130,19 +130,6 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         onCancel();
     }, [onCancel]);
 
-    const createSuccessNotification = (picklist: Picklist): void => {
-        createNotification({
-            message: (
-                <>
-                    Successfully created "{picklist.name}" with{' '}
-                    {validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples'}.&nbsp;
-                    <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>.
-                </>
-            ),
-            alertClass: 'success',
-        });
-    };
-
     const onSavePicklist = useCallback(async (): Promise<void> => {
         setIsSubmitting(true);
         try {
@@ -162,9 +149,20 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
                 updatedList = await createPicklist(trimmedName, description, shared, selectionKey, useSnapshotSelection, sampleIds);
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
+
             reset();
+
             if (showNotification) {
-                createSuccessNotification(updatedList);
+                const href = getPicklistUrl(picklist.listId, picklistProductId, currentProductId);
+                const noun = validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples';
+                createNotification({
+                    message: (
+                        <>
+                            Successfully created "{picklist.name}" with {noun}. <a href={href}>View picklist</a>.
+                        </>
+                    ),
+                    alertClass: 'success',
+                });
             }
 
             onFinish(updatedList);
@@ -174,14 +172,13 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         }
     }, [
         api.query,
-        createSuccessNotification,
         description,
         isUpdate,
         metricFeatureArea,
         name,
         onFinish,
-        picklist.Container,
-        picklist.listId,
+        picklist?.Container,
+        picklist?.listId,
         sampleIds,
         selectionKey,
         shared,

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ReactWrapper } from 'enzyme';
-import { Button, Modal, ModalFooter, ModalTitle } from 'react-bootstrap';
+import { Modal, ModalFooter, ModalTitle } from 'react-bootstrap';
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
@@ -19,7 +19,7 @@ describe('PicklistEditModal', () => {
         const title = modal.find(ModalTitle);
         expect(title.text()).toBe(expectedTitle);
         const footer = modal.find(ModalFooter);
-        const buttons = footer.find(Button);
+        const buttons = footer.find('.btn');
         expect(buttons).toHaveLength(2);
         expect(buttons.at(1).text()).toBe(expectedFinishText);
     }

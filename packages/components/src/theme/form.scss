@@ -336,3 +336,8 @@ textarea.form-control {
     display: flex;
     gap: 8px;
 }
+
+.modal-footer .form-buttons {
+    // Bootstrap wants all modal buttons on the right side of the footer, so we need to override that.
+    text-align: left;
+}

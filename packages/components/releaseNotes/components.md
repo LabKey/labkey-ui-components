@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.375.3
+*Released*: 6 October 2023
+- Issue 48240: Assay Result field creation using JSON file results in lookup failure
+
 ### version 2.375.2
 *Released*: 5 October 2023
 - Choose a default filter for field types that don't offer text choices

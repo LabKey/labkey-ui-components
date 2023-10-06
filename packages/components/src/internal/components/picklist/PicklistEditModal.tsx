@@ -7,10 +7,6 @@ import { WizardNavButtons } from '../buttons/WizardNavButtons';
 
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
-
-import { SampleOperation } from '../samples/constants';
-import { OperationConfirmationData } from '../entities/models';
-import { getOperationNotPermittedMessage } from '../samples/utils';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -22,18 +18,6 @@ import { setSnapshotSelections } from '../../actions';
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
-
-// TODO reconcile these properties. Do we need both selectionKey and queryModel.
-// Is selectedQuantity needed if we always have either the sampleIds or the queryModel?
-// SampleHeader usage passes in sampleIds, no queryModel
-// SampleActionsButton passes in the sample listing model and either a sampleFieldKey or the selectionKey for the sample listing model - don't need selection key; check for sampleFieldKey
-// PicklistButton passes in either the sampleIds or the model, its selectionKey, and the size of the selections from the model - use model's selection key and selections.length
-// MediaGridButtons passes in the listing model
-// SampleGridButtons passes in the listing model
-// WorkflowSamplesPageWrapper passes in the listing model
-// ItemSamplesActionMenu passes in the itemsModel and the selectedSampleIds as sampleIds
-//
-// PicklistListing passes in no queryModel, selectionKey or SampleIds (only for creating a picklist)
 
 export interface PicklistEditModalProps {
     sampleIds?: string[];

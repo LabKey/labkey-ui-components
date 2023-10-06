@@ -714,6 +714,7 @@ import {
     userCanReadRegistry,
     userCanReadSources,
     getCurrentProductName,
+    freezerManagerIsCurrentApp,
 } from './internal/app/utils';
 import {
     menuInit,
@@ -866,6 +867,7 @@ const App = {
     isProjectContainer,
     isProtectedDataEnabled,
     sampleManagerIsPrimaryApp,
+    freezerManagerIsCurrentApp,
     isSampleStatusEnabled,
     isProductProjectsEnabled,
     isAllProductFoldersFilteringEnabled,

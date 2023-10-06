@@ -229,6 +229,10 @@ export function biologicsIsPrimaryApp(moduleContext?: ModuleContext): boolean {
     return getPrimaryAppProperties(moduleContext)?.productId === BIOLOGICS_APP_PROPERTIES.productId;
 }
 
+export function freezerManagerIsCurrentApp(): boolean {
+    return getCurrentAppProperties()?.productId === FREEZER_MANAGER_APP_PROPERTIES.productId;
+}
+
 export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('SampleManagement', moduleContext);
 }

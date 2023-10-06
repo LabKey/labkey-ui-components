@@ -37,6 +37,8 @@ import { handleRequestFailure } from '../../util/utils';
 
 import { getExcludedDataTypeNames } from '../entities/actions';
 
+import { getQueryDetails } from '../../query/api';
+
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -88,7 +90,6 @@ import {
 } from './models';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
-import { getQueryDetails } from '../../query/api';
 
 let sharedCache = Map<string, Promise<any>>();
 

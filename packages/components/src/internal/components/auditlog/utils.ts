@@ -31,6 +31,7 @@ import {
     REGISTRY_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
+    DATACLASS_DATA_UPDATE_AUDIT_QUERY,
 } from './constants';
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
@@ -39,7 +40,10 @@ export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     if (isWorkflowEnabled(ctx)) queries.push(WORKFLOW_AUDIT_QUERY);
     if (isAssayEnabled(ctx)) queries.push(ASSAY_AUDIT_QUERY);
     if (isSampleManagerEnabled(ctx) && sampleManagerIsPrimaryApp(ctx)) queries.push(SOURCE_AUDIT_QUERY);
-    if (isBiologicsEnabled(ctx) && biologicsIsPrimaryApp(ctx)) queries.push(REGISTRY_AUDIT_QUERY);
+    if (isBiologicsEnabled(ctx) && biologicsIsPrimaryApp(ctx)) {
+        queries.push(DATACLASS_DATA_UPDATE_AUDIT_QUERY);
+        queries.push(REGISTRY_AUDIT_QUERY);
+    }
     if (isELNEnabled(ctx)) {
         queries.push(NOTEBOOK_AUDIT_QUERY);
         queries.push(NOTEBOOK_REVIEW_AUDIT_QUERY);

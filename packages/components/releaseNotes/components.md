@@ -5,6 +5,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD October 2023
 - Issue 48240: Assay Result field creation using JSON file results in lookup failure
 
+### version 2.375.2
+*Released*: 5 October 2023
+- Choose a default filter for field types that don't offer text choices
+
+### version 2.375.1
+*Released*: 4 October 2023
+* Show SourceID on SourceEvents Audit Table
+  * Added DATACLASS_DATA_UPDATE_AUDIT_QUERY for Biologic audit logs
+
 ### version 2.375.0
 *Released*: 4 October 2023
 - Rename `LabelPrintingProviderProps` to `LabelPrintingContext`. Rename `LabelPrintingProvider` to `LabelPrintingContextProvider`.

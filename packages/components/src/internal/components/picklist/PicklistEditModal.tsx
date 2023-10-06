@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Checkbox, Modal } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
@@ -25,9 +25,17 @@ import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants
 
 // TODO reconcile these properties. Do we need both selectionKey and queryModel.
 // Is selectedQuantity needed if we always have either the sampleIds or the queryModel?
+// SampleHeader usage passes in sampleIds, no queryModel
+// SampleActionsButton passes in the sample listing model and either a sampleFieldKey or the selectionKey for the sample listing model - don't need selection key; check for sampleFieldKey
+// PicklistButton passes in either the sampleIds or the model, its selectionKey, and the size of the selections from the model - use model's selection key and selections.length
+// MediaGridButtons passes in the listing model
+// SampleGridButtons passes in the listing model
+// WorkflowSamplesPageWrapper passes in the listing model
+// ItemSamplesActionMenu passes in the itemsModel and the selectedSampleIds as sampleIds
+//
+// PicklistListing passes in no queryModel, selectionKey or SampleIds (only for creating a picklist)
+
 export interface PicklistEditModalProps {
-    selectionKey?: string; // pass in either selectionKey and selectedQuantity or sampleIds.
-    selectedQuantity?: number;
     sampleIds?: string[];
     picklist?: Picklist;
     onCancel: () => void;
@@ -42,9 +50,8 @@ export interface PicklistEditModalProps {
 }
 
 export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
-    const { api, selectionKey, queryModel, sampleFieldKey, sampleIds } = props;
+    const { api, queryModel, sampleFieldKey, sampleIds } = props;
     const [ids, setIds] = useState<string[]>(sampleIds);
-    const [selKey, setSelKey] = useState<string>(selectionKey);
 
     useEffect(() => {
         (async () => {
@@ -63,14 +70,11 @@ export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
                 } catch (error) {
                     console.error(error);
                 }
-
-                // Clear the selection key as it will not correctly map to the sampleIds
-                setSelKey(undefined);
             }
         })();
     }, [api, sampleFieldKey, queryModel]);
 
-    return <PicklistEditModalDisplay {...props} selectionKey={selKey} sampleIds={ids} />;
+    return <PicklistEditModalDisplay {...props} sampleIds={ids} />;
 });
 
 const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
@@ -78,8 +82,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         api,
         onCancel,
         onFinish,
-        selectionKey,
-        selectedQuantity,
+        sampleFieldKey,
         sampleIds,
         picklist,
         showNotification,
@@ -92,6 +95,11 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
     const { createNotification } = useNotificationsContext();
     const [name, setName] = useState<string>(picklist?.name ?? '');
     const onNameChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => setName(evt.target.value), []);
+    const validCount = useMemo(
+        () => sampleIds?.length || queryModel?.selections.size,
+        [sampleIds, queryModel?.selections]
+    );
+    const selectionKey = useMemo(() => sampleFieldKey ? undefined : queryModel?.selectionKey, [sampleFieldKey, queryModel?.selectionKey]);
 
     const [description, setDescription] = useState<string>(picklist?.Description ?? '');
     const onDescriptionChange = useCallback(
@@ -111,7 +119,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         (async () => {
             if (useSnapshotSelection) await setSnapshotSelections(selectionKey, [...queryModel.selections]);
         })();
-    }, [useSnapshotSelection, selectionKey, queryModel.selections]);
+    }, [useSnapshotSelection, selectionKey, queryModel?.selections]);
 
     const isUpdate = picklist !== undefined;
     let finishVerb, finishingVerb;
@@ -123,7 +131,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         finishingVerb = 'Creating';
     }
 
-    const reset = () => {
+    const reset = (): void => {
         setPicklistError(undefined);
         setIsSubmitting(false);
         setName(undefined);
@@ -136,12 +144,12 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         onCancel();
     }, [onCancel]);
 
-    const createSuccessNotification = (picklist: Picklist) => {
+    const createSuccessNotification = (picklist: Picklist): void => {
         createNotification({
             message: (
                 <>
                     Successfully created "{picklist.name}" with{' '}
-                    {sampleIds ? Utils.pluralize(sampleIds.length, 'sample', 'samples') : ' no samples'}.&nbsp;
+                    {validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples'}.&nbsp;
                     <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>.
                 </>
             ),
@@ -181,7 +189,6 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
     };
 
     let title;
-    const validCount = sampleIds ? sampleIds.length : 0;
     if (isUpdate) {
         title = 'Update Picklist Data';
     } else {

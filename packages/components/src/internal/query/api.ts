@@ -956,6 +956,7 @@ export function deleteRows(options: DeleteRowsOptions): Promise<DeleteRowsRespon
 
 export enum InsertOptions {
     IMPORT,
+    CREATE, // synonymous with Import for server-side; used for better messaging client-side
     MERGE,
     UPDATE,
 }
@@ -966,6 +967,8 @@ export function getVerbForInsertOption(option: string, defaultVerb: string = 'im
         return defaultVerb + ' or updated';
     } else if (ucOption === InsertOptions.UPDATE.toString()) {
         return 'updated';
+    } else if (ucOption === InsertOptions.CREATE.toString()) {
+        return 'created';
     } else {
         return defaultVerb;
     }

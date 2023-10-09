@@ -5,8 +5,6 @@ import { Utils } from '@labkey/api';
 
 import { ModalButtons } from '../../ModalButtons';
 
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
-
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
@@ -183,7 +181,6 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         selectionKey,
         shared,
         showNotification,
-        statusData,
         useSnapshotSelection,
     ]);
 

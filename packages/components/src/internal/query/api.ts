@@ -960,6 +960,17 @@ export enum InsertOptions {
     UPDATE,
 }
 
+export function getVerbForInsertOption(option: string, defaultVerb: string = 'imported'): string {
+    const ucOption = option.toUpperCase();
+    if (ucOption === InsertOptions.MERGE.toString()) {
+        return defaultVerb + ' or updated';
+    } else if (ucOption === InsertOptions.UPDATE.toString()) {
+        return 'updated';
+    } else {
+        return defaultVerb;
+    }
+}
+
 export enum InsertFormats {
     csv = 'csv',
     tsv = 'tsv',

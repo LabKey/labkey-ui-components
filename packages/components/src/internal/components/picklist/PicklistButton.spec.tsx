@@ -25,8 +25,6 @@ describe('PicklistButton', () => {
         expect(wrapper.find(SubMenuItem)).toHaveLength(0);
         const menuItem = wrapper.find(PicklistCreationMenuItem);
         expect(menuItem).toHaveLength(1);
-        expect(menuItem.prop('selectionKey')).toBe(queryModel.id);
-        expect(menuItem.prop('selectedQuantity')).toBeFalsy();
         expect(menuItem.prop('metricFeatureArea')).toBe(featureArea);
         const addMenuItem = wrapper.find(AddToPicklistMenuItem);
         expect(addMenuItem).toHaveLength(1);
@@ -52,7 +50,6 @@ describe('PicklistButton', () => {
         });
         const menuItem = wrapper.find(PicklistCreationMenuItem);
         expect(menuItem).toHaveLength(1);
-        expect(menuItem.prop('selectionKey')).toBe(queryModel.id);
-        expect(menuItem.prop('selectedQuantity')).toBe(2);
+        expect(menuItem.prop('queryModel')).toBeDefined();
     });
 });

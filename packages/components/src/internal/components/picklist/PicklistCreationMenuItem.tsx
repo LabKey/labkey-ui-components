@@ -8,6 +8,7 @@ import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 import { User } from '../base/models/User';
 
 import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
+import { MAX_SELECTIONS_PER_ADD } from './constants';
 
 interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
     asMenuItem?: boolean;
@@ -46,6 +47,7 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
                     onClick={onClick}
                     queryModel={queryModel}
                     nounPlural="samples"
+                    maxSelection={MAX_SELECTIONS_PER_ADD}
                 />
             )}
             {!queryModel && asMenuItem && <MenuItem onClick={onClick}>{itemText}</MenuItem>}

@@ -200,7 +200,6 @@ interface ChoosePicklistModalDisplayProps {
     loading: boolean;
     picklistLoadError: ReactNode;
     picklists: Picklist[];
-    statusData: OperationConfirmationData;
     validCount: number;
 }
 
@@ -219,7 +218,6 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             currentProductId,
             picklistProductId,
             metricFeatureArea,
-            statusData,
             validCount,
         } = props;
         const [search, setSearch] = useState<string>('');
@@ -263,13 +261,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             let numAdded = 0;
 
             try {
-                const response = await addSamplesToPicklist(
-                    activeItem.name,
-                    statusData,
-                    false,
-                    selectionKey,
-                    sampleIds
-                );
+                const response = await addSamplesToPicklist(activeItem.name, false, selectionKey, sampleIds);
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'addSamplesToPicklist');
                 numAdded = response.rows.length;
                 setSubmitting(false);
@@ -360,7 +352,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                     </div>
                 </>
             );
-        } else if (statusData?.anyAllowed) {
+        } else {
             title = 'Choose a Picklist';
             body = (
                 <>
@@ -368,7 +360,6 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                         <div className="col-md-12">
                             <Alert bsStyle="info">
                                 Adding {Utils.pluralize(validCount, 'sample', 'samples')} to selected picklist.{' '}
-                                {getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData)}
                             </Alert>
                         </div>
                     </div>
@@ -412,7 +403,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                                 <div className="choices-list__empty-message">Choose a picklist</div>
                             )}
 
-                            {activeItem !== undefined && <PicklistDetails picklist={activeItem} />}
+                            {activeItem !== undefined && <PicklistDetails picklist={activeItem}/>}
                         </div>
                     </div>
                 </>
@@ -437,14 +428,6 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                     </div>
                 </>
             );
-        } else {
-            title = 'Cannot Add to Picklist';
-            buttons = (
-                <Button bsClass="btn btn-default pull-right" onClick={closeModal}>
-                    Dismiss
-                </Button>
-            );
-            body = getOperationNotPermittedMessage(SampleOperation.AddToPicklist, statusData);
         }
 
         return (
@@ -486,7 +469,6 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
     const [itemsLoading, setItemsLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [ids, setIds] = useState<string[]>(sampleIds);
     const [validCount, setValidCount] = useState<number>(numSelected);
-    const [statusData, setStatusData] = useState<OperationConfirmationData>();
     const [selectionsLoading, setSelectionsLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const useSnapshotSelection = queryModel?.filterArray.length > 0;
 
@@ -502,6 +484,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                     const picklists = await getPicklistsForInsert();
                     setItems(picklists);
                 } catch (e) {
+                    console.error(e);
                     setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklists.');
                 }
                 setItemsLoading(LoadingState.LOADED);
@@ -522,7 +505,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                 setSelectionsLoading(LoadingState.LOADED);
             }
         })();
-    }, [queryModel?.selectionKey, selections, queryModel?.isLoadingSelections, useSnapshotSelection]);
+    }, [selectionsLoading, queryModel?.selectionKey, selections, queryModel?.isLoadingSelections, useSnapshotSelection]);
 
     useEffect(() => {
         setIdsLoading(LoadingState.LOADING);
@@ -547,24 +530,11 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                     } catch (e) {
                         setError(resolveErrorMessage(e) ?? 'Failed to retrieve picklist selection.');
                     }
+                } else if (selections) {
+                    ids_ = [...selections];
                 }
-
-                try {
-                    const data = await api.samples.getSampleOperationConfirmationData(
-                        SampleOperation.AddToPicklist,
-                        ids_,
-                        // If sample IDs are explicitly provided, then do not pass
-                        // the selectionKey to ensure the ids are processed.
-                        ids_ ? undefined : selectionKey,
-                        ids_ ? false : useSnapshotSelection
-                    );
-                    setIds(ids_);
-                    setStatusData(data);
-                    setValidCount(data.allowed.length);
-                } catch (e) {
-                    setError(resolveErrorMessage(e) ?? 'Failed to retrieve sample operations.');
-                }
-
+                setIds(ids_);
+                setValidCount(ids_?.length ?? 0);
                 setIdsLoading(LoadingState.LOADED);
             })();
         }
@@ -587,7 +557,6 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
             picklistLoadError={error}
             sampleIds={ids}
             selectionKey={selectionKey}
-            statusData={statusData}
             validCount={validCount}
         />
     );

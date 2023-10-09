@@ -928,7 +928,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             const reader = new FileReader();
 
             // Waits until file is loaded
-            reader.onloadend = function (e: any) {
+            reader.onloadend = async (e: any) => {
                 // Catches malformed JSON
                 try {
                     content = e.target.result;
@@ -938,7 +938,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         return resolve(response);
                     } else {
                         const tsFields = response.fields;
-                        onChange?.(mergeDomainFields(domain, tsFields), true);
+                        const mergedFields = await mergeDomainFields(domain, tsFields);
+                        onChange?.(mergedFields, true);
                         resolve({ success: true });
                     }
                 } catch (e) {

@@ -1,11 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.376.0
+*Released*: 9 October 2023
 * Issue 48287: Improve behavior for Picklist buttons
   * Don't check sample status before adding to picklists since there is no restriction for picklists
   * Limit the number of samples that can be added at one time
+
+### version 2.375.3
+*Released*: 6 October 2023
+- Issue 48240: Assay Result field creation using JSON file results in lookup failure
 
 ### version 2.375.2
 *Released*: 5 October 2023

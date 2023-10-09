@@ -1,9 +1,6 @@
 import React, { ComponentType, createContext, FC, PureComponent, ReactNode } from 'react';
-import { List } from 'immutable';
 import { produce } from 'immer';
 import { withRouter, WithRouterProps } from 'react-router';
-
-import { fetchProtocol } from '../domainproperties/assay/actions';
 
 import { isAssayEnabled } from '../../app/utils';
 
@@ -12,14 +9,11 @@ import { AssayProtocolModel } from '../domainproperties/assay/models';
 
 import { LoadingState } from '../../../public/LoadingState';
 
-import { AssayStateModel } from './models';
-import { clearAssayDefinitionCache, fetchAllAssays } from './actions';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-export interface AssayLoader {
-    clearDefinitionsCache: () => void;
-    loadDefinitions: (containerPath?: string) => Promise<List<AssayDefinitionModel>>;
-    loadProtocol: (protocolId: number, containerPath?: string) => Promise<AssayProtocolModel>;
-}
+import { ModuleContext } from '../base/ServerContext';
+
+import { AssayStateModel } from './models';
 
 interface AssayContextModel {
     assayDefinition: AssayDefinitionModel;
@@ -27,10 +21,11 @@ interface AssayContextModel {
 }
 
 export interface WithAssayModelProps {
+    api?: ComponentsAPIWrapper;
     assayContainerPath?: string;
-    assayLoader?: AssayLoader;
     assayName?: string;
     excludedAssayDesigns?: number[];
+    moduleContext?: ModuleContext;
 }
 
 export interface InjectedAssayModel extends AssayContextModel {
@@ -47,22 +42,15 @@ export const AssayContext = createContext<AssayContextModel>(undefined);
 export const AssayContextProvider = AssayContext.Provider;
 export const AssayContextConsumer = AssayContext.Consumer;
 
-const DefaultAssayLoader: AssayLoader = {
-    clearDefinitionsCache: clearAssayDefinitionCache,
-    loadDefinitions: (containerPath: string) => fetchAllAssays(undefined, containerPath),
-    loadProtocol: (protocolId: number, containerPath?: string) =>
-        fetchProtocol(protocolId, undefined, undefined, containerPath),
-};
-
 /**
  * Provides a wrapped component with assay definitions. These definitions are loaded into the
  * [[AssayStateModel]] which is injected into the component as the "assayModel" property.
  * Optionally, if the "assayName" property is specified it will load the associated assay
- * protocol and pass it, along with it's specific assay definition, as props "assayProtocol"
+ * protocol and pass it, along with its specific assay definition, as props "assayProtocol"
  * and "assayDefinition".
- * @param ComponentToWrap: The component definition (e.g. class, function) to wrap.
+ * @param ComponentToWrap The component definition (e.g. class, function) to wrap.
  * This will have [[InjectedAssayModel]] props injected into it when instantiated.
- * @param defaultProps: Provide alternative "defaultProps" for this wrapped component.
+ * @param defaultProps Provide alternative "defaultProps" for this wrapped component.
  */
 export function withAssayModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedAssayModel>,
@@ -97,7 +85,7 @@ export function withAssayModels<Props>(
         };
 
         load = async (): Promise<void> => {
-            if (!isAssayEnabled()) {
+            if (!isAssayEnabled(this.props.moduleContext)) {
                 this.updateModel({
                     definitions: [],
                     definitionsLoadingState: LoadingState.LOADED,
@@ -109,7 +97,7 @@ export function withAssayModels<Props>(
         };
 
         loadDefinitions = async (): Promise<void> => {
-            const { assayContainerPath, assayLoader, excludedAssayDesigns } = this.props;
+            const { api, assayContainerPath, excludedAssayDesigns } = this.props;
             const { model } = this.state;
 
             if (model.definitionsLoadingState === LoadingState.LOADED) {
@@ -119,23 +107,23 @@ export function withAssayModels<Props>(
             this.updateModel({ definitionsError: undefined, definitionsLoadingState: LoadingState.LOADING });
 
             try {
-                const definitionsResult = await assayLoader.loadDefinitions(assayContainerPath);
-                let definitions = definitionsResult.toArray();
+                let definitions = await api.assay.getAssayDefinitions({ containerPath: assayContainerPath });
 
-                if (excludedAssayDesigns?.length > 0)
+                if (excludedAssayDesigns?.length > 0) {
                     definitions = definitions.filter(def => excludedAssayDesigns.indexOf(def.id) === -1);
+                }
 
                 this.updateModel({
                     definitions,
                     definitionsLoadingState: LoadingState.LOADED,
                 });
             } catch (definitionsError) {
-                this.updateModel({ definitionsError, definitionsLoadingState: LoadingState.LOADED });
+                this.updateModel({ definitions: [], definitionsError, definitionsLoadingState: LoadingState.LOADED });
             }
         };
 
         loadProtocol = async (): Promise<void> => {
-            const { assayContainerPath, assayLoader, assayName } = this.props;
+            const { api, assayContainerPath, assayName } = this.props;
             const { model } = this.state;
 
             // If an "assayName" is not provided and one has not ever been loaded by this instance,
@@ -166,7 +154,10 @@ export function withAssayModels<Props>(
             }
 
             try {
-                const assayProtocol = await assayLoader.loadProtocol(assayDefinition.id, assayContainerPath);
+                const assayProtocol = await api.assay.getProtocol({
+                    containerPath: assayContainerPath,
+                    protocolId: assayDefinition.id,
+                });
 
                 this.update({
                     context: { assayDefinition, assayProtocol },
@@ -178,7 +169,7 @@ export function withAssayModels<Props>(
         };
 
         reload = async (): Promise<void> => {
-            this.props.assayLoader.clearDefinitionsCache();
+            this.props.api.assay.clearAssayDefinitionCache();
 
             await this.update({
                 context: { assayDefinition: undefined, assayProtocol: undefined },
@@ -220,7 +211,7 @@ export function withAssayModels<Props>(
 
         render = (): ReactNode => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { assayLoader, assayName, ...props } = this.props;
+            const { api, assayName, ...props } = this.props;
             const { context, model } = this.state;
 
             return (
@@ -232,7 +223,7 @@ export function withAssayModels<Props>(
     }
 
     ComponentWithAssays.defaultProps = {
-        assayLoader: defaultProps?.assayLoader ?? DefaultAssayLoader,
+        api: defaultProps?.api ?? getDefaultAPIWrapper(),
     };
 
     return ComponentWithAssays;
@@ -243,9 +234,9 @@ export function withAssayModels<Props>(
  * This additional wrapping allows for sourcing the "assayName" property from the URL. NOTE: This is specifically
  * configured to expect a route param called "protocol" which is expected to a be (string) name of a specific assay
  * protocol.
- * @param ComponentToWrap: The component definition (e.g. class, function) to wrap.
+ * @param ComponentToWrap The component definition (e.g. class, function) to wrap.
  * This will have [[InjectedAssayModel]] props injected into it when instantiated.
- * @param defaultProps: Provide alternative "defaultProps" for this wrapped component.
+ * @param defaultProps Provide alternative "defaultProps" for this wrapped component.
  */
 export function withAssayModelsFromLocation<Props>(
     ComponentToWrap: ComponentType<Props & InjectedAssayModel>,

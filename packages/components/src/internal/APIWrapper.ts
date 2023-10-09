@@ -1,3 +1,4 @@
+import { AssayAPIWrapper, AssayServerAPIWrapper, getAssayTestAPIWrapper } from './components/assay/APIWrapper';
 import { SamplesAPIWrapper, SamplesServerAPIWrapper, getSamplesTestAPIWrapper } from './components/samples/APIWrapper';
 import {
     PicklistAPIWrapper,
@@ -33,6 +34,7 @@ import {
 import { getSearchTestAPIWrapper, SearchAPIWrapper, SearchServerAPIWrapper } from './components/search/APIWrapper';
 
 export interface ComponentsAPIWrapper {
+    assay: AssayAPIWrapper;
     domain: DomainPropertiesAPIWrapper;
     entity: EntityAPIWrapper;
     folder: FolderAPIWrapper;
@@ -50,6 +52,7 @@ let DEFAULT_WRAPPER: ComponentsAPIWrapper;
 export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
     if (!DEFAULT_WRAPPER) {
         DEFAULT_WRAPPER = {
+            assay: new AssayServerAPIWrapper(),
             domain: new DomainPropertiesAPIWrapper(),
             entity: new EntityServerAPIWrapper(),
             folder: new ServerFolderAPIWrapper(),
@@ -74,6 +77,7 @@ export function getTestAPIWrapper(
     overrides: Partial<ComponentsAPIWrapper> = {}
 ): ComponentsAPIWrapper {
     return {
+        assay: getAssayTestAPIWrapper(mockFn, overrides.assay),
         domain: getDomainPropertiesTestAPIWrapper(mockFn, overrides.domain),
         entity: getEntityTestAPIWrapper(mockFn, overrides.entity),
         folder: getFolderTestAPIWrapper(mockFn, overrides.folder),

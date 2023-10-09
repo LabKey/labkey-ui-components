@@ -410,7 +410,12 @@ import {
 } from './internal/components/assay/withAssayModels';
 import { AssayPicker, AssayPickerTabs } from './internal/components/assay/AssayPicker';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
-import { allowReimportAssayRun, clearAssayDefinitionCache, fetchAllAssays } from './internal/components/assay/actions';
+import {
+    allowReimportAssayRun,
+    clearAssayDefinitionCache,
+    getAssayDefinitions,
+    getProtocol,
+} from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import {
     createHorizontalBarLegendData,
@@ -551,7 +556,7 @@ import { SAMPLE_TYPE } from './internal/components/domainproperties/PropDescType
 import DomainForm from './internal/components/domainproperties/DomainForm';
 import { BasePropertiesPanel } from './internal/components/domainproperties/BasePropertiesPanel';
 import { DomainFieldsDisplay } from './internal/components/domainproperties/DomainFieldsDisplay';
-import { fetchProtocol, saveAssayDesign } from './internal/components/domainproperties/assay/actions';
+import { saveAssayDesign } from './internal/components/domainproperties/assay/actions';
 import { AssayProtocolModel } from './internal/components/domainproperties/assay/models';
 import { AssayDesignerPanels } from './internal/components/domainproperties/assay/AssayDesignerPanels';
 import { ListModel } from './internal/components/domainproperties/list/models';
@@ -1328,7 +1333,7 @@ export {
     AssayDesignEmptyAlert,
     allowReimportAssayRun,
     clearAssayDefinitionCache,
-    fetchAllAssays,
+    getAssayDefinitions,
     WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
     GENERAL_ASSAY_PROVIDER_NAME,
@@ -1415,7 +1420,7 @@ export {
     BasePropertiesPanel,
     AssayDesignerPanels,
     saveAssayDesign,
-    fetchProtocol,
+    getProtocol,
     AssayProtocolModel,
     SAMPLE_TYPE,
     DOMAIN_FIELD_REQUIRED,
@@ -1815,3 +1820,4 @@ export type { GetParentTypeDataForLineage } from './internal/components/entities
 export type { URLMapper } from './internal/url/URLResolver';
 export type { EditableGridEvent } from './internal/components/editable/constants';
 export type { EditableGridChange } from './internal/components/editable/EditableGrid';
+export type { GetAssayDefinitionsOptions, GetProtocolOptions } from './internal/components/assay/actions';

@@ -2,13 +2,12 @@ import React from 'react';
 
 import { mount, shallow } from 'enzyme';
 
-import { Button, ModalBody, ModalTitle, NavItem } from 'react-bootstrap';
+import { ModalBody } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR } from '../../userFixtures';
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
-import { OperationConfirmationData } from '../entities/models';
 
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
@@ -302,7 +301,6 @@ describe('AddToPicklistNotification', () => {
 
 describe('ChoosePicklistModalDisplay', () => {
     test('loading', async () => {
-        const statusData = new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] });
         const wrapper = mountWithAppServerContext(
             <ChoosePicklistModalDisplay
                 picklists={[]}
@@ -313,8 +311,7 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2']}
                 numSelected={2}
-                statusData={statusData}
-                validCount={statusData.allowed.length}
+                validCount={2}
             />
         );
 
@@ -328,7 +325,6 @@ describe('ChoosePicklistModalDisplay', () => {
 
     test('loading error', async () => {
         const errorText = "Couldn't get your data";
-        const statusData = new OperationConfirmationData({ allowed: [1, 2], notAllowed: [] });
         const wrapper = mountWithAppServerContext(
             <ChoosePicklistModalDisplay
                 picklists={[]}
@@ -339,8 +335,7 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1', '2']}
                 numSelected={2}
-                statusData={statusData}
-                validCount={statusData.allowed.length}
+                validCount={2}
             />
         );
         await waitForLifecycle(wrapper);
@@ -352,7 +347,6 @@ describe('ChoosePicklistModalDisplay', () => {
     });
 
     test('adding one sample', async () => {
-        const statusData = new OperationConfirmationData({ allowed: [1], notAllowed: [] });
         const wrapper = mountWithAppServerContext(
             <ChoosePicklistModalDisplay
                 picklists={[]}
@@ -363,8 +357,7 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1']}
                 numSelected={1}
-                statusData={statusData}
-                validCount={statusData.allowed.length}
+                validCount={1}
             />
         );
         await waitForLifecycle(wrapper);
@@ -376,7 +369,6 @@ describe('ChoosePicklistModalDisplay', () => {
     });
 
     test('with active item', async () => {
-        const statusData = new OperationConfirmationData({ allowed: [1], notAllowed: [] });
         const wrapper = mountWithAppServerContext(
             <ChoosePicklistModalDisplay
                 picklists={[PUBLIC_EDITOR_PICKLIST]}
@@ -387,8 +379,7 @@ describe('ChoosePicklistModalDisplay', () => {
                 user={TEST_USER_EDITOR}
                 sampleIds={['1']}
                 numSelected={1}
-                statusData={statusData}
-                validCount={statusData.allowed.length}
+                validCount={1}
             />
         );
         await waitForLifecycle(wrapper);
@@ -396,60 +387,6 @@ describe('ChoosePicklistModalDisplay', () => {
         const picklistButtons = wrapper.find('.list-group-item');
         picklistButtons.at(0).simulate('click');
         expect(wrapper.find('.choice-details')).toHaveLength(1);
-        wrapper.unmount();
-    });
-
-    test('some not allowed', async () => {
-        const statusData = new OperationConfirmationData({ allowed: [1], notAllowed: [2, 3] });
-        const wrapper = mountWithAppServerContext(
-            <ChoosePicklistModalDisplay
-                picklists={[PUBLIC_EDITOR_PICKLIST]}
-                picklistLoadError={undefined}
-                loading={false}
-                onCancel={jest.fn()}
-                afterAddToPicklist={jest.fn()}
-                user={TEST_USER_EDITOR}
-                sampleIds={['1', '2', '3']}
-                numSelected={1}
-                statusData={statusData}
-                validCount={statusData.allowed.length}
-            />
-        );
-        await waitForLifecycle(wrapper);
-        const alert = wrapper.find('.alert-info');
-        expect(alert).toHaveLength(1);
-        expect(alert.text()).toBe(
-            'Adding 1 sample to selected picklist. ' +
-                'The current status of 2 selected samples prevents adding them to a picklist.'
-        );
-        wrapper.unmount();
-    });
-
-    test('none allowed', async () => {
-        const statusData = new OperationConfirmationData({ allowed: [], notAllowed: [1, 2, 3] });
-        const wrapper = mountWithAppServerContext(
-            <ChoosePicklistModalDisplay
-                picklists={[PUBLIC_EDITOR_PICKLIST]}
-                picklistLoadError={undefined}
-                loading={false}
-                onCancel={jest.fn()}
-                afterAddToPicklist={jest.fn()}
-                user={TEST_USER_EDITOR}
-                sampleIds={['1', '2', '3']}
-                numSelected={1}
-                statusData={statusData}
-                validCount={statusData.allowed.length}
-            />
-        );
-        await waitForLifecycle(wrapper);
-        const modalTitle = wrapper.find(ModalTitle);
-        expect(modalTitle.text()).toBe('Cannot Add to Picklist');
-        expect(wrapper.find(ModalBody).text()).toBe(
-            'All selected samples have a status that prevents adding them to a picklist.'
-        );
-        const buttons = wrapper.find(Button);
-        expect(buttons).toHaveLength(1);
-        expect(buttons.at(0).text()).toBe('Dismiss');
         wrapper.unmount();
     });
 });

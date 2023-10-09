@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 import { fromJS, Iterable, List, Map, OrderedMap, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { ReactNode } from 'react';
 
@@ -35,6 +35,7 @@ import { genCellKey, parseCellKey } from './utils';
 
 export interface EditableColumnMetadata {
     caption?: string;
+    containerFilter?: Query.ContainerFilter;
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;

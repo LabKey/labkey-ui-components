@@ -30,14 +30,13 @@ export type Props = InjectedRouteLeaveProps & InjectedPermissionsPage & WithRout
 
 // exported for testing
 export const PermissionManagementPageImpl: FC<Props> = memo(props => {
-    const { children, roles } = props;
-
+    const { roles } = props;
     const [policyLastModified, setPolicyLastModified] = useState<string>(undefined);
     const [hidePageDescription, setHidePageDescription] = useState<boolean>(false);
     const { dismissNotifications, createNotification } = useNotificationsContext();
     const { extraPermissionRoles } = useAdminAppContext();
     const { user, moduleContext, container } = useServerContext();
-    const showAssignments = user.isAdmin || user.isRootAdmin;
+    const hasPermission = user.isAdmin || user.isRootAdmin;
     const showPremium = showPremiumFeatures(moduleContext);
     const description = showPremium ? container.path : undefined;
 
@@ -62,10 +61,10 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
     const { updatedRoles, rolesToShow } = useMemo(() => {
         let roles_ = showPremium ? APPLICATION_SECURITY_ROLES : HOSTED_APPLICATION_SECURITY_ROLES;
         roles_ = roles_.merge(Map<string, string>(extraPermissionRoles));
-        let updatedRoles = roles_;
-        if (!showPremium) updatedRoles = updatedRoles.merge(SITE_SECURITY_ROLES);
+        let updatedRoles_ = roles_;
+        if (!showPremium) updatedRoles_ = updatedRoles_.merge(SITE_SECURITY_ROLES);
         return {
-            updatedRoles: getUpdatedPolicyRoles(roles, updatedRoles),
+            updatedRoles: getUpdatedPolicyRoles(roles, updatedRoles_),
             rolesToShow: roles_.keySeq().toList(),
         };
     }, [extraPermissionRoles, showPremium, roles]);
@@ -77,23 +76,20 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
     return (
         <BasePermissionsCheckPage
             description={showPremium && !hidePageDescription ? description : null}
-            hasPermission={user.isAdmin}
+            hasPermission={hasPermission}
             renderButtons={renderButtons}
             title="Permissions"
             user={user}
         >
-            {showAssignments && (
-                <PermissionAssignments
-                    {...props}
-                    roles={updatedRoles}
-                    rolesToShow={rolesToShow}
-                    onSuccess={onSuccess}
-                    setLastModified={setPolicyLastModified}
-                    setProjectCount={setProjectCount}
-                    rootRolesToShow={!showPremium ? SITE_SECURITY_ROLES.keySeq().toList() : undefined}
-                />
-            )}
-            {children}
+            <PermissionAssignments
+                {...props}
+                roles={updatedRoles}
+                rolesToShow={rolesToShow}
+                onSuccess={onSuccess}
+                setLastModified={setPolicyLastModified}
+                setProjectCount={setProjectCount}
+                rootRolesToShow={!showPremium ? SITE_SECURITY_ROLES.keySeq().toList() : undefined}
+            />
         </BasePermissionsCheckPage>
     );
 });

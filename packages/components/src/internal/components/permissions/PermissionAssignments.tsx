@@ -3,10 +3,11 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Checkbox, Col, Row } from 'react-bootstrap';
+import { Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { InjectedRouter } from 'react-router';
 import { Security } from '@labkey/api';
+import { FormButtons } from '../../FormButtons';
 
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
@@ -59,7 +60,6 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage, Inj
     router?: InjectedRouter;
     setLastModified?: (modified: string) => void;
     setProjectCount?: (count: number) => void;
-    showDetailsPanel?: boolean;
     /** Specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage */
     typeToShow?: string;
 }
@@ -75,7 +75,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         rolesByUniqueName,
         rolesToShow,
         setIsDirty,
-        showDetailsPanel = true,
         router,
         rootRolesToShow,
         setLastModified,
@@ -486,26 +485,17 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 )}
                 <br />
                 {saveErrorMsg && <Alert>{saveErrorMsg}</Alert>}
-                <Button
-                    className="pull-right alert-button permissions-assignment-save-btn"
-                    bsStyle="success"
-                    disabled={submitting || !getIsDirty()}
-                    onClick={onSavePolicy}
-                >
-                    Save
-                </Button>
-                {router && <Button onClick={onCancel}>Cancel</Button>}
             </div>
         </div>
     );
 
     return (
-        <>
+        <div className="permission-assignments-panel">
             {error && <Alert>{error}</Alert>}
             <Row>
                 {(!isProductProjectsEnabled(moduleContext) || projects?.length <= 1) && <>{_panelContent}</>}
                 {isProductProjectsEnabled(moduleContext) && projects?.length > 1 && (
-                    <Col xs={12} md={showDetailsPanel ? 8 : 12}>
+                    <Col xs={12} md={8}>
                         <div className="side-panels-container">
                             <ProjectListing
                                 projects={sortedProjects}
@@ -526,33 +516,44 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                         </div>
                     </Col>
                 )}
-                {showDetailsPanel && (
-                    <Col xs={12} md={4}>
-                        {selectedPrincipal?.type === MemberType.group && groupMembership ? (
-                            <GroupDetailsPanel
-                                principal={selectedPrincipal}
-                                policy={policy}
-                                rolesByUniqueName={rolesByUniqueName}
-                                members={groupMembership[selectedPrincipal?.userId].members}
-                                isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
-                                getAuditLogData={api.security.getAuditLogData}
-                                showPermissionListLinks={false}
-                            />
-                        ) : (
-                            <UserDetailsPanel
-                                currentUser={user}
-                                userId={selectedUserId}
-                                policy={policy}
-                                rootPolicy={rootPolicy}
-                                rolesByUniqueName={rolesByUniqueName}
-                                showPermissionListLinks={false}
-                                showGroupListLinks={!projectsEnabled || !isSubfolder}
-                            />
-                        )}
-                    </Col>
-                )}
+                <Col xs={12} md={4}>
+                    {selectedPrincipal?.type === MemberType.group && groupMembership ? (
+                        <GroupDetailsPanel
+                            principal={selectedPrincipal}
+                            policy={policy}
+                            rolesByUniqueName={rolesByUniqueName}
+                            members={groupMembership[selectedPrincipal?.userId].members}
+                            isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
+                            getAuditLogData={api.security.getAuditLogData}
+                            showPermissionListLinks={false}
+                        />
+                    ) : (
+                        <UserDetailsPanel
+                            currentUser={user}
+                            userId={selectedUserId}
+                            policy={policy}
+                            rootPolicy={rootPolicy}
+                            rolesByUniqueName={rolesByUniqueName}
+                            showPermissionListLinks={false}
+                            showGroupListLinks={!projectsEnabled || !isSubfolder}
+                        />
+                    )}
+                </Col>
             </Row>
-        </>
+
+            <FormButtons>
+                {router && <button className="btn btn-default" onClick={onCancel} type="button">Cancel</button>}
+
+                <button
+                    className="pull-right alert-button permissions-assignment-save-btn btn btn-success"
+                    disabled={submitting || !getIsDirty()}
+                    onClick={onSavePolicy}
+                    type="button"
+                >
+                    Save
+                </button>
+            </FormButtons>
+        </div>
     );
 });
 

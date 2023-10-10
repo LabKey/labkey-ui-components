@@ -3,7 +3,7 @@ import { Checkbox, Modal } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
+import { ModalButtons } from '../../ModalButtons';
 
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
@@ -128,20 +128,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         onCancel();
     }, [onCancel]);
 
-    const createSuccessNotification = (picklist: Picklist): void => {
-        createNotification({
-            message: (
-                <>
-                    Successfully created "{picklist.name}" with{' '}
-                    {validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples'}.&nbsp;
-                    <a href={getPicklistUrl(picklist.listId, picklistProductId, currentProductId)}>View picklist</a>.
-                </>
-            ),
-            alertClass: 'success',
-        });
-    };
-
-    const onSavePicklist = async (): Promise<void> => {
+    const onSavePicklist = useCallback(async (): Promise<void> => {
         setIsSubmitting(true);
         try {
             let updatedList;
@@ -160,9 +147,20 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
                 updatedList = await createPicklist(trimmedName, description, shared, selectionKey, useSnapshotSelection, sampleIds);
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
+
             reset();
+
             if (showNotification) {
-                createSuccessNotification(updatedList);
+                const href = getPicklistUrl(updatedList.listId, picklistProductId, currentProductId);
+                const noun = validCount ? Utils.pluralize(validCount, 'sample', 'samples') : ' no samples';
+                createNotification({
+                    message: (
+                        <>
+                            Successfully created "{updatedList.name}" with {noun}. <a href={href}>View picklist</a>.
+                        </>
+                    ),
+                    alertClass: 'success',
+                });
             }
 
             onFinish(updatedList);
@@ -170,7 +168,21 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
             setPicklistError(resolveErrorMessage(e));
             setIsSubmitting(false);
         }
-    };
+    }, [
+        api.query,
+        description,
+        isUpdate,
+        metricFeatureArea,
+        name,
+        onFinish,
+        picklist?.Container,
+        picklist?.listId,
+        sampleIds,
+        selectionKey,
+        shared,
+        showNotification,
+        useSnapshotSelection,
+    ]);
 
     let title;
     if (isUpdate) {
@@ -227,16 +239,13 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
             </Modal.Body>
 
             <Modal.Footer>
-                <WizardNavButtons
-                    cancel={onHide}
-                    cancelText="Cancel"
-                    canFinish={!!name}
-                    containerClassName=""
-                    isFinishing={isSubmitting}
-                    isFinishingText={finishingVerb + ' Picklist...'}
-                    finish
-                    finishText={finishVerb + ' Picklist'}
-                    nextStep={onSavePicklist}
+                <ModalButtons
+                    canConfirm={!!name}
+                    confirmText={finishVerb + ' Picklist'}
+                    confirmingText={finishingVerb + ' Picklist...'}
+                    isConfirming={isSubmitting}
+                    onCancel={onHide}
+                    onConfirm={onSavePicklist}
                 />
             </Modal.Footer>
         </Modal>

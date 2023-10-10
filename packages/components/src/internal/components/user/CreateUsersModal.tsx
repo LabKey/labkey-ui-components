@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { FormControl, Modal } from 'react-bootstrap';
 import { Security } from '@labkey/api';
+import { ModalButtons } from '../../ModalButtons';
 
 import { UserLimitSettings } from '../permissions/actions';
 import { SelectInput } from '../forms/input/SelectInput';
@@ -156,15 +157,13 @@ export class CreateUsersModal extends React.Component<Props, State> {
                     {error && <Alert style={{ marginTop: '10px' }}>{error}</Alert>}
                 </Modal.Body>
                 <Modal.Footer>
-                    <WizardNavButtons
-                        containerClassName=""
-                        cancel={this.props.onCancel}
-                        finish={true}
-                        canFinish={valid}
-                        finishText="Create Users"
-                        isFinishing={this.state.isSubmitting}
-                        isFinishingText="Creating Users..."
-                        nextStep={this.createUsers}
+                    <ModalButtons
+                        canConfirm={valid}
+                        confirmText="Create Users"
+                        confirmingText="Creating Users..."
+                        isConfirming={this.state.isSubmitting}
+                        onCancel={this.props.onCancel}
+                        onConfirm={this.createUsers}
                     />
                 </Modal.Footer>
             </Modal>

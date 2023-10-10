@@ -4,6 +4,23 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Issue 48082: Improve verbs used when updating or merging data
+- Don't pre-select False for an undefined Boolean filter field
+
+### version 2.378.0
+*Released*: 10 October 2023
+- Add ModalButtons
+    - Update all Modals using WizardNavButtons to use ModalButtons
+- Use FormButtons
+    - WizardNavButtons
+    - CreateProjectPage
+    - GroupAssignments
+    - QueryInfoForm
+    - PermissionAssignments
+    - AssayImportPanels
+- Simplify props for WizardNavButtons
+    - Many props weren't used, or weren't needed
+- Fix scrollbar issues on Projects and Permissions Pages
+- Fix scrollbar issues with menu-section
 
 ### version 2.377.0
 *Released*: 10 October 2023

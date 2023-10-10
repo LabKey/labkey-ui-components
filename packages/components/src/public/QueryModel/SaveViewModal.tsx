@@ -4,6 +4,7 @@ import { Modal } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
 import { WizardNavButtons } from '../../internal/components/buttons/WizardNavButtons';
+import { ModalButtons } from '../../internal/ModalButtons';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { Alert } from '../../internal/components/base/Alert';
 import { resolveErrorMessage } from '../../internal/util/messaging';
@@ -227,16 +228,11 @@ export const SaveViewModal: FC<Props> = memo(props => {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <WizardNavButtons
-                    cancel={onCancel}
-                    cancelText="Cancel"
-                    canFinish={(!!viewName && !nameError) || isDefaultView}
-                    containerClassName=""
-                    isFinishing={isSubmitting}
-                    isFinishingText="Saving..."
-                    finish
-                    finishText="Save"
-                    nextStep={saveView}
+                <ModalButtons
+                    canConfirm={(!!viewName && !nameError) || isDefaultView}
+                    isConfirming={isSubmitting}
+                    onCancel={onCancel}
+                    onConfirm={saveView}
                 />
             </Modal.Footer>
         </Modal>

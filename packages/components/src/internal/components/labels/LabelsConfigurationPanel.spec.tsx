@@ -18,16 +18,6 @@ import { getLabelPrintingTestAPIWrapper } from './APIWrapper';
 import { LabelsConfigurationPanel, LabelTemplateDetails, LabelTemplatesList } from './LabelsConfigurationPanel';
 import { LabelTemplate } from './models';
 
-jest.mock('react-bootstrap-toggle', () => {
-    return props => {
-        return (
-            <div
-                {...props}
-                className={classNames('mock-toggle', { 'toggle-on': props.active, 'toggle-off': !props.active })}
-            />
-        );
-    };
-});
 
 describe('LabelsConfigurationPanel', () => {
     const DEFAULT_PROPS = {
@@ -164,7 +154,7 @@ describe('LabelTemplateDetails', () => {
         // Don't show anything, use Label List's default message
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
         expect(wrapper.find(FormGroup)).toHaveLength(0);
-        expect(wrapper.find('.mock-toggle')).toHaveLength(0);
+        expect(wrapper.find('[name="isDefault"]')).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -174,13 +164,12 @@ describe('LabelTemplateDetails', () => {
         // Show no selection message
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(1);
         expect(wrapper.find(FormGroup)).toHaveLength(0);
-        expect(wrapper.find('.mock-toggle')).toHaveLength(0);
-        expect(wrapper.find('.toggle-on')).toHaveLength(0);
-        expect(wrapper.find('.toggle-off')).toHaveLength(0);
+        const defaultInput = wrapper.find('[name="isDefault"]');
+        expect(defaultInput).toHaveLength(0);
         wrapper.unmount();
     });
 
-    test('Template Selected, cant be default', () => {
+    test('Template Selected, cannot be default', () => {
         const wrapper = mountWithAppServerContext(
             <LabelTemplateDetails
                 {...DEFAULT_PROPS}
@@ -200,9 +189,8 @@ describe('LabelTemplateDetails', () => {
         // Show form w/o default selector
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
         expect(wrapper.find(FormGroup)).toHaveLength(3);
-        expect(wrapper.find('.mock-toggle')).toHaveLength(0);
-        expect(wrapper.find('.toggle-on')).toHaveLength(0);
-        expect(wrapper.find('.toggle-off')).toHaveLength(0);
+        const defaultInput = wrapper.find('[name="isDefault"]');
+        expect(defaultInput).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -229,9 +217,9 @@ describe('LabelTemplateDetails', () => {
         // Show form with default selector and default selected
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
         expect(wrapper.find(FormGroup)).toHaveLength(4);
-        expect(wrapper.find('.mock-toggle')).toHaveLength(1);
-        expect(wrapper.find('.toggle-on')).toHaveLength(1);
-        expect(wrapper.find('.toggle-off')).toHaveLength(0);
+        const defaultInput = wrapper.find('[name="isDefault"]');
+        expect(defaultInput).toHaveLength(1);
+        expect(defaultInput.prop('checked')).toBe(true);
         wrapper.unmount();
     });
 
@@ -258,9 +246,9 @@ describe('LabelTemplateDetails', () => {
         // Show form with default selector and default selected
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
         expect(wrapper.find(FormGroup)).toHaveLength(4);
-        expect(wrapper.find('.mock-toggle')).toHaveLength(1);
-        expect(wrapper.find('.toggle-on')).toHaveLength(0);
-        expect(wrapper.find('.toggle-off')).toHaveLength(1);
+        const defaultInput = wrapper.find('[name="isDefault"]');
+        expect(defaultInput).toHaveLength(1);
+        expect(defaultInput.prop('checked')).toBe(false);
         wrapper.unmount();
     });
 });

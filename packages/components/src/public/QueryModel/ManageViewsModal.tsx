@@ -142,7 +142,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     const deleteSavedView = useCallback(() => {
         handleAction(async () => {
             const viewName = deleting.name;
-            await api.query.deleteView(schemaQuery, containerPath, viewName, false);
+            await api.query.deleteView(schemaQuery, containerPath, viewName, true);
             if (currentView.name === viewName || reselectViewName === viewName) setReselectViewName('');
         });
     }, [api, handleAction, deleting, schemaQuery, containerPath, currentView, reselectViewName]);

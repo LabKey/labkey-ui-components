@@ -121,6 +121,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
         () => user.hasAdminPermission() && currentView?.isDefault
     );
     const [canInherit, setCanInherit] = useState<boolean>(currentView?.inherit);
+    const [isShared, setIsShared] = useState<boolean>(currentView?.shared);
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
 
@@ -133,13 +134,13 @@ export const SaveViewModal: FC<Props> = memo(props => {
         try {
             const name = isDefaultView ? '' : viewName.trim();
             const isCurrentView = name?.toLowerCase() === currentView?.name?.toLowerCase();
-            await onConfirmSave(name, canInherit, isCurrentView, isDefaultView);
+            await onConfirmSave(name, canInherit, isCurrentView, isDefaultView || isShared);
         } catch (error) {
             setErrorMessage(resolveErrorMessage(error));
         } finally {
             setIsSubmitting(false);
         }
-    }, [viewName, isDefaultView, currentView?.name, onConfirmSave, canInherit]);
+    }, [viewName, isDefaultView, currentView?.name, onConfirmSave, canInherit, isShared]);
 
     const onViewNameChange = useCallback((name: string, hasError: boolean) => {
         setViewName(name);
@@ -152,6 +153,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
     }, []);
 
     const toggleInherit = useCallback((evt: ChangeEvent<HTMLInputElement>) => setCanInherit(evt.target.checked), []);
+    const toggleShared = useCallback((evt: ChangeEvent<HTMLInputElement>) => setIsShared(evt.target.checked), []);
 
     return (
         <Modal onHide={onCancel} show>
@@ -207,6 +209,18 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                     view={currentView}
                                     isDefaultView={isDefaultView}
                                 />
+                            </div>
+                        )}
+                        {!isDefaultView && (
+                            <div className="form-check">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    name="setShared"
+                                    onChange={toggleShared}
+                                    checked={isShared}
+                                />
+                                <span className="margin-left">Make this grid view available to all users</span>
                             </div>
                         )}
                         {isProductProjectsEnabled(moduleContext) && (

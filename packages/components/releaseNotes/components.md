@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 48082: Improve verbs used when updating or merging data
 
+### version 2.377.0
+*Released*: 10 October 2023
+- Issue 48814: Counts in tabs don't always have commas
+- Issue 48818: Update BarTender Label configuration to not use toggle selector
+
 ### version 2.376.0
 *Released*: 9 October 2023
 * Issue 48287: Improve behavior for Picklist buttons

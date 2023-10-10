@@ -227,14 +227,29 @@ interface RemappedKeyValues {
  * filter/sort
  * @param fromColumn Key column for the current grid
  * @param toColumn Key column for the FK field, can be empty.
- * @param schemaName
- * @param queryName
- * @param selections
- * @param sortString
- * @param queryParameters
- * @param viewName
+ * @param selectedIds
+ * @param queryModel
  */
-export function getOrderedSelectedMappedKeys(
+export function getOrderedSelectedMappedKeysFromQueryModel(
+    fromColumn: string,
+    toColumn: string,
+    queryModel: QueryModel,
+    selectedIds?: string[]
+): Promise<RemappedKeyValues> {
+    const { schemaName, queryName, queryParameters, sortString, viewName, selections } = queryModel;
+    return getOrderedSelectedMappedKeys(
+        fromColumn,
+        undefined,
+        schemaName,
+        queryName,
+        selectedIds ?? Array.from(selections),
+        sortString,
+        queryParameters,
+        viewName
+    );
+}
+
+function getOrderedSelectedMappedKeys(
     fromColumn: string,
     toColumn: string,
     schemaName: string,

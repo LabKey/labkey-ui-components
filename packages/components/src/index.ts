@@ -647,7 +647,7 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
-    getOrderedSelectedMappedKeys,
+    getOrderedSelectedMappedKeysFromQueryModel,
     getOrderedSelectedPicklistSamples,
     getSelectedPicklistSamples,
     getPicklistFromId,
@@ -1014,7 +1014,7 @@ export {
     createGridModelId,
     clearSelected,
     // grid functions
-    getOrderedSelectedMappedKeys,
+    getOrderedSelectedMappedKeysFromQueryModel,
     getSelected,
     getSelectedData,
     getSelection,

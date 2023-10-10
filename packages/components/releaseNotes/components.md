@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD October 2023
 - Add helper for App.freezerManagerIsCurrentApp()
 - Add containerFilter to EditableColumnMetadata
+- Refactor from getOrderedSelectedMappedKeys to getOrderedSelectedMappedKeysFromQueryModel
 
 ### version 2.375.3
 *Released*: 6 October 2023

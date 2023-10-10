@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Add UI for making non-default views sharable
+
 ### version 2.378.0
 *Released*: 10 October 2023
 - Add ModalButtons

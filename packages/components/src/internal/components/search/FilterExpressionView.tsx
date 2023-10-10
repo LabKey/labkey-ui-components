@@ -253,7 +253,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         <div key="field-value-bool-false">
                             <label className="field-value-bool-label clickable">
                                 <input
-                                    checked={valueRaw != 'true'}
+                                    checked={valueRaw && valueRaw != 'true'}
                                     className=""
                                     type="radio"
                                     name={'field-value-bool' + suffix}

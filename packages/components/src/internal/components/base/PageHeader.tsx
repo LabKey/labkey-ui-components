@@ -35,3 +35,4 @@ export const PageHeader: FC<PageHeaderProps> = ({ children, iconCls, showNotific
         {showNotifications && <Notifications />}
     </div>
 );
+PageHeader.displayName = 'PageHeader';

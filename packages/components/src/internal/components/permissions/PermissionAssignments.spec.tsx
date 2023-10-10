@@ -362,16 +362,8 @@ describe('PermissionAssignments', () => {
 
         await waitForLifecycle(wrapper, 1);
 
-        // The prop "showDetailsPanel" is expected to default to true
         expect(wrapper.find(GroupDetailsPanel).exists()).toEqual(false);
         expect(wrapper.find(UserDetailsPanel).exists()).toEqual(true);
-
-        wrapper.setProps({ showDetailsPanel: false });
-
-        expect(wrapper.find(GroupDetailsPanel).exists()).toEqual(false);
-        expect(wrapper.find(UserDetailsPanel).exists()).toEqual(false);
-
-        wrapper.setProps({ showDetailsPanel: true });
 
         const onShowDetails = wrapper.find(PermissionsRole).at(0).prop('onClickAssignment');
         act(() => {

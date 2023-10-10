@@ -1,6 +1,22 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.378.0
+*Released*: 10 October 2023
+- Add ModalButtons
+    - Update all Modals using WizardNavButtons to use ModalButtons
+- Use FormButtons
+    - WizardNavButtons
+    - CreateProjectPage
+    - GroupAssignments
+    - QueryInfoForm
+    - PermissionAssignments
+    - AssayImportPanels
+- Simplify props for WizardNavButtons
+    - Many props weren't used, or weren't needed
+- Fix scrollbar issues on Projects and Permissions Pages
+- Fix scrollbar issues with menu-section
+
 ### version 2.377.0
 *Released*: 10 October 2023
 - Issue 48814: Counts in tabs don't always have commas

@@ -157,7 +157,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                 <WizardNavButtons
                     cancel={onCancel}
                     nextStep={this.onSubmit}
-                    finish={true}
+                    finish
                     isFinishing={isSubmitting}
                     isFinishingText="Updating..."
                     isFinishedText="Finished Updating"

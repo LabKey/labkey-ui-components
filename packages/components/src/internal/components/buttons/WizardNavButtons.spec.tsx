@@ -1,54 +1,51 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import { Button } from 'react-bootstrap';
 
 import { WizardNavButtons } from './WizardNavButtons';
 
 describe('<WizardNavButtons/>', () => {
     test('default props', () => {
-        const cancelFn = jest.fn();
-        const component = <WizardNavButtons cancel={cancelFn} />;
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        const wrapper = mount(<WizardNavButtons cancel={jest.fn()} />);
+        expect(wrapper.find('button').length === 2);
+        expect(wrapper.find('button').at(0).text()).toEqual('Cancel');
+        expect(wrapper.find('button').at(1).text()).toEqual('Next');
+        expect(wrapper.find('button').at(1).prop('disabled')).toEqual(false);
     });
 
     test('finish props', () => {
-        const cancelFn = jest.fn();
-        const component = (
+        const wrapper = mount(
             <WizardNavButtons
-                cancel={cancelFn}
+                cancel={jest.fn()}
                 finishText="Custom Finish"
-                finishStyle="info"
-                finish={true}
+                finish
+                nextStep={jest.fn()}
                 canFinish={false}
             />
         );
-
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(wrapper.find('button').length).toEqual(2);
+        expect(wrapper.find('button').at(0).text()).toEqual('Cancel');
+        expect(wrapper.find('button').at(1).text()).toEqual('Custom Finish');
+        expect(wrapper.find('button').at(1).prop('disabled')).toEqual(true);
     });
 
     test('with children', () => {
-        const cancelFn = jest.fn();
-        const component = (
-            <WizardNavButtons cancel={cancelFn} includeNext={false}>
-                <Button>first</Button>
-                <Button>second</Button>
+        const wrapper = mount(
+            <WizardNavButtons cancel={jest.fn()}>
+                <button className="test-btn-1" type="button">
+                    My Additional Button
+                </button>
             </WizardNavButtons>
         );
-
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(wrapper.find('button').length).toEqual(3);
+        expect(wrapper.find('button').at(0).text()).toEqual('Cancel');
+        expect(wrapper.find('button').at(1).text()).toEqual('My Additional Button');
     });
 
     test('onClick handlers', () => {
         const cancelFn = jest.fn();
         const prevFn = jest.fn();
         const nextFn = jest.fn();
-        const component = <WizardNavButtons cancel={cancelFn} previousStep={prevFn} nextStep={nextFn} />;
-
-        const wrapper = mount(component);
+        const wrapper = mount(<WizardNavButtons cancel={cancelFn} previousStep={prevFn} nextStep={nextFn} />);
         expect(cancelFn).toHaveBeenCalledTimes(0);
         expect(prevFn).toHaveBeenCalledTimes(0);
         expect(nextFn).toHaveBeenCalledTimes(0);

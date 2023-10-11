@@ -60,8 +60,7 @@ export class Page extends React.Component<PageProps, any> {
     };
 
     isHeader = (child): boolean => {
-        // Dev/Prod builds require slightly different requirements for this check
-        return child.type === PageHeader || child.type.name === 'PageHeader';
+        return child.type.displayName === 'PageHeader';
     };
 
     render() {

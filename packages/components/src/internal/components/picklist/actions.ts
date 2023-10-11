@@ -54,7 +54,6 @@ export function createPicklist(
     name: string,
     description: string,
     shared: boolean,
-    statusData: OperationConfirmationData,
     selectionKey: string,
     useSnapshotSelection: boolean,
     sampleIds: string[]
@@ -89,7 +88,7 @@ export function createPicklist(
             success: response => {
                 Promise.all([
                     getListIdFromDomainId(response.domainId),
-                    addSamplesToPicklist(name, statusData, useSnapshotSelection, selectionKey, sampleIds),
+                    addSamplesToPicklist(name, useSnapshotSelection, selectionKey, sampleIds),
                 ])
                     .then(responses => {
                         const [listId] = responses;
@@ -358,7 +357,6 @@ export async function getSamplesNotInList(
 
 export function addSamplesToPicklist(
     listName: string,
-    statusData: OperationConfirmationData,
     useSnapshotSelection?: boolean,
     selectionKey?: string,
     sampleIds?: string[]
@@ -368,9 +366,7 @@ export function addSamplesToPicklist(
             .then(sampleIdsToAdd => {
                 let rows = List<any>();
                 sampleIdsToAdd.forEach(id => {
-                    if (statusData.isIdAllowed(id)) {
-                        rows = rows.push({ SampleID: id });
-                    }
+                    rows = rows.push({ SampleID: id });
                 });
                 if (rows.size > 0) {
                     insertRows({

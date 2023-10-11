@@ -958,6 +958,19 @@ export enum InsertOptions {
     IMPORT,
     MERGE,
     UPDATE,
+    CREATE, // synonymous with Import for server-side; used for better messaging client-side
+}
+
+export function getVerbForInsertOption(option: string, defaultVerb: string = 'imported'): string {
+    if (option === InsertOptions.MERGE.toString()) {
+        return defaultVerb + ' or updated';
+    } else if (option === InsertOptions.UPDATE.toString()) {
+        return 'updated';
+    } else if (option === InsertOptions.CREATE.toString()) {
+        return 'created';
+    } else {
+        return defaultVerb;
+    }
 }
 
 export enum InsertFormats {

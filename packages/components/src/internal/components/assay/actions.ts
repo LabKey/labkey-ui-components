@@ -58,7 +58,8 @@ export function getAssayDefinitions(options: GetAssayDefinitionsOptions): Promis
     if (!assayDefinitionCache[key]) {
         assayDefinitionCache[key] = new Promise((resolve, reject) => {
             Assay.getAssays({
-                ...options,
+                // TODO: Fix this so "parameters" does not have to be specified
+                parameters: options,
                 success: rawModels => {
                     resolve(rawModels.map(raw => AssayDefinitionModel.create(raw)) ?? []);
                 },

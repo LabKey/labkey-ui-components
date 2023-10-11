@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.379.0
+*Released*: 11 October 2023
 - Issue 48082: Improve verbs used when updating or merging data
 - Don't pre-select False for an undefined Boolean filter field
 

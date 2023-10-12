@@ -14,6 +14,7 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
 
 import { ViewNameInput } from './SaveViewModal';
+import { userCanEditSharedViews } from '../../internal/app/utils';
 
 // exported for jest tests
 export const ViewLabel: FC<{ view: ViewInfo }> = memo(props => {
@@ -50,6 +51,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
 
     const { api } = useAppContext();
     const { user } = useServerContext();
+    const userCanEditShared = userCanEditSharedViews(user);
 
     useEffect(() => {
         (async () => {
@@ -200,7 +202,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                         const isRenaming = !!selectedView;
                         let canEdit = !isDefault && !isRenaming && !unsavedView && !deleting;
                         if (shared) {
-                            canEdit = canEdit && user.isAdmin;
+                            canEdit = canEdit && userCanEditShared;
                         }
 
                         return (

@@ -10,7 +10,7 @@ import { Alert } from '../../internal/components/base/Alert';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 import { CUSTOM_VIEW, HelpLink } from '../../internal/util/helpLinks';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
-import { isProductProjectsEnabled } from '../../internal/app/utils';
+import { isAppHomeFolder, isProductProjectsEnabled, userCanEditSharedViews } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
 import classNames from 'classnames';
 
@@ -124,6 +124,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
     const [isShared, setIsShared] = useState<boolean>(currentView?.shared);
     const [errorMessage, setErrorMessage] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>();
+    const canEditShared = userCanEditSharedViews(user);
 
     const saveView = useCallback(async () => {
         if (!viewName && !isDefaultView) return;
@@ -211,7 +212,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 />
                             </div>
                         )}
-                        {!isDefaultView && (
+                        {!isDefaultView && canEditShared && (
                             <div className="form-check">
                                 <input
                                     className="form-check-input"
@@ -223,7 +224,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 <span className="margin-left">Make this grid view available to all users</span>
                             </div>
                         )}
-                        {isProductProjectsEnabled(moduleContext) && (
+                        {isProductProjectsEnabled(moduleContext) && isAppHomeFolder() && canEditShared && (
                             <div className="form-check">
                                 <input
                                     className="form-check-input"

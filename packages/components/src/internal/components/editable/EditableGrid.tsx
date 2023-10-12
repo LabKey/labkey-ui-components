@@ -1110,8 +1110,18 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     onPaste = async (event: ClipboardEvent): Promise<void> => {
-        const { allowAdd, columnMetadata, data, dataKeys, disabled, editorModel, onChange, queryInfo, readonlyRows } =
-            this.props;
+        const {
+            allowAdd,
+            columnMetadata,
+            data,
+            dataKeys,
+            disabled,
+            editorModel,
+            onChange,
+            queryInfo,
+            readonlyRows,
+            lockedRows,
+        } = this.props;
 
         if (disabled) return;
 
@@ -1125,6 +1135,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             event,
             columnMetadata,
             readonlyRows,
+            lockedRows,
             !allowAdd
         );
         this.hideMask();

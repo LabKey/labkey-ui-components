@@ -2,8 +2,8 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.373.5
-*Released*: 11 October 2023
-* Issue 48377: Account for read only cells when pasting EditableGrid
+*Released*: 12 October 2023
+* Issue 48377: Account for read only cells when pasting in EditableGrid
 
 ### version 2.373.4
 *Released*: 2 October 2023

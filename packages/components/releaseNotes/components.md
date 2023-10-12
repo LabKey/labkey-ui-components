@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add containerFilter to EditableColumnMetadata
 - Refactor from getOrderedSelectedMappedKeys to getOrderedSelectedMappedKeysFromQueryModel
 
+### version 2.379.0
+*Released*: 11 October 2023
+- Issue 48082: Improve verbs used when updating or merging data
+- Don't pre-select False for an undefined Boolean filter field
+
 ### version 2.378.0
 *Released*: 10 October 2023
 - Add ModalButtons

@@ -161,7 +161,7 @@ export function userCanReadGroupDetails(user: User): boolean {
 }
 
 export function userCanEditSharedViews(user: User): boolean {
-    return hasPermissions(user, ['org.labkey.api.security.permissions.EditSharedViewPermission']);
+    return hasPermissions(user, [PermissionTypes.EditSharedView]);
 }
 
 export function isFreezerManagementEnabled(moduleContext?: ModuleContext): boolean {

@@ -111,7 +111,7 @@ interface Props {
 
 export const SaveViewModal: FC<Props> = memo(props => {
     const { onConfirmSave, currentView, onCancel, gridLabel } = props;
-    const { moduleContext, user } = useServerContext();
+    const { container, moduleContext, user } = useServerContext();
 
     const [viewName, setViewName] = useState<string>(
         currentView?.isDefault || currentView?.hidden ? '' : currentView?.name
@@ -224,7 +224,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 <span className="margin-left">Make this grid view available to all users</span>
                             </div>
                         )}
-                        {isProductProjectsEnabled(moduleContext) && isAppHomeFolder() && canEditShared && (
+                        {isProductProjectsEnabled(moduleContext) && isAppHomeFolder(container, moduleContext) && canEditShared && (
                             <div className="form-check">
                                 <input
                                     className="form-check-input"

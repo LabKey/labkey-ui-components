@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 48312: Update messaging for race condition when adding to storage
+
 ### version 2.379.0
 *Released*: 11 October 2023
 - Issue 48082: Improve verbs used when updating or merging data

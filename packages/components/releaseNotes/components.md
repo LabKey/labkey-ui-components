@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 48854: Trim leading spaces for field values in domain forms
+
 ### version 2.380.1
 *Released*: 13 October 2023
 - Add UI for making non-default views sharable

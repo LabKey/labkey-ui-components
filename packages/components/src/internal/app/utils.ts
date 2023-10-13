@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 
 import { LABKEY_WEBSOCKET } from '../constants';
 
-import { hasAllPermissions, User } from '../components/base/models/User';
+import { hasAllPermissions, hasPermissions, User } from '../components/base/models/User';
 
 import { MenuSectionConfig } from '../components/navigation/model';
 import { imageURL } from '../url/ActionURL';
@@ -158,6 +158,10 @@ export function userCanReadUserDetails(user: User): boolean {
 
 export function userCanReadGroupDetails(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.CanSeeGroupDetails], false);
+}
+
+export function userCanEditSharedViews(user: User): boolean {
+    return hasPermissions(user, [PermissionTypes.EditSharedView]);
 }
 
 export function isFreezerManagementEnabled(moduleContext?: ModuleContext): boolean {

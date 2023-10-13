@@ -91,6 +91,7 @@ export const TEST_USER_EDITOR = new User({
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
+        PermissionTypes.EditSharedView,
     ],
 });
 

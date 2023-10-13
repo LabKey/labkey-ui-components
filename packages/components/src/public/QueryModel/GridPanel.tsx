@@ -59,6 +59,8 @@ import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
 import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ChartPanel } from './ChartPanel';
+import { userCanEditSharedViews } from '../../internal/app/utils';
+import { User } from '../../internal/components/base/models/User';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -320,7 +322,7 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
     }, [model, onRevertView, actions, allowSelections]);
 
     const _onSaveCurrentView = useCallback((): void => {
-        onSaveView(user?.isAdmin);
+        onSaveView(userCanEditSharedViews(user as User));
     }, [onSaveView, user]);
 
     if (!displayTitle && (!allowViewCustomization || (!isEdited && !isUpdated))) {

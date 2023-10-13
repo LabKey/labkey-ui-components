@@ -712,20 +712,23 @@ describe('getFilterSelections', () => {
     });
 
     test('no matching filter option', () => {
+        const filterOptions = [
+            {
+                value: 'none-such',
+                label: 'Not Valid',
+                valueRequired: true,
+                multiValue: true,
+                betweenOperator: false,
+                isSoleFilter: false,
+            },
+        ];
         const filterSelections = getFilterSelections(
             [Filter.create('strField', 'test')],
-            [
-                {
-                    value: 'none-such',
-                    label: 'Not Valid',
-                    valueRequired: true,
-                    multiValue: true,
-                    betweenOperator: false,
-                    isSoleFilter: false,
-                },
-            ]
+            filterOptions
         );
-        expect(filterSelections).toStrictEqual([]);
+        expect(filterSelections).toStrictEqual([{
+                filterType: filterOptions[0],
+            }]);
     });
 
     test('single filter, single value', () => {

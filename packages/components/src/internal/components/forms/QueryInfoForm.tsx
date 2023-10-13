@@ -22,6 +22,7 @@ import { Filter, Utils } from '@labkey/api';
 import { Operation } from '../../../public/QueryColumn';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
+import { FormButtons } from '../../FormButtons';
 
 import { SampleCreationTypeModel } from '../samples/models';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -256,6 +257,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
 
     renderButtons = (): ReactNode => {
         const {
+            asModal,
             cancelText,
             canSubmitNotDirty,
             submitForEditText,
@@ -277,55 +279,45 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         const suffix = count > 1 ? pluralNoun : singularNoun;
         const showCancel = this.props.onHide !== undefined || this.props.asModal;
 
-        let submitForEditBtn;
-
-        if (onSubmitForEdit && submitForEditText) {
-            submitForEditBtn = (
-                <Button
-                    className="test-loc-submit-for-edit-button"
-                    bsStyle={onSubmit ? 'default' : 'success'}
-                    disabled={isSubmitting || !canSubmit || count === 0}
-                    onClick={this.setSubmittingForEdit}
-                    type="submit"
-                >
-                    {submitForEdit && inProgressText ? inProgressText : submitForEditText}
-                </Button>
-            );
-        }
-
         return (
-            <div className="form-group no-margin-bottom">
-                <div className="col-sm-12">
-                    {showCancel && (
-                        <div className="pull-left">
-                            <Button className="test-loc-cancel-button" onClick={this.onHide}>
-                                {cancelText}
-                            </Button>
-                        </div>
-                    )}
-                    <div className="btn-group pull-right">
-                        {submitForEditBtn}
-                        {submitText && onSubmit && (
-                            <Button
-                                className="test-loc-submit-button"
-                                bsStyle="success"
-                                disabled={
-                                    isSubmitting ||
-                                    fieldEnabledCount === 0 ||
-                                    !canSubmit ||
-                                    count === 0 ||
-                                    !(canSubmitNotDirty || isDirty)
-                                }
-                                onClick={this.setSubmittingForSave}
-                                type="submit"
-                            >
-                                {!submitForEdit && inProgressText ? inProgressText : submitText}
-                                {suffix ? ' ' + suffix : null}
-                            </Button>
-                        )}
-                    </div>
-                </div>
-            </div>
+            <FormButtons sticky={!asModal}>
+                {showCancel && (
+                    <Button className="test-loc-cancel-button" onClick={this.onHide}>
+                        {cancelText}
+                    </Button>
+                )}
+
+                {onSubmitForEdit && submitForEditText && (
+                    <Button
+                        className="test-loc-submit-for-edit-button"
+                        bsStyle={onSubmit ? 'default' : 'success'}
+                        disabled={isSubmitting || !canSubmit || count === 0}
+                        onClick={this.setSubmittingForEdit}
+                        type="submit"
+                    >
+                        {submitForEdit && inProgressText ? inProgressText : submitForEditText}
+                    </Button>
+                )}
+
+                {submitText && onSubmit && (
+                    <Button
+                        className="test-loc-submit-button"
+                        bsStyle="success"
+                        disabled={
+                            isSubmitting ||
+                            fieldEnabledCount === 0 ||
+                            !canSubmit ||
+                            count === 0 ||
+                            !(canSubmitNotDirty || isDirty)
+                        }
+                        onClick={this.setSubmittingForSave}
+                        type="submit"
+                    >
+                        {!submitForEdit && inProgressText ? inProgressText : submitText}
+                        {suffix ? ' ' + suffix : null}
+                    </Button>
+                )}
+            </FormButtons>
         );
     };
 

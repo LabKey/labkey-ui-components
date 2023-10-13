@@ -191,7 +191,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     }
 
     return (
-        <div className="merged-panels-container">
+        <div className="project-settings-container">
             <div className="project-settings panel panel-default">
                 <div className="panel-heading">Settings</div>
                 <div className="panel-body">

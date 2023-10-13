@@ -9,9 +9,13 @@ export const FormButtons: FC<Props> = memo(({ children, sticky = true }) => {
     const className = classNames('form-buttons', { 'form-buttons--sticky': sticky });
     let cancel;
     let secondary;
+    let tertiary;
     let submit;
     const childCount = Children.count(children);
 
+    // Note: we split children in to separate variables because if we just split the children into two arrays consumers
+    // would need to remember to supply a key prop for each button, which is easy to forget, and would result in
+    // warnings from React.
     if (childCount === 0) {
         return null;
     } else if (childCount === 1) {
@@ -23,8 +27,13 @@ export const FormButtons: FC<Props> = memo(({ children, sticky = true }) => {
         cancel = children[0];
         secondary = children[1];
         submit = children[2];
+    } else if (childCount === 4) {
+        cancel = children[0];
+        secondary = children[1];
+        tertiary = children[2];
+        submit = children[3];
     } else {
-        console.error('Invalid number of children passed to FormButtons, not rendering');
+        console.error(`Invalid number of children (${childCount}) passed to FormButtons, not rendering`);
         return null;
     }
 
@@ -33,6 +42,7 @@ export const FormButtons: FC<Props> = memo(({ children, sticky = true }) => {
             <div className="form-buttons__left">{cancel}</div>
             <div className="form-buttons__right">
                 {secondary}
+                {tertiary}
                 {submit}
             </div>
         </div>

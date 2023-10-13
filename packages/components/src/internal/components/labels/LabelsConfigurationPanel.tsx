@@ -1,7 +1,6 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button, FormGroup } from 'react-bootstrap';
-import ReactBootstrapToggle from 'react-bootstrap-toggle';
 
 import { List } from 'immutable';
 
@@ -158,9 +157,10 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
     }, [onActionCompleted]);
 
     const defaultToggleHandler = useCallback(
-        switchVal => {
-            setDirty(dirty || switchVal !== isDefault);
-            setIsDefault(switchVal);
+        (event: ChangeEvent<HTMLInputElement>) => {
+            const value = event.target.checked;
+            setDirty(dirty || value !== isDefault);
+            setIsDefault(value);
             onChange?.();
         },
         [dirty, isDefault, onChange]
@@ -307,16 +307,15 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                     {isDefaultable && (
                         <FormGroup>
                             <div className="col-sm-4">
-                                <DomainFieldLabel label="Set as Default" />
+                                <DomainFieldLabel label="Default Template" />
                             </div>
-                            <div className="col-sm-8">
-                                <ReactBootstrapToggle
-                                    active={isDefault}
-                                    on="Default"
-                                    off="Selectable"
-                                    onClick={defaultToggleHandler}
-                                />
-                            </div>
+                            <input
+                                style={{ margin: '0 15px' }}
+                                name="isDefault"
+                                checked={isDefault}
+                                type="checkbox"
+                                onChange={defaultToggleHandler}
+                            />
                         </FormGroup>
                     )}
                     <div>

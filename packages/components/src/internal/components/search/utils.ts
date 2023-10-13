@@ -401,13 +401,17 @@ export function getFilterSelections(
             filters.push(filter);
         }
     });
-    if (filters.length == 0) {
+    if (filters.length === 0) {
         const filterOption = filterOptions?.find(option => {
             return isFilterUrlSuffixMatch(option.value, Filter.Types.CONTAINS);
         });
         if (filterOption) {
             filters.push({
                 filterType: filterOption,
+            });
+        } else if (filterOptions?.length) {
+            filters.push({
+                filterType: filterOptions[0],
             });
         }
     }

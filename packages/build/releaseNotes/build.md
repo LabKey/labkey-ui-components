@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 6.16.0
+*Released*: 13 October 2023
+* Add @labkey/ehr to start-link paths
+* Make start-link paths optional
+
 ### version 6.15.0
 *Released*: 21 September 2023
 * Package updates

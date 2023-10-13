@@ -173,7 +173,7 @@ const TS_CHECKER_DEV_CONFIG = {
                     '@labkey/premium/storage': [labkeyUIPremiumPath + '/storage'],
                     '@labkey/premium/search': [labkeyUIPremiumPath + '/search]'],
                     '@labkey/ehr': [labkeyUIEhrPath],
-                    '@labkey/ehr/animalhitory': [labkeyUIEhrPath + '/reports/animalhistory']
+                    '@labkey/ehr/participanthistory': [labkeyUIEhrPath + '/reports/participanthistory']
                 }
             }
         },
@@ -192,7 +192,7 @@ const labkeyPackagesDev = process.env.LINK
         '@labkey/premium/workflow': labkeyUIPremiumPath + '/workflow',
         '@labkey/premium/storage': labkeyUIPremiumPath + '/storage',
         '@labkey/ehr': labkeyUIEhrPath,
-        '@labkey/ehr/animalhistory': labkeyUIEhrPath + '/reports/animalhistory',
+        '@labkey/ehr/participanthistory': labkeyUIEhrPath + '/reports/participanthistory',
     }
     : {};
 

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "6.15.0-fb-ehr-react-package.2",
+  "version": "6.15.0-fb-ehr-react-package.4",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

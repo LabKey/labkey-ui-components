@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.380.0
+### version 2.380.1
 *Released*: 13 October 2023
 - Add UI for making non-default views sharable
 

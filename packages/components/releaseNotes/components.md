@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD October 2023
+### version 2.381.0
+*Released*: 16 October 2023
 - Add helper for App.freezerManagerIsCurrentApp()
 - Add containerFilter to EditableColumnMetadata
 - Refactor from getOrderedSelectedMappedKeys to getOrderedSelectedMappedKeysFromQueryModel

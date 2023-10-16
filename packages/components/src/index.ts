@@ -648,7 +648,7 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
-    getOrderedSelectedMappedKeys,
+    getOrderedSelectedMappedKeysFromQueryModel,
     getOrderedSelectedPicklistSamples,
     getSelectedPicklistSamples,
     getPicklistFromId,
@@ -716,6 +716,7 @@ import {
     userCanReadRegistry,
     userCanReadSources,
     getCurrentProductName,
+    freezerManagerIsCurrentApp,
 } from './internal/app/utils';
 import {
     menuInit,
@@ -869,6 +870,7 @@ const App = {
     isProjectContainer,
     isProtectedDataEnabled,
     sampleManagerIsPrimaryApp,
+    freezerManagerIsCurrentApp,
     isSampleStatusEnabled,
     isProductProjectsEnabled,
     isAllProductFoldersFilteringEnabled,
@@ -1016,7 +1018,7 @@ export {
     createGridModelId,
     clearSelected,
     // grid functions
-    getOrderedSelectedMappedKeys,
+    getOrderedSelectedMappedKeysFromQueryModel,
     getSelected,
     getSelectedData,
     getSelection,

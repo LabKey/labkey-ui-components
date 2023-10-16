@@ -56,6 +56,7 @@ import {
     userCanEditStorageData,
     userCanReadUserDetails,
     userCanReadGroupDetails,
+    freezerManagerIsCurrentApp,
 } from './utils';
 import {
     ASSAYS_KEY,
@@ -810,6 +811,48 @@ describe('utils', () => {
         expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, biologics: {} })).toStrictEqual(
             BIOLOGICS_APP_PROPERTIES
         );
+    });
+});
+
+describe('freezerManagerIsCurrentApp', () => {
+    const { location } = window;
+
+    beforeAll(() => {
+        delete window.location;
+    });
+
+    afterAll(() => {
+        window.location = location;
+    });
+
+    test('LKFM', () => {
+        window.location = Object.assign(
+            { ...location },
+            {
+                pathname: '/Biologics/freezermanager-app.view#',
+            }
+        );
+        expect(freezerManagerIsCurrentApp()).toBe(true);
+    });
+
+    test('LKSM', () => {
+        window.location = Object.assign(
+            { ...location },
+            {
+                pathname: 'labkey/Sam Man/samplemanager-app.view#',
+            }
+        );
+        expect(freezerManagerIsCurrentApp()).toBe(false);
+    });
+
+    test('LKB', () => {
+        window.location = Object.assign(
+            { ...location },
+            {
+                pathname: '/Biologics/biologics-app.view#',
+            }
+        );
+        expect(freezerManagerIsCurrentApp()).toBe(false);
     });
 });
 

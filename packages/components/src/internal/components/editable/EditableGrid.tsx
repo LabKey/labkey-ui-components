@@ -796,7 +796,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         readonlyRows,
                         lockedRows,
                         this.cellActions,
-                        containerFilter,
+                        metadata?.containerFilter ?? containerFilter,
                         forUpdate,
                         this.state.initialSelection
                     ),

@@ -17,6 +17,33 @@ describe('resolveErrorMessage', () => {
         ).toBe('other message');
     });
 
+    test('duplicate key violation exception - alternate resolution', () => {
+        const resolver = (errorMsg: string, noun: string): string => {
+            return 'Some interference detected with your ' + noun + '.';
+        };
+
+        const error = {
+            exception:
+                'ERROR: duplicate key value violates unique constraint "uq_item_boxid_row_col"\n' +
+                '  Detail: Key (boxid, "row", col)=(24566, 1, 1) already exists.',
+            extraContext: {},
+            success: false,
+            errors: [
+                {
+                    exception:
+                        'ERROR: duplicate key value violates unique constraint "uq_item_boxid_row_col"\n' +
+                        '  Detail: Key (boxid, "row", col)=(24566, 1, 1) already exists.',
+                    rowNumber: 1,
+                    errors: [{}],
+                },
+            ],
+            errorCount: 1,
+        };
+        expect(resolveErrorMessage(error, 'samples', undefined, undefined, resolver)).toBe(
+            'Some interference detected with your samples.'
+        );
+    });
+
     test('duplicate key violation exception - Postgres', () => {
         const error = {
             exception:

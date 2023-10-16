@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 48854: Trim leading spaces for field values in domain forms
 
+### version 2.381.1
+*Released*: 16 October 2023
+- Issue 48312: Update messaging for race condition when adding to storage
+
 ### version 2.381.0
 *Released*: 16 October 2023
 - Add helper for App.freezerManagerIsCurrentApp()

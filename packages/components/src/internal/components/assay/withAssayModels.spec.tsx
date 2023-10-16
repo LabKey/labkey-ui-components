@@ -142,7 +142,9 @@ describe('withAssayModels', () => {
         const expectedError = 'load protocol failed!';
         const assayName = 'SomeAssayDefinition';
         const api = createAPIWrapper({
-            getAssayDefinitions: jest.fn().mockResolvedValue([AssayDefinitionModel.create({ id: 123, name: assayName })]),
+            getAssayDefinitions: jest
+                .fn()
+                .mockResolvedValue([AssayDefinitionModel.create({ id: 123, name: assayName })]),
             getProtocol: jest.fn().mockRejectedValue(expectedError),
         });
         let injectedAssayModel: AssayStateModel;

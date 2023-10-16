@@ -78,11 +78,7 @@ import {
 } from './internal/util/utils';
 import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
-import {
-    getUserProperties,
-    getUserRoleDisplay,
-    getUserSharedContainerPermissions,
-} from './internal/components/user/actions';
+import { getUserProperties, getUserRoleDisplay } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import { withWindowFocusCheckExpiredSession } from './internal/util/WindowFocusCheckExpiredSession';
 import {
@@ -1152,7 +1148,6 @@ export {
     useUsersWithPermissions,
     getUserProperties,
     getUserRoleDisplay,
-    getUserSharedContainerPermissions,
     UserDetailHeader,
     UserProfile,
     UserLink,

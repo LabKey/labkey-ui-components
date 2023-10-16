@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.381.1
+*Released*: 16 October 2023
+- Issue 48312: Update messaging for race condition when adding to storage
+
 ### version 2.381.0
 *Released*: 16 October 2023
 - Add helper for App.freezerManagerIsCurrentApp()

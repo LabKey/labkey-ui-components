@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 
 import { LABKEY_WEBSOCKET } from '../constants';
 
-import { hasAllPermissions, User } from '../components/base/models/User';
+import { hasAllPermissions, hasPermissions, User } from '../components/base/models/User';
 
 import { MenuSectionConfig } from '../components/navigation/model';
 import { imageURL } from '../url/ActionURL';
@@ -160,6 +160,10 @@ export function userCanReadGroupDetails(user: User): boolean {
     return hasAllPermissions(user, [PermissionTypes.CanSeeGroupDetails], false);
 }
 
+export function userCanEditSharedViews(user: User): boolean {
+    return hasPermissions(user, [PermissionTypes.EditSharedView]);
+}
+
 export function isFreezerManagementEnabled(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.inventory !== undefined;
 }
@@ -227,6 +231,10 @@ export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolea
 
 export function biologicsIsPrimaryApp(moduleContext?: ModuleContext): boolean {
     return getPrimaryAppProperties(moduleContext)?.productId === BIOLOGICS_APP_PROPERTIES.productId;
+}
+
+export function freezerManagerIsCurrentApp(): boolean {
+    return getCurrentAppProperties()?.productId === FREEZER_MANAGER_APP_PROPERTIES.productId;
 }
 
 export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {

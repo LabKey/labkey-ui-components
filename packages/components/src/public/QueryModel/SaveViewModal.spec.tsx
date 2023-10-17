@@ -7,7 +7,12 @@ import { mount } from 'enzyme';
 import { ViewInfo } from '../../internal/ViewInfo';
 
 import { mountWithServerContext } from '../../internal/test/enzymeTestHelpers';
-import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR, TEST_USER_PROJECT_ADMIN } from '../../internal/userFixtures';
+import {
+    TEST_USER_APP_ADMIN,
+    TEST_USER_EDITOR,
+    TEST_USER_PROJECT_ADMIN,
+    TEST_USER_READER
+} from '../../internal/userFixtures';
 
 import { SaveViewModal, ViewNameInput } from './SaveViewModal';
 
@@ -44,6 +49,10 @@ describe('SaveViewModal', () => {
     test('current view is default', () => {
         const wrapper = mountWithServerContext(<SaveViewModal {...DEFAULT_PROPS} currentView={DEFAULT_VIEW} />, {
             user: TEST_USER_APP_ADMIN,
+            container: {
+                path: '/home',
+                type: 'project',
+            },
             moduleContext,
         });
 
@@ -55,6 +64,7 @@ describe('SaveViewModal', () => {
         expect(wrapper.find('input[id="defaultView"]').prop('checked')).toBeTruthy();
         expect(wrapper.find('input[id="customView"]').prop('checked')).toBeFalsy();
         expect(wrapper.find('input[name="setInherit"]').prop('checked')).toBe(true);
+        expect(wrapper.find('input[name="setShared"]')).toHaveLength(0);
 
         wrapper.unmount();
     });
@@ -62,6 +72,10 @@ describe('SaveViewModal', () => {
     test('current view is a customized view', () => {
         const wrapper = mountWithServerContext(<SaveViewModal {...DEFAULT_PROPS} currentView={VIEW_1} />, {
             user: TEST_USER_PROJECT_ADMIN,
+            container: {
+                path: '/home',
+                type: 'project',
+            },
             moduleContext,
         });
 
@@ -73,13 +87,41 @@ describe('SaveViewModal', () => {
         expect(wrapper.find('input[id="defaultView"]').prop('checked')).toBeFalsy();
         expect(wrapper.find('input[id="customView"]').prop('checked')).toBeTruthy();
         expect(wrapper.find('input[name="setInherit"]').prop('checked')).toBe(false);
+        expect(wrapper.find('input[name="setShared"]').prop('checked')).toBe(false);
 
         wrapper.unmount();
     });
 
-    test('no admin perm', () => {
+    test('customized view in subfolder', () => {
+        const wrapper = mountWithServerContext(<SaveViewModal {...DEFAULT_PROPS} currentView={VIEW_1} />, {
+            user: TEST_USER_PROJECT_ADMIN,
+            container: {
+                path: '/home/folderA',
+                type: 'folder',
+            },
+            moduleContext,
+        });
+
+        expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
+        expect(wrapper.find(ModalBody).text()).toContain(
+            'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+        );
+        expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('View1');
+        expect(wrapper.find('input[id="defaultView"]').prop('checked')).toBeFalsy();
+        expect(wrapper.find('input[id="customView"]').prop('checked')).toBeTruthy();
+        expect(wrapper.find('input[name="setInherit"]')).toHaveLength(0);
+        expect(wrapper.find('input[name="setShared"]').prop('checked')).toBe(false);
+
+        wrapper.unmount();
+    });
+
+    test('no admin perm, but shared view perm', () => {
         const wrapper = mountWithServerContext(<SaveViewModal {...DEFAULT_PROPS} currentView={VIEW_2} />, {
             user: TEST_USER_EDITOR,
+            container: {
+                path: '/home',
+                type: 'project',
+            },
             moduleContext,
         });
 
@@ -90,6 +132,29 @@ describe('SaveViewModal', () => {
         expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('View2');
         expect(wrapper.find('input[name="setDefaultView"]').length).toEqual(0);
         expect(wrapper.find('input[name="setInherit"]').prop('checked')).toBe(true);
+        expect(wrapper.find('input[name="setShared"]').prop('checked')).toBe(false);
+
+        wrapper.unmount();
+    });
+
+    test('no shared view perm', () => {
+        const wrapper = mountWithServerContext(<SaveViewModal {...DEFAULT_PROPS} currentView={VIEW_2} />, {
+            user: TEST_USER_READER,
+            container: {
+                path: '/home',
+                type: 'project',
+            },
+            moduleContext,
+        });
+
+        expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
+        expect(wrapper.find(ModalBody).text()).toContain(
+            'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
+        );
+        expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('View2');
+        expect(wrapper.find('input[name="setDefaultView"]')).toHaveLength(0);
+        expect(wrapper.find('input[name="setInherit"]')).toHaveLength(0);
+        expect(wrapper.find('input[name="setShared"]')).toHaveLength(0);
 
         wrapper.unmount();
     });

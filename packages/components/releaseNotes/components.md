@@ -1,6 +1,20 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.381.1
+*Released*: 16 October 2023
+- Issue 48312: Update messaging for race condition when adding to storage
+
+### version 2.381.0
+*Released*: 16 October 2023
+- Add helper for App.freezerManagerIsCurrentApp()
+- Add containerFilter to EditableColumnMetadata
+- Refactor from getOrderedSelectedMappedKeys to getOrderedSelectedMappedKeysFromQueryModel
+
+### version 2.380.1
+*Released*: 13 October 2023
+- Add UI for making non-default views sharable
+
 ### version 2.379.0
 *Released*: 11 October 2023
 - Issue 48082: Improve verbs used when updating or merging data

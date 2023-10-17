@@ -648,7 +648,7 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
-    getOrderedSelectedMappedKeys,
+    getOrderedSelectedMappedKeysFromQueryModel,
     getOrderedSelectedPicklistSamples,
     getSelectedPicklistSamples,
     getPicklistFromId,
@@ -705,6 +705,7 @@ import {
     userCanDeletePublicPicklists,
     userCanDesignLocations,
     userCanDesignSourceTypes,
+    userCanEditSharedViews,
     userCanEditStorageData,
     userCanManagePicklists,
     userCanManageSampleWorkflow,
@@ -715,6 +716,7 @@ import {
     userCanReadRegistry,
     userCanReadSources,
     getCurrentProductName,
+    freezerManagerIsCurrentApp,
 } from './internal/app/utils';
 import {
     menuInit,
@@ -868,6 +870,7 @@ const App = {
     isProjectContainer,
     isProtectedDataEnabled,
     sampleManagerIsPrimaryApp,
+    freezerManagerIsCurrentApp,
     isSampleStatusEnabled,
     isProductProjectsEnabled,
     isAllProductFoldersFilteringEnabled,
@@ -902,6 +905,7 @@ const App = {
     userCanReadDataClasses,
     userCanReadRegistry,
     userCanReadSources,
+    userCanEditSharedViews,
     userCanDeletePublicPicklists,
     getCurrentProductName,
     SECURITY_LOGOUT,
@@ -1014,7 +1018,7 @@ export {
     createGridModelId,
     clearSelected,
     // grid functions
-    getOrderedSelectedMappedKeys,
+    getOrderedSelectedMappedKeysFromQueryModel,
     getSelected,
     getSelectedData,
     getSelection,

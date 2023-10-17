@@ -50,7 +50,7 @@
   },
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
-    "@labkey/api": "1.25.1-rfc-5987.1",
+    "@labkey/api": "1.25.1-rfc-5987.2",
     "@testing-library/jest-dom": "~5.17.0",
     "@testing-library/react": "~12.1.5",
     "@testing-library/user-event": "~12.8.3",

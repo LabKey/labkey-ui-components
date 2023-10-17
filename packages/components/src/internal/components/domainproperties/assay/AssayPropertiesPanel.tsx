@@ -50,7 +50,7 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
     const onValueChange = useCallback(
         (id, value): void => {
             const newModel = model.merge({
-                [id.replace(FORM_ID_PREFIX, '')]: value?.trimStart(),
+                [id.replace(FORM_ID_PREFIX, '')]: Utils.isString(value) ? value.trimStart() : value,
             }) as AssayProtocolModel;
 
             onChange(newModel);

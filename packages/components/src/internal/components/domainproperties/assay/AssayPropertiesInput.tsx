@@ -51,6 +51,7 @@ interface InputProps {
     appPropertiesOnly?: boolean;
     model: AssayProtocolModel;
     onChange: (evt) => void;
+    canRename?: boolean;
 }
 
 export function NameInput(props: InputProps) {
@@ -71,7 +72,7 @@ export function NameInput(props: InputProps) {
                 placeholder="Enter a name for this assay"
                 value={props.model.name || ''}
                 onChange={props.onChange}
-                disabled={!props.model.isNew()}
+                disabled={!props.model.isNew() && !props.canRename}
             />
         </AssayPropertiesInput>
     );

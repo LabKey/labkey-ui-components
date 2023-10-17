@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X October 2023
+- Assay Design Rename
+  - TODO
+
 ### version 2.381.1
 *Released*: 16 October 2023
 - Issue 48312: Update messaging for race condition when adding to storage

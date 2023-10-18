@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.382.1
+*Released*: 18 October 2023
+- Issue 48855: Update @labkey/api for better parsing of Content-Disposition header
+
 ### version 2.382.0
 Released*: 18 October 2023
 - Introduce `AssayAPIWrapper` to better support calls to assay endpoints from within components.
@@ -11,7 +15,7 @@ Released*: 18 October 2023
 - Recognize the `plateLsid` URL parameter in `AssayImportPanels` to support selection of a plate.
 
 ### version 2.381.3
-Released*: 18 October 2023
+*Released*: 18 October 2023
 - Issue 48854: Trim leading spaces for field values in domain forms
 
 ### version 2.381.2

@@ -14,11 +14,11 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 import { Alert } from '../../internal/components/base/Alert';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWrapper';
+import { QueryModel } from './QueryModel';
 
-import { RequiresModelAndActions } from './withQueryModels';
 import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
 
-export interface EditableDetailPanelProps extends RequiresModelAndActions {
+export interface EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
     appEditable?: boolean;
     asSubPanel?: boolean;
@@ -30,6 +30,7 @@ export interface EditableDetailPanelProps extends RequiresModelAndActions {
     detailHeader?: ReactNode;
     detailRenderer?: DetailRenderer;
     editColumns?: QueryColumn[];
+    model: QueryModel;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     onEditToggle?: (editing: boolean) => void;
     onUpdate: () => void;
@@ -136,7 +137,6 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
     render(): ReactNode {
         const {
-            actions,
             appEditable,
             containerFilter,
             containerPath,
@@ -179,7 +179,6 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                         {!editing && (
                             <DetailPanel
-                                actions={actions}
                                 containerFilter={containerFilter}
                                 containerPath={containerPath}
                                 detailRenderer={detailRenderer}

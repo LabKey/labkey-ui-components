@@ -21,23 +21,35 @@ const isProductionBuild = process.env.NODE_ENV === 'production';
 // NOTE: the LABKEY_UI_COMPONENTS_HOME and LABKEY_UI_PREMIUM_HOME environment variable must be set for this to work.
 let labkeyUIComponentsPath = path.resolve('./node_modules/@labkey/components');
 let labkeyUIPremiumPath = path.resolve('./node_modules/@labkey/premium');
+let labkeyUIEhrPath = path.resolve('./node_modules/@labkey/ehr');
 const labkeyBuildTSConfigPath = path.resolve('./node_modules/@labkey/build/webpack/tsconfig.json');
 const customTSConfigPath = path.resolve('./tsconfig.json');
 const tsconfigPath = fs.existsSync(customTSConfigPath) ? customTSConfigPath : labkeyBuildTSConfigPath;
 
 if (process.env.LINK) {
-    if (process.env.LABKEY_UI_COMPONENTS_HOME === undefined) {
-        throw 'ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.';
+    if (process.env.LABKEY_UI_COMPONENTS_HOME !== undefined) {
+        labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + '/packages/components/src';
+        console.log('Using @labkey/components path:', labkeyUIComponentsPath);
     }
-    if (process.env.LABKEY_UI_PREMIUM_HOME === undefined) {
-        throw 'ERROR: You must set your LABKEY_UI_PREMIUM_HOME environment variable in order to link your @labkey packages.';
+    else {
+        console.log('Environment variable LABKEY_UI_COMPONENTS_HOME not defined. Not linking to @labkey/components.');
     }
 
-    labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + '/packages/components/src';
-    console.log('Using @labkey/components path:', labkeyUIComponentsPath);
+    if (process.env.LABKEY_UI_PREMIUM_HOME !== undefined) {
+        labkeyUIPremiumPath = process.env.LABKEY_UI_PREMIUM_HOME + '/src';
+        console.log('Using @labkey/premium path:', labkeyUIPremiumPath);
+    }
+    else {
+        console.log('Environment variable LABKEY_UI_PREMIUM_HOME not defined. Not linking to @labkey/premium.');
+    }
 
-    labkeyUIPremiumPath = process.env.LABKEY_UI_PREMIUM_HOME + '/src';
-    console.log('Using @labkey/premium path:', labkeyUIPremiumPath);
+    if (process.env.LABKEY_UI_EHR_HOME !== undefined) {
+        labkeyUIEhrPath = process.env.LABKEY_UI_EHR_HOME + '/src';
+        console.log('Using @labkey/ehr path:', labkeyUIEhrPath);
+    }
+    else {
+        console.log('Environment variable LABKEY_UI_EHR_HOME not defined. Not linking to @labkey/ehr.');
+    }
 }
 
 const watchPort = process.env.WATCH_PORT || 3001;
@@ -160,6 +172,8 @@ const TS_CHECKER_DEV_CONFIG = {
                     '@labkey/premium/workflow': [labkeyUIPremiumPath + '/workflow'],
                     '@labkey/premium/storage': [labkeyUIPremiumPath + '/storage'],
                     '@labkey/premium/search': [labkeyUIPremiumPath + '/search]'],
+                    '@labkey/ehr': [labkeyUIEhrPath],
+                    '@labkey/ehr/participanthistory': [labkeyUIEhrPath + '/participanthistory']
                 }
             }
         },
@@ -179,6 +193,8 @@ const labkeyPackagesDev = process.env.LINK
         '@labkey/premium/workflow': labkeyUIPremiumPath + '/workflow',
         '@labkey/premium/storage': labkeyUIPremiumPath + '/storage',
         '@labkey/premium/search': labkeyUIPremiumPath + '/search',
+        '@labkey/ehr': labkeyUIEhrPath,
+        '@labkey/ehr/participanthistory': labkeyUIEhrPath + '/participanthistory',
     }
     : {};
 
@@ -186,6 +202,7 @@ module.exports = {
     lkModule,
     labkeyUIComponentsPath,
     labkeyUIPremiumPath,
+    labkeyUIEhrPath,
     tsconfigPath,
     watchPort,
     TS_CHECKER_CONFIG,
@@ -255,6 +272,7 @@ module.exports = {
             '@labkey/components-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme',
             '@labkey/components-app-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme/app',
             '@labkey/premium-scss': labkeyUIPremiumPath + '/dist/assets/scss/theme',
+            '@labkey/ehr-scss': labkeyUIEhrPath + '/dist/assets/scss/theme',
         },
         LABKEY_PACKAGES_DEV: {
             ...labkeyPackagesDev,
@@ -262,6 +280,7 @@ module.exports = {
             '@labkey/components-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
             '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme/app' : '/dist/assets/scss/theme/app'),
             '@labkey/premium-scss': labkeyUIPremiumPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
+            '@labkey/ehr-scss': labkeyUIEhrPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
         },
     },
     outputPath: path.resolve('./resources/web/gen'),

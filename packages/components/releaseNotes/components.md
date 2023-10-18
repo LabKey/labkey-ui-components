@@ -6,6 +6,32 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Assay Design Rename
   - TODO
 
+### version 2.382.2
+*Released*: 18 October 2023
+- Issue 48901: R Reports not filtering runs in assay
+
+### version 2.382.1
+*Released*: 18 October 2023
+- Issue 48855: Update @labkey/api for better parsing of Content-Disposition header
+
+### version 2.382.0
+Released*: 18 October 2023
+- Introduce `AssayAPIWrapper` to better support calls to assay endpoints from within components.
+- Rename `fetchAllAssays` and `fetchProtocol` to `getAssayDefinitions and `getProtocol` respectively.
+- Update `getAssayDefinitions` (formerly `fetchAllAssays`) to utilize the newly exposed `Assay.getAssays` endpoint wrapper.
+- Update `withAssayModels` component to use `api.assay` in place of the `AssayLoader` pattern.
+- Add `SchemaQuery.hasSchemaQuery` for more succinct comparison of `SchemaQuery` objects where it only matters if the `schemaName` and `queryName` match.
+- Recognize the `plateLsid` URL parameter in `AssayImportPanels` to support selection of a plate.
+
+### version 2.381.3
+*Released*: 18 October 2023
+- Issue 48854: Trim leading spaces for field values in domain forms
+
+### version 2.381.2
+*Released*: 18 October 2023
+* Merge release23.10-SNAPSHOT to develop:
+    * includes changes from 2.373.5
+
 ### version 2.381.1
 *Released*: 16 October 2023
 - Issue 48312: Update messaging for race condition when adding to storage
@@ -94,6 +120,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 2 October 2023
 * Issue 48781: LKSM/LKB: Groups using wrong icon
 
+### version 2.373.5
+*Released*: 12 October 2023
+* Issue 48377: Account for read only cells when pasting in EditableGrid
+
+### version 2.373.4
+*Released*: 2 October 2023
+* Issue 48781: LKSM/LKB: Groups using wrong icon
+
 ### version 2.373.3
 *Released*: 2 October 2023
 * add some keys to Fragments to get rid of warnings about missing keys
@@ -124,7 +158,7 @@ Components, models, actions, and utility functions for LabKey applications and p
      - Removed BasePermission
      - Updated ProjectManagementPage from grid to side to side project/setting layout and support cross folder view/update
      - Support ApplicationAdminPermission update on the same panel with project level permissions.
-   - Moved ProtectedDataSettingsPanel and RequestsSettignsPanel from Biologics to components
+   - Moved ProtectedDataSettingsPanel and RequestsSettingsPanel from Biologics to components
 - Issue 48623: LKSM: revert to initial sampleCount or rootSampleCount when updating fails
 
 ### version 2.372.0

@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.382.2
+### version 2.382.2
 *Released*: 18 October 2023
 - Issue 48901: R Reports not filtering runs in assay
 

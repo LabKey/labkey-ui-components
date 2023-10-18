@@ -871,6 +871,19 @@ function inferSelectionIncrement(
     };
 }
 
+function getPkValue(row: any, queryInfo: QueryInfo): string {
+    const keyCols = queryInfo.getPkCols();
+    let key;
+
+    if (keyCols.length === 1) {
+        key = caseInsensitive(row.toJS(), keyCols[0].fieldKey);
+        if (Array.isArray(key)) key = key[0];
+        if (typeof key === 'object') key = key.value;
+    }
+
+    return key;
+}
+
 interface CellReadStatus {
     isLockedRow: boolean;
     isReadonlyCell: boolean;
@@ -887,9 +900,7 @@ export function checkCellReadStatus(
     if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
         const keyCols = queryInfo.getPkCols();
         if (keyCols.length === 1) {
-            let key = caseInsensitive(row.toJS(), keyCols[0].fieldKey);
-            if (Array.isArray(key)) key = key[0];
-            if (typeof key === 'object') key = key.value;
+            const key = getPkValue(row, queryInfo);
 
             return {
                 isReadonlyRow: readonlyRows && key ? readonlyRows.includes(key) : false,
@@ -1268,7 +1279,7 @@ function getColumnFilteredLookup(
     column: QueryColumn,
     columnMetadata: Map<string, EditableColumnMetadata>
 ): List<string> {
-    const metadata: EditableColumnMetadata = columnMetadata && columnMetadata.get(column.fieldKey);
+    const metadata: EditableColumnMetadata = columnMetadata && columnMetadata.get(column.fieldKey.toLowerCase());
     if (metadata) return metadata.filteredLookupValues;
 
     return undefined;
@@ -1330,11 +1341,6 @@ function parsePastedLookup(column: QueryColumn, descriptors: ValueDescriptor[], 
     };
 }
 
-function isReadOnly(column: QueryColumn, columnMetadata: Map<string, EditableColumnMetadata>): boolean {
-    const metadata: EditableColumnMetadata = columnMetadata && column && columnMetadata.get(column.fieldKey);
-    return (column && column.readOnly) || (metadata && metadata.readOnly);
-}
-
 function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: string[]): boolean {
     if (pkCols.length === 1 && row) {
         const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey);
@@ -1353,8 +1359,9 @@ function insertPastedData(
     paste: PasteModel,
     lookupDescriptorMap: { [colKey: string]: ValueDescriptor[] },
     columnMetadata: Map<string, EditableColumnMetadata>,
-    readonlyRows?: string[],
-    lockRowCount?: boolean
+    readonlyRows: string[],
+    lockedRows: string[],
+    lockRowCount: boolean
 ): EditorModelAndGridData {
     const pastedData = paste.payload.data;
     let cellMessages = editorModel.cellMessages;
@@ -1375,11 +1382,21 @@ function insertPastedData(
     const pkCols = queryInfo.getPkCols();
     let rowIdx = rowMin;
     let hasReachedRowLimit = false;
+    let allReadOnlyRows;
+
+    if (readonlyRows && lockedRows) {
+        allReadOnlyRows = readonlyRows.concat(lockedRows);
+    } else if (readonlyRows) {
+        allReadOnlyRows = readonlyRows;
+    } else if (lockedRows) {
+        allReadOnlyRows = lockedRows;
+    }
+
     pastedData.forEach(row => {
         if (hasReachedRowLimit && lockRowCount) return;
 
-        if (readonlyRows) {
-            while (rowIdx < rowCount && isReadonlyRow(data.get(dataKeys.get(rowIdx)), pkCols, readonlyRows)) {
+        if (allReadOnlyRows) {
+            while (rowIdx < rowCount && isReadonlyRow(data.get(dataKeys.get(rowIdx)), pkCols, allReadOnlyRows)) {
                 // Skip over readonly rows
                 rowIdx++;
             }
@@ -1390,14 +1407,17 @@ function insertPastedData(
             }
         }
 
+        const pkValue = getPkValue(row, queryInfo);
+
         row.forEach((value, cn) => {
             const colIdx = colMin + cn;
-            const col = columns[colIdx];
             const cellKey = genCellKey(colIdx, rowIdx);
+            const col = columns[colIdx];
+            const metadata = columnMetadata?.get(col?.fieldKey.toLowerCase());
             let cv: List<ValueDescriptor>;
             let msg: CellMessage;
 
-            if (col && col.isPublicLookup()) {
+            if (col?.isPublicLookup()) {
                 const { message, values } = parsePastedLookup(col, lookupDescriptorMap[col.lookupKey], value);
                 cv = values;
 
@@ -1408,7 +1428,10 @@ function insertPastedData(
                 cv = List([{ display: value, raw: value }]);
             }
 
-            if (!isReadOnly(col, columnMetadata) && !col.readOnly) {
+            const readOnlyCol = col?.readOnly || metadata?.readOnly;
+            const readOnlyCell = metadata?.isReadOnlyCell(pkValue);
+
+            if (!readOnlyCol && !readOnlyCell) {
                 if (msg) {
                     cellMessages = cellMessages.set(cellKey, msg);
                 } else {
@@ -1479,9 +1502,10 @@ async function validateAndInsertPastedData(
     queryInfo: QueryInfo,
     columns: QueryColumn[],
     value: string,
-    columnMetadata?: Map<string, EditableColumnMetadata>,
-    readonlyRows?: string[],
-    lockRowCount?: boolean
+    columnMetadata: Map<string, EditableColumnMetadata>,
+    readonlyRows: string[],
+    lockedRows: string[],
+    lockRowCount: boolean
 ): Promise<EditorModelAndGridData> {
     const { selectedColIdx, selectedRowIdx } = editorModel;
     const readOnlyRowCount =
@@ -1535,6 +1559,7 @@ async function validateAndInsertPastedData(
             descriptorMap,
             columnMetadata,
             readonlyRows,
+            lockedRows,
             lockRowCount
         );
     } else {
@@ -1554,9 +1579,10 @@ export async function pasteEvent(
     queryInfo: QueryInfo,
     columns: QueryColumn[],
     event: any,
-    columnMetadata?: Map<string, EditableColumnMetadata>,
-    readonlyRows?: string[],
-    lockRowCount?: boolean
+    columnMetadata: Map<string, EditableColumnMetadata>,
+    readonlyRows: string[],
+    lockedRows: string[],
+    lockRowCount: boolean
 ): Promise<EditorModelAndGridData> {
     // If a cell has focus do not accept incoming paste events -- allow for normal paste to input
     if (editorModel && editorModel.hasSelection && !editorModel.hasFocus) {
@@ -1571,6 +1597,7 @@ export async function pasteEvent(
             value,
             columnMetadata,
             readonlyRows,
+            lockedRows,
             lockRowCount
         );
     }

@@ -23,7 +23,6 @@ export interface EditableDetailPanelProps {
     appEditable?: boolean;
     asSubPanel?: boolean;
     canUpdate: boolean;
-    cancelText?: string;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     detailEditRenderer?: DetailRenderer;
@@ -37,7 +36,6 @@ export interface EditableDetailPanelProps {
     queryColumns?: QueryColumn[];
     submitText?: string;
     title?: string;
-    useEditIcon?: boolean;
 }
 
 interface State {
@@ -50,8 +48,6 @@ interface State {
 export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
-        useEditIcon: true,
-        cancelText: 'Cancel',
         submitText: 'Save',
     };
 
@@ -144,14 +140,12 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             detailHeader,
             detailRenderer,
             asSubPanel,
-            cancelText,
             canUpdate,
             editColumns,
             model,
             queryColumns,
             submitText,
             title,
-            useEditIcon,
             onAdditionalFormDataChange,
         } = this.props;
         const { canSubmit, editing, error, warning } = this.state;
@@ -159,17 +153,13 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
         const panel = (
             <div className={`panel ${editing ? 'panel-info' : 'panel-default'}`}>
-                <div className="panel-heading">
-                    <DetailPanelHeader
-                        useEditIcon={useEditIcon}
-                        isEditable={isEditable}
-                        canUpdate={canUpdate}
-                        editing={editing}
-                        title={title}
-                        onClickFn={this.toggleEditing}
-                        warning={warning}
-                    />
-                </div>
+                <DetailPanelHeader
+                    isEditable={isEditable && canUpdate}
+                    editing={editing}
+                    title={title}
+                    onClick={this.toggleEditing}
+                    warning={warning}
+                />
 
                 <div className="panel-body">
                     <div className="detail__editing">
@@ -225,7 +215,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                     <div className="full-width bottom-spacing">
                         <Button className="pull-left" onClick={this.toggleEditing}>
-                            {cancelText}
+                            Cancel
                         </Button>
                         <Button className="pull-right" bsStyle="success" type="submit" disabled={!canSubmit}>
                             {submitText}

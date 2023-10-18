@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.382.1
+*Released*: 18 October 2023
 - Issue 48855: Update @labkey/api for better parsing of Content-Disposition header
 
 ### version 2.382.0

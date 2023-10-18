@@ -1144,7 +1144,6 @@ export {
     updateRowFieldValue,
     // user/permissions related items
     getUsersWithPermissions,
-    useUsersWithPermissions,
     getUserProperties,
     getUserRoleDisplay,
     getUserSharedContainerPermissions,
@@ -1170,7 +1169,6 @@ export {
     SecurityPolicy,
     SecurityRole,
     Principal,
-    useUserProperties,
     // sample picklist items
     AddToPicklistMenuItem,
     PicklistButton,
@@ -1391,7 +1389,6 @@ export {
     markAllNotificationsAsRead,
     deleteSuccessMessage,
     deleteErrorMessage,
-    useNotificationsContext,
     withNotificationsContext,
     // domain designer related items
     DomainForm,
@@ -1494,7 +1491,6 @@ export {
     HelpIcon,
     incrementClientSideMetricCount,
     Key,
-    useEnterEscape,
     encodePart,
     decodePart,
     // devTools functions
@@ -1525,7 +1521,6 @@ export {
     PageDetailHeader,
     ErrorBoundary,
     BeforeUnload,
-    useRouteLeave,
     withRouteLeave,
     SchemaListing,
     SchemaListingPage,
@@ -1566,12 +1561,10 @@ export {
     Container,
     User,
     AppContextProvider,
-    useAppContext,
     AppContexts,
     GlobalStateContextProvider,
     ServerContextProvider,
     ServerContextConsumer,
-    useServerContext,
     useServerContextDispatch,
     withAppUser,
     QueryColumn,
@@ -1676,7 +1669,6 @@ export {
     // BarTender
     BarTenderConfiguration,
     PrintLabelsModal,
-    useLabelPrintingContext,
     usePortalRef,
     ExtendedMap,
     FormButtons,

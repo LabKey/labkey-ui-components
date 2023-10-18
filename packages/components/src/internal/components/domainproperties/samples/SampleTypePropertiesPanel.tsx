@@ -181,7 +181,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
     onFormChange = (evt: any): void => {
         const id = evt.target.id;
         const value = evt.target.value;
-        this.onFieldChange(getFormNameFromId(id), value);
+        this.onFieldChange(getFormNameFromId(id), value?.trimStart());
     };
 
     onFieldChange = (key: string, value: any): void => {

@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.381.3
+Released*: 18 October 2023
+- Issue 48854: Trim leading spaces for field values in domain forms
+
+### version 2.381.2
+*Released*: 18 October 2023
+* Merge release23.10-SNAPSHOT to develop:
+    * includes changes from 2.373.5
+
 ### version 2.381.1
 *Released*: 16 October 2023
 - Issue 48312: Update messaging for race condition when adding to storage
@@ -89,6 +98,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 2 October 2023
 * Issue 48781: LKSM/LKB: Groups using wrong icon
 
+### version 2.373.5
+*Released*: 12 October 2023
+* Issue 48377: Account for read only cells when pasting in EditableGrid
+
+### version 2.373.4
+*Released*: 2 October 2023
+* Issue 48781: LKSM/LKB: Groups using wrong icon
+
 ### version 2.373.3
 *Released*: 2 October 2023
 * add some keys to Fragments to get rid of warnings about missing keys
@@ -119,7 +136,7 @@ Components, models, actions, and utility functions for LabKey applications and p
      - Removed BasePermission
      - Updated ProjectManagementPage from grid to side to side project/setting layout and support cross folder view/update
      - Support ApplicationAdminPermission update on the same panel with project level permissions.
-   - Moved ProtectedDataSettingsPanel and RequestsSettignsPanel from Biologics to components
+   - Moved ProtectedDataSettingsPanel and RequestsSettingsPanel from Biologics to components
 - Issue 48623: LKSM: revert to initial sampleCount or rootSampleCount when updating fails
 
 ### version 2.372.0

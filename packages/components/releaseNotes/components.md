@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD October 2023
+* Issue 48347: Field editor "User" data type to allow lookup validator option
+
 ### version 2.381.2
 *Released*: 18 October 2023
 * Merge release23.10-SNAPSHOT to develop:

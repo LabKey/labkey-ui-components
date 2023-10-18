@@ -272,7 +272,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             }
         }
 
-        this.onFieldChange(evt, PropDescType.isLookup(value) || PropDescType.isTextChoice(value));
+        this.onFieldChange(
+            evt,
+            PropDescType.isLookup(value) || PropDescType.isTextChoice(value) || PropDescType.isUser(value)
+        );
     };
 
     onShowConfirmTypeChange = (dataTypeChangeToConfirm: string): void => {

@@ -1,4 +1,4 @@
-import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
+import { fromJS, List, Map, OrderedMap, Record as ImmutableRecord } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../public/QueryColumn';
@@ -34,7 +34,7 @@ interface ScopedSampleColumn {
     domain: AssayDomainTypes;
 }
 
-export class AssayDefinitionModel extends Record({
+export class AssayDefinitionModel extends ImmutableRecord({
     containerPath: undefined,
     description: undefined,
     domains: Map<string, List<QueryColumn>>(),
@@ -115,26 +115,23 @@ export class AssayDefinitionModel extends Record({
         targetProductId?: string,
         ignoreFilter?: boolean
     ): string {
-        let url,
-            params = {};
+        let url: AppURL | string;
         // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
         if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
-            params['rowId'] = this.id;
-            if (dataTab) params['dataTab'] = dataTab;
+            const params: Record<string, any> = { rowId: this.id };
+            if (dataTab) params.dataTab = dataTab;
             if (!ignoreFilter) {
-                if (filterList && !filterList.isEmpty()) {
-                    filterList.forEach(filter => {
-                        // if the filter has a URL suffix and is not registered as one recognized for URL filters, we ignore it here
-                        // CONSIDER:  Applications might want to be able to register their own filter types
-                        const urlSuffix = filter.getFilterType().getURLSuffix();
-                        if (!urlSuffix || Filter.getFilterTypeForURLSuffix(urlSuffix)) {
-                            params[filter.getURLParameterName()] = filter.getURLParameterValue();
-                        }
-                    });
-                }
+                filterList?.forEach(filter => {
+                    // if the filter has a URL suffix and is not registered as one recognized for URL filters, we ignore it here
+                    // CONSIDER:  Applications might want to be able to register their own filter types
+                    const urlSuffix = filter.getFilterType().getURLSuffix();
+                    if (!urlSuffix || Filter.getFilterTypeForURLSuffix(urlSuffix)) {
+                        params[filter.getURLParameterName()] = filter.getURLParameterValue();
+                    }
+                });
             }
-            if (selectionKey) params['selectionKey'] = selectionKey;
-            if (isPicklist) params['isPicklist'] = true;
+            if (selectionKey) params.selectionKey = selectionKey;
+            if (isPicklist) params.isPicklist = true;
             url = createProductUrlFromParts(
                 targetProductId,
                 currentProductId,

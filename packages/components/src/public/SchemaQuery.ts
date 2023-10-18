@@ -85,6 +85,11 @@ export class SchemaQuery {
         return false;
     }
 
+    hasSchemaQuery(sq: SchemaQuery): boolean {
+        if (!sq) return false;
+        return this.toString(false).toLowerCase() === sq.toString(false).toLowerCase();
+    }
+
     getKey(includeViewName = true): string {
         return resolveKey(this.schemaName, this.queryName, includeViewName ? this.viewName : undefined);
     }
@@ -102,8 +107,12 @@ export class SchemaQuery {
         return [APP_SELECTION_PREFIX, targetSQ.getKey(), keys.join(';')].join('|');
     }
 
-    toString(): string {
-        return [this.schemaName, this.queryName, this.viewName].join('|');
+    toString(includeViewName = true): string {
+        const parts = [this.schemaName, this.queryName];
+        if (includeViewName) {
+            parts.push(this.viewName);
+        }
+        return parts.join('|');
     }
 }
 

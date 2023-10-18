@@ -21,39 +21,11 @@ import { DomainException } from '../models';
 
 import { setDomainException } from '../actions';
 
-import { AssayProtocolModel } from './models';
 import { buildURL } from '../../../url/AppURL';
 import { Container } from '../../base/models/Container';
 import { isAssayEnabled } from '../../../app/utils';
 
-export function fetchProtocol(
-    protocolId?: number,
-    providerName?: string,
-    copy?: boolean,
-    containerPath?: string
-): Promise<AssayProtocolModel> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL(
-                'assay',
-                'getProtocol.api',
-                {
-                    // give precedence to the protocolId if both are provided
-                    protocolId,
-                    providerName: protocolId !== undefined ? undefined : providerName,
-                    copy: copy || false,
-                },
-                { container: containerPath }
-            ),
-            success: Utils.getCallbackWrapper(data => {
-                resolve(AssayProtocolModel.create(data.data));
-            }),
-            failure: Utils.getCallbackWrapper(error => {
-                reject(error);
-            }),
-        });
-    });
-}
+import { AssayProtocolModel } from './models';
 
 export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {

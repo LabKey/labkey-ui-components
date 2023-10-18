@@ -7,6 +7,7 @@ import { AuditBehaviorTypes, Query } from '@labkey/api';
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
 import { DetailRenderer } from '../../internal/components/forms/detail/DetailDisplay';
 import { extractChanges } from '../../internal/components/forms/detail/utils';
+import { FormButtons } from '../../internal/FormButtons';
 
 import { QueryColumn } from '../QueryColumn';
 import { FileInput } from '../../internal/components/forms/input/FileInput';
@@ -213,14 +214,14 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                 >
                     {panel}
 
-                    <div className="full-width bottom-spacing">
-                        <Button className="pull-left" onClick={this.toggleEditing}>
+                    <FormButtons>
+                        <button className="btn btn-default" type="button" onClick={this.toggleEditing}>
                             Cancel
-                        </Button>
-                        <Button className="pull-right" bsStyle="success" type="submit" disabled={!canSubmit}>
+                        </button>
+                        <button className="btn btn-success" type="submit" disabled={!canSubmit}>
                             {submitText}
-                        </Button>
-                    </div>
+                        </button>
+                    </FormButtons>
 
                     {asSubPanel && <div className="panel-divider-spacing" />}
                 </Formsy>

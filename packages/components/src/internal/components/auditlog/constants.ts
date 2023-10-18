@@ -52,7 +52,7 @@ export const USER_AUDIT_QUERY: AuditQuery = {
     label: 'User Events',
     value: 'userauditevent',
 };
-export const ASSAY_AUDIT_QUERY: AuditQuery = { value: 'experimentauditevent', label: 'Assay Events' };
+export const ASSAY_AUDIT_QUERY: AuditQuery = { value: 'assayauditevent', label: 'Assay Events' };
 export const WORKFLOW_AUDIT_QUERY: AuditQuery = {
     hasDetail: true,
     label: 'Sample Workflow Events',
@@ -86,3 +86,5 @@ export const COMMON_AUDIT_QUERIES: AuditQuery[] = [
     SAMPLE_TIMELINE_AUDIT_QUERY,
     USER_AUDIT_QUERY,
 ];
+
+export const EXPERIMENT_AUDIT_EVENT = 'experimentauditevent';

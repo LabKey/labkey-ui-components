@@ -189,6 +189,14 @@
   padding-bottom: 12px;
 }
 
+.editable-grid-buttons {
+    margin-bottom: 15px;
+}
+
+.editable-grid-buttons__action-buttons button {
+    margin-right: 10px;
+}
+
 .edit-grid-container {
   width: 100%;
 }
@@ -445,11 +453,6 @@ $table-cell-selection-bg-color: #EDF3FF;
 
 .loading-mask {
   @include loading($mask: true);
-}
-
-// Grid bar
-.QueryGrid-bottom-spacing {
-  padding-bottom: 15px;
 }
 
 // Add rows controls

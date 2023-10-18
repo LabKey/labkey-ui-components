@@ -1345,34 +1345,37 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             : 'The grid contains the maximum number of ' + nounPlural + '.';
 
         const allowExport = !!exportHandler;
+        const actionButtonClassNames = classNames('editable-grid-buttons__action-buttons', {
+            'col-sm-9': showAddOnTop,
+            'col-sm-12': !showAddOnTop,
+        });
 
         return (
-            <div className="row QueryGrid-bottom-spacing">
+            <div className="row editable-grid-buttons">
                 {showAddOnTop && <div className="col-sm-3">{this.renderAddRowsControl('top')}</div>}
-                <div className={showAddOnTop ? 'col-sm-9' : 'col-sm-12'}>
+                <div className={actionButtonClassNames}>
                     {!showAsTab && allowBulkAdd && (
-                        <span className="control-right">
-                            <Button title={addTitle} disabled={!canAddRows} onClick={this.toggleBulkAdd}>
-                                {bulkAddText}
-                            </Button>
-                        </span>
+                        <Button
+                            className="bulk-add-button"
+                            title={addTitle}
+                            disabled={!canAddRows}
+                            onClick={this.toggleBulkAdd}
+                        >
+                            {bulkAddText}
+                        </Button>
                     )}
                     {!showAsTab && allowBulkUpdate && (
-                        <span className="control-right">
-                            <Button className="control-right" disabled={invalidSel} onClick={this.toggleBulkUpdate}>
-                                {bulkUpdateText}
-                            </Button>
-                        </span>
+                        <Button className="bulk-update-button" disabled={invalidSel} onClick={this.toggleBulkUpdate}>
+                            {bulkUpdateText}
+                        </Button>
                     )}
                     {allowBulkRemove && (
-                        <span className="control-right">
-                            <Button className="control-right" disabled={invalidSel} onClick={this.removeSelected}>
-                                {bulkRemoveText}
-                            </Button>
-                        </span>
+                        <Button className="bulk-remove-button" disabled={invalidSel} onClick={this.removeSelected}>
+                            {bulkRemoveText}
+                        </Button>
                     )}
                     {allowExport && (
-                        <span className="control-right pull-right">
+                        <span className="pull-right">
                             <EditableGridExportMenu id={editorModel.id} hasData exportHandler={exportHandler} />
                         </span>
                     )}

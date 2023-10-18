@@ -237,6 +237,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
     initModel = async (): Promise<void> => {
         const { assayDefinition, location, runId } = this.props;
         const { schemaQuery } = this.state;
+        let plateProperties = Map<string, any>();
         let workflowTask: number;
 
         if (location?.query?.workflowTaskId) {
@@ -250,6 +251,12 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
         const { plateColumns, runColumns } = this.getRunColumns(runQueryInfo);
 
+        if (this.plateSupportEnabled) {
+            if (location?.query?.plateLsid) {
+                plateProperties = plateProperties.set(PLATE_TEMPLATE_COLUMN, location.query.plateLsid);
+            }
+        }
+
         this.setState(
             {
                 model: new AssayWizardModel({
@@ -259,6 +266,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     assayDef: assayDefinition,
                     batchColumns: this.getDomainColumns(AssayDomainTypes.BATCH, batchQueryInfo),
                     plateColumns,
+                    plateProperties,
                     runColumns,
                     runId,
                     usePreviousRunFile: this.isReimport(),
@@ -790,7 +798,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 </FormButtons>
                 <Progress
                     estimate={this.getProgressSizeEstimate()}
-                    modal={true}
+                    modal
                     title={isReimport ? 'Re-importing assay run' : 'Importing assay run'}
                     toggle={model.isSubmitting}
                 />

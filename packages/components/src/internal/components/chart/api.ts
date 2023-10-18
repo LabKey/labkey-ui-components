@@ -30,7 +30,9 @@ function fetchRReport(
         // The getWebPart API honors containerFilterName, not containerFilter.
         const containerFilterPrefix = `${urlPrefix}.containerFilterName`;
         const params = { reportId, 'webpart.name': 'report', [containerFilterPrefix]: getContainerFilter(container) };
-        if (filters) filters.forEach(filter => (params[filter.getURLParameterName()] = filter.getURLParameterValue()));
+        if (filters) {
+            filters.forEach(filter => (params[filter.getURLParameterName(urlPrefix)] = filter.getURLParameterValue()));
+        }
         Ajax.request({
             url: buildURL('project', 'getWebPart.view', params, { container }),
             success: Utils.getCallbackWrapper(response => {

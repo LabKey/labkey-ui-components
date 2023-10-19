@@ -165,6 +165,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                     />
                 );
             case 'lookup':
+            case 'users':
                 return (
                     <LookupFieldOptions
                         index={index}
@@ -245,15 +246,8 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
     };
 
     render() {
-        const {
-            field,
-            index,
-            onChange,
-            showingModal,
-            appPropertiesOnly,
-            domainIndex,
-            domainFormDisplayOptions,
-        } = this.props;
+        const { field, index, onChange, showingModal, appPropertiesOnly, domainIndex, domainFormDisplayOptions } =
+            this.props;
 
         return (
             <div className="domain-row-container">

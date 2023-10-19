@@ -26,6 +26,7 @@ import {
     TargetTableSelectProps,
 } from './Lookup/Fields';
 import { LookupFieldOptions } from './LookupFieldOptions';
+import { PropDescType } from './PropDescType';
 
 describe('LookupFieldOptions', () => {
     const waitForLoad = jest.fn(field => Promise.resolve(!field.state().loading));
@@ -100,6 +101,7 @@ describe('LookupFieldOptions', () => {
                     field={
                         new DomainField({
                             original: field,
+                            dataType: PropDescType.fromName('lookup'),
                             lookupSchema: _schema,
                             lookupQueryValue: _query,
                             lookupIsValid: true,
@@ -181,6 +183,7 @@ describe('LookupFieldOptions', () => {
                     field={
                         new DomainField({
                             original: field,
+                            dataType: PropDescType.fromName('lookup'),
                             lookupSchema: _schema,
                             lookupQueryValue: _query,
                         })
@@ -215,6 +218,7 @@ describe('LookupFieldOptions', () => {
                             field={
                                 new DomainField({
                                     original: field,
+                                    dataType: PropDescType.fromName('lookup'),
                                     lookupSchema: '',
                                     lookupQueryValue: '',
                                 })
@@ -267,6 +271,7 @@ describe('LookupFieldOptions', () => {
                     field={
                         new DomainField({
                             original: field,
+                            dataType: PropDescType.fromName('lookup'),
                             lookupSchema: _schema1,
                             lookupQueryValue: _query1,
                         })
@@ -305,6 +310,7 @@ describe('LookupFieldOptions', () => {
                                 field={
                                     new DomainField({
                                         original: field,
+                                        dataType: PropDescType.fromName('lookup'),
                                         lookupSchema: _schema2,
                                         lookupQueryValue: '',
                                         lookupIsValid: true,
@@ -359,6 +365,7 @@ describe('LookupFieldOptions', () => {
                     field={
                         new DomainField({
                             original: field,
+                            dataType: PropDescType.fromName('lookup'),
                             lookupSchema: _schema1,
                             lookupQueryValue: _query1,
                             lookupIsValid: true,
@@ -391,6 +398,7 @@ describe('LookupFieldOptions', () => {
                             field={
                                 new DomainField({
                                     original: field,
+                                    dataType: PropDescType.fromName('lookup'),
                                     lookupSchema: '',
                                     lookupQueryValue: '',
                                     lookupIsValid: true,
@@ -428,6 +436,7 @@ describe('LookupFieldOptions', () => {
         const base = {
             field: new DomainField({
                 original: {},
+                dataType: PropDescType.fromName('string'),
                 lookupSchema: 'schema',
                 lookupQueryValue: 'query',
             }),
@@ -475,6 +484,7 @@ describe('LookupFieldOptions', () => {
                     field={
                         new DomainField({
                             original: field,
+                            dataType: PropDescType.fromName('int'),
                             lookupSchema: 'exp',
                             lookupQueryValue: _invalidLookup,
                             lookupIsValid: false,

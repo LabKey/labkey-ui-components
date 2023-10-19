@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Assay Design Rename
   - TODO
 
+### version 2.383.0
+*Released*: 19 October 2023
+* Issue 48347: Update field editor "User" data type to allow lookup validator option
+
 ### version 2.382.2
 *Released*: 18 October 2023
 - Issue 48901: R Reports not filtering runs in assay

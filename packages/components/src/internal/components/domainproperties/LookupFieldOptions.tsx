@@ -78,7 +78,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
             dataType,
         } = field;
         const disabled = lockType === DOMAIN_FIELD_PARTIALLY_LOCKED || lockType === DOMAIN_FIELD_FULLY_LOCKED;
-        const isUserLk = dataType.isUser();
+        const isUserLookup = dataType.isUser();
 
         return (
             <div>
@@ -88,7 +88,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                     </Col>
                 </Row>
                 <Row>
-                    {!isUserLk && (
+                    {!isUserLookup && (
                         <>
                             <Col xs={2}>
                                 <div className="domain-field-label">Target Folder</div>

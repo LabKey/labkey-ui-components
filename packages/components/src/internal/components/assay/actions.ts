@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 import { List, Map } from 'immutable';
-import { Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { buildURL } from '../../url/AppURL';
-import { caseInsensitive } from '../../util/utils';
+import { caseInsensitive, handleRequestFailure } from '../../util/utils';
+
+import { AssayProtocolModel } from '../domainproperties/assay/models';
 
 import { AssayUploadOptions } from './AssayWizardModel';
 import { AssayUploadResultModel } from './models';
@@ -35,29 +37,33 @@ export function allowReimportAssayRun(user: User, runContainerId: string, target
     );
 }
 
-let assayDefinitionCache: { [key: string]: Promise<List<AssayDefinitionModel>> } = {};
+let assayDefinitionCache: { [key: string]: Promise<AssayDefinitionModel[]> } = {};
 
 export function clearAssayDefinitionCache(): void {
     assayDefinitionCache = {};
 }
 
-export function fetchAllAssays(type?: string, containerPath?: string): Promise<List<AssayDefinitionModel>> {
-    const key = [type ?? 'undefined', containerPath ?? 'undefined'].join('|');
+export type GetAssayDefinitionsOptions = Omit<Assay.GetAssaysOptions, 'failure' | 'parameters' | 'scope' | 'success'>;
+
+export function getAssayDefinitions(options: GetAssayDefinitionsOptions): Promise<AssayDefinitionModel[]> {
+    const key = [
+        options.containerPath,
+        options.id,
+        options.name,
+        options.plateEnabled,
+        options.status,
+        options.type,
+    ].join('|');
 
     if (!assayDefinitionCache[key]) {
-        assayDefinitionCache[key] = new Promise((res, rej) => {
-            Assay.getAll({
-                containerPath,
-                parameters: { type },
-                success: (rawModels: any[]) => {
-                    const models = rawModels.reduce(
-                        (list, raw) => list.push(AssayDefinitionModel.create(raw)),
-                        List<AssayDefinitionModel>()
-                    );
-                    res(models);
+        assayDefinitionCache[key] = new Promise((resolve, reject) => {
+            Assay.getAssays({
+                ...options,
+                success: rawModels => {
+                    resolve(rawModels.map(raw => AssayDefinitionModel.create(raw)) ?? []);
                 },
                 failure: error => {
-                    rej(error);
+                    reject(error);
                 },
             });
         });
@@ -66,7 +72,32 @@ export function fetchAllAssays(type?: string, containerPath?: string): Promise<L
     return assayDefinitionCache[key];
 }
 
-type ImportAssayRunOptions = Omit<AssayDOM.ImportRunOptions, 'success' | 'failure' | 'scope'>;
+export type GetProtocolOptions = {
+    containerPath?: string;
+    copy?: boolean;
+    protocolId?: number;
+    providerName?: string;
+};
+
+export function getProtocol(options: GetProtocolOptions): Promise<AssayProtocolModel> {
+    const { copy = false, containerPath, protocolId, providerName } = options;
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('assay', 'getProtocol.api', containerPath, {
+                copy,
+                // give precedence to the protocolId if both are provided
+                protocolId,
+                providerName: protocolId !== undefined ? undefined : providerName,
+            }),
+            success: Utils.getCallbackWrapper(data => {
+                resolve(AssayProtocolModel.create(data.data));
+            }),
+            failure: handleRequestFailure(reject, 'Failed to load assay protocol'),
+        });
+    });
+}
+
+export type ImportAssayRunOptions = Omit<AssayDOM.ImportRunOptions, 'success' | 'failure' | 'scope'>;
 
 export function importAssayRun(config: ImportAssayRunOptions): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
@@ -217,7 +248,7 @@ export interface DuplicateFilesResponse {
 export function checkForDuplicateAssayFiles(fileNames: string[]): Promise<DuplicateFilesResponse> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('assay', 'assayFileDuplicateCheck.api'),
+            url: ActionURL.buildURL('assay', 'assayFileDuplicateCheck.api'),
             method: 'POST',
             jsonData: {
                 fileNames,
@@ -225,10 +256,7 @@ export function checkForDuplicateAssayFiles(fileNames: string[]): Promise<Duplic
             success: Utils.getCallbackWrapper(res => {
                 resolve(res);
             }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error('Problem checking for duplicate files', response);
-                reject(response);
-            }),
+            failure: handleRequestFailure(reject, 'Problem checking for duplicate files'),
         });
     });
 }

@@ -555,7 +555,10 @@ export class URLResolver {
         }
 
         if (mapper.url !== undefined && _url !== false && getServerContext().devMode) {
-            console.warn('Unable to map URL:', mapper.url);
+            // Don't bother logging the default server URL
+            if (!mapper.url.indexOf('project-begin')) {
+                console.warn('Unable to map URL:', mapper.url);
+            }
         }
 
         return mapper.url;

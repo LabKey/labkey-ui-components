@@ -5,6 +5,27 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD October 2023
 * Issue 48347: Field editor "User" data type to allow lookup validator option
 
+### version 2.382.2
+*Released*: 18 October 2023
+- Issue 48901: R Reports not filtering runs in assay
+
+### version 2.382.1
+*Released*: 18 October 2023
+- Issue 48855: Update @labkey/api for better parsing of Content-Disposition header
+
+### version 2.382.0
+Released*: 18 October 2023
+- Introduce `AssayAPIWrapper` to better support calls to assay endpoints from within components.
+- Rename `fetchAllAssays` and `fetchProtocol` to `getAssayDefinitions and `getProtocol` respectively.
+- Update `getAssayDefinitions` (formerly `fetchAllAssays`) to utilize the newly exposed `Assay.getAssays` endpoint wrapper.
+- Update `withAssayModels` component to use `api.assay` in place of the `AssayLoader` pattern.
+- Add `SchemaQuery.hasSchemaQuery` for more succinct comparison of `SchemaQuery` objects where it only matters if the `schemaName` and `queryName` match.
+- Recognize the `plateLsid` URL parameter in `AssayImportPanels` to support selection of a plate.
+
+### version 2.381.3
+*Released*: 18 October 2023
+- Issue 48854: Trim leading spaces for field values in domain forms
+
 ### version 2.381.2
 *Released*: 18 October 2023
 * Merge release23.10-SNAPSHOT to develop:

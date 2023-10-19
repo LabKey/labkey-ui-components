@@ -119,7 +119,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
 
     onFormChange = (evt: any): void => {
         const { id, value } = evt.target;
-        this.onChange(id, value);
+        this.onChange(id, value?.trimStart());
     };
 
     onChange = (id: string, value: any): void => {

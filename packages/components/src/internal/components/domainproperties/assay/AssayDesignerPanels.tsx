@@ -21,6 +21,9 @@ import { AssayRunDataType } from '../../entities/constants';
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
+import { getAppHomeFolderPath } from '../../../app/utils';
+import { Container } from '../../base/models/Container';
+import { getServerContext } from '@labkey/api';
 
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
@@ -124,7 +127,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 
         beforeFinish?.(protocolModel);
 
-        saveAssayDesign(protocolModel)
+        saveAssayDesign(protocolModel, protocolModel.isNew() ? getAppHomeFolderPath(new Container(getServerContext().container)) : protocolModel.container)
             .then(response => {
                 this.setState(() => ({ protocolModel }));
                 setSubmitting(false, () => {

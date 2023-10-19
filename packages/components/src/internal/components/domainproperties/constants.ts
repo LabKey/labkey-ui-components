@@ -192,7 +192,8 @@ export const FIELD_NAME_CHAR_WARNING_INFO =
     'SPSS, and MATLAB.';
 
 export const FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG = 'No text choice values defined.';
-export const TEXT_CHOICE_PHI_NOTE = 'Note: These text choice options are visible to all administrators, including those not granted any PHI reader role.';
+export const TEXT_CHOICE_PHI_NOTE =
+    'Note: These text choice options are visible to all administrators, including those not granted any PHI reader role.';
 export const FIELD_EMPTY_TEXT_CHOICE_WARNING_INFO =
     'This field is defined as a "Text Choice" field, but no values have been added. Expand the field and use the ' +
     '"Add Values" button to define the set of choices for this field.';

@@ -26,7 +26,7 @@ import {
     TargetTableSelectProps,
 } from './Lookup/Fields';
 import { LookupFieldOptions } from './LookupFieldOptions';
-import {PropDescType} from "./PropDescType";
+import { PropDescType } from './PropDescType';
 
 describe('LookupFieldOptions', () => {
     const waitForLoad = jest.fn(field => Promise.resolve(!field.state().loading));

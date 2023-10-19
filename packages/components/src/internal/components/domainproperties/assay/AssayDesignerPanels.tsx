@@ -192,6 +192,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 
     render() {
         const {
+            initModel,
             api,
             appPropertiesOnly,
             hideAdvancedProperties,
@@ -267,7 +268,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             index={domain.domainId || i}
                             domainIndex={i}
                             domain={domain}
-                            headerPrefix={protocolModel.name}
+                            headerPrefix={initModel?.name}
                             controlledCollapse
                             initCollapsed={currentPanelIndex !== i + DOMAIN_PANEL_INDEX}
                             validate={validatePanel === i + DOMAIN_PANEL_INDEX}

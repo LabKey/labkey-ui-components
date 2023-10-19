@@ -671,6 +671,7 @@ import {
 
 import {
     CloseEventCode,
+    getAppHomeFolderPath,
     getCurrentAppProperties,
     getPrimaryAppProperties,
     getProjectDataExclusion,
@@ -854,6 +855,7 @@ const App = {
     EntityCreationMode,
     getCurrentAppProperties,
     registerWebSocketListeners,
+    getAppHomeFolderPath,
     isAppHomeFolder,
     isAssayDesignExportEnabled,
     isAssayEnabled,

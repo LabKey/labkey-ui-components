@@ -221,7 +221,7 @@ export function isAppHomeFolder(container?: Container, moduleContext?: ModuleCon
     return isTopFolder || (isSubFolder && !isProductProjectsEnabled(moduleContext));
 }
 
-export function getAppHomeFolderPath(container?: Container, moduleContext?: ModuleContext): string {
+export function getAppHomeFolderPath(container: Container, moduleContext?: ModuleContext): string {
     return isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath;
 }
 

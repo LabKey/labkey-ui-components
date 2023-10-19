@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Add ability to create, edit, and delete sample, source, and assay domains from subfolders
+
 ### version 2.383.0
 *Released*: 19 October 2023
 * Issue 48347: Update field editor "User" data type to allow lookup validator option

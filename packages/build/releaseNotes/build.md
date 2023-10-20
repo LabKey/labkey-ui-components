@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version 6.X
-*Released*:X 2023
+### version 6.16.1
+*Released*: 20 October  2023
 * Export @labkey/api path in link mode
 
 ### version 6.16.0

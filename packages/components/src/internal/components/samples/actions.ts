@@ -434,12 +434,7 @@ export function getSampleAliquotRows(sampleId: number | string): Promise<Array<R
     return new Promise((resolve, reject) => {
         Query.executeSql({
             containerFilter: getContainerFilter(),
-            sql:
-                'SELECT m.RowId, m.Name\n' +
-                'FROM exp.materials m \n' +
-                'WHERE m.lsid <> m.RootMaterialLSID AND m.RootMaterialLSID = (SELECT lsid FROM exp.materials mi WHERE mi.RowId = ' +
-                sampleId +
-                ')',
+            sql: `SELECT RowId, Name FROM materials WHERE RowId <> RootMaterialRowId AND RootMaterialRowId = ${sampleId}`,
             schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
             requiredVersion: 17.1,
             success: result => {
@@ -698,8 +693,8 @@ export function hasExistingSamples(isRoot?: boolean, containerPath?: string): Pr
         '\n' +
         'FROM materials m WHERE EXISTS ' +
         '\n' +
-        '( SELECT * FROM materials mi WHERE mi.rowId = m.rowId';
-    if (isRoot) dataCountSql += ' AND mi.rootMaterialLSID = mi.lsid';
+        '( SELECT * FROM materials mi WHERE mi.RowId = m.RowId';
+    if (isRoot) dataCountSql += ' AND mi.RootMaterialRowId = mi.RowId';
     dataCountSql += ')';
 
     return new Promise((resolve, reject) => {

@@ -6,7 +6,7 @@ import { NEW_SAMPLE_TYPE_HREF } from '../../app/constants';
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { Container } from '../base/models/Container';
 
-import { SampleTypeEmptyAlert } from './SampleEmptyAlert';
+import { SampleTypeEmptyAlert } from './SampleTypeEmptyAlert';
 
 const EMPTY_ALERT = '.empty-alert';
 
@@ -16,8 +16,9 @@ describe('SampleTypeEmptyAlert', () => {
         moduleContext: { query: { isProductProjectsEnabled: false } },
     };
 
-    const homeProjectContext = {
+    const adminHomeProjectContext = {
         container: new Container({ type: 'project', path: 'project' }),
+        user: TEST_USER_APP_ADMIN,
         moduleContext: { query: { isProductProjectsEnabled: true } },
     };
 
@@ -35,7 +36,7 @@ describe('SampleTypeEmptyAlert', () => {
         const wrapper = mountWithAppServerContext(
             <SampleTypeEmptyAlert user={TEST_USER_APP_ADMIN} />,
             {},
-            homeProjectContext
+            adminHomeProjectContext
         );
 
         // Expect default message
@@ -49,7 +50,7 @@ describe('SampleTypeEmptyAlert', () => {
         const wrapper = mountWithAppServerContext(
             <SampleTypeEmptyAlert message={expectedMessage} user={TEST_USER_READER} />,
             {},
-            homeProjectContext
+            adminHomeProjectContext
         );
 
         expect(wrapper.find(EMPTY_ALERT).at(0).text()).toEqual(expectedMessage);

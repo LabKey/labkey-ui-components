@@ -97,6 +97,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
   visitedPanels={Immutable.List []}
 >
   <ComponentWithDomainPropertiesPanelCollapse
+    canRename={true}
     controlledCollapse={true}
     hideStudyProperties={true}
     initCollapsed={false}
@@ -1072,6 +1073,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
   visitedPanels={Immutable.List []}
 >
   <ComponentWithDomainPropertiesPanelCollapse
+    canRename={false}
     controlledCollapse={true}
     hideStudyProperties={true}
     initCollapsed={false}
@@ -2642,6 +2644,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
   visitedPanels={Immutable.List []}
 >
   <ComponentWithDomainPropertiesPanelCollapse
+    canRename={true}
     controlledCollapse={true}
     hideStudyProperties={true}
     initCollapsed={false}
@@ -3339,6 +3342,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
   visitedPanels={Immutable.List []}
 >
   <ComponentWithDomainPropertiesPanelCollapse
+    canRename={true}
     controlledCollapse={true}
     hideStudyProperties={true}
     initCollapsed={false}
@@ -4121,6 +4125,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
   visitedPanels={Immutable.List []}
 >
   <ComponentWithDomainPropertiesPanelCollapse
+    canRename={false}
     controlledCollapse={true}
     hideStudyProperties={true}
     initCollapsed={false}
@@ -5496,6 +5501,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
   visitedPanels={Immutable.List []}
 >
   <ComponentWithDomainPropertiesPanelCollapse
+    canRename={false}
     controlledCollapse={true}
     hideStudyProperties={true}
     initCollapsed={false}

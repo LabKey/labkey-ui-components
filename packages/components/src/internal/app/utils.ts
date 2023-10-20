@@ -427,7 +427,7 @@ export function getStorageSectionConfig(user: User, currentProductId: string, mo
             iconURL: imageURL('_images', 'freezer_menu.svg'),
             headerURLPart: HOME_KEY,
         });
-        if (userCanDesignLocations(user)) {
+        if (user && userCanDesignLocations(user)) {
             locationsMenuConfig = locationsMenuConfig.merge({
                 emptyAppURL: AppURL.create(FREEZERS_KEY, 'new'),
                 emptyURLText: 'Create storage',
@@ -448,7 +448,7 @@ export function addSourcesSectionConfig(
         filteredEmptyText: 'No source types available',
         iconURL: imageURL('_images', 'source_type.svg'),
     });
-    if (userCanDesignSourceTypes(user)) {
+    if (user && userCanDesignSourceTypes(user)) {
         sourcesMenuConfig = sourcesMenuConfig.merge({
             emptyAppURL: NEW_SOURCE_TYPE_HREF,
             emptyURLText: 'Create a source type',
@@ -464,7 +464,7 @@ export function getSamplesSectionConfig(user: User): MenuSectionConfig {
         filteredEmptyText: 'No sample types available',
         iconURL: imageURL('_images', 'samples.svg'),
     });
-    if (user.hasDesignSampleTypesPermission()) {
+    if (user && user.hasDesignSampleTypesPermission()) {
         samplesMenuConfig = samplesMenuConfig.merge({
             emptyAppURL: NEW_SAMPLE_TYPE_HREF,
             emptyURLText: 'Create a sample type',
@@ -484,7 +484,7 @@ export function addAssaysSectionConfig(
         filteredEmptyText: 'No assays available',
         iconURL: imageURL('_images', 'assay.svg'),
     });
-    if (user.hasDesignAssaysPermission()) {
+    if (user && user.hasDesignAssaysPermission()) {
         assaysMenuConfig = assaysMenuConfig.merge({
             emptyAppURL: standardAssayOnly ? NEW_STANDARD_ASSAY_DESIGN_HREF : NEW_ASSAY_DESIGN_HREF,
             emptyURLText: 'Create an assay design',

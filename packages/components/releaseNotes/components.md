@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Add ability to create, edit, and delete sample, source, and assay domains from subfolders
+- Issue 48921: Use sort order from model for printing labels
 
 ### version 2.383.0
 *Released*: 19 October 2023

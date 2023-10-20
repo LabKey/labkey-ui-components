@@ -8,6 +8,7 @@ interface Props {
     bsStyleSecondActive?: string;
     bsStyleSecondInactive?: string;
     className?: string;
+    disabled?: boolean;
     first?: string;
     id?: string;
     inputFieldName?: string;
@@ -17,6 +18,7 @@ interface Props {
 
 export const ToggleButtons: FC<Props> = memo(props => {
     const {
+        disabled = false,
         first = 'Enabled',
         second = 'Disabled',
         onClick,
@@ -48,10 +50,10 @@ export const ToggleButtons: FC<Props> = memo(props => {
                 <Input name={inputFieldName} type="hidden" value={active === first ? 'true' : 'false'} />
             )}
             <div className={'btn-group' + (className ? ' ' + className : '')} id={id}>
-                <button type="button" className={firstCls} onClick={firstBtnClick}>
+                <button type="button" className={firstCls} onClick={firstBtnClick} disabled={disabled}>
                     {first}
                 </button>
-                <button type="button" className={secondCls} onClick={secondBtnClick}>
+                <button type="button" className={secondCls} onClick={secondBtnClick} disabled={disabled}>
                     {second}
                 </button>
             </div>

@@ -374,7 +374,7 @@ import {
     getGroupedSampleDomainFields,
     getGroupedSampleDisplayColumns,
 } from './internal/components/samples/actions';
-import { SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
+import { SampleTypeEmptyAlert } from './internal/components/samples/SampleTypeEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
 import { StorageAmountInput } from './internal/components/samples/StorageAmountInput';
 

@@ -81,6 +81,7 @@ import { AssayUploadResultModel } from './models';
 import { PlatePropertiesPanel } from './PlatePropertiesPanel';
 import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
+import { applyEditableGridChangesToModels } from '../editable/utils';
 
 const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';
@@ -671,18 +672,19 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     onGridChange: EditableGridChange = (event, editorModelChanges, dataKeys, data): void => {
         this.setState(state => {
-            const editorModel = state.editorModel.merge(editorModelChanges) as EditorModel;
-            let { dataModel } = state;
-            const orderedRows = dataKeys?.toJS();
-            const rows = data?.toJS();
-
-            if (orderedRows !== undefined && rows !== undefined) {
-                dataModel = dataModel.mutate({ orderedRows, rows });
-            }
+            const { dataModel, editorModel } = state;
+            const updatedModels = applyEditableGridChangesToModels(
+                [dataModel],
+                [editorModel],
+                editorModelChanges,
+                undefined,
+                dataKeys,
+                data
+            );
 
             this.props.setIsDirty?.(true);
 
-            return { dataModel, editorModel };
+            return { dataModel: updatedModels.dataModels[0], editorModel: updatedModels.editorModels[0] };
         });
     };
 

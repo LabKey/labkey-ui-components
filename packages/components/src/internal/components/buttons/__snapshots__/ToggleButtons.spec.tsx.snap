@@ -2,19 +2,17 @@
 
 exports[`<ToggleButtons/> with active 1`] = `
 <div
-  className="btn-group"
+  className="btn-group control-toggle-btn-group"
 >
   <button
-    className="btn btn-sm btn-default"
-    disabled={false}
+    className="btn btn-default"
     onClick={[Function]}
     type="button"
   >
     a
   </button>
   <button
-    className="btn btn-sm btn-primary"
-    disabled={false}
+    className="btn btn-primary"
     onClick={[Function]}
     type="button"
   >
@@ -28,16 +26,14 @@ exports[`<ToggleButtons/> with className 1`] = `
   className="btn-group testing-cls"
 >
   <button
-    className="btn btn-sm btn-default"
-    disabled={false}
+    className="btn btn-default"
     onClick={[Function]}
     type="button"
   >
     a
   </button>
   <button
-    className="btn btn-sm btn-default"
-    disabled={false}
+    className="btn btn-default"
     onClick={[Function]}
     type="button"
   >
@@ -48,19 +44,17 @@ exports[`<ToggleButtons/> with className 1`] = `
 
 exports[`<ToggleButtons/> without active 1`] = `
 <div
-  className="btn-group"
+  className="btn-group control-toggle-btn-group"
 >
   <button
-    className="btn btn-sm btn-default"
-    disabled={false}
+    className="btn btn-default"
     onClick={[Function]}
     type="button"
   >
     a
   </button>
   <button
-    className="btn btn-sm btn-default"
-    disabled={false}
+    className="btn btn-default"
     onClick={[Function]}
     type="button"
   >

@@ -28,14 +28,14 @@ describe('<ToggleButtons/>', () => {
 
     test('onClick handler', () => {
         const onClickFn = jest.fn();
-        const component = <ToggleButtons first="a" second="b" onClick={onClickFn} />;
+        const component = <ToggleButtons first="a" second="b" active="b" onClick={onClickFn} />;
         const wrapper = mount(component);
         const aBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'a');
         const bBtn = wrapper.findWhere(n => n.type() === 'button' && n.text() === 'b');
         expect(onClickFn).toHaveBeenCalledTimes(0);
         aBtn.simulate('click');
         expect(onClickFn).toHaveBeenCalledTimes(1);
-        bBtn.simulate('click');
+        aBtn.simulate('click');
         expect(onClickFn).toHaveBeenCalledTimes(2);
         wrapper.unmount();
     });

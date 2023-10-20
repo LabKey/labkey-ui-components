@@ -8,9 +8,10 @@ import { mount, shallow } from 'enzyme';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { ToggleIcon } from '../buttons/ToggleButtons';
+
 import { FieldLabel } from './FieldLabel';
 import { LabelOverlay } from './LabelOverlay';
-import { ToggleWithInputField } from './input/ToggleWithInputField';
 
 const queryColumn = new QueryColumn({
     name: 'testColumn',
@@ -48,17 +49,15 @@ describe('FieldLabel', () => {
         expect(wrapper.find(LabelOverlay)).toHaveLength(1);
     });
 
-    function verifyToggle(wrapper, className?: string, wrapperClassName?: string) {
-        expect(wrapper.find(ToggleWithInputField)).toHaveLength(1);
-
-        expect(wrapper.find(ToggleWithInputField).prop('className')).toEqual(className ?? 'control-label-toggle-input');
-        if (wrapperClassName)
-            expect(wrapper.find(ToggleWithInputField).prop('containerClassName')).toEqual(wrapperClassName);
-        else expect(wrapper.find(ToggleWithInputField).prop('containerClassName')).toBeUndefined();
+    function verifyToggle(wrapper, classNames?: string[]) {
+        expect(wrapper.find(ToggleIcon)).toHaveLength(1);
+        if (classNames?.length > 0) {
+            classNames.forEach(className => expect(wrapper.find('.' + className)).toHaveLength(1));
+        }
     }
 
     test('showToggle', () => {
-        const wrapper = shallow(<FieldLabel column={queryColumn} showToggle />);
+        const wrapper = shallow(<FieldLabel id="test" column={queryColumn} showToggle />);
         verifyToggle(wrapper);
     });
 
@@ -68,8 +67,8 @@ describe('FieldLabel', () => {
             label,
             isFormsy: false,
         };
-        const wrapper = shallow(<FieldLabel column={queryColumn} showToggle labelOverlayProps={props} />);
-        verifyToggle(wrapper, 'control-label-toggle-input control-label-toggle-input-size-fixed', 'col-xs-1');
+        const wrapper = shallow(<FieldLabel id="test" column={queryColumn} showToggle labelOverlayProps={props} />);
+        verifyToggle(wrapper, ['control-label-toggle-input', 'control-label-toggle-input-size-fixed', 'col-xs-1']);
     });
 
     test('showToggle, with labelOverlayProps, formsy', () => {
@@ -78,7 +77,7 @@ describe('FieldLabel', () => {
             label,
             isFormsy: true,
         };
-        const wrapper = shallow(<FieldLabel column={queryColumn} showToggle labelOverlayProps={props} />);
+        const wrapper = shallow(<FieldLabel id="test" column={queryColumn} showToggle labelOverlayProps={props} />);
         verifyToggle(wrapper);
     });
 
@@ -89,9 +88,15 @@ describe('FieldLabel', () => {
             isFormsy: true,
         };
         const wrapper = shallow(
-            <FieldLabel column={queryColumn} showToggle labelOverlayProps={props} toggleClassName="toggle-wrapper" />
+            <FieldLabel
+                id="test"
+                column={queryColumn}
+                showToggle
+                labelOverlayProps={props}
+                toggleClassName="toggle-wrapper"
+            />
         );
-        verifyToggle(wrapper, 'toggle-wrapper');
+        verifyToggle(wrapper, ['toggle-wrapper']);
     });
 
     test('showToggle, with labelOverlayProps, not formsy, with toggleClassName', () => {
@@ -101,22 +106,14 @@ describe('FieldLabel', () => {
             isFormsy: false,
         };
         const wrapper = shallow(
-            <FieldLabel column={queryColumn} showToggle labelOverlayProps={props} toggleClassName="toggle-wrapper" />
+            <FieldLabel
+                id="test"
+                column={queryColumn}
+                showToggle
+                labelOverlayProps={props}
+                toggleClassName="toggle-wrapper"
+            />
         );
-        verifyToggle(wrapper, 'toggle-wrapper', 'col-xs-1');
+        verifyToggle(wrapper, ['toggle-wrapper', 'col-xs-1']);
     });
-
-    // TODO these tests fail with: TypeError: Cannot read property 'style' of null
-    // This is somewhere inside the ReactBootstrapToggle element.
-    // test("without overlay, allow disable", () => {
-    //     const wrapper = renderer.create(
-    //         <Formsy>
-    //             <FieldLabel allowDisable={true} withLabelOverlay={false} column={queryColumn}/>
-    //         </Formsy>).toJSON();
-    //     // expect(wrapper.find(LabelOverlay)).toHaveLength(1);
-    // });
-    //
-    // test("with overlay, allow disable", () => {
-    //
-    // });
 });

@@ -29,8 +29,6 @@ import { generateNameWithTimestamp } from '../../util/Date';
 
 import { ActionButton } from '../buttons/ActionButton';
 
-import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
-
 import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
 import { hasModule, isApp } from '../../app/utils';
@@ -107,6 +105,7 @@ import {
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 import { SystemFields } from './SystemFields';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
+import { ToggleButtons } from '../buttons/ToggleButtons';
 
 interface IDomainFormInput {
     api?: DomainPropertiesAPIWrapper;
@@ -1323,15 +1322,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 />
 
                                                 {!testMode && (
-                                                    <ToggleWithInputField
-                                                        active={summaryViewMode}
-                                                        id={'domain-toggle-summary-' + domainIndex}
-                                                        onClick={this.onToggleSummaryView}
-                                                        on="Summary mode"
-                                                        off="Detail mode"
-                                                        containerClassName="domain-toolbar-toggle-summary"
-                                                        style={{ height: '100%', marginLeft: '10px' }} // Inline style necessary for <ReactBootstrapToggle/>
-                                                    />
+                                                    <div className="domain-toolbar-toggle-summary">
+                                                        <span>Mode: </span>
+                                                        <ToggleButtons
+                                                            className=""
+                                                            first="Summary"
+                                                            second="Detail"
+                                                            active={summaryViewMode ? 'Summary' : 'Detail'}
+                                                            onClick={this.onToggleSummaryView}
+                                                        />
+                                                    </div>
                                                 )}
                                             </div>
                                         </Col>

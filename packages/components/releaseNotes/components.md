@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD October 2023
 * remove react-bootstrap-toggle dependency from @labkey/components
 * remove ToggleWithInputFields.tsx and replace usages with ToggleButtons or ToggleIcon components
+* remove unused CustomToggle.tsx component
 
 ### version 2.383.0
 *Released*: 19 October 2023

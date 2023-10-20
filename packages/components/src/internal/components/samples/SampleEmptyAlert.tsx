@@ -20,6 +20,9 @@ export const SampleTypeEmptyAlert: FC<Props> = memo(props => {
     const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
     const homeContainer = useContainerUser(homeFolderPath);
 
+    if (!homeContainer.isLoaded) {
+        return null;
+    }
     return (
         <EmptyAlert
             {...baseProps}

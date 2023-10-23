@@ -744,7 +744,7 @@ import {
     TEST_USER_STORAGE_EDITOR,
     TEST_USER_WORKFLOW_EDITOR,
 } from './internal/userFixtures';
-import { TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER, TEST_PROJECT_APP_CONTEXT_ADMIN, TEST_PROJECT_APP_CONTEXT_NON_ADMIN } from './internal/containerFixtures';
+import { TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER, createTestProjectAppContextAdmin, createTestProjectAppContextNonAdmin } from './internal/containerFixtures';
 import {
     ASSAY_DESIGN_KEY,
     ASSAYS_KEY,
@@ -854,6 +854,8 @@ const App = {
     ServerNotificationReducers,
     CloseEventCode,
     EntityCreationMode,
+    createTestProjectAppContextAdmin,
+    createTestProjectAppContextNonAdmin,
     getCurrentAppProperties,
     registerWebSocketListeners,
     getAppHomeFolderPath,
@@ -975,8 +977,6 @@ const App = {
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_PROJECT_CONTAINER,
     TEST_FOLDER_CONTAINER,
-    TEST_PROJECT_APP_CONTEXT_ADMIN,
-    TEST_PROJECT_APP_CONTEXT_NON_ADMIN,
     MEDIA_KEY,
     REGISTRY_KEY,
     CROSS_TYPE_KEY,

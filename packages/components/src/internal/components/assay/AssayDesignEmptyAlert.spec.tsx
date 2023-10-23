@@ -6,10 +6,10 @@ import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTe
 
 import { AssayDesignEmptyAlert } from './AssayDesignEmptyAlert';
 import {
+    createTestProjectAppContextAdmin,
+    createTestProjectAppContextNonAdmin,
     TEST_FOLDER_CONTAINER,
-    TEST_PROJECT_APP_CONTEXT_ADMIN,
-    TEST_PROJECT_APP_CONTEXT_NON_ADMIN,
-    TEST_PROJECT_CONTAINER
+    TEST_PROJECT_CONTAINER,
 } from '../../containerFixtures';
 
 const EMPTY_ALERT = '.empty-alert';
@@ -35,6 +35,8 @@ const childFolderNonProjectContext = {
 };
 
 describe('AssayDesignEmptyAlert', () => {
+    const TEST_PROJECT_APP_CONTEXT_ADMIN = createTestProjectAppContextAdmin(jest.fn);
+    const TEST_PROJECT_APP_CONTEXT_NON_ADMIN = createTestProjectAppContextNonAdmin(jest.fn);
     test('with permissions', async () => {
         const wrapper = mountWithAppServerContext(
             <AssayDesignEmptyAlert user={TEST_USER_ASSAY_DESIGNER} />,

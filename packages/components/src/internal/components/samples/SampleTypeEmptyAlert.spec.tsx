@@ -4,19 +4,21 @@ import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 import { NEW_SAMPLE_TYPE_HREF } from '../../app/constants';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
-import { Container } from '../base/models/Container';
 
 import { SampleTypeEmptyAlert } from './SampleTypeEmptyAlert';
 import {
+    createTestProjectAppContextAdmin,
+    createTestProjectAppContextNonAdmin,
     TEST_FOLDER_CONTAINER,
-    TEST_PROJECT_APP_CONTEXT_ADMIN,
-    TEST_PROJECT_APP_CONTEXT_NON_ADMIN,
     TEST_PROJECT_CONTAINER,
 } from '../../containerFixtures';
 
 const EMPTY_ALERT = '.empty-alert';
 
 describe('SampleTypeEmptyAlert', () => {
+    const TEST_PROJECT_APP_CONTEXT_ADMIN = createTestProjectAppContextAdmin(jest.fn);
+    const TEST_PROJECT_APP_CONTEXT_NON_ADMIN = createTestProjectAppContextNonAdmin(jest.fn);
+
     const topFolderContext = {
         container: TEST_PROJECT_CONTAINER,
         moduleContext: { query: { isProductProjectsEnabled: false } },

@@ -75,17 +75,27 @@ export const TEST_FOLDER_OTHER_CONTAINER_ADMIN = new Container({
     ...TEST_FOLDER_OTHER_CONTAINER_CONFIG,
     effectivePermissions: ['org.labkey.api.security.permissions.AdminPermission'],
 });
-export const TEST_PROJECT_APP_CONTEXT_ADMIN: Partial<AppContext> = {
-    api: getTestAPIWrapper(jest.fn, {
-        security: getSecurityTestAPIWrapper(jest.fn, {
-            fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER_ADMIN, TEST_FOLDER_CONTAINER_ADMIN]),
+
+export const createTestProjectAppContextAdmin = (
+    mockFn = (): any => () => {},
+): Partial<AppContext> => {
+    return {
+        api: getTestAPIWrapper(mockFn, {
+            security: getSecurityTestAPIWrapper(mockFn, {
+                fetchContainers: mockFn().mockResolvedValue([TEST_PROJECT_CONTAINER_ADMIN, TEST_FOLDER_CONTAINER_ADMIN]),
+            }),
         }),
-    }),
+    };
 };
-export const TEST_PROJECT_APP_CONTEXT_NON_ADMIN: Partial<AppContext> = {
-    api: getTestAPIWrapper(jest.fn, {
-        security: getSecurityTestAPIWrapper(jest.fn, {
-            fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
+
+export const createTestProjectAppContextNonAdmin = (
+    mockFn = (): any => () => {}
+): Partial<AppContext> => {
+    return {
+        api: getTestAPIWrapper(mockFn, {
+            security: getSecurityTestAPIWrapper(mockFn, {
+                fetchContainers: mockFn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
+            }),
         }),
-    }),
+    };
 };

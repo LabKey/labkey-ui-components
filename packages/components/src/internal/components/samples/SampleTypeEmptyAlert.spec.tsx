@@ -9,69 +9,31 @@ import { Container } from '../base/models/Container';
 import { SampleTypeEmptyAlert } from './SampleTypeEmptyAlert';
 import {
     TEST_FOLDER_CONTAINER,
-    TEST_FOLDER_CONTAINER_ADMIN,
+    TEST_PROJECT_APP_CONTEXT_ADMIN,
+    TEST_PROJECT_APP_CONTEXT_NON_ADMIN,
     TEST_PROJECT_CONTAINER,
-    TEST_PROJECT_CONTAINER_ADMIN,
 } from '../../containerFixtures';
-import { AppContext } from '../../AppContext';
-import { getTestAPIWrapper } from '../../APIWrapper';
-import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
-
-export const TEST_PROJECT_APP_CONTEXT_ADMIN: Partial<AppContext> = {
-    api: getTestAPIWrapper(jest.fn, {
-        security: getSecurityTestAPIWrapper(jest.fn, {
-            fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER_ADMIN, TEST_FOLDER_CONTAINER_ADMIN]),
-        }),
-    }),
-};
-
-export const TEST_PROJECT_APP_CONTEXT_NON_ADMIN: Partial<AppContext> = {
-    api: getTestAPIWrapper(jest.fn, {
-        security: getSecurityTestAPIWrapper(jest.fn, {
-            fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
-        }),
-    }),
-};
 
 const EMPTY_ALERT = '.empty-alert';
 
 describe('SampleTypeEmptyAlert', () => {
     const topFolderContext = {
-        container: new Container({ type: 'project', path: 'project' }),
+        container: TEST_PROJECT_CONTAINER,
         moduleContext: { query: { isProductProjectsEnabled: false } },
     };
 
-    const adminHomeProjectContext = {
-        container: new Container({ type: 'project', path: 'project' }),
-        user: TEST_USER_APP_ADMIN,
+    const homeProjectContext = {
+        container: TEST_PROJECT_CONTAINER,
         moduleContext: { query: { isProductProjectsEnabled: true } },
-        isLoaded: true,
-    };
-
-    const readerHomeProjectContext = {
-        container: new Container({ type: 'project', path: 'project' }),
-        user: TEST_USER_READER,
-        moduleContext: { query: { isProductProjectsEnabled: true } },
-        isLoaded: true,
     };
 
     const childProjectContext = {
-        container: new Container({
-            type: 'folder',
-            path: TEST_FOLDER_CONTAINER.path,
-            parentPath: TEST_PROJECT_CONTAINER.path,
-        }),
-        user: TEST_USER_APP_ADMIN,
+        container: TEST_FOLDER_CONTAINER,
         moduleContext: { query: { isProductProjectsEnabled: true } },
-        isLoaded: true,
     };
 
     const childFolderNonProjectContext = {
-        container: new Container({
-            type: 'folder',
-            path: TEST_FOLDER_CONTAINER.path,
-            parentPath: TEST_PROJECT_CONTAINER.path,
-        }),
+        container: TEST_FOLDER_CONTAINER,
         moduleContext: { query: { isProductProjectsEnabled: false } },
         isLoaded: true,
     };
@@ -80,7 +42,7 @@ describe('SampleTypeEmptyAlert', () => {
         const wrapper = mountWithAppServerContext(
             <SampleTypeEmptyAlert user={TEST_USER_APP_ADMIN} />,
             TEST_PROJECT_APP_CONTEXT_ADMIN,
-            adminHomeProjectContext
+            homeProjectContext
         );
         await waitForLifecycle(wrapper);
         // Expect default message
@@ -94,7 +56,7 @@ describe('SampleTypeEmptyAlert', () => {
         const wrapper = mountWithAppServerContext(
             <SampleTypeEmptyAlert message={expectedMessage} user={TEST_USER_READER} />,
             TEST_PROJECT_APP_CONTEXT_NON_ADMIN,
-            readerHomeProjectContext
+            homeProjectContext
         );
         await waitForLifecycle(wrapper);
 

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.383.2
+*Released*: 23 October 2023
+* AssayImportPanels.tsx fix for grid cell updates to use applyEditableGridChangesToModels()
+
 ### version 2.383.1
 *Released*: 20 October 2023
 - Assay Design Rename

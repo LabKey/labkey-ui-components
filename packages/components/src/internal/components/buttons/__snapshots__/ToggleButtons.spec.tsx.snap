@@ -2,7 +2,7 @@
 
 exports[`<ToggleButtons/> with active 1`] = `
 <div
-  className="btn-group control-toggle-btn-group"
+  className="toggle btn-group toggle-off control-toggle-btn-group"
 >
   <button
     className="btn btn-default"
@@ -25,7 +25,7 @@ exports[`<ToggleButtons/> with active 1`] = `
 
 exports[`<ToggleButtons/> with className 1`] = `
 <div
-  className="btn-group testing-cls"
+  className="toggle btn-group testing-cls"
 >
   <button
     className="btn btn-default"
@@ -48,7 +48,7 @@ exports[`<ToggleButtons/> with className 1`] = `
 
 exports[`<ToggleButtons/> without active 1`] = `
 <div
-  className="btn-group control-toggle-btn-group"
+  className="toggle btn-group control-toggle-btn-group"
 >
   <button
     className="btn btn-default"

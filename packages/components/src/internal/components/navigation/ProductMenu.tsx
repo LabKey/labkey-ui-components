@@ -232,14 +232,6 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         [menuModel]
     );
 
-    const showEmptyActionUrl = useMemo(() => {
-        if (isProjectContainer(menuModel.containerPath))
-            // if top folder
-            return true;
-
-        return !isProductProjectsEnabled(moduleContext); // or if subfolder where Projects are not enable
-    }, [menuModel, moduleContext]);
-
     const sectionConfigKeysWithInfo = sectionConfigs.reduce((keysWithInfo, sectionConfig) => {
         // get the keys for the sections in a given column/config that have info/items
         keysWithInfo.push(Object.keys(sectionConfig.toJS()).filter(key => getSectionModel(key) !== undefined));
@@ -292,7 +284,6 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                                             section={getSectionModel(key)}
                                             config={menuConfig}
                                             containerPath={menuModel.containerPath}
-                                            hideEmptyUrl={!showEmptyActionUrl}
                                             currentProductId={menuModel.currentProductId}
                                         />
                                     );

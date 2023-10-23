@@ -406,7 +406,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const visibleRoles = useMemo(() => {
         if (!policy) return null;
         let _rolesToShow = rolesToShow;
-        if (!isAppHomeFolder(selectedProject, moduleContext))
+        if (!isAppHomeFolder(selectedProject, moduleContext) && _rolesToShow)
             _rolesToShow = _rolesToShow.filter(value => INVALID_PROJECT_ROLES.indexOf(value) === -1).toList();
         return SecurityRole.filter(roles, policy, _rolesToShow);
     }, [policy, rolesToShow, selectedProject, moduleContext, roles]);

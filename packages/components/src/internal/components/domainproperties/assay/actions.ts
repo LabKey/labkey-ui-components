@@ -27,11 +27,11 @@ import { isAssayEnabled } from '../../../app/utils';
 
 import { AssayProtocolModel } from './models';
 
-export function saveAssayDesign(model: AssayProtocolModel, containerPath?: string): Promise<AssayProtocolModel> {
+export function saveAssayDesign(model: AssayProtocolModel, containerPath: string): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('assay', 'saveProtocol.api', undefined, {
-                container: containerPath ?? model.container,
+                container: containerPath,
             }),
             jsonData: AssayProtocolModel.serialize(model),
             success: Utils.getCallbackWrapper(response => {

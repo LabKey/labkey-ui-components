@@ -552,7 +552,6 @@ import { SAMPLE_TYPE } from './internal/components/domainproperties/PropDescType
 import DomainForm from './internal/components/domainproperties/DomainForm';
 import { BasePropertiesPanel } from './internal/components/domainproperties/BasePropertiesPanel';
 import { DomainFieldsDisplay } from './internal/components/domainproperties/DomainFieldsDisplay';
-import { saveAssayDesign } from './internal/components/domainproperties/assay/actions';
 import { AssayProtocolModel } from './internal/components/domainproperties/assay/models';
 import { AssayDesignerPanels } from './internal/components/domainproperties/assay/AssayDesignerPanels';
 import { ListModel } from './internal/components/domainproperties/list/models';
@@ -1420,7 +1419,6 @@ export {
     InferDomainResponse,
     BasePropertiesPanel,
     AssayDesignerPanels,
-    saveAssayDesign,
     getProtocol,
     AssayProtocolModel,
     SAMPLE_TYPE,

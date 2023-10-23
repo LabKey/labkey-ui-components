@@ -841,6 +841,7 @@ import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './internal/
 import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 import { FormButtons } from './internal/FormButtons';
 import { ModalButtons } from './internal/ModalButtons';
+import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -884,6 +885,7 @@ const App = {
     getProjectDataClassExclusion,
     getProjectSampleTypeExclusion,
     getProjectPath,
+    getSecurityTestAPIWrapper,
     hasPremiumModule,
     hasProductProjects,
     hasModule,

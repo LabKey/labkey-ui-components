@@ -62,6 +62,8 @@ import { getOperationNotPermittedMessage } from '../samples/utils';
 
 import { EditableGridChange } from '../editable/EditableGrid';
 
+import { applyEditableGridChangesToModels } from '../editable/utils';
+
 import {
     allowReimportAssayRun,
     checkForDuplicateAssayFiles,
@@ -81,7 +83,6 @@ import { AssayUploadResultModel } from './models';
 import { PlatePropertiesPanel } from './PlatePropertiesPanel';
 import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
-import { applyEditableGridChangesToModels } from '../editable/utils';
 
 const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';

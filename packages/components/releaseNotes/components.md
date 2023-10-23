@@ -7,6 +7,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * remove ToggleWithInputFields.tsx and replace usages with ToggleButtons or ToggleIcon components
 * remove unused CustomToggle.tsx component
 
+### version 2.383.1
+*Released*: 20 October 2023
+- Assay Design Rename
+  - enable rename on assaydesign update mode for gpat assays
+  - Use new assayauditevent for assay audits
+
 ### version 2.383.0
 *Released*: 19 October 2023
 * Issue 48347: Update field editor "User" data type to allow lookup validator option

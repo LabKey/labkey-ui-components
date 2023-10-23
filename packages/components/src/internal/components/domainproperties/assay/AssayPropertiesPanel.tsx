@@ -41,10 +41,11 @@ interface AssayPropertiesFormProps {
     hideStudyProperties?: boolean;
     model: AssayProtocolModel;
     onChange: (model: AssayProtocolModel) => void;
+    canRename?: boolean;
 }
 
 const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
-    const { appPropertiesOnly, children, hideStudyProperties, model, onChange } = props;
+    const { appPropertiesOnly, children, hideStudyProperties, model, onChange, canRename } = props;
     const { moduleContext } = useServerContext();
 
     const onValueChange = useCallback(
@@ -103,7 +104,7 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
             <Col xs={12} lg={appPropertiesOnly ? 12 : 6}>
                 <div className="domain-field-padding-bottom">
                     <SectionHeading title="Basic Properties" />
-                    <NameInput model={model} onChange={onInputChange} appPropertiesOnly={appPropertiesOnly} />
+                    <NameInput model={model} onChange={onInputChange} appPropertiesOnly={appPropertiesOnly} canRename={canRename} />
                     <DescriptionInput model={model} onChange={onInputChange} appPropertiesOnly={appPropertiesOnly} />
                     {model.allowPlateTemplateSelection() && (
                         <PlateTemplatesInput
@@ -194,7 +195,7 @@ interface OwnProps extends AssayPropertiesFormProps {
 type Props = OwnProps & BasePropertiesPanelProps;
 
 const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapseProps> = memo(props => {
-    const { appPropertiesOnly, asPanel, children, helpTopic, hideStudyProperties, model, onChange } = props;
+    const { appPropertiesOnly, canRename, asPanel, children, helpTopic, hideStudyProperties, model, onChange } = props;
     const [isValid, setIsValid] = useState<boolean>(true);
 
     const updateValidStatus = useCallback(
@@ -216,6 +217,7 @@ const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapse
             hideStudyProperties={hideStudyProperties}
             model={model}
             onChange={updateValidStatus}
+            canRename={canRename}
         >
             {children}
         </AssayPropertiesForm>

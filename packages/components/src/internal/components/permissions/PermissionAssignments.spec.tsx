@@ -144,7 +144,7 @@ describe('PermissionAssignments', () => {
         const defaultProps = getDefaultProps();
 
         const wrapper = mountWithAppServerContext(
-            <PermissionAssignments {...defaultProps} containerId={container.id} />,
+            <PermissionAssignments {...defaultProps} />,
             getDefaultAppContext({ fetchPolicy, fetchGroups, getGroupMemberships }),
             getDefaultServerContext({
                 container,

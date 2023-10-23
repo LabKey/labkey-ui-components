@@ -195,6 +195,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 
     render() {
         const {
+            initModel,
             api,
             appPropertiesOnly,
             hideAdvancedProperties,
@@ -211,6 +212,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
         } = this.props;
         const { protocolModel } = this.state;
 
+        const isGpat = protocolModel.providerName === GENERAL_ASSAY_PROVIDER_NAME;
         return (
             <BaseDomainDesigner
                 name={protocolModel.name}
@@ -239,6 +241,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback);
                     }}
+                    canRename={isGpat}
                 />
                 {protocolModel.domains.map((domain, i) => {
                     // optionally hide the Batch Fields domain from the UI
@@ -248,7 +251,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 
                     // allow empty domain to be inferred from a file for Data Fields in General assay
                     const hideInferFromFile =
-                        protocolModel.providerName !== GENERAL_ASSAY_PROVIDER_NAME || !domain.isNameSuffixMatch('Data');
+                        !isGpat || !domain.isNameSuffixMatch('Data');
                     // The File property type should be hidden for Data domains if the display options indicate this.
                     // We will always allow file property types for the Batch and Run domains.
                     const hideFilePropertyType =
@@ -268,7 +271,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             index={domain.domainId || i}
                             domainIndex={i}
                             domain={domain}
-                            headerPrefix={protocolModel.name}
+                            headerPrefix={initModel?.name}
                             controlledCollapse
                             initCollapsed={currentPanelIndex !== i + DOMAIN_PANEL_INDEX}
                             validate={validatePanel === i + DOMAIN_PANEL_INDEX}

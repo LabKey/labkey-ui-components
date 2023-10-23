@@ -38,6 +38,8 @@ import {
     QUERY_UPDATE_AUDIT_QUERY,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     PROJECT_AUDIT_QUERY,
+    ASSAY_AUDIT_QUERY,
+    EXPERIMENT_AUDIT_EVENT,
 } from './constants';
 
 interface OwnProps {
@@ -70,7 +72,10 @@ const AuditQueriesListingPageBody: FC<InjectedQueryModels & OwnProps> = memo(pro
                 const { value } = selectedQuery;
                 const isQueryDataUpdate =
                     value === SOURCE_AUDIT_QUERY.value || value === DATACLASS_DATA_UPDATE_AUDIT_QUERY.value;
-                const auditEventType = isQueryDataUpdate ? QUERY_UPDATE_AUDIT_QUERY.value : value;
+                let auditEventType = isQueryDataUpdate ? QUERY_UPDATE_AUDIT_QUERY.value : value;
+                const isAssayEvent = value === ASSAY_AUDIT_QUERY.value;
+                if (isAssayEvent)
+                    auditEventType = EXPERIMENT_AUDIT_EVENT;
                 const detail_ = await getAuditDetail(selectedRowId, auditEventType);
                 setDetail(detail_.merge({ rowId: selectedRowId }) as AuditDetailsModel);
                 setError(undefined);

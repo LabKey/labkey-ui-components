@@ -184,6 +184,7 @@ const labkeyPackagesDev = process.env.LINK
     ? {
         // Note that for modules that don't have these packages, the aliases are just ignored and don't
         // seem to cause any problems.
+        '@labkey/api': path.resolve('./node_modules/@labkey/api'),
         '@labkey/components': labkeyUIComponentsPath,
         '@labkey/premium': labkeyUIPremiumPath,
         '@labkey/premium/assay': labkeyUIPremiumPath + '/assay',

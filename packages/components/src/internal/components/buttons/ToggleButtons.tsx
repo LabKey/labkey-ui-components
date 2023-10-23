@@ -87,7 +87,14 @@ export const ToggleIcon: FC<Props> = memo(props => {
             {inputFieldName && (
                 <Input name={inputFieldName} type="hidden" value={active === first ? 'true' : 'false'} />
             )}
-            <div className={'toggle-group-icon btn-group' + (className ? ' ' + className : '')} id={id}>
+            <div
+                className={classNames('toggle', 'toggle-group-icon', 'btn-group', {
+                    'toggle-on': firstActive,
+                    'toggle-off': secondActive,
+                    [className]: !!className,
+                })}
+                id={id}
+            >
                 {firstActive && <i className="fa fa-toggle-on" onClick={secondBtnClick} />}
                 {secondActive && <i className="fa fa-toggle-off" onClick={firstBtnClick} />}
             </div>

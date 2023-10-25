@@ -49,6 +49,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { ToggleButtons } from '../buttons/ToggleButtons';
+
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     EXPAND_TRANSITION,
@@ -105,7 +107,6 @@ import {
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 import { SystemFields } from './SystemFields';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
-import { ToggleButtons } from '../buttons/ToggleButtons';
 
 interface IDomainFormInput {
     api?: DomainPropertiesAPIWrapper;

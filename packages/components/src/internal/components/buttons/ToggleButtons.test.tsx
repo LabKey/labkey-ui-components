@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import {ToggleButtons, ToggleIcon} from './ToggleButtons';
+import { ToggleButtons, ToggleIcon } from './ToggleButtons';
 
 describe('ToggleButtons', () => {
     test('default props', () => {

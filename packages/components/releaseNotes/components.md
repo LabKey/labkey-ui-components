@@ -7,6 +7,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 - export new `isSharedDefinition` method in `App` object
 - Issue 48921: Use sort order from model for printing labels
 
+### version 2.385.0
+*Released*: 25 October 2023
+- EditableGrid: Add more specific classNames to button bar buttons
+- EditableDetailPanel: Use FormButtons
+- DetailPanel/EditableDetailPanel: Remove actions prop
+- DetailPanelHeader: convert to FC, simplify props, render panel-heading div
+
 ### version 2.384.0
 *Released*: 25 October 2023
 * remove react-bootstrap-toggle dependency from @labkey/components

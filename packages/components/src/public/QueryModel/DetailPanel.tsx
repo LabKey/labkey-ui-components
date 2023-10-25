@@ -30,13 +30,15 @@ interface DetailPanelProps extends DetailDisplaySharedProps {
     queryColumns?: QueryColumn[];
 }
 
+type RequiresModel = Pick<RequiresModelAndActions, 'model'>;
+
 /**
  * Render a QueryModel with a single row of a data. For in-depth documentation and examples see
  * components/docs/QueryModel.md.
  */
-export const DetailPanel: FC<DetailPanelProps & RequiresModelAndActions> = memo(props => {
+export const DetailPanel: FC<DetailPanelProps & RequiresModel> = memo(props => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { actions, editColumns, model, queryColumns, ...detailDisplayProps } = props;
+    const { editColumns, model, queryColumns, ...detailDisplayProps } = props;
     const { editingMode } = detailDisplayProps;
     const error = model.queryInfoError ?? model.rowsError;
     let displayColumns: List<QueryColumn>;

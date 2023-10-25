@@ -18,7 +18,7 @@ export interface LineageDetailProps {
 }
 
 const LineageDetailImpl: FC<LineageDetailProps & InjectedQueryModels> = memo(props => {
-    const { actions, queryModels } = props;
+    const { queryModels } = props;
     if (queryModels.model.isLoading) return <LoadingSpinner />;
     if (queryModels.model.hasLoadErrors) return <Alert>{queryModels.model.loadErrors[0]}</Alert>;
 
@@ -28,12 +28,7 @@ const LineageDetailImpl: FC<LineageDetailProps & InjectedQueryModels> = memo(pro
     const detailColumns = [...queryModels.model.detailColumns, ...additionalCols];
 
     return (
-        <DetailPanel
-            model={queryModels.model}
-            actions={actions}
-            queryColumns={detailColumns}
-            detailRenderer={_resolveDetailRenderer}
-        />
+        <DetailPanel model={queryModels.model} queryColumns={detailColumns} detailRenderer={_resolveDetailRenderer} />
     );
 });
 

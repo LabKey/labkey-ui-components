@@ -13,59 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, memo } from 'react';
 
 interface DetailPanelHeaderProps {
-    canUpdate: boolean;
     editing?: boolean;
     isEditable: boolean;
-    onClickFn?: () => void;
+    onClick?: () => void;
     title?: string;
-    useEditIcon: boolean;
     verb?: string;
     warning?: string;
 }
 
-export class DetailPanelHeader extends React.Component<DetailPanelHeaderProps, any> {
-    static defaultProps = {
-        title: 'Details',
-        useEditIcon: true,
-        verb: 'Editing',
-    };
+export const DetailPanelHeader: FC<DetailPanelHeaderProps> = memo(props => {
+    const { isEditable, editing, onClick, warning, title = 'Details', verb = 'Editing' } = props;
 
-    render() {
-        const { isEditable, canUpdate, editing, onClickFn, warning, title, useEditIcon, verb } = this.props;
-
-        if (editing) {
-            return (
-                <>
-                    {verb} {title}
-                    <span className="detail__edit--heading">
-                        {warning !== undefined && (
-                            <span>
-                                <span> - </span>
-                                <span className="edit__warning">{warning}</span>
-                            </span>
-                        )}
-                    </span>
-                </>
-            );
-        }
-
+    if (editing) {
         return (
-            <>
-                {title}
+            <div className="panel-heading">
+                {verb} {title}
                 <span className="detail__edit--heading">
-                    {isEditable && canUpdate && (
-                        <>
-                            <div className="detail__edit-button" onClick={onClickFn}>
-                                {useEditIcon ? <i className="fa fa-pencil-square-o" /> : 'Edit'}
-                            </div>
-                            <div className="clearfix" />
-                        </>
+                    {warning !== undefined && (
+                        <span>
+                            <span> - </span>
+                            <span className="edit__warning">{warning}</span>
+                        </span>
                     )}
                 </span>
-            </>
+            </div>
         );
     }
-}
+
+    return (
+        <div className="panel-heading">
+            {title}
+            <span className="detail__edit--heading">
+                {isEditable && (
+                    <>
+                        <div className="detail__edit-button" onClick={onClick}>
+                            <i className="fa fa-pencil-square-o" />
+                        </div>
+                        <div className="clearfix" />
+                    </>
+                )}
+            </span>
+        </div>
+    );
+});
+DetailPanelHeader.displayName = 'DetailPanelHeader';

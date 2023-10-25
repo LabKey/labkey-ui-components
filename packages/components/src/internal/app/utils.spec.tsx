@@ -24,13 +24,14 @@ import { MenuSectionConfig } from '../components/navigation/model';
 
 import {
     addAssaysSectionConfig,
-    getSamplesSectionConfig,
     addSourcesSectionConfig,
     biologicsIsPrimaryApp,
+    freezerManagerIsCurrentApp,
     getCurrentAppProperties,
     getMenuSectionConfigs,
     getPrimaryAppProperties,
     getProjectPath,
+    getSamplesSectionConfig,
     getStorageSectionConfig,
     hasPremiumModule,
     isAppHomeFolder,
@@ -48,15 +49,15 @@ import {
     isProtectedDataEnabled,
     isSampleManagerEnabled,
     isSampleStatusEnabled,
+    isSharedDefinition,
     isWorkflowEnabled,
     sampleManagerIsPrimaryApp,
     setProductProjects,
     userCanDesignLocations,
     userCanDesignSourceTypes,
     userCanEditStorageData,
-    userCanReadUserDetails,
     userCanReadGroupDetails,
-    freezerManagerIsCurrentApp,
+    userCanReadUserDetails,
 } from './utils';
 import {
     ASSAYS_KEY,
@@ -1132,5 +1133,60 @@ describe('addAssaySectionConfig', () => {
         expect(configs.size).toBe(1);
         sectionConfig = configs.get(0).get(ASSAYS_KEY);
         expect(sectionConfig.emptyAppURL?.toHref()).toBe('#/assayDesign/General');
+    });
+});
+
+describe('isSharedDefinition', () => {
+    const currentContainerHome = new Container( {
+        path: '/home',
+        parentPath: '/',
+        parentId: 'root',
+        type: 'project',
+        id: 'homeId',
+    });
+    const currentContainerFolder = new Container ({
+        path: '/home/folder',
+        parentPath: '/home',
+        parentId: 'homeId',
+        type: 'folder',
+        id: 'folderId',
+    });
+    const moduleContextWithProjects = {
+        query: {
+            isProductProjectsEnabled: true,
+            hasProductProjects: true,
+        },
+    };
+    const moduleContextWithoutProjects = {
+        query: {
+            isProductProjectsEnabled: false,
+            hasProductProjects: false,
+        },
+    };
+
+    test('different container', () => {
+        expect(isSharedDefinition(currentContainerHome, moduleContextWithProjects, '/home/other')).toBe(true);
+        expect(isSharedDefinition(currentContainerHome, moduleContextWithoutProjects, '/home/other')).toBe(true);
+        expect(isSharedDefinition(currentContainerHome, moduleContextWithProjects, 'otherId', true)).toBe(true);
+        expect(isSharedDefinition(currentContainerHome, moduleContextWithoutProjects, 'otherId', true)).toBe(true);
+    });
+
+    test('same container, no product projects', () => {
+        expect(isSharedDefinition(currentContainerHome, moduleContextWithoutProjects, '/home')).toBe(false);
+        expect(isSharedDefinition(currentContainerHome, moduleContextWithoutProjects, 'homeId', true)).toBe(false);
+        expect(isSharedDefinition(currentContainerFolder, moduleContextWithoutProjects, '/home/folder')).toBe(false);
+        expect(isSharedDefinition(currentContainerFolder, moduleContextWithoutProjects, 'folderId', true)).toBe(false);
+    });
+
+    test('same container, with product projects, defined in home', () => {
+        expect(isSharedDefinition(currentContainerHome, moduleContextWithProjects, '/home')).toBe(true);
+        expect(isSharedDefinition(currentContainerHome, moduleContextWithProjects, 'homeId', true)).toBe(true);
+        expect(isSharedDefinition(currentContainerFolder, moduleContextWithProjects, '/home')).toBe(true);
+        expect(isSharedDefinition(currentContainerFolder, moduleContextWithProjects, 'homeId', true)).toBe(true);
+    });
+
+    test('same container, with product projects, defined in folder', () => {
+        expect(isSharedDefinition(currentContainerFolder, moduleContextWithProjects, '/home/folder')).toBe(false);
+        expect(isSharedDefinition(currentContainerFolder, moduleContextWithProjects, 'folderId', true)).toBe(false);
     });
 });

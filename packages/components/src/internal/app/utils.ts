@@ -225,6 +225,32 @@ export function getAppHomeFolderPath(container: Container, moduleContext?: Modul
     return isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath;
 }
 
+function getAppHomeFolderId(container: Container, moduleContext?: ModuleContext): string {
+    return isAppHomeFolder(container, moduleContext) ? container.id : container.parentId;
+}
+
+// either defined in a different container or it's defined in the home container and product projects are available.
+export function isSharedDefinition(
+    currentContainer: Container,
+    moduleContext: ModuleContext,
+    domainContainerPathOrId: string,
+    isId?: boolean
+): boolean {
+    if (
+        (isId && domainContainerPathOrId !== currentContainer.id) ||
+        (!isId && domainContainerPathOrId !== currentContainer.path)
+    ) {
+        return true;
+    }
+    if (!hasProductProjects(moduleContext)) {
+        return false;
+    }
+    if (isId && getAppHomeFolderId(currentContainer, moduleContext) === domainContainerPathOrId) {
+        return true;
+    }
+    return !isId && getAppHomeFolderPath(currentContainer, moduleContext) === domainContainerPathOrId;
+}
+
 export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolean {
     return getPrimaryAppProperties(moduleContext)?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
 }

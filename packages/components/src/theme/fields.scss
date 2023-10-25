@@ -116,11 +116,44 @@
     }
 }
 
+.toggle-group-icon {
+    i {
+        font-size: 1.5em;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    i.fa-toggle-on {
+        color: $brand-primary;
+    }
+    i.fa-toggle-off {
+        color: $gray-light;
+    }
+}
+
+.control-toggle-btn-group {
+    display: flex;
+}
+
 .control-label-toggle-input {
     float: right;
+
+    .btn {
+        padding: 4px 8px;
+    }
+    .btn-disabled {
+        margin-left: unset !important;
+    }
+    .btn-default:focus {
+        background-color: white;
+    }
 }
 
 .control-label-toggle-input-size-fixed {
     width: 90px !important;
     height: 28px !important;
+
+    .btn-group {
+        float: right;
+    }
 }

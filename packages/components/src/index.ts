@@ -163,7 +163,7 @@ import { PaginationButtons } from './internal/components/buttons/PaginationButto
 import { ManageDropdownButton } from './internal/components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
 import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
-import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
+import { ToggleButtons, ToggleIcon } from './internal/components/buttons/ToggleButtons';
 import { DisableableButton } from './internal/components/buttons/DisableableButton';
 import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMenuButton';
 import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
@@ -1523,6 +1523,7 @@ export {
     SplitButtonGroup,
     PaginationButtons,
     ToggleButtons,
+    ToggleIcon,
     DisableableButton,
     ResponsiveMenuButton,
     ResponsiveMenuButtonGroup,

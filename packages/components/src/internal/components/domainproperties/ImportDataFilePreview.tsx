@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { convertRowDataIntoPreviewData } from '../files/actions';
-import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 import { FilePreviewGrid } from '../files/FilePreviewGrid';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 import { DeleteIcon } from '../base/DeleteIcon';
+import { ToggleButtons } from '../buttons/ToggleButtons';
 
 interface Props {
     file: File;
@@ -51,12 +51,11 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
             <div className="domain-form__file-preview">
                 <div className="domain-form__file-preview__text">Import data from this file upon {noun} creation? </div>
                 <div className="domain-form__file-preview__toggle">
-                    <ToggleWithInputField
-                        active={shouldImportData}
-                        id="importData"
+                    <ToggleButtons
+                        first="Yes"
+                        second="No"
+                        active={shouldImportData ? 'Yes' : 'No'}
                         onClick={this.onToggleClick}
-                        on="Import Data"
-                        off="Don't Import"
                     />
                     {shouldImportData && file && (
                         <>

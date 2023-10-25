@@ -7,6 +7,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - export new `isSharedDefinition` method in `App` object
 - Issue 48921: Use sort order from model for printing labels
 
+### version 2.384.0
+*Released*: 25 October 2023
+* remove react-bootstrap-toggle dependency from @labkey/components
+* remove ToggleWithInputFields.tsx and replace usages with ToggleButtons or ToggleIcon components
+* remove unused CustomToggle.tsx component
+
 ### version 2.383.2
 *Released*: 23 October 2023
 * AssayImportPanels.tsx fix for grid cell updates to use applyEditableGridChangesToModels()

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.383.3-createDomainsFromProjects.7",
+  "version": "2.384.1-createDomainsFromProjects.7",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -70,7 +70,6 @@
     "react": "~16.14.0",
     "react-beautiful-dnd": "~13.1.1",
     "react-bootstrap": "~0.33.1",
-    "react-bootstrap-toggle": "~2.3.2",
     "react-color": "~2.19.3",
     "react-datepicker": "~4.17.0",
     "react-dom": "~16.14.0",

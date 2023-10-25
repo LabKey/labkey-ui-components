@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.38?.0
-*Released*: ?? October 2023
+### version 2.385.0
+*Released*: 25 October 2023
 - EditableGrid: Add more specific classNames to button bar buttons
 - EditableDetailPanel: Use FormButtons
 - DetailPanel/EditableDetailPanel: Remove actions prop

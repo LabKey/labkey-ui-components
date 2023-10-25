@@ -4,11 +4,18 @@
  */
 import React, { Component, CSSProperties, ReactNode } from 'react';
 
+import classNames from 'classnames';
+
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { ToggleWithInputField, ToggleWithInputFieldProps } from './input/ToggleWithInputField';
+import { ToggleIcon } from '../buttons/ToggleButtons';
+
 import { getFieldEnabledFieldName } from './utils';
 import { LabelOverlay, LabelOverlayProps } from './LabelOverlay';
+
+interface ToggleProps {
+    onClick: () => void;
+}
 
 export interface FieldLabelProps {
     column?: QueryColumn;
@@ -21,7 +28,7 @@ export interface FieldLabelProps {
     showToggle?: boolean;
     style?: CSSProperties;
     toggleClassName?: string;
-    toggleProps?: Partial<ToggleWithInputFieldProps>;
+    toggleProps?: Partial<ToggleProps>;
     withLabelOverlay?: boolean;
 }
 
@@ -79,16 +86,16 @@ export class FieldLabel extends Component<FieldLabelProps> {
             <>
                 {labelBody}
                 {showToggle && (
-                    <ToggleWithInputField
-                        active={!isDisabled}
-                        onClick={toggleProps && toggleProps.onClick}
-                        id={id ? id : column ? column.fieldKey : undefined}
-                        inputFieldName={getFieldEnabledFieldName(column, fieldName)}
-                        on={toggleProps && toggleProps.on ? toggleProps.on : 'Enabled'}
-                        off={toggleProps && toggleProps.off ? toggleProps.off : 'Disabled'}
-                        className={toggleClassName ?? toggleWrapperClassName}
-                        containerClassName={toggleContainerClassName}
-                    />
+                    <span className={classNames(toggleContainerClassName)}>
+                        <div className={classNames(toggleClassName, toggleWrapperClassName)}>
+                            <ToggleIcon
+                                id={id ?? column?.fieldKey}
+                                inputFieldName={getFieldEnabledFieldName(column, fieldName)}
+                                active={!isDisabled ? 'on' : 'off'}
+                                onClick={toggleProps?.onClick}
+                            />
+                        </div>
+                    </span>
                 )}
             </>
         );

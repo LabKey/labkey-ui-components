@@ -48,7 +48,7 @@ class DetailBodyImpl extends PureComponent<BodyProps & InjectedQueryModels> {
     }
 
     render(): ReactNode {
-        const { actions, id, queryModels } = this.props;
+        const { id, queryModels } = this.props;
         const model = queryModels[id];
 
         if (model.isLoading) {
@@ -69,7 +69,7 @@ class DetailBodyImpl extends PureComponent<BodyProps & InjectedQueryModels> {
                     <Link to={AppURL.create('q', schemaName, name).toString()}>{plural}</Link>
                 </BreadcrumbCreate>
                 {title && <PageHeader title={title} />}
-                <DetailPanel actions={actions} asPanel model={model} />
+                <DetailPanel asPanel model={model} />
             </Page>
         );
     }

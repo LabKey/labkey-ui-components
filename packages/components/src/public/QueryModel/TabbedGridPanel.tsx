@@ -200,6 +200,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 await exportTabsXlsx(filename, models);
                 onExport?.[EXPORT_TYPES.EXCEL]?.();
             } catch (e) {
+                console.error(e);
                 // Set export error
                 _createNotification?.({ message: 'Export failed: ' + e, alertClass: 'danger' });
             } finally {

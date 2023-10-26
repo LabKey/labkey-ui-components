@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 48969: add loadAllQueryInfos method to withQueryModels actions
+- Update ExportModal to show all system views (prefixed by ~~) as 'Default'
+- Update ExportModal to pre-select models with counts > 0 when using `tabRowCounts`
+
 ### version 2.385.0
 *Released*: 25 October 2023
 - EditableGrid: Add more specific classNames to button bar buttons

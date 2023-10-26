@@ -1,6 +1,9 @@
 import { Project } from '@labkey/api';
 
 import { Container, ContainerDateFormats } from './components/base/models/Container';
+import { AppContext } from './AppContext';
+import { getTestAPIWrapper } from './APIWrapper';
+import { getSecurityTestAPIWrapper } from './components/security/APIWrapper';
 
 const TEST_DATE_FORMATS: ContainerDateFormats = {
     dateFormat: 'yyyy-MM-dd',
@@ -72,3 +75,27 @@ export const TEST_FOLDER_OTHER_CONTAINER_ADMIN = new Container({
     ...TEST_FOLDER_OTHER_CONTAINER_CONFIG,
     effectivePermissions: ['org.labkey.api.security.permissions.AdminPermission'],
 });
+
+export const createTestProjectAppContextAdmin = (
+    mockFn = (): any => () => {},
+): Partial<AppContext> => {
+    return {
+        api: getTestAPIWrapper(mockFn, {
+            security: getSecurityTestAPIWrapper(mockFn, {
+                fetchContainers: mockFn().mockResolvedValue([TEST_PROJECT_CONTAINER_ADMIN, TEST_FOLDER_CONTAINER_ADMIN]),
+            }),
+        }),
+    };
+};
+
+export const createTestProjectAppContextNonAdmin = (
+    mockFn = (): any => () => {}
+): Partial<AppContext> => {
+    return {
+        api: getTestAPIWrapper(mockFn, {
+            security: getSecurityTestAPIWrapper(mockFn, {
+                fetchContainers: mockFn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
+            }),
+        }),
+    };
+};

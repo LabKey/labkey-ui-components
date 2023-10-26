@@ -1,10 +1,12 @@
 import React, { FC, memo } from 'react';
 import { PermissionTypes } from '@labkey/api';
 
-import { EmptyAlertWithPermissions, EmptyAlertWithPermissionsProps } from '../base/EmptyAlert';
+import { EmptyAlert, EmptyAlertWithPermissionsProps } from '../base/EmptyAlert';
 import { NEW_SAMPLE_TYPE_HREF } from '../../app/constants';
 import { useServerContext } from '../base/ServerContext';
-import { getProjectSampleTypeExclusion, isAppHomeFolder } from '../../app/utils';
+import { getAppHomeFolderPath, getProjectSampleTypeExclusion } from '../../app/utils';
+import { useContainerUser } from '../container/actions';
+import { hasAllPermissions } from '../base/models/User';
 
 interface Props extends EmptyAlertWithPermissionsProps {
     hasExcludedTypes?: boolean;
@@ -15,16 +17,21 @@ export const SampleTypeEmptyAlert: FC<Props> = memo(props => {
     const { message, ...baseProps } = props;
     const { container, moduleContext } = useServerContext();
     const excludedSampleTypes = getProjectSampleTypeExclusion(moduleContext);
+    const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
+    const homeContainer = useContainerUser(homeFolderPath);
 
+    if (!homeContainer.isLoaded) {
+        return null;
+    }
     return (
-        <EmptyAlertWithPermissions
+        <EmptyAlert
             {...baseProps}
-            actionURL={isAppHomeFolder(container, moduleContext) ? NEW_SAMPLE_TYPE_HREF : undefined}
+            actionURL={NEW_SAMPLE_TYPE_HREF}
             message={
                 message ??
                 (excludedSampleTypes?.length > 0 ? 'No sample types available.' : 'No sample types have been created.')
             }
-            permission={PermissionTypes.DesignSampleSet}
+            allowAction={hasAllPermissions(homeContainer.user, [PermissionTypes.DesignSampleSet])}
         />
     );
 });

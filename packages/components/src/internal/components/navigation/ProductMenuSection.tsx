@@ -26,13 +26,12 @@ interface MenuSectionProps {
     config: MenuSectionConfig;
     containerPath: string;
     currentProductId: string;
-    hideEmptyUrl?: boolean;
     section: MenuSectionModel;
 }
 
 export class ProductMenuSection extends PureComponent<MenuSectionProps> {
     render(): ReactNode {
-        const { config, section, currentProductId, containerPath, hideEmptyUrl } = this.props;
+        const { config, section, currentProductId, containerPath } = this.props;
         const { activeJobIconCls, showActiveJobIcon } = config;
 
         if (!section) return null;
@@ -87,7 +86,7 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
                 {(section.items.isEmpty() || visibleItems.isEmpty()) ? (
                     <>
                         {(config.emptyText || config.filteredEmptyText) && <li className="empty-section">{section.items.isEmpty() ? config.emptyText : config.filteredEmptyText}</li>}
-                        {emptyURL && !hideEmptyUrl && (
+                        {emptyURL && (
                             <li className="empty-section-link">
                                 <a href={getHref(emptyURL)}>{config.emptyURLText}</a>
                             </li>

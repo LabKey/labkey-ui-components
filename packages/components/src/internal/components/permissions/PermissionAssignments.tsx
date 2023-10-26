@@ -64,6 +64,10 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage, Inj
     typeToShow?: string;
 }
 
+const INVALID_PROJECT_ROLES = [
+    'org.labkey.api.inventory.security.StorageDesignerRole'
+];
+
 export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props => {
     const {
         getIsDirty,
@@ -398,11 +402,14 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     }, []);
 
     // use the explicit set of role uniqueNames from the rolesToShow prop, if provided.
-    // fall back to show all of the relevant roles for the policy, if the rolesToShow prop is undefined
+    // fall back to show all the relevant roles for the policy, if the rolesToShow prop is undefined
     const visibleRoles = useMemo(() => {
         if (!policy) return null;
-        return SecurityRole.filter(roles, policy, rolesToShow);
-    }, [roles, policy, rolesToShow]);
+        let _rolesToShow = rolesToShow;
+        if (!isAppHomeFolder(selectedProject, moduleContext) && _rolesToShow)
+            _rolesToShow = _rolesToShow.filter(value => INVALID_PROJECT_ROLES.indexOf(value) === -1).toList();
+        return SecurityRole.filter(roles, policy, _rolesToShow);
+    }, [policy, rolesToShow, selectedProject, moduleContext, roles]);
 
     const visibleRootRoles = useMemo(() => {
         if (!rootPolicy || !rootRolesToShow) return null;

@@ -7,6 +7,7 @@ import { AuditBehaviorTypes, Query } from '@labkey/api';
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
 import { DetailRenderer } from '../../internal/components/forms/detail/DetailDisplay';
 import { extractChanges } from '../../internal/components/forms/detail/utils';
+import { FormButtons } from '../../internal/FormButtons';
 
 import { QueryColumn } from '../QueryColumn';
 import { FileInput } from '../../internal/components/forms/input/FileInput';
@@ -14,29 +15,28 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 import { Alert } from '../../internal/components/base/Alert';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWrapper';
+import { QueryModel } from './QueryModel';
 
-import { RequiresModelAndActions } from './withQueryModels';
 import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
 
-export interface EditableDetailPanelProps extends RequiresModelAndActions {
+export interface EditableDetailPanelProps {
     api?: ComponentsAPIWrapper;
     appEditable?: boolean;
     asSubPanel?: boolean;
     canUpdate: boolean;
-    cancelText?: string;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     detailEditRenderer?: DetailRenderer;
     detailHeader?: ReactNode;
     detailRenderer?: DetailRenderer;
     editColumns?: QueryColumn[];
+    model: QueryModel;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     onEditToggle?: (editing: boolean) => void;
     onUpdate: () => void;
     queryColumns?: QueryColumn[];
     submitText?: string;
     title?: string;
-    useEditIcon?: boolean;
 }
 
 interface State {
@@ -49,8 +49,6 @@ interface State {
 export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
-        useEditIcon: true,
-        cancelText: 'Cancel',
         submitText: 'Save',
     };
 
@@ -136,7 +134,6 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
     render(): ReactNode {
         const {
-            actions,
             appEditable,
             containerFilter,
             containerPath,
@@ -144,14 +141,12 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             detailHeader,
             detailRenderer,
             asSubPanel,
-            cancelText,
             canUpdate,
             editColumns,
             model,
             queryColumns,
             submitText,
             title,
-            useEditIcon,
             onAdditionalFormDataChange,
         } = this.props;
         const { canSubmit, editing, error, warning } = this.state;
@@ -159,17 +154,13 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
         const panel = (
             <div className={`panel ${editing ? 'panel-info' : 'panel-default'}`}>
-                <div className="panel-heading">
-                    <DetailPanelHeader
-                        useEditIcon={useEditIcon}
-                        isEditable={isEditable}
-                        canUpdate={canUpdate}
-                        editing={editing}
-                        title={title}
-                        onClickFn={this.toggleEditing}
-                        warning={warning}
-                    />
-                </div>
+                <DetailPanelHeader
+                    isEditable={isEditable && canUpdate}
+                    editing={editing}
+                    title={title}
+                    onClick={this.toggleEditing}
+                    warning={warning}
+                />
 
                 <div className="panel-body">
                     <div className="detail__editing">
@@ -179,7 +170,6 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                         {!editing && (
                             <DetailPanel
-                                actions={actions}
                                 containerFilter={containerFilter}
                                 containerPath={containerPath}
                                 detailRenderer={detailRenderer}
@@ -224,14 +214,14 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                 >
                     {panel}
 
-                    <div className="full-width bottom-spacing">
-                        <Button className="pull-left" onClick={this.toggleEditing}>
-                            {cancelText}
-                        </Button>
-                        <Button className="pull-right" bsStyle="success" type="submit" disabled={!canSubmit}>
+                    <FormButtons>
+                        <button className="btn btn-default" type="button" onClick={this.toggleEditing}>
+                            Cancel
+                        </button>
+                        <button className="btn btn-success" type="submit" disabled={!canSubmit}>
                             {submitText}
-                        </Button>
-                    </div>
+                        </button>
+                    </FormButtons>
 
                     {asSubPanel && <div className="panel-divider-spacing" />}
                 </Formsy>

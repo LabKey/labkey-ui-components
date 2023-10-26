@@ -55,6 +55,7 @@ interface AdvancedSettingsProps {
     onHide: () => any;
     show: boolean;
     showDefaultValueSettings: boolean;
+    allowUniqueConstraintProperties: boolean;
 }
 
 interface AdvancedSettingsState {
@@ -337,7 +338,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     renderMiscOptions = () => {
-        const { index, field, domainIndex, domainFormDisplayOptions } = this.props;
+        const { index, field, domainIndex, domainFormDisplayOptions, allowUniqueConstraintProperties } = this.props;
         const {
             measure,
             dimension,
@@ -482,18 +483,20 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </LabelHelpTip>
                     </Checkbox>
                 )}
-                <Checkbox
-                    checked={uniqueConstraint || field.isPrimaryKey}
-                    disabled={field.isPrimaryKey}
-                    onChange={this.handleCheckbox}
-                    name={createFormInputName(DOMAIN_FIELD_UNIQUECONSTRAINT)}
-                    id={createFormInputId(DOMAIN_FIELD_UNIQUECONSTRAINT, domainIndex, index)}
-                >
-                    Unique constraint
-                    <LabelHelpTip title="Unique constraint">
-                        <div>Adds a database level unique constraint for this field.</div>
-                    </LabelHelpTip>
-                </Checkbox>
+                {allowUniqueConstraintProperties && (
+                    <Checkbox
+                        checked={uniqueConstraint || field.isPrimaryKey}
+                        disabled={field.isPrimaryKey}
+                        onChange={this.handleCheckbox}
+                        name={createFormInputName(DOMAIN_FIELD_UNIQUECONSTRAINT)}
+                        id={createFormInputId(DOMAIN_FIELD_UNIQUECONSTRAINT, domainIndex, index)}
+                    >
+                        Require all values to be unique
+                        <LabelHelpTip title="Unique Constraint">
+                            <div>Add a unique constraint via a database-level index for this field.</div>
+                        </LabelHelpTip>
+                    </Checkbox>
+                )}
             </>
         );
     };

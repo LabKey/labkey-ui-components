@@ -131,6 +131,7 @@ interface IDomainDesign {
     allowSampleSubjectProperties: boolean;
     allowTextChoiceProperties: boolean;
     allowTimepointProperties: boolean;
+    allowUniqueConstraintProperties: boolean;
     allowUserProperties: boolean;
     container: string;
     defaultDefaultValueType: string;
@@ -165,6 +166,7 @@ export class DomainDesign
         allowSampleSubjectProperties: true,
         allowTextChoiceProperties: true,
         allowTimepointProperties: false,
+        allowUniqueConstraintProperties: false,
         allowUserProperties: true,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
@@ -194,6 +196,7 @@ export class DomainDesign
     declare allowSampleSubjectProperties: boolean;
     declare allowTextChoiceProperties: boolean;
     declare allowTimepointProperties: boolean;
+    declare allowUniqueConstraintProperties: boolean;
     declare allowUserProperties: boolean;
     declare showDefaultValueSettings: boolean;
     declare defaultDefaultValueType: string;

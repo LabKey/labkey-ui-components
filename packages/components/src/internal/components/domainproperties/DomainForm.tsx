@@ -1164,6 +1164,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                             maxPhiLevel={maxPhiLevel}
                                             dragging={dragId === i}
                                             availableTypes={availableTypes}
+                                            allowUniqueConstraintProperties={domain.allowUniqueConstraintProperties}
                                             showDefaultValueSettings={domain.showDefaultValueSettings}
                                             defaultDefaultValueType={domain.defaultDefaultValueType}
                                             defaultValueOptions={domain.defaultValueOptions}

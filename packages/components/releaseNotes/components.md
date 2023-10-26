@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD October 2023
 * Issue 41677: Include single field uniqueness constraint option in field editor
+  * Add domain kind property for allowUniqueConstraintProperties
   * Add new checkbox option to the field Advanced Settings dialog
   * DomainField update to serialize and de-serialize the "uniqueConstraint" prop based on the DomainDesign "indices"
 

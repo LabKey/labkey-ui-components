@@ -95,6 +95,7 @@ export interface DomainRowProps {
     queryName?: string;
     schemaName?: string;
     showDefaultValueSettings: boolean;
+    allowUniqueConstraintProperties: boolean;
 }
 
 interface DomainRowState {
@@ -459,6 +460,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             domainIndex,
             helpNoun,
             showDefaultValueSettings,
+            allowUniqueConstraintProperties,
             defaultDefaultValueType,
             defaultValueOptions,
             appPropertiesOnly,
@@ -496,6 +498,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                 onHide={this.onHideAdvanced}
                                 label={field.name}
                                 showDefaultValueSettings={showDefaultValueSettings}
+                                allowUniqueConstraintProperties={allowUniqueConstraintProperties}
                                 defaultDefaultValueType={defaultDefaultValueType}
                                 defaultValueOptions={defaultValueOptions}
                                 domainFormDisplayOptions={domainFormDisplayOptions}

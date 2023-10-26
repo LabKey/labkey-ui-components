@@ -1,7 +1,5 @@
 import { getServerContext } from '@labkey/api';
 import React, { FC, useMemo } from 'react';
-import { Provider } from 'react-redux';
-import { Router } from 'react-router';
 
 import { AppContextProvider, ExtendableAppContext } from './AppContext';
 import { GlobalStateContextProvider } from './GlobalStateContext';
@@ -10,9 +8,7 @@ import { NotificationsContextProvider } from './components/notifications/Notific
 import { LabelPrintingContextProvider } from './components/labels/LabelPrintingContextProvider';
 
 interface Props<T = {}> {
-    history: any;
     initialAppContext?: ExtendableAppContext<T>;
-    store: any;
 }
 
 /**
@@ -21,7 +17,7 @@ interface Props<T = {}> {
  * at once, and reduce the level of nesting needed in our Route configurations.
  */
 export const AppContexts: FC<Props> = props => {
-    const { children, history, initialAppContext, store } = props;
+    const { children, initialAppContext } = props;
     const initialServerContext = useMemo(() => withAppUser(getServerContext()), []);
     return (
         <ServerContextProvider initialContext={initialServerContext}>
@@ -29,9 +25,7 @@ export const AppContexts: FC<Props> = props => {
                 <GlobalStateContextProvider>
                     <NotificationsContextProvider>
                         <LabelPrintingContextProvider>
-                            <Provider store={store}>
-                                <Router history={history}>{children}</Router>
-                            </Provider>
+                            {children}
                         </LabelPrintingContextProvider>
                     </NotificationsContextProvider>
                 </GlobalStateContextProvider>

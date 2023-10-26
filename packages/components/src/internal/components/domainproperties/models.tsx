@@ -215,6 +215,7 @@ export class DomainDesign
         let indices = List<DomainIndex>();
         let defaultValueOptions = List<DomainField>();
         let mandatoryFieldNames = List<string>();
+        let uniqueConstraintFieldNames = List<string>();
 
         const domainException = DomainException.create(exception, exception ? exception.severity : undefined);
 
@@ -223,12 +224,16 @@ export class DomainDesign
                 mandatoryFieldNames = List<string>(rawModel.mandatoryFieldNames.map(name => name.toLowerCase()));
             }
 
-            if (rawModel.fields) {
-                fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames);
-            }
-
             if (rawModel.indices) {
                 indices = DomainIndex.fromJS(rawModel.indices);
+                uniqueConstraintFieldNames = indices
+                    .filter(index => index.type === 'unique' && index.columns.size === 1)
+                    .map(index => index.columns.get(0))
+                    .toList();
+            }
+
+            if (rawModel.fields) {
+                fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames, uniqueConstraintFieldNames);
             }
 
             if (rawModel.defaultValueOptions) {
@@ -249,6 +254,22 @@ export class DomainDesign
 
     static serialize(dd: DomainDesign): any {
         const json = dd.toJS();
+
+        // Issue 41677: allow for per-field unique constraints to be added via the field editor UI
+        json.indices = dd.indices
+            // filter out the single field unique indices, and keep the others
+            .filter(index => !(index.type === 'unique' && index.columns.size === 1))
+            .map(index => DomainIndex.serialize(index))
+            .toArray();
+        // add in the new set of single field unique indices
+        dd.fields.forEach(field => {
+            if (field.uniqueConstraint) {
+                json.indices.push(
+                    DomainIndex.serialize(new DomainIndex({ columns: List.of(field.name?.trim()), type: 'unique' }))
+                );
+            }
+        });
+
         json.fields = dd.fields.map(field => DomainField.serialize(field)).toArray();
 
         // remove non-serializable fields
@@ -476,7 +497,7 @@ export class DomainDesign
 
 interface IDomainIndex {
     columns: string[] | List<string>;
-    type: 'primary' | 'unique';
+    type: 'primary' | 'unique' | 'nonunique';
 }
 
 export class DomainIndex
@@ -487,16 +508,32 @@ export class DomainIndex
     implements IDomainIndex
 {
     declare columns: List<string>;
-    declare type: 'primary' | 'unique';
+    declare type: 'primary' | 'unique' | 'nonunique';
 
     static fromJS(rawIndices: IDomainIndex[]): List<DomainIndex> {
         let indices = List<DomainIndex>();
 
         for (let i = 0; i < rawIndices.length; i++) {
-            indices = indices.push(new DomainIndex(fromJS(rawIndices[i])));
+            let raw = fromJS(rawIndices[i]);
+            if (raw.has('columnNames')) raw = raw.set('columns', raw.get('columnNames'));
+            if (raw.has('unique')) raw = raw.set('type', raw.get('unique') ? 'unique' : 'nonunique');
+
+            indices = indices.push(new DomainIndex(raw));
         }
 
         return indices;
+    }
+
+    static serialize(index: DomainIndex): any {
+        const json = index.toJS();
+
+        json.columnNames = [...json.columns];
+        delete json.columns;
+
+        json.unique = json.type === 'primary' || json.type === 'unique';
+        delete json.type;
+
+        return json;
     }
 }
 
@@ -760,6 +797,7 @@ export interface IDomainField {
     rangeURI: string;
     rangeValidators: List<PropertyValidator>;
     recommendedVariable?: boolean;
+    uniqueConstraint?: boolean;
     regexValidators: List<PropertyValidator>;
     required?: boolean;
     scale?: number;
@@ -805,6 +843,7 @@ export class DomainField
         regexValidators: List<PropertyValidator>(),
         textChoiceValidator: undefined,
         recommendedVariable: false,
+        uniqueConstraint: false,
         required: false,
         scale: MAX_TEXT_LENGTH,
         URL: undefined,
@@ -863,6 +902,7 @@ export class DomainField
     declare regexValidators: List<PropertyValidator>;
     declare textChoiceValidator?: PropertyValidator;
     declare recommendedVariable: boolean;
+    declare uniqueConstraint: boolean;
     declare required?: boolean;
     declare scale?: number;
     declare scannable?: boolean;
@@ -960,11 +1000,17 @@ export class DomainField
         };
     }
 
-    static fromJS(rawFields: IDomainField[], mandatoryFieldNames?: List<string>): List<DomainField> {
+    static fromJS(
+        rawFields: IDomainField[],
+        mandatoryFieldNames?: List<string>,
+        uniqueConstraintFieldNames?: List<string>
+    ): List<DomainField> {
         let fields = List<DomainField>();
 
         for (let i = 0; i < rawFields.length; i++) {
-            fields = fields.push(DomainField.create(rawFields[i], undefined, mandatoryFieldNames));
+            const rawField = rawFields[i];
+            rawField.uniqueConstraint = uniqueConstraintFieldNames.contains(rawField.name);
+            fields = fields.push(DomainField.create(rawField, undefined, mandatoryFieldNames));
         }
 
         return fields;
@@ -1074,6 +1120,7 @@ export class DomainField
         delete json.lockExistingField;
         delete json.selected;
         delete json.lookupIsValid;
+        delete json.uniqueConstraint;
 
         return json;
     }

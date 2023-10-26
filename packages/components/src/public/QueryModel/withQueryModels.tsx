@@ -241,6 +241,10 @@ export function withQueryModels<Props>(
                 // for now. Attempts to coordinate better between these two settings have thus far not been successful
                 // (or have seemed too invasive to be attractive). See Issue 48758.
                 this.loadAllModels(!!this.props.modelLoader.loadSelections);
+            } else {
+                // Issue 48969: For purposes of export, at least, we want to know the queryInfo data for all models
+                // without having to visit each model.
+                this.loadAllQueryInfos();
             }
         }
 

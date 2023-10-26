@@ -83,7 +83,7 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                                     </td>
                                     <td className="pull-right">{rowCountDisplay}</td>
                                     <td className="view-name">
-                                        { !model.viewName || model.viewName?.startsWith("~~") ? 'Default' : model.viewName}{' '}
+                                        { !model.viewName || model.viewName.startsWith("~~") ? 'Default' : model.viewName}{' '}
                                         {model.currentView?.session && <span className="text-muted">(edited)</span>}
                                     </td>
                                 </tr>

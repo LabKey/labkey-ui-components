@@ -1044,7 +1044,6 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                         className="css-1f43avz-a11yText-A11yText"
                       />
                       <div
-                        aria-disabled={true}
                         className="select-input__control select-input__control--is-disabled css-1mgq1wa-control"
                         onMouseDown={[Function]}
                         onTouchEnd={[Function]}

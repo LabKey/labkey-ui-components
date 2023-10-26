@@ -19,11 +19,11 @@ import { List } from 'immutable';
 import { AppURL } from '../../url/AppURL';
 
 import { mountWithServerContext } from '../../test/enzymeTestHelpers';
-import { TEST_PROJECT_CONTAINER } from '../../../test/data/constants';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { ProductMenuSection } from './ProductMenuSection';
 import { MenuSectionModel, MenuSectionConfig } from './model';
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 describe('ProductMenuSection render', () => {
     const sampleSetItems = List<MenuSectionModel>([
@@ -380,7 +380,6 @@ describe('ProductMenuSection render', () => {
                 containerPath="/test"
                 currentProductId="testProductHeaderUrl"
                 section={section}
-                hideEmptyUrl={false}
                 config={
                     new MenuSectionConfig({
                         emptyText: 'Testing empty',
@@ -396,34 +395,6 @@ describe('ProductMenuSection render', () => {
         expect(menuSection.find('.empty-section-link').length).toBe(1);
         expect(menuSection.find('.empty-section-link').text()).toBe('Create it');
         expect(menuSection.find('.empty-section-link').childAt(0).prop('href')).toBe('home');
-    });
-
-    test('hideEmptyUrl', () => {
-        const section = MenuSectionModel.create({
-            label: 'Sample Sets',
-            items: List<MenuSectionModel>(),
-            key: 'samples',
-        });
-
-        const menuSection = mountWithServerContext(
-            <ProductMenuSection
-                containerPath="/test/sub"
-                currentProductId="testProductHeaderUrl"
-                hideEmptyUrl={true}
-                section={section}
-                config={
-                    new MenuSectionConfig({
-                        emptyText: 'Testing empty',
-                        emptyAppURL: 'home',
-                        emptyURLText: 'Create it',
-                    })
-                }
-            />,
-            getDefaultServerContext()
-        );
-
-        expect(menuSection.find('.empty-section').text()).toBe('Testing empty');
-        expect(menuSection.find('.empty-section-link').length).toBe(0);
     });
 
     test('useOriginalURL', () => {

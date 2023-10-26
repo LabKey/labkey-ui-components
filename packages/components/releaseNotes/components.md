@@ -7,6 +7,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Update ExportModal to show all system views (prefixed by ~~) as 'Default'
 - Update ExportModal to pre-select models with counts > 0 when using `tabRowCounts`
 
+### version 2.386.0
+*Released*: 26 October 2023
+- Add ability to create, edit, and delete sample, source, and assay domains from subfolders
+- export new `isSharedDefinition` method in `App` object
+- Issue 48921: Use sort order from model for printing labels
+
 ### version 2.385.0
 *Released*: 25 October 2023
 - EditableGrid: Add more specific classNames to button bar buttons

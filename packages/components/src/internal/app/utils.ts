@@ -221,8 +221,34 @@ export function isAppHomeFolder(container?: Container, moduleContext?: ModuleCon
     return isTopFolder || (isSubFolder && !isProductProjectsEnabled(moduleContext));
 }
 
-export function getAppHomeFolderPath(container?: Container, moduleContext?: ModuleContext): string {
+export function getAppHomeFolderPath(container: Container, moduleContext?: ModuleContext): string {
     return isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath;
+}
+
+function getAppHomeFolderId(container: Container, moduleContext?: ModuleContext): string {
+    return isAppHomeFolder(container, moduleContext) ? container.id : container.parentId;
+}
+
+// either defined in a different container or it's defined in the home container and product projects are available.
+export function isSharedDefinition(
+    currentContainer: Container,
+    moduleContext: ModuleContext,
+    domainContainerPathOrId: string,
+    isId?: boolean
+): boolean {
+    if (
+        (isId && domainContainerPathOrId !== currentContainer.id) ||
+        (!isId && domainContainerPathOrId !== currentContainer.path)
+    ) {
+        return true;
+    }
+    if (!hasProductProjects(moduleContext)) {
+        return false;
+    }
+    if (isId && getAppHomeFolderId(currentContainer, moduleContext) === domainContainerPathOrId) {
+        return true;
+    }
+    return !isId && getAppHomeFolderPath(currentContainer, moduleContext) === domainContainerPathOrId;
 }
 
 export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolean {
@@ -427,7 +453,7 @@ export function getStorageSectionConfig(user: User, currentProductId: string, mo
             iconURL: imageURL('_images', 'freezer_menu.svg'),
             headerURLPart: HOME_KEY,
         });
-        if (userCanDesignLocations(user)) {
+        if (user && userCanDesignLocations(user)) {
             locationsMenuConfig = locationsMenuConfig.merge({
                 emptyAppURL: AppURL.create(FREEZERS_KEY, 'new'),
                 emptyURLText: 'Create storage',
@@ -448,7 +474,7 @@ export function addSourcesSectionConfig(
         filteredEmptyText: 'No source types available',
         iconURL: imageURL('_images', 'source_type.svg'),
     });
-    if (userCanDesignSourceTypes(user)) {
+    if (user && userCanDesignSourceTypes(user)) {
         sourcesMenuConfig = sourcesMenuConfig.merge({
             emptyAppURL: NEW_SOURCE_TYPE_HREF,
             emptyURLText: 'Create a source type',
@@ -464,7 +490,7 @@ export function getSamplesSectionConfig(user: User): MenuSectionConfig {
         filteredEmptyText: 'No sample types available',
         iconURL: imageURL('_images', 'samples.svg'),
     });
-    if (user.hasDesignSampleTypesPermission()) {
+    if (user && user.hasDesignSampleTypesPermission()) {
         samplesMenuConfig = samplesMenuConfig.merge({
             emptyAppURL: NEW_SAMPLE_TYPE_HREF,
             emptyURLText: 'Create a sample type',
@@ -484,7 +510,7 @@ export function addAssaysSectionConfig(
         filteredEmptyText: 'No assays available',
         iconURL: imageURL('_images', 'assay.svg'),
     });
-    if (user.hasDesignAssaysPermission()) {
+    if (user && user.hasDesignAssaysPermission()) {
         assaysMenuConfig = assaysMenuConfig.merge({
             emptyAppURL: standardAssayOnly ? NEW_STANDARD_ASSAY_DESIGN_HREF : NEW_ASSAY_DESIGN_HREF,
             emptyURLText: 'Create an assay design',

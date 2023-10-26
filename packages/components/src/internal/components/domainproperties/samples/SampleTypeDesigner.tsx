@@ -1,6 +1,6 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
-import { Domain } from '@labkey/api';
+import { Domain, getServerContext } from '@labkey/api';
 
 import { DomainDesign, DomainDetails, IAppDomainHeader, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
@@ -13,7 +13,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 
 import { PropDescType, UNIQUE_ID_TYPE } from '../PropDescType';
 
-import { biologicsIsPrimaryApp, hasModule, isCommunityDistribution } from '../../../app/utils';
+import { biologicsIsPrimaryApp, getAppHomeFolderPath, hasModule, isCommunityDistribution } from '../../../app/utils';
 
 import { NameExpressionValidationModal } from '../validation/NameExpressionValidationModal';
 
@@ -43,6 +43,7 @@ import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
+import { Container } from '../../base/models/Container';
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -468,6 +469,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
         try {
             const response: DomainDesign = await saveDomain({
+                containerPath: model.isNew() ? getAppHomeFolderPath(new Container(getServerContext().container)) : model.containerPath,
                 domain: domainDesign,
                 kind: Domain.KINDS.SAMPLE_TYPE,
                 name,

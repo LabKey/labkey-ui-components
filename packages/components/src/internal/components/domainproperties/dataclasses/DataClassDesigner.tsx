@@ -2,14 +2,14 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 import { List, Map } from 'immutable';
 
-import { Domain } from '@labkey/api';
+import { Domain, getServerContext } from '@labkey/api';
 
 import { DomainDesign, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { isSampleManagerEnabled } from '../../../app/utils';
+import { getAppHomeFolderPath, isSampleManagerEnabled } from '../../../app/utils';
 
 import { NameExpressionValidationModal } from '../validation/NameExpressionValidationModal';
 
@@ -32,6 +32,7 @@ import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
 import { DataClassModel, DataClassModelConfig } from './models';
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
+import { Container } from '../../base/models/Container';
 
 interface Props {
     allowParentAlias?: boolean;
@@ -246,6 +247,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
 
         try {
             const savedDomain = await saveDomain({
+                containerPath: model.isNew ? getAppHomeFolderPath(new Container(getServerContext().container)) : model.containerPath,
                 domain: domainDesign,
                 kind: Domain.KINDS.DATA_CLASS,
                 name: model.name,

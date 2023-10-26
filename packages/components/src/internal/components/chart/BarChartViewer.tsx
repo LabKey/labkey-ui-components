@@ -23,7 +23,7 @@ import { User } from '../base/models/User';
 import { Alert } from '../base/Alert';
 import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { SampleTypeEmptyAlert } from '../samples/SampleEmptyAlert';
+import { SampleTypeEmptyAlert } from '../samples/SampleTypeEmptyAlert';
 import { AssayDesignEmptyAlert } from '../assay/AssayDesignEmptyAlert';
 import { Section } from '../base/Section';
 import { Tip } from '../base/Tip';

@@ -52,12 +52,14 @@ import { naturalSort, naturalSortByProperty } from './public/sort';
 import { AssayDefinitionModel, AssayDomainTypes, AssayLink } from './internal/AssayDefinitionModel';
 import {
     applyDevTools,
+    arrayEquals,
     blurActiveElement,
     capitalizeFirstChar,
     caseInsensitive,
     debounce,
     devToolsActive,
     downloadAttachment,
+    findMissingValues,
     generateId,
     getDisambiguatedSelectInputOptions,
     handleFileInputChange,
@@ -73,8 +75,6 @@ import {
     uncapitalizeFirstChar,
     valueIsEmpty,
     withTransformedKeys,
-    arrayEquals,
-    findMissingValues,
 } from './internal/util/utils';
 import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
@@ -145,10 +145,10 @@ import {
     formatDateTime,
     getDateFormat,
     getDateTimeFormat,
-    isDateTimeInPast,
-    parseDate,
-    isRelativeDateFilterValue,
     getParsedRelativeDateStr,
+    isDateTimeInPast,
+    isRelativeDateFilterValue,
+    parseDate,
 } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
@@ -175,15 +175,15 @@ import { ChoicesListItem } from './internal/components/base/ChoicesListItem';
 
 import { DataTypeSelector } from './internal/components/entities/DataTypeSelector';
 
-import { EditorModel, EditorMode } from './internal/components/editable/models';
+import { EditorMode, EditorModel } from './internal/components/editable/models';
 import {
     clearSelected,
+    getSampleTypesFromTransactionIds,
     getSelected,
     getSelectedData,
     getSelection,
     incrementClientSideMetricCount,
     replaceSelected,
-    getSampleTypesFromTransactionIds,
     selectGridIdsFromTransactionId,
     setSelected,
     setSnapshotSelections,
@@ -220,18 +220,18 @@ import {
     updateRows,
 } from './internal/query/api';
 import {
-    registerFilterType,
     COLUMN_IN_FILTER_TYPE,
     COLUMN_NOT_IN_FILTER_TYPE,
     getFilterLabKeySql,
     getLegalIdentifier,
+    registerFilterType,
 } from './internal/query/filter';
 import { selectRows } from './internal/query/selectRows';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
+    AssayUploadTabs,
     DataViewInfoTypes,
     EXPORT_TYPES,
-    AssayUploadTabs,
     GRID_CHECKBOX_OPTIONS,
     IMPORT_DATA_FORM_TYPES,
     MAX_EDITABLE_GRID_ROWS,
@@ -318,28 +318,28 @@ import { SchemaListingPage } from './internal/components/listing/pages/SchemaLis
 import {
     EntityIdCreationModel,
     EntityParentType,
-    OperationConfirmationData,
     EntityTypeOption,
+    OperationConfirmationData,
 } from './internal/components/entities/models';
 import { EntityMoveModal } from './internal/components/entities/EntityMoveModal';
 import { EntityMoveConfirmationModal } from './internal/components/entities/EntityMoveConfirmationModal';
 import {
-    AssayResultsForSamplesMenuItem,
     AssayResultsForSamplesButton,
+    AssayResultsForSamplesMenuItem,
 } from './internal/components/entities/AssayResultsForSamplesButton';
 import { SampleAliquotViewSelector } from './internal/components/entities/SampleAliquotViewSelector';
 import { GridAliquotViewSelector } from './internal/components/entities/GridAliquotViewSelector';
 import {
-    FindDerivativesMenuItem,
     FindDerivativesButton,
-    SAMPLE_FINDER_SESSION_PREFIX,
-    getSearchFilterObjs,
-    searchFiltersToJson,
+    FindDerivativesMenuItem,
     getSampleFinderLocalStorageKey,
+    getSearchFilterObjs,
+    SAMPLE_FINDER_SESSION_PREFIX,
+    searchFiltersToJson,
 } from './internal/components/entities/FindDerivativesButton';
 import {
-    SEARCH_PAGE_DEFAULT_SIZE,
     SAMPLE_PROPERTY_ALL_SAMPLE_TYPE,
+    SEARCH_PAGE_DEFAULT_SIZE,
     SearchCategory,
     SearchField,
     SearchScope,
@@ -348,11 +348,11 @@ import { SearchResultCard } from './internal/components/search/SearchResultCard'
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { SearchPanel } from './internal/components/search/SearchPanel';
 import {
+    getFieldFiltersValidationResult,
+    getFilterValuesAsArray,
     getSearchScopeFromContainerFilter,
     isValidFilterField,
     SAMPLE_FILTER_METRIC_AREA,
-    getFilterValuesAsArray,
-    getFieldFiltersValidationResult,
 } from './internal/components/search/utils';
 import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
@@ -366,15 +366,15 @@ import {
     deleteSampleSet,
     fetchSamples,
     getFieldLookupFromSelection,
+    getGroupedSampleDisplayColumns,
+    getGroupedSampleDomainFields,
     getSampleSet,
     getSampleTypeDetails,
     getSelectedSampleIdsFromSelectionKey,
     getSelectionLineageData,
     updateSampleStorageData,
-    getGroupedSampleDomainFields,
-    getGroupedSampleDisplayColumns,
 } from './internal/components/samples/actions';
-import { SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
+import { SampleTypeEmptyAlert } from './internal/components/samples/SampleTypeEmptyAlert';
 import { SampleAmountEditModal } from './internal/components/samples/SampleAmountEditModal';
 import { StorageAmountInput } from './internal/components/samples/StorageAmountInput';
 
@@ -457,12 +457,12 @@ import { AccountSubNav } from './internal/components/user/AccountSubNav';
 import { ProfilePage } from './internal/components/user/ProfilePage';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    DERIVATION_DATA_SCOPES,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
     DOMAIN_RANGE_VALIDATOR,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
-    DERIVATION_DATA_SCOPES,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
@@ -474,33 +474,33 @@ import {
     getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
-    getOperationConfirmationData,
-    getParentTypeDataForLineage,
-    getSampleOperationConfirmationData,
     getDeleteConfirmationData,
     getEntityTypeOptions,
     getExcludedDataTypeNames,
+    getOperationConfirmationData,
+    getParentTypeDataForLineage,
+    getSampleOperationConfirmationData,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
     AssayRunDataType,
+    DATA_CLASS_IMPORT_PREFIX,
     DataClassDataType,
     DataOperation,
-    ParentEntityRequiredColumns,
-    SampleTypeDataType,
-    SamplePropertyDataType,
-    DATA_CLASS_IMPORT_PREFIX,
-    SAMPLE_SET_IMPORT_PREFIX,
     ParentEntityLineageColumns,
+    ParentEntityRequiredColumns,
+    SAMPLE_SET_IMPORT_PREFIX,
+    SamplePropertyDataType,
+    SampleTypeDataType,
 } from './internal/components/entities/constants';
 import {
+    getEntityDescription,
+    getEntityNoun,
+    getInitialParentChoices,
+    getJobCreationHref,
     getUniqueIdColumnMetadata,
     isSampleEntity,
     sampleDeleteDependencyText,
-    getEntityNoun,
-    getEntityDescription,
-    getInitialParentChoices,
-    getJobCreationHref,
 } from './internal/components/entities/utils';
 import {
     ALIQUOT_CREATION,
@@ -509,7 +509,7 @@ import {
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
 } from './internal/components/samples/models';
-import { SampleTypeModel, DEFAULT_ALIQUOT_NAMING_PATTERN } from './internal/components/domainproperties/samples/models';
+import { DEFAULT_ALIQUOT_NAMING_PATTERN, SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
@@ -522,10 +522,10 @@ import { CHART_GROUPS } from './internal/components/chart/configs';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
 import {
     ASSAY_AUDIT_QUERY,
-    QUERY_UPDATE_AUDIT_QUERY,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     GROUP_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
+    QUERY_UPDATE_AUDIT_QUERY,
     SAMPLE_TIMELINE_AUDIT_QUERY,
     SAMPLE_TYPE_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
@@ -552,7 +552,6 @@ import { SAMPLE_TYPE } from './internal/components/domainproperties/PropDescType
 import DomainForm from './internal/components/domainproperties/DomainForm';
 import { BasePropertiesPanel } from './internal/components/domainproperties/BasePropertiesPanel';
 import { DomainFieldsDisplay } from './internal/components/domainproperties/DomainFieldsDisplay';
-import { saveAssayDesign } from './internal/components/domainproperties/assay/actions';
 import { AssayProtocolModel } from './internal/components/domainproperties/assay/models';
 import { AssayDesignerPanels } from './internal/components/domainproperties/assay/AssayDesignerPanels';
 import { ListModel } from './internal/components/domainproperties/list/models';
@@ -622,6 +621,7 @@ import {
     IS_ALIQUOT_COL,
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
+    SAMPLE_ID_FIND_FIELD,
     SAMPLE_INSERT_EXTRA_COLUMNS,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
@@ -631,7 +631,6 @@ import {
     SAMPLES_WITH_TYPES_FILTER,
     SampleStateType,
     SELECTION_KEY_TYPE,
-    SAMPLE_ID_FIND_FIELD,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
@@ -649,12 +648,12 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
+    deletePicklists,
     getOrderedSelectedMappedKeysFromQueryModel,
     getOrderedSelectedPicklistSamples,
-    getSelectedPicklistSamples,
     getPicklistFromId,
     getPicklistListingContainerFilter,
-    deletePicklists,
+    getSelectedPicklistSamples,
     updatePicklist,
 } from './internal/components/picklist/actions';
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
@@ -671,13 +670,16 @@ import {
 
 import {
     CloseEventCode,
+    freezerManagerIsCurrentApp,
+    getAppHomeFolderPath,
     getCurrentAppProperties,
+    getCurrentProductName,
     getPrimaryAppProperties,
-    getProjectDataExclusion,
     getProjectAssayDesignExclusion,
     getProjectDataClassExclusion,
-    getProjectSampleTypeExclusion,
+    getProjectDataExclusion,
     getProjectPath,
+    getProjectSampleTypeExclusion,
     hasModule,
     hasPremiumModule,
     hasProductProjects,
@@ -699,6 +701,7 @@ import {
     isSampleAliquotSelectorEnabled,
     isSampleManagerEnabled,
     isSampleStatusEnabled,
+    isSharedDefinition,
     isWorkflowEnabled,
     registerWebSocketListeners,
     sampleManagerIsPrimaryApp,
@@ -716,8 +719,6 @@ import {
     userCanReadNotebooks,
     userCanReadRegistry,
     userCanReadSources,
-    getCurrentProductName,
-    freezerManagerIsCurrentApp,
 } from './internal/app/utils';
 import {
     menuInit,
@@ -743,7 +744,12 @@ import {
     TEST_USER_STORAGE_EDITOR,
     TEST_USER_WORKFLOW_EDITOR,
 } from './internal/userFixtures';
-import { TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER } from './internal/containerFixtures';
+import {
+    createTestProjectAppContextAdmin,
+    createTestProjectAppContextNonAdmin,
+    TEST_FOLDER_CONTAINER,
+    TEST_PROJECT_CONTAINER
+} from './internal/containerFixtures';
 import {
     ASSAY_DESIGN_KEY,
     ASSAYS_KEY,
@@ -752,30 +758,30 @@ import {
     BOXES_KEY,
     CROSS_TYPE_KEY,
     DATA_CLASS_KEY,
-    EntityCreationMode,
     ELN_KEY,
+    EntityCreationMode,
     EXPERIMENTAL_REQUESTS_MENU,
+    FILE_IMPORT_SAMPLES_HREF,
+    FILE_UPDATE_SAMPLES_HREF,
     FIND_SAMPLES_BY_FILTER_HREF,
     FIND_SAMPLES_BY_FILTER_KEY,
     FIND_SAMPLES_BY_ID_HREF,
     FIND_SAMPLES_BY_ID_KEY,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
-    HOME_KEY,
     GRID_INSERT_SAMPLES_HREF,
-    FILE_IMPORT_SAMPLES_HREF,
-    FILE_UPDATE_SAMPLES_HREF,
+    HOME_KEY,
     MEDIA_KEY,
     MINE_KEY,
+    MY_PICKLISTS_HREF,
     NEW_ASSAY_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_SOURCE_TYPE_HREF,
     NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTIFICATION_TIMEOUT,
     PICKLIST_HOME_HREF,
-    MY_PICKLISTS_HREF,
-    TEAM_PICKLISTS_HREF,
     PICKLIST_KEY,
+    PLATES_KEY,
     REGISTRY_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLE_TYPE_KEY,
@@ -788,12 +794,12 @@ import {
     SOURCE_TYPE_KEY,
     SOURCES_KEY,
     TEAM_KEY,
+    TEAM_PICKLISTS_HREF,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     USER_KEY,
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
-    PLATES_KEY,
 } from './internal/app/constants';
 import { Key, useEnterEscape } from './public/useEnterEscape';
 import { DateInput } from './internal/components/DateInput';
@@ -808,13 +814,13 @@ import { useNotAuthorized, useNotFound, usePortalRef } from './internal/hooks';
 import {
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-    TEST_LKSM_STARTER_MODULE_CONTEXT,
     TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from './internal/productFixtures';
 import {
     GENERAL_ASSAY_PROVIDER_NAME,
-    WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
+    WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
 } from './internal/components/assay/constants';
 import { AdminSettingsPage } from './internal/components/administration/AdminSettingsPage';
 import { GlobalStateContextProvider } from './internal/GlobalStateContext';
@@ -840,6 +846,7 @@ import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './internal/
 import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 import { FormButtons } from './internal/FormButtons';
 import { ModalButtons } from './internal/ModalButtons';
+import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -852,8 +859,11 @@ const App = {
     ServerNotificationReducers,
     CloseEventCode,
     EntityCreationMode,
+    createTestProjectAppContextAdmin,
+    createTestProjectAppContextNonAdmin,
     getCurrentAppProperties,
     registerWebSocketListeners,
+    getAppHomeFolderPath,
     isAppHomeFolder,
     isAssayDesignExportEnabled,
     isAssayEnabled,
@@ -870,6 +880,7 @@ const App = {
     isSampleAliquotSelectorEnabled,
     isProjectContainer,
     isProtectedDataEnabled,
+    isSharedDefinition,
     sampleManagerIsPrimaryApp,
     freezerManagerIsCurrentApp,
     isSampleStatusEnabled,
@@ -882,6 +893,7 @@ const App = {
     getProjectDataClassExclusion,
     getProjectSampleTypeExclusion,
     getProjectPath,
+    getSecurityTestAPIWrapper,
     hasPremiumModule,
     hasProductProjects,
     hasModule,
@@ -1414,7 +1426,6 @@ export {
     InferDomainResponse,
     BasePropertiesPanel,
     AssayDesignerPanels,
-    saveAssayDesign,
     getProtocol,
     AssayProtocolModel,
     SAMPLE_TYPE,

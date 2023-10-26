@@ -140,7 +140,7 @@ export function hasPermissions(
 }
 
 /**
- * Determines if a user has all of the permissions given. If the user has only some of these permissions, returns false.
+ * Determines if a user has all the permissions given. If the user has only some of these permissions, returns false.
  * @param user User in question
  * @param perms Array of permission strings (See models/constants)
  * @param checkIsAdmin Indicates if user.isAdmin should override check

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.386.0
+*Released*: 26 October 2023
+- Add ability to create, edit, and delete sample, source, and assay domains from subfolders
+- export new `isSharedDefinition` method in `App` object
+- Issue 48921: Use sort order from model for printing labels
+
 ### version 2.385.0
 *Released*: 25 October 2023
 - EditableGrid: Add more specific classNames to button bar buttons

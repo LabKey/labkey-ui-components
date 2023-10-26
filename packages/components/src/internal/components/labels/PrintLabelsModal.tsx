@@ -72,6 +72,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                 id: this._modelId,
                 schemaQuery: model?.schemaQuery,
                 baseFilters: model?.filters,
+                sorts: model?.sorts,
             },
             true,
             true

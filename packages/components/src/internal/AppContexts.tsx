@@ -24,9 +24,7 @@ export const AppContexts: FC<Props> = props => {
             <AppContextProvider initialContext={initialAppContext}>
                 <GlobalStateContextProvider>
                     <NotificationsContextProvider>
-                        <LabelPrintingContextProvider>
-                            {children}
-                        </LabelPrintingContextProvider>
+                        <LabelPrintingContextProvider>{children}</LabelPrintingContextProvider>
                     </NotificationsContextProvider>
                 </GlobalStateContextProvider>
             </AppContextProvider>

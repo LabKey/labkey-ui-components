@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 48961: Make sure Name (id) fields are shown, but read-only, in editable grids for update
+
 ### version 2.386.0
 *Released*: 26 October 2023
 - Add ability to create, edit, and delete sample, source, and assay domains from subfolders

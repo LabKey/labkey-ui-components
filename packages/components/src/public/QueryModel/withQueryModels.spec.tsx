@@ -64,13 +64,13 @@ describe('withQueryModels', () => {
         // When we first mount a component we initialize rows and queryInfo to undefined with loading states set to
         // loading.
         expect(injectedModel.queryInfo).toEqual(undefined);
-        expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.INITIALIZED);
+        expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADING);
         expect(injectedModel.rows).toEqual(undefined);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.INITIALIZED);
 
         // Trigger load model like a consuming component would in componentDidMount.
         injectedActions.loadModel(injectedModel.id);
-        // We can expect that LoadingState for QueryInfo should be LOADING, but rows shoudl still be INITIALIZED
+        // We can expect that LoadingState for QueryInfo should be LOADING, but rows should still be INITIALIZED
         // because we can't even try until we have a QueryInfo.
         expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADING);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.INITIALIZED);

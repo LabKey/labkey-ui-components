@@ -30,7 +30,6 @@ export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
     clearSelections: (id: string) => void;
     loadAllModels: (loadSelections?: boolean, reloadTotalCount?: boolean) => void;
-    loadAllQueryInfos: () => void;
     loadCharts: (id: string) => void;
     loadFirstPage: (id: string) => void;
     loadLastPage: (id: string) => void;
@@ -207,7 +206,6 @@ export function withQueryModels<Props>(
                 clearSelections: this.clearSelections,
                 loadModel: this.loadModel,
                 loadAllModels: this.loadAllModels,
-                loadAllQueryInfos: this.loadAllQueryInfos,
                 loadRows: this.loadRows,
                 loadNextPage: this.loadNextPage,
                 loadPreviousPage: this.loadPreviousPage,

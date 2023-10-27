@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.388.0
+*Released*: 27 October 2023
+- Remove dependency on `react-redux`
+- Remove configuration of `Provider` and `Router` from `AppContexts`
+
 ### version 2.387.0
 *Released*: 27 October 2023
 - Issue 48969: add loadAllQueryInfos method to withQueryModels actions

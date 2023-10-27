@@ -48,7 +48,7 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
         ...{
             cols: 50,
             elementWrapperClassName: 'col-md-9 col-xs-12',
-            labelClassName: 'control-label text-left col-xs-12',
+            labelClassName: 'control-label textarea-control-label text-left col-xs-12',
             rows: 5,
             showLabel: true,
         },

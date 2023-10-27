@@ -361,7 +361,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             content = <LoadingSpinner />;
         } else {
             content = (
-                <div>
+                <div className="query-info-form">
                     {header}
                     {!showErrorsAtBottom && this.renderError()}
                     <Formsy

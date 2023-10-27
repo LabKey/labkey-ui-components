@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD October 2023
 * ToggleButton updates
   * ImportDataFilePreview update to remove usage and replace with a checkbox
+  * QueryInfoForm fix for ToggleIcon alignment with various form input types
 
 ### version 2.386.0
 *Released*: 26 October 2023

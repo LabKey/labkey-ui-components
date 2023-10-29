@@ -1,6 +1,7 @@
 import React, { FC, memo, useCallback } from 'react';
-import { Input } from 'formsy-react-components';
 import classNames from 'classnames';
+
+import { Input } from '../forms/input/FormsyReactComponents';
 
 interface Props {
     active: string;

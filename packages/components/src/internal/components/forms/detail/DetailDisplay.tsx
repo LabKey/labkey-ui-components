@@ -407,7 +407,7 @@ export function resolveDetailEditRenderer(
 
                 return (
                     <TextInput
-                        elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
+                        elementWrapperClassName="col-sm-12"
                         queryColumn={col}
                         // Issue 43561: Support name expression fields
                         // NK: If a name expression is applied, then the server does not mark the field as required as

@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { List, Map, OrderedMap } from 'immutable';
-import { Input } from 'formsy-react-components';
+import { List, Map } from 'immutable';
 import { Filter, Query } from '@labkey/api';
 import { ExtendedMap } from '../../../public/ExtendedMap';
 
@@ -25,6 +24,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { caseInsensitive } from '../../util/utils';
 
+import { Input } from './input/FormsyReactComponents';
 import { resolveInputRenderer } from './input/InputRenderFactory';
 import { QuerySelect } from './QuerySelect';
 import { SelectInputChange } from './input/SelectInput';

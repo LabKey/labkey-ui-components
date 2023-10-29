@@ -1,4 +1,15 @@
-import React, { ChangeEvent, FC, FocusEvent, memo, ReactNode, useCallback } from 'react';
+import React, {
+    ChangeEvent,
+    FC,
+    FocusEvent,
+    InputHTMLAttributes,
+    memo,
+    ReactNode,
+    RefObject,
+    TextareaHTMLAttributes,
+    useCallback,
+    useMemo,
+} from 'react';
 import { withFormsy } from 'formsy-react';
 import classNames from 'classnames';
 
@@ -7,17 +18,48 @@ import { WithFormsyProps } from '../constants';
 type LayoutType = 'elementOnly' | 'horizontal' | 'vertical';
 
 interface BaseComponentProps {
+    componentRef?: RefObject<any>;
     elementWrapperClassName?: string;
     help?: ReactNode;
+    label?: ReactNode;
     labelClassName?: string;
     layout?: LayoutType;
     onChange?: (name: string, value: any) => void;
     required?: boolean;
     rowClassName?: string;
+    validateBeforeSubmit?: boolean;
+    validateOnSubmit?: boolean;
+    validatePristine?: boolean;
+    value?: any;
 }
 
-const componentDefaultProps = {
+const componentDefaultProps: Partial<BaseComponentProps> = {
     layout: 'horizontal',
+    validateBeforeSubmit: true,
+    validateOnSubmit: false,
+    validatePristine: false,
+};
+
+/** Determine whether to show errors, or not. */
+const shouldShowErrors = (
+    isPristine: boolean,
+    isFormSubmitted: boolean,
+    isValid: boolean,
+    validatePristine: boolean,
+    validateBeforeSubmit: boolean
+): boolean => {
+    if (isPristine === true) {
+        if (validatePristine === false) {
+            return false;
+        }
+    }
+    if (validateBeforeSubmit === false) {
+        if (isFormSubmitted === false) {
+            return false;
+        }
+    }
+
+    return isValid === false;
 };
 
 interface ErrorMessageProps {
@@ -71,13 +113,12 @@ const Label: FC<LabelProps> = memo(props => {
 });
 
 interface RowProps extends BaseComponentProps, LabelProps {
-    label?: ReactNode;
     showErrors?: boolean;
 }
 
 const Row: FC<RowProps> = memo(props => {
-    const { children, label, ...baseProps } = props;
-    const { elementWrapperClassName, layout, required, rowClassName, showErrors } = baseProps;
+    const { children, elementWrapperClassName, label, labelClassName, layout, required, rowClassName, showErrors } =
+        props;
 
     if (layout === 'elementOnly') {
         return <span>{children}</span>;
@@ -103,12 +144,7 @@ const Row: FC<RowProps> = memo(props => {
     return (
         <div className={classNames(rowClassNames)}>
             {renderLabel && (
-                <Label
-                    htmlFor={props.htmlFor}
-                    labelClassName={props.labelClassName}
-                    layout={layout}
-                    required={required}
-                >
+                <Label htmlFor={props.htmlFor} labelClassName={labelClassName} layout={layout} required={required}>
                     {label}
                 </Label>
             )}
@@ -122,22 +158,212 @@ const Row: FC<RowProps> = memo(props => {
     );
 });
 
-export interface TextareaProps extends BaseComponentProps {
-    className?: string;
-    cols?: number;
-    disabled?: boolean;
-    id?: string;
-    label?: ReactNode;
-    name?: string;
-    placeholder?: string;
-    rows?: number;
-    value?: any; // TODO: Move to WithFormsyProps?
+Row.defaultProps = {
+    label: null,
+    showErrors: true,
+};
+
+Row.displayName = 'Row';
+
+interface InputGroupProps {
+    addonAfter?: ReactNode;
+    addonBefore?: ReactNode;
+    buttonAfter?: ReactNode;
+    buttonBefore?: ReactNode;
 }
 
-const TextareaImpl: FC<TextareaProps & WithFormsyProps> = props => {
+const InputGroup: FC<InputGroupProps> = props => {
+    const { addonAfter, addonBefore, buttonAfter, buttonBefore, children } = props;
+
+    return (
+        <div className="input-group">
+            {!!addonBefore && <span className="input-group-prepend">{addonBefore}</span>}
+            {!!buttonBefore && <span className="input-group-prepend">{buttonBefore}</span>}
+            {children}
+            {!!addonAfter && <span className="input-group-append">{addonAfter}</span>}
+            {!!buttonAfter && <span className="input-group-append">{buttonAfter}</span>}
+        </div>
+    );
+};
+
+InputGroup.displayName = 'InputGroup';
+
+type InputHTMLProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' | 'onChange' | 'value'>;
+
+type InputProps = BaseComponentProps & InputGroupProps & InputHTMLProps;
+
+const InputImpl: FC<InputProps & WithFormsyProps> = props => {
+    // Extract InputGroupProps
+    const { addonAfter, addonBefore, buttonAfter, buttonBefore, ...rest } = props;
+    const {
+        componentRef,
+        elementWrapperClassName,
+        help,
+        label,
+        labelClassName,
+        layout,
+        onChange,
+        required,
+        rowClassName,
+        validateBeforeSubmit,
+        validateOnSubmit,
+        validatePristine,
+        ...formsyAndHTMLProps
+    } = rest;
+    const {
+        getErrorMessage,
+        getErrorMessages,
+        getValue,
+        hasValue,
+        isFormDisabled,
+        isFormSubmitted,
+        isPristine,
+        isRequired,
+        isValid,
+        isValidValue,
+        resetValue,
+        setValidations,
+        setValue,
+        showError,
+        showRequired,
+        validationError,
+        validationErrors,
+        validations,
+        ...inputHTMLProps
+    } = formsyAndHTMLProps;
+    const { className, disabled, id, type } = inputHTMLProps;
+    const isValid_ = isValid();
+    const showErrors = !isValid_ || showError();
+    const errorMessages = getErrorMessages();
+    const markAsInvalid = showErrors && (required || errorMessages?.length > 0);
+
+    const className_ = useMemo<string>(
+        () =>
+            classNames(
+                {
+                    'custom-range': type === 'range',
+                    'form-control': type !== 'hidden' && type !== 'range', // TODO: Double check this logic
+                    'is-invalid': markAsInvalid,
+                },
+                className
+            ),
+        [className, markAsInvalid, type]
+    );
+
+    const handleBlur = useCallback(
+        (event: FocusEvent<HTMLInputElement>) => {
+            setValue(event.currentTarget.value);
+        },
+        [setValue]
+    );
+
+    const handleChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            setValue(event.currentTarget.value);
+            onChange?.(event.currentTarget.name, event.currentTarget.value);
+        },
+        [onChange, setValue]
+    );
+
+    const input = (
+        <input
+            {...inputHTMLProps}
+            className={className_}
+            disabled={isFormDisabled() || disabled || false}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            ref={componentRef}
+            value={getValue()}
+        />
+    );
+
+    if (type === 'hidden') {
+        return input;
+    }
+
+    let control: React.JSX.Element;
+    if (addonAfter || addonBefore || buttonAfter || buttonBefore) {
+        control = (
+            <InputGroup
+                addonAfter={addonAfter}
+                addonBefore={addonBefore}
+                buttonAfter={buttonAfter}
+                buttonBefore={buttonBefore}
+            >
+                {input}
+            </InputGroup>
+        );
+    } else {
+        control = input;
+    }
+
+    if (layout === 'elementOnly') {
+        return control;
+    }
+
+    // TODO: Wire this up for textarea as well, reconcile this with "showErrors" and the "markAsInvalid" logic
+    // Reconcile with this logic:
+    // const validatePristine = getFallbackBoolean(
+    //     propValidatePristine,
+    //     contextValidatePristine,
+    //     false,
+    // );
+    const showErrors_ = shouldShowErrors(
+        isPristine(),
+        isFormSubmitted(),
+        isValid_,
+        validatePristine,
+        validateBeforeSubmit
+    );
+
+    return (
+        <Row
+            elementWrapperClassName={elementWrapperClassName}
+            label={label}
+            labelClassName={labelClassName}
+            layout={layout}
+            htmlFor={id}
+            required={required}
+            rowClassName={rowClassName}
+            showErrors={showErrors_}
+        >
+            {control}
+            {help && <Help>{help}</Help>}
+            {showErrors_ && <ErrorMessages messages={errorMessages} />}
+        </Row>
+    );
+};
+
+InputImpl.defaultProps = {
+    ...componentDefaultProps,
+    type: 'text',
+};
+
+const InputWithFormsy = withFormsy(InputImpl);
+
+export const Input: FC<InputProps & WithFormsyProps> = props => <InputWithFormsy {...props} />;
+
+Input.displayName = 'Input';
+
+type TextAreaHTMLProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onBlur' | 'onChange' | 'value'>;
+
+export type TextAreaProps = BaseComponentProps & TextAreaHTMLProps;
+
+const TextAreaImpl: FC<TextAreaProps & WithFormsyProps> = props => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { className, cols, disabled, id, label, name, placeholder, rows, value, ...baseProps } = props;
-    const { getErrorMessages, getValue, help, required, isValid, layout, onChange, setValue, showError } = baseProps;
+    const { className, cols, disabled, id, name, placeholder, rows, value, ...baseProps } = props;
+    const {
+        getErrorMessages,
+        getValue,
+        help,
+        isFormDisabled,
+        required,
+        isValid,
+        layout,
+        onChange,
+        setValue,
+        showError,
+    } = baseProps;
     const showErrors = !isValid() || showError();
     const errorMessages = getErrorMessages();
     const markAsInvalid = showErrors && (required || errorMessages?.length > 0);
@@ -157,11 +383,11 @@ const TextareaImpl: FC<TextareaProps & WithFormsyProps> = props => {
         [onChange, setValue]
     );
 
-    const element = (
+    const control = (
         <textarea
             className={classNames('form-control', { 'is-invalid': markAsInvalid }, className)}
             cols={cols}
-            disabled={disabled}
+            disabled={isFormDisabled() || disabled || false}
             id={id}
             name={name}
             onBlur={handleBlur}
@@ -174,23 +400,27 @@ const TextareaImpl: FC<TextareaProps & WithFormsyProps> = props => {
     );
 
     if (layout === 'elementOnly') {
-        return element;
+        return control;
     }
 
     return (
         <Row {...baseProps} htmlFor={id} showErrors={showErrors}>
-            {element}
+            {control}
             {help && <Help>{help}</Help>}
             {showErrors && <ErrorMessages messages={errorMessages} />}
         </Row>
     );
 };
 
-TextareaImpl.defaultProps = {
+TextAreaImpl.defaultProps = {
     ...componentDefaultProps,
     cols: 0,
     rows: 3,
     value: '',
-} as any;
+};
 
-export const Textarea = withFormsy(TextareaImpl);
+const TextAreaWithFormsy = withFormsy(TextAreaImpl);
+
+export const TextArea: FC<TextAreaProps & WithFormsyProps> = props => <TextAreaWithFormsy {...props} />;
+
+TextArea.displayName = 'TextArea';

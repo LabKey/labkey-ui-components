@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
-import { Input } from 'formsy-react-components';
+import React, { ReactNode, RefObject } from 'react';
 
 import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
+import { Input } from './FormsyReactComponents';
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 export interface TextInputProps extends DisableableInputProps {
     addLabelAsterisk?: boolean;
     addonAfter?: ReactNode;
-    elementWrapperClassName?: any[] | string;
+    elementWrapperClassName?: string;
     label?: any;
-    labelClassName?: any[] | string;
+    labelClassName?: string;
     name?: string;
     onChange?: any;
     placeholder?: string;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     required?: boolean;
-    rowClassName?: any[] | string;
+    rowClassName?: string;
     showLabel?: boolean;
     startFocused?: boolean;
     validatePristine?: boolean;
@@ -58,7 +58,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         },
     };
 
-    textInput: Input;
+    textInput: RefObject<any>;
 
     constructor(props: TextInputProps) {
         super(props);
@@ -69,6 +69,8 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             didFocus: false,
             isDisabled: props.initiallyDisabled,
         };
+
+        this.textInput = React.createRef();
     }
 
     componentDidMount(): void {
@@ -76,8 +78,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         const { didFocus } = this.state;
 
         if (startFocused && !didFocus && queryColumn && queryColumn.name) {
-            // https://github.com/twisty/formsy-react-components/blob/master/docs/refs.md
-            this.textInput.element.focus();
+            this.textInput.current?.focus();
             this.setState({ didFocus: true });
         }
     }
@@ -89,7 +90,6 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
     renderLabel() {
         const { label, queryColumn, showLabel, allowDisable, addLabelAsterisk, renderFieldLabel } = this.props;
         const { isDisabled } = this.state;
-
 
         if (renderFieldLabel) {
             return renderFieldLabel(queryColumn);
@@ -158,7 +158,6 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             <Input
                 addonAfter={addonAfter}
                 disabled={this.state.isDisabled}
-                changeDebounceInterval={0}
                 elementWrapperClassName={elementWrapperClassName}
                 help={help}
                 id={queryColumn.fieldKey}
@@ -175,7 +174,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
                 validationError={validationError}
                 validations={validations}
                 value={this.getInputValue()}
-                componentRef={node => (this.textInput = node)}
+                componentRef={this.textInput}
             />
         );
     }

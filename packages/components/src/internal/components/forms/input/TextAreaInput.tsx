@@ -20,15 +20,14 @@ import { FieldLabel } from '../FieldLabel';
 import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
-import { Textarea, TextareaProps } from './FormsyReactComponents';
+import { TextArea, TextAreaProps } from './FormsyReactComponents';
 
-interface TextAreaInputProps extends DisableableInputProps, Omit<TextareaProps, 'onChange'> {
+interface TextAreaInputProps extends DisableableInputProps, Omit<TextAreaProps, 'onChange'> {
     addLabelAsterisk?: boolean;
     onChange?: (value: any) => void;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
-    validatePristine?: boolean;
 }
 
 export class TextAreaInput extends DisableableInput<TextAreaInputProps, DisableableInputState> {
@@ -86,33 +85,31 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
 
     render() {
         const {
-            cols,
-            elementWrapperClassName,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            addLabelAsterisk,
             labelClassName,
             name,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            onChange,
             queryColumn,
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            renderFieldLabel,
             required,
-            rowClassName,
-            rows,
             showLabel,
-            validatePristine,
+            ...textAreaProps
         } = this.props;
 
         return (
-            <Textarea
+            <TextArea
+                id={queryColumn.fieldKey}
+                placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
+                {...textAreaProps}
                 disabled={this.state.isDisabled}
                 onChange={this.onChange}
-                cols={cols}
-                elementWrapperClassName={elementWrapperClassName}
-                id={queryColumn.fieldKey}
                 label={this.renderLabel()}
                 labelClassName={showLabel ? labelClassName : 'hide-label'}
-                placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
                 name={name ?? queryColumn.fieldKey}
-                rowClassName={rowClassName}
-                rows={rows}
                 required={required ?? queryColumn.required}
-                validatePristine={validatePristine}
                 value={this.getInputValue()}
             />
         );

@@ -22,10 +22,19 @@ export interface WithFormsyProps {
     getErrorMessage?: Function;
     getErrorMessages?: Function;
     getValue?: Function;
+    hasValue?: Function;
+    isFormDisabled?: Function;
+    isFormSubmitted?: Function;
+    isPristine?: Function;
     isRequired?: () => boolean;
     isValid?: Function;
+    isValidValue?: Function;
+    resetValue?: Function;
+    setValidations?: Function;
     setValue?: Function;
     showError?: () => boolean;
     showRequired?: Function;
-    validations?: any;
+    validationError?: string;
+    validationErrors?: string;
+    validations?: any; // Record<string, any> | string;
 }

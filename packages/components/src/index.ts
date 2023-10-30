@@ -1831,4 +1831,4 @@ export type { URLMapper } from './internal/url/URLResolver';
 export type { EditableGridEvent } from './internal/components/editable/constants';
 export type { EditableGridChange } from './internal/components/editable/EditableGrid';
 export type { GetAssayDefinitionsOptions, GetProtocolOptions } from './internal/components/assay/actions';
-import type { InputProps, TextAreaProps } from './internal/components/forms/input/FormsyReactComponents';
+export type { InputProps, TextAreaProps } from './internal/components/forms/input/FormsyReactComponents';

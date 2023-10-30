@@ -49,7 +49,12 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
             <div className="domain-form__file-preview">
                 <div className="domain-form__file-preview__text">Import data from this file upon {noun} creation? </div>
                 <div className="domain-form__file-preview__toggle">
-                    <input type="checkbox" id="domain__import-data__file-enabled" checked={shouldImportData} onChange={this.onToggleClick} />
+                    <input
+                        type="checkbox"
+                        id="domain__import-data__file-enabled"
+                        checked={shouldImportData}
+                        onChange={this.onToggleClick}
+                    />
                     {file && <span className="domain__import-data__file-title"> {file.name} </span>}
                 </div>
 

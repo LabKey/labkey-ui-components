@@ -145,6 +145,11 @@ export function resolveErrorMessage(
             } already exist in a different project.`;
         } else if (lcMessage.indexOf('inventory:item: row: ') >= 0) {
             return trimExceptionPrefix('inventory:item: row: ', errorMsg);
+        } else if (lcMessage.indexOf('could not create unique index') >= 0) {
+            const startIndex = lcMessage.indexOf('detail: key (');
+            const fieldname =
+                startIndex > -1 ? 'for field ' + lcMessage.substring(startIndex + 13, lcMessage.indexOf(')=(')) : '';
+            return `Unable to create a unique constraint ${fieldname} because duplicate values already exists in the data.`;
         }
     }
     return errorMsg;

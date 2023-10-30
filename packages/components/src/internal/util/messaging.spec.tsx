@@ -273,4 +273,19 @@ describe('resolveErrorMessage', () => {
             'There was a problem creating your sample.  Check that the format of the data matches the expected type for each field.'
         );
     });
+
+    test('Unique constraint exception', () => {
+        const error = {
+            msg: "SqlExecutor.execute(); ERROR: could not create unique index \"c519d3498_construct_cloningsite\"\n" +
+                "  Detail: Key (cloningsite)=(TEST) is duplicated.\n" +
+                "  Where: SQL statement \"CREATE UNIQUE INDEX c519d3498_construct_cloningSite ON expdataclass.c519d3498_construct (\"cloningsite\")\"\n" +
+                "PL/pgSQL function inline_code_block line 10 at SQL statement; nested exception is org.postgresql.util.PSQLException: ERROR: could not create unique index \"c519d3498_construct_cloningsite\"\n" +
+                "  Detail: Key (cloningsite)=(TEST) is duplicated.\n" +
+                "  Where: SQL statement \"CREATE UNIQUE INDEX c519d3498_construct_cloningSite ON expdataclass.c519d3498_construct (\"cloningsite\")\"\n" +
+                "PL/pgSQL function inline_code_block line 10 at SQL statement",
+        };
+        expect(resolveErrorMessage(error)).toBe(
+            'Unable to create a unique constraint for field cloningsite because duplicate values already exists in the data.'
+        );
+    });
 });

@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { List } from 'immutable';
+
 import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
 import { CONCEPT_CACHE } from '../ontology/actions';
@@ -52,6 +54,7 @@ import {
     FieldErrors,
     getValidValuesDetailStr,
     getValidValuesFromArray,
+    IDomainField,
     isPropertyTypeAllowed,
     isValidTextChoiceValue,
     PropertyValidator,
@@ -731,6 +734,47 @@ describe('DomainDesign', () => {
         delete nameColConstTest.cell;
         expect(nameColTest).toStrictEqual(nameColConstTest);
     });
+
+    test('uniqueConstraintFieldNames in create', () => {
+        const dd = DomainDesign.create({
+            fields: [
+                { name: 'a', rangeURI: INTEGER_TYPE.rangeURI },
+                { name: 'b', rangeURI: TEXT_TYPE.rangeURI },
+            ],
+            indices: [
+                { columnNames: ['a', 'b', 'c'], unique: true },
+                { columnNames: ['a'], unique: true },
+                { columnNames: ['b'], unique: false },
+                { columnNames: ['c'], unique: true },
+            ],
+        });
+        expect(dd.indices.size).toBe(4);
+        expect(dd.fields.get(0).uniqueConstraint).toBe(true); // field a
+        expect(dd.fields.get(1).uniqueConstraint).toBe(false); // field b
+    });
+
+    test('serialize indices', () => {
+        const dd = DomainDesign.create({
+            fields: [
+                { name: 'a', rangeURI: INTEGER_TYPE.rangeURI },
+                { name: 'b', rangeURI: TEXT_TYPE.rangeURI },
+            ],
+            indices: [
+                { columnNames: ['a', 'b', 'c'], unique: true },
+                { columnNames: ['a'], unique: true },
+                { columnNames: ['b'], unique: false },
+                { columnNames: ['c'], unique: true },
+            ],
+        });
+        const ddJson = DomainDesign.serialize(dd);
+        expect(ddJson.indices.length).toBe(3);
+        expect(ddJson.indices[0].columnNames).toStrictEqual(['a', 'b', 'c']);
+        expect(ddJson.indices[0].unique).toBe(true);
+        expect(ddJson.indices[1].columnNames).toStrictEqual(['b']);
+        expect(ddJson.indices[1].unique).toBe(false);
+        expect(ddJson.indices[2].columnNames).toStrictEqual(['a']);
+        expect(ddJson.indices[2].unique).toBe(true);
+    });
 });
 
 describe('DomainField', () => {
@@ -872,7 +916,9 @@ describe('DomainField', () => {
         expect(field.getDetailsArray(0).join('')).toBe('Updated. SRC. Primary Key. Locked');
 
         field = field.merge({ principalConceptCode: 'abc:123' }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe('Updated. SRC. Ontology Concept: ABC 123 (abc:123). Primary Key. Locked');
+        expect(field.getDetailsArray(0).join('')).toBe(
+            'Updated. SRC. Ontology Concept: ABC 123 (abc:123). Primary Key. Locked'
+        );
 
         expect(field.getDetailsArray(0, { test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: ABC 123 (abc:123). Primary Key. Locked. Additional Info'
@@ -1008,6 +1054,17 @@ describe('DomainField', () => {
         expect(
             DomainField.hasRangeValidation(DomainField.create({ name: 'foo', rangeURI: DATETIME_TYPE.rangeURI }))
         ).toBeTruthy();
+    });
+
+    test('uniqueConstraintFieldNames in fromJS', () => {
+        const fields = DomainField.fromJS(
+            [{ name: 'a' } as IDomainField, { name: 'b' } as IDomainField, { name: 'c' } as IDomainField],
+            undefined,
+            List.of('A', 'b', 'd')
+        );
+        expect(fields.get(0).uniqueConstraint).toBe(true); // field a
+        expect(fields.get(1).uniqueConstraint).toBe(true); // field b
+        expect(fields.get(2).uniqueConstraint).toBe(false); // field c
     });
 
     // TODO add other test cases for DomainField.serialize code

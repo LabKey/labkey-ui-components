@@ -20,6 +20,7 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
     const [selected, setSelected] = useState<Set<string>>(() => {
         let selected = new Set<string>();
         tabOrder.forEach(modelId => {
+            if (tabRowCounts?.[modelId] > 0) selected = selected.add(modelId);
             if (queryModels[modelId].rowCount > 0) selected = selected.add(modelId);
         });
         return selected;
@@ -82,7 +83,7 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                                     </td>
                                     <td className="pull-right">{rowCountDisplay}</td>
                                     <td className="view-name">
-                                        {model.viewName || 'Default'}{' '}
+                                        { !model.viewName || model.viewName.startsWith("~~") ? 'Default' : model.viewName}{' '}
                                         {model.currentView?.session && <span className="text-muted">(edited)</span>}
                                     </td>
                                 </tr>

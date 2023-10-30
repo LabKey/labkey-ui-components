@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.386.1-EditableGridRONames.0",
+  "version": "2.388.1-EditableGridRONames.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -73,7 +73,6 @@
     "react-color": "~2.19.3",
     "react-datepicker": "~4.17.0",
     "react-dom": "~16.14.0",
-    "react-redux": "~5.1.0",
     "react-router": "~3.2.6",
     "react-select": "~5.7.0",
     "react-treebeard": "~3.2.4",

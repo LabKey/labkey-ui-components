@@ -8,6 +8,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add new checkbox option to the field Advanced Settings dialog
   * DomainField update to serialize and de-serialize the "uniqueConstraint" prop based on the DomainDesign "indices"
 
+### version 2.388.1
+*Released*: 30 October 2023
+* ToggleButton updates
+  * ImportDataFilePreview update to remove usage and replace with a checkbox
+  * QueryInfoForm fix for ToggleIcon alignment with various form input types
+
 ### version 2.388.0
 *Released*: 27 October 2023
 - Remove dependency on `react-redux`

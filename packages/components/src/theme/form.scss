@@ -341,3 +341,18 @@ textarea.form-control {
     // Bootstrap wants all modal buttons on the right side of the footer, so we need to override that.
     text-align: left;
 }
+
+.query-info-form .toggle-group-icon {
+    padding-top: 7px;
+}
+.query-info-form .control-label {
+    padding-top: 7px;
+    .toggle-group-icon, &.textarea-control-label {
+        padding-top: 0;
+    }
+}
+.query-info-form .checkbox-input-form-row {
+    .control-label, .toggle-group-icon {
+        padding-top: 0;
+    }
+}

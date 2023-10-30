@@ -101,7 +101,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         // This should not be responsible for rendering the "required-symbol" and should allow for component prop
         // to define label wrapper classes.
         return (
-            <div className="form-group row">
+            <div className="form-group row checkbox-input-form-row">
                 {renderFieldLabel ? (
                     <label className="control-label col-sm-3 text-left col-xs-12">
                         {renderFieldLabel(queryColumn)}

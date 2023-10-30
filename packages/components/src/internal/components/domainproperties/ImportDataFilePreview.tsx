@@ -3,8 +3,6 @@ import React from 'react';
 import { convertRowDataIntoPreviewData } from '../files/actions';
 import { FilePreviewGrid } from '../files/FilePreviewGrid';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
-import { DeleteIcon } from '../base/DeleteIcon';
-import { ToggleButtons } from '../buttons/ToggleButtons';
 
 interface Props {
     file: File;
@@ -51,22 +49,13 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
             <div className="domain-form__file-preview">
                 <div className="domain-form__file-preview__text">Import data from this file upon {noun} creation? </div>
                 <div className="domain-form__file-preview__toggle">
-                    <ToggleButtons
-                        first="Yes"
-                        second="No"
-                        active={shouldImportData ? 'Yes' : 'No'}
-                        onClick={this.onToggleClick}
+                    <input
+                        type="checkbox"
+                        id="domain__import-data__file-enabled"
+                        checked={shouldImportData}
+                        onChange={this.onToggleClick}
                     />
-                    {shouldImportData && file && (
-                        <>
-                            <DeleteIcon title={null} iconCls="domain-field-delete-icon" onDelete={this.onToggleClick} />
-                            <span className="domain__import-data__file-icon">
-                                <span className="fa fa-lg fa-file-alt" />
-                            </span>
-
-                            <span className="domain__import-data__file-title"> {file.name} </span>
-                        </>
-                    )}
+                    {file && <span className="domain__import-data__file-title"> {file.name} </span>}
                 </div>
 
                 {shouldImportData && this.props.children}

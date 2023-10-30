@@ -422,7 +422,7 @@ export async function addRows(
  * @param queryColumns the ordered map of columns to be added
  * @param fieldKey the fieldKey of the existing column after which the new columns should be inserted.  If undefined
  * or the column is not found, columns will be added at the beginning.
- * @param readOnlyColumns set of columns that are in the grid but may be designated not as showInInsertView (e.g., 'Name')
+ * @param readOnlyColumns set of columns that are in the grid along with the editable columns (e.g., 'Name')
  */
 export function addColumns(
     editorModel: EditorModel,

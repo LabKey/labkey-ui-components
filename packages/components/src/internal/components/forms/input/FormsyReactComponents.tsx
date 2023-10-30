@@ -190,7 +190,7 @@ InputGroup.displayName = 'InputGroup';
 
 type InputHTMLProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' | 'onChange' | 'value'>;
 
-type InputProps = BaseComponentProps & InputGroupProps & InputHTMLProps;
+export type InputProps = BaseComponentProps & InputGroupProps & InputHTMLProps;
 
 const InputImpl: FC<InputProps & WithFormsyProps> = props => {
     // Extract InputGroupProps

@@ -445,6 +445,7 @@ import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCre
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
 
 import { UserSelectInput } from './internal/components/forms/input/UserSelectInput';
+import { Input, TextArea } from './internal/components/forms/input/FormsyReactComponents';
 import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
 import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
@@ -1137,6 +1138,8 @@ export {
     FieldEditProps,
     QuerySelect,
     UserSelectInput,
+    Input,
+    TextArea,
     DetailPanelHeader,
     handleInputTab,
     handleTabKeyOnTextArea,
@@ -1828,3 +1831,4 @@ export type { URLMapper } from './internal/url/URLResolver';
 export type { EditableGridEvent } from './internal/components/editable/constants';
 export type { EditableGridChange } from './internal/components/editable/EditableGrid';
 export type { GetAssayDefinitionsOptions, GetProtocolOptions } from './internal/components/assay/actions';
+import type { InputProps, TextAreaProps } from './internal/components/forms/input/FormsyReactComponents';

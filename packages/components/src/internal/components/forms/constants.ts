@@ -35,6 +35,6 @@ export interface WithFormsyProps {
     showError?: () => boolean;
     showRequired?: Function;
     validationError?: string;
-    validationErrors?: string;
+    validationErrors?: any; // Record<string, any> | string;
     validations?: any; // Record<string, any> | string;
 }

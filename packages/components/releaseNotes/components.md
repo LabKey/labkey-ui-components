@@ -8,6 +8,17 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Add new checkbox option to the field Advanced Settings dialog
   * DomainField update to serialize and de-serialize the "uniqueConstraint" prop based on the DomainDesign "indices"
 
+### version 2.388.0
+*Released*: 27 October 2023
+- Remove dependency on `react-redux`
+- Remove configuration of `Provider` and `Router` from `AppContexts`
+
+### version 2.387.0
+*Released*: 27 October 2023
+- Issue 48969: add loadAllQueryInfos method to withQueryModels actions
+- Update ExportModal to show all system views (prefixed by ~~) as 'Default'
+- Update ExportModal to pre-select models with counts > 0 when using `tabRowCounts`
+
 ### version 2.386.0
 *Released*: 26 October 2023
 - Add ability to create, edit, and delete sample, source, and assay domains from subfolders

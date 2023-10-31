@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD October 2023
+### version 2.390.0
+*Released*: 31 October 2023
 * Issue 41677: Include single field uniqueness constraint option in field editor
   * Add domain kind property for allowUniqueConstraintProperties
   * Add new checkbox option to the field Advanced Settings dialog

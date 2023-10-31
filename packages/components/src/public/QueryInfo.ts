@@ -273,16 +273,24 @@ export class QueryInfo {
 
     // @param isIncludedColumn can be used to filter out columns that should not be designate as insertColumns
     // (e.g., if creating samples that are not aliquots, the aliquot-only fields should never be included)
-    getInsertColumns(isIncludedColumn?: (col: QueryColumn) => boolean): QueryColumn[] {
+    getInsertColumns(isIncludedColumn?: (col: QueryColumn) => boolean, readOnlyColumns?: string[]): QueryColumn[] {
+        const lowerReadOnlyColumnsSet = readOnlyColumns?.reduce((result, value) => {
+            result.add(value.toLowerCase());
+            return result;
+        }, new Set());
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
-        return this.columns.valueArray.filter(col => insertColumnFilter(col, false, isIncludedColumn));
+        return this.columns.valueArray.filter(
+            col =>
+                lowerReadOnlyColumnsSet?.has(col.fieldKey.toLowerCase()) ||
+                insertColumnFilter(col, false, isIncludedColumn)
+        );
     }
 
-    getInsertColumnIndex(fieldKey: string): number {
+    getInsertColumnIndex(fieldKey: string, readOnlyColumns?: string[]): number {
         if (!fieldKey) return -1;
 
         const lcFieldKey = fieldKey.toLowerCase();
-        return this.getInsertColumns().findIndex(column => column.fieldKey.toLowerCase() === lcFieldKey);
+        return this.getInsertColumns(undefined, readOnlyColumns).findIndex(column => column.fieldKey.toLowerCase() === lcFieldKey);
     }
 
     getUpdateColumns(readOnlyColumns?: string[]): QueryColumn[] {

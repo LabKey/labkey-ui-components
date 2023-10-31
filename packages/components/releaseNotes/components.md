@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.388.2
+*Released*: 31 October 2023
+- Issue 48961: Make sure Name (id) fields are shown, but read-only, in editable grids for update
+
 ### version 2.388.1
 *Released*: 30 October 2023
 * ToggleButton updates

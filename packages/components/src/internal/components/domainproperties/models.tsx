@@ -230,9 +230,19 @@ export class DomainDesign
             if (rawModel.indices) {
                 indices = DomainIndex.fromJS(rawModel.indices);
                 uniqueConstraintFieldNames = indices
-                    .filter(index => index.type === 'unique' && index.columns.size === 1)
+                    .filter(index => index.isSingleFieldUniqueConstraint())
                     .map(index => index.columns.get(0))
                     .toList();
+
+                // Hack: SQL server uses a hashed field for unique constraints on text columns, see
+                // BaseMicrosoftSqlServerDialect.addCreateIndexStatements (where it talks about HASHBYTES)
+                indices
+                    .filter(index => index.isMSSQLHashedSingleFieldUniqueConstraint())
+                    .forEach(index => {
+                        uniqueConstraintFieldNames = uniqueConstraintFieldNames.push(
+                            index.columns.get(0).replace('_hashed_', '')
+                        );
+                    });
             }
 
             if (rawModel.fields) {
@@ -261,7 +271,9 @@ export class DomainDesign
         // Issue 41677: allow for per-field unique constraints to be added via the field editor UI
         json.indices = dd.indices
             // filter out the single field unique indices, and keep the others
-            .filter(index => !(index.type === 'unique' && index.columns.size === 1))
+            .filter(
+                index => !index.isSingleFieldUniqueConstraint() && !index.isMSSQLHashedSingleFieldUniqueConstraint()
+            )
             .map(index => DomainIndex.serialize(index))
             .toArray();
         // add in the new set of single field unique indices
@@ -498,7 +510,7 @@ export class DomainDesign
     }
 }
 
-interface IDomainIndex {
+export interface IDomainIndex {
     columns: string[] | List<string>;
     type: 'primary' | 'unique' | 'nonunique';
 }
@@ -537,6 +549,14 @@ export class DomainIndex
         delete json.type;
 
         return json;
+    }
+
+    isSingleFieldUniqueConstraint(): boolean {
+        return this.type === 'unique' && this.columns.size === 1;
+    }
+
+    isMSSQLHashedSingleFieldUniqueConstraint(): boolean {
+        return this.type === 'nonunique' && this.columns.size === 1 && this.columns.get(0).startsWith('_hashed_');
     }
 }
 

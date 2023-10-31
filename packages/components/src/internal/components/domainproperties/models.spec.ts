@@ -51,6 +51,8 @@ import {
     DEFAULT_TEXT_CHOICE_VALIDATOR,
     DomainDesign,
     DomainField,
+    DomainIndex,
+    IDomainIndex,
     FieldErrors,
     getValidValuesDetailStr,
     getValidValuesFromArray,
@@ -1068,6 +1070,30 @@ describe('DomainField', () => {
     });
 
     // TODO add other test cases for DomainField.serialize code
+});
+
+describe('DomainIndex', () => {
+    test('isSingleFieldUniqueConstraint', () => {
+        let index = DomainIndex.fromJS([{ columnNames: ['a'], unique: true } as IDomainIndex]).get(0);
+        expect(index.isSingleFieldUniqueConstraint()).toBe(true);
+        index = DomainIndex.fromJS([{ columnNames: ['a'], unique: false } as IDomainIndex]).get(0);
+        expect(index.isSingleFieldUniqueConstraint()).toBe(false);
+        index = DomainIndex.fromJS([{ columnNames: ['a', 'b'], unique: true } as IDomainIndex]).get(0);
+        expect(index.isSingleFieldUniqueConstraint()).toBe(false);
+    });
+
+    test('isMSSQLHashedSingleFieldUniqueConstraint', () => {
+        let index = DomainIndex.fromJS([{ columnNames: ['a'], unique: true } as IDomainIndex]).get(0);
+        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
+        index = DomainIndex.fromJS([{ columnNames: ['a'], unique: false } as IDomainIndex]).get(0);
+        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
+        index = DomainIndex.fromJS([{ columnNames: ['_hashed_a'], unique: true } as IDomainIndex]).get(0);
+        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
+        index = DomainIndex.fromJS([{ columnNames: ['_hashed_a'], unique: false } as IDomainIndex]).get(0);
+        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(true);
+        index = DomainIndex.fromJS([{ columnNames: ['_hashed_a', 'b'], unique: false } as IDomainIndex]).get(0);
+        expect(index.isMSSQLHashedSingleFieldUniqueConstraint()).toBe(false);
+    });
 });
 
 describe('PropertyValidator', () => {

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X November 2023
+* Issue 48751: LKSM/LKB: Respect sort order of sources or samples for lineage sample creation
+  * Add saveOrderedSnapshotSelection util
+
 ### version 2.390.0
 *Released*: 31 October 2023
 * Issue 41677: Include single field uniqueness constraint option in field editor

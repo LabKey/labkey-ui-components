@@ -480,6 +480,8 @@ import {
     getOperationConfirmationData,
     getParentTypeDataForLineage,
     getSampleOperationConfirmationData,
+    getOrderedSelectedMappedKeysFromQueryModel,
+    saveOrderedSnapshotSelection,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -649,7 +651,6 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
     deletePicklists,
-    getOrderedSelectedMappedKeysFromQueryModel,
     getOrderedSelectedPicklistSamples,
     getPicklistFromId,
     getPicklistListingContainerFilter,
@@ -1032,6 +1033,7 @@ export {
     clearSelected,
     // grid functions
     getOrderedSelectedMappedKeysFromQueryModel,
+    saveOrderedSnapshotSelection,
     getSelected,
     getSelectedData,
     getSelection,

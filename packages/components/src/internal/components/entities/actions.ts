@@ -1,7 +1,7 @@
 import { ActionURL, Ajax, AuditBehaviorTypes, Filter, getServerContext, Query, Utils } from '@labkey/api';
 import { List, Map } from 'immutable';
 
-import { getSelectedData, getSelected } from '../../actions';
+import {getSelectedData, getSelected, setSnapshotSelections} from '../../actions';
 
 import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
@@ -50,8 +50,9 @@ import {
     IParentOption,
     MoveEntitiesResult,
     OperationConfirmationData,
-    ProjectConfigurableDataType,
+    ProjectConfigurableDataType, RemappedKeyValues,
 } from './models';
+import {QueryModel} from "../../../public/QueryModel/QueryModel";
 
 export function getOperationConfirmationData(
     dataType: EntityDataType,
@@ -137,7 +138,8 @@ export function getSampleOperationConfirmationData(
 async function getSelectedParents(
     schemaQuery: SchemaQuery,
     filterArray: Filter.IFilter[],
-    isAliquotParent?: boolean
+    isAliquotParent?: boolean,
+    orderedRowIds?: string[],
 ): Promise<List<EntityParentType>> {
     const isSampleParent = isSamplesSchema(schemaQuery);
     const columns = ['LSID', 'Name', 'RowId'];
@@ -148,10 +150,10 @@ async function getSelectedParents(
     const response = await selectRows({ columns, filterArray, schemaQuery });
 
     if (isSampleParent) {
-        return resolveSampleParentTypes(response, isAliquotParent);
+        return resolveSampleParentTypes(response, isAliquotParent, orderedRowIds);
     }
 
-    return resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent);
+    return resolveEntityParentTypeFromIds(schemaQuery, response, isAliquotParent, orderedRowIds);
 }
 
 export async function getSelectedItemSamples(selectedItemIds: string[]): Promise<number[]> {
@@ -160,8 +162,8 @@ export async function getSelectedItemSamples(selectedItemIds: string[]): Promise
     return data.map(row => row.getIn(['MaterialId', 'value'])).toArray();
 }
 
-function resolveSampleParentTypes(response: SelectRowsResponse, isAliquotParent?: boolean): List<EntityParentType> {
-    const groups = {};
+function resolveSampleParentTypes(response: SelectRowsResponse, isAliquotParent?: boolean, orderedRowIds?: string[]): List<EntityParentType> {
+    const groups : {[key: string] : any[]} = {};
     const results = [];
 
     // The transformation done here makes the entities compatible with the editable grid
@@ -184,7 +186,7 @@ function resolveSampleParentTypes(response: SelectRowsResponse, isAliquotParent?
                 index,
                 schema: 'samples',
                 query: sampleType?.toLowerCase(),
-                value: List<DisplayObject>(data),
+                value: List<DisplayObject>(data.sort(_getEntitySort(orderedRowIds))),
                 isAliquotParent,
             })
         );
@@ -226,7 +228,7 @@ async function initParents(
             filterArray.push(opFilter);
         }
 
-        return getSelectedParents(schemaQuery, filterArray, isAliquotParent);
+        return getSelectedParents(schemaQuery, filterArray, isAliquotParent, isSnapshotSelection ? selectionResponse.selected : undefined);
     } else if (initialParents?.length > 0) {
         const [parent] = initialParents;
         const [schema, query, value] = parent.toLowerCase().split(':');
@@ -268,15 +270,24 @@ async function initParents(
     return List<EntityParentType>();
 }
 
+function _getEntitySort(ordredIds: string[]) {
+    return (a, b) => {
+        return ordredIds.indexOf(a.value + '') - ordredIds.indexOf(b.value + '');
+    }
+}
+
+
 function resolveEntityParentTypeFromIds(
     schemaQuery: SchemaQuery,
     response: SelectRowsResponse,
-    isAliquotParent?: boolean
+    isAliquotParent?: boolean,
+    orderedRowIds?: string[],
 ): List<EntityParentType> {
     // The transformation done here makes the entities compatible with the editable grid
     const data: DisplayObject[] = response.rows
         .map(row => extractEntityTypeOptionFromRow(row))
-        .map(({ label, rowId }) => ({ displayValue: label, value: rowId }));
+        .map(({ label, rowId }) => ({ displayValue: label, value: rowId }))
+        .sort(_getEntitySort(orderedRowIds));
 
     return List<EntityParentType>([
         EntityParentType.create({
@@ -1023,3 +1034,125 @@ export const getExcludedDataTypeNames = (
             });
     });
 };
+
+export function getOrderedSelectedMappedKeys(
+    fromColumn: string,
+    toColumn: string,
+    schemaName: string,
+    queryName: string,
+    selections: string[],
+    sortString?: string,
+    queryParameters?: Record<string, any>,
+    viewName?: string
+): Promise<RemappedKeyValues> {
+    return new Promise((resolve, reject) => {
+        getSelectedData(
+            schemaName,
+            queryName,
+            Array.from(selections),
+            toColumn ? [fromColumn, toColumn].join(',') : fromColumn,
+            sortString,
+            queryParameters,
+            viewName,
+            fromColumn
+        )
+            .then(response => {
+                const { data, dataIds } = response;
+                const values = [];
+                data.forEach(row => {
+                    const rowData = row.toJS();
+                    const from = caseInsensitive(rowData, fromColumn)?.value;
+                    const to = toColumn ? caseInsensitive(rowData, toColumn)?.value : null;
+                    const orderNum = dataIds.indexOf(from + '');
+                    values.push({
+                        from,
+                        to,
+                        orderNum,
+                    });
+                });
+
+                const mapFromValues = [];
+                const mapToValues = [];
+                values.sort((a, b) => a.orderNum - b.orderNum);
+                values.forEach(value => {
+                    mapToValues.push(value.to);
+                    mapFromValues.push(value.from);
+                });
+
+                resolve({
+                    mapToValues,
+                    mapFromValues,
+                });
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(reason);
+            });
+    });
+}
+
+export function saveOrderedSnapshotSelection(
+    queryModel: QueryModel,
+    fromColumn: string,
+    toColumn?: string,
+): Promise<number[]> {
+    return new Promise((resolve, reject) => {
+        const { queryName, queryParameters, selections, sortString, viewName, selectionKey, schemaName } = queryModel;
+        getOrderedSelectedMappedKeys(
+            fromColumn,
+            toColumn ?? fromColumn,
+            schemaName,
+            queryName,
+            Array.from(selections),
+            sortString,
+            queryParameters,
+            viewName
+        )
+            .then(result => {
+                const fromIds = result.mapFromValues;
+                const toIds = result.mapToValues;
+                setSnapshotSelections(selectionKey, fromIds)
+                    .then(result => {
+                        resolve(toIds);
+                    })
+                    .catch(reason => {
+                        console.error(reason);
+                        reject(reason);
+                    })
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(reason);
+            });
+    });
+}
+
+
+/**
+ * Get the ordered remapped key values from a QueryModel based on grid's current selection.
+ * For example, picklist grid has a "ID" PK column and a "SampleId" FK column.
+ * This function can be used to get the SampleIds for the currently selected IDs, in the order that respect current grid
+ * filter/sort
+ * @param fromColumn Key column for the current grid
+ * @param toColumn Key column for the FK field, can be empty.
+ * @param selectedIds
+ * @param queryModel
+ */
+export function getOrderedSelectedMappedKeysFromQueryModel(
+    fromColumn: string,
+    toColumn: string,
+    queryModel: QueryModel,
+    selectedIds?: string[]
+): Promise<RemappedKeyValues> {
+    const { schemaName, queryName, queryParameters, sortString, viewName, selections } = queryModel;
+    return getOrderedSelectedMappedKeys(
+        fromColumn,
+        undefined,
+        schemaName,
+        queryName,
+        selectedIds ?? Array.from(selections),
+        sortString,
+        queryParameters,
+        viewName
+    );
+}

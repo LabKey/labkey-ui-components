@@ -30,6 +30,7 @@ import {
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_MVENABLED,
     DOMAIN_FIELD_PHI,
+    DOMAIN_FIELD_UNIQUECONSTRAINT,
     DOMAIN_FIELD_RECOMMENDEDVARIABLE,
     DOMAIN_FIELD_SHOWNINDETAILSVIEW,
     DOMAIN_FIELD_SHOWNININSERTVIEW,
@@ -54,6 +55,7 @@ interface AdvancedSettingsProps {
     onHide: () => any;
     show: boolean;
     showDefaultValueSettings: boolean;
+    allowUniqueConstraintProperties: boolean;
 }
 
 interface AdvancedSettingsState {
@@ -70,6 +72,7 @@ interface AdvancedSettingsState {
     shownInDetailsView?: boolean;
     shownInInsertView?: boolean;
     shownInUpdateView?: boolean;
+    uniqueConstraint?: boolean;
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
@@ -112,6 +115,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             mvEnabled: field.mvEnabled,
             recommendedVariable: field.recommendedVariable,
             excludeFromShifting: field.excludeFromShifting,
+            uniqueConstraint: field.uniqueConstraint,
             PHI: field.PHI,
             phiLevels,
         };
@@ -334,8 +338,17 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     renderMiscOptions = () => {
-        const { index, field, domainIndex, domainFormDisplayOptions } = this.props;
-        const { measure, dimension, mvEnabled, recommendedVariable, PHI, excludeFromShifting, phiLevels } = this.state;
+        const { index, field, domainIndex, domainFormDisplayOptions, allowUniqueConstraintProperties } = this.props;
+        const {
+            measure,
+            dimension,
+            mvEnabled,
+            recommendedVariable,
+            uniqueConstraint,
+            PHI,
+            excludeFromShifting,
+            phiLevels,
+        } = this.state;
         const currentValueExists = phiLevels?.find(level => level.value === PHI) !== undefined;
         const disablePhiSelect =
             domainFormDisplayOptions.phiLevelDisabled ||
@@ -446,7 +459,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </div>
                     </LabelHelpTip>
                 </Checkbox>
-
                 {PropDescType.isMvEnableable(field.dataType.rangeURI) && (
                     <Checkbox
                         checked={mvEnabled}
@@ -468,6 +480,20 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                     {helpLinkNode(MISSING_VALUES_TOPIC, 'Missing Value Indicators')}.
                                 </p>
                             </div>
+                        </LabelHelpTip>
+                    </Checkbox>
+                )}
+                {allowUniqueConstraintProperties && (
+                    <Checkbox
+                        checked={uniqueConstraint || field.isPrimaryKey}
+                        disabled={field.isPrimaryKey}
+                        onChange={this.handleCheckbox}
+                        name={createFormInputName(DOMAIN_FIELD_UNIQUECONSTRAINT)}
+                        id={createFormInputId(DOMAIN_FIELD_UNIQUECONSTRAINT, domainIndex, index)}
+                    >
+                        Require all values to be unique
+                        <LabelHelpTip title="Unique Constraint">
+                            <div>Add a unique constraint via a database-level index for this field.</div>
                         </LabelHelpTip>
                     </Checkbox>
                 )}

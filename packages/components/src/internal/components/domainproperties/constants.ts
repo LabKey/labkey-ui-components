@@ -41,6 +41,7 @@ export const DOMAIN_FIELD_DIMENSION = 'dimension';
 export const DOMAIN_FIELD_HIDDEN = 'hidden';
 export const DOMAIN_FIELD_MVENABLED = 'mvEnabled';
 export const DOMAIN_FIELD_PHI = 'PHI';
+export const DOMAIN_FIELD_UNIQUECONSTRAINT = 'uniqueConstraint';
 export const DOMAIN_FIELD_RECOMMENDEDVARIABLE = 'recommendedVariable';
 export const DOMAIN_FIELD_SHOWNINDETAILSVIEW = 'shownInDetailsView';
 export const DOMAIN_FIELD_SHOWNININSERTVIEW = 'shownInInsertView';

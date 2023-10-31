@@ -15,6 +15,7 @@ import {
     DOMAIN_FIELD_SHOWNINDETAILSVIEW,
     DOMAIN_FIELD_SHOWNININSERTVIEW,
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
+    DOMAIN_FIELD_UNIQUECONSTRAINT,
     DOMAIN_LAST_ENTERED_DEFAULT,
     DOMAIN_NON_EDITABLE_DEFAULT,
     INT_RANGE_URI,
@@ -43,6 +44,7 @@ describe('AdvancedSettings', () => {
         measure: true,
         mvEnabled: false,
         recommendedVariable: true,
+        uniqueConstraint: true,
         PHI: PHILEVEL_LIMITED_PHI,
     };
     const field1 = DomainField.create(fieldProps);
@@ -57,6 +59,7 @@ describe('AdvancedSettings', () => {
         onHide: jest.fn(),
         onApply: jest.fn(),
         showDefaultValueSettings: true,
+        allowUniqueConstraintProperties: true,
         defaultDefaultValueType: DOMAIN_EDITABLE_DEFAULT,
         defaultValueOptions: List<string>([
             DOMAIN_EDITABLE_DEFAULT,
@@ -138,6 +141,14 @@ describe('AdvancedSettings', () => {
         expect(recommendedVariable.length).toEqual(1);
         expect(recommendedVariable.props().checked).toEqual(true);
 
+        // Verify uniqueConstraint
+        const uniqueConstraint = advSettings.find({
+            id: createFormInputId(DOMAIN_FIELD_UNIQUECONSTRAINT, _domainIndex, _index),
+            bsClass: 'checkbox',
+        });
+        expect(uniqueConstraint.length).toEqual(1);
+        expect(uniqueConstraint.props().checked).toEqual(true);
+
         // Verify default type
         let defaultType = advSettings.find({
             id: createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, _domainIndex, _index),
@@ -209,6 +220,13 @@ describe('AdvancedSettings', () => {
             });
             expect(recommendedVariable.props().checked).toEqual(false);
 
+            // Verify uniqueConstraint
+            const uniqueConstraint = advSettings.find({
+                id: createFormInputId(DOMAIN_FIELD_UNIQUECONSTRAINT, _domainIndex, _index),
+                bsClass: 'checkbox',
+            });
+            expect(uniqueConstraint.props().checked).toEqual(false);
+
             const phi = advSettings.find({
                 id: createFormInputId(DOMAIN_FIELD_PHI, _domainIndex, _index),
                 bsClass: 'form-control',
@@ -236,6 +254,7 @@ describe('AdvancedSettings', () => {
                 measure: false,
                 mvEnabled: true,
                 recommendedVariable: false,
+                uniqueConstraint: false,
                 PHI: PHILEVEL_FULL_PHI,
                 defaultValueType: DOMAIN_LAST_ENTERED_DEFAULT,
             },

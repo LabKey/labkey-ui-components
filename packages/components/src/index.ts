@@ -749,7 +749,7 @@ import {
     createTestProjectAppContextAdmin,
     createTestProjectAppContextNonAdmin,
     TEST_FOLDER_CONTAINER,
-    TEST_PROJECT_CONTAINER
+    TEST_PROJECT_CONTAINER,
 } from './internal/containerFixtures';
 import {
     ASSAY_DESIGN_KEY,

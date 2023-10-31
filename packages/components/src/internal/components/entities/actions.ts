@@ -1,7 +1,7 @@
 import { ActionURL, Ajax, AuditBehaviorTypes, Filter, getServerContext, Query, Utils } from '@labkey/api';
 import { List, Map } from 'immutable';
 
-import {getSelectedData, getSelected, setSnapshotSelections} from '../../actions';
+import { getSelectedData, getSelected, setSnapshotSelections } from '../../actions';
 
 import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
@@ -28,6 +28,8 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
 import { getInitialParentChoices, isDataClassEntity, isSampleEntity } from './utils';
 import {
     DATA_CLASS_IMPORT_PREFIX,
@@ -50,9 +52,9 @@ import {
     IParentOption,
     MoveEntitiesResult,
     OperationConfirmationData,
-    ProjectConfigurableDataType, RemappedKeyValues,
+    ProjectConfigurableDataType,
+    RemappedKeyValues,
 } from './models';
-import {QueryModel} from "../../../public/QueryModel/QueryModel";
 
 export function getOperationConfirmationData(
     dataType: EntityDataType,
@@ -139,7 +141,7 @@ async function getSelectedParents(
     schemaQuery: SchemaQuery,
     filterArray: Filter.IFilter[],
     isAliquotParent?: boolean,
-    orderedRowIds?: string[],
+    orderedRowIds?: string[]
 ): Promise<List<EntityParentType>> {
     const isSampleParent = isSamplesSchema(schemaQuery);
     const columns = ['LSID', 'Name', 'RowId'];
@@ -162,8 +164,12 @@ export async function getSelectedItemSamples(selectedItemIds: string[]): Promise
     return data.map(row => row.getIn(['MaterialId', 'value'])).toArray();
 }
 
-function resolveSampleParentTypes(response: SelectRowsResponse, isAliquotParent?: boolean, orderedRowIds?: string[]): List<EntityParentType> {
-    const groups : {[key: string] : any[]} = {};
+function resolveSampleParentTypes(
+    response: SelectRowsResponse,
+    isAliquotParent?: boolean,
+    orderedRowIds?: string[]
+): List<EntityParentType> {
+    const groups: { [key: string]: any[] } = {};
     const results = [];
 
     // The transformation done here makes the entities compatible with the editable grid
@@ -228,7 +234,12 @@ async function initParents(
             filterArray.push(opFilter);
         }
 
-        return getSelectedParents(schemaQuery, filterArray, isAliquotParent, isSnapshotSelection ? selectionResponse.selected : undefined);
+        return getSelectedParents(
+            schemaQuery,
+            filterArray,
+            isAliquotParent,
+            isSnapshotSelection ? selectionResponse.selected : undefined
+        );
     } else if (initialParents?.length > 0) {
         const [parent] = initialParents;
         const [schema, query, value] = parent.toLowerCase().split(':');
@@ -273,15 +284,14 @@ async function initParents(
 function _getEntitySort(ordredIds: string[]) {
     return (a, b) => {
         return ordredIds.indexOf(a.value + '') - ordredIds.indexOf(b.value + '');
-    }
+    };
 }
-
 
 function resolveEntityParentTypeFromIds(
     schemaQuery: SchemaQuery,
     response: SelectRowsResponse,
     isAliquotParent?: boolean,
-    orderedRowIds?: string[],
+    orderedRowIds?: string[]
 ): List<EntityParentType> {
     // The transformation done here makes the entities compatible with the editable grid
     const data: DisplayObject[] = response.rows
@@ -1094,7 +1104,7 @@ export function getOrderedSelectedMappedKeys(
 export function saveOrderedSnapshotSelection(
     queryModel: QueryModel,
     fromColumn: string,
-    toColumn?: string,
+    toColumn?: string
 ): Promise<number[]> {
     return new Promise((resolve, reject) => {
         const { queryName, queryParameters, selections, sortString, viewName, selectionKey, schemaName } = queryModel;
@@ -1118,7 +1128,7 @@ export function saveOrderedSnapshotSelection(
                     .catch(reason => {
                         console.error(reason);
                         reject(reason);
-                    })
+                    });
             })
             .catch(reason => {
                 console.error(reason);
@@ -1126,7 +1136,6 @@ export function saveOrderedSnapshotSelection(
             });
     });
 }
-
 
 /**
  * Get the ordered remapped key values from a QueryModel based on grid's current selection.

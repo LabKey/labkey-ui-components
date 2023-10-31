@@ -19,9 +19,10 @@ import { isProductProjectsEnabled } from '../../app/utils';
 import { SCHEMAS } from '../../schemas';
 import { caseInsensitive } from '../../util/utils';
 
+import { getOrderedSelectedMappedKeys } from '../entities/actions';
+
 import { Picklist, PICKLIST_KEY_COLUMN, PICKLIST_SAMPLE_ID_COLUMN } from './models';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
-import {getOrderedSelectedMappedKeys} from "../entities/actions";
 
 export function getPicklistsForInsert(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {

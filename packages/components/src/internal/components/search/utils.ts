@@ -159,7 +159,7 @@ export function getFieldFiltersValidationResult(
                 const isTotalValueTooLong = value.reduce((accum, curr) => accum + curr.length, 0) > 2000;
                 if (isValueTooLong || isTotalValueTooLong) {
                     hasLongValueError = true;
-                    longValueParentFields.push(fieldFilter.fieldKey ?? fieldFilter.fieldCaption);
+                    longValueParentFields.push(fieldFilter.fieldCaption ?? fieldFilter.fieldKey);
                 }
             }
         });

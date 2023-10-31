@@ -117,8 +117,11 @@ export function getFieldFiltersValidationResult(
     dataTypeFilters: { [key: string]: FieldFilter[] },
     queryLabels?: { [key: string]: string }
 ): string {
-    let parentFields = {},
-        hasError = false;
+    let missingValueParentFields = {},
+        hasMissingValueError = false,
+        longValueParentFields = [],
+        hasLongValueError = false,
+        errorMsg = '';
     Object.keys(dataTypeFilters).forEach(parent => {
         const filters = dataTypeFilters[parent];
         filters.forEach(fieldFilter => {
@@ -141,27 +144,40 @@ export function getFieldFiltersValidationResult(
                 }
 
                 if (fieldError == true) {
-                    hasError = true;
-                    const fields = parentFields[parent] ?? [];
+                    hasMissingValueError = true;
+                    const fields = missingValueParentFields[parent] ?? [];
                     if (fields.indexOf(fieldFilter.fieldCaption) === -1) {
                         fields.push(fieldFilter.fieldCaption);
-                        parentFields[parent] = fields;
+                        missingValueParentFields[parent] = fields;
                     }
+                }
+            }
+
+            if (filter.getFilterType().isMultiValued()) {
+                const value = filter.getValue();
+                const isValueTooLong = value.some(v => v?.length > 2000);
+                const isTotalValueTooLong = value.reduce((accum, curr) => accum + curr.length, 0) > 2000;
+                if (isValueTooLong || isTotalValueTooLong) {
+                    hasLongValueError = true;
+                    longValueParentFields.push(fieldFilter.fieldKey ?? fieldFilter.fieldCaption);
                 }
             }
         });
     });
 
-    if (hasError) {
+    if (hasMissingValueError) {
         const parentMsgs = [];
-        Object.keys(parentFields).forEach(parent => {
+        Object.keys(missingValueParentFields).forEach(parent => {
             const parentLabel = queryLabels?.[parent];
-            parentMsgs.push((parentLabel ? parentLabel + ': ' : '') + parentFields[parent].join(', '));
+            parentMsgs.push((parentLabel ? parentLabel + ': ' : '') + missingValueParentFields[parent].join(', '));
         });
-        return 'Missing filter values for: ' + parentMsgs.join('; ') + '.';
+        errorMsg += 'Missing filter values for: ' + parentMsgs.join('; ') + '.';
+    }
+    if (hasLongValueError) {
+        errorMsg += ' Value input is too long for: ' + longValueParentFields.join('; ') + '.';
     }
 
-    return null;
+    return errorMsg ? errorMsg : null;
 }
 
 export function getFilterForFilterSelection(filterSelection: FilterSelection, field: QueryColumn): Filter.IFilter {

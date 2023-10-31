@@ -56,15 +56,19 @@ export function handleTabKeyOnTextArea(evt: ITargetElementEvent): void {
  * @param permissions the PermissionType or array of PermissionType values that all users must have.
  * @param containerPath the path of the container to request user permissions from. If not specified, then it defaults
  * to the page context's container.
+ * @param includeInactive flag to optionally return inactive users
  */
 export function getUsersWithPermissions(
     permissions: string | string[] = PermissionTypes.Read,
-    containerPath?: string
+    containerPath?: string,
+    includeInactive?: boolean
 ): Promise<User[]> {
     return new Promise((resolve, reject) => {
         return Security.getUsersWithPermissions({
             containerPath,
             permissions,
+            includeInactive,
+            requiredVersion: 23.11,
             success: ({ users }) => {
                 users.sort(naturalSortByProperty('displayName'));
                 resolve(users);

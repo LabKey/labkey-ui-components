@@ -235,8 +235,7 @@ describe('resolveErrorMessage', () => {
 
     test('IllegalArgumentException', () => {
         const error = {
-            msg:
-                "java.lang.IllegalArgumentException: Can't create new name using the name expression: P-${genId}-${blah}",
+            msg: "java.lang.IllegalArgumentException: Can't create new name using the name expression: P-${genId}-${blah}",
             message:
                 "java.lang.IllegalArgumentException: Can't create new name using the name expression: P-${genId}-${blah}",
         };
@@ -264,7 +263,8 @@ describe('resolveErrorMessage', () => {
     test('Class cast exception', () => {
         const error = {
             msg: "class java.lang.String cannot be cast to class java.util.Date (java.lang.String and java.util.Date are in module java.base of loader 'bootstrap')",
-            message: "class java.lang.String cannot be cast to class java.util.Date (java.lang.String and java.util.Date are in module java.base of loader 'bootstrap')",
+            message:
+                "class java.lang.String cannot be cast to class java.util.Date (java.lang.String and java.util.Date are in module java.base of loader 'bootstrap')",
         };
         expect(resolveErrorMessage(error)).toBe(
             'There was a problem creating your data.  Check that the format of the data matches the expected type for each field.'
@@ -276,13 +276,14 @@ describe('resolveErrorMessage', () => {
 
     test('Unique constraint exception', () => {
         const error = {
-            msg: "SqlExecutor.execute(); ERROR: could not create unique index \"c519d3498_construct_cloningsite\"\n" +
-                "  Detail: Key (cloningsite)=(TEST) is duplicated.\n" +
-                "  Where: SQL statement \"CREATE UNIQUE INDEX c519d3498_construct_cloningSite ON expdataclass.c519d3498_construct (\"cloningsite\")\"\n" +
-                "PL/pgSQL function inline_code_block line 10 at SQL statement; nested exception is org.postgresql.util.PSQLException: ERROR: could not create unique index \"c519d3498_construct_cloningsite\"\n" +
-                "  Detail: Key (cloningsite)=(TEST) is duplicated.\n" +
-                "  Where: SQL statement \"CREATE UNIQUE INDEX c519d3498_construct_cloningSite ON expdataclass.c519d3498_construct (\"cloningsite\")\"\n" +
-                "PL/pgSQL function inline_code_block line 10 at SQL statement",
+            msg:
+                'SqlExecutor.execute(); ERROR: could not create unique index "c519d3498_construct_cloningsite"\n' +
+                '  Detail: Key (cloningsite)=(TEST) is duplicated.\n' +
+                '  Where: SQL statement "CREATE UNIQUE INDEX c519d3498_construct_cloningSite ON expdataclass.c519d3498_construct ("cloningsite")"\n' +
+                'PL/pgSQL function inline_code_block line 10 at SQL statement; nested exception is org.postgresql.util.PSQLException: ERROR: could not create unique index "c519d3498_construct_cloningsite"\n' +
+                '  Detail: Key (cloningsite)=(TEST) is duplicated.\n' +
+                '  Where: SQL statement "CREATE UNIQUE INDEX c519d3498_construct_cloningSite ON expdataclass.c519d3498_construct ("cloningsite")"\n' +
+                'PL/pgSQL function inline_code_block line 10 at SQL statement',
         };
         expect(resolveErrorMessage(error)).toBe(
             'Unable to create a unique constraint for field cloningsite because duplicate values already exists in the data.'

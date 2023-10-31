@@ -61,7 +61,9 @@ function resolveDuplicatesAsName(errorMsg: string, noun: string, nounPlural?: st
     if (name) {
         retMsg += ` Duplicate name '${name}' found.`;
     } else {
-        retMsg += ` Check the existing ${nounPlural || noun} for possible duplicates and make sure any referenced ${nounPlural || noun} are still valid.`
+        retMsg += ` Check the existing ${nounPlural || noun} for possible duplicates and make sure any referenced ${
+            nounPlural || noun
+        } are still valid.`;
     }
     return retMsg;
 }

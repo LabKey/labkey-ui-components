@@ -19,28 +19,16 @@ import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
-import { Input } from './FormsyReactComponents';
+import { Input, InputProps } from './FormsyReactComponents';
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-export interface TextInputProps extends DisableableInputProps {
+export interface TextInputProps extends DisableableInputProps, Omit<InputProps, 'onChange'> {
     addLabelAsterisk?: boolean;
-    addonAfter?: ReactNode;
-    elementWrapperClassName?: string;
-    label?: any;
-    labelClassName?: string;
-    name?: string;
-    onChange?: any;
-    placeholder?: string;
+    onChange?: (value: any) => void;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-    required?: boolean;
-    rowClassName?: string;
     showLabel?: boolean;
     startFocused?: boolean;
-    validatePristine?: boolean;
-    validationError?: string;
-    validations?: string;
-    value?: any;
 }
 
 interface TextInputState extends DisableableInputState {
@@ -119,20 +107,13 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
     };
 
     render() {
-        const {
-            addonAfter,
-            elementWrapperClassName,
-            labelClassName,
-            name,
-            placeholder,
-            queryColumn,
-            required,
-            rowClassName,
-            showLabel,
-            validatePristine,
-            validationError,
-        } = this.props;
-        let { validations } = this.props;
+        // Extract DisableableInputProps
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { allowDisable, initiallyDisabled, onToggleDisable, ...rest } = this.props;
+        // Extract TextInputProps
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { labelClassName, queryColumn, showLabel, startFocused, ...inputProps } = rest;
+        let { validations } = inputProps;
 
         let type = 'text';
         let step: string;
@@ -156,25 +137,21 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
 
         return (
             <Input
-                addonAfter={addonAfter}
-                disabled={this.state.isDisabled}
-                elementWrapperClassName={elementWrapperClassName}
-                help={help}
                 id={queryColumn.fieldKey}
+                name={queryColumn.fieldKey}
+                placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
+                required={queryColumn.required}
+                {...inputProps}
+                componentRef={this.textInput}
+                disabled={this.state.isDisabled}
+                help={help}
                 label={this.renderLabel()}
                 labelClassName={showLabel ? labelClassName : 'hide-label'}
-                name={name ?? queryColumn.fieldKey}
                 onChange={this.onChange}
-                placeholder={placeholder ?? `Enter ${queryColumn.caption.toLowerCase()}`}
-                required={required ?? queryColumn.required}
-                rowClassName={rowClassName}
                 step={step}
                 type={type}
-                validatePristine={validatePristine}
-                validationError={validationError}
                 validations={validations}
                 value={this.getInputValue()}
-                componentRef={this.textInput}
             />
         );
     }

@@ -17,7 +17,13 @@ import { WithFormsyProps } from '../constants';
 
 type LayoutType = 'elementOnly' | 'horizontal' | 'vertical';
 
-interface BaseComponentProps {
+interface SharedFormsyProps {
+    validationError?: string;
+    validationErrors?: any; // Record<string, any> | string;
+    validations?: any; // Record<string, any> | string;
+}
+
+interface BaseComponentProps extends SharedFormsyProps {
     componentRef?: RefObject<any>;
     elementWrapperClassName?: string;
     help?: ReactNode;
@@ -70,9 +76,12 @@ const ErrorMessages: FC<ErrorMessageProps> = memo(props => {
     const { messages } = props;
     if (!messages) return null;
     return (
-        <div className="invalid-feedback">
+        <div>
             {messages.map((message, key) => (
-                <div key={key}>{message}</div>
+                // eslint-disable-next-line react/no-array-index-key
+                <span className="help-block validation-message" key={key}>
+                    {message}
+                </span>
             ))}
         </div>
     );
@@ -233,9 +242,8 @@ const InputImpl: FC<InputProps & WithFormsyProps> = props => {
     } = formsyAndHTMLProps;
     const { className, disabled, id, type } = inputHTMLProps;
     const isValid_ = isValid();
-    const showErrors = !isValid_ || showError();
     const errorMessages = getErrorMessages();
-    const markAsInvalid = showErrors && (required || errorMessages?.length > 0);
+    const markAsInvalid = (!isValid_ || showError()) && (required || errorMessages?.length > 0);
 
     const className_ = useMemo<string>(
         () =>
@@ -350,23 +358,46 @@ type TextAreaHTMLProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onBl
 export type TextAreaProps = BaseComponentProps & TextAreaHTMLProps;
 
 const TextAreaImpl: FC<TextAreaProps & WithFormsyProps> = props => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { className, cols, disabled, id, name, placeholder, rows, value, ...baseProps } = props;
     const {
-        getErrorMessages,
-        getValue,
+        componentRef,
+        elementWrapperClassName,
         help,
-        isFormDisabled,
-        required,
-        isValid,
+        label,
+        labelClassName,
         layout,
         onChange,
+        required,
+        rowClassName,
+        validateBeforeSubmit,
+        validateOnSubmit,
+        validatePristine,
+        ...formsyAndHTMLProps
+    } = props;
+    const {
+        getErrorMessage,
+        getErrorMessages,
+        getValue,
+        hasValue,
+        isFormDisabled,
+        isFormSubmitted,
+        isPristine,
+        isRequired,
+        isValid,
+        isValidValue,
+        resetValue,
+        setValidations,
         setValue,
         showError,
-    } = baseProps;
-    const showErrors = !isValid() || showError();
+        showRequired,
+        validationError,
+        validationErrors,
+        validations,
+        ...textAreaHTMLProps
+    } = formsyAndHTMLProps;
+    const { className, disabled, id } = textAreaHTMLProps;
+    const isValid_ = isValid();
     const errorMessages = getErrorMessages();
-    const markAsInvalid = showErrors && (required || errorMessages?.length > 0);
+    const markAsInvalid = (!isValid_ || showError()) && (required || errorMessages?.length > 0);
 
     const handleBlur = useCallback(
         (event: FocusEvent<HTMLTextAreaElement>) => {
@@ -385,16 +416,13 @@ const TextAreaImpl: FC<TextAreaProps & WithFormsyProps> = props => {
 
     const control = (
         <textarea
+            {...textAreaHTMLProps}
             className={classNames('form-control', { 'is-invalid': markAsInvalid }, className)}
-            cols={cols}
             disabled={isFormDisabled() || disabled || false}
             id={id}
-            name={name}
             onBlur={handleBlur}
             onChange={handleChange}
-            placeholder={placeholder}
             required={required}
-            rows={rows}
             value={getValue()}
         />
     );
@@ -403,11 +431,28 @@ const TextAreaImpl: FC<TextAreaProps & WithFormsyProps> = props => {
         return control;
     }
 
+    const showErrors_ = shouldShowErrors(
+        isPristine(),
+        isFormSubmitted(),
+        isValid_,
+        validatePristine,
+        validateBeforeSubmit
+    );
+
     return (
-        <Row {...baseProps} htmlFor={id} showErrors={showErrors}>
+        <Row
+            elementWrapperClassName={elementWrapperClassName}
+            label={label}
+            labelClassName={labelClassName}
+            layout={layout}
+            htmlFor={id}
+            required={required}
+            rowClassName={rowClassName}
+            showErrors={showErrors_}
+        >
             {control}
             {help && <Help>{help}</Help>}
-            {showErrors && <ErrorMessages messages={errorMessages} />}
+            {showErrors_ && <ErrorMessages messages={errorMessages} />}
         </Row>
     );
 };

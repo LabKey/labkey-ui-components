@@ -84,32 +84,25 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
     };
 
     render() {
-        const {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            addLabelAsterisk,
-            labelClassName,
-            name,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            onChange,
-            queryColumn,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            renderFieldLabel,
-            required,
-            showLabel,
-            ...textAreaProps
-        } = this.props;
+        // Extract DisableableInputProps
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { allowDisable, initiallyDisabled, onToggleDisable, ...rest } = this.props;
+        // Extract TextAreaInputProps
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { addLabelAsterisk, onChange, queryColumn, renderFieldLabel, showLabel, ...textAreaProps } = rest;
+        const { labelClassName } = textAreaProps;
 
         return (
             <TextArea
                 id={queryColumn.fieldKey}
+                name={queryColumn.fieldKey}
                 placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
+                required={queryColumn.required}
                 {...textAreaProps}
                 disabled={this.state.isDisabled}
                 onChange={this.onChange}
                 label={this.renderLabel()}
                 labelClassName={showLabel ? labelClassName : 'hide-label'}
-                name={name ?? queryColumn.fieldKey}
-                required={required ?? queryColumn.required}
                 value={this.getInputValue()}
             />
         );

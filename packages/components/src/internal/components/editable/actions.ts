@@ -422,19 +422,21 @@ export async function addRows(
  * @param queryColumns the ordered map of columns to be added
  * @param fieldKey the fieldKey of the existing column after which the new columns should be inserted.  If undefined
  * or the column is not found, columns will be added at the beginning.
+ * @param readOnlyColumns set of columns that are in the grid along with the editable columns (e.g., 'Name')
  */
 export function addColumns(
     editorModel: EditorModel,
     queryInfo: QueryInfo,
     originalData: Map<any, Map<string, any>>,
     queryColumns: ExtendedMap<string, QueryColumn>,
-    fieldKey?: string
+    fieldKey?: string,
+    readOnlyColumns?: string[]
 ): EditorModelUpdates {
     if (queryColumns.size === 0) return {};
 
     // add one to these because we insert after the given field (or at the
     // beginning if there is no such field)
-    const editorColIndex = queryInfo.getInsertColumnIndex(fieldKey) + 1;
+    const editorColIndex = queryInfo.getInsertColumnIndex(fieldKey, readOnlyColumns) + 1;
     const queryColIndex = queryInfo.getColumnIndex(fieldKey) + 1;
 
     if (editorColIndex < 0 || editorColIndex > queryInfo.columns.size) return {};

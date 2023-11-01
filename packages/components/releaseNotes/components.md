@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 48751: LKSM/LKB: Respect sort order of sources or samples for lineage sample creation
   * Add saveOrderedSnapshotSelection util
 
+### version 2.391.0
+*Released*: 1 November 2023
+* Issue 48828: Don't show sample insights panel while editing in the grid
+  -  add `onEditToggle` optional prop for `SampleTabbedGridPanel`
+
 ### version 2.390.0
 *Released*: 31 October 2023
 * Issue 41677: Include single field uniqueness constraint option in field editor

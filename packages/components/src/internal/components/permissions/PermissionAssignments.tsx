@@ -49,6 +49,7 @@ import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { InjectedPermissionsPage } from './withPermissionsPage';
+import { InjectedRouter } from 'react-router';
 
 // exported for testing
 export interface PermissionAssignmentsProps extends InjectedPermissionsPage, InjectedRouteLeaveProps {
@@ -56,6 +57,7 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage, Inj
     /** Subset list of role uniqueNames to show in this component usage */
     rolesToShow?: List<string>;
     rootRolesToShow?: List<string>;
+    router?: InjectedRouter;
     setLastModified?: (modified: string) => void;
     setProjectCount?: (count: number) => void;
     /** Specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage */
@@ -77,6 +79,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         rolesByUniqueName,
         rolesToShow,
         setIsDirty,
+        router,
         rootRolesToShow,
         setLastModified,
         setProjectCount,
@@ -261,6 +264,11 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         onSuccess();
         loadGroupMembership();
     }, [onSuccess, loadGroupMembership]);
+
+    const onCancel = useCallback(() => {
+        setIsDirty(false);
+        router.goBack();
+    }, [router, setIsDirty]);
 
     const onSaveSuccess = useCallback(async () => {
         await loadPolicy();
@@ -540,6 +548,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             </div>
 
             <FormButtons>
+                {router && <button className="btn btn-default" onClick={onCancel} type="button">Cancel</button>}
+
                 <button
                     className="pull-right alert-button permissions-assignment-save-btn btn btn-success"
                     disabled={submitting || !getIsDirty()}

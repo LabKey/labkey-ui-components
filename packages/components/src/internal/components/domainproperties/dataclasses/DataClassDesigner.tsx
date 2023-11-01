@@ -175,7 +175,9 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
             }
 
             setSubmitting(false, () => {
-                this.saveModel({ exception });
+                this.saveModel({ exception }, () => {
+                    document.querySelector("#domain-bottom").scrollIntoView();
+                });
             });
         }
     };
@@ -323,7 +325,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
         );
     };
 
-    onNameFieldHover = () => {
+    onNameFieldHover = (): void => {
         const { api } = this.props;
         const { model, namePreviewsLoading } = this.state;
 

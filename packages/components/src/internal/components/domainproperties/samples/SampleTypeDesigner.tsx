@@ -381,7 +381,9 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
             const updatedModel = model.set('exception', exception) as SampleTypeModel;
             setSubmitting(false, () => {
-                this.setState(() => ({ model: updatedModel }));
+                this.setState(() => ({ model: updatedModel }), () => {
+                    document.querySelector("#domain-bottom").scrollIntoView();
+                });
             });
         }
     };
@@ -390,7 +392,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         const { beforeFinish, setSubmitting, api } = this.props;
         const { model } = this.state;
         const { name, domain, description } = model;
-
+        console.log("saveDomain");
         if (beforeFinish && !hasConfirmedNameExpression) {
             beforeFinish(model);
         }
@@ -489,7 +491,10 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                   }) as SampleTypeModel);
 
             setSubmitting(false, () => {
-                this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false }));
+                this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false }),
+                     () => {
+                        document.querySelector("#domain-bottom").scrollIntoView();
+                    });
             });
         }
     };

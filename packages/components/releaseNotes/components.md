@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 48804: Scroll error message at bottom of domain designer into view
+* Issue 48896: Remove 'Cancel' button from Group and Permission management pages
+
 ### version 2.390.0
 *Released*: 31 October 2023
 * Issue 41677: Include single field uniqueness constraint option in field editor

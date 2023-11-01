@@ -116,7 +116,12 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     : textChoiceValidMsg ?? protocolModel.getFirstDomainFieldError();
             const updatedModel = protocolModel.set('exception', exception) as AssayProtocolModel;
             setSubmitting(false, () => {
-                this.setState(() => ({ protocolModel: updatedModel }));
+                this.setState(
+                    () => ({ protocolModel: updatedModel }),
+                    () => {
+                        document.querySelector('#domain-bottom').scrollIntoView();
+                    }
+                );
             });
         }
     };

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.391.1-stickyFixes.2",
+  "version": "2.391.1-stickyFixes.3",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

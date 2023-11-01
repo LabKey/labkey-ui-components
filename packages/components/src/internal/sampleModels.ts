@@ -27,6 +27,7 @@ export interface SamplesTabbedGridPanelComponentProps {
     initialTabId?: string; // use if you have multiple tabs but want to start on something other than the first one
     isAllSamplesTab?: (QuerySchema) => boolean;
     modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
+    onEditToggle?: (isEditing: boolean) => void;
     onSampleTabSelect?: (modelId: string) => void;
     sampleAliquotType?: ALIQUOT_FILTER_MODE; // the init sampleAliquotType, requires all query models to have completed loading queryInfo prior to rendering of the component
     samplesEditableGridProps?: Partial<SamplesEditableGridProps>;

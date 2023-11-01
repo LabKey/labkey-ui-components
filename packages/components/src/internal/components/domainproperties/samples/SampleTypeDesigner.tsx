@@ -392,7 +392,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         const { beforeFinish, setSubmitting, api } = this.props;
         const { model } = this.state;
         const { name, domain, description } = model;
-        console.log("saveDomain");
         if (beforeFinish && !hasConfirmedNameExpression) {
             beforeFinish(model);
         }

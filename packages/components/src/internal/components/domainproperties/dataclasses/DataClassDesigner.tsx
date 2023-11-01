@@ -176,7 +176,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
 
             setSubmitting(false, () => {
                 this.saveModel({ exception }, () => {
-                    document.querySelector("#domain-bottom").scrollIntoView();
+                    document.querySelector("#domain-error").scrollIntoView();
                 });
             });
         }

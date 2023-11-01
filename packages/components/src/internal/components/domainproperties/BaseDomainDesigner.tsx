@@ -150,13 +150,11 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
     return (
         <div className="domain-designer">
             {children}
-            <div id="domain-bottom">
             {bottomErrorMsg && (
-                <div className="domain-form-panel">
+                <div className="domain-form-panel" id="domain-error">
                     <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
                 </div>
             )}
-            </div>
             <FormButtons sticky={isApp()}>
                 <button className="cancel-button btn btn-default" onClick={onCancel} type="button">
                     Cancel

@@ -119,7 +119,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                 this.setState(
                     () => ({ protocolModel: updatedModel }),
                     () => {
-                        document.querySelector('#domain-bottom').scrollIntoView();
+                        document.querySelector('#domain-error').scrollIntoView();
                     }
                 );
             });

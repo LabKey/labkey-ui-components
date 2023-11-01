@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 48804: Scroll error message at bottom of domain designer into view
-* Issue 48896: Remove 'Cancel' button from Group and Permission management pages
+* fix `FormButtons` handling of single child case
 
 ### version 2.391.0
 *Released*: 1 November 2023

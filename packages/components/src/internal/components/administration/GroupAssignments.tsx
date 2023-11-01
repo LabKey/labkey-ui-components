@@ -32,7 +32,6 @@ export interface GroupAssignmentsProps {
     principalsById: Map<number, Principal>;
     removeMember: (groupId: string, memberId: number) => void;
     rolesByUniqueName: Map<string, SecurityRole>;
-    router?: InjectedRouter;
     save: () => Promise<void>;
     setErrorMsg: (e: string) => void;
     setIsDirty: (isDirty: boolean) => void;
@@ -57,18 +56,12 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         save,
         setErrorMsg,
         setIsDirty,
-        router,
     } = props;
     const { user } = useServerContext();
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [selectedPrincipalId, setSelectedPrincipalId] = useState<number>();
     const [newGroupName, setNewGroupName] = useState<string>('');
     const initExpandedGroup = getLocation().query?.get('expand');
-
-    const onCancel = useCallback(() => {
-        setIsDirty(false);
-        router.goBack();
-    }, [router, setIsDirty]);
 
     const onSave = useCallback(async () => {
         setSubmitting(true);
@@ -188,12 +181,6 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                         <div className="group-assignment-panel__footer">{errorMsg && <Alert>{errorMsg}</Alert>}</div>
 
                         <FormButtons>
-                            {router && (
-                                <button className="btn btn-default" onClick={onCancel} type="button">
-                                    Cancel
-                                </button>
-                            )}
-
                             <button
                                 className="btn btn-success alert-button group-management-save-btn"
                                 disabled={submitting || !getIsDirty()}

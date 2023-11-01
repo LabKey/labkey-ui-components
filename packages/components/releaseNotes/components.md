@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.391.0
+*Released*: 1 November 2023
 * Issue 48828: Don't show sample insights panel while editing in the grid
   -  add `onEditToggle` optional prop for `SampleTabbedGridPanel`
 

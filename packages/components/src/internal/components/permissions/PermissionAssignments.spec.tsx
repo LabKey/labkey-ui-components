@@ -216,7 +216,7 @@ describe('PermissionAssignments', () => {
         expect(projectList.prop('inheritedProjects')).toEqual([TEST_FOLDER_OTHER_CONTAINER_ADMIN.name]);
 
         // Displays inherit checkbox
-        const inheritCheckbox = wrapper.find('.permissions-assignment-inherit');
+        const inheritCheckbox = wrapper.find('.permissions-assignment-inherit input');
         expect(inheritCheckbox.exists()).toEqual(true);
         expect(inheritCheckbox.at(0).prop('checked')).toEqual(true);
 

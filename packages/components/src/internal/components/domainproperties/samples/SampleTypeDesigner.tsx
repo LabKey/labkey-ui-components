@@ -6,7 +6,7 @@ import { DomainDesign, DomainDetails, IAppDomainHeader, IDomainField, IDomainFor
 import DomainForm from '../DomainForm';
 
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DERIVATION_DATA_SCOPES } from '../constants';
-import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
+import { addDomainField, getDomainPanelStatus, saveDomain, scrollDomainErrorIntoView } from '../actions';
 import { DEFAULT_SAMPLE_FIELD_CONFIG, SAMPLE_TYPE_NAME_EXPRESSION_TOPIC } from '../../samples/constants';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
@@ -382,7 +382,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             const updatedModel = model.set('exception', exception) as SampleTypeModel;
             setSubmitting(false, () => {
                 this.setState(() => ({ model: updatedModel }), () => {
-                    document.querySelector("#domain-error").scrollIntoView();
+                    scrollDomainErrorIntoView();
                 });
             });
         }
@@ -492,7 +492,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             setSubmitting(false, () => {
                 this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false }),
                      () => {
-                        document.querySelector("#domain-error").scrollIntoView();
+                         scrollDomainErrorIntoView();
                     });
             });
         }

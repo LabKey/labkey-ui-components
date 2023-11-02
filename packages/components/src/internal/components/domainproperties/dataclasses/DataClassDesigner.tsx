@@ -6,7 +6,7 @@ import { Domain, getServerContext } from '@labkey/api';
 
 import { DomainDesign, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
-import { getDomainPanelStatus, saveDomain } from '../actions';
+import { getDomainPanelStatus, saveDomain, scrollDomainErrorIntoView } from '../actions';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
 import { getAppHomeFolderPath, isSampleManagerEnabled } from '../../../app/utils';
@@ -176,7 +176,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
 
             setSubmitting(false, () => {
                 this.saveModel({ exception }, () => {
-                    document.querySelector("#domain-error").scrollIntoView();
+                    scrollDomainErrorIntoView();
                 });
             });
         }

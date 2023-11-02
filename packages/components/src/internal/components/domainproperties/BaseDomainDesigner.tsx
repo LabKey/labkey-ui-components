@@ -7,7 +7,7 @@ import { FormButtons } from '../../FormButtons';
 import { Alert } from '../base/Alert';
 
 import { getDomainBottomErrorMessage, getDomainHeaderName, getUpdatedVisitedPanelsList } from './actions';
-import { SEVERITY_LEVEL_ERROR } from './constants';
+import { DOMAIN_ERROR_ID, SEVERITY_LEVEL_ERROR } from './constants';
 
 import { DomainDesign } from './models';
 
@@ -151,7 +151,7 @@ export const BaseDomainDesigner: FC<BaseDomainDesignerProps> = memo(props => {
         <div className="domain-designer">
             {children}
             {bottomErrorMsg && (
-                <div className="domain-form-panel" id="domain-error">
+                <div className="domain-form-panel" id={DOMAIN_ERROR_ID}>
                     <Alert bsStyle="danger">{bottomErrorMsg}</Alert>
                 </div>
             )}

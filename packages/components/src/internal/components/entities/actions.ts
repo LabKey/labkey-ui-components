@@ -281,9 +281,9 @@ async function initParents(
     return List<EntityParentType>();
 }
 
-function _getEntitySort(ordredIds: string[]) {
+function _getEntitySort(orderedIds: string[]) {
     return (a, b) => {
-        return ordredIds.indexOf(a.value + '') - ordredIds.indexOf(b.value + '');
+        return orderedIds.indexOf(a.value + '') - orderedIds.indexOf(b.value + '');
     };
 }
 
@@ -294,10 +294,11 @@ function resolveEntityParentTypeFromIds(
     orderedRowIds?: string[]
 ): List<EntityParentType> {
     // The transformation done here makes the entities compatible with the editable grid
-    const data: DisplayObject[] = response.rows
+    let data: DisplayObject[] = response.rows
         .map(row => extractEntityTypeOptionFromRow(row))
         .map(({ label, rowId }) => ({ displayValue: label, value: rowId }))
-        .sort(_getEntitySort(orderedRowIds));
+    if (orderedRowIds?.length > 1)
+        data = data.sort(_getEntitySort(orderedRowIds));
 
     return List<EntityParentType>([
         EntityParentType.create({

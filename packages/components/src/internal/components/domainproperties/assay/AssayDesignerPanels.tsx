@@ -5,7 +5,7 @@ import { DomainPropertiesAPIWrapper } from '../APIWrapper';
 
 import { DomainDesign, HeaderRenderer, IDomainFormDisplayOptions } from '../models';
 
-import { getDomainPanelStatus } from '../actions';
+import { getDomainPanelStatus, scrollDomainErrorIntoView } from '../actions';
 
 import DomainForm from '../DomainForm';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
@@ -116,7 +116,12 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     : textChoiceValidMsg ?? protocolModel.getFirstDomainFieldError();
             const updatedModel = protocolModel.set('exception', exception) as AssayProtocolModel;
             setSubmitting(false, () => {
-                this.setState(() => ({ protocolModel: updatedModel }));
+                this.setState(
+                    () => ({ protocolModel: updatedModel }),
+                    () => {
+                        scrollDomainErrorIntoView();
+                    }
+                );
             });
         }
     };

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.391.1
+*Released*: 2 November 2023
+* Issue 48804: Scroll error message at bottom of domain designer into view
+* fix `FormButtons` handling of single child case
+
 ### version 2.391.0
 *Released*: 1 November 2023
 * Issue 48828: Don't show sample insights panel while editing in the grid

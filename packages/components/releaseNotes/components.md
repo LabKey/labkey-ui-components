@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.X
+*Released*: X November 2023
+* Issue 48999: Unable to "Select them in the grid" when created trigger script runs after samples are added
+   * Add reselectRowCounts to InsertRowsResponse
+
 ### version 2.391.1
 *Released*: 2 November 2023
 * Issue 48804: Scroll error message at bottom of domain designer into view

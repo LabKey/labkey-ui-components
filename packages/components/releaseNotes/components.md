@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.390.TBD
+*Released*: 3 November 2023
+* Issue 49019: Grid session filters/sorts/etc. are not applied as expected when model loads queryInfo from API instead of cache
+  * the additional render cycle from the query details API call causes the withQueryModels componentDidUpdate to detect a URL param change and then remove the filters/sorts/etc. that were just applied from the session state
+
 ### version 2.390.0
 *Released*: 31 October 2023
 * Issue 41677: Include single field uniqueness constraint option in field editor

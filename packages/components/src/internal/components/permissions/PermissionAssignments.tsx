@@ -3,20 +3,19 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { InjectedRouter } from 'react-router';
-import { Security } from '@labkey/api';
-import { FormButtons } from '../../FormButtons';
 
+import { Security } from '@labkey/api';
+
+import { FormButtons } from '../../FormButtons';
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
 import {
     getProjectPath,
-    isProjectContainer,
-    isProductProjectsEnabled,
-    userCanReadGroupDetails,
     isAppHomeFolder,
+    isProductProjectsEnabled,
+    isProjectContainer,
+    userCanReadGroupDetails,
 } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
@@ -50,6 +49,7 @@ import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { InjectedPermissionsPage } from './withPermissionsPage';
+import { InjectedRouter } from 'react-router';
 
 // exported for testing
 export interface PermissionAssignmentsProps extends InjectedPermissionsPage, InjectedRouteLeaveProps {
@@ -439,13 +439,12 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 {isSubfolder && canInherit && (
                     <div>
                         <form>
-                            <Checkbox
-                                checked={inherited}
-                                className="permissions-assignment-inherit"
-                                onChange={onInheritChange}
-                            >
-                                Inherit permissions from the application
-                            </Checkbox>
+                            <div className="permissions-assignment-inherit checkbox">
+                                <label>
+                                    <input type="checkbox" checked={inherited} onChange={onInheritChange} />
+                                    Inherit permissions from the application
+                                </label>
+                            </div>
                         </form>
                         <hr />
                     </div>
@@ -499,10 +498,10 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     return (
         <div className="permission-assignments-panel">
             {error && <Alert>{error}</Alert>}
-            <Row>
+            <div className="row">
                 {(!isProductProjectsEnabled(moduleContext) || projects?.length <= 1) && <>{_panelContent}</>}
                 {isProductProjectsEnabled(moduleContext) && projects?.length > 1 && (
-                    <Col xs={12} md={8}>
+                    <div className="col-md-8 col-xs-12">
                         <div className="side-panels-container">
                             <ProjectListing
                                 projects={sortedProjects}
@@ -521,9 +520,9 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                                 {_panelContent}
                             </VerticalScrollPanel>
                         </div>
-                    </Col>
+                    </div>
                 )}
-                <Col xs={12} md={4}>
+                <div className="col-md-4 col-xs-12">
                     {selectedPrincipal?.type === MemberType.group && groupMembership ? (
                         <GroupDetailsPanel
                             principal={selectedPrincipal}
@@ -545,8 +544,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                             showGroupListLinks={!projectsEnabled || !isSubfolder}
                         />
                     )}
-                </Col>
-            </Row>
+                </div>
+            </div>
 
             <FormButtons>
                 {router && <button className="btn btn-default" onClick={onCancel} type="button">Cancel</button>}

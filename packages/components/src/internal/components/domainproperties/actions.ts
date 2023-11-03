@@ -40,6 +40,7 @@ import { getExcludedDataTypeNames } from '../entities/actions';
 import { getQueryDetails } from '../../query/api';
 
 import {
+    DOMAIN_ERROR_ID,
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
     DOMAIN_FIELD_LOOKUP_QUERY,
@@ -1318,4 +1319,8 @@ export function setGenId(
             },
         });
     });
+}
+
+export function scrollDomainErrorIntoView(): void {
+    document.querySelector('#' + DOMAIN_ERROR_ID).scrollIntoView();
 }

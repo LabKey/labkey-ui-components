@@ -19,7 +19,7 @@ export const FormButtons: FC<Props> = memo(({ children, sticky = true }) => {
     if (childCount === 0) {
         return null;
     } else if (childCount === 1) {
-        submit = children[0];
+        submit = children;
     } else if (childCount === 2) {
         cancel = children[0];
         submit = children[1];

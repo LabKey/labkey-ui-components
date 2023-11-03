@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
-import { Button, Col, Panel, Row } from 'react-bootstrap';
+import { Button, Panel } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import { InjectedRouter } from 'react-router';
 
@@ -147,8 +147,8 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     const userIsAppAdmin = user.isAppAdmin();
 
     return (
-        <Row>
-            <Col xs={12} md={8}>
+        <div className="row">
+            <div className="col-xs-12 col-md-8">
                 <Panel>
                     <Panel.Heading> Application Groups and Assignments </Panel.Heading>
                     <Panel.Body className="permissions-groups-assignment-panel group-assignment-panel">
@@ -193,7 +193,6 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                                     Cancel
                                 </button>
                             )}
-
                             <button
                                 className="btn btn-success alert-button group-management-save-btn"
                                 disabled={submitting || !getIsDirty()}
@@ -205,9 +204,9 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                         </FormButtons>
                     </Panel.Body>
                 </Panel>
-            </Col>
+            </div>
 
-            <Col xs={12} md={4}>
+            <div className="col-xs-12 col-md-4">
                 {selectedPrincipal?.type === MemberType.group ? (
                     <GroupDetailsPanel
                         principal={selectedPrincipal}
@@ -227,7 +226,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                         showGroupListLinks={false}
                     />
                 )}
-            </Col>
-        </Row>
+            </div>
+        </div>
     );
 });

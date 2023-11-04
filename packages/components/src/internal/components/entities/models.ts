@@ -617,3 +617,8 @@ export interface FilterProps {
     selectColumnFieldKey?: string;
     targetColumnFieldKey?: string;
 }
+
+export interface RemappedKeyValues {
+    mapFromValues: any[];
+    mapToValues: any[];
+}

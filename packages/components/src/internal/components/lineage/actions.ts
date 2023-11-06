@@ -14,7 +14,6 @@ import { SCHEMAS } from '../../schemas';
 import { caseInsensitive } from '../../util/utils';
 import { AppURL } from '../../url/AppURL';
 import { naturalSort } from '../../../public/sort';
-import { Location } from '../../util/URL';
 
 import { ViewInfo } from '../../ViewInfo';
 
@@ -208,15 +207,15 @@ export function createGridModel(
     });
 }
 
-export function getPageNumberChangeURL(location: Location, seed: string, pageNumber: number): AppURL {
+export function getPageNumberChangeURL(queryParams: Record<string, string>, seed: string, pageNumber: number): AppURL {
     let url = AppURL.create('lineage');
 
     // use the seed lsid value from the param
     url = url.addParam('seeds', seed);
 
-    location.query.map((value: any, key: string) => {
+    Object.keys(queryParams).map(key => {
         if (key !== 'p' && key !== 'seeds') {
-            url = url.addParam(key, value);
+            url = url.addParam(key, queryParams[key]);
         }
     });
 

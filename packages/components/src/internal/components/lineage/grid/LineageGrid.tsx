@@ -2,10 +2,9 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, memo, PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
-
-import { Location } from '../../../util/URL';
+import { WithRouterProps } from 'react-router';
 
 import { createGridModel } from '../actions';
 import { LineageGridModel } from '../models';
@@ -55,26 +54,27 @@ class LineageGridImpl extends PureComponent<LineageGridProps, LineageGridState> 
 
 export const LineageGrid = withLineage(LineageGridImpl, false);
 
+function ensureNumber(value: string): number {
+    const numValue = parseInt(value);
+    return isNaN(numValue) ? undefined : numValue;
+}
+
+// TODO: move this type defintion to URL.ts after we've replaced all usages of URL.ts version of Location
+type Location = WithRouterProps['location'];
+
 export interface LineageGridFromLocationProps {
     location: Location;
 }
 
-export class LineageGridFromLocation extends PureComponent<LineageGridFromLocationProps> {
-    ensureNumber(value: string): number {
-        const numValue = parseInt(value);
-        return isNaN(numValue) ? undefined : numValue;
-    }
+export const LineageGridFromLocation: FC<LineageGridFromLocationProps> = memo(({ location }) => {
+    const { distance, members, p, seeds } = location.query;
 
-    render(): ReactNode {
-        const { query } = this.props.location;
-
-        return (
-            <LineageGrid
-                distance={this.ensureNumber(query.get('distance'))}
-                lsid={query.get('seeds') ? decodeURIComponent(query.get('seeds').split(',')[0]) : undefined}
-                members={query.get('members')}
-                pageNumber={this.ensureNumber(query.get('p'))}
-            />
-        );
-    }
-}
+    return (
+        <LineageGrid
+            distance={ensureNumber(distance)}
+            lsid={seeds ? seeds.split(',')[0] : undefined}
+            members={members}
+            pageNumber={ensureNumber(p)}
+        />
+    );
+});

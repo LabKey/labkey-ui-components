@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 import { List, Map } from 'immutable';
-import { InjectedRouter } from 'react-router';
+import { InjectedRouter, WithRouterProps } from 'react-router';
 
 import { FormButtons } from '../../FormButtons';
 
@@ -13,12 +13,13 @@ import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 
 import { naturalSort } from '../../../public/sort';
 
-import { getLocation } from '../../util/URL';
-
 import { useServerContext } from '../base/ServerContext';
 
 import { Group } from './Group';
 import { GroupMembership, MemberType } from './models';
+
+// TODO: move this type defintion to URL.ts after we've replaced all usages of URL.ts version of Location
+type Location = WithRouterProps['location'];
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
@@ -28,11 +29,12 @@ export interface GroupAssignmentsProps {
     getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     getIsDirty: () => boolean;
     groupMembership: GroupMembership;
+    location: Location;
     policy: SecurityPolicy;
     principalsById: Map<number, Principal>;
     removeMember: (groupId: string, memberId: number) => void;
     rolesByUniqueName: Map<string, SecurityRole>;
-    router?: InjectedRouter;
+    router: InjectedRouter;
     save: () => Promise<void>;
     setErrorMsg: (e: string) => void;
     setIsDirty: (isDirty: boolean) => void;
@@ -46,6 +48,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         getAuditLogData,
         getIsDirty,
         groupMembership,
+        location,
         policy,
         rolesByUniqueName,
         principalsById,
@@ -63,7 +66,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [selectedPrincipalId, setSelectedPrincipalId] = useState<number>();
     const [newGroupName, setNewGroupName] = useState<string>('');
-    const initExpandedGroup = getLocation().query?.get('expand');
+    const initExpandedGroup = location.query.expand;
 
     const onCancel = useCallback(() => {
         setIsDirty(false);

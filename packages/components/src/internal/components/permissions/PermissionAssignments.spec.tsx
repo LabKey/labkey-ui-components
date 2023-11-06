@@ -31,8 +31,6 @@ import { Alert } from '../base/Alert';
 
 import { MemberType } from '../administration/models';
 
-import { initBrowserHistoryState } from '../../util/global';
-
 import { FolderAPIWrapper, getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
 import { ProjectListing } from '../project/ProjectListing';
@@ -82,10 +80,6 @@ const POLICY = SecurityPolicy.updateAssignmentsData(SecurityPolicy.create(policy
 const ROOT_POLICY = SecurityPolicy.updateAssignmentsData(SecurityPolicy.create(policyRootJSON), PRINCIPALS_BY_ID);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
-
-beforeAll(() => {
-    initBrowserHistoryState();
-});
 
 describe('PermissionAssignments', () => {
     function getDefaultProps(): PermissionAssignmentsProps {

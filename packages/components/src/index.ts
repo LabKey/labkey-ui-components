@@ -199,7 +199,6 @@ import {
 import { cancelEvent } from './internal/events';
 import { createGridModelId } from './internal/models';
 import { initQueryGridState } from './internal/global';
-import { initBrowserHistoryState } from './internal/util/global';
 import {
     deleteRows,
     getContainerFilter,
@@ -243,16 +242,10 @@ import {
     SHARED_CONTAINER_PATH,
 } from './internal/constants';
 import {
-    getLocation,
     pushParameters,
     removeParameters,
     replaceParameters,
     resetParameters,
-    pushParameterDeprecated,
-    removeParametersDeprecated,
-    replaceParameterDeprecated,
-    replaceParametersDeprecated,
-    resetParametersDeprecated,
 } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import { DATA_IMPORT_TOPIC, getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
@@ -1029,7 +1022,6 @@ export {
     getDefaultAPIWrapper,
     // global state functions
     initQueryGridState,
-    initBrowserHistoryState,
     getContainerFilter,
     getContainerFilterForFolder,
     getContainerFilterForLookups,
@@ -1093,13 +1085,11 @@ export {
     URLService,
     ListResolver,
     ExperimentRunResolver,
-    getLocation,
+    pushParameters,
+    removeParameters,
+    replaceParameters,
+    resetParameters,
     getHref,
-    pushParameterDeprecated,
-    removeParametersDeprecated,
-    replaceParameterDeprecated,
-    replaceParametersDeprecated,
-    resetParametersDeprecated,
     hasParameter,
     toggleParameter,
     applyURL,

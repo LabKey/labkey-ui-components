@@ -17,7 +17,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { getRolesByUniqueName, processGetRolesResponse, UserLimitSettings } from '../permissions/actions';
-import { initBrowserHistoryState } from '../../util/global';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
 import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures';
@@ -34,10 +33,6 @@ import { UsersGridPanelImpl } from './UsersGridPanel';
 const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
-
-beforeAll(() => {
-    initBrowserHistoryState();
-});
 
 describe('<UsersGridPanel/>', () => {
     const DEFAULT_PROPS = {

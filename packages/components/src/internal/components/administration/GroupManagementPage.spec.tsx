@@ -14,14 +14,8 @@ import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { Alert } from '../base/Alert';
 
-import { initBrowserHistoryState } from '../../util/global';
-
 import { GroupManagementPageImpl, GroupManagementPageProps } from './GroupManagementPage';
 import { GroupAssignments } from './GroupAssignments';
-
-beforeAll(() => {
-    initBrowserHistoryState();
-});
 
 describe('BasePermissions', () => {
     function getDefaultProps(): GroupManagementPageProps {

@@ -16,14 +16,9 @@ import { Alert } from '../base/Alert';
 
 import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
-import { initBrowserHistoryState } from '../../util/global';
 
 import { MemberType } from './models';
 import { GroupAssignments } from './GroupAssignments';
-
-beforeAll(() => {
-    initBrowserHistoryState();
-});
 
 describe('<GroupAssignments/>', () => {
     const GROUP_MEMBERSHIP = {

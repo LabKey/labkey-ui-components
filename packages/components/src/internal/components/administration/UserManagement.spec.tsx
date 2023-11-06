@@ -3,7 +3,6 @@ import { List, Map } from 'immutable';
 import { ReactWrapper } from 'enzyme';
 import { PermissionRoles } from '@labkey/api';
 
-import { initBrowserHistoryState } from '../../util/global';
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { UsersGridPanel } from '../user/UsersGridPanel';
@@ -20,10 +19,6 @@ import { InjectedPermissionsPage } from '../permissions/withPermissionsPage';
 import { AdminAppContext } from '../../AppContext';
 
 import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
-
-beforeAll(() => {
-    initBrowserHistoryState();
-});
 
 describe('UserManagement', () => {
     function getDefaultProps(): InjectedPermissionsPage {

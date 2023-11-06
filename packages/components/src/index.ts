@@ -244,11 +244,15 @@ import {
 } from './internal/constants';
 import {
     getLocation,
-    pushParameter,
+    pushParameters,
     removeParameters,
-    replaceParameter,
     replaceParameters,
     resetParameters,
+    pushParameterDeprecated,
+    removeParametersDeprecated,
+    replaceParameterDeprecated,
+    replaceParametersDeprecated,
+    resetParametersDeprecated,
 } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import { DATA_IMPORT_TOPIC, getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
@@ -1091,11 +1095,11 @@ export {
     ExperimentRunResolver,
     getLocation,
     getHref,
-    pushParameter,
-    removeParameters,
-    replaceParameter,
-    replaceParameters,
-    resetParameters,
+    pushParameterDeprecated,
+    removeParametersDeprecated,
+    replaceParameterDeprecated,
+    replaceParametersDeprecated,
+    resetParametersDeprecated,
     hasParameter,
     toggleParameter,
     applyURL,

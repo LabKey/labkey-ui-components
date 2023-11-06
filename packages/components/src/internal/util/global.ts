@@ -22,15 +22,12 @@ let _BrowserHistory;
  */
 export function initBrowserHistoryState() {
     _BrowserHistory = createHistory();
-
-    // add a no-op listener just to connect this global state history to the url changes
-    getBrowserHistory().listen((location, action) => {});
 }
 
 /**
  * Access method for getting global browser history object
  */
-export function getBrowserHistory() {
+export function getBrowserHistoryDeprecated() {
     if (!_BrowserHistory) {
         throw new Error('Must call initBrowserHistoryState before you can access the global BrowserHistory object.');
     }

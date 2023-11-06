@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 import { List, Map } from 'immutable';
+import { InjectedRouter, WithRouterProps } from 'react-router';
 
-import { getBrowserHistory } from './global';
+import { getBrowserHistoryDeprecated } from './global';
 
 // This type is roughly equivalent to the Location object from this history package
 // but here we have all fields optional to make it also compatible with the window.location object
@@ -31,7 +32,7 @@ export type Location = {
 };
 
 export function getLocation(): Location {
-    const location = getBrowserHistory().location;
+    const location = getBrowserHistoryDeprecated().location;
     const { action, pathname, search, key, state } = location;
 
     let hash = location.hash;
@@ -60,19 +61,6 @@ export function getLocation(): Location {
     return { action, pathname, search, key, state, hash, query };
 }
 
-export function getRouteFromLocationHash(hash: string): string {
-    if (hash) {
-        const index = hash.indexOf('?');
-        if (index > -1) {
-            return hash.substring(0, index);
-        }
-
-        return hash;
-    }
-
-    return undefined;
-}
-
 export function buildQueryString(params: Map<string, string | number>): string {
     let q = '',
         sep = '';
@@ -88,12 +76,12 @@ export function build(pathname: string, hash?: string, params?: Map<string, stri
     return pathname + (hash || '') + (params ? buildQueryString(params) : '');
 }
 
-function setParameter(location: Location, key: string, value: string | number, asReplace = false): void {
+function setParameterDeprecated(location: Location, key: string, value: string | number, asReplace = false): void {
     const params = Map<string, string | number>();
-    setParameters(location, params.set(key, value), asReplace);
+    setParametersDeprecated(location, params.set(key, value), asReplace);
 }
 
-function setParameters(location: Location, params: Map<string, string | number>, asReplace = false): void {
+function setParametersDeprecated(location: Location, params: Map<string, string | number>, asReplace = false): void {
     const { query } = location;
 
     const newParams = Map<string, string | number>(query).asMutable();
@@ -106,38 +94,34 @@ function setParameters(location: Location, params: Map<string, string | number>,
     });
 
     if (asReplace) {
-        getBrowserHistory().replace(build(location.pathname, location.hash, newParams.asImmutable()));
+        getBrowserHistoryDeprecated().replace(build(location.pathname, location.hash, newParams.asImmutable()));
     } else {
-        getBrowserHistory().push(build(location.pathname, location.hash, newParams.asImmutable()));
+        getBrowserHistoryDeprecated().push(build(location.pathname, location.hash, newParams.asImmutable()));
     }
 }
 
-export function pushParameter(location: Location, key: string, value: string | number): void {
-    setParameter(location, key, value);
+export function pushParameterDeprecated(location: Location, key: string, value: string | number): void {
+    setParameterDeprecated(location, key, value);
 }
 
-export function pushParameters(location: Location, params: Map<string, string | number>): void {
-    setParameters(location, params);
-}
-
-export function removeParameters(location: Location, ...params: string[]): void {
+export function removeParametersDeprecated(location: Location, ...params: string[]): void {
     if (!params) return;
-    setParameters(
+    setParametersDeprecated(
         location,
         params.reduce((map, param) => map.set(param, undefined), Map<string, string>()),
         true
     );
 }
 
-export function replaceParameter(location: Location, key: string, value: string | number): void {
-    setParameter(location, key, value, true);
+export function replaceParameterDeprecated(location: Location, key: string, value: string | number): void {
+    setParameterDeprecated(location, key, value, true);
 }
 
-export function replaceParameters(location: Location, params: Map<string, string | number>): void {
-    setParameters(location, params, true);
+export function replaceParametersDeprecated(location: Location, params: Map<string, string | number>): void {
+    setParametersDeprecated(location, params, true);
 }
 
-export function resetParameters(except?: List<string>): void {
+export function resetParametersDeprecated(except?: List<string>): void {
     const location = getLocation();
 
     const emptyParams = location.query.map((value: string, key: string) => {
@@ -148,5 +132,72 @@ export function resetParameters(except?: List<string>): void {
         }
     });
 
-    setParameters(location, emptyParams);
+    setParametersDeprecated(location, emptyParams);
+}
+
+// We don't have a direct dependency on ReactRouter, so we do this for now.
+type RRLocation = WithRouterProps['location'];
+
+function setParameters(
+    router: InjectedRouter,
+    location: RRLocation,
+    params: Record<string, string | number>,
+    asReplace = false
+): void {
+    const query = { ...location.query };
+
+    Object.keys(params).forEach(key => {
+        const value = params[key];
+
+        if (value === undefined) {
+            delete query[key];
+        } else {
+            query[key] = value;
+        }
+    });
+
+    if (asReplace) {
+        router.replace({ ...location, query });
+    } else {
+        router.push({ ...location, query });
+    }
+}
+
+export function removeParameters(router: InjectedRouter, location: RRLocation, ...params: string[]): void {
+    if (!params) return;
+    const paramsObj = params.reduce((result, param) => {
+        result[param] = undefined;
+        return result;
+    }, {});
+    setParameters(router, location, paramsObj, true);
+}
+
+export function replaceParameters(
+    router: InjectedRouter,
+    location: RRLocation,
+    params: Record<string, string | number>
+): void {
+    setParameters(router, location, params, true);
+}
+
+export function pushParameters(
+    router: InjectedRouter,
+    location: RRLocation,
+    params: Record<string, string | number>
+): void {
+    setParameters(router, location, params);
+}
+
+export function resetParameters(router: InjectedRouter, location: RRLocation, except: string[] = []): void {
+    const updatedParams = Object.keys(location.query).reduce((result, key: string) => {
+        if (except.indexOf(key) > -1) {
+            result[key] = location.query[key];
+        } else {
+            result[key] = undefined;
+        }
+
+        return result;
+    }, {});
+
+    setParameters(router, location, updatedParams);
 }

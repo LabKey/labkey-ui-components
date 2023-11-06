@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 import { List, Map } from 'immutable';
-import { InjectedRouter, WithRouterProps } from 'react-router';
+import { InjectedRouter } from 'react-router';
 
 import { FormButtons } from '../../FormButtons';
 
@@ -12,14 +12,12 @@ import { UserDetailsPanel } from '../user/UserDetailsPanel';
 import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 
 import { naturalSort } from '../../../public/sort';
+import { Location } from '../../util/URL';
 
 import { useServerContext } from '../base/ServerContext';
 
 import { Group } from './Group';
 import { GroupMembership, MemberType } from './models';
-
-// TODO: move this type defintion to URL.ts after we've replaced all usages of URL.ts version of Location
-type Location = WithRouterProps['location'];
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;

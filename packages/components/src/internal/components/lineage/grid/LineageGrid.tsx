@@ -4,12 +4,12 @@
  */
 import React, { FC, memo, PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
-import { WithRouterProps } from 'react-router';
 
 import { createGridModel } from '../actions';
 import { LineageGridModel } from '../models';
 import { InjectedLineage, withLineage, WithLineageOptions } from '../withLineage';
 import { LINEAGE_DIRECTIONS } from '../types';
+import { Location } from '../../../util/URL';
 
 import { LineageGridDisplay } from './LineageGridDisplay';
 
@@ -58,9 +58,6 @@ function ensureNumber(value: string): number {
     const numValue = parseInt(value);
     return isNaN(numValue) ? undefined : numValue;
 }
-
-// TODO: move this type defintion to URL.ts after we've replaced all usages of URL.ts version of Location
-type Location = WithRouterProps['location'];
 
 export interface LineageGridFromLocationProps {
     location: Location;

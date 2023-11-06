@@ -55,6 +55,35 @@
         "role" : "no role"
       } ]
     },
+    "urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3-clone" : {
+      "created" : "2020-03-30 14:15:26.255",
+      "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-6:17",
+      "schemaName" : "samples",
+      "type" : "Sample",
+      "url" : "/labkey/testContainer/experiment-showMaterial.view?rowId=68144",
+      "lsid" : "urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3-clone",
+      "createdBy" : "nickk@labkey.com",
+      "children" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-61:dbcee514-54f9-1038-9426-08c060dcd006",
+        "role" : "no role"
+      } ],
+      "pkFilters" : [ {
+        "fieldKey" : "RowId",
+        "value" : 68144
+      } ],
+      "name" : "Hgb3.3",
+      "queryName" : "shemoglobin",
+      "modified" : "2020-03-30 14:20:59.827",
+      "modifiedBy" : "nickk@labkey.com",
+      "id" : 68144,
+      "properties" : {
+        "name" : "Hgb3.3-clone"
+      },
+      "parents" : [ {
+        "lsid" : "urn:lsid:labkey.com:Run.Folder-61:83e2a187-54e9-1038-9426-08c060dcd006",
+        "role" : "no role"
+      } ]
+    },
     "urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3.1.2" : {
       "created" : "2020-03-30 14:22:19.979",
       "cpasType" : "urn:lsid:labkey.com:SampleSet.Folder-61:Hemoglobin",

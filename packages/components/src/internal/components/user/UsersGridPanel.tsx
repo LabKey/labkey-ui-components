@@ -11,6 +11,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { getSelected } from '../../actions';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { removeParameters } from '../../util/URL';
 
 import { UserLimitSettings } from '../permissions/actions';
 
@@ -104,10 +105,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
 
         if (curUsersView !== undefined) {
             this.setState({ usersView: this.getUsersView(curUsersView) });
-            const query = { ...this.props.location.query };
-            delete query.usersView;
-            const newLocation = { ...this.props.location, query };
-            this.props.router.replace(newLocation);
+            removeParameters(this.props.router, this.props.location, 'usersView');
         }
     }
 

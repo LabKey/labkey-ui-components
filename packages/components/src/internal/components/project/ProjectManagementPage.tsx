@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, MenuItem } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
-import { Link } from 'react-router';
+import { Link, WithRouterProps } from 'react-router';
 
 import { Security } from '@labkey/api';
 
@@ -11,13 +11,13 @@ import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPag
 import { AUDIT_KEY } from '../../app/constants';
 import { AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY } from '../auditlog/constants';
 import { Alert } from '../base/Alert';
-import { getLocation, removeParameters } from '../../util/URL';
+import { removeParameters } from '../../util/URL';
 import { AppContext, useAppContext } from '../../AppContext';
 import { Container } from '../base/models/Container';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
+import { useRouteLeave } from '../../util/RouteLeave';
 import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 import { VerticalScrollPanel } from '../base/VeriticalScrollPanel';
 
@@ -25,19 +25,18 @@ import { ProjectSettings } from './ProjectSettings';
 
 import { ProjectListing } from './ProjectListing';
 
-export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props => {
-    const { getIsDirty, setIsDirty } = props;
+export const ProjectManagementPage: FC<WithRouterProps> = memo(({ location, router, routes }) => {
+    const [getIsDirty, setIsDirty] = useRouteLeave(router, routes);
     const [successMsg, setSuccessMsg] = useState<string>();
     const { user, moduleContext, container } = useServerContext();
-
     const { api } = useAppContext<AppContext>();
-
+    // TODO: get rid of reloadCounter, instead create a load callback for loading data, and call load when needed
+    //  (on mount, on success) instead of incrementing the counter.
     const [reloadCounter, setReloadCounter] = useState<number>(0);
     const [projects, setProjects] = useState<Container[]>(undefined);
     const [selectedProject, setSelectedProject] = useState<Container>(undefined);
     const [error, setError] = useState<string>();
     const [loaded, setLoaded] = useState<boolean>(false);
-
     useEffect(() => {
         (async () => {
             setLoaded(false);
@@ -49,15 +48,16 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
                 setProjects(projects_);
 
                 if (selectedProject) {
-                    if (projects_.some(proj => proj.id === selectedProject.id))
+                    if (projects_.some(proj => proj.id === selectedProject.id)) {
                         // selected project is still present
                         return;
+                    }
                 }
 
                 let defaultContainer = container?.isFolder ? container : projects_?.[0];
-                const createdProjectName = getLocation().query?.get('created');
+                const createdProjectName = location.query.created;
                 if (createdProjectName) {
-                    removeParameters(getLocation(), 'created');
+                    removeParameters(router, location, 'created');
                     const createdProject = projects_.find(proj => proj.name === createdProjectName);
                     if (createdProject) defaultContainer = createdProject;
                 }
@@ -72,10 +72,10 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
     }, [reloadCounter]);
 
     useEffect(() => {
-        const successMessage = getLocation().query?.get('successMsg');
+        const successMessage = location.query.successMsg;
         if (successMessage) {
-            setSuccessMsg(`${decodeURI(successMessage)} successfully deleted.`);
-            removeParameters(getLocation(), 'successMsg');
+            setSuccessMsg(`${successMessage} successfully deleted.`);
+            removeParameters(router, location, 'successMsg');
         }
     }, []);
 
@@ -176,5 +176,3 @@ export const ProjectManagementPageImpl: FC<InjectedRouteLeaveProps> = memo(props
         </>
     );
 });
-
-export const ProjectManagementPage = withRouteLeave(ProjectManagementPageImpl);

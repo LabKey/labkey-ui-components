@@ -13,140 +13,71 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from 'immutable';
+import { InjectedRouter, WithRouterProps } from 'react-router';
 
-import { getBrowserHistory } from './global';
+// We export Location like this in order to avoid having a direct dependency on the History library
+export type Location = WithRouterProps['location'];
 
-// This type is roughly equivalent to the Location object from this history package
-// but here we have all fields optional to make it also compatible with the window.location object
-// we are not making use of action, key, state fields for now, but keeping them so the type is consistent with history.location type
-export type Location = {
-    action?: string;
-    hash?: string;
-    key?: string;
-    pathname?: string;
-    query?: any; // {[key:string]: string}
-    search?: string;
-    state?: any; // {[key:string]: string}
-};
+function setParameters(
+    router: InjectedRouter,
+    location: Location,
+    params: Record<string, string | number>,
+    asReplace = false
+): void {
+    const query = { ...location.query };
 
-export function getLocation(): Location {
-    const location = getBrowserHistory().location;
-    const { action, pathname, search, key, state } = location;
+    Object.keys(params).forEach(key => {
+        const value = params[key];
 
-    let hash = location.hash;
-    let query = Map<string, string>().asMutable();
-    const parseParams = p => {
-        const keyVal = p.split('=');
-        query = query.set(keyVal[0].trim(), keyVal[1].trim());
-    };
-
-    // check for query params that are before the hash
-    if (search && search.length > 0) {
-        const params = search.substring(1).split('&');
-        params.forEach(parseParams);
-    }
-
-    // and check for query params after the hash
-    if (hash && hash.indexOf('?') > -1) {
-        const index = hash.indexOf('?');
-        const params = hash.substring(index + 1).split('&');
-        params.forEach(parseParams);
-        hash = hash.substring(0, index);
-    }
-
-    query = query.asImmutable();
-
-    return { action, pathname, search, key, state, hash, query };
-}
-
-export function getRouteFromLocationHash(hash: string): string {
-    if (hash) {
-        const index = hash.indexOf('?');
-        if (index > -1) {
-            return hash.substring(0, index);
-        }
-
-        return hash;
-    }
-
-    return undefined;
-}
-
-export function buildQueryString(params: Map<string, string | number>): string {
-    let q = '',
-        sep = '';
-    params.forEach((v, k) => {
-        q += sep + k + '=' + v;
-        sep = '&';
-    });
-
-    return q.length > 0 ? '?' + q : '';
-}
-
-export function build(pathname: string, hash?: string, params?: Map<string, string | number>): string {
-    return pathname + (hash || '') + (params ? buildQueryString(params) : '');
-}
-
-function setParameter(location: Location, key: string, value: string | number, asReplace = false): void {
-    const params = Map<string, string | number>();
-    setParameters(location, params.set(key, value), asReplace);
-}
-
-function setParameters(location: Location, params: Map<string, string | number>, asReplace = false): void {
-    const { query } = location;
-
-    const newParams = Map<string, string | number>(query).asMutable();
-    params.forEach((value, key) => {
         if (value === undefined) {
-            newParams.delete(key);
+            delete query[key];
         } else {
-            newParams.set(key, value);
+            query[key] = value;
         }
     });
 
     if (asReplace) {
-        getBrowserHistory().replace(build(location.pathname, location.hash, newParams.asImmutable()));
+        router.replace({ ...location, query });
     } else {
-        getBrowserHistory().push(build(location.pathname, location.hash, newParams.asImmutable()));
+        router.push({ ...location, query });
     }
 }
 
-export function pushParameter(location: Location, key: string, value: string | number): void {
-    setParameter(location, key, value);
-}
-
-export function pushParameters(location: Location, params: Map<string, string | number>): void {
-    setParameters(location, params);
-}
-
-export function removeParameters(location: Location, ...params: string[]): void {
+export function removeParameters(router: InjectedRouter, location: Location, ...params: string[]): void {
     if (!params) return;
-    setParameters(
-        location,
-        params.reduce((map, param) => map.set(param, undefined), Map<string, string>()),
-        true
-    );
+    const paramsObj = params.reduce((result, param) => {
+        result[param] = undefined;
+        return result;
+    }, {});
+    setParameters(router, location, paramsObj, true);
 }
 
-export function replaceParameter(location: Location, key: string, value: string | number): void {
-    setParameter(location, key, value, true);
+export function replaceParameters(
+    router: InjectedRouter,
+    location: Location,
+    params: Record<string, string | number>
+): void {
+    setParameters(router, location, params, true);
 }
 
-export function replaceParameters(location: Location, params: Map<string, string | number>): void {
-    setParameters(location, params, true);
+export function pushParameters(
+    router: InjectedRouter,
+    location: Location,
+    params: Record<string, string | number>
+): void {
+    setParameters(router, location, params);
 }
 
-export function resetParameters(except?: List<string>): void {
-    const location = getLocation();
-
-    const emptyParams = location.query.map((value: string, key: string) => {
-        if (except && except.contains(key)) {
-            return value;
+export function resetParameters(router: InjectedRouter, location: Location, except: string[] = []): void {
+    const updatedParams = Object.keys(location.query).reduce((result, key: string) => {
+        if (except.indexOf(key) > -1) {
+            result[key] = location.query[key];
         } else {
-            return undefined;
+            result[key] = undefined;
         }
-    });
 
-    setParameters(location, emptyParams);
+        return result;
+    }, {});
+
+    setParameters(router, location, updatedParams);
 }

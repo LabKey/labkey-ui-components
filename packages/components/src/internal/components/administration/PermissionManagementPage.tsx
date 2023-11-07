@@ -5,7 +5,7 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { Map } from 'immutable';
 
-import { WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 
 import { useServerContext } from '../base/ServerContext';
 
@@ -17,7 +17,7 @@ import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants
 
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { PermissionAssignments } from '../permissions/PermissionAssignments';
-import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
+import { useRouteLeave } from '../../util/RouteLeave';
 import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
 import { useAdminAppContext } from './useAdminAppContext';
@@ -26,11 +26,12 @@ import { showPremiumFeatures } from './utils';
 import { getUpdatedPolicyRoles } from './actions';
 
 // exported for testing
-export type Props = InjectedRouteLeaveProps & InjectedPermissionsPage & WithRouterProps;
+export type Props = InjectedPermissionsPage & WithRouterProps;
 
 // exported for testing
 export const PermissionManagementPageImpl: FC<Props> = memo(props => {
-    const { roles } = props;
+    const { roles, router, routes } = props;
+    const [getIsDirty, setIsDirty] = useRouteLeave(router, routes);
     const [policyLastModified, setPolicyLastModified] = useState<string>(undefined);
     const [hidePageDescription, setHidePageDescription] = useState<boolean>(false);
     const { dismissNotifications, createNotification } = useNotificationsContext();
@@ -83,6 +84,8 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
         >
             <PermissionAssignments
                 {...props}
+                getIsDirty={getIsDirty}
+                setIsDirty={setIsDirty}
                 roles={updatedRoles}
                 rolesToShow={rolesToShow}
                 onSuccess={onSuccess}
@@ -94,4 +97,4 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
     );
 });
 
-export const PermissionManagementPage = withRouteLeave(withPermissionsPage(PermissionManagementPageImpl));
+export const PermissionManagementPage = withRouter(withPermissionsPage(PermissionManagementPageImpl));

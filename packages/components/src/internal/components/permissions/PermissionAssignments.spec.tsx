@@ -20,6 +20,7 @@ import {
     TEST_FOLDER_CONTAINER_ADMIN,
     TEST_FOLDER_OTHER_CONTAINER_ADMIN,
 } from '../../containerFixtures';
+import { createMockWithRouterProps } from '../../mockUtils';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { ServerContext } from '../base/ServerContext';
@@ -30,8 +31,6 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 import { Alert } from '../base/Alert';
 
 import { MemberType } from '../administration/models';
-
-import { initBrowserHistoryState } from '../../util/global';
 
 import { FolderAPIWrapper, getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
@@ -83,10 +82,6 @@ const ROOT_POLICY = SecurityPolicy.updateAssignmentsData(SecurityPolicy.create(p
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
-beforeAll(() => {
-    initBrowserHistoryState();
-});
-
 describe('PermissionAssignments', () => {
     function getDefaultProps(): PermissionAssignmentsProps {
         return {
@@ -99,6 +94,7 @@ describe('PermissionAssignments', () => {
             rolesByUniqueName: ROLES_BY_NAME,
             getIsDirty: jest.fn(),
             setIsDirty: jest.fn(),
+            ...createMockWithRouterProps(jest.fn),
         };
     }
 

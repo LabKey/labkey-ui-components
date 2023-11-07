@@ -5,14 +5,13 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Col, MenuItem, Row } from 'react-bootstrap';
-import { ActionURL, Filter } from '@labkey/api';
-
-import { getLocation, getRouteFromLocationHash, replaceParameter } from '../../util/URL';
-import { getBrowserHistory } from '../../util/global';
+import { Filter } from '@labkey/api';
+import { InjectedRouter } from 'react-router';
 
 import { getSelected } from '../../actions';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { removeParameters, Location } from '../../util/URL';
 
 import { UserLimitSettings } from '../permissions/actions';
 
@@ -49,6 +48,7 @@ const OMITTED_COLUMNS = [
 interface OwnProps {
     // option to disable the reset password UI pieces for this component
     allowResetPassword?: boolean;
+    location: Location;
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
     newUserRoleOptions?: any[];
@@ -56,10 +56,9 @@ interface OwnProps {
     onUsersStateChangeComplete: (response: any) => any;
     policy: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
+    router: InjectedRouter;
     showDetailsPanel?: boolean;
-
     user: User;
-
     userLimitSettings?: UserLimitSettings;
 }
 
@@ -69,7 +68,6 @@ interface State {
     selectedUserId: number;
     // valid options are 'create', 'deactivate', 'reactivate', 'delete', undefined
     showDialog: string;
-    unlisten: any;
     // valid options are 'active', 'inactive', 'all'
     usersView: string;
 }
@@ -84,28 +82,12 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        // add a URL listener specifically for the usersView param so that we can change the GridPanel data accordingly without a route change
-        const unlisten = getBrowserHistory().listen(location => {
-            if (getRouteFromLocationHash(location.hash) === '#/admin/users') {
-                // if the usersView param is defined and has changed, set state to trigger re-render with proper QueryModel
-                const paramValue = ActionURL.getParameters(location.hash).usersView;
-                const usersView = this.getUsersView(paramValue);
-                if (paramValue && this.state.usersView !== usersView) {
-                    this.setState(() => ({
-                        usersView,
-                        selectedUserId: undefined, // clear selected user anytime we change views
-                    }));
-
-                    replaceParameter(getLocation(), 'usersView', undefined);
-                }
-            }
-        });
-
         this.state = {
-            usersView: this.getUsersView(getLocation().query.get('usersView')),
+            // location is really only undefined when running in jest tests because the react-router context isn't
+            // properly setup.
+            usersView: this.getUsersView(props.location?.query.usersView),
             showDialog: undefined,
             selectedUserId: undefined,
-            unlisten,
         };
     }
 
@@ -122,12 +104,12 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
             // if we had a policy and it changed (ex. user was deactivated or deleted from detail panel), then load model
             this.reloadUsersModel();
         }
-    }
 
-    componentWillUnmount() {
-        const { unlisten } = this.state;
-        if (unlisten) {
-            unlisten();
+        const curUsersView = this.props.location?.query.usersView;
+
+        if (curUsersView !== undefined) {
+            this.setState({ usersView: this.getUsersView(curUsersView) });
+            removeParameters(this.props.router, this.props.location, 'usersView');
         }
     }
 
@@ -235,6 +217,9 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         if (model.selectionsLoadingState === LoadingState.LOADED) {
             this.updateSelectedUserId(this.getLastSelectedId());
         } else {
+            // TODO: This seems wrong, we should just do nothing, eventually the selections will load and we'll be able
+            //  to set the user id. If we don't automatically load selections we can manually call loadSelections via
+            //  model actions.
             getSelected(
                 model.id,
                 false,

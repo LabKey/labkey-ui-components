@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * add utility spacing css class
 
+### version 2.391.2
+*Released*: 4 November 2023
+* Issue 48751: LKSM/LKB: Respect sort order of sources or samples for lineage sample creation
+  * Add saveOrderedSnapshotSelection util
+
 ### version 2.391.1
 *Released*: 2 November 2023
 * Issue 48804: Scroll error message at bottom of domain designer into view

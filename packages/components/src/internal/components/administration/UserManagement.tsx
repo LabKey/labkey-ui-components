@@ -322,8 +322,6 @@ export const UserManagementPageImpl: FC<ImplProps> = props => {
 
     if (isProductProjectsEnabled() && !container.isProject) return <NotFound />;
 
-    // console.log('UserManagementImpl location, router', props.location, props.router);
-
     return (
         <UserManagement
             {...props}

@@ -20,6 +20,7 @@ import {
     TEST_FOLDER_CONTAINER_ADMIN,
     TEST_FOLDER_OTHER_CONTAINER_ADMIN,
 } from '../../containerFixtures';
+import { createMockWithRouterProps } from '../../mockUtils';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { ServerContext } from '../base/ServerContext';
@@ -93,6 +94,7 @@ describe('PermissionAssignments', () => {
             rolesByUniqueName: ROLES_BY_NAME,
             getIsDirty: jest.fn(),
             setIsDirty: jest.fn(),
+            ...createMockWithRouterProps(jest.fn),
         };
     }
 

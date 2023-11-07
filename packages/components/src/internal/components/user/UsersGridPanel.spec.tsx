@@ -15,6 +15,7 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
+import { createMockWithRouterProps } from '../../mockUtils';
 
 import { getRolesByUniqueName, processGetRolesResponse, UserLimitSettings } from '../permissions/actions';
 import policyJSON from '../../../test/data/security-getPolicy.json';
@@ -68,6 +69,7 @@ describe('<UsersGridPanel/>', () => {
                 'user-management-users-inactive'
             ),
         },
+        ...createMockWithRouterProps(jest.fn),
     };
 
     test('active users view', () => {

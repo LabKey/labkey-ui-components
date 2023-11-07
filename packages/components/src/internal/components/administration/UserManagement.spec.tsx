@@ -2,6 +2,7 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { ReactWrapper } from 'enzyme';
 import { PermissionRoles } from '@labkey/api';
+import { createMockWithRouterProps } from '../../mockUtils';
 
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
@@ -29,6 +30,7 @@ describe('UserManagement', () => {
             principalsById: Map(),
             roles: List(),
             rolesByUniqueName: Map(),
+            ...createMockWithRouterProps(jest.fn),
         };
     }
 

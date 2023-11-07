@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.392.0
+* Remove utils/global.ts, which removes initBrowserHistoryState and getBrowserHistory
+* URL.ts:
+  * Add `router` and `location` arg to util methods and update usages
+    * Remove getLocation, update usages to use react-router instead
+* UsersGridPanel: use withRouter instead of directly listening to URL changes via history
+
 ### version 2.391.2
 *Released*: 4 November 2023
 * Issue 48751: LKSM/LKB: Respect sort order of sources or samples for lineage sample creation

@@ -6,12 +6,12 @@ import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Col, MenuItem, Row } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
-import { withRouter, WithRouterProps } from 'react-router';
+import { InjectedRouter } from 'react-router';
 
 import { getSelected } from '../../actions';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { removeParameters } from '../../util/URL';
+import { removeParameters, Location } from '../../util/URL';
 
 import { UserLimitSettings } from '../permissions/actions';
 
@@ -48,6 +48,7 @@ const OMITTED_COLUMNS = [
 interface OwnProps {
     // option to disable the reset password UI pieces for this component
     allowResetPassword?: boolean;
+    location: Location;
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
     newUserRoleOptions?: any[];
@@ -55,12 +56,13 @@ interface OwnProps {
     onUsersStateChangeComplete: (response: any) => any;
     policy: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
+    router: InjectedRouter;
     showDetailsPanel?: boolean;
     user: User;
     userLimitSettings?: UserLimitSettings;
 }
 
-type Props = OwnProps & InjectedQueryModels & WithRouterProps;
+type Props = OwnProps & InjectedQueryModels;
 
 interface State {
     selectedUserId: number;
@@ -81,7 +83,9 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            usersView: this.getUsersView(props.location.query.usersView),
+            // location is really only undefined when running in jest tests because the react-router context isn't
+            // properly setup.
+            usersView: this.getUsersView(props.location?.query.usersView),
             showDialog: undefined,
             selectedUserId: undefined,
         };
@@ -101,7 +105,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
             this.reloadUsersModel();
         }
 
-        const curUsersView = this.props.location.query.usersView;
+        const curUsersView = this.props.location?.query.usersView;
 
         if (curUsersView !== undefined) {
             this.setState({ usersView: this.getUsersView(curUsersView) });
@@ -366,4 +370,4 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     }
 }
 
-export const UsersGridPanel = withRouter(withQueryModels(UsersGridPanelImpl));
+export const UsersGridPanel = withQueryModels(UsersGridPanelImpl);

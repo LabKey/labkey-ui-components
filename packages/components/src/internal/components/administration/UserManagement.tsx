@@ -6,6 +6,7 @@ import React, { FC, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionRoles, Project, Utils } from '@labkey/api';
+import { WithRouterProps } from 'react-router';
 
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
@@ -32,13 +33,15 @@ import { AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY } from '../auditlog/constants'
 
 import { AUDIT_KEY } from '../../app/constants';
 
+import { NotFound } from '../base/NotFound';
+
+import { isProductProjectsEnabled } from '../../app/utils';
+
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
 
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './constants';
 import { useAdminAppContext } from './useAdminAppContext';
-import { NotFound } from '../base/NotFound';
-import { isProductProjectsEnabled } from '../../app/utils';
 
 export function getNewUserRoles(
     user: User,
@@ -92,7 +95,7 @@ interface OwnProps {
 }
 
 // exported for jest testing
-export type UserManagementProps = OwnProps & InjectedPermissionsPage & NotificationsContextProps;
+export type UserManagementProps = OwnProps & InjectedPermissionsPage & NotificationsContextProps & WithRouterProps;
 
 interface State {
     policy: SecurityPolicy;
@@ -276,7 +279,8 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     };
 
     render(): ReactNode {
-        const { allowResetPassword, container, extraRoles, project, user, rolesByUniqueName } = this.props;
+        const { allowResetPassword, container, extraRoles, location, project, user, rolesByUniqueName, router } =
+            this.props;
         const { policy, userLimitSettings } = this.state;
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
@@ -301,19 +305,24 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                     allowResetPassword={allowResetPassword}
                     showDetailsPanel={user.hasManageUsersPermission()}
                     userLimitSettings={userLimitSettings}
+                    router={router}
+                    location={location}
                 />
             </BasePermissionsCheckPage>
         );
     }
 }
 
-export const UserManagementPageImpl: FC<InjectedPermissionsPage & NotificationsContextProps> = props => {
+type ImplProps = InjectedPermissionsPage & NotificationsContextProps & WithRouterProps;
+
+export const UserManagementPageImpl: FC<ImplProps> = props => {
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext, project, user } = useServerContext();
     const { extraPermissionRoles } = useAdminAppContext();
 
-    if (isProductProjectsEnabled() && !container.isProject)
-        return <NotFound />;
+    if (isProductProjectsEnabled() && !container.isProject) return <NotFound />;
+
+    // console.log('UserManagementImpl location, router', props.location, props.router);
 
     return (
         <UserManagement

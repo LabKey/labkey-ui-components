@@ -2,9 +2,11 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { ReactWrapper } from 'enzyme';
 import { PermissionRoles } from '@labkey/api';
+import { WithRouterProps } from 'react-router';
 import { createMockWithRouterProps } from '../../mockUtils';
 
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
+import { NotificationsContextProps } from '../notifications/NotificationsContext';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { UsersGridPanel } from '../user/UsersGridPanel';
 import { SecurityPolicy } from '../permissions/models';
@@ -22,8 +24,10 @@ import { AdminAppContext } from '../../AppContext';
 import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 
 describe('UserManagement', () => {
-    function getDefaultProps(): InjectedPermissionsPage {
+    function getDefaultProps(): InjectedPermissionsPage & NotificationsContextProps & WithRouterProps {
         return {
+            createNotification: jest.fn(),
+            dismissNotifications: jest.fn(),
             error: undefined,
             inactiveUsersById: undefined,
             principals: List(),

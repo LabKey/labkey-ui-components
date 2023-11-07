@@ -36,6 +36,7 @@ const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
 describe('<UsersGridPanel/>', () => {
+    const { router, location } = createMockWithRouterProps(jest.fn);
     const DEFAULT_PROPS = {
         user: TEST_USER_APP_ADMIN,
         onCreateComplete: jest.fn(),
@@ -69,7 +70,8 @@ describe('<UsersGridPanel/>', () => {
                 'user-management-users-inactive'
             ),
         },
-        ...createMockWithRouterProps(jest.fn),
+        router,
+        location
     };
 
     test('active users view', () => {

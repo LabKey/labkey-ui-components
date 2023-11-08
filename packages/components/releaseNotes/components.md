@@ -1,7 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.392.1
+*Released*: 8 November 2023
+* Merge release23.11-SNAPSHOT to develop:
+    * includes changes from 2.390.1 and 2.390.2
+
 ### version 2.392.0
+*Released*: 7 November 2023
 * Remove utils/global.ts, which removes initBrowserHistoryState and getBrowserHistory
 * URL.ts:
   * Add `router` and `location` arg to util methods and update usages
@@ -22,6 +28,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 1 November 2023
 * Issue 48828: Don't show sample insights panel while editing in the grid
   -  add `onEditToggle` optional prop for `SampleTabbedGridPanel`
+
+### version 2.390.2
+*Released*: 6 November 2023
+* Issue 49019: Grid session filters/sorts/etc. are not applied as expected when model loads queryInfo from API instead of cache
+  * the additional render cycle from the query details API call causes the withQueryModels componentDidUpdate to detect a URL param change and then remove the filters/sorts/etc. that were just applied from the session state
+
+### version 2.390.1
+*Released*: 3 November 2023
+- Issue 48836: Update `URLResolver.resolveLineageItem` to resolve the name of the data type from the query name
 
 ### version 2.390.0
 *Released*: 31 October 2023

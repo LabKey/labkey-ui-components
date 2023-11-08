@@ -18,7 +18,7 @@ import { ActionURL, Experiment, Filter, getServerContext } from '@labkey/api';
 
 import { LineageLinkMetadata } from '../components/lineage/types';
 
-import { FREEZER_MANAGER_APP_PROPERTIES } from '../app/constants';
+import { FREEZER_MANAGER_APP_PROPERTIES, SAMPLES_KEY } from '../app/constants';
 
 import { getCurrentAppProperties, getProjectPath } from '../app/utils';
 
@@ -335,7 +335,7 @@ const SAMPLE_TYPE_MAPPERS = [
                 url = ['rd', 'samples', identifier];
             } else {
                 // string -- assume sample set name
-                url = ['samples', identifier];
+                url = [SAMPLES_KEY, identifier];
             }
 
             return AppURL.create(...url);
@@ -574,15 +574,21 @@ export class URLResolver {
             overview: item.url,
         };
 
-        if (item.type && acceptedTypes.indexOf(item.type) >= 0 && item.cpasType) {
-            const parts = item.cpasType.split(':');
-            let name = parts[parts.length - 1];
+        if (item.type && acceptedTypes.indexOf(item.type) >= 0 && (item.queryName || item.cpasType)) {
+            // Issue 48836: Resolve lineage item URL from queryName if available
+            let name = item.queryName;
 
-            // LSID strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
-            name = name.replace(/\+/g, ' ');
+            if (!name) {
+                // Fallback to parsing name from cpasType
+                const parts = item.cpasType.split(':');
+                name = parts[parts.length - 1];
+
+                // LSID strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
+                name = name.replace(/\+/g, ' ');
+            }
 
             // Create a URL that will be resolved/redirected in the application resolvers
-            const listURLParts = item.type === 'Sample' ? ['samples', name] : ['rd', 'dataclass', name];
+            const listURLParts = item.type === 'Sample' ? [SAMPLES_KEY, name] : ['rd', 'dataclass', name];
 
             // listURL is the url to the grid for the data type. It will be filtered to the lineage members.
             metadata.list = AppURL.create(...listURLParts).toHref();

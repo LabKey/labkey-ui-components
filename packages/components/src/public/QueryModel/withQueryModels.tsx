@@ -281,7 +281,15 @@ export function withQueryModels<Props>(
                             return result;
                         }, {});
 
-                        if (!paramsEqual(modelParamsFromURL, model.urlQueryParams)) {
+                        // Issue 49019: Grid session filters/sorts/etc. are not applied as expected when model loads
+                        // queryInfo from API instead of cache the additional render cycle from the query details API
+                        // call causes the withQueryModels componentDidUpdate to detect a URL param change and then
+                        // remove the filters/sorts/etc. that were just applied from the session state. So add a check
+                        // for the queryInfo loading state in the if statement here.
+                        if (
+                            !isLoading(model.queryInfoLoadingState) &&
+                            !paramsEqual(modelParamsFromURL, model.urlQueryParams)
+                        ) {
                             // The params for the model have changed on the URL, so update the model.
                             this.updateModelFromURL(model.id);
                         }

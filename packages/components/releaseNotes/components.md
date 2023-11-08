@@ -1,7 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.392.1
+*Released*: 8 November 2023
+* Merge release23.11-SNAPSHOT to develop:
+    * includes changes from 2.390.1 and 2.390.2
+
 ### version 2.392.0
+*Released*: 7 November 2023
 * Remove utils/global.ts, which removes initBrowserHistoryState and getBrowserHistory
 * URL.ts:
   * Add `router` and `location` arg to util methods and update usages

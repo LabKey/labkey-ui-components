@@ -3,7 +3,11 @@ module.exports = {
         LABKEY: {
             contextPath: '/labkey',
             container: {
-                path: ''
+                path: '',
+                formats: {
+                    dateFormat: "yyyy-MM-dd",
+                    dateTimeFormat: "yyyy-MM-dd HH:mm"
+                }
             },
             project: {
                 rootId: 'ROOTID'

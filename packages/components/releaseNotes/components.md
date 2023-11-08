@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.390.TBD
+*Released*: TBD November 2023
+* Fix for reportId url param check in locationHasQueryParamSettings
+
 ### version 2.390.2
 *Released*: 6 November 2023
 * Issue 49019: Grid session filters/sorts/etc. are not applied as expected when model loads queryInfo from API instead of cache

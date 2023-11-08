@@ -12,7 +12,7 @@ import { GRID_CHECKBOX_OPTIONS } from '../../internal/constants';
 
 import { ViewInfo } from '../../internal/ViewInfo';
 
-import { flattenValuesFromRow, QueryConfig, QueryModel } from './QueryModel';
+import { flattenValuesFromRow, locationHasQueryParamSettings, QueryConfig, QueryModel } from './QueryModel';
 import { makeTestQueryModel } from './testUtils';
 
 const SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
@@ -291,5 +291,39 @@ describe('flattenValuesFromRow', () => {
         expect(flattenValuesFromRow(data, Object.keys(data)).test2).toBe(456);
         expect(flattenValuesFromRow(data, Object.keys(data)).test3).toBe(null);
         expect(flattenValuesFromRow(data, Object.keys(data)).test4).toBe(undefined);
+    });
+});
+
+describe('locationHasQueryParamSettings', () => {
+    test('no queryParams', () => {
+        expect(locationHasQueryParamSettings('test', undefined)).toBe(false);
+        expect(locationHasQueryParamSettings('test', {})).toBe(false);
+    });
+
+    test('with matching queryParams', () => {
+        expect(locationHasQueryParamSettings('test', { 'test.reportId': '1' })).toBe(true);
+        expect(locationHasQueryParamSettings('test', { 'test.view': '1' })).toBe(true);
+        expect(locationHasQueryParamSettings('test', { 'test.q': '1' })).toBe(true);
+        expect(locationHasQueryParamSettings('test', { 'test.sort': '1' })).toBe(true);
+        expect(locationHasQueryParamSettings('test', { 'test.p': '1' })).toBe(true);
+        expect(locationHasQueryParamSettings('test', { 'test.pageSize': '1' })).toBe(true);
+        expect(locationHasQueryParamSettings('test', { 'test.col~eq=': '1' })).toBe(true);
+    });
+
+    test('with mismatched prefix', () => {
+        expect(locationHasQueryParamSettings('bogus', { 'test.reportId': '1' })).toBe(false);
+        expect(locationHasQueryParamSettings('bogus', { 'test.view': '1' })).toBe(false);
+        expect(locationHasQueryParamSettings('bogus', { 'test.q': '1' })).toBe(false);
+        expect(locationHasQueryParamSettings('bogus', { 'test.sort': '1' })).toBe(false);
+        expect(locationHasQueryParamSettings('bogus', { 'test.p': '1' })).toBe(false);
+        expect(locationHasQueryParamSettings('bogus', { 'test.pageSize': '1' })).toBe(false);
+        expect(locationHasQueryParamSettings('bogus', { 'test.col~eq=': '1' })).toBe(false);
+    });
+
+    test('with mismatched queryParams', () => {
+        expect(locationHasQueryParamSettings('test', { 'test.reportid': '1' })).toBe(false);
+        expect(locationHasQueryParamSettings('test', { 'test.reportIdd': '1' })).toBe(false);
+        expect(locationHasQueryParamSettings('test', { 'test.bogus': '1' })).toBe(false);
+        expect(locationHasQueryParamSettings('test', { 'test.col~eq': '1' })).toBe(true);
     });
 });

@@ -122,6 +122,7 @@ describe('resolveLineage', () => {
         let resolvedLinks = resolver.resolveLineageItem(
             lineageResult.nodes.get('urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3')
         );
+
         // test a sample type
         expect(resolvedLinks.list).toEqual('#/samples/Hemoglobin');
         expect(resolvedLinks.overview).toEqual('#/rd/samples/6814');
@@ -133,5 +134,13 @@ describe('resolveLineage', () => {
 
         expect(resolvedLinks.list).toEqual(undefined);
         expect(resolvedLinks.overview).toEqual('/labkey/testContainer/experiment-showRunGraph.view?rowId=794');
+
+        // Issue 48836: resolve list URL via queryName if available
+        // Note that the node "urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3-clone" uses
+        // the new "cpasType" which does not include the name of the sample type.
+        resolvedLinks = resolver.resolveLineageItem(
+            lineageResult.nodes.get('urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3-clone')
+        );
+        expect(resolvedLinks.list).toEqual('#/samples/shemoglobin');
     });
 });

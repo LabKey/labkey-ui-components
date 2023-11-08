@@ -15,9 +15,9 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
+import { createMockWithRouterProps } from '../../mockUtils';
 
 import { getRolesByUniqueName, processGetRolesResponse, UserLimitSettings } from '../permissions/actions';
-import { initBrowserHistoryState } from '../../util/global';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
 import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures';
@@ -35,11 +35,8 @@ const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
-beforeAll(() => {
-    initBrowserHistoryState();
-});
-
 describe('<UsersGridPanel/>', () => {
+    const { router, location } = createMockWithRouterProps(jest.fn);
     const DEFAULT_PROPS = {
         user: TEST_USER_APP_ADMIN,
         onCreateComplete: jest.fn(),
@@ -73,6 +70,8 @@ describe('<UsersGridPanel/>', () => {
                 'user-management-users-inactive'
             ),
         },
+        router,
+        location
     };
 
     test('active users view', () => {

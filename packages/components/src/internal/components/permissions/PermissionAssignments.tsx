@@ -4,7 +4,7 @@
  */
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
-
+import { WithRouterProps } from 'react-router';
 import { Security } from '@labkey/api';
 
 import { FormButtons } from '../../FormButtons';
@@ -31,8 +31,6 @@ import { GroupMembership, MemberType } from '../administration/models';
 
 import { fetchGroupMembership } from '../administration/actions';
 
-import { getLocation } from '../../util/URL';
-
 import { useContainerUser } from '../container/actions';
 
 import { VerticalScrollPanel } from '../base/VeriticalScrollPanel';
@@ -49,15 +47,13 @@ import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { InjectedPermissionsPage } from './withPermissionsPage';
-import { InjectedRouter } from 'react-router';
 
 // exported for testing
-export interface PermissionAssignmentsProps extends InjectedPermissionsPage, InjectedRouteLeaveProps {
+export interface PermissionAssignmentsProps extends InjectedPermissionsPage, InjectedRouteLeaveProps, WithRouterProps {
     onSuccess: () => void;
     /** Subset list of role uniqueNames to show in this component usage */
     rolesToShow?: List<string>;
     rootRolesToShow?: List<string>;
-    router?: InjectedRouter;
     setLastModified?: (modified: string) => void;
     setProjectCount?: (count: number) => void;
     /** Specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage */
@@ -72,6 +68,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const {
         getIsDirty,
         inactiveUsersById,
+        location,
         onSuccess,
         principals,
         principalsById,
@@ -108,10 +105,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const homeFolderPath = isAppHome ? container.path : container.parentPath;
 
     const selectedPrincipal = principalsById?.get(selectedUserId);
-    const initExpandedRole = getLocation().query?.get('expand')
-        ? decodeURI(getLocation().query?.get('expand'))
-        : undefined;
-
+    const initExpandedRole = location.query.expand;
     const projectUser = useContainerUser(getProjectPath(container?.path));
 
     const loadGroupMembership = useCallback(async () => {
@@ -237,7 +231,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             isRootPolicy ? setHasRootPolicyChange(true) : setHasPolicyChange(true);
             setIsDirty(true);
         },
-        [policy, rootPolicy]
+        [policy, rootPolicy, setIsDirty]
     );
 
     const addAssignment = useCallback(
@@ -258,7 +252,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         setIsDirty(true);
         setInherited(!inherited);
         setHasPolicyChange(true);
-    }, [inherited]);
+    }, [inherited, setIsDirty]);
 
     const _onSuccess = useCallback(() => {
         onSuccess();

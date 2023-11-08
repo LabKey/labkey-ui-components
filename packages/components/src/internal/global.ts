@@ -15,8 +15,6 @@
  */
 import { Map } from 'immutable';
 
-import { initBrowserHistoryState } from './util/global';
-
 // Don't touch this directly, if you need access to it use getQueryMetadata, if you need to set the value use
 // setQueryMetadata
 let _queryMetadata = Map<string, any>();
@@ -31,8 +29,6 @@ let _queryColumnRenderers = {};
  * @param columnRenderers Optional Map to set the column renderers for this application
  */
 export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?: Record<string, any>): void {
-    initBrowserHistoryState();
-
     if (metadata) {
         setQueryMetadata(metadata);
     }

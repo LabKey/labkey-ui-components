@@ -8,7 +8,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { useServerContext } from '../base/ServerContext';
-import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
+import { useRouteLeave } from '../../util/RouteLeave';
 import { resolveErrorMessage } from '../../util/messaging';
 import { AppContext, useAppContext } from '../../AppContext';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
@@ -39,10 +39,11 @@ import { showPremiumFeatures } from './utils';
 import { GroupMembership, MemberType } from './models';
 import { fetchGroupMembership } from './actions';
 
-export type GroupManagementPageProps = InjectedRouteLeaveProps & InjectedPermissionsPage & WithRouterProps;
+export type GroupManagementPageProps = InjectedPermissionsPage & WithRouterProps;
 
 export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props => {
-    const { setIsDirty, getIsDirty, inactiveUsersById, principalsById, rolesByUniqueName, principals, router } = props;
+    const { inactiveUsersById, location, principalsById, rolesByUniqueName, principals, router, routes } = props;
+    const [getIsDirty, setIsDirty] = useRouteLeave(router, routes);
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [savedGroupMembership, setSavedGroupMembership] = useState<GroupMembership>();
@@ -283,6 +284,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
                     setIsDirty={setIsDirty}
                     getIsDirty={getIsDirty}
                     getAuditLogData={api.security.getAuditLogData}
+                    location={location}
                     router={router}
                 />
             )}
@@ -290,5 +292,4 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
     );
 });
 
-// TODO: instead of using withRouteLeave use useRouteLeave in the child component
-export const GroupManagementPage = withRouteLeave(withPermissionsPage(GroupManagementPageImpl));
+export const GroupManagementPage = withPermissionsPage(GroupManagementPageImpl);

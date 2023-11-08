@@ -18,10 +18,8 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 import { Principal, SecurityPolicy } from '../permissions/models';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 
-import { initBrowserHistoryState } from '../../util/global';
-
 import { PermissionAssignments } from '../permissions/PermissionAssignments';
-import { createMockWithRouteLeave } from '../../mockUtils';
+import { createMockWithRouteLeave, createMockWithRouterProps } from '../../mockUtils';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 
 import { MemberType } from './models';
@@ -48,15 +46,12 @@ const PRINCIPALS_BY_ID = PRINCIPALS.reduce((map, principal) => {
 }, Map<number, Principal>());
 const POLICY = SecurityPolicy.updateAssignmentsData(SecurityPolicy.create(policyJSON), PRINCIPALS_BY_ID);
 
-beforeAll(() => {
-    initBrowserHistoryState();
-});
-
 describe('PermissionManagementPage', () => {
     function getDefaultProps() {
         return {
             roles: List(),
             ...createMockWithRouteLeave(jest.fn),
+            ...createMockWithRouterProps(jest.fn),
         };
     }
 

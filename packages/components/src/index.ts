@@ -200,7 +200,6 @@ import {
 import { cancelEvent } from './internal/events';
 import { createGridModelId } from './internal/models';
 import { initQueryGridState } from './internal/global';
-import { initBrowserHistoryState } from './internal/util/global';
 import {
     deleteRows,
     getContainerFilter,
@@ -244,10 +243,8 @@ import {
     SHARED_CONTAINER_PATH,
 } from './internal/constants';
 import {
-    getLocation,
-    pushParameter,
+    pushParameters,
     removeParameters,
-    replaceParameter,
     replaceParameters,
     resetParameters,
 } from './internal/util/URL';
@@ -481,6 +478,8 @@ import {
     getOperationConfirmationData,
     getParentTypeDataForLineage,
     getSampleOperationConfirmationData,
+    getOrderedSelectedMappedKeysFromQueryModel,
+    saveOrderedSnapshotSelection,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -650,7 +649,6 @@ import { PicklistEditModal } from './internal/components/picklist/PicklistEditMo
 import { AddToPicklistMenuItem } from './internal/components/picklist/AddToPicklistMenuItem';
 import {
     deletePicklists,
-    getOrderedSelectedMappedKeysFromQueryModel,
     getOrderedSelectedPicklistSamples,
     getPicklistFromId,
     getPicklistListingContainerFilter,
@@ -749,7 +747,7 @@ import {
     createTestProjectAppContextAdmin,
     createTestProjectAppContextNonAdmin,
     TEST_FOLDER_CONTAINER,
-    TEST_PROJECT_CONTAINER
+    TEST_PROJECT_CONTAINER,
 } from './internal/containerFixtures';
 import {
     ASSAY_DESIGN_KEY,
@@ -1025,7 +1023,6 @@ export {
     getDefaultAPIWrapper,
     // global state functions
     initQueryGridState,
-    initBrowserHistoryState,
     getContainerFilter,
     getContainerFilterForFolder,
     getContainerFilterForLookups,
@@ -1033,6 +1030,7 @@ export {
     clearSelected,
     // grid functions
     getOrderedSelectedMappedKeysFromQueryModel,
+    saveOrderedSnapshotSelection,
     getSelected,
     getSelectedData,
     getSelection,
@@ -1089,13 +1087,11 @@ export {
     URLService,
     ListResolver,
     ExperimentRunResolver,
-    getLocation,
-    getHref,
-    pushParameter,
+    pushParameters,
     removeParameters,
-    replaceParameter,
     replaceParameters,
     resetParameters,
+    getHref,
     hasParameter,
     toggleParameter,
     applyURL,

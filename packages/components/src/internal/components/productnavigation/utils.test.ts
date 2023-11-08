@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR } from '../../userFixtures';
 import { TEST_LIMS_STARTER_MODULE_CONTEXT, TEST_LKSM_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 

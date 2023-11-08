@@ -2,6 +2,7 @@ import React from 'react';
 import { fromJS, List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 import PanelBody from 'react-bootstrap/lib/PanelBody';
+import { createMockWithRouterProps } from '../../mockUtils';
 
 import { Principal, SecurityPolicy } from '../permissions/models';
 import policyJSON from '../../../test/data/security-getPolicy.json';
@@ -16,14 +17,9 @@ import { Alert } from '../base/Alert';
 
 import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
-import { initBrowserHistoryState } from '../../util/global';
 
 import { MemberType } from './models';
 import { GroupAssignments } from './GroupAssignments';
-
-beforeAll(() => {
-    initBrowserHistoryState();
-});
 
 describe('<GroupAssignments/>', () => {
     const GROUP_MEMBERSHIP = {
@@ -120,6 +116,7 @@ describe('<GroupAssignments/>', () => {
         setErrorMsg: jest.fn(),
         setIsDirty: jest.fn(),
         getAuditLogData: jest.fn(),
+        ...createMockWithRouterProps(jest.fn),
     };
 
     test('without members', async () => {

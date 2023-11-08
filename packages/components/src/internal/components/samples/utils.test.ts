@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Filter } from '@labkey/api';
 
 import { isFreezerManagementEnabled, isSampleStatusEnabled } from '../../app/utils';

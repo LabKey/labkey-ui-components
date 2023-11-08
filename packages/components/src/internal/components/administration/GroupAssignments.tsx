@@ -12,8 +12,7 @@ import { UserDetailsPanel } from '../user/UserDetailsPanel';
 import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 
 import { naturalSort } from '../../../public/sort';
-
-import { getLocation } from '../../util/URL';
+import { Location } from '../../util/URL';
 
 import { useServerContext } from '../base/ServerContext';
 
@@ -28,11 +27,12 @@ export interface GroupAssignmentsProps {
     getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     getIsDirty: () => boolean;
     groupMembership: GroupMembership;
+    location: Location;
     policy: SecurityPolicy;
     principalsById: Map<number, Principal>;
     removeMember: (groupId: string, memberId: number) => void;
     rolesByUniqueName: Map<string, SecurityRole>;
-    router?: InjectedRouter;
+    router: InjectedRouter;
     save: () => Promise<void>;
     setErrorMsg: (e: string) => void;
     setIsDirty: (isDirty: boolean) => void;
@@ -46,6 +46,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         getAuditLogData,
         getIsDirty,
         groupMembership,
+        location,
         policy,
         rolesByUniqueName,
         principalsById,
@@ -63,7 +64,7 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [selectedPrincipalId, setSelectedPrincipalId] = useState<number>();
     const [newGroupName, setNewGroupName] = useState<string>('');
-    const initExpandedGroup = getLocation().query?.get('expand');
+    const initExpandedGroup = location.query.expand;
 
     const onCancel = useCallback(() => {
         setIsDirty(false);

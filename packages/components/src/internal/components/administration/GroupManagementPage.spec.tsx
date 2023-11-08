@@ -2,7 +2,7 @@ import React from 'react';
 import { List, Map } from 'immutable';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
-import { createMockWithRouteLeave } from '../../mockUtils';
+import { createMockWithRouteLeave, createMockWithRouterProps } from '../../mockUtils';
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
 import { AppContext } from '../../AppContext';
 import { getTestAPIWrapper } from '../../APIWrapper';
@@ -14,16 +14,10 @@ import { TEST_PROJECT, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 import { Alert } from '../base/Alert';
 
-import { initBrowserHistoryState } from '../../util/global';
-
 import { GroupManagementPageImpl, GroupManagementPageProps } from './GroupManagementPage';
 import { GroupAssignments } from './GroupAssignments';
 
-beforeAll(() => {
-    initBrowserHistoryState();
-});
-
-describe('BasePermissions', () => {
+describe('GroupManagementPage', () => {
     function getDefaultProps(): GroupManagementPageProps {
         return {
             error: undefined,
@@ -33,6 +27,7 @@ describe('BasePermissions', () => {
             roles: List(),
             rolesByUniqueName: Map(),
             ...createMockWithRouteLeave(jest.fn),
+            ...createMockWithRouterProps(jest.fn),
         };
     }
 

@@ -21,7 +21,6 @@ import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import { SecurityPolicy } from '../permissions/models';
-import { initBrowserHistoryState } from '../../util/global';
 
 import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
 
@@ -36,10 +35,6 @@ import { ServerContext } from '../base/ServerContext';
 import { AdminSettingsPageImpl } from './AdminSettingsPage';
 
 const TEST_POLICY = SecurityPolicy.create(policyJSON);
-
-beforeAll(() => {
-    initBrowserHistoryState();
-});
 
 describe('AdminSettingsPageImpl', () => {
     const APP_CONTEXT: Partial<AppContext> = {

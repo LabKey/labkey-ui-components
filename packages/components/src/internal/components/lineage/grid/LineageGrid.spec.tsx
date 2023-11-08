@@ -7,7 +7,6 @@ import runsQueryInfo from '../../../../test/data/exp-runs-getQueryDetails.json';
 import lineageSampleData from '../../../../test/data/experiment-lineage.json';
 import hemoglobinLineageQueryIn from '../../../../test/data/samples-hemoglobin-getQuery-in.json';
 import hemoglobinLineageQueryInfo from '../../../../test/data/samples-hemoglobin-getQueryDetails.json';
-import { initBrowserHistoryState } from '../../../util/global';
 import { TestLineageAPIWrapper } from '../actions';
 import { LineageResult } from '../models';
 
@@ -26,8 +25,6 @@ beforeAll(() => {
     const hemoGlobinData = makeTestISelectRowsResult(hemoglobinLineageQueryIn, hemoglobinLineageQueryInfo);
     const expRunsData = makeTestISelectRowsResult(runsQuery, runsQueryInfo);
     API = new TestLineageAPIWrapper(result, [hemoGlobinData, expRunsData]);
-
-    initBrowserHistoryState();
 });
 
 describe('<LineageGrid/>', () => {

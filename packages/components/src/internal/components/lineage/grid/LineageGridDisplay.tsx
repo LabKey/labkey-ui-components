@@ -2,74 +2,72 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, memo, PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
+import { withRouter, WithRouterProps } from 'react-router';
 
 import { LineageGridModel } from '../models';
 import { DEFAULT_LINEAGE_DISTANCE } from '../constants';
 import { LINEAGE_DIRECTIONS } from '../types';
 import { getPageNumberChangeURL } from '../actions';
 import { LineageDepthLimitMessage } from '../LineageGraph';
-import { getLocation } from '../../../util/URL';
 import { AppURL } from '../../../url/AppURL';
 import { Alert } from '../../base/Alert';
 import { Grid, GridProps } from '../../base/Grid';
 
-interface LineagePagingProps {
+interface LineagePagingProps extends WithRouterProps {
     model: LineageGridModel;
 }
 
-export class LineagePaging extends PureComponent<LineagePagingProps> {
-    render(): ReactNode {
-        const { maxRowIndex, minRowIndex, pageNumber, seedNode, totalRows } = this.props.model;
-        // TODO: This component should not reference "getLocation()" but rather be handed an action to update the page
-        const location = getLocation();
+const LineagePagingImpl: FC<LineagePagingProps> = memo(({ location, model }) => {
+    const { maxRowIndex, minRowIndex, pageNumber, seedNode, totalRows } = model;
 
-        // hidden when "0 of 0" or "1 - N of N"
-        const showButtons = !(maxRowIndex === 0 || (minRowIndex === 1 && maxRowIndex === totalRows));
+    // hidden when "0 of 0" or "1 - N of N"
+    const showButtons = !(maxRowIndex === 0 || (minRowIndex === 1 && maxRowIndex === totalRows));
 
-        return (
-            <div className="col-xs-12">
-                <div className="paging pull-right text-nowrap">
-                    {totalRows !== 0 && (
-                        <span
-                            className={showButtons ? 'paging-counts-with-buttons' : 'paging-counts-without-buttons'}
-                            data-max={maxRowIndex}
-                            data-min={minRowIndex}
-                            data-total={totalRows}
+    return (
+        <div className="col-xs-12">
+            <div className="paging pull-right text-nowrap">
+                {totalRows !== 0 && (
+                    <span
+                        className={showButtons ? 'paging-counts-with-buttons' : 'paging-counts-without-buttons'}
+                        data-max={maxRowIndex}
+                        data-min={minRowIndex}
+                        data-total={totalRows}
+                    >
+                        {minRowIndex === maxRowIndex ? (
+                            <span>{maxRowIndex}</span>
+                        ) : (
+                            <span>
+                                {maxRowIndex === 0 ? 0 : minRowIndex}&nbsp;-&nbsp;{maxRowIndex}
+                            </span>
+                        )}{' '}
+                        of {totalRows}
+                    </span>
+                )}
+                {showButtons && (
+                    <div className="btn-group">
+                        <Button
+                            href={getPageNumberChangeURL(location.query, seedNode.lsid, pageNumber - 1).toHref()}
+                            disabled={pageNumber <= 1}
                         >
-                            {minRowIndex === maxRowIndex ? (
-                                <span>{maxRowIndex}</span>
-                            ) : (
-                                <span>
-                                    {maxRowIndex === 0 ? 0 : minRowIndex}&nbsp;-&nbsp;{maxRowIndex}
-                                </span>
-                            )}{' '}
-                            of {totalRows}
-                        </span>
-                    )}
-                    {showButtons && (
-                        <div className="btn-group">
-                            <Button
-                                href={getPageNumberChangeURL(location, seedNode.lsid, pageNumber - 1).toHref()}
-                                disabled={pageNumber <= 1}
-                            >
-                                <i className="fa fa-chevron-left" />
-                            </Button>
-                            <Button
-                                href={getPageNumberChangeURL(location, seedNode.lsid, pageNumber + 1).toHref()}
-                                disabled={maxRowIndex === totalRows}
-                            >
-                                <i className="fa fa-chevron-right" />
-                            </Button>
-                        </div>
-                    )}
-                </div>
+                            <i className="fa fa-chevron-left" />
+                        </Button>
+                        <Button
+                            href={getPageNumberChangeURL(location.query, seedNode.lsid, pageNumber + 1).toHref()}
+                            disabled={maxRowIndex === totalRows}
+                        >
+                            <i className="fa fa-chevron-right" />
+                        </Button>
+                    </div>
+                )}
             </div>
-        );
-    }
-}
+        </div>
+    );
+});
+
+const LineagePaging = withRouter(LineagePagingImpl);
 
 interface LineageGridProps {
     model: LineageGridModel;

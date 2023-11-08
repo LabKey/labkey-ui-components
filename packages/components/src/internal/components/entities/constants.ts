@@ -17,7 +17,7 @@ import { sampleDeleteDependencyText } from './utils';
 
 export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
-export const ASSAY_RUN_OPERATION_CONFIRMATION_ACTION = 'getAssayRunDeletionConfirmationData.api';
+export const ASSAY_RUN_OPERATION_CONFIRMATION_ACTION = 'getAssayRunOperationConfirmationDataAction.api';
 
 export const AssayRunDataType: EntityDataType = {
     deleteHelpLinkTopic: DELETE_ASSAY_RUNS_TOPIC,
@@ -37,8 +37,8 @@ export const AssayRunDataType: EntityDataType = {
     uniqueFieldKey: 'RowId',
     dependencyText: undefined,
     projectConfigurableDataType: 'AssayDesign',
-    moveControllerName: 'Assay',
-    moveActionName: 'MoveAssayRuns',
+    moveControllerName: 'assay',
+    moveActionName: 'moveAssayRuns',
 };
 
 export const AssayResultDataType: EntityDataType = {

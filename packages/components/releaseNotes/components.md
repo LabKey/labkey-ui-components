@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue X: We support move operations for assaysa as well as delete, but don't need to check references for move
+
 ### version 2.390.2
 *Released*: 6 November 2023
 * Issue 49019: Grid session filters/sorts/etc. are not applied as expected when model loads queryInfo from API instead of cache

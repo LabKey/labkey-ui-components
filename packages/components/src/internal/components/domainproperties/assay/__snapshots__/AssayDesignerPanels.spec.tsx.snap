@@ -733,7 +733,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         "nounAsParentSingular": "Assay Run",
         "nounPlural": "runs",
         "nounSingular": "run",
-        "operationConfirmationActionName": "getAssayRunOperationConfirmationDataAction.api",
+        "operationConfirmationActionName": "getAssayRunOperationConfirmationData.api",
         "operationConfirmationControllerName": "assay",
         "projectConfigurableDataType": "AssayDesign",
         "typeListingSchemaQuery": SchemaQuery {
@@ -2570,7 +2570,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         "nounAsParentSingular": "Assay Run",
         "nounPlural": "runs",
         "nounSingular": "run",
-        "operationConfirmationActionName": "getAssayRunOperationConfirmationDataAction.api",
+        "operationConfirmationActionName": "getAssayRunOperationConfirmationData.api",
         "operationConfirmationControllerName": "assay",
         "projectConfigurableDataType": "AssayDesign",
         "typeListingSchemaQuery": SchemaQuery {

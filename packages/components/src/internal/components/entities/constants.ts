@@ -17,7 +17,7 @@ import { sampleDeleteDependencyText } from './utils';
 
 export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
 export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
-export const ASSAY_RUN_OPERATION_CONFIRMATION_ACTION = 'getAssayRunOperationConfirmationDataAction.api';
+export const ASSAY_RUN_OPERATION_CONFIRMATION_ACTION = 'getAssayRunOperationConfirmationData.api';
 
 export const AssayRunDataType: EntityDataType = {
     deleteHelpLinkTopic: DELETE_ASSAY_RUNS_TOPIC,
@@ -69,6 +69,11 @@ export const AssayResultDataType: EntityDataType = {
     sampleFinderCardType: 'assaydata',
     projectConfigurableDataType: 'AssayDesign',
 };
+
+export enum AssayRunOperation {
+    Delete,
+    Move,
+}
 
 export const SamplePropertyDataType: EntityDataType = {
     allowSingleParentTypeFilter: true,

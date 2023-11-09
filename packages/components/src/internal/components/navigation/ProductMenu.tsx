@@ -121,6 +121,7 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
             if (
                 !nodeName ||
                 (nodeName.toLowerCase() === 'a' && className !== 'menu-folder-item') ||
+                (nodeName.toLowerCase() === 'span' && className?.indexOf('product-menu-item') > -1) ||
                 (nodeName.toLowerCase() === 'i' && className?.toLowerCase().startsWith('fa'))
             ) {
                 toggleMenu();

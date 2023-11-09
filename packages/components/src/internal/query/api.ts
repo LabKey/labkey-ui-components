@@ -756,11 +756,13 @@ export class InsertRowsResponse extends ImmutableRecord({
     schemaQuery: undefined,
     error: undefined,
     transactionAuditId: undefined,
+    reselectRowCount: undefined,
 }) {
     declare rows: any[];
     declare schemaQuery: SchemaQuery;
     declare error: InsertRowsErrorResponse;
     declare transactionAuditId?: number;
+    declare reselectRowCount?: boolean;
 
     getFilter(): Filter.IFilter {
         const rowIds = [];
@@ -802,6 +804,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
                         schemaQuery,
                         rows: response.rows,
                         transactionAuditId: response.transactionAuditId,
+                        reselectRowCount: response.reselectRowCount,
                     })
                 );
             },
@@ -865,6 +868,7 @@ export interface UpdateRowsResponse {
     rows: any[];
     schemaQuery: SchemaQuery;
     transactionAuditId?: number;
+    reselectRowCount?: boolean;
 }
 
 export function updateRows(options: UpdateRowsOptions): Promise<UpdateRowsResponse> {
@@ -889,6 +893,7 @@ export function updateRows(options: UpdateRowsOptions): Promise<UpdateRowsRespon
                             schemaQuery,
                             rows: response.rows,
                             transactionAuditId: response.transactionAuditId,
+                            reselectRowCount: response.reselectRowCount
                         }
                     )
                 );

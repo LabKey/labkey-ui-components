@@ -185,6 +185,7 @@ import {
     incrementClientSideMetricCount,
     replaceSelected,
     selectGridIdsFromTransactionId,
+    getGridIdsFromTransactionId,
     setSelected,
     setSnapshotSelections,
 } from './internal/actions';
@@ -1039,6 +1040,7 @@ export {
     setSnapshotSelections,
     getSampleTypesFromTransactionIds,
     selectGridIdsFromTransactionId,
+    getGridIdsFromTransactionId,
     addColumns,
     changeColumn,
     removeColumn,

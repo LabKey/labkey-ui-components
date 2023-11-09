@@ -67,7 +67,7 @@ export function selectAll(
     });
 }
 
-function getGridIdsFromTransactionId(transactionAuditId: number, dataType: string): Promise<string[]> {
+export function getGridIdsFromTransactionId(transactionAuditId: number, dataType: string): Promise<string[]> {
     if (!transactionAuditId) {
         return;
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox } from 'react-bootstrap';
 
-import { Filter } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -49,6 +49,7 @@ export class PipelineJobsPageImpl extends React.PureComponent<Props & InjectedQu
 
         const queryConfig = {
             id: gridId,
+            containerFilter: Query.ContainerFilter.allInProject, // use AllInProject for this grid to match getServerNotifications()
             schemaQuery: new SchemaQuery('pipeline', 'job'),
             baseFilters,
             sorts: [new QuerySort({ fieldKey: 'Created', dir: '-' })],

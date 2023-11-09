@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActionURL, Ajax, Filter, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, Query, Utils } from '@labkey/api';
 
 import { buildURL } from '../../url/AppURL';
 import { resolveErrorMessage } from '../../util/messaging';
@@ -38,7 +38,15 @@ export function getServerNotifications(typeLabels?: string[], maxRows?: number):
         Ajax.request({
             url: ActionURL.buildURL('notification', 'getUserNotifications.api'),
             method: 'GET',
-            params: { byContainer: true, containerFilter: getContainerFilter(), typeLabels, maxRows },
+            params: {
+                byContainer: true,
+                // per cross-folder action improvements, we always want to default to using the allInProject
+                // containerFilter for this API call so users can see all of their pipeline job details regardless of
+                // which project container they are in
+                containerFilter: Query.ContainerFilter.allInProject,
+                typeLabels,
+                maxRows,
+            },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     const notifications = response.notifications.map(

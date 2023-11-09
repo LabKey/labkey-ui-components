@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Improve cross-project actions: Import job notifications
+  * Use the Query.ContainerFilter.allInProject container filter in getUserNotifications API call and PipelineJobsPage queryConfig
+
 ### version 2.392.2
 *Released*: 8 November 2023
 * Issue 48999: Unable to "Select them in the grid" when created trigger script runs after samples are added

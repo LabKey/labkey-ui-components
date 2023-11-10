@@ -60,11 +60,6 @@ export function NameInput(props: InputProps) {
             label="Name"
             required={true}
             appPropertiesOnly={props.appPropertiesOnly}
-            helpTipBody={
-                <p>
-                    The name for this assay design. Note that this can't be changed after the assay design is created.
-                </p>
-            }
         >
             <FormControl
                 id={FORM_IDS.ASSAY_NAME}

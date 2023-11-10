@@ -175,9 +175,9 @@ export const ParentEntityRequiredColumns = SCHEMAS.CBMB.concat(
     'RowId',
     'Description',
     'AliquotedFromLSID/Name',
-    'RootMaterialLSID',
-    'RootMaterialLSID/Name',
-    'RootMaterialLSID/Description'
+    'RootMaterialRowId',
+    'RootMaterialRowId/Name',
+    'RootMaterialRowId/Description'
 ).concat(ParentEntityLineageColumns);
 
 export enum DataOperation {

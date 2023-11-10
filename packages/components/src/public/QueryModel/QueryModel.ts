@@ -67,6 +67,8 @@ function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
  */
 export function locationHasQueryParamSettings(prefix: string, queryParams?: Record<string, string>): boolean {
     if (queryParams === undefined) return false;
+    // Report
+    if (queryParams[`${prefix}.reportId`] !== undefined) return true;
     // View
     if (queryParams[`${prefix}.view`] !== undefined) return true;
     // Search Filters

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.390.4
+*Released*: 10 November 2023
+* Fix for reportId url param check in locationHasQueryParamSettings
+
 ### version 2.390.3
 *Released*: 9 November 2023
 * Issue 49074: We support move operations for assays as well as delete, but don't need to check references for move

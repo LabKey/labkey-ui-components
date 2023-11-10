@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.393.1
+*Released*: 10 November 2023
+* Improve cross-project actions: Import job notifications
+  * Use the Query.ContainerFilter.allInProject container filter in getUserNotifications API call and PipelineJobsPage queryConfig
+
 ### version 2.393.0
 *Released*: 10 November 2023
 - Replace all usages of `RootMaterialLSID` with `RootMaterialRowId`

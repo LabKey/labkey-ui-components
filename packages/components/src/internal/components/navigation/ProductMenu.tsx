@@ -19,14 +19,13 @@ import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
 import { withRouter, WithRouterProps } from 'react-router';
 import { ActionURL } from '@labkey/api';
+import { Location } from '../../util/URL';
 
 import { blurActiveElement } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { useServerContext } from '../base/ServerContext';
 import { AppProperties } from '../../app/models';
-import {
-    getCurrentAppProperties,
-} from '../../app/utils';
+import { getCurrentAppProperties } from '../../app/utils';
 
 import { Alert } from '../base/Alert';
 
@@ -67,7 +66,7 @@ export interface ProductMenuButtonProps {
 }
 
 const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo(props => {
-    const { appProperties = getCurrentAppProperties(), routes } = props;
+    const { appProperties = getCurrentAppProperties(), location } = props;
     const [menuOpen, setMenuOpen] = useState(false);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -135,7 +134,7 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
             id="product-menu"
             onToggle={toggleMenu}
             open={menuOpen}
-            title={<ProductMenuButtonTitle container={container} folderItems={folderItems} routes={routes} />}
+            title={<ProductMenuButtonTitle container={container} folderItems={folderItems} location={location} />}
         >
             {menuOpen && (
                 <ProductMenu
@@ -296,18 +295,18 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
 interface ProductMenuButtonTitle {
     container: Container;
     folderItems: FolderMenuItem[];
-    routes: any[];
+    location: Location;
 }
 
 export const ProductMenuButtonTitle: FC<ProductMenuButtonTitle> = memo(props => {
-    const { container, folderItems, routes } = props;
+    const { container, folderItems, location } = props;
     const title = useMemo(() => {
         return folderItems?.length > 1 ? (container.path === HOME_PATH ? HOME_TITLE : container.title) : 'Menu';
     }, [container.path, container.title, folderItems?.length]);
 
     const subtitle = useMemo(() => {
-        return getHeaderMenuSubtitle(routes?.[1]?.path);
-    }, [routes]);
+        return getHeaderMenuSubtitle(location?.pathname?.split('/')[1]);
+    }, [location]);
 
     return (
         <>

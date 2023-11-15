@@ -452,7 +452,6 @@ import {
 import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
 import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
-import { UsersGridPanel } from './internal/components/user/UsersGridPanel';
 import { useUserProperties } from './internal/components/user/hooks';
 import { UserLink, UserLinkList } from './internal/components/user/UserLink';
 import { AccountSubNav } from './internal/components/user/AccountSubNav';
@@ -468,7 +467,6 @@ import {
     STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
-import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
 import { withPermissionsPage } from './internal/components/permissions/withPermissionsPage';
 import { Principal, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
 import { fetchContainerSecurityPolicy, getUserLimitSettings } from './internal/components/permissions/actions';
@@ -1175,7 +1173,6 @@ export {
     AccountSubNav,
     ProfilePage,
     ChangePasswordModal,
-    UsersGridPanel,
     InsufficientPermissionsAlert,
     InsufficientPermissionsPage,
     BasePermissionsCheckPage,
@@ -1185,7 +1182,6 @@ export {
     hasPermissions,
     fetchContainerSecurityPolicy,
     getUserLimitSettings,
-    PermissionAssignments,
     withPermissionsPage,
     SecurityPolicy,
     SecurityRole,

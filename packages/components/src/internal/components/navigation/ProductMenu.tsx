@@ -17,9 +17,9 @@ import React, { MouseEvent, FC, memo, useCallback, useState, useEffect, useRef, 
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
-import { withRouter, WithRouterProps } from 'react-router';
+import { Location } from 'history';
 import { ActionURL } from '@labkey/api';
-import { Location } from '../../util/URL';
+import { useLocation } from 'react-router-dom';
 
 import { blurActiveElement } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -65,8 +65,9 @@ export interface ProductMenuButtonProps {
     showFolderMenu: boolean;
 }
 
-const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo(props => {
-    const { appProperties = getCurrentAppProperties(), location } = props;
+export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
+    const { appProperties = getCurrentAppProperties() } = props;
+    const location = useLocation();
     const [menuOpen, setMenuOpen] = useState(false);
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
@@ -149,9 +150,6 @@ const ProductMenuButtonImpl: FC<ProductMenuButtonProps & WithRouterProps> = memo
         </DropdownButton>
     );
 });
-
-export const ProductMenuButton = withRouter<ProductMenuButtonProps>(ProductMenuButtonImpl);
-
 export interface ProductMenuProps extends ProductMenuButtonProps {
     className: string;
     error: string;

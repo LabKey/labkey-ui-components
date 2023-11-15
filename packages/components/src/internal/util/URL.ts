@@ -85,18 +85,3 @@ export function replaceParameters(setParams: SetURLSearchParams, params: QueryPa
 export function pushParameters(setParams: SetURLSearchParams, params: QueryParams): void {
     setParameters(setParams, params);
 }
-
-export function resetParameters(setParams: SetURLSearchParams, except: string[] = []): void {
-    setParams(current => {
-        const currentParams = getQueryParams(current);
-        return Object.keys(currentParams).reduce((result, key: string) => {
-            if (except.indexOf(key) > -1) {
-                result[key] = currentParams[key];
-            } else {
-                result[key] = undefined;
-            }
-
-            return result;
-        }, {});
-    });
-}

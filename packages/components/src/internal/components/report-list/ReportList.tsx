@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router';
 import { Image, Media, Modal, Panel } from 'react-bootstrap';
 
 import { PreviewGrid } from '../PreviewGrid';
@@ -54,7 +53,7 @@ class ReportLinks extends PureComponent<ReportConsumer> {
         if (appUrl) {
             appLink = (
                 <p>
-                    <Link to={appUrl.toString()}>View in Biologics</Link>
+                    <a href={appUrl.toHref()}>View in Biologics</a>
                 </p>
             );
         }
@@ -124,7 +123,7 @@ class UnsupportedReportBody extends PureComponent<ReportConsumer> {
 
 class GridReportBody extends PureComponent<ReportConsumer> {
     render() {
-        const { schemaName, queryName, viewName, runUrl, appUrl } = this.props.report;
+        const { schemaName, queryName, viewName } = this.props.report;
         const schemaQuery = new SchemaQuery(schemaName, queryName, viewName);
 
         return (
@@ -205,9 +204,9 @@ export class ReportListItem extends PureComponent<ReportListItemProps> {
 
         if (appUrl) {
             nameEl = (
-                <Link to={appUrl.toString()} onClick={this.onLinkClicked}>
+                <a href={appUrl.toHref()} onClick={this.onLinkClicked}>
                     {name}
-                </Link>
+                </a>
             );
         }
 

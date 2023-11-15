@@ -4,16 +4,13 @@ import { Filter } from '@labkey/api';
 // eslint-disable-next-line import/named
 import { Draft, produce } from 'immer';
 
-// eslint cannot find WithRouterProps for some reason, but Intellij can.
-// eslint-disable-next-line import/named
-import { withRouter, WithRouterProps } from 'react-router';
-
 import { SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
 import { isLoading, LoadingState } from '../LoadingState';
 import { naturalSort } from '../sort';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 
+import { DeprecatedWithRouterProps, withRouterDeprecated } from '../../internal/withRouterDeprecated';
 import { selectRows } from '../../internal/query/selectRows';
 
 import { filterArraysEqual, getSelectRowCountColumnsStr, sortArraysEqual } from './utils';
@@ -157,7 +154,7 @@ const paramsEqual = (oldParams, newParams): boolean => {
 export function withQueryModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedQueryModels>
 ): ComponentType<Props & MakeQueryModels> {
-    type WrappedProps = Props & MakeQueryModels & WithRouterProps;
+    type WrappedProps = Props & MakeQueryModels & DeprecatedWithRouterProps;
 
     const initModels = (props: WrappedProps): QueryModelMap => {
         const { location, queryConfigs } = props;
@@ -1059,5 +1056,5 @@ export function withQueryModels<Props>(
         useSavedSettings: false,
     };
 
-    return withRouter(ComponentWithQueryModels) as ComponentType<Props & MakeQueryModels>;
+    return withRouterDeprecated(ComponentWithQueryModels) as ComponentType<Props & MakeQueryModels>;
 }

@@ -4,6 +4,7 @@ import { Filter, Query } from '@labkey/api';
 import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
 
 import { DataViewInfo } from '../../internal/DataViewInfo';
+import { QueryParams } from '../../internal/routerTypes';
 
 import { encodePart, SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
@@ -65,7 +66,7 @@ function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
  * @param prefix: the QueryModel prefix
  * @param queryParams: The query object from Location
  */
-export function locationHasQueryParamSettings(prefix: string, queryParams?: Record<string, string>): boolean {
+export function locationHasQueryParamSettings(prefix: string, queryParams?: QueryParams): boolean {
     if (queryParams === undefined) return false;
     // Report
     if (queryParams[`${prefix}.reportId`] !== undefined) return true;
@@ -1103,18 +1104,18 @@ export class QueryModel {
      * this should be false, because you want to treat the URL as the single source of truth, but when we initialize
      * models we may programmatically want to set an initial value (e.g. a default sort).
      */
-    attributesForURLQueryParams(queryParams: Record<string, string>, useExistingValues = false): QueryModelURLState {
+    attributesForURLQueryParams(queryParams: QueryParams, useExistingValues = false): QueryModelURLState {
         const prefix = this.urlPrefix;
-        const viewName = queryParams[`${prefix}.view`] ?? undefined;
-        const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]) ?? [];
+        const viewName = (queryParams[`${prefix}.view`] as string) ?? undefined;
+        const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`] as string) ?? [];
         const columnFilters = Filter.getFiltersFromParameters(queryParams, prefix);
         let filterArray = columnFilters.concat(searchFilters);
-        let maxRows = parseInt(queryParams[`${prefix}.pageSize`]);
+        let maxRows = parseInt(queryParams[`${prefix}.pageSize`] as string, 10);
         if (isNaN(maxRows)) maxRows = DEFAULT_MAX_ROWS;
-        let offset = offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? DEFAULT_OFFSET;
+        let offset = offsetFromString(this.maxRows, queryParams[`${prefix}.p`] as string) ?? DEFAULT_OFFSET;
         let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
-        let selectedReportId = queryParams[`${prefix}.reportId`] ?? undefined;
-        let sorts = querySortsFromString(queryParams[`${prefix}.sort`]) ?? [];
+        let selectedReportId = (queryParams[`${prefix}.reportId`] as string) ?? undefined;
+        let sorts = querySortsFromString(queryParams[`${prefix}.sort`] as string) ?? [];
 
         // If useExistingValues is true we'll assume any value not present on the URL can be overridden by the current
         // model value. This behavior is really only wanted when we are initializing the model.

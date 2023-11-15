@@ -373,7 +373,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
 
 const UsersGridPanelWithModels = withQueryModels(UsersGridPanelImpl);
 
-type PanelProps = Omit<OwnProps, 'clearQueryParams' | 'searchParams'>;
+type PanelProps = Omit<OwnProps, 'searchParams' | 'setSearchParams'>;
 
 export const UsersGridPanel: FC<PanelProps> = memo(props => {
     const [searchParams, setSearchParams] = useSearchParams();

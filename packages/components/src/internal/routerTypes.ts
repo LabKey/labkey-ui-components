@@ -10,6 +10,8 @@ export interface DeprecatedRouter {
     goForward: () => void;
     push: (string) => void;
     replace: (string) => void;
+    // FIXME: do not merge with this part of the interface
+    setRouteLeaveHook: (currentRoute: any, onRouteLeave: any) => void;
 }
 
 export interface DeprecatedLocation extends Location {

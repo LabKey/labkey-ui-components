@@ -2,16 +2,16 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, memo, PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Col, MenuItem, Row } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
-import { InjectedRouter } from 'react-router';
+import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 
 import { getSelected } from '../../actions';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { removeParameters, Location } from '../../util/URL';
+import { removeParameters } from '../../util/URL';
 
 import { UserLimitSettings } from '../permissions/actions';
 
@@ -48,7 +48,6 @@ const OMITTED_COLUMNS = [
 interface OwnProps {
     // option to disable the reset password UI pieces for this component
     allowResetPassword?: boolean;
-    location: Location;
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
     newUserRoleOptions?: any[];
@@ -56,7 +55,9 @@ interface OwnProps {
     onUsersStateChangeComplete: (response: any) => any;
     policy: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
-    router: InjectedRouter;
+    // searchParams/setSearchParams can be removed as props if we convert to an FC and use the useSearchParams hook
+    searchParams: URLSearchParams;
+    setSearchParams: SetURLSearchParams;
     showDetailsPanel?: boolean;
     user: User;
     userLimitSettings?: UserLimitSettings;
@@ -85,7 +86,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         this.state = {
             // location is really only undefined when running in jest tests because the react-router context isn't
             // properly setup.
-            usersView: this.getUsersView(props.location?.query.usersView),
+            usersView: this.getUsersView(this.props.searchParams.get('usersView')),
             showDialog: undefined,
             selectedUserId: undefined,
         };
@@ -105,11 +106,11 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
             this.reloadUsersModel();
         }
 
-        const curUsersView = this.props.location?.query.usersView;
+        const curUsersView = this.props.searchParams.get('usersView');
 
         if (curUsersView !== undefined) {
             this.setState({ usersView: this.getUsersView(curUsersView) });
-            removeParameters(this.props.router, this.props.location, 'usersView');
+            removeParameters(this.props.setSearchParams, 'usersView');
         }
     }
 
@@ -370,4 +371,11 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     }
 }
 
-export const UsersGridPanel = withQueryModels(UsersGridPanelImpl);
+const UsersGridPanelWithModels = withQueryModels(UsersGridPanelImpl);
+
+type PanelProps = Omit<OwnProps, 'clearQueryParams' | 'searchParams'>;
+
+export const UsersGridPanel: FC<PanelProps> = memo(props => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    return <UsersGridPanelWithModels {...props} searchParams={searchParams} setSearchParams={setSearchParams} />;
+});

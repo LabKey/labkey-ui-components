@@ -6,7 +6,6 @@ import React, { FC, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionRoles, Project, Utils } from '@labkey/api';
-import { WithRouterProps } from 'react-router';
 
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
@@ -95,7 +94,7 @@ interface OwnProps {
 }
 
 // exported for jest testing
-export type UserManagementProps = OwnProps & InjectedPermissionsPage & NotificationsContextProps & WithRouterProps;
+export type UserManagementProps = OwnProps & InjectedPermissionsPage & NotificationsContextProps;
 
 interface State {
     policy: SecurityPolicy;
@@ -279,8 +278,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     };
 
     render(): ReactNode {
-        const { allowResetPassword, container, extraRoles, location, project, user, rolesByUniqueName, router } =
-            this.props;
+        const { allowResetPassword, container, extraRoles, project, user, rolesByUniqueName } = this.props;
         const { policy, userLimitSettings } = this.state;
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
@@ -305,15 +303,13 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                     allowResetPassword={allowResetPassword}
                     showDetailsPanel={user.hasManageUsersPermission()}
                     userLimitSettings={userLimitSettings}
-                    router={router}
-                    location={location}
                 />
             </BasePermissionsCheckPage>
         );
     }
 }
 
-type ImplProps = InjectedPermissionsPage & NotificationsContextProps & WithRouterProps;
+type ImplProps = InjectedPermissionsPage & NotificationsContextProps;
 
 export const UserManagementPageImpl: FC<ImplProps> = props => {
     const { api } = useAppContext<AppContext>();

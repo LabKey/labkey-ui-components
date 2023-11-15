@@ -1792,7 +1792,6 @@ export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type { BulkAddData, SharedEditableGridPanelProps } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
 export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
-export type { Location } from './internal/util/URL';
 export type {
     RoutingTableState,
     ServerNotificationState,

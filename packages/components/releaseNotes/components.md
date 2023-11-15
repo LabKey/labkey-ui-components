@@ -14,6 +14,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * use ReactRouter SetURLSearchParams instead of InjectedRouter and Location
     * remove resetParameters
     * remove Location type
+    * add getQueryParams
   * Add withRouterDeprecated
     * This is a wrapper that is very similar to withRouter, which no longer exists, in order to ease the transition to React Router 6
   * Update components to use React Router Hooks

@@ -244,7 +244,7 @@ import {
     PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
     SHARED_CONTAINER_PATH,
 } from './internal/constants';
-import { pushParameters, removeParameters, replaceParameters } from './internal/util/URL';
+import { getQueryParams, pushParameters, removeParameters, replaceParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import { DATA_IMPORT_TOPIC, getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
@@ -1091,6 +1091,7 @@ export {
     URLService,
     ListResolver,
     ExperimentRunResolver,
+    getQueryParams,
     pushParameters,
     removeParameters,
     replaceParameters,
@@ -1842,3 +1843,4 @@ export type {
     FormsySelectProps,
     FormsyTextAreaProps,
 } from './internal/components/forms/input/FormsyReactComponents';
+export type { DeprecatedLocation, DeprecatedRouter, QueryParams } from './internal/routerTypes';

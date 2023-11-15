@@ -10,6 +10,7 @@ import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 import { SAMPLES_KEY } from '../../app/constants';
 
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
+import { QueryParams } from '../../routerTypes';
 import { SCHEMAS } from '../../schemas';
 import { caseInsensitive } from '../../util/utils';
 import { AppURL } from '../../url/AppURL';
@@ -207,7 +208,7 @@ export function createGridModel(
     });
 }
 
-export function getPageNumberChangeURL(queryParams: Record<string, string>, seed: string, pageNumber: number): AppURL {
+export function getPageNumberChangeURL(queryParams: QueryParams, seed: string, pageNumber: number): AppURL {
     let url = AppURL.create('lineage');
 
     // use the seed lsid value from the param
@@ -215,7 +216,7 @@ export function getPageNumberChangeURL(queryParams: Record<string, string>, seed
 
     Object.keys(queryParams).map(key => {
         if (key !== 'p' && key !== 'seeds') {
-            url = url.addParam(key, queryParams[key]);
+            url = url.addParam(key, queryParams[key] as string);
         }
     });
 

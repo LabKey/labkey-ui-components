@@ -305,7 +305,7 @@ export const ProductMenuButtonTitle: FC<ProductMenuButtonTitle> = memo(props => 
     }, [container.path, container.title, folderItems?.length]);
 
     const subtitle = useMemo(() => {
-        return getHeaderMenuSubtitle(location?.pathname?.split('/')[1]);
+        return getHeaderMenuSubtitle(location?.pathname);
     }, [location]);
 
     return (
@@ -358,11 +358,17 @@ const HEADER_MENU_SUBTITLE_MAP = {
     [WORKFLOW_KEY]: 'Workflow',
 };
 
-// export for jest testing
-export function getHeaderMenuSubtitle(baseRoute: string) {
-    return HEADER_MENU_SUBTITLE_MAP[baseRoute?.toLowerCase()] ?? 'Dashboard';
+function getBaseRoute(pathname: string) {
+    // pathname is prefixed with, and split up, by /, so the first segment is always an empty string when splitting, the
+    // second is the base route.
+    return pathname?.toLowerCase().split('/')[1];
 }
 
-export function isAdminRoute(baseRoute: string) {
-    return HEADER_MENU_SUBTITLE_MAP[baseRoute?.toLowerCase()] === 'Administration';
+// export for jest testing
+export function getHeaderMenuSubtitle(pathname: string) {
+    return HEADER_MENU_SUBTITLE_MAP[getBaseRoute(pathname)] ?? 'Dashboard';
+}
+
+export function isAdminRoute(pathname: string) {
+    return HEADER_MENU_SUBTITLE_MAP[getBaseRoute(pathname)] === 'Administration';
 }

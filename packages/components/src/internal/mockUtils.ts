@@ -1,5 +1,5 @@
-import { InjectedRouter, WithRouterProps } from 'react-router';
-
+import { DeprecatedRouter } from './routerTypes';
+import { DeprecatedWithRouterProps } from './withRouterDeprecated';
 import { InjectedRouteLeaveProps } from './util/RouteLeave';
 
 /**
@@ -27,15 +27,11 @@ export const createMockWithRouteLeave = (
  */
 export const createMockWithRouterProps = (
     mockFn = (): any => () => {},
-    routerOverrides: Partial<InjectedRouter> = {}
-): WithRouterProps => {
-    const defaultRouter: InjectedRouter = {
-        createHref: mockFn(),
-        createPath: mockFn(),
-        go: mockFn(),
+    routerOverrides: Partial<DeprecatedRouter> = {}
+): DeprecatedWithRouterProps => {
+    const defaultRouter: DeprecatedRouter = {
         goBack: mockFn(),
         goForward: mockFn(),
-        isActive: mockFn(),
         push: mockFn(),
         replace: mockFn(),
         setRouteLeaveHook: mockFn(),
@@ -48,11 +44,9 @@ export const createMockWithRouterProps = (
             query: {},
             hash: '',
             state: undefined,
-            action: 'PUSH',
             key: '',
         },
         params: {},
         router: Object.assign(defaultRouter, routerOverrides),
-        routes: [],
     };
 };

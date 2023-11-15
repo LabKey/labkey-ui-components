@@ -5,8 +5,6 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { Map } from 'immutable';
 
-import { withRouter, WithRouterProps } from 'react-router';
-
 import { useServerContext } from '../base/ServerContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
@@ -26,12 +24,12 @@ import { showPremiumFeatures } from './utils';
 import { getUpdatedPolicyRoles } from './actions';
 
 // exported for testing
-export type Props = InjectedPermissionsPage & WithRouterProps;
+export type Props = InjectedPermissionsPage;
 
 // exported for testing
 export const PermissionManagementPageImpl: FC<Props> = memo(props => {
-    const { roles, router, routes } = props;
-    const [getIsDirty, setIsDirty] = useRouteLeave(router, routes);
+    const { roles } = props;
+    const [getIsDirty, setIsDirty] = useRouteLeave();
     const [policyLastModified, setPolicyLastModified] = useState<string>(undefined);
     const [hidePageDescription, setHidePageDescription] = useState<boolean>(false);
     const { dismissNotifications, createNotification } = useNotificationsContext();
@@ -97,4 +95,4 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
     );
 });
 
-export const PermissionManagementPage = withRouter(withPermissionsPage(PermissionManagementPageImpl));
+export const PermissionManagementPage = withPermissionsPage(PermissionManagementPageImpl);

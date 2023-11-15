@@ -117,6 +117,10 @@ export function isDataClassEntity(dataType: EntityDataType): boolean {
     return dataType.instanceSchemaName === SCHEMAS.DATA_CLASSES.SCHEMA;
 }
 
+export function isAssayDesignEntity(dataType: EntityDataType): boolean {
+    return dataType.instanceSchemaName === SCHEMAS.ASSAY_TABLES.SCHEMA;
+}
+
 export function getJobCreationHref(
     model: QueryModel,
     templateId?: string | number,

@@ -562,11 +562,6 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                   <Component
                     appPropertiesOnly={true}
                     colSize={9}
-                    helpTipBody={
-                      <p>
-                        The name for this assay design. Note that this can't be changed after the assay design is created.
-                      </p>
-                    }
                     label="Name"
                     required={true}
                   >
@@ -588,11 +583,6 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                             className="col-lg-2 col-xs-3"
                           >
                             <DomainFieldLabel
-                              helpTipBody={
-                                <p>
-                                  The name for this assay design. Note that this can't be changed after the assay design is created.
-                                </p>
-                              }
                               label="Name"
                               required={true}
                             >
@@ -600,34 +590,6 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                 className="domain-no-wrap"
                               >
                                 Name
-                                <Component
-                                  id="tooltip"
-                                  required={true}
-                                  title="Name"
-                                >
-                                  <span
-                                    className="label-help-target"
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                  >
-                                    <span
-                                      className="label-help-icon fa fa-question-circle"
-                                    />
-                                    <Overlay
-                                      animation={[Function]}
-                                      placement="right"
-                                      rootClose={false}
-                                      show={false}
-                                    >
-                                      <Overlay
-                                        placement="right"
-                                        rootClose={false}
-                                        show={false}
-                                        transition={[Function]}
-                                      />
-                                    </Overlay>
-                                  </span>
-                                </Component>
                                  *
                               </span>
                             </DomainFieldLabel>
@@ -1916,11 +1878,6 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                 <Component
                                   appPropertiesOnly={false}
                                   colSize={9}
-                                  helpTipBody={
-                                    <p>
-                                      The name for this assay design. Note that this can't be changed after the assay design is created.
-                                    </p>
-                                  }
                                   label="Name"
                                   required={true}
                                 >
@@ -1942,11 +1899,6 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                           className="col-lg-4 col-xs-3"
                                         >
                                           <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                The name for this assay design. Note that this can't be changed after the assay design is created.
-                                              </p>
-                                            }
                                             label="Name"
                                             required={true}
                                           >
@@ -1954,34 +1906,6 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                               className="domain-no-wrap"
                                             >
                                               Name
-                                              <Component
-                                                id="tooltip"
-                                                required={true}
-                                                title="Name"
-                                              >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
                                                *
                                             </span>
                                           </DomainFieldLabel>
@@ -3301,11 +3225,6 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                 <Component
                                   appPropertiesOnly={false}
                                   colSize={9}
-                                  helpTipBody={
-                                    <p>
-                                      The name for this assay design. Note that this can't be changed after the assay design is created.
-                                    </p>
-                                  }
                                   label="Name"
                                   required={true}
                                 >
@@ -3327,11 +3246,6 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                           className="col-lg-4 col-xs-3"
                                         >
                                           <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                The name for this assay design. Note that this can't be changed after the assay design is created.
-                                              </p>
-                                            }
                                             label="Name"
                                             required={true}
                                           >
@@ -3339,34 +3253,6 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                               className="domain-no-wrap"
                                             >
                                               Name
-                                              <Component
-                                                id="tooltip"
-                                                required={true}
-                                                title="Name"
-                                              >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
                                                *
                                             </span>
                                           </DomainFieldLabel>
@@ -4246,11 +4132,6 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                 <Component
                                   appPropertiesOnly={false}
                                   colSize={9}
-                                  helpTipBody={
-                                    <p>
-                                      The name for this assay design. Note that this can't be changed after the assay design is created.
-                                    </p>
-                                  }
                                   label="Name"
                                   required={true}
                                 >
@@ -4272,11 +4153,6 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                           className="col-lg-4 col-xs-3"
                                         >
                                           <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                The name for this assay design. Note that this can't be changed after the assay design is created.
-                                              </p>
-                                            }
                                             label="Name"
                                             required={true}
                                           >
@@ -4284,34 +4160,6 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                               className="domain-no-wrap"
                                             >
                                               Name
-                                              <Component
-                                                id="tooltip"
-                                                required={true}
-                                                title="Name"
-                                              >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
                                                *
                                             </span>
                                           </DomainFieldLabel>
@@ -5420,11 +5268,6 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                 <Component
                                   appPropertiesOnly={true}
                                   colSize={9}
-                                  helpTipBody={
-                                    <p>
-                                      The name for this assay design. Note that this can't be changed after the assay design is created.
-                                    </p>
-                                  }
                                   label="Name"
                                   required={true}
                                 >
@@ -5446,11 +5289,6 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                           className="col-lg-2 col-xs-3"
                                         >
                                           <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                The name for this assay design. Note that this can't be changed after the assay design is created.
-                                              </p>
-                                            }
                                             label="Name"
                                             required={true}
                                           >
@@ -5458,34 +5296,6 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                               className="domain-no-wrap"
                                             >
                                               Name
-                                              <Component
-                                                id="tooltip"
-                                                required={true}
-                                                title="Name"
-                                              >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
                                                *
                                             </span>
                                           </DomainFieldLabel>

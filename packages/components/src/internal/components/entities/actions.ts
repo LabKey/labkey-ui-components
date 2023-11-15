@@ -30,8 +30,9 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
-import { getInitialParentChoices, isDataClassEntity, isSampleEntity } from './utils';
+import { getInitialParentChoices, isAssayDesignEntity, isDataClassEntity, isSampleEntity } from './utils';
 import {
+    AssayRunOperation,
     DATA_CLASS_IMPORT_PREFIX,
     DataClassDataType,
     DataOperation,
@@ -122,7 +123,7 @@ export function getDeleteConfirmationData(
             ? {
                   dataOperation: DataOperation.Delete,
               }
-            : undefined
+            : isAssayDesignEntity(dataType) ? { dataOperation: AssayRunOperation.Delete } : undefined
     );
 }
 
@@ -800,6 +801,7 @@ export function getMoveConfirmationData(
     if (isSampleEntity(dataType)) {
         return getSampleOperationConfirmationData(SampleOperation.Move, rowIds, selectionKey, useSnapshotSelection);
     }
+
     return getOperationConfirmationData(
         dataType,
         rowIds,
@@ -809,7 +811,7 @@ export function getMoveConfirmationData(
             ? {
                   dataOperation: DataOperation.Move,
               }
-            : undefined
+            :  isAssayDesignEntity(dataType) ? { dataOperation: AssayRunOperation.Move } : undefined
     );
 }
 

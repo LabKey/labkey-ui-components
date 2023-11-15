@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useMemo } from 'react';
-import { Link, WithRouterProps } from 'react-router';
+import { useParams } from 'react-router-dom';
 
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
 import { Page } from '../../base/Page';
@@ -28,8 +28,8 @@ const QueryListingBodyImpl: FC<BodyProps & InjectedQueryModels> = memo(({ action
         <Page hasHeader={true} title={`Query - ${schemaTitle}.${title}`}>
             {queryInfo !== undefined && (
                 <Breadcrumb>
-                    <Link to={AppURL.create('q').toString()}>Schemas</Link>
-                    <Link to={AppURL.create('q', queryInfo.schemaName).toString()}>{schemaTitle}</Link>
+                    <a href={AppURL.create('q').toHref()}>Schemas</a>
+                    <a href={AppURL.create('q', queryInfo.schemaName).toHref()}>{schemaTitle}</a>
                 </Breadcrumb>
             )}
 
@@ -42,8 +42,8 @@ const QueryListingBodyImpl: FC<BodyProps & InjectedQueryModels> = memo(({ action
 
 const QueryListingBody = withQueryModels<BodyProps>(QueryListingBodyImpl);
 
-export const QueryListingPage: FC<WithRouterProps> = ({ params }) => {
-    const { schema, query } = params;
+export const QueryListingPage: FC = () => {
+    const { schema, query } = useParams();
     const modelId = `q.${schema}.${query}`;
     const queryConfigs: QueryConfigMap = useMemo(
         () => ({
@@ -54,7 +54,7 @@ export const QueryListingPage: FC<WithRouterProps> = ({ params }) => {
                 schemaQuery: new SchemaQuery(schema, query),
             },
         }),
-        [modelId]
+        [modelId, query, schema]
     );
 
     // Key is used here so that if the schema or query change via the URL we remount the component which will

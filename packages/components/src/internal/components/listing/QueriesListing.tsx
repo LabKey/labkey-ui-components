@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import React, { Component, ReactNode } from 'react';
-import { Link } from 'react-router';
-import { fromJS, List, Map } from 'immutable';
+import { fromJS, List } from 'immutable';
 import { Query } from '@labkey/api';
 
 import { GridColumn } from '../base/models/GridColumn';
+import { QueryInfo } from '../../../public/QueryInfo';
 import { AppURL } from '../../url/AppURL';
 import { naturalSortByProperty } from '../../../public/sort';
 import { Grid } from '../base/Grid';
@@ -35,14 +35,9 @@ const columns = List([
     new GridColumn({
         index: 'name',
         title: 'Name',
-        cell: (name: string, map: Map<string, any>) => {
-            if (name && map) {
-                const queryData: QueryData = map.toJS();
-                return (
-                    <Link to={AppURL.create('q', queryData.schemaName, queryData.name).toString()}>
-                        {queryData.title}
-                    </Link>
-                );
+        cell: (name: string, info: QueryInfo) => {
+            if (name && info) {
+                return <a href={AppURL.create('q', info.schemaName, info.name).toHref()}>{info.title}</a>;
             }
             return name;
         },

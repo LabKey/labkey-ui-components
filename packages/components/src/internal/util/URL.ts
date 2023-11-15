@@ -13,18 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { InjectedRouter, WithRouterProps } from 'react-router';
+import { Location } from 'history';
+import { SetURLSearchParams } from 'react-router-dom';
 
-// We export Location like this in order to avoid having a direct dependency on the History library
-export type Location = WithRouterProps['location'];
+import { DeprecatedRouter, QueryParams } from '../routerTypes';
 
-function setParameters(
-    router: InjectedRouter,
-    location: Location,
-    params: Record<string, string | number>,
-    asReplace = false
-): void {
-    const query = { ...location.query };
+/**
+ * Takes a search string (typically from Location) and converts it to a QueryParams object. If the same key is used
+ * multiple times in a search string (e.g. ?foo=bar&foo=baz) it will return an array of values for that key, if the key
+ * only appears once it will return a string for that key. If you know the key you are looking for will not be an array
+ * use: const myValue = getQueryParams(search).myValue as string;
+ * @param search
+ */
+export function getQueryParams(search: string): QueryParams {
+    if (!search) return {};
+    const paramsArray = new URLSearchParams(search).entries();
+    return [...paramsArray].reduce((result, tuple) => {
+        const [key, value] = tuple;
+        if (result.hasOwnProperty(key)) {
+            if (Array.isArray(result[key])) {
+                result[key].push(value);
+            } else {
+                result[key] = [result[key], value];
+            }
+        } else {
+            result[key] = value;
+        }
+        return result;
+    }, {});
+}
+
+// TODO: convert this to use SetURLSearchParams, which negates the need for router and location as it is a React style
+//  useState setter that lets us pass exactly what we want, or a function that accesses the current params while setting
+function setParameters(router: DeprecatedRouter, location: Location, params: QueryParams, asReplace = false): void {
+    const query = getQueryParams(location.search);
 
     Object.keys(params).forEach(key => {
         const value = params[key];
@@ -43,7 +65,7 @@ function setParameters(
     }
 }
 
-export function removeParameters(router: InjectedRouter, location: Location, ...params: string[]): void {
+export function removeParameters(router: DeprecatedRouter, location: Location, ...params: string[]): void {
     if (!params) return;
     const paramsObj = params.reduce((result, param) => {
         result[param] = undefined;
@@ -52,26 +74,19 @@ export function removeParameters(router: InjectedRouter, location: Location, ...
     setParameters(router, location, paramsObj, true);
 }
 
-export function replaceParameters(
-    router: InjectedRouter,
-    location: Location,
-    params: Record<string, string | number>
-): void {
+export function replaceParameters(router: DeprecatedRouter, location: Location, params: QueryParams): void {
     setParameters(router, location, params, true);
 }
 
-export function pushParameters(
-    router: InjectedRouter,
-    location: Location,
-    params: Record<string, string | number>
-): void {
+export function pushParameters(router: DeprecatedRouter, location: Location, params: QueryParams): void {
     setParameters(router, location, params);
 }
 
-export function resetParameters(router: InjectedRouter, location: Location, except: string[] = []): void {
-    const updatedParams = Object.keys(location.query).reduce((result, key: string) => {
+export function resetParameters(router: DeprecatedRouter, location: Location, except: string[] = []): void {
+    const currentParams = getQueryParams(location.search);
+    const updatedParams = Object.keys(currentParams).reduce((result, key: string) => {
         if (except.indexOf(key) > -1) {
-            result[key] = location.query[key];
+            result[key] = currentParams[key];
         } else {
             result[key] = undefined;
         }

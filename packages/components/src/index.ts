@@ -484,6 +484,7 @@ import {
 import {
     AssayResultDataType,
     AssayRunDataType,
+    AssayRunOperation,
     DATA_CLASS_IMPORT_PREFIX,
     DataClassDataType,
     DataOperation,
@@ -1246,6 +1247,7 @@ export {
     DataClassDataType,
     AssayResultDataType,
     AssayRunDataType,
+    AssayRunOperation,
     DataOperation,
     ParentEntityRequiredColumns,
     SampleAmountEditModal,

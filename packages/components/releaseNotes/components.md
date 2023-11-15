@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.393.2
+*Released*: 15 November 2023
+* Merge release23.11-SNAPSHOT to develop:
+    * includes changes from 2.390.3 and 2.390.4
+
 ### version 2.393.1
 *Released*: 10 November 2023
 * Improve cross-project actions: Import job notifications
@@ -42,6 +47,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 1 November 2023
 * Issue 48828: Don't show sample insights panel while editing in the grid
   -  add `onEditToggle` optional prop for `SampleTabbedGridPanel`
+
+### version 2.390.4
+*Released*: 10 November 2023
+* Fix for reportId url param check in locationHasQueryParamSettings
+
+### version 2.390.3
+*Released*: 9 November 2023
+* Issue 49074: We support move operations for assays as well as delete, but don't need to check references for move
+* Issue 49077: Remove tool tip indicating assay designs cannot be renamed.
 
 ### version 2.390.2
 *Released*: 6 November 2023

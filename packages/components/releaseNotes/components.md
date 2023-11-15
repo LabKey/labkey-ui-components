@@ -1,6 +1,24 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.0.0
+*Released*: ?? November 2023
+* Breaking Changes:
+  * Upgrade react-router dependency to react-router-dom version 6.x
+    * If you use react-router you will need to upgrade
+    * If you have history pinned in your dependencies you should remove it
+  * withQueryModels updated to be compatible with React Router 6.x
+* Other Changes:
+  * Note: all other changes listed here have to do with our upgrade of React Router, they're not considered breaking because they are all on our internal APIs which you should not be using
+  * URL helpers:
+    * use ReactRouter SetURLSearchParams instead of InjectedRouter and Location
+    * remove resetParameters
+    * remove Location type
+  * Add withRouterDeprecated
+    * This is a wrapper that is very similar to withRouter, which no longer exists, in order to ease the transition to React Router 6
+  * Update components to use React Router Hooks
+  * Don't export UsersGridPanel or PermissionAssignments
+
 ### version 2.399.1
 *Released*: 19 December 2023
 - Update @labkey/api and use moveRows() function

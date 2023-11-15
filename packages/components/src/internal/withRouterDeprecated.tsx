@@ -36,6 +36,9 @@ export function withRouterDeprecated<T>(Component: WithRouterComponent<T>): Comp
                 replace: path => {
                     navigate(path, { replace: true });
                 },
+                setRouteLeaveHook: () => {
+                    // FIXME: temporary no-op while I get stuff to compile, this will be removed before merging
+                },
             }),
             [navigate]
         );

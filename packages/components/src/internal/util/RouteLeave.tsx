@@ -1,5 +1,6 @@
 import React, { ComponentType, FC, useCallback, useEffect, useMemo, useRef } from 'react';
-import { InjectedRouter, withRouter, WithRouterProps, PlainRoute } from 'react-router';
+import { DeprecatedRouter } from '../routerTypes';
+import { DeprecatedWithRouterProps, withRouterDeprecated } from '../withRouterDeprecated';
 
 export const CONFIRM_MESSAGE = 'You have unsaved changes that will be lost. Are you sure you want to continue?';
 
@@ -26,9 +27,10 @@ type GetSetIsDirty = [() => boolean, (dirty: boolean) => void];
  * navigating away from the page, not when closing the tab or browser window. Browsers do not let you customize the
  * message displayed when the browser/tab is closed.
  */
+// FIXME: use the appropriate RR6 APIs, do not merge until that is completed
 export const useRouteLeave = (
-    router: InjectedRouter,
-    routes: PlainRoute[],
+    router?: DeprecatedRouter,
+    routes?: any[],
     confirmMessage = CONFIRM_MESSAGE
 ): GetSetIsDirty => {
     const initialHistoryLength = useMemo(() => history.length, []);
@@ -93,7 +95,7 @@ export const useRouteLeave = (
         const currentRoute = routes?.[routes.length - 1];
         // setRouteLeaveHook returns a cleanup function.
         return router?.setRouteLeaveHook(currentRoute, onRouteLeave);
-    }, [onRouteLeave]);
+    }, [onRouteLeave, router, routes]);
 
     useEffect(() => {
         window.addEventListener('beforeunload', beforeUnload);
@@ -107,16 +109,16 @@ export const useRouteLeave = (
 };
 
 export function withRouteLeave<T>(
-    Component: ComponentType<T & InjectedRouteLeaveProps & WithRouterProps>
+    Component: ComponentType<T & InjectedRouteLeaveProps & DeprecatedWithRouterProps>
 ): ComponentType<T & WrappedRouteLeaveProps> {
-    const wrapped: FC<T & WrappedRouteLeaveProps & WithRouterProps> = props => {
-        const { router, routes, confirmMessage } = props;
-        const [getIsDirty, setIsDirty] = useRouteLeave(router, routes, confirmMessage);
+    const wrapped: FC<T & WrappedRouteLeaveProps & DeprecatedWithRouterProps> = props => {
+        const { router, confirmMessage } = props;
+        const [getIsDirty, setIsDirty] = useRouteLeave(router, undefined, confirmMessage);
 
         return <Component getIsDirty={getIsDirty} setIsDirty={setIsDirty} {...props} />;
     };
 
-    return withRouter(wrapped) as FC<T & WrappedRouteLeaveProps>;
+    return withRouterDeprecated(wrapped) as FC<T & WrappedRouteLeaveProps>;
 }
 
 export interface WithDirtyCheckLinkProps {

@@ -33,10 +33,10 @@ import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionMod
 import { AssayUploadTabs } from '../../constants';
 import { FormButtons } from '../../FormButtons';
 import { getQueryDetails } from '../../query/api';
+import { DeprecatedLocation } from '../../routerTypes';
 import { SCHEMAS } from '../../schemas';
 import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
 
-import { Location } from '../../util/URL';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Container } from '../base/models/Container';
@@ -102,8 +102,8 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getIsDirty?: () => boolean;
     jobNotificationProvider?: string;
-    loadSelectedSamples?: (location: Location, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
-    location?: Location;
+    loadSelectedSamples?: (location: DeprecatedLocation, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
+    location?: DeprecatedLocation;
     // Not currently used, but related logic retained in component
     maxRows?: number;
     onCancel: () => void;
@@ -165,7 +165,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const { location, selectStep } = this.props;
 
         if (location?.query?.dataTab) {
-            selectStep(parseInt(location.query.dataTab, 10));
+            selectStep(parseInt(location.query.dataTab as string, 10));
         }
 
         this.initModel();
@@ -244,7 +244,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         let workflowTask: number;
 
         if (location?.query?.workflowTaskId) {
-            const _workflowTask = parseInt(location.query.workflowTaskId, 10);
+            const _workflowTask = parseInt(location.query.workflowTaskId as string, 10);
             workflowTask = isNaN(_workflowTask) ? undefined : _workflowTask;
         }
 

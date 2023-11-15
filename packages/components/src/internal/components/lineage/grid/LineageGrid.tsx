@@ -2,14 +2,15 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, PureComponent, ReactNode } from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import { Draft, produce } from 'immer';
+import { Location } from 'history';
+import { useSearchParams } from 'react-router-dom';
 
 import { createGridModel } from '../actions';
 import { LineageGridModel } from '../models';
 import { InjectedLineage, withLineage, WithLineageOptions } from '../withLineage';
 import { LINEAGE_DIRECTIONS } from '../types';
-import { Location } from '../../../util/URL';
 
 import { LineageGridDisplay } from './LineageGridDisplay';
 
@@ -59,18 +60,15 @@ function ensureNumber(value: string): number {
     return isNaN(numValue) ? undefined : numValue;
 }
 
-export interface LineageGridFromLocationProps {
-    location: Location;
-}
-
-export const LineageGridFromLocation: FC<LineageGridFromLocationProps> = memo(({ location }) => {
-    const { distance, members, p, seeds } = location.query;
+export const LineageGridFromLocation: FC = memo(() => {
+    const [searchParams, _] = useSearchParams();
+    const { distance, members, p, seeds } = useMemo(() => Object.fromEntries(searchParams.entries()), [searchParams]);
 
     return (
         <LineageGrid
             distance={ensureNumber(distance)}
             lsid={seeds ? seeds.split(',')[0] : undefined}
-            members={members}
+            members={members as LINEAGE_DIRECTIONS}
             pageNumber={ensureNumber(p)}
         />
     );

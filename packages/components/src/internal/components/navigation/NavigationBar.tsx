@@ -16,8 +16,7 @@
 import classNames from 'classnames';
 import React, { Children, FC, memo, ReactNode, useCallback, useMemo } from 'react';
 import { List, Map } from 'immutable';
-
-import { WithRouterProps } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
@@ -35,8 +34,6 @@ import { getPrimaryAppProperties } from '../../app/utils';
 import { User } from '../base/models/User';
 
 import { useServerContext } from '../base/ServerContext';
-
-import { withRouteLeave } from '../../util/RouteLeave';
 
 import { isAdminRoute, ProductMenuButton } from './ProductMenu';
 import { UserMenuGroup, UserMenuProps } from './UserMenuGroup';
@@ -59,15 +56,14 @@ interface NavigationBarProps {
     user?: User;
 }
 
-type Props = NavigationBarProps & UserMenuProps & WithRouterProps;
+type Props = NavigationBarProps & UserMenuProps;
 
-export const NavigationBarImpl: FC<Props> = memo(props => {
+export const NavigationBar: FC<Props> = memo(props => {
     const {
         brand,
         children,
         extraDevItems,
         extraUserItems,
-        location,
         menuSectionConfigs,
         notificationsConfig,
         onSearch,
@@ -83,17 +79,13 @@ export const NavigationBarImpl: FC<Props> = memo(props => {
         signOutUrl,
         user,
     } = props;
-
     const { moduleContext } = useServerContext();
     const folderMenuContext = useFolderMenuContext();
+    const location = useLocation();
+    const isAdminPage = useMemo(() => isAdminRoute(location.pathname), [location.pathname]);
     const onSearchIconClick = useCallback(() => {
         onSearch('');
     }, [onSearch]);
-
-    const isAdminPage = useMemo(() => {
-        return isAdminRoute(location?.pathname);
-    }, [location]);
-
     const _searchPlaceholder =
         searchPlaceholder ?? getPrimaryAppProperties(moduleContext)?.searchPlaceholder ?? SEARCH_PLACEHOLDER;
     const _showNotifications = showNotifications !== false && !!notificationsConfig && !!user && !user.isGuest;
@@ -182,9 +174,9 @@ export const NavigationBarImpl: FC<Props> = memo(props => {
     );
 });
 
-export const NavigationBar = withRouteLeave(NavigationBarImpl);
-
-NavigationBarImpl.defaultProps = {
+// FIXME: re-evaluate these defaults. Some are always passed, so no default is needed. Some are never passed, so no prop
+//  is needed.
+NavigationBar.defaultProps = {
     showFolderMenu: false,
     showNavMenu: true,
     showNotifications: true,
@@ -192,4 +184,4 @@ NavigationBarImpl.defaultProps = {
     showSearchBox: false,
 };
 
-NavigationBarImpl.displayName = 'NavigationBar';
+NavigationBar.displayName = 'NavigationBar';

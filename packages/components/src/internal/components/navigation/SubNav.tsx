@@ -23,7 +23,7 @@ import { useServerContext } from '../base/ServerContext';
 
 import { hasPremiumModule, hasProductProjects } from '../../app/utils';
 
-import NavItem, { ParentNavItem } from './NavItem';
+import { NavItem, ParentNavItem } from './NavItem';
 import { ITab, SubNavGlobalContext } from './types';
 import { useSubNavContext } from './hooks';
 

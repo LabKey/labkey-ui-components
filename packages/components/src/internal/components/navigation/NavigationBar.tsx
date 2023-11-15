@@ -67,6 +67,7 @@ export const NavigationBarImpl: FC<Props> = memo(props => {
         children,
         extraDevItems,
         extraUserItems,
+        location,
         menuSectionConfigs,
         notificationsConfig,
         onSearch,
@@ -81,7 +82,6 @@ export const NavigationBarImpl: FC<Props> = memo(props => {
         showSearchBox,
         signOutUrl,
         user,
-        routes,
     } = props;
 
     const { moduleContext } = useServerContext();
@@ -91,8 +91,8 @@ export const NavigationBarImpl: FC<Props> = memo(props => {
     }, [onSearch]);
 
     const isAdminPage = useMemo(() => {
-        return isAdminRoute(routes?.[1]?.path);
-    }, [routes]);
+        return isAdminRoute(location?.pathname);
+    }, [location]);
 
     const _searchPlaceholder =
         searchPlaceholder ?? getPrimaryAppProperties(moduleContext)?.searchPlaceholder ?? SEARCH_PLACEHOLDER;

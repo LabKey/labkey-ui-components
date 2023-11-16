@@ -57,7 +57,8 @@ interface State {
     hasSamples?: boolean;
     isReset?: boolean;
     isRoot?: boolean;
-    loading: boolean;
+    loadingNamingOptions: boolean;
+    loadingCounters: boolean;
     newRootSampleCount?: number;
     newSampleCount?: number;
     prefix: string;
@@ -70,7 +71,8 @@ interface State {
 
 const initialState: State = {
     error: undefined,
-    loading: true,
+    loadingNamingOptions: true,
+    loadingCounters: true,
     prefix: '',
     savingPrefix: false,
     confirmModalOpen: false,
@@ -90,7 +92,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
     const { moduleContext } = useServerContext();
 
     const {
-        loading,
+        loadingCounters,
+        loadingNamingOptions,
         savingAllowUserSpecifiedNames,
         allowUserSpecifiedNames,
         prefix,
@@ -112,10 +115,20 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         hasRootSampleCountChange,
     } = state;
 
-    const initialize = async (): Promise<void> => {
+    const initializeNamingPattern = async (): Promise<void> => {
         try {
             const payload = await loadNameExpressionOptions(container.path);
-
+            setState({
+                prefix: payload.prefix ?? '',
+                allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
+                loadingNamingOptions: false,
+            });
+        } catch (err) {
+            setState({ error: err.exception, loadingNamingOptions: false });
+        }
+    };
+    const initialize = async (): Promise<void> => {
+        try {
             if (isAppHome) {
                 const sampleCount = await api.samples.getSampleCounter('sampleCount'); // show the next value
                 const rootSampleCount = await api.samples.getSampleCounter('rootSampleCount');
@@ -125,9 +138,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                 if (rootSampleCount > 0) hasRootSamples = await api.samples.hasExistingSamples(true);
 
                 setState({
-                    prefix: payload.prefix ?? '',
-                    allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
-                    loading: false,
+                    loadingCounters: false,
                     sampleCount,
                     rootSampleCount,
                     newSampleCount: sampleCount,
@@ -135,19 +146,14 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     hasSamples,
                     hasRootSamples,
                 });
-            } else {
-                setState({
-                    prefix: payload.prefix ?? '',
-                    allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
-                    loading: false,
-                });
             }
         } catch (err) {
-            setState({ error: err.exception, loading: false });
+            setState({ error: err.exception, loadingCounters: false });
         }
     };
 
     useEffect(() => {
+        initializeNamingPattern();
         initialize();
     }, [isAppHome, container]);
 
@@ -284,8 +290,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                 <div className="name-id-setting__setting-section">
                     <div className="list__bold-text margin-bottom">User-defined IDs/Names</div>
 
-                    {loading && <LoadingSpinner />}
-                    {!loading && (
+                    {loadingNamingOptions && <LoadingSpinner />}
+                    {!loadingNamingOptions && (
                         <form>
                             <Checkbox
                                 onChange={saveAllowUserSpecifiedNames}
@@ -319,8 +325,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                             No existing IDs/Names will be changed.
                         </div>
 
-                        {loading && <LoadingSpinner />}
-                        {!loading && (
+                        {loadingNamingOptions && <LoadingSpinner />}
+                        {!loadingNamingOptions && (
                             <>
                                 <div className="name-id-setting__prefix">
                                     <div className="name-id-setting__prefix-label"> Prefix: </div>
@@ -384,8 +390,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                             <HelpLink topic={SAMPLE_TYPE_NAME_EXPRESSION_TOPIC}>link</HelpLink>.
                         </div>
 
-                        {loading && <LoadingSpinner />}
-                        {!loading && (
+                        {loadingCounters && <LoadingSpinner />}
+                        {!loadingCounters && (
                             <div>
                                 <Row className="margin-top">
                                     <Col sm={2}>

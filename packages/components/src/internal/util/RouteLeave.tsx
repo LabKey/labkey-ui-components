@@ -108,6 +108,10 @@ export const useRouteLeave = (
     return [getIsDirty, setIsDirty];
 };
 
+/**
+ * @deprecated use the useRouteLeave hook instead
+ * @param Component
+ */
 export function withRouteLeave<T>(
     Component: ComponentType<T & InjectedRouteLeaveProps & DeprecatedWithRouterProps>
 ): ComponentType<T & WrappedRouteLeaveProps> {
@@ -127,6 +131,8 @@ export interface WithDirtyCheckLinkProps {
     onClick: () => void;
 }
 
+// FIXME: The existence of this component implies that useRouteLeave isn't working, we should fix the underlying problem
+//  and remove this component.
 export const WithDirtyCheckLink: FC<WithDirtyCheckLinkProps & InjectedRouteLeaveProps> = props => {
     const { className, onClick, children, setIsDirty, getIsDirty, leaveMsg } = props;
 

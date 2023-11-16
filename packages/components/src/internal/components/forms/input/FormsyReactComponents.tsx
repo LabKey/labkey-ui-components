@@ -6,6 +6,7 @@ import React, {
     memo,
     ReactNode,
     RefObject,
+    SelectHTMLAttributes,
     TextareaHTMLAttributes,
     useCallback,
     useMemo,
@@ -352,6 +353,141 @@ const InputWithFormsy = withFormsy(InputImpl);
 export const Input: FC<InputProps & WithFormsyProps> = props => <InputWithFormsy {...props} />;
 
 Input.displayName = 'Input';
+
+export interface FormsySelectOption {
+    className?: string;
+    disabled?: boolean;
+    group?: string;
+    label: string;
+    value: string;
+}
+
+interface SelectBaseProps extends BaseComponentProps {
+    multiple?: boolean;
+    options: FormsySelectOption[];
+}
+
+type SelectHTMLProps = Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onBlur' | 'onChange'>;
+
+export type SelectProps = SelectBaseProps & SelectHTMLProps & WithFormsyProps;
+
+const SelectImpl: FC<SelectProps> = props => {
+    const {
+        componentRef,
+        elementWrapperClassName,
+        help,
+        label,
+        labelClassName,
+        layout,
+        multiple,
+        onChange,
+        required,
+        rowClassName,
+        validateBeforeSubmit,
+        validateOnSubmit,
+        validatePristine,
+        ...formsyAndHTMLProps
+    } = props;
+    const {
+        getErrorMessage,
+        getErrorMessages,
+        getValue,
+        hasValue,
+        isFormDisabled,
+        isFormSubmitted,
+        isPristine,
+        isRequired,
+        isValid,
+        isValidValue,
+        options,
+        resetValue,
+        setValidations,
+        setValue,
+        showError,
+        showRequired,
+        validationError,
+        validationErrors,
+        validations,
+        ...selectHTMLProps
+    } = formsyAndHTMLProps;
+    const { className, disabled, id } = selectHTMLProps;
+
+    const isValid_ = isValid();
+    const errorMessages = getErrorMessages();
+    const markAsInvalid = (!isValid_ || showError()) && (errorMessages.length > 0 || required);
+
+    const handleChange = useCallback(
+        (event: React.FormEvent<HTMLSelectElement>) => {
+            let value: any;
+            if (multiple) {
+                value = Array.from(event.currentTarget.options)
+                    .filter(o => o.selected)
+                    .map(o => o.value);
+            } else {
+                ({ value } = event.currentTarget);
+            }
+            setValue(value);
+            onChange?.(event.currentTarget.name, value);
+        },
+        [multiple, onChange, setValue]
+    );
+
+    const control = (
+        <select
+            {...selectHTMLProps}
+            className={classNames('form-control', { 'is-invalid': markAsInvalid }, className)}
+            disabled={isFormDisabled() || disabled || false}
+            id={id}
+            onChange={handleChange}
+        >
+            {options.map((option, i) => (
+                <option key={i} value={option.value}>
+                    {option.label}
+                </option>
+            ))}
+        </select>
+    );
+
+    if (layout === 'elementOnly') {
+        return control;
+    }
+
+    const showErrors_ = shouldShowErrors(
+        isPristine(),
+        isFormSubmitted(),
+        isValid_,
+        validatePristine,
+        validateBeforeSubmit
+    );
+
+    return (
+        <Row
+            elementWrapperClassName={elementWrapperClassName}
+            label={label}
+            labelClassName={labelClassName}
+            layout={layout}
+            htmlFor={id}
+            required={required}
+            rowClassName={rowClassName}
+            showErrors={showErrors_}
+        >
+            {control}
+            {help && <Help>{help}</Help>}
+            {showErrors_ && <ErrorMessages messages={errorMessages} />}
+        </Row>
+    );
+};
+
+SelectImpl.defaultProps = {
+    ...componentDefaultProps,
+    multiple: false,
+};
+
+const SelectWithFormsy = withFormsy(SelectImpl);
+
+export const Select: FC<SelectProps> = props => <SelectWithFormsy {...props} />;
+
+Select.displayName = 'Select';
 
 type TextAreaHTMLProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onBlur' | 'onChange' | 'value'>;
 

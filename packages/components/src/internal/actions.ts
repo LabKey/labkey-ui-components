@@ -67,7 +67,7 @@ export function selectAll(
     });
 }
 
-export function getGridIdsFromTransactionId(transactionAuditId: number, dataType: string): Promise<string[]> {
+export function getGridIdsFromTransactionId(transactionAuditId: number | string, dataType: string): Promise<string[]> {
     if (!transactionAuditId) {
         return;
     }
@@ -96,13 +96,12 @@ export function getGridIdsFromTransactionId(transactionAuditId: number, dataType
 export async function selectGridIdsFromTransactionId(
     gridIdPrefix: string,
     schemaQuery: SchemaQuery,
-    transactionAuditId: number,
+    transactionAuditId: number | string,
     dataType: string,
     actions: Actions
 ): Promise<string[]> {
-    if (!transactionAuditId) {
-        return;
-    }
+    if (!transactionAuditId) return Promise.resolve(undefined);
+
     const modelId = createGridModelId(gridIdPrefix, schemaQuery);
     const selected = await getGridIdsFromTransactionId(transactionAuditId, dataType);
     await actions.replaceSelections(modelId, selected);
@@ -110,12 +109,12 @@ export async function selectGridIdsFromTransactionId(
     return selected;
 }
 
+type SampleTypesFromTransactionIds = Promise<{ rowIds: string[]; sampleTypes: string[] }>;
 export async function getSampleTypesFromTransactionIds(
-    transactionAuditId: number
-): Promise<{ rowIds: string[]; sampleTypes: string[] }> {
-    if (!transactionAuditId) {
-        return;
-    }
+    transactionAuditId: number | string
+): SampleTypesFromTransactionIds {
+    if (!transactionAuditId) return Promise.resolve(undefined);
+
     const rowIds = await getGridIdsFromTransactionId(transactionAuditId, SAMPLES_KEY);
     const sampleTypes = await selectDistinctRows({
         schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,

@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 
-import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
+import { InjectedRouteLeaveProps, useRouteLeave } from '../../util/RouteLeave';
 import { useServerContext } from '../base/ServerContext';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
@@ -32,8 +32,8 @@ import { ProtectedDataSettingsPanel } from './ProtectedDataSettingsPanel';
 import { RequestsSettingsPanel } from './RequestsSettingsPanel';
 
 // export for jest testing
-export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
-    const { setIsDirty, getIsDirty } = props;
+export const AdminSettingsPage: FC<InjectedRouteLeaveProps> = props => {
+    const [getIsDirty, setIsDirty] = useRouteLeave();
     const { moduleContext, container } = useServerContext();
     const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
     const { createNotification, dismissNotifications } = useNotificationsContext();
@@ -100,5 +100,3 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         </>
     );
 };
-
-export const AdminSettingsPage = withRouteLeave(AdminSettingsPageImpl);

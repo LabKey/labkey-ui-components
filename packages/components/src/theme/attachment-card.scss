@@ -2,7 +2,7 @@
     border: 1px solid $border-color;
     border-radius: 4px;
     display: inline-flex;
-    height: 48px;
+    min-height: 48px;
     width: 234px;
 
     &:hover {
@@ -74,6 +74,11 @@
 .attachment-card__size {
     color: $gray-light;
     font-size: 14px;
+}
+.attachment-card__description {
+    color: $gray-light;
+    font-size: 12px;
+    overflow-wrap: anywhere;
 }
 
 .attachment-card__img {

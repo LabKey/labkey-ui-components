@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD November 2023
 * Assay Transform Script UX update
   * AttachmentCard updates to support description and use getIconFontCls for default iconFontCls based on name
+  * WebDav update to add uploadWebDavFileToUrl() and support overwrite param, default true
 
 ### version 2.393.2
 *Released*: 15 November 2023

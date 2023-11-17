@@ -1,5 +1,8 @@
 import React from 'react';
 import { Map } from 'immutable';
+
+import { getServerContext } from '@labkey/api';
+
 import { getDefaultAPIWrapper } from '../../../APIWrapper';
 import { DomainPropertiesAPIWrapper } from '../APIWrapper';
 
@@ -18,12 +21,13 @@ import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
 import { AssayRunDataType } from '../../entities/constants';
 
+import { getAppHomeFolderPath } from '../../../app/utils';
+
+import { Container } from '../../base/models/Container';
+
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
-import { getAppHomeFolderPath } from '../../../app/utils';
-import { Container } from '../../base/models/Container';
-import { getServerContext } from '@labkey/api';
 
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
@@ -132,16 +136,26 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 
         beforeFinish?.(protocolModel);
 
-        saveAssayDesign(protocolModel, protocolModel.isNew() ? getAppHomeFolderPath(new Container(getServerContext().container)) : protocolModel.container)
+        saveAssayDesign(
+            protocolModel,
+            protocolModel.isNew()
+                ? getAppHomeFolderPath(new Container(getServerContext().container))
+                : protocolModel.container
+        )
             .then(response => {
                 this.setState(() => ({ protocolModel }));
                 setSubmitting(false, () => {
                     this.props.onComplete(response);
                 });
             })
-            .catch(protocolModel => {
+            .catch(errorModel => {
                 setSubmitting(false, () => {
-                    this.setState(() => ({ protocolModel }));
+                    this.setState(
+                        () => ({ protocolModel: errorModel }),
+                        () => {
+                            scrollDomainErrorIntoView();
+                        }
+                    );
                 });
             });
     };
@@ -255,8 +269,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     }
 
                     // allow empty domain to be inferred from a file for Data Fields in General assay
-                    const hideInferFromFile =
-                        !isGpat || !domain.isNameSuffixMatch('Data');
+                    const hideInferFromFile = !isGpat || !domain.isNameSuffixMatch('Data');
                     // The File property type should be hidden for Data domains if the display options indicate this.
                     // We will always allow file property types for the Batch and Run domains.
                     const hideFilePropertyType =

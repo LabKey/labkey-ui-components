@@ -1,6 +1,7 @@
 import React, { FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
+import { getServerContext } from '@labkey/api';
 
 import {
     ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
@@ -17,8 +18,19 @@ import { Container } from '../../base/models/Container';
 import { AddEntityButton } from '../../buttons/AddEntityButton';
 import { RemoveEntityButton } from '../../buttons/RemoveEntityButton';
 
+import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
+import { getWebDavFiles, getWebDavUrl, uploadWebDavFileToUrl } from '../../../../public/files/WebDav';
+
+import { Alert } from '../../base/Alert';
+
+import { AttachmentCard, IAttachment } from '../../../renderers/AttachmentCard';
+
+import { getAttachmentTitleFromName } from '../../../renderers/FileColumnRenderer';
+
+import { setCopyValue } from '../../../events';
+
 import { AssayProtocolModel } from './models';
-import { FORM_IDS } from './constants';
+import { FORM_IDS, SCRIPTS_DIR } from './constants';
 import { getValidPublishTargets } from './actions';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps {
@@ -56,11 +68,7 @@ interface InputProps {
 
 export function NameInput(props: InputProps) {
     return (
-        <AssayPropertiesInput
-            label="Name"
-            required={true}
-            appPropertiesOnly={props.appPropertiesOnly}
-        >
+        <AssayPropertiesInput label="Name" required={true} appPropertiesOnly={props.appPropertiesOnly}>
             <FormControl
                 id={FORM_IDS.ASSAY_NAME}
                 type="text"
@@ -405,26 +413,44 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
     );
 }
 
+enum AddingScriptType {
+    file,
+    path,
+}
+
 interface TransformScriptsInputProps {
     model: AssayProtocolModel;
     onChange: (id: string, value: any) => void;
 }
 
-export class TransformScriptsInput extends React.PureComponent<TransformScriptsInputProps> {
-    onChange = evt => {
-        const id = evt.target.id;
-        const index = parseInt(id.replace(FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS, ''));
-        const value = evt.target.value;
-        this.applyChanges(
-            this.props.model.protocolTransformScripts.map((currentVal, i) => (i === index ? value : currentVal))
-        );
+interface TransformScriptsInputState {
+    addingScript: AddingScriptType;
+    addingScriptPath: string;
+    error: string;
+}
+
+export class TransformScriptsInput extends React.PureComponent<TransformScriptsInputProps, TransformScriptsInputState> {
+    readonly state = { error: undefined, addingScript: undefined, addingScriptPath: '' };
+
+    toggleAddingScript = (): void => {
+        this.setState(state => ({
+            addingScript: state.addingScript === undefined ? AddingScriptType.file : undefined,
+            addingScriptPath: '',
+            error: undefined,
+        }));
     };
 
-    addScript = () => {
+    onChangeAddingScriptType = (evt: any): void => {
+        const value = evt.target.value ?? evt.target.getAttribute('data-value');
+        this.setState({ addingScript: value === 'file' ? AddingScriptType.file : AddingScriptType.path });
+    };
+
+    addScript = (path?: string) => {
         const scripts = this.props.model.protocolTransformScripts
             ? this.props.model.protocolTransformScripts
             : List<string>();
-        this.applyChanges(scripts.push(''));
+        this.applyChanges(scripts.push(path ?? ''));
+        this.toggleAddingScript();
     };
 
     removeScript = (index: number) => {
@@ -434,6 +460,55 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
     applyChanges(updatedScripts: any) {
         this.props.onChange(FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS, updatedScripts);
     }
+
+    onScriptPathChange = (evt: any): void => {
+        this.setState({ addingScriptPath: evt.target.value });
+    };
+
+    onAddScriptPath = (): void => {
+        if (this.state.addingScript !== AddingScriptType.path) return;
+        const value = this.state.addingScriptPath?.trim() ?? '';
+        if (value.length > 0) {
+            this.addScript(value);
+        }
+    };
+
+    onAddScriptFile = async (files: Map<string, File>): Promise<void> => {
+        if (this.state.addingScript !== AddingScriptType.file) return;
+
+        this.setState({ error: undefined });
+
+        // TODO validate valid script engine before uploading
+        try {
+            const url = getWebDavUrl(getServerContext().container.path, SCRIPTS_DIR, false, true);
+            const fileName = await uploadWebDavFileToUrl(files.first(), url, false);
+            const scriptFiles = await getWebDavFiles(getServerContext().container.path, SCRIPTS_DIR, false, true);
+            const filePath = scriptFiles.get('files')?.get(fileName)?.dataFileUrl;
+
+            // dataFileUrl comes back encoded and with a "file://" prefix
+            if (filePath) {
+                this.addScript(decodeURIComponent(filePath.replace('file://', '')));
+            }
+        } catch (e) {
+            this.setState({ error: e });
+        }
+    };
+
+    onRemoveScript = (attachment: IAttachment): void => {
+        this.applyChanges(
+            this.props.model.protocolTransformScripts.filter(script => script !== attachment.description)
+        );
+    };
+
+    onCopyScriptPath = (attachment: IAttachment): void => {
+        const handleCopy = (event: ClipboardEvent): void => {
+            setCopyValue(event, attachment.description);
+            event.preventDefault();
+            document.removeEventListener('copy', handleCopy, true);
+        };
+        document.addEventListener('copy', handleCopy, true);
+        document.execCommand('copy');
+    };
 
     renderLabel() {
         return (
@@ -465,41 +540,110 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
 
     render() {
         const { model } = this.props;
+        const { error, addingScript, addingScriptPath } = this.state;
         const protocolTransformScripts = model.protocolTransformScripts || List<string>();
+        const protocolTransformAttachments = protocolTransformScripts.map(script => {
+            return { name: getAttachmentTitleFromName(script), description: script };
+        });
 
         return (
             <>
-                {protocolTransformScripts.map((scriptPath, i) => {
+                {protocolTransformAttachments.map((attachment, i) => {
                     return (
-                        <Row key={'scriptrow-' + i} className="margin-top">
+                        <Row key={attachment.description} className="margin-top">
                             {i === 0 ? this.renderLabel() : <Col xs={3} lg={4} />}
-                            <Col xs={8} lg={7}>
-                                <FormControl
-                                    key={'scriptinput-' + i}
-                                    id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
-                                    type="text"
-                                    value={scriptPath}
-                                    onChange={this.onChange}
-                                />
-                            </Col>
-                            <Col xs={1}>
-                                <RemoveEntityButton
-                                    key={'scriptremove-' + i}
-                                    labelClass="domain-remove-icon"
-                                    onClick={() => {
-                                        this.removeScript(i);
-                                    }}
+                            <Col xs={9} lg={8}>
+                                <AttachmentCard
+                                    outerCls="transform-script-card"
+                                    allowRemove
+                                    allowDownload={false}
+                                    attachment={attachment}
+                                    copyNoun="path"
+                                    noun="file"
+                                    onRemove={this.onRemoveScript}
+                                    onCopyLink={this.onCopyScriptPath}
                                 />
                             </Col>
                         </Row>
                     );
                 })}
+                {addingScript !== undefined && (
+                    <Row className="transform-script-add">
+                        {protocolTransformScripts.size === 0 ? this.renderLabel() : <Col xs={3} lg={4} />}
+                        <Col xs={8} lg={8}>
+                            <input
+                                className="transform-script-add--radio"
+                                checked={addingScript === AddingScriptType.file}
+                                type="radio"
+                                value="file"
+                                onChange={this.onChangeAddingScriptType}
+                            />
+                            <div
+                                className="transform-script-add--label"
+                                data-value="file"
+                                onClick={this.onChangeAddingScriptType}
+                            >
+                                Upload file
+                            </div>
+                            <input
+                                className="transform-script-add--radio"
+                                checked={addingScript === AddingScriptType.path}
+                                type="radio"
+                                value="path"
+                                onChange={this.onChangeAddingScriptType}
+                            />
+                            <div
+                                className="transform-script-add--label"
+                                data-value="path"
+                                onClick={this.onChangeAddingScriptType}
+                            >
+                                Enter file path
+                            </div>
+                            <RemoveEntityButton
+                                labelClass="domain-remove-icon pull-right"
+                                onClick={this.toggleAddingScript}
+                            />
+                            {addingScript === AddingScriptType.file && (
+                                <FileAttachmentForm
+                                    allowDirectories={false}
+                                    allowMultiple={false}
+                                    compact
+                                    showLabel={false}
+                                    onFileChange={this.onAddScriptFile}
+                                />
+                            )}
+                            {addingScript === AddingScriptType.path && (
+                                <div className="transform-script-add--path">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={addingScriptPath}
+                                        onChange={this.onScriptPathChange}
+                                    />
+                                    <button type="button" className="btn btn-primary" onClick={this.onAddScriptPath}>
+                                        Apply
+                                    </button>
+                                </div>
+                            )}
+                            {error && <Alert>{error}</Alert>}
+                        </Col>
+                    </Row>
+                )}
                 <Row className="margin-top">
-                    {protocolTransformScripts.size === 0 ? this.renderLabel() : <Col xs={3} lg={4} />}
+                    {protocolTransformScripts.size === 0 && addingScript === undefined ? (
+                        this.renderLabel()
+                    ) : (
+                        <Col xs={3} lg={4} />
+                    )}
                     <Col xs={3} lg={4}>
-                        <AddEntityButton entity="Script" containerClass="" onClick={this.addScript} />
+                        <AddEntityButton
+                            entity="Script"
+                            containerClass=""
+                            onClick={this.toggleAddingScript}
+                            disabled={addingScript !== undefined}
+                        />
                     </Col>
-                    {protocolTransformScripts.size > 0 && !model.isNew() && (
+                    {(protocolTransformScripts.size > 0 || addingScript !== undefined) && !model.isNew() && (
                         <Col xs={5} lg={4}>
                             <span className="pull-right">
                                 <a

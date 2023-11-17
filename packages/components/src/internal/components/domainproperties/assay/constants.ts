@@ -1,5 +1,6 @@
 export const PROPERTIES_HEADER_ID = 'assay-properties-hdr';
 export const FORM_ID_PREFIX = 'assay-design-';
+export const SCRIPTS_DIR = '@scripts';
 
 export const FORM_IDS = {
     ASSAY_NAME: FORM_ID_PREFIX + 'name',

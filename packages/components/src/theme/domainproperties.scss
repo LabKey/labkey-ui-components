@@ -849,3 +849,38 @@
     line-height: 26px;
     margin-bottom: 5px;
 }
+
+.transform-script-card.attachment-card {
+    display: flex;
+    width: unset;
+
+    .attachment-card__body {
+        width: 100%;
+    }
+
+    .attachment-card__content {
+        width: unset;
+    }
+}
+
+.transform-script-add {
+    margin-top: 15px;
+
+    .transform-script-add--label {
+        display: inline-block;
+        padding: 0 25px 10px 0;
+        cursor: pointer;
+    }
+    .transform-script-add--path {
+        width: 100%;
+        margin-bottom: 15px;
+
+        input {
+            display: inline-block;
+            width: 80%;
+        }
+        button {
+            float: right;
+        }
+    }
+}

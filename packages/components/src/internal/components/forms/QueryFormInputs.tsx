@@ -24,7 +24,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { caseInsensitive } from '../../util/utils';
 
-import { Input } from './input/FormsyReactComponents';
+import { FormsyInput } from './input/FormsyReactComponents';
 import { resolveInputRenderer } from './input/InputRenderFactory';
 import { QuerySelect } from './QuerySelect';
 import { SelectInputChange } from './input/SelectInput';
@@ -144,7 +144,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
 
         if (includeLabelField) {
             const fieldName = getQueryFormLabelFieldName(col.name);
-            return <Input name={fieldName} type="hidden" value={this.state.labels[fieldName]} />;
+            return <FormsyInput name={fieldName} type="hidden" value={this.state.labels[fieldName]} />;
         }
 
         return null;

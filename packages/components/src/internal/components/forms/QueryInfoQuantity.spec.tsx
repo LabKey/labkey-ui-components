@@ -6,13 +6,13 @@ import { mount, ReactWrapper } from 'enzyme';
 import { DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION } from '../samples/models';
 
 import { QueryInfoQuantity } from './QueryInfoQuantity';
-import { Input } from './input/FormsyReactComponents';
+import { FormsyInput } from './input/FormsyReactComponents';
 import { RadioGroupInput } from './input/RadioGroupInput';
 
 describe('<QueryInfoQuantity>', () => {
     function validate(wrapper: ReactWrapper, optionCount: number, includeCount: boolean) {
         expect(wrapper.find(RadioGroupInput)).toHaveLength(optionCount === 0 ? 0 : 1);
-        expect(wrapper.find(Input)).toHaveLength(includeCount || optionCount > 0 ? 1 : 0);
+        expect(wrapper.find(FormsyInput)).toHaveLength(includeCount || optionCount > 0 ? 1 : 0);
     }
 
     test('no content', () => {
@@ -40,7 +40,7 @@ describe('<QueryInfoQuantity>', () => {
             </Formsy>
         );
         validate(wrapper, 0, true);
-        const input = wrapper.find(Input);
+        const input = wrapper.find(FormsyInput);
         expect(input.prop('max')).toBe(5);
         expect(input.prop('value')).toBe('1');
         wrapper.unmount();

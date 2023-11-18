@@ -23,7 +23,7 @@ import { AssayTaskInput } from '../forms/input/AssayTaskInput';
 import { isWorkflowEnabled } from '../../app/utils';
 import { LabelOverlay } from '../forms/LabelOverlay';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
-import { Input, TextArea } from '../forms/input/FormsyReactComponents';
+import { FormsyInput, FormsyTextArea } from '../forms/input/FormsyReactComponents';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
@@ -56,14 +56,14 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model, 
             <div className="panel-heading">Run Details</div>
             <div className="panel-body">
                 <Formsy className="form-horizontal" onChange={onChange}>
-                    <Input
+                    <FormsyInput
                         id="runname"
                         label={NAME_LABEL}
                         labelClassName="text-left"
                         name="runname"
                         value={model.runName}
                     />
-                    <TextArea
+                    <FormsyTextArea
                         cols={60}
                         id="comment"
                         label={COMMENT_LABEL}

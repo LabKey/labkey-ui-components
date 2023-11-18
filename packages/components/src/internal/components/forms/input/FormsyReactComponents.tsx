@@ -200,9 +200,9 @@ InputGroup.displayName = 'InputGroup';
 
 type InputHTMLProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' | 'onChange' | 'value'>;
 
-export type InputProps = BaseComponentProps & InputGroupProps & InputHTMLProps;
+export type FormsyInputProps = BaseComponentProps & InputGroupProps & InputHTMLProps;
 
-const InputImpl: FC<InputProps & WithFormsyProps> = props => {
+const InputImpl: FC<FormsyInputProps & WithFormsyProps> = props => {
     // Extract InputGroupProps
     const { addonAfter, addonBefore, buttonAfter, buttonBefore, ...rest } = props;
     const {
@@ -350,14 +350,13 @@ InputImpl.defaultProps = {
 
 const InputWithFormsy = withFormsy(InputImpl);
 
-export const Input: FC<InputProps & WithFormsyProps> = props => <InputWithFormsy {...props} />;
+export const FormsyInput: FC<FormsyInputProps & WithFormsyProps> = props => <InputWithFormsy {...props} />;
 
-Input.displayName = 'Input';
+FormsyInput.displayName = 'FormsyInput';
 
 export interface FormsySelectOption {
     className?: string;
     disabled?: boolean;
-    group?: string;
     label: string;
     value: string;
 }
@@ -369,9 +368,9 @@ interface SelectBaseProps extends BaseComponentProps {
 
 type SelectHTMLProps = Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onBlur' | 'onChange'>;
 
-export type SelectProps = SelectBaseProps & SelectHTMLProps & WithFormsyProps;
+export type FormsySelectProps = SelectBaseProps & SelectHTMLProps & WithFormsyProps;
 
-const SelectImpl: FC<SelectProps> = props => {
+const SelectImpl: FC<FormsySelectProps> = props => {
     const {
         componentRef,
         elementWrapperClassName,
@@ -485,15 +484,15 @@ SelectImpl.defaultProps = {
 
 const SelectWithFormsy = withFormsy(SelectImpl);
 
-export const Select: FC<SelectProps> = props => <SelectWithFormsy {...props} />;
+export const FormsySelect: FC<FormsySelectProps> = props => <SelectWithFormsy {...props} />;
 
-Select.displayName = 'Select';
+FormsySelect.displayName = 'FormsySelect';
 
 type TextAreaHTMLProps = Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'onBlur' | 'onChange' | 'value'>;
 
-export type TextAreaProps = BaseComponentProps & TextAreaHTMLProps;
+export type FormsyTextAreaProps = BaseComponentProps & TextAreaHTMLProps;
 
-const TextAreaImpl: FC<TextAreaProps & WithFormsyProps> = props => {
+const TextAreaImpl: FC<FormsyTextAreaProps & WithFormsyProps> = props => {
     const {
         componentRef,
         elementWrapperClassName,
@@ -602,6 +601,6 @@ TextAreaImpl.defaultProps = {
 
 const TextAreaWithFormsy = withFormsy(TextAreaImpl);
 
-export const TextArea: FC<TextAreaProps & WithFormsyProps> = props => <TextAreaWithFormsy {...props} />;
+export const FormsyTextArea: FC<FormsyTextAreaProps & WithFormsyProps> = props => <TextAreaWithFormsy {...props} />;
 
-TextArea.displayName = 'TextArea';
+FormsyTextArea.displayName = 'FormsyTextArea';

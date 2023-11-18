@@ -19,10 +19,10 @@ import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
-import { Input, InputProps } from './FormsyReactComponents';
+import { FormsyInput, FormsyInputProps } from './FormsyReactComponents';
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-export interface TextInputProps extends DisableableInputProps, Omit<InputProps, 'onChange'> {
+export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputProps, 'onChange'> {
     addLabelAsterisk?: boolean;
     onChange?: (value: any) => void;
     queryColumn: QueryColumn;
@@ -136,7 +136,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         }
 
         return (
-            <Input
+            <FormsyInput
                 id={queryColumn.fieldKey}
                 name={queryColumn.fieldKey}
                 placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}

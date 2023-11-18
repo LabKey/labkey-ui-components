@@ -3,7 +3,7 @@ import { addValidationRule } from 'formsy-react';
 
 import { SampleCreationType, SampleCreationTypeModel } from '../samples/models';
 
-import { Input } from './input/FormsyReactComponents';
+import { FormsyInput } from './input/FormsyReactComponents';
 import { RadioGroupInput } from './input/RadioGroupInput';
 
 interface Props {
@@ -85,7 +85,7 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
                     </div>
                 )}
                 {(options.length > 0 || includeCountField) && (
-                    <Input
+                    <FormsyInput
                         id="numItems"
                         label={text}
                         labelClassName="control-label text-left"

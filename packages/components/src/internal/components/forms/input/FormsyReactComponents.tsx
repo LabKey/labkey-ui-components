@@ -19,6 +19,7 @@ import { WithFormsyProps } from '../constants';
 type LayoutType = 'elementOnly' | 'horizontal' | 'vertical';
 
 interface SharedFormsyProps {
+    innerRef?: any; // Maybe on WithFormsyProps instead?
     validationError?: string;
     validationErrors?: any; // Record<string, any> | string;
     validations?: any; // Record<string, any> | string;
@@ -225,6 +226,7 @@ const InputImpl: FC<FormsyInputProps & WithFormsyProps> = props => {
         getErrorMessages,
         getValue,
         hasValue,
+        innerRef,
         isFormDisabled,
         isFormSubmitted,
         isPristine,
@@ -235,6 +237,7 @@ const InputImpl: FC<FormsyInputProps & WithFormsyProps> = props => {
         setValidations,
         setValue,
         showError,
+        step,
         showRequired,
         validationError,
         validationErrors,
@@ -282,7 +285,7 @@ const InputImpl: FC<FormsyInputProps & WithFormsyProps> = props => {
             onBlur={handleBlur}
             onChange={handleChange}
             ref={componentRef}
-            value={getValue()}
+            value={getValue() ?? ''}
         />
     );
 
@@ -392,6 +395,7 @@ const SelectImpl: FC<FormsySelectProps> = props => {
         getErrorMessages,
         getValue,
         hasValue,
+        innerRef,
         isFormDisabled,
         isFormSubmitted,
         isPristine,
@@ -513,6 +517,7 @@ const TextAreaImpl: FC<FormsyTextAreaProps & WithFormsyProps> = props => {
         getErrorMessages,
         getValue,
         hasValue,
+        innerRef,
         isFormDisabled,
         isFormSubmitted,
         isPristine,

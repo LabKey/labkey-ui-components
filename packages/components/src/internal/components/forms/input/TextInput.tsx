@@ -111,8 +111,15 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { allowDisable, initiallyDisabled, onToggleDisable, ...rest } = this.props;
         // Extract TextInputProps
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { labelClassName, queryColumn, showLabel, startFocused, ...inputProps } = rest;
+        const {
+            addLabelAsterisk,
+            labelClassName,
+            renderFieldLabel,
+            queryColumn,
+            showLabel,
+            startFocused,
+            ...inputProps
+        } = rest;
         let { validations } = inputProps;
 
         let type = 'text';

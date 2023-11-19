@@ -89,7 +89,10 @@ const ErrorMessages: FC<ErrorMessageProps> = memo(props => {
     );
 });
 
-const Help: FC = ({ children }) => <small className="form-text text-muted">{children}</small>;
+const Help: FC = ({ children }) => {
+    if (!children) return null;
+    return <small className="form-text text-muted">{children}</small>;
+};
 
 interface RequiredSymbolProps {
     required: boolean;
@@ -143,8 +146,17 @@ interface RowProps extends BaseComponentProps, LabelProps {
 }
 
 const Row: FC<RowProps> = memo(props => {
-    const { children, elementWrapperClassName, label, labelClassName, layout, required, rowClassName, showErrors } =
-        props;
+    const {
+        children,
+        elementWrapperClassName,
+        help,
+        label,
+        labelClassName,
+        layout,
+        required,
+        rowClassName,
+        showErrors,
+    } = props;
 
     if (layout === 'elementOnly') {
         return <span>{children}</span>;
@@ -177,9 +189,15 @@ const Row: FC<RowProps> = memo(props => {
             {layout === 'horizontal' && (
                 <div className={classNames('col-sm-9', elementWrapperClassName, { 'offset-sm-3': !renderLabel })}>
                     {children}
+                    <Help>{help}</Help>
                 </div>
             )}
-            {layout !== 'horizontal' && children}
+            {layout !== 'horizontal' && (
+                <>
+                    {children}
+                    <Help>{help}</Help>
+                </>
+            )}
         </div>
     );
 });
@@ -307,16 +325,16 @@ const CheckboxImpl: FC<FormsyCheckboxProps & WithFormsyProps> = props => {
         <Row
             elementWrapperClassName={elementWrapperClassName}
             fakeLabel
+            help={help}
+            htmlFor={id}
             label={label}
             labelClassName={labelClassName}
             layout={layout}
-            htmlFor={id}
             required={required}
             rowClassName={rowClassName}
             showErrors={showErrors_}
         >
             {control}
-            {help && <Help>{help}</Help>}
             {showErrors_ && <ErrorMessages messages={getErrorMessages()} />}
         </Row>
     );
@@ -464,16 +482,16 @@ const InputImpl: FC<FormsyInputProps & WithFormsyProps> = props => {
     return (
         <Row
             elementWrapperClassName={elementWrapperClassName}
+            help={help}
+            htmlFor={id}
             label={label}
             labelClassName={labelClassName}
             layout={layout}
-            htmlFor={id}
             required={required}
             rowClassName={rowClassName}
             showErrors={showErrors_}
         >
             {control}
-            {help && <Help>{help}</Help>}
             {showErrors_ && <ErrorMessages messages={errorMessages} />}
         </Row>
     );
@@ -599,16 +617,16 @@ const SelectImpl: FC<FormsySelectProps> = props => {
     return (
         <Row
             elementWrapperClassName={elementWrapperClassName}
+            help={help}
+            htmlFor={id}
             label={label}
             labelClassName={labelClassName}
             layout={layout}
-            htmlFor={id}
             required={required}
             rowClassName={rowClassName}
             showErrors={showErrors_}
         >
             {control}
-            {help && <Help>{help}</Help>}
             {showErrors_ && <ErrorMessages messages={errorMessages} />}
         </Row>
     );
@@ -715,16 +733,16 @@ const TextAreaImpl: FC<FormsyTextAreaProps & WithFormsyProps> = props => {
     return (
         <Row
             elementWrapperClassName={elementWrapperClassName}
+            help={help}
+            htmlFor={id}
             label={label}
             labelClassName={labelClassName}
             layout={layout}
-            htmlFor={id}
             required={required}
             rowClassName={rowClassName}
             showErrors={showErrors_}
         >
             {control}
-            {help && <Help>{help}</Help>}
             {showErrors_ && <ErrorMessages messages={errorMessages} />}
         </Row>
     );

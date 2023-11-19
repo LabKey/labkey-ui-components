@@ -263,7 +263,7 @@ const CheckboxImpl: FC<FormsyCheckboxProps & WithFormsyProps> = props => {
         value,
         ...inputHTMLProps
     } = formsyAndHTMLProps;
-    const { id } = inputHTMLProps;
+    const { disabled, id } = inputHTMLProps;
 
     const handleChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
@@ -279,6 +279,7 @@ const CheckboxImpl: FC<FormsyCheckboxProps & WithFormsyProps> = props => {
                 {...inputHTMLProps}
                 checked={getValue() === true}
                 className="custom-control-input"
+                disabled={isFormDisabled() || disabled || false}
                 id={id}
                 onChange={handleChange}
                 ref={componentRef}

@@ -440,7 +440,12 @@ import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCre
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
 
 import { UserSelectInput } from './internal/components/forms/input/UserSelectInput';
-import { FormsyInput, FormsySelect, FormsyTextArea } from './internal/components/forms/input/FormsyReactComponents';
+import {
+    FormsyCheckbox,
+    FormsyInput,
+    FormsySelect,
+    FormsyTextArea,
+} from './internal/components/forms/input/FormsyReactComponents';
 import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
 import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
@@ -1133,6 +1138,7 @@ export {
     FieldEditProps,
     QuerySelect,
     UserSelectInput,
+    FormsyCheckbox,
     FormsyInput,
     FormsySelect,
     FormsyTextArea,

@@ -102,6 +102,7 @@ const RequiredSymbol: FC<RequiredSymbolProps> = memo(({ required, symbol = '*' }
 });
 
 interface LabelProps {
+    fakeLabel?: boolean;
     htmlFor: string;
     labelClassName?: string;
     layout?: LayoutType;
@@ -109,11 +110,20 @@ interface LabelProps {
 }
 
 const Label: FC<LabelProps> = memo(props => {
-    const { children, htmlFor, labelClassName, layout, required = false } = props;
+    const { children, fakeLabel, htmlFor, labelClassName, layout, required } = props;
 
     if (layout === 'elementOnly') return null;
 
     const labelClassNames = classNames(['col-form-label', layout === 'horizontal' ? 'col-sm-3' : '', labelClassName]);
+
+    if (fakeLabel) {
+        return (
+            <div className={labelClassNames} data-required={required}>
+                {children}
+                <RequiredSymbol required={required} />
+            </div>
+        );
+    }
 
     return (
         <label className={labelClassNames} data-required={required} htmlFor={htmlFor}>
@@ -122,6 +132,11 @@ const Label: FC<LabelProps> = memo(props => {
         </label>
     );
 });
+
+Label.defaultProps = {
+    fakeLabel: false,
+    required: false,
+};
 
 interface RowProps extends BaseComponentProps, LabelProps {
     showErrors?: boolean;
@@ -200,6 +215,123 @@ const InputGroup: FC<InputGroupProps> = props => {
 InputGroup.displayName = 'InputGroup';
 
 type InputHTMLProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'onBlur' | 'onChange' | 'value'>;
+
+interface CheckboxBaseProps extends BaseComponentProps {
+    valueLabel?: string;
+}
+
+export type FormsyCheckboxProps = CheckboxBaseProps & InputHTMLProps;
+
+const CheckboxImpl: FC<FormsyCheckboxProps & WithFormsyProps> = props => {
+    const {
+        componentRef,
+        elementWrapperClassName,
+        help,
+        label,
+        labelClassName,
+        layout,
+        onChange,
+        required,
+        rowClassName,
+        validateBeforeSubmit,
+        validateOnSubmit,
+        validatePristine,
+        valueLabel,
+        ...formsyAndHTMLProps
+    } = props;
+    const {
+        getErrorMessage,
+        getErrorMessages,
+        getValue,
+        hasValue,
+        innerRef,
+        isFormDisabled,
+        isFormSubmitted,
+        isPristine,
+        isRequired,
+        isValid,
+        isValidValue,
+        resetValue,
+        setValidations,
+        setValue,
+        showError,
+        step,
+        showRequired,
+        validationError,
+        validationErrors,
+        validations,
+        value,
+        ...inputHTMLProps
+    } = formsyAndHTMLProps;
+    const { id } = inputHTMLProps;
+
+    const handleChange = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            setValue(event.currentTarget.checked);
+            onChange?.(event.currentTarget.name, event.currentTarget.checked);
+        },
+        [onChange, setValue]
+    );
+
+    const control = (
+        <div className="custom-control custom-checkbox">
+            <input
+                {...inputHTMLProps}
+                checked={getValue() === true}
+                className="custom-control-input"
+                id={id}
+                onChange={handleChange}
+                ref={componentRef}
+                type="checkbox"
+            />
+            <label className="custom-control-label" htmlFor={id}>
+                {valueLabel}
+            </label>
+        </div>
+    );
+
+    if (layout === 'elementOnly') {
+        return control;
+    }
+
+    const showErrors_ = shouldShowErrors(
+        isPristine(),
+        isFormSubmitted(),
+        isValid(),
+        validatePristine,
+        validateBeforeSubmit
+    );
+
+    return (
+        <Row
+            elementWrapperClassName={elementWrapperClassName}
+            fakeLabel
+            label={label}
+            labelClassName={labelClassName}
+            layout={layout}
+            htmlFor={id}
+            required={required}
+            rowClassName={rowClassName}
+            showErrors={showErrors_}
+        >
+            {control}
+            {help && <Help>{help}</Help>}
+            {showErrors_ && <ErrorMessages messages={getErrorMessages()} />}
+        </Row>
+    );
+};
+
+CheckboxImpl.defaultProps = {
+    ...componentDefaultProps,
+    value: false,
+    valueLabel: '',
+};
+
+const CheckboxWithFormsy = withFormsy(CheckboxImpl);
+
+export const FormsyCheckbox: FC<FormsyCheckboxProps & WithFormsyProps> = props => <CheckboxWithFormsy {...props} />;
+
+FormsyCheckbox.displayName = 'FormsyCheckbox';
 
 export type FormsyInputProps = BaseComponentProps & InputGroupProps & InputHTMLProps;
 

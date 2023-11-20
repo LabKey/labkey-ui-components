@@ -31,7 +31,8 @@ import { setCopyValue } from '../../../events';
 
 import { AssayProtocolModel } from './models';
 import { FORM_IDS, SCRIPTS_DIR } from './constants';
-import { getValidPublishTargets } from './actions';
+import {getScriptEngineForExtension, getValidPublishTargets} from './actions';
+import {getFileExtension} from "../../files/actions";
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps {
     appPropertiesOnly?: boolean;
@@ -463,11 +464,22 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         this.setState({ addingScriptPath: evt.target.value });
     };
 
-    onAddScriptPath = (): void => {
+    onAddScriptPath = async (): Promise<void> => {
         if (this.state.addingScript !== AddingScriptType.path) return;
-        const value = this.state.addingScriptPath?.trim() ?? '';
-        if (value.length > 0) {
-            this.addScript(value);
+
+        const { model } = this.props;
+        this.setState({ error: undefined });
+
+        try {
+            const value = this.state.addingScriptPath?.trim() ?? '';
+
+            await getScriptEngineForExtension(getFileExtension(value), model.container);
+
+            if (value.length > 0) {
+                this.addScript(value);
+            }
+        } catch (e) {
+            this.setState({ error: e.exception ?? e });
         }
     };
 
@@ -477,8 +489,9 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         const { model } = this.props;
         this.setState({ error: undefined });
 
-        // TODO validate valid script engine before uploading
         try {
+            await getScriptEngineForExtension(getFileExtension(files.first()?.name), model.container);
+
             const url = getWebDavUrl(model.container, SCRIPTS_DIR, false, true);
             const fileName = await uploadWebDavFileToUrl(files.first(), url, false);
             const scriptFiles = await getWebDavFiles(model.container, SCRIPTS_DIR, false, true);
@@ -489,7 +502,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                 this.addScript(decodeURIComponent(filePath.replace('file://', '')));
             }
         } catch (e) {
-            this.setState({ error: e });
+            this.setState({ error: e.exception ?? e });
         }
     };
 

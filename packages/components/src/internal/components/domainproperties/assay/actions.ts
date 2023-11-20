@@ -104,3 +104,21 @@ export function getValidPublishTargets(containerPath?: string): Promise<List<Con
         });
     });
 }
+
+export function getScriptEngineForExtension(extension: string, containerPath?: string): Promise<Record<string, any>> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('core', 'getScriptEngineForExtension.api', undefined, {
+                container: containerPath,
+            }),
+            params: { extension },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error(error);
+                reject(error);
+            }),
+        });
+    });
+}

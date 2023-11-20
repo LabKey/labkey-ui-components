@@ -191,9 +191,7 @@ const Control: FC<BaseControlProps & LabelProps> = memo(props => {
                 </Label>
             )}
             {layout === 'horizontal' && (
-                <div className={classNames('col-sm-9', elementWrapperClassName, { 'offset-sm-3': !renderLabel })}>
-                    {control}
-                </div>
+                <div className={classNames(elementWrapperClassName, { 'offset-sm-3': !renderLabel })}>{control}</div>
             )}
             {layout !== 'horizontal' && control}
         </div>
@@ -201,6 +199,7 @@ const Control: FC<BaseControlProps & LabelProps> = memo(props => {
 });
 
 Control.defaultProps = {
+    elementWrapperClassName: 'col-sm-9',
     label: null,
     showErrors: true,
 };

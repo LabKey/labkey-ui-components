@@ -136,12 +136,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 
         beforeFinish?.(protocolModel);
 
-        saveAssayDesign(
-            protocolModel,
-            protocolModel.isNew()
-                ? getAppHomeFolderPath(new Container(getServerContext().container))
-                : protocolModel.container
-        )
+        saveAssayDesign(protocolModel)
             .then(response => {
                 this.setState(() => ({ protocolModel }));
                 setSubmitting(false, () => {

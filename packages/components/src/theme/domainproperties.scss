@@ -884,3 +884,16 @@
         }
     }
 }
+
+.transform-script--add-button {
+    display: inline-block;
+    padding-right: 10px;
+}
+.transform-script--manage-link {
+    display: inline-block;
+    vertical-align: center;
+}
+.transform-script--download-link {
+    float: right;
+    padding-top: 6px;
+}

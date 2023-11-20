@@ -474,13 +474,14 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
     onAddScriptFile = async (files: Map<string, File>): Promise<void> => {
         if (this.state.addingScript !== AddingScriptType.file) return;
 
+        const { model } = this.props;
         this.setState({ error: undefined });
 
         // TODO validate valid script engine before uploading
         try {
-            const url = getWebDavUrl(getServerContext().container.path, SCRIPTS_DIR, false, true);
+            const url = getWebDavUrl(model.container, SCRIPTS_DIR, false, true);
             const fileName = await uploadWebDavFileToUrl(files.first(), url, false);
-            const scriptFiles = await getWebDavFiles(getServerContext().container.path, SCRIPTS_DIR, false, true);
+            const scriptFiles = await getWebDavFiles(model.container, SCRIPTS_DIR, false, true);
             const filePath = scriptFiles.get('files')?.get(fileName)?.dataFileUrl;
 
             // dataFileUrl comes back encoded and with a "file://" prefix

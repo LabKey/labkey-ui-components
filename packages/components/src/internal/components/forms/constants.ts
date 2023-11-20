@@ -23,6 +23,7 @@ export interface WithFormsyProps {
     getErrorMessages?: Function;
     getValue?: Function;
     hasValue?: Function;
+    innerRef?: any;
     isFormDisabled?: Function;
     isFormSubmitted?: Function;
     isPristine?: Function;

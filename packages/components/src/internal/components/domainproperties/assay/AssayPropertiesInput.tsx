@@ -472,10 +472,8 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
 
         try {
             const value = this.state.addingScriptPath?.trim() ?? '';
-
-            await getScriptEngineForExtension(getFileExtension(value), model.container);
-
             if (value.length > 0) {
+                await getScriptEngineForExtension(getFileExtension(value), model.container);
                 this.addScript(value);
             }
         } catch (e) {

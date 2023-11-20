@@ -500,6 +500,7 @@ import {
     getInitialParentChoices,
     getJobCreationHref,
     getUniqueIdColumnMetadata,
+    getPermissionRestrictionMessage,
     isSampleEntity,
     sampleDeleteDependencyText,
 } from './internal/components/entities/utils';
@@ -1290,6 +1291,7 @@ export {
     getEntityDescription,
     getInitialParentChoices,
     getJobCreationHref,
+    getPermissionRestrictionMessage,
     DiscardConsumedSamplesPanel,
     // metric related items
     UnitModel,

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Filter, Query } from '@labkey/api';
 
 import { User } from '../base/models/User';
@@ -37,6 +36,7 @@ import {
     SampleOperation,
     SampleStateType,
 } from './constants';
+import { getPermissionRestrictionMessage } from '../entities/utils';
 
 export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];
@@ -126,7 +126,7 @@ function getOperationMessageAndRecommendation(operation: SampleOperation, numSam
     } else {
         const messageInfo = operationRestrictionMessage[operation];
         let message;
-        if (numSamples == 1) {
+        if (numSamples === 1) {
             message = operationRestrictionMessage[operation].singular;
         } else {
             message = operationRestrictionMessage[operation].plural;
@@ -141,9 +141,13 @@ function getOperationMessageAndRecommendation(operation: SampleOperation, numSam
 export function getOperationNotPermittedMessage(
     operation: SampleOperation,
     statusData: OperationConfirmationData,
-    aliquotIds?: number[]
+    aliquotIds?: number[],
+    noPermissionIds?: string[],
+    notPermittedVerb?: string,
+    notPermittedVerbSuffix?: string
 ): string {
     let notAllowedMsg = null;
+    let msg = null;
 
     if (statusData) {
         if (statusData.totalCount === 0) {
@@ -154,10 +158,10 @@ export function getOperationNotPermittedMessage(
             return `All selected samples have a status that prevents ${operationRestrictionMessage[operation].all}.`;
         }
 
-        const noAliquots = !aliquotIds || aliquotIds.length == 0;
+        const noAliquots = !aliquotIds || aliquotIds.length === 0;
         let notAllowed = [];
         // no aliquots or only aliquots, we show a status message about all that are not allowed
-        if (noAliquots || aliquotIds.length == statusData.totalCount) {
+        if (noAliquots || aliquotIds.length === statusData.totalCount) {
             notAllowed = statusData.notAllowed;
         } else {
             // some aliquots, some not, filter out the aliquots from the status message
@@ -165,12 +169,23 @@ export function getOperationNotPermittedMessage(
         }
         if (notAllowed?.length > 0) {
             notAllowedMsg = `The current status of ${notAllowed.length.toLocaleString()} selected sample${
-                notAllowed.length == 1 ? '' : 's'
+                notAllowed.length === 1 ? '' : 's'
             } prevents ${getOperationMessageAndRecommendation(operation, notAllowed.length, false)}.`;
         }
     }
 
-    return notAllowedMsg;
+    if (noPermissionIds) {
+        const notPermittedMsg = getPermissionRestrictionMessage(statusData.totalCount, noPermissionIds.length, 'sample', 'samples', notPermittedVerb, notPermittedVerbSuffix)
+        if (notAllowedMsg) {
+            msg = notPermittedMsg + notAllowedMsg;
+        } else {
+            msg = notPermittedMsg;
+        }
+    } else {
+        msg = notAllowedMsg;
+    }
+
+    return msg;
 }
 
 export enum SamplesEditButtonSections {

@@ -36,7 +36,8 @@ import {
     SampleOperation,
     SampleStateType,
 } from './constants';
-import { getPermissionRestrictionMessage } from '../entities/utils';
+
+import { getPermissionRestrictionMessage } from '../../util/messaging';
 
 export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];

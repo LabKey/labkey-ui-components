@@ -546,6 +546,8 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         const protocolTransformAttachments = protocolTransformScripts.map(script => {
             return { name: getAttachmentTitleFromName(script), description: script };
         });
+        const showDownloadSampleFile =
+            (protocolTransformScripts.size > 0 || addingScript !== undefined) && !model.isNew();
 
         return (
             <>
@@ -560,7 +562,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                     allowDownload={false}
                                     attachment={attachment}
                                     copyNoun="path"
-                                    noun="file"
+                                    noun="path"
                                     onRemove={this.onRemoveScript}
                                     onCopyLink={this.onCopyScriptPath}
                                 />
@@ -636,17 +638,27 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                     ) : (
                         <Col xs={3} lg={4} />
                     )}
-                    <Col xs={3} lg={4}>
+                    <Col xs={showDownloadSampleFile ? 6 : 9} lg={showDownloadSampleFile ? 4 : 8}>
                         <AddEntityButton
                             entity="Script"
-                            containerClass=""
+                            containerClass="transform-script--add-button"
                             onClick={this.toggleAddingScript}
                             disabled={addingScript !== undefined}
                         />
+                        <div className="transform-script--manage-link">
+                            <a
+                                href={getWebDavUrl(model.container, SCRIPTS_DIR, false, true)}
+                                target="_blank"
+                                className="labkey-text-link"
+                                rel="noopener noreferrer"
+                            >
+                                Manage script files
+                            </a>
+                        </div>
                     </Col>
-                    {(protocolTransformScripts.size > 0 || addingScript !== undefined) && !model.isNew() && (
-                        <Col xs={5} lg={4}>
-                            <span className="pull-right">
+                    {showDownloadSampleFile && (
+                        <Col xs={3} lg={4}>
+                            <div className="transform-script--download-link">
                                 <a
                                     href={buildURL('assay', 'downloadSampleQCData', {
                                         rowId: model.protocolId,
@@ -657,7 +669,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                 >
                                     Download sample file
                                 </a>
-                            </span>
+                            </div>
                         </Col>
                     )}
                 </Row>

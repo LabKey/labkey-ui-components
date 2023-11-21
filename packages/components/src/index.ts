@@ -80,7 +80,7 @@ import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
 import { getUserProperties, getUserRoleDisplay } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
-import { withWindowFocusCheckExpiredSession } from './internal/util/WindowFocusCheckExpiredSession';
+import { useWindowFocusCheckExpiredSession } from './internal/util/WindowFocusCheckExpiredSession';
 import {
     deleteErrorMessage,
     deleteSuccessMessage,
@@ -1556,7 +1556,7 @@ export {
     QueryDetailPage,
     Theme,
     SVGIcon,
-    withWindowFocusCheckExpiredSession,
+    useWindowFocusCheckExpiredSession,
     // general components
     Alert,
     ColumnSelectionModal,

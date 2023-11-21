@@ -57,6 +57,7 @@ module.exports = {
             ...constants.aliases.LABKEY_PACKAGES_DEV,
             // This assures there is only one copy of react used while doing start-link
             react: path.resolve('./node_modules/react'),
+            'react-router-dom': path.resolve('./node_modules/react-router-dom'),
         },
         extensions: constants.extensions.TYPESCRIPT.concat('.scss')
     },

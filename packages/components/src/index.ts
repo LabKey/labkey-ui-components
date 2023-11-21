@@ -436,8 +436,8 @@ import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { QueryFilterPanel } from './internal/components/search/QueryFilterPanel';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
-import { useSubNavContext } from './internal/components/navigation/hooks';
-import { SubNav, SubNavWithContext } from './internal/components/navigation/SubNav';
+import { useSubNavTabsContext } from './internal/components/navigation/hooks';
+import { SubNav, SubNavWithTabsContext } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
@@ -1691,9 +1691,9 @@ export {
     // hooks
     useNotAuthorized,
     useNotFound,
-    // SubNavWithContext
-    useSubNavContext,
-    SubNavWithContext,
+    // SubNavTabsWithContext
+    useSubNavTabsContext,
+    SubNavWithTabsContext,
     // BarTender
     BarTenderConfiguration,
     PrintLabelsModal,

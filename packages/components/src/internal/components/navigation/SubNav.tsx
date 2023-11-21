@@ -25,7 +25,7 @@ import { hasPremiumModule, hasProductProjects } from '../../app/utils';
 
 import { NavItem, ParentNavItem } from './NavItem';
 import { ITab, SubNavGlobalContext } from './types';
-import { useSubNavContext } from './hooks';
+import { useSubNavTabsContext } from './hooks';
 
 interface Props {
     noun?: ITab;
@@ -144,8 +144,8 @@ export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
  * SubNavWithContext renders a SubNav component using data stored in the SubNavContext, this component is useful when
  * you need to update the SubNav based on data you load asynchronously after the page loads.
  */
-export const SubNavWithContext: FC<SubNavGlobalContext> = memo(() => {
-    const { noun, tabs } = useSubNavContext();
+export const SubNavWithTabsContext: FC<SubNavGlobalContext> = memo(() => {
+    const { noun, tabs } = useSubNavTabsContext();
 
     if (tabs.size === 0 && noun === undefined) {
         return null;

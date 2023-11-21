@@ -13,15 +13,8 @@ import { OperationConfirmationData } from '../entities/models';
 
 import { SCHEMAS } from '../../schemas';
 import { caseInsensitive } from '../../util/utils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { ModuleContext } from '../base/ServerContext';
-
-import { PICKLIST_SAMPLES_FILTER } from '../picklist/models';
-
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-
-import { SystemField } from '../domainproperties/models';
 
 import { SampleState, SampleStatus } from './models';
 
@@ -36,8 +29,10 @@ import {
     SampleOperation,
     SampleStateType,
 } from './constants';
-
-import { getPermissionRestrictionMessage } from '../../util/messaging';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { PICKLIST_SAMPLES_FILTER } from '../picklist/models';
+import { SystemField } from '../domainproperties/models';
 
 export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];
@@ -142,13 +137,9 @@ function getOperationMessageAndRecommendation(operation: SampleOperation, numSam
 export function getOperationNotPermittedMessage(
     operation: SampleOperation,
     statusData: OperationConfirmationData,
-    aliquotIds?: number[],
-    noPermissionIds?: string[],
-    notPermittedVerb?: string,
-    notPermittedVerbSuffix?: string
+    aliquotIds?: number[]
 ): string {
-    let notAllowedMsg = null;
-    let msg = null;
+    let notAllowedMsg: string;
 
     if (statusData) {
         if (statusData.totalCount === 0) {
@@ -174,19 +165,7 @@ export function getOperationNotPermittedMessage(
             } prevents ${getOperationMessageAndRecommendation(operation, notAllowed.length, false)}.`;
         }
     }
-
-    if (noPermissionIds) {
-        const notPermittedMsg = getPermissionRestrictionMessage(statusData.totalCount, noPermissionIds.length, 'sample', 'samples', notPermittedVerb, notPermittedVerbSuffix)
-        if (notAllowedMsg) {
-            msg = notPermittedMsg + notAllowedMsg;
-        } else {
-            msg = notPermittedMsg;
-        }
-    } else {
-        msg = notAllowedMsg;
-    }
-
-    return msg;
+    return notAllowedMsg;
 }
 
 export enum SamplesEditButtonSections {

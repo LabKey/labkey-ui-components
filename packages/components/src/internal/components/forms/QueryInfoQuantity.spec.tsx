@@ -9,8 +9,8 @@ import { QueryInfoQuantity } from './QueryInfoQuantity';
 import { FormsyInput } from './input/FormsyReactComponents';
 import { RadioGroupInput } from './input/RadioGroupInput';
 
-describe('<QueryInfoQuantity>', () => {
-    function validate(wrapper: ReactWrapper, optionCount: number, includeCount: boolean) {
+describe('QueryInfoQuantity', () => {
+    function validate(wrapper: ReactWrapper, optionCount: number, includeCount: boolean): void {
         expect(wrapper.find(RadioGroupInput)).toHaveLength(optionCount === 0 ? 0 : 1);
         expect(wrapper.find(FormsyInput)).toHaveLength(includeCount || optionCount > 0 ? 1 : 0);
     }
@@ -31,12 +31,7 @@ describe('<QueryInfoQuantity>', () => {
     test('no options, show quantity', () => {
         const wrapper = mount(
             <Formsy>
-                <QueryInfoQuantity
-                    creationTypeOptions={[]}
-                    includeCountField={true}
-                    maxCount={5}
-                    countText="Quantity"
-                />
+                <QueryInfoQuantity creationTypeOptions={[]} includeCountField maxCount={5} countText="Quantity" />
             </Formsy>
         );
         validate(wrapper, 0, true);
@@ -70,7 +65,7 @@ describe('<QueryInfoQuantity>', () => {
             <Formsy>
                 <QueryInfoQuantity
                     creationTypeOptions={[{ ...DERIVATIVE_CREATION, selected: true }, POOLED_SAMPLE_CREATION]}
-                    includeCountField={true}
+                    includeCountField
                     maxCount={5}
                     countText="Quantity"
                 />

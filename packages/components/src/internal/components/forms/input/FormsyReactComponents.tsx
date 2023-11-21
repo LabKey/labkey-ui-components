@@ -98,7 +98,7 @@ interface RequiredSymbolProps {
     symbol?: ReactNode;
 }
 
-const RequiredSymbol: FC<RequiredSymbolProps> = memo(({ required, symbol = '*' }) => {
+const RequiredSymbol: FC<RequiredSymbolProps> = memo(({ required, symbol = ' *' }) => {
     if (required === false) return null;
     return <span className="required-symbol">{symbol}</span>;
 });

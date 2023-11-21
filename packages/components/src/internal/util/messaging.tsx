@@ -176,7 +176,7 @@ export function getPermissionRestrictionMessage(
     verbSuffix?: string
 ): string {
     if (!noPermissionCount) {
-        return null;
+        return '';
     }
 
     const noun = totalCount === 1 ? nounSingular : nounPlural;
@@ -186,5 +186,5 @@ export function getPermissionRestrictionMessage(
     }
 
     const notPermittedNoun = Utils.pluralize(noPermissionCount, nounSingular, nounPlural);
-    return `Selection includes ${notPermittedNoun} that you do not have permission to ${verb}${verbSuffix}. Only the ${nounPlural} that you have permission for will be updated.`;
+    return `Selection includes ${notPermittedNoun} that you do not have permission to ${verb}${verbSuffix ?? ''}. Only the ${nounPlural} that you have permission for will be updated.`;
 }

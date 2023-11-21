@@ -1,13 +1,13 @@
 import React, { FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List, Map } from 'immutable';
-import { getServerContext } from '@labkey/api';
 
 import {
     ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
     CONFIGURE_SCRIPTING_TOPIC,
     HelpLink,
     PROGRAMMATIC_QC_TOPIC,
+    RUN_PROPERTIES_TOPIC,
 } from '../../../util/helpLinks';
 import { DomainFieldLabel, DomainFieldLabelProps } from '../DomainFieldLabel';
 
@@ -29,10 +29,11 @@ import { getAttachmentTitleFromName } from '../../../renderers/FileColumnRendere
 
 import { setCopyValue } from '../../../events';
 
+import { getFileExtension } from '../../files/actions';
+
 import { AssayProtocolModel } from './models';
 import { FORM_IDS, SCRIPTS_DIR } from './constants';
-import {getScriptEngineForExtension, getValidPublishTargets} from './actions';
-import {getFileExtension} from "../../files/actions";
+import { getScriptEngineForExtension, getValidPublishTargets } from './actions';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps {
     appPropertiesOnly?: boolean;
@@ -557,8 +558,6 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         const protocolTransformAttachments = protocolTransformScripts.map(script => {
             return { name: getAttachmentTitleFromName(script), description: script };
         });
-        const showDownloadSampleFile =
-            (protocolTransformScripts.size > 0 || addingScript !== undefined) && !model.isNew();
 
         return (
             <>
@@ -651,7 +650,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                     ) : (
                         <Col xs={3} lg={4} />
                     )}
-                    <Col xs={showDownloadSampleFile ? 6 : 9} lg={showDownloadSampleFile ? 4 : 8}>
+                    <Col xs={9} lg={8}>
                         <AddEntityButton
                             entity="Script"
                             containerClass="transform-script--add-button"
@@ -669,22 +668,6 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                             </a>
                         </div>
                     </Col>
-                    {showDownloadSampleFile && (
-                        <Col xs={3} lg={4}>
-                            <div className="transform-script--download-link">
-                                <a
-                                    href={buildURL('assay', 'downloadSampleQCData', {
-                                        rowId: model.protocolId,
-                                    })}
-                                    target="_blank"
-                                    className="labkey-text-link"
-                                    rel="noopener noreferrer"
-                                >
-                                    Download sample file
-                                </a>
-                            </div>
-                        </Col>
-                    )}
                 </Row>
             </>
         );
@@ -692,6 +675,8 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
 }
 
 export function SaveScriptDataInput(props: InputProps) {
+    const { model } = props;
+
     return (
         <AssayPropertiesInput
             label="Save Script Data for Debugging"
@@ -706,6 +691,14 @@ export function SaveScriptDataInput(props: InputProps) {
                         If this checkbox is checked, files will be saved to a subfolder named:
                         "TransformAndValidationFiles", located in the same folder that the original script is located.
                     </p>
+                    {!model.isNew() && (
+                        <p>
+                            Use the "Download template files" link to get example files for your assay design.{' '}
+                            <HelpLink topic={RUN_PROPERTIES_TOPIC} useDefaultUrl>
+                                More info
+                            </HelpLink>
+                        </p>
+                    )}
                 </>
             }
         >
@@ -715,6 +708,20 @@ export function SaveScriptDataInput(props: InputProps) {
                 checked={props.model.saveScriptFiles}
                 onChange={props.onChange}
             />
+            {!model.isNew() && (
+                <div className="transform-script--download-link">
+                    <a
+                        href={buildURL('assay', 'downloadSampleQCData', {
+                            rowId: model.protocolId,
+                        })}
+                        target="_blank"
+                        className="labkey-text-link"
+                        rel="noopener noreferrer"
+                    >
+                        Download template files
+                    </a>
+                </div>
+            )}
         </AssayPropertiesInput>
     );
 }

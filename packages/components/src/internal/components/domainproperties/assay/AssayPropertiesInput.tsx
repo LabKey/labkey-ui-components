@@ -34,6 +34,7 @@ import { getFileExtension } from '../../files/actions';
 import { AssayProtocolModel } from './models';
 import { FORM_IDS, SCRIPTS_DIR } from './constants';
 import { getScriptEngineForExtension, getValidPublishTargets } from './actions';
+import { resolveErrorMessage } from '../../../util/messaging';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps {
     appPropertiesOnly?: boolean;
@@ -394,7 +395,7 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
                         scripts configured above.
                     </p>
                     <p>
-                        The extension of the script file identifies the script engine that will be used to run the
+                        The extension of the script file identifies the scripting engine that will be used to run the
                         validation script. For example, a script named test.pl will be run with the Perl scripting
                         engine. The scripting engine must be configured on the Views and Scripting page in the Admin
                         Console. <HelpLink topic={CONFIGURE_SCRIPTING_TOPIC}>More info</HelpLink>
@@ -478,7 +479,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                 this.addScript(value);
             }
         } catch (e) {
-            this.setState({ error: e.exception ?? e });
+            this.setState({ error: resolveErrorMessage(e) });
         }
     };
 
@@ -501,7 +502,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                 this.addScript(decodeURIComponent(filePath.replace('file://', '')));
             }
         } catch (e) {
-            this.setState({ error: e.exception ?? e });
+            this.setState({ error: resolveErrorMessage(e) });
         }
     };
 
@@ -537,7 +538,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                 </HelpLink>
                             </p>
                             <p>
-                                The extension of the script file identifies the script engine that will be used. The
+                                The extension of the script file identifies the scripting engine that will be used. The
                                 scripting engine must be configured on the Views and Scripting page in the Admin
                                 Console.{' '}
                                 <HelpLink topic={CONFIGURE_SCRIPTING_TOPIC} useDefaultUrl>
@@ -563,7 +564,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
             <>
                 {protocolTransformAttachments.map((attachment, i) => {
                     return (
-                        <Row key={attachment.description} className="margin-top">
+                        <Row key={i} className="margin-top">
                             {i === 0 ? this.renderLabel() : <Col xs={3} lg={4} />}
                             <Col xs={9} lg={8}>
                                 <AttachmentCard

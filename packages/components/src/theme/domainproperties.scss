@@ -854,6 +854,10 @@
     display: flex;
     width: unset;
 
+    &:hover {
+        cursor: default;
+    }
+
     .attachment-card__body {
         width: 100%;
     }

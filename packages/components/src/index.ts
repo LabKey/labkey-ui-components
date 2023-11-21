@@ -850,6 +850,7 @@ import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 import { FormButtons } from './internal/FormButtons';
 import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
+import { useSubNavContext } from './internal/SubNavContext';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1691,6 +1692,8 @@ export {
     // hooks
     useNotAuthorized,
     useNotFound,
+    // SubNavContext
+    useSubNavContext,
     // SubNavTabsWithContext
     useSubNavTabsContext,
     SubNavWithTabsContext,

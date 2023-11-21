@@ -290,7 +290,7 @@ function useControlProps<H>(props: any): ControlProps<H> {
             label,
             labelClassName,
             layout,
-            markAsInvalid: (!isValid() || showError()) && (required || messages?.length > 0),
+            markAsInvalid: showError() && (required || messages?.length > 0),
             messages,
             onChange,
             required,

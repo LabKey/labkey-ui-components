@@ -589,6 +589,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                 className="transform-script-add--radio"
                                 checked={addingScript === AddingScriptType.file}
                                 type="radio"
+                                name="transformScriptAddType"
                                 value="file"
                                 onChange={this.onChangeAddingScriptType}
                             />
@@ -603,6 +604,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                 className="transform-script-add--radio"
                                 checked={addingScript === AddingScriptType.path}
                                 type="radio"
+                                name="transformScriptAddType"
                                 value="path"
                                 onChange={this.onChangeAddingScriptType}
                             />

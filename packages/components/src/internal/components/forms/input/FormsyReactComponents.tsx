@@ -404,7 +404,7 @@ const InputImpl: FC<FormsyInputProps & WithFormsyProps> = props => {
             classNames(
                 {
                     'custom-range': type === 'range',
-                    'form-control': type !== 'hidden' && type !== 'range', // TODO: Double check this logic
+                    'form-control': type !== 'hidden' && type !== 'range',
                     'is-invalid': markAsInvalid,
                 },
                 className

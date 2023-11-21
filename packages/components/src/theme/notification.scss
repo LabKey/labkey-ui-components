@@ -129,3 +129,12 @@
 .page-detail-header-title-padding {
     padding-left: 10px;
 }
+
+.message-list {
+    list-style: none;
+    padding-left: 0;
+
+    & > li {
+        margin-bottom: 15px;
+    }
+}

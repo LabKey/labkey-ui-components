@@ -18,6 +18,8 @@ import React, { Children, FC, memo, ReactNode, useCallback, useMemo } from 'reac
 import { List, Map } from 'immutable';
 import { useLocation } from 'react-router-dom';
 
+import { useSubNavContext } from '../../SubNavContext';
+
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
 
@@ -90,7 +92,10 @@ export const NavigationBar: FC<Props> = memo(props => {
         searchPlaceholder ?? getPrimaryAppProperties(moduleContext)?.searchPlaceholder ?? SEARCH_PLACEHOLDER;
     const _showNotifications = showNotifications !== false && !!notificationsConfig && !!user && !user.isGuest;
     const _showProductNav = showProductNav !== false && shouldShowProductNavigation(user, moduleContext);
-    const hasSubNav = Children.count(children) > 0;
+    const { SubNav } = useSubNavContext();
+    const hasSubNav = SubNav !== undefined;
+
+    console.log('SubNav:', SubNav);
 
     return (
         <div className={classNames('app-navigation', { 'with-sub-nav': hasSubNav })}>
@@ -169,7 +174,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                 </div>
             </nav>
 
-            <div className="sub-nav-wrapper">{children}</div>
+            <div className="sub-nav-wrapper">{SubNav !== undefined && <SubNav />}</div>
         </div>
     );
 });

@@ -1,15 +1,30 @@
-import React, { ComponentType, createContext, ReactElement, useContext, useMemo, useState } from 'react';
+import React, {
+    ComponentType,
+    createContext,
+    ReactElement,
+    ReactNode,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from 'react';
 
 export interface SubNavContext {
     SubNav: ComponentType;
-    setSubNav: (subNav?: ComponentType) => void;
+    setSubNav: (subNav?: ReactNode) => void;
 }
 
 const Context = createContext<SubNavContext>(undefined);
 
 export function SubNavContextProvider({ children }): ReactElement {
     const [component, setComponent] = useState<ComponentType>(undefined);
-    const value = useMemo(() => ({ SubNav: component, setSubNav: setComponent }), [component]);
+    // Note: while this does seem like an unnecessary wrapper around setComponent it's actually necessary, because we
+    // need to use the callback version of setComponent in order to set the value to a function, otherwise if you pass
+    // an FC to setComponent it will call function, which will trigger a render.
+    const setSubNav = useCallback((SubNav: ComponentType) => {
+        setComponent(() => SubNav);
+    }, []);
+    const value = useMemo(() => ({ SubNav: component, setSubNav }), [component, setSubNav]);
     return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 

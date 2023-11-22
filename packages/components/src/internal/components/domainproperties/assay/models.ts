@@ -15,12 +15,12 @@
  */
 import { List, Record } from 'immutable';
 
-import {getServerContext, Utils} from '@labkey/api';
+import { getServerContext, Utils } from '@labkey/api';
 
 import { DomainDesign, FieldErrors } from '../models';
 import { AppURL } from '../../../url/AppURL';
-import {getAppHomeFolderPath} from "../../../app/utils";
-import {Container} from "../../base/models/Container";
+import { getAppHomeFolderPath } from '../../../app/utils';
+import { Container } from '../../base/models/Container';
 
 // See ExpProtocol.Status in 'platform' repository.
 export enum Status {

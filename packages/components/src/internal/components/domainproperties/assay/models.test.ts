@@ -263,4 +263,29 @@ describe('AssayProtocolModel', () => {
             }).validateTransformScripts()
         ).toBe(undefined);
     });
+
+    test('container', () => {
+        const newModel = AssayProtocolModel.create({
+            name: 'Test Assay Protocol',
+            domains: [
+                {
+                    name: 'Sample Fields',
+                    container: 'Test Container',
+                },
+            ],
+        });
+        expect(newModel.container).toBe('');
+
+        const existingModel = AssayProtocolModel.create({
+            protocolId: 1,
+            name: 'Test Assay Protocol',
+            domains: [
+                {
+                    name: 'Sample Fields',
+                    container: 'Test Container',
+                },
+            ],
+        });
+        expect(existingModel.container).toBe('Test Container');
+    });
 });

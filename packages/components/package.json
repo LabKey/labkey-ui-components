@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.393.2-fb-transformScriptUX.5",
+  "version": "2.393.2-fb-transformScriptUX.6",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

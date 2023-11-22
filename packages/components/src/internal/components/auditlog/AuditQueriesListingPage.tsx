@@ -11,6 +11,7 @@ import { useSearchParams } from 'react-router-dom';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import { useAdministrationSubNav } from '../administration/useAdministrationSubNav';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Page } from '../base/Page';
@@ -129,6 +130,7 @@ const AuditQueriesListingPageBody: FC<InjectedQueryModels & OwnProps> = memo(pro
 const AuditQueriesListingBodyWithModels = withQueryModels<OwnProps>(AuditQueriesListingPageBody);
 
 export const AuditQueriesListingPage: FC = memo(() => {
+    useAdministrationSubNav();
     const [searchParams, setSearchParams] = useSearchParams();
     const locationEventType = searchParams.get('eventType');
     const [eventType, setEventType] = useState<string>(() => locationEventType ?? SAMPLE_TIMELINE_AUDIT_QUERY.value);

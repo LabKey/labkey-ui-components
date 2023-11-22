@@ -2,6 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { Button } from 'react-bootstrap';
 import { Security } from '@labkey/api';
 import { useSearchParams } from 'react-router-dom';
+import { useAdministrationSubNav } from '../administration/useAdministrationSubNav';
 
 import { useServerContext } from '../base/ServerContext';
 import { AppURL, createProductUrl } from '../../url/AppURL';
@@ -24,6 +25,7 @@ import { ProjectSettings } from './ProjectSettings';
 import { ProjectListing } from './ProjectListing';
 
 export const ProjectManagementPage: FC = memo(() => {
+    useAdministrationSubNav();
     const [searchParams, setSearchParams] = useSearchParams();
     const [getIsDirty, setIsDirty] = useRouteLeave();
     const [successMsg, setSuccessMsg] = useState<string>();

@@ -11,7 +11,7 @@ import {
 
 import { createMockWithRouterProps } from '../../mockUtils';
 
-import { AdministrationSubNavImpl } from './AdministrationSubNav';
+import { useAdministrationSubNav } from './useAdministrationSubNav';
 
 describe('AdministrationSubNavImpl', () => {
     test('requires admin', () => {

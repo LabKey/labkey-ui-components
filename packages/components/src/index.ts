@@ -349,7 +349,6 @@ import {
     isValidFilterField,
     SAMPLE_FILTER_METRIC_AREA,
 } from './internal/components/search/utils';
-import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { CreateProjectPage } from './internal/components/project/CreateProjectPage';
 import { ProjectManagementPage } from './internal/components/project/ProjectManagementPage';
@@ -1323,7 +1322,6 @@ export {
     getFieldFiltersValidationResult,
     // administration
     AccountSettingsPage,
-    AdministrationSubNav,
     UserManagementPage,
     CreateProjectPage,
     ProjectManagementPage,

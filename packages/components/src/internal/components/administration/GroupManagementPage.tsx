@@ -31,6 +31,7 @@ import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants
 import { AUDIT_KEY } from '../../app/constants';
 
 import { NotFound } from '../base/NotFound';
+import { useAdministrationSubNav } from './useAdministrationSubNav';
 
 import { GroupAssignments } from './GroupAssignments';
 
@@ -42,6 +43,7 @@ export type GroupManagementPageProps = InjectedPermissionsPage;
 
 export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props => {
     const { inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;
+    useAdministrationSubNav();
     const [getIsDirty, setIsDirty] = useRouteLeave();
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);

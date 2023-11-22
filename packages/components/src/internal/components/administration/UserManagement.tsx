@@ -6,6 +6,7 @@ import React, { FC, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionRoles, Project, Utils } from '@labkey/api';
+import { useNotFound } from '../../hooks';
 
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
@@ -26,7 +27,7 @@ import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
 
 import { UserLimitSettings } from '../permissions/actions';
 
-import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
+import { NotificationsContextProps, useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY } from '../auditlog/constants';
 
@@ -35,6 +36,7 @@ import { AUDIT_KEY } from '../../app/constants';
 import { NotFound } from '../base/NotFound';
 
 import { isProductProjectsEnabled } from '../../app/utils';
+import { useAdministrationSubNav } from './useAdministrationSubNav';
 
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
@@ -309,9 +311,9 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     }
 }
 
-type ImplProps = InjectedPermissionsPage & NotificationsContextProps;
-
-export const UserManagementPageImpl: FC<ImplProps> = props => {
+export const UserManagementPageImpl: FC<InjectedPermissionsPage> = props => {
+    useAdministrationSubNav();
+    const { createNotification, dismissNotifications } = useNotificationsContext();
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext, project, user } = useServerContext();
     const { extraPermissionRoles } = useAdminAppContext();
@@ -324,6 +326,8 @@ export const UserManagementPageImpl: FC<ImplProps> = props => {
             allowResetPassword={!isLoginAutoRedirectEnabled(moduleContext)}
             api={api.security}
             container={container}
+            createNotification={createNotification}
+            dismissNotifications={dismissNotifications}
             extraRoles={extraPermissionRoles}
             project={project}
             user={user}
@@ -331,4 +335,4 @@ export const UserManagementPageImpl: FC<ImplProps> = props => {
     );
 };
 
-export const UserManagementPage = withPermissionsPage(withNotificationsContext(UserManagementPageImpl));
+export const UserManagementPage = withPermissionsPage(UserManagementPageImpl);

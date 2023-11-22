@@ -27,12 +27,15 @@ import { useContainerUser } from '../container/actions';
 
 import { LoadingPage } from '../base/LoadingPage';
 
+import { useAdministrationSubNav } from './useAdministrationSubNav';
+
 import { useAdminAppContext } from './useAdminAppContext';
 import { ProtectedDataSettingsPanel } from './ProtectedDataSettingsPanel';
 import { RequestsSettingsPanel } from './RequestsSettingsPanel';
 
 // export for jest testing
-export const AdminSettingsPage: FC<InjectedRouteLeaveProps> = props => {
+export const AdminSettingsPage: FC = () => {
+    useAdministrationSubNav();
     const [getIsDirty, setIsDirty] = useRouteLeave();
     const { moduleContext, container } = useServerContext();
     const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
@@ -86,9 +89,18 @@ export const AdminSettingsPage: FC<InjectedRouteLeaveProps> = props => {
                     setIsDirty={setIsDirty}
                     getIsDirty={getIsDirty}
                 />
-                <NameIdSettings {...props} container={homeProjectContainer.container} isAppHome={true} />
+                <NameIdSettings
+                    container={homeProjectContainer.container}
+                    getIsDirty={getIsDirty}
+                    isAppHome={true}
+                    setIsDirty={setIsDirty}
+                />
                 {isSampleStatusEnabled(moduleContext) && (
-                    <ManageSampleStatusesPanel {...props} container={homeProjectContainer.container} />
+                    <ManageSampleStatusesPanel
+                        container={homeProjectContainer.container}
+                        getIsDirty={getIsDirty}
+                        setIsDirty={setIsDirty}
+                    />
                 )}
                 {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) && (
                     <ProtectedDataSettingsPanel containerPath={homeProjectContainer.container.path} />

@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Dropdown, MenuItem, Modal } from 'react-bootstrap';
 
-import {formatBytes, getIconFontCls, isImage} from '../util/utils';
+import { formatBytes, getIconFontCls, isImage } from '../util/utils';
 import { isLoading, LoadingState } from '../../public/LoadingState';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
 

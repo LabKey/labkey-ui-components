@@ -19,7 +19,9 @@ describe('AttachmentCard', () => {
         expect(document.querySelectorAll('.attachment-card').length).toBe(renderedCount);
         expect(document.querySelectorAll('.attachment-card__body').length).toBe(renderedCount);
         expect(document.querySelectorAll('.attachment-card__icon').length).toBe(renderedCount);
-        expect(document.querySelectorAll('.attachment-card__icon_img').length).toBe(isImage && !isLoading ? renderedCount : 0);
+        expect(document.querySelectorAll('.attachment-card__icon_img').length).toBe(
+            isImage && !isLoading ? renderedCount : 0
+        );
         expect(document.querySelectorAll('.attachment-card__icon_tile').length).toBe(!isImage ? renderedCount : 0);
         expect(document.querySelectorAll('.attachment-card__content').length).toBe(renderedCount);
         expect(document.querySelectorAll('.attachment-card__description').length).toBe(descriptionCount);
@@ -50,7 +52,7 @@ describe('AttachmentCard', () => {
         const onDownload = jest.fn();
         render(<AttachmentCard {...DEFAULT_PROPS} onDownload={onDownload} allowDownload={false} />);
         userEvent.click(document.querySelector('.attachment-card__body'));
-        expect(onDownload).toHaveBeenCalledTimes(0 );
+        expect(onDownload).toHaveBeenCalledTimes(0);
     });
 
     test('with title', () => {

@@ -565,69 +565,49 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                     label="Name"
                     required={true}
                   >
-                    <Row
-                      bsClass="row"
-                      className="margin-top"
-                      componentClass="div"
+                    <div
+                      className="row margin-top"
                     >
                       <div
-                        className="margin-top row"
+                        className="col col-xs-3 col-lg-2"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          lg={2}
-                          xs={3}
+                        <DomainFieldLabel
+                          label="Name"
+                          required={true}
                         >
-                          <div
-                            className="col-lg-2 col-xs-3"
+                          <span
+                            className="domain-no-wrap"
                           >
-                            <DomainFieldLabel
-                              label="Name"
-                              required={true}
-                            >
-                              <span
-                                className="domain-no-wrap"
-                              >
-                                Name
-                                 *
-                              </span>
-                            </DomainFieldLabel>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          lg={10}
-                          xs={9}
-                        >
-                          <div
-                            className="col-lg-10 col-xs-9"
-                          >
-                            <FormControl
-                              bsClass="form-control"
-                              componentClass="input"
-                              disabled={false}
-                              id="assay-design-name"
-                              onChange={[Function]}
-                              placeholder="Enter a name for this assay"
-                              type="text"
-                              value=""
-                            >
-                              <input
-                                className="form-control"
-                                disabled={false}
-                                id="assay-design-name"
-                                onChange={[Function]}
-                                placeholder="Enter a name for this assay"
-                                type="text"
-                                value=""
-                              />
-                            </FormControl>
-                          </div>
-                        </Col>
+                            Name
+                             *
+                          </span>
+                        </DomainFieldLabel>
                       </div>
-                    </Row>
+                      <div
+                        className="col col-xs-9 col-lg-10"
+                      >
+                        <FormControl
+                          bsClass="form-control"
+                          componentClass="input"
+                          disabled={false}
+                          id="assay-design-name"
+                          onChange={[Function]}
+                          placeholder="Enter a name for this assay"
+                          type="text"
+                          value=""
+                        >
+                          <input
+                            className="form-control"
+                            disabled={false}
+                            id="assay-design-name"
+                            onChange={[Function]}
+                            placeholder="Enter a name for this assay"
+                            type="text"
+                            value=""
+                          />
+                        </FormControl>
+                      </div>
+                    </div>
                   </Component>
                 </NameInput>
                 <DescriptionInput
@@ -768,85 +748,65 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                     }
                     label="Description"
                   >
-                    <Row
-                      bsClass="row"
-                      className="margin-top"
-                      componentClass="div"
+                    <div
+                      className="row margin-top"
                     >
                       <div
-                        className="margin-top row"
+                        className="col col-xs-3 col-lg-2"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          lg={2}
-                          xs={3}
+                        <DomainFieldLabel
+                          helpTipBody={
+                            <p>
+                              A short description for this assay design.
+                            </p>
+                          }
+                          label="Description"
                         >
-                          <div
-                            className="col-lg-2 col-xs-3"
+                          <span
+                            className="domain-no-wrap"
                           >
-                            <DomainFieldLabel
-                              helpTipBody={
-                                <p>
-                                  A short description for this assay design.
-                                </p>
-                              }
-                              label="Description"
+                            Description
+                            <Component
+                              id="tooltip"
+                              title="Description"
                             >
                               <span
-                                className="domain-no-wrap"
+                                className="label-help-target"
+                                onMouseOut={[Function]}
+                                onMouseOver={[Function]}
                               >
-                                Description
-                                <Component
-                                  id="tooltip"
-                                  title="Description"
+                                <span
+                                  className="label-help-icon fa fa-question-circle"
+                                />
+                                <Overlay
+                                  animation={[Function]}
+                                  placement="right"
+                                  rootClose={false}
+                                  show={false}
                                 >
-                                  <span
-                                    className="label-help-target"
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                  >
-                                    <span
-                                      className="label-help-icon fa fa-question-circle"
-                                    />
-                                    <Overlay
-                                      animation={[Function]}
-                                      placement="right"
-                                      rootClose={false}
-                                      show={false}
-                                    >
-                                      <Overlay
-                                        placement="right"
-                                        rootClose={false}
-                                        show={false}
-                                        transition={[Function]}
-                                      />
-                                    </Overlay>
-                                  </span>
-                                </Component>
+                                  <Overlay
+                                    placement="right"
+                                    rootClose={false}
+                                    show={false}
+                                    transition={[Function]}
+                                  />
+                                </Overlay>
                               </span>
-                            </DomainFieldLabel>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          lg={10}
-                          xs={9}
-                        >
-                          <div
-                            className="col-lg-10 col-xs-9"
-                          >
-                            <textarea
-                              className="form-control"
-                              id="assay-design-description"
-                              onChange={[Function]}
-                              value=""
-                            />
-                          </div>
-                        </Col>
+                            </Component>
+                          </span>
+                        </DomainFieldLabel>
                       </div>
-                    </Row>
+                      <div
+                        className="col col-xs-9 col-lg-10"
+                      >
+                        <textarea
+                          className="form-control"
+                          id="assay-design-description"
+                          onChange={[Function]}
+                          value=""
+                        />
+                      </div>
+                    </div>
                   </Component>
                 </DescriptionInput>
               </div>
@@ -1000,86 +960,66 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                     }
                     label="Editable Runs"
                   >
-                    <Row
-                      bsClass="row"
-                      className="margin-top"
-                      componentClass="div"
+                    <div
+                      className="row margin-top"
                     >
                       <div
-                        className="margin-top row"
+                        className="col col-xs-3 col-lg-2"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          lg={2}
-                          xs={3}
+                        <DomainFieldLabel
+                          helpTipBody={
+                            <p>
+                              If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                            </p>
+                          }
+                          label="Editable Runs"
                         >
-                          <div
-                            className="col-lg-2 col-xs-3"
+                          Editable 
+                          <span
+                            className="domain-no-wrap"
                           >
-                            <DomainFieldLabel
-                              helpTipBody={
-                                <p>
-                                  If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
-                                </p>
-                              }
-                              label="Editable Runs"
+                            Runs
+                            <Component
+                              id="tooltip"
+                              title="Editable Runs"
                             >
-                              Editable 
                               <span
-                                className="domain-no-wrap"
+                                className="label-help-target"
+                                onMouseOut={[Function]}
+                                onMouseOver={[Function]}
                               >
-                                Runs
-                                <Component
-                                  id="tooltip"
-                                  title="Editable Runs"
+                                <span
+                                  className="label-help-icon fa fa-question-circle"
+                                />
+                                <Overlay
+                                  animation={[Function]}
+                                  placement="right"
+                                  rootClose={false}
+                                  show={false}
                                 >
-                                  <span
-                                    className="label-help-target"
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                  >
-                                    <span
-                                      className="label-help-icon fa fa-question-circle"
-                                    />
-                                    <Overlay
-                                      animation={[Function]}
-                                      placement="right"
-                                      rootClose={false}
-                                      show={false}
-                                    >
-                                      <Overlay
-                                        placement="right"
-                                        rootClose={false}
-                                        show={false}
-                                        transition={[Function]}
-                                      />
-                                    </Overlay>
-                                  </span>
-                                </Component>
+                                  <Overlay
+                                    placement="right"
+                                    rootClose={false}
+                                    show={false}
+                                    transition={[Function]}
+                                  />
+                                </Overlay>
                               </span>
-                            </DomainFieldLabel>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          lg={10}
-                          xs={9}
-                        >
-                          <div
-                            className="col-lg-10 col-xs-9"
-                          >
-                            <input
-                              checked={false}
-                              id="assay-design-editableRuns"
-                              onChange={[Function]}
-                              type="checkbox"
-                            />
-                          </div>
-                        </Col>
+                            </Component>
+                          </span>
+                        </DomainFieldLabel>
                       </div>
-                    </Row>
+                      <div
+                        className="col col-xs-9 col-lg-10"
+                      >
+                        <input
+                          checked={false}
+                          id="assay-design-editableRuns"
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                      </div>
+                    </div>
                   </Component>
                 </EditableRunsInput>
               </div>
@@ -1881,69 +1821,49 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   label="Name"
                                   required={true}
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-4"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={4}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        label="Name"
+                                        required={true}
                                       >
-                                        <div
-                                          className="col-lg-4 col-xs-3"
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            label="Name"
-                                            required={true}
-                                          >
-                                            <span
-                                              className="domain-no-wrap"
-                                            >
-                                              Name
-                                               *
-                                            </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={8}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-8 col-xs-9"
-                                        >
-                                          <FormControl
-                                            bsClass="form-control"
-                                            componentClass="input"
-                                            disabled={false}
-                                            id="assay-design-name"
-                                            onChange={[Function]}
-                                            placeholder="Enter a name for this assay"
-                                            type="text"
-                                            value=""
-                                          >
-                                            <input
-                                              className="form-control"
-                                              disabled={false}
-                                              id="assay-design-name"
-                                              onChange={[Function]}
-                                              placeholder="Enter a name for this assay"
-                                              type="text"
-                                              value=""
-                                            />
-                                          </FormControl>
-                                        </div>
-                                      </Col>
+                                          Name
+                                           *
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-8"
+                                    >
+                                      <FormControl
+                                        bsClass="form-control"
+                                        componentClass="input"
+                                        disabled={false}
+                                        id="assay-design-name"
+                                        onChange={[Function]}
+                                        placeholder="Enter a name for this assay"
+                                        type="text"
+                                        value=""
+                                      >
+                                        <input
+                                          className="form-control"
+                                          disabled={false}
+                                          id="assay-design-name"
+                                          onChange={[Function]}
+                                          placeholder="Enter a name for this assay"
+                                          type="text"
+                                          value=""
+                                        />
+                                      </FormControl>
+                                    </div>
+                                  </div>
                                 </Component>
                               </NameInput>
                               <DescriptionInput
@@ -2084,85 +2004,65 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   }
                                   label="Description"
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-4"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={4}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        helpTipBody={
+                                          <p>
+                                            A short description for this assay design.
+                                          </p>
+                                        }
+                                        label="Description"
                                       >
-                                        <div
-                                          className="col-lg-4 col-xs-3"
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                A short description for this assay design.
-                                              </p>
-                                            }
-                                            label="Description"
+                                          Description
+                                          <Component
+                                            id="tooltip"
+                                            title="Description"
                                           >
                                             <span
-                                              className="domain-no-wrap"
+                                              className="label-help-target"
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
                                             >
-                                              Description
-                                              <Component
-                                                id="tooltip"
-                                                title="Description"
+                                              <span
+                                                className="label-help-icon fa fa-question-circle"
+                                              />
+                                              <Overlay
+                                                animation={[Function]}
+                                                placement="right"
+                                                rootClose={false}
+                                                show={false}
                                               >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
+                                                <Overlay
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                  transition={[Function]}
+                                                />
+                                              </Overlay>
                                             </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={8}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-8 col-xs-9"
-                                        >
-                                          <textarea
-                                            className="form-control"
-                                            id="assay-design-description"
-                                            onChange={[Function]}
-                                            value=""
-                                          />
-                                        </div>
-                                      </Col>
+                                          </Component>
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-8"
+                                    >
+                                      <textarea
+                                        className="form-control"
+                                        id="assay-design-description"
+                                        onChange={[Function]}
+                                        value=""
+                                      />
+                                    </div>
+                                  </div>
                                 </Component>
                               </DescriptionInput>
                             </div>
@@ -2316,86 +2216,66 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                   }
                                   label="Editable Runs"
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-4"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={4}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        helpTipBody={
+                                          <p>
+                                            If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                          </p>
+                                        }
+                                        label="Editable Runs"
                                       >
-                                        <div
-                                          className="col-lg-4 col-xs-3"
+                                        Editable 
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
-                                              </p>
-                                            }
-                                            label="Editable Runs"
+                                          Runs
+                                          <Component
+                                            id="tooltip"
+                                            title="Editable Runs"
                                           >
-                                            Editable 
                                             <span
-                                              className="domain-no-wrap"
+                                              className="label-help-target"
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
                                             >
-                                              Runs
-                                              <Component
-                                                id="tooltip"
-                                                title="Editable Runs"
+                                              <span
+                                                className="label-help-icon fa fa-question-circle"
+                                              />
+                                              <Overlay
+                                                animation={[Function]}
+                                                placement="right"
+                                                rootClose={false}
+                                                show={false}
                                               >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
+                                                <Overlay
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                  transition={[Function]}
+                                                />
+                                              </Overlay>
                                             </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={8}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-8 col-xs-9"
-                                        >
-                                          <input
-                                            checked={false}
-                                            id="assay-design-editableRuns"
-                                            onChange={[Function]}
-                                            type="checkbox"
-                                          />
-                                        </div>
-                                      </Col>
+                                          </Component>
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-8"
+                                    >
+                                      <input
+                                        checked={false}
+                                        id="assay-design-editableRuns"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </div>
+                                  </div>
                                 </Component>
                               </EditableRunsInput>
                             </div>
@@ -3228,69 +3108,49 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   label="Name"
                                   required={true}
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-4"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={4}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        label="Name"
+                                        required={true}
                                       >
-                                        <div
-                                          className="col-lg-4 col-xs-3"
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            label="Name"
-                                            required={true}
-                                          >
-                                            <span
-                                              className="domain-no-wrap"
-                                            >
-                                              Name
-                                               *
-                                            </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={8}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-8 col-xs-9"
-                                        >
-                                          <FormControl
-                                            bsClass="form-control"
-                                            componentClass="input"
-                                            disabled={false}
-                                            id="assay-design-name"
-                                            onChange={[Function]}
-                                            placeholder="Enter a name for this assay"
-                                            type="text"
-                                            value=""
-                                          >
-                                            <input
-                                              className="form-control"
-                                              disabled={false}
-                                              id="assay-design-name"
-                                              onChange={[Function]}
-                                              placeholder="Enter a name for this assay"
-                                              type="text"
-                                              value=""
-                                            />
-                                          </FormControl>
-                                        </div>
-                                      </Col>
+                                          Name
+                                           *
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-8"
+                                    >
+                                      <FormControl
+                                        bsClass="form-control"
+                                        componentClass="input"
+                                        disabled={false}
+                                        id="assay-design-name"
+                                        onChange={[Function]}
+                                        placeholder="Enter a name for this assay"
+                                        type="text"
+                                        value=""
+                                      >
+                                        <input
+                                          className="form-control"
+                                          disabled={false}
+                                          id="assay-design-name"
+                                          onChange={[Function]}
+                                          placeholder="Enter a name for this assay"
+                                          type="text"
+                                          value=""
+                                        />
+                                      </FormControl>
+                                    </div>
+                                  </div>
                                 </Component>
                               </NameInput>
                               <DescriptionInput
@@ -3431,85 +3291,65 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   }
                                   label="Description"
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-4"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={4}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        helpTipBody={
+                                          <p>
+                                            A short description for this assay design.
+                                          </p>
+                                        }
+                                        label="Description"
                                       >
-                                        <div
-                                          className="col-lg-4 col-xs-3"
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                A short description for this assay design.
-                                              </p>
-                                            }
-                                            label="Description"
+                                          Description
+                                          <Component
+                                            id="tooltip"
+                                            title="Description"
                                           >
                                             <span
-                                              className="domain-no-wrap"
+                                              className="label-help-target"
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
                                             >
-                                              Description
-                                              <Component
-                                                id="tooltip"
-                                                title="Description"
+                                              <span
+                                                className="label-help-icon fa fa-question-circle"
+                                              />
+                                              <Overlay
+                                                animation={[Function]}
+                                                placement="right"
+                                                rootClose={false}
+                                                show={false}
                                               >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
+                                                <Overlay
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                  transition={[Function]}
+                                                />
+                                              </Overlay>
                                             </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={8}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-8 col-xs-9"
-                                        >
-                                          <textarea
-                                            className="form-control"
-                                            id="assay-design-description"
-                                            onChange={[Function]}
-                                            value=""
-                                          />
-                                        </div>
-                                      </Col>
+                                          </Component>
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-8"
+                                    >
+                                      <textarea
+                                        className="form-control"
+                                        id="assay-design-description"
+                                        onChange={[Function]}
+                                        value=""
+                                      />
+                                    </div>
+                                  </div>
                                 </Component>
                               </DescriptionInput>
                             </div>
@@ -3663,86 +3503,66 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                   }
                                   label="Editable Runs"
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-4"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={4}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        helpTipBody={
+                                          <p>
+                                            If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                          </p>
+                                        }
+                                        label="Editable Runs"
                                       >
-                                        <div
-                                          className="col-lg-4 col-xs-3"
+                                        Editable 
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
-                                              </p>
-                                            }
-                                            label="Editable Runs"
+                                          Runs
+                                          <Component
+                                            id="tooltip"
+                                            title="Editable Runs"
                                           >
-                                            Editable 
                                             <span
-                                              className="domain-no-wrap"
+                                              className="label-help-target"
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
                                             >
-                                              Runs
-                                              <Component
-                                                id="tooltip"
-                                                title="Editable Runs"
+                                              <span
+                                                className="label-help-icon fa fa-question-circle"
+                                              />
+                                              <Overlay
+                                                animation={[Function]}
+                                                placement="right"
+                                                rootClose={false}
+                                                show={false}
                                               >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
+                                                <Overlay
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                  transition={[Function]}
+                                                />
+                                              </Overlay>
                                             </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={8}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-8 col-xs-9"
-                                        >
-                                          <input
-                                            checked={false}
-                                            id="assay-design-editableRuns"
-                                            onChange={[Function]}
-                                            type="checkbox"
-                                          />
-                                        </div>
-                                      </Col>
+                                          </Component>
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-8"
+                                    >
+                                      <input
+                                        checked={false}
+                                        id="assay-design-editableRuns"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </div>
+                                  </div>
                                 </Component>
                               </EditableRunsInput>
                             </div>
@@ -4135,69 +3955,49 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   label="Name"
                                   required={true}
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-4"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={4}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        label="Name"
+                                        required={true}
                                       >
-                                        <div
-                                          className="col-lg-4 col-xs-3"
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            label="Name"
-                                            required={true}
-                                          >
-                                            <span
-                                              className="domain-no-wrap"
-                                            >
-                                              Name
-                                               *
-                                            </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={8}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-8 col-xs-9"
-                                        >
-                                          <FormControl
-                                            bsClass="form-control"
-                                            componentClass="input"
-                                            disabled={true}
-                                            id="assay-design-name"
-                                            onChange={[Function]}
-                                            placeholder="Enter a name for this assay"
-                                            type="text"
-                                            value="name should not be editable"
-                                          >
-                                            <input
-                                              className="form-control"
-                                              disabled={true}
-                                              id="assay-design-name"
-                                              onChange={[Function]}
-                                              placeholder="Enter a name for this assay"
-                                              type="text"
-                                              value="name should not be editable"
-                                            />
-                                          </FormControl>
-                                        </div>
-                                      </Col>
+                                          Name
+                                           *
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-8"
+                                    >
+                                      <FormControl
+                                        bsClass="form-control"
+                                        componentClass="input"
+                                        disabled={true}
+                                        id="assay-design-name"
+                                        onChange={[Function]}
+                                        placeholder="Enter a name for this assay"
+                                        type="text"
+                                        value="name should not be editable"
+                                      >
+                                        <input
+                                          className="form-control"
+                                          disabled={true}
+                                          id="assay-design-name"
+                                          onChange={[Function]}
+                                          placeholder="Enter a name for this assay"
+                                          type="text"
+                                          value="name should not be editable"
+                                        />
+                                      </FormControl>
+                                    </div>
+                                  </div>
                                 </Component>
                               </NameInput>
                               <DescriptionInput
@@ -4250,85 +4050,65 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   }
                                   label="Description"
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-4"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={4}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        helpTipBody={
+                                          <p>
+                                            A short description for this assay design.
+                                          </p>
+                                        }
+                                        label="Description"
                                       >
-                                        <div
-                                          className="col-lg-4 col-xs-3"
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                A short description for this assay design.
-                                              </p>
-                                            }
-                                            label="Description"
+                                          Description
+                                          <Component
+                                            id="tooltip"
+                                            title="Description"
                                           >
                                             <span
-                                              className="domain-no-wrap"
+                                              className="label-help-target"
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
                                             >
-                                              Description
-                                              <Component
-                                                id="tooltip"
-                                                title="Description"
+                                              <span
+                                                className="label-help-icon fa fa-question-circle"
+                                              />
+                                              <Overlay
+                                                animation={[Function]}
+                                                placement="right"
+                                                rootClose={false}
+                                                show={false}
                                               >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
+                                                <Overlay
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                  transition={[Function]}
+                                                />
+                                              </Overlay>
                                             </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={8}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-8 col-xs-9"
-                                        >
-                                          <textarea
-                                            className="form-control"
-                                            id="assay-design-description"
-                                            onChange={[Function]}
-                                            value="test description for this assay"
-                                          />
-                                        </div>
-                                      </Col>
+                                          </Component>
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-8"
+                                    >
+                                      <textarea
+                                        className="form-control"
+                                        id="assay-design-description"
+                                        onChange={[Function]}
+                                        value="test description for this assay"
+                                      />
+                                    </div>
+                                  </div>
                                 </Component>
                               </DescriptionInput>
                             </div>
@@ -4394,86 +4174,66 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                   }
                                   label="Editable Runs"
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-4"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={4}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        helpTipBody={
+                                          <p>
+                                            If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                          </p>
+                                        }
+                                        label="Editable Runs"
                                       >
-                                        <div
-                                          className="col-lg-4 col-xs-3"
+                                        Editable 
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
-                                              </p>
-                                            }
-                                            label="Editable Runs"
+                                          Runs
+                                          <Component
+                                            id="tooltip"
+                                            title="Editable Runs"
                                           >
-                                            Editable 
                                             <span
-                                              className="domain-no-wrap"
+                                              className="label-help-target"
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
                                             >
-                                              Runs
-                                              <Component
-                                                id="tooltip"
-                                                title="Editable Runs"
+                                              <span
+                                                className="label-help-icon fa fa-question-circle"
+                                              />
+                                              <Overlay
+                                                animation={[Function]}
+                                                placement="right"
+                                                rootClose={false}
+                                                show={false}
                                               >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
+                                                <Overlay
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                  transition={[Function]}
+                                                />
+                                              </Overlay>
                                             </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={8}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-8 col-xs-9"
-                                        >
-                                          <input
-                                            checked={true}
-                                            id="assay-design-editableRuns"
-                                            onChange={[Function]}
-                                            type="checkbox"
-                                          />
-                                        </div>
-                                      </Col>
+                                          </Component>
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-8"
+                                    >
+                                      <input
+                                        checked={true}
+                                        id="assay-design-editableRuns"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </div>
+                                  </div>
                                 </Component>
                               </EditableRunsInput>
                             </div>
@@ -5271,69 +5031,49 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                   label="Name"
                                   required={true}
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-2"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={2}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        label="Name"
+                                        required={true}
                                       >
-                                        <div
-                                          className="col-lg-2 col-xs-3"
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            label="Name"
-                                            required={true}
-                                          >
-                                            <span
-                                              className="domain-no-wrap"
-                                            >
-                                              Name
-                                               *
-                                            </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={10}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-10 col-xs-9"
-                                        >
-                                          <FormControl
-                                            bsClass="form-control"
-                                            componentClass="input"
-                                            disabled={false}
-                                            id="assay-design-name"
-                                            onChange={[Function]}
-                                            placeholder="Enter a name for this assay"
-                                            type="text"
-                                            value=""
-                                          >
-                                            <input
-                                              className="form-control"
-                                              disabled={false}
-                                              id="assay-design-name"
-                                              onChange={[Function]}
-                                              placeholder="Enter a name for this assay"
-                                              type="text"
-                                              value=""
-                                            />
-                                          </FormControl>
-                                        </div>
-                                      </Col>
+                                          Name
+                                           *
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-10"
+                                    >
+                                      <FormControl
+                                        bsClass="form-control"
+                                        componentClass="input"
+                                        disabled={false}
+                                        id="assay-design-name"
+                                        onChange={[Function]}
+                                        placeholder="Enter a name for this assay"
+                                        type="text"
+                                        value=""
+                                      >
+                                        <input
+                                          className="form-control"
+                                          disabled={false}
+                                          id="assay-design-name"
+                                          onChange={[Function]}
+                                          placeholder="Enter a name for this assay"
+                                          type="text"
+                                          value=""
+                                        />
+                                      </FormControl>
+                                    </div>
+                                  </div>
                                 </Component>
                               </NameInput>
                               <DescriptionInput
@@ -5474,85 +5214,65 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                   }
                                   label="Description"
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-2"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={2}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        helpTipBody={
+                                          <p>
+                                            A short description for this assay design.
+                                          </p>
+                                        }
+                                        label="Description"
                                       >
-                                        <div
-                                          className="col-lg-2 col-xs-3"
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                A short description for this assay design.
-                                              </p>
-                                            }
-                                            label="Description"
+                                          Description
+                                          <Component
+                                            id="tooltip"
+                                            title="Description"
                                           >
                                             <span
-                                              className="domain-no-wrap"
+                                              className="label-help-target"
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
                                             >
-                                              Description
-                                              <Component
-                                                id="tooltip"
-                                                title="Description"
+                                              <span
+                                                className="label-help-icon fa fa-question-circle"
+                                              />
+                                              <Overlay
+                                                animation={[Function]}
+                                                placement="right"
+                                                rootClose={false}
+                                                show={false}
                                               >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
+                                                <Overlay
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                  transition={[Function]}
+                                                />
+                                              </Overlay>
                                             </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={10}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-10 col-xs-9"
-                                        >
-                                          <textarea
-                                            className="form-control"
-                                            id="assay-design-description"
-                                            onChange={[Function]}
-                                            value=""
-                                          />
-                                        </div>
-                                      </Col>
+                                          </Component>
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-10"
+                                    >
+                                      <textarea
+                                        className="form-control"
+                                        id="assay-design-description"
+                                        onChange={[Function]}
+                                        value=""
+                                      />
+                                    </div>
+                                  </div>
                                 </Component>
                               </DescriptionInput>
                             </div>
@@ -5706,86 +5426,66 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                   }
                                   label="Editable Runs"
                                 >
-                                  <Row
-                                    bsClass="row"
-                                    className="margin-top"
-                                    componentClass="div"
+                                  <div
+                                    className="row margin-top"
                                   >
                                     <div
-                                      className="margin-top row"
+                                      className="col col-xs-3 col-lg-2"
                                     >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={2}
-                                        xs={3}
+                                      <DomainFieldLabel
+                                        helpTipBody={
+                                          <p>
+                                            If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                          </p>
+                                        }
+                                        label="Editable Runs"
                                       >
-                                        <div
-                                          className="col-lg-2 col-xs-3"
+                                        Editable 
+                                        <span
+                                          className="domain-no-wrap"
                                         >
-                                          <DomainFieldLabel
-                                            helpTipBody={
-                                              <p>
-                                                If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
-                                              </p>
-                                            }
-                                            label="Editable Runs"
+                                          Runs
+                                          <Component
+                                            id="tooltip"
+                                            title="Editable Runs"
                                           >
-                                            Editable 
                                             <span
-                                              className="domain-no-wrap"
+                                              className="label-help-target"
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
                                             >
-                                              Runs
-                                              <Component
-                                                id="tooltip"
-                                                title="Editable Runs"
+                                              <span
+                                                className="label-help-icon fa fa-question-circle"
+                                              />
+                                              <Overlay
+                                                animation={[Function]}
+                                                placement="right"
+                                                rootClose={false}
+                                                show={false}
                                               >
-                                                <span
-                                                  className="label-help-target"
-                                                  onMouseOut={[Function]}
-                                                  onMouseOver={[Function]}
-                                                >
-                                                  <span
-                                                    className="label-help-icon fa fa-question-circle"
-                                                  />
-                                                  <Overlay
-                                                    animation={[Function]}
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                  >
-                                                    <Overlay
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      transition={[Function]}
-                                                    />
-                                                  </Overlay>
-                                                </span>
-                                              </Component>
+                                                <Overlay
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                  transition={[Function]}
+                                                />
+                                              </Overlay>
                                             </span>
-                                          </DomainFieldLabel>
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        lg={10}
-                                        xs={9}
-                                      >
-                                        <div
-                                          className="col-lg-10 col-xs-9"
-                                        >
-                                          <input
-                                            checked={false}
-                                            id="assay-design-editableRuns"
-                                            onChange={[Function]}
-                                            type="checkbox"
-                                          />
-                                        </div>
-                                      </Col>
+                                          </Component>
+                                        </span>
+                                      </DomainFieldLabel>
                                     </div>
-                                  </Row>
+                                    <div
+                                      className="col col-xs-9 col-lg-10"
+                                    >
+                                      <input
+                                        checked={false}
+                                        id="assay-design-editableRuns"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </div>
+                                  </div>
                                 </Component>
                               </EditableRunsInput>
                             </div>

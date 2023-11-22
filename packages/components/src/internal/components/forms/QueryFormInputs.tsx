@@ -16,6 +16,7 @@
 import React, { ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Filter, Query } from '@labkey/api';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { insertColumnFilter, Operation, QueryColumn } from '../../../public/QueryColumn';

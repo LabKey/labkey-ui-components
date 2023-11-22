@@ -15,6 +15,7 @@
  */
 import React, { FC, memo, useMemo } from 'react';
 import Formsy from 'formsy-react';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
 

@@ -157,9 +157,14 @@ export class AssayProtocolModel extends Record({
     }
 
     get container(): string {
+        const container = new Container(getServerContext().container);
+        const domainContainerId = this.getIn(['domains', 0, 'container']);
+
         return this.isNew()
-            ? getAppHomeFolderPath(new Container(getServerContext().container))
-            : this.getIn(['domains', 0, 'container']);
+            ? getAppHomeFolderPath(container)
+            : domainContainerId === container.id
+            ? container.path
+            : domainContainerId;
     }
 
     isNew(): boolean {

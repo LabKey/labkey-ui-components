@@ -71,6 +71,4 @@ describe('SampleTypeModel', () => {
         ) as SampleTypeModel;
         expect(model.containerPath).toEqual(expectedContainerPath);
     });
-
-    // TODO add tests for getDuplicateAlias
 });

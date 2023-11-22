@@ -144,7 +144,7 @@ export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
  * SubNavWithContext renders a SubNav component using data stored in the SubNavContext, this component is useful when
  * you need to update the SubNav based on data you load asynchronously after the page loads.
  */
-export const SubNavWithTabsContext: FC<SubNavGlobalContext> = memo(() => {
+export const SubNavWithTabsContext: FC = memo(() => {
     const { noun, tabs } = useSubNavTabsContext();
 
     if (tabs.size === 0 && noun === undefined) {

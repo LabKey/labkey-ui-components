@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 import classNames from 'classnames';
-import React, { Children, FC, memo, ReactNode, useCallback, useMemo } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useMemo } from 'react';
 import { List, Map } from 'immutable';
 import { useLocation } from 'react-router-dom';
-
-import { useSubNavContext } from '../../SubNavContext';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
@@ -38,10 +36,11 @@ import { User } from '../base/models/User';
 import { useServerContext } from '../base/ServerContext';
 
 import { isAdminRoute, ProductMenuButton } from './ProductMenu';
+import { SubNavWithTabsContext } from './SubNav';
 import { UserMenuGroup, UserMenuProps } from './UserMenuGroup';
 import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
-import { useFolderMenuContext } from './hooks';
+import { useFolderMenuContext, useSubNavTabsContext } from './hooks';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -63,7 +62,6 @@ type Props = NavigationBarProps & UserMenuProps;
 export const NavigationBar: FC<Props> = memo(props => {
     const {
         brand,
-        children,
         extraDevItems,
         extraUserItems,
         menuSectionConfigs,
@@ -92,10 +90,8 @@ export const NavigationBar: FC<Props> = memo(props => {
         searchPlaceholder ?? getPrimaryAppProperties(moduleContext)?.searchPlaceholder ?? SEARCH_PLACEHOLDER;
     const _showNotifications = showNotifications !== false && !!notificationsConfig && !!user && !user.isGuest;
     const _showProductNav = showProductNav !== false && shouldShowProductNavigation(user, moduleContext);
-    const { SubNav } = useSubNavContext();
-    const hasSubNav = SubNav !== undefined;
-
-    console.log('SubNav:', SubNav);
+    const { noun, tabs } = useSubNavTabsContext();
+    const hasSubNav = noun !== undefined || tabs.length > 0;
 
     return (
         <div className={classNames('app-navigation', { 'with-sub-nav': hasSubNav })}>
@@ -174,7 +170,9 @@ export const NavigationBar: FC<Props> = memo(props => {
                 </div>
             </nav>
 
-            <div className="sub-nav-wrapper">{SubNav !== undefined && <SubNav />}</div>
+            <div className="sub-nav-wrapper">
+                <SubNavWithTabsContext />
+            </div>
         </div>
     );
 });

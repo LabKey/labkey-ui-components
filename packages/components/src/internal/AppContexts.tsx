@@ -6,7 +6,6 @@ import { GlobalStateContextProvider } from './GlobalStateContext';
 import { ServerContextProvider, withAppUser } from './components/base/ServerContext';
 import { NotificationsContextProvider } from './components/notifications/NotificationsContext';
 import { LabelPrintingContextProvider } from './components/labels/LabelPrintingContextProvider';
-import { SubNavContextProvider } from './SubNavContext';
 
 interface Props<T = {}> {
     initialAppContext?: ExtendableAppContext<T>;
@@ -25,9 +24,7 @@ export const AppContexts: FC<Props> = props => {
             <AppContextProvider initialContext={initialAppContext}>
                 <GlobalStateContextProvider>
                     <NotificationsContextProvider>
-                        <LabelPrintingContextProvider>
-                            <SubNavContextProvider>{children}</SubNavContextProvider>
-                        </LabelPrintingContextProvider>
+                        <LabelPrintingContextProvider>{children}</LabelPrintingContextProvider>
                     </NotificationsContextProvider>
                 </GlobalStateContextProvider>
             </AppContextProvider>

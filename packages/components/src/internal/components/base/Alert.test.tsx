@@ -14,19 +14,29 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render, screen } from '@testing-library/react';
 
 import { Alert } from './Alert';
 
-describe('<Alert />', () => {
-    test('Renders with children', () => {
-        const tree = renderer.create(<Alert>My alert message</Alert>).toJSON();
-        expect(tree).toMatchSnapshot();
+describe('Alert', () => {
+    test('with children', () => {
+        render(<Alert>My alert message</Alert>);
+
+        // verify the alert message
+        expect(screen.getByText('My alert message')).toBeInTheDocument();
     });
 
-    test('Nothing displayed without children', () => {
-        const message = undefined;
-        const tree = renderer.create(<Alert>{message}</Alert>).toJSON();
-        expect(tree).toMatchSnapshot();
+    test('without children', () => {
+        const { container } = render(<Alert />);
+
+        // verify the document body is empty
+        expect(container.firstChild).toBeNull();
+    });
+
+    test('bsStyle prop', () => {
+        render(<Alert bsStyle="warning">My alert message</Alert>);
+
+        // verify bsStyle is warning
+        expect(screen.getByRole('alert')).toHaveClass('alert-warning');
     });
 });

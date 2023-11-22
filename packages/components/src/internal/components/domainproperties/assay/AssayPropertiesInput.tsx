@@ -1,6 +1,8 @@
 import React, { FC, memo } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import { List, Map } from 'immutable';
+
+import classNames from 'classnames';
 
 import {
     ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
@@ -31,10 +33,11 @@ import { setCopyValue } from '../../../events';
 
 import { getFileExtension } from '../../files/actions';
 
+import { resolveErrorMessage } from '../../../util/messaging';
+
 import { AssayProtocolModel } from './models';
 import { FORM_IDS, SCRIPTS_DIR } from './constants';
 import { getScriptEngineForExtension, getValidPublishTargets } from './actions';
-import { resolveErrorMessage } from '../../../util/messaging';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps {
     appPropertiesOnly?: boolean;
@@ -43,16 +46,24 @@ interface AssayPropertiesInputProps extends DomainFieldLabelProps {
 
 export const AssayPropertiesInput: FC<AssayPropertiesInputProps> = memo(props => {
     const { appPropertiesOnly, children, colSize, ...domainFieldProps } = props;
+    const colXs = colSize ? 'col-xs-' + colSize : undefined;
 
     return (
-        <Row className="margin-top">
-            <Col xs={3} lg={appPropertiesOnly ? 2 : 4}>
+        <div className="row margin-top">
+            <div
+                className={classNames('col col-xs-3', {
+                    'col-lg-2': appPropertiesOnly,
+                    'col-lg-4': !appPropertiesOnly,
+                })}
+            >
                 <DomainFieldLabel {...domainFieldProps} />
-            </Col>
-            <Col xs={colSize} lg={appPropertiesOnly ? 10 : 8}>
+            </div>
+            <div
+                className={classNames('col', colXs, { 'col-lg-10': appPropertiesOnly, 'col-lg-8': !appPropertiesOnly })}
+            >
                 {children}
-            </Col>
-        </Row>
+            </div>
+        </div>
     );
 });
 
@@ -405,7 +416,7 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
         >
             {props.model.moduleTransformScripts.map((script, i) => {
                 return (
-                    <div key={i} style={{ overflowWrap: 'break-word' }}>
+                    <div key={i} className="module-transform-script" style={{ overflowWrap: 'break-word' }}>
                         {script}
                     </div>
                 );
@@ -524,7 +535,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
 
     renderLabel() {
         return (
-            <Col xs={3} lg={4}>
+            <div className="col col-xs-3 col-lg-4">
                 <DomainFieldLabel
                     label="Transform Scripts"
                     helpTipBody={
@@ -548,7 +559,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                         </>
                     }
                 />
-            </Col>
+            </div>
         );
     }
 
@@ -564,9 +575,9 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
             <>
                 {protocolTransformAttachments.map((attachment, i) => {
                     return (
-                        <Row key={i} className="margin-top">
-                            {i === 0 ? this.renderLabel() : <Col xs={3} lg={4} />}
-                            <Col xs={9} lg={8}>
+                        <div key={i} className="row margin-top">
+                            {i === 0 ? this.renderLabel() : <div className="col col-xs-3 col-lg-4" />}
+                            <div className="col col-xs-9 col-lg-8">
                                 <AttachmentCard
                                     outerCls="transform-script-card"
                                     allowRemove
@@ -577,14 +588,18 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                     onRemove={this.onRemoveScript}
                                     onCopyLink={this.onCopyScriptPath}
                                 />
-                            </Col>
-                        </Row>
+                            </div>
+                        </div>
                     );
                 })}
                 {addingScript !== undefined && (
-                    <Row className="transform-script-add">
-                        {protocolTransformScripts.size === 0 ? this.renderLabel() : <Col xs={3} lg={4} />}
-                        <Col xs={8} lg={8}>
+                    <div className="row transform-script-add">
+                        {protocolTransformScripts.size === 0 ? (
+                            this.renderLabel()
+                        ) : (
+                            <div className="col col-xs-3 col-lg-4" />
+                        )}
+                        <div className="col col-xs-8 col-lg-8">
                             <input
                                 className="transform-script-add--radio"
                                 checked={addingScript === AddingScriptType.file}
@@ -642,16 +657,16 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                 </div>
                             )}
                             {error && <Alert>{error}</Alert>}
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
                 )}
-                <Row className="margin-top">
+                <div className="row margin-top">
                     {protocolTransformScripts.size === 0 && addingScript === undefined ? (
                         this.renderLabel()
                     ) : (
-                        <Col xs={3} lg={4} />
+                        <div className="col col-xs-3 col-lg-4" />
                     )}
-                    <Col xs={9} lg={8}>
+                    <div className="col col-xs-9 col-lg-8">
                         <AddEntityButton
                             entity="Script"
                             containerClass="transform-script--add-button"
@@ -668,8 +683,8 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                 Manage script files
                             </a>
                         </div>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </>
         );
     }

@@ -1,3 +1,7 @@
+// The components declared in this file are intended to be functional equivalents for components
+// in the "formsy-react-components" package. That package is no longer maintained as of this writing (11/23)
+// and we needed to drop it as a dependency with our move to React 18.
+// Credit: https://github.com/twisty/formsy-react-components
 import React, {
     ChangeEvent,
     FC,

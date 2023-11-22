@@ -73,7 +73,6 @@ interface State {
     usersView: string;
 }
 
-// exported for jest testing
 export class UsersGridPanelImpl extends PureComponent<Props, State> {
     static defaultProps = {
         showDetailsPanel: true,
@@ -108,7 +107,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
 
         const curUsersView = this.props.searchParams.get('usersView');
 
-        if (curUsersView !== undefined) {
+        if (curUsersView !== null) {
             this.setState({ usersView: this.getUsersView(curUsersView) });
             removeParameters(this.props.setSearchParams, 'usersView');
         }

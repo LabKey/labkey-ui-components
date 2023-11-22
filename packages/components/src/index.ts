@@ -1768,6 +1768,7 @@ export type {
     SampleGridButtonProps,
     GroupedSampleFields,
     FindField,
+    StorageActionStatusCounts,
 } from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/models';

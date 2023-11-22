@@ -87,6 +87,7 @@ import { RunPropertiesPanel } from './RunPropertiesPanel';
 const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';
 const DATA_GRID_ID = 'assay-grid-data';
+const IMPORT_ERROR_ID = 'assay-import-error';
 
 interface OwnProps {
     acceptedPreviewFileFormats?: string;
@@ -635,10 +636,17 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     setModelState = (isSubmitting: boolean, errorMsg: ReactNode): void => {
-        this.setState(state => ({
-            error: errorMsg,
-            model: state.model.merge({ isSubmitting }) as AssayWizardModel,
-        }));
+        this.setState(
+            state => ({
+                error: errorMsg,
+                model: state.model.merge({ isSubmitting }) as AssayWizardModel,
+            }),
+            () => {
+                if (errorMsg) {
+                    document.querySelector('#' + IMPORT_ERROR_ID)?.scrollIntoView();
+                }
+            }
+        );
     };
 
     getProgressSizeEstimate = (): number => {
@@ -780,7 +788,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     getIsDirty={getIsDirty}
                     setIsDirty={setIsDirty}
                 />
-                <Alert>{this.state.error}</Alert>
+                <Alert id={IMPORT_ERROR_ID}>{this.state.error}</Alert>
                 <FormButtons>
                     <button className="btn btn-default" onClick={onCancel} type="button">
                         Cancel

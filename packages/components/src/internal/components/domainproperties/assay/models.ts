@@ -15,10 +15,12 @@
  */
 import { List, Record } from 'immutable';
 
-import { Utils } from '@labkey/api';
+import { getServerContext, Utils } from '@labkey/api';
 
 import { DomainDesign, FieldErrors } from '../models';
 import { AppURL } from '../../../url/AppURL';
+import { getAppHomeFolderPath } from '../../../app/utils';
+import { Container } from '../../base/models/Container';
 
 // See ExpProtocol.Status in 'platform' repository.
 export enum Status {
@@ -154,8 +156,15 @@ export class AssayProtocolModel extends Record({
         }
     }
 
-    get container() {
-        return this.getIn(['domains', 0, 'container']);
+    get container(): string {
+        const container = new Container(getServerContext().container);
+        const domainContainerId = this.getIn(['domains', 0, 'container']);
+
+        return this.isNew()
+            ? getAppHomeFolderPath(container)
+            : domainContainerId === container.id
+            ? container.path
+            : domainContainerId;
     }
 
     isNew(): boolean {

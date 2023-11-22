@@ -1,12 +1,15 @@
 import React, { FC, memo } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
-import { List } from 'immutable';
+import { FormControl } from 'react-bootstrap';
+import { List, Map } from 'immutable';
+
+import classNames from 'classnames';
 
 import {
     ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
     CONFIGURE_SCRIPTING_TOPIC,
-    helpLinkNode,
+    HelpLink,
     PROGRAMMATIC_QC_TOPIC,
+    RUN_PROPERTIES_TOPIC,
 } from '../../../util/helpLinks';
 import { DomainFieldLabel, DomainFieldLabelProps } from '../DomainFieldLabel';
 
@@ -17,9 +20,24 @@ import { Container } from '../../base/models/Container';
 import { AddEntityButton } from '../../buttons/AddEntityButton';
 import { RemoveEntityButton } from '../../buttons/RemoveEntityButton';
 
+import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
+import { getWebDavFiles, getWebDavUrl, uploadWebDavFileToUrl } from '../../../../public/files/WebDav';
+
+import { Alert } from '../../base/Alert';
+
+import { AttachmentCard, IAttachment } from '../../../renderers/AttachmentCard';
+
+import { getAttachmentTitleFromName } from '../../../renderers/FileColumnRenderer';
+
+import { setCopyValue } from '../../../events';
+
+import { getFileExtension } from '../../files/actions';
+
+import { resolveErrorMessage } from '../../../util/messaging';
+
 import { AssayProtocolModel } from './models';
-import { FORM_IDS } from './constants';
-import { getValidPublishTargets } from './actions';
+import { FORM_IDS, SCRIPTS_DIR } from './constants';
+import { getScriptEngineForExtension, getValidPublishTargets } from './actions';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps {
     appPropertiesOnly?: boolean;
@@ -28,16 +46,24 @@ interface AssayPropertiesInputProps extends DomainFieldLabelProps {
 
 export const AssayPropertiesInput: FC<AssayPropertiesInputProps> = memo(props => {
     const { appPropertiesOnly, children, colSize, ...domainFieldProps } = props;
+    const colXs = colSize ? 'col-xs-' + colSize : undefined;
 
     return (
-        <Row className="margin-top">
-            <Col xs={3} lg={appPropertiesOnly ? 2 : 4}>
+        <div className="row margin-top">
+            <div
+                className={classNames('col col-xs-3', {
+                    'col-lg-2': appPropertiesOnly,
+                    'col-lg-4': !appPropertiesOnly,
+                })}
+            >
                 <DomainFieldLabel {...domainFieldProps} />
-            </Col>
-            <Col xs={colSize} lg={appPropertiesOnly ? 10 : 8}>
+            </div>
+            <div
+                className={classNames('col', colXs, { 'col-lg-10': appPropertiesOnly, 'col-lg-8': !appPropertiesOnly })}
+            >
                 {children}
-            </Col>
-        </Row>
+            </div>
+        </div>
     );
 });
 
@@ -56,11 +82,7 @@ interface InputProps {
 
 export function NameInput(props: InputProps) {
     return (
-        <AssayPropertiesInput
-            label="Name"
-            required={true}
-            appPropertiesOnly={props.appPropertiesOnly}
-        >
+        <AssayPropertiesInput label="Name" required={true} appPropertiesOnly={props.appPropertiesOnly}>
             <FormControl
                 id={FORM_IDS.ASSAY_NAME}
                 type="text"
@@ -116,8 +138,7 @@ export function PlateTemplatesInput(props: InputProps) {
             helpTipBody={
                 <p>
                     Specify the plate template definition used to map spots or wells on the plate to data fields in this
-                    assay design. For additional information refer to the{' '}
-                    {helpLinkNode(ASSAY_EDIT_PLATE_TEMPLATE_TOPIC, 'help documentation')}.
+                    assay design. <HelpLink topic={ASSAY_EDIT_PLATE_TEMPLATE_TOPIC}>More info</HelpLink>
                 </p>
             }
         >
@@ -385,18 +406,17 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
                         scripts configured above.
                     </p>
                     <p>
-                        The extension of the script file identifies the script engine that will be used to run the
+                        The extension of the script file identifies the scripting engine that will be used to run the
                         validation script. For example, a script named test.pl will be run with the Perl scripting
                         engine. The scripting engine must be configured on the Views and Scripting page in the Admin
-                        Console. For additional information refer to the{' '}
-                        {helpLinkNode(CONFIGURE_SCRIPTING_TOPIC, 'help documentation')}.
+                        Console. <HelpLink topic={CONFIGURE_SCRIPTING_TOPIC}>More info</HelpLink>
                     </p>
                 </>
             }
         >
             {props.model.moduleTransformScripts.map((script, i) => {
                 return (
-                    <div key={i} style={{ overflowWrap: 'break-word' }}>
+                    <div key={i} className="module-transform-script" style={{ overflowWrap: 'break-word' }}>
                         {script}
                     </div>
                 );
@@ -405,26 +425,44 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
     );
 }
 
+enum AddingScriptType {
+    file,
+    path,
+}
+
 interface TransformScriptsInputProps {
     model: AssayProtocolModel;
     onChange: (id: string, value: any) => void;
 }
 
-export class TransformScriptsInput extends React.PureComponent<TransformScriptsInputProps> {
-    onChange = evt => {
-        const id = evt.target.id;
-        const index = parseInt(id.replace(FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS, ''));
-        const value = evt.target.value;
-        this.applyChanges(
-            this.props.model.protocolTransformScripts.map((currentVal, i) => (i === index ? value : currentVal))
-        );
+interface TransformScriptsInputState {
+    addingScript: AddingScriptType;
+    addingScriptPath: string;
+    error: string;
+}
+
+export class TransformScriptsInput extends React.PureComponent<TransformScriptsInputProps, TransformScriptsInputState> {
+    readonly state = { error: undefined, addingScript: undefined, addingScriptPath: '' };
+
+    toggleAddingScript = (): void => {
+        this.setState(state => ({
+            addingScript: state.addingScript === undefined ? AddingScriptType.file : undefined,
+            addingScriptPath: '',
+            error: undefined,
+        }));
     };
 
-    addScript = () => {
+    onChangeAddingScriptType = (evt: any): void => {
+        const value = evt.target.value ?? evt.target.getAttribute('data-value');
+        this.setState({ addingScript: value === 'file' ? AddingScriptType.file : AddingScriptType.path });
+    };
+
+    addScript = (path?: string) => {
         const scripts = this.props.model.protocolTransformScripts
             ? this.props.model.protocolTransformScripts
             : List<string>();
-        this.applyChanges(scripts.push(''));
+        this.applyChanges(scripts.push(path ?? ''));
+        this.toggleAddingScript();
     };
 
     removeScript = (index: number) => {
@@ -435,93 +473,226 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         this.props.onChange(FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS, updatedScripts);
     }
 
+    onScriptPathChange = (evt: any): void => {
+        this.setState({ addingScriptPath: evt.target.value });
+    };
+
+    onAddScriptPath = async (): Promise<void> => {
+        if (this.state.addingScript !== AddingScriptType.path) return;
+
+        const { model } = this.props;
+        this.setState({ error: undefined });
+
+        try {
+            const value = this.state.addingScriptPath?.trim() ?? '';
+            if (value.length > 0) {
+                await getScriptEngineForExtension(getFileExtension(value), model.container);
+                this.addScript(value);
+            }
+        } catch (e) {
+            this.setState({ error: resolveErrorMessage(e) });
+        }
+    };
+
+    onAddScriptFile = async (files: Map<string, File>): Promise<void> => {
+        if (this.state.addingScript !== AddingScriptType.file) return;
+
+        const { model } = this.props;
+        this.setState({ error: undefined });
+
+        try {
+            await getScriptEngineForExtension(getFileExtension(files.first()?.name), model.container);
+
+            const url = getWebDavUrl(model.container, SCRIPTS_DIR, false, true);
+            const fileName = await uploadWebDavFileToUrl(files.first(), url, false);
+            const scriptFiles = await getWebDavFiles(model.container, SCRIPTS_DIR, false, true);
+            const filePath = scriptFiles.get('files')?.get(fileName)?.dataFileUrl;
+
+            // dataFileUrl comes back encoded and with a "file://" prefix
+            if (filePath) {
+                this.addScript(decodeURIComponent(filePath.replace('file://', '')));
+            }
+        } catch (e) {
+            this.setState({ error: resolveErrorMessage(e) });
+        }
+    };
+
+    onRemoveScript = (attachment: IAttachment): void => {
+        this.applyChanges(
+            this.props.model.protocolTransformScripts.filter(script => script !== attachment.description)
+        );
+    };
+
+    onCopyScriptPath = (attachment: IAttachment): void => {
+        const handleCopy = (event: ClipboardEvent): void => {
+            setCopyValue(event, attachment.description);
+            event.preventDefault();
+            document.removeEventListener('copy', handleCopy, true);
+        };
+        document.addEventListener('copy', handleCopy, true);
+        document.execCommand('copy');
+    };
+
     renderLabel() {
         return (
-            <Col xs={3} lg={4}>
+            <div className="col col-xs-3 col-lg-4">
                 <DomainFieldLabel
                     label="Transform Scripts"
                     helpTipBody={
                         <>
+                            <p>Upload a transform script file or enter the full path to an existing file.</p>
                             <p>
-                                The full path to the transform script file. Transform scripts run before the assay data
-                                is imported and can reshape the data file to match the expected import format. For help
-                                writing a transform script refer to the{' '}
-                                {helpLinkNode(PROGRAMMATIC_QC_TOPIC, 'Programmatic Quality Control & Transformations')}{' '}
-                                guide.
+                                Transform scripts run before the assay data is imported and can reshape the data file to
+                                match the expected import format.{' '}
+                                <HelpLink topic={PROGRAMMATIC_QC_TOPIC} useDefaultUrl>
+                                    More info
+                                </HelpLink>
                             </p>
                             <p>
-                                The extension of the script file identifies the script engine that will be used to run
-                                the validation script. For example, a script named test.pl will be run with the Perl
-                                scripting engine. The scripting engine must be configured on the Views and Scripting
-                                page in the Admin Console. For additional information refer to the{' '}
-                                {helpLinkNode(CONFIGURE_SCRIPTING_TOPIC, 'help documentation')}.
+                                The extension of the script file identifies the scripting engine that will be used. The
+                                scripting engine must be configured on the Views and Scripting page in the Admin
+                                Console.{' '}
+                                <HelpLink topic={CONFIGURE_SCRIPTING_TOPIC} useDefaultUrl>
+                                    More info
+                                </HelpLink>
                             </p>
                         </>
                     }
                 />
-            </Col>
+            </div>
         );
     }
 
     render() {
         const { model } = this.props;
+        const { error, addingScript, addingScriptPath } = this.state;
         const protocolTransformScripts = model.protocolTransformScripts || List<string>();
+        const protocolTransformAttachments = protocolTransformScripts.map(script => {
+            return { name: getAttachmentTitleFromName(script), description: script };
+        });
 
         return (
             <>
-                {protocolTransformScripts.map((scriptPath, i) => {
+                {protocolTransformAttachments.map((attachment, i) => {
                     return (
-                        <Row key={'scriptrow-' + i} className="margin-top">
-                            {i === 0 ? this.renderLabel() : <Col xs={3} lg={4} />}
-                            <Col xs={8} lg={7}>
-                                <FormControl
-                                    key={'scriptinput-' + i}
-                                    id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
-                                    type="text"
-                                    value={scriptPath}
-                                    onChange={this.onChange}
+                        <div key={i} className="row margin-top">
+                            {i === 0 ? this.renderLabel() : <div className="col col-xs-3 col-lg-4" />}
+                            <div className="col col-xs-9 col-lg-8">
+                                <AttachmentCard
+                                    outerCls="transform-script-card"
+                                    allowRemove
+                                    allowDownload={false}
+                                    attachment={attachment}
+                                    copyNoun="path"
+                                    noun="path"
+                                    onRemove={this.onRemoveScript}
+                                    onCopyLink={this.onCopyScriptPath}
                                 />
-                            </Col>
-                            <Col xs={1}>
-                                <RemoveEntityButton
-                                    key={'scriptremove-' + i}
-                                    labelClass="domain-remove-icon"
-                                    onClick={() => {
-                                        this.removeScript(i);
-                                    }}
-                                />
-                            </Col>
-                        </Row>
+                            </div>
+                        </div>
                     );
                 })}
-                <Row className="margin-top">
-                    {protocolTransformScripts.size === 0 ? this.renderLabel() : <Col xs={3} lg={4} />}
-                    <Col xs={3} lg={4}>
-                        <AddEntityButton entity="Script" containerClass="" onClick={this.addScript} />
-                    </Col>
-                    {protocolTransformScripts.size > 0 && !model.isNew() && (
-                        <Col xs={5} lg={4}>
-                            <span className="pull-right">
-                                <a
-                                    href={buildURL('assay', 'downloadSampleQCData', {
-                                        rowId: model.protocolId,
-                                    })}
-                                    target="_blank"
-                                    className="labkey-text-link"
-                                    rel="noopener noreferrer"
-                                >
-                                    Download sample file
-                                </a>
-                            </span>
-                        </Col>
+                {addingScript !== undefined && (
+                    <div className="row transform-script-add">
+                        {protocolTransformScripts.size === 0 ? (
+                            this.renderLabel()
+                        ) : (
+                            <div className="col col-xs-3 col-lg-4" />
+                        )}
+                        <div className="col col-xs-8 col-lg-8">
+                            <input
+                                className="transform-script-add--radio"
+                                checked={addingScript === AddingScriptType.file}
+                                type="radio"
+                                name="transformScriptAddType"
+                                value="file"
+                                onChange={this.onChangeAddingScriptType}
+                            />
+                            <div
+                                className="transform-script-add--label"
+                                data-value="file"
+                                onClick={this.onChangeAddingScriptType}
+                            >
+                                Upload file
+                            </div>
+                            <input
+                                className="transform-script-add--radio"
+                                checked={addingScript === AddingScriptType.path}
+                                type="radio"
+                                name="transformScriptAddType"
+                                value="path"
+                                onChange={this.onChangeAddingScriptType}
+                            />
+                            <div
+                                className="transform-script-add--label"
+                                data-value="path"
+                                onClick={this.onChangeAddingScriptType}
+                            >
+                                Enter file path
+                            </div>
+                            <RemoveEntityButton
+                                labelClass="domain-remove-icon pull-right"
+                                onClick={this.toggleAddingScript}
+                            />
+                            {addingScript === AddingScriptType.file && (
+                                <FileAttachmentForm
+                                    allowDirectories={false}
+                                    allowMultiple={false}
+                                    compact
+                                    showLabel={false}
+                                    onFileChange={this.onAddScriptFile}
+                                />
+                            )}
+                            {addingScript === AddingScriptType.path && (
+                                <div className="transform-script-add--path">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={addingScriptPath}
+                                        onChange={this.onScriptPathChange}
+                                    />
+                                    <button type="button" className="btn btn-primary" onClick={this.onAddScriptPath}>
+                                        Apply
+                                    </button>
+                                </div>
+                            )}
+                            {error && <Alert>{error}</Alert>}
+                        </div>
+                    </div>
+                )}
+                <div className="row margin-top">
+                    {protocolTransformScripts.size === 0 && addingScript === undefined ? (
+                        this.renderLabel()
+                    ) : (
+                        <div className="col col-xs-3 col-lg-4" />
                     )}
-                </Row>
+                    <div className="col col-xs-9 col-lg-8">
+                        <AddEntityButton
+                            entity="Script"
+                            containerClass="transform-script--add-button"
+                            onClick={this.toggleAddingScript}
+                            disabled={addingScript !== undefined}
+                        />
+                        <div className="transform-script--manage-link">
+                            <a
+                                href={getWebDavUrl(model.container, SCRIPTS_DIR, false, true)}
+                                target="_blank"
+                                className="labkey-text-link"
+                                rel="noopener noreferrer"
+                            >
+                                Manage script files
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </>
         );
     }
 }
 
 export function SaveScriptDataInput(props: InputProps) {
+    const { model } = props;
+
     return (
         <AssayPropertiesInput
             label="Save Script Data for Debugging"
@@ -536,6 +707,14 @@ export function SaveScriptDataInput(props: InputProps) {
                         If this checkbox is checked, files will be saved to a subfolder named:
                         "TransformAndValidationFiles", located in the same folder that the original script is located.
                     </p>
+                    {!model.isNew() && (
+                        <p>
+                            Use the "Download template files" link to get example files for your assay design.{' '}
+                            <HelpLink topic={RUN_PROPERTIES_TOPIC} useDefaultUrl>
+                                More info
+                            </HelpLink>
+                        </p>
+                    )}
                 </>
             }
         >
@@ -545,6 +724,20 @@ export function SaveScriptDataInput(props: InputProps) {
                 checked={props.model.saveScriptFiles}
                 onChange={props.onChange}
             />
+            {!model.isNew() && (
+                <div className="transform-script--download-link">
+                    <a
+                        href={buildURL('assay', 'downloadSampleQCData', {
+                            rowId: model.protocolId,
+                        })}
+                        target="_blank"
+                        className="labkey-text-link"
+                        rel="noopener noreferrer"
+                    >
+                        Download template files
+                    </a>
+                </div>
+            )}
         </AssayPropertiesInput>
     );
 }

@@ -27,11 +27,11 @@ import { isAssayEnabled } from '../../../app/utils';
 
 import { AssayProtocolModel } from './models';
 
-export function saveAssayDesign(model: AssayProtocolModel, containerPath: string): Promise<AssayProtocolModel> {
+export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('assay', 'saveProtocol.api', undefined, {
-                container: containerPath,
+                container: model.container,
             }),
             jsonData: AssayProtocolModel.serialize(model),
             success: Utils.getCallbackWrapper(response => {
@@ -99,6 +99,24 @@ export function getValidPublishTargets(containerPath?: string): Promise<List<Con
                 resolve(List<Container>(response.containers.map(container => new Container(container))));
             }),
             failure: Utils.getCallbackWrapper(error => {
+                reject(error);
+            }),
+        });
+    });
+}
+
+export function getScriptEngineForExtension(extension: string, containerPath?: string): Promise<Record<string, any>> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('core', 'getScriptEngineForExtension.api', undefined, {
+                container: containerPath,
+            }),
+            params: { extension },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error(error);
                 reject(error);
             }),
         });

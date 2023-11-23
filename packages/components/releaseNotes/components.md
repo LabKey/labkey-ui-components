@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 48817: Update some wording in the NameIdSettings panel
+
 ### version 2.394.0
 *Released*: 22 November 2023
 * Assay Transform Script UX update

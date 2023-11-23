@@ -57,7 +57,8 @@ interface State {
     hasSamples?: boolean;
     isReset?: boolean;
     isRoot?: boolean;
-    loading: boolean;
+    loadingNamingOptions: boolean;
+    loadingCounters: boolean;
     newRootSampleCount?: number;
     newSampleCount?: number;
     prefix: string;
@@ -70,7 +71,8 @@ interface State {
 
 const initialState: State = {
     error: undefined,
-    loading: true,
+    loadingNamingOptions: true,
+    loadingCounters: true,
     prefix: '',
     savingPrefix: false,
     confirmModalOpen: false,
@@ -90,7 +92,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
     const { moduleContext } = useServerContext();
 
     const {
-        loading,
+        loadingCounters,
+        loadingNamingOptions,
         savingAllowUserSpecifiedNames,
         allowUserSpecifiedNames,
         prefix,
@@ -112,10 +115,20 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         hasRootSampleCountChange,
     } = state;
 
-    const initialize = async (): Promise<void> => {
+    const initializeNamingPattern = async (): Promise<void> => {
         try {
             const payload = await loadNameExpressionOptions(container.path);
-
+            setState({
+                prefix: payload.prefix ?? '',
+                allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
+                loadingNamingOptions: false,
+            });
+        } catch (err) {
+            setState({ error: err.exception, loadingNamingOptions: false });
+        }
+    };
+    const initialize = async (): Promise<void> => {
+        try {
             if (isAppHome) {
                 const sampleCount = await api.samples.getSampleCounter('sampleCount'); // show the next value
                 const rootSampleCount = await api.samples.getSampleCounter('rootSampleCount');
@@ -125,9 +138,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                 if (rootSampleCount > 0) hasRootSamples = await api.samples.hasExistingSamples(true);
 
                 setState({
-                    prefix: payload.prefix ?? '',
-                    allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
-                    loading: false,
+                    loadingCounters: false,
                     sampleCount,
                     rootSampleCount,
                     newSampleCount: sampleCount,
@@ -135,19 +146,14 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     hasSamples,
                     hasRootSamples,
                 });
-            } else {
-                setState({
-                    prefix: payload.prefix ?? '',
-                    allowUserSpecifiedNames: payload.allowUserSpecifiedNames,
-                    loading: false,
-                });
             }
         } catch (err) {
-            setState({ error: err.exception, loading: false });
+            setState({ error: err.exception, loadingCounters: false });
         }
     };
 
     useEffect(() => {
+        initializeNamingPattern();
         initialize();
     }, [isAppHome, container]);
 
@@ -284,15 +290,15 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                 <div className="name-id-setting__setting-section">
                     <div className="list__bold-text margin-bottom">User-defined IDs/Names</div>
 
-                    {loading && <LoadingSpinner />}
-                    {!loading && (
+                    {loadingNamingOptions && <LoadingSpinner />}
+                    {!loadingNamingOptions && (
                         <form>
                             <Checkbox
                                 onChange={saveAllowUserSpecifiedNames}
                                 disabled={savingAllowUserSpecifiedNames}
                                 checked={allowUserSpecifiedNames}
                             >
-                                Allow users to create/import their own IDs/Names
+                                Allow users to create/import their own IDs/Names in this folder
                                 <LabelHelpTip title="User Defined ID/Names">
                                     <p>
                                         When users are not permitted to create their own IDs/Names, the ID/Name field
@@ -315,12 +321,12 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         <div className="list__bold-text margin-bottom margin-top">ID/Name Prefix</div>
                         <div>
                             Enter a prefix to the Naming Pattern for all new Samples and{' '}
-                            {sampleManagerIsPrimaryApp(moduleContext) ? 'Sources' : 'Data Classes'}. No existing
-                            IDs/Names will be changed.
+                            {sampleManagerIsPrimaryApp(moduleContext) ? 'Sources' : 'Data Classes'} in this folder.
+                            No existing IDs/Names will be changed.
                         </div>
 
-                        {loading && <LoadingSpinner />}
-                        {!loading && (
+                        {loadingNamingOptions && <LoadingSpinner />}
+                        {!loadingNamingOptions && (
                             <>
                                 <div className="name-id-setting__prefix">
                                     <div className="name-id-setting__prefix-label"> Prefix: </div>
@@ -377,15 +383,15 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     <div className="sample-counter__setting-section margin-top">
                         <div className="list__bold-text margin-bottom">Naming Pattern Elements/Tokens</div>
                         <div>
-                            The following tokens/counters are utilized in naming patterns for the project and all
-                            sub-projects. To modify a counter, simply enter a number greater than the current value and
+                            The following tokens/counters are utilized in naming patterns for the application and all
+                            projects. To modify a counter, simply enter a number greater than the current value and
                             click “Apply”. Please be aware that once a counter is changed, the action cannot be
                             reversed. For additional information regarding these tokens, you can refer to this{' '}
                             <HelpLink topic={SAMPLE_TYPE_NAME_EXPRESSION_TOPIC}>link</HelpLink>.
                         </div>
 
-                        {loading && <LoadingSpinner />}
-                        {!loading && (
+                        {loadingCounters && <LoadingSpinner />}
+                        {!loadingCounters && (
                             <div>
                                 <Row className="margin-top">
                                     <Col sm={2}>
@@ -481,7 +487,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                                 This action will change the {isRoot ? 'rootSampleCount' : 'sampleCount'}{' '}
                                                 from {isRoot ? rootSampleCount : sampleCount} to{' '}
                                                 {isReset ? 0 : isRoot ? newRootSampleCount : newSampleCount} for the
-                                                project and all sub-projects. Are you sure you want to proceed? This
+                                                application and all projects. Are you sure you want to proceed? This
                                                 action cannot be undone.
                                             </p>
                                         </div>

@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Dropdown, MenuItem, Modal } from 'react-bootstrap';
 
-import { formatBytes, isImage } from '../util/utils';
+import { formatBytes, getIconFontCls, isImage } from '../util/utils';
 import { isLoading, LoadingState } from '../../public/LoadingState';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
 
@@ -9,8 +9,9 @@ const now = (): number => new Date().valueOf();
 
 export interface IAttachment {
     created?: number;
+    description?: string;
     fileIcon?: string;
-    iconFontCls: string;
+    iconFontCls?: string;
     loadingState?: LoadingState;
     name: string;
     size?: number;
@@ -18,20 +19,33 @@ export interface IAttachment {
 }
 
 interface Props {
+    allowDownload?: boolean;
     allowRemove?: boolean;
     attachment: IAttachment;
+    copyNoun?: string;
     imageCls?: string;
     imageURL?: string;
     noun?: string;
     onCopyLink?: (attachment: IAttachment) => void;
     onDownload?: (attachment: IAttachment) => void;
     onRemove?: (attachment: IAttachment) => void;
+    outerCls?: string;
 }
 
 export const AttachmentCard: FC<Props> = memo(props => {
-    const { attachment, imageURL, imageCls, onCopyLink, onRemove, onDownload } = props;
-    const noun = props.noun ?? 'attachment';
-    const allowRemove = props.allowRemove ?? true;
+    const {
+        attachment,
+        imageURL,
+        imageCls,
+        onCopyLink,
+        onRemove,
+        onDownload,
+        outerCls = '',
+        noun = 'attachment',
+        copyNoun = 'link',
+        allowRemove = true,
+        allowDownload = true,
+    } = props;
     const [showModal, setShowModal] = useState<boolean>();
 
     const _showModal = useCallback(() => {
@@ -45,8 +59,10 @@ export const AttachmentCard: FC<Props> = memo(props => {
     const _onCopyLink = useCallback((): void => onCopyLink(attachment), [attachment, onCopyLink]);
 
     const _onDownload = useCallback((): void => {
-        onDownload?.(attachment);
-    }, [attachment, onDownload]);
+        if (allowDownload) {
+            onDownload?.(attachment);
+        }
+    }, [allowDownload, attachment, onDownload]);
 
     const _onRemove = useCallback(() => {
         if (allowRemove) {
@@ -58,14 +74,15 @@ export const AttachmentCard: FC<Props> = memo(props => {
         return null;
     }
 
-    const { iconFontCls, loadingState, name, title, size } = attachment;
+    const { iconFontCls, loadingState, name, title, size, description } = attachment;
+    const _iconFontCls = iconFontCls ?? getIconFontCls(name);
     const isLoaded = !isLoading(loadingState);
     const recentlyCreated = attachment.created ? attachment.created > now() - 30000 : false;
     const _isImage = isImage(attachment.name);
 
     return (
         <>
-            <div className="attachment-card" title={name}>
+            <div className={'attachment-card ' + outerCls} title={name}>
                 <div
                     className="attachment-card__body"
                     onClick={isLoaded ? (_isImage ? _showModal : _onDownload) : undefined}
@@ -75,7 +92,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
                         {_isImage && isLoaded && (
                             <img className={`attachment-card__icon_img ${imageCls}`} src={imageURL} alt={name} />
                         )}
-                        {!_isImage && <i className={`attachment-card__icon_tile ${iconFontCls}`} />}
+                        {!_isImage && <i className={`attachment-card__icon_tile ${_iconFontCls}`} />}
                     </div>
                     <div className="attachment-card__content">
                         <div className="attachment-card__name">{title ?? name}</div>
@@ -88,6 +105,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
                             )}
                             {isLoaded && !recentlyCreated && size && formatBytes(size)}
                         </div>
+                        {description && <div className="attachment-card__description">{description}</div>}
                     </div>
                 </div>
                 {isLoaded && (
@@ -96,8 +114,8 @@ export const AttachmentCard: FC<Props> = memo(props => {
                             <i className="fa fa-ellipsis-v" />
                         </Dropdown.Toggle>
                         <Dropdown.Menu className="pull-right">
-                            {onCopyLink && <MenuItem onClick={_onCopyLink}>Copy link</MenuItem>}
-                            <MenuItem onClick={_onDownload}>Download</MenuItem>
+                            {onCopyLink && <MenuItem onClick={_onCopyLink}>Copy {copyNoun}</MenuItem>}
+                            {allowDownload && <MenuItem onClick={_onDownload}>Download</MenuItem>}
                             {allowRemove && <MenuItem onClick={_onRemove}>Remove {noun}</MenuItem>}
                         </Dropdown.Menu>
                     </Dropdown>

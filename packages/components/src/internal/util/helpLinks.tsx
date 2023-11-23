@@ -17,6 +17,7 @@ export const ONTOLOGY_CONCEPT_TOPIC = 'ontologyConcept';
 export const ASSAY_EDIT_PLATE_TEMPLATE_TOPIC = 'editPlateTemplate';
 export const CONFIGURE_SCRIPTING_TOPIC = 'configureScripting';
 export const PROGRAMMATIC_QC_TOPIC = 'programmaticQC';
+export const RUN_PROPERTIES_TOPIC = 'runProperties';
 export const DEFINE_ASSAY_SCHEMA_TOPIC = 'defineAssaySchema';
 export const DELETE_ASSAY_RUNS_TOPIC = 'manageAssayData#deleteRun';
 export const DEFINE_DATA_CLASS_TOPIC = 'createDataClass';
@@ -47,6 +48,8 @@ export const UNIQUE_IDS_TOPIC = 'uniqueStorageIds';
 
 export const CUSTOM_VIEW = 'customViews';
 
+const HELP_LINK_DEFAULT_URL = 'https://www.labkey.org/Documentation/wiki-page.view?';
+
 // See HelpTopic.java Referrer enum
 export enum HELP_LINK_REFERRER {
     DEV_MENU = 'devMenu',
@@ -56,11 +59,14 @@ export enum HELP_LINK_REFERRER {
     PRODUCT_MENU = 'productMenu',
 }
 
-export function getHelpLink(topic: string, referrer = HELP_LINK_REFERRER.IN_PAGE): string {
+export function getHelpLink(topic: string, referrer = HELP_LINK_REFERRER.IN_PAGE, useDefaultUrl = false): string {
     const prefix = getServerContext().helpLinkPrefix;
-    if (prefix)
+    if (useDefaultUrl) {
+        return HELP_LINK_DEFAULT_URL + 'referrer=' + referrer + '&name=' + topic;
+    } else if (prefix) {
         // putting referrer= at the end causes links that go to anchors in the page not to work.
         return prefix.replace('name=', 'referrer=' + referrer + '&name=' + topic);
+    }
     return undefined;
 }
 
@@ -68,13 +74,19 @@ interface HelpLinkProps {
     className?: string;
     referrer?: HELP_LINK_REFERRER;
     topic: string;
+    useDefaultUrl?: boolean;
 }
 
 export const HelpLink: FC<HelpLinkProps> = props => {
-    const { className, topic, referrer, children } = props;
+    const { className, topic, referrer, children, useDefaultUrl } = props;
 
     return (
-        <a target="_blank" href={getHelpLink(topic, referrer)} className={className} rel="noopener noreferrer">
+        <a
+            target="_blank"
+            href={getHelpLink(topic, referrer, useDefaultUrl)}
+            className={className}
+            rel="noopener noreferrer"
+        >
             {children}
         </a>
     );

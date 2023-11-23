@@ -4,6 +4,8 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { DEFAULT_FILE, IFile } from '../../internal/components/files/models';
 
+const SC_FILE_MATCH = 208;
+
 export interface IFileExtended extends IFile {
     collection: boolean; // Gets coerced to isCollection
     contenttype: string; // Gets coerced to contentType
@@ -53,7 +55,7 @@ export class WebDavFile implements IFile {
     }
 }
 
-function getWebDavUrl(
+export function getWebDavUrl(
     containerPath: string,
     directory?: string,
     createIntermediates?: boolean,
@@ -111,26 +113,37 @@ export function uploadWebDavFile(
     file: File,
     containerPath: string,
     directory?: string,
-    createIntermediates?: boolean
+    createIntermediates?: boolean,
+    overwrite = true
 ): Promise<string> {
+    const url = getWebDavUrl(containerPath, directory, createIntermediates);
+    return uploadWebDavFileToUrl(file, url, overwrite);
+}
+
+export function uploadWebDavFileToUrl(file: File, url: string, overwrite = true): Promise<string> {
     return new Promise((resolve, reject) => {
         const form = new FormData();
         form.append('file', file);
+        form.append('overwrite', overwrite ? 'T' : 'F');
 
         Ajax.request({
-            url: getWebDavUrl(containerPath, directory, createIntermediates),
+            url,
             method: 'POST',
             form,
-            success: Utils.getCallbackWrapper(() => {
-                resolve(file.name);
+            success: Utils.getCallbackWrapper((response, request) => {
+                if (!overwrite && request?.status === SC_FILE_MATCH) {
+                    reject('File already exists: ' + file.name);
+                } else {
+                    resolve(file.name);
+                }
             }),
             failure: Utils.getCallbackWrapper(
                 () => {
-                    console.error('failure uploading file ' + file.name);
-                    reject(file.name);
+                    console.error('Failure uploading file: ' + file.name);
+                    reject('Failure uploading file: ' + file.name);
                 },
                 null,
-                false
+                true
             ),
         });
     });

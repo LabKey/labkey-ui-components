@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, act, screen } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
+import userEvent from '@testing-library/user-event';
 
 import { RemovableButton } from './RemovableButton';
 
@@ -37,9 +37,7 @@ describe('<RemovableButton/>', () => {
     });
 
     test('on click remove', async () => {
-        render(
-            <RemovableButton id={1} display="Display Text" onRemove={jest.fn()} onClick={jest.fn()} />
-        );
+        render(<RemovableButton id={1} display="Display Text" onRemove={jest.fn()} onClick={jest.fn()} />);
 
         // test the removed state, should change some css classes
         expect(document.querySelectorAll('.permissions-button-added').length).toBe(0);
@@ -51,14 +49,24 @@ describe('<RemovableButton/>', () => {
     });
 
     test('added prop', () => {
-        const component = <RemovableButton id={1} display="Display Text" added onRemove={jest.fn()} onClick={jest.fn()} />;
+        const component = (
+            <RemovableButton id={1} display="Display Text" added onRemove={jest.fn()} onClick={jest.fn()} />
+        );
 
         render(component);
         expect(document.querySelectorAll('.permissions-button-added').length).toBe(1);
     });
 
     test('disabledMsg prop', () => {
-        const component = <RemovableButton id={1} display="Display Text" disabledMsg="Disabled message" onRemove={jest.fn()} onClick={jest.fn()} />;
+        const component = (
+            <RemovableButton
+                id={1}
+                display="Display Text"
+                disabledMsg="Disabled message"
+                onRemove={jest.fn()}
+                onClick={jest.fn()}
+            />
+        );
 
         render(component);
         expect(document.querySelectorAll('.disabled-button-with-tooltip').length).toBe(1);

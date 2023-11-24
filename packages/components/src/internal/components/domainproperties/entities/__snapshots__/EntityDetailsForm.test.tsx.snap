@@ -1,0 +1,503 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EntityDetailsForm/> default properties 1`] = `
+<div>
+  <form
+    class=""
+  >
+    <div
+      class="margin-bottom margin-top row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Name
+           *
+        </span>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <input
+          class="form-control"
+          id="entity-name"
+          placeholder="Enter a name for this entity"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="margin-bottom row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Description
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="label-help-icon fa fa-question-circle"
+            />
+          </span>
+          
+        </span>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <textarea
+          class="form-control"
+          id="entity-description"
+        />
+      </div>
+    </div>
+    <div
+      class="margin-bottom row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <div
+          class="name-expression-label-div"
+        >
+          Naming 
+          <span
+            class="domain-no-wrap"
+          >
+            Pattern
+            <span
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+            
+          </span>
+        </div>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <input
+          class="form-control"
+          id="entity-nameExpression"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<EntityDetailsForm/> initial data 1`] = `
+<div>
+  <form
+    class=""
+  >
+    <div
+      class="margin-bottom margin-top row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Name
+           *
+        </span>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <input
+          class="form-control"
+          id="entity-name"
+          placeholder="Enter a name for this entity"
+          type="text"
+          value="Test Entity Name"
+        />
+      </div>
+    </div>
+    <div
+      class="margin-bottom row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Description
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="label-help-icon fa fa-question-circle"
+            />
+          </span>
+          
+        </span>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <textarea
+          class="form-control"
+          id="entity-description"
+        >
+          Test Entity Description
+        </textarea>
+      </div>
+    </div>
+    <div
+      class="margin-bottom row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <div
+          class="name-expression-label-div"
+        >
+          Naming 
+          <span
+            class="domain-no-wrap"
+          >
+            Pattern
+            <span
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+            
+          </span>
+        </div>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <input
+          class="form-control"
+          id="entity-nameExpression"
+          type="text"
+          value="Test Name Expression"
+        />
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
+<div>
+  <form
+    class=""
+  >
+    <div
+      class="margin-bottom margin-top row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Name
+           *
+        </span>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <input
+          class="form-control"
+          id="entity-name"
+          placeholder="Enter a name for this entity"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="margin-bottom row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Description
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="label-help-icon fa fa-question-circle"
+            />
+          </span>
+          
+        </span>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <textarea
+          class="form-control"
+          id="entity-description"
+        />
+      </div>
+    </div>
+    <div
+      class="margin-bottom row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <div
+          class="name-expression-label-div"
+        >
+          Naming 
+          <span
+            class="domain-no-wrap"
+          >
+            Pattern
+            <span
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+            
+          </span>
+        </div>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <input
+          class="form-control"
+          id="entity-nameExpression"
+          placeholder="Enter a name expression"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<EntityDetailsForm/> with formValues 1`] = `
+<div>
+  <form
+    class=""
+  >
+    <div
+      class="margin-bottom margin-top row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Name
+           *
+        </span>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <input
+          class="form-control"
+          id="entity-name"
+          placeholder="Enter a name for this entity"
+          type="text"
+          value="Test Entity Name"
+        />
+      </div>
+    </div>
+    <div
+      class="margin-bottom row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Description
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="label-help-icon fa fa-question-circle"
+            />
+          </span>
+          
+        </span>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <textarea
+          class="form-control"
+          id="entity-description"
+        >
+          Test Entity Description
+        </textarea>
+      </div>
+    </div>
+    <div
+      class="margin-bottom row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <div
+          class="name-expression-label-div"
+        >
+          Naming 
+          <span
+            class="domain-no-wrap"
+          >
+            Pattern
+            <span
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+            
+          </span>
+        </div>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <input
+          class="form-control"
+          id="entity-nameExpression"
+          type="text"
+          value="Test Name Expression"
+        />
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<EntityDetailsForm/> with previewName 1`] = `
+<div>
+  <form
+    class=""
+  >
+    <div
+      class="margin-bottom margin-top row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Name
+           *
+        </span>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <input
+          class="form-control"
+          id="entity-name"
+          placeholder="Enter a name for this entity"
+          type="text"
+          value="Test Entity Name"
+        />
+      </div>
+    </div>
+    <div
+      class="margin-bottom row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <span
+          class="domain-no-wrap"
+        >
+          Description
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="label-help-icon fa fa-question-circle"
+            />
+          </span>
+          
+        </span>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <textarea
+          class="form-control"
+          id="entity-description"
+        >
+          Test Entity Description
+        </textarea>
+      </div>
+    </div>
+    <div
+      class="margin-bottom row"
+    >
+      <div
+        class="col-xs-2"
+      >
+        <div
+          class="name-expression-label-div"
+        >
+          Naming 
+          <span
+            class="domain-no-wrap"
+          >
+            Pattern
+            <span
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+            
+          </span>
+        </div>
+      </div>
+      <div
+        class="col-xs-10"
+      >
+        <input
+          class="form-control"
+          id="entity-nameExpression"
+          type="text"
+          value="Test Name Expression"
+        />
+      </div>
+    </div>
+  </form>
+</div>
+`;

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SectionHeading/> title and cls 1`] = `
+<div>
+  <div
+    class="domain-field-section-heading section-heading-cls"
+  >
+    Section Heading Title
+  </div>
+</div>
+`;
+
+exports[`<SectionHeading/> title only 1`] = `
+<div>
+  <div
+    class="domain-field-section-heading"
+  >
+    Section Heading Title
+  </div>
+</div>
+`;

@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpTopicURL/> default properties 1`] = `
+<div>
+  <div
+    class="row"
+  >
+    <div
+      class="col-xs-12"
+    >
+      <a
+        class="domain-field-float-right"
+        href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=testTopic"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Learn more about this tool
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<HelpTopicURL/> with nounPlural 1`] = `
+<div>
+  <div
+    class="row"
+  >
+    <div
+      class="col-xs-12"
+    >
+      <a
+        class="domain-field-float-right"
+        href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=sampleTopic"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Learn more about designing samples
+      </a>
+    </div>
+  </div>
+</div>
+`;

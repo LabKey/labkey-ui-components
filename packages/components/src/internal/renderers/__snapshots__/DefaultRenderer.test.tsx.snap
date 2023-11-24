@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DefaultRenderer boolean 1`] = `
+<div>
+  <span
+    class="ws-pre-wrap"
+  >
+    true
+  </span>
+</div>
+`;
+
+exports[`DefaultRenderer displayValue 1`] = `
+<div>
+  <span
+    class="ws-pre-wrap"
+  >
+    Value 1
+  </span>
+</div>
+`;
+
+exports[`DefaultRenderer formattedValue 1`] = `
+<div>
+  <span
+    class="ws-pre-wrap"
+  >
+    Value 1.00
+  </span>
+</div>
+`;
+
+exports[`DefaultRenderer list 1`] = `
+<div>
+  <div>
+    <span>
+      
+      a
+    </span>
+    <span>
+      , 
+      b
+    </span>
+  </div>
+</div>
+`;
+
+exports[`DefaultRenderer new line 1`] = `
+<div>
+  <span
+    class="ws-pre-wrap"
+  >
+    test1
+test2
+  </span>
+</div>
+`;
+
+exports[`DefaultRenderer string 1`] = `
+<div>
+  <span
+    class="ws-pre-wrap"
+  >
+    test string
+  </span>
+</div>
+`;
+
+exports[`DefaultRenderer undefined 1`] = `
+<div>
+  <span
+    class="ws-pre-wrap"
+  />
+</div>
+`;
+
+exports[`DefaultRenderer url 1`] = `
+<div>
+  <a
+    class="ws-pre-wrap"
+    href="labkey.com"
+  >
+    Value 1
+  </a>
+</div>
+`;
+
+exports[`DefaultRenderer value 1`] = `
+<div>
+  <span
+    class="ws-pre-wrap"
+  >
+    1
+  </span>
+</div>
+`;

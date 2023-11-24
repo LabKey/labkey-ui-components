@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ExpandableContainer/> custom props 1`] = `
+<div
+  class="row container-expandable disabled"
+>
+  <div
+    class="test-container-cls container-expandable-blue container-expandable-child__inactive container-expandable__active"
+  >
+    <i
+      class="container-expandable-child__img"
+    >
+      <i
+        class="fa fa-fa-test"
+        style="padding: 5px;"
+      />
+    </i>
+    <div
+      class="pull-right container-expandable-child__chevron text-muted"
+    >
+      <i
+        class="fa fa-chevron-down"
+      />
+    </div>
+    <div
+      class="container-expandable-heading"
+    >
+      <div>
+        Clause
+      </div>
+      <div>
+        links
+      </div>
+    </div>
+  </div>
+  <div>
+    Body
+  </div>
+</div>
+`;
+
+exports[`<ExpandableContainer/> default props 1`] = `
+<div
+  class="row container-expandable"
+>
+  <div
+    class="container-expandable-blue container-expandable__inactive"
+  >
+    <i
+      class="container-expandable-child__img"
+    >
+      <img
+        alt="test-icon"
+        height="50px"
+        src="/labkey/_images/test.svg"
+        width="50px"
+      />
+    </i>
+    <div
+      class="pull-right container-expandable-child__chevron"
+    >
+      <i
+        class="fa fa-chevron-right"
+      />
+    </div>
+    <div
+      class="container-expandable-heading"
+    >
+      <div>
+        Clause
+      </div>
+      <div>
+        links
+      </div>
+    </div>
+  </div>
+</div>
+`;

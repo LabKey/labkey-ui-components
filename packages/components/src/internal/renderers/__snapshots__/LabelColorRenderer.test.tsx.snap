@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LabelColorRenderer empty data 1`] = `<div />`;
+
+exports[`LabelColorRenderer undefined data 1`] = `<div />`;
+
+exports[`LabelColorRenderer with data 1`] = `
+<div>
+  <i
+    class="color-icon__circle"
+    style="background-color: rgb(0, 0, 0);"
+  />
+</div>
+`;

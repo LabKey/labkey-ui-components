@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 49155: Get proper raw value for measurement units in grid
+
 ### version 2.390.4
 *Released*: 10 November 2023
 * Fix for reportId url param check in locationHasQueryParamSettings

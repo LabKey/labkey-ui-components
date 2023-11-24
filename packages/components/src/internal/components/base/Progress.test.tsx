@@ -88,7 +88,9 @@ describe('Progress', () => {
     });
 
     test('render non-modal, set estimate, delay, and increment', () => {
-        const { container, rerender } = render(<Progress toggle={false} estimate={200} delay={20} updateIncrement={10} />);
+        const { container, rerender } = render(
+            <Progress toggle={false} estimate={200} delay={20} updateIncrement={10} />
+        );
         // update prop of toggle to true
         rerender(<Progress toggle estimate={200} delay={20} updateIncrement={10} />);
 

@@ -17,7 +17,14 @@ describe('DeleteIcon', () => {
 
     test('custom properties', () => {
         const onDelete = jest.fn();
-        render(<DeleteIcon onDelete={onDelete} id="delete-icon-custom-id" iconCls="delete-icon-custom-cls" title="Delete Icon Custom Title" />);
+        render(
+            <DeleteIcon
+                onDelete={onDelete}
+                id="delete-icon-custom-id"
+                iconCls="delete-icon-custom-cls"
+                title="Delete Icon Custom Title"
+            />
+        );
         expect(document.querySelectorAll('.field-icon')).toHaveLength(1);
         expect(document.querySelectorAll('.field-delete')).toHaveLength(0);
         expect(document.querySelectorAll('.delete-icon-custom-cls')).toHaveLength(1);

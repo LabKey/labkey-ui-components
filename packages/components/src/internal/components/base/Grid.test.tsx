@@ -141,16 +141,7 @@ describe('Grid', () => {
     });
 
     test('render with non-default properties', () => {
-        render(
-            <Grid
-                data={gridData}
-                columns={gridColumns}
-                bordered={false}
-                cellular
-                condensed
-                striped={false}
-            />
-        );
+        render(<Grid data={gridData} columns={gridColumns} bordered={false} cellular condensed striped={false} />);
         validateHasData();
         validateHeaderCells();
         validatePositionCells();
@@ -171,17 +162,15 @@ describe('Grid', () => {
                         index: 'name',
                         caption: 'Player Name',
                         showHeader: true,
-                        title: "My test grid title",
+                        title: 'My test grid title',
                         phiProtected: true,
-                    }
+                    },
                 ])}
                 calcWidths
             />
         );
 
-        expect(document.querySelector('.grid-header-cell').getAttribute('style')).toBe(
-            'min-width: 189px;'
-        );
+        expect(document.querySelector('.grid-header-cell').getAttribute('style')).toBe('min-width: 189px;');
         expect(document.querySelector('.grid-header-cell')).not.toBeNull();
         expect(document.querySelector('.phi-protected')).not.toBeNull();
     });
@@ -299,7 +288,7 @@ describe('GridHeader', () => {
         ),
     };
 
-    function validate(columnCount: number, labelHelpTipCount = 0, draggable = "false"): void {
+    function validate(columnCount: number, labelHelpTipCount = 0, draggable = 'false'): void {
         expect(document.querySelectorAll('thead').length).toBe(1);
         expect(document.querySelectorAll('.grid-header-cell').length).toBe(columnCount);
         expect(document.querySelectorAll('.label-help-target').length).toBe(labelHelpTipCount);
@@ -347,7 +336,7 @@ describe('GridHeader', () => {
 
     test('draggable', () => {
         render(<GridHeader {...DEFAULT_PROPS} onColumnDrop={jest.fn} />);
-        validate(2, 0, "true");
+        validate(2, 0, 'true');
         expect(document.querySelectorAll('.grid-header-drag-over').length).toBe(0);
     });
 });

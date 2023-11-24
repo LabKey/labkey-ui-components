@@ -1,6 +1,5 @@
 import React from 'react';
 import { OrderedMap } from 'immutable';
-import { Input, Textarea } from 'formsy-react-components';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
@@ -11,6 +10,7 @@ import { QueryFormInputs } from '../forms/QueryFormInputs';
 import { TextInput } from '../forms/input/TextInput';
 import { DatePickerInput } from '../forms/input/DatePickerInput';
 import { SelectInput } from '../forms/input/SelectInput';
+import { FormsyInput, FormsyTextArea } from '../forms/input/FormsyReactComponents';
 
 import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 
@@ -23,8 +23,8 @@ describe('RunPropertiesPanel', () => {
         const wrapper = mountWithServerContext(<RunPropertiesPanel model={model} onChange={jest.fn} />);
 
         expect(wrapper.find('.panel')).toHaveLength(1);
-        expect(wrapper.find(Input)).toHaveLength(1); // assay id input always there for run props
-        expect(wrapper.find(Textarea)).toHaveLength(1); // comments input always there for run props
+        expect(wrapper.find(FormsyInput)).toHaveLength(1); // assay id input always there for run props
+        expect(wrapper.find(FormsyTextArea)).toHaveLength(1); // comments input always there for run props
         expect(wrapper.find(QueryFormInputs)).toHaveLength(0);
     });
 
@@ -32,8 +32,8 @@ describe('RunPropertiesPanel', () => {
         const wrapper = mountWithServerContext(<RunPropertiesPanel model={ASSAY_WIZARD_MODEL} onChange={jest.fn} />);
 
         expect(wrapper.find('.panel')).toHaveLength(1);
-        expect(wrapper.find(Input)).toHaveLength(4); // assay id plus 4 TextInputs
-        expect(wrapper.find(Textarea)).toHaveLength(2); // comments plus one other multi-line text input
+        expect(wrapper.find(FormsyInput)).toHaveLength(4); // assay id plus 4 TextInputs
+        expect(wrapper.find(FormsyTextArea)).toHaveLength(2); // comments plus one other multi-line text input
         expect(wrapper.find(QueryFormInputs)).toHaveLength(1);
         expect(wrapper.find(TextInput)).toHaveLength(3); // text, multi-line, integer, and decimal fields
         expect(wrapper.find(DatePickerInput)).toHaveLength(1);

@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.395.0
+*Released*: 23 November 2023
+- Happy Thanksgiving!
+- Provide logically equivalent implementations for some `formsy-react-components` components. Only props that are used or are useful are supported (e.g. `changeDebounceInterval` is not supported).
+- Replace all usages of `formsy-react-components` components within the `@labkey/components` package with internal equivalent components.
+- Remove `formsy-react-components` dependency
+
+### version 2.394.1
+*Released*: 22 November 2023
+* Issue 48817: Update some wording in the NameIdSettings panel
+
 ### version 2.394.0
 *Released*: 22 November 2023
 * Assay Transform Script UX update

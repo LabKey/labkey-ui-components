@@ -1,6 +1,7 @@
 import React, { FC, memo, useCallback } from 'react';
-import { Input } from 'formsy-react-components';
 import classNames from 'classnames';
+
+import { FormsyInput } from '../forms/input/FormsyReactComponents';
 
 interface Props {
     active: string;
@@ -48,7 +49,7 @@ export const ToggleButtons: FC<Props> = memo(props => {
     return (
         <>
             {inputFieldName && (
-                <Input name={inputFieldName} type="hidden" value={active === first ? 'true' : 'false'} />
+                <FormsyInput name={inputFieldName} type="hidden" value={active === first ? 'true' : 'false'} />
             )}
             <div
                 className={classNames('toggle', 'btn-group', {
@@ -85,7 +86,7 @@ export const ToggleIcon: FC<Props> = memo(props => {
     return (
         <>
             {inputFieldName && (
-                <Input name={inputFieldName} type="hidden" value={active === first ? 'true' : 'false'} />
+                <FormsyInput name={inputFieldName} type="hidden" value={active === first ? 'true' : 'false'} />
             )}
             <div
                 className={classNames('toggle', 'toggle-group-icon', 'btn-group', {

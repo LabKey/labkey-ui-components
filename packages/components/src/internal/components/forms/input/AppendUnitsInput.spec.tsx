@@ -1,9 +1,10 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Formsy from 'formsy-react';
-import { Input } from 'formsy-react-components';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
+
+import { FormsyInput } from './FormsyReactComponents';
 
 import { AppendUnitsInput } from './AppendUnitsInput';
 
@@ -17,7 +18,7 @@ describe('AppendUnitsInput', () => {
     test('without formsy', () => {
         // Without Formsy it should not crash the page
         const wrapper = mount(<AppendUnitsInput col={column} data={undefined} value={undefined} />);
-        expect(wrapper.exists(Input)).toBeFalsy();
+        expect(wrapper.exists(FormsyInput)).toBeFalsy();
         wrapper.unmount();
     });
 
@@ -27,7 +28,7 @@ describe('AppendUnitsInput', () => {
                 <AppendUnitsInput col={column} data={undefined} formsy value={undefined} />
             </Formsy>
         );
-        expect(wrapper.exists(Input)).toBeTruthy();
+        expect(wrapper.exists(FormsyInput)).toBeTruthy();
         wrapper.unmount();
     });
 });

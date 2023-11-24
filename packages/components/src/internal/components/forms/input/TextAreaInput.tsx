@@ -14,32 +14,20 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { Textarea } from 'formsy-react-components';
 
 import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { FormsyTextArea, FormsyTextAreaProps } from './FormsyReactComponents';
 
-interface TextAreaInputProps extends DisableableInputProps {
+interface TextAreaInputProps extends DisableableInputProps, Omit<FormsyTextAreaProps, 'onChange'> {
     addLabelAsterisk?: boolean;
-    allowDisable?: boolean;
-    cols?: number;
-    elementWrapperClassName?: any[] | string;
-    initiallyDisabled?: boolean;
-    label?: any;
-    labelClassName?: any[] | string;
-    name?: string;
-    onChange?: any;
+    onChange?: (value: any) => void;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
-    required?: boolean;
-    rowClassName?: any[] | string;
-    rows?: number;
     showLabel?: boolean;
-    validatePristine?: boolean;
-    value?: any;
 }
 
 export class TextAreaInput extends DisableableInput<TextAreaInputProps, DisableableInputState> {
@@ -96,35 +84,25 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
     };
 
     render() {
-        const {
-            cols,
-            elementWrapperClassName,
-            labelClassName,
-            name,
-            queryColumn,
-            required,
-            rowClassName,
-            rows,
-            showLabel,
-            validatePristine,
-        } = this.props;
+        // Extract DisableableInputProps
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { allowDisable, initiallyDisabled, onToggleDisable, ...rest } = this.props;
+        // Extract TextAreaInputProps
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { addLabelAsterisk, onChange, queryColumn, renderFieldLabel, showLabel, ...textAreaProps } = rest;
+        const { labelClassName } = textAreaProps;
 
         return (
-            <Textarea
-                changeDebounceInterval={0}
+            <FormsyTextArea
+                id={queryColumn.fieldKey}
+                name={queryColumn.fieldKey}
+                placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
+                required={queryColumn.required}
+                {...textAreaProps}
                 disabled={this.state.isDisabled}
                 onChange={this.onChange}
-                cols={cols}
-                elementWrapperClassName={elementWrapperClassName}
-                id={queryColumn.fieldKey}
                 label={this.renderLabel()}
                 labelClassName={showLabel ? labelClassName : 'hide-label'}
-                placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
-                name={name ?? queryColumn.fieldKey}
-                rowClassName={rowClassName}
-                rows={rows}
-                required={required ?? queryColumn.required}
-                validatePristine={validatePristine}
                 value={this.getInputValue()}
             />
         );

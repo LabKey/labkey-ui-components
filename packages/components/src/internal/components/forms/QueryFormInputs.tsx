@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { List, Map, OrderedMap } from 'immutable';
-import { Input } from 'formsy-react-components';
+import { List, Map } from 'immutable';
 import { Filter, Query } from '@labkey/api';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { insertColumnFilter, Operation, QueryColumn } from '../../../public/QueryColumn';
@@ -25,6 +25,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { caseInsensitive } from '../../util/utils';
 
+import { FormsyInput } from './input/FormsyReactComponents';
 import { resolveInputRenderer } from './input/InputRenderFactory';
 import { QuerySelect } from './QuerySelect';
 import { SelectInputChange } from './input/SelectInput';
@@ -144,7 +145,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
 
         if (includeLabelField) {
             const fieldName = getQueryFormLabelFieldName(col.name);
-            return <Input name={fieldName} type="hidden" value={this.state.labels[fieldName]} />;
+            return <FormsyInput name={fieldName} type="hidden" value={this.state.labels[fieldName]} />;
         }
 
         return null;

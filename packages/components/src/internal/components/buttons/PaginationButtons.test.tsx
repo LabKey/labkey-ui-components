@@ -25,7 +25,7 @@ const totalSelector = '.pagination-info__total';
 const prevSelector = '.pagination-buttons__prev';
 const nextSelector = '.pagination-buttons__next';
 
-describe('<PaginationButtons />', () => {
+describe('PaginationButtons', () => {
     test('Render first page', () => {
         const prev = jest.fn();
         const next = jest.fn();

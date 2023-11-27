@@ -51,7 +51,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
     return (
         <div>
             <div className="row">
-                <div className="col col-xs-6">
+                <div className="col-xs-6">
                     {selected && options?.length > 0 && (
                         <>
                             <div className="margin-bottom">
@@ -82,7 +82,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
             </div>
             {selected && options?.length > 0 && (
                 <div className="row">
-                    <div className="col col-xs-6">
+                    <div className="col-xs-6">
                         <div className={warning ? 'margin-bottom' : 'margin-top margin-bottom'}>
                             <b>Supported File Types</b>
                         </div>
@@ -93,7 +93,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
             {children}
             {!hasPremium && (
                 <div className="row">
-                    <div className={'col col-xs-12 ' + premiumInfoClass}>
+                    <div className={'col-xs-12 ' + premiumInfoClass}>
                         <Alert bsStyle="info">
                             <h1 className="fa fa-star-o"> Premium Feature</h1>
                             <h3>More specialty assays are available with LabKey Server Premium Edition</h3>

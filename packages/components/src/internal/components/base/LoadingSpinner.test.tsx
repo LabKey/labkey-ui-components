@@ -14,24 +14,29 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render, screen } from '@testing-library/react';
 
 import { LoadingSpinner } from './LoadingSpinner';
 
-describe('<LoadingSpinner />', () => {
+describe('LoadingSpinner', () => {
     test('render without properties', () => {
-        const tree = renderer.create(<LoadingSpinner />).toJSON();
-        expect(tree).toMatchSnapshot();
+        render(<LoadingSpinner />);
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
+        expect(document.querySelectorAll('.fa-spinner')).toHaveLength(1);
     });
 
     test('render with text message', () => {
-        const tree = renderer.create(<LoadingSpinner wrapperClassName="custom-class" msg="my message here" />).toJSON();
-        expect(tree).toMatchSnapshot();
+        render(<LoadingSpinner msg="my message here" />);
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+        expect(screen.getByText('my message here')).toBeInTheDocument();
+        expect(document.querySelectorAll('.fa-spinner')).toHaveLength(1);
     });
 
     test('render with react node message', () => {
         const messageNode = <div className="special-class">A div message</div>;
-        const tree = renderer.create(<LoadingSpinner msg={messageNode} />).toJSON();
-        expect(tree).toMatchSnapshot();
+        render(<LoadingSpinner msg={messageNode} />);
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+        expect(screen.getByText('A div message')).toBeInTheDocument();
+        expect(document.querySelectorAll('.fa-spinner')).toHaveLength(1);
     });
 });

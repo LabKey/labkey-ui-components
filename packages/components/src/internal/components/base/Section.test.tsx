@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render, screen } from '@testing-library/react';
 
 import { Section } from './Section';
 
-describe('<Section />', () => {
+describe('Section', () => {
     test('default properties', () => {
-        const tree = renderer.create(<Section />);
-        expect(tree).toMatchSnapshot();
+        render(<Section />);
+        expect(document.querySelectorAll('.g-section')).toHaveLength(1);
+        expect(document.querySelectorAll('.panel')).toHaveLength(1);
+        expect(document.querySelectorAll('.panel-content-title-large')).toHaveLength(0);
+        expect(document.querySelectorAll('.panel-content-caption')).toHaveLength(0);
+        expect(document.querySelectorAll('.panel-content-context')).toHaveLength(0);
     });
 
     test('custom properties', () => {
-        const tree = renderer.create(
+        render(
             <Section
                 caption={<p>Testing Caption</p>}
                 context={<div>Testing Context</div>}
@@ -33,6 +37,11 @@ describe('<Section />', () => {
                 panelClassName="testing-class-name"
             />
         );
-        expect(tree).toMatchSnapshot();
+        expect(document.querySelectorAll('.g-section')).toHaveLength(1);
+        expect(document.querySelectorAll('.panel')).toHaveLength(1);
+        expect(document.querySelectorAll('.testing-class-name')).toHaveLength(1);
+        expect(screen.getByText('Testing Title')).toBeInTheDocument();
+        expect(screen.getByText('Testing Caption')).toBeInTheDocument();
+        expect(screen.getByText('Testing Context')).toBeInTheDocument();
     });
 });

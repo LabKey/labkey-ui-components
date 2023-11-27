@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Add `getPermissionRestrictionMessage` utility method.
+* Issue 49148: pass through column description for rendering TextInput fields
 
 ### version 2.395.0
 *Released*: 23 November 2023

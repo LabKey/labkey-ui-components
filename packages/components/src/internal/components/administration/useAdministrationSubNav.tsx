@@ -52,7 +52,7 @@ export const useAdministrationSubNav = (): void => {
             setTabs(tabs);
         }
 
-        return () => clearNav();
+        return clearNav;
     }, [
         appHomeUser.isAdmin,
         clearNav,

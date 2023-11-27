@@ -105,7 +105,7 @@ interface AddSamplesToStorageModalComponentProps {
     onSuccess?: () => any;
     samplesSelectionKey?: string;
     user: User;
-    actionStatusCounts: StorageActionStatusCounts;
+    actionStatusCounts?: StorageActionStatusCounts;
 }
 
 export type AddSamplesToStorageModal = ComponentType<AddSamplesToStorageModalComponentProps>;

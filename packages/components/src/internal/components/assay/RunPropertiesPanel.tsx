@@ -15,7 +15,7 @@
  */
 import React, { FC, memo, useMemo } from 'react';
 import Formsy from 'formsy-react';
-import { Input, Textarea } from 'formsy-react-components';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
 
@@ -24,6 +24,7 @@ import { AssayTaskInput } from '../forms/input/AssayTaskInput';
 import { isWorkflowEnabled } from '../../app/utils';
 import { LabelOverlay } from '../forms/LabelOverlay';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
+import { FormsyInput, FormsyTextArea } from '../forms/input/FormsyReactComponents';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
@@ -56,17 +57,14 @@ export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model, 
             <div className="panel-heading">Run Details</div>
             <div className="panel-body">
                 <Formsy className="form-horizontal" onChange={onChange}>
-                    <Input
-                        changeDebounceInterval={0}
+                    <FormsyInput
                         id="runname"
                         label={NAME_LABEL}
                         labelClassName="text-left"
                         name="runname"
-                        type="text"
                         value={model.runName}
                     />
-                    <Textarea
-                        changeDebounceInterval={0}
+                    <FormsyTextArea
                         cols={60}
                         id="comment"
                         label={COMMENT_LABEL}

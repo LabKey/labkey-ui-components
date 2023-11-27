@@ -15,11 +15,10 @@
  */
 import React, { Component, ReactNode } from 'react';
 import { Link } from 'react-router';
-import { fromJS, List } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import { Query } from '@labkey/api';
 
 import { GridColumn } from '../base/models/GridColumn';
-import { QueryInfo } from '../../../public/QueryInfo';
 import { AppURL } from '../../url/AppURL';
 import { naturalSortByProperty } from '../../../public/sort';
 import { Grid } from '../base/Grid';
@@ -28,10 +27,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { SchemaListing } from './SchemaListing';
 
-// This should extend GetQueryResponse from @labkey/api but we don't export that type at the moment.
-interface QueryData {
-    description: string;
-    name: string;
+interface QueryData extends Query.GetQueryResponse {
     schemaName: string;
 }
 
@@ -39,9 +35,14 @@ const columns = List([
     new GridColumn({
         index: 'name',
         title: 'Name',
-        cell: (name: string, info: QueryInfo) => {
-            if (name && info) {
-                return <Link to={AppURL.create('q', info.schemaName, info.name).toString()}>{info.title}</Link>;
+        cell: (name: string, map: Map<string, any>) => {
+            if (name && map) {
+                const queryData: QueryData = map.toJS();
+                return (
+                    <Link to={AppURL.create('q', queryData.schemaName, queryData.name).toString()}>
+                        {queryData.title}
+                    </Link>
+                );
             }
             return name;
         },
@@ -125,7 +126,7 @@ export class QueriesListing extends Component<QueriesListingProps, QueriesListin
         if (queries) {
             return (
                 <>
-                    <SchemaListing schemaName={schemaName} hideEmpty={true} asPanel={true} title="Nested Schemas" />
+                    <SchemaListing schemaName={schemaName} hideEmpty asPanel title="Nested Schemas" />
                     {hideEmpty && queries.length === 0 ? null : asPanel ? (
                         <div className="panel panel-default">
                             <div className="panel-heading">{title}</div>

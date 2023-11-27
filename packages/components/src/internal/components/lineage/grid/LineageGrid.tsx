@@ -4,8 +4,9 @@
  */
 import React, { FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import { Draft, produce } from 'immer';
-import { Location } from 'history';
 import { useSearchParams } from 'react-router-dom';
+import { Page } from '../../base/Page';
+import { PageHeader } from '../../base/PageHeader';
 
 import { createGridModel } from '../actions';
 import { LineageGridModel } from '../models';
@@ -73,3 +74,18 @@ export const LineageGridFromLocation: FC = memo(() => {
         />
     );
 });
+
+interface PageProps {
+    title: string;
+}
+
+export const LineagePage: FC<PageProps> = memo(({ title }) => (
+    <Page title={title}>
+        <PageHeader title={title} />
+        <div className="panel panel-default">
+            <div className="panel-body">
+                <LineageGridFromLocation />
+            </div>
+        </div>
+    </Page>
+));

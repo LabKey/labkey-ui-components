@@ -18,7 +18,6 @@ import { fromJS, List } from 'immutable';
 import { Query } from '@labkey/api';
 
 import { GridColumn } from '../base/models/GridColumn';
-import { QueryInfo } from '../../../public/QueryInfo';
 import { AppURL } from '../../url/AppURL';
 import { naturalSortByProperty } from '../../../public/sort';
 import { Grid } from '../base/Grid';
@@ -35,11 +34,12 @@ const columns = List([
     new GridColumn({
         index: 'name',
         title: 'Name',
-        cell: (name: string, info: QueryInfo) => {
-            if (name && info) {
-                return <a href={AppURL.create('q', info.schemaName, info.name).toHref()}>{info.title}</a>;
+        cell: (queryName: string, data: any) => {
+            if (queryName && data) {
+                const { name, schemaName, title } = data.toJS();
+                return <a href={AppURL.create('q', schemaName, name).toHref()}>{title}</a>;
             }
-            return name;
+            return queryName;
         },
     }),
     new GridColumn({

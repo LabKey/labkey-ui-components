@@ -306,10 +306,6 @@ import {
     useUsersWithPermissions,
 } from './internal/components/forms/actions';
 import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
-import { SchemaListing } from './internal/components/listing/SchemaListing';
-import { QueriesListing } from './internal/components/listing/QueriesListing';
-import { QueriesListingPage } from './internal/components/listing/pages/QueriesListingPage';
-import { SchemaListingPage } from './internal/components/listing/pages/SchemaListingPage';
 import {
     EntityIdCreationModel,
     EntityParentType,
@@ -428,7 +424,7 @@ import {
     LineageURLResolvers,
 } from './internal/components/lineage/types';
 import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
-import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
+import { LineageGrid, LineageGridFromLocation, LineagePage } from './internal/components/lineage/grid/LineageGrid';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
 import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
@@ -596,8 +592,7 @@ import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
-import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
-import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
+import { SchemaBrowserRoutes } from './internal/components/SchemaBrowser/SchemaBrowserRoutes';
 import {
     ACTIVE_JOB_INDICATOR_CLS,
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
@@ -1373,6 +1368,7 @@ export {
     LineageGraph,
     LineageGrid,
     LineageGridFromLocation,
+    LineagePage,
     LineageURLResolvers,
     SampleTypeLineageCounts,
     invalidateLineageResults,
@@ -1546,12 +1542,7 @@ export {
     BeforeUnload,
     useRouteLeave,
     withRouteLeave,
-    SchemaListing,
-    SchemaListingPage,
-    QueriesListing,
-    QueriesListingPage,
-    QueryListingPage,
-    QueryDetailPage,
+    SchemaBrowserRoutes,
     Theme,
     SVGIcon,
     useWindowFocusCheckExpiredSession,

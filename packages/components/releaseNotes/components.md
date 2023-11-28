@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 49113: Better handling for ListDesignerPanels case where the only error is a form error for saveDomain()
 - Include DomainException class in index.ts
+- Further usage of scrollDomainErrorIntoView() in DataClassDesigner
 
 ### version 2.395.1
 *Released*: 28 November 2023

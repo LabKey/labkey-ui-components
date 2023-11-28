@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.395.1
+*Released*: 28 November 2023
+* Merge release23.11-SNAPSHOT to develop:
+    * includes changes from 2.390.5
+
 ### version 2.395.0
 *Released*: 23 November 2023
 - Happy Thanksgiving!

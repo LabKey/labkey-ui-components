@@ -219,7 +219,7 @@ const DEFAULT_MAX_ROWS = 20;
  * it becomes the "pivot" row for shift-select behavior. Subsequently, if a user selects another row while holding
  * the shift key then all rows between the pivot row and the newly selected row will be selected/deselected.
  */
-interface SelectionPivot {
+export interface SelectionPivot {
     checked: boolean;
     selection: string;
 }

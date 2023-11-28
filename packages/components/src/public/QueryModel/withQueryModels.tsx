@@ -435,6 +435,12 @@ export function withQueryModels<Props>(
                 this.setState(
                     produce<State>(draft => {
                         const model = draft.queryModels[id];
+
+                        // If there are selections made, then ensure the model.selections is initialized
+                        if (!model.selections && selections.length > 0) {
+                            model.selections = new Set();
+                        }
+
                         selections.forEach(selection => {
                             if (checked) {
                                 model.selections.add(selection);

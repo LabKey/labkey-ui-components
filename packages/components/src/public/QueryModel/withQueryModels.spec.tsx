@@ -21,6 +21,8 @@ import { Actions, QueryModelMap, withQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';
 
 import { RowsResponse } from './QueryModelLoader';
+import {enableMapSet} from "immer";
+import {waitForLifecycle} from "../../internal/test/enzymeTestHelpers";
 
 /**
  * Note: All of the tests in this file look a tad weird. We create a component that resets local variables on render
@@ -38,6 +40,7 @@ let AMINO_ACIDS_QUERY_INFO: QueryInfo;
 let AMINO_ACIDS_DATA: RowsResponse;
 
 beforeAll(() => {
+    enableMapSet();
     MIXTURES_QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
     AMINO_ACIDS_QUERY_INFO = makeQueryInfo(aminoAcidsQueryInfo);
     AMINO_ACIDS_DATA = makeTestData(aminoAcidsQuery);
@@ -252,6 +255,31 @@ describe('withQueryModels', () => {
         await sleep();
         model3 = injectedModels.model3;
         expect(model3.rowsLoadingState).toEqual(LoadingState.LOADED);
+
+        // selectRow
+        // Select a single row
+        const selectionKey = injectedModel.orderedRows[0];
+        const selectedRow = injectedModel.getRow(selectionKey);
+        injectedActions.selectRow(injectedModel.id, true, selectedRow);
+        await waitForLifecycle(wrapper);
+
+        expect(injectedModel.selections.has(selectionKey)).toBe(true);
+        expect(injectedModel.selectionPivot).toEqual({ checked: true, selection: selectionKey });
+
+        // useSelectionPivot for multiple rows
+        const nextSelectionKey = injectedModel.orderedRows[5];
+        const nextSelectedRow = injectedModel.getRow(nextSelectionKey);
+        injectedActions.selectRow(injectedModel.id, true, nextSelectedRow, true);
+        await waitForLifecycle(wrapper);
+
+        expect(injectedModel.selections.size).toEqual(6);
+        expect(injectedModel.selectionPivot).toEqual({ checked: true, selection: selectionKey });
+
+        injectedActions.clearSelections(injectedModel.id);
+        await waitForLifecycle(wrapper);
+
+        expect(injectedModel.selections.size).toEqual(0);
+        expect(injectedModel.selectionPivot).toBeUndefined();
     });
 
     test('Bind from URL', async () => {

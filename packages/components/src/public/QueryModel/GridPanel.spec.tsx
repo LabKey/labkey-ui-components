@@ -338,7 +338,7 @@ describe('GridPanel', () => {
         let checkbox = getCheckbox(wrapper, index + 1);
         const event = { target: { checked: expectedState } };
         checkbox.simulate('change', event);
-        expect(actions.selectRow).toHaveBeenCalledWith(model.id, expectedState, row);
+        expect(actions.selectRow).toHaveBeenCalledWith(model.id, expectedState, row, false);
         const newSelections = new Set(model.selections);
 
         if (expectedState) {

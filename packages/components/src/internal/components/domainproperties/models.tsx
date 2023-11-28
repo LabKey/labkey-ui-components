@@ -90,6 +90,7 @@ import {
 import { INT_LIST, VAR_LIST } from './list/constants';
 import { DomainRowWarning } from './DomainRowWarning';
 import { createFormInputId } from './utils';
+import { setDomainException } from './actions';
 
 export interface IFieldChange {
     id: string;
@@ -507,6 +508,16 @@ export class DomainDesign
             Object.keys(columns).map(key => ({ index: key, caption: camelCaseToTitleCase(key), sortable: true }))
         );
         return specialCols.concat(unsortedColumns.sort(reorderSummaryColumns)).toList();
+    }
+
+    setDomainException(
+        raw: any,
+        severityLevel = SEVERITY_LEVEL_ERROR,
+        addRowIndexes?: boolean,
+        originalDomain?: DomainDesign
+    ): DomainDesign {
+        const exception = DomainException.create(raw, severityLevel);
+        return setDomainException(this, exception, addRowIndexes, originalDomain);
     }
 }
 

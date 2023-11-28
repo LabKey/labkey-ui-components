@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- Issue 49113: Better handling for case where the only error is a form error for saveDomain()
+- Issue 49113: Better handling for ListDesignerPanels case where the only error is a form error for saveDomain()
 
 ### version 2.395.1
 *Released*: 28 November 2023

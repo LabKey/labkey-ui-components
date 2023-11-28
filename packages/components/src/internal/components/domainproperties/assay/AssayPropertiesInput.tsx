@@ -82,11 +82,7 @@ interface InputProps {
 
 export function NameInput(props: InputProps) {
     return (
-        <AssayPropertiesInput
-            label="Name"
-            required={true}
-            appPropertiesOnly={props.appPropertiesOnly}
-        >
+        <AssayPropertiesInput label="Name" required={true} appPropertiesOnly={props.appPropertiesOnly}>
             <FormControl
                 id={FORM_IDS.ASSAY_NAME}
                 type="text"

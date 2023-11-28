@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 49113: Better handling for case where the only error is a form error for saveDomain()
+
 ### version 2.395.0
 *Released*: 23 November 2023
 - Happy Thanksgiving!

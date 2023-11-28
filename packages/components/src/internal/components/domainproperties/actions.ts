@@ -401,6 +401,11 @@ export function saveDomain(options: SaveDomainOptions): Promise<DomainDesign> {
                 reject(response);
             }
 
+            // Issue 49113: Better handling for case where the only error is a form error
+            if (response.errors.length === 1 && response.errors[0].id === 'form') {
+                reject(response);
+            }
+
             const exception = DomainException.create(response, SEVERITY_LEVEL_ERROR);
             const badDomain = setDomainException(domain, exception, addRowIndexes, originalDomain);
             reject(badDomain);

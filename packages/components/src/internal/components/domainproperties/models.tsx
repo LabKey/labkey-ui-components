@@ -509,16 +509,6 @@ export class DomainDesign
         );
         return specialCols.concat(unsortedColumns.sort(reorderSummaryColumns)).toList();
     }
-
-    setDomainException(
-        raw: any,
-        severityLevel = SEVERITY_LEVEL_ERROR,
-        addRowIndexes?: boolean,
-        originalDomain?: DomainDesign
-    ): DomainDesign {
-        const exception = DomainException.create(raw, severityLevel);
-        return setDomainException(this, exception, addRowIndexes, originalDomain);
-    }
 }
 
 export interface IDomainIndex {

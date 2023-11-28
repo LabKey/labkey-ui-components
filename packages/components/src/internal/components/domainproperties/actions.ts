@@ -401,7 +401,9 @@ export function saveDomain(options: SaveDomainOptions): Promise<DomainDesign> {
                 reject(response);
             }
 
-            reject(domain.setDomainException(response, SEVERITY_LEVEL_ERROR, addRowIndexes, originalDomain));
+            const exception = DomainException.create(response, SEVERITY_LEVEL_ERROR);
+            const badDomain = setDomainException(domain, exception, addRowIndexes, originalDomain);
+            reject(badDomain);
         }
 
         if (domain.domainId) {

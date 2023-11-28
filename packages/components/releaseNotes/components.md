@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add `getPermissionRestrictionMessage` utility method.
 * Issue 49148: pass through column description for rendering TextInput fields
 
+### version 2.395.1
+*Released*: 28 November 2023
+* Merge release23.11-SNAPSHOT to develop:
+    * includes changes from 2.390.5
+
 ### version 2.395.0
 *Released*: 23 November 2023
 - Happy Thanksgiving!
@@ -71,6 +76,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 1 November 2023
 * Issue 48828: Don't show sample insights panel while editing in the grid
   -  add `onEditToggle` optional prop for `SampleTabbedGridPanel`
+
+### version 2.390.5
+*Released*: 27 November 2023
+* Issue 49155: Get proper raw value for measurement units in grid
 
 ### version 2.390.4
 *Released*: 10 November 2023

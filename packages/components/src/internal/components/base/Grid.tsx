@@ -266,7 +266,6 @@ class GridBody extends PureComponent<GridBodyProps> {
         const { columns, rowKey } = this.props;
         const key = rowKey ? row.get(rowKey) : r;
 
-        // CONSIDER: Could implement row selector at a table level instead and pass the data from the clicked row using data-index
         // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
         // "textAlign" property correctly for <td> elements.
         return (
@@ -278,7 +277,7 @@ class GridBody extends PureComponent<GridBodyProps> {
                     'grid-row': r % 2 === 1,
                 })}
             >
-                {columns.map((column, c) =>
+                {columns.map((column: GridColumn, c: number) =>
                     column.tableCell ? (
                         <Fragment key={column.index}>{column.cell(row.get(column.index), row, column, r, c)}</Fragment>
                     ) : (

@@ -90,7 +90,6 @@ import {
 import { INT_LIST, VAR_LIST } from './list/constants';
 import { DomainRowWarning } from './DomainRowWarning';
 import { createFormInputId } from './utils';
-import { setDomainException } from './actions';
 
 export interface IFieldChange {
     id: string;

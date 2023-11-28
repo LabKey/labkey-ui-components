@@ -215,6 +215,16 @@ const DEFAULT_OFFSET = 0;
 const DEFAULT_MAX_ROWS = 20;
 
 /**
+ * An object that describes the current selection pivot row for shift-select behavior. When a single row is selected
+ * it becomes the "pivot" row for shift-select behavior. Subsequently, if a user selects another row while holding
+ * the shift key then all rows between the pivot row and the newly selected row will be selected/deselected.
+ */
+interface SelectionPivot {
+    checked: boolean;
+    selection: string;
+}
+
+/**
  * This is the base model used to store all the data for a query. At a high level the QueryModel API is a wrapper around
  * the [selectRows](https://labkey.github.io/labkey-api-js/modules/Query.html#selectRows) API.
  * If you need to retrieve data from a LabKey table or query, so you can render it in a React
@@ -386,6 +396,10 @@ export class QueryModel {
      */
     readonly selectedReportId: string;
     /**
+     * [[SelectionPivot]] object that describes the current selection pivot row for shift-select behavior.
+     */
+    readonly selectionPivot?: SelectionPivot;
+    /**
      * Array of row keys for row selections in the QueryModel.
      */
     readonly selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set.
@@ -471,6 +485,7 @@ export class QueryModel {
         this.rowCount = undefined;
         this.rowsLoadingState = LoadingState.INITIALIZED;
         this.selectedReportId = undefined;
+        this.selectionPivot = undefined;
         this.selections = undefined;
         this.selectionsError = undefined;
         this.selectionsLoadingState = LoadingState.INITIALIZED;

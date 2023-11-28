@@ -446,7 +446,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         if (nodeName === 'td' || nodeName === 'tr') {
             const checked = row.get(GRID_SELECTION_INDEX) === true;
-            actions.selectRow(model.id, !checked, row.toJS());
+            actions.selectRow(model.id, !checked, row.toJS(), event.shiftKey);
+            document.getSelection().removeAllRanges();
         }
     };
 
@@ -511,11 +512,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
     };
 
-    selectRow = (row, event): void => {
+    selectRow = (row: Map<string, any>, event): void => {
         const { model, actions } = this.props;
         const checked = event.target.checked === true;
         // Have to call toJS() on the row because <Grid /> converts rows to Immutable objects.
-        actions.selectRow(model.id, checked, row.toJS());
+        actions.selectRow(model.id, checked, row.toJS(), event.shiftKey);
     };
 
     selectPage = (event): void => {
@@ -924,18 +925,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 index: GRID_SELECTION_INDEX,
                 title: '',
                 showHeader: true,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                cell: (selected: boolean, row: any): ReactNode => {
-                    const onChange = (event): void => this.selectRow(row, event);
-                    const disabled = isLoading || isLoadingSelections;
+                cell: (selected: boolean, row: Map<string, any>): ReactNode => {
                     return (
-                        // eslint-disable-next-line react/jsx-no-bind
                         <input
-                            className="grid-panel__row-checkbox"
-                            type="checkbox"
-                            disabled={disabled}
                             checked={selected === true}
-                            onChange={onChange} // eslint-disable-line
+                            className="grid-panel__row-checkbox"
+                            disabled={isLoading || isLoadingSelections}
+                            onClick={this.selectRow.bind(this, row)} // eslint-disable-line
+                            type="checkbox"
                         />
                     );
                 },

@@ -40,10 +40,10 @@ export interface Actions {
     replaceSelections: (id: string, selections: string[]) => void;
     resetTotalCountState: () => void;
     selectAllRows: (id: string) => void;
-    selectPage: (id: string, checked) => void;
+    selectPage: (id: string, checked: boolean) => void;
     selectReport: (id: string, reportId: string) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    selectRow: (id: string, checked, row: { [key: string]: any }) => void;
+    selectRow: (id: string, checked: boolean, row: { [key: string]: any }, useSelectionPivot?: boolean) => void;
     setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
     setMaxRows: (id: string, maxRows: number) => void;
     setOffset: (id: string, offset: number) => void;
@@ -409,6 +409,7 @@ export function withQueryModels<Props>(
                         if (!isLoading) {
                             model.selectionsLoadingState = LoadingState.LOADED;
                         }
+                        model.selectionPivot = undefined;
                         model.selectionsError = undefined;
                     })
                 );
@@ -441,6 +442,12 @@ export function withQueryModels<Props>(
                                 model.selections.delete(selection);
                             }
                         });
+
+                        // Set the selection pivot row iff a single row is selected
+                        if (selections.length === 1) {
+                            model.selectionPivot = { checked, selection: selections[0] };
+                        }
+
                         model.selectionsError = undefined;
                         if (!isLoading) {
                             model.selectionsLoadingState = LoadingState.LOADED;
@@ -468,6 +475,7 @@ export function withQueryModels<Props>(
                         const model = draft.queryModels[id];
                         model.selections = new Set(selections);
                         model.selectionsError = undefined;
+                        model.selectionPivot = undefined;
                         model.selectionsLoadingState = LoadingState.LOADED;
                     })
                 );
@@ -492,6 +500,7 @@ export function withQueryModels<Props>(
                         const model = draft.queryModels[id];
                         model.selections = selections;
                         model.selectionsError = undefined;
+                        model.selectionPivot = undefined;
                         model.selectionsLoadingState = LoadingState.LOADED;
                     })
                 );
@@ -501,7 +510,7 @@ export function withQueryModels<Props>(
         };
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        selectRow = (id: string, checked: boolean, row: { [key: string]: any }): void => {
+        selectRow = (id: string, checked: boolean, row: { [key: string]: any }, useSelectionPivot?: boolean): void => {
             const model = this.state.queryModels[id];
             const pkCols = model.queryInfo.getPkCols();
 
@@ -513,7 +522,28 @@ export function withQueryModels<Props>(
                     return;
                 }
 
-                this.setSelections(id, checked, [pkValue]);
+                if (useSelectionPivot && model.selectionPivot) {
+                    const pivotIdx = model.orderedRows.findIndex(key => key === model.selectionPivot.selection);
+                    const selectedIdx = model.orderedRows.findIndex(key => key === pkValue);
+
+                    // If we cannot make sense of the indices then just treat this as a normal selection
+                    if (pivotIdx === -1 || selectedIdx === -1 || pivotIdx === selectedIdx) {
+                        this.setSelections(id, checked, [pkValue]);
+                        return;
+                    }
+
+                    // Select all rows relative to/from the pivot row
+                    let selections: string[];
+                    if (pivotIdx < selectedIdx) {
+                        selections = model.orderedRows.slice(pivotIdx + 1, selectedIdx + 1);
+                    } else {
+                        selections = model.orderedRows.slice(selectedIdx, pivotIdx);
+                    }
+
+                    this.setSelections(id, model.selectionPivot.checked, selections);
+                } else {
+                    this.setSelections(id, checked, [pkValue]);
+                }
             } else {
                 const msg = `Cannot set row selection for model ${id}. The model has multiple PK Columns.`;
                 console.warn(msg, pkCols);
@@ -564,6 +594,7 @@ export function withQueryModels<Props>(
                         model.rowCount = !model.includeTotalCount ? rowCount : model.rowCount; // only update the rowCount on the model if we aren't loading the totalCount
                         model.rowsLoadingState = LoadingState.LOADED;
                         model.rowsError = undefined;
+                        model.selectionPivot = undefined;
                     }),
                     () => this.maybeLoad(id, false, false, loadSelections)
                 );
@@ -580,6 +611,7 @@ export function withQueryModels<Props>(
                         console.error(`Error loading rows for model ${id}: `, rowsError);
                         model.rowsLoadingState = LoadingState.LOADED;
                         model.rowsError = rowsError;
+                        model.selectionPivot = undefined;
                     })
                 );
             }

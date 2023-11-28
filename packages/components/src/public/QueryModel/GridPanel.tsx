@@ -440,17 +440,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         view: ViewAction;
     };
 
-    onRowClick = (row: Map<string, any>, event): void => {
-        const { actions, model } = this.props;
-        const nodeName = event.target.nodeName?.toLowerCase();
-
-        if (nodeName === 'td' || nodeName === 'tr') {
-            const checked = row.get(GRID_SELECTION_INDEX) === true;
-            actions.selectRow(model.id, !checked, row.toJS(), event.shiftKey);
-            document.getSelection().removeAllRanges();
-        }
-    };
-
     createGridActionValues = (): ActionValue[] => {
         const { model } = this.props;
         const { filterArray, sorts } = model;
@@ -1137,7 +1126,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                                     columns={this.getGridColumns()}
                                     data={model.gridData}
                                     highlightRowIndexes={this.getHighlightRowIndexes()}
-                                    onRowClick={allowSelections ? this.onRowClick : undefined}
                                 />
                             )}
                         </div>

@@ -240,7 +240,6 @@ interface GridBodyProps {
     highlightRowIndexes?: List<number>;
     isLoading: boolean;
     loadingText: ReactNode;
-    onRowClick?: (row: Map<string, any>, event) => void;
     rowKey: any;
     transpose: boolean;
 }
@@ -263,9 +262,9 @@ class GridBody extends PureComponent<GridBodyProps> {
         );
     }
 
-    renderRow(row: any, rowIndex: number, highlight?: boolean): any {
-        const { columns, onRowClick, rowKey } = this.props;
-        const key = rowKey ? row.get(rowKey) : rowIndex;
+    renderRow(row: any, r: number, highlight?: boolean): any {
+        const { columns, rowKey } = this.props;
+        const key = rowKey ? row.get(rowKey) : r;
 
         // CONSIDER: Could implement row selector at a table level instead and pass the data from the clicked row using data-index
         // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
@@ -275,17 +274,16 @@ class GridBody extends PureComponent<GridBodyProps> {
                 key={key}
                 className={classNames({
                     'grid-row-highlight': highlight,
-                    'grid-row-alternate': rowIndex % 2 === 0,
-                    'grid-row': rowIndex % 2 === 1,
+                    'grid-row-alternate': r % 2 === 0,
+                    'grid-row': r % 2 === 1,
                 })}
-                onClick={onRowClick?.bind(this, row)}
             >
-                {columns.map((column, colIdx) =>
+                {columns.map((column, c) =>
                     column.tableCell ? (
-                        <Fragment key={column.index}>{column.cell(row.get(column.index), row, column, rowIndex, colIdx)}</Fragment>
+                        <Fragment key={column.index}>{column.cell(row.get(column.index), row, column, r, c)}</Fragment>
                     ) : (
                         <td key={column.index} style={{ textAlign: column.align || 'left' } as any}>
-                            {column.cell(row.get(column.index), row, column, rowIndex, colIdx)}
+                            {column.cell(row.get(column.index), row, column, r, c)}
                         </td>
                     )
                 )}
@@ -344,7 +342,6 @@ export interface GridProps {
     loadingText?: ReactNode;
     messages?: List<Map<string, string>>;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
-    onRowClick?: (row: Map<string, any>, event) => void;
     responsive?: boolean;
     /**
      * If a rowKey is specified the <Grid> will use it as a lookup key into each row. The associated value
@@ -377,7 +374,6 @@ export const Grid: FC<GridProps> = memo(props => {
         columns,
         headerCell,
         onColumnDrop,
-        onRowClick,
         rowKey,
         highlightRowIndexes,
         gridId,
@@ -408,7 +404,6 @@ export const Grid: FC<GridProps> = memo(props => {
         emptyText,
         isLoading,
         loadingText,
-        onRowClick,
         rowKey,
         transpose,
         highlightRowIndexes,

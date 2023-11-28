@@ -262,6 +262,7 @@ export class QueryColumn implements IQueryColumn {
     static ALIQUOTED_FROM = 'AliquotedFrom';
     static ALIQUOTED_FROM_CAPTION = 'Aliquoted From';
     static ALIQUOTED_FROM_LSID = 'AliquotedFromLSID';
+    static MEASUREMENT_UNITS_QUERY = "MeasurementUnits";
 
     static isUserLookup(lookupInfo: Record<string, any>): boolean {
         if (!lookupInfo) return false;
@@ -316,6 +317,10 @@ export class QueryColumn implements IQueryColumn {
             this.name.toLowerCase().indexOf(QueryColumn.DATA_INPUTS.toLowerCase()) !== -1 &&
             (!checkLookup || this.isLookup())
         );
+    }
+
+    isUnitsLookup(): boolean {
+        return this.isLookup && this.lookup.queryName === QueryColumn.MEASUREMENT_UNITS_QUERY;
     }
 
     isAliquotParent(): boolean {

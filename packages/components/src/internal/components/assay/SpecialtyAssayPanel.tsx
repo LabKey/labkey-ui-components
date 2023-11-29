@@ -1,5 +1,4 @@
 import React, { FC, memo, useMemo, useCallback } from 'react';
-import { Col, Row } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
 
@@ -51,8 +50,8 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
 
     return (
         <div>
-            <Row>
-                <Col xs={6}>
+            <div className="row">
+                <div className="col-xs-6">
                     {selected && options?.length > 0 && (
                         <>
                             <div className="margin-bottom">
@@ -79,22 +78,22 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                             {warning}
                         </Alert>
                     )}
-                </Col>
-            </Row>
+                </div>
+            </div>
             {selected && options?.length > 0 && (
-                <Row>
-                    <Col xs={6}>
+                <div className="row">
+                    <div className="col-xs-6">
                         <div className={warning ? 'margin-bottom' : 'margin-top margin-bottom'}>
                             <b>Supported File Types</b>
                         </div>
                         <p>{selected?.fileTypes.join(', ')}</p>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             )}
             {children}
             {!hasPremium && (
-                <Row>
-                    <Col xs={12} className={premiumInfoClass}>
+                <div className="row">
+                    <div className={'col-xs-12 ' + premiumInfoClass}>
                         <Alert bsStyle="info">
                             <h1 className="fa fa-star-o"> Premium Feature</h1>
                             <h3>More specialty assays are available with LabKey Server Premium Edition</h3>
@@ -132,8 +131,8 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                                 </div>
                             </div>
                         </Alert>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             )}
         </div>
     );

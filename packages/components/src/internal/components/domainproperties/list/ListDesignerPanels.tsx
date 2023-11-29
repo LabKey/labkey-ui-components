@@ -214,6 +214,15 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
             })
             .catch(response => {
                 const exception = resolveErrorMessage(response);
+
+                // Issue 49113: Better handling for case where the only error is a form error
+                if (!exception && response.domainException) {
+                    response = response.setIn(
+                        ['domainException', 'exception'],
+                        resolveErrorMessage(response.domainException.exception)
+                    );
+                }
+
                 const updatedModel = exception
                     ? (model.set('exception', exception) as ListModel)
                     : (model.merge({ domain: response, exception: undefined }) as ListModel);

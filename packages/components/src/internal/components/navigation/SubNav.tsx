@@ -13,27 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, useRef, useState, useCallback, useEffect, memo } from 'react';
+import React, { FC, useRef, useState, useCallback, useEffect, memo, useMemo } from 'react';
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
+import { useLocation } from 'react-router-dom';
 
 import { useServerContext } from '../base/ServerContext';
 
 import { hasPremiumModule, hasProductProjects } from '../../app/utils';
 
 import { NavItem, ParentNavItem } from './NavItem';
-import { ITab, SubNavGlobalContext } from './types';
+import { isAdminRoute } from './ProductMenu';
+import { ITab } from './types';
 import { useSubNavTabsContext } from './hooks';
 
 interface Props {
     noun?: ITab;
-    tabs: List<ITab>;
-    showLKVersion?: boolean;
+    tabs: List<ITab>; // TODO: convert to ITab[]
 }
 
-export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
+export const SubNav: FC<Props> = ({ noun, tabs }) => {
+    // FIXME: after all usages of SuNav are gone update this component to use the context to get noun/tabs and stop
+    //  exporting in index
+    const location = useLocation();
+    const isAdminPage = useMemo(() => isAdminRoute(location.pathname), [location.pathname]);
     const scrollable = useRef<HTMLDivElement>();
     const { container, moduleContext } = useServerContext();
     const { versionString } = getServerContext();
@@ -128,7 +133,7 @@ export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
                     </div>
                 )}
 
-                {showLKVersion && (
+                {isAdminPage && (
                     <div className="lk-version-nav">
                         <span className="lk-version-nav__label" title={versionString}>
                             Version: {versionString}
@@ -147,9 +152,10 @@ export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
 export const SubNavWithTabsContext: FC = memo(() => {
     const { noun, tabs } = useSubNavTabsContext();
 
-    if (tabs.size === 0 && noun === undefined) {
+    if (tabs.length === 0 && noun === undefined) {
         return null;
     }
 
-    return <SubNav noun={noun} tabs={tabs} />;
+    // FIXME: don't convert to List
+    return <SubNav noun={noun} tabs={List(tabs)} />;
 });

@@ -21,6 +21,7 @@ import { getDateFormat } from '../../util/Date';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { useRouteLeave } from '../../util/RouteLeave';
+import { useAccountSubNav } from './AccountSubNav';
 
 import { UserDetailHeader } from './UserDetailHeader';
 import { getUserRoleDisplay } from './actions';
@@ -38,6 +39,7 @@ const TITLE = 'User Profile';
 
 export const ProfilePage: FC<Props> = props => {
     const { updateUserDisplayName } = props;
+    useAccountSubNav();
     const [_, setIsDirty] = useRouteLeave();
     const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
     const { moduleContext, user } = useServerContext();

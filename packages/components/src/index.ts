@@ -449,7 +449,6 @@ import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
 import { useUserProperties } from './internal/components/user/hooks';
 import { UserLink, UserLinkList } from './internal/components/user/UserLink';
-import { AccountSubNav } from './internal/components/user/AccountSubNav';
 import { ProfilePage } from './internal/components/user/ProfilePage';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -1160,7 +1159,6 @@ export {
     UserProfile,
     UserLink,
     UserLinkList,
-    AccountSubNav,
     ProfilePage,
     ChangePasswordModal,
     InsufficientPermissionsAlert,

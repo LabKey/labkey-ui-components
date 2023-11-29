@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- FormsyReactComponents.tsx fix for handling of rowClassName prop
+
 ### version 2.395.2
 *Released*: 29 November 2023
 - Issue 49113: Better handling for ListDesignerPanels case where the only error is a form error for saveDomain()

@@ -252,7 +252,7 @@ const ASSAY_MAPPERS = [
             const params = ActionURL.getParameters(url);
 
             if (params.rowId) {
-                return AppURL.create('assays', params.rowId);
+                return AppURL.create('rd', 'assays', params.rowId);
             }
         }
     }),

@@ -13,7 +13,7 @@ describe('<ExpandableContainer/>', () => {
         );
 
         const { container } = render(component);
-        expect(container.firstChild).toMatchSnapshot();
+        expect(container).toMatchSnapshot();
     });
 
     test('custom props', () => {
@@ -31,7 +31,7 @@ describe('<ExpandableContainer/>', () => {
         );
 
         const { container } = render(component);
-        expect(container.firstChild).toMatchSnapshot();
+        expect(container).toMatchSnapshot();
     });
 
     test('with state', () => {

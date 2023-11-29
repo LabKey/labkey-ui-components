@@ -20,7 +20,7 @@ describe('<AssayReimportHeader/>', () => {
             <AssayReimportHeader hasBatchProperties={true} assay={assay} replacedRunProperties={runData} />
         );
         const { container } = render(component);
-        expect(container.firstChild).toMatchSnapshot();
+        expect(container).toMatchSnapshot();
     });
 
     test('no batch properties', () => {
@@ -28,6 +28,6 @@ describe('<AssayReimportHeader/>', () => {
             <AssayReimportHeader hasBatchProperties={false} assay={assay} replacedRunProperties={runData} />
         );
         const { container } = render(component);
-        expect(container.firstChild).toMatchSnapshot();
+        expect(container).toMatchSnapshot();
     });
 });

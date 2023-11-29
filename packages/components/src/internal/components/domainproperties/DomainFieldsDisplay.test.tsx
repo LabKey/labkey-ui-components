@@ -27,18 +27,18 @@ describe('DomainFieldsDisplay', () => {
         const domain = new DomainDesign();
         const { container} = render(<DomainFieldsDisplay domain={domain} />);
 
-        expect(container.firstChild).toMatchSnapshot();
+        expect(container).toMatchSnapshot();
     });
 
     test('without title', () => {
         const { container} = render(<DomainFieldsDisplay domain={testDomain} />);
 
-        expect(container.firstChild).toMatchSnapshot();
+        expect(container).toMatchSnapshot();
     });
 
     test('with title', () => {
         const { container} = render(<DomainFieldsDisplay domain={testDomain} title="test domain title" />);
 
-        expect(container.firstChild).toMatchSnapshot();
+        expect(container).toMatchSnapshot();
     });
 });

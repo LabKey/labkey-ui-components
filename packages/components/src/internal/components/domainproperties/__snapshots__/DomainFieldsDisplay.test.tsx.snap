@@ -1,265 +1,271 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DomainFieldsDisplay with empty domain design 1`] = `
-<div
-  class="panel panel-default"
->
+<div>
   <div
-    class="panel-heading"
+    class="panel panel-default"
   >
     <div
-      class="panel-title"
-    />
-  </div>
-  <div
-    class="panel-body"
-  >
-    <p />
-    <div
-      class="table-responsive"
+      class="panel-heading"
     >
       <div
-        class="grid-messages"
+        class="panel-title"
       />
-      <table
-        class="table table-striped table-bordered"
+    </div>
+    <div
+      class="panel-body"
+    >
+      <p />
+      <div
+        class="table-responsive"
       >
-        <thead>
-          <tr>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="name"
+        <div
+          class="grid-messages"
+        />
+        <table
+          class="table table-striped table-bordered"
+        >
+          <thead>
+            <tr>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="name"
+              >
+                Name
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="label"
+              >
+                Label
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="rangeURI"
+              >
+                Range URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="conceptURI"
+              >
+                Concept URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="required"
+              >
+                Required
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="scale"
+              >
+                Scale
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="grid-empty"
             >
-              Name
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="label"
-            >
-              Label
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="rangeURI"
-            >
-              Range URI
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="conceptURI"
-            >
-              Concept URI
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="required"
-            >
-              Required
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="scale"
-            >
-              Scale
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            class="grid-empty"
-          >
-            <td
-              colspan="6"
-            >
-              No data available.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td
+                colspan="6"
+              >
+                No data available.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
 `;
 
 exports[`DomainFieldsDisplay with title 1`] = `
-<div
-  class="panel panel-default"
->
+<div>
   <div
-    class="panel-heading"
+    class="panel panel-default"
   >
     <div
-      class="panel-title"
-    >
-      test domain title
-    </div>
-  </div>
-  <div
-    class="panel-body"
-  >
-    <p />
-    <div
-      class="table-responsive"
+      class="panel-heading"
     >
       <div
-        class="grid-messages"
-      />
-      <table
-        class="table table-striped table-bordered"
+        class="panel-title"
       >
-        <thead>
-          <tr>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="name"
+        test domain title
+      </div>
+    </div>
+    <div
+      class="panel-body"
+    >
+      <p />
+      <div
+        class="table-responsive"
+      >
+        <div
+          class="grid-messages"
+        />
+        <table
+          class="table table-striped table-bordered"
+        >
+          <thead>
+            <tr>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="name"
+              >
+                Name
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="label"
+              >
+                Label
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="rangeURI"
+              >
+                Range URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="conceptURI"
+              >
+                Concept URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="required"
+              >
+                Required
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="scale"
+              >
+                Scale
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="grid-empty"
             >
-              Name
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="label"
-            >
-              Label
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="rangeURI"
-            >
-              Range URI
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="conceptURI"
-            >
-              Concept URI
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="required"
-            >
-              Required
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="scale"
-            >
-              Scale
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            class="grid-empty"
-          >
-            <td
-              colspan="6"
-            >
-              No data available.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td
+                colspan="6"
+              >
+                No data available.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
 `;
 
 exports[`DomainFieldsDisplay without title 1`] = `
-<div
-  class="panel panel-default"
->
+<div>
   <div
-    class="panel-heading"
+    class="panel panel-default"
   >
     <div
-      class="panel-title"
-    >
-      test domain name
-    </div>
-  </div>
-  <div
-    class="panel-body"
-  >
-    <p />
-    <div
-      class="table-responsive"
+      class="panel-heading"
     >
       <div
-        class="grid-messages"
-      />
-      <table
-        class="table table-striped table-bordered"
+        class="panel-title"
       >
-        <thead>
-          <tr>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="name"
+        test domain name
+      </div>
+    </div>
+    <div
+      class="panel-body"
+    >
+      <p />
+      <div
+        class="table-responsive"
+      >
+        <div
+          class="grid-messages"
+        />
+        <table
+          class="table table-striped table-bordered"
+        >
+          <thead>
+            <tr>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="name"
+              >
+                Name
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="label"
+              >
+                Label
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="rangeURI"
+              >
+                Range URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="conceptURI"
+              >
+                Concept URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="required"
+              >
+                Required
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="scale"
+              >
+                Scale
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="grid-empty"
             >
-              Name
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="label"
-            >
-              Label
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="rangeURI"
-            >
-              Range URI
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="conceptURI"
-            >
-              Concept URI
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="required"
-            >
-              Required
-            </th>
-            <th
-              class="grid-header-cell"
-              draggable="false"
-              id="scale"
-            >
-              Scale
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            class="grid-empty"
-          >
-            <td
-              colspan="6"
-            >
-              No data available.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td
+                colspan="6"
+              >
+                No data available.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

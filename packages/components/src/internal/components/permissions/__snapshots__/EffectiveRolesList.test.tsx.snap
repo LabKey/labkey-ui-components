@@ -1,0 +1,266 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EffectiveRolesList/> admin, showLinks false 1`] = `
+<div>
+  <hr
+    class="principal-hr"
+  />
+  <div
+    class="row"
+  >
+    <div
+      class="principal-detail-label col-xs-4"
+    >
+      Effective Roles
+    </div>
+    <div
+      class="principal-detail-value col-xs-8"
+    >
+      <ul
+        class="principal-detail-ul"
+      >
+        <li
+          class="principal-detail-li"
+        >
+          Editor
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<EffectiveRolesList/> multiple roles 1`] = `
+<div>
+  <hr
+    class="principal-hr"
+  />
+  <div
+    class="row"
+  >
+    <div
+      class="principal-detail-label col-xs-4"
+    >
+      Effective Roles
+    </div>
+    <div
+      class="principal-detail-value col-xs-8"
+    >
+      <ul
+        class="principal-detail-ul"
+      >
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Editor"
+          >
+            Editor
+          </a>
+        </li>
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Folder%20Administrator"
+          >
+            Folder Administrator
+          </a>
+        </li>
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Project%20Administrator"
+          >
+            Project Administrator
+          </a>
+        </li>
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Reader"
+          >
+            Reader
+          </a>
+        </li>
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Restricted%20Reader"
+          >
+            Restricted Reader
+          </a>
+        </li>
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Submitter"
+          >
+            Submitter
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<EffectiveRolesList/> no roles 1`] = `<div />`;
+
+exports[`<EffectiveRolesList/> non admin 1`] = `
+<div>
+  <hr
+    class="principal-hr"
+  />
+  <div
+    class="row"
+  >
+    <div
+      class="principal-detail-label col-xs-4"
+    >
+      Effective Roles
+    </div>
+    <div
+      class="principal-detail-value col-xs-8"
+    >
+      <ul
+        class="principal-detail-ul"
+      >
+        <li
+          class="principal-detail-li"
+        >
+          Editor
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<EffectiveRolesList/> single role 1`] = `
+<div>
+  <hr
+    class="principal-hr"
+  />
+  <div
+    class="row"
+  >
+    <div
+      class="principal-detail-label col-xs-4"
+    >
+      Effective Roles
+    </div>
+    <div
+      class="principal-detail-value col-xs-8"
+    >
+      <ul
+        class="principal-detail-ul"
+      >
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Editor"
+          >
+            Editor
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<EffectiveRolesList/> with root policy 1`] = `
+<div>
+  <hr
+    class="principal-hr"
+  />
+  <div
+    class="row"
+  >
+    <div
+      class="principal-detail-label col-xs-4"
+    >
+      Effective Roles
+    </div>
+    <div
+      class="principal-detail-value col-xs-8"
+    >
+      <ul
+        class="principal-detail-ul"
+      >
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Editor"
+          >
+            Editor
+          </a>
+        </li>
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Folder%20Administrator"
+          >
+            Folder Administrator
+          </a>
+        </li>
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Project%20Administrator"
+          >
+            Project Administrator
+          </a>
+        </li>
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Reader"
+          >
+            Reader
+          </a>
+        </li>
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Restricted%20Reader"
+          >
+            Restricted Reader
+          </a>
+        </li>
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Submitter"
+          >
+            Submitter
+          </a>
+        </li>
+        <li
+          class="principal-detail-li"
+        >
+          <a
+            href="#/admin/permissions?expand=Application%20Admin"
+          >
+            Application Admin
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<EffectiveRolesList/> without policy 1`] = `<div />`;

@@ -182,7 +182,7 @@ export function getPermissionRestrictionMessage(
     const noun = totalCount === 1 ? nounSingular : nounPlural;
 
     if (noPermissionCount === totalCount) {
-        return `You don't have the required permission to ${verb} the selected ${noun}${verbSuffix}.`;
+        return `You don't have the required permission to ${verb} the selected ${noun}${verbSuffix ?? ''}.`;
     }
 
     const notPermittedNoun = Utils.pluralize(noPermissionCount, nounSingular, nounPlural);

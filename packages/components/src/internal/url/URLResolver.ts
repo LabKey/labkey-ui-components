@@ -51,56 +51,20 @@ export namespace URLService {
         });
     }
 
-    export function resolveAppRoute(store, nextRouteState, replace, next) {
-        const query = nextRouteState.location.query;
-        const nextRoute = nextRouteState.location.pathname;
-        const table = getRouteTable(store.getState());
+    export async function resolveRedirect(path: string): Promise<string> {
+        const resolver = resolvers.find(r => r.matches(path));
 
-        if (table.has(nextRoute)) {
-            if (table.get(nextRoute) !== true) {
-                replace({ pathname: table.get(nextRoute), query });
-            }
-        } else {
-            let found = false;
-            resolvers.forEach(resolver => {
-                if (resolver.matches(nextRoute)) {
-                    found = true;
-                    const routes = nextRoute.split('/');
-                    routes.shift(); // account for initial '/'
-                    resolver.fetch(routes).then((fetchedRoute: AppURL | boolean) => {
-                        const toRoute = typeof fetchedRoute === 'boolean' ? fetchedRoute : fetchedRoute.toString();
+        if (resolver === undefined) return undefined;
 
-                        store.dispatch({
-                            type: ADD_TABLE_ROUTE,
-                            fromRoute: nextRoute,
-                            toRoute,
-                        });
+        const parts = path.split('/');
+        parts.shift(); // account for initial '/'
+        const redirectPath = await resolver.fetch(parts);
 
-                        if (typeof toRoute === 'string') {
-                            replace({
-                                pathname: toRoute,
-                                query,
-                            });
-                        }
-
-                        next();
-                    });
-                    return false; // stop at this resolver
-                }
-            });
-
-            if (found) {
-                return;
-            } else {
-                store.dispatch({
-                    type: ADD_TABLE_ROUTE,
-                    fromRoute: nextRoute,
-                    toRoute: true,
-                });
-            }
+        if (typeof redirectPath === 'boolean') {
+            return undefined;
         }
 
-        next();
+        return redirectPath.toString();
     }
 
     export function getRouteTable(state): RoutingTable {

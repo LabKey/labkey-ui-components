@@ -31,6 +31,7 @@ import {
     VIEW_NOT_FOUND_EXCEPTION_CLASS,
 } from './constants';
 import { DataViewInfo } from './DataViewInfo';
+import { getQueryParams } from './util/URL';
 
 import { handleRequestFailure } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
@@ -55,7 +56,7 @@ export function selectAll(
                 container: containerPath,
             }),
             method: 'POST',
-            params: getQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter),
+            params: buildQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
@@ -289,13 +290,13 @@ function getFilteredQueryParams(
     containerFilter?: Query.ContainerFilter
 ): Record<string, any> {
     if (schemaQuery && filterArray) {
-        return getQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter);
+        return buildQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter);
     }
 
     return { key };
 }
 
-function getQueryParams(
+function buildQueryParams(
     key: string,
     schemaQuery: SchemaQuery,
     filterArray: Filter.IFilter[],
@@ -570,12 +571,12 @@ interface ISelectionResponse {
 }
 
 export async function getSelection(
-    location: any,
+    searchParams: URLSearchParams,
     schemaName?: string,
     queryName?: string
 ): Promise<ISelectionResponse> {
-    if (location?.query?.selectionKey) {
-        const { selectionKey } = location.query;
+    const selectionKey = searchParams.get('selectionKey');
+    if (selectionKey) {
         let { keys, schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
 
         if (keys !== undefined) {
@@ -594,7 +595,8 @@ export async function getSelection(
             );
         }
 
-        const filters = Filter.getFiltersFromParameters(Object.assign({}, location.query));
+        const params = getQueryParams(searchParams);
+        const filters = Filter.getFiltersFromParameters(Object.assign({}, params));
         const response = await getSelected(selectionKey, false, schemaQuery, filters);
 
         return { resolved: true, schemaQuery, selected: response.selected };

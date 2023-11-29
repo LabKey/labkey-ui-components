@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PageDetailHeader/> default props 1`] = `
+<div>
+  <div
+    class="page-header"
+  >
+    <div
+      class="col-xs-12 col-md-6 detail__header--container"
+    >
+      <div
+        class="detail__header--image-container"
+      >
+        <img
+          alt="default-icon"
+          class="detail__header-icon"
+          height="100%"
+          src="/labkey/_images/default.svg"
+          width="100%"
+        />
+      </div>
+      <div
+        class="detail__header-icon--body-container"
+      >
+        <h2
+          class="no-margin-top detail__header--name"
+        >
+          Title
+        </h2>
+      </div>
+    </div>
+    <div
+      class="clearfix"
+    />
+  </div>
+</div>
+`;
+
+exports[`<PageDetailHeader/> with additional props 1`] = `
+<div>
+  <div
+    class="page-header"
+  >
+    <div
+      class="col-xs-12 col-md-5 detail__header--container"
+    >
+      <div
+        class="detail__header--image-container"
+      >
+        <img
+          alt="iconSrc-icon"
+          class="detail__header-icon"
+          height="100%"
+          src="/labkey/iconDir/iconsrc.svg"
+          width="100%"
+        />
+      </div>
+      <div
+        class="detail__header-icon--body-container"
+      >
+        <h2
+          class="no-margin-top detail__header--name"
+        >
+          Title
+        </h2>
+        <h4
+          class="test-loc-detail-subtitle"
+        >
+          Subtitle
+        </h4>
+        <span
+          class="detail__header--desc"
+        >
+          Description
+        </span>
+      </div>
+    </div>
+    <div
+      class="pull-right"
+    >
+      <div>
+        Something off to the right
+      </div>
+    </div>
+    <div
+      class="clearfix"
+    />
+  </div>
+</div>
+`;
+
+exports[`<PageDetailHeader/> without icon 1`] = `
+<div>
+  <div
+    class="page-header"
+  >
+    <div
+      class="col-xs-12 col-md-6 detail__header--container"
+    >
+      <div
+        class=""
+      >
+        <h2
+          class="no-margin-top detail__header--name"
+        >
+          Title
+        </h2>
+      </div>
+    </div>
+    <div
+      class="clearfix"
+    />
+  </div>
+</div>
+`;

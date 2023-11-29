@@ -550,6 +550,7 @@ import {
     DomainDetails,
     DomainField,
     PropertyValidator,
+    DomainException,
 } from './internal/components/domainproperties/models';
 import { SAMPLE_TYPE } from './internal/components/domainproperties/PropDescType';
 import DomainForm from './internal/components/domainproperties/DomainForm';
@@ -1427,6 +1428,7 @@ export {
     DomainFieldLabel,
     RangeValidationOptionsModal,
     PropertyValidator,
+    DomainException,
     DOMAIN_RANGE_VALIDATOR,
     DomainDetails,
     inferDomainFromFile,

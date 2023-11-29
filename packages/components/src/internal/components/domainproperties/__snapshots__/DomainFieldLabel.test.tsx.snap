@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DomainFieldLabel/> label and helpTip 1`] = `
+<div>
+  Field 
+  <span
+    class="domain-no-wrap"
+  >
+    Label
+    <span
+      class="label-help-target"
+    >
+      <span
+        class="label-help-icon fa fa-question-circle"
+      />
+    </span>
+    
+  </span>
+</div>
+`;
+
+exports[`<DomainFieldLabel/> label and required 1`] = `
+<div>
+  Field 
+  <span
+    class="domain-no-wrap"
+  >
+    Label
+     *
+  </span>
+</div>
+`;
+
+exports[`<DomainFieldLabel/> label only 1`] = `
+<div>
+  Field 
+  <span
+    class="domain-no-wrap"
+  >
+    Label
+    
+  </span>
+</div>
+`;
+
+exports[`<DomainFieldLabel/> label, required, and helpTip 1`] = `
+<div>
+  Field 
+  <span
+    class="domain-no-wrap"
+  >
+    Label
+    <span
+      class="label-help-target"
+    >
+      <span
+        class="label-help-icon fa fa-question-circle"
+      />
+    </span>
+     *
+  </span>
+</div>
+`;

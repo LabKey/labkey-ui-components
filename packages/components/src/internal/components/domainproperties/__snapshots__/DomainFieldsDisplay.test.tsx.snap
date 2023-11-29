@@ -1,0 +1,272 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DomainFieldsDisplay with empty domain design 1`] = `
+<div>
+  <div
+    class="panel panel-default"
+  >
+    <div
+      class="panel-heading"
+    >
+      <div
+        class="panel-title"
+      />
+    </div>
+    <div
+      class="panel-body"
+    >
+      <p />
+      <div
+        class="table-responsive"
+      >
+        <div
+          class="grid-messages"
+        />
+        <table
+          class="table table-striped table-bordered"
+        >
+          <thead>
+            <tr>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="name"
+              >
+                Name
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="label"
+              >
+                Label
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="rangeURI"
+              >
+                Range URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="conceptURI"
+              >
+                Concept URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="required"
+              >
+                Required
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="scale"
+              >
+                Scale
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="grid-empty"
+            >
+              <td
+                colspan="6"
+              >
+                No data available.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DomainFieldsDisplay with title 1`] = `
+<div>
+  <div
+    class="panel panel-default"
+  >
+    <div
+      class="panel-heading"
+    >
+      <div
+        class="panel-title"
+      >
+        test domain title
+      </div>
+    </div>
+    <div
+      class="panel-body"
+    >
+      <p />
+      <div
+        class="table-responsive"
+      >
+        <div
+          class="grid-messages"
+        />
+        <table
+          class="table table-striped table-bordered"
+        >
+          <thead>
+            <tr>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="name"
+              >
+                Name
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="label"
+              >
+                Label
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="rangeURI"
+              >
+                Range URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="conceptURI"
+              >
+                Concept URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="required"
+              >
+                Required
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="scale"
+              >
+                Scale
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="grid-empty"
+            >
+              <td
+                colspan="6"
+              >
+                No data available.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DomainFieldsDisplay without title 1`] = `
+<div>
+  <div
+    class="panel panel-default"
+  >
+    <div
+      class="panel-heading"
+    >
+      <div
+        class="panel-title"
+      >
+        test domain name
+      </div>
+    </div>
+    <div
+      class="panel-body"
+    >
+      <p />
+      <div
+        class="table-responsive"
+      >
+        <div
+          class="grid-messages"
+        />
+        <table
+          class="table table-striped table-bordered"
+        >
+          <thead>
+            <tr>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="name"
+              >
+                Name
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="label"
+              >
+                Label
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="rangeURI"
+              >
+                Range URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="conceptURI"
+              >
+                Concept URI
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="required"
+              >
+                Required
+              </th>
+              <th
+                class="grid-header-cell"
+                draggable="false"
+                id="scale"
+              >
+                Scale
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="grid-empty"
+            >
+              <td
+                colspan="6"
+              >
+                No data available.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;

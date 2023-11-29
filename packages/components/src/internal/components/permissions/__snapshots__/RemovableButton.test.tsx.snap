@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RemovableButton/> custom props 1`] = `
+<div>
+  <div
+    class="permissions-button-group btn-group"
+  >
+    <div
+      class="disabled-button-with-tooltip "
+    >
+      <button
+        class="btn btn-primary"
+        disabled=""
+        type="button"
+      >
+        <i
+          class="fa fa-remove"
+        />
+      </button>
+    </div>
+    <button
+      class="permissions-button-display permissions-button-added btn btn-primary"
+      type="button"
+    >
+      Display Text (Custom)
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<RemovableButton/> default props 1`] = `
+<div>
+  <div
+    class="permissions-button-group btn-group"
+  >
+    <button
+      class="btn btn-default"
+      type="button"
+    >
+      <i
+        class="fa fa-remove"
+      />
+    </button>
+    <button
+      class="permissions-button-display btn btn-default"
+      type="button"
+    >
+      Display Text
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<RemovableButton/> not removable 1`] = `
+<div>
+  <button
+    class="permissions-button-display btn btn-default"
+    type="button"
+  >
+    Display Text (Not Removable)
+  </button>
+</div>
+`;

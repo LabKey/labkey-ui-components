@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add `getPermissionRestrictionMessage` utility method.
 * Issue 49148: pass through column description for rendering TextInput fields
 
+### version 2.395.2
+*Released*: 29 November 2023
+- Issue 49113: Better handling for ListDesignerPanels case where the only error is a form error for saveDomain()
+- Include DomainException class in index.ts
+- Further usage of scrollDomainErrorIntoView() in DataClassDesigner
+
 ### version 2.395.1
 *Released*: 28 November 2023
 * Merge release23.11-SNAPSHOT to develop:

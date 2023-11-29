@@ -15,7 +15,6 @@
  */
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Domain, Experiment, Filter, Query, Utils } from '@labkey/api';
-import { DeprecatedLocation } from '../../routerTypes';
 
 import { IEntityTypeDetails } from '../entities/models';
 import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';

@@ -601,11 +601,7 @@ import {
     PIPELINE_PROVIDER_FILTER_LKB,
     PIPELINE_PROVIDER_FILTER_LKSM,
 } from './internal/components/pipeline/constants';
-import { PipelineJobDetailPage } from './internal/components/pipeline/PipelineJobDetailPage';
-import { PipelineJobsListingPage } from './internal/components/pipeline/PipelineJobsListingPage';
-import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
-import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
-import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
+import { PipelineRoutes } from './internal/components/pipeline/PipelineRoutes';
 import { getTitleDisplay, hasActivePipelineJob } from './internal/components/pipeline/utils';
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
@@ -1637,13 +1633,9 @@ export {
     TimelineEventModel,
     TimelineView,
     // pipeline
-    PipelineJobsPage,
-    PipelineStatusDetailPage,
     hasActivePipelineJob,
     getTitleDisplay,
-    PipelineJobDetailPage,
-    PipelineJobsListingPage,
-    PipelineSubNav,
+    PipelineRoutes,
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,

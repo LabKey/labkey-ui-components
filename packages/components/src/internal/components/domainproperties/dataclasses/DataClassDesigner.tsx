@@ -30,9 +30,10 @@ import { DATA_CLASS_IMPORT_PREFIX, DataClassDataType } from '../../entities/cons
 import { initParentOptionsSelects } from '../../entities/actions';
 import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
+import { Container } from '../../base/models/Container';
+
 import { DataClassModel, DataClassModelConfig } from './models';
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
-import { Container } from '../../base/models/Container';
 
 interface Props {
     allowParentAlias?: boolean;
@@ -175,9 +176,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
             }
 
             setSubmitting(false, () => {
-                this.saveModel({ exception }, () => {
-                    scrollDomainErrorIntoView();
-                });
+                this.saveModelForError({ exception });
             });
         }
     };
@@ -229,7 +228,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
 
                 if (response.errors?.length > 0 || response.warnings?.length > 0) {
                     setSubmitting(false, () => {
-                        this.saveModel({ exception: response.errors?.join('\n') });
+                        this.saveModelForError({ exception: response.errors?.join('\n') });
                         this.setState({
                             nameExpressionWarnings: response.warnings,
                             namePreviews: response.previews,
@@ -241,7 +240,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                 const exception = resolveErrorMessage(e);
 
                 setSubmitting(false, () => {
-                    this.saveModel({ exception });
+                    this.saveModelForError({ exception });
                 });
                 return;
             }
@@ -249,7 +248,9 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
 
         try {
             const savedDomain = await saveDomain({
-                containerPath: model.isNew ? getAppHomeFolderPath(new Container(getServerContext().container)) : model.containerPath,
+                containerPath: model.isNew
+                    ? getAppHomeFolderPath(new Container(getServerContext().container))
+                    : model.containerPath,
                 domain: domainDesign,
                 kind: Domain.KINDS.DATA_CLASS,
                 name: model.name,
@@ -266,12 +267,18 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
 
             setSubmitting(false, () => {
                 if (exception) {
-                    this.saveModel({ exception });
+                    this.saveModelForError({ exception });
                 } else {
-                    this.saveModel({ domain: error, exception: undefined });
+                    this.saveModelForError({ domain: error, exception: undefined });
                 }
             });
         }
+    };
+
+    saveModelForError = (modelOrProps: DataClassModel | Partial<DataClassModelConfig>): void => {
+        this.saveModel(modelOrProps, () => {
+            scrollDomainErrorIntoView();
+        });
     };
 
     saveModel = (modelOrProps: DataClassModel | Partial<DataClassModelConfig>, callback?: () => void): void => {

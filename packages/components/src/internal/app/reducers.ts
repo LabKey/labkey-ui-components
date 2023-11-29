@@ -42,6 +42,7 @@ export function AppReducers(state = new AppModel(), action): AppReducerState {
                 logoutReason: LogoutReason.SERVER_LOGOUT,
                 reloadRequired: true,
             }) as AppModel;
+        // TODO: the following constants appear to never be dispatched, are these handlers needed?
         case SECURITY_SESSION_TIMEOUT:
             return state.merge({
                 logoutReason: LogoutReason.SESSION_EXPIRED,

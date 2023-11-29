@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * If you use react-router you will need to upgrade
     * If you have history pinned in your dependencies you should remove it
   * withQueryModels updated to be compatible with React Router 6.x
+
 * Other Changes:
   * Note: all other changes listed here have to do with our upgrade of React Router, they're not considered breaking because they are all on our internal APIs which you should not be using
   * URL helpers:
@@ -19,6 +20,8 @@ Components, models, actions, and utility functions for LabKey applications and p
     * This is a wrapper that is very similar to withRouter, which no longer exists, in order to ease the transition to React Router 6
   * Update components to use React Router Hooks
   * Don't export UsersGridPanel or PermissionAssignments
+  * AppRouteResolver: fetch now returns Promise<AppURL> instead of Promise<AppURL | boolean>
+  * SubNav is no longer exported
 
 ### version 2.399.1
 *Released*: 19 December 2023

@@ -36,7 +36,7 @@ import { User } from '../base/models/User';
 import { useServerContext } from '../base/ServerContext';
 
 import { isAdminRoute, ProductMenuButton } from './ProductMenu';
-import { SubNavWithTabsContext } from './SubNav';
+import { SubNav } from './SubNav';
 import { UserMenuGroup, UserMenuProps } from './UserMenuGroup';
 import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
@@ -171,7 +171,7 @@ export const NavigationBar: FC<Props> = memo(props => {
             </nav>
 
             <div className="sub-nav-wrapper">
-                <SubNavWithTabsContext />
+                <SubNav />
             </div>
         </div>
     );

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { FC, useRef, useState, useCallback, useEffect, memo, useMemo } from 'react';
-import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
@@ -31,12 +30,10 @@ import { useSubNavTabsContext } from './hooks';
 
 interface Props {
     noun?: ITab;
-    tabs: List<ITab>; // TODO: convert to ITab[]
+    tabs: ITab[];
 }
 
-export const SubNav: FC<Props> = ({ noun, tabs }) => {
-    // FIXME: after all usages of SuNav are gone update this component to use the context to get noun/tabs and stop
-    //  exporting in index
+const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
     const location = useLocation();
     const isAdminPage = useMemo(() => isAdminRoute(location.pathname), [location.pathname]);
     const scrollable = useRef<HTMLDivElement>();
@@ -145,17 +142,12 @@ export const SubNav: FC<Props> = ({ noun, tabs }) => {
     );
 };
 
-/**
- * SubNavWithContext renders a SubNav component using data stored in the SubNavContext, this component is useful when
- * you need to update the SubNav based on data you load asynchronously after the page loads.
- */
-export const SubNavWithTabsContext: FC = memo(() => {
+export const SubNav: FC = memo(() => {
     const { noun, tabs } = useSubNavTabsContext();
 
     if (tabs.length === 0 && noun === undefined) {
         return null;
     }
 
-    // FIXME: don't convert to List
-    return <SubNav noun={noun} tabs={List(tabs)} />;
+    return <SubNavImpl noun={noun} tabs={tabs} />;
 });

@@ -1,6 +1,16 @@
-import React, { ComponentType, FC, memo, PureComponent, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, {
+    ChangeEvent,
+    ComponentType,
+    FC,
+    memo,
+    PureComponent,
+    ReactNode,
+    useCallback,
+    useMemo,
+    useState,
+} from 'react';
 import classNames from 'classnames';
-import { fromJS, List, Set } from 'immutable';
+import { fromJS, List, Map, Set } from 'immutable';
 import { Filter, getServerContext, Query } from '@labkey/api';
 
 import { MenuItem, SplitButton } from 'react-bootstrap';
@@ -35,6 +45,10 @@ import { Grid } from '../../internal/components/base/Grid';
 
 import { Alert } from '../../internal/components/base/Alert';
 
+import { userCanEditSharedViews } from '../../internal/app/utils';
+
+import { User } from '../../internal/components/base/models/User';
+
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
 import { SearchAction } from './grid/actions/Search';
@@ -59,8 +73,6 @@ import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
 import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ChartPanel } from './ChartPanel';
-import { userCanEditSharedViews } from '../../internal/app/utils';
-import { User } from '../../internal/components/base/models/User';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -476,8 +488,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
                 } else if (filter.getColumnName().indexOf('/') > -1) {
                     const lookupCol = model.getColumn(filter.getColumnName().split('/')[0]);
-                    if (lookupCol)
-                        actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
+                    if (lookupCol) actionValues.push(this.gridActions.filter.actionValueFromFilter(filter, column));
                 }
             }
         });
@@ -501,11 +512,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         }
     };
 
-    selectRow = (row, event): void => {
+    selectRow = (row: Map<string, any>, event: ChangeEvent<HTMLInputElement>): void => {
         const { model, actions } = this.props;
         const checked = event.target.checked === true;
-        // Have to call toJS() on the row because <Grid /> converts rows to Immutable objects.
-        actions.selectRow(model.id, checked, row.toJS());
+        // Look through to the nativeEvent to determine if the shift key is engaged.
+        actions.selectRow(model.id, checked, row.toJS(), (event.nativeEvent as any).shiftKey ?? false);
     };
 
     selectPage = (event): void => {
@@ -914,18 +925,14 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 index: GRID_SELECTION_INDEX,
                 title: '',
                 showHeader: true,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                cell: (selected: boolean, row: any): ReactNode => {
-                    const onChange = (event): void => this.selectRow(row, event);
-                    const disabled = isLoading || isLoadingSelections;
+                cell: (selected: boolean, row: Map<string, any>): ReactNode => {
                     return (
-                        // eslint-disable-next-line react/jsx-no-bind
                         <input
-                            className="grid-panel__row-checkbox"
-                            type="checkbox"
-                            disabled={disabled}
                             checked={selected === true}
-                            onChange={onChange} // eslint-disable-line
+                            className="grid-panel__row-checkbox"
+                            disabled={isLoading || isLoadingSelections}
+                            onChange={this.selectRow.bind(this, row)} // eslint-disable-line
+                            type="checkbox"
                         />
                     );
                 },

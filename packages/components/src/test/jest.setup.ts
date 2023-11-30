@@ -15,10 +15,15 @@
  */
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { enableMapSet, enablePatches } from 'immer';
 
 // Enzyme expects an adapter to be configured
 // http://airbnb.io/enzyme/docs/installation/react-16.html
 configure({ adapter: new Adapter() });
+
+// See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
+enableMapSet();
+enablePatches();
 
 // This silences errors related to our Page component using window.scrollTo. JSDom doesn't implement scrollTo, but that
 // is ok, we aren't testing that behavior.

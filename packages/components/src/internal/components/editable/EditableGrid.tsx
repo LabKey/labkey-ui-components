@@ -23,6 +23,7 @@ import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
+import { SelectionPivot } from '../../../public/QueryModel/QueryModel';
 import { Key } from '../../../public/useEnterEscape';
 
 import { incrementClientSideMetricCount } from '../../actions';
@@ -364,6 +365,7 @@ export interface EditableGridState {
     pendingBulkFormData?: any;
     selected: Set<number>;
     selectedState: GRID_CHECKBOX_OPTIONS;
+    selectionPivot?: SelectionPivot;
     showBulkAdd: boolean;
     showBulkUpdate: boolean;
     showMask: boolean;
@@ -432,6 +434,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             initialSelection: undefined,
             selected: selectionCells,
             selectedState,
+            selectionPivot: undefined,
             showBulkAdd: false,
             showBulkUpdate: false,
             showMask: false,
@@ -452,20 +455,33 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     select = (row: Map<string, any>, event: ChangeEvent<HTMLInputElement>): void => {
         const checked = event.currentTarget.checked;
+        // Look through to the nativeEvent to determine if the shift key is engaged.
+        const isShiftSelect = (event.nativeEvent as any).shiftKey ?? false;
 
         this.setState(state => {
             const { dataKeys } = this.props;
+            const { selectionPivot } = state;
+            let { selected } = state;
             const key = row.get(GRID_EDIT_INDEX);
-            let selected = state.selected;
 
-            if (checked) {
+            if (isShiftSelect && selectionPivot) {
+                const pivotIdx = parseInt(selectionPivot.selection, 10);
+                const beginIdx = Math.min(key, pivotIdx);
+                const endIdx = Math.max(key, pivotIdx);
+                for (let i = beginIdx; i <= endIdx; i++) {
+                    if (selectionPivot.checked) {
+                        selected = selected.add(i);
+                    } else {
+                        selected = selected.remove(i);
+                    }
+                }
+            } else if (checked) {
                 selected = selected.add(key);
             } else {
                 selected = selected.remove(key);
             }
 
-            let selectedState;
-
+            let selectedState: GRID_CHECKBOX_OPTIONS;
             if (selected.size === 0) {
                 selectedState = GRID_CHECKBOX_OPTIONS.NONE;
             } else if (dataKeys.size === selected.size) {
@@ -474,7 +490,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 selectedState = GRID_CHECKBOX_OPTIONS.SOME;
             }
 
-            return { selected, selectedState };
+            const nextState: any /* Partial<EditableGridState> */ = { selected, selectedState };
+
+            if (!isShiftSelect) {
+                nextState.selectionPivot = { checked, selection: key.toString() };
+            }
+
+            return nextState;
         });
     };
 
@@ -487,6 +509,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return {
                 selected: selected ? Set<number>(dataKeys.map((v, i) => i, Set<number>())) : Set<number>(),
                 selectedState: selected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE,
+                selectionPivot: undefined,
             };
         });
     };
@@ -499,7 +522,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     focusCell = (colIdx: number, rowIdx: number, clearValue?: boolean): void => {
         const { editorModel, onChange } = this.props;
         const cellKey = genCellKey(colIdx, rowIdx);
-        const changes: Partial<EditorModel> = {
+        const changes: Partial<EditorModelProps> = {
             cellMessages: editorModel.cellMessages.remove(cellKey),
             focusColIdx: colIdx,
             focusRowIdx: rowIdx,
@@ -633,6 +656,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             }
 
             onChange(EditableGridEvent.SELECT_CELL, changes);
+
+            if (this.state.selectionPivot) {
+                this.setState({ selectionPivot: undefined });
+            }
         }
     };
 
@@ -726,10 +753,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         onChange(EditableGridEvent.REMOVE_ROWS, editorModelChanges, updatedKeys, updatedData);
 
-        this.setState(() => ({
+        this.setState({
             selected: Set<number>(),
             selectedState: GRID_CHECKBOX_OPTIONS.NONE,
-        }));
+            selectionPivot: undefined,
+        });
     };
 
     removeSelected = (): void => {

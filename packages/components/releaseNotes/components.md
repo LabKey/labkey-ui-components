@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.395.4
+*Released*: 30 November 2023
+- Adds support for shift-select across multiple rows in any components that leverage `GridPanel` or `EditableGrid`
+
 ### version 2.395.3
 *Released*: 30 November 2023
 - Issue 49148: use LabelOverlay as label for TextChoiceInput fields

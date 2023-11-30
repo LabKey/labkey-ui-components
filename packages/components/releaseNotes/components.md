@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Issue 49148: use LabelOverlay as label for TextChoiceInput fields
+- Issue 49111: resolve URLs for workflow jobs to app URLs
 
 ### version 2.395.2
 *Released*: 29 November 2023

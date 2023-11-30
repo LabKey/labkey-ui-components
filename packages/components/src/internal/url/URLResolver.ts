@@ -703,13 +703,13 @@ export class URLResolver {
                         query = row.getIn(['title']);
                         url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
                         return row.set('url', this.mapURL({ url, row, column, query }));
-                    } else if (id.indexOf('material') != -1 && row.hasIn(['data', 'sampleSet'])) {
+                    } else if (id.indexOf('material') !== -1 && row.hasIn(['data', 'sampleSet'])) {
                         query = row.getIn(['data', 'sampleSet', 'name']);
                         return row.set('url', this.mapURL({ url, row, column, query }));
                     } else if (row.has('data') && row.hasIn(['data', 'id'])) {
                         query = row.getIn(['data', 'type']);
                         return row.set('url', this.mapURL({ url, row, column, query }));
-                    } else if (id.indexOf('samplemanagerJob') >= 0) {
+                    } else if (id.indexOf('workflowJob:') >= 0) {
                         return row.set('url', this.mapURL({ url, row, column }));
                     } else if (url.indexOf('samplemanager-downloadAttachments') >= 0) {
                         return row.set('url', this.mapURL({ url, row, column }));

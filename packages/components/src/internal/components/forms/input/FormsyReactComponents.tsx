@@ -170,12 +170,8 @@ const Control: FC<BaseControlProps & LabelProps> = memo(props => {
         return control;
     }
 
-    const rowClassNames = [];
-    if (rowClassName !== undefined) {
-        rowClassNames.push(rowClassName);
-    } else {
-        rowClassNames.push('form-group');
-
+    const rowClassNames = [rowClassName ?? 'form-group'];
+    if (rowClassName === undefined) {
         if (showErrors) {
             rowClassNames.push('has-error');
             rowClassNames.push('has-feedback');

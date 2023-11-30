@@ -10,14 +10,10 @@ import { ProductMenuModel } from '../components/navigation/model';
 
 import { ServerNotificationModel } from '../components/notifications/model';
 
-import { AppModel, LogoutReason } from './models';
+import { AppModel } from './models';
 import {
-    SECURITY_LOGOUT,
-    SECURITY_SERVER_UNAVAILABLE,
-    SECURITY_SESSION_TIMEOUT,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
-    ADD_TABLE_ROUTE,
     MENU_INVALIDATE,
     MENU_LOADING_START,
     MENU_LOADING_ERROR,
@@ -37,33 +33,6 @@ export function AppReducers(state = new AppModel(), action): AppReducerState {
             return state.merge({ user: new User({ ...state.user, ...action.userProps }) }) as AppModel;
         case UPDATE_USER_DISPLAY_NAME:
             return state.merge({ user: new User({ ...state.user, displayName: action.displayName }) }) as AppModel;
-        case SECURITY_LOGOUT:
-            return state.merge({
-                logoutReason: LogoutReason.SERVER_LOGOUT,
-                reloadRequired: true,
-            }) as AppModel;
-        // TODO: the following constants appear to never be dispatched, are these handlers needed?
-        case SECURITY_SESSION_TIMEOUT:
-            return state.merge({
-                logoutReason: LogoutReason.SESSION_EXPIRED,
-                reloadRequired: true,
-            }) as AppModel;
-        case SECURITY_SERVER_UNAVAILABLE:
-            return state.merge({
-                logoutReason: LogoutReason.SERVER_UNAVAILABLE,
-                reloadRequired: true,
-            }) as AppModel;
-        default:
-            return state;
-    }
-}
-
-export type RoutingTableState = Map<string, string | boolean>;
-
-export function RoutingTableReducers(state = Map<string, string | boolean>(), action): RoutingTableState {
-    switch (action.type) {
-        case ADD_TABLE_ROUTE:
-            return state.set(action.fromRoute, action.toRoute) as RoutingTableState;
         default:
             return state;
     }

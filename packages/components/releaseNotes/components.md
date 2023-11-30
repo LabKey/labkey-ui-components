@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 3.0.0
-*Released*: ?? November 2023
+*Released*: ?? December 2023
 * Breaking Changes:
   * Upgrade react-router dependency to react-router-dom version 6.x
     * If you use react-router you will need to upgrade
@@ -22,6 +22,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Don't export UsersGridPanel or PermissionAssignments
   * AppRouteResolver: fetch now returns Promise<AppURL> instead of Promise<AppURL | boolean>
   * SubNav is no longer exported
+  * Removed unused constants
+    * SECURITY_LOGOUT
+    * SECURITY_SERVER_UNAVAILABLE
+    * SECURITY_SESSION_TIMEOUT
+  * Removed RoutingTableState and RoutingTableReducers
 
 ### version 2.399.1
 *Released*: 19 December 2023

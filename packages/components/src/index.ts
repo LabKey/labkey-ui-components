@@ -632,7 +632,7 @@ import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrow
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
 import { OntologySearchInput } from './internal/components/ontology/OntologyTreeSearchContainer';
-import { AppModel, LogoutReason } from './internal/app/models';
+import { AppModel } from './internal/app/models';
 import { Picklist, PICKLIST_SAMPLES_FILTER } from './internal/components/picklist/models';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
@@ -655,7 +655,6 @@ import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal
 import {
     AppReducers,
     ProductMenuReducers,
-    RoutingTableReducers,
     ServerNotificationReducers,
 } from './internal/app/reducers';
 
@@ -778,9 +777,6 @@ import {
     SAMPLE_TYPE_KEY,
     SAMPLES_KEY,
     SEARCH_KEY,
-    SECURITY_LOGOUT,
-    SECURITY_SERVER_UNAVAILABLE,
-    SECURITY_SESSION_TIMEOUT,
     SERVER_NOTIFICATION_MAX_ROWS,
     SOURCE_TYPE_KEY,
     SOURCES_KEY,
@@ -846,7 +842,6 @@ enablePatches();
 const App = {
     AppReducers,
     ProductMenuReducers,
-    RoutingTableReducers,
     ServerNotificationReducers,
     CloseEventCode,
     EntityCreationMode,
@@ -912,9 +907,6 @@ const App = {
     userCanEditSharedViews,
     userCanDeletePublicPicklists,
     getCurrentProductName,
-    SECURITY_LOGOUT,
-    SECURITY_SERVER_UNAVAILABLE,
-    SECURITY_SESSION_TIMEOUT,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     BIOLOGICS: BIOLOGICS_APP_PROPERTIES,
@@ -1011,7 +1003,6 @@ export {
     App,
     AppModel,
     Hooks,
-    LogoutReason,
     getDefaultAPIWrapper,
     // global state functions
     initQueryGridState,
@@ -1766,7 +1757,6 @@ export type { BulkAddData, SharedEditableGridPanelProps } from './internal/compo
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
 export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
 export type {
-    RoutingTableState,
     ServerNotificationState,
     ProductMenuState,
     AppReducerState,

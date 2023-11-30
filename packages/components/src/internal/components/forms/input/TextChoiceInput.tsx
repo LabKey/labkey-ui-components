@@ -4,6 +4,7 @@ import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { SelectInput, SelectInputProps } from './SelectInput';
 import { DisableableInput, DisableableInputState } from './DisableableInput';
+import { LabelOverlay } from '../LabelOverlay';
 
 interface Props extends Omit<SelectInputProps, 'options'> {
     queryColumn: QueryColumn;
@@ -16,7 +17,7 @@ export class TextChoiceInput extends DisableableInput<Props, DisableableInputSta
 
         return (
             <SelectInput
-                label={queryColumn.caption}
+                label={<LabelOverlay column={queryColumn} inputId={queryColumn.fieldKey} isFormsy={false} />}
                 name={queryColumn.fieldKey}
                 required={queryColumn.required}
                 {...selectInputProps}

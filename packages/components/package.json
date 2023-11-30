@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.395.3-crossFolderStorage.8",
+  "version": "2.395.4-crossFolderStorage.8",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

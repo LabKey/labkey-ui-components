@@ -17,6 +17,8 @@ import { LoadingState } from '../LoadingState';
 
 import { QuerySort } from '../QuerySort';
 
+import { waitForLifecycle } from '../../internal/test/enzymeTestHelpers';
+
 import { Actions, QueryModelMap, withQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';
 
@@ -252,6 +254,31 @@ describe('withQueryModels', () => {
         await sleep();
         model3 = injectedModels.model3;
         expect(model3.rowsLoadingState).toEqual(LoadingState.LOADED);
+
+        // selectRow
+        // Select a single row
+        const selectionKey = injectedModel.orderedRows[0];
+        const selectedRow = injectedModel.getRow(selectionKey);
+        injectedActions.selectRow(injectedModel.id, true, selectedRow);
+        await waitForLifecycle(wrapper);
+
+        expect(injectedModel.selections.has(selectionKey)).toBe(true);
+        expect(injectedModel.selectionPivot).toEqual({ checked: true, selection: selectionKey });
+
+        // useSelectionPivot for multiple rows
+        const nextSelectionKey = injectedModel.orderedRows[5];
+        const nextSelectedRow = injectedModel.getRow(nextSelectionKey);
+        injectedActions.selectRow(injectedModel.id, true, nextSelectedRow, true);
+        await waitForLifecycle(wrapper);
+
+        expect(injectedModel.selections.size).toEqual(6);
+        expect(injectedModel.selectionPivot).toEqual({ checked: true, selection: selectionKey });
+
+        injectedActions.clearSelections(injectedModel.id);
+        await waitForLifecycle(wrapper);
+
+        expect(injectedModel.selections.size).toEqual(0);
+        expect(injectedModel.selectionPivot).toBeUndefined();
     });
 
     test('Bind from URL', async () => {

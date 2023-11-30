@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.395.3
+*Released*: 30 November 2023
 - Issue 49148: use LabelOverlay as label for TextChoiceInput fields
 - Issue 49111: resolve URLs for workflow jobs to app URLs
 

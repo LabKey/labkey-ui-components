@@ -139,7 +139,7 @@ export function getOperationNotPermittedMessage(
     statusData: OperationConfirmationData,
     aliquotIds?: number[]
 ): string {
-    let notAllowedMsg: string;
+    let notAllowedMsg: string = null;
 
     if (statusData) {
         if (statusData.totalCount === 0) {

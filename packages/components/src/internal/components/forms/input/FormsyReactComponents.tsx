@@ -170,18 +170,17 @@ const Control: FC<BaseControlProps & LabelProps> = memo(props => {
         return control;
     }
 
-    const rowClassNames = ['form-group'];
+    const rowClassNames = [rowClassName ?? 'form-group'];
+    if (rowClassName === undefined) {
+        if (showErrors) {
+            rowClassNames.push('has-error');
+            rowClassNames.push('has-feedback');
+        }
 
-    if (showErrors) {
-        rowClassNames.push('has-error');
-        rowClassNames.push('has-feedback');
+        if (layout === 'horizontal') {
+            rowClassNames.push('row');
+        }
     }
-
-    if (layout === 'horizontal') {
-        rowClassNames.push('row');
-    }
-
-    rowClassNames.push(rowClassName);
 
     // We should render the label if there is label text defined, or if the
     // component is required (so a required symbol is displayed in the label tag)

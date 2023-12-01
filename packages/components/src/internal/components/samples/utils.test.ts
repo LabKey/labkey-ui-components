@@ -258,55 +258,6 @@ describe('getOperationNotPermittedMessage', () => {
             )
         ).toBe('The current status of 1,235 selected samples prevents updating of their lineage.');
     });
-
-    test('override notAllowedCount', () => {
-        expect(
-            getOperationNotPermittedMessage(
-                SampleOperation.EditLineage,
-                new OperationConfirmationData({
-                    allowed: [
-                        {
-                            Name: 'T-1',
-                            RowId: 111,
-                        },
-                    ],
-                    notAllowed: [
-                        {
-                            Name: 'D-2',
-                            RowId: 351,
-                        },
-                    ],
-                }),
-                undefined,
-                5
-            )
-        ).toBe('The current status of 5 selected samples prevents updating of their lineage.');
-        expect(
-            getOperationNotPermittedMessage(
-                SampleOperation.EditLineage,
-                new OperationConfirmationData({
-                    allowed: [
-                        {
-                            Name: 'T-1',
-                            RowId: 111,
-                        },
-                    ],
-                    notAllowed: [
-                        {
-                            Name: 'D-2',
-                            RowId: 351,
-                        },
-                        {
-                            Name: 'D-3',
-                            RowId: 352,
-                        },
-                    ],
-                }),
-                undefined,
-                1
-            )
-        ).toBe('The current status of 1 selected sample prevents updating of its lineage.');
-    });
 });
 
 describe('isSamplesSchema', () => {

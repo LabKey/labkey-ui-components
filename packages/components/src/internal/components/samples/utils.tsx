@@ -137,7 +137,8 @@ function getOperationMessageAndRecommendation(operation: SampleOperation, numSam
 export function getOperationNotPermittedMessage(
     operation: SampleOperation,
     statusData: OperationConfirmationData,
-    aliquotIds?: number[]
+    aliquotIds?: number[],
+    notAllowedCount?: number
 ): string {
     let notAllowedMsg: string = null;
 
@@ -151,18 +152,22 @@ export function getOperationNotPermittedMessage(
         }
 
         const noAliquots = !aliquotIds || aliquotIds.length === 0;
-        let notAllowed = [];
-        // no aliquots or only aliquots, we show a status message about all that are not allowed
-        if (noAliquots || aliquotIds.length === statusData.totalCount) {
-            notAllowed = statusData.notAllowed;
-        } else {
-            // some aliquots, some not, filter out the aliquots from the status message
-            notAllowed = statusData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
+        let _notAllowedCount = notAllowedCount;
+        if (_notAllowedCount === undefined) {
+            let notAllowed = [];
+            // no aliquots or only aliquots, we show a status message about all that are not allowed
+            if (noAliquots || aliquotIds.length === statusData.totalCount) {
+                notAllowed = statusData.notAllowed;
+            } else {
+                // some aliquots, some not, filter out the aliquots from the status message
+                notAllowed = statusData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
+            }
+            _notAllowedCount = notAllowed.length;
         }
-        if (notAllowed?.length > 0) {
-            notAllowedMsg = `The current status of ${notAllowed.length.toLocaleString()} selected sample${
-                notAllowed.length === 1 ? '' : 's'
-            } prevents ${getOperationMessageAndRecommendation(operation, notAllowed.length, false)}.`;
+        if (_notAllowedCount > 0) {
+            notAllowedMsg = `The current status of ${_notAllowedCount.toLocaleString()} selected sample${
+                _notAllowedCount === 1 ? '' : 's'
+            } prevents ${getOperationMessageAndRecommendation(operation, _notAllowedCount, false)}.`;
         }
     }
     return notAllowedMsg;

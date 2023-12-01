@@ -51,8 +51,8 @@ describe('QueryFormInputs', () => {
         // default properties don't render file inputs
         expect(formWrapper.find(FileInput)).toHaveLength(0);
 
-        // by default all inputs should render labels with FieldLabel
-        expect(formWrapper.find(FieldLabel)).toHaveLength(7);
+        // by default all inputs except TextChoiceInput should render labels with FieldLabel
+        expect(formWrapper.find(FieldLabel)).toHaveLength(6);
 
         formWrapper.unmount();
     });
@@ -70,7 +70,7 @@ describe('QueryFormInputs', () => {
         );
 
         expect(formWrapper.find(FieldLabel)).toHaveLength(0);
-        expect(formWrapper.find('.jest-field-label-test')).toHaveLength(7);
+        expect(formWrapper.find('.jest-field-label-test')).toHaveLength(6);
 
         formWrapper.unmount();
     });

@@ -105,7 +105,7 @@ export interface QueryModelLoader {
      * @param checked: boolean, the checked status of the ids
      * @param selections: A list of stringified RowIds.
      */
-    setSelections: (model: QueryModel, checked, selections: string[]) => Promise<SelectResponse>;
+    setSelections: (model: QueryModel, checked: boolean, selections: string[]) => Promise<SelectResponse>;
 }
 
 export const DefaultQueryModelLoader: QueryModelLoader = {

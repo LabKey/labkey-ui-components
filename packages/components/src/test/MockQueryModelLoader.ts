@@ -1,6 +1,7 @@
 import { QueryModelLoader, RowsResponse } from '../public/QueryModel/QueryModelLoader';
 import { QueryInfo } from '../public/QueryInfo';
 import { QueryModel } from '../public/QueryModel/QueryModel';
+import { SelectResponse } from '../internal/actions';
 
 export class MockQueryModelLoader implements QueryModelLoader {
     queryInfo: QueryInfo;
@@ -52,8 +53,12 @@ export class MockQueryModelLoader implements QueryModelLoader {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setSelections = (model: QueryModel, selections): Promise<never> => {
-        return Promise.reject('Not implemented!');
+    setSelections = (model: QueryModel, checked: boolean, selections: string[]): Promise<SelectResponse> => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve({ count: selections.length });
+            }, 0);
+        });
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -67,8 +72,12 @@ export class MockQueryModelLoader implements QueryModelLoader {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    clearSelections = (model: QueryModel): Promise<never> => {
-        return Promise.reject('Not implemented!');
+    clearSelections = (model: QueryModel): Promise<SelectResponse> => {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve({ count: 0 });
+            }, 0);
+        });
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

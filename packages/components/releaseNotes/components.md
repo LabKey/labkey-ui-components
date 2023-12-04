@@ -27,6 +27,8 @@ Components, models, actions, and utility functions for LabKey applications and p
     * SECURITY_SERVER_UNAVAILABLE
     * SECURITY_SESSION_TIMEOUT
   * Removed RoutingTableState and RoutingTableReducers
+  * Removed withRouteLeave
+  * useRouteLeave: remove `router` and `routes` props
 
 ### version 2.399.1
 *Released*: 19 December 2023

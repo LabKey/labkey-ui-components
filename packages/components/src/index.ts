@@ -509,7 +509,7 @@ import { DEFAULT_ALIQUOT_NAMING_PATTERN, SampleTypeModel } from './internal/comp
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
 import { getQueryModelExportParams, runDetailsColumnsForQueryModel } from './public/QueryModel/utils';
-import { useRouteLeave, withRouteLeave } from './internal/util/RouteLeave';
+import { useRouteLeave } from './internal/util/RouteLeave';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
 import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
 import { ItemsLegend } from './internal/components/chart/ItemsLegend';
@@ -1522,7 +1522,6 @@ export {
     ErrorBoundary,
     BeforeUnload,
     useRouteLeave,
-    withRouteLeave,
     SchemaBrowserRoutes,
     Theme,
     SVGIcon,

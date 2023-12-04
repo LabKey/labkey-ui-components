@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { FC, memo, useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { AppURL } from '../../url/AppURL';
 
@@ -26,7 +26,7 @@ interface NavItemProps {
 
 export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, onClick }) => {
     const location = useLocation();
-    const href = to instanceof AppURL ? to.toHref() : to;
+    const href = to instanceof AppURL ? to.toString() : to;
     const itemRef = useRef<HTMLLIElement>();
     const [active, setActive] = useState<boolean>(false);
 
@@ -49,9 +49,9 @@ export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, onClick
 
     return (
         <li className={active ? 'active' : null} ref={itemRef}>
-            <a href={href} onClick={onClick}>
+            <Link to={href} onClick={onClick}>
                 {children}
-            </a>
+            </Link>
         </li>
     );
 });

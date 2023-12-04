@@ -34,7 +34,6 @@ export const createMockWithRouterProps = (
         goForward: mockFn(),
         push: mockFn(),
         replace: mockFn(),
-        setRouteLeaveHook: mockFn(),
     };
 
     return {

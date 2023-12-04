@@ -147,7 +147,7 @@ describe('EditInlineField', () => {
     });
 
     test('isDate, with initial value', () => {
-        renderWithAppContext(<EditInlineField {...DEFAULT_PROPS} type="date" value="2022-08-11" />, {
+        renderWithAppContext(<EditInlineField {...DEFAULT_PROPS} type="date" value="2022-08-11 18:00:00" />, {
             serverContext: SERVER_CONTEXT,
             appContext: APP_CONTEXT,
         });
@@ -155,7 +155,7 @@ describe('EditInlineField', () => {
         userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { date: 1 });
         expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
-        expect(document.querySelector('.react-datepicker__input-container input').value).toBe('2022-08-10');
+        expect(document.querySelector('.react-datepicker__input-container input').value).toBe('2022-08-11');
     });
 
     test('isDate, with initial value and QueryColumn format', () => {
@@ -163,7 +163,7 @@ describe('EditInlineField', () => {
             <EditInlineField
                 {...DEFAULT_PROPS}
                 type="date"
-                value="2022-08-11"
+                value="2022-08-11 18:00:00"
                 column={new QueryColumn({ format: 'MM/dd/YYYY HH:mm:ss' })}
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
@@ -172,7 +172,7 @@ describe('EditInlineField', () => {
         userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { date: 1 });
         expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
-        expect(document.querySelector('.react-datepicker__input-container input').value).toBe('08/10/2022 19:00:00');
+        expect(document.querySelector('.react-datepicker__input-container input').value).toBe('08/11/2022 18:00:00');
     });
 
     test('resolveDetailEditRenderer', () => {

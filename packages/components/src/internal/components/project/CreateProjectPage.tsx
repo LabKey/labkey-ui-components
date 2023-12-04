@@ -143,7 +143,8 @@ export const CreateProjectPage = memo(() => {
     const onCreated = useCallback(
         (project: Container) => {
             // Reroute user back to projects listing page
-            setParams({ created: project.name }, { replace: true });
+            const url = AppURL.create('admin', 'projects').addParam('created', project.name);
+            navigate(url.toString(), { replace: true });
 
             const appProps = getCurrentAppProperties();
             if (!appProps?.controllerName) return;

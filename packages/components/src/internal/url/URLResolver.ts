@@ -26,10 +26,6 @@ import { AppURL, createProductUrl } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
 
-const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
-
-type RoutingTable = Map<string, string | boolean>;
-
 let resolvers = OrderedSet<AppRouteResolver>();
 
 let urlMappers: List<URLMapper> = List<URLMapper>();
@@ -59,16 +55,7 @@ export namespace URLService {
         const parts = path.split('/');
         parts.shift(); // account for initial '/'
         const redirectPath = await resolver.fetch(parts);
-
-        if (typeof redirectPath === 'boolean') {
-            return undefined;
-        }
-
-        return redirectPath.toString();
-    }
-
-    export function getRouteTable(state): RoutingTable {
-        return state.routing.table;
+        return redirectPath?.toString();
     }
 
     export function registerURLMappers(...mappers: URLMapper[]): void {

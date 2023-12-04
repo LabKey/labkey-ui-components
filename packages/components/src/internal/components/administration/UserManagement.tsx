@@ -6,7 +6,6 @@ import React, { FC, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionRoles, Project, Utils } from '@labkey/api';
-import { useNotFound } from '../../hooks';
 
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';

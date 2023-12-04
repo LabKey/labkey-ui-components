@@ -101,7 +101,7 @@ export async function selectGridIdsFromTransactionId(
     dataType: string,
     actions: Actions
 ): Promise<string[]> {
-    if (!transactionAuditId) return Promise.resolve(undefined);
+    if (!transactionAuditId) return undefined;
 
     const modelId = createGridModelId(gridIdPrefix, schemaQuery);
     const selected = await getGridIdsFromTransactionId(transactionAuditId, dataType);
@@ -110,11 +110,12 @@ export async function selectGridIdsFromTransactionId(
     return selected;
 }
 
-type SampleTypesFromTransactionIds = Promise<{ rowIds: string[]; sampleTypes: string[] }>;
+type SampleTypesFromTransactionIds = { rowIds: string[]; sampleTypes: string[] };
+
 export async function getSampleTypesFromTransactionIds(
     transactionAuditId: number | string
-): SampleTypesFromTransactionIds {
-    if (!transactionAuditId) return Promise.resolve(undefined);
+): Promise<SampleTypesFromTransactionIds> {
+    if (!transactionAuditId) return undefined;
 
     const rowIds = await getGridIdsFromTransactionId(transactionAuditId, SAMPLES_KEY);
     const sampleTypes = await selectDistinctRows({
@@ -596,7 +597,7 @@ export async function getSelection(
         }
 
         const params = getQueryParams(searchParams);
-        const filters = Filter.getFiltersFromParameters(Object.assign({}, params));
+        const filters = Filter.getFiltersFromParameters(params);
         const response = await getSelected(selectionKey, false, schemaQuery, filters);
 
         return { resolved: true, schemaQuery, selected: response.selected };

@@ -5,7 +5,7 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { FormButtons } from '../../FormButtons';
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
@@ -102,8 +102,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const homeFolderPath = isAppHome ? container.path : container.parentPath;
 
     const selectedPrincipal = principalsById?.get(selectedUserId);
-    const location = useLocation();
-    const initExpandedRole = getQueryParams(location.search).expand as string;
+    const [searchParams] = useSearchParams();
+    const initExpandedRole = searchParams.get('expand');
     const projectUser = useContainerUser(getProjectPath(container?.path));
 
     const loadGroupMembership = useCallback(async () => {

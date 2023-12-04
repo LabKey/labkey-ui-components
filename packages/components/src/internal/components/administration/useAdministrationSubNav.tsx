@@ -13,6 +13,7 @@ import { isProjectContainer, isProductProjectsEnabled, isAppHomeFolder } from '.
 import { useContainerUser } from '../container/actions';
 import { ITab } from '../navigation/types';
 
+const ADMIN_KEY = 'admin';
 const PARENT_TAB: ITab = {
     text: 'Dashboard',
     url: AppURL.create('home'),
@@ -24,7 +25,7 @@ export const useAdministrationSubNav = (): void => {
     const isAppHome = isAppHomeFolder(container, moduleContext);
     const homeFolderPath = isAppHome ? container.path : container.parentPath;
     const homeProjectContainer = useContainerUser(homeFolderPath, { includeStandardProperties: true });
-    const appHomeUser = homeProjectContainer?.user ?? user;
+    const appHomeUser = homeProjectContainer.user ?? user;
 
     useEffect(() => {
         setNoun(PARENT_TAB);
@@ -35,19 +36,19 @@ export const useAdministrationSubNav = (): void => {
             const tabs = [];
 
             if (appHomeUser.isAdmin) {
-                tabs.push({ text: 'Application Settings', url: AppURL.create('admin', 'settings') });
+                tabs.push({ text: 'Application Settings', url: AppURL.create(ADMIN_KEY, 'settings') });
             }
 
-            if (projectsEnabled) tabs.push({ text: 'Projects', url: AppURL.create('admin', 'projects') });
+            if (projectsEnabled) tabs.push({ text: 'Projects', url: AppURL.create(ADMIN_KEY, 'projects') });
 
             tabs.push({ text: 'Audit Logs', url: AppURL.create(AUDIT_KEY) });
 
             if (!projectsEnabled || inProjectContainer) {
-                tabs.push({ text: 'Users', url: AppURL.create('admin', 'users') });
-                tabs.push({ text: 'Groups', url: AppURL.create('admin', 'groups') });
+                tabs.push({ text: 'Users', url: AppURL.create(ADMIN_KEY, 'users') });
+                tabs.push({ text: 'Groups', url: AppURL.create(ADMIN_KEY, 'groups') });
             }
 
-            tabs.push({ text: 'Permissions', url: AppURL.create('admin', 'permissions') });
+            tabs.push({ text: 'Permissions', url: AppURL.create(ADMIN_KEY, 'permissions') });
 
             setTabs(tabs);
         }

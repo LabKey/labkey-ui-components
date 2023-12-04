@@ -19,7 +19,6 @@ export class AppModel extends Record({
     container: new Container(getServerContext().container),
     contextPath: ActionURL.getContextPath(),
     initialUserId: user.id,
-    logoutReason: undefined,
     user,
 }) {
     declare container: Container;

@@ -1,5 +1,6 @@
 import React, { Component, ComponentType, FC, useMemo } from 'react';
 import { Params, useLocation, useNavigate, useParams } from 'react-router-dom';
+
 import { DeprecatedLocation, DeprecatedRouter } from './routerTypes';
 import { getQueryParams } from './util/URL';
 
@@ -36,16 +37,16 @@ export function withRouterDeprecated<T>(Component: WithRouterComponent<T>): Comp
                 replace: path => {
                     navigate(path, { replace: true });
                 },
-                setRouteLeaveHook: () => {
-                    // FIXME: temporary no-op while I get stuff to compile, this will be removed before merging
-                },
             }),
             [navigate]
         );
-        const deprecatedLocation = {
-            ...location,
-            query: getQueryParams(location.search),
-        };
+        const deprecatedLocation = useMemo(
+            () => ({
+                ...location,
+                query: getQueryParams(location.search),
+            }),
+            [location]
+        );
         return <Component location={deprecatedLocation} params={params} router={router} {...props} />;
     };
 

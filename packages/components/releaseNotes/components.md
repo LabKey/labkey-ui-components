@@ -16,8 +16,6 @@ Components, models, actions, and utility functions for LabKey applications and p
     * remove resetParameters
     * remove Location type
     * add getQueryParams
-  * Add withRouterDeprecated
-    * This is a wrapper that is very similar to withRouter, which no longer exists, in order to ease the transition to React Router 6
   * Update components to use React Router Hooks
   * Don't export UsersGridPanel or PermissionAssignments
   * AppRouteResolver: fetch now returns Promise<AppURL> instead of Promise<AppURL | boolean>

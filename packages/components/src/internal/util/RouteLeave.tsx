@@ -20,6 +20,25 @@ type GetSetIsDirty = [() => boolean, (dirty: boolean) => void];
  * The useRouteLeave hook is useful if you want to display a confirmation dialog when the user tries to navigate away
  * from a "dirty" form or page. This hook ties into both the React Router RouteLeave event, and the browser beforeunload
  * event. This allows us to prevent navigation via back button, link clicking, or browser window/tab closing.
+ *
+ * NOTE: due to how this implemented you cannot call setIsDirty(true) and then immediately invoke navigate. Instead, you
+ * need to wait for the new dirty state to get persisted. The easiest way to do this is to have a local variable called
+ * successURL (or similar) that you set when you want to navigate, call setIsDirty and setSuccessURL and then navigate
+ * within a useEffect call that checks if successURL is undefined. It will look something like this:
+ *
+ * const navigate = useNavigate();
+ * const [getIsDirty, setisDirty] = useRouteLeave;
+ * const [successURL, setSuccessURL] = useState<string>(undefined);
+ *
+ * const mySuccessHandler = useCallback(() => {
+ *     setIsDirty(false);
+ *     setSuccessURL(AppURL.create('some', 'route', 'parts));
+ * });
+ *
+ * useEffect(() => {
+ *     if (successURL !== undefined) navigate(successURL);
+ * }, [navigate, successURL]);
+ *
  * @param confirmMessage: The confirm message you want to display to the user, this message is only displayed when
  * navigating away from the page, not when closing the tab or browser window. Browsers do not let you customize the
  * message displayed when the browser/tab is closed.

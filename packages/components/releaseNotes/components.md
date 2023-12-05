@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add `getPermissionRestrictionMessage` utility method.
 * Issue 49148: pass through column description for rendering TextInput fields
 
+### version 2.396.0
+*Released*: 1 December 2023
+- FormsyReactComponents.tsx fix for handling of rowClassName prop
+
 ### version 2.395.4
 *Released*: 30 November 2023
 - Adds support for shift-select across multiple rows in any components that leverage `GridPanel` or `EditableGrid`

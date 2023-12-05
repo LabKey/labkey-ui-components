@@ -15,7 +15,7 @@
  */
 import { SetURLSearchParams } from 'react-router-dom';
 
-import { QueryParams } from '../routerTypes';
+export type QueryParams = Record<string, string | string[]>;
 
 function getQueryParamsFromSearchParams(searchParams: URLSearchParams): QueryParams {
     return [...searchParams.entries()].reduce((result, tuple) => {

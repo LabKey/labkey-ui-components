@@ -10,7 +10,7 @@ import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 import { SAMPLES_KEY } from '../../app/constants';
 
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
-import { QueryParams } from '../../routerTypes';
+import { QueryParams } from '../../util/URL';
 import { SCHEMAS } from '../../schemas';
 import { caseInsensitive } from '../../util/utils';
 import { AppURL } from '../../url/AppURL';

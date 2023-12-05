@@ -624,7 +624,7 @@ import {
     SELECTION_KEY_TYPE,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
-import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
+import { createMockWithRouteLeave } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
 import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrowserPanel';
@@ -1629,7 +1629,6 @@ export {
     // Test Helpers
     sleep,
     createMockWithRouteLeave,
-    createMockWithRouterProps,
     makeQueryInfo,
     mountWithAppServerContextOptions,
     mountWithServerContextOptions,
@@ -1806,4 +1805,4 @@ export type {
     FormsySelectProps,
     FormsyTextAreaProps,
 } from './internal/components/forms/input/FormsyReactComponents';
-export type { DeprecatedLocation, DeprecatedRouter, QueryParams } from './internal/routerTypes';
+export type { QueryParams } from './internal/util/URL';

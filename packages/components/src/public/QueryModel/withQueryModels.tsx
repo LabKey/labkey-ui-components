@@ -259,8 +259,8 @@ export function withQueryModels<Props>(
         }
 
         /**
-         * componentDidUpdate only checks for changes to props.location so it can update models when there are changes
-         * to the URL (only for models with bindURL set to true).
+         * componentDidUpdate only checks for changes to props.searchParams so it can update models when there are
+         * changes to the URL (only for models with bindURL set to true).
          *
          * Currently, we do not listen for changes to props.queryConfigs. You may be tempted to try to diff queryConfigs
          * in the future and add/update/remove models as you see changes, but this introduces a bunch of other problems

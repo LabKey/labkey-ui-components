@@ -69,19 +69,19 @@ function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
 export function locationHasQueryParamSettings(prefix: string, searchParams?: URLSearchParams): boolean {
     if (searchParams === undefined) return false;
     // Report
-    if (searchParams.get(`${prefix}.reportId`) !== undefined) return true;
+    if (searchParams.get(`${prefix}.reportId`) !== null) return true;
     // View
-    if (searchParams.get(`${prefix}.view`) !== undefined) return true;
+    if (searchParams.get(`${prefix}.view`) !== null) return true;
     // Search Filters
-    if (searchParams.get(`${prefix}.q`) !== undefined) return true;
+    if (searchParams.get(`${prefix}.q`) !== null) return true;
     // Column Filters
     if (Filter.getFiltersFromParameters(getQueryParams(searchParams), prefix).length > 0) return true;
     // Sorts
-    if (searchParams.get(`${prefix}.sort`) !== undefined) return true;
+    if (searchParams.get(`${prefix}.sort`) !== null) return true;
     // Page offset
-    if (searchParams.get(`${prefix}.p`) !== undefined) return true;
+    if (searchParams.get(`${prefix}.p`) !== null) return true;
     // Page size
-    return searchParams.get(`${prefix}.pageSize`) !== undefined;
+    return searchParams.get(`${prefix}.pageSize`) !== null;
 }
 
 /**

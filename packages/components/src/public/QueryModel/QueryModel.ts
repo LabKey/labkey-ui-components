@@ -30,7 +30,7 @@ export function flattenValuesFromRow(row: any, keys: string[]): { [key: string]:
 }
 
 function offsetFromString(rowsPerPage: number, pageStr: string): number {
-    if (pageStr === undefined) {
+    if (pageStr === null) {
         return undefined;
     }
 

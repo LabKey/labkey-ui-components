@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Security } from '@labkey/api';
 import { useSearchParams } from 'react-router-dom';
@@ -23,6 +23,21 @@ import { VerticalScrollPanel } from '../base/VeriticalScrollPanel';
 import { ProjectSettings } from './ProjectSettings';
 
 import { ProjectListing } from './ProjectListing';
+
+const renderButtons = (): ReactNode => (
+    <>
+        <Button
+            bsStyle="success"
+            className="button-right-spacing"
+            href={AppURL.create('admin', 'projects', 'new').toHref()}
+        >
+            Create a Project
+        </Button>
+        <a href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value).toHref()}>
+            View Audit History
+        </a>
+    </>
+);
 
 export const ProjectManagementPage: FC = memo(() => {
     useAdministrationSubNav();
@@ -79,24 +94,6 @@ export const ProjectManagementPage: FC = memo(() => {
             removeParameters(setSearchParams, 'successMsg');
         }
     }, []);
-
-    const renderButtons = useMemo(
-        () => () => (
-            <>
-                <Button
-                    bsStyle="success"
-                    className="button-right-spacing"
-                    href={AppURL.create('admin', 'projects', 'new').toHref()}
-                >
-                    Create a Project
-                </Button>
-                <a href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value).toHref()}>
-                    View Audit History
-                </a>
-            </>
-        ),
-        []
-    );
 
     const onError = useCallback((e: string) => {
         setError(e);

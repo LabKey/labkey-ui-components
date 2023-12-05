@@ -66,7 +66,7 @@ export const UserLink: FC<UserLinkProps> = props => {
 
     return (
         <>
-            <a onClick={toggleDetailsModal} className="clickable">
+            <a onClick={toggleDetailsModal} className="clickable user-link">
                 {targetUserDisplayValue}
             </a>
             {showDetails && (

@@ -122,10 +122,7 @@ interface AssayImportPanelsBodyProps extends NotificationsContextProps {
     searchParams: URLSearchParams;
 }
 
-type Props = AssayImportPanelsBodyProps &
-    OwnProps &
-    WithFormStepsProps &
-    InjectedQueryModels;
+type Props = AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps & InjectedQueryModels;
 
 interface State {
     dataModel: QueryModel;

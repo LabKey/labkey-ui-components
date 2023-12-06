@@ -5,6 +5,8 @@ import { Filter } from '@labkey/api';
 import { Draft, produce } from 'immer';
 import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 
+import { getQueryParams } from '../../internal/util/URL';
+
 import { SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
 import { isLoading, LoadingState } from '../LoadingState';
@@ -313,8 +315,8 @@ export function withQueryModels<Props>(
         bindURL = (id: string): void => {
             const { setSearchParams } = this.props;
 
-            if (location === undefined) {
-                // This happens when we're rendering a component outside a router.
+            if (setSearchParams === undefined) {
+                // This happens when we're rendering a component outside a react-router context.
                 return;
             }
 
@@ -322,14 +324,20 @@ export function withQueryModels<Props>(
             const { urlPrefix, urlQueryParams } = model;
 
             setSearchParams(currentParams => {
-                return Object.keys(currentParams).reduce((result, key) => {
-                    // Only copy params that aren't related to the current model, we initialize the result with the
-                    // updated params below.
-                    if (!key.startsWith(urlPrefix + '.')) {
-                        result[key] = currentParams[key];
-                    }
-                    return result;
-                }, urlQueryParams);
+                const queryParams = getQueryParams(currentParams);
+                return Object.keys(queryParams).reduce(
+                    (result, key) => {
+                        // Only copy params that aren't related to the current model, we initialize the result with the
+                        // updated params below.
+                        if (!key.startsWith(urlPrefix + '.')) {
+                            result[key] = queryParams[key];
+                        }
+                        return result;
+                    },
+                    // QueryModel.urlQueryParams returns Record<string, string> but getQueryParams and setSearchParams
+                    // use Record<string, string | string[]
+                    urlQueryParams as Record<string, string | string[]>
+                );
             });
         };
 

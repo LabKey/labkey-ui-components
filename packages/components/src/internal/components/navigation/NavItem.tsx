@@ -20,11 +20,10 @@ import { AppURL } from '../../url/AppURL';
 
 interface NavItemProps {
     onActive?: (activeEl: HTMLElement) => void;
-    onClick?: () => void;
     to?: string | AppURL;
 }
 
-export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, onClick }) => {
+export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to }) => {
     const location = useLocation();
     const href = to instanceof AppURL ? to.toString() : to;
     const itemRef = useRef<HTMLLIElement>();
@@ -49,25 +48,25 @@ export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to, onClick
 
     return (
         <li className={active ? 'active' : null} ref={itemRef}>
-            <Link to={href} onClick={onClick}>
+            <Link to={href}>
                 {children}
             </Link>
         </li>
     );
 });
 
-export const ParentNavItem: FC<NavItemProps> = memo(({ children, to, onClick }) => {
-    const href = to instanceof AppURL ? to.toHref() : to;
+export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => {
+    const href = to instanceof AppURL ? to.toString() : to;
 
     return (
         <div className="parent-nav">
             <ul className="nav navbar-nav">
                 <li>
-                    <a href={href} onClick={onClick}>
+                    <Link to={href}>
                         <i className="fa fa-chevron-left" />
                         &nbsp;
                         {children}
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </div>

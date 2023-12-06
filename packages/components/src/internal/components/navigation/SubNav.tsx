@@ -91,7 +91,7 @@ const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
         <nav className="navbar navbar-inverse sub-nav">
             <div className="sub-nav-container">
                 {noun && (
-                    <ParentNavItem to={noun.url} onClick={noun.onClick}>
+                    <ParentNavItem to={noun.url}>
                         {noun.text}
                     </ParentNavItem>
                 )}
@@ -100,10 +100,10 @@ const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
                     <ul className="nav navbar-nav">
                         {tabs
                             .filter(tab => !!tab.text)
-                            .map(({ text, url, onClick }, i) => (
+                            .map(({ text, url }, i) => (
                                 // neither "text" nor "url" are consistently unique
                                 // eslint-disable-next-line react/no-array-index-key
-                                <NavItem key={i} to={url} onActive={onItemActivate} onClick={onClick}>
+                                <NavItem key={i} to={url} onActive={onItemActivate}>
                                     {text}
                                 </NavItem>
                             ))}

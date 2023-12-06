@@ -71,7 +71,7 @@
     "react-color": "~2.19.3",
     "react-datepicker": "~4.17.0",
     "react-dom": "~16.14.0",
-    "react-router-dom": "~6.18.0",
+    "react-router-dom": "~6.20.1",
     "react-select": "~5.7.0",
     "react-treebeard": "~3.2.4",
     "vis-network": "~6.5.2"

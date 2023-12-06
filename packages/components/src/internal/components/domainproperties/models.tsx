@@ -1006,7 +1006,7 @@ export class DomainField
         return field;
     }
 
-    private static resolveLookupConfig(rawField: Partial<IDomainField>, dataType: PropDescType): ILookupConfig {
+    static resolveLookupConfig(rawField: Partial<IDomainField>, dataType: PropDescType): ILookupConfig {
         const lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
         const lookupContainer = rawField.lookupContainer === null ? undefined : rawField.lookupContainer;
         const lookupSchema = resolveLookupSchema(rawField, dataType);

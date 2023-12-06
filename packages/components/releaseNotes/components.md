@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD December 2023
+- Issue 49005: Field editor assigning a lookup to exp.Materials then switching to Samples type should retain schema/query for lookup
+
 ### version 2.396.0
 *Released*: 1 December 2023
 - FormsyReactComponents.tsx fix for handling of rowClassName prop

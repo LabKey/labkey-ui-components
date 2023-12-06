@@ -739,6 +739,33 @@ describe('domain properties actions', () => {
         expect(field.dimension).toBe(false);
     });
 
+    test('updateDataType Sample data type, new field', () => {
+        let field = DomainField.create({});
+        field = updateDataType(field, 'sample');
+        expect(field.dataType).toBe(SAMPLE_TYPE);
+        expect(field.lookupSchema).toBe('exp');
+        expect(field.lookupQuery).toBe('Materials');
+        expect(field.lookupQueryValue).toBe('http://www.w3.org/2001/XMLSchema#int|Materials');
+    });
+
+    test('updateDataType Sample data type, saved field', () => {
+        let field = DomainField.create({ propertyId: 1 });
+        field = updateDataType(field, 'sample');
+        expect(field.dataType).toBe(SAMPLE_TYPE);
+        expect(field.lookupSchema).toBe('exp');
+        expect(field.lookupQuery).toBe('Materials');
+        expect(field.lookupQueryValue).toBe('http://www.w3.org/2001/XMLSchema#int|Materials');
+    });
+
+    test('updateDataType Sample data type, saved lookup field', () => {
+        let field = DomainField.create({ propertyId: 1, lookupSchema: 'exp', lookupQuery: 'Materials' });
+        field = updateDataType(field, 'sample');
+        expect(field.dataType).toBe(SAMPLE_TYPE);
+        expect(field.lookupSchema).toBe('exp');
+        expect(field.lookupQuery).toBe('Materials');
+        expect(field.lookupQueryValue).toBe('http://www.w3.org/2001/XMLSchema#int|Materials');
+    });
+
     test('updateDomainField principalConceptCode', () => {
         let domainDesign = DomainDesign.create({
             fields: [{ name: 'field1', principalConceptCode: undefined }],

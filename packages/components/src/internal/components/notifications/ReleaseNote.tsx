@@ -2,20 +2,24 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import { getServerContext } from '@labkey/api';
 
+import { withRouter, WithRouterProps } from 'react-router';
+
 import { HelpLink } from '../../util/helpLinks';
 import { getPrimaryAppProperties } from '../../app/utils';
-import { withRouter, WithRouterProps } from 'react-router';
 
 const DISMISSED_STORAGE_PREFIX = '__release_notes_dismissed__';
 
-export const ReleaseNoteImpl: FC<WithRouterProps> = (props) => {
+export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
     const { location } = props;
     const { releaseNoteLink, name } = getPrimaryAppProperties();
     const { versionString } = getServerContext();
 
     const releaseNoteDismissKey = DISMISSED_STORAGE_PREFIX + name + versionString;
 
-    const [releaseNoteDismissed, setReleaseNoteDismissed] = useState<boolean>(location.query.showReleaseNote?.toLowerCase() !== 'true' && localStorage.getItem(releaseNoteDismissKey)?.toLowerCase() === 'true');
+    const [releaseNoteDismissed, setReleaseNoteDismissed] = useState<boolean>(
+        location.query.showReleaseNote?.toLowerCase() !== 'true' &&
+            localStorage.getItem(releaseNoteDismissKey)?.toLowerCase() === 'true'
+    );
 
     useEffect(() => {
         localStorage.setItem(releaseNoteDismissKey, JSON.stringify(releaseNoteDismissed));
@@ -25,13 +29,11 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = (props) => {
         setReleaseNoteDismissed(true);
     }, []);
 
-    // if (releaseNoteDismissed || isInAppReleaseNoteDisabled())
-    if (releaseNoteDismissed)
-        return null;
+    if (releaseNoteDismissed) return null;
 
     return (
         <>
-            <div className={'notification-container alert alert-success release-note-container'}>
+            <div className="notification-container alert alert-success release-note-container">
                 <div className="input-group-align release-note-new">NEW</div>
                 <div className="notification-item input-group-align">
                     {name} {versionString} is here.&nbsp;
@@ -40,7 +42,7 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = (props) => {
                 </div>
             </div>
         </>
-    )
+    );
 };
 
 export const ReleaseNote = withRouter(ReleaseNoteImpl);

@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 import React from 'react';
+
 import { InsufficientPermissionsAlert } from '../permissions/InsufficientPermissionsAlert';
 
-import { PageHeader } from './PageHeader';
 import { ReleaseNote } from '../notifications/ReleaseNote';
 import { isApp } from '../../app/utils';
+
+import { PageHeader } from './PageHeader';
 
 export interface PageProps {
     hasHeader?: boolean;

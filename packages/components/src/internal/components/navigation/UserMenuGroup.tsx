@@ -28,9 +28,10 @@ import { AppProperties } from '../../app/models';
 
 import { AppContext, useAppContext } from '../../AppContext';
 
+import { getHelpLink } from '../../util/helpLinks';
+
 import { signIn, signOut } from './actions';
 import { MenuSectionModel } from './model';
-import { getHelpLink } from '../../util/helpLinks';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;
@@ -148,8 +149,16 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                         pullRight
                     >
                         <div className="navbar-icon-connector" />
-                        {helpHref && <MenuItem key="help" href={helpHref} target="_blank" rel="noopener noreferrer">Help</MenuItem>}
-                        {releaseNoteHref && <MenuItem key="release" href={releaseNoteHref} target="_blank" rel="noopener noreferrer">Release Notes</MenuItem>}
+                        {helpHref && (
+                            <MenuItem key="help" href={helpHref} target="_blank" rel="noopener noreferrer">
+                                Help
+                            </MenuItem>
+                        )}
+                        {releaseNoteHref && (
+                            <MenuItem key="release" href={releaseNoteHref} target="_blank" rel="noopener noreferrer">
+                                Release Notes
+                            </MenuItem>
+                        )}
                     </DropdownButton>
                 </div>
             )}

@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add `getPermissionRestrictionMessage` utility method.
 * Issue 49148: pass through column description for rendering TextInput fields
 
+### version 2.396.1
+*Released*: 7 December 2023
+- Issue 49005: Field editor assigning a lookup to exp.Materials then switching to Samples type should retain schema/query for lookup
+
 ### version 2.396.0
 *Released*: 1 December 2023
 - FormsyReactComponents.tsx fix for handling of rowClassName prop

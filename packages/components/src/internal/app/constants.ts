@@ -117,6 +117,7 @@ export const EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS = 'queryProductAllFolderLoo
 export const EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED = 'queryProductProjectDataListingScoped';
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
+export const EXPERIMENTAL_HIDE_IN_APP_RELEASE_NOTES_BANNER = 'experimental-hide-in-app-release-note';
 
 export const PROJECT_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
 
@@ -142,6 +143,7 @@ export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     moduleName: 'biologics',
     searchPlaceholder: SEARCH_PLACEHOLDER,
     dataClassUrlPart: REGISTRY_KEY,
+    releaseNoteLink: 'bioReleaseNotes',
 };
 
 export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
@@ -154,6 +156,7 @@ export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
     moduleName: 'sampleManagement',
     searchPlaceholder: SAMPLE_MANAGER_SEARCH_PLACEHOLDER,
     dataClassUrlPart: SOURCES_KEY,
+    releaseNoteLink: 'releaseNotes',
 };
 
 export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {

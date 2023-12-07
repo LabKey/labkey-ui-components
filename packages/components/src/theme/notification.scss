@@ -129,3 +129,12 @@
 .page-detail-header-title-padding {
     padding-left: 10px;
 }
+
+.release-note-container {
+    background: linear-gradient(90deg, #D6E9C6 60px, $white 60px);
+
+    .release-note-new {
+        font-weight: bold;
+        padding-right: 30px;
+    }
+}

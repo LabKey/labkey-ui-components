@@ -30,6 +30,7 @@ import { AppContext, useAppContext } from '../../AppContext';
 
 import { signIn, signOut } from './actions';
 import { MenuSectionModel } from './model';
+import { getHelpLink } from '../../util/helpLinks';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;
@@ -48,6 +49,7 @@ interface ImplProps {
 // exported for jest testing
 export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
+    const releaseNoteHref = getHelpLink(getPrimaryAppProperties().releaseNoteLink);
 
     const { helpHref, userMenuItems, adminMenuItems } = useMemo(() => {
         let helpHref;
@@ -136,13 +138,19 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     </DropdownButton>
                 </div>
             )}
-            {helpHref && (
-                <div className="navbar-item pull-right">
-                    <div className="btn navbar-icon-button-right" id="nav-help-button">
-                        <a href={helpHref} target="_blank" rel="noopener noreferrer">
-                            <i className="fa fa-question-circle navbar-header-icon" />
-                        </a>
-                    </div>
+            {(!!helpHref || !!releaseNoteHref) && (
+                <div className="navbar-item pull-right navbar-item-product-navigation">
+                    <DropdownButton
+                        id="help-menu-button"
+                        className="navbar-icon-button-right"
+                        title={<i className="fa fa-question-circle navbar-header-icon" />}
+                        noCaret
+                        pullRight
+                    >
+                        <div className="navbar-icon-connector" />
+                        {helpHref && <MenuItem key="help" href={helpHref} target="_blank" rel="noopener noreferrer">Help</MenuItem>}
+                        {releaseNoteHref && <MenuItem key="release" href={releaseNoteHref} target="_blank" rel="noopener noreferrer">Release Notes</MenuItem>}
+                    </DropdownButton>
                 </div>
             )}
         </>

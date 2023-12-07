@@ -710,6 +710,9 @@ export function updateDataType(field: DomainField, value: any): DomainField {
 
         if (field.isNew()) {
             field = DomainField.updateDefaultValues(field);
+        } else if (dataType === SAMPLE_TYPE) {
+            // Issue 49005: set default lookup schema/query for change to Sample data type
+            field = field.merge(DomainField.resolveLookupConfig(field, dataType)) as DomainField;
         }
 
         if (field.isTextChoiceField()) {

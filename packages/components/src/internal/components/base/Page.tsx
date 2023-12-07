@@ -18,6 +18,7 @@ import { InsufficientPermissionsAlert } from '../permissions/InsufficientPermiss
 
 import { PageHeader } from './PageHeader';
 import { ReleaseNote } from '../notifications/ReleaseNote';
+import { isApp } from '../../app/utils';
 
 export interface PageProps {
     hasHeader?: boolean;
@@ -93,7 +94,7 @@ export class Page extends React.Component<PageProps, any> {
 
             return (
                 <div className="app-page">
-                    <ReleaseNote />
+                    {isApp() && <ReleaseNote />}
                     {!hasHeader && <PageHeader showNotifications={showNotifications} />}
                     {children}
                 </div>

@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD December 2023
 - Issue 49199: Field Editor name input to use defaultValue instead of value to prevent cursor jumping to end of input on change
+  - Also include minor fix for row/col display issue on permission assignments app page (issue 48895)
 
 ### version 2.396.1
 *Released*: 7 December 2023

@@ -493,9 +493,9 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         <div className="permission-assignments-panel">
             {error && <Alert>{error}</Alert>}
             <div className="row">
-                {(!isProductProjectsEnabled(moduleContext) || projects?.length <= 1) && <>{_panelContent}</>}
-                {isProductProjectsEnabled(moduleContext) && projects?.length > 1 && (
-                    <div className="col-md-8 col-xs-12">
+                <div className="col-md-8 col-xs-12">
+                    {(!isProductProjectsEnabled(moduleContext) || projects?.length <= 1) && <>{_panelContent}</>}
+                    {isProductProjectsEnabled(moduleContext) && projects?.length > 1 && (
                         <div className="side-panels-container">
                             <ProjectListing
                                 projects={sortedProjects}
@@ -514,8 +514,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                                 {_panelContent}
                             </VerticalScrollPanel>
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
                 <div className="col-md-4 col-xs-12">
                     {selectedPrincipal?.type === MemberType.group && groupMembership ? (
                         <GroupDetailsPanel

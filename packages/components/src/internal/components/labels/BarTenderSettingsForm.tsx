@@ -158,7 +158,8 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
             setDirty(false);
             onSuccess?.();
         } catch (e) {
-            setFailureMessage(FAILED_TO_SAVE_MESSAGE);
+            setFailureMessage(resolveErrorMessage(e) ?? FAILED_TO_SAVE_MESSAGE);
+            setConnectionValidated(false);
         } finally {
             setSubmitting(false);
         }

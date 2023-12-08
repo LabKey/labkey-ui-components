@@ -50,7 +50,8 @@ interface ImplProps {
 // exported for jest testing
 export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
-    const releaseNoteHref = getHelpLink(getPrimaryAppProperties().releaseNoteLink);
+    const releaseNoteLink = getPrimaryAppProperties()?.releaseNoteLink;
+    const releaseNoteHref = releaseNoteLink ? getHelpLink(getPrimaryAppProperties()?.releaseNoteLink) : undefined;
 
     const { helpHref, userMenuItems, adminMenuItems } = useMemo(() => {
         let helpHref;

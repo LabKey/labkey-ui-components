@@ -23,8 +23,9 @@ import { User } from '../base/models/User';
 import { UserMenuGroupImpl } from './UserMenuGroup';
 import { MenuSectionModel } from './model';
 
-beforeAll(() => {
+beforeEach(() => {
     LABKEY.devMode = false;
+    LABKEY.moduleContext = {};
 });
 
 describe('UserMenuGroup', () => {
@@ -97,7 +98,16 @@ describe('UserMenuGroup', () => {
         sectionKey: 'user',
     });
 
-    function verify(wrapper: ReactWrapper, userOptions?: string[], adminOptions?: string[], help?: boolean) {
+    function verifyMenuOptions(menu: any, options: string[]) {
+        const menuOptions = menu.find(MenuItem);
+        expect(menuOptions).toHaveLength(options?.length);
+        expect(menuOptions.at(0).text()).toEqual(options[0]);
+        for (let i = 0; i < options.length; i++) {
+            expect(menuOptions.at(i).text()).toEqual(options[i]);
+        }
+    }
+
+    function verify(wrapper: ReactWrapper, userOptions?: string[], adminOptions?: string[], helpOptions?: string[]) {
         const userMenu = wrapper.find(Dropdown);
         const userMenuOptions = userMenu.at(0).find(MenuItem);
         expect(userMenuOptions).toHaveLength(userOptions?.length);
@@ -105,17 +115,21 @@ describe('UserMenuGroup', () => {
             expect(userMenuOptions.at(i).text()).toEqual(userOptions[i]);
         }
 
+        const dropdowns = wrapper.find(DropdownButton);
+
+        let dropdownCount = 0, helpMenu, adminMenu;
         if (adminOptions?.length > 0) {
-            const adminMenu = wrapper.find(DropdownButton);
-            expect(adminMenu).toHaveLength(1);
-            const adminMenuOptions = adminMenu.find(MenuItem);
-            expect(adminMenuOptions).toHaveLength(adminOptions?.length);
-            for (let i = 0; i < adminOptions.length; i++) {
-                expect(adminMenuOptions.at(i).text()).toEqual(adminOptions[i]);
-            }
+            adminMenu = dropdowns.at(dropdownCount);
+            verifyMenuOptions(adminMenu, adminOptions);
+            dropdownCount += 1;
+        }
+        if (helpOptions?.length > 0) {
+            helpMenu = dropdowns.at(dropdownCount);
+            verifyMenuOptions(helpMenu, helpOptions);
+            dropdownCount += 1;
         }
 
-        expect(wrapper.find('#nav-help-button').length).toEqual(help ? 1 : 0);
+        expect(dropdowns).toHaveLength(dropdownCount);
     }
 
     test('not initialized', () => {
@@ -130,7 +144,7 @@ describe('UserMenuGroup', () => {
         });
 
         const tree = mount(<UserMenuGroupImpl model={section} user={user} />);
-        verify(tree, ['', 'Sign In'], null, true);
+        verify(tree, ['', 'Sign In'], null, ['Help']);
     });
 
     test('no help icon', () => {
@@ -139,7 +153,7 @@ describe('UserMenuGroup', () => {
         });
 
         const tree = mount(<UserMenuGroupImpl model={noHelpSection} user={user} />);
-        verify(tree, ['Documentation', '', 'Sign In'], null, false);
+        verify(tree, ['Documentation', '', 'Sign In'], null, null);
     });
 
     test('with admin items', () => {
@@ -149,7 +163,7 @@ describe('UserMenuGroup', () => {
 
         const tree = mount(<UserMenuGroupImpl model={withAdmins} user={user} />);
 
-        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Application Settings'], true);
+        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Application Settings'], ['Help']);
     });
 
     test('user logged in, but not in dev mode', () => {
@@ -158,7 +172,7 @@ describe('UserMenuGroup', () => {
         });
 
         const tree = mount(<UserMenuGroupImpl model={section} user={user} />);
-        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], null, true);
+        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], null, ['Help']);
     });
 
     test('user logged in dev mode', () => {
@@ -168,7 +182,7 @@ describe('UserMenuGroup', () => {
         LABKEY.devMode = true;
 
         const tree = mount(<UserMenuGroupImpl model={section} user={user} />);
-        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Dev Tools', 'Enable Redux Tools'], true);
+        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Dev Tools', 'Enable Redux Tools'], ['Help']);
     });
 
     test('user logged in extra items', () => {
@@ -184,7 +198,7 @@ describe('UserMenuGroup', () => {
         );
         const tree = mount(<UserMenuGroupImpl model={section} user={user} extraUserItems={extraUserItems} />);
 
-        verify(tree, ['Profile', 'Extra One', 'Extra Two', '', /* divider*/ 'Sign Out'], null, true);
+        verify(tree, ['Profile', 'Extra One', 'Extra Two', '', /* divider*/ 'Sign Out'], null, ['Help']);
     });
 
     test('user logged in extra dev mode items', () => {
@@ -219,7 +233,40 @@ describe('UserMenuGroup', () => {
             tree,
             ['Profile', 'Extra One', 'Extra Two', '', /* divider*/ 'Sign Out'],
             ['Dev Tools', 'Enable Redux Tools', 'Extra Dev One', 'Extra Dev Two'],
-            true
+            ['Help']
         );
     });
+
+    test('with release note, with help', () => {
+        LABKEY.moduleContext = {
+            samplemanagement: {
+                productId: 'SampleManager',
+            }
+        };
+
+        const user = new User({
+            isSignedIn: true,
+        });
+
+        const tree = mount(<UserMenuGroupImpl model={withAdmins} user={user} />);
+
+        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Application Settings'], ['Help', 'Release Notes']);
+    });
+
+    test('with release note, without help', () => {
+        LABKEY.moduleContext = {
+            samplemanagement: {
+                productId: 'SampleManager',
+            }
+        };
+
+        const user = new User({
+            isSignedIn: false,
+        });
+
+        const tree = mount(<UserMenuGroupImpl model={noHelpSection} user={user} />);
+
+        verify(tree, ['Documentation', '', 'Sign In'], null, ['Release Notes']);
+    });
+
 });

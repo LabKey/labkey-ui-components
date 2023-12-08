@@ -29,7 +29,7 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
         setReleaseNoteDismissed(true);
     }, []);
 
-    if (releaseNoteDismissed) return null;
+    if (releaseNoteDismissed || !releaseNoteLink) return null;
 
     return (
         <>

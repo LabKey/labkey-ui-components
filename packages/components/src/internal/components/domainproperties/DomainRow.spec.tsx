@@ -130,7 +130,7 @@ describe('DomainRow', () => {
             bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
-        expect(name.props().value).toEqual(_name);
+        expect(name.props().defaultValue).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
@@ -173,7 +173,7 @@ describe('DomainRow', () => {
             bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
-        expect(name.props().value).toEqual(_name);
+        expect(name.props().defaultValue).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
@@ -216,7 +216,7 @@ describe('DomainRow', () => {
             bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
-        expect(name.props().value).toEqual(_name);
+        expect(name.props().defaultValue).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
@@ -259,7 +259,7 @@ describe('DomainRow', () => {
             bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
-        expect(name.props().value).toEqual(_name);
+        expect(name.props().defaultValue).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
@@ -313,7 +313,7 @@ describe('DomainRow', () => {
             bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
-        expect(name.props().value).toEqual(_name);
+        expect(name.props().defaultValue).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
@@ -370,7 +370,7 @@ describe('DomainRow', () => {
             bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
-        expect(name.props().value).toEqual(_name);
+        expect(name.props().defaultValue).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),

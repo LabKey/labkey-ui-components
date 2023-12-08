@@ -357,9 +357,8 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this.ref}>
                 <Col xs={6}>
                     <FormControl
-                        // autoFocus={field.isNew()}  // TODO: This is not working great with drag and drop, need to investigate
                         type="text"
-                        value={field.name || ''}
+                        defaultValue={field.name || ''} // Issue 49199: use defaultValue instead of value to prevent cursor jumping to end of input on change
                         name={createFormInputName(DOMAIN_FIELD_NAME)}
                         id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
                         onChange={this.onNameChange}

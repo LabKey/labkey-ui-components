@@ -764,21 +764,21 @@ exports[`DomainRow Sample Field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
+                                            defaultValue="sampleField"
                                             disabled={false}
                                             id="domainpropertiesrow-name-1-0"
                                             name="domainpropertiesrow-name"
                                             onChange={[Function]}
                                             type="text"
-                                            value="sampleField"
                                           >
                                             <input
                                               className="form-control"
+                                              defaultValue="sampleField"
                                               disabled={false}
                                               id="domainpropertiesrow-name-1-0"
                                               name="domainpropertiesrow-name"
                                               onChange={[Function]}
                                               type="text"
-                                              value="sampleField"
                                             />
                                           </FormControl>
                                         </div>
@@ -2720,21 +2720,21 @@ exports[`DomainRow client side warning on field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
+                                            defaultValue="#ColumnAwesome"
                                             disabled={false}
                                             id="domainpropertiesrow-name-1-1"
                                             name="domainpropertiesrow-name"
                                             onChange={[Function]}
                                             type="text"
-                                            value="#ColumnAwesome"
                                           >
                                             <input
                                               className="form-control"
+                                              defaultValue="#ColumnAwesome"
                                               disabled={false}
                                               id="domainpropertiesrow-name-1-1"
                                               name="domainpropertiesrow-name"
                                               onChange={[Function]}
                                               type="text"
-                                              value="#ColumnAwesome"
                                             />
                                           </FormControl>
                                         </div>
@@ -4736,21 +4736,21 @@ exports[`DomainRow date time field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
+                                            defaultValue="dateTimeField"
                                             disabled={false}
                                             id="domainpropertiesrow-name-1-0"
                                             name="domainpropertiesrow-name"
                                             onChange={[Function]}
                                             type="text"
-                                            value="dateTimeField"
                                           >
                                             <input
                                               className="form-control"
+                                              defaultValue="dateTimeField"
                                               disabled={false}
                                               id="domainpropertiesrow-name-1-0"
                                               name="domainpropertiesrow-name"
                                               onChange={[Function]}
                                               type="text"
-                                              value="dateTimeField"
                                             />
                                           </FormControl>
                                         </div>
@@ -6737,21 +6737,21 @@ exports[`DomainRow decimal field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
+                                            defaultValue="decimalField"
                                             disabled={false}
                                             id="domainpropertiesrow-name-1-2"
                                             name="domainpropertiesrow-name"
                                             onChange={[Function]}
                                             type="text"
-                                            value="decimalField"
                                           >
                                             <input
                                               className="form-control"
+                                              defaultValue="decimalField"
                                               disabled={false}
                                               id="domainpropertiesrow-name-1-2"
                                               name="domainpropertiesrow-name"
                                               onChange={[Function]}
                                               type="text"
-                                              value="decimalField"
                                             />
                                           </FormControl>
                                         </div>
@@ -8782,21 +8782,21 @@ exports[`DomainRow participant id field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
+                                            defaultValue="participantField"
                                             disabled={false}
                                             id="domainpropertiesrow-name-1-0"
                                             name="domainpropertiesrow-name"
                                             onChange={[Function]}
                                             type="text"
-                                            value="participantField"
                                           >
                                             <input
                                               className="form-control"
+                                              defaultValue="participantField"
                                               disabled={false}
                                               id="domainpropertiesrow-name-1-0"
                                               name="domainpropertiesrow-name"
                                               onChange={[Function]}
                                               type="text"
-                                              value="participantField"
                                             />
                                           </FormControl>
                                         </div>
@@ -10639,21 +10639,21 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
+                                            defaultValue="modified"
                                             disabled={false}
                                             id="domainpropertiesrow-name-1-1"
                                             name="domainpropertiesrow-name"
                                             onChange={[Function]}
                                             type="text"
-                                            value="modified"
                                           >
                                             <input
                                               className="form-control"
+                                              defaultValue="modified"
                                               disabled={false}
                                               id="domainpropertiesrow-name-1-1"
                                               name="domainpropertiesrow-name"
                                               onChange={[Function]}
                                               type="text"
-                                              value="modified"
                                             />
                                           </FormControl>
                                         </div>
@@ -12620,21 +12620,21 @@ exports[`DomainRow string field test 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
+                                            defaultValue="stringField"
                                             disabled={false}
                                             id="domainpropertiesrow-name-1-1"
                                             name="domainpropertiesrow-name"
                                             onChange={[Function]}
                                             type="text"
-                                            value="stringField"
                                           >
                                             <input
                                               className="form-control"
+                                              defaultValue="stringField"
                                               disabled={false}
                                               id="domainpropertiesrow-name-1-1"
                                               name="domainpropertiesrow-name"
                                               onChange={[Function]}
                                               type="text"
-                                              value="stringField"
                                             />
                                           </FormControl>
                                         </div>
@@ -14711,21 +14711,21 @@ exports[`DomainRow with empty domain form 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
+                                            defaultValue=""
                                             disabled={false}
                                             id="domainpropertiesrow-name-1-1"
                                             name="domainpropertiesrow-name"
                                             onChange={[Function]}
                                             type="text"
-                                            value=""
                                           >
                                             <input
                                               className="form-control"
+                                              defaultValue=""
                                               disabled={false}
                                               id="domainpropertiesrow-name-1-1"
                                               name="domainpropertiesrow-name"
                                               onChange={[Function]}
                                               type="text"
-                                              value=""
                                             />
                                           </FormControl>
                                         </div>

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD December 2023
+- Issue 49199: Field Editor name input to use defaultValue instead of value to prevent cursor jumping to end of input on change
+
 ### version 2.396.1
 *Released*: 7 December 2023
 - Issue 49005: Field editor assigning a lookup to exp.Materials then switching to Samples type should retain schema/query for lookup

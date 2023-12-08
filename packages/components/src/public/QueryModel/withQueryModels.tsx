@@ -323,22 +323,25 @@ export function withQueryModels<Props>(
             const model = this.state.queryModels[id];
             const { urlPrefix, urlQueryParams } = model;
 
-            setSearchParams(currentParams => {
-                const queryParams = getQueryParams(currentParams);
-                return Object.keys(queryParams).reduce(
-                    (result, key) => {
-                        // Only copy params that aren't related to the current model, we initialize the result with the
-                        // updated params below.
-                        if (!key.startsWith(urlPrefix + '.')) {
-                            result[key] = queryParams[key];
-                        }
-                        return result;
-                    },
-                    // QueryModel.urlQueryParams returns Record<string, string> but getQueryParams and setSearchParams
-                    // use Record<string, string | string[]
-                    urlQueryParams as Record<string, string | string[]>
-                );
-            });
+            setSearchParams(
+                currentParams => {
+                    const queryParams = getQueryParams(currentParams);
+                    return Object.keys(queryParams).reduce(
+                        (result, key) => {
+                            // Only copy params that aren't related to the current model, we initialize the result with the
+                            // updated params below.
+                            if (!key.startsWith(urlPrefix + '.')) {
+                                result[key] = queryParams[key];
+                            }
+                            return result;
+                        },
+                        // QueryModel.urlQueryParams returns Record<string, string> but getQueryParams and setSearchParams
+                        // use Record<string, string | string[]
+                        urlQueryParams as Record<string, string | string[]>
+                    );
+                },
+                { replace: true }
+            );
         };
 
         updateModelFromURL = (id: string): void => {

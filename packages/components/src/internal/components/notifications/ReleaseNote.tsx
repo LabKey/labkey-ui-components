@@ -5,7 +5,7 @@ import { getServerContext } from '@labkey/api';
 import { withRouter, WithRouterProps } from 'react-router';
 
 import { HelpLink } from '../../util/helpLinks';
-import { getPrimaryAppProperties } from '../../app/utils';
+import { getPrimaryAppProperties, isInAppReleaseNoteDisabled } from '../../app/utils';
 
 const DISMISSED_STORAGE_PREFIX = '__release_notes_dismissed__';
 
@@ -29,7 +29,7 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
         setReleaseNoteDismissed(true);
     }, []);
 
-    if (releaseNoteDismissed || !releaseNoteLink) return null;
+    if (releaseNoteDismissed || !releaseNoteLink || isInAppReleaseNoteDisabled()) return null;
 
     return (
         <>

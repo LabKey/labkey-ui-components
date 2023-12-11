@@ -407,6 +407,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         this.setState({ reservedFieldsMsg: undefined, fieldDetails: updatedDomain.getFieldDetails() });
 
+        // Issue 49199: onChange call to be made separate from setState callback, Field Editor name input fix for jumping cursor to end of input
         this.props.onChange?.(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChanges);
     }
 

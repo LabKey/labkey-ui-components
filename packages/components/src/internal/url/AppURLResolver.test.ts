@@ -429,11 +429,9 @@ describe('App Route Resolvers', () => {
         expect(listResolver.matches('/q/lists/$CPSq/we/ry$CPE/919/foo/bar?bar=1')).toBe(true);
 
         return Promise.all([
-            listResolver
-                .fetch(['q', 'lists', encodeListResolverPath('/BULLS'), 'jordan', 4])
-                .then((result: boolean) => {
-                    expect(result).toBe(true);
-                }),
+            listResolver.fetch(['q', 'lists', encodeListResolverPath('/BULLS'), 'jordan', 4]).then(result => {
+                expect(result).toBe(undefined);
+            }),
             listResolver.fetch(['q', 'lists', encodeListResolverPath('/BULLS'), 23]).then((url: AppURL) => {
                 expect(url.toString()).toBe('/q/lists/Jordan');
             }),
@@ -458,8 +456,8 @@ describe('App Route Resolvers', () => {
         expect(jobsResolver.matches('/rd/run/141345')).toBe(true);
 
         return Promise.all([
-            jobsResolver.fetch(['rd', 'runs', 'notanumber']).then((result: boolean) => {
-                expect(result).toBe(true);
+            jobsResolver.fetch(['rd', 'runs', 'notanumber']).then(result => {
+                expect(result).toBe(undefined);
             }),
             jobsResolver.fetch(['rd', 'runs', 4]).then((result: AppURL) => {
                 expect(result.toString()).toBe('/workflow/4');

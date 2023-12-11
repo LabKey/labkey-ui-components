@@ -51,7 +51,13 @@ interface ImplProps {
 export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
     const releaseNoteLink = getPrimaryAppProperties()?.releaseNoteLink;
-    const releaseNoteHref = releaseNoteLink ? getHelpLink(getPrimaryAppProperties()?.releaseNoteLink, null, biologicsIsPrimaryApp()/*needed for FM in Biologics*/) : undefined;
+    const releaseNoteHref = releaseNoteLink
+        ? getHelpLink(
+              getPrimaryAppProperties()?.releaseNoteLink,
+              null,
+              biologicsIsPrimaryApp() /* needed for FM in Biologics*/
+          )
+        : undefined;
 
     const { helpHref, userMenuItems, adminMenuItems } = useMemo(() => {
         let helpHref;

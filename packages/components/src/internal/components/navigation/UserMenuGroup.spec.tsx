@@ -117,7 +117,9 @@ describe('UserMenuGroup', () => {
 
         const dropdowns = wrapper.find(DropdownButton);
 
-        let dropdownCount = 0, helpMenu, adminMenu;
+        let dropdownCount = 0,
+            helpMenu,
+            adminMenu;
         if (adminOptions?.length > 0) {
             adminMenu = dropdowns.at(dropdownCount);
             verifyMenuOptions(adminMenu, adminOptions);
@@ -241,7 +243,7 @@ describe('UserMenuGroup', () => {
         LABKEY.moduleContext = {
             samplemanagement: {
                 productId: 'SampleManager',
-            }
+            },
         };
 
         const user = new User({
@@ -257,7 +259,7 @@ describe('UserMenuGroup', () => {
         LABKEY.moduleContext = {
             samplemanagement: {
                 productId: 'SampleManager',
-            }
+            },
         };
 
         const user = new User({
@@ -268,5 +270,4 @@ describe('UserMenuGroup', () => {
 
         verify(tree, ['Documentation', '', 'Sign In'], null, ['Release Notes']);
     });
-
 });

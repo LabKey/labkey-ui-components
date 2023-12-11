@@ -17,11 +17,9 @@ describe('AppModel', () => {
     });
 
     test('shouldReload', () => {
-        let model = new AppModel({ reloadRequired: false, initialUserId: 1, user: TEST_USER_READER });
+        let model = new AppModel({ initialUserId: 1, user: TEST_USER_READER });
         expect(model.shouldReload()).toBeTruthy();
-        model = new AppModel({ reloadRequired: false, initialUserId: TEST_USER_READER.id, user: TEST_USER_READER });
+        model = new AppModel({ initialUserId: TEST_USER_READER.id, user: TEST_USER_READER });
         expect(model.shouldReload()).toBeFalsy();
-        model = new AppModel({ reloadRequired: true, initialUserId: TEST_USER_READER.id, user: TEST_USER_READER });
-        expect(model.shouldReload()).toBeTruthy();
     });
 });

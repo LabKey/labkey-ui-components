@@ -405,9 +405,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             });
         }
 
-        this.setState({ reservedFieldsMsg: undefined, fieldDetails: updatedDomain.getFieldDetails() }, () => {
-            this.props.onChange?.(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChanges);
-        });
+        this.setState({ reservedFieldsMsg: undefined, fieldDetails: updatedDomain.getFieldDetails() });
+
+        this.props.onChange?.(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChanges);
     }
 
     clearFilePreviewData = (): void => {

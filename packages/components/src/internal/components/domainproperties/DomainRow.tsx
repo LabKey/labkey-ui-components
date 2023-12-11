@@ -358,7 +358,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                 <Col xs={6}>
                     <FormControl
                         type="text"
-                        defaultValue={field.name || ''} // Issue 49199: use defaultValue instead of value to prevent cursor jumping to end of input on change
+                        value={field.name || ''}
                         name={createFormInputName(DOMAIN_FIELD_NAME)}
                         id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
                         onChange={this.onNameChange}

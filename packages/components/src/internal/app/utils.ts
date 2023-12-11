@@ -51,7 +51,6 @@ import {
     USER_KEY,
     WORKFLOW_KEY,
     EXPERIMENTAL_APP_R_SUPPORT,
-    EXPERIMENTAL_HIDE_IN_APP_RELEASE_NOTES_BANNER,
 } from './constants';
 
 declare var LABKEY: LabKey;
@@ -406,10 +405,6 @@ export function isFeatureEnabled(flag: ProductFeature, moduleContext?: ModuleCon
 
 export function isSampleAliquotSelectorEnabled(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR] === true;
-}
-
-export function isInAppReleaseNoteDisabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_HIDE_IN_APP_RELEASE_NOTES_BANNER] === true;
 }
 
 export function hasModule(moduleName: string, moduleContext?: ModuleContext): boolean {

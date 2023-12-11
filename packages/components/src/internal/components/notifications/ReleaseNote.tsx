@@ -5,7 +5,10 @@ import { getServerContext } from '@labkey/api';
 import { withRouter, WithRouterProps } from 'react-router';
 
 import { HelpLink } from '../../util/helpLinks';
-import { getPrimaryAppProperties, isInAppReleaseNoteDisabled } from '../../app/utils';
+import {
+    biologicsIsPrimaryApp,
+    getPrimaryAppProperties,
+} from '../../app/utils';
 
 const DISMISSED_STORAGE_PREFIX = '__release_notes_dismissed__';
 
@@ -17,7 +20,7 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
     const releaseNoteDismissKey = DISMISSED_STORAGE_PREFIX + name + versionString;
 
     const [releaseNoteDismissed, setReleaseNoteDismissed] = useState<boolean>(
-        location.query.showReleaseNote?.toLowerCase() !== 'true' &&
+        location?.query.showReleaseNote?.toLowerCase() !== 'true' &&
             localStorage.getItem(releaseNoteDismissKey)?.toLowerCase() === 'true'
     );
 
@@ -29,7 +32,7 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
         setReleaseNoteDismissed(true);
     }, []);
 
-    if (releaseNoteDismissed || !releaseNoteLink || isInAppReleaseNoteDisabled()) return null;
+    if (releaseNoteDismissed || !releaseNoteLink) return null;
 
     return (
         <>
@@ -37,7 +40,7 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
                 <div className="input-group-align release-note-new">NEW</div>
                 <div className="notification-item input-group-align">
                     {name} {versionString} is here.&nbsp;
-                    <HelpLink topic={releaseNoteLink}>See what's new.</HelpLink>
+                    <HelpLink topic={releaseNoteLink} useDefaultUrl={biologicsIsPrimaryApp()/*needed for FM in Biologics*/}>See what's new.</HelpLink>
                     <i style={{ float: 'right' }} className="fa fa-times-circle pointer" onClick={onDismiss} />
                 </div>
             </div>

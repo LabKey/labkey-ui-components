@@ -23,7 +23,7 @@ import { User } from '../base/models/User';
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 
 import { useServerContext } from '../base/ServerContext';
-import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { biologicsIsPrimaryApp, getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 import { AppProperties } from '../../app/models';
 
 import { AppContext, useAppContext } from '../../AppContext';
@@ -51,7 +51,7 @@ interface ImplProps {
 export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
     const releaseNoteLink = getPrimaryAppProperties()?.releaseNoteLink;
-    const releaseNoteHref = releaseNoteLink ? getHelpLink(getPrimaryAppProperties()?.releaseNoteLink) : undefined;
+    const releaseNoteHref = releaseNoteLink ? getHelpLink(getPrimaryAppProperties()?.releaseNoteLink, null, biologicsIsPrimaryApp()/*needed for FM in Biologics*/) : undefined;
 
     const { helpHref, userMenuItems, adminMenuItems } = useMemo(() => {
         let helpHref;

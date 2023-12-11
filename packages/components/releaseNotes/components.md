@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD December 2023
+- Issue 49237: From app settings page, set defaultDateFormat whenever defaultDateTimeFormat is changed
+
 ### version 2.396.2
 *Released*: 11 December 2023
 - Secure Issue 49250: BarTender: CSP parsing of the Service URL fails for relative and partial URIs

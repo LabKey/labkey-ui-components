@@ -7,7 +7,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { HelpLink } from '../../util/helpLinks';
 import { biologicsIsPrimaryApp, getPrimaryAppProperties } from '../../app/utils';
 
-const DISMISSED_STORAGE_PREFIX = '__release_notes_dismissed__';
+export const DISMISSED_STORAGE_PREFIX = '__release_notes_dismissed__';
 
 export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
     const { location } = props;

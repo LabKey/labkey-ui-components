@@ -9,15 +9,12 @@ import {
     TEST_USER_PROJECT_ADMIN,
 } from '../../userFixtures';
 
-import { createMockWithRouterProps } from '../../mockUtils';
-
 import { useAdministrationSubNav } from './useAdministrationSubNav';
 
 describe('AdministrationSubNavImpl', () => {
     test('requires admin', () => {
         const wrapper = shallow(
             <AdministrationSubNavImpl
-                {...createMockWithRouterProps(jest.fn, {})}
                 inProjectContainer={false}
                 projectsEnabled={false}
                 user={TEST_USER_GUEST}
@@ -36,7 +33,6 @@ describe('AdministrationSubNavImpl', () => {
     test('folder admin, but not app home admin', () => {
         const wrapper = shallow(
             <AdministrationSubNavImpl
-                {...createMockWithRouterProps(jest.fn, {})}
                 inProjectContainer={false}
                 projectsEnabled={false}
                 user={TEST_USER_APP_ADMIN}
@@ -50,7 +46,6 @@ describe('AdministrationSubNavImpl', () => {
     test('displays "projects"', () => {
         const wrapper = shallow(
             <AdministrationSubNavImpl
-                {...createMockWithRouterProps(jest.fn, {})}
                 inProjectContainer={false}
                 projectsEnabled={false}
                 user={TEST_USER_PROJECT_ADMIN}
@@ -77,7 +72,6 @@ describe('AdministrationSubNavImpl', () => {
     test('display of Users or Groups', () => {
         const wrapper = shallow(
             <AdministrationSubNavImpl
-                {...createMockWithRouterProps(jest.fn, {})}
                 inProjectContainer={false}
                 projectsEnabled={false}
                 user={TEST_USER_PROJECT_ADMIN}

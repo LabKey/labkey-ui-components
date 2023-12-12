@@ -9,8 +9,6 @@ import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
 import { FolderAPIWrapper, getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
-import { createMockWithRouterProps } from '../../mockUtils';
-
 import { AppURL } from '../../url/AppURL';
 
 import { TEST_LIMS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
@@ -137,11 +135,10 @@ describe('CreateProjectPage', () => {
         );
 
         const replace = jest.fn();
-        const wrapper = mountWithAppServerContext(
-            <CreateProjectPage {...createMockWithRouterProps(jest.fn, { replace })} />,
-            getDefaultAppContext(),
-            { moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT, user: TEST_USER_APP_ADMIN }
-        );
+        const wrapper = mountWithAppServerContext(<CreateProjectPage />, getDefaultAppContext(), {
+            moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT,
+            user: TEST_USER_APP_ADMIN,
+        });
 
         const container = wrapper.find(CreateProjectContainer);
         expect(container.exists()).toBe(true);

@@ -2,8 +2,6 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { ReactWrapper } from 'enzyme';
 import { PermissionRoles } from '@labkey/api';
-import { WithRouterProps } from 'react-router';
-import { createMockWithRouterProps } from '../../mockUtils';
 
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { NotificationsContextProps } from '../notifications/NotificationsContext';
@@ -24,7 +22,7 @@ import { AdminAppContext } from '../../AppContext';
 import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 
 describe('UserManagement', () => {
-    function getDefaultProps(): InjectedPermissionsPage & NotificationsContextProps & WithRouterProps {
+    function getDefaultProps(): InjectedPermissionsPage & NotificationsContextProps {
         return {
             createNotification: jest.fn(),
             dismissNotifications: jest.fn(),
@@ -34,7 +32,6 @@ describe('UserManagement', () => {
             principalsById: Map(),
             roles: List(),
             rolesByUniqueName: Map(),
-            ...createMockWithRouterProps(jest.fn),
         };
     }
 

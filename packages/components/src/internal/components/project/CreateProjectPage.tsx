@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { ActionURL } from '@labkey/api';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { FormButtons } from '../../FormButtons';
 
@@ -130,7 +130,6 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
 });
 
 export const CreateProjectPage = memo(() => {
-    const [_, setParams] = useSearchParams();
     const navigate = useNavigate();
     const { api } = useAppContext<AppContext>();
     const { createNotification } = useNotificationsContext();
@@ -172,7 +171,7 @@ export const CreateProjectPage = memo(() => {
             // Reload the folder menu to ensure the new project appears in the navigation for this session
             reload();
         },
-        [createNotification, dispatch, hasProjects, moduleContext, reload, setParams]
+        [createNotification, dispatch, hasProjects, moduleContext, navigate, reload]
     );
 
     return (

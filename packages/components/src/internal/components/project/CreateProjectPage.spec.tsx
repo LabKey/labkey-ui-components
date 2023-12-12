@@ -38,16 +38,6 @@ describe('CreateProjectPage', () => {
         };
     }
 
-    const { location } = window;
-
-    beforeAll(() => {
-        delete window.location;
-    });
-
-    afterAll(() => {
-        window.location = location;
-    });
-
     test('submits data', async () => {
         // Arrange
         const project = TEST_FOLDER_CONTAINER;
@@ -127,19 +117,13 @@ describe('CreateProjectPage', () => {
     });
 
     test('page displays notifications and reroutes', async () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Biologics/samplemanager-app.view#',
-            }
-        );
-
-        const replace = jest.fn();
+        const rrd = require('react-router-dom') as any;
+        const mockNavigate = jest.fn();
+        rrd.__setNavigate(mockNavigate);
         const wrapper = mountWithAppServerContext(<CreateProjectPage />, getDefaultAppContext(), {
             moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT,
             user: TEST_USER_APP_ADMIN,
         });
-
         const container = wrapper.find(CreateProjectContainer);
         expect(container.exists()).toBe(true);
         const onCreated = container.prop('onCreated');
@@ -151,8 +135,9 @@ describe('CreateProjectPage', () => {
         });
 
         await waitForLifecycle(wrapper);
-        expect(replace).toHaveBeenCalledWith(
-            AppURL.create('admin', 'projects').addParam('created', TEST_FOLDER_CONTAINER.name).toString()
+        expect(mockNavigate).toHaveBeenCalledWith(
+            AppURL.create('admin', 'projects').addParam('created', TEST_FOLDER_CONTAINER.name).toString(),
+            { replace: true }
         );
 
         wrapper.unmount();

@@ -384,10 +384,10 @@ describe('getHeaderMenuSubtitle', () => {
     });
 
     test('mapping', () => {
-        expect(getHeaderMenuSubtitle('account')).toBe('Settings');
-        expect(getHeaderMenuSubtitle('assayDesign')).toBe('Assays');
-        expect(getHeaderMenuSubtitle('assaydesign')).toBe('Assays');
-        expect(getHeaderMenuSubtitle('sampleType')).toBe('Sample Types');
-        expect(getHeaderMenuSubtitle('sampleType')).toBe('Sample Types');
+        expect(getHeaderMenuSubtitle('/account')).toBe('Settings');
+        expect(getHeaderMenuSubtitle('/assayDesign')).toBe('Assays');
+        expect(getHeaderMenuSubtitle('/assaydesign')).toBe('Assays');
+        expect(getHeaderMenuSubtitle('/sampleType')).toBe('Sample Types');
+        expect(getHeaderMenuSubtitle('/sampleType')).toBe('Sample Types');
     });
 });

@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { capitalizeFirstChar } from './utils';
+import { Utils } from '@labkey/api';
 
 // TODO rename as actionErrorMessage
 export function getActionErrorMessage(problemStatement: string, noun: string, showRefresh = true): React.ReactNode {
@@ -164,4 +165,26 @@ export function getConfirmDeleteMessage(verbNoun = 'Deletion'): ReactNode {
             &nbsp;Do you want to proceed?
         </p>
     );
+}
+
+export function getPermissionRestrictionMessage(
+    totalCount: number,
+    noPermissionCount: number,
+    nounSingular: string,
+    nounPlural: string,
+    verb: string,
+    verbSuffix?: string
+): string {
+    if (!noPermissionCount) {
+        return '';
+    }
+
+    const noun = totalCount === 1 ? nounSingular : nounPlural;
+
+    if (noPermissionCount === totalCount) {
+        return `You don't have the required permission to ${verb} the selected ${noun}${verbSuffix ?? ''}.`;
+    }
+
+    const notPermittedNoun = Utils.pluralize(noPermissionCount, nounSingular, nounPlural);
+    return `Selection includes ${notPermittedNoun} that you do not have permission to ${verb}${verbSuffix ?? ''}. Only the ${nounPlural} that you have permission for will be updated.`;
 }

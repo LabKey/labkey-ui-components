@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Regression from change to this.setState and this.props.onChange call sequence from https://github.com/LabKey/labkey-ui-components/pull/1273
   - Also include minor fix for row/col display issue on permission assignments app page (issue 48895)
 
+### version 2.396.2
+*Released*: 11 December 2023
+- Secure Issue 49250: BarTender: CSP parsing of the Service URL fails for relative and partial URIs
+
 ### version 2.396.1
 *Released*: 7 December 2023
 - Issue 49005: Field editor assigning a lookup to exp.Materials then switching to Samples type should retain schema/query for lookup

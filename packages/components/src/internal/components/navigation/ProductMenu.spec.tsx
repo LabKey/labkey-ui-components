@@ -206,12 +206,9 @@ describe('ProductMenuButton', () => {
     });
 
     test('ProductMenuButtonTitle without items', async () => {
+        const location = { pathname: '/admin' };
         const wrapper = mountWithAppServerContext(
-            <ProductMenuButtonTitle
-                container={TEST_FOLDER_CONTAINER}
-                folderItems={[]}
-                routes={[{ path: '#' }, { path: 'admin' }]}
-            />,
+            <ProductMenuButtonTitle container={TEST_FOLDER_CONTAINER} folderItems={[]} location={location as any} />,
             getDefaultAppContext(),
             getDefaultServerContext()
         );
@@ -222,11 +219,12 @@ describe('ProductMenuButton', () => {
     });
 
     test('ProductMenuButtonTitle with items', async () => {
+        const location = { pathname: '/items' };
         const wrapper = mountWithAppServerContext(
             <ProductMenuButtonTitle
                 container={TEST_FOLDER_CONTAINER}
                 folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
-                routes={[{ path: '#' }, { path: 'items' }]}
+                location={location as any}
             />,
             getDefaultAppContext(),
             getDefaultServerContext()
@@ -238,11 +236,12 @@ describe('ProductMenuButton', () => {
     });
 
     test('ProductMenuButtonTitle without routes', async () => {
+        const location = { pathname: '/' };
         const wrapper = mountWithAppServerContext(
             <ProductMenuButtonTitle
                 container={TEST_FOLDER_CONTAINER}
                 folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
-                routes={[]}
+                location={location as any}
             />,
             getDefaultAppContext(),
             getDefaultServerContext()
@@ -254,11 +253,12 @@ describe('ProductMenuButton', () => {
     });
 
     test('ProductMenuButtonTitle home', async () => {
+        const location = { pathname: '/' };
         const wrapper = mountWithAppServerContext(
             <ProductMenuButtonTitle
                 container={HOME_PROJECT}
                 folderItems={[{} as FolderMenuItem, {} as FolderMenuItem]}
-                routes={[]}
+                location={location as any}
             />,
             getDefaultAppContext(),
             getDefaultServerContext()

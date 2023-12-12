@@ -23,7 +23,6 @@ import { QueryModel } from './QueryModel';
 
 import { RowsResponse } from './QueryModelLoader';
 
-jest.mock('react-router-dom');
 const rrd = require('react-router-dom') as any;
 
 /**

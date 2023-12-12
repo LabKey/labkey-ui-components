@@ -20,8 +20,6 @@ import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 import { MemberType } from './models';
 import { GroupAssignments } from './GroupAssignments';
 
-jest.mock('react-router-dom');
-
 describe('<GroupAssignments/>', () => {
     const GROUP_MEMBERSHIP = {
         '1035': {

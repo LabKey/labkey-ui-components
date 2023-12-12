@@ -60,9 +60,7 @@ export interface PermissionAssignmentsProps extends InjectedPermissionsPage, Inj
     typeToShow?: string;
 }
 
-const INVALID_PROJECT_ROLES = [
-    'org.labkey.api.inventory.security.StorageDesignerRole'
-];
+const INVALID_PROJECT_ROLES = ['org.labkey.api.inventory.security.StorageDesignerRole'];
 
 export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props => {
     const {
@@ -542,7 +540,11 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             </div>
 
             <FormButtons>
-                {router && <button className="btn btn-default" onClick={onCancel} type="button">Cancel</button>}
+                {router && (
+                    <button className="btn btn-default" onClick={onCancel} type="button">
+                        Cancel
+                    </button>
+                )}
 
                 <button
                     className="pull-right alert-button permissions-assignment-save-btn btn btn-success"

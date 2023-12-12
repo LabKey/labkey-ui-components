@@ -35,6 +35,16 @@ describe('UserManagement', () => {
         };
     }
 
+    function getDefaultServerContext(): any {
+        return {
+            user: TEST_USER_APP_ADMIN,
+            container: {
+                path: '',
+                parentPath: '',
+            },
+        };
+    }
+
     function validate(wrapper: ReactWrapper, hasNewUserRoles = false, allowResetPassword = true): void {
         expect(wrapper.find(BasePermissionsCheckPage)).toHaveLength(1);
         expect(wrapper.find(ActiveUserLimitMessage)).toHaveLength(1);
@@ -47,15 +57,9 @@ describe('UserManagement', () => {
 
     test('default props', () => {
         const wrapper = mountWithAppServerContext(
-            <UserManagementPageImpl
-                {...getDefaultProps()}
-                createNotification={jest.fn()}
-                dismissNotifications={jest.fn()}
-            />,
+            <UserManagementPageImpl {...getDefaultProps()} />,
             { admin: {} as AdminAppContext },
-            {
-                user: TEST_USER_APP_ADMIN,
-            }
+            getDefaultServerContext()
         );
         validate(wrapper);
         wrapper.unmount();
@@ -63,15 +67,9 @@ describe('UserManagement', () => {
 
     test('non-inherit security policy', () => {
         const wrapper = mountWithAppServerContext(
-            <UserManagementPageImpl
-                {...getDefaultProps()}
-                createNotification={jest.fn()}
-                dismissNotifications={jest.fn()}
-            />,
+            <UserManagementPageImpl {...getDefaultProps()} />,
             { admin: {} as AdminAppContext },
-            {
-                user: TEST_USER_APP_ADMIN,
-            }
+            getDefaultServerContext()
         );
         wrapper.find('UserManagement').setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '1' }) });
         validate(wrapper, true);
@@ -80,15 +78,9 @@ describe('UserManagement', () => {
 
     test('inherit security policy', () => {
         const wrapper = mountWithAppServerContext(
-            <UserManagementPageImpl
-                {...getDefaultProps()}
-                createNotification={jest.fn()}
-                dismissNotifications={jest.fn()}
-            />,
+            <UserManagementPageImpl {...getDefaultProps()} />,
             { admin: {} as AdminAppContext },
-            {
-                user: TEST_USER_APP_ADMIN,
-            }
+            getDefaultServerContext()
         );
         wrapper.find('UserManagement').setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '2' }) });
         validate(wrapper);
@@ -97,14 +89,10 @@ describe('UserManagement', () => {
 
     test('allowResetPassword false', () => {
         const wrapper = mountWithAppServerContext(
-            <UserManagementPageImpl
-                {...getDefaultProps()}
-                createNotification={jest.fn()}
-                dismissNotifications={jest.fn()}
-            />,
+            <UserManagementPageImpl {...getDefaultProps()} />,
             { admin: {} as AdminAppContext },
             {
-                user: TEST_USER_APP_ADMIN,
+                ...getDefaultServerContext(),
                 moduleContext: { api: { AutoRedirectSSOAuthConfiguration: true } },
             }
         );

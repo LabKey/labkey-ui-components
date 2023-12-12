@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 49086: Add onChange callback for AssayTaskInput to fix some initialization timing issues
+
 ### version 2.396.2
 *Released*: 11 December 2023
 - Secure Issue 49250: BarTender: CSP parsing of the Service URL fails for relative and partial URIs

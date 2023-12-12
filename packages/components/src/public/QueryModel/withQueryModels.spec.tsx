@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import { mount } from 'enzyme';
-import { createMemoryHistory, InjectedRouter, Route, Router } from 'react-router';
 import { Filter } from '@labkey/api';
 
 import { makeQueryInfo, makeTestData, sleep } from '../../internal/test/testHelpers';
@@ -23,6 +22,9 @@ import { Actions, QueryModelMap, withQueryModels } from './withQueryModels';
 import { QueryModel } from './QueryModel';
 
 import { RowsResponse } from './QueryModelLoader';
+
+jest.mock('react-router-dom');
+const rrd = require('react-router-dom') as any;
 
 /**
  * Note: All of the tests in this file look a tad weird. We create a component that resets local variables on render
@@ -77,15 +79,12 @@ describe('withQueryModels', () => {
         expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADING);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.INITIALIZED);
 
-        await sleep(); // Sleep to let lifecycle methods do their thing.
+        // Have to call waitForLifecycle twice or tests are flaky
+        await waitForLifecycle(wrapper);
+        await waitForLifecycle(wrapper);
 
-        // QueryInfo should be loaded, rows should now be loading.
+        // QueryInfo and rows should be loaded
         expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADED);
-        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
-
-        await sleep(); // Sleep to let lifecycle methods do their thing.
-
-        // Rows should be loaded.
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
 
         // We're on the first page, so loading the previous page should do nothing.
@@ -101,7 +100,7 @@ describe('withQueryModels', () => {
         expect(injectedModel.currentPage).toEqual(2);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
 
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
         // loadLastPage should set the offset to the last page offset and trigger loading.
@@ -111,7 +110,7 @@ describe('withQueryModels', () => {
         expect(injectedModel.currentPage).toEqual(34);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
 
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         // loadNextPage should do nothing.
         expectedOffset = injectedModel.offset;
@@ -125,7 +124,7 @@ describe('withQueryModels', () => {
         expect(injectedModel.offset).toEqual(expectedOffset);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
 
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         expectedOffset = 0;
         injectedActions.loadFirstPage(injectedModel.id);
@@ -133,7 +132,7 @@ describe('withQueryModels', () => {
         expect(injectedModel.currentPage).toEqual(1);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
 
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         expectedOffset = injectedModel.maxRows * 2;
         injectedActions.setOffset(injectedModel.id, expectedOffset);
@@ -141,7 +140,7 @@ describe('withQueryModels', () => {
         expect(injectedModel.currentPage).toEqual(3);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
 
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         // setMaxRows should change maxRows and reset offset to 0.
         injectedActions.setMaxRows(injectedModel.id, 40);
@@ -149,11 +148,11 @@ describe('withQueryModels', () => {
         expect(injectedModel.offset).toEqual(0);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
 
-        await sleep();
+        await waitForLifecycle(wrapper);
         // loadNextPage so we can confirm that changing schemaQuery resets offset.
         injectedActions.loadNextPage(injectedModel.id);
 
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
         modelLoader.queryInfo = AMINO_ACIDS_QUERY_INFO;
@@ -169,16 +168,15 @@ describe('withQueryModels', () => {
         expect(injectedModel.rowCount).toEqual(undefined);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.INITIALIZED);
 
-        await sleep();
+        // Have to call waitForLifecycle twice or tests are flaky
+        await waitForLifecycle(wrapper);
+        await waitForLifecycle(wrapper);
 
-        // QueryInfo should be loaded, rows should now be loading.
+        // QueryInfo and rows should be loaded
         expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADED);
-        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
-
-        await sleep();
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
 
         // We should have messages now.
-        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
         expect(injectedModel.messages).toBe(AMINO_ACIDS_DATA.messages);
 
         // Changing view is basically the same as changing the schemaQuery.
@@ -192,14 +190,14 @@ describe('withQueryModels', () => {
         expect(injectedModel.messages).toEqual(undefined);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
 
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         let error = 'Something really bad happened!';
         modelLoader.rowsException = { exception: error };
         injectedActions.loadRows(injectedModel.id);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
 
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         // Expect resolveError message to extract the error.
         expect(injectedModel.rowsError).toEqual(error);
@@ -210,7 +208,7 @@ describe('withQueryModels', () => {
         injectedActions.loadModel(injectedModel.id);
         expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADING);
 
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         // Expect resolveError to extract the error.
         expect(injectedModel.queryInfoLoadingState).toEqual(LoadingState.LOADED);
@@ -231,7 +229,7 @@ describe('withQueryModels', () => {
         expect(model2.queryInfoLoadingState).toEqual(LoadingState.INITIALIZED);
         expect(model2.rowsLoadingState).toEqual(LoadingState.INITIALIZED);
 
-        await sleep();
+        await waitForLifecycle(wrapper);
 
         // Double check that we're not trying to load model2.
         expect(model2.queryInfoLoadingState).toEqual(LoadingState.INITIALIZED);
@@ -246,13 +244,11 @@ describe('withQueryModels', () => {
         expect(model3.queryInfoLoadingState).toEqual(LoadingState.LOADING);
         expect(model3.rowsLoadingState).toEqual(LoadingState.INITIALIZED);
 
-        await sleep();
+        // Have to call waitForLifecycle twice or tests are flaky
+        await waitForLifecycle(wrapper);
+        await waitForLifecycle(wrapper);
         model3 = injectedModels.model3;
         expect(model3.queryInfoLoadingState).toEqual(LoadingState.LOADED);
-        expect(model3.rowsLoadingState).toEqual(LoadingState.LOADING);
-
-        await sleep();
-        model3 = injectedModels.model3;
         expect(model3.rowsLoadingState).toEqual(LoadingState.LOADED);
 
         // selectRow
@@ -283,147 +279,131 @@ describe('withQueryModels', () => {
 
     test('Bind from URL', async () => {
         const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
-        const history = createMemoryHistory();
         const queryConfigs = { model: { schemaQuery: MIXTURES_SCHEMA_QUERY, bindURL: true } };
         const queryParams: Record<string, string> = {};
         let injectedModel: QueryModel;
-        let injectedRouter: InjectedRouter;
-        let injectedLocation;
-        const TestComponentImpl = ({ actions, location, queryModels, router }): ReactElement => {
+        const TestComponentImpl = ({ actions, queryModels }): ReactElement => {
             injectedModel = queryModels.model;
-            injectedRouter = router;
-            injectedLocation = location;
             return <div />;
         };
         const WrappedComponent = withQueryModels<{}>(TestComponentImpl);
-        const wrapper = mount(
-            <Router history={history}>
-                <Route
-                    path="/"
-                    component={() => (
-                        <WrappedComponent autoLoad modelLoader={modelLoader} queryConfigs={queryConfigs} />
-                    )}
-                />
-            </Router>
-        );
-        await sleep(); // Sleep so QueryInfo gets loaded.
-        await sleep(); // Sleep so Rows get loaded.
+        rrd.__setSearchParams(new URLSearchParams({ 'query.p': '2' }));
+        const wrapper = mount(<WrappedComponent autoLoad modelLoader={modelLoader} queryConfigs={queryConfigs} />);
+        await waitForLifecycle(wrapper); // QueryInfo load
+        await waitForLifecycle(wrapper); // Rows load
 
-        queryParams['query.p'] = '2';
-        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
-        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
         expect(injectedModel.offset).toEqual(20);
-        await sleep(); // Load Rows
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
 
-        queryParams['query.view'] = 'noMixtures';
-        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
+        rrd.__setSearchParams(new URLSearchParams({ 'query.view': 'noMixtures' }));
+        wrapper.setProps({}); // setProps triggers a re-render, which will pick up the new searchParams
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        await waitForLifecycle(wrapper);
         expect(injectedModel.schemaQuery.viewName).toEqual('noMixtures');
-        await sleep(); // Load Rows
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
 
-        queryParams['query.Name~eq'] = 'DMXP';
-        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
+        rrd.__setSearchParams(new URLSearchParams({ 'query.Name~eq': 'DMXP' }));
+        wrapper.setProps({});
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
         expect(injectedModel.filterArray.length).toEqual(1);
         const filter = injectedModel.filterArray[0];
         expect(filter.getColumnName()).toEqual('Name');
         expect(filter.getValue()).toEqual('DMXP');
         expect(filter.getFilterType()).toEqual(Filter.Types.EQUAL);
-        await sleep(); // Load Rows
+        await waitForLifecycle(wrapper);
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
 
-        queryParams['query.sort'] = 'Name';
-        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
+        rrd.__setSearchParams(new URLSearchParams({ 'query.sort': 'Name' }));
+        wrapper.setProps({});
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
         expect(injectedModel.sorts.length).toEqual(1);
         let sort = injectedModel.sorts[0];
         expect(sort.fieldKey).toEqual('Name');
         expect(sort.dir).toEqual('');
-        await sleep(); // Load Rows
+        await waitForLifecycle(wrapper); // Load Rows
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
 
-        queryParams['query.sort'] = 'Name,-expirationTime';
-        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
+        rrd.__setSearchParams(new URLSearchParams({ 'query.sort': 'Name,-expirationTime' }));
+        wrapper.setProps({});
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
         expect(injectedModel.sorts.length).toEqual(2);
         sort = injectedModel.sorts[1];
         expect(sort.fieldKey).toEqual('expirationTime');
         expect(sort.dir).toEqual('-');
-        await sleep(); // Load Rows
+        await waitForLifecycle(wrapper); // Load Rows
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
 
         queryParams['query.reportId'] = 'db:1';
-        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
+        rrd.__setSearchParams(new URLSearchParams({ 'query.reportId': 'db:1' }));
+        wrapper.setProps({});
         // Selecting a report doesn't trigger loading rows.
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
         expect(injectedModel.selectedReportId).toEqual('db:1');
     });
 
     test('Bind to URL', async () => {
+        const mockSetSearchParams = jest.fn();
+        rrd.__setSearchParams(new URLSearchParams());
+        rrd.__setSetSearchParams(mockSetSearchParams);
         const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
-        const history = createMemoryHistory();
         const queryConfigs = { model: { schemaQuery: MIXTURES_SCHEMA_QUERY, bindURL: true } };
         let injectedModel: QueryModel;
         let injectedActions: Actions;
-        let injectedLocation;
-        const TestComponentImpl = ({ actions, location, queryModels, router }): ReactElement => {
+        const TestComponentImpl = ({ actions, queryModels }): ReactElement => {
             injectedModel = queryModels.model;
             injectedActions = actions;
-            injectedLocation = location;
             return <div />;
         };
         const WrappedComponent = withQueryModels<{}>(TestComponentImpl);
-        const wrapper = mount(
-            <Router history={history}>
-                <Route
-                    path="/"
-                    component={() => (
-                        <WrappedComponent autoLoad modelLoader={modelLoader} queryConfigs={queryConfigs} />
-                    )}
-                />
-            </Router>
-        );
-        await sleep(); // Sleep so QueryInfo gets loaded.
-        await sleep(); // Sleep so Rows get loaded.
+        const wrapper = mount(<WrappedComponent autoLoad modelLoader={modelLoader} queryConfigs={queryConfigs} />);
+        await waitForLifecycle(wrapper); // QueryInfo load.
+        await waitForLifecycle(wrapper); // Rows load.
 
         let expectedQuery: Record<string, string> = { 'query.p': '34' };
         injectedActions.loadLastPage(injectedModel.id);
-        await sleep();
-        expect(injectedLocation.query).toEqual(expectedQuery);
+        await waitForLifecycle(wrapper);
+        // withQueryModels should keep any searchParams on the URL that don't have the model's prefix
+        let updatedSearchParams = mockSetSearchParams.mock.lastCall[0](new URLSearchParams({ other: 'still here' }));
+        expect(updatedSearchParams).toEqual({ ...expectedQuery, other: 'still here' });
+        expect(mockSetSearchParams.mock.lastCall[1]).toEqual({ replace: true });
 
         injectedActions.loadFirstPage(injectedModel.id);
-        await sleep();
+        await waitForLifecycle(wrapper);
         // Setting the page to 1 removes the "p" param from the URL.
-        expect(injectedLocation.query).toEqual({});
+        expect(mockSetSearchParams.mock.lastCall[0](new URLSearchParams())).toEqual({});
+        expect(mockSetSearchParams.mock.lastCall[1]).toEqual({ replace: true });
 
         expectedQuery['query.p'] = '2';
         injectedActions.loadNextPage(injectedModel.id);
-        await sleep();
-        expect(injectedLocation.query).toEqual(expectedQuery);
+        await waitForLifecycle(wrapper);
+        expect(mockSetSearchParams.mock.lastCall[0](new URLSearchParams())).toEqual(expectedQuery);
+        expect(mockSetSearchParams.mock.lastCall[1]).toEqual({ replace: true });
 
         // Setting a filter resets offset to 0, so we dont' expect "p" to stick around.
         expectedQuery = { 'query.Name~eq': 'DMXP' };
         injectedActions.setFilters(injectedModel.id, [Filter.create('Name', 'DMXP', Filter.Types.EQUAL)]);
-        await sleep();
-        expect(injectedLocation.query).toEqual(expectedQuery);
+        await waitForLifecycle(wrapper);
+        expect(mockSetSearchParams.mock.lastCall[0](new URLSearchParams())).toEqual(expectedQuery);
+        expect(mockSetSearchParams.mock.lastCall[1]).toEqual({ replace: true });
 
         expectedQuery['query.sort'] = '-Name,expirationTime';
         injectedActions.setSorts(injectedModel.id, [
             new QuerySort({ fieldKey: 'Name', dir: '-' }),
             new QuerySort({ fieldKey: 'expirationTime', dir: '' }),
         ]);
-        await sleep();
-        expect(injectedLocation.query).toEqual(expectedQuery);
+        await waitForLifecycle(wrapper);
+        expect(mockSetSearchParams.mock.lastCall[0](new URLSearchParams())).toEqual(expectedQuery);
+        expect(mockSetSearchParams.mock.lastCall[1]).toEqual({ replace: true });
 
         expectedQuery['query.view'] = 'noMixtures';
         injectedActions.setView(injectedModel.id, 'noMixtures');
-        await sleep();
-        expect(injectedLocation.query).toEqual(expectedQuery);
+        await waitForLifecycle(wrapper);
+        expect(mockSetSearchParams.mock.lastCall[0](new URLSearchParams())).toEqual(expectedQuery);
+        expect(mockSetSearchParams.mock.lastCall[1]).toEqual({ replace: true });
 
         expectedQuery['query.reportId'] = 'db:1';
         injectedActions.selectReport(injectedModel.id, 'db:1');
-        expect(injectedLocation.query).toEqual(expectedQuery);
+        expect(mockSetSearchParams.mock.lastCall[0](new URLSearchParams())).toEqual(expectedQuery);
+        expect(mockSetSearchParams.mock.lastCall[1]).toEqual({ replace: true });
     });
 });

@@ -17,9 +17,11 @@ export const __setLocation = (mockLocation: Location): void => {
 export const useLocation = () => location_;
 
 let searchParams = new URLSearchParams();
+let setSearchParams = jest.fn();
 export const __setSearchParams = (mockSearchParams: URLSearchParams) => searchParams = mockSearchParams;
+export const __setSetSearchParams = (mockSetSearchParams) => setSearchParams = mockSetSearchParams;
 export const useSearchParams = () => {
-    return [searchParams, jest.fn()];
+    return [searchParams, setSearchParams];
 };
 
 export const unstable_usePrompt = () => {};

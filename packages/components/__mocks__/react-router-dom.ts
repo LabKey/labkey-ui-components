@@ -1,5 +1,7 @@
-const rrd = jest.createMockFromModule('react-router-dom');
+const rrd = jest.createMockFromModule('react-router-dom') as any;
 export default rrd;
+
+export const Link = rrd.Link;
 
 let navigate = jest.fn();
 

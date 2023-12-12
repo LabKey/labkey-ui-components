@@ -2,6 +2,7 @@ const rrd = jest.createMockFromModule('react-router-dom') as any;
 export default rrd;
 
 export const Link = rrd.Link;
+export const unstable_usePrompt = () => {};
 
 let navigate = jest.fn();
 
@@ -26,4 +27,6 @@ export const useSearchParams = () => {
     return [searchParams, setSearchParams];
 };
 
-export const unstable_usePrompt = () => {};
+let params = {};
+export const __setParams = (mockParams: Record<string, string>) => params = mockParams;
+export const useParams = () => params;

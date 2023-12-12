@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import { QueriesListingPage } from './pages/QueriesListingPage';

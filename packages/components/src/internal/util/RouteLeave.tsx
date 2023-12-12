@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { unstable_usePrompt as usePrompt } from 'react-router-dom';
 
 export const CONFIRM_MESSAGE = 'You have unsaved changes that will be lost. Are you sure you want to continue?';

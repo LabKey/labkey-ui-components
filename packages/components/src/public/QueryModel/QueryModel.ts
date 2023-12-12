@@ -4,7 +4,7 @@ import { Filter, Query } from '@labkey/api';
 import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
 
 import { DataViewInfo } from '../../internal/DataViewInfo';
-import { getQueryParams, QueryParams } from '../../internal/util/URL';
+import { getQueryParams } from '../../internal/util/URL';
 
 import { encodePart, SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';

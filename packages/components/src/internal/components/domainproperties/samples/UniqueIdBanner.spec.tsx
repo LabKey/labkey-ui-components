@@ -9,7 +9,7 @@ import { Alert } from '../../base/Alert';
 
 import { INT_RANGE_URI, STORAGE_UNIQUE_ID_CONCEPT_URI, STRING_RANGE_URI } from '../constants';
 
-import { DomainDesign, DomainDetails, DomainField } from '../models';
+import { DomainDesign, DomainDetails } from '../models';
 
 import { ADD_NEW_UNIQUE_ID_MSG, NEW_TYPE_NO_BARCODE_FIELDS_MSG, UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypeModel } from './models';

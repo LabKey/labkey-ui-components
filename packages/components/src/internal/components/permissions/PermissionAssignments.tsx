@@ -9,7 +9,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { FormButtons } from '../../FormButtons';
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
-import { getQueryParams } from '../../util/URL';
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
 import {

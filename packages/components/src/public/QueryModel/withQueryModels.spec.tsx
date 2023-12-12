@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { mount } from 'enzyme';
 import { Filter } from '@labkey/api';
 
-import { makeQueryInfo, makeTestData, sleep } from '../../internal/test/testHelpers';
+import { makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
 import { MockQueryModelLoader } from '../../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';

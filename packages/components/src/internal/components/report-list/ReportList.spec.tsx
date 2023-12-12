@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
 import exampleData from '../../../test/data/example_browse_data_tree_api.json';

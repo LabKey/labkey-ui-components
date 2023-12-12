@@ -1,6 +1,5 @@
 import React from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
-import { ReactWrapper } from 'enzyme';
+import { DropdownButton } from 'react-bootstrap';
 import { PermissionTypes } from '@labkey/api';
 
 import { PicklistButton } from '../picklist/PicklistButton';

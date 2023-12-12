@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 
-import { InjectedRouteLeaveProps, useRouteLeave } from '../../util/RouteLeave';
+import { useRouteLeave } from '../../util/RouteLeave';
 import { useServerContext } from '../base/ServerContext';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 

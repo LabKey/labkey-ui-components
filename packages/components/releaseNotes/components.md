@@ -4,6 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.X
 *Released*: X December 2023
 - In-app messaging for product updates
+  - Add `ReleaseNote` component
+  - Updated Help icon to be a menu
 
 ### version 2.396.3
 *Released*: 12 December 2023

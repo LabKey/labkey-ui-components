@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.397.1
+*Released*: 13 December 2023
 - Issue 49086: Add onChange callback for AssayTaskInput to fix some initialization timing issues
 
 ### version 2.397.0

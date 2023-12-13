@@ -9,7 +9,7 @@ describe('SpecialtyAssayPanel', () => {
     const third = { name: 'Other Two', fileTypes: ['other'], description: 'Other Two Assay' };
 
     test('with AssayProvider values and selected prop', async () => {
-        await act(() => {
+        await act(async () => {
             render(
                 <SpecialtyAssayPanel values={[first, second, third]} selected={second} hasPremium onChange={jest.fn} />
             );
@@ -39,7 +39,7 @@ describe('SpecialtyAssayPanel', () => {
     });
 
     test('without hasPremium prop', async () => {
-        await act(() => {
+        await act(async () => {
             render(
                 <SpecialtyAssayPanel
                     values={[first, second, third]}
@@ -59,7 +59,7 @@ describe('SpecialtyAssayPanel', () => {
     });
 
     test('without options', async () => {
-        await act(() => {
+        await act(async () => {
             render(<SpecialtyAssayPanel values={[]} selected={second} onChange={jest.fn} hasPremium />);
         });
 

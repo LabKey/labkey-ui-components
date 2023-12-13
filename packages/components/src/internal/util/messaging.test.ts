@@ -1,4 +1,4 @@
-import { resolveErrorMessage } from './messaging';
+import { getPermissionRestrictionMessage, resolveErrorMessage } from './messaging';
 
 describe('resolveErrorMessage', () => {
     test('original is string', () => {
@@ -287,6 +287,49 @@ describe('resolveErrorMessage', () => {
         };
         expect(resolveErrorMessage(error)).toBe(
             'Unable to create a unique constraint for field cloningsite because duplicate values already exists in the data.'
+        );
+    });
+});
+
+describe('getPermissionRestrictionMessage', () => {
+    test('noPermissionCount undefined', () => {
+        const message = getPermissionRestrictionMessage(10, undefined, 'dog', 'dogs', 'walk');
+        expect(message).toBe('');
+    });
+    test('0 noPermissionCount', () => {
+        const message = getPermissionRestrictionMessage(10, 0, 'dog', 'dogs', 'walk');
+        expect(message).toBe('');
+    });
+    test('all without permission, no verb suffix', () => {
+        expect(getPermissionRestrictionMessage(10, 10, 'dog', 'dogs', 'walk')).toBe(
+            "You don't have the required permission to walk the selected dogs."
+        );
+        expect(getPermissionRestrictionMessage(1, 1, 'dog', 'dogs', 'walk')).toBe(
+            "You don't have the required permission to walk the selected dog."
+        );
+    });
+    test('all without permission, with verb suffix', () => {
+        expect(getPermissionRestrictionMessage(10, 10, 'dog', 'dogs', 'walk', ' around the block')).toBe(
+            "You don't have the required permission to walk the selected dogs around the block."
+        );
+        expect(getPermissionRestrictionMessage(1, 1, 'dog', 'dogs', 'walk', ' around the block')).toBe(
+            "You don't have the required permission to walk the selected dog around the block."
+        );
+    });
+    test('some without permission, no verb suffix', () => {
+        expect(getPermissionRestrictionMessage(10, 4, 'dog', 'dogs', 'walk')).toBe(
+            "Selection includes 4 dogs that you do not have permission to walk. Only the dogs that you have permission for will be updated."
+        );
+        expect(getPermissionRestrictionMessage(2, 1, 'dog', 'dogs', 'walk')).toBe(
+            "Selection includes 1 dog that you do not have permission to walk. Only the dogs that you have permission for will be updated."
+        );
+    });
+    test('some without permission, with verb suffix', () => {
+        expect(getPermissionRestrictionMessage(10, 4, 'dog', 'dogs', 'walk', ' around the block')).toBe(
+            "Selection includes 4 dogs that you do not have permission to walk around the block. Only the dogs that you have permission for will be updated."
+        );
+        expect(getPermissionRestrictionMessage(2, 1, 'dog', 'dogs', 'walk', ' around the block')).toBe(
+            "Selection includes 1 dog that you do not have permission to walk around the block. Only the dogs that you have permission for will be updated."
         );
     });
 });

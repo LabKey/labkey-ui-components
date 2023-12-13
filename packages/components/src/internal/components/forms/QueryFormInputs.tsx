@@ -282,6 +282,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 placeholder="Select or type to search..."
                                 queryColumn={col}
                                 renderFieldLabel={renderFieldLabel}
+                                description={col.description}
                                 value={value}
                             />
                         );

@@ -79,6 +79,7 @@ export const ProjectLookAndFeelForm: FC<Props> = memo(props => {
 
         try {
             const options: UpdateProjectSettingsOptions = {
+                defaultDateFormat: dateTimeFormat, // Issue 49237: when defaultDateTimeFormat is set from app, use the same format value for defaultDateFormat
                 defaultDateTimeFormat: dateTimeFormat,
             };
 

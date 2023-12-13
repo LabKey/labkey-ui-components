@@ -846,7 +846,7 @@ export function moveEntities(
         }
 
         return Ajax.request({
-            url: buildURL(entityDataType.moveControllerName, entityDataType.moveActionName, undefined, {
+            url: buildURL('query', 'moveRows.api', undefined, {
                 container: sourceContainer?.path,
             }),
             method: 'POST',

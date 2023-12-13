@@ -232,8 +232,6 @@ exports[`DataClassDesigner custom properties 1`] = `
           "schemaName": "exp",
           "viewName": undefined,
         },
-        "moveActionName": "moveRows.api",
-        "moveControllerName": "query",
         "nounAsParentPlural": "Data Types",
         "nounAsParentSingular": "Parent",
         "nounPlural": "sources",

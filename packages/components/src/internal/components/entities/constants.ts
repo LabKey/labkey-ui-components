@@ -37,8 +37,6 @@ export const AssayRunDataType: EntityDataType = {
     uniqueFieldKey: 'RowId',
     dependencyText: undefined,
     projectConfigurableDataType: 'AssayDesign',
-    moveControllerName: 'query',
-    moveActionName: 'moveRows',
 };
 
 export const AssayResultDataType: EntityDataType = {
@@ -114,8 +112,6 @@ export const SampleTypeDataType: EntityDataType = {
     appUrlPrefixParts: ['samples'],
     operationConfirmationControllerName: 'experiment',
     operationConfirmationActionName: SAMPLE_OPERATION_CONFIRMATION_ACTION,
-    moveActionName: 'moveRows.api',
-    moveControllerName: 'query',
     nounSingular: 'sample',
     nounPlural: 'samples',
     nounAsParentSingular: 'Parent',
@@ -145,8 +141,6 @@ export const DataClassDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
     listingSchemaQuery: SCHEMAS.EXP_TABLES.DATA,
     instanceSchemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
-    moveActionName: 'moveRows.api',
-    moveControllerName: 'query',
     operationConfirmationControllerName: 'experiment',
     operationConfirmationActionName: DATA_OPERATION_CONFIRMATION_ACTION,
     nounSingular: 'source',

@@ -819,6 +819,7 @@ export function moveEntities(
     sourceContainer: Container,
     targetContainer: string,
     entityDataType: EntityDataType,
+    queryName: string,
     rowIds?: number[],
     selectionKey?: string,
     useSnapshotSelection?: boolean,
@@ -827,11 +828,16 @@ export function moveEntities(
     return new Promise((resolve, reject) => {
         const params = {
             auditBehavior: AuditBehaviorTypes.DETAILED,
+            schemaName: entityDataType.instanceSchemaName,
+            queryName,
             targetContainer,
             userComment,
         };
         if (rowIds) {
-            params['rowIds'] = rowIds;
+            params['rows'] = rowIds.reduce((prev, curr) => {
+                prev.push({ rowId: curr });
+                return prev;
+            }, []);
         }
         if (selectionKey) {
             params['dataRegionSelectionKey'] = selectionKey;
@@ -843,7 +849,7 @@ export function moveEntities(
                 container: sourceContainer?.path,
             }),
             method: 'POST',
-            params,
+            jsonData: params,
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     resolve(response);

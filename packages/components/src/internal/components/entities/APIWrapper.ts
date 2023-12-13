@@ -94,6 +94,7 @@ export interface EntityAPIWrapper {
         sourceContainer: Container,
         targetContainer: string,
         entityDataType: EntityDataType,
+        queryName: string,
         rowIds?: number[],
         selectionKey?: string,
         useSnapshotSelection?: boolean,

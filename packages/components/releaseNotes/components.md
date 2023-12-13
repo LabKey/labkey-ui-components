@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Consolidate move entities to MoveRowsAction in query controller
+  - update API call controller and actions and update params to match new moveRows API format
+
 ### version 2.396.3
 *Released*: 12 December 2023
 - Issue 49199: Field Editor name input fix for jumping cursor to end of input

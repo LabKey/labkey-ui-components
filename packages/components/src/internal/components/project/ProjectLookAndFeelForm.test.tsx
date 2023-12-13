@@ -39,6 +39,7 @@ describe('ProjectLookAndFeelForm', () => {
 
         expect(api.updateProjectLookAndFeelSettings).toHaveBeenCalledWith(
             {
+                defaultDateFormat: 'yyyy-MM-dd HH:mmaa',
                 defaultDateTimeFormat: 'yyyy-MM-dd HH:mmaa',
             },
             TEST_PROJECT_CONTAINER.path
@@ -73,6 +74,7 @@ describe('ProjectLookAndFeelForm', () => {
 
         expect(api.updateProjectLookAndFeelSettings).toHaveBeenCalledWith(
             {
+                defaultDateFormat: 'yyyy-MM-dd HH:mmb',
                 defaultDateTimeFormat: 'yyyy-MM-dd HH:mmb',
             },
             TEST_PROJECT_CONTAINER.path

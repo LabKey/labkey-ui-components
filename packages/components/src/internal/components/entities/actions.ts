@@ -819,6 +819,7 @@ export function moveEntities(
     sourceContainer: Container,
     targetContainer: string,
     entityDataType: EntityDataType,
+    schemaName: string,
     queryName: string,
     rowIds?: number[],
     selectionKey?: string,
@@ -828,7 +829,7 @@ export function moveEntities(
     return new Promise((resolve, reject) => {
         const params = {
             auditBehavior: AuditBehaviorTypes.DETAILED,
-            schemaName: entityDataType.instanceSchemaName,
+            schemaName,
             queryName,
             targetContainer,
             userComment,

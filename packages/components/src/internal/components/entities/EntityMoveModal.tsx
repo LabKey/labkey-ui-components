@@ -121,6 +121,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     currentContainer,
                     targetContainerPath,
                     entityDataType,
+                    queryModel.schemaName,
                     queryModel.queryName,
                     rowIds_,
                     selectionKey,

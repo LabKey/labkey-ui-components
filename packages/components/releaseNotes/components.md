@@ -5,6 +5,20 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD December 2023
 - Issue 49237: From app settings page, set defaultDateFormat whenever defaultDateTimeFormat is changed
 
+### version 2.397.1
+*Released*: 13 December 2023
+- Issue 49086: Add onChange callback for AssayTaskInput to fix some initialization timing issues
+
+### version 2.397.0
+*Released*: 12 December 2023
+* Add `getPermissionRestrictionMessage` utility method.
+
+### version 2.396.3
+*Released*: 12 December 2023
+- Issue 49199: Field Editor name input fix for jumping cursor to end of input
+  - Regression from change to this.setState and this.props.onChange call sequence from https://github.com/LabKey/labkey-ui-components/pull/1273
+  - Also include minor fix for row/col display issue on permission assignments app page (issue 48895)
+
 ### version 2.396.2
 *Released*: 11 December 2023
 - Secure Issue 49250: BarTender: CSP parsing of the Service URL fails for relative and partial URIs

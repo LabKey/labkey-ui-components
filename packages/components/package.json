@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.396.3",
+  "version": "2.396.3-fb-moveRowsAPI.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

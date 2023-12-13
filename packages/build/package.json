@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "7.0.0-fb-upgrade-hot-loader.2",
+  "version": "7.0.0-fb-upgrade-hot-loader.3",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

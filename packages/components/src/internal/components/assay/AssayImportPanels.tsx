@@ -457,9 +457,19 @@ class AssayImportPanelsBody extends Component<Props, State> {
         this.handleChange('batchProperties', Map<string, any>(values ? values : {}));
     };
 
+    handleWorkflowTaskChange = (name: string, value: any): void => {
+        this.handleChange('runProperties', OrderedMap<string, any>({ workflowTask: value }), () => {
+            this.setState(state => ({
+                model: state.model.merge({
+                    workflowTask: value,
+                }) as AssayWizardModel,
+            }));
+        });
+    };
+
     handleRunChange = (fieldValues: any, isChanged?: boolean): void => {
         const values = { ...this.state.model.runProperties.toObject(), ...fieldValues };
-        let { comment, runName, workflowTask } = this.state.model;
+        let { comment, runName } = this.state.model;
 
         const cleanedValues = Object.keys(values).reduce((result, key) => {
             const value = values[key];
@@ -467,9 +477,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 runName = value;
             } else if (key === 'comment') {
                 comment = value;
-            } else if (key === 'workflowtask') {
-                workflowTask = value;
-            } else if (value !== undefined) {
+            } else if (key !== 'workflowtask' && value !== undefined) {
                 result[key] = value;
             }
             return result;
@@ -484,7 +492,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 model: state.model.merge({
                     runName,
                     comment,
-                    workflowTask,
                 }) as AssayWizardModel,
             }));
         });
@@ -762,7 +769,12 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 )}
                 <Alert bsStyle="warning">{sampleStatusWarning}</Alert>
                 <BatchPropertiesPanel model={model} operation={operation} onChange={this.handleBatchChange} />
-                <RunPropertiesPanel model={model} operation={operation} onChange={this.handleRunChange} />
+                <RunPropertiesPanel
+                    model={model}
+                    operation={operation}
+                    onChange={this.handleRunChange}
+                    onWorkflowTaskChange={this.handleWorkflowTaskChange}
+                />
                 {this.plateSupportEnabled && (
                     <PlatePropertiesPanel model={model} operation={operation} onChange={this.handleRunChange} />
                 )}

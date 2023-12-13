@@ -20,11 +20,13 @@ import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { LoadingState } from '../../../public/LoadingState';
 
 import { AssayWizardModel } from './AssayWizardModel';
+import { SelectInputChange } from '../forms/input/SelectInput';
 
 export interface AssayPropertiesPanelProps {
     operation: Operation;
     model: AssayWizardModel;
     onChange: (fieldValues: any, isChanged?: boolean) => void;
+    onWorkflowTaskChange?: SelectInputChange;
 }
 
 export class AssayUploadResultModel {

@@ -11,14 +11,9 @@ import { caseInsensitive } from '../../../util/utils';
 import { InputRendererProps } from './types';
 
 import { DisableableInputProps } from './DisableableInput';
-import { SelectInput, SelectInputProps } from './SelectInput';
+import { SelectInput, SelectInputChange, SelectInputOption, SelectInputProps } from './SelectInput';
 
-export interface InputOption {
-    label: string;
-    value: number;
-}
-
-async function loadInputOptions(assayId: number): Promise<InputOption[]> {
+async function loadInputOptions(assayId: number): Promise<SelectInputOption[]> {
     const result = await selectRows({
         columns: 'RowId, Name, AssayTypes, Run/Name',
         filterArray: [
@@ -28,7 +23,7 @@ async function loadInputOptions(assayId: number): Promise<InputOption[]> {
         maxRows: -1,
         schemaQuery: new SchemaQuery('samplemanagement', 'Tasks', ViewInfo.DETAIL_NAME),
     });
-    const taskOptions: InputOption[] = [];
+    const taskOptions: SelectInputOption[] = [];
 
     result.rows.forEach(row => {
         const taskId = caseInsensitive(row, 'RowId').value;
@@ -50,14 +45,15 @@ interface WorkflowTaskInputProps
         Omit<SelectInputProps, 'isLoading' | 'loadOptions' | 'options'> {
     assayId: number;
     containerFilter?: Query.ContainerFilter;
+    onChange: SelectInputChange;
 }
 
 // Note: this component is specific to Workflow, and ideally would live in the Workflow package, however we do not
 // currently have a way for our Apps to override the InputRenderers (see InputRenderer.tsx).
 export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
-    const { assayId, ...selectInputProps } = props;
+    const { assayId,  ...selectInputProps } = props;
     const [loading, setLoading] = useState<boolean>(true);
-    const [taskOptions, setTaskOptions] = useState<InputOption[]>();
+    const [taskOptions, setTaskOptions] = useState<SelectInputOption[]>();
     const [error, setError] = useState<string>();
 
     useEffect(() => {

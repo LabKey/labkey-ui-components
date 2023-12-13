@@ -1,10 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.397.1
+*Released*: 13 December 2023
+- Issue 49086: Add onChange callback for AssayTaskInput to fix some initialization timing issues
+
 ### version 2.397.0
 *Released*: 12 December 2023
 * Add `getPermissionRestrictionMessage` utility method.
-* Issue 49148: pass through column description for rendering TextInput fields
 
 ### version 2.396.3
 *Released*: 12 December 2023

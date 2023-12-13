@@ -30,6 +30,7 @@ export interface PageProps {
     productName?: string;
     showNotifications?: boolean;
     title?: string;
+    hideReleaseNotes?: boolean;
 }
 
 export class Page extends React.Component<PageProps, any> {
@@ -68,7 +69,7 @@ export class Page extends React.Component<PageProps, any> {
     };
 
     render() {
-        const { notAuthorizedMessage, notAuthorized, notFound, showNotifications } = this.props;
+        const { hideReleaseNotes, notAuthorizedMessage, notAuthorized, notFound, showNotifications } = this.props;
         let { hasHeader } = this.props;
         let children;
 
@@ -96,7 +97,7 @@ export class Page extends React.Component<PageProps, any> {
 
             return (
                 <div className="app-page">
-                    {isApp() && <ReleaseNote />}
+                    {(isApp() && !hideReleaseNotes) && <ReleaseNote />}
                     {!hasHeader && <PageHeader showNotifications={showNotifications} />}
                     {children}
                 </div>

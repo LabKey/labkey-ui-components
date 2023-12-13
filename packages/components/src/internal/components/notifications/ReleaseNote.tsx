@@ -1,18 +1,17 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 
-import { getServerContext } from '@labkey/api';
-
 import { withRouter, WithRouterProps } from 'react-router';
 
 import { HelpLink } from '../../util/helpLinks';
 import { biologicsIsPrimaryApp, getPrimaryAppProperties } from '../../app/utils';
+import { useServerContext } from '../base/ServerContext';
 
 export const DISMISSED_STORAGE_PREFIX = '__release_notes_dismissed__';
 
 export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
     const { location } = props;
-    const { releaseNoteLink, name } = getPrimaryAppProperties();
-    const { versionString } = getServerContext();
+    const { versionString, moduleContext } = useServerContext();
+    const { releaseNoteLink, name } = getPrimaryAppProperties(moduleContext);
 
     const releaseNoteDismissKey = DISMISSED_STORAGE_PREFIX + name + versionString;
 
@@ -23,7 +22,7 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
 
     useEffect(() => {
         localStorage.setItem(releaseNoteDismissKey, JSON.stringify(releaseNoteDismissed));
-    }, [releaseNoteDismissed]);
+    }, [releaseNoteDismissed, releaseNoteDismissKey]);
 
     const onDismiss = useCallback(() => {
         setReleaseNoteDismissed(true);
@@ -36,7 +35,7 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
             <div className="notification-container alert alert-success release-note-container">
                 <div className="input-group-align release-note-new">NEW</div>
                 <div className="notification-item input-group-align">
-                    {name} {versionString} is here.&nbsp;
+                    {name} {versionString} is here!&nbsp;
                     <HelpLink
                         topic={releaseNoteLink}
                         useDefaultUrl={biologicsIsPrimaryApp() /* needed for FM in Biologics*/}

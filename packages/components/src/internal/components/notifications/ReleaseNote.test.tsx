@@ -1,5 +1,4 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 import {
     TEST_LIMS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
@@ -7,6 +6,7 @@ import {
 import { DISMISSED_STORAGE_PREFIX, ReleaseNoteImpl } from './ReleaseNote';
 import userEvent from '@testing-library/user-event';
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../../app/constants';
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 beforeEach(() => {
     LABKEY.versionString = "24.1";
@@ -30,17 +30,22 @@ describe('ReleaseNote', () => {
 
     test('LKSM', () => {
         const version = "24.1";
-        LABKEY.versionString = version;
-        LABKEY.moduleContext = TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT;
 
         localStorage.removeItem(DISMISSED_STORAGE_PREFIX + "Sample Manager" + version);
 
-        render(
-            <ReleaseNoteImpl location={null} />
+        renderWithAppContext(
+            <ReleaseNoteImpl location={null} />,
+            {
+                serverContext: {
+                    versionString: version,
+                    moduleContext: TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+                },
+                appContext: {},
+            }
         );
 
         expect(hasReleaseNote()).toBe(true);
-        expect(getReleaseNoteMsg()).toBe( "Sample Manager 24.1 is here.&nbsp;<a target=\"_blank\" href=\"https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&amp;name=releaseNotes\" rel=\"noopener noreferrer\">See what's new.</a><i style=\"float: right;\" class=\"fa fa-times-circle pointer\"></i>");
+        expect(getReleaseNoteMsg()).toBe( "Sample Manager 24.1 is here!&nbsp;<a target=\"_blank\" href=\"https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&amp;name=releaseNotes\" rel=\"noopener noreferrer\">See what's new.</a><i style=\"float: right;\" class=\"fa fa-times-circle pointer\"></i>");
 
         userEvent.click(dismissButton());
 
@@ -50,17 +55,22 @@ describe('ReleaseNote', () => {
 
     test('LKB', () => {
         const version = "24.1-snap";
-        LABKEY.versionString = version;
-        LABKEY.moduleContext = TEST_LIMS_STARTER_MODULE_CONTEXT;
 
         localStorage.removeItem(DISMISSED_STORAGE_PREFIX + "Biologics" + version);
 
-        render(
-            <ReleaseNoteImpl location={null} />
+        renderWithAppContext(
+            <ReleaseNoteImpl location={null} />,
+            {
+                serverContext: {
+                    versionString: version,
+                    moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT,
+                },
+                appContext: {},
+            }
         );
 
         expect(hasReleaseNote()).toBe(true);
-        expect(getReleaseNoteMsg()).toBe( "Biologics 24.1-snap is here.&nbsp;<a target=\"_blank\" href=\"https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&amp;name=bioReleaseNotes\" rel=\"noopener noreferrer\">See what's new.</a><i style=\"float: right;\" class=\"fa fa-times-circle pointer\"></i>");
+        expect(getReleaseNoteMsg()).toBe( "Biologics 24.1-snap is here!&nbsp;<a target=\"_blank\" href=\"https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&amp;name=bioReleaseNotes\" rel=\"noopener noreferrer\">See what's new.</a><i style=\"float: right;\" class=\"fa fa-times-circle pointer\"></i>");
 
         userEvent.click(dismissButton());
 
@@ -70,17 +80,22 @@ describe('ReleaseNote', () => {
 
     test('FM', () => {
         const version = "24.1";
-        LABKEY.versionString = version;
-        LABKEY.moduleContext = {
-            inventory: {
-                productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
-            }
-        };
 
         localStorage.removeItem(DISMISSED_STORAGE_PREFIX + "Freezer Manager" + version);
 
-        render(
-            <ReleaseNoteImpl location={null} />
+        renderWithAppContext(
+            <ReleaseNoteImpl location={null} />,
+            {
+                serverContext: {
+                    versionString: version,
+                    moduleContext: {
+                        inventory: {
+                            productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
+                        }
+                    },
+                },
+                appContext: {}
+            }
         );
 
         expect(hasReleaseNote()).toBe(false);

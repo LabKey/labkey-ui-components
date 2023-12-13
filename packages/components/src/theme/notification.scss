@@ -130,6 +130,15 @@
     padding-left: 10px;
 }
 
+.message-list {
+    list-style: none;
+    padding-left: 0;
+
+    & > li:not(:last-child) {
+        margin-bottom: 15px;
+    }
+}
+
 .release-note-container {
     background: linear-gradient(90deg, #D6E9C6 60px, $white 60px);
 

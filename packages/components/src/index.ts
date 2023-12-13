@@ -86,6 +86,7 @@ import {
     deleteSuccessMessage,
     getActionErrorMessage,
     getConfirmDeleteMessage,
+    getPermissionRestrictionMessage,
     resolveErrorMessage,
 } from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
@@ -179,6 +180,7 @@ import { DataTypeSelector } from './internal/components/entities/DataTypeSelecto
 import { EditorMode, EditorModel } from './internal/components/editable/models';
 import {
     clearSelected,
+    getGridIdsFromTransactionId,
     getSampleTypesFromTransactionIds,
     getSelected,
     getSelectedData,
@@ -186,7 +188,6 @@ import {
     incrementClientSideMetricCount,
     replaceSelected,
     selectGridIdsFromTransactionId,
-    getGridIdsFromTransactionId,
     setSelected,
     setSnapshotSelections,
 } from './internal/actions';
@@ -381,6 +382,7 @@ import {
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
+    getOperationNotPermittedMessageFromCounts,
     getSampleDomainDefaultSystemFields,
     getSampleStatus,
     getSampleStatusContainerFilter,
@@ -478,9 +480,9 @@ import {
     getEntityTypeOptions,
     getExcludedDataTypeNames,
     getOperationConfirmationData,
+    getOrderedSelectedMappedKeysFromQueryModel,
     getParentTypeDataForLineage,
     getSampleOperationConfirmationData,
-    getOrderedSelectedMappedKeysFromQueryModel,
     saveOrderedSnapshotSelection,
 } from './internal/components/entities/actions';
 import {
@@ -1262,6 +1264,7 @@ export {
     SamplesEditButtonSections,
     StorageAmountInput,
     getOmittedSampleTypeColumns,
+    getOperationNotPermittedMessageFromCounts,
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
     SampleStatusLegend,
@@ -1297,6 +1300,7 @@ export {
     getEntityDescription,
     getInitialParentChoices,
     getJobCreationHref,
+    getPermissionRestrictionMessage,
     DiscardConsumedSamplesPanel,
     // metric related items
     UnitModel,
@@ -1780,6 +1784,7 @@ export type {
     SampleGridButtonProps,
     GroupedSampleFields,
     FindField,
+    StorageActionStatusCounts,
 } from './internal/components/samples/models';
 export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
 export type { AppRouteResolver } from './internal/url/models';

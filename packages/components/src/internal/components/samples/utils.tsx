@@ -1,4 +1,3 @@
-import React from 'react';
 import { Filter, Query } from '@labkey/api';
 
 import { User } from '../base/models/User';
@@ -14,15 +13,8 @@ import { OperationConfirmationData } from '../entities/models';
 
 import { SCHEMAS } from '../../schemas';
 import { caseInsensitive } from '../../util/utils';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { ModuleContext } from '../base/ServerContext';
-
-import { PICKLIST_SAMPLES_FILTER } from '../picklist/models';
-
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-
-import { SystemField } from '../domainproperties/models';
 
 import { SampleState, SampleStatus } from './models';
 
@@ -37,6 +29,10 @@ import {
     SampleOperation,
     SampleStateType,
 } from './constants';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { PICKLIST_SAMPLES_FILTER } from '../picklist/models';
+import { SystemField } from '../domainproperties/models';
 
 export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];
@@ -126,7 +122,7 @@ function getOperationMessageAndRecommendation(operation: SampleOperation, numSam
     } else {
         const messageInfo = operationRestrictionMessage[operation];
         let message;
-        if (numSamples == 1) {
+        if (numSamples === 1) {
             message = operationRestrictionMessage[operation].singular;
         } else {
             message = operationRestrictionMessage[operation].plural;
@@ -138,39 +134,44 @@ function getOperationMessageAndRecommendation(operation: SampleOperation, numSam
     }
 }
 
+export function getOperationNotPermittedMessageFromCounts(
+    operation: SampleOperation,
+    totalCount: number,
+    notAllowedCount: number
+): string {
+    let notAllowedMsg: string = null;
+    if (totalCount === 0) {
+        return null;
+    }
+    if (notAllowedCount === totalCount) {
+        return `All selected samples have a status that prevents ${operationRestrictionMessage[operation].all}.`;
+    }
+    if (notAllowedCount > 0) {
+        notAllowedMsg = `The current status of ${notAllowedCount.toLocaleString()} selected sample${
+            notAllowedCount === 1 ? '' : 's'
+        } prevents ${getOperationMessageAndRecommendation(operation, notAllowedCount, false)}.`;
+    }
+    return notAllowedMsg;
+}
+
 export function getOperationNotPermittedMessage(
     operation: SampleOperation,
     statusData: OperationConfirmationData,
     aliquotIds?: number[]
 ): string {
-    let notAllowedMsg = null;
-
     if (statusData) {
-        if (statusData.totalCount === 0) {
-            return null;
-        }
-
-        if (statusData.noneAllowed) {
-            return `All selected samples have a status that prevents ${operationRestrictionMessage[operation].all}.`;
-        }
-
-        const noAliquots = !aliquotIds || aliquotIds.length == 0;
+        const noAliquots = !aliquotIds || aliquotIds.length === 0;
         let notAllowed = [];
         // no aliquots or only aliquots, we show a status message about all that are not allowed
-        if (noAliquots || aliquotIds.length == statusData.totalCount) {
+        if (noAliquots || aliquotIds.length === statusData.totalCount) {
             notAllowed = statusData.notAllowed;
         } else {
             // some aliquots, some not, filter out the aliquots from the status message
             notAllowed = statusData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
         }
-        if (notAllowed?.length > 0) {
-            notAllowedMsg = `The current status of ${notAllowed.length.toLocaleString()} selected sample${
-                notAllowed.length == 1 ? '' : 's'
-            } prevents ${getOperationMessageAndRecommendation(operation, notAllowed.length, false)}.`;
-        }
+        return getOperationNotPermittedMessageFromCounts(operation, statusData.totalCount, notAllowed.length);
     }
-
-    return notAllowedMsg;
+    return null;
 }
 
 export enum SamplesEditButtonSections {

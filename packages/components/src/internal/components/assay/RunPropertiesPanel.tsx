@@ -44,57 +44,59 @@ const COMMENT_LABEL = (
     <LabelOverlay description="Contains comments about this run" label="Comments" type="Text (String)" />
 );
 
-export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model, onChange, operation }) => {
-    const { moduleContext } = useServerContext();
-    // FIXME: Update the AssayWizardModel to use ExtendedMap for runColumns so we don't need to do this conversion.
-    const queryColumns = useMemo(
-        () => new ExtendedMap<string, QueryColumn>(model.runColumns.toJS()),
-        [model.runColumns]
-    );
-
-    return (
-        <div className="panel panel-default">
-            <div className="panel-heading">Run Details</div>
-            <div className="panel-body">
-                <Formsy className="form-horizontal" onChange={onChange}>
-                    <FormsyInput
-                        id="runname"
-                        label={NAME_LABEL}
-                        labelClassName="text-left"
-                        name="runname"
-                        value={model.runName}
-                    />
-                    <FormsyTextArea
-                        cols={60}
-                        id="comment"
-                        label={COMMENT_LABEL}
-                        labelClassName="text-left"
-                        name="comment"
-                        rows={2}
-                        value={model.comment}
-                    />
-                    {isWorkflowEnabled(moduleContext) && (
-                        <AssayTaskInput
-                            assayId={model.assayDef.id}
-                            containerFilter={getContainerFilterForLookups()}
-                            formsy
-                            name="workflowtask"
-                            value={model.workflowTask}
+export const RunPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(
+    ({ model, onChange, onWorkflowTaskChange, operation }) => {
+        const { moduleContext } = useServerContext();
+        // FIXME: Update the AssayWizardModel to use ExtendedMap for runColumns so we don't need to do this conversion.
+        const queryColumns = useMemo(
+            () => new ExtendedMap<string, QueryColumn>(model.runColumns.toJS()),
+            [model.runColumns]
+        );
+        return (
+            <div className="panel panel-default">
+                <div className="panel-heading">Run Details</div>
+                <div className="panel-body">
+                    <Formsy className="form-horizontal" onChange={onChange}>
+                        <FormsyInput
+                            id="runname"
+                            label={NAME_LABEL}
+                            labelClassName="text-left"
+                            name="runname"
+                            value={model.runName}
                         />
-                    )}
-                    {model.runColumns.size !== 0 && (
-                        <QueryFormInputs
-                            containerFilter={getContainerFilterForLookups()}
-                            fieldValues={model.runProperties.toObject()}
-                            operation={operation}
-                            queryColumns={queryColumns}
-                            renderFileInputs
+                        <FormsyTextArea
+                            cols={60}
+                            id="comment"
+                            label={COMMENT_LABEL}
+                            labelClassName="text-left"
+                            name="comment"
+                            rows={2}
+                            value={model.comment}
                         />
-                    )}
-                </Formsy>
+                        {isWorkflowEnabled(moduleContext) && (
+                            <AssayTaskInput
+                                assayId={model.assayDef.id}
+                                containerFilter={getContainerFilterForLookups()}
+                                formsy
+                                name="workflowtask"
+                                value={model.workflowTask}
+                                onChange={onWorkflowTaskChange}
+                            />
+                        )}
+                        {model.runColumns.size !== 0 && (
+                            <QueryFormInputs
+                                containerFilter={getContainerFilterForLookups()}
+                                fieldValues={model.runProperties.toObject()}
+                                operation={operation}
+                                queryColumns={queryColumns}
+                                renderFileInputs
+                            />
+                        )}
+                    </Formsy>
+                </div>
             </div>
-        </div>
-    );
-});
+        );
+    }
+);
 
 RunPropertiesPanel.displayName = 'RunPropertiesPanel';

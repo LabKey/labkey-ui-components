@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.X
-*Released*: X December 2023
+### version 2.398.0
+*Released*: 14 December 2023
 - In-app messaging for product updates
   - Add `ReleaseNote` component
   - Updated Help icon to be a menu

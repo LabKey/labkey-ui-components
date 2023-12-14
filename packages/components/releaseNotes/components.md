@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-- TODO
+- Issue 41718: Domain Designer List Field Imports should observe auto-increment fields
 
 ### version 2.397.2
 *Released*: 13 December 2023

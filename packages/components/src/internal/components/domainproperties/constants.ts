@@ -157,6 +157,7 @@ export const TEXT_CHOICE_CONCEPT_URI = 'http://www.labkey.org/types#textChoice';
 export const CREATED_TIMESTAMP_CONCEPT_URI = 'http://www.labkey.org/types#createdTimestamp';
 export const MODIFIED_TIMESTAMP_CONCEPT_URI = 'http://www.labkey.org/types#modifiedTimestamp';
 export const SMILES_CONCEPT_URI = 'http://www.labkey.org/exp/xml#smiles';
+export const AUTO_INT_CONCEPT_URI = 'http://www.labkey.org/types#autoInt';
 
 export const UNLIMITED_TEXT_LENGTH = 2147483647; // Integer.MAX_VALUE
 export const MAX_TEXT_LENGTH = 4000;

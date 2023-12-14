@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- TODO
+
 ### version 2.397.2
 *Released*: 13 December 2023
 - Issue 49237: From app settings page, set defaultDateFormat whenever defaultDateTimeFormat is changed

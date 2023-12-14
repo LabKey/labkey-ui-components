@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import { mount, ReactWrapper, shallow } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 
 import { Dropdown, DropdownButton, MenuItem } from 'react-bootstrap';
 
@@ -22,6 +22,7 @@ import { User } from '../base/models/User';
 
 import { UserMenuGroupImpl } from './UserMenuGroup';
 import { MenuSectionModel } from './model';
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 
 beforeEach(() => {
     LABKEY.devMode = false;
@@ -136,7 +137,7 @@ describe('UserMenuGroup', () => {
 
     test('not initialized', () => {
         const model = new MenuSectionModel({});
-        const tree = mount(<UserMenuGroupImpl model={model} user={new User()} />);
+        const tree = mountWithAppServerContext(<UserMenuGroupImpl model={model} user={new User()} />);
         expect(tree).toEqual({});
     });
 
@@ -145,7 +146,7 @@ describe('UserMenuGroup', () => {
             isSignedIn: false,
         });
 
-        const tree = mount(<UserMenuGroupImpl model={section} user={user} />);
+        const tree = mountWithAppServerContext(<UserMenuGroupImpl model={section} user={user} />);
         verify(tree, ['', 'Sign In'], null, ['Help']);
     });
 
@@ -154,7 +155,7 @@ describe('UserMenuGroup', () => {
             isSignedIn: false,
         });
 
-        const tree = mount(<UserMenuGroupImpl model={noHelpSection} user={user} />);
+        const tree = mountWithAppServerContext(<UserMenuGroupImpl model={noHelpSection} user={user} />);
         verify(tree, ['Documentation', '', 'Sign In'], null, null);
     });
 
@@ -163,7 +164,7 @@ describe('UserMenuGroup', () => {
             isSignedIn: true,
         });
 
-        const tree = mount(<UserMenuGroupImpl model={withAdmins} user={user} />);
+        const tree = mountWithAppServerContext(<UserMenuGroupImpl model={withAdmins} user={user} />);
 
         verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Application Settings'], ['Help']);
     });
@@ -173,7 +174,7 @@ describe('UserMenuGroup', () => {
             isSignedIn: true,
         });
 
-        const tree = mount(<UserMenuGroupImpl model={section} user={user} />);
+        const tree = mountWithAppServerContext(<UserMenuGroupImpl model={section} user={user} />);
         verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], null, ['Help']);
     });
 
@@ -183,7 +184,7 @@ describe('UserMenuGroup', () => {
         });
         LABKEY.devMode = true;
 
-        const tree = mount(<UserMenuGroupImpl model={section} user={user} />);
+        const tree = mountWithAppServerContext(<UserMenuGroupImpl model={section} user={user} />);
         verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Dev Tools', 'Enable Redux Tools'], ['Help']);
     });
 
@@ -198,7 +199,7 @@ describe('UserMenuGroup', () => {
                 <MenuItem key="e2">Extra Two</MenuItem>
             </>
         );
-        const tree = mount(<UserMenuGroupImpl model={section} user={user} extraUserItems={extraUserItems} />);
+        const tree = mountWithAppServerContext(<UserMenuGroupImpl model={section} user={user} extraUserItems={extraUserItems} />);
 
         verify(tree, ['Profile', 'Extra One', 'Extra Two', '', /* divider*/ 'Sign Out'], null, ['Help']);
     });
@@ -222,7 +223,7 @@ describe('UserMenuGroup', () => {
         );
 
         LABKEY.devMode = true;
-        const tree = mount(
+        const tree = mountWithAppServerContext(
             <UserMenuGroupImpl
                 extraDevItems={extraDevItems}
                 extraUserItems={extraUserItems}
@@ -250,7 +251,7 @@ describe('UserMenuGroup', () => {
             isSignedIn: true,
         });
 
-        const tree = mount(<UserMenuGroupImpl model={withAdmins} user={user} />);
+        const tree = mountWithAppServerContext(<UserMenuGroupImpl model={withAdmins} user={user} />);
 
         verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Application Settings'], ['Help', 'Release Notes']);
     });
@@ -266,7 +267,7 @@ describe('UserMenuGroup', () => {
             isSignedIn: false,
         });
 
-        const tree = mount(<UserMenuGroupImpl model={noHelpSection} user={user} />);
+        const tree = mountWithAppServerContext(<UserMenuGroupImpl model={noHelpSection} user={user} />);
 
         verify(tree, ['Documentation', '', 'Sign In'], null, ['Release Notes']);
     });

@@ -45,7 +45,7 @@ describe('ReleaseNote', () => {
         );
 
         expect(hasReleaseNote()).toBe(true);
-        expect(getReleaseNoteMsg()).toBe( "Sample Manager 24.1 is here!&nbsp;<a target=\"_blank\" href=\"https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&amp;name=releaseNotes\" rel=\"noopener noreferrer\">See what's new.</a><i style=\"float: right;\" class=\"fa fa-times-circle pointer\"></i>");
+        expect(getReleaseNoteMsg()).toBe( "Sample Manager 24.1 is here!&nbsp;<span><a target=\"_blank\" href=\"https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&amp;name=releaseNotes\" rel=\"noopener noreferrer\">See what's new.</a></span><i style=\"float: right;\" class=\"fa fa-times-circle pointer\"></i>");
 
         userEvent.click(dismissButton());
 
@@ -70,7 +70,7 @@ describe('ReleaseNote', () => {
         );
 
         expect(hasReleaseNote()).toBe(true);
-        expect(getReleaseNoteMsg()).toBe( "Biologics 24.1-snap is here!&nbsp;<a target=\"_blank\" href=\"https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&amp;name=bioReleaseNotes\" rel=\"noopener noreferrer\">See what's new.</a><i style=\"float: right;\" class=\"fa fa-times-circle pointer\"></i>");
+        expect(getReleaseNoteMsg()).toBe( "Biologics 24.1-snap is here!&nbsp;<span><a target=\"_blank\" href=\"https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&amp;name=bioReleaseNotes\" rel=\"noopener noreferrer\">See what's new.</a></span><i style=\"float: right;\" class=\"fa fa-times-circle pointer\"></i>");
 
         userEvent.click(dismissButton());
 

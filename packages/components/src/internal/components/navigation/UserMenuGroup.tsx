@@ -32,6 +32,7 @@ import { getHelpLink } from '../../util/helpLinks';
 
 import { signIn, signOut } from './actions';
 import { MenuSectionModel } from './model';
+import { RELEASE_NOTES_METRIC } from '../productnavigation/constants';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;
@@ -50,6 +51,7 @@ interface ImplProps {
 // exported for jest testing
 export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
+    const { api } = useAppContext();
     const releaseNoteLink = getPrimaryAppProperties()?.releaseNoteLink;
     const releaseNoteHref = releaseNoteLink
         ? getHelpLink(
@@ -89,6 +91,10 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     const handleSignOut = useCallback(() => {
         onSignOut(signOutUrl);
     }, [onSignOut, signOutUrl]);
+
+    const onReleaseNotesClick = useCallback(() => {
+        api.query.incrementClientSideMetricCount(RELEASE_NOTES_METRIC, "FromHelpMenu");
+    }, []);
 
     if (!model || !user) {
         return null;
@@ -162,7 +168,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                             </MenuItem>
                         )}
                         {releaseNoteHref && (
-                            <MenuItem key="release" href={releaseNoteHref} target="_blank" rel="noopener noreferrer">
+                            <MenuItem key="release" href={releaseNoteHref} target="_blank" rel="noopener noreferrer" onClick={onReleaseNotesClick}>
                                 Release Notes
                             </MenuItem>
                         )}

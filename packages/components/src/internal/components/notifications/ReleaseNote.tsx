@@ -5,11 +5,14 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { HelpLink } from '../../util/helpLinks';
 import { biologicsIsPrimaryApp, getPrimaryAppProperties } from '../../app/utils';
 import { useServerContext } from '../base/ServerContext';
+import { useAppContext } from '../../AppContext';
+import { RELEASE_NOTES_METRIC } from '../productnavigation/constants';
 
 export const DISMISSED_STORAGE_PREFIX = '__release_notes_dismissed__';
 
 export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
     const { location } = props;
+    const { api } = useAppContext();
     const { versionString, moduleContext } = useServerContext();
     const { releaseNoteLink, name } = getPrimaryAppProperties(moduleContext);
 
@@ -28,6 +31,10 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
         setReleaseNoteDismissed(true);
     }, []);
 
+    const onLinkClick = useCallback(() => {
+        api.query.incrementClientSideMetricCount(RELEASE_NOTES_METRIC, "FromBanner");
+    }, []);
+
     if (releaseNoteDismissed || !releaseNoteLink) return null;
 
     return (
@@ -36,12 +43,14 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
                 <div className="input-group-align release-note-new">NEW</div>
                 <div className="notification-item input-group-align">
                     {name} {versionString} is here!&nbsp;
-                    <HelpLink
-                        topic={releaseNoteLink}
-                        useDefaultUrl={biologicsIsPrimaryApp() /* needed for FM in Biologics*/}
-                    >
+                    <span onClick={onLinkClick}>
+                        <HelpLink
+                            topic={releaseNoteLink}
+                            useDefaultUrl={biologicsIsPrimaryApp() /* needed for FM in Biologics*/}
+                        >
                         See what's new.
-                    </HelpLink>
+                        </HelpLink>
+                    </span>
                     <i style={{ float: 'right' }} className="fa fa-times-circle pointer" onClick={onDismiss} />
                 </div>
             </div>

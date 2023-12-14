@@ -319,7 +319,7 @@ describe('getSampleStatus', () => {
 });
 
 const TEST_SQ = new SchemaQuery('schema', 'query');
-const TEST_QUERY_INFO = new QueryInfo({ schemaQuery: TEST_SQ });
+const TEST_QUERY_INFO = new QueryInfo({ schemaQuery: TEST_SQ, pkCols: ['RowId'] });
 const TEST_MODEL = makeTestQueryModel(TEST_SQ, TEST_QUERY_INFO).mutate({ id: 'model-id' });
 
 describe('getURLParamsForSampleSelectionKey', () => {
@@ -346,6 +346,7 @@ describe('getURLParamsForSampleSelectionKey', () => {
     test('keyValue', () => {
         const model = TEST_MODEL.mutate({ keyValue: 123 });
         expect(getURLParamsForSampleSelectionKey(model)).toStrictEqual({
+            'query.RowId~eq': 123,
             selectionKey: 'appkey|schema/query|123',
         });
     });

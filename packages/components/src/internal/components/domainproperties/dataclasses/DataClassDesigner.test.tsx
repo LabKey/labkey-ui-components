@@ -21,6 +21,10 @@ const BASE_PROPS = {
 };
 
 describe('DataClassDesigner', () => {
+    beforeAll(() => {
+        global.console.error = jest.fn();
+    });
+
     test('default properties', async () => {
         const component = (
             <DataClassDesignerImpl

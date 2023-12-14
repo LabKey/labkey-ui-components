@@ -23,13 +23,16 @@ import { User } from '../base/models/User';
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 
 import { useServerContext } from '../base/ServerContext';
-import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { biologicsIsPrimaryApp, getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 import { AppProperties } from '../../app/models';
 
 import { AppContext, useAppContext } from '../../AppContext';
 
+import { getHelpLink } from '../../util/helpLinks';
+
 import { signIn, signOut } from './actions';
 import { MenuSectionModel } from './model';
+import { RELEASE_NOTES_METRIC } from '../productnavigation/constants';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;
@@ -48,6 +51,15 @@ interface ImplProps {
 // exported for jest testing
 export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
+    const { api } = useAppContext();
+    const releaseNoteLink = getPrimaryAppProperties()?.releaseNoteLink;
+    const releaseNoteHref = releaseNoteLink
+        ? getHelpLink(
+              getPrimaryAppProperties()?.releaseNoteLink,
+              null,
+              biologicsIsPrimaryApp() /* needed for FM in Biologics*/
+          )
+        : undefined;
 
     const { helpHref, userMenuItems, adminMenuItems } = useMemo(() => {
         let helpHref;
@@ -79,6 +91,10 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     const handleSignOut = useCallback(() => {
         onSignOut(signOutUrl);
     }, [onSignOut, signOutUrl]);
+
+    const onReleaseNotesClick = useCallback(() => {
+        api.query.incrementClientSideMetricCount(RELEASE_NOTES_METRIC, "FromHelpMenu");
+    }, []);
 
     if (!model || !user) {
         return null;
@@ -136,13 +152,27 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     </DropdownButton>
                 </div>
             )}
-            {helpHref && (
-                <div className="navbar-item pull-right">
-                    <div className="btn navbar-icon-button-right" id="nav-help-button">
-                        <a href={helpHref} target="_blank" rel="noopener noreferrer">
-                            <i className="fa fa-question-circle navbar-header-icon" />
-                        </a>
-                    </div>
+            {(!!helpHref || !!releaseNoteHref) && (
+                <div className="navbar-item pull-right navbar-item-product-navigation">
+                    <DropdownButton
+                        id="help-menu-button"
+                        className="navbar-icon-button-right"
+                        title={<i className="fa fa-question-circle navbar-header-icon" />}
+                        noCaret
+                        pullRight
+                    >
+                        <div className="navbar-icon-connector" />
+                        {helpHref && (
+                            <MenuItem key="help" href={helpHref} target="_blank" rel="noopener noreferrer">
+                                Help
+                            </MenuItem>
+                        )}
+                        {releaseNoteHref && (
+                            <MenuItem key="release" href={releaseNoteHref} target="_blank" rel="noopener noreferrer" onClick={onReleaseNotesClick}>
+                                Release Notes
+                            </MenuItem>
+                        )}
+                    </DropdownButton>
                 </div>
             )}
         </>

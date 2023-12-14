@@ -26,15 +26,11 @@ import { useServerContext } from '../base/ServerContext';
 import { AppProperties } from '../../app/models';
 import {
     getCurrentAppProperties,
-    isProductProjectsEnabled,
-    isProjectContainer,
-    isAppHomeFolder,
 } from '../../app/utils';
 
 import { Alert } from '../base/Alert';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
-import { naturalSortByProperty } from '../../../public/sort';
 import { resolveErrorMessage } from '../../util/messaging';
 import { AppContext, useAppContext } from '../../AppContext';
 import { Container } from '../base/models/Container';

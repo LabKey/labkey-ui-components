@@ -142,6 +142,7 @@ export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     moduleName: 'biologics',
     searchPlaceholder: SEARCH_PLACEHOLDER,
     dataClassUrlPart: REGISTRY_KEY,
+    releaseNoteLink: 'bioReleaseNotes',
 };
 
 export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
@@ -154,6 +155,7 @@ export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
     moduleName: 'sampleManagement',
     searchPlaceholder: SAMPLE_MANAGER_SEARCH_PLACEHOLDER,
     dataClassUrlPart: SOURCES_KEY,
+    releaseNoteLink: 'releaseNotes',
 };
 
 export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {

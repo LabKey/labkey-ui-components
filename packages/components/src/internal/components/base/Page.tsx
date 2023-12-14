@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 import React from 'react';
+
 import { InsufficientPermissionsAlert } from '../permissions/InsufficientPermissionsAlert';
+
+import { ReleaseNote } from '../notifications/ReleaseNote';
+import { isApp } from '../../app/utils';
 
 import { PageHeader } from './PageHeader';
 
@@ -26,6 +30,7 @@ export interface PageProps {
     productName?: string;
     showNotifications?: boolean;
     title?: string;
+    hideReleaseNotes?: boolean;
 }
 
 export class Page extends React.Component<PageProps, any> {
@@ -64,7 +69,7 @@ export class Page extends React.Component<PageProps, any> {
     };
 
     render() {
-        const { notAuthorizedMessage, notAuthorized, notFound, showNotifications } = this.props;
+        const { hideReleaseNotes, notAuthorizedMessage, notAuthorized, notFound, showNotifications } = this.props;
         let { hasHeader } = this.props;
         let children;
 
@@ -92,6 +97,7 @@ export class Page extends React.Component<PageProps, any> {
 
             return (
                 <div className="app-page">
+                    {(isApp() && !hideReleaseNotes) && <ReleaseNote />}
                     {!hasHeader && <PageHeader showNotifications={showNotifications} />}
                     {children}
                 </div>

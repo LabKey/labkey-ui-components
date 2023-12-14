@@ -334,8 +334,6 @@ import {
     SearchField,
     SearchScope,
 } from './internal/components/search/constants';
-import { SearchResultCard } from './internal/components/search/SearchResultCard';
-import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { SearchPanel } from './internal/components/search/SearchPanel';
 import {
     getFieldFiltersValidationResult,
@@ -1286,9 +1284,6 @@ export {
     getStoredAmountDisplay,
     isValuePrecisionValid,
     // search related items
-    SearchResultsModel,
-    SearchResultCard,
-    SearchResultsPanel,
     SearchPanel,
     SearchCategory,
     SearchField,
@@ -1716,6 +1711,7 @@ export type {
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
 export type { SearchResultCardData, FieldFilter } from './internal/components/search/models';
+export type { SearchHitWithCardData, SearchResultWithCardData } from './internal/components/search/actions';
 export type { AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
 export type {
     CrossFolderSelectionResult,

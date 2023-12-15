@@ -132,6 +132,7 @@ import {
     WebDavFile,
 } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
+import { ReleaseNote } from './internal/components/notifications/ReleaseNote';
 import { Notifications } from './internal/components/notifications/Notifications';
 import { getPipelineActivityData, markAllNotificationsAsRead } from './internal/components/notifications/actions';
 import {
@@ -1405,6 +1406,7 @@ export {
     PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
     SHARED_CONTAINER_PATH,
     NotificationItemModel,
+    ReleaseNote,
     Notifications,
     ServerNotificationModel,
     ServerActivityData,

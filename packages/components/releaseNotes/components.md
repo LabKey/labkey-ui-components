@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Consolidate move entities to MoveRowsAction in query controller
   - update API call controller and actions and update params to match new moveRows API format
 
+### version 2.398.0
+*Released*: 14 December 2023
+- In-app messaging for product updates
+  - Add `ReleaseNote` component
+  - Updated Help icon to be a menu
+
 ### version 2.397.2
 *Released*: 13 December 2023
 - Issue 49237: From app settings page, set defaultDateFormat whenever defaultDateTimeFormat is changed

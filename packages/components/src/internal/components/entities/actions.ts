@@ -829,10 +829,10 @@ export function moveEntities(
     return new Promise((resolve, reject) => {
         const params = {
             auditBehavior: AuditBehaviorTypes.DETAILED,
+            auditUserComment: userComment,
+            targetContainerPath: targetContainer,
             schemaName,
             queryName,
-            targetContainer,
-            userComment,
         };
         if (rowIds) {
             params['rows'] = rowIds.reduce((prev, curr) => {

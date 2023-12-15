@@ -3,7 +3,7 @@ import {
     TEST_LIMS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT
 } from '../../productFixtures';
-import { DISMISSED_STORAGE_PREFIX, ReleaseNoteImpl } from './ReleaseNote';
+import { DISMISSED_STORAGE_PREFIX, ReleaseNote } from './ReleaseNote';
 import userEvent from '@testing-library/user-event';
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
@@ -14,7 +14,6 @@ beforeEach(() => {
 });
 
 describe('ReleaseNote', () => {
-
     function dismissButton(): HTMLButtonElement {
         return document.querySelector<HTMLButtonElement>('.fa-times-circle');
     }
@@ -34,7 +33,7 @@ describe('ReleaseNote', () => {
         localStorage.removeItem(DISMISSED_STORAGE_PREFIX + "Sample Manager" + version);
 
         renderWithAppContext(
-            <ReleaseNoteImpl location={null} />,
+            <ReleaseNote />,
             {
                 serverContext: {
                     versionString: version,
@@ -59,7 +58,7 @@ describe('ReleaseNote', () => {
         localStorage.removeItem(DISMISSED_STORAGE_PREFIX + "Biologics" + version);
 
         renderWithAppContext(
-            <ReleaseNoteImpl location={null} />,
+            <ReleaseNote />,
             {
                 serverContext: {
                     versionString: version,
@@ -84,7 +83,7 @@ describe('ReleaseNote', () => {
         localStorage.removeItem(DISMISSED_STORAGE_PREFIX + "Freezer Manager" + version);
 
         renderWithAppContext(
-            <ReleaseNoteImpl location={null} />,
+            <ReleaseNote />,
             {
                 serverContext: {
                     versionString: version,

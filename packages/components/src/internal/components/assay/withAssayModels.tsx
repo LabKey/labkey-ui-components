@@ -230,10 +230,9 @@ export function withAssayModels<Props>(
 }
 
 /**
- * Provides a [[withAssayModels]] wrapped component that is additionally wrapped by react-router's withRouter.
- * This additional wrapping allows for sourcing the "assayName" property from the URL. NOTE: This is specifically
- * configured to expect a route param called "protocol" which is expected to a be (string) name of a specific assay
- * protocol.
+ * Provides a [[withAssayModels]] wrapped component that sources the "assayName" property from the URL. NOTE: This is
+ * specifically configured to expect a route param called "protocol" which is expected to a be (string) name of a
+ * specific assay protocol.
  * @param ComponentToWrap The component definition (e.g. class, function) to wrap.
  * This will have [[InjectedAssayModel]] props injected into it when instantiated.
  * @param defaultProps Provide alternative "defaultProps" for this wrapped component.

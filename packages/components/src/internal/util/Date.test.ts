@@ -221,6 +221,7 @@ describe('Date Utilities', () => {
         });
 
         test('invalid date', () => {
+            global.console.warn = jest.fn();
             expect(parseDate('test')).toBe(null);
             expect(parseDate('test', 'yyyy-MM-dd')).toBe(null);
         });

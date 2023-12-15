@@ -123,7 +123,9 @@ export function getDeleteConfirmationData(
             ? {
                   dataOperation: DataOperation.Delete,
               }
-            : isAssayDesignEntity(dataType) ? { dataOperation: AssayRunOperation.Delete } : undefined
+            : isAssayDesignEntity(dataType)
+            ? { dataOperation: AssayRunOperation.Delete }
+            : undefined
     );
 }
 
@@ -297,9 +299,8 @@ function resolveEntityParentTypeFromIds(
     // The transformation done here makes the entities compatible with the editable grid
     let data: DisplayObject[] = response.rows
         .map(row => extractEntityTypeOptionFromRow(row))
-        .map(({ label, rowId }) => ({ displayValue: label, value: rowId }))
-    if (orderedRowIds?.length > 1)
-        data = data.sort(_getEntitySort(orderedRowIds));
+        .map(({ label, rowId }) => ({ displayValue: label, value: rowId }));
+    if (orderedRowIds?.length > 1) data = data.sort(_getEntitySort(orderedRowIds));
 
     return List<EntityParentType>([
         EntityParentType.create({
@@ -811,7 +812,9 @@ export function getMoveConfirmationData(
             ? {
                   dataOperation: DataOperation.Move,
               }
-            :  isAssayDesignEntity(dataType) ? { dataOperation: AssayRunOperation.Move } : undefined
+            : isAssayDesignEntity(dataType)
+            ? { dataOperation: AssayRunOperation.Move }
+            : undefined
     );
 }
 
@@ -819,6 +822,8 @@ export function moveEntities(
     sourceContainer: Container,
     targetContainer: string,
     entityDataType: EntityDataType,
+    schemaName: string,
+    queryName: string,
     rowIds?: number[],
     selectionKey?: string,
     useSnapshotSelection?: boolean,
@@ -827,11 +832,16 @@ export function moveEntities(
     return new Promise((resolve, reject) => {
         const params = {
             auditBehavior: AuditBehaviorTypes.DETAILED,
-            targetContainer,
-            userComment,
+            auditUserComment: userComment,
+            targetContainerPath: targetContainer,
+            schemaName,
+            queryName,
         };
         if (rowIds) {
-            params['rowIds'] = rowIds;
+            params['rows'] = rowIds.reduce((prev, curr) => {
+                prev.push({ rowId: curr });
+                return prev;
+            }, []);
         }
         if (selectionKey) {
             params['dataRegionSelectionKey'] = selectionKey;
@@ -839,11 +849,11 @@ export function moveEntities(
         }
 
         return Ajax.request({
-            url: buildURL(entityDataType.moveControllerName, entityDataType.moveActionName, undefined, {
+            url: buildURL('query', 'moveRows.api', undefined, {
                 container: sourceContainer?.path,
             }),
             method: 'POST',
-            params,
+            jsonData: params,
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     resolve(response);

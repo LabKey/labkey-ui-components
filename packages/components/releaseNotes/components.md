@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.399.0
+*Released*: 15 December 2023
+- Consolidate move entities to MoveRowsAction in query controller
+  - update API call controller and actions and update params to match new moveRows API format
+
 ### version 2.398.0
 *Released*: 14 December 2023
 - In-app messaging for product updates

@@ -286,6 +286,10 @@ export class EntityIdCreationModel extends Record({
         return this.targetEntityType && this.targetEntityType.value !== undefined;
     }
 
+    getTargetEntityTypeId(): number {
+        return this.hasTargetEntityType() ? this.targetEntityType.rowId : undefined;
+    }
+
     getTargetEntityTypeValue(): string {
         return this.hasTargetEntityType() ? this.targetEntityType.value : undefined;
     }

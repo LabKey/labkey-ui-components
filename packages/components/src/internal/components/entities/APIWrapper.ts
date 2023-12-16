@@ -74,7 +74,8 @@ export interface EntityAPIWrapper {
         useAsync: boolean,
         importParameters?: Record<string, any>,
         importFileController?: string,
-        saveToPipeline?: boolean
+        saveToPipeline?: boolean,
+        containerPath?: string,
     ) => Promise<any>;
     initParentOptionsSelects: (
         includeSampleTypes: boolean,

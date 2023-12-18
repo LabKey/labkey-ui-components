@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Update @labkey/api and use moveRows() function
+- Include fix for Issue 49164: Datepicker in editable grid needs to account for the sticky footer when at the bottom of the grid
 
 ### version 2.399.0
 *Released*: 15 December 2023

@@ -109,8 +109,8 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
 
         if (config.emptyAppURL) {
             const emptyURL = createProductUrl(section.productId, currentProductId, config.emptyAppURL, containerPath);
-            if (emptyURL instanceof AppURL) emptyLink = <Link to={emptyLink.toString()}>{config.emptyURLText}</Link>
-            else emptyLink = <a href={emptyLink}>{config.emptyURLText}</a>
+            if (emptyURL instanceof AppURL) emptyLink = <Link to={emptyURL.toString()}>{config.emptyURLText}</Link>
+            else emptyLink = <a href={emptyURL}>{config.emptyURLText}</a>
         }
 
         const visibleItems = section.items.filter(item => !item.hidden);

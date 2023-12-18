@@ -1,4 +1,4 @@
-import { ActionURL, Ajax, AuditBehaviorTypes, Filter, getServerContext, Query, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
 import { List, Map } from 'immutable';
 
 import { getSelectedData, getSelected, setSnapshotSelections } from '../../actions';
@@ -19,8 +19,6 @@ import { SCHEMAS } from '../../schemas';
 import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
 import { ViewInfo } from '../../ViewInfo';
-
-import { Container } from '../base/models/Container';
 
 import { getProjectDataExclusion, hasModule } from '../../app/utils';
 
@@ -817,35 +815,20 @@ export function getMoveConfirmationData(
     );
 }
 
-export function moveEntities(
-    sourceContainer: Container,
-    targetContainer: string,
-    entityDataType: EntityDataType,
-    schemaName: string,
-    queryName: string,
-    rowIds?: number[],
-    selectionKey?: string,
-    useSnapshotSelection?: boolean,
-    userComment?: string
-): Promise<Query.MoveRowsResponse> {
+export interface MoveEntitiesOptions extends Omit<Query.MoveRowsOptions, 'rows' | 'success' | 'failure' | 'scope'> {
+    entityDataType: EntityDataType;
+    rowIds?: number[];
+}
+
+export function moveEntities(options: MoveEntitiesOptions): Promise<Query.MoveRowsResponse> {
     return new Promise((resolve, reject) => {
-        const params = {
-            containerPath: sourceContainer?.path,
-            auditBehavior: AuditBehaviorTypes.DETAILED,
-            auditUserComment: userComment,
-            targetContainerPath: targetContainer,
-            schemaName,
-            queryName,
-        };
+        const { entityDataType, rowIds, ...rest} = options;
+        const params = Object.assign({}, rest);
         if (rowIds) {
             params['rows'] = rowIds.reduce((prev, curr) => {
                 prev.push({ rowId: curr });
                 return prev;
             }, []);
-        }
-        if (selectionKey) {
-            params['dataRegionSelectionKey'] = selectionKey;
-            params['useSnapshotSelection'] = useSnapshotSelection;
         }
 
         Query.moveRows({

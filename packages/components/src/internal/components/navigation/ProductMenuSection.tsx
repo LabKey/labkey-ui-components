@@ -98,6 +98,7 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
               );
         const headerURLIsAppURL = headerURL instanceof AppURL;
         let headerEl = label;
+        let emptyLink;
 
         // In order to make sure we don't break useRouteLeave we need to use <Link> for AppURLs and <a> for non-app URLs
         if (headerURL && headerURLIsAppURL) {
@@ -106,9 +107,10 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
             headerEl = <a href={getHref(headerURL)}>{label}</a>;
         }
 
-        let emptyURL;
         if (config.emptyAppURL) {
-            emptyURL = createProductUrl(section.productId, currentProductId, config.emptyAppURL, containerPath);
+            const emptyURL = createProductUrl(section.productId, currentProductId, config.emptyAppURL, containerPath);
+            if (emptyURL instanceof AppURL) emptyLink = <Link to={emptyLink.toString()}>{config.emptyURLText}</Link>
+            else emptyLink = <a href={emptyLink}>{config.emptyURLText}</a>
         }
 
         const visibleItems = section.items.filter(item => !item.hidden);
@@ -128,9 +130,9 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
                                 {section.items.isEmpty() ? config.emptyText : config.filteredEmptyText}
                             </li>
                         )}
-                        {emptyURL && (
+                        {emptyLink && (
                             <li className="empty-section-link">
-                                <a href={getHref(emptyURL)}>{config.emptyURLText}</a>
+                                {emptyLink}
                             </li>
                         )}
                     </>

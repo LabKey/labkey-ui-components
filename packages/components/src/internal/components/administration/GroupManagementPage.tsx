@@ -67,11 +67,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
         setLoadingState(LoadingState.LOADING);
         try {
             // Used in renderButtons()
-            const lastModifiedState = await api.security.getAuditLogData(
-                'Date,Project',
-                'ProjectId/Name',
-                projectPath.slice(0, -1)
-            );
+            const lastModifiedState = await api.security.getAuditLogData('ProjectId/Name', projectPath.slice(0, -1));
 
             setLastModified(lastModifiedState);
 
@@ -101,6 +97,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
 
     const save = useCallback(async () => {
         try {
+            // TODO: This should all be done server-side and transacted
             // Delete members
             const newGroupMembership = { ...groupMembership };
             for (const groupId of Object.keys(newGroupMembership)) {
@@ -147,10 +144,10 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
                     await api.security.addGroupMembers(parseInt(groupId, 10), addedMembers, projectPath);
             }
 
-            const principals = await getPrincipals();
+            const principals_ = await getPrincipals();
 
             // Save updated state
-            setUpdatedPrincipals(principals);
+            setUpdatedPrincipals(principals_);
             setSavedGroupMembership(newGroupMembership);
             setGroupMembership(newGroupMembership);
 
@@ -255,7 +252,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
         return showPremiumFeatures(moduleContext) ? container.path : undefined;
     }, [container, moduleContext]);
 
-    if (isProductProjectsEnabled() && !container.isProject) return <NotFound />;
+    if (isProductProjectsEnabled(moduleContext) && !container.isProject) return <NotFound />;
 
     return (
         <BasePermissionsCheckPage
@@ -283,7 +280,6 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
                     setErrorMsg={onSetErrorMsg}
                     setIsDirty={setIsDirty}
                     getIsDirty={getIsDirty}
-                    getAuditLogData={api.security.getAuditLogData}
                 />
             )}
         </BasePermissionsCheckPage>

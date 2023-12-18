@@ -29,7 +29,7 @@ const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
-describe('<GroupDetailsPanel/>', () => {
+describe('GroupDetailsPanel', () => {
     test('no principal', () => {
         const component = mountWithAppServerContext(
             <GroupDetailsPanel
@@ -38,7 +38,6 @@ describe('<GroupDetailsPanel/>', () => {
                 rolesByUniqueName={ROLES_BY_NAME}
                 members={[]}
                 isSiteGroup={false}
-                getAuditLogData={jest.fn()}
             />,
             {},
             { user: TEST_USER_APP_ADMIN }
@@ -63,7 +62,6 @@ describe('<GroupDetailsPanel/>', () => {
                     { id: 3, name: 'group1', type: MemberType.group },
                 ]}
                 isSiteGroup={false}
-                getAuditLogData={jest.fn()}
             />,
             {},
             { user: TEST_USER_APP_ADMIN }
@@ -95,7 +93,6 @@ describe('<GroupDetailsPanel/>', () => {
                     { id: 3, name: 'group1', type: MemberType.group },
                 ]}
                 isSiteGroup={true}
-                getAuditLogData={jest.fn()}
             />,
             {},
             { user: TEST_USER_APP_ADMIN }
@@ -127,7 +124,6 @@ describe('<GroupDetailsPanel/>', () => {
                     { id: 3, name: 'group1', type: MemberType.group },
                 ]}
                 isSiteGroup={true}
-                getAuditLogData={jest.fn()}
                 displayCounts={false}
             />,
             {},

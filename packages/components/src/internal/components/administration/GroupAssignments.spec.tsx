@@ -20,7 +20,7 @@ import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 import { MemberType } from './models';
 import { GroupAssignments } from './GroupAssignments';
 
-describe('<GroupAssignments/>', () => {
+describe('GroupAssignments', () => {
     const GROUP_MEMBERSHIP = {
         '1035': {
             groupName: 'NewSiteGroup',
@@ -114,7 +114,6 @@ describe('<GroupAssignments/>', () => {
         save: jest.fn(),
         setErrorMsg: jest.fn(),
         setIsDirty: jest.fn(),
-        getAuditLogData: jest.fn(),
     };
 
     test('without members', async () => {

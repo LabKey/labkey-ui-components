@@ -33,11 +33,13 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
 
-import { handleRequestFailure } from '../../util/utils';
+import {caseInsensitive, handleRequestFailure} from '../../util/utils';
 
 import { getExcludedDataTypeNames } from '../entities/actions';
 
 import { getQueryDetails } from '../../query/api';
+
+import { selectRows } from '../../query/selectRows';
 
 import {
     DOMAIN_ERROR_ID,
@@ -108,24 +110,25 @@ function cache<T>(prefix: string, key: string, miss: () => Promise<T>): Promise<
     return promise;
 }
 
-// TODO move these to lookups dir
 export function fetchContainers(): Promise<List<Container>> {
     return cache<List<Container>>(
         'container-cache',
         'containers',
         () =>
-            new Promise(resolve => {
-                const success: any = data => {
-                    resolve(processContainers(data));
-                };
-
+            new Promise((resolve, reject) => {
                 Security.getContainers({
                     containerPath: '/',
                     includeSubfolders: true,
                     includeEffectivePermissions: false,
                     includeWorkbookChildren: false,
                     includeStandardProperties: false,
-                    success,
+                    success: data => {
+                        resolve(processContainers(data));
+                    },
+                    failure: error => {
+                        console.error(error);
+                        reject(error);
+                    },
                 });
             })
     );
@@ -255,7 +258,7 @@ export function fetchSchemas(containerPath: string): Promise<SchemaDetails[]> {
     );
 }
 
-export function getExcludedSchemaQueryNames(schemaName, queryContainerPath?: string): Promise<string[]> {
+export function getExcludedSchemaQueryNames(schemaName: string, queryContainerPath?: string): Promise<string[]> {
     switch (schemaName) {
         case 'assay':
             return getExcludedDataTypeNames(SCHEMAS.ASSAY_TABLES.ASSAY_LIST, 'AssayDesign', queryContainerPath);
@@ -331,24 +334,14 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
 }
 
 export function fetchOntologies(containerPath?: string): Promise<OntologyModel[]> {
-    return cache<OntologyModel[]>('ontologies-cache', containerPath, () => {
-        return new Promise((resolve, reject) => {
-            Query.selectRows({
-                method: 'POST',
-                containerPath,
-                schemaName: 'ontology',
-                queryName: 'ontologies',
-                columns: 'RowId,Name,Abbreviation',
-                sort: 'Name',
-                requiredVersion: 17.1,
-                success: response => {
-                    resolve(response.rows.map(OntologyModel.create));
-                },
-                failure: error => {
-                    reject(error);
-                },
-            });
+    return cache<OntologyModel[]>('ontologies-cache', containerPath, async () => {
+        const result = await selectRows({
+            columns: ['RowId', 'Name', 'Abbreviation'],
+            containerPath,
+            schemaQuery: new SchemaQuery('ontology', 'ontologies'),
+            sort: 'Name',
         });
+        return result.rows.map(OntologyModel.create);
     });
 }
 
@@ -443,22 +436,17 @@ export function validateDomainNameExpressions(
     includeNamePreview?: boolean
 ): Promise<NameExpressionsValidationResults> {
     return new Promise((resolve, reject) => {
-        function successHandler(response) {
-            resolve({
-                warnings: response['warnings'],
-                errors: response['errors'],
-                previews: response['previews'],
-            });
-        }
-
         Domain.validateNameExpressions({
             containerPath: domain.container,
             options,
             domainDesign: DomainDesign.serialize(domain),
             kind,
             includeNamePreview,
-            success: successHandler,
+            success: response => {
+                resolve({ errors: response.errors, previews: response.previews, warnings: response.warnings });
+            },
             failure: error => {
+                console.error(error);
                 reject(error);
             },
         });
@@ -551,15 +539,13 @@ export function processJsonImport(content: string, domain: DomainDesign): Simple
 }
 
 export function handleSystemFieldUpdates(domain: DomainDesign, field: string, enable: boolean): DomainDesign {
-    const disabledFieldNames = domain.disabledSystemFields ? [...domain.disabledSystemFields] : [];
-    const disabledFieldNamesLc = disabledFieldNames.map(field => field.toLowerCase());
+    const disabledSystemFields = domain.disabledSystemFields ? [...domain.disabledSystemFields] : [];
+    const disabledFieldNamesLc = disabledSystemFields.map(f => f.toLowerCase());
     const fieldInd = disabledFieldNamesLc.indexOf(field.toLowerCase());
-    if (enable && fieldInd > -1) disabledFieldNames.splice(fieldInd, 1);
-    else if (!enable && fieldInd === -1) disabledFieldNames.push(field);
+    if (enable && fieldInd > -1) disabledSystemFields.splice(fieldInd, 1);
+    else if (!enable && fieldInd === -1) disabledSystemFields.push(field);
 
-    return domain.merge({
-        disabledSystemFields: disabledFieldNames,
-    }) as DomainDesign;
+    return domain.merge({ disabledSystemFields }) as DomainDesign;
 }
 
 export function addDomainField(domain: DomainDesign, fieldConfig: Partial<IDomainField> = {}): DomainDesign {
@@ -599,8 +585,7 @@ export function removeFields(domain: DomainDesign, deletableSelectedFields: numb
         domain = updateDomainException(domain, value, undefined);
     });
 
-    const fields = domain.fields;
-    const newFields = fields.filter((field, i) => !deletableSelectedFields.includes(i));
+    const newFields = domain.fields.filter((_, i) => !deletableSelectedFields.includes(i));
     const updatedDomain = domain.merge({
         fields: newFields,
     }) as DomainDesign;
@@ -616,18 +601,9 @@ export function removeFields(domain: DomainDesign, deletableSelectedFields: numb
     }
 }
 
-/**
- *
- * @param domain: DomainDesign to update
- * @param changes: List of ids and values describing changes
- * @return copy of domain with updated fields
- */
 export function handleDomainUpdates(domain: DomainDesign, changes: List<IFieldChange>): DomainDesign {
-    let type;
-
     changes.forEach(change => {
-        type = getNameFromId(change.id);
-        if (type === DOMAIN_FIELD_CLIENT_SIDE_ERROR) {
+        if (getNameFromId(change.id) === DOMAIN_FIELD_CLIENT_SIDE_ERROR) {
             domain = updateDomainException(domain, getIndexFromId(change.id), change.value);
         } else {
             domain = updateDomainField(domain, change);
@@ -1182,68 +1158,64 @@ export function getDomainNamePreviews(
     });
 }
 
-export function getTextChoiceInUseValues(
+export async function getTextChoiceInUseValues(
     field: DomainField,
     schemaName: string,
     queryName: string,
     lockedSqlFragment: string
 ): Promise<Record<string, any>> {
+    const containerFilter = Query.ContainerFilter.allFolders; // to account for a shared domain at project or /Shared
+    const fieldName = field.original?.name ?? field.name;
+
+    // If the field is set as PHI, we need the query to include the RowId for logging, so we have to do the aggregate client side
+    if (field.isPHI()) {
+        const result = await selectRows({
+            columns: ['RowId', 'SampleState/StatusType', fieldName],
+            containerFilter,
+            filterArray: [Filter.create(fieldName, undefined, Filter.Types.NONBLANK)],
+            maxRows: -1,
+            schemaQuery: new SchemaQuery(schemaName, queryName),
+        });
+
+        const values = {};
+        result.rows.forEach(row => {
+            const value = row[fieldName]?.value;
+            if (isValidTextChoiceValue(value)) {
+                if (!values[value]) {
+                    values[value] = { count: 0, locked: false };
+                }
+                values[value].count++;
+                values[value].locked =
+                    values[value].locked || caseInsensitive(row, 'SampleState/StatusType').value === 'Locked';
+                // TODO: Double check displayValue vs value of 'SampleState/StatusType'
+            }
+        });
+        return values;
+    }
+
     return new Promise((resolve, reject) => {
-        const containerFilter = Query.ContainerFilter.allFolders; // to account for a shared domain at project or /Shared
-        const fieldName = field.original?.name ?? field.name;
+        Query.executeSql({
+            containerFilter,
+            schemaName,
+            sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
+            success: response => {
+                const values = response.rows
+                    .filter(row => isValidTextChoiceValue(row[fieldName]))
+                    .reduce((prev, current) => {
+                        prev[current[fieldName]] = {
+                            count: current['RowCount'],
+                            locked: current['IsLocked'] === 1,
+                        };
+                        return prev;
+                    }, {});
 
-        // if the field is set as PHI, we need the query to include the RowId for logging, so we have to do the aggregate client side
-        if (field.isPHI()) {
-            Query.selectRows({
-                containerFilter,
-                schemaName,
-                queryName,
-                columns: 'RowId,SampleState/StatusType,' + fieldName,
-                filterArray: [Filter.create(fieldName, undefined, Filter.Types.NONBLANK)],
-                maxRows: -1,
-                success: response => {
-                    const values = {};
-                    response.rows.forEach(row => {
-                        const value = row[fieldName];
-                        if (isValidTextChoiceValue(value)) {
-                            if (!values[value]) {
-                                values[value] = { count: 0, locked: false };
-                            }
-                            values[value].count++;
-                            values[value].locked = values[value].locked || row['SampleState/StatusType'] === 'Locked';
-                        }
-                    });
-                    resolve(values);
-                },
-                failure: error => {
-                    console.error('Error fetching distinct values for the text field: ', error);
-                    reject(error);
-                },
-            });
-        } else {
-            Query.executeSql({
-                containerFilter,
-                schemaName,
-                sql: `SELECT "${fieldName}", ${lockedSqlFragment} AS IsLocked, COUNT(*) AS RowCount FROM "${queryName}" WHERE "${fieldName}" IS NOT NULL GROUP BY "${fieldName}"`,
-                success: response => {
-                    const values = response.rows
-                        .filter(row => isValidTextChoiceValue(row[fieldName]))
-                        .reduce((prev, current) => {
-                            prev[current[fieldName]] = {
-                                count: current['RowCount'],
-                                locked: current['IsLocked'] === 1,
-                            };
-                            return prev;
-                        }, {});
-
-                    resolve(values);
-                },
-                failure: error => {
-                    console.error('Error fetching distinct values for the text field: ', error);
-                    reject(error);
-                },
-            });
-        }
+                resolve(values);
+            },
+            failure: error => {
+                console.error('Error fetching distinct values for the text field: ', error);
+                reject(error);
+            },
+        });
     });
 }
 
@@ -1287,7 +1259,7 @@ export function hasExistingDomainData(
             containerPath,
             schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
             sql: dataCountSql,
-            success: async data => {
+            success: data => {
                 resolve(data.rows[0].DataCount !== 0);
             },
             failure: error => {

@@ -13,6 +13,8 @@ import { UserProperties } from '../user/UserProperties';
 
 import { useServerContext } from '../base/ServerContext';
 
+import { useAppContext } from '../../AppContext';
+
 import { EffectiveRolesList } from './EffectiveRolesList';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
@@ -20,51 +22,43 @@ import { MembersList } from './MembersList';
 
 interface Props {
     displayCounts?: boolean;
-    getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     isSiteGroup: boolean;
     members?: Member[];
     policy: SecurityPolicy;
-    principal: Principal;
+    principal: Principal; // TODO: Is "principal" required or not? The code seems confused about this
     rolesByUniqueName: Map<string, SecurityRole>;
     showPermissionListLinks?: boolean;
 }
 
 export const GroupDetailsPanel: FC<Props> = memo(props => {
-    const {
-        getAuditLogData,
-        principal,
-        members,
-        isSiteGroup,
-        displayCounts = true,
-        showPermissionListLinks = true,
-    } = props;
+    const { principal, members, isSiteGroup, displayCounts = true, showPermissionListLinks = true } = props;
     const [created, setCreated] = useState<string>('');
+    const { api } = useAppContext();
     const { user } = useServerContext();
 
     const loadWhenCreated = useCallback(async () => {
         try {
-            const createdState = await getAuditLogData('Date,group/UserId', 'group/UserId', principal.userId);
-
+            const createdState = await api.security.getAuditLogData('group/UserId', principal.userId);
+            // TODO: Surely need a comment about -7
             setCreated(createdState.slice(0, -7));
         } catch (e) {
             console.error(resolveErrorMessage(e) ?? 'Failed to load when group created');
         }
-    }, [getAuditLogData, principal]);
+    }, [api, principal]);
 
     useEffect(() => {
         loadWhenCreated();
     }, [loadWhenCreated]);
 
     const { usersCount, groupsCount } = useMemo(() => {
-        const usersCount = members.filter(member => member.type === MemberType.user).length;
-        const groupsCount = (members.length - usersCount).toString();
+        const usersCount_ = members.filter(member => member.type === MemberType.user).length;
 
-        return { usersCount, groupsCount };
+        return { usersCount: usersCount_, groupsCount: (members.length - usersCount_).toString() };
     }, [members]);
 
     return (
         <Panel className="group-details-panel">
-            <Panel.Heading>{principal ? principal.displayName : 'Group Details'}</Panel.Heading>
+            <Panel.Heading>{principal?.displayName ?? 'Group Details'}</Panel.Heading>
             <Panel.Body>
                 {principal ? (
                     <>

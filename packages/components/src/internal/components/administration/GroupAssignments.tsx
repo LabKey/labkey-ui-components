@@ -23,7 +23,6 @@ export interface GroupAssignmentsProps {
     createGroup: (name: string) => void;
     deleteGroup: (id: string) => void;
     errorMsg: string;
-    getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     getIsDirty: () => boolean;
     groupMembership: GroupMembership;
     policy: SecurityPolicy;
@@ -40,7 +39,6 @@ export interface GroupAssignmentsProps {
 export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     const {
         errorMsg,
-        getAuditLogData,
         getIsDirty,
         groupMembership,
         policy,
@@ -211,7 +209,6 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                         rolesByUniqueName={rolesByUniqueName}
                         members={groupMembership[selectedPrincipal?.userId]?.members}
                         isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
-                        getAuditLogData={getAuditLogData}
                         displayCounts={userIsAppAdmin}
                     />
                 ) : (

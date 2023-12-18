@@ -20,7 +20,10 @@ import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { processRequest } from '../../query/api';
 
-export type FetchContainerOptions = Omit<Security.GetContainersOptions, 'success' | 'failure' | 'scope'>;
+type NonRequestCallback<T extends Utils.RequestCallbackOptions> = Omit<T, 'success' | 'failure' | 'scope'>;
+export type DeleteContainerOptions = NonRequestCallback<Security.DeleteContainerOptions>;
+export type FetchContainerOptions = NonRequestCallback<Security.GetContainersOptions>;
+export type GetUserPermissionsOptions = NonRequestCallback<Security.GetUserPermissionsOptions>;
 
 export interface Summary {
     count: number;
@@ -48,7 +51,7 @@ export interface RemoveGroupMembersResponse {
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
     createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
-    deleteContainer: (options: Security.DeleteContainerOptions) => Promise<Record<string, unknown>>;
+    deleteContainer: (options: DeleteContainerOptions) => Promise<Record<string, unknown>>;
     deleteGroup: (id: number, projectPath: string) => Promise<DeleteGroupResponse>;
     deletePolicy: (resourceId: string, containerPath?: string) => Promise<any>;
     fetchContainers: (options: FetchContainerOptions) => Promise<Container[]>;
@@ -59,21 +62,21 @@ export interface SecurityAPIWrapper {
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
     fetchRoles: () => Promise<List<SecurityRole>>;
-    getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
+    getAuditLogData: (filterCol: string, filterVal: string | number) => Promise<string>;
     getDeletionSummaries: () => Promise<Summary[]>;
     getGroupMemberships: () => Promise<Row[]>;
     getInheritedProjects: (container: Container) => Promise<string[]>;
     getUserLimitSettings: (containerPath?: string) => Promise<UserLimitSettings>;
-    getUserPermissions: (options: Security.GetUserPermissionsOptions) => Promise<string[]>;
+    getUserPermissions: (options: GetUserPermissionsOptions) => Promise<string[]>;
     getUserProperties: (userId: number) => Promise<any>;
-    getUserPropertiesForOther: (userId: number) => Promise<{ [key: string]: any }>;
+    getUserPropertiesForOther: (userId: number) => Promise<Record<string, any>>;
     removeGroupMembers: (
         groupId: number,
         principalIds: number[],
         projectPath: string
     ) => Promise<RemoveGroupMembersResponse>;
     savePolicy: (policy: any, containerPath?: string) => Promise<any>;
-    updateUserDetails: (schemaQuery: SchemaQuery, data: FormData) => Promise<any>;
+    updateUserDetails: (data: FormData) => Promise<any>;
 }
 
 export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
@@ -114,11 +117,10 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    deleteContainer = (options: Security.DeleteContainerOptions): Promise<Record<string, unknown>> => {
+    deleteContainer = (options: DeleteContainerOptions): Promise<Record<string, unknown>> => {
         return new Promise((resolve, reject) => {
             Security.deleteContainer({
-                comment: options.comment,
-                containerPath: options.containerPath,
+                ...(options ?? {}),
                 success: data => {
                     resolve(data);
                 },
@@ -180,26 +182,17 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    getAuditLogData = (columns: string, filterCol: string, filterVal: string | number): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            Query.selectRows({
-                method: 'POST',
-                schemaName: SCHEMAS.AUDIT_TABLES.SCHEMA,
-                queryName: 'GroupAuditEvent',
-                columns,
-                filterArray: [Filter.create(filterCol, filterVal, Filter.Types.EQUAL)],
-                containerFilter: Query.ContainerFilter.allFolders,
-                sort: '-Date',
-                maxRows: 1,
-                success: response => {
-                    resolve(response.rows.length ? response.rows[0].Date : '');
-                },
-                failure: error => {
-                    console.error('Failed to fetch group memberships', error);
-                    reject(error);
-                },
-            });
+    getAuditLogData = async (filterCol: string, filterVal: string | number): Promise<string> => {
+        const result = await selectRows({
+            columns: ['Date'],
+            containerFilter: Query.ContainerFilter.allFolders,
+            filterArray: [Filter.create(filterCol, filterVal, Filter.Types.EQUAL)],
+            maxRows: 1,
+            schemaQuery: new SchemaQuery(SCHEMAS.AUDIT_TABLES.SCHEMA, 'GroupAuditEvent'),
+            sort: '-Date',
         });
+
+        return result.rows.length > 0 ? caseInsensitive(result.rows[0], 'Date').value : '';
     };
 
     getDeletionSummaries = (): Promise<Summary[]> => {
@@ -216,33 +209,23 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    getGroupMemberships = (): Promise<Row[]> => {
-        return new Promise((resolve, reject) => {
-            Query.selectRows({
-                method: 'POST',
-                schemaName: 'core',
-                queryName: 'Members',
-                columns: 'UserId,GroupId,GroupId/Name,UserId/DisplayName,UserId/Email',
-                success: response => {
-                    resolve(response.rows);
-                },
-                failure: error => {
-                    console.error('Failed to fetch group memberships', error);
-                    reject(error);
-                },
-            });
+    getGroupMemberships = async (): Promise<Row[]> => {
+        const result = await selectRows({
+            columns: ['UserId', 'GroupId', 'GroupId/Name', 'UserId/DisplayName', 'UserId/Email'],
+            schemaQuery: new SchemaQuery('core', 'Members'),
         });
+
+        return result.rows;
     };
 
     getUserLimitSettings = getUserLimitSettings;
 
-    getUserPermissions = (options: Security.GetUserPermissionsOptions): Promise<string[]> => {
+    getUserPermissions = (options: GetUserPermissionsOptions): Promise<string[]> => {
         return new Promise((resolve, reject) => {
             Security.getUserPermissions({
-                containerPath: options.containerPath,
+                ...(options ?? {}),
                 success: response => {
-                    const { container } = response;
-                    resolve(container.effectivePermissions);
+                    resolve(response.container.effectivePermissions);
                 },
                 failure: error => {
                     console.error('Failed to fetch user permissions', error);
@@ -254,30 +237,23 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
 
     getUserProperties = getUserProperties;
 
-    getUserPropertiesForOther = (userId: number): Promise<{ [key: string]: any }> => {
-        return new Promise((resolve, reject) => {
-            selectRows({
-                filterArray: [Filter.create('UserId', userId)],
-                schemaQuery: SCHEMAS.CORE_TABLES.USERS,
-            })
-                .then(response => {
-                    if (response.rows.length > 0) {
-                        const row = response.rows[0];
-                        const rowValues = flattenValuesFromRow(row, Object.keys(row));
-
-                        // special case for the Groups prop as it is an array
-                        rowValues.Groups = caseInsensitive(row, 'Groups');
-
-                        resolve(rowValues);
-                    } else {
-                        resolve({});
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                    reject(error);
-                });
+    getUserPropertiesForOther = async (userId: number): Promise<Record<string, any>> => {
+        const response = await selectRows({
+            filterArray: [Filter.create('UserId', userId)],
+            schemaQuery: SCHEMAS.CORE_TABLES.USERS,
         });
+
+        if (response.rows.length === 0) {
+            return {};
+        }
+
+        const [row] = response.rows;
+        const rowValues = flattenValuesFromRow(row, Object.keys(row));
+
+        // special case for the Groups prop as it is an array
+        rowValues.Groups = caseInsensitive(row, 'Groups');
+
+        return rowValues;
     };
 
     removeGroupMembers = (
@@ -301,7 +277,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    updateUserDetails = (schemaQuery: SchemaQuery, data: FormData): Promise<any> => {
+    updateUserDetails = (data: FormData): Promise<any> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: buildURL('user', 'updateUserDetails.api'),
@@ -320,7 +296,6 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL('core', 'getExtSecurityContainerTree.api', container.path),
-                method: 'GET',
                 params: {
                     requiredPermission: Security.PermissionTypes.Admin,
                     nodeId: container.id,

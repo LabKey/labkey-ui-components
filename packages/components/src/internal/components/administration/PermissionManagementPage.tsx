@@ -32,7 +32,7 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
     const { roles } = props;
     useAdministrationSubNav();
     const [getIsDirty, setIsDirty] = useRouteLeave();
-    const [policyLastModified, setPolicyLastModified] = useState<string>(undefined);
+    const [policyLastModified, setPolicyLastModified] = useState<string>();
     const [hidePageDescription, setHidePageDescription] = useState<boolean>(false);
     const { dismissNotifications, createNotification } = useNotificationsContext();
     const { extraPermissionRoles } = useAdminAppContext();

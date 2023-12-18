@@ -51,7 +51,6 @@ import {
     IEntityTypeOption,
     IParentAlias,
     IParentOption,
-    MoveEntitiesResult,
     OperationConfirmationData,
     ProjectConfigurableDataType,
     RemappedKeyValues,
@@ -828,9 +827,10 @@ export function moveEntities(
     selectionKey?: string,
     useSnapshotSelection?: boolean,
     userComment?: string
-): Promise<MoveEntitiesResult> {
+): Promise<Query.MoveRowsResponse> {
     return new Promise((resolve, reject) => {
         const params = {
+            containerPath: sourceContainer?.path,
             auditBehavior: AuditBehaviorTypes.DETAILED,
             auditUserComment: userComment,
             targetContainerPath: targetContainer,
@@ -848,24 +848,20 @@ export function moveEntities(
             params['useSnapshotSelection'] = useSnapshotSelection;
         }
 
-        return Ajax.request({
-            url: buildURL('query', 'moveRows.api', undefined, {
-                container: sourceContainer?.path,
-            }),
-            method: 'POST',
-            jsonData: params,
-            success: Utils.getCallbackWrapper(response => {
+        Query.moveRows({
+            ...params,
+            success: (response: Query.MoveRowsResponse) => {
                 if (response.success) {
                     resolve(response);
                 } else {
                     console.error('Error moving ' + entityDataType.nounPlural, response);
                     reject(response?.error ?? 'Unknown error moving ' + entityDataType.nounPlural + '.');
                 }
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error('Error moving ' + entityDataType.nounPlural, response);
-                reject(response?.exception ?? 'Unknown error moving ' + entityDataType.nounPlural + '.');
-            }),
+            },
+            failure: reason => {
+                console.error('Error moving ' + entityDataType.nounPlural, reason);
+                reject(reason?.exception ?? 'Unknown error moving ' + entityDataType.nounPlural + '.');
+            },
         });
     });
 }

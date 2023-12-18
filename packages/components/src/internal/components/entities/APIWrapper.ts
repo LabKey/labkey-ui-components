@@ -1,4 +1,5 @@
 import { List, Map } from 'immutable';
+import { Query } from '@labkey/api';
 
 import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../settings/actions';
 
@@ -26,7 +27,6 @@ import {
     IEntityTypeOption,
     IParentAlias,
     IParentOption,
-    MoveEntitiesResult,
     OperationConfirmationData,
 } from './models';
 
@@ -100,7 +100,7 @@ export interface EntityAPIWrapper {
         selectionKey?: string,
         useSnapshotSelection?: boolean,
         auditUserComment?: string
-    ) => Promise<MoveEntitiesResult>;
+    ) => Promise<Query.MoveRowsResponse>;
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {

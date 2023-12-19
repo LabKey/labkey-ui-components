@@ -822,7 +822,7 @@ export interface MoveEntitiesOptions extends Omit<Query.MoveRowsOptions, 'rows' 
 
 export function moveEntities(options: MoveEntitiesOptions): Promise<Query.MoveRowsResponse> {
     return new Promise((resolve, reject) => {
-        const { entityDataType, rowIds, ...rest} = options;
+        const { entityDataType, rowIds, ...rest } = options;
         const params = Object.assign({}, rest);
         if (rowIds) {
             params['rows'] = rowIds.reduce((prev, curr) => {

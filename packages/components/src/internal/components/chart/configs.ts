@@ -32,8 +32,8 @@ export const CHART_GROUPS: Record<string, BarChartConfig> = {
             CHART_SELECTORS.Week,
             CHART_SELECTORS.Today,
         ],
-        // TODO: Use redirect AppURL.create('assays', row.id, 'overview')
-        getAppURL: row => AppURL.create(ASSAYS_KEY, 'general', row.x || row['label'], 'overview'),
+        // TODO: Use redirect AppURL.create('assays', row.id, 'runs')
+        getAppURL: row => AppURL.create(ASSAYS_KEY, 'general', row.x || row['label'], 'runs'),
         filterDataRegionName: 'Runs',
         itemCountSQ: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
         key: ASSAYS_KEY,

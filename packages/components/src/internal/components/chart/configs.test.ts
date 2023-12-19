@@ -4,7 +4,7 @@ import { ChartData } from './types';
 describe('CHART_GROUPS', () => {
     test('getAppURL', () => {
         let row = { x: 'x', xSub: 'xSub' } as ChartData;
-        expect(CHART_GROUPS.Assays.getAppURL(row).toHref()).toBe('#/assays/general/x/overview');
+        expect(CHART_GROUPS.Assays.getAppURL(row).toHref()).toBe('#/assays/general/x/runs');
         expect(CHART_GROUPS.Samples.getAppURL(row).toHref()).toBe('#/samples/x');
         expect(CHART_GROUPS.SampleStatuses.getAppURL(row, { target: { tagName: 'title' } }).toHref()).toBe(
             '#/samples/xSub'

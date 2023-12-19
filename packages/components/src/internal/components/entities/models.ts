@@ -590,12 +590,6 @@ export interface IParentAlias {
     parentValue: IParentOption;
 }
 
-export interface MoveEntitiesResult {
-    containerPath: string;
-    success: boolean;
-    updateCounts: Record<string, number>;
-}
-
 export interface DataTypeEntity {
     description?: string;
     label: string;

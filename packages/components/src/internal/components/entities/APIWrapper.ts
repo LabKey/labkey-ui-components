@@ -1,12 +1,11 @@
 import { List, Map } from 'immutable';
+import { Query } from '@labkey/api';
 
 import { GetNameExpressionOptionsResponse, loadNameExpressionOptions } from '../settings/actions';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import { InsertOptions } from '../../query/api';
-
-import { Container } from '../base/models/Container';
 
 import {
     getDataOperationConfirmationData,
@@ -17,6 +16,7 @@ import {
     handleEntityFileImport,
     moveEntities,
     initParentOptionsSelects,
+    MoveEntitiesOptions,
 } from './actions';
 import { DataOperation } from './constants';
 import {
@@ -26,7 +26,6 @@ import {
     IEntityTypeOption,
     IParentAlias,
     IParentOption,
-    MoveEntitiesResult,
     OperationConfirmationData,
 } from './models';
 
@@ -91,17 +90,7 @@ export interface EntityAPIWrapper {
         parentOptions: IParentOption[];
     }>;
     loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
-    moveEntities: (
-        sourceContainer: Container,
-        targetContainer: string,
-        entityDataType: EntityDataType,
-        schemaName: string,
-        queryName: string,
-        rowIds?: number[],
-        selectionKey?: string,
-        useSnapshotSelection?: boolean,
-        auditUserComment?: string
-    ) => Promise<MoveEntitiesResult>;
+    moveEntities: (options: MoveEntitiesOptions) => Promise<Query.MoveRowsResponse>;
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {

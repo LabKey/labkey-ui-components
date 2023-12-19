@@ -1022,7 +1022,6 @@ export function withQueryModels<Props>(
                 produce<State>(draft => {
                     const model = draft.queryModels[id];
                     if (!filterArraysEqual(model.filterArray, filters)) {
-                        console.log('filter array has  changed');
                         shouldLoad = true;
                         model.filterArray = filters;
                         // Changing filters affects row count so we need to reset the offset or pagination can get into

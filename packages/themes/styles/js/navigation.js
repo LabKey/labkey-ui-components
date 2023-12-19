@@ -201,7 +201,11 @@
                         // Show a better error to the user than just a generic Unauthorized dialog
                         if (response.status === 401) {
                             document.getElementById(id).innerHTML = '<div style="padding: 5px">You do not have permission to view this data. You have likely been logged out.'
-                                    + (this.loginUrl != null ? ' Please <a href="' + this.loginUrl + '">log in</a> again.' : ' Please <a href="#" onclick="location.reload();">reload</a> the page.') + "</div>";
+                                    + (this.loginUrl != null ? ' Please <a href="' + this.loginUrl + '">log in</a> again.' : ' Please <a href="#" id="' + id + '-reload">reload</a> the page.') + "</div>";
+
+                            document.getElementById(id + '-reload').addEventListener('click', function() {
+                                location.reload();
+                            });
                         }
                         else {
                             if (window.console && window.console.log) {
@@ -364,7 +368,7 @@
         if (menu.length === 0) {
             return;
         }
-        
+
         var offset = menu.offset();
         var win = $(window);
 

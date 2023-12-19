@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
-import { ActionURL } from '@labkey/api';
+import { ActionURL, AuditBehaviorTypes } from '@labkey/api';
 
 import { Progress } from '../base/Progress';
 import { ConfirmModal } from '../base/ConfirmModal';
@@ -117,17 +117,18 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
             const useSnapshotSelection = useSelected && movingAll && queryModel.filterArray.length > 0;
 
             try {
-                await api.entity.moveEntities(
-                    currentContainer,
+                await api.entity.moveEntities({
+                    containerPath: currentContainer?.path,
                     targetContainerPath,
                     entityDataType,
-                    queryModel.schemaName,
-                    queryModel.queryName,
-                    rowIds_,
-                    selectionKey,
+                    schemaName: queryModel.schemaName,
+                    queryName: queryModel.queryName,
+                    rowIds: rowIds_,
+                    dataRegionSelectionKey: selectionKey,
                     useSnapshotSelection,
-                    auditUserComment
-                );
+                    auditBehavior: AuditBehaviorTypes.DETAILED,
+                    auditUserComment,
+                });
 
                 let projectUrl = buildURL(
                     getPrimaryAppProperties()?.productId,

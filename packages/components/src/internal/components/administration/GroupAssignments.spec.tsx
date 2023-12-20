@@ -2,7 +2,6 @@ import React from 'react';
 import { fromJS, List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 import PanelBody from 'react-bootstrap/lib/PanelBody';
-import { createMockWithRouterProps } from '../../mockUtils';
 
 import { Principal, SecurityPolicy } from '../permissions/models';
 import policyJSON from '../../../test/data/security-getPolicy.json';
@@ -116,7 +115,6 @@ describe('<GroupAssignments/>', () => {
         setErrorMsg: jest.fn(),
         setIsDirty: jest.fn(),
         getAuditLogData: jest.fn(),
-        ...createMockWithRouterProps(jest.fn),
     };
 
     test('without members', async () => {

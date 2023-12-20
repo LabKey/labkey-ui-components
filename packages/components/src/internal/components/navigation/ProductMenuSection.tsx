@@ -13,14 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, PureComponent, ReactNode } from 'react';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 
-import { createProductUrl, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
+import { AppURL, createProductUrl, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
 import { naturalSort } from '../../../public/sort';
 import { getHref } from '../../url/utils';
 
-import { MenuSectionModel, MenuSectionConfig } from './model';
+import { MenuSectionModel, MenuSectionConfig, MenuItemModel } from './model';
+
+interface MenuSectionLinkProps {
+    config: MenuSectionConfig;
+    item: MenuItemModel;
+}
+
+const MenuSectionLink: FC<MenuSectionLinkProps> = ({ config, item }) => {
+    const { activeJobIconCls, showActiveJobIcon, useOriginalURL } = config;
+    const isAppUrl = (item.url instanceof AppURL || item.url.indexOf('#') === 0) && !useOriginalURL;
+    const body =
+        item.hasActiveJob && showActiveJobIcon ? (
+            <>
+                <i className={classNames('fa', activeJobIconCls)} />
+                <span className="spacer-left product-menu-item">{item.label}</span>
+            </>
+        ) : (
+            item.label
+        );
+
+    if (isAppUrl) {
+        // Hack: sometimes our server returns strings that are actually proper AppURLs (workflow, eln, and more). We can
+        // detect this by checking if the URL is prefixed with "#".
+        const url = item.url instanceof AppURL ? item.url.toString() : item.url.replace('#', '');
+        return <Link to={url}>{body}</Link>;
+    }
+
+    return <a href={item.url.toString()}>{body}</a>;
+};
 
 interface MenuSectionProps {
     config: MenuSectionConfig;
@@ -67,10 +96,21 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
                   undefined,
                   config.headerURLPart ?? section.key
               );
+        const headerURLIsAppURL = headerURL instanceof AppURL;
+        let headerEl = label;
+        let emptyLink;
 
-        let emptyURL;
+        // In order to make sure we don't break useRouteLeave we need to use <Link> for AppURLs and <a> for non-app URLs
+        if (headerURL && headerURLIsAppURL) {
+            headerEl = <Link to={headerURL.toString()}>{label}</Link>;
+        } else if (headerURL && !headerURLIsAppURL) {
+            headerEl = <a href={getHref(headerURL)}>{label}</a>;
+        }
+
         if (config.emptyAppURL) {
-            emptyURL = createProductUrl(section.productId, currentProductId, config.emptyAppURL, containerPath);
+            const emptyURL = createProductUrl(section.productId, currentProductId, config.emptyAppURL, containerPath);
+            if (emptyURL instanceof AppURL) emptyLink = <Link to={emptyURL.toString()}>{config.emptyURLText}</Link>
+            else emptyLink = <a href={emptyURL}>{config.emptyURLText}</a>
         }
 
         const visibleItems = section.items.filter(item => !item.hidden);
@@ -78,17 +118,21 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
         return (
             <ul>
                 <li className="menu-section-header clickable-item">
-                    {headerURL ? <a href={getHref(headerURL)}>{label}</a> : <>{label}</>}
+                    {headerEl}
                 </li>
                 <li>
                     <hr />
                 </li>
-                {(section.items.isEmpty() || visibleItems.isEmpty()) ? (
+                {section.items.isEmpty() || visibleItems.isEmpty() ? (
                     <>
-                        {(config.emptyText || config.filteredEmptyText) && <li className="empty-section">{section.items.isEmpty() ? config.emptyText : config.filteredEmptyText}</li>}
-                        {emptyURL && (
+                        {(config.emptyText || config.filteredEmptyText) && (
+                            <li className="empty-section">
+                                {section.items.isEmpty() ? config.emptyText : config.filteredEmptyText}
+                            </li>
+                        )}
+                        {emptyLink && (
                             <li className="empty-section-link">
-                                <a href={getHref(emptyURL)}>{config.emptyURLText}</a>
+                                {emptyLink}
                             </li>
                         )}
                     </>
@@ -109,9 +153,7 @@ export class ProductMenuSection extends PureComponent<MenuSectionProps> {
                             if (item.url) {
                                 return (
                                     <li key={item.label} className="clickable-item">
-                                        <a href={item.getUrlString(config.useOriginalURL)} target="_self">
-                                            {labelDisplay}
-                                        </a>
+                                        <MenuSectionLink config={config} item={item} />
                                     </li>
                                 );
                             }

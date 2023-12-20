@@ -9,8 +9,6 @@ import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 
 import { FolderAPIWrapper, getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
-import { createMockWithRouterProps } from '../../mockUtils';
-
 import { AppURL } from '../../url/AppURL';
 
 import { TEST_LIMS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
@@ -39,16 +37,6 @@ describe('CreateProjectPage', () => {
             api: getTestAPIWrapper(),
         };
     }
-
-    const { location } = window;
-
-    beforeAll(() => {
-        delete window.location;
-    });
-
-    afterAll(() => {
-        window.location = location;
-    });
 
     test('submits data', async () => {
         // Arrange
@@ -129,20 +117,13 @@ describe('CreateProjectPage', () => {
     });
 
     test('page displays notifications and reroutes', async () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Biologics/samplemanager-app.view#',
-            }
-        );
-
-        const replace = jest.fn();
-        const wrapper = mountWithAppServerContext(
-            <CreateProjectPage {...createMockWithRouterProps(jest.fn, { replace })} />,
-            getDefaultAppContext(),
-            { moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT, user: TEST_USER_APP_ADMIN }
-        );
-
+        const rrd = require('react-router-dom') as any;
+        const mockNavigate = jest.fn();
+        rrd.__setNavigate(mockNavigate);
+        const wrapper = mountWithAppServerContext(<CreateProjectPage />, getDefaultAppContext(), {
+            moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT,
+            user: TEST_USER_APP_ADMIN,
+        });
         const container = wrapper.find(CreateProjectContainer);
         expect(container.exists()).toBe(true);
         const onCreated = container.prop('onCreated');
@@ -154,8 +135,9 @@ describe('CreateProjectPage', () => {
         });
 
         await waitForLifecycle(wrapper);
-        expect(replace).toHaveBeenCalledWith(
-            AppURL.create('admin', 'projects').addParam('created', TEST_FOLDER_CONTAINER.name).toString()
+        expect(mockNavigate).toHaveBeenCalledWith(
+            AppURL.create('admin', 'projects').addParam('created', TEST_FOLDER_CONTAINER.name).toString(),
+            { replace: true }
         );
 
         wrapper.unmount();

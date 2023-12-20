@@ -1,18 +1,15 @@
 import React, { FC } from 'react';
 
-import { WithRouterProps } from 'react-router';
-
 import { biologicsIsPrimaryApp, sampleManagerIsPrimaryApp } from '../../app/utils';
 
 import { PipelineJobsPage } from './PipelineJobsPage';
 import { PIPELINE_PROVIDER_FILTER_LKB, PIPELINE_PROVIDER_FILTER_LKSM } from './constants';
 
-export const PipelineJobsListingPage: FC<WithRouterProps> = props => {
-    const baseFilters = sampleManagerIsPrimaryApp()
-        ? [PIPELINE_PROVIDER_FILTER_LKSM]
-        : biologicsIsPrimaryApp()
-        ? [PIPELINE_PROVIDER_FILTER_LKB]
-        : null;
+// TODO: this component is not necessary, we can just use PipelineJobsPage directly.
+export const PipelineJobsListingPage: FC = () => {
+    let baseFilters;
+    if (sampleManagerIsPrimaryApp()) baseFilters = [PIPELINE_PROVIDER_FILTER_LKSM];
+    else if (biologicsIsPrimaryApp()) baseFilters = [PIPELINE_PROVIDER_FILTER_LKB];
 
-    return <PipelineJobsPage {...props} autoRefresh={true} title="Background Imports" baseFilters={baseFilters} />;
+    return <PipelineJobsPage autoRefresh={true} title="Background Imports" baseFilters={baseFilters} />;
 };

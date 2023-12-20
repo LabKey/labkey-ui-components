@@ -4,10 +4,11 @@
  */
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
-import { WithRouterProps } from 'react-router';
 import { Security } from '@labkey/api';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { FormButtons } from '../../FormButtons';
+import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 
 import {
@@ -23,7 +24,6 @@ import { useServerContext } from '../base/ServerContext';
 import { AppContext, useAppContext } from '../../AppContext';
 
 import { resolveErrorMessage } from '../../util/messaging';
-import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
 import { Alert } from '../base/Alert';
 
@@ -49,7 +49,7 @@ import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { InjectedPermissionsPage } from './withPermissionsPage';
 
 // exported for testing
-export interface PermissionAssignmentsProps extends InjectedPermissionsPage, InjectedRouteLeaveProps, WithRouterProps {
+export interface PermissionAssignmentsProps extends InjectedPermissionsPage, InjectedRouteLeaveProps {
     onSuccess: () => void;
     /** Subset list of role uniqueNames to show in this component usage */
     rolesToShow?: List<string>;
@@ -66,7 +66,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const {
         getIsDirty,
         inactiveUsersById,
-        location,
         onSuccess,
         principals,
         principalsById,
@@ -74,7 +73,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         rolesByUniqueName,
         rolesToShow,
         setIsDirty,
-        router,
         rootRolesToShow,
         setLastModified,
         setProjectCount,
@@ -103,7 +101,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const homeFolderPath = isAppHome ? container.path : container.parentPath;
 
     const selectedPrincipal = principalsById?.get(selectedUserId);
-    const initExpandedRole = location.query.expand;
+    const [searchParams] = useSearchParams();
+    const initExpandedRole = searchParams.get('expand');
     const projectUser = useContainerUser(getProjectPath(container?.path));
 
     const loadGroupMembership = useCallback(async () => {
@@ -257,10 +256,12 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         loadGroupMembership();
     }, [onSuccess, loadGroupMembership]);
 
+    const navigate = useNavigate();
+
     const onCancel = useCallback(() => {
         setIsDirty(false);
-        router.goBack();
-    }, [router, setIsDirty]);
+        navigate(-1);
+    }, [navigate, setIsDirty]);
 
     const onSaveSuccess = useCallback(async () => {
         await loadPolicy();
@@ -540,11 +541,9 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             </div>
 
             <FormButtons>
-                {router && (
-                    <button className="btn btn-default" onClick={onCancel} type="button">
-                        Cancel
-                    </button>
-                )}
+                <button className="btn btn-default" onClick={onCancel} type="button">
+                    Cancel
+                </button>
 
                 <button
                     className="pull-right alert-button permissions-assignment-save-btn btn btn-success"

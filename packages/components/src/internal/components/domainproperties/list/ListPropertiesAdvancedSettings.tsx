@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FormEventHandler, memo, ReactNode, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useState } from 'react';
 import classNames from 'classnames';
 import { Button, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
 import { getSubmitButtonClass } from '../../../app/utils';

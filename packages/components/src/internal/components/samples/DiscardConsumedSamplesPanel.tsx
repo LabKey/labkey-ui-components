@@ -1,5 +1,4 @@
 import React, { ChangeEventHandler, FC, memo } from 'react';
-import { Col, Row } from 'react-bootstrap';
 
 interface Props {
     discardTitle?: string;

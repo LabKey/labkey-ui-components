@@ -4,6 +4,7 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const constants = require('./constants');
 const path = require('path');
 // relative to the <lk_module>/node_modules/@labkey/build/webpack dir
@@ -15,7 +16,7 @@ const devServer = {
     },
     host: 'localhost',
     port: constants.watchPort,
-    hot: 'only',
+    hot: true,
     headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
@@ -37,7 +38,6 @@ for (let i = 0; i < entryPoints.apps.length; i++) {
     const entryPoint = entryPoints.apps[i];
 
     entries[entryPoint.name] = [
-        'react-hot-loader/patch',
         entryPoint.path + '/dev.tsx'
     ];
 }
@@ -57,6 +57,7 @@ module.exports = {
             ...constants.aliases.LABKEY_PACKAGES_DEV,
             // This assures there is only one copy of react used while doing start-link
             react: path.resolve('./node_modules/react'),
+            'react-router-dom': path.resolve('./node_modules/react-router-dom'),
         },
         extensions: constants.extensions.TYPESCRIPT.concat('.scss')
     },
@@ -68,6 +69,7 @@ module.exports = {
         emitOnErrors: false,
     },
     plugins: [
+        new ReactRefreshWebpackPlugin(),
         // This Plugin type checks our TS code, @babel/preset-typescript does not type check, it only transforms
         new ForkTsCheckerWebpackPlugin(constants.TS_CHECKER_DEV_CONFIG)
     ],

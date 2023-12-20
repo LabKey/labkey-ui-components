@@ -6,6 +6,33 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Support cross folder sample import
   - add util for check isCrossProjectImportEnabled
 
+### version 3.0.0
+*Released*: 20 December 2023
+* Breaking Changes:
+  * Upgrade react-router dependency to react-router-dom version 6.x
+    * If you use react-router you will need to upgrade
+    * If you have history pinned in your dependencies you should remove it
+  * withQueryModels updated to be compatible with React Router 6.x
+
+* Other Changes:
+  * Note: all other changes listed here have to do with our upgrade of React Router, they're not considered breaking because they are all on our internal APIs which you should not be using
+  * URL helpers:
+    * use ReactRouter SetURLSearchParams instead of InjectedRouter and Location
+    * remove resetParameters
+    * remove Location type
+    * add getQueryParams
+  * Update components to use React Router Hooks
+  * Don't export UsersGridPanel or PermissionAssignments
+  * AppRouteResolver: fetch now returns Promise<AppURL> instead of Promise<AppURL | boolean>
+  * SubNav is no longer exported
+  * Removed unused constants
+    * SECURITY_LOGOUT
+    * SECURITY_SERVER_UNAVAILABLE
+    * SECURITY_SESSION_TIMEOUT
+  * Removed RoutingTableState and RoutingTableReducers
+  * Removed withRouteLeave
+  * useRouteLeave: remove `router` and `routes` props
+
 ### version 2.399.1
 *Released*: 19 December 2023
 - Update @labkey/api and use moveRows() function

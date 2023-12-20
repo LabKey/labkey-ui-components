@@ -3,7 +3,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { List } from 'immutable';
-import { wrapper } from 'react-bootstrap/lib/utils/deprecationWarning';
 
 import renderer from 'react-test-renderer';
 

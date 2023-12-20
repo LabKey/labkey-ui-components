@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.399.2-fb-crossFolderImport.1",
+  "version": "3.0.1-fb-crossFolderImport.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -59,7 +59,6 @@
     "enzyme": "~3.11.0",
     "font-awesome": "~4.7.0",
     "formsy-react": "~1.1.5",
-    "history": "~4.7.2",
     "immer": "~10.0.2",
     "immutable": "~3.8.2",
     "moment": "~2.29.3",
@@ -72,13 +71,13 @@
     "react-color": "~2.19.3",
     "react-datepicker": "~4.17.0",
     "react-dom": "~16.14.0",
-    "react-router": "~3.2.6",
+    "react-router-dom": "~6.20.1",
     "react-select": "~5.7.0",
     "react-treebeard": "~3.2.4",
     "vis-network": "~6.5.2"
   },
   "devDependencies": {
-    "@labkey/build": "6.16.1",
+    "@labkey/build": "7.0.0",
     "@labkey/eslint-config-react": "0.0.13",
     "@types/enzyme": "~3.10.13",
     "@types/history": "~4.7.9",
@@ -90,7 +89,6 @@
     "@types/react-bootstrap": "~0.32.32",
     "@types/react-datepicker": "~4.15.0",
     "@types/react-dom": "~16.9.19",
-    "@types/react-router": "~3.0.28",
     "@types/react-test-renderer": "~16.9.6",
     "blob-polyfill": "7.0.20220408",
     "bootstrap-sass": "~3.4.3",

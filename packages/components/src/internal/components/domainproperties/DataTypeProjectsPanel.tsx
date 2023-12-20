@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { hasProductProjects, isAppHomeFolder } from '../../app/utils';
+import { hasProductProjects } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
 

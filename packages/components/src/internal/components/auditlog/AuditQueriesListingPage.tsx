@@ -6,12 +6,12 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { fromJS } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
-
-import { WithRouterProps } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import { useAdministrationSubNav } from '../administration/useAdministrationSubNav';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Page } from '../base/Page';
@@ -74,8 +74,7 @@ const AuditQueriesListingPageBody: FC<InjectedQueryModels & OwnProps> = memo(pro
                     value === SOURCE_AUDIT_QUERY.value || value === DATACLASS_DATA_UPDATE_AUDIT_QUERY.value;
                 let auditEventType = isQueryDataUpdate ? QUERY_UPDATE_AUDIT_QUERY.value : value;
                 const isAssayEvent = value === ASSAY_AUDIT_QUERY.value;
-                if (isAssayEvent)
-                    auditEventType = EXPERIMENT_AUDIT_EVENT;
+                if (isAssayEvent) auditEventType = EXPERIMENT_AUDIT_EVENT;
                 const detail_ = await getAuditDetail(selectedRowId, auditEventType);
                 setDetail(detail_.merge({ rowId: selectedRowId }) as AuditDetailsModel);
                 setError(undefined);
@@ -130,8 +129,10 @@ const AuditQueriesListingPageBody: FC<InjectedQueryModels & OwnProps> = memo(pro
 
 const AuditQueriesListingBodyWithModels = withQueryModels<OwnProps>(AuditQueriesListingPageBody);
 
-export const AuditQueriesListingPage: FC<WithRouterProps> = memo(({ location, router }) => {
-    const locationEventType = location.query?.eventType;
+export const AuditQueriesListingPage: FC = memo(() => {
+    useAdministrationSubNav();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const locationEventType = searchParams.get('eventType');
     const [eventType, setEventType] = useState<string>(() => locationEventType ?? SAMPLE_TIMELINE_AUDIT_QUERY.value);
     const { moduleContext, project, user } = useServerContext();
     const auditQueries = useMemo(() => getAuditQueries(moduleContext), [moduleContext]);
@@ -168,22 +169,26 @@ export const AuditQueriesListingPage: FC<WithRouterProps> = memo(({ location, ro
     const onChange = useCallback<SelectInputChange>(
         (_, eventType_) => {
             if (eventType_ === eventType) return;
-            const query = Object.keys(location.query).reduce((query_, key) => {
-                // remove query parameters from next model event type
-                if (!key.startsWith('query.')) {
-                    if (key === AUDIT_EVENT_TYPE_PARAM) {
-                        query_[key] = eventType_;
-                    } else {
-                        query_[key] = location.query[key];
-                    }
-                }
+            setSearchParams(
+                params => {
+                    const paramsObj = Object.fromEntries(params.entries());
+                    return Object.keys(paramsObj).reduce((result, key) => {
+                        if (!key.startsWith('query.')) {
+                            if (key === AUDIT_EVENT_TYPE_PARAM) {
+                                result[key] = eventType_;
+                            } else {
+                                result[key] = paramsObj[key];
+                            }
+                        }
 
-                return query_;
-            }, {});
-            router.replace({ ...location, query });
+                        return result;
+                    }, {});
+                },
+                { replace: true }
+            );
             setEventType(eventType_);
         },
-        [eventType, location, router]
+        [eventType, setSearchParams]
     );
 
     const title = 'Audit Logs';

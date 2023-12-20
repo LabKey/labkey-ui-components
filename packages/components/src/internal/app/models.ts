@@ -9,32 +9,21 @@ import { ComponentType } from 'react';
 
 import { Container } from '../components/base/models/Container';
 import { User } from '../components/base/models/User';
-import { ProjectConfigurableDataType } from '../components/entities/models';
 
 const user = new User({
     ...getServerContext().user,
     permissionsList: getServerContext().container?.effectivePermissions ?? [],
 });
 
-export enum LogoutReason {
-    SERVER_LOGOUT,
-    SESSION_EXPIRED,
-    SERVER_UNAVAILABLE,
-}
-
 export class AppModel extends Record({
     container: new Container(getServerContext().container),
     contextPath: ActionURL.getContextPath(),
     initialUserId: user.id,
-    logoutReason: undefined,
-    reloadRequired: false,
     user,
 }) {
     declare container: Container;
     declare contextPath: string;
     declare initialUserId: number;
-    declare logoutReason: LogoutReason;
-    declare reloadRequired: boolean;
     declare user: User;
 
     hasUserChanged(): boolean {
@@ -42,7 +31,7 @@ export class AppModel extends Record({
     }
 
     shouldReload(): boolean {
-        return this.reloadRequired || this.hasUserChanged();
+        return this.hasUserChanged();
     }
 }
 

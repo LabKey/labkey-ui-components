@@ -136,7 +136,7 @@ const BABEL_DEV_CONFIG = {
     ...BABEL_CONFIG,
     options: {
         ...BABEL_CONFIG.options,
-        plugins: ['react-hot-loader/babel'].concat(BABEL_PLUGINS),
+        plugins: [require.resolve('react-refresh/babel')].concat(BABEL_PLUGINS),
     }
 };
 

@@ -11,7 +11,7 @@ import { Theme } from '../base/SVGIcon';
 import { SCHEMAS } from '../../schemas';
 
 import { LINEAGE_DIRECTIONS, LineageIconMetadata } from './types';
-import { LineageItemWithMetadata, LineageLink, LineageNode } from './models';
+import { LineageLink, LineageNode } from './models';
 
 export const DEFAULT_ICON_URL = 'default';
 const BACKUP_IMAGE_ROOT = 'https://labkey.org/_images/';

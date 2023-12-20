@@ -1,6 +1,5 @@
 import React, { FC, ReactElement } from 'react';
 import { mount } from 'enzyme';
-import { createMemoryHistory, InjectedRouter, Route, Router } from 'react-router';
 
 import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../productFixtures';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
@@ -204,8 +203,10 @@ describe('withAssayModels', () => {
 
 describe('withAssayModelsFromLocation', () => {
     test('sets "assayName" from location', async () => {
-        // Arrange
         const expectedAssayName = 'SomeAssay';
+        const rrd = require('react-router-dom') as any;
+        rrd.__setParams({ protocol: expectedAssayName });
+        // Arrange
         const expectedAssayDefinition = AssayDefinitionModel.create({ id: 123, name: expectedAssayName });
         const expectedAssayProtocol = AssayProtocolModel.create({ name: 'SomeProtocol' });
 
@@ -216,7 +217,6 @@ describe('withAssayModelsFromLocation', () => {
         let injectedAssayDefinition: AssayDefinitionModel;
         let injectedAssayModel: AssayStateModel;
         let injectedAssayProtocol: AssayProtocolModel;
-        let injectedRouter: InjectedRouter;
 
         const WrappedTestComponent = withAssayModelsFromLocation(
             ({ assayDefinition, assayModel, assayProtocol }): ReactElement => {
@@ -227,33 +227,8 @@ describe('withAssayModelsFromLocation', () => {
             }
         );
 
-        // Mounts the "/" route and defines the injectedRouter.
-        // With this the test can then navigate to the location.
-        const RootRouteComponent = ({ children, router }): ReactElement => {
-            injectedRouter = router;
-            return children;
-        };
-
         // Act
-        const wrapper = mount(
-            <Router history={createMemoryHistory()}>
-                <Route path="/" component={RootRouteComponent}>
-                    <Route
-                        path=":protocol"
-                        component={routeProps => (
-                            <WrappedTestComponent
-                                api={api}
-                                moduleContext={TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT}
-                                {...routeProps}
-                            />
-                        )}
-                    />
-                </Route>
-            </Router>
-        );
-
-        // Set the ":protocol" via the route
-        injectedRouter.replace(`/${expectedAssayName}`);
+        const wrapper = mount(<WrappedTestComponent api={api} moduleContext={TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT} />);
 
         // Load definitions
         await waitForLifecycle(wrapper);

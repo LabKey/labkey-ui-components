@@ -5,7 +5,6 @@ import { ModalButtons } from '../../ModalButtons';
 
 import { UserLimitSettings } from '../permissions/actions';
 import { SelectInput } from '../forms/input/SelectInput';
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { Alert } from '../base/Alert';
 
 interface Props {

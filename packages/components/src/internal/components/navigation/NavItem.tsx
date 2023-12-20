@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 import React, { FC, memo, useEffect, useRef, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { Link, useLocation } from 'react-router-dom';
 
 import { AppURL } from '../../url/AppURL';
 
 interface NavItemProps {
     onActive?: (activeEl: HTMLElement) => void;
-    onClick?: () => void;
     to?: string | AppURL;
 }
 
-const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, location, onActive, to, onClick }) => {
-    const href = to instanceof AppURL ? to.toHref() : to;
+export const NavItem: FC<NavItemProps> = memo(({ children, onActive, to }) => {
+    const location = useLocation();
+    const href = to instanceof AppURL ? to.toString() : to;
     const itemRef = useRef<HTMLLIElement>();
     const [active, setActive] = useState<boolean>(false);
 
@@ -48,28 +48,25 @@ const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, locati
 
     return (
         <li className={active ? 'active' : null} ref={itemRef}>
-            <a href={href} onClick={onClick}>
+            <Link to={href}>
                 {children}
-            </a>
+            </Link>
         </li>
     );
 });
 
-// Export as "default" to avoid erroneous type warning use of withRouter()
-export default withRouter<NavItemProps>(NavItemImpl);
-
-export const ParentNavItem: FC<NavItemProps> = memo(({ children, to, onClick }) => {
-    const href = to instanceof AppURL ? to.toHref() : to;
+export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => {
+    const href = to instanceof AppURL ? to.toString() : to;
 
     return (
         <div className="parent-nav">
             <ul className="nav navbar-nav">
                 <li>
-                    <a href={href} onClick={onClick}>
+                    <Link to={href}>
                         <i className="fa fa-chevron-left" />
                         &nbsp;
                         {children}
-                    </a>
+                    </Link>
                 </li>
             </ul>
         </div>

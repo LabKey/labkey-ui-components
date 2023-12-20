@@ -1,18 +1,12 @@
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 
-import { LabelHelpTip } from '../base/LabelHelpTip';
-
-import { DomainRowWarning } from './DomainRowWarning';
 import {
-    DOMAIN_FIELD_DEFAULT_SCALE,
     DOMAIN_FIELD_FILE_DISPLAY,
-    DOMAIN_FIELD_FORMAT,
     DOMAIN_FIELD_NOT_LOCKED,
     FILE_DISPLAY_ATTACHMENT,
     FILE_DISPLAY_INLINE,
 } from './constants';
-import { NumericFieldOptions } from './NumericFieldOptions';
 import { createFormInputId } from './utils';
 import { FileAttachmentOptions } from './FileAttachmentOptions';
 

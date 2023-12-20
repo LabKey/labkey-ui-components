@@ -1,7 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
-import { WithRouterProps } from 'react-router';
 
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -32,6 +31,7 @@ import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants
 import { AUDIT_KEY } from '../../app/constants';
 
 import { NotFound } from '../base/NotFound';
+import { useAdministrationSubNav } from './useAdministrationSubNav';
 
 import { GroupAssignments } from './GroupAssignments';
 
@@ -39,11 +39,12 @@ import { showPremiumFeatures } from './utils';
 import { GroupMembership, MemberType } from './models';
 import { fetchGroupMembership } from './actions';
 
-export type GroupManagementPageProps = InjectedPermissionsPage & WithRouterProps;
+export type GroupManagementPageProps = InjectedPermissionsPage;
 
 export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props => {
-    const { inactiveUsersById, location, principalsById, rolesByUniqueName, principals, router, routes } = props;
-    const [getIsDirty, setIsDirty] = useRouteLeave(router, routes);
+    const { inactiveUsersById, principalsById, rolesByUniqueName, principals } = props;
+    useAdministrationSubNav();
+    const [getIsDirty, setIsDirty] = useRouteLeave();
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [savedGroupMembership, setSavedGroupMembership] = useState<GroupMembership>();
@@ -52,7 +53,6 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
     const [lastModified, setLastModified] = useState<string>();
     const [policy, setPolicy] = useState<SecurityPolicy>();
     const [errorMsg, setErrorMsg] = useState<string>();
-
     const { api } = useAppContext<AppContext>();
     const { dismissNotifications, createNotification } = useNotificationsContext();
     const { container, moduleContext, user } = useServerContext();
@@ -284,8 +284,6 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
                     setIsDirty={setIsDirty}
                     getIsDirty={getIsDirty}
                     getAuditLogData={api.security.getAuditLogData}
-                    location={location}
-                    router={router}
                 />
             )}
         </BasePermissionsCheckPage>

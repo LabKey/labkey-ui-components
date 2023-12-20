@@ -35,19 +35,9 @@ exports[`ProductMenuSection render empty section no text 1`] = `
     <li
       className="menu-section-header clickable-item"
     >
-      <a
-        href="#/samples"
-      >
-        <img
-          alt="Sample Sets icon"
-          className="menu-section-image "
-          height="24px"
-          src="/testProduct/images/samples.svg"
-          width="24px"
-        />
-         
-        Sample Sets
-      </a>
+      <Link
+        to="/samples"
+      />
     </li>
     <li>
       <hr />
@@ -91,19 +81,9 @@ exports[`ProductMenuSection render empty section with empty text and create link
     <li
       className="menu-section-header clickable-item"
     >
-      <a
-        href="#/samples"
-      >
-        <img
-          alt="Sample Sets icon"
-          className="menu-section-image "
-          height="24px"
-          src="/testProduct/images/samples.svg"
-          width="24px"
-        />
-         
-        Sample Sets
-      </a>
+      <Link
+        to="/samples"
+      />
     </li>
     <li>
       <hr />
@@ -177,19 +157,9 @@ exports[`ProductMenuSection render not empty, but all items hidden 1`] = `
     <li
       className="menu-section-header clickable-item"
     >
-      <a
-        href="#/samples"
-      >
-        <img
-          alt="Sample Sets icon"
-          className="menu-section-image "
-          height="24px"
-          src="/testProduct/images/samples.svg"
-          width="24px"
-        />
-         
-        Sample Sets
-      </a>
+      <Link
+        to="/samples"
+      />
     </li>
     <li>
       <hr />
@@ -299,19 +269,9 @@ exports[`ProductMenuSection render one column section 1`] = `
     <li
       className="menu-section-header clickable-item"
     >
-      <a
-        href="#/assays"
-      >
-        <img
-          alt="Assays icon"
-          className="menu-section-image "
-          height="24px"
-          src="/testProduct4Columns/images/assays.svg"
-          width="24px"
-        />
-         
-        Assays
-      </a>
+      <Link
+        to="/assays"
+      />
     </li>
     <li>
       <hr />
@@ -429,19 +389,9 @@ exports[`ProductMenuSection render one-column section 1`] = `
     <li
       className="menu-section-header clickable-item"
     >
-      <a
-        href="#/samples"
-      >
-        <img
-          alt="Sample Sets icon"
-          className="menu-section-image "
-          height="24px"
-          src="/testProduct3Columns/images/samples.svg"
-          width="24px"
-        />
-         
-        Sample Sets
-      </a>
+      <Link
+        to="/samples"
+      />
     </li>
     <li>
       <hr />
@@ -517,19 +467,9 @@ exports[`ProductMenuSection render section with custom headerURL and headerText 
     <li
       className="menu-section-header clickable-item"
     >
-      <a
-        href="#%2Fsample%2Fnew%3Fsort%3Ddate"
-      >
-        <img
-          alt="Sample Sets icon"
-          className="menu-section-image "
-          height="24px"
-          src="/testProduct/images/samples.svg"
-          width="24px"
-        />
-         
-        Custom Sample Sets
-      </a>
+      <Link
+        to="%2Fsample%2Fnew%3Fsort%3Ddate"
+      />
     </li>
     <li>
       <hr />

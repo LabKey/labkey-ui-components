@@ -1,4 +1,3 @@
-import { fromJS, List } from 'immutable';
 import { ExtendedMap } from '../public/ExtendedMap';
 
 import { QueryInfo } from '../public/QueryInfo';

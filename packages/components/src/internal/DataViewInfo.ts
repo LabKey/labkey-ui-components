@@ -1,5 +1,3 @@
-import { Record } from 'immutable';
-
 import { DataViewInfoTypes } from './constants';
 import { AppURL } from './url/AppURL';
 

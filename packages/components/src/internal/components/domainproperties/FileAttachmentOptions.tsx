@@ -4,7 +4,6 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
-import { DomainFieldLabel } from './DomainFieldLabel';
 import { createFormInputId, createFormInputName } from './utils';
 import { DOMAIN_FIELD_FILE_DISPLAY, FILE_DISPLAY_ATTACHMENT, FILE_DISPLAY_INLINE } from './constants';
 import { isFieldFullyLocked } from './propertiesUtil';

@@ -6,6 +6,6 @@ export const useFolderMenuContext = (): FolderMenuGlobalContext => {
     return useGlobalStateContext().navigation.folderMenu;
 };
 
-export const useSubNavContext = (): SubNavGlobalContext => {
+export const useSubNavTabsContext = (): SubNavGlobalContext => {
     return useGlobalStateContext().navigation.subNav;
 };

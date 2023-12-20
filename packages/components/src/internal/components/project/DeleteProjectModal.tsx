@@ -6,8 +6,6 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Progress } from '../base/Progress';
 
 import { useServerContext } from '../base/ServerContext';
-import { AppURL, createProductUrl } from '../../url/AppURL';
-import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
 

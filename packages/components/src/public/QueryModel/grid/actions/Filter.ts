@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, Set } from 'immutable';
+import { Map, Set } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
 import { decodePart } from '../../../SchemaQuery';
@@ -23,7 +23,6 @@ import { JsonType } from '../../../../internal/components/domainproperties/PropD
 import { getColFormattedDateFilterValue } from '../../../../internal/util/Date';
 
 import { QueryColumn } from '../../../QueryColumn';
-import { QueryInfo } from '../../../QueryInfo';
 
 import { Action, ActionValue } from './Action';
 

@@ -13,27 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, useRef, useState, useCallback, useEffect, memo } from 'react';
-import { List } from 'immutable';
+import React, { FC, useRef, useState, useCallback, useEffect, memo, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
+import { useLocation } from 'react-router-dom';
 
 import { useServerContext } from '../base/ServerContext';
 
 import { hasPremiumModule, hasProductProjects } from '../../app/utils';
 
-import NavItem, { ParentNavItem } from './NavItem';
-import { ITab, SubNavGlobalContext } from './types';
-import { useSubNavContext } from './hooks';
+import { NavItem, ParentNavItem } from './NavItem';
+import { isAdminRoute } from './ProductMenu';
+import { ITab } from './types';
+import { useSubNavTabsContext } from './hooks';
 
 interface Props {
     noun?: ITab;
-    tabs: List<ITab>;
-    showLKVersion?: boolean;
+    tabs: ITab[];
 }
 
-export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
+const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
+    const location = useLocation();
+    const isAdminPage = useMemo(() => isAdminRoute(location.pathname), [location.pathname]);
     const scrollable = useRef<HTMLDivElement>();
     const { container, moduleContext } = useServerContext();
     const { versionString } = getServerContext();
@@ -89,7 +91,7 @@ export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
         <nav className="navbar navbar-inverse sub-nav">
             <div className="sub-nav-container">
                 {noun && (
-                    <ParentNavItem to={noun.url} onClick={noun.onClick}>
+                    <ParentNavItem to={noun.url}>
                         {noun.text}
                     </ParentNavItem>
                 )}
@@ -98,10 +100,10 @@ export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
                     <ul className="nav navbar-nav">
                         {tabs
                             .filter(tab => !!tab.text)
-                            .map(({ text, url, onClick }, i) => (
+                            .map(({ text, url }, i) => (
                                 // neither "text" nor "url" are consistently unique
                                 // eslint-disable-next-line react/no-array-index-key
-                                <NavItem key={i} to={url} onActive={onItemActivate} onClick={onClick}>
+                                <NavItem key={i} to={url} onActive={onItemActivate}>
                                     {text}
                                 </NavItem>
                             ))}
@@ -128,7 +130,7 @@ export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
                     </div>
                 )}
 
-                {showLKVersion && (
+                {isAdminPage && (
                     <div className="lk-version-nav">
                         <span className="lk-version-nav__label" title={versionString}>
                             Version: {versionString}
@@ -140,16 +142,12 @@ export const SubNav: FC<Props> = ({ noun, tabs, showLKVersion }) => {
     );
 };
 
-/**
- * SubNavWithContext renders a SubNav component using data stored in the SubNavContext, this component is useful when
- * you need to update the SubNav based on data you load asynchronously after the page loads.
- */
-export const SubNavWithContext: FC<SubNavGlobalContext> = memo(() => {
-    const { noun, tabs } = useSubNavContext();
+export const SubNav: FC = memo(() => {
+    const { noun, tabs } = useSubNavTabsContext();
 
-    if (tabs.size === 0 && noun === undefined) {
+    if (tabs.length === 0 && noun === undefined) {
         return null;
     }
 
-    return <SubNav noun={noun} tabs={tabs} />;
+    return <SubNavImpl noun={noun} tabs={tabs} />;
 });

@@ -1,6 +1,5 @@
 import React from 'react';
 import { List, Map } from 'immutable';
-import { Panel } from 'react-bootstrap';
 import { getDomainPropertiesTestAPIWrapper } from '../APIWrapper';
 
 import { DomainDesign } from '../models';

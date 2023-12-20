@@ -1,25 +1,25 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 interface Props {
-    beforeunload: (event: any) => any;
+    beforeunload: (event: any) => void;
 }
 
 /**
- * @deprecated use the useRouteLeave hook or withRouteLeave HOC instead.
  * A HOC to be used for any LKS React page that needs to check for a dirty state on page navigation.
- * Note that this HOC will not work for app usages which use react-router since the dirty check is to be done on
- * route changes instead of on page navigation. For those cases use the useRouteLeave hook or withRouteLeave HOC.
+ *
+ * This HOC  will NOT work in any of our App pages, because we use react-router in our apps. If you need similar
+ * behavior in an app page use the useRouteLeave hook.
  */
-export class BeforeUnload extends React.PureComponent<Props, any> {
-    componentDidMount() {
+export class BeforeUnload extends React.PureComponent<Props> {
+    componentDidMount(): void {
         window.addEventListener('beforeunload', this.props.beforeunload);
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         window.removeEventListener('beforeunload', this.props.beforeunload);
     }
 
-    render() {
+    render(): ReactNode {
         return this.props.children;
     }
 }

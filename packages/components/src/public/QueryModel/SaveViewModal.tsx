@@ -3,7 +3,6 @@ import { Modal } from 'react-bootstrap';
 
 import { PermissionTypes } from '@labkey/api';
 
-import { WizardNavButtons } from '../../internal/components/buttons/WizardNavButtons';
 import { ModalButtons } from '../../internal/ModalButtons';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { Alert } from '../../internal/components/base/Alert';

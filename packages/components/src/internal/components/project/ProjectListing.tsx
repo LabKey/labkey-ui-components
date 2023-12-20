@@ -1,11 +1,38 @@
-import React, { FC, memo, Fragment } from 'react';
+import React, { FC, memo, Fragment, useCallback } from 'react';
 
 import classNames from 'classnames';
 
-import { WithDirtyCheckLink } from '../../util/RouteLeave';
+import { CONFIRM_MESSAGE, InjectedRouteLeaveProps } from '../../util/RouteLeave';
 import { Container } from '../base/models/Container';
 import { VerticalScrollPanel } from '../base/VeriticalScrollPanel';
 import { SVGIcon } from '../base/SVGIcon';
+
+export interface WithDirtyCheckLinkProps {
+    className?: string;
+    leaveMsg?: string;
+    onClick: () => void;
+}
+
+export const WithDirtyCheckLink: FC<WithDirtyCheckLinkProps & InjectedRouteLeaveProps> = props => {
+    const { className, onClick, children, setIsDirty, getIsDirty, leaveMsg } = props;
+
+    const handleOnClick = useCallback(() => {
+        const dirty = getIsDirty();
+        if (dirty) {
+            const result = confirm(leaveMsg ?? CONFIRM_MESSAGE);
+            if (!result) return;
+
+            setIsDirty(false);
+        }
+        onClick();
+    }, [setIsDirty, getIsDirty, onClick, leaveMsg]);
+
+    return (
+        <a className={className} onClick={handleOnClick}>
+            {children}
+        </a>
+    );
+};
 
 interface Props {
     getIsDirty: () => boolean;

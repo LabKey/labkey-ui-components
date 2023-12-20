@@ -2,8 +2,6 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { ReactWrapper } from 'enzyme';
 import { PermissionRoles } from '@labkey/api';
-import { WithRouterProps } from 'react-router';
-import { createMockWithRouterProps } from '../../mockUtils';
 
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { NotificationsContextProps } from '../notifications/NotificationsContext';
@@ -24,7 +22,7 @@ import { AdminAppContext } from '../../AppContext';
 import { getNewUserRoles, UserManagementPageImpl } from './UserManagement';
 
 describe('UserManagement', () => {
-    function getDefaultProps(): InjectedPermissionsPage & NotificationsContextProps & WithRouterProps {
+    function getDefaultProps(): InjectedPermissionsPage & NotificationsContextProps {
         return {
             createNotification: jest.fn(),
             dismissNotifications: jest.fn(),
@@ -34,7 +32,16 @@ describe('UserManagement', () => {
             principalsById: Map(),
             roles: List(),
             rolesByUniqueName: Map(),
-            ...createMockWithRouterProps(jest.fn),
+        };
+    }
+
+    function getDefaultServerContext(): any {
+        return {
+            user: TEST_USER_APP_ADMIN,
+            container: {
+                path: '',
+                parentPath: '',
+            },
         };
     }
 
@@ -50,15 +57,9 @@ describe('UserManagement', () => {
 
     test('default props', () => {
         const wrapper = mountWithAppServerContext(
-            <UserManagementPageImpl
-                {...getDefaultProps()}
-                createNotification={jest.fn()}
-                dismissNotifications={jest.fn()}
-            />,
+            <UserManagementPageImpl {...getDefaultProps()} />,
             { admin: {} as AdminAppContext },
-            {
-                user: TEST_USER_APP_ADMIN,
-            }
+            getDefaultServerContext()
         );
         validate(wrapper);
         wrapper.unmount();
@@ -66,15 +67,9 @@ describe('UserManagement', () => {
 
     test('non-inherit security policy', () => {
         const wrapper = mountWithAppServerContext(
-            <UserManagementPageImpl
-                {...getDefaultProps()}
-                createNotification={jest.fn()}
-                dismissNotifications={jest.fn()}
-            />,
+            <UserManagementPageImpl {...getDefaultProps()} />,
             { admin: {} as AdminAppContext },
-            {
-                user: TEST_USER_APP_ADMIN,
-            }
+            getDefaultServerContext()
         );
         wrapper.find('UserManagement').setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '1' }) });
         validate(wrapper, true);
@@ -83,15 +78,9 @@ describe('UserManagement', () => {
 
     test('inherit security policy', () => {
         const wrapper = mountWithAppServerContext(
-            <UserManagementPageImpl
-                {...getDefaultProps()}
-                createNotification={jest.fn()}
-                dismissNotifications={jest.fn()}
-            />,
+            <UserManagementPageImpl {...getDefaultProps()} />,
             { admin: {} as AdminAppContext },
-            {
-                user: TEST_USER_APP_ADMIN,
-            }
+            getDefaultServerContext()
         );
         wrapper.find('UserManagement').setState({ policy: new SecurityPolicy({ resourceId: '1', containerId: '2' }) });
         validate(wrapper);
@@ -100,14 +89,10 @@ describe('UserManagement', () => {
 
     test('allowResetPassword false', () => {
         const wrapper = mountWithAppServerContext(
-            <UserManagementPageImpl
-                {...getDefaultProps()}
-                createNotification={jest.fn()}
-                dismissNotifications={jest.fn()}
-            />,
+            <UserManagementPageImpl {...getDefaultProps()} />,
             { admin: {} as AdminAppContext },
             {
-                user: TEST_USER_APP_ADMIN,
+                ...getDefaultServerContext(),
                 moduleContext: { api: { AutoRedirectSSOAuthConfiguration: true } },
             }
         );

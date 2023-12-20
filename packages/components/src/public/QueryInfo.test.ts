@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List } from 'immutable';
+import { fromJS } from 'immutable';
 
 import sampleSetQueryInfo from '../test/data/sampleSet-getQueryDetails.json';
-import sampleSet3QueryColumn from '../test/data/SampleSet3Parent-QueryColumn.json';
-import nameExpSetQueryColumn from '../test/data/NameExprParent-QueryColumn.json';
 
 import { ViewInfo } from '../internal/ViewInfo';
 import { ExtendedMap } from './ExtendedMap';

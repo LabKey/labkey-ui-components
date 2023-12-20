@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { WithRouterProps } from 'react-router';
 import { ActionURL } from '@labkey/api';
+import { useNavigate } from 'react-router-dom';
 
 import { FormButtons } from '../../FormButtons';
 
@@ -129,18 +129,21 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
     );
 });
 
-export const CreateProjectPage: FC<WithRouterProps> = memo(({ router }) => {
+export const CreateProjectPage = memo(() => {
+    const navigate = useNavigate();
     const { api } = useAppContext<AppContext>();
     const { createNotification } = useNotificationsContext();
     const { moduleContext, user } = useServerContext();
     const { reload } = useFolderMenuContext();
     const dispatch = useServerContextDispatch();
     const hasProjects = hasProductProjects(moduleContext);
+    const onCancel = useCallback(() => navigate(-1), [navigate]);
 
     const onCreated = useCallback(
         (project: Container) => {
             // Reroute user back to projects listing page
-            router.replace(AppURL.create('admin', 'projects').addParam('created', project.name).toString());
+            const url = AppURL.create('admin', 'projects').addParam('created', project.name);
+            navigate(url.toString(), { replace: true });
 
             const appProps = getCurrentAppProperties();
             if (!appProps?.controllerName) return;
@@ -168,13 +171,13 @@ export const CreateProjectPage: FC<WithRouterProps> = memo(({ router }) => {
             // Reload the folder menu to ensure the new project appears in the navigation for this session
             reload();
         },
-        [createNotification, dispatch, hasProjects, moduleContext, reload, router]
+        [createNotification, dispatch, hasProjects, moduleContext, navigate, reload]
     );
 
     return (
         <Page notAuthorized={!user.isAdmin} hasHeader title={TITLE}>
             <PageDetailHeader title={TITLE} />
-            <CreateProjectContainer api={api.folder} onCancel={router.goBack} onCreated={onCreated} />
+            <CreateProjectContainer api={api.folder} onCancel={onCancel} onCreated={onCreated} />
         </Page>
     );
 });

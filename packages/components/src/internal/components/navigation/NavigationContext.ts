@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from 'react';
-import { List } from 'immutable';
 
 import { FolderMenuGlobalContext, ITab, NavigationGlobalContext, SubNavGlobalContext } from './types';
 
@@ -23,10 +22,10 @@ export const useNavigationContextState = (): NavigationGlobalContext => {
 
     // SubNavGlobalContext
     const [noun, setNoun] = useState<ITab>(undefined);
-    const [tabs, setTabs] = useState<List<ITab>>(List());
+    const [tabs, setTabs] = useState<ITab[]>([]);
     const clearNav = useCallback(() => {
         setNoun(undefined);
-        setTabs(List());
+        setTabs([]);
     }, []);
     const subNavContext = useMemo<SubNavGlobalContext>(
         () => ({ clearNav, noun, setNoun, setTabs, tabs }),

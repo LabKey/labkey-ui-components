@@ -1,9 +1,8 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-
-import { Link, WithRouterProps } from 'react-router';
-
 import { Security } from '@labkey/api';
+import { useSearchParams } from 'react-router-dom';
+import { useAdministrationSubNav } from '../administration/useAdministrationSubNav';
 
 import { useServerContext } from '../base/ServerContext';
 import { AppURL, createProductUrl } from '../../url/AppURL';
@@ -25,8 +24,25 @@ import { ProjectSettings } from './ProjectSettings';
 
 import { ProjectListing } from './ProjectListing';
 
-export const ProjectManagementPage: FC<WithRouterProps> = memo(({ location, router, routes }) => {
-    const [getIsDirty, setIsDirty] = useRouteLeave(router, routes);
+const renderButtons = (): ReactNode => (
+    <>
+        <Button
+            bsStyle="success"
+            className="button-right-spacing"
+            href={AppURL.create('admin', 'projects', 'new').toHref()}
+        >
+            Create a Project
+        </Button>
+        <a href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value).toHref()}>
+            View Audit History
+        </a>
+    </>
+);
+
+export const ProjectManagementPage: FC = memo(() => {
+    useAdministrationSubNav();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [getIsDirty, setIsDirty] = useRouteLeave();
     const [successMsg, setSuccessMsg] = useState<string>();
     const { user, moduleContext, container } = useServerContext();
     const { api } = useAppContext<AppContext>();
@@ -55,9 +71,9 @@ export const ProjectManagementPage: FC<WithRouterProps> = memo(({ location, rout
                 }
 
                 let defaultContainer = container?.isFolder ? container : projects_?.[0];
-                const createdProjectName = location.query.created;
+                const createdProjectName = searchParams.get('created');
                 if (createdProjectName) {
-                    removeParameters(router, location, 'created');
+                    removeParameters(setSearchParams, 'created');
                     const createdProject = projects_.find(proj => proj.name === createdProjectName);
                     if (createdProject) defaultContainer = createdProject;
                 }
@@ -72,30 +88,12 @@ export const ProjectManagementPage: FC<WithRouterProps> = memo(({ location, rout
     }, [reloadCounter]);
 
     useEffect(() => {
-        const successMessage = location.query.successMsg;
+        const successMessage = searchParams.get('successMsg');
         if (successMessage) {
             setSuccessMsg(`${successMessage} successfully deleted.`);
-            removeParameters(router, location, 'successMsg');
+            removeParameters(setSearchParams, 'successMsg');
         }
     }, []);
-
-    const renderButtons = useMemo(
-        () => () => (
-            <>
-                <Button
-                    bsStyle="success"
-                    className="button-right-spacing"
-                    href={AppURL.create('admin', 'projects', 'new').toHref()}
-                >
-                    Create a Project
-                </Button>
-                <a href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value).toHref()}>
-                    View Audit History
-                </a>
-            </>
-        ),
-        []
-    );
 
     const onError = useCallback((e: string) => {
         setError(e);
@@ -147,7 +145,7 @@ export const ProjectManagementPage: FC<WithRouterProps> = memo(({ location, rout
                 {loaded && !error && projects?.length === 0 && (
                     <Alert bsStyle="warning">
                         No projects have been created. Click{' '}
-                        <Link to={AppURL.create('admin', 'projects', 'new').toString()}>here</Link> to get started.
+                        <a href={AppURL.create('admin', 'projects', 'new').toHref()}>here</a> to get started.
                     </Alert>
                 )}
                 {projects?.length > 0 && (

@@ -22,7 +22,7 @@ import { FREEZER_MANAGER_APP_PROPERTIES, SAMPLES_KEY } from '../app/constants';
 
 import { getCurrentAppProperties, getProjectPath } from '../app/utils';
 
-import { AppURL, createProductUrl } from './AppURL';
+import { AppURL, createProductUrl, createProductUrlFromParts } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
 
@@ -505,7 +505,6 @@ export const PROJECT_MGMT_MAPPER = new ActionMapper('project', 'begin', (row, co
     return undefined;
 });
 
-
 // query-detailsQueryRow.view?schemaName=inventory&query.queryName=Location&RowId=1811
 // map to /rd/freezerLocation/1811
 export const STORAGE_LOCATION_MAPPER = new ActionMapper('query', 'detailsQueryRow', row => {
@@ -522,7 +521,14 @@ export const STORAGE_LOCATION_MAPPER = new ActionMapper('query', 'detailsQueryRo
         ) {
             const rowId = params.RowId;
             if (rowId && rowId.length) {
-                return AppURL.create('rd', 'freezerLocation', rowId);
+                return createProductUrlFromParts(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId,
+                    ActionURL.getController(),
+                    {},
+                    'rd',
+                    'freezerLocation',
+                    rowId
+                );
             }
             return false;
         }
@@ -538,15 +544,16 @@ export const STORAGE_BOX_MAPPER = new ActionMapper('query', 'detailsQueryRow', r
         const params = ActionURL.getParameters(url);
         const schemaName = params.schemaName;
         const queryName = params['query.queryName'];
-        if (
-            schemaName &&
-            schemaName.toLowerCase() === 'inventory' &&
-            queryName &&
-            queryName.toLowerCase() === 'box'
-        ) {
+        if (schemaName && schemaName.toLowerCase() === 'inventory' && queryName && queryName.toLowerCase() === 'box') {
             const rowId = params.RowId;
             if (rowId && rowId.length) {
-                return AppURL.create('boxes', rowId).addParam('query.sort', 'WellPosition');
+                return createProductUrlFromParts(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId,
+                    ActionURL.getController(),
+                    { 'query.sort': 'WellPosition' },
+                    'boxes',
+                    rowId
+                );
             }
             return false;
         }
@@ -581,14 +588,14 @@ export class URLResolver {
         if (mapper.url) {
             const urlPath = ActionURL.getPathFromLocation(mapper.url).containerPath;
 
-            // if (urlPath) {
-            //     const currentPath = getServerContext().container.path;
-            //
-            //     // not current container AND not same top-level folder
-            //     if (urlPath !== currentPath && getProjectPath(currentPath) !== getProjectPath(urlPath)) {
-            //         return mapper.url;
-            //     }
-            // }
+            if (urlPath) {
+                const currentPath = getServerContext().container.path;
+
+                // not current container AND not same top-level folder
+                if (urlPath !== currentPath && getProjectPath(currentPath) !== getProjectPath(urlPath)) {
+                    return mapper.url;
+                }
+            }
         }
 
         const _url = URLService.getUrlMappers()

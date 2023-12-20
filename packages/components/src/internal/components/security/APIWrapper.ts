@@ -63,7 +63,7 @@ export interface SecurityAPIWrapper {
         inactiveUsersById?: Map<number, Principal>
     ) => Promise<SecurityPolicy>;
     fetchRoles: () => Promise<List<SecurityRole>>;
-    getAuditLogData: (filterCol: string, filterVal: string | number) => Promise<string>;
+    getAuditLogDate: (filterCol: string, filterVal: string | number) => Promise<string>;
     getDeletionSummaries: () => Promise<Summary[]>;
     getGroupMemberships: () => Promise<GroupMembership[]>;
     getInheritedProjects: (container: Container) => Promise<string[]>;
@@ -183,7 +183,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    getAuditLogData = async (filterCol: string, filterVal: string | number): Promise<string> => {
+    getAuditLogDate = async (filterCol: string, filterVal: string | number): Promise<string> => {
         const result = await selectRows({
             columns: ['Date'],
             containerFilter: Query.ContainerFilter.allFolders,
@@ -193,7 +193,12 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
             sort: '-Date',
         });
 
-        return result.rows.length > 0 ? caseInsensitive(result.rows[0], 'Date').value : '';
+        if (result.rows.length === 0) {
+            return '';
+        }
+
+        const dateRow = caseInsensitive(result.rows[0], 'Date');
+        return dateRow.formattedValue ?? dateRow.value;
     };
 
     getDeletionSummaries = (): Promise<Summary[]> => {
@@ -375,7 +380,7 @@ export function getSecurityTestAPIWrapper(
         fetchGroups: mockFn(),
         fetchPolicy: mockFn(),
         fetchRoles: mockFn(),
-        getAuditLogData: mockFn(),
+        getAuditLogDate: mockFn(),
         getDeletionSummaries: mockFn(),
         getGroupMemberships: mockFn(),
         getUserLimitSettings: mockFn(),

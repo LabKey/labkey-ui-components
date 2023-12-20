@@ -67,8 +67,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
         setLoadingState(LoadingState.LOADING);
         try {
             // Used in renderButtons()
-            const lastModifiedState = await api.security.getAuditLogData('ProjectId/Name', projectPath.slice(0, -1));
-
+            const lastModifiedState = await api.security.getAuditLogDate('ProjectId/Name', projectPath.slice(0, -1));
             setLastModified(lastModifiedState);
 
             // Used in DetailsPanels
@@ -173,7 +172,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
 
         return (
             <>
-                <CreatedModified row={row} />
+                <CreatedModified row={row} useServerDate={false} />
                 <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
                     <MenuItem
                         href={AppURL.create(AUDIT_KEY)

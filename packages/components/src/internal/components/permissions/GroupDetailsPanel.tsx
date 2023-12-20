@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useEffect, useMemo, useState } from 'react';
 import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
@@ -25,7 +25,7 @@ interface Props {
     isSiteGroup: boolean;
     members?: Member[];
     policy: SecurityPolicy;
-    principal: Principal; // TODO: Is "principal" required or not? The code seems confused about this
+    principal?: Principal;
     rolesByUniqueName: Map<string, SecurityRole>;
     showPermissionListLinks?: boolean;
 }
@@ -36,24 +36,25 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
     const { api } = useAppContext();
     const { user } = useServerContext();
 
-    const loadWhenCreated = useCallback(async () => {
-        try {
-            const createdState = await api.security.getAuditLogData('group/UserId', principal.userId);
-            // TODO: Surely need a comment about -7
-            setCreated(createdState.slice(0, -7));
-        } catch (e) {
-            console.error(resolveErrorMessage(e) ?? 'Failed to load when group created');
-        }
+    useEffect(() => {
+        if (!principal) return;
+        (async () => {
+            try {
+                const createdState = await api.security.getAuditLogDate('group/UserId', principal.userId);
+                setCreated(createdState);
+            } catch (e) {
+                console.error(resolveErrorMessage(e) ?? 'Failed to load when group created');
+            }
+        })();
     }, [api, principal]);
 
-    useEffect(() => {
-        loadWhenCreated();
-    }, [loadWhenCreated]);
-
-    const { usersCount, groupsCount } = useMemo(() => {
+    const { groupsCount, usersCount } = useMemo(() => {
         const usersCount_ = members.filter(member => member.type === MemberType.user).length;
 
-        return { usersCount: usersCount_, groupsCount: (members.length - usersCount_).toString() };
+        return {
+            groupsCount: (members.length - usersCount_).toLocaleString(),
+            usersCount: usersCount_.toLocaleString(),
+        };
     }, [members]);
 
     return (

@@ -32,13 +32,7 @@ const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 describe('GroupDetailsPanel', () => {
     test('no principal', () => {
         const component = mountWithAppServerContext(
-            <GroupDetailsPanel
-                principal={undefined}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
-                members={[]}
-                isSiteGroup={false}
-            />,
+            <GroupDetailsPanel policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} members={[]} isSiteGroup={false} />,
             {},
             { user: TEST_USER_APP_ADMIN }
         );
@@ -92,7 +86,7 @@ describe('GroupDetailsPanel', () => {
                     { id: 1, name: 'user1', type: MemberType.user },
                     { id: 3, name: 'group1', type: MemberType.group },
                 ]}
-                isSiteGroup={true}
+                isSiteGroup
             />,
             {},
             { user: TEST_USER_APP_ADMIN }
@@ -123,7 +117,7 @@ describe('GroupDetailsPanel', () => {
                     { id: 1, name: 'user1', type: MemberType.user },
                     { id: 3, name: 'group1', type: MemberType.group },
                 ]}
-                isSiteGroup={true}
+                isSiteGroup
                 displayCounts={false}
             />,
             {},

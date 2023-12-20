@@ -1164,7 +1164,7 @@ export async function getTextChoiceInUseValues(
     queryName: string,
     lockedSqlFragment: string
 ): Promise<Record<string, any>> {
-    const containerFilter = Query.ContainerFilter.allFolders; // to account for a shared domain at project or /Shared
+    const containerFilter = Query.ContainerFilter.allInProjectPlusShared; // to account for a shared domain at project or /Shared
     const fieldName = field.original?.name ?? field.name;
 
     // If the field is set as PHI, we need the query to include the RowId for logging, so we have to do the aggregate client side
@@ -1187,7 +1187,6 @@ export async function getTextChoiceInUseValues(
                 values[value].count++;
                 values[value].locked =
                     values[value].locked || caseInsensitive(row, 'SampleState/StatusType').value === 'Locked';
-                // TODO: Double check displayValue vs value of 'SampleState/StatusType'
             }
         });
         return values;

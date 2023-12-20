@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 3.0.0
-*Released*: ?? December 2023
+*Released*: 20 December 2023
 * Breaking Changes:
   * Upgrade react-router dependency to react-router-dom version 6.x
     * If you use react-router you will need to upgrade

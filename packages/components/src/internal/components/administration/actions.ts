@@ -5,7 +5,7 @@ import { Security } from '@labkey/api';
 import { AppURL } from '../../url/AppURL';
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
 
-import { naturalSort } from '../../../public/sort';
+import { naturalSortByProperty } from '../../../public/sort';
 
 import { FetchedGroup, SecurityAPIWrapper } from '../security/APIWrapper';
 
@@ -13,7 +13,11 @@ import { getProjectPath } from '../../app/utils';
 
 import { Container } from '../base/models/Container';
 
-import { GroupMembership, MemberType } from './models';
+import { Row } from '../../query/selectRows';
+
+import { caseInsensitive } from '../../util/utils';
+
+import { GroupMembership, Member, MemberType } from './models';
 import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
 
 export function getUpdatedPolicyRoles(
@@ -104,43 +108,46 @@ export function updateSecurityPolicy(
 //       ...
 // }
 // Where the members array is sorted by type, and then by name. The types stand for 'group,' 'site group,' and 'user'
-export const getGroupMembership = (groups: FetchedGroup[], groupMemberships): GroupMembership => {
-    const groupsWithMembers = groupMemberships.reduce((prev, curr) => {
-        const groupId = curr['GroupId'];
-        const isProjectGroup = groups.find(group => group.id === groupId)?.isProjectGroup;
-
+export const getGroupMembership = (groups: FetchedGroup[], groupMemberships: Row[]): GroupMembership => {
+    const groupsWithMembers = groupMemberships.reduce<GroupMembership>((membership, row) => {
+        const groupId = caseInsensitive(row, 'GroupId').value;
         if (groupId === -1) {
-            return prev;
+            return membership;
         }
-        const userDisplayName = curr['UserId/DisplayName'];
-        const userDisplayValue = `${curr['UserId/Email']} (${userDisplayName})`;
-        const memberIsGroup = !userDisplayName;
-        const foundGroup = groups.find(group => group.id === curr.UserId);
 
-        // Issue47306: When a member is not resolvable, do not accumulate the member into any groups.
+        const userDisplayName = caseInsensitive(row, 'UserId/DisplayName').value;
+        const userEmail = caseInsensitive(row, 'UserId/Email').value;
+        const userId: number = caseInsensitive(row, 'UserId').value;
+        const memberIsGroup = !userDisplayName;
+        const foundGroup = groups.find(group => group.id === userId);
+
+        // Issue 47306: When a member is not resolvable, do not accumulate the member into any groups.
         // For example, if you are a Project Admin, a groupMembership row associating a site group with a user possessing no
         // permissions in the project will result in your inability to resolve data on the permission-less user.
         // That user will not be visible to you, and so should be excluded from the GroupMembership return value.
         if (memberIsGroup && !foundGroup) {
-            return prev;
+            return membership;
         }
-        const member = {
-            name: memberIsGroup ? foundGroup.name : userDisplayValue,
-            id: curr.UserId,
+
+        const member: Member = {
+            name: memberIsGroup ? foundGroup.name : `${userEmail} (${userDisplayName})`,
+            id: userId,
             type: memberIsGroup ? MemberType.group : MemberType.user,
         };
-        if (curr.GroupId in prev) {
-            prev[groupId].members.push(member);
-            prev[groupId].members.sort((member1, member2) => naturalSort(member1.name, member2.name));
-            return prev;
+
+        if (groupId in membership) {
+            membership[groupId].members.push(member);
+            membership[groupId].members.sort(naturalSortByProperty('name'));
         } else {
-            prev[groupId] = {
-                groupName: curr['GroupId/Name'],
+            const isProjectGroup = groups.find(group => group.id === groupId)?.isProjectGroup;
+            membership[groupId] = {
+                groupName: caseInsensitive(row, 'GroupId/Name').value,
                 members: [member],
                 type: isProjectGroup ? MemberType.group : MemberType.siteGroup,
             };
-            return prev;
         }
+
+        return membership;
     }, {});
 
     // If a group has no members—is in groupsData but not groupRows—add it as well, unless it is a site group

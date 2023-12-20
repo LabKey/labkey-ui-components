@@ -10,7 +10,7 @@ import { ExpandableContainer } from '../ExpandableContainer';
 
 import { naturalSort } from '../../../public/sort';
 
-import { GroupMembership, MemberType } from '../administration/models';
+import { Groups, MemberType } from '../administration/models';
 
 import { Principal, SecurityAssignment, SecurityRole } from './models';
 import { RemovableButton } from './RemovableButton';
@@ -19,7 +19,7 @@ import { AddRoleAssignmentInput } from './AddRoleAssignmentInput';
 interface Props {
     assignments: List<SecurityAssignment>;
     disabledId?: number;
-    groupMembership: GroupMembership;
+    groupMembership: Groups;
     initExpanded?: boolean;
     onAddAssignment?: (principal: Principal, role: SecurityRole) => any;
     onClickAssignment: (userId: number) => any;

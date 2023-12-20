@@ -27,7 +27,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { Alert } from '../base/Alert';
 
-import { GroupMembership, MemberType } from '../administration/models';
+import { Groups, MemberType } from '../administration/models';
 
 import { fetchGroupMembership } from '../administration/actions';
 
@@ -81,7 +81,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const [rootPolicy, setRootPolicy] = useState<SecurityPolicy>();
     const [saveErrorMsg, setSaveErrorMsg] = useState<string>();
     const [selectedUserId, setSelectedUserId] = useState<number>();
-    const [groupMembership, setGroupMembership] = useState<GroupMembership>();
+    const [groupMembership, setGroupMembership] = useState<Groups>();
     const [error, setError] = useState<string>();
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [hasPolicyChange, setHasPolicyChange] = useState<boolean>(false);

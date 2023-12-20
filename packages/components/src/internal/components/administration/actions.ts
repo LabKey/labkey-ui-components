@@ -13,11 +13,7 @@ import { getProjectPath } from '../../app/utils';
 
 import { Container } from '../base/models/Container';
 
-import { Row } from '../../query/selectRows';
-
-import { caseInsensitive } from '../../util/utils';
-
-import { GroupMembership, Member, MemberType } from './models';
+import { GroupMembership, Groups, Member, MemberType } from './models';
 import { SECURITY_ROLE_DESCRIPTIONS } from './constants';
 
 export function getUpdatedPolicyRoles(
@@ -108,16 +104,13 @@ export function updateSecurityPolicy(
 //       ...
 // }
 // Where the members array is sorted by type, and then by name. The types stand for 'group,' 'site group,' and 'user'
-export const getGroupMembership = (groups: FetchedGroup[], groupMemberships: Row[]): GroupMembership => {
-    const groupsWithMembers = groupMemberships.reduce<GroupMembership>((membership, row) => {
-        const groupId = caseInsensitive(row, 'GroupId').value;
+export const getGroupMembership = (groups: FetchedGroup[], groupMemberships: GroupMembership[]): Groups => {
+    const groupsWithMembers = groupMemberships.reduce<Groups>((memberships, groupMembership) => {
+        const { groupId, groupName, userDisplayName, userId, userEmail } = groupMembership;
         if (groupId === -1) {
-            return membership;
+            return memberships;
         }
 
-        const userDisplayName = caseInsensitive(row, 'UserId/DisplayName').value;
-        const userEmail = caseInsensitive(row, 'UserId/Email').value;
-        const userId: number = caseInsensitive(row, 'UserId').value;
         const memberIsGroup = !userDisplayName;
         const foundGroup = groups.find(group => group.id === userId);
 
@@ -126,7 +119,7 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships: Row
         // permissions in the project will result in your inability to resolve data on the permission-less user.
         // That user will not be visible to you, and so should be excluded from the GroupMembership return value.
         if (memberIsGroup && !foundGroup) {
-            return membership;
+            return memberships;
         }
 
         const member: Member = {
@@ -135,19 +128,19 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships: Row
             type: memberIsGroup ? MemberType.group : MemberType.user,
         };
 
-        if (groupId in membership) {
-            membership[groupId].members.push(member);
-            membership[groupId].members.sort(naturalSortByProperty('name'));
+        if (groupId in memberships) {
+            memberships[groupId].members.push(member);
+            memberships[groupId].members.sort(naturalSortByProperty('name'));
         } else {
             const isProjectGroup = groups.find(group => group.id === groupId)?.isProjectGroup;
-            membership[groupId] = {
-                groupName: caseInsensitive(row, 'GroupId/Name').value,
+            memberships[groupId] = {
+                groupName,
                 members: [member],
                 type: isProjectGroup ? MemberType.group : MemberType.siteGroup,
             };
         }
 
-        return membership;
+        return memberships;
     }, {});
 
     // If a group has no members—is in groupsData but not groupRows—add it as well, unless it is a site group
@@ -164,7 +157,7 @@ export const getGroupMembership = (groups: FetchedGroup[], groupMemberships: Row
     return groupsWithMembers;
 };
 
-export const fetchGroupMembership = async (container: Container, api: SecurityAPIWrapper): Promise<GroupMembership> => {
+export const fetchGroupMembership = async (container: Container, api: SecurityAPIWrapper): Promise<Groups> => {
     const groups = await api.fetchGroups(getProjectPath(container.path));
     const groupMemberships = await api.getGroupMemberships();
     return getGroupMembership(groups, groupMemberships);

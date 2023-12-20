@@ -36,7 +36,7 @@ import { useAdministrationSubNav } from './useAdministrationSubNav';
 import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
-import { GroupMembership, MemberType } from './models';
+import { Groups, MemberType } from './models';
 import { fetchGroupMembership } from './actions';
 
 export type GroupManagementPageProps = InjectedPermissionsPage;
@@ -47,8 +47,8 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
     const [getIsDirty, setIsDirty] = useRouteLeave();
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
-    const [savedGroupMembership, setSavedGroupMembership] = useState<GroupMembership>();
-    const [groupMembership, setGroupMembership] = useState<GroupMembership>();
+    const [savedGroupMembership, setSavedGroupMembership] = useState<Groups>();
+    const [groupMembership, setGroupMembership] = useState<Groups>();
     const [updatedPrincipals, setUpdatedPrincipals] = useState<List<Principal>>(principals);
     const [lastModified, setLastModified] = useState<string>();
     const [policy, setPolicy] = useState<SecurityPolicy>();

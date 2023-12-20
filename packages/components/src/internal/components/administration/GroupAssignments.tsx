@@ -16,7 +16,7 @@ import { naturalSort } from '../../../public/sort';
 import { useServerContext } from '../base/ServerContext';
 
 import { Group } from './Group';
-import { GroupMembership, MemberType } from './models';
+import { Groups, MemberType } from './models';
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
@@ -24,7 +24,7 @@ export interface GroupAssignmentsProps {
     deleteGroup: (id: string) => void;
     errorMsg: string;
     getIsDirty: () => boolean;
-    groupMembership: GroupMembership;
+    groupMembership: Groups;
     policy: SecurityPolicy;
     principalsById: Map<number, Principal>;
     removeMember: (groupId: string, memberId: number) => void;

@@ -2,15 +2,13 @@ import { fromJS, List, Map } from 'immutable';
 
 import { SecurityRole } from '../permissions/models';
 
-import { Row } from '../../query/selectRows';
-
 import {
     getGroupMembership,
     getUpdatedPolicyRoles,
     getUpdatedPolicyRolesByUniqueName,
     getUserGridFilterURL,
 } from './actions';
-import { GroupMembership, MemberType } from './models';
+import { GroupMembership, Groups, MemberType } from './models';
 
 describe('Administration actions', () => {
     test('getUpdatedPolicyRoles', () => {
@@ -83,45 +81,45 @@ describe('Administration actions', () => {
             },
         ];
 
-        const groupMemberships: Row[] = [
+        const groupMemberships: GroupMembership[] = [
             {
-                GroupId: { displayValue: 'Administrators', value: -1 },
-                'GroupId/Name': { value: 'Administrators' },
-                UserId: { displayValue: 'rosalinep', value: 1005 },
-                'UserId/DisplayName': { value: 'rosalinep' },
-                'UserId/Email': { value: 'rosalinep@labkey.com' },
+                groupId: -1,
+                groupName: 'Administrators',
+                userDisplayName: 'rosalinep',
+                userEmail: 'rosalinep@labkey.com',
+                userId: 1005,
             },
             {
-                GroupId: { displayValue: 'NewSiteGroup', value: 1035 },
-                'GroupId/Name': { value: 'NewSiteGroup' },
-                UserId: { displayValue: 'rosalinep', value: 1005 },
-                'UserId/DisplayName': { value: 'rosalinep' },
-                'UserId/Email': { value: 'rosalinep@labkey.com' },
+                groupId: 1035,
+                groupName: 'NewSiteGroup',
+                userDisplayName: 'rosalinep',
+                userEmail: 'rosalinep@labkey.com',
+                userId: 1005,
             },
             {
-                GroupId: { displayValue: 'group1', value: 1064 },
-                'GroupId/Name': { value: 'group1' },
-                UserId: { displayValue: 'rosalinep', value: 1005 },
-                'UserId/DisplayName': { value: 'rosalinep' },
-                'UserId/Email': { value: 'rosalinep@labkey.com' },
+                groupId: 1064,
+                groupName: 'group1',
+                userDisplayName: 'rosalinep',
+                userEmail: 'rosalinep@labkey.com',
+                userId: 1005,
             },
             {
-                GroupId: { displayValue: 'group1', value: 1064 },
-                'GroupId/Name': { value: 'group1' },
-                UserId: { value: 1066 },
-                'UserId/DisplayName': { value: null },
-                'UserId/Email': { value: null },
+                groupId: 1064,
+                groupName: 'group1',
+                userDisplayName: null,
+                userEmail: null,
+                userId: 1066,
             },
             {
-                GroupId: { displayValue: 'group1', value: 1064 },
-                'GroupId/Name': { value: 'group1' },
-                UserId: { value: 1000 },
-                'UserId/DisplayName': { value: null },
-                'UserId/Email': { value: null },
+                groupId: 1064,
+                groupName: 'group1',
+                userDisplayName: null,
+                userEmail: null,
+                userId: 1000,
             },
         ];
 
-        const expected: GroupMembership = {
+        const expected: Groups = {
             '1035': {
                 groupName: 'NewSiteGroup',
                 members: [

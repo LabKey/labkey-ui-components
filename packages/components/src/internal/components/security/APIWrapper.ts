@@ -10,7 +10,7 @@ import {
     fetchContainers,
 } from '../permissions/actions';
 import { Principal, SecurityPolicy, SecurityRole } from '../permissions/models';
-import { Row, selectRows } from '../../query/selectRows';
+import { selectRows } from '../../query/selectRows';
 import { SCHEMAS } from '../../schemas';
 import { buildURL } from '../../url/AppURL';
 import { naturalSortByProperty } from '../../../public/sort';
@@ -19,6 +19,7 @@ import { getUserProperties } from '../user/actions';
 import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { processRequest } from '../../query/api';
+import { GroupMembership } from '../administration/models';
 
 type NonRequestCallback<T extends Utils.RequestCallbackOptions> = Omit<T, 'success' | 'failure' | 'scope'>;
 export type DeleteContainerOptions = NonRequestCallback<Security.DeleteContainerOptions>;
@@ -64,7 +65,7 @@ export interface SecurityAPIWrapper {
     fetchRoles: () => Promise<List<SecurityRole>>;
     getAuditLogData: (filterCol: string, filterVal: string | number) => Promise<string>;
     getDeletionSummaries: () => Promise<Summary[]>;
-    getGroupMemberships: () => Promise<Row[]>;
+    getGroupMemberships: () => Promise<GroupMembership[]>;
     getInheritedProjects: (container: Container) => Promise<string[]>;
     getUserLimitSettings: (containerPath?: string) => Promise<UserLimitSettings>;
     getUserPermissions: (options: GetUserPermissionsOptions) => Promise<string[]>;
@@ -209,13 +210,22 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    getGroupMemberships = async (): Promise<Row[]> => {
+    getGroupMemberships = async (): Promise<GroupMembership[]> => {
         const result = await selectRows({
-            columns: ['UserId', 'GroupId', 'GroupId/Name', 'UserId/DisplayName', 'UserId/Email'],
+            columns: ['GroupId', 'GroupId/Name', 'UserId', 'UserId/DisplayName', 'UserId/Email'],
             schemaQuery: new SchemaQuery('core', 'Members'),
         });
 
-        return result.rows;
+        return result.rows.reduce<GroupMembership[]>((memberships, row) => {
+            memberships.push({
+                groupId: caseInsensitive(row, 'GroupId').value,
+                groupName: caseInsensitive(row, 'GroupId/Name').value,
+                userDisplayName: caseInsensitive(row, 'UserId/DisplayName').value,
+                userId: caseInsensitive(row, 'UserId').value,
+                userEmail: caseInsensitive(row, 'UserId/Email').value,
+            });
+            return memberships;
+        }, []);
     };
 
     getUserLimitSettings = getUserLimitSettings;

@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, PureComponent, ReactNode } from 'react';
+import React, { ComponentType, FC, PureComponent, ReactNode, useMemo, useCallback } from 'react';
 import { Filter } from '@labkey/api';
 // eslint cannot find Draft for some reason, but Intellij can.
 // eslint-disable-next-line import/named
@@ -32,9 +32,20 @@ export interface SearchParamsProps {
 
 type WithSearchParamsComponent<T> = ComponentType<T & SearchParamsProps>;
 
+const DEFAULT_SEARCH_PARAMS = new URLSearchParams();
+const DEFAULT_SET_SEARCH_PARAMS = () => {};
+
 export function withSearchParams<T>(Component: WithSearchParamsComponent<T>): ComponentType<T> {
     const Wrapped: FC<T & SearchParamsProps> = (props: T) => {
-        const [searchParams, setSearchParams] = useSearchParams();
+        let searchParams;
+        let setSearchParams;
+        try {
+            [searchParams, setSearchParams] = useSearchParams();
+        } catch (error) {
+            // We are not in a react router context, so we revert to injecting a default set of these props
+            searchParams = DEFAULT_SEARCH_PARAMS;
+            setSearchParams = DEFAULT_SET_SEARCH_PARAMS;
+        }
         return <Component searchParams={searchParams} setSearchParams={setSearchParams} {...props} />;
     };
 
@@ -315,8 +326,8 @@ export function withQueryModels<Props>(
         bindURL = (id: string): void => {
             const { setSearchParams } = this.props;
 
-            if (setSearchParams === undefined) {
-                // This happens when we're rendering a component outside a react-router context.
+            if (setSearchParams === DEFAULT_SET_SEARCH_PARAMS) {
+                // We're rendering a component outside a react-router context, so we can't bind to the URL
                 return;
             }
 

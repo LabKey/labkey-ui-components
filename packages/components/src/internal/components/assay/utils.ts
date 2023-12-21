@@ -40,7 +40,7 @@ export function inferDomainFromFile(
  * This is used for retrieving preview data for a file already on the server side
  * @param file This can be a rowId for the file, or a path to the file
  * @param fileName The file name to be used to check the extension
- * @param numLinesToInclude: the number of lines of data to include (excludes the header)
+ * @param numLinesToInclude the number of lines of data to include (excludes the header)
  */
 export function getServerFilePreview(
     file: string,

@@ -17,6 +17,7 @@ import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPag
 import { PermissionAssignments } from '../permissions/PermissionAssignments';
 import { useRouteLeave } from '../../util/RouteLeave';
 import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
+
 import { useAdministrationSubNav } from './useAdministrationSubNav';
 
 import { useAdminAppContext } from './useAdminAppContext';
@@ -32,7 +33,7 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
     const { roles } = props;
     useAdministrationSubNav();
     const [getIsDirty, setIsDirty] = useRouteLeave();
-    const [policyLastModified, setPolicyLastModified] = useState<string>(undefined);
+    const [policyLastModified, setPolicyLastModified] = useState<string>();
     const [hidePageDescription, setHidePageDescription] = useState<boolean>(false);
     const { dismissNotifications, createNotification } = useNotificationsContext();
     const { extraPermissionRoles } = useAdminAppContext();

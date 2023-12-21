@@ -697,6 +697,7 @@ exports[`DataClassDesigner default properties 1`] = `
                       class="css-1f43avz-a11yText-A11yText"
                     />
                     <div
+                      aria-disabled="true"
                       class="select-input__control select-input__control--is-disabled css-1mgq1wa-control"
                     >
                       <div
@@ -807,6 +808,7 @@ exports[`DataClassDesigner default properties 1`] = `
                       class="css-1f43avz-a11yText-A11yText"
                     />
                     <div
+                      aria-disabled="true"
                       class="select-input__control select-input__control--is-disabled css-1mgq1wa-control"
                     >
                       <div
@@ -1419,6 +1421,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       class="css-1f43avz-a11yText-A11yText"
                     />
                     <div
+                      aria-disabled="true"
                       class="select-input__control select-input__control--is-disabled css-1mgq1wa-control"
                     >
                       <div
@@ -1529,6 +1532,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       class="css-1f43avz-a11yText-A11yText"
                     />
                     <div
+                      aria-disabled="true"
                       class="select-input__control select-input__control--is-disabled css-1mgq1wa-control"
                     >
                       <div

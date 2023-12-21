@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useEffect, useMemo, useState } from 'react';
 import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
@@ -13,6 +13,8 @@ import { UserProperties } from '../user/UserProperties';
 
 import { useServerContext } from '../base/ServerContext';
 
+import { useAppContext } from '../../AppContext';
+
 import { EffectiveRolesList } from './EffectiveRolesList';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
@@ -20,51 +22,44 @@ import { MembersList } from './MembersList';
 
 interface Props {
     displayCounts?: boolean;
-    getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     isSiteGroup: boolean;
     members?: Member[];
     policy: SecurityPolicy;
-    principal: Principal;
+    principal?: Principal;
     rolesByUniqueName: Map<string, SecurityRole>;
     showPermissionListLinks?: boolean;
 }
 
 export const GroupDetailsPanel: FC<Props> = memo(props => {
-    const {
-        getAuditLogData,
-        principal,
-        members,
-        isSiteGroup,
-        displayCounts = true,
-        showPermissionListLinks = true,
-    } = props;
+    const { principal, members, isSiteGroup, displayCounts = true, showPermissionListLinks = true } = props;
     const [created, setCreated] = useState<string>('');
+    const { api } = useAppContext();
     const { user } = useServerContext();
 
-    const loadWhenCreated = useCallback(async () => {
-        try {
-            const createdState = await getAuditLogData('Date,group/UserId', 'group/UserId', principal.userId);
-
-            setCreated(createdState.slice(0, -7));
-        } catch (e) {
-            console.error(resolveErrorMessage(e) ?? 'Failed to load when group created');
-        }
-    }, [getAuditLogData, principal]);
-
     useEffect(() => {
-        loadWhenCreated();
-    }, [loadWhenCreated]);
+        if (!principal) return;
+        (async () => {
+            try {
+                const createdState = await api.security.getAuditLogDate('group/UserId', principal.userId);
+                setCreated(createdState);
+            } catch (e) {
+                console.error(resolveErrorMessage(e) ?? 'Failed to load when group created');
+            }
+        })();
+    }, [api, principal]);
 
-    const { usersCount, groupsCount } = useMemo(() => {
-        const usersCount = members.filter(member => member.type === MemberType.user).length;
-        const groupsCount = (members.length - usersCount).toString();
+    const { groupsCount, usersCount } = useMemo(() => {
+        const usersCount_ = members.filter(member => member.type === MemberType.user).length;
 
-        return { usersCount, groupsCount };
+        return {
+            groupsCount: (members.length - usersCount_).toLocaleString(),
+            usersCount: usersCount_.toLocaleString(),
+        };
     }, [members]);
 
     return (
         <Panel className="group-details-panel">
-            <Panel.Heading>{principal ? principal.displayName : 'Group Details'}</Panel.Heading>
+            <Panel.Heading>{principal?.displayName ?? 'Group Details'}</Panel.Heading>
             <Panel.Body>
                 {principal ? (
                     <>

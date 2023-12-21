@@ -10,9 +10,15 @@ interface Group {
     type?: string;
 }
 
-export interface GroupMembership {
-    [key: string]: Group;
-}
+export type GroupMembership = {
+    groupId: number;
+    groupName: string;
+    userDisplayName: string;
+    userEmail: string;
+    userId: number;
+};
+
+export type Groups = Record<string, Group>;
 
 export enum MemberType {
     group = 'g',

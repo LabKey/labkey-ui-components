@@ -7,7 +7,7 @@ import { Record, List, Map } from 'immutable';
 import React from 'react';
 
 import { naturalSort } from '../../../public/sort';
-import { GroupMembership, MemberType } from '../administration/models';
+import { Groups, MemberType } from '../administration/models';
 
 export class Principal extends Record({
     userId: undefined,
@@ -41,7 +41,7 @@ export class Principal extends Record({
 
     static filterAndSort(
         principals: List<Principal>,
-        groupMembership: GroupMembership,
+        groupMembership: Groups,
         excludeUserIds?: List<number>
     ): List<Principal> {
         return (

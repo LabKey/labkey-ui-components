@@ -8,7 +8,7 @@ import {
     getUpdatedPolicyRolesByUniqueName,
     getUserGridFilterURL,
 } from './actions';
-import { MemberType } from './models';
+import { GroupMembership, Groups, MemberType } from './models';
 
 describe('Administration actions', () => {
     test('getUpdatedPolicyRoles', () => {
@@ -81,45 +81,45 @@ describe('Administration actions', () => {
             },
         ];
 
-        const groupMemberships = [
+        const groupMemberships: GroupMembership[] = [
             {
-                'UserId/Email': 'rosalinep@labkey.com',
-                'UserId/DisplayName': 'rosalinep',
-                'GroupId/Name': 'Administrators',
-                UserId: 1005,
-                GroupId: -1,
+                groupId: -1,
+                groupName: 'Administrators',
+                userDisplayName: 'rosalinep',
+                userEmail: 'rosalinep@labkey.com',
+                userId: 1005,
             },
             {
-                'UserId/Email': 'rosalinep@labkey.com',
-                'UserId/DisplayName': 'rosalinep',
-                'GroupId/Name': 'NewSiteGroup',
-                UserId: 1005,
-                GroupId: 1035,
+                groupId: 1035,
+                groupName: 'NewSiteGroup',
+                userDisplayName: 'rosalinep',
+                userEmail: 'rosalinep@labkey.com',
+                userId: 1005,
             },
             {
-                'UserId/Email': 'rosalinep@labkey.com',
-                'UserId/DisplayName': 'rosalinep',
-                'GroupId/Name': 'group1',
-                UserId: 1005,
-                GroupId: 1064,
+                groupId: 1064,
+                groupName: 'group1',
+                userDisplayName: 'rosalinep',
+                userEmail: 'rosalinep@labkey.com',
+                userId: 1005,
             },
             {
-                'UserId/Email': null,
-                'UserId/DisplayName': null,
-                'GroupId/Name': 'group1',
-                UserId: 1066,
-                GroupId: 1064,
+                groupId: 1064,
+                groupName: 'group1',
+                userDisplayName: null,
+                userEmail: null,
+                userId: 1066,
             },
             {
-                'UserId/Email': null,
-                'UserId/DisplayName': null,
-                'GroupId/Name': 'group1',
-                UserId: 1000,
-                GroupId: 1064,
+                groupId: 1064,
+                groupName: 'group1',
+                userDisplayName: null,
+                userEmail: null,
+                userId: 1000,
             },
         ];
 
-        const expected = {
+        const expected: Groups = {
             '1035': {
                 groupName: 'NewSiteGroup',
                 members: [

@@ -31,12 +31,13 @@ import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants
 import { AUDIT_KEY } from '../../app/constants';
 
 import { NotFound } from '../base/NotFound';
+
 import { useAdministrationSubNav } from './useAdministrationSubNav';
 
 import { GroupAssignments } from './GroupAssignments';
 
 import { showPremiumFeatures } from './utils';
-import { GroupMembership, MemberType } from './models';
+import { Groups, MemberType } from './models';
 import { fetchGroupMembership } from './actions';
 
 export type GroupManagementPageProps = InjectedPermissionsPage;
@@ -47,8 +48,8 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
     const [getIsDirty, setIsDirty] = useRouteLeave();
     const [error, setError] = useState<string>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
-    const [savedGroupMembership, setSavedGroupMembership] = useState<GroupMembership>();
-    const [groupMembership, setGroupMembership] = useState<GroupMembership>();
+    const [savedGroupMembership, setSavedGroupMembership] = useState<Groups>();
+    const [groupMembership, setGroupMembership] = useState<Groups>();
     const [updatedPrincipals, setUpdatedPrincipals] = useState<List<Principal>>(principals);
     const [lastModified, setLastModified] = useState<string>();
     const [policy, setPolicy] = useState<SecurityPolicy>();
@@ -67,12 +68,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
         setLoadingState(LoadingState.LOADING);
         try {
             // Used in renderButtons()
-            const lastModifiedState = await api.security.getAuditLogData(
-                'Date,Project',
-                'ProjectId/Name',
-                projectPath.slice(0, -1)
-            );
-
+            const lastModifiedState = await api.security.getAuditLogDate('ProjectId/Name', projectPath.slice(0, -1));
             setLastModified(lastModifiedState);
 
             // Used in DetailsPanels
@@ -101,6 +97,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
 
     const save = useCallback(async () => {
         try {
+            // TODO: This should all be done server-side and transacted
             // Delete members
             const newGroupMembership = { ...groupMembership };
             for (const groupId of Object.keys(newGroupMembership)) {
@@ -147,10 +144,10 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
                     await api.security.addGroupMembers(parseInt(groupId, 10), addedMembers, projectPath);
             }
 
-            const principals = await getPrincipals();
+            const principals_ = await getPrincipals();
 
             // Save updated state
-            setUpdatedPrincipals(principals);
+            setUpdatedPrincipals(principals_);
             setSavedGroupMembership(newGroupMembership);
             setGroupMembership(newGroupMembership);
 
@@ -176,7 +173,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
 
         return (
             <>
-                <CreatedModified row={row} />
+                <CreatedModified row={row} useServerDate={false} />
                 <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
                     <MenuItem
                         href={AppURL.create(AUDIT_KEY)
@@ -255,7 +252,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
         return showPremiumFeatures(moduleContext) ? container.path : undefined;
     }, [container, moduleContext]);
 
-    if (isProductProjectsEnabled() && !container.isProject) return <NotFound />;
+    if (isProductProjectsEnabled(moduleContext) && !container.isProject) return <NotFound />;
 
     return (
         <BasePermissionsCheckPage
@@ -283,7 +280,6 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
                     setErrorMsg={onSetErrorMsg}
                     setIsDirty={setIsDirty}
                     getIsDirty={getIsDirty}
-                    getAuditLogData={api.security.getAuditLogData}
                 />
             )}
         </BasePermissionsCheckPage>

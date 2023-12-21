@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.1.0
+*Released*: 21 December 2023
+- Change `domain` and `security` API wrappers to use `selectRows`
+- Update `api.security.getAuditLogDate` to not need to specify additional columns
+- Update `GroupDetailsPanel` to use API wrapper from context
+- Improve typings of `SecurityAPIWrapper`
+
+### version 3.0.1
+*Released*: 21 December 2023
+- Rehydrate the package-lock.json for the components package
+
 ### version 3.0.0
 *Released*: 20 December 2023
 * Breaking Changes:

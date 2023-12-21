@@ -33,7 +33,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { SCHEMAS } from '../../schemas';
 
-import {caseInsensitive, handleRequestFailure} from '../../util/utils';
+import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 
 import { getExcludedDataTypeNames } from '../entities/actions';
 

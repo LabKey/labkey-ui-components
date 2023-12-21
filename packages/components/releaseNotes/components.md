@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.1.1
+*Released*: 21 December 2023
+* withQueryModels: fix issue when operating outside of a React Router context
+
 ### version 3.1.0
 *Released*: 21 December 2023
 - Change `domain` and `security` API wrappers to use `selectRows`

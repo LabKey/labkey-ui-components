@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-
-import { withRouter, WithRouterProps } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 import { HelpLink } from '../../util/helpLinks';
 import { biologicsIsPrimaryApp, getPrimaryAppProperties } from '../../app/utils';
@@ -10,8 +9,8 @@ import { RELEASE_NOTES_METRIC } from '../productnavigation/constants';
 
 export const DISMISSED_STORAGE_PREFIX = '__release_notes_dismissed__';
 
-export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
-    const { location } = props;
+export const ReleaseNote: FC = props => {
+    const [searchParams] = useSearchParams();
     const { api } = useAppContext();
     const { versionString, moduleContext } = useServerContext();
     const { releaseNoteLink, name } = getPrimaryAppProperties(moduleContext);
@@ -19,7 +18,7 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
     const releaseNoteDismissKey = DISMISSED_STORAGE_PREFIX + name + versionString;
 
     const [releaseNoteDismissed, setReleaseNoteDismissed] = useState<boolean>(
-        location?.query.showReleaseNote?.toLowerCase() !== 'true' &&
+        (searchParams.get('showReleaseNote') ?? '').toLowerCase() !== 'true' &&
             localStorage.getItem(releaseNoteDismissKey)?.toLowerCase() === 'true'
     );
 
@@ -38,24 +37,20 @@ export const ReleaseNoteImpl: FC<WithRouterProps> = props => {
     if (releaseNoteDismissed || !releaseNoteLink) return null;
 
     return (
-        <>
-            <div className="notification-container alert alert-success release-note-container">
-                <div className="input-group-align release-note-new">NEW</div>
-                <div className="notification-item input-group-align">
-                    {name} {versionString} is here!&nbsp;
-                    <span onClick={onLinkClick}>
-                        <HelpLink
-                            topic={releaseNoteLink}
-                            useDefaultUrl={biologicsIsPrimaryApp() /* needed for FM in Biologics*/}
-                        >
-                        See what's new.
-                        </HelpLink>
-                    </span>
-                    <i style={{ float: 'right' }} className="fa fa-times-circle pointer" onClick={onDismiss} />
-                </div>
+        <div className="notification-container alert alert-success release-note-container">
+            <div className="input-group-align release-note-new">NEW</div>
+            <div className="notification-item input-group-align">
+                {name} {versionString} is here!&nbsp;
+                <span onClick={onLinkClick}>
+                    <HelpLink
+                        topic={releaseNoteLink}
+                        useDefaultUrl={biologicsIsPrimaryApp() /* needed for FM in Biologics*/}
+                    >
+                    See what's new.
+                    </HelpLink>
+                </span>
+                <i style={{ float: 'right' }} className="fa fa-times-circle pointer" onClick={onDismiss} />
             </div>
-        </>
+        </div>
     );
 };
-
-export const ReleaseNote = withRouter(ReleaseNoteImpl);

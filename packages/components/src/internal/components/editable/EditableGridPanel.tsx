@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
-import { fromJS, List, Map } from 'immutable';
+import { fromJS } from 'immutable';
 import classNames from 'classnames';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';

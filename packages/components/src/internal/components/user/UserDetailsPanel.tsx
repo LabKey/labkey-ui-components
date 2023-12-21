@@ -6,7 +6,7 @@ import React, { FC } from 'react';
 import moment from 'moment';
 import { Button, Col, Modal, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
-import { Filter, getServerContext, Security, Utils } from '@labkey/api';
+import { getServerContext, Utils } from '@labkey/api';
 
 import classNames from 'classnames';
 
@@ -15,17 +15,14 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { getMomentDateTimeFormat } from '../../util/Date';
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
-import { selectRows } from '../../query/selectRows';
-import { SCHEMAS } from '../../schemas';
-import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 
 import { GroupsList } from '../permissions/GroupsList';
-import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
+import { AppURL, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
 import { User } from '../base/models/User';
 import { getDefaultAPIWrapper } from '../../APIWrapper';
 import { SecurityAPIWrapper } from '../security/APIWrapper';
 import { Container } from '../base/models/Container';
-import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
+import { getRolesByUniqueName } from '../permissions/actions';
 
 import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 
@@ -301,13 +298,16 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     render() {
         const { userId, allowDelete, allowResetPassword, toggleDetailsModal, onUsersStateChangeComplete } = this.props;
         const { showDialog, userProperties } = this.state;
-        const { user } = getServerContext();
+        const { user, container, project } = getServerContext();
         const isSelf = userId === user.id;
         const currentProductId = getCurrentAppProperties()?.productId;
         const targetProductId = getPrimaryAppProperties()?.productId;
-        const manageUrl = createProductUrlFromParts(
+        // We do not currently support user management in sub folders, so we create the management URL for the project
+        // container.
+        const manageUrl = createProductUrlFromPartsWithContainer(
             targetProductId,
             currentProductId,
+            project.path,
             { usersView: 'all', 'all.UserId~eq': userId },
             'admin',
             'users'

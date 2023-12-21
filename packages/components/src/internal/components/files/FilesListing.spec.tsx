@@ -2,9 +2,7 @@ import React from 'react';
 import { List, Set } from 'immutable';
 import { shallow } from 'enzyme';
 
-import { FILES_DATA, FILES_DATA_2 } from '../../../test/data/constants';
-
-import { FilesListingForm } from './FilesListingForm';
+import { FILES_DATA } from '../../../test/data/constants';
 
 import { IFile } from './models';
 import { FilesListing } from './FilesListing';

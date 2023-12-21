@@ -162,7 +162,7 @@ describe('ProductMenuSection render', () => {
         expect(menuSection.contains('Empty due to exclusion')).toBe(false);
 
         expect(menuSection.find('.menu-section-header').length).toBe(1);
-        expect(menuSection.find('.menu-section-header').childAt(0).prop('href')).toBe('#/samples');
+        expect(menuSection.find('.menu-section-header').childAt(0).prop('to')).toBe('/samples');
 
         expect(menuSection).toMatchSnapshot();
     });
@@ -196,7 +196,7 @@ describe('ProductMenuSection render', () => {
         expect(menuSection.contains('Empty due to exclusion')).toBe(true);
 
         expect(menuSection.find('.menu-section-header').length).toBe(1);
-        expect(menuSection.find('.menu-section-header').childAt(0).prop('href')).toBe('#/samples');
+        expect(menuSection.find('.menu-section-header').childAt(0).prop('to')).toBe('/samples');
 
         expect(menuSection).toMatchSnapshot();
     });
@@ -256,7 +256,7 @@ describe('ProductMenuSection render', () => {
         );
 
         expect(menuSection.find('.menu-section-header').length).toBe(1);
-        expect(menuSection.find('.menu-section-header').childAt(0).prop('href')).toBe('#%2Fsample%2Fnew%3Fsort%3Ddate');
+        expect(menuSection.find('.menu-section-header').childAt(0).prop('to')).toBe('%2Fsample%2Fnew%3Fsort%3Ddate');
 
         expect(menuSection).toMatchSnapshot();
     });

@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, PureComponent, memo, ReactNode, useMemo } from 'react';
-import { Link, WithRouterProps } from 'react-router';
+import { useParams } from 'react-router-dom';
 
 import { InjectedQueryModels, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
 import { AppURL } from '../../../url/AppURL';
@@ -64,9 +64,9 @@ class DetailBodyImpl extends PureComponent<BodyProps & InjectedQueryModels> {
         return (
             <Page hasHeader={true} title={pageTitle}>
                 <BreadcrumbCreate row={row}>
-                    <Link to={AppURL.create('q').toString()}>Schemas</Link>
-                    <Link to={AppURL.create('q', schemaName).toString()}>{schemaLabel}</Link>
-                    <Link to={AppURL.create('q', schemaName, name).toString()}>{plural}</Link>
+                    <a href={AppURL.create('q').toHref()}>Schemas</a>
+                    <a href={AppURL.create('q', schemaName).toHref()}>{schemaLabel}</a>
+                    <a href={AppURL.create('q', schemaName, name).toHref()}>{plural}</a>
                 </BreadcrumbCreate>
                 {title && <PageHeader title={title} />}
                 <DetailPanel asPanel model={model} />
@@ -77,8 +77,8 @@ class DetailBodyImpl extends PureComponent<BodyProps & InjectedQueryModels> {
 
 const DetailBody = withQueryModels<BodyProps>(DetailBodyImpl);
 
-export const QueryDetailPage: FC<WithRouterProps> = memo(({ params }) => {
-    const { schema, query, id } = params;
+export const QueryDetailPage: FC = memo(() => {
+    const { schema, query, id } = useParams();
     const modelId = `q.details.${schema}.${query}.${id}`;
 
     const queryConfigs = useMemo(

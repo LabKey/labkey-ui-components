@@ -15,7 +15,6 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
-import { createMockWithRouterProps } from '../../mockUtils';
 
 import { getRolesByUniqueName, processGetRolesResponse, UserLimitSettings } from '../permissions/actions';
 import policyJSON from '../../../test/data/security-getPolicy.json';
@@ -36,7 +35,6 @@ const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
 describe('<UsersGridPanel/>', () => {
-    const { router, location } = createMockWithRouterProps(jest.fn);
     const DEFAULT_PROPS = {
         user: TEST_USER_APP_ADMIN,
         onCreateComplete: jest.fn(),
@@ -47,7 +45,7 @@ describe('<UsersGridPanel/>', () => {
         queryModels: {
             'user-management-users-all': makeTestQueryModel(
                 SCHEMAS.CORE_TABLES.USERS,
-                new QueryInfo(),
+                new QueryInfo({}),
                 {},
                 [],
                 0,
@@ -55,7 +53,7 @@ describe('<UsersGridPanel/>', () => {
             ),
             'user-management-users-active': makeTestQueryModel(
                 SCHEMAS.CORE_TABLES.USERS,
-                new QueryInfo(),
+                new QueryInfo({}),
                 {},
                 [],
                 0,
@@ -63,15 +61,15 @@ describe('<UsersGridPanel/>', () => {
             ),
             'user-management-users-inactive': makeTestQueryModel(
                 SCHEMAS.CORE_TABLES.USERS,
-                new QueryInfo(),
+                new QueryInfo({}),
                 {},
                 [],
                 0,
                 'user-management-users-inactive'
             ),
         },
-        router,
-        location
+        searchParams: new URLSearchParams(),
+        setSearchParams: jest.fn(),
     };
 
     test('active users view', () => {

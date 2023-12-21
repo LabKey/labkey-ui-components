@@ -143,6 +143,7 @@ export interface WithFormStepsProps extends WithFormStepsState {
     previousStep: () => any;
 }
 
+// FIXME: this wrapper obliterates all type information for wrapped components, making it unsafe
 export const withFormSteps = (Component: any, defaultState?: WithFormStepsState) =>
     class WithFormSteps extends React.Component<any, any> {
         constructor(props) {

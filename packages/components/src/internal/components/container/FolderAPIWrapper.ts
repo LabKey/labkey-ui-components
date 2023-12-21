@@ -1,11 +1,9 @@
-import { rejects } from 'assert';
-
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
 import { handleRequestFailure } from '../../util/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
-import { DataTypeEntity, ProjectConfigurableDataType } from '../entities/models';
+import { ProjectConfigurableDataType } from '../entities/models';
 import { isAppHomeFolder } from '../../app/utils';
 import { fetchContainers } from '../permissions/actions';
 import { ModuleContext } from '../base/ServerContext';

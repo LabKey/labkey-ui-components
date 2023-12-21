@@ -6,7 +6,6 @@ import React, { FC, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 import { MenuItem } from 'react-bootstrap';
 import { PermissionRoles, Project, Utils } from '@labkey/api';
-import { WithRouterProps } from 'react-router';
 
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
@@ -27,7 +26,7 @@ import { ActiveUserLimitMessage } from '../settings/ActiveUserLimit';
 
 import { UserLimitSettings } from '../permissions/actions';
 
-import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
+import { NotificationsContextProps, useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY } from '../auditlog/constants';
 
@@ -36,6 +35,7 @@ import { AUDIT_KEY } from '../../app/constants';
 import { NotFound } from '../base/NotFound';
 
 import { isProductProjectsEnabled } from '../../app/utils';
+import { useAdministrationSubNav } from './useAdministrationSubNav';
 
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
 import { getUserGridFilterURL, updateSecurityPolicy } from './actions';
@@ -95,7 +95,7 @@ interface OwnProps {
 }
 
 // exported for jest testing
-export type UserManagementProps = OwnProps & InjectedPermissionsPage & NotificationsContextProps & WithRouterProps;
+export type UserManagementProps = OwnProps & InjectedPermissionsPage & NotificationsContextProps;
 
 interface State {
     policy: SecurityPolicy;
@@ -279,8 +279,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
     };
 
     render(): ReactNode {
-        const { allowResetPassword, container, extraRoles, location, project, user, rolesByUniqueName, router } =
-            this.props;
+        const { allowResetPassword, container, extraRoles, project, user, rolesByUniqueName } = this.props;
         const { policy, userLimitSettings } = this.state;
 
         // issue 39501: only allow permissions changes to be made if policy is stored in this container (i.e. not inherited)
@@ -305,17 +304,15 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
                     allowResetPassword={allowResetPassword}
                     showDetailsPanel={user.hasManageUsersPermission()}
                     userLimitSettings={userLimitSettings}
-                    router={router}
-                    location={location}
                 />
             </BasePermissionsCheckPage>
         );
     }
 }
 
-type ImplProps = InjectedPermissionsPage & NotificationsContextProps & WithRouterProps;
-
-export const UserManagementPageImpl: FC<ImplProps> = props => {
+export const UserManagementPageImpl: FC<InjectedPermissionsPage> = props => {
+    useAdministrationSubNav();
+    const { createNotification, dismissNotifications } = useNotificationsContext();
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext, project, user } = useServerContext();
     const { extraPermissionRoles } = useAdminAppContext();
@@ -328,6 +325,8 @@ export const UserManagementPageImpl: FC<ImplProps> = props => {
             allowResetPassword={!isLoginAutoRedirectEnabled(moduleContext)}
             api={api.security}
             container={container}
+            createNotification={createNotification}
+            dismissNotifications={dismissNotifications}
             extraRoles={extraPermissionRoles}
             project={project}
             user={user}
@@ -335,4 +334,4 @@ export const UserManagementPageImpl: FC<ImplProps> = props => {
     );
 };
 
-export const UserManagementPage = withPermissionsPage(withNotificationsContext(UserManagementPageImpl));
+export const UserManagementPage = withPermissionsPage(UserManagementPageImpl);

@@ -1,6 +1,6 @@
 import React, { ComponentType, createContext, FC, PureComponent, ReactNode } from 'react';
 import { produce } from 'immer';
-import { withRouter, WithRouterProps } from 'react-router';
+import { useParams } from 'react-router-dom';
 
 import { isAssayEnabled } from '../../app/utils';
 
@@ -230,23 +230,25 @@ export function withAssayModels<Props>(
 }
 
 /**
- * Provides a [[withAssayModels]] wrapped component that is additionally wrapped by react-router's withRouter.
- * This additional wrapping allows for sourcing the "assayName" property from the URL. NOTE: This is specifically
- * configured to expect a route param called "protocol" which is expected to a be (string) name of a specific assay
- * protocol.
+ * Provides a [[withAssayModels]] wrapped component that sources the "assayName" property from the URL. NOTE: This is
+ * specifically configured to expect a route param called "protocol" which is expected to a be (string) name of a
+ * specific assay protocol.
  * @param ComponentToWrap The component definition (e.g. class, function) to wrap.
  * This will have [[InjectedAssayModel]] props injected into it when instantiated.
  * @param defaultProps Provide alternative "defaultProps" for this wrapped component.
  */
+// TODO: this component seems kind of unnecessary, it seems like every consumer should be able to just use the RR6
+//  useParams hook directly, it's not particularly complicated.
 export function withAssayModelsFromLocation<Props>(
     ComponentToWrap: ComponentType<Props & InjectedAssayModel>,
     defaultProps?: WithAssayModelProps
-): ComponentType<Props & WithAssayModelProps & WithRouterProps> {
+): ComponentType<Props & WithAssayModelProps> {
     const WrappedComponent = withAssayModels<Props>(ComponentToWrap, defaultProps);
 
-    const AssayFromLocation: FC<Props & WithRouterProps> = props => {
-        return <WrappedComponent {...props} assayName={props.params?.protocol} />;
+    const AssayFromLocation: FC<Props> = props => {
+        const protocol = useParams().protocol;
+        return <WrappedComponent {...props} assayName={protocol} />;
     };
 
-    return withRouter(AssayFromLocation);
+    return AssayFromLocation;
 }

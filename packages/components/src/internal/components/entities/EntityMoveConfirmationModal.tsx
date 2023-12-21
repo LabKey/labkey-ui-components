@@ -8,7 +8,6 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { isLoading, LoadingState } from '../../../public/LoadingState';
-import { isAppHomeFolder } from '../../app/utils';
 import { AppContext, useAppContext } from '../../AppContext';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';

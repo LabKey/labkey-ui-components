@@ -1,7 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import Formsy from 'formsy-react';
 import { fromJS } from 'immutable';
-import { Button } from 'react-bootstrap';
 import { AuditBehaviorTypes, Query } from '@labkey/api';
 
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';

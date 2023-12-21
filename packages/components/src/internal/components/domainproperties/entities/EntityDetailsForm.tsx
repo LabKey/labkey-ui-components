@@ -15,7 +15,6 @@ import {
     getEntityDescriptionValue,
     getEntityNameExpressionValue,
     getEntityNameValue,
-    isExistingEntity,
 } from './actions';
 import { ENTITY_FORM_IDS } from './constants';
 

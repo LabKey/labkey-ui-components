@@ -26,10 +26,6 @@ import { AppURL, createProductUrl, createProductUrlFromParts } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
 
-const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
-
-type RoutingTable = Map<string, string | boolean>;
-
 let resolvers = OrderedSet<AppRouteResolver>();
 
 let urlMappers: List<URLMapper> = List<URLMapper>();
@@ -51,60 +47,15 @@ export namespace URLService {
         });
     }
 
-    export function resolveAppRoute(store, nextRouteState, replace, next) {
-        const query = nextRouteState.location.query;
-        const nextRoute = nextRouteState.location.pathname;
-        const table = getRouteTable(store.getState());
+    export async function resolveRedirect(path: string): Promise<string> {
+        const resolver = resolvers.find(r => r.matches(path));
 
-        if (table.has(nextRoute)) {
-            if (table.get(nextRoute) !== true) {
-                replace({ pathname: table.get(nextRoute), query });
-            }
-        } else {
-            let found = false;
-            resolvers.forEach(resolver => {
-                if (resolver.matches(nextRoute)) {
-                    found = true;
-                    const routes = nextRoute.split('/');
-                    routes.shift(); // account for initial '/'
-                    resolver.fetch(routes).then((fetchedRoute: AppURL | boolean) => {
-                        const toRoute = typeof fetchedRoute === 'boolean' ? fetchedRoute : fetchedRoute.toString();
+        if (resolver === undefined) return undefined;
 
-                        store.dispatch({
-                            type: ADD_TABLE_ROUTE,
-                            fromRoute: nextRoute,
-                            toRoute,
-                        });
-
-                        if (typeof toRoute === 'string') {
-                            replace({
-                                pathname: toRoute,
-                                query,
-                            });
-                        }
-
-                        next();
-                    });
-                    return false; // stop at this resolver
-                }
-            });
-
-            if (found) {
-                return;
-            } else {
-                store.dispatch({
-                    type: ADD_TABLE_ROUTE,
-                    fromRoute: nextRoute,
-                    toRoute: true,
-                });
-            }
-        }
-
-        next();
-    }
-
-    export function getRouteTable(state): RoutingTable {
-        return state.routing.table;
+        const parts = path.split('/');
+        parts.shift(); // account for initial '/'
+        const redirectPath = await resolver.fetch(parts);
+        return redirectPath?.toString();
     }
 
     export function registerURLMappers(...mappers: URLMapper[]): void {
@@ -252,7 +203,7 @@ const ASSAY_MAPPERS = [
             const params = ActionURL.getParameters(url);
 
             if (params.rowId) {
-                return AppURL.create('assays', params.rowId);
+                return AppURL.create('rd', 'assays', params.rowId);
             }
         }
     }),

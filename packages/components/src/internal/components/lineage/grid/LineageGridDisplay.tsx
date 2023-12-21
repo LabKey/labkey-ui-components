@@ -2,10 +2,11 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo, PureComponent, ReactNode } from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
-import { withRouter, WithRouterProps } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
+import { getQueryParams } from '../../../util/URL';
 
 import { LineageGridModel } from '../models';
 import { DEFAULT_LINEAGE_DISTANCE } from '../constants';
@@ -16,15 +17,17 @@ import { AppURL } from '../../../url/AppURL';
 import { Alert } from '../../base/Alert';
 import { Grid, GridProps } from '../../base/Grid';
 
-interface LineagePagingProps extends WithRouterProps {
+interface LineagePagingProps {
     model: LineageGridModel;
 }
 
-const LineagePagingImpl: FC<LineagePagingProps> = memo(({ location, model }) => {
+export const LineagePaging: FC<LineagePagingProps> = memo(({ model }) => {
+    const [searchParams, _] = useSearchParams();
     const { maxRowIndex, minRowIndex, pageNumber, seedNode, totalRows } = model;
 
     // hidden when "0 of 0" or "1 - N of N"
     const showButtons = !(maxRowIndex === 0 || (minRowIndex === 1 && maxRowIndex === totalRows));
+    const queryParams = useMemo(() => getQueryParams(searchParams), [searchParams]);
 
     return (
         <div className="col-xs-12">
@@ -49,13 +52,13 @@ const LineagePagingImpl: FC<LineagePagingProps> = memo(({ location, model }) => 
                 {showButtons && (
                     <div className="btn-group">
                         <Button
-                            href={getPageNumberChangeURL(location.query, seedNode.lsid, pageNumber - 1).toHref()}
+                            href={getPageNumberChangeURL(queryParams, seedNode.lsid, pageNumber - 1).toHref()}
                             disabled={pageNumber <= 1}
                         >
                             <i className="fa fa-chevron-left" />
                         </Button>
                         <Button
-                            href={getPageNumberChangeURL(location.query, seedNode.lsid, pageNumber + 1).toHref()}
+                            href={getPageNumberChangeURL(queryParams, seedNode.lsid, pageNumber + 1).toHref()}
                             disabled={maxRowIndex === totalRows}
                         >
                             <i className="fa fa-chevron-right" />
@@ -66,8 +69,6 @@ const LineagePagingImpl: FC<LineagePagingProps> = memo(({ location, model }) => 
         </div>
     );
 });
-
-const LineagePaging = withRouter(LineagePagingImpl);
 
 interface LineageGridProps {
     model: LineageGridModel;

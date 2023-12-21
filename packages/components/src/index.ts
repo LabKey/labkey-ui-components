@@ -80,7 +80,7 @@ import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
 import { getUserProperties, getUserRoleDisplay } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
-import { withWindowFocusCheckExpiredSession } from './internal/util/WindowFocusCheckExpiredSession';
+import { useWindowFocusCheckExpiredSession } from './internal/util/WindowFocusCheckExpiredSession';
 import {
     deleteErrorMessage,
     deleteSuccessMessage,
@@ -184,7 +184,6 @@ import {
     getSampleTypesFromTransactionIds,
     getSelected,
     getSelectedData,
-    getSelection,
     incrementClientSideMetricCount,
     replaceSelected,
     selectGridIdsFromTransactionId,
@@ -244,7 +243,7 @@ import {
     PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
     SHARED_CONTAINER_PATH,
 } from './internal/constants';
-import { pushParameters, removeParameters, replaceParameters, resetParameters } from './internal/util/URL';
+import { getQueryParams, pushParameters, removeParameters, replaceParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import { DATA_IMPORT_TOPIC, getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
@@ -306,10 +305,6 @@ import {
     useUsersWithPermissions,
 } from './internal/components/forms/actions';
 import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
-import { SchemaListing } from './internal/components/listing/SchemaListing';
-import { QueriesListing } from './internal/components/listing/QueriesListing';
-import { QueriesListingPage } from './internal/components/listing/pages/QueriesListingPage';
-import { SchemaListingPage } from './internal/components/listing/pages/SchemaListingPage';
 import {
     EntityIdCreationModel,
     EntityParentType,
@@ -339,8 +334,6 @@ import {
     SearchField,
     SearchScope,
 } from './internal/components/search/constants';
-import { SearchResultCard } from './internal/components/search/SearchResultCard';
-import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { SearchPanel } from './internal/components/search/SearchPanel';
 import {
     getFieldFiltersValidationResult,
@@ -349,7 +342,6 @@ import {
     isValidFilterField,
     SAMPLE_FILTER_METRIC_AREA,
 } from './internal/components/search/utils';
-import { AdministrationSubNav } from './internal/components/administration/AdministrationSubNav';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { CreateProjectPage } from './internal/components/project/CreateProjectPage';
 import { ProjectManagementPage } from './internal/components/project/ProjectManagementPage';
@@ -429,15 +421,14 @@ import {
     LineageURLResolvers,
 } from './internal/components/lineage/types';
 import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
-import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
+import { LineageGrid, LineageGridFromLocation, LineagePage } from './internal/components/lineage/grid/LineageGrid';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
 import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { QueryFilterPanel } from './internal/components/search/QueryFilterPanel';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
-import { useSubNavContext } from './internal/components/navigation/hooks';
-import { SubNav, SubNavWithContext } from './internal/components/navigation/SubNav';
+import { useSubNavTabsContext } from './internal/components/navigation/hooks';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
@@ -452,10 +443,8 @@ import {
 import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
 import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
-import { UsersGridPanel } from './internal/components/user/UsersGridPanel';
 import { useUserProperties } from './internal/components/user/hooks';
 import { UserLink, UserLinkList } from './internal/components/user/UserLink';
-import { AccountSubNav } from './internal/components/user/AccountSubNav';
 import { ProfilePage } from './internal/components/user/ProfilePage';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -468,7 +457,6 @@ import {
     STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
-import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
 import { withPermissionsPage } from './internal/components/permissions/withPermissionsPage';
 import { Principal, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
 import { fetchContainerSecurityPolicy, getUserLimitSettings } from './internal/components/permissions/actions';
@@ -519,7 +507,7 @@ import { DEFAULT_ALIQUOT_NAMING_PATTERN, SampleTypeModel } from './internal/comp
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
 import { getQueryModelExportParams, runDetailsColumnsForQueryModel } from './public/QueryModel/utils';
-import { useRouteLeave, withRouteLeave } from './internal/util/RouteLeave';
+import { useRouteLeave } from './internal/util/RouteLeave';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
 import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
 import { ItemsLegend } from './internal/components/chart/ItemsLegend';
@@ -599,8 +587,7 @@ import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
-import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
-import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
+import { SchemaBrowserRoutes } from './internal/components/SchemaBrowser/SchemaBrowserRoutes';
 import {
     ACTIVE_JOB_INDICATOR_CLS,
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
@@ -609,11 +596,7 @@ import {
     PIPELINE_PROVIDER_FILTER_LKB,
     PIPELINE_PROVIDER_FILTER_LKSM,
 } from './internal/components/pipeline/constants';
-import { PipelineJobDetailPage } from './internal/components/pipeline/PipelineJobDetailPage';
-import { PipelineJobsListingPage } from './internal/components/pipeline/PipelineJobsListingPage';
-import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
-import { PipelineSubNav } from './internal/components/pipeline/PipelineSubNav';
-import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
+import { PipelineRoutes } from './internal/components/pipeline/PipelineRoutes';
 import { getTitleDisplay, hasActivePipelineJob } from './internal/components/pipeline/utils';
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
@@ -639,14 +622,14 @@ import {
     SELECTION_KEY_TYPE,
     UNIQUE_ID_FIND_FIELD,
 } from './internal/components/samples/constants';
-import { createMockWithRouteLeave, createMockWithRouterProps } from './internal/mockUtils';
+import { createMockWithRouteLeave } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
 import { OntologyConceptPicker } from './internal/components/ontology/OntologyConceptPicker';
 import { OntologyBrowserPage } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 import { OntologyBrowserFilterPanel } from './internal/components/ontology/OntologyBrowserFilterPanel';
 import { OntologySearchInput } from './internal/components/ontology/OntologyTreeSearchContainer';
-import { AppModel, LogoutReason } from './internal/app/models';
+import { AppModel } from './internal/app/models';
 import { Picklist, PICKLIST_SAMPLES_FILTER } from './internal/components/picklist/models';
 import { PicklistCreationMenuItem } from './internal/components/picklist/PicklistCreationMenuItem';
 import { PicklistButton } from './internal/components/picklist/PicklistButton';
@@ -669,7 +652,6 @@ import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal
 import {
     AppReducers,
     ProductMenuReducers,
-    RoutingTableReducers,
     ServerNotificationReducers,
 } from './internal/app/reducers';
 
@@ -792,9 +774,6 @@ import {
     SAMPLE_TYPE_KEY,
     SAMPLES_KEY,
     SEARCH_KEY,
-    SECURITY_LOGOUT,
-    SECURITY_SERVER_UNAVAILABLE,
-    SECURITY_SESSION_TIMEOUT,
     SERVER_NOTIFICATION_MAX_ROWS,
     SOURCE_TYPE_KEY,
     SOURCES_KEY,
@@ -860,7 +839,6 @@ enablePatches();
 const App = {
     AppReducers,
     ProductMenuReducers,
-    RoutingTableReducers,
     ServerNotificationReducers,
     CloseEventCode,
     EntityCreationMode,
@@ -926,9 +904,6 @@ const App = {
     userCanEditSharedViews,
     userCanDeletePublicPicklists,
     getCurrentProductName,
-    SECURITY_LOGOUT,
-    SECURITY_SERVER_UNAVAILABLE,
-    SECURITY_SESSION_TIMEOUT,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     BIOLOGICS: BIOLOGICS_APP_PROPERTIES,
@@ -1025,7 +1000,6 @@ export {
     App,
     AppModel,
     Hooks,
-    LogoutReason,
     getDefaultAPIWrapper,
     // global state functions
     initQueryGridState,
@@ -1039,7 +1013,6 @@ export {
     saveOrderedSnapshotSelection,
     getSelected,
     getSelectedData,
-    getSelection,
     getQueryModelExportParams,
     replaceSelected,
     setSelected,
@@ -1093,10 +1066,10 @@ export {
     URLService,
     ListResolver,
     ExperimentRunResolver,
+    getQueryParams,
     pushParameters,
     removeParameters,
     replaceParameters,
-    resetParameters,
     getHref,
     hasParameter,
     toggleParameter,
@@ -1172,10 +1145,8 @@ export {
     UserProfile,
     UserLink,
     UserLinkList,
-    AccountSubNav,
     ProfilePage,
     ChangePasswordModal,
-    UsersGridPanel,
     InsufficientPermissionsAlert,
     InsufficientPermissionsPage,
     BasePermissionsCheckPage,
@@ -1185,7 +1156,6 @@ export {
     hasPermissions,
     fetchContainerSecurityPolicy,
     getUserLimitSettings,
-    PermissionAssignments,
     withPermissionsPage,
     SecurityPolicy,
     SecurityRole,
@@ -1314,9 +1284,6 @@ export {
     getStoredAmountDisplay,
     isValuePrecisionValid,
     // search related items
-    SearchResultsModel,
-    SearchResultCard,
-    SearchResultsPanel,
     SearchPanel,
     SearchCategory,
     SearchField,
@@ -1327,7 +1294,6 @@ export {
     getFieldFiltersValidationResult,
     // administration
     AccountSettingsPage,
-    AdministrationSubNav,
     UserManagementPage,
     CreateProjectPage,
     ProjectManagementPage,
@@ -1379,6 +1345,7 @@ export {
     LineageGraph,
     LineageGrid,
     LineageGridFromLocation,
+    LineagePage,
     LineageURLResolvers,
     SampleTypeLineageCounts,
     invalidateLineageResults,
@@ -1394,7 +1361,6 @@ export {
     ProductNavigationMenu,
     FindByIdsModal,
     QueryFilterPanel,
-    SubNav,
     Breadcrumb,
     BreadcrumbCreate,
     // notification related items
@@ -1551,16 +1517,10 @@ export {
     ErrorBoundary,
     BeforeUnload,
     useRouteLeave,
-    withRouteLeave,
-    SchemaListing,
-    SchemaListingPage,
-    QueriesListing,
-    QueriesListingPage,
-    QueryListingPage,
-    QueryDetailPage,
+    SchemaBrowserRoutes,
     Theme,
     SVGIcon,
-    withWindowFocusCheckExpiredSession,
+    useWindowFocusCheckExpiredSession,
     // general components
     Alert,
     ColumnSelectionModal,
@@ -1652,13 +1612,9 @@ export {
     TimelineEventModel,
     TimelineView,
     // pipeline
-    PipelineJobsPage,
-    PipelineStatusDetailPage,
     hasActivePipelineJob,
     getTitleDisplay,
-    PipelineJobDetailPage,
-    PipelineJobsListingPage,
-    PipelineSubNav,
+    PipelineRoutes,
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
@@ -1668,7 +1624,6 @@ export {
     // Test Helpers
     sleep,
     createMockWithRouteLeave,
-    createMockWithRouterProps,
     makeQueryInfo,
     mountWithAppServerContextOptions,
     mountWithServerContextOptions,
@@ -1695,9 +1650,8 @@ export {
     // hooks
     useNotAuthorized,
     useNotFound,
-    // SubNavWithContext
-    useSubNavContext,
-    SubNavWithContext,
+    // SubNavTabsWithContext
+    useSubNavTabsContext,
     // BarTender
     BarTenderConfiguration,
     PrintLabelsModal,
@@ -1757,6 +1711,7 @@ export type {
 export type { IDataViewInfo } from './internal/DataViewInfo';
 export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
 export type { SearchResultCardData, FieldFilter } from './internal/components/search/models';
+export type { SearchHitWithCardData, SearchResultWithCardData } from './internal/components/search/actions';
 export type { AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
 export type {
     CrossFolderSelectionResult,
@@ -1792,9 +1747,7 @@ export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type { BulkAddData, SharedEditableGridPanelProps } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
 export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
-export type { Location } from './internal/util/URL';
 export type {
-    RoutingTableState,
     ServerNotificationState,
     ProductMenuState,
     AppReducerState,
@@ -1848,3 +1801,4 @@ export type {
     FormsySelectProps,
     FormsyTextAreaProps,
 } from './internal/components/forms/input/FormsyReactComponents';
+export type { QueryParams } from './internal/util/URL';

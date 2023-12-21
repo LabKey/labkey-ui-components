@@ -2,7 +2,6 @@ import React, { FC, memo, useCallback, useState } from 'react';
 import { Checkbox, Modal } from 'react-bootstrap';
 
 import { QueryModelMap } from '../../../public/QueryModel/withQueryModels';
-import { LoadingState } from '../../../public/LoadingState';
 
 interface ExportModalProperties {
     canExport: boolean;

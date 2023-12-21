@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Modal, Tab, Tabs } from 'react-bootstrap';
+import { Modal, Tab, Tabs } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
@@ -11,9 +11,6 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
 
-import { SampleOperation } from '../samples/constants';
-import { OperationConfirmationData } from '../entities/models';
-import { getOperationNotPermittedMessage } from '../samples/utils';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';

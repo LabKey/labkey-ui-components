@@ -109,6 +109,10 @@ export const NotificationsContextProvider: FC<NotificationsContextProviderProps>
     }
 );
 
+/**
+ * @deprecated use the useNotificationsContext hook instead
+ * @param Component: the component to wrap and inject the NotificationsContext methods into
+ */
 export function withNotificationsContext<T>(Component: ComponentType<T & NotificationsContextProps>): ComponentType<T> {
     const wrapped: FC<T> = props => {
         const { createNotification, dismissNotifications } = useNotificationsContext();

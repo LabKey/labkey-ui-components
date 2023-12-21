@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 import classNames from 'classnames';
-import React, { Children, FC, memo, ReactNode, useCallback, useMemo } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useMemo } from 'react';
 import { List, Map } from 'immutable';
-
-import { WithRouterProps } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
@@ -36,13 +35,12 @@ import { User } from '../base/models/User';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { withRouteLeave } from '../../util/RouteLeave';
-
 import { isAdminRoute, ProductMenuButton } from './ProductMenu';
+import { SubNav } from './SubNav';
 import { UserMenuGroup, UserMenuProps } from './UserMenuGroup';
 import { MenuSectionConfig } from './model';
 import { SEARCH_PLACEHOLDER } from './constants';
-import { useFolderMenuContext } from './hooks';
+import { useFolderMenuContext, useSubNavTabsContext } from './hooks';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -59,12 +57,11 @@ interface NavigationBarProps {
     user?: User;
 }
 
-type Props = NavigationBarProps & UserMenuProps & WithRouterProps;
+type Props = NavigationBarProps & UserMenuProps;
 
-export const NavigationBarImpl: FC<Props> = memo(props => {
+export const NavigationBar: FC<Props> = memo(props => {
     const {
         brand,
-        children,
         extraDevItems,
         extraUserItems,
         menuSectionConfigs,
@@ -81,24 +78,20 @@ export const NavigationBarImpl: FC<Props> = memo(props => {
         showSearchBox,
         signOutUrl,
         user,
-        routes,
     } = props;
-
     const { moduleContext } = useServerContext();
     const folderMenuContext = useFolderMenuContext();
+    const location = useLocation();
+    const isAdminPage = useMemo(() => isAdminRoute(location.pathname), [location.pathname]);
     const onSearchIconClick = useCallback(() => {
         onSearch('');
     }, [onSearch]);
-
-    const isAdminPage = useMemo(() => {
-        return isAdminRoute(routes?.[1]?.path);
-    }, [routes]);
-
     const _searchPlaceholder =
         searchPlaceholder ?? getPrimaryAppProperties(moduleContext)?.searchPlaceholder ?? SEARCH_PLACEHOLDER;
     const _showNotifications = showNotifications !== false && !!notificationsConfig && !!user && !user.isGuest;
     const _showProductNav = showProductNav !== false && shouldShowProductNavigation(user, moduleContext);
-    const hasSubNav = Children.count(children) > 0;
+    const { noun, tabs } = useSubNavTabsContext();
+    const hasSubNav = noun !== undefined || tabs.length > 0;
 
     return (
         <div className={classNames('app-navigation', { 'with-sub-nav': hasSubNav })}>
@@ -177,14 +170,16 @@ export const NavigationBarImpl: FC<Props> = memo(props => {
                 </div>
             </nav>
 
-            <div className="sub-nav-wrapper">{children}</div>
+            <div className="sub-nav-wrapper">
+                <SubNav />
+            </div>
         </div>
     );
 });
 
-export const NavigationBar = withRouteLeave(NavigationBarImpl);
-
-NavigationBarImpl.defaultProps = {
+// FIXME: re-evaluate these defaults. Some are always passed, so no default is needed. Some are never passed, so no prop
+//  is needed.
+NavigationBar.defaultProps = {
     showFolderMenu: false,
     showNavMenu: true,
     showNotifications: true,
@@ -192,4 +187,4 @@ NavigationBarImpl.defaultProps = {
     showSearchBox: false,
 };
 
-NavigationBarImpl.displayName = 'NavigationBar';
+NavigationBar.displayName = 'NavigationBar';

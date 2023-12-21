@@ -1,8 +1,6 @@
 import React from 'react';
 import { Map } from 'immutable';
 
-import { getServerContext } from '@labkey/api';
-
 import { getDefaultAPIWrapper } from '../../../APIWrapper';
 import { DomainPropertiesAPIWrapper } from '../APIWrapper';
 
@@ -20,10 +18,6 @@ import { GENERAL_ASSAY_PROVIDER_NAME } from '../../assay/constants';
 import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
 import { AssayRunDataType } from '../../entities/constants';
-
-import { getAppHomeFolderPath } from '../../../app/utils';
-
-import { Container } from '../../base/models/Container';
 
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';

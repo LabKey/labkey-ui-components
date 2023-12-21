@@ -1,7 +1,5 @@
 import React from 'react';
 
-import classNames from 'classnames';
-
 import { FormGroup } from 'react-bootstrap';
 
 import { getTestAPIWrapper } from '../../APIWrapper';

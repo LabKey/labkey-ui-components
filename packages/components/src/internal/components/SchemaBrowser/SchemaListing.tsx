@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { FC, memo, useEffect, useState } from 'react';
-import { Link } from 'react-router';
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
 
@@ -36,9 +35,9 @@ const columns = List([
         cell: (schemaName: string, details: SchemaDetails) => {
             if (details) {
                 return (
-                    <Link className="text-capitalize" to={AppURL.create('q', details.fullyQualifiedName).toString()}>
+                    <a className="text-capitalize" href={AppURL.create('q', details.fullyQualifiedName).toHref()}>
                         {schemaName}
-                    </Link>
+                    </a>
                 );
             }
 

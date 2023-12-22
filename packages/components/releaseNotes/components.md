@@ -6,6 +6,26 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Support cross folder sample import
   - add util for check isCrossProjectImportEnabled
 
+### version 3.1.2
+*Released*: 22 December 2023
+* update package.json to pin devDependencies versions by dropping tilde
+  * this fixes the @types/react version mismatch between the packages and apps with start-link
+
+### version 3.1.1
+*Released*: 21 December 2023
+* withQueryModels: fix issue when operating outside of a React Router context
+
+### version 3.1.0
+*Released*: 21 December 2023
+- Change `domain` and `security` API wrappers to use `selectRows`
+- Update `api.security.getAuditLogDate` to not need to specify additional columns
+- Update `GroupDetailsPanel` to use API wrapper from context
+- Improve typings of `SecurityAPIWrapper`
+
+### version 3.0.1
+*Released*: 21 December 2023
+- Rehydrate the package-lock.json for the components package
+
 ### version 3.0.0
 *Released*: 20 December 2023
 * Breaking Changes:

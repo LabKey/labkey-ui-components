@@ -27,7 +27,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { Alert } from '../base/Alert';
 
-import { GroupMembership, MemberType } from '../administration/models';
+import { Groups, MemberType } from '../administration/models';
 
 import { fetchGroupMembership } from '../administration/actions';
 
@@ -81,34 +81,46 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const [rootPolicy, setRootPolicy] = useState<SecurityPolicy>();
     const [saveErrorMsg, setSaveErrorMsg] = useState<string>();
     const [selectedUserId, setSelectedUserId] = useState<number>();
-    const [groupMembership, setGroupMembership] = useState<GroupMembership>();
+    const [groupMembership, setGroupMembership] = useState<Groups>();
     const [error, setError] = useState<string>();
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [hasPolicyChange, setHasPolicyChange] = useState<boolean>(false);
     const [hasRootPolicyChange, setHasRootPolicyChange] = useState<boolean>(false);
-    const [policy, setPolicy] = useState<SecurityPolicy>(undefined);
-
-    const [projects, setProjects] = useState<Container[]>(undefined);
-    const [appHomeContainer, setAppHomeContainer] = useState<Container>(undefined);
-    const [selectedProject, setSelectedProject] = useState<Container>(undefined);
+    const [policy, setPolicy] = useState<SecurityPolicy>();
+    const [projects, setProjects] = useState<Container[]>();
+    const [appHomeContainer, setAppHomeContainer] = useState<Container>();
+    const [selectedProject, setSelectedProject] = useState<Container>();
     const [loaded, setLoaded] = useState<boolean>(false);
-    const [inheritedProjects, setInheritedProjects] = useState<string[]>(undefined);
+    const [inheritedProjects, setInheritedProjects] = useState<string[]>();
 
     const { api } = useAppContext<AppContext>();
     const { container, project, user, moduleContext } = useServerContext();
 
     const isAppHome = isAppHomeFolder(container, moduleContext);
     const homeFolderPath = isAppHome ? container.path : container.parentPath;
-
     const selectedPrincipal = principalsById?.get(selectedUserId);
     const [searchParams] = useSearchParams();
     const initExpandedRole = searchParams.get('expand');
     const projectUser = useContainerUser(getProjectPath(container?.path));
+    const projectsEnabled = isProductProjectsEnabled(moduleContext);
+
+    const loadContainerTree = useCallback(
+        async (homeContainer?: Container) => {
+            if (!projectsEnabled) return;
+            try {
+                const _inherited = await api.security.getInheritedProjects(homeContainer ?? appHomeContainer);
+                setInheritedProjects(_inherited);
+            } catch (e) {
+                setError(resolveErrorMessage(e) ?? 'Failed to load container tree');
+            }
+        },
+        [api, appHomeContainer, projectsEnabled]
+    );
 
     const loadGroupMembership = useCallback(async () => {
         // Issue 47641: since groups are defined at the project container level,
         // check permissions there before requesting group membership info
-        if (!selectedProject || projectUser.error || !userCanReadGroupDetails(projectUser?.user)) return;
+        if (!selectedProject || projectUser.error || !userCanReadGroupDetails(projectUser.user)) return;
 
         try {
             const groupMembershipState = await fetchGroupMembership(selectedProject, api.security);
@@ -116,13 +128,10 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         } catch (e) {
             setError(resolveErrorMessage(e) ?? 'Failed to load group membership data.');
         }
-    }, [api.security, selectedProject, projectUser.error, projectUser?.user]);
+    }, [api, selectedProject, projectUser.error, projectUser.user]);
 
     useEffect(() => {
         (async () => {
-            setLoaded(false);
-            setError(undefined);
-
             if (user.isRootAdmin) {
                 try {
                     const rootPolicy_ = await api.security.fetchPolicy(
@@ -136,7 +145,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 }
             }
 
-            if (!isProductProjectsEnabled(moduleContext)) {
+            if (!projectsEnabled) {
                 setSelectedProject(container);
                 setLoaded(true);
                 return;
@@ -168,20 +177,9 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                 setLoaded(true);
             }
         })();
-    }, [moduleContext]);
+    }, []);
 
-    const loadContainerTree = useCallback(
-        async (homeContainer?: Container) => {
-            if (!isProductProjectsEnabled(moduleContext)) return;
-
-            const _inherited = await api.security.getInheritedProjects(homeContainer ?? appHomeContainer);
-
-            setInheritedProjects(_inherited);
-        },
-        [projects, moduleContext, container, appHomeContainer]
-    );
-
-    const sortedProjects = useMemo(() => {
+    const sortedProjects = useMemo<Container[]>(() => {
         if (!inheritedProjects || inheritedProjects.length === 0) return projects;
 
         if (!project || projects.length <= 2) return projects;
@@ -198,11 +196,11 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         _inheritedProjects.sort(naturalSortByProperty('title'));
         _nonInheritedProjects.sort(naturalSortByProperty('title'));
         return [home, ..._inheritedProjects, ..._nonInheritedProjects];
-    }, [projects, inheritedProjects]);
+    }, [inheritedProjects, projects, project]);
 
     const loadPolicy = useCallback(async () => {
+        if (!selectedProject) return;
         try {
-            if (!selectedProject) return;
             const policy_ = await api.security.fetchPolicy(selectedProject.id, principalsById, inactiveUsersById);
             setPolicy(policy_);
             setInherited(policy_.isInheritFromParent());
@@ -211,7 +209,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         } catch (e) {
             setError(resolveErrorMessage(e) ?? 'Failed to load security policy');
         }
-    }, [selectedProject?.id, principalsById, inactiveUsersById, setLastModified, loadGroupMembership]);
+    }, [selectedProject, api, principalsById, inactiveUsersById, setLastModified, loadGroupMembership]);
 
     useEffect(() => {
         (async () => {
@@ -267,7 +265,7 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         await loadPolicy();
 
         if (projects.length > 1) await loadContainerTree();
-    }, [loadPolicy, projects]);
+    }, [loadContainerTree, loadPolicy, projects]);
 
     const onSavePolicy = useCallback(async () => {
         const wasInherited = policy.isInheritFromParent();
@@ -356,7 +354,19 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
         setHasPolicyChange(false);
         setIsDirty(false);
         setSubmitting(false);
-    }, [project, selectedProject, inherited, _onSuccess, policy, hasRootPolicyChange, hasPolicyChange]);
+    }, [
+        policy,
+        hasRootPolicyChange,
+        hasPolicyChange,
+        inherited,
+        _onSuccess,
+        onSaveSuccess,
+        setIsDirty,
+        api,
+        rootPolicy,
+        project.rootId,
+        selectedProject,
+    ]);
 
     const _removeAssignment = useCallback(
         (isRootPolicy: boolean, userId: number, role: SecurityRole) => {
@@ -366,31 +376,31 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             setIsDirty(true);
             isRootPolicy ? setHasRootPolicyChange(true) : setHasPolicyChange(true);
         },
-        [policy, rootPolicy]
+        [policy, rootPolicy, setIsDirty]
     );
 
     const removeAssignment = useCallback(
         (userId: number, role: SecurityRole) => {
             _removeAssignment(false, userId, role);
         },
-        [_removeAssignment, policy, rootPolicy]
+        [_removeAssignment]
     );
 
     const removeRootAssignment = useCallback(
         (userId: number, role: SecurityRole) => {
             _removeAssignment(true, userId, role);
         },
-        [policy, _removeAssignment, rootPolicy]
+        [_removeAssignment]
     );
 
     const showDetails = useCallback((selectedUserId_: number) => {
         setSelectedUserId(selectedUserId_);
     }, []);
 
-    const handleSelectProject = useCallback((project: Container) => {
+    const handleSelectProject = useCallback((selectedProject_: Container) => {
         setHasPolicyChange(false);
         setHasRootPolicyChange(false);
-        setSelectedProject(project);
+        setSelectedProject(selectedProject_);
         setSelectedUserId(undefined);
     }, []);
 
@@ -423,7 +433,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
 
     const isSubfolder = !isProjectContainer(selectedProject.path);
     const canInherit = project.rootId !== selectedProject.id;
-    const projectsEnabled = isProductProjectsEnabled(moduleContext);
 
     const _panelContent = (
         <div className="panel panel-default">
@@ -493,8 +502,8 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
             {error && <Alert>{error}</Alert>}
             <div className="row">
                 <div className="col-md-8 col-xs-12">
-                    {(!isProductProjectsEnabled(moduleContext) || projects?.length <= 1) && <>{_panelContent}</>}
-                    {isProductProjectsEnabled(moduleContext) && projects?.length > 1 && (
+                    {(!projectsEnabled || projects?.length <= 1) && <>{_panelContent}</>}
+                    {projectsEnabled && projects?.length > 1 && (
                         <div className="side-panels-container">
                             <ProjectListing
                                 projects={sortedProjects}
@@ -523,7 +532,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                             rolesByUniqueName={rolesByUniqueName}
                             members={groupMembership[selectedPrincipal?.userId].members}
                             isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
-                            getAuditLogData={api.security.getAuditLogData}
                             showPermissionListLinks={false}
                         />
                     ) : (

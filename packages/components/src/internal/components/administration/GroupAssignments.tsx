@@ -16,16 +16,15 @@ import { naturalSort } from '../../../public/sort';
 import { useServerContext } from '../base/ServerContext';
 
 import { Group } from './Group';
-import { GroupMembership, MemberType } from './models';
+import { Groups, MemberType } from './models';
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
     createGroup: (name: string) => void;
     deleteGroup: (id: string) => void;
     errorMsg: string;
-    getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     getIsDirty: () => boolean;
-    groupMembership: GroupMembership;
+    groupMembership: Groups;
     policy: SecurityPolicy;
     principalsById: Map<number, Principal>;
     removeMember: (groupId: string, memberId: number) => void;
@@ -40,7 +39,6 @@ export interface GroupAssignmentsProps {
 export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     const {
         errorMsg,
-        getAuditLogData,
         getIsDirty,
         groupMembership,
         policy,
@@ -211,7 +209,6 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                         rolesByUniqueName={rolesByUniqueName}
                         members={groupMembership[selectedPrincipal?.userId]?.members}
                         isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
-                        getAuditLogData={getAuditLogData}
                         displayCounts={userIsAppAdmin}
                     />
                 ) : (

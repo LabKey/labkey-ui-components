@@ -23,7 +23,7 @@ import { createMockWithRouteLeave } from '../../mockUtils';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 
 import { MemberType } from './models';
-import { PermissionManagementPage, PermissionManagementPageImpl } from './PermissionManagementPage';
+import { PermissionManagementPageImpl } from './PermissionManagementPage';
 
 const USER = Principal.createFromSelectRow(
     fromJS({

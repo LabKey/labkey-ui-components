@@ -345,6 +345,7 @@ module.exports = {
                         mode: 'dev',
                         port: watchPort,
                         name: app.name,
+                        nonce: '<%=scriptNonce%>',
                         filename: '../../views/gen/' + app.name + 'Dev.html',
                         template: 'node_modules/@labkey/build/webpack/app.template.html',
                         minify: minifyTemplateOptions

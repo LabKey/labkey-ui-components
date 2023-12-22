@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.2.0
+*Released*: 22 December 2023
+- Add support for searching or storage locations
+
 ### version 3.1.2
 *Released*: 22 December 2023
 * update package.json to pin devDependencies versions by dropping tilde

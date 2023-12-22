@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.1.2
+*Released*: 22 December 2023
+* update package.json to pin devDependencies versions by dropping tilde
+  * this fixes the @types/react version mismatch between the packages and apps with start-link
+
 ### version 3.1.1
 *Released*: 21 December 2023
 * withQueryModels: fix issue when operating outside of a React Router context

@@ -1,6 +1,7 @@
 import { ActionURL } from '@labkey/api';
 
 import { List } from 'immutable';
+import moment from 'moment';
 
 import { hasPremiumModule } from '../../app/utils';
 import { ModuleContext } from '../base/ServerContext';
@@ -10,6 +11,17 @@ import { MemberType } from './models';
 
 export function isLoginAutoRedirectEnabled(moduleContext: ModuleContext): boolean {
     return moduleContext?.api?.AutoRedirectSSOAuthConfiguration !== undefined;
+}
+
+export function isApiKeyGenerationEnabled(moduleContext: ModuleContext): boolean {
+    return !!moduleContext?.api?.allowApiKeys;
+}
+
+export function getApiExpirationMessage(moduleContext: ModuleContext): string {
+    const expSeconds = moduleContext?.api?.apiKeyExpirationSeconds;
+    if (!expSeconds || expSeconds === -1)
+        return "never expire";
+    return "expire after " + moment.duration(expSeconds, 'seconds').humanize();
 }
 
 export function showPremiumFeatures(moduleContext?: ModuleContext): boolean {

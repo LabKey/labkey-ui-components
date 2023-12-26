@@ -45,7 +45,7 @@ export const APIKeysPanel: FC<any> = () => {
     const { user, moduleContext, impersonatingUser } = useServerContext();
     const { api } = useAppContext<AppContext>();
     const [ error, setError ] = useState<boolean>(false);
-    const [ generatedKey, setGeneratedKey ] = useState<string>('8bfa6d86d77291dfc6a7820e7d613226667cdf2a584080023045e94c0bdf0021');
+    const [ generatedKey, setGeneratedKey ] = useState<string>();
     // const [ expirationDate, setExpirationDae ] = useState<number>();
 
     const onGenerateKey = useCallback(async () => {
@@ -68,24 +68,22 @@ export const APIKeysPanel: FC<any> = () => {
     }, [generatedKey]);
 
     const adminMsg = useMemo(() => user.isSystemAdmin ? (
-        <p>
-            <Alert bsStyle="info">
-                As a site administrator, you can configure API keys on the <a
-                href={ActionURL.buildURL("admin", "customizeSite.view", "/")}>Site Settings page</a>. You
-                can manage API keys generated on the server via <a
-                href={ActionURL.buildURL("query", "executeQuery.view", "/", {schemaName: "core", queryName: "APIKeys"})}>this
-                query</a>.
-            </Alert>
-        </p>
+        <Alert bsStyle="info" id={"admin-msg"}>
+            As a site administrator, you can configure API keys on the <a
+            href={ActionURL.buildURL("admin", "customizeSite.view", "/")}>Site Settings page</a>. You
+            can manage API keys generated on the server via <a
+            href={ActionURL.buildURL("query", "executeQuery.view", "/", {schemaName: "core", queryName: "APIKeys"})}>this
+            query</a>.
+        </Alert>
     ) : null, [user]);
 
     const configMsg = useMemo(() => isApiKeyGenerationEnabled(moduleContext) ?
-        <p>
+        <p id={"config-msg"}>
             API keys are currently configured to <span className="api-key__expiration-config">{getApiExpirationMessage(moduleContext)}</span>.{' '}
             <span><a href={'https://www.labkey.org/Documentation/wiki-page.view?name=apiKey#usage'}>More info</a></span>
         </p>
         :
-        <Alert bsStyle="warning">
+        <Alert bsStyle="warning" id={"config-msg"}>
             API keys are currently not enabled on this server.
         </Alert>,
     [moduleContext]);
@@ -111,7 +109,7 @@ export const APIKeysPanel: FC<any> = () => {
                 {isApiKeyGenerationEnabled(moduleContext) && (
                     <>
                         {impersonatingUser !== undefined && (
-                            <Alert bsStyle="warning">
+                            <Alert bsStyle="warning" id={"impersonating-msg"}>
                                 API Key generation is not available while impersonating.
                             </Alert>
                             )
@@ -121,7 +119,7 @@ export const APIKeysPanel: FC<any> = () => {
                                 <div className="top-spacing form-group">
                                     <button className="btn btn-success api-key__button"
                                             onClick={onGenerateKey}
-                                            disabled={!generatedKey}
+                                            disabled={!!generatedKey}
                                     >
                                         Generate API Key
                                     </button>

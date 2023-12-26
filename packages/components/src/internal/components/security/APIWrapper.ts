@@ -51,6 +51,7 @@ export interface RemoveGroupMembersResponse {
 
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
+    createApiKey: (type?: string) => Promise<string>;
     createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
     deleteContainer: (options: DeleteContainerOptions) => Promise<Record<string, unknown>>;
     deleteGroup: (id: number, projectPath: string) => Promise<DeleteGroupResponse>;
@@ -98,6 +99,20 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
                     console.error('Failed to add group member(s)', error);
                     reject(error);
                 },
+            });
+        });
+    };
+
+    createApiKey(type = 'apikey'): Promise<string> {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: buildURL('security', 'CreateApiKey.api'),
+                method: 'POST',
+                params: {type: type},
+                success: Utils.getCallbackWrapper(response => {
+                    resolve(response.apikey);
+                }),
+                failure: handleRequestFailure(reject, 'Problem generating the apiKey for this user.'),
             });
         });
     };
@@ -373,6 +388,7 @@ export function getSecurityTestAPIWrapper(
 ): SecurityAPIWrapper {
     return {
         addGroupMembers: mockFn(),
+        createApiKey: mockFn(),
         createGroup: mockFn(),
         deleteContainer: mockFn(),
         deleteGroup: mockFn(),

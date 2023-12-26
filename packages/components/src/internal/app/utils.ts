@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map } from 'immutable';
-import { ActionURL, LabKey, getServerContext, PermissionTypes } from '@labkey/api';
+import { ActionURL, getServerContext, LabKey, PermissionTypes } from '@labkey/api';
 
 import { useMemo } from 'react';
 
@@ -23,6 +23,7 @@ import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
     EXPERIMENTAL_APP_PLATE_SUPPORT,
+    EXPERIMENTAL_APP_R_SUPPORT,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED,
     EXPERIMENTAL_REQUESTS_MENU,
@@ -38,8 +39,8 @@ import {
     NEW_SOURCE_TYPE_HREF,
     NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTEBOOKS_KEY,
-    PLATES_KEY,
     PICKLIST_KEY,
+    PLATES_KEY,
     ProductFeature,
     PROJECT_DATA_TYPE_EXCLUSIONS,
     REGISTRY_KEY,
@@ -50,7 +51,6 @@ import {
     SOURCES_KEY,
     USER_KEY,
     WORKFLOW_KEY,
-    EXPERIMENTAL_APP_R_SUPPORT,
 } from './constants';
 
 declare var LABKEY: LabKey;
@@ -396,6 +396,12 @@ export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {
     return (
         hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) &&
         isFeatureEnabled(ProductFeature.Workflow, moduleContext)
+    );
+}
+
+export function isApiKeyGenerationEnabled(moduleContext?: ModuleContext): boolean {
+    return (
+        isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)
     );
 }
 

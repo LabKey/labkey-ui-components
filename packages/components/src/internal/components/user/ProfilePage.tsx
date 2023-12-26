@@ -2,8 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, useCallback, useState } from 'react';
-import { Button, Panel } from 'react-bootstrap';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 
 import {
     getApiExpirationMessage,
@@ -35,41 +34,69 @@ import { ChangePasswordModal } from './ChangePasswordModal';
 
 import { useUserProperties } from './hooks';
 import { Alert } from '../base/Alert';
-import { Grid } from '../base/Grid';
-import { fromJS } from 'immutable';
-import { HelpIcon } from '../HelpIcon';
-import { hasAllPermissions } from '../base/models/User';
-import { ActionURL, getServerContext } from '@labkey/api';
+import { ActionURL } from '@labkey/api';
+import { AppContext, useAppContext } from '../../AppContext';
+import { setCopyValue } from '../../events';
+import { isFeatureEnabled } from '../../app/utils';
+import { ProductFeature } from '../../app/constants';
 
-interface Props {
-    updateUserDisplayName: (displayName: string) => void;
-}
 
-const TITLE = 'User Profile';
-
-export const APIKeysPanel: FC<any> = props => {
+export const APIKeysPanel: FC<any> = () => {
     const { user, moduleContext, impersonatingUser } = useServerContext();
-    const [ error, setError ] = useState<string>();
-    const [ generatedKey, setGeneratedKey ] = useState<string>();
+    const { api } = useAppContext<AppContext>();
+    const [ error, setError ] = useState<boolean>(false);
+    const [ generatedKey, setGeneratedKey ] = useState<string>('8bfa6d86d77291dfc6a7820e7d613226667cdf2a584080023045e94c0bdf0021');
+    // const [ expirationDate, setExpirationDae ] = useState<number>();
 
-    if (!isApiKeyGenerationEnabled(moduleContext))
+    const onGenerateKey = useCallback(async () => {
+        try {
+            const key =  await api.security.createApiKey();
+            setGeneratedKey(key);
+        } catch (e) {
+            setError(true);
+        }
+    }, []);
+
+    const onCopyKey = useCallback(()  => {
+        const handleCopy = (event: ClipboardEvent): void => {
+            setCopyValue(event, generatedKey);
+            event.preventDefault();
+            document.removeEventListener('copy', handleCopy, true);
+        };
+        document.addEventListener('copy', handleCopy, true);
+        document.execCommand('copy');
+    }, [generatedKey]);
+
+    const adminMsg = useMemo(() => user.isSystemAdmin ? (
+        <p>
+            <Alert bsStyle="info">
+                As a site administrator, you can configure API keys on the <a
+                href={ActionURL.buildURL("admin", "customizeSite.view", "/")}>Site Settings page</a>. You
+                can manage API keys generated on the server via <a
+                href={ActionURL.buildURL("query", "executeQuery.view", "/", {schemaName: "core", queryName: "APIKeys"})}>this
+                query</a>.
+            </Alert>
+        </p>
+    ) : null, [user]);
+
+    const configMsg = useMemo(() => isApiKeyGenerationEnabled(moduleContext) ?
+        <p>
+            API keys are currently configured to <span className="api-key__expiration-config">{getApiExpirationMessage(moduleContext)}</span>.{' '}
+            <span><a href={'http://TODO'}>More info</a></span>
+        </p>
+        :
+        <Alert bsStyle="warning">
+            API keys are currently not enabled on this server.
+        </Alert>,
+    [moduleContext]);
+
+    if (!isFeatureEnabled(ProductFeature.ApiKeys, moduleContext))
         return null;
 
     return (
-        <Panel>
-            <Panel.Heading>API Keys</Panel.Heading>
-            <Panel.Body>
-                {user.isSystemAdmin && (
-                    <p>
-                        <Alert bsStyle={'info'}>
-                            As a site administrator, you can configure API keys on the <a
-                            href={ActionURL.buildURL("admin", "customizeSite.view", "/")}>Site Settings page</a>. You
-                            can manage API keys generated on the server via <a
-                            href={ActionURL.buildURL("query", "executeQuery.view", "/", {schemaName: "core", queryName: "APIKeys"})}>this
-                            query</a>.
-                        </Alert>
-                    </p>
-                )}
+        <div className="panel panel-default">
+            <div className="panel-heading">API Keys</div>
+            <div className="panel-body">
                 <p>
                     API keys are used to authorize client code accessing LabKey Sample Manager using one of the{' '}
                     <a href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=viewApis">LabKey Client APIs</a>
@@ -78,42 +105,63 @@ export const APIKeysPanel: FC<any> = props => {
                     authenticating API use from automated scripts. A valid API key provides complete access to your data
                     and actions, so it should be kept secret.
                 </p>
-                <p>
-                    API keys are currently configured to {getApiExpirationMessage(moduleContext)}.{' '}
-                    <span><a href={'http://'}>More info</a></span>
-                </p>
-                {impersonatingUser !== undefined && (
-                    <Alert bsStyle="info">
-                        API Key generation is not available while impersonating.
-                    </Alert>
-                    )
-                }
-                {!impersonatingUser && (
-                    <>
-                        <div className="top-spacing">
-                            <button className="btn btn-success" style={{marginBottom: '3px'}}>Generate API Key
-                            </button>
 
-                            <input disabled type="text" className="form-control"
-                                   style={{width: '275px', display: 'inline-block'}}
-                                   value={generatedKey}
-                            />
-                            <button className=" btn btn-default" title="Copy to clipboard" style={{marginBottom: '3px'}}>
-                                <i className="fa fa-clipboard"></i>
-                            </button>
-                            <span className="left-spacing">Expiration Date: 2024-04-29</span>
-                            <button className=" btn btn-default pull-right" title="Delete key"
-                                    style={{marginBottom: '3px'}}>
-                                Delete <i className="fa fa-trash"></i>
-                            </button>
-                        </div>
-                        <Alert>{error}</Alert>
+                {configMsg}
+                {adminMsg}
+                {isApiKeyGenerationEnabled(moduleContext) && (
+                    <>
+                        {impersonatingUser !== undefined && (
+                            <Alert bsStyle="warning">
+                                API Key generation is not available while impersonating.
+                            </Alert>
+                            )
+                        }
+                        {!impersonatingUser && (
+                            <>
+                                <div className="top-spacing form-group">
+                                    <button className="btn btn-success api-key__button"
+                                            onClick={onGenerateKey}
+                                            disabled={!generatedKey}
+                                    >
+                                        Generate API Key
+                                    </button>
+
+                                    <input disabled type="text" className="form-control api-key__input"
+                                           value={generatedKey}
+                                    />
+                                    <button className="btn btn-default api-key__button"
+                                            title="Copy to clipboard"
+                                            onClick={onCopyKey}
+                                            disabled={!generatedKey}
+                                    >
+                                        <i className="fa fa-clipboard"></i>
+                                    </button>
+                                    {/*{expirationDate && <span className="left-spacing">Expiration Date: {expirationDate}</span>}*/}
+                                    {/*<button className=" btn btn-default api-key__button pull-right" title="Delete key"*/}
+                                    {/*        disabled={!generatedKey}>*/}
+                                    {/*    Delete <i className="fa fa-trash"></i>*/}
+                                    {/*</button>*/}
+                                </div>
+                                {error && (
+                                    <Alert className={"margin-top"}>
+                                        There was a problem generating your API key.
+                                        If the problem persists, please contact your system administrator.
+                                    </Alert>
+                                )}
+                            </>
+                        )}
                     </>
                 )}
-            </Panel.Body>
-        </Panel>
+            </div>
+        </div>
     )
 }
+
+interface Props {
+    updateUserDisplayName: (displayName: string) => void;
+}
+
+const TITLE = 'User Profile';
 
 export const ProfilePage: FC<Props> = props => {
     const { updateUserDisplayName } = props;
@@ -174,7 +222,7 @@ export const ProfilePage: FC<Props> = props => {
                 description={getUserRoleDisplay(user)}
                 dateFormat={getDateFormat().toUpperCase()}
                 renderButtons={
-                    allowChangePassword ? <Button onClick={toggleChangePassword}>Change Password</Button> : null
+                    allowChangePassword ? <button className={"btn btn-default"} onClick={toggleChangePassword} type={"button"}>Change Password</button> : null
                 }
             />
             <Notifications />

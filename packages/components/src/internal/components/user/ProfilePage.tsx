@@ -82,7 +82,7 @@ export const APIKeysPanel: FC<any> = () => {
     const configMsg = useMemo(() => isApiKeyGenerationEnabled(moduleContext) ?
         <p>
             API keys are currently configured to <span className="api-key__expiration-config">{getApiExpirationMessage(moduleContext)}</span>.{' '}
-            <span><a href={'http://TODO'}>More info</a></span>
+            <span><a href={'https://www.labkey.org/Documentation/wiki-page.view?name=apiKey#usage'}>More info</a></span>
         </p>
         :
         <Alert bsStyle="warning">

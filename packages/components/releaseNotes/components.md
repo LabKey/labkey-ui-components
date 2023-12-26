@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Add API Keys panel to profile page
+
 ### version 3.2.0
 *Released*: 22 December 2023
 - Add support for searching or storage locations

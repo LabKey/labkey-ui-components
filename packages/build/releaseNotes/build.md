@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 7.0.2
+*Released*: 27 December  2023
+- Update TypeScript compiler `lib` option to `["es2019", "dom", "dom.iterable"]`
+
 ### version 7.0.1
 *Released*: 26 December  2023
 - Issue 49331: Include `nonce` in `app.template.xml` to support CSP in `appDev.view`

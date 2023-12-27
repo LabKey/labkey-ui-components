@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Draft, immerable, produce } from 'immer';
+import { immerable, produce } from 'immer';
 import { Operation } from '../../../public/QueryColumn';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
@@ -89,7 +89,7 @@ export class AssayStateModel {
     }
 
     mutate(props: Partial<AssayStateModel>): AssayStateModel {
-        return produce(this, (draft: Draft<AssayStateModel>) => {
+        return produce<AssayStateModel>(this, draft => {
             Object.assign(draft, props);
         });
     }

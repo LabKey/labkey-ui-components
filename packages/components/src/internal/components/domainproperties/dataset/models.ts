@@ -18,7 +18,7 @@ import { Record } from 'immutable';
 
 import { getServerContext } from '@labkey/api';
 
-import { Draft, immerable, produce } from 'immer';
+import { immerable, produce } from 'immer';
 
 import { DomainDesign, DomainField } from '../models';
 
@@ -107,7 +107,7 @@ export class DatasetModel implements IDatasetModel {
                         .toList(),
                 }) as DomainDesign;
 
-                model = produce(model, (draft: Draft<DatasetModel>) => {
+                model = produce<DatasetModel>(model, draft => {
                     draft.domain = newDomain;
                 });
             }
@@ -178,7 +178,7 @@ export class DatasetModel implements IDatasetModel {
     }
 
     getOptions(): Record<string, any> {
-        return produce(this, (draft: Draft<IDatasetModel>) => {
+        return produce<IDatasetModel>(this, draft => {
             delete draft.exception;
             delete draft.domain;
         });

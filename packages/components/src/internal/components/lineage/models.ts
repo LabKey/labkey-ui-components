@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Draft, immerable, produce } from 'immer';
+import { immerable, produce } from 'immer';
 import { List, Map, Record as ImmutableRecord } from 'immutable';
 import { Experiment, Utils } from '@labkey/api';
 import { DataSet, Edge, IdType, Node } from 'vis-network';
@@ -613,7 +613,7 @@ export class Lineage {
      * @param props
      */
     mutate(props: Partial<Lineage>): Lineage {
-        return produce(this, (draft: Draft<Lineage>) => {
+        return produce<Lineage>(this, draft => {
             Object.assign(draft, props);
         });
     }

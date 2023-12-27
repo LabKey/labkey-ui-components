@@ -92,7 +92,7 @@ export const APIKeysPanel: FC<any> = () => {
         return null;
 
     return (
-        <div className="panel panel-default">
+        <div className="panel panel-content panel-default">
             <div className="panel-heading">API Keys</div>
             <div className="panel-body">
                 <p>
@@ -125,10 +125,12 @@ export const APIKeysPanel: FC<any> = () => {
                                     </button>
 
                                     <input disabled type="text" className="form-control api-key__input"
+                                           name={"key_input"}
                                            value={generatedKey}
                                     />
                                     <button className="btn btn-default api-key__button"
                                             title="Copy to clipboard"
+                                            name={"copy_key"}
                                             onClick={onCopyKey}
                                             disabled={!generatedKey}
                                     >

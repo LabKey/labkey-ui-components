@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.2.1
+*Released*: 27 December 2023
+- Support cross-folder sample import
+  - add util for check isCrossProjectImportEnabled
+
 ### version 3.2.0
 *Released*: 22 December 2023
 - Add support for searching or storage locations

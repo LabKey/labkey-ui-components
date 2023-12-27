@@ -574,14 +574,15 @@ export function handleEntityFileImport(
     useAsync: boolean,
     importParameters?: Record<string, any>,
     importFileController?: string,
-    saveToPipeline?: boolean
+    saveToPipeline?: boolean,
+    containerPath?: string,
 ): Promise<any> {
     return new Promise((resolve, reject) => {
         return importData({
             schemaName: queryInfo?.schemaQuery.schemaName,
             queryName: queryInfo?.schemaQuery.queryName,
             file,
-            importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, null, {
+            importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, containerPath, {
                 ...importParameters,
             }),
             importLookupByAlternateKey: true,

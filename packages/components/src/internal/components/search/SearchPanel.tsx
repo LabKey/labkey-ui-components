@@ -160,6 +160,8 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
             SearchCategory.MaterialSource,
             SearchCategory.Notebook,
             SearchCategory.NotebookTemplate,
+            SearchCategory.StorageLocation,
+            SearchCategory.TerminalStorageLocation,
             SearchCategory.WorkflowJob,
         ];
 

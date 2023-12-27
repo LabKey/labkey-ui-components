@@ -177,6 +177,8 @@ export function resolveTypeName(data: any, category: SearchCategory): string {
             typeName = data.dataClass.name;
         } else if (data.sampleSet?.name) {
             typeName = data.sampleSet.name;
+        } else if (data.inventorySystemId) {
+            typeName = data.typeName;
         }
     }
     if (!typeName && category) {
@@ -184,6 +186,10 @@ export function resolveTypeName(data: any, category: SearchCategory): string {
             typeName = 'Notebook';
         } else if (category === SearchCategory.NotebookTemplate) {
             typeName = 'Notebook Template';
+        } else if (category === SearchCategory.TerminalStorageLocation) {
+            typeName = 'Terminal Storage Unit';
+        } else if (category === SearchCategory.StorageLocation) {
+            typeName = 'Storage Unit';
         }
     }
     return typeName;
@@ -207,6 +213,10 @@ export function resolveIconSrc(data: any, category: SearchCategory): string {
                 iconSrc = 'sample_set';
             } else if (lcType.indexOf('dataclass') !== 0) {
                 iconSrc = lcType;
+            } else if (lcType === 'storagelocation') {
+                iconSrc = 'freezer';
+            } else if (lcType === 'terminalstoragelocation') {
+                iconSrc = 'terminal_unit';
             }
             // else fallback to default
         }
@@ -225,6 +235,12 @@ export function resolveIconSrc(data: any, category: SearchCategory): string {
                 break;
             case SearchCategory.WorkflowJob:
                 iconSrc = 'workflow';
+                break;
+            case SearchCategory.StorageLocation:
+                iconSrc = 'freezer';
+                break;
+            case SearchCategory.TerminalStorageLocation:
+                iconSrc = 'terminal_unit';
                 break;
             default:
         }

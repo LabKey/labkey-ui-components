@@ -3,8 +3,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.XX
 *Released*: XX December 2023
-- Support cross folder sample import
+- Support cross-folder sample import
   - add util for check isCrossProjectImportEnabled
+
+### version 3.2.0
+*Released*: 22 December 2023
+- Add support for searching or storage locations
 
 ### version 3.1.2
 *Released*: 22 December 2023

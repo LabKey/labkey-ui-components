@@ -41,9 +41,9 @@ export const SearchResultsPanel: FC<Props> = memo(({ emptyResultDisplay, iconUrl
 
     return (
         <div className="search-results-panel">
-            {loading && <LoadingSpinner />}
+            {loading && <div className="top-spacing"><LoadingSpinner /></div>}
             {!loading && error && (
-                <Alert>
+                <Alert className="margin-top">
                     There was an error with your search term(s). {decodeErrorMessage(error)}
                     <br />
                     <br />

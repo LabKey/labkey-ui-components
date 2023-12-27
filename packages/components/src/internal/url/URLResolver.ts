@@ -22,7 +22,7 @@ import { FREEZER_MANAGER_APP_PROPERTIES, SAMPLES_KEY } from '../app/constants';
 
 import { getCurrentAppProperties, getProjectPath } from '../app/utils';
 
-import { AppURL, createProductUrl } from './AppURL';
+import { AppURL, createProductUrl, createProductUrlFromParts } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
 
@@ -456,6 +456,62 @@ export const PROJECT_MGMT_MAPPER = new ActionMapper('project', 'begin', (row, co
     return undefined;
 });
 
+// query-detailsQueryRow.view?schemaName=inventory&query.queryName=Location&RowId=1811
+// map to /rd/freezerLocation/1811
+export const STORAGE_LOCATION_MAPPER = new ActionMapper('query', 'detailsQueryRow', row => {
+    const url = row.get('url');
+    if (url) {
+        const params = ActionURL.getParameters(url);
+        const schemaName = params.schemaName;
+        const queryName = params['query.queryName'];
+        if (
+            schemaName &&
+            schemaName.toLowerCase() === 'inventory' &&
+            queryName &&
+            queryName.toLowerCase() === 'location'
+        ) {
+            const rowId = params.RowId;
+            if (rowId && rowId.length) {
+                return createProductUrlFromParts(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId,
+                    ActionURL.getController(),
+                    {},
+                    'rd',
+                    'freezerLocation',
+                    rowId
+                );
+            }
+            return false;
+        }
+    }
+    return undefined;
+});
+
+// query-detailsQueryRow.view?schemaName=inventory&query.queryName=Box&RowId=2918
+// map to boxes/24363?query.sort=WellPosition
+export const STORAGE_BOX_MAPPER = new ActionMapper('query', 'detailsQueryRow', row => {
+    const url = row.get('url');
+    if (url) {
+        const params = ActionURL.getParameters(url);
+        const schemaName = params.schemaName;
+        const queryName = params['query.queryName'];
+        if (schemaName && schemaName.toLowerCase() === 'inventory' && queryName && queryName.toLowerCase() === 'box') {
+            const rowId = params.RowId;
+            if (rowId && rowId.length) {
+                return createProductUrlFromParts(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId,
+                    ActionURL.getController(),
+                    { 'query.sort': 'WellPosition' },
+                    'boxes',
+                    rowId
+                );
+            }
+            return false;
+        }
+    }
+    return undefined;
+});
+
 export const URL_MAPPERS = {
     ASSAY_MAPPERS,
     DATA_CLASS_MAPPERS,
@@ -471,6 +527,8 @@ export const URL_MAPPERS = {
     PIPELINE_MAPPER,
     FREEZER_ITEM_SAMPLE_MAPPER,
     PROJECT_MGMT_MAPPER,
+    STORAGE_LOCATION_MAPPER,
+    STORAGE_BOX_MAPPER,
 };
 
 export class URLResolver {
@@ -661,6 +719,16 @@ export class URLResolver {
                         query = row.getIn(['data', 'type']);
                         return row.set('url', this.mapURL({ url, row, column, query }));
                     } else if (id.indexOf('workflowJob:') >= 0) {
+                        return row.set('url', this.mapURL({ url, row, column }));
+                    } else if (id.indexOf('torageLocation:') >= 0) {
+                        let index = url.indexOf('&_docid');
+                        if (index > -1) {
+                            url = url.substring(0, index);
+                        }
+                        index = url.indexOf('?_docid');
+                        if (index > -1) {
+                            url = url.substring(0, index);
+                        }
                         return row.set('url', this.mapURL({ url, row, column }));
                     } else if (url.indexOf('samplemanager-downloadAttachments') >= 0) {
                         return row.set('url', this.mapURL({ url, row, column }));

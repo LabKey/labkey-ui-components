@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 import { immerable, produce } from 'immer';
+
 import { Operation } from '../../../public/QueryColumn';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { LoadingState } from '../../../public/LoadingState';
 
-import { AssayWizardModel } from './AssayWizardModel';
 import { SelectInputChange } from '../forms/input/SelectInput';
+
+import { AssayWizardModel } from './AssayWizardModel';
 
 export interface AssayPropertiesPanelProps {
     operation: Operation;

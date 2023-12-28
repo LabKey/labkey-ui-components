@@ -5,8 +5,6 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import { Map } from 'immutable';
 
-import { withRouter, WithRouterProps } from 'react-router';
-
 import { useServerContext } from '../base/ServerContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
@@ -20,19 +18,22 @@ import { PermissionAssignments } from '../permissions/PermissionAssignments';
 import { useRouteLeave } from '../../util/RouteLeave';
 import { InjectedPermissionsPage, withPermissionsPage } from '../permissions/withPermissionsPage';
 
+import { useAdministrationSubNav } from './useAdministrationSubNav';
+
 import { useAdminAppContext } from './useAdminAppContext';
 import { APPLICATION_SECURITY_ROLES, HOSTED_APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from './constants';
 import { showPremiumFeatures } from './utils';
 import { getUpdatedPolicyRoles } from './actions';
 
 // exported for testing
-export type Props = InjectedPermissionsPage & WithRouterProps;
+export type Props = InjectedPermissionsPage;
 
 // exported for testing
 export const PermissionManagementPageImpl: FC<Props> = memo(props => {
-    const { roles, router, routes } = props;
-    const [getIsDirty, setIsDirty] = useRouteLeave(router, routes);
-    const [policyLastModified, setPolicyLastModified] = useState<string>(undefined);
+    const { roles } = props;
+    useAdministrationSubNav();
+    const [getIsDirty, setIsDirty] = useRouteLeave();
+    const [policyLastModified, setPolicyLastModified] = useState<string>();
     const [hidePageDescription, setHidePageDescription] = useState<boolean>(false);
     const { dismissNotifications, createNotification } = useNotificationsContext();
     const { extraPermissionRoles } = useAdminAppContext();
@@ -97,4 +98,4 @@ export const PermissionManagementPageImpl: FC<Props> = memo(props => {
     );
 });
 
-export const PermissionManagementPage = withRouter(withPermissionsPage(PermissionManagementPageImpl));
+export const PermissionManagementPage = withPermissionsPage(PermissionManagementPageImpl);

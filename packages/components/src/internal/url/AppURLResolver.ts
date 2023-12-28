@@ -42,7 +42,7 @@ export class ListResolver implements AppRouteResolver {
         return /\/q\/lists\/(\$CPS.+\$CPE)\/(\d+$|\d+)\/*/.test(decodeURIComponent(route));
     }
 
-    async fetch(parts: any[]): Promise<AppURL | boolean> {
+    async fetch(parts: any[]): Promise<AppURL> {
         // ["q", "lists", "/container/path", "44", ...]
         const containerPathIndex = 2;
         const listIdIndex = 3;
@@ -52,14 +52,14 @@ export class ListResolver implements AppRouteResolver {
 
         if (isNaN(listIdNum) || !containerPath) {
             // skip it
-            return true;
+            return;
         } else if (this.lists.has(key)) {
             // resolve it
             const newParts = [this.lists.get(key)];
             return spliceURL(parts, newParts, containerPathIndex, 2);
         } else if (this.fetched) {
             // skip it
-            return true;
+            return undefined;
         }
 
         // fetch it
@@ -94,7 +94,7 @@ export class ListResolver implements AppRouteResolver {
         }
 
         // skip it
-        return true;
+        return undefined;
     }
 }
 
@@ -104,7 +104,7 @@ export class ListResolver implements AppRouteResolver {
  * If this doesn't correspond to a job, the link won't resolve.
  *
  * Ideally we would resolve to the original URL if it's not a job, but since that's a link out to LKS
- * it's not current supported by AppRouteResolvers.  Alternatively, and perhaps more ideally, we'd resolve
+ * it's not currently supported by AppRouteResolvers.  Alternatively, and perhaps more ideally, we'd resolve
  * to the lineage page for a sample, but the URL here doesn't have any info about the related entity.
  */
 export class ExperimentRunResolver implements AppRouteResolver {
@@ -118,13 +118,13 @@ export class ExperimentRunResolver implements AppRouteResolver {
         this.jobs = jobs !== undefined ? jobs : new Set();
     }
 
-    async fetch(parts: any[]): Promise<AppURL | boolean> {
+    async fetch(parts: any[]): Promise<AppURL> {
         const rowIdIndex = 2;
         const rowId = parseInt(parts[rowIdIndex], 10);
 
         if (isNaN(rowId)) {
             // skip it
-            return true;
+            return undefined;
         }
         if (this.jobs.has(rowId)) {
             // resolve it
@@ -149,7 +149,7 @@ export class ExperimentRunResolver implements AppRouteResolver {
         }
 
         // skip it
-        return true;
+        return undefined;
     }
 
     matches(route: string): boolean {

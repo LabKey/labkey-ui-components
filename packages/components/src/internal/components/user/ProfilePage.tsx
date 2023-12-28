@@ -4,7 +4,6 @@
  */
 import React, { FC, useCallback, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { WithRouterProps } from 'react-router';
 
 import { isLoginAutoRedirectEnabled } from '../administration/utils';
 import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
@@ -22,6 +21,7 @@ import { getDateFormat } from '../../util/Date';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { useRouteLeave } from '../../util/RouteLeave';
+import { useAccountSubNav } from './AccountSubNav';
 
 import { UserDetailHeader } from './UserDetailHeader';
 import { getUserRoleDisplay } from './actions';
@@ -31,15 +31,16 @@ import { ChangePasswordModal } from './ChangePasswordModal';
 
 import { useUserProperties } from './hooks';
 
-interface Props extends WithRouterProps {
+interface Props {
     updateUserDisplayName: (displayName: string) => void;
 }
 
 const TITLE = 'User Profile';
 
-const ProfilePageImpl: FC<Props> = props => {
-    const { router, routes, updateUserDisplayName } = props;
-    const [_, setIsDirty] = useRouteLeave(router, routes);
+export const ProfilePage: FC<Props> = props => {
+    const { updateUserDisplayName } = props;
+    useAccountSubNav();
+    const [_, setIsDirty] = useRouteLeave();
     const [showChangePassword, setShowChangePassword] = useState<boolean>(false);
     const { moduleContext, user } = useServerContext();
     const userProperties = useUserProperties(user);
@@ -108,5 +109,3 @@ const ProfilePageImpl: FC<Props> = props => {
         </Page>
     );
 };
-
-export const ProfilePage = ProfilePageImpl;

@@ -16,6 +16,7 @@
 import { AssayDOM, Filter, Utils } from '@labkey/api';
 import { Map, OrderedMap } from 'immutable';
 import React, { Component, FC, ReactNode, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
 import { LoadingState } from '../../../public/LoadingState';
@@ -36,7 +37,6 @@ import { getQueryDetails } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
 import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
 
-import { Location } from '../../util/URL';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Container } from '../base/models/Container';
@@ -47,7 +47,10 @@ import { AssayProtocolModel } from '../domainproperties/assay/models';
 import { EditorModel } from '../editable/models';
 import { getSampleOperationConfirmationData } from '../entities/actions';
 import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
-import { NotificationsContextProps, withNotificationsContext } from '../notifications/NotificationsContext';
+import {
+    NotificationsContextProps,
+    useNotificationsContext,
+} from '../notifications/NotificationsContext';
 
 import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
@@ -102,8 +105,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getIsDirty?: () => boolean;
     jobNotificationProvider?: string;
-    loadSelectedSamples?: (location: Location, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
-    location?: Location;
+    loadSelectedSamples?: (searchParams: URLSearchParams, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
     // Not currently used, but related logic retained in component
     maxRows?: number;
     onCancel: () => void;
@@ -114,16 +116,13 @@ interface OwnProps {
     showUploadTabs?: boolean;
 }
 
-interface AssayImportPanelsBodyProps {
+interface AssayImportPanelsBodyProps extends NotificationsContextProps {
     container: Partial<Container>;
     user: User;
+    searchParams: URLSearchParams;
 }
 
-type Props = AssayImportPanelsBodyProps &
-    OwnProps &
-    WithFormStepsProps &
-    InjectedQueryModels &
-    NotificationsContextProps;
+type Props = AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps & InjectedQueryModels;
 
 interface State {
     dataModel: QueryModel;
@@ -162,10 +161,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
     }
 
     componentDidMount(): void {
-        const { location, selectStep } = this.props;
+        const { searchParams, selectStep } = this.props;
 
-        if (location?.query?.dataTab) {
-            selectStep(parseInt(location.query.dataTab, 10));
+        if (searchParams.get('dataTab')) {
+            selectStep(parseInt(searchParams.get('dataTab'), 10));
         }
 
         this.initModel();
@@ -199,12 +198,12 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     getRunPropertiesMap = (): Map<string, any> => {
-        const { location } = this.props;
+        const { searchParams } = this.props;
         let runProperties = flattenQueryModelRow(this.getRunPropsQueryModel().getRow());
 
         // Issue 38711: Need to pre-populate the run properties form with assayRequest if it is present on the URL
-        if (location?.query?.assayRequest !== undefined) {
-            runProperties = runProperties.set('assayRequest', location.query.assayRequest);
+        if (searchParams.get('assayRequest')) {
+            runProperties = runProperties.set('assayRequest', searchParams.get('assayRequest'));
         }
 
         return runProperties;
@@ -238,13 +237,13 @@ class AssayImportPanelsBody extends Component<Props, State> {
     }
 
     initModel = async (): Promise<void> => {
-        const { assayDefinition, location, runId } = this.props;
+        const { assayDefinition, searchParams, runId } = this.props;
         const { schemaQuery } = this.state;
         let plateProperties = Map<string, any>();
         let workflowTask: number;
 
-        if (location?.query?.workflowTaskId) {
-            const _workflowTask = parseInt(location.query.workflowTaskId, 10);
+        if (searchParams.get('workflowTaskId')) {
+            const _workflowTask = parseInt(searchParams.get('workflowTaskId'), 10);
             workflowTask = isNaN(_workflowTask) ? undefined : _workflowTask;
         }
 
@@ -255,8 +254,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const { plateColumns, runColumns } = this.getRunColumns(runQueryInfo);
 
         if (this.plateSupportEnabled) {
-            if (location?.query?.plateLsid) {
-                plateProperties = plateProperties.set(PLATE_TEMPLATE_COLUMN, location.query.plateLsid);
+            if (searchParams.get('plateLsid')) {
+                plateProperties = plateProperties.set(PLATE_TEMPLATE_COLUMN, searchParams.get('plateLsid'));
             }
         }
 
@@ -334,7 +333,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     onGetQueryDetailsComplete = async (): Promise<void> => {
-        const { assayDefinition, location } = this.props;
+        const { assayDefinition, searchParams } = this.props;
         const sampleColumnData = assayDefinition.getSampleColumn();
 
         let sampleStatusWarning: string;
@@ -344,7 +343,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             runProperties: this.getRunPropertiesMap(),
         };
 
-        if (sampleColumnData && location) {
+        if (sampleColumnData) {
             try {
                 // If the assay has a sample column look up at Batch, Run, or Result level then we want to retrieve
                 // the currently selected samples so we can pre-populate the fields in the wizard with the selected
@@ -352,7 +351,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 // Additionally, we want to pre-populate the fields in the wizard with samples if the job has samples
                 // associated with it, and the assay has a sample column.
                 const { column, domain } = sampleColumnData;
-                const samples = await this.props.loadSelectedSamples(location, column);
+                const samples = await this.props.loadSelectedSamples(searchParams, column);
 
                 const statusConfirmationData = await getSampleOperationConfirmationData(
                     SampleOperation.AddAssayData,
@@ -557,7 +556,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             beforeFinish,
             jobNotificationProvider,
             assayProtocol,
-            location,
+            searchParams,
             dismissNotifications,
         } = this.props;
         const { model } = this.state;
@@ -576,8 +575,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
             const backgroundUpload = assayProtocol?.backgroundUpload;
             let forceAsync = false;
             if (!backgroundUpload && assayProtocol?.allowBackgroundUpload) {
-                const asyncFileSize = location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
-                const asyncRowSize = location?.query?.useAsync === 'true' ? 1 : BACKGROUND_IMPORT_MIN_ROW_SIZE;
+                const useAsync = searchParams.get('useAsync') === 'true';
+                const asyncFileSize = useAsync ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
+                const asyncRowSize = useAsync ? 1 : BACKGROUND_IMPORT_MIN_ROW_SIZE;
                 if (
                     (processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize) ||
                     (processedData.maxRowCount && processedData.maxRowCount >= asyncRowSize)
@@ -839,11 +839,13 @@ class AssayImportPanelsBody extends Component<Props, State> {
 }
 
 const AssayImportPanelWithQueryModels = withQueryModels<AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps>(
-    withNotificationsContext(AssayImportPanelsBody)
+    AssayImportPanelsBody
 );
 
 const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
     const { assayDefinition, runId } = props;
+    const [searchParams] = useSearchParams();
+    const { createNotification, dismissNotifications } = useNotificationsContext();
     const { container, user } = useServerContext();
     const key = [runId, assayDefinition.protocolSchemaName].join('|');
     const schemaQuery = useMemo(
@@ -871,8 +873,11 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
             {...props}
             autoLoad
             container={container}
+            createNotification={createNotification}
+            dismissNotifications={dismissNotifications}
             key={key}
             queryConfigs={queryConfigs}
+            searchParams={searchParams}
             user={user}
         />
     );

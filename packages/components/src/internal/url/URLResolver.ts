@@ -22,13 +22,9 @@ import { FREEZER_MANAGER_APP_PROPERTIES, SAMPLES_KEY } from '../app/constants';
 
 import { getCurrentAppProperties, getProjectPath } from '../app/utils';
 
-import { AppURL, createProductUrl } from './AppURL';
+import { AppURL, createProductUrl, createProductUrlFromParts } from './AppURL';
 import { AppRouteResolver } from './models';
 import { encodeListResolverPath } from './utils';
-
-const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
-
-type RoutingTable = Map<string, string | boolean>;
 
 let resolvers = OrderedSet<AppRouteResolver>();
 
@@ -51,60 +47,15 @@ export namespace URLService {
         });
     }
 
-    export function resolveAppRoute(store, nextRouteState, replace, next) {
-        const query = nextRouteState.location.query;
-        const nextRoute = nextRouteState.location.pathname;
-        const table = getRouteTable(store.getState());
+    export async function resolveRedirect(path: string): Promise<string> {
+        const resolver = resolvers.find(r => r.matches(path));
 
-        if (table.has(nextRoute)) {
-            if (table.get(nextRoute) !== true) {
-                replace({ pathname: table.get(nextRoute), query });
-            }
-        } else {
-            let found = false;
-            resolvers.forEach(resolver => {
-                if (resolver.matches(nextRoute)) {
-                    found = true;
-                    const routes = nextRoute.split('/');
-                    routes.shift(); // account for initial '/'
-                    resolver.fetch(routes).then((fetchedRoute: AppURL | boolean) => {
-                        const toRoute = typeof fetchedRoute === 'boolean' ? fetchedRoute : fetchedRoute.toString();
+        if (resolver === undefined) return undefined;
 
-                        store.dispatch({
-                            type: ADD_TABLE_ROUTE,
-                            fromRoute: nextRoute,
-                            toRoute,
-                        });
-
-                        if (typeof toRoute === 'string') {
-                            replace({
-                                pathname: toRoute,
-                                query,
-                            });
-                        }
-
-                        next();
-                    });
-                    return false; // stop at this resolver
-                }
-            });
-
-            if (found) {
-                return;
-            } else {
-                store.dispatch({
-                    type: ADD_TABLE_ROUTE,
-                    fromRoute: nextRoute,
-                    toRoute: true,
-                });
-            }
-        }
-
-        next();
-    }
-
-    export function getRouteTable(state): RoutingTable {
-        return state.routing.table;
+        const parts = path.split('/');
+        parts.shift(); // account for initial '/'
+        const redirectPath = await resolver.fetch(parts);
+        return redirectPath?.toString();
     }
 
     export function registerURLMappers(...mappers: URLMapper[]): void {
@@ -252,7 +203,7 @@ const ASSAY_MAPPERS = [
             const params = ActionURL.getParameters(url);
 
             if (params.rowId) {
-                return AppURL.create('assays', params.rowId);
+                return AppURL.create('rd', 'assays', params.rowId);
             }
         }
     }),
@@ -505,6 +456,62 @@ export const PROJECT_MGMT_MAPPER = new ActionMapper('project', 'begin', (row, co
     return undefined;
 });
 
+// query-detailsQueryRow.view?schemaName=inventory&query.queryName=Location&RowId=1811
+// map to /rd/freezerLocation/1811
+export const STORAGE_LOCATION_MAPPER = new ActionMapper('query', 'detailsQueryRow', row => {
+    const url = row.get('url');
+    if (url) {
+        const params = ActionURL.getParameters(url);
+        const schemaName = params.schemaName;
+        const queryName = params['query.queryName'];
+        if (
+            schemaName &&
+            schemaName.toLowerCase() === 'inventory' &&
+            queryName &&
+            queryName.toLowerCase() === 'location'
+        ) {
+            const rowId = params.RowId;
+            if (rowId && rowId.length) {
+                return createProductUrlFromParts(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId,
+                    ActionURL.getController(),
+                    {},
+                    'rd',
+                    'freezerLocation',
+                    rowId
+                );
+            }
+            return false;
+        }
+    }
+    return undefined;
+});
+
+// query-detailsQueryRow.view?schemaName=inventory&query.queryName=Box&RowId=2918
+// map to boxes/24363?query.sort=WellPosition
+export const STORAGE_BOX_MAPPER = new ActionMapper('query', 'detailsQueryRow', row => {
+    const url = row.get('url');
+    if (url) {
+        const params = ActionURL.getParameters(url);
+        const schemaName = params.schemaName;
+        const queryName = params['query.queryName'];
+        if (schemaName && schemaName.toLowerCase() === 'inventory' && queryName && queryName.toLowerCase() === 'box') {
+            const rowId = params.RowId;
+            if (rowId && rowId.length) {
+                return createProductUrlFromParts(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId,
+                    ActionURL.getController(),
+                    { 'query.sort': 'WellPosition' },
+                    'boxes',
+                    rowId
+                );
+            }
+            return false;
+        }
+    }
+    return undefined;
+});
+
 export const URL_MAPPERS = {
     ASSAY_MAPPERS,
     DATA_CLASS_MAPPERS,
@@ -520,6 +527,8 @@ export const URL_MAPPERS = {
     PIPELINE_MAPPER,
     FREEZER_ITEM_SAMPLE_MAPPER,
     PROJECT_MGMT_MAPPER,
+    STORAGE_LOCATION_MAPPER,
+    STORAGE_BOX_MAPPER,
 };
 
 export class URLResolver {
@@ -710,6 +719,16 @@ export class URLResolver {
                         query = row.getIn(['data', 'type']);
                         return row.set('url', this.mapURL({ url, row, column, query }));
                     } else if (id.indexOf('workflowJob:') >= 0) {
+                        return row.set('url', this.mapURL({ url, row, column }));
+                    } else if (id.indexOf('torageLocation:') >= 0) {
+                        let index = url.indexOf('&_docid');
+                        if (index > -1) {
+                            url = url.substring(0, index);
+                        }
+                        index = url.indexOf('?_docid');
+                        if (index > -1) {
+                            url = url.substring(0, index);
+                        }
                         return row.set('url', this.mapURL({ url, row, column }));
                     } else if (url.indexOf('samplemanager-downloadAttachments') >= 0) {
                         return row.set('url', this.mapURL({ url, row, column }));

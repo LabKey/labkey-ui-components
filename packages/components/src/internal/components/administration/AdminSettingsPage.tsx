@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 
-import { InjectedRouteLeaveProps, withRouteLeave } from '../../util/RouteLeave';
+import { useRouteLeave } from '../../util/RouteLeave';
 import { useServerContext } from '../base/ServerContext';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
@@ -27,13 +27,16 @@ import { useContainerUser } from '../container/actions';
 
 import { LoadingPage } from '../base/LoadingPage';
 
+import { useAdministrationSubNav } from './useAdministrationSubNav';
+
 import { useAdminAppContext } from './useAdminAppContext';
 import { ProtectedDataSettingsPanel } from './ProtectedDataSettingsPanel';
 import { RequestsSettingsPanel } from './RequestsSettingsPanel';
 
 // export for jest testing
-export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
-    const { setIsDirty, getIsDirty } = props;
+export const AdminSettingsPage: FC = () => {
+    useAdministrationSubNav();
+    const [getIsDirty, setIsDirty] = useRouteLeave();
     const { moduleContext, container } = useServerContext();
     const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
     const { createNotification, dismissNotifications } = useNotificationsContext();
@@ -86,9 +89,18 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
                     setIsDirty={setIsDirty}
                     getIsDirty={getIsDirty}
                 />
-                <NameIdSettings {...props} container={homeProjectContainer.container} isAppHome={true} />
+                <NameIdSettings
+                    container={homeProjectContainer.container}
+                    getIsDirty={getIsDirty}
+                    isAppHome={true}
+                    setIsDirty={setIsDirty}
+                />
                 {isSampleStatusEnabled(moduleContext) && (
-                    <ManageSampleStatusesPanel {...props} container={homeProjectContainer.container} />
+                    <ManageSampleStatusesPanel
+                        container={homeProjectContainer.container}
+                        getIsDirty={getIsDirty}
+                        setIsDirty={setIsDirty}
+                    />
                 )}
                 {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) && (
                     <ProtectedDataSettingsPanel containerPath={homeProjectContainer.container.path} />
@@ -100,5 +112,3 @@ export const AdminSettingsPageImpl: FC<InjectedRouteLeaveProps> = props => {
         </>
     );
 };
-
-export const AdminSettingsPage = withRouteLeave(AdminSettingsPageImpl);

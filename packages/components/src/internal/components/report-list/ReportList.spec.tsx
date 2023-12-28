@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
-import { createMemoryHistory, Route, Router } from 'react-router';
 import { mount } from 'enzyme';
 
 import exampleData from '../../../test/data/example_browse_data_tree_api.json';
@@ -25,8 +23,6 @@ import { flattenBrowseDataTreeResponse } from '../../query/reports';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { ReportItemModal, ReportList, ReportListItem } from './ReportList';
-
-const history = createMemoryHistory();
 
 const noop = () => {};
 const messageSelector = '.report-list__message';
@@ -54,8 +50,6 @@ describe('<ReportList />', () => {
 
     test('Render with no data', () => {
         const component = <ReportList loading={false} reports={[]} onReportClicked={noop} />;
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
         const wrapper = mount(component);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(messageSelector).text()).toContain('No reports');
@@ -64,8 +58,6 @@ describe('<ReportList />', () => {
 
     test('Render loading', () => {
         const component = <ReportList loading={true} reports={[]} onReportClicked={noop} />;
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
         const wrapper = mount(component);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
         wrapper.unmount();
@@ -74,8 +66,6 @@ describe('<ReportList />', () => {
     test('Render with data', () => {
         const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper);
         const component = <ReportList loading={false} reports={reports} onReportClicked={noop} />;
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
         const wrapper = mount(component);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(ReportListItem)).toHaveLength(reports.length);
@@ -97,19 +87,13 @@ describe('<ReportListItem />', () => {
     test('ReportListItem renders', () => {
         const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[1];
         const onClick = jest.fn();
-        const component = (
-            <Router history={history}>
-                <Route path="/" component={() => <ReportListItem report={report} onClick={onClick} />} />
-            </Router>
-        );
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
+        const component = <ReportListItem report={report} onClick={onClick} />;
         const wrapper = mount(component);
         expect(wrapper.find(createdBySelector)).toHaveLength(1);
         expect(wrapper.text()).toContain(report.createdBy);
         expect(wrapper.text()).toContain(report.name);
         // Enzyme prefixes relative URLs with http://localhost
-        const expectedHref = `http://localhost${report.appUrl.toString()}`;
+        const expectedHref = `http://localhost/#${report.appUrl.toString()}`;
         expect(wrapper.find('a').getDOMNode()).toHaveProperty('href', expectedHref);
         wrapper.unmount();
     });

@@ -6,7 +6,7 @@ import { User } from '../base/models/User';
 import { fetchGroupMembership } from '../administration/actions';
 import { useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';
-import { GroupMembership, MemberType } from '../administration/models';
+import { Groups, MemberType } from '../administration/models';
 import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
 
 export const GroupsList: FC<Props> = memo(props => {
     const { groups, currentUser, asRow = true, showLinks = true } = props;
-    const [groupMembership, setGroupMembership] = useState<GroupMembership>();
+    const [groupMembership, setGroupMembership] = useState<Groups>();
     const { api } = useAppContext();
     const { container } = useServerContext();
     const currentProductId = getCurrentAppProperties()?.productId;

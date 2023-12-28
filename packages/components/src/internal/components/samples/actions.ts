@@ -19,7 +19,6 @@ import { ActionURL, Ajax, Domain, Experiment, Filter, Query, Utils } from '@labk
 import { IEntityTypeDetails } from '../entities/models';
 import { deleteEntityType, getSelectedItemSamples } from '../entities/actions';
 
-import { Location } from '../../util/URL';
 import { getSelectedData, getSelection, getSnapshotSelections } from '../../actions';
 
 import { caseInsensitive, handleRequestFailure } from '../../util/utils';
@@ -146,21 +145,22 @@ export async function fetchSamples(
 /**
  * Loads a collection of RowIds from a selectionKey found on "location". Uses [[fetchSamples]] to query and filter
  * the Sample Set data.
- * @param location The location to search for the selectionKey on
+ * @param searchParams The URLSearchParams to search for the selectionKey on
  * @param sampleColumn A QueryColumn used to map data in [[fetchSamples]]
  */
 export async function loadSelectedSamples(
-    location: Location,
+    searchParams: URLSearchParams,
     sampleColumn: QueryColumn
 ): Promise<OrderedMap<any, any>> {
+    const workflowJobId = searchParams.get('workflowJobId');
     // If the "workflowJobId" URL parameter is specified, then fetch the samples associated with the workflow job.
-    if (location?.query?.workflowJobId) {
+    if (workflowJobId) {
         return fetchSamples(
             new SchemaQuery('sampleManagement', 'inputSamples'),
             sampleColumn,
             [
                 Filter.create('ApplicationType', 'ExperimentRun'),
-                Filter.create('ApplicationRun', location.query.workflowJobId),
+                Filter.create('ApplicationRun', workflowJobId),
             ],
             'Name',
             'SampleId'
@@ -168,10 +168,10 @@ export async function loadSelectedSamples(
     }
 
     // Otherwise, load the samples from the selection.
-    const selection = await getSelection(location);
+    const selection = await getSelection(searchParams);
 
     if (selection.resolved && selection.schemaQuery && selection.selected.length) {
-        const isPicklist = location?.query?.isPicklist === 'true';
+        const isPicklist = searchParams.get('isPicklist') === 'true';
         let sampleIdNums = selection.selected;
         if (isPicklist) {
             sampleIdNums = await getSelectedPicklistSamples(selection.schemaQuery.queryName, selection.selected, false);
@@ -193,15 +193,6 @@ export async function loadSelectedSamples(
     return OrderedMap();
 }
 
-function getLocationQueryVal(location: Location, key: string): string {
-    if (!location.query) {
-        return undefined;
-    }
-
-    const val: string | string[] = location.query[key];
-    return Array.isArray(val) ? val[0] : val;
-}
-
 /**
  * Get an array of sample RowIds from a URL selectionKey for the following scenarios:
  *  - sample grid
@@ -209,28 +200,38 @@ function getLocationQueryVal(location: Location, key: string): string {
  *  - assay
  *  - storage items
  */
-export async function getSelectedSampleIdsFromSelectionKey(location: Location): Promise<number[]> {
-    const key = getLocationQueryVal(location, 'selectionKey');
+export async function getSelectedSampleIdsFromSelectionKey(searchParams: URLSearchParams): Promise<number[]> {
+    const key = searchParams.get('selectionKey');
     let sampleIds;
-    const selectionType = getLocationQueryVal(location, 'selectionKeyType');
+    const selectionType = searchParams.get('selectionKeyType');
     const isSnapshot = selectionType === SELECTION_KEY_TYPE.snapshot;
+
     if (selectionType === SELECTION_KEY_TYPE.inventoryItems) {
         const response = await getSnapshotSelections(key);
         sampleIds = await getSelectedItemSamples(response.selected);
-    } else if (getLocationQueryVal(location, 'isAssay')) {
-        const schemaName = getLocationQueryVal(location, 'assayProtocol');
-        const sampleFieldKey = getLocationQueryVal(location, 'sampleFieldKey');
+    } else if (searchParams.get('isAssay')) {
+        const schemaName = searchParams.get('assayProtocol');
+        const sampleFieldKey = searchParams.get('sampleFieldKey');
         const queryName = SCHEMAS.ASSAY_TABLES.RESULTS_QUERYNAME;
         let response;
-        if (isSnapshot) response = await getSnapshotSelections(location.query.selectionKey);
-        else response = await getSelection(location, schemaName, queryName);
+
+        if (isSnapshot) {
+            response = await getSnapshotSelections(key);
+        } else {
+            response = await getSelection(searchParams, schemaName, queryName);
+        }
+
         sampleIds = await getFieldLookupFromSelection(schemaName, queryName, response?.selected, sampleFieldKey);
     } else {
-        const picklistName = getLocationQueryVal(location, 'picklistName');
+        const picklistName = searchParams.get('picklistName');
         let response;
-        if (isSnapshot && location.query?.selectionKey)
-            response = await getSnapshotSelections(location.query.selectionKey);
-        else response = await getSelection(location, SCHEMAS.PICKLIST_TABLES.SCHEMA, picklistName);
+
+        if (isSnapshot && key) {
+            response = await getSnapshotSelections(key);
+        } else {
+            response = await getSelection(searchParams, SCHEMAS.PICKLIST_TABLES.SCHEMA, picklistName);
+        }
+
         if (picklistName) {
             sampleIds = await getSelectedPicklistSamples(picklistName, response.selected, false, undefined);
         } else {

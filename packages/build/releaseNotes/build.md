@@ -1,5 +1,19 @@
 # @labkey/build
 
+### version 7.0.2
+*Released*: 27 December  2023
+- Update TypeScript compiler `lib` option to `["es2019", "dom", "dom.iterable"]`
+
+### version 7.0.1
+*Released*: 26 December  2023
+- Issue 49331: Include `nonce` in `app.template.xml` to support CSP in `appDev.view`
+
+### version 7.0.0
+*Released*: 20 December  2023
+- Replace `react-hot-loader` with `react-refresh`
+- Add dependency on `@pmmmwh/react-refresh-webpack-plugin` for `ReactRefreshWebpackPlugin`
+- Add `@remix-run/router`, `normalizr` and `react-router-dom` to externals
+
 ### version 6.16.1
 *Released*: 20 October  2023
 * Export @labkey/api path in link mode

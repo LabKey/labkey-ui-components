@@ -5,6 +5,83 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 41718: Domain Designer List Field Imports should observe auto-increment fields
 
+### version 3.2.2
+*Released*: 27 December 2023
+- Bump @labkey/build
+- Replace Immer `Draft<Type>` with `produce<Type>` as the former declaration pattern can cause compilation problems.
+
+### version 3.2.1
+*Released*: 27 December 2023
+- Support cross-folder sample import
+  - add util for check isCrossProjectImportEnabled
+
+### version 3.2.0
+*Released*: 22 December 2023
+- Add support for searching or storage locations
+
+### version 3.1.2
+*Released*: 22 December 2023
+* update package.json to pin devDependencies versions by dropping tilde
+  * this fixes the @types/react version mismatch between the packages and apps with start-link
+
+### version 3.1.1
+*Released*: 21 December 2023
+* withQueryModels: fix issue when operating outside of a React Router context
+
+### version 3.1.0
+*Released*: 21 December 2023
+- Change `domain` and `security` API wrappers to use `selectRows`
+- Update `api.security.getAuditLogDate` to not need to specify additional columns
+- Update `GroupDetailsPanel` to use API wrapper from context
+- Improve typings of `SecurityAPIWrapper`
+
+### version 3.0.1
+*Released*: 21 December 2023
+- Rehydrate the package-lock.json for the components package
+
+### version 3.0.0
+*Released*: 20 December 2023
+* Breaking Changes:
+  * Upgrade react-router dependency to react-router-dom version 6.x
+    * If you use react-router you will need to upgrade
+    * If you have history pinned in your dependencies you should remove it
+  * withQueryModels updated to be compatible with React Router 6.x
+
+* Other Changes:
+  * Note: all other changes listed here have to do with our upgrade of React Router, they're not considered breaking because they are all on our internal APIs which you should not be using
+  * URL helpers:
+    * use ReactRouter SetURLSearchParams instead of InjectedRouter and Location
+    * remove resetParameters
+    * remove Location type
+    * add getQueryParams
+  * Update components to use React Router Hooks
+  * Don't export UsersGridPanel or PermissionAssignments
+  * AppRouteResolver: fetch now returns Promise<AppURL> instead of Promise<AppURL | boolean>
+  * SubNav is no longer exported
+  * Removed unused constants
+    * SECURITY_LOGOUT
+    * SECURITY_SERVER_UNAVAILABLE
+    * SECURITY_SESSION_TIMEOUT
+  * Removed RoutingTableState and RoutingTableReducers
+  * Removed withRouteLeave
+  * useRouteLeave: remove `router` and `routes` props
+
+### version 2.399.1
+*Released*: 19 December 2023
+- Update @labkey/api and use moveRows() function
+- Include fix for Issue 49164: Datepicker in editable grid needs to account for the sticky footer when at the bottom of the grid
+
+### version 2.399.0
+*Released*: 15 December 2023
+- Consolidate move entities to MoveRowsAction in query controller
+  - update API call controller and actions and update params to match new moveRows API format
+
+### version 2.398.0
+*Released*: 14 December 2023
+- In-app messaging for product updates
+  - Add `ReleaseNote` component
+  - Updated Help icon to be a menu
+
 ### version 2.397.2
 *Released*: 13 December 2023
 - Issue 49237: From app settings page, set defaultDateFormat whenever defaultDateTimeFormat is changed

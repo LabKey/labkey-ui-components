@@ -1,9 +1,10 @@
-import { Draft, immerable, produce } from 'immer';
+import { immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
 
 import { DataViewInfo } from '../../internal/DataViewInfo';
+import { getQueryParams } from '../../internal/util/URL';
 
 import { encodePart, SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
@@ -29,7 +30,7 @@ export function flattenValuesFromRow(row: any, keys: string[]): { [key: string]:
 }
 
 function offsetFromString(rowsPerPage: number, pageStr: string): number {
-    if (pageStr === undefined) {
+    if (pageStr === null) {
         return undefined;
     }
 
@@ -63,24 +64,24 @@ function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
  * Returns true if a given location has queryParams that would conflict with savedSettings: filters, sorts, view,
  * page offset, pageSize.
  * @param prefix: the QueryModel prefix
- * @param queryParams: The query object from Location
+ * @param searchParams: The URLSearchParams returned by the react-router useSearchParams hook
  */
-export function locationHasQueryParamSettings(prefix: string, queryParams?: Record<string, string>): boolean {
-    if (queryParams === undefined) return false;
+export function locationHasQueryParamSettings(prefix: string, searchParams?: URLSearchParams): boolean {
+    if (searchParams === undefined) return false;
     // Report
-    if (queryParams[`${prefix}.reportId`] !== undefined) return true;
+    if (searchParams.get(`${prefix}.reportId`) !== null) return true;
     // View
-    if (queryParams[`${prefix}.view`] !== undefined) return true;
+    if (searchParams.get(`${prefix}.view`) !== null) return true;
     // Search Filters
-    if (queryParams[`${prefix}.q`] !== undefined) return true;
+    if (searchParams.get(`${prefix}.q`) !== null) return true;
     // Column Filters
-    if (Filter.getFiltersFromParameters(queryParams, prefix).length > 0) return true;
+    if (Filter.getFiltersFromParameters(getQueryParams(searchParams), prefix).length > 0) return true;
     // Sorts
-    if (queryParams[`${prefix}.sort`] !== undefined) return true;
+    if (searchParams.get(`${prefix}.sort`) !== null) return true;
     // Page offset
-    if (queryParams[`${prefix}.p`] !== undefined) return true;
+    if (searchParams.get(`${prefix}.p`) !== null) return true;
     // Page size
-    return queryParams[`${prefix}.pageSize`] !== undefined;
+    return searchParams.get(`${prefix}.pageSize`) !== null;
 }
 
 /**
@@ -1098,23 +1099,23 @@ export class QueryModel {
 
     /**
      * Returns the model attributes given a set of queryParams from the URL. Used for URL Binding.
-     * @param queryParams: The query attribute from a ReactRouter Location object.
-     * @param useExistingValues: Set to true if you want to use the values on the model as the default values. Typically
-     * this should be false, because you want to treat the URL as the single source of truth, but when we initialize
-     * models we may programmatically want to set an initial value (e.g. a default sort).
+     * @param searchParams: The URLSearchParams from the react-router useSearchParams hook
+     * @param useExistingValues: Set to true if you want to use the values on the model as the default values.
+     * Typically, this should be false, because you want to treat the URL as the single source of truth, but when we
+     * initialize models we may programmatically want to set an initial value (e.g. a default sort).
      */
-    attributesForURLQueryParams(queryParams: Record<string, string>, useExistingValues = false): QueryModelURLState {
+    attributesForURLQueryParams(searchParams: URLSearchParams, useExistingValues = false): QueryModelURLState {
         const prefix = this.urlPrefix;
-        const viewName = queryParams[`${prefix}.view`] ?? undefined;
-        const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]) ?? [];
-        const columnFilters = Filter.getFiltersFromParameters(queryParams, prefix);
+        const viewName = searchParams.get(`${prefix}.view`) ?? undefined;
+        const searchFilters = searchFiltersFromString(searchParams.get(`${prefix}.q`)) ?? [];
+        const columnFilters = Filter.getFiltersFromParameters(getQueryParams(searchParams), prefix);
         let filterArray = columnFilters.concat(searchFilters);
-        let maxRows = parseInt(queryParams[`${prefix}.pageSize`]);
+        let maxRows = parseInt(searchParams.get(`${prefix}.pageSize`), 10);
         if (isNaN(maxRows)) maxRows = DEFAULT_MAX_ROWS;
-        let offset = offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? DEFAULT_OFFSET;
+        let offset = offsetFromString(this.maxRows, searchParams.get(`${prefix}.p`)) ?? DEFAULT_OFFSET;
         let schemaQuery = new SchemaQuery(this.schemaName, this.queryName, viewName);
-        let selectedReportId = queryParams[`${prefix}.reportId`] ?? undefined;
-        let sorts = querySortsFromString(queryParams[`${prefix}.sort`]) ?? [];
+        let selectedReportId = searchParams.get(`${prefix}.reportId`) ?? undefined;
+        let sorts = querySortsFromString(searchParams.get(`${prefix}.sort`)) ?? [];
 
         // If useExistingValues is true we'll assume any value not present on the URL can be overridden by the current
         // model value. This behavior is really only wanted when we are initializing the model.
@@ -1153,7 +1154,7 @@ export class QueryModel {
      * @param props
      */
     mutate(props: Partial<QueryModel>): QueryModel {
-        return produce(this, (draft: Draft<QueryModel>) => {
+        return produce<QueryModel>(this, draft => {
             Object.assign(draft, props);
         });
     }

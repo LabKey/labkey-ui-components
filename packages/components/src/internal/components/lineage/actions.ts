@@ -3,13 +3,14 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { createContext } from 'react';
-import { Draft, produce } from 'immer';
+import { produce } from 'immer';
 import { fromJS, Map, OrderedSet } from 'immutable';
 import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 
 import { SAMPLES_KEY } from '../../app/constants';
 
 import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
+import { QueryParams } from '../../util/URL';
 import { SCHEMAS } from '../../schemas';
 import { caseInsensitive } from '../../util/utils';
 import { AppURL } from '../../url/AppURL';
@@ -73,7 +74,7 @@ function applyLineageMetadata(
         const config = {
             ...applyItemMetadata(node, iconURLByLsid, urlResolver, lineage.seed === node.lsid),
             steps: node.steps.map(
-                produce((draft: Draft<LineageRunStep>) => {
+                produce<LineageRunStep>(draft => {
                     Object.assign(draft, applyItemMetadata(draft, iconURLByLsid, urlResolver));
                 })
             ),
@@ -110,7 +111,7 @@ function applyLineageIOMetadata(
     iconURLByLsid: Record<string /* LSID */, string>,
     urlResolver: LineageURLResolver
 ): LineageIOWithMetadata {
-    const _applyItem = produce((draft: Draft<LineageItemWithMetadata>) => {
+    const _applyItem = produce<LineageItemWithMetadata>(draft => {
         draft.iconProps = resolveIconAndShapeForNode(draft, iconURLByLsid[draft.lsid]);
         draft.links = urlResolver.resolveItem(draft);
     });
@@ -207,7 +208,7 @@ export function createGridModel(
     });
 }
 
-export function getPageNumberChangeURL(queryParams: Record<string, string>, seed: string, pageNumber: number): AppURL {
+export function getPageNumberChangeURL(queryParams: QueryParams, seed: string, pageNumber: number): AppURL {
     let url = AppURL.create('lineage');
 
     // use the seed lsid value from the param
@@ -215,7 +216,7 @@ export function getPageNumberChangeURL(queryParams: Record<string, string>, seed
 
     Object.keys(queryParams).map(key => {
         if (key !== 'p' && key !== 'seeds') {
-            url = url.addParam(key, queryParams[key]);
+            url = url.addParam(key, queryParams[key] as string);
         }
     });
 

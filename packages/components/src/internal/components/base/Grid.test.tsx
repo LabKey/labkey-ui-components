@@ -280,6 +280,10 @@ describe('Grid', () => {
 });
 
 describe('GridHeader', () => {
+    beforeAll(() => {
+        global.console.error = jest.fn();
+    });
+
     const DEFAULT_PROPS = {
         showHeader: true,
         columns: List.of(

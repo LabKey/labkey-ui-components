@@ -1,12 +1,11 @@
-import React, { ComponentType, PureComponent, ReactNode } from 'react';
+import React, { ComponentType, FC, PureComponent, ReactNode } from 'react';
 import { Filter } from '@labkey/api';
 // eslint cannot find Draft for some reason, but Intellij can.
 // eslint-disable-next-line import/named
 import { Draft, produce } from 'immer';
+import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 
-// eslint cannot find WithRouterProps for some reason, but Intellij can.
-// eslint-disable-next-line import/named
-import { withRouter, WithRouterProps } from 'react-router';
+import { getQueryParams } from '../../internal/util/URL';
 
 import { SchemaQuery } from '../SchemaQuery';
 import { QuerySort } from '../QuerySort';
@@ -25,6 +24,33 @@ import {
     QueryModel,
     saveSettingsToLocalStorage,
 } from './QueryModel';
+
+export interface SearchParamsProps {
+    searchParams: URLSearchParams;
+    setSearchParams: SetURLSearchParams;
+}
+
+type WithSearchParamsComponent<T> = ComponentType<T & SearchParamsProps>;
+
+const DEFAULT_SEARCH_PARAMS = new URLSearchParams();
+const DEFAULT_SET_SEARCH_PARAMS = () => {};
+
+export function withSearchParams<T>(Component: WithSearchParamsComponent<T>): ComponentType<T> {
+    const Wrapped: FC<T & SearchParamsProps> = (props: T) => {
+        let searchParams;
+        let setSearchParams;
+        try {
+            [searchParams, setSearchParams] = useSearchParams();
+        } catch (error) {
+            // We are not in a react router context, so we revert to injecting a default set of these props
+            searchParams = DEFAULT_SEARCH_PARAMS;
+            setSearchParams = DEFAULT_SET_SEARCH_PARAMS;
+        }
+        return <Component searchParams={searchParams} setSearchParams={setSearchParams} {...props} />;
+    };
+
+    return Wrapped;
+}
 
 export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
@@ -79,7 +105,7 @@ interface State {
 /**
  * Resets queryInfo state to initialized state. Use this when you need to load/reload QueryInfo.
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model: Draft<QueryModel> the model to reset queryInfo state on.
+ * @param model The model to reset queryInfo state on.
  */
 const resetQueryInfoState = (model: Draft<QueryModel>): void => {
     model.queryInfo = undefined;
@@ -90,7 +116,7 @@ const resetQueryInfoState = (model: Draft<QueryModel>): void => {
 /**
  * Resets totalCount state to initialized state. Use this when you need to load/reload QueryInfo.
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model: Draft<QueryModel> the model to reset queryInfo state on.
+ * @param model The model to reset queryInfo state on.
  */
 const resetTotalCountState = (model: Draft<QueryModel>): void => {
     model.rowCount = undefined;
@@ -101,7 +127,7 @@ const resetTotalCountState = (model: Draft<QueryModel>): void => {
 /**
  * Resets rows state to initialized state. Use this when you need to load/reload selections.
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model: Draft<QueryModel> the model to reset selection state on.
+ * @param model The model to reset selection state on.
  */
 const resetRowsState = (model: Draft<QueryModel>): void => {
     model.messages = undefined;
@@ -116,7 +142,7 @@ const resetRowsState = (model: Draft<QueryModel>): void => {
 /**
  * Resets selection state to initialized state. Use this when you need to load/reload selections.
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model: Draft<QueryModel> the model to reset selection state on.
+ * @param model The model to reset selection state on.
  */
 const resetSelectionState = (model: Draft<QueryModel>): void => {
     model.selections = undefined;
@@ -151,26 +177,25 @@ const paramsEqual = (oldParams, newParams): boolean => {
 
 /**
  * A wrapper for LabKey selectRows API. For in-depth documentation and examples see components/docs/QueryModel.md.
- * @param ComponentToWrap: A component that implements generic Props and InjectedQueryModels.
+ * @param ComponentToWrap A component that implements generic Props and InjectedQueryModels.
  * @returns A react ComponentType that implements generic Props and MakeQueryModels.
  */
 export function withQueryModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedQueryModels>
 ): ComponentType<Props & MakeQueryModels> {
-    type WrappedProps = Props & MakeQueryModels & WithRouterProps;
+    type WrappedProps = Props & MakeQueryModels & SearchParamsProps;
 
     const initModels = (props: WrappedProps): QueryModelMap => {
-        const { location, queryConfigs } = props;
+        const { searchParams, queryConfigs } = props;
         return Object.keys(queryConfigs).reduce((models, id) => {
             // We expect the key value for each QueryConfig to be the id. If a user were to mistakenly set the id
             // to something different on the QueryConfig then actions would break
             // e.g. actions.loadNextPage(model.id) would not work.
             let model = new QueryModel({ id, ...queryConfigs[id] });
-            const queryParams = location?.query;
-            const hasQueryParamSettings = locationHasQueryParamSettings(model.urlPrefix, queryParams);
+            const hasQueryParamSettings = locationHasQueryParamSettings(model.urlPrefix, searchParams);
 
             if (model.bindURL && hasQueryParamSettings) {
-                model = model.mutate(model.attributesForURLQueryParams(queryParams, true));
+                model = model.mutate(model.attributesForURLQueryParams(searchParams, true));
             } else if (model.useSavedSettings) {
                 const settings = getSettingsFromLocalStorage(id, model.containerPath);
                 if (settings !== undefined) {
@@ -247,8 +272,8 @@ export function withQueryModels<Props>(
         }
 
         /**
-         * componentDidUpdate only checks for changes to props.location so it can update models when there are changes
-         * to the URL (only for models with bindURL set to true).
+         * componentDidUpdate only checks for changes to props.searchParams so it can update models when there are
+         * changes to the URL (only for models with bindURL set to true).
          *
          * Currently, we do not listen for changes to props.queryConfigs. You may be tempted to try to diff queryConfigs
          * in the future and add/update/remove models as you see changes, but this introduces a bunch of other problems
@@ -266,20 +291,19 @@ export function withQueryModels<Props>(
          * changes.
          */
         componentDidUpdate(prevProps: Readonly<WrappedProps>): void {
-            const prevLoc = prevProps.location;
-            const currLoc = this.props.location;
+            const prevSearch = prevProps.searchParams;
+            const currSearch = this.props.searchParams;
 
-            if (prevLoc !== undefined && currLoc !== undefined && prevLoc !== currLoc) {
-                const query = currLoc.query;
+            if (prevSearch !== undefined && currSearch !== undefined && prevSearch !== currSearch) {
                 Object.values(this.state.queryModels)
                     .filter(model => model.bindURL)
                     .forEach(model => {
-                        const modelParamsFromURL = Object.keys(query).reduce((result, key) => {
+                        const modelParamsFromURL = {};
+                        for (const [key, value] of currSearch.entries()) {
                             if (key.startsWith(model.urlPrefix + '.')) {
-                                result[key] = query[key];
+                                modelParamsFromURL[key] = value;
                             }
-                            return result;
-                        }, {});
+                        }
 
                         // Issue 49019: Grid session filters/sorts/etc. are not applied as expected when model loads
                         // queryInfo from API instead of cache the additional render cycle from the query details API
@@ -300,37 +324,45 @@ export function withQueryModels<Props>(
         actions: Actions;
 
         bindURL = (id: string): void => {
-            const { router, location } = this.props;
+            const { setSearchParams } = this.props;
 
-            if (location === undefined) {
-                // This happens when we're rendering a component outside a router.
+            if (setSearchParams === DEFAULT_SET_SEARCH_PARAMS) {
+                // We're rendering a component outside a react-router context, so we can't bind to the URL
                 return;
             }
 
             const model = this.state.queryModels[id];
             const { urlPrefix, urlQueryParams } = model;
-            const newParams = { ...location.query };
 
-            Object.keys(newParams).forEach(key => {
-                if (key.startsWith(urlPrefix + '.')) {
-                    delete newParams[key];
-                }
-            });
-            Object.assign(newParams, urlQueryParams);
-
-            if (!paramsEqual(location.query, newParams)) {
-                router.replace({ ...location, query: newParams });
-            }
+            setSearchParams(
+                currentParams => {
+                    const queryParams = getQueryParams(currentParams);
+                    return Object.keys(queryParams).reduce(
+                        (result, key) => {
+                            // Only copy params that aren't related to the current model, we initialize the result with the
+                            // updated params below.
+                            if (!key.startsWith(urlPrefix + '.')) {
+                                result[key] = queryParams[key];
+                            }
+                            return result;
+                        },
+                        // QueryModel.urlQueryParams returns Record<string, string> but getQueryParams and setSearchParams
+                        // use Record<string, string | string[]
+                        urlQueryParams as Record<string, string | string[]>
+                    );
+                },
+                { replace: true }
+            );
         };
 
         updateModelFromURL = (id: string): void => {
-            const { query } = this.props.location;
+            const { searchParams } = this.props;
             let loadSelections = false;
 
             this.setState(
                 produce<State>(draft => {
                     const model = draft.queryModels[id];
-                    Object.assign(model, model.attributesForURLQueryParams(query));
+                    Object.assign(model, model.attributesForURLQueryParams(searchParams));
                     // If we have selections or previously attempted to load them we'll want to reload them when the
                     // model is updated from the URL because it can affect selections.
                     loadSelections = !!model.selections || !!model.selectionsError;
@@ -885,6 +917,7 @@ export function withQueryModels<Props>(
         };
 
         addModel = (queryConfig: QueryConfig, load = true, loadSelections = false): void => {
+            const { searchParams } = this.props;
             let id;
             this.setState(
                 produce<State>(draft => {
@@ -892,10 +925,8 @@ export function withQueryModels<Props>(
                     // QueryModel constructor if not set.
                     let queryModel = new QueryModel(queryConfig);
                     id = queryModel.id;
-                    if (queryModel.bindURL && this.props.location) {
-                        queryModel = queryModel.mutate(
-                            queryModel.attributesForURLQueryParams(this.props.location.query)
-                        );
+                    if (queryModel.bindURL && searchParams) {
+                        queryModel = queryModel.mutate(queryModel.attributesForURLQueryParams(searchParams));
                     }
                     draft.queryModels[queryModel.id] = queryModel;
                 }),
@@ -1059,5 +1090,5 @@ export function withQueryModels<Props>(
         useSavedSettings: false,
     };
 
-    return withRouter(ComponentWithQueryModels) as ComponentType<Props & MakeQueryModels>;
+    return withSearchParams(ComponentWithQueryModels) as ComponentType<Props & MakeQueryModels>;
 }

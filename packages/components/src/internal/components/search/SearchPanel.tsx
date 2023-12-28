@@ -136,6 +136,11 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
     );
 });
 
+// FIXME: This component should be moved into premium, the props should be refactored:
+//      - search prop should be removed, and it should be handled internally via react router hooks (setting search
+//      params via useSearchParams setter).
+//      - offset, pageSize, and searchTerm (q) can be taken directly off the URL via useSearchParams
+//      - searchMetadata is the only needed prop
 export const SearchPanel: FC<SearchPanelProps> = memo(props => {
     const { offset = 0, pageSize = SEARCH_PAGE_DEFAULT_SIZE, searchTerm, search, searchMetadata } = props;
     const [model, setModel] = useState<SearchResultsModel>(() => SearchResultsModel.create({ isLoading: true }));
@@ -155,6 +160,8 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
             SearchCategory.MaterialSource,
             SearchCategory.Notebook,
             SearchCategory.NotebookTemplate,
+            SearchCategory.StorageLocation,
+            SearchCategory.TerminalStorageLocation,
             SearchCategory.WorkflowJob,
         ];
 
@@ -200,6 +207,9 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
 
     const onPage = useCallback(
         direction => {
+            // FIXME: offset is a string because it comes from queryParams and we aren't properly parsing it upstream
+            //  so the comment below is inaccurate. We should fix the code so it's always a number.
+
             // because JS is dumb and treats offset as a string...
             const newOffset = direction * pageSize + offset * 1;
             search({ q: searchTerm, pageSize, offset: newOffset });

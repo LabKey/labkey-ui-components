@@ -286,6 +286,10 @@ export class EntityIdCreationModel extends Record({
         return this.targetEntityType && this.targetEntityType.value !== undefined;
     }
 
+    getTargetEntityTypeId(): number {
+        return this.hasTargetEntityType() ? this.targetEntityType.rowId : undefined;
+    }
+
     getTargetEntityTypeValue(): string {
         return this.hasTargetEntityType() ? this.targetEntityType.value : undefined;
     }
@@ -469,7 +473,7 @@ export type ProjectConfigurableDataType = 'SampleType' | 'DataClass' | 'AssayDes
  *     instanceSchemaName: string; // (e.g., samples) Name of the schema associated with an individual instance that can be used in conjunction with a name returned from the typeListingSchemaQuery listing
  *     isFromSharedContainer?: boolean; // if the data type is defined in /Shared project
  *     listingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available
- *     operationConfirmationActionName: string; // action in moveControllerName used to get the confirmation data for performing operations on entities
+ *     operationConfirmationActionName: string; // action in operationConfirmationControllerName used to get the confirmation data for performing operations on entities
  *     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
  *     projectConfigurableDataType?: string; // the DataTypeExclusion type
  */
@@ -499,8 +503,6 @@ export interface EntityDataType {
     isFromSharedContainer?: boolean;
     labelColorCol?: string;
     listingSchemaQuery: SchemaQuery;
-    moveActionName?: string;
-    moveControllerName?: string;
     nounAsParentPlural: string;
     nounAsParentSingular: string;
     nounPlural: string;
@@ -586,12 +588,6 @@ export interface IParentAlias {
     ignoreSelectError: boolean;
     isDupe?: boolean;
     parentValue: IParentOption;
-}
-
-export interface MoveEntitiesResult {
-    containerPath: string;
-    success: boolean;
-    updateCounts: Record<string, number>;
 }
 
 export interface DataTypeEntity {

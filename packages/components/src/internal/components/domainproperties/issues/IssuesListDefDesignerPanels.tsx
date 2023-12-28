@@ -1,6 +1,6 @@
 import React from 'react';
 import { List } from 'immutable';
-import { Draft, produce } from 'immer';
+import { produce } from 'immer';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 import { getDomainPanelStatus, saveDomain } from '../actions';
@@ -47,7 +47,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
         const { onChange } = this.props;
 
         this.setState(
-            produce((draft: Draft<State>) => {
+            produce<State>(draft => {
                 draft.model = model;
             }),
             () => {
@@ -62,7 +62,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
         const { onChange } = this.props;
 
         this.setState(
-            produce((draft: Draft<State>) => {
+            produce<State>(draft => {
                 draft.model.domain = domain;
             }),
             () => {
@@ -87,7 +87,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
             .catch(response => {
                 setSubmitting(false, () => {
                     this.setState(
-                        produce((draft: Draft<State>) => {
+                        produce<State>(draft => {
                             draft.model.exception = response.exception;
                         })
                     );
@@ -111,7 +111,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
 
                 setSubmitting(false, () => {
                     this.setState(
-                        produce((draft: Draft<State>) => {
+                        produce<State>(draft => {
                             if (exception) {
                                 draft.model.exception = exception;
                             } else {
@@ -128,7 +128,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
         const { setSubmitting } = this.props;
 
         this.setState(
-            produce((draft: Draft<State>) => {
+            produce<State>(draft => {
                 draft.model.exception = undefined;
                 if (response) {
                     draft.model.domain = response;

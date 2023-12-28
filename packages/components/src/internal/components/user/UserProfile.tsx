@@ -153,7 +153,7 @@ export class UserProfile extends PureComponent<Props, State> {
             this.setState(() => ({ reloadRequired: true }));
         }
 
-        return api.security.updateUserDetails(SCHEMAS.CORE_TABLES.USERS, getUserDetailsRowData(user, data, avatar));
+        return api.security.updateUserDetails(getUserDetailsRowData(user, data, avatar));
     };
 
     onSuccess = (result: {}): void => {

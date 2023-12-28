@@ -2,7 +2,7 @@ import React from 'react';
 import { List, Map } from 'immutable';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
-import { createMockWithRouteLeave, createMockWithRouterProps } from '../../mockUtils';
+import { createMockWithRouteLeave } from '../../mockUtils';
 import { getSecurityTestAPIWrapper, SecurityAPIWrapper } from '../security/APIWrapper';
 import { AppContext } from '../../AppContext';
 import { getTestAPIWrapper } from '../../APIWrapper';
@@ -27,7 +27,6 @@ describe('GroupManagementPage', () => {
             roles: List(),
             rolesByUniqueName: Map(),
             ...createMockWithRouteLeave(jest.fn),
-            ...createMockWithRouterProps(jest.fn),
         };
     }
 
@@ -40,7 +39,7 @@ describe('GroupManagementPage', () => {
                     fetchPolicy: jest.fn().mockResolvedValue(TEST_POLICY),
                     fetchGroups: jest.fn().mockResolvedValue([]),
                     getGroupMemberships: jest.fn().mockResolvedValue([]),
-                    getAuditLogData: jest.fn().mockResolvedValue('Modified a day ago'),
+                    getAuditLogDate: jest.fn().mockResolvedValue('Modified a day ago'),
                     ...overrides,
                 }),
             }),

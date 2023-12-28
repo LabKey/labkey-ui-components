@@ -480,6 +480,10 @@ describe('fillColumnCells', () => {
         lookup: undefined,
     });
 
+    beforeAll(() => {
+        global.console.warn = jest.fn();
+    });
+
     test('single initialSelection', async () => {
         const { cellValues } = await fillColumnCells(
             editorModel,

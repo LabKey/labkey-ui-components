@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 import { List, Map } from 'immutable';
-import { InjectedRouter } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { FormButtons } from '../../FormButtons';
 
@@ -12,27 +12,23 @@ import { UserDetailsPanel } from '../user/UserDetailsPanel';
 import { GroupDetailsPanel } from '../permissions/GroupDetailsPanel';
 
 import { naturalSort } from '../../../public/sort';
-import { Location } from '../../util/URL';
 
 import { useServerContext } from '../base/ServerContext';
 
 import { Group } from './Group';
-import { GroupMembership, MemberType } from './models';
+import { Groups, MemberType } from './models';
 
 export interface GroupAssignmentsProps {
     addMembers: (groupId: string, principalId: number, principalName: string, principalType: string) => void;
     createGroup: (name: string) => void;
     deleteGroup: (id: string) => void;
     errorMsg: string;
-    getAuditLogData: (columns: string, filterCol: string, filterVal: string | number) => Promise<string>;
     getIsDirty: () => boolean;
-    groupMembership: GroupMembership;
-    location: Location;
+    groupMembership: Groups;
     policy: SecurityPolicy;
     principalsById: Map<number, Principal>;
     removeMember: (groupId: string, memberId: number) => void;
     rolesByUniqueName: Map<string, SecurityRole>;
-    router: InjectedRouter;
     save: () => Promise<void>;
     setErrorMsg: (e: string) => void;
     setIsDirty: (isDirty: boolean) => void;
@@ -43,10 +39,8 @@ export interface GroupAssignmentsProps {
 export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
     const {
         errorMsg,
-        getAuditLogData,
         getIsDirty,
         groupMembership,
-        location,
         policy,
         rolesByUniqueName,
         principalsById,
@@ -58,18 +52,19 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
         save,
         setErrorMsg,
         setIsDirty,
-        router,
     } = props;
     const { user } = useServerContext();
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [selectedPrincipalId, setSelectedPrincipalId] = useState<number>();
     const [newGroupName, setNewGroupName] = useState<string>('');
-    const initExpandedGroup = location.query.expand;
+    const navigate = useNavigate();
+    const [searchParams, _] = useSearchParams();
+    const initExpandedGroup = searchParams.get('expand');
 
     const onCancel = useCallback(() => {
         setIsDirty(false);
-        router.goBack();
-    }, [router, setIsDirty]);
+        navigate(-1);
+    }, [navigate, setIsDirty]);
 
     const onSave = useCallback(async () => {
         setSubmitting(true);
@@ -189,11 +184,10 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                         <div className="group-assignment-panel__footer">{errorMsg && <Alert>{errorMsg}</Alert>}</div>
 
                         <FormButtons>
-                            {router && (
-                                <button className="btn btn-default" onClick={onCancel} type="button">
-                                    Cancel
-                                </button>
-                            )}
+                            <button className="btn btn-default" onClick={onCancel} type="button">
+                                Cancel
+                            </button>
+
                             <button
                                 className="btn btn-success alert-button group-management-save-btn"
                                 disabled={submitting || !getIsDirty()}
@@ -215,7 +209,6 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                         rolesByUniqueName={rolesByUniqueName}
                         members={groupMembership[selectedPrincipal?.userId]?.members}
                         isSiteGroup={groupMembership[selectedPrincipal?.userId]?.type === MemberType.siteGroup}
-                        getAuditLogData={getAuditLogData}
                         displayCounts={userIsAppAdmin}
                     />
                 ) : (

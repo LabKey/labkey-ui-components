@@ -2,7 +2,6 @@ import React from 'react';
 import { fromJS, List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 import PanelBody from 'react-bootstrap/lib/PanelBody';
-import { createMockWithRouterProps } from '../../mockUtils';
 
 import { Principal, SecurityPolicy } from '../permissions/models';
 import policyJSON from '../../../test/data/security-getPolicy.json';
@@ -21,7 +20,7 @@ import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 import { MemberType } from './models';
 import { GroupAssignments } from './GroupAssignments';
 
-describe('<GroupAssignments/>', () => {
+describe('GroupAssignments', () => {
     const GROUP_MEMBERSHIP = {
         '1035': {
             groupName: 'NewSiteGroup',
@@ -115,8 +114,6 @@ describe('<GroupAssignments/>', () => {
         save: jest.fn(),
         setErrorMsg: jest.fn(),
         setIsDirty: jest.fn(),
-        getAuditLogData: jest.fn(),
-        ...createMockWithRouterProps(jest.fn),
     };
 
     test('without members', async () => {

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 
 import { useServerContext } from '../base/ServerContext';
 import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
+import { useAccountSubNav } from '../user/AccountSubNav';
 import { useUserProperties } from '../user/hooks';
 import { Page } from '../base/Page';
 import { UserDetailHeader } from '../user/UserDetailHeader';
@@ -16,6 +17,7 @@ const TITLE = 'User Settings';
 
 export const AccountSettingsPage: FC = () => {
     const { container, moduleContext, user } = useServerContext();
+    useAccountSubNav();
     const userProperties = useUserProperties(user);
     const { NotebookNotificationSettingsComponent, WorkflowNotificationSettingsComponent } = useAdminAppContext();
 

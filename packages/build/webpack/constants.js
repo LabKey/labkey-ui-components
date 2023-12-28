@@ -136,7 +136,7 @@ const BABEL_DEV_CONFIG = {
     ...BABEL_CONFIG,
     options: {
         ...BABEL_CONFIG.options,
-        plugins: ['react-hot-loader/babel'].concat(BABEL_PLUGINS),
+        plugins: [require.resolve('react-refresh/babel')].concat(BABEL_PLUGINS),
     }
 };
 
@@ -345,6 +345,7 @@ module.exports = {
                         mode: 'dev',
                         port: watchPort,
                         name: app.name,
+                        nonce: '<%=scriptNonce%>',
                         filename: '../../views/gen/' + app.name + 'Dev.html',
                         template: 'node_modules/@labkey/build/webpack/app.template.html',
                         minify: minifyTemplateOptions

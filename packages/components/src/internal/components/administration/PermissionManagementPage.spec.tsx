@@ -19,11 +19,11 @@ import { Principal, SecurityPolicy } from '../permissions/models';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 
 import { PermissionAssignments } from '../permissions/PermissionAssignments';
-import { createMockWithRouteLeave, createMockWithRouterProps } from '../../mockUtils';
+import { createMockWithRouteLeave } from '../../mockUtils';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 
 import { MemberType } from './models';
-import { PermissionManagementPage, PermissionManagementPageImpl } from './PermissionManagementPage';
+import { PermissionManagementPageImpl } from './PermissionManagementPage';
 
 const USER = Principal.createFromSelectRow(
     fromJS({
@@ -51,7 +51,6 @@ describe('PermissionManagementPage', () => {
         return {
             roles: List(),
             ...createMockWithRouteLeave(jest.fn),
-            ...createMockWithRouterProps(jest.fn),
         };
     }
 

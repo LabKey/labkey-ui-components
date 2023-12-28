@@ -31,6 +31,7 @@ import {
     VIEW_NOT_FOUND_EXCEPTION_CLASS,
 } from './constants';
 import { DataViewInfo } from './DataViewInfo';
+import { getQueryParams } from './util/URL';
 
 import { handleRequestFailure } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
@@ -55,7 +56,7 @@ export function selectAll(
                 container: containerPath,
             }),
             method: 'POST',
-            params: getQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter),
+            params: buildQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
@@ -67,7 +68,7 @@ export function selectAll(
     });
 }
 
-export function getGridIdsFromTransactionId(transactionAuditId: number, dataType: string): Promise<string[]> {
+export function getGridIdsFromTransactionId(transactionAuditId: number | string, dataType: string): Promise<string[]> {
     if (!transactionAuditId) {
         return;
     }
@@ -96,13 +97,12 @@ export function getGridIdsFromTransactionId(transactionAuditId: number, dataType
 export async function selectGridIdsFromTransactionId(
     gridIdPrefix: string,
     schemaQuery: SchemaQuery,
-    transactionAuditId: number,
+    transactionAuditId: number | string,
     dataType: string,
     actions: Actions
 ): Promise<string[]> {
-    if (!transactionAuditId) {
-        return;
-    }
+    if (!transactionAuditId) return undefined;
+
     const modelId = createGridModelId(gridIdPrefix, schemaQuery);
     const selected = await getGridIdsFromTransactionId(transactionAuditId, dataType);
     await actions.replaceSelections(modelId, selected);
@@ -110,12 +110,13 @@ export async function selectGridIdsFromTransactionId(
     return selected;
 }
 
+type SampleTypesFromTransactionIds = { rowIds: string[]; sampleTypes: string[] };
+
 export async function getSampleTypesFromTransactionIds(
-    transactionAuditId: number
-): Promise<{ rowIds: string[]; sampleTypes: string[] }> {
-    if (!transactionAuditId) {
-        return;
-    }
+    transactionAuditId: number | string
+): Promise<SampleTypesFromTransactionIds> {
+    if (!transactionAuditId) return undefined;
+
     const rowIds = await getGridIdsFromTransactionId(transactionAuditId, SAMPLES_KEY);
     const sampleTypes = await selectDistinctRows({
         schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
@@ -290,13 +291,13 @@ function getFilteredQueryParams(
     containerFilter?: Query.ContainerFilter
 ): Record<string, any> {
     if (schemaQuery && filterArray) {
-        return getQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter);
+        return buildQueryParams(key, schemaQuery, filterArray, queryParameters, containerPath, containerFilter);
     }
 
     return { key };
 }
 
-function getQueryParams(
+function buildQueryParams(
     key: string,
     schemaQuery: SchemaQuery,
     filterArray: Filter.IFilter[],
@@ -571,12 +572,12 @@ interface ISelectionResponse {
 }
 
 export async function getSelection(
-    location: any,
+    searchParams: URLSearchParams,
     schemaName?: string,
     queryName?: string
 ): Promise<ISelectionResponse> {
-    if (location?.query?.selectionKey) {
-        const { selectionKey } = location.query;
+    const selectionKey = searchParams.get('selectionKey');
+    if (selectionKey) {
         let { keys, schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
 
         if (keys !== undefined) {
@@ -595,7 +596,8 @@ export async function getSelection(
             );
         }
 
-        const filters = Filter.getFiltersFromParameters(Object.assign({}, location.query));
+        const params = getQueryParams(searchParams);
+        const filters = Filter.getFiltersFromParameters(params);
         const response = await getSelected(selectionKey, false, schemaQuery, filters);
 
         return { resolved: true, schemaQuery, selected: response.selected };

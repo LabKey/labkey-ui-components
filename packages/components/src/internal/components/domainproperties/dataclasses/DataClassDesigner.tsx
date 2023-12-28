@@ -1,5 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { Draft, produce } from 'immer';
+import { produce } from 'immer';
 import { List, Map } from 'immutable';
 
 import { Domain, getServerContext } from '@labkey/api';
@@ -125,7 +125,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
             );
 
             this.setState(
-                produce((draft: Draft<State>) => {
+                produce<State>(draft => {
                     draft.model.parentAliases = parentAliases;
                     draft.parentOptions = parentOptions;
                 })
@@ -137,7 +137,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
 
             if (response.prefix) {
                 this.setState(
-                    produce((draft: Draft<State>) => {
+                    produce<State>(draft => {
                         draft.model.nameExpression =
                             response.prefix + (draft.model.nameExpression ? draft.model.nameExpression : '');
                     })
@@ -283,7 +283,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
 
     saveModel = (modelOrProps: DataClassModel | Partial<DataClassModelConfig>, callback?: () => void): void => {
         this.setState(
-            produce((draft: Draft<State>) => {
+            produce<State>(draft => {
                 if (modelOrProps instanceof DataClassModel) {
                     draft.model = modelOrProps;
                 } else {

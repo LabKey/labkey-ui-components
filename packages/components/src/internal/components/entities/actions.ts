@@ -1,4 +1,4 @@
-import { ActionURL, Ajax, AuditBehaviorTypes, Filter, getServerContext, Query, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
 import { List, Map } from 'immutable';
 
 import { getSelectedData, getSelected, setSnapshotSelections } from '../../actions';
@@ -19,8 +19,6 @@ import { SCHEMAS } from '../../schemas';
 import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
 import { ViewInfo } from '../../ViewInfo';
-
-import { Container } from '../base/models/Container';
 
 import { getProjectDataExclusion, hasModule } from '../../app/utils';
 
@@ -51,7 +49,6 @@ import {
     IEntityTypeOption,
     IParentAlias,
     IParentOption,
-    MoveEntitiesResult,
     OperationConfirmationData,
     ProjectConfigurableDataType,
     RemappedKeyValues,
@@ -123,7 +120,9 @@ export function getDeleteConfirmationData(
             ? {
                   dataOperation: DataOperation.Delete,
               }
-            : isAssayDesignEntity(dataType) ? { dataOperation: AssayRunOperation.Delete } : undefined
+            : isAssayDesignEntity(dataType)
+            ? { dataOperation: AssayRunOperation.Delete }
+            : undefined
     );
 }
 
@@ -297,9 +296,8 @@ function resolveEntityParentTypeFromIds(
     // The transformation done here makes the entities compatible with the editable grid
     let data: DisplayObject[] = response.rows
         .map(row => extractEntityTypeOptionFromRow(row))
-        .map(({ label, rowId }) => ({ displayValue: label, value: rowId }))
-    if (orderedRowIds?.length > 1)
-        data = data.sort(_getEntitySort(orderedRowIds));
+        .map(({ label, rowId }) => ({ displayValue: label, value: rowId }));
+    if (orderedRowIds?.length > 1) data = data.sort(_getEntitySort(orderedRowIds));
 
     return List<EntityParentType>([
         EntityParentType.create({
@@ -576,14 +574,15 @@ export function handleEntityFileImport(
     useAsync: boolean,
     importParameters?: Record<string, any>,
     importFileController?: string,
-    saveToPipeline?: boolean
+    saveToPipeline?: boolean,
+    containerPath?: string,
 ): Promise<any> {
     return new Promise((resolve, reject) => {
         return importData({
             schemaName: queryInfo?.schemaQuery.schemaName,
             queryName: queryInfo?.schemaQuery.queryName,
             file,
-            importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, null, {
+            importUrl: ActionURL.buildURL(importFileController ?? 'experiment', importAction, containerPath, {
                 ...importParameters,
             }),
             importLookupByAlternateKey: true,
@@ -811,51 +810,42 @@ export function getMoveConfirmationData(
             ? {
                   dataOperation: DataOperation.Move,
               }
-            :  isAssayDesignEntity(dataType) ? { dataOperation: AssayRunOperation.Move } : undefined
+            : isAssayDesignEntity(dataType)
+            ? { dataOperation: AssayRunOperation.Move }
+            : undefined
     );
 }
 
-export function moveEntities(
-    sourceContainer: Container,
-    targetContainer: string,
-    entityDataType: EntityDataType,
-    rowIds?: number[],
-    selectionKey?: string,
-    useSnapshotSelection?: boolean,
-    userComment?: string
-): Promise<MoveEntitiesResult> {
+export interface MoveEntitiesOptions extends Omit<Query.MoveRowsOptions, 'rows' | 'success' | 'failure' | 'scope'> {
+    entityDataType: EntityDataType;
+    rowIds?: number[];
+}
+
+export function moveEntities(options: MoveEntitiesOptions): Promise<Query.MoveRowsResponse> {
     return new Promise((resolve, reject) => {
-        const params = {
-            auditBehavior: AuditBehaviorTypes.DETAILED,
-            targetContainer,
-            userComment,
-        };
+        const { entityDataType, rowIds, ...rest } = options;
+        const params = Object.assign({}, rest);
         if (rowIds) {
-            params['rowIds'] = rowIds;
-        }
-        if (selectionKey) {
-            params['dataRegionSelectionKey'] = selectionKey;
-            params['useSnapshotSelection'] = useSnapshotSelection;
+            params['rows'] = rowIds.reduce((prev, curr) => {
+                prev.push({ rowId: curr });
+                return prev;
+            }, []);
         }
 
-        return Ajax.request({
-            url: buildURL(entityDataType.moveControllerName, entityDataType.moveActionName, undefined, {
-                container: sourceContainer?.path,
-            }),
-            method: 'POST',
-            params,
-            success: Utils.getCallbackWrapper(response => {
+        Query.moveRows({
+            ...params,
+            success: (response: Query.MoveRowsResponse) => {
                 if (response.success) {
                     resolve(response);
                 } else {
                     console.error('Error moving ' + entityDataType.nounPlural, response);
                     reject(response?.error ?? 'Unknown error moving ' + entityDataType.nounPlural + '.');
                 }
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error('Error moving ' + entityDataType.nounPlural, response);
-                reject(response?.exception ?? 'Unknown error moving ' + entityDataType.nounPlural + '.');
-            }),
+            },
+            failure: reason => {
+                console.error('Error moving ' + entityDataType.nounPlural, reason);
+                reject(reason?.exception ?? 'Unknown error moving ' + entityDataType.nounPlural + '.');
+            },
         });
     });
 }

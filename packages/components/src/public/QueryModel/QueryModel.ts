@@ -1220,3 +1220,7 @@ export function saveSettingsToLocalStorage(model: QueryModel): void {
     // a single model.
     localStorage.setItem(localStorageKey(model.id, model.containerPath), JSON.stringify(settings));
 }
+
+export function removeSettingsFromLocalStorage(model: QueryModel): void {
+    localStorage.removeItem(localStorageKey(model.id, model.containerPath));
+}

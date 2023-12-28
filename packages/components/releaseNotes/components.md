@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.2.2
+*Released*: 27 December 2023
+- Bump @labkey/build
+- Replace Immer `Draft<Type>` with `produce<Type>` as the former declaration pattern can cause compilation problems.
+
 ### version 3.2.1
 *Released*: 27 December 2023
 - Support cross-folder sample import

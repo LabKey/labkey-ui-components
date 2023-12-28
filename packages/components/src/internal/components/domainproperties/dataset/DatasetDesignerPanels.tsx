@@ -20,7 +20,7 @@ import { List } from 'immutable';
 
 import { Domain, getServerContext } from '@labkey/api';
 
-import { Draft, produce } from 'immer';
+import { produce } from 'immer';
 
 import { getDefaultAPIWrapper } from '../../../APIWrapper';
 import { DomainPropertiesAPIWrapper } from '../APIWrapper';
@@ -113,7 +113,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     .toList(),
             }) as DomainDesign;
 
-            const updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
+            const updatedModel = produce<DatasetModel>(model, draft => {
                 draft.domain = updatedDomain;
             });
 
@@ -159,14 +159,14 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         if (file && (this._participantId || this._sequenceNum)) {
             const error = this.checkFieldsInColumnMapping(model);
             if (model.exception !== error) {
-                updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
+                updatedModel = produce<DatasetModel>(model, draft => {
                     draft.exception = error;
                 });
             }
         }
 
         if (!model.hasValidAdditionalKey() && model.exception !== ADDITIONAL_KEY_ERROR) {
-            updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
+            updatedModel = produce<DatasetModel>(model, draft => {
                 draft.exception = ADDITIONAL_KEY_ERROR;
             });
         }
@@ -192,7 +192,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
         if (shouldImportData && (!this._participantId || missingRequiredTimepointMapping)) {
             this.setState(
-                produce((draft: Draft<State>) => {
+                produce<State>(draft => {
                     draft.model.exception =
                         'You must select a column mapping field for ' +
                         getStudySubjectProp('nounPlural') +
@@ -218,7 +218,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         const { keyPropertyIndex, visitDatePropertyIndex } = this.state;
 
         this.setState(
-            produce((draft: Draft<State>) => {
+            produce<State>(draft => {
                 draft.model.domain = domain;
 
                 // if we are back to the no fields state, reset the file related items
@@ -314,7 +314,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         }) as DomainDesign;
 
         this.setState(
-            produce((draft: Draft<State>) => {
+            produce<State>(draft => {
                 draft.model.domain = updatedDomain;
                 draft.model.exception = this.checkFieldsInColumnMapping(draft.model);
             })
@@ -347,7 +347,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             queryName: savedModel.name,
             failure: error => {
                 this.setState(
-                    produce((draft: Draft<State>) => {
+                    produce<State>(draft => {
                         draft.model.exception = error;
                         draft.savedModel = undefined;
                         draft.importError = undefined;
@@ -356,7 +356,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             },
             success: () => {
                 this.setState(
-                    produce((draft: Draft<State>) => {
+                    produce<State>(draft => {
                         draft.savedModel = undefined;
                         draft.importError = undefined;
                     })
@@ -435,13 +435,13 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         })
             .then(response => {
                 this.setState(
-                    produce((draftState: Draft<State>) => {
+                    produce<State>(draftState => {
                         draftState.keyPropertyIndex = keyPropIndex;
                         draftState.visitDatePropertyIndex = visitPropIndex;
                         draftState.model.exception = undefined;
 
                         // the savedModel will be used for dropping the domain on file import failure or for onComplete
-                        draftState.savedModel = produce(draftState.model, (draftModel: Draft<DatasetModel>) => {
+                        draftState.savedModel = produce<DatasetModel>(draftState.model, draftModel => {
                             draftModel.domain = response;
                         });
                     }),
@@ -462,7 +462,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
                 setSubmitting(false, () => {
                     this.setState(
-                        produce((draft: Draft<State>) => {
+                        produce<State>(draft => {
                             if (exception) {
                                 draft.model.exception = exception;
                             } else {

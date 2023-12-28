@@ -3,8 +3,9 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, PureComponent, ReactNode, useMemo } from 'react';
-import { Draft, produce } from 'immer';
+import { produce } from 'immer';
 import { useSearchParams } from 'react-router-dom';
+
 import { Page } from '../../base/Page';
 import { PageHeader } from '../../base/PageHeader';
 
@@ -33,7 +34,7 @@ class LineageGridImpl extends PureComponent<LineageGridProps, LineageGridState> 
         const { distance, lineage, members, pageNumber } = nextProps;
 
         return {
-            model: produce(prevState.model, (draft: Draft<LineageGridModel>) => {
+            model: produce<LineageGridModel>(prevState.model, draft => {
                 if (lineage?.error) {
                     draft.isError = true;
                     draft.isLoaded = false;

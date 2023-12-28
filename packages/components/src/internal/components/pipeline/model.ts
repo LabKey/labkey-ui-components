@@ -1,4 +1,4 @@
-import { Draft, immerable, produce } from 'immer';
+import { immerable, produce } from 'immer';
 
 export interface PipelineLogEntry {
     dateTime: string;
@@ -45,7 +45,7 @@ export class PipelineStatusDetailModel {
     }
 
     mutate(props: Partial<PipelineStatusDetailModel>): PipelineStatusDetailModel {
-        return produce(this, (draft: Draft<PipelineStatusDetailModel>) => {
+        return produce<PipelineStatusDetailModel>(this, draft => {
             Object.assign(draft, props);
         });
     }

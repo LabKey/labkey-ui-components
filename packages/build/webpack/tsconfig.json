@@ -10,7 +10,7 @@
     // compile times
     "sourceMap": true,
     "target": "es6",
-    "lib": ["es2017", "dom"],
+    "lib": ["es2019", "dom", "dom.iterable"],
     "types": ["jest"],
   }
 }

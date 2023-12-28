@@ -1,4 +1,4 @@
-import { Draft, immerable, produce } from 'immer';
+import { immerable, produce } from 'immer';
 
 import { Filter } from '@labkey/api';
 
@@ -63,7 +63,7 @@ export class Picklist {
     }
 
     mutate(props: Partial<Picklist>): Picklist {
-        return produce(this, (draft: Draft<Picklist>) => {
+        return produce<Picklist>(this, draft => {
             Object.assign(draft, props);
         });
     }

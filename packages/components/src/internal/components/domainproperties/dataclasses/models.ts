@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Draft, immerable, produce } from 'immer';
+import { immerable, produce } from 'immer';
 import { Map, fromJS, OrderedMap } from 'immutable';
 
 import { DomainDesign, IDomainField, SystemField } from '../models';
@@ -71,7 +71,7 @@ export class DataClassModel implements DataClassModelConfig {
 
         const model = new DataClassModel({ ...(raw.options ? raw.options : raw), domain });
 
-        return produce(model, (draft: Draft<DataClassModel>) => {
+        return produce<DataClassModel>(model, draft => {
             if (raw.options && model.category === null) {
                 draft.category = undefined;
             }

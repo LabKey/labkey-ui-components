@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { createContext } from 'react';
-import { Draft, produce } from 'immer';
+import { produce } from 'immer';
 import { fromJS, Map, OrderedSet } from 'immutable';
 import { Experiment, Filter, getServerContext, Query } from '@labkey/api';
 
@@ -74,7 +74,7 @@ function applyLineageMetadata(
         const config = {
             ...applyItemMetadata(node, iconURLByLsid, urlResolver, lineage.seed === node.lsid),
             steps: node.steps.map(
-                produce((draft: Draft<LineageRunStep>) => {
+                produce<LineageRunStep>(draft => {
                     Object.assign(draft, applyItemMetadata(draft, iconURLByLsid, urlResolver));
                 })
             ),
@@ -111,7 +111,7 @@ function applyLineageIOMetadata(
     iconURLByLsid: Record<string /* LSID */, string>,
     urlResolver: LineageURLResolver
 ): LineageIOWithMetadata {
-    const _applyItem = produce((draft: Draft<LineageItemWithMetadata>) => {
+    const _applyItem = produce<LineageItemWithMetadata>(draft => {
         draft.iconProps = resolveIconAndShapeForNode(draft, iconURLByLsid[draft.lsid]);
         draft.links = urlResolver.resolveItem(draft);
     });

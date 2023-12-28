@@ -1,9 +1,10 @@
-import React, { PureComponent, } from 'react';
-import { Treebeard, decorators, TreeTheme, animations, } from 'react-treebeard';
-import { Alert } from 'react-bootstrap';
+import React, { PureComponent } from 'react';
+import { Treebeard, decorators, TreeTheme, animations } from 'react-treebeard';
 import { List } from 'immutable';
 
+import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { Header } from './FileTreeHeader';
 
 const fileTree_color = '#333'; // $text-color
@@ -205,8 +206,8 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     }
 
     renderHeaderDecorator = props => {
-        const { allowMultiSelect, useFileIconCls, emptyDirectoryText, showNodeIcon, headerDecorator, } = this.props;
-        const {node} = props;
+        const { allowMultiSelect, useFileIconCls, emptyDirectoryText, showNodeIcon, headerDecorator } = this.props;
+        const { node } = props;
         const { checked } = this.state;
         const isLoading = nodeIsLoading(node.id);
         const isEmpty = nodeIsEmpty(node.id);
@@ -480,7 +481,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                 {showLoading ? (
                     <LoadingSpinner />
                 ) : error ? (
-                    <Alert bsStyle="danger">{error}</Alert>
+                    <Alert>{error}</Alert>
                 ) : (
                     <Treebeard
                         animations={showAnimations ? animations : false}

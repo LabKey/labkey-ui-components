@@ -16,7 +16,7 @@
 import React from 'react';
 import { Record } from 'immutable';
 
-import { Draft, immerable, produce } from 'immer';
+import { immerable, produce } from 'immer';
 
 import { generateId } from '../../util/utils';
 
@@ -109,7 +109,7 @@ export class ServerActivityData {
     }
 
     mutate(props: Partial<ServerActivityData>): ServerActivityData {
-        return produce(this, (draft: Draft<ServerActivityData>) => {
+        return produce<ServerActivityData>(this, draft => {
             Object.assign(draft, props);
         });
     }
@@ -180,7 +180,7 @@ export class ServerNotificationModel implements IServerNotificationModel {
     }
 
     mutate(props: Partial<ServerNotificationModel>): ServerNotificationModel {
-        return produce(this, (draft: Draft<ServerNotificationModel>) => {
+        return produce<ServerNotificationModel>(this, draft => {
             Object.assign(draft, props);
         });
     }

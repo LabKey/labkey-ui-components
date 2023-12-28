@@ -17,7 +17,7 @@
 import React from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { Draft, produce } from 'immer';
+import { produce } from 'immer';
 
 import { List } from 'immutable';
 
@@ -84,14 +84,14 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     onChange = (identifier, value): void => {
         const { model } = this.props;
 
-        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+        const newModel = produce<DatasetModel>(model, draft => {
             draft[identifier] = value;
         });
 
         this.updateValidStatus(newModel);
     };
 
-    onInputChange = (evt: any) => {
+    onInputChange = (evt: any): void => {
         const id = evt.target.id;
         let value = evt.target.value;
 
@@ -104,7 +104,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
 
     onCategoryChange = (_, category): void => {
         const { model } = this.props;
-        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+        const newModel = produce<DatasetModel>(model, draft => {
             draft.category = category ?? undefined;
         });
 
@@ -120,7 +120,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
             fields: this.getUpdatedFieldsWithoutDisablePhi(),
         }) as DomainDesign;
 
-        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+        const newModel = produce<DatasetModel>(model, draft => {
             draft.domain = updatedDomain;
             draft.useTimeKeyField = false;
             draft.keyPropertyManaged = false;
@@ -166,7 +166,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                 .toList(),
         }) as DomainDesign;
 
-        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+        const newModel = produce<DatasetModel>(model, draft => {
             draft.domain = updatedDomain;
             draft.useTimeKeyField = formValue === TIME_KEY_FIELD_KEY;
             draft.keyPropertyName = formValue;
@@ -185,7 +185,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
         const { model, onIndexChange, keyPropertyIndex } = this.props;
 
         let visitDatePropIndex;
-        const newModel = produce(model, (draft: Draft<DatasetModel>) => {
+        const newModel = produce<DatasetModel>(model, draft => {
             Object.assign(draft, model, advancedSettingsForm);
         });
 

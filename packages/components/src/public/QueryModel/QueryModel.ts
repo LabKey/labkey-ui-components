@@ -1,4 +1,4 @@
-import { Draft, immerable, produce } from 'immer';
+import { immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
@@ -1154,7 +1154,7 @@ export class QueryModel {
      * @param props
      */
     mutate(props: Partial<QueryModel>): QueryModel {
-        return produce(this, (draft: Draft<QueryModel>) => {
+        return produce<QueryModel>(this, draft => {
             Object.assign(draft, props);
         });
     }

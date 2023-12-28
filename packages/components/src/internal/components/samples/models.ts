@@ -1,5 +1,5 @@
 import { ComponentType } from 'react';
-import { Draft, immerable, produce } from 'immer';
+import { immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
@@ -176,7 +176,7 @@ export class SampleState {
     }
 
     mutate(props: Partial<SampleState>): SampleState {
-        return produce(this, (draft: Draft<SampleState>) => {
+        return produce<SampleState>(this, draft => {
             Object.assign(draft, props);
         });
     }

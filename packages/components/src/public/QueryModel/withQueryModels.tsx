@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, PureComponent, ReactNode, useMemo, useCallback } from 'react';
+import React, { ComponentType, FC, PureComponent, ReactNode } from 'react';
 import { Filter } from '@labkey/api';
 // eslint cannot find Draft for some reason, but Intellij can.
 // eslint-disable-next-line import/named
@@ -106,7 +106,7 @@ interface State {
 /**
  * Resets queryInfo state to initialized state. Use this when you need to load/reload QueryInfo.
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model: Draft<QueryModel> the model to reset queryInfo state on.
+ * @param model The model to reset queryInfo state on.
  */
 const resetQueryInfoState = (model: Draft<QueryModel>): void => {
     model.queryInfo = undefined;
@@ -117,7 +117,7 @@ const resetQueryInfoState = (model: Draft<QueryModel>): void => {
 /**
  * Resets totalCount state to initialized state. Use this when you need to load/reload QueryInfo.
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model: Draft<QueryModel> the model to reset queryInfo state on.
+ * @param model The model to reset queryInfo state on.
  */
 const resetTotalCountState = (model: Draft<QueryModel>): void => {
     model.rowCount = undefined;
@@ -128,7 +128,7 @@ const resetTotalCountState = (model: Draft<QueryModel>): void => {
 /**
  * Resets rows state to initialized state. Use this when you need to load/reload selections.
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model: Draft<QueryModel> the model to reset selection state on.
+ * @param model The model to reset selection state on.
  */
 const resetRowsState = (model: Draft<QueryModel>): void => {
     model.messages = undefined;
@@ -143,7 +143,7 @@ const resetRowsState = (model: Draft<QueryModel>): void => {
 /**
  * Resets selection state to initialized state. Use this when you need to load/reload selections.
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
- * @param model: Draft<QueryModel> the model to reset selection state on.
+ * @param model The model to reset selection state on.
  */
 const resetSelectionState = (model: Draft<QueryModel>): void => {
     model.selections = undefined;
@@ -178,7 +178,7 @@ const paramsEqual = (oldParams, newParams): boolean => {
 
 /**
  * A wrapper for LabKey selectRows API. For in-depth documentation and examples see components/docs/QueryModel.md.
- * @param ComponentToWrap: A component that implements generic Props and InjectedQueryModels.
+ * @param ComponentToWrap A component that implements generic Props and InjectedQueryModels.
  * @returns A react ComponentType that implements generic Props and MakeQueryModels.
  */
 export function withQueryModels<Props>(

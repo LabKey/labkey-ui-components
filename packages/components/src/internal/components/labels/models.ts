@@ -1,4 +1,4 @@
-import { Draft, immerable, produce } from 'immer';
+import { immerable, produce } from 'immer';
 
 import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 
@@ -128,7 +128,7 @@ export class LabelTemplate {
     }
 
     mutate(props: Partial<LabelTemplate>): LabelTemplate {
-        return produce(this, (draft: Draft<LabelTemplate>) => {
+        return produce<LabelTemplate>(this, draft => {
             Object.assign(draft, props);
         });
     }

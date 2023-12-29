@@ -264,7 +264,6 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
             testMode,
         } = this.props;
         const { model, file, importError } = this.state;
-        console.log('model', model.toJS());
 
         return (
             <BaseDomainDesigner

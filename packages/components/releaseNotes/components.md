@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.2.3
+*Released*: 29 December 2023
 - Issue 41718: Domain Designer List Field Imports should observe auto-increment fields
 
 ### version 3.2.2

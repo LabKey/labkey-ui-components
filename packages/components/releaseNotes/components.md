@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.2.4
+*Released*: 29 December 2023
+- remove AliquotedFrom from samples grid export/editable grid export
+- Issue 49082: remove QueryModel from localStorage on error
+
 ### version 3.2.3
 *Released*: 29 December 2023
 - Issue 41718: Domain Designer List Field Imports should observe auto-increment fields

@@ -7,7 +7,7 @@ import { createNewDomainField } from '../actions';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
-import { DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from '../constants';
+import { AUTO_INT_CONCEPT_URI, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from '../constants';
 
 import { AUTOINT_TYPE, PropDescType } from '../PropDescType';
 
@@ -22,6 +22,7 @@ const AUTO_INC_FIELD_CONFIG = {
     rangeURI: AUTOINT_TYPE.rangeURI,
     isPrimaryKey: true,
     lockType: DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
+    conceptURI: AUTO_INT_CONCEPT_URI,
 } as Partial<IDomainField>;
 
 interface Props extends IAppDomainHeader {
@@ -32,7 +33,7 @@ interface Props extends IAppDomainHeader {
 export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
     onSelectionChange = (e: any) => {
         const { model, onModelChange } = this.props;
-        const { name, value } = e.target;
+        const { value } = e.target;
         const selectedRowIndex = Utils.isNumber(parseInt(value)) ? parseInt(value) : undefined;
 
         if (selectedRowIndex === undefined) {

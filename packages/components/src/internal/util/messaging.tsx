@@ -88,6 +88,8 @@ export function resolveErrorMessage(
         errorMsg = error.msg;
     } else if (error.exception) {
         errorMsg = error.exception;
+    } else if (error.error) {
+        errorMsg = error.error;
     }
     if (errorMsg) {
         const lcMessage = errorMsg.toLowerCase();

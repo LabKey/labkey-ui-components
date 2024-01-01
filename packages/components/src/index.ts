@@ -212,7 +212,7 @@ import {
     InsertFormats,
     InsertOptions,
     insertRows,
-    InsertRowsResponse,
+    QueryCommandResponse,
     invalidateQueryDetailsCache,
     loadQueries,
     loadQueriesFromTable,
@@ -1026,7 +1026,7 @@ export {
     changeColumn,
     removeColumn,
     // query related items
-    InsertRowsResponse,
+    QueryCommandResponse,
     InsertFormats,
     InsertOptions,
     getVerbForInsertOption,

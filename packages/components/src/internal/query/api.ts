@@ -961,7 +961,7 @@ export function deleteRowsByContainer(options: DeleteRowsOptions, containerField
     const commands = [];
 
     const allRows = options.rows;
-    if (!allRows || Object.keys(allRows[0]).map(key => key.toLowerCase()).indexOf(containerField) === -1)
+    if (!allRows || Object.keys(allRows[0]).map(key => key.toLowerCase()).indexOf(containerField.toLowerCase()) === -1)
         return deleteRows(options);
 
     const containerRows = {};
@@ -973,7 +973,14 @@ export function deleteRowsByContainer(options: DeleteRowsOptions, containerField
     })
 
     if (Object.keys(containerRows).length <= 1)
-        return deleteRows(options);
+    {
+        const containerPath = Object.keys(containerRows)?.[0];
+        return deleteRows({
+            ...options,
+            containerPath,
+        });
+    }
+
 
     Object.keys(containerRows).forEach(containerPath => {
         const rows = containerRows[containerPath];

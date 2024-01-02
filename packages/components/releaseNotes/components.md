@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.X
 *Released*: X
 - Support cross-folder delete
-    - TODO
+    - Refactor InsertRowsResponse, UpdateRowsResponse and DeleteRowsResponse into QueryCommandResponse
+    - add deleteRowsByContainer util
 
 ### version 3.2.4
 *Released*: 29 December 2023

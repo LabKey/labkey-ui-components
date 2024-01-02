@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { DomainField } from '../domainproperties/models';
@@ -27,9 +26,9 @@ describe('OntologyConceptSelectButton', () => {
         expect(wrapper.find(ConceptOverviewTooltip)).toHaveLength(1);
         expect(wrapper.find(OntologyBrowserModal)).toHaveLength(showModal ? 1 : 0);
 
-        expect(wrapper.find(Button)).toHaveLength(showModal ? 3 : 1);
-        expect(wrapper.find(Button).first().prop('disabled')).toBe(isFieldLocked);
-        expect(wrapper.find(Button).first().text()).toBe('Button Title');
+        expect(wrapper.find('button')).toHaveLength(showModal ? 4 : 1);
+        expect(wrapper.find('button').first().prop('disabled')).toBe(isFieldLocked);
+        expect(wrapper.find('button').first().text()).toBe('Button Title');
 
         expect(wrapper.find('.fa-remove')).toHaveLength(hasValue && !isFieldLocked ? 1 : 0);
         expect(wrapper.find('.domain-text-label')).toHaveLength(!hasValue || isFieldLocked ? 1 : 0);
@@ -53,7 +52,7 @@ describe('OntologyConceptSelectButton', () => {
     test('showSelectModal', () => {
         const wrapper = mount(<OntologyConceptSelectButton {...DEFAULT_PROPS} />);
         validate(wrapper);
-        wrapper.find(Button).simulate('click');
+        wrapper.find('button').simulate('click');
         validate(wrapper, 'None Set', false, true);
         wrapper.unmount();
     });
@@ -96,7 +95,7 @@ describe('OntologyConceptSelectButton', () => {
                 }
             />
         );
-        wrapper.find(Button).simulate('click');
+        wrapper.find('button').simulate('click');
         validate(wrapper, 'None Set', false, true);
         const modal = wrapper.find(OntologyBrowserModal);
         expect(modal.prop('title')).toBe('Button Title');
@@ -116,7 +115,7 @@ describe('OntologyConceptSelectButton', () => {
                 useFieldSourceOntology
             />
         );
-        wrapper.find(Button).simulate('click');
+        wrapper.find('button').simulate('click');
         validate(wrapper, 'None Set', false, true);
         const modal = wrapper.find(OntologyBrowserModal);
         expect(modal.prop('initOntologyId')).toBe('Test Source');

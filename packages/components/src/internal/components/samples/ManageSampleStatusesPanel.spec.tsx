@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { Button } from 'react-bootstrap';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -248,11 +247,11 @@ describe('SampleStatusDetail', () => {
         expect(wrapper.find('textarea').prop('disabled')).toBe(false);
         expect(wrapper.find(SelectInput).prop('value')).toBe(STATE.stateType);
         expect(wrapper.find(SelectInput).prop('disabled')).toBe(false);
-        expect(wrapper.find(Button)).toHaveLength(2);
-        expect(wrapper.find(Button).first().text()).toContain('Delete');
-        expect(wrapper.find(Button).first().prop('disabled')).toBe(false);
-        expect(wrapper.find(Button).last().text()).toBe('Save');
-        expect(wrapper.find(Button).last().prop('disabled')).toBe(true); // save initially disabled
+        expect(wrapper.find('button')).toHaveLength(2);
+        expect(wrapper.find('button').first().text()).toContain('Delete');
+        expect(wrapper.find('button').first().prop('disabled')).toBeFalsy();
+        expect(wrapper.find('button').last().text()).toBe('Save');
+        expect(wrapper.find('button').last().prop('disabled')).toBe(true); // save initially disabled
         wrapper.unmount();
     });
 
@@ -276,11 +275,11 @@ describe('SampleStatusDetail', () => {
         expect(wrapper.find('input[name="label"]').prop('disabled')).toBe(false);
         expect(wrapper.find('textarea').prop('disabled')).toBe(false);
         expect(wrapper.find(SelectInput).prop('disabled')).toBe(true);
-        expect(wrapper.find(Button)).toHaveLength(2);
-        expect(wrapper.find(Button).first().text()).toContain('Delete');
-        expect(wrapper.find(Button).first().prop('disabled')).toBe(true); // delete disabled
-        expect(wrapper.find(Button).last().text()).toBe('Save');
-        expect(wrapper.find(Button).last().prop('disabled')).toBe(true); // save initially disabled
+        expect(wrapper.find('button')).toHaveLength(2);
+        expect(wrapper.find('button').first().text()).toContain('Delete');
+        expect(wrapper.find('button').first().prop('disabled')).toBe(true); // delete disabled
+        expect(wrapper.find('button').last().text()).toBe('Save');
+        expect(wrapper.find('button').last().prop('disabled')).toBe(true); // save initially disabled
         wrapper.unmount();
     });
 
@@ -304,7 +303,7 @@ describe('SampleStatusDetail', () => {
         expect(wrapper.find('input[name="label"]').prop('disabled')).toBe(true);
         expect(wrapper.find('textarea').prop('disabled')).toBe(true);
         expect(wrapper.find(SelectInput).prop('disabled')).toBe(true);
-        expect(wrapper.find(Button)).toHaveLength(0);
+        expect(wrapper.find('button')).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -330,9 +329,9 @@ describe('SampleStatusDetail', () => {
         });
         await waitForLifecycle(wrapper);
         validate(wrapper);
-        expect(wrapper.find(Button)).toHaveLength(2);
-        expect(wrapper.find(Button).first().text()).toBe('Cancel');
-        expect(wrapper.find(Button).first().prop('disabled')).toBe(false);
+        expect(wrapper.find('button')).toHaveLength(2);
+        expect(wrapper.find('button').first().text()).toBe('Cancel');
+        expect(wrapper.find('button').first().prop('disabled')).toBe(false);
         wrapper.unmount();
     });
 
@@ -343,7 +342,7 @@ describe('SampleStatusDetail', () => {
         await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(ConfirmModal)).toHaveLength(0);
-        wrapper.find(Button).first().simulate('click'); // click delete button
+        wrapper.find('button').first().simulate('click'); // click delete button
         await waitForLifecycle(wrapper);
         expect(wrapper.find(ConfirmModal)).toHaveLength(1);
         wrapper.unmount();

@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Button } from 'react-bootstrap';
 
 import { TEST_USER_READER } from '../../userFixtures';
 import { FileInput } from '../forms/input/FileInput';
@@ -15,7 +14,7 @@ import usersQueryInfo from '../../../test/data/users-getQueryDetails.json';
 
 import { UserProfile } from './UserProfile';
 
-describe('<UserProfile/>', () => {
+describe('UserProfile', () => {
     test('without state, except queryInfo', async () => {
         const QUERY_INFO = makeQueryInfo(usersQueryInfo);
         const API = getTestAPIWrapper(jest.fn, {
@@ -42,7 +41,7 @@ describe('<UserProfile/>', () => {
         expect(wrapper.find('.user-text-link')).toHaveLength(0);
         expect(wrapper.find(TextInput)).toHaveLength(5);
         expect(wrapper.find('input').findWhere(input => input.prop('disabled'))).toHaveLength(1); // email disabled
-        expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find('button')).toHaveLength(1);
 
         wrapper.unmount();
     });

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { Button, Modal, Sizes } from 'react-bootstrap';
+import { Modal, Sizes } from 'react-bootstrap';
 import classNames from 'classnames';
 
 export interface ConfirmModalProps {
@@ -67,14 +67,24 @@ export class ConfirmModal extends React.PureComponent<ConfirmModalProps> {
 
                 <Modal.Footer>
                     {onCancel && (
-                        <Button className={cancelBtnClass} onClick={onCancel} disabled={submitting}>
+                        <button
+                            className={`${cancelBtnClass} btn btn-default`}
+                            disabled={submitting}
+                            onClick={onCancel}
+                            type="button"
+                        >
                             {cancelButtonText}
-                        </Button>
+                        </button>
                     )}
                     {onConfirm && (
-                        <Button bsStyle={confirmVariant} onClick={onConfirm} disabled={!canConfirm || submitting}>
+                        <button
+                            className={`btn btn-${confirmVariant}`}
+                            disabled={!canConfirm || submitting}
+                            onClick={onConfirm}
+                            type="button"
+                        >
                             {confirmButtonText}
-                        </Button>
+                        </button>
                     )}
                 </Modal.Footer>
             </Modal>

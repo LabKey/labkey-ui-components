@@ -5,7 +5,7 @@ import { Modal } from 'react-bootstrap';
 
 import { ConfirmModal } from './ConfirmModal';
 
-describe('<ConfirmModal/>', () => {
+describe('ConfirmModal', () => {
     test('default props', () => {
         const msg = 'Testing confirm modal message';
         const modal = mount(<ConfirmModal>{msg}</ConfirmModal>);
@@ -33,7 +33,7 @@ describe('<ConfirmModal/>', () => {
         expect(modal.find('.close')).toHaveLength(1);
         expect(modal.find('.btn')).toHaveLength(2);
         expect(modal.find('.btn-danger')).toHaveLength(1);
-        expect(modal.find('.btn-danger').prop('disabled')).toBe(false);
+        expect(modal.find('.btn-danger').prop('disabled')).toBeFalsy();
     });
 
     test('submitting', () => {

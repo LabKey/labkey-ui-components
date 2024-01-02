@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { mount, ReactWrapper, shallow } from 'enzyme';
 
 import { OntologyBrowserModal } from './OntologyBrowserModal';
@@ -18,13 +18,12 @@ describe('OntologyBrowserModal', () => {
         expect(wrapper.find(Modal.Header).prop('closeButton')).toBe(true);
         expect(wrapper.find(Modal.Title).text()).toBe(DEFAULT_PROPS.title);
         expect(wrapper.find(OntologyBrowserPanel)).toHaveLength(1);
-        expect(wrapper.find(Button)).toHaveLength(2);
+        expect(wrapper.find('button')).toHaveLength(3);
     }
 
     test('default props', () => {
         const wrapper = mount(<OntologyBrowserModal {...DEFAULT_PROPS} />);
         validate(wrapper);
-        expect(wrapper.find(Button).last().prop('bsStyle')).toBe('primary');
         wrapper.unmount();
     });
 

@@ -1,5 +1,4 @@
 import React, { FC, memo } from 'react';
-import { Button } from 'react-bootstrap';
 
 import { Tip } from '../../internal/components/base/Tip';
 
@@ -14,16 +13,16 @@ export const FiltersButton: FC<Props> = memo(props => {
     if (iconOnly) {
         return (
             <Tip caption="Filters" trigger={['hover']}>
-                <Button className="grid-panel__button" onClick={onFilter}>
+                <button className="grid-panel__button btn btn-default" onClick={onFilter} type="button">
                     <i className="fa fa-filter" />
-                </Button>
+                </button>
             </Tip>
         );
     }
 
     return (
-        <Button className="grid-panel__button" onClick={onFilter}>
+        <button className="grid-panel__button btn btn-default" onClick={onFilter} type="button">
             <i className="fa fa-filter" /> Filters
-        </Button>
+        </button>
     );
 });

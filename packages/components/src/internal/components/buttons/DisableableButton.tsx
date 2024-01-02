@@ -1,5 +1,5 @@
 import React, { memo, FC } from 'react';
-import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 interface Props {
     bsStyle?: string;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const DisableableButton: FC<Props> = memo(props => {
-    const { bsStyle, className = '', disabledMsg, title, onClick, children } = props;
+    const { bsStyle = 'default', className = '', disabledMsg, title, onClick, children } = props;
 
     return (
         <>
@@ -24,16 +24,18 @@ export const DisableableButton: FC<Props> = memo(props => {
                     }
                 >
                     <div className={'disabled-button-with-tooltip ' + className}>
-                        <Button bsStyle={bsStyle} disabled>
+                        <button className={`btn btn-${bsStyle}`} disabled type="button">
                             {children}
-                        </Button>
+                        </button>
                     </div>
                 </OverlayTrigger>
             ) : (
-                <Button bsStyle={bsStyle} className={className} onClick={onClick}>
+                <button className={`${className} btn btn-${bsStyle}`} onClick={onClick} type="button">
                     {children}
-                </Button>
+                </button>
             )}
         </>
     );
 });
+
+DisableableButton.displayName = 'DisableableButton';

@@ -1,5 +1,6 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+
 import { getSubmitButtonClass } from '../../app/utils';
 
 import { OntologyBrowserPanel } from './OntologyBrowserPanel';
@@ -44,17 +45,21 @@ export const OntologyBrowserModal: FC<OntologyBrowserModalProps> = memo(props =>
                 />
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={onCancel} className="domain-adv-footer domain-adv-cancel-btn">
+                <button
+                    className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
+                    onClick={onCancel}
+                    type="button"
+                >
                     Cancel
-                </Button>
-                <Button
-                    className="domain-adv-footer domain-adv-apply-btn pull-right"
+                </button>
+                <button
+                    className={`domain-adv-footer domain-adv-apply-btn pull-right btn btn-${getSubmitButtonClass()}`}
                     disabled={!selectedConcept}
                     onClick={onApplyClick}
-                    bsStyle={getSubmitButtonClass()}
+                    type="button"
                 >
                     Apply
-                </Button>
+                </button>
             </Modal.Footer>
         </Modal>
     );

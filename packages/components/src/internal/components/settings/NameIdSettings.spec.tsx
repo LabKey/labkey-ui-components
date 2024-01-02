@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Checkbox, FormControl } from 'react-bootstrap';
+import { Checkbox, FormControl } from 'react-bootstrap';
 
 import { mountWithServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
@@ -75,7 +75,7 @@ describe('NameIdSettings', () => {
         expect(wrapper.find('.sample-counter__prefix-label')).toHaveLength(2);
         expect(wrapper.find(Checkbox)).toHaveLength(1);
         expect(wrapper.find(FormControl)).toHaveLength(3);
-        expect(wrapper.find(Button)).toHaveLength(3);
+        expect(wrapper.find('button')).toHaveLength(3);
         expect(DEFAULT_PROPS.loadNameExpressionOptions).toHaveBeenCalled();
 
         const counterLabel = wrapper.find('div.sample-counter__prefix-label');
@@ -104,7 +104,7 @@ describe('NameIdSettings', () => {
         expect(wrapper.find('.sample-counter__prefix-label')).toHaveLength(0);
         expect(wrapper.find(Checkbox)).toHaveLength(1);
         expect(wrapper.find(FormControl)).toHaveLength(1);
-        expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find('button')).toHaveLength(1);
         expect(DEFAULT_PROPS.loadNameExpressionOptions).toHaveBeenCalled();
 
         const counterLabel = wrapper.find('div.sample-counter__prefix-label');
@@ -144,7 +144,7 @@ describe('NameIdSettings', () => {
             .at(0)
             .simulate('change', { target: { value: 'abc' } });
 
-        wrapper.find(Button).at(0).simulate('click');
+        wrapper.find('button').at(0).simulate('click');
         expect(wrapper.find(ConfirmModal).exists()).toEqual(true);
         wrapper.find('.close').simulate('click');
         expect(wrapper.find(ConfirmModal).exists()).toEqual(false);
@@ -159,11 +159,11 @@ describe('NameIdSettings', () => {
             .at(0)
             .simulate('change', { target: { value: 'abc' } });
 
-        wrapper.find(Button).at(0).simulate('click');
+        wrapper.find('button').at(0).simulate('click');
         expect(wrapper.find(ConfirmModal).exists()).toEqual(true);
 
         // Click on 'Yes, Save and Apply Prefix' button
-        wrapper.find(Button).at(2).simulate('click');
+        wrapper.find('button').at(3).simulate('click');
         expect(DEFAULT_PROPS.saveNameExpressionOptions).toHaveBeenCalled();
     });
 
@@ -190,7 +190,7 @@ describe('NameIdSettings', () => {
         expect(wrapper.find('.sample-counter__setting-section')).toHaveLength(1);
         expect(wrapper.find('.sample-counter__prefix-label')).toHaveLength(2);
         expect(wrapper.find(FormControl)).toHaveLength(3);
-        const buttons = wrapper.find(Button);
+        const buttons = wrapper.find('button');
         expect(buttons.length).toEqual(3);
 
         expect(buttons.at(1).text()).toBe('Apply New sampleCount');
@@ -211,7 +211,7 @@ describe('NameIdSettings', () => {
         expect(wrapper.find('.sample-counter__setting-section')).toHaveLength(1);
         expect(wrapper.find('.sample-counter__prefix-label')).toHaveLength(2);
         expect(wrapper.find(FormControl)).toHaveLength(3);
-        const buttons = wrapper.find(Button);
+        const buttons = wrapper.find('button');
         expect(buttons.length).toEqual(5);
 
         expect(buttons.at(1).text()).toBe('Apply New sampleCount');

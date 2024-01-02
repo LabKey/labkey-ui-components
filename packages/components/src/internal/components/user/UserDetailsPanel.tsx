@@ -4,7 +4,7 @@
  */
 import React, { FC } from 'react';
 import moment from 'moment';
-import { Button, Col, Modal, Panel, Row } from 'react-bootstrap';
+import { Col, Modal, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
@@ -189,24 +189,26 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             <>
                 <hr className="principal-hr" />
                 {allowResetPassword && isActive && (
-                    <Button onClick={() => this.toggleDialog('reset')}>Reset Password</Button>
+                    <button className="btn btn-default" onClick={() => this.toggleDialog('reset')} type="button">Reset Password</button>
                 )}
                 {allowDelete && (
-                    <Button
-                        className="pull-right"
+                    <button
+                        className="pull-right btn btn-default"
                         style={{ marginLeft: '10px' }}
                         onClick={() => this.toggleDialog('delete')}
+                        type="button"
                     >
                         Delete
-                    </Button>
+                    </button>
                 )}
-                <Button
-                    className="pull-right"
+                <button
+                    className="pull-right btn btn-default"
                     style={{ marginLeft: '10px' }}
                     onClick={() => this.toggleDialog(isActive ? 'deactivate' : 'reactivate')}
+                    type="button"
                 >
                     {isActive ? 'Deactivate' : 'Reactivate'}
-                </Button>
+                </button>
             </>
         );
     }
@@ -298,7 +300,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     render() {
         const { userId, allowDelete, allowResetPassword, toggleDetailsModal, onUsersStateChangeComplete } = this.props;
         const { showDialog, userProperties } = this.state;
-        const { user, container, project } = getServerContext();
+        const { user, project } = getServerContext();
         const isSelf = userId === user.id;
         const currentProductId = getCurrentAppProperties()?.productId;
         const targetProductId = getPrimaryAppProperties()?.productId;
@@ -322,12 +324,12 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     <Modal.Body>{this.renderBody()}</Modal.Body>
                     {user.isAdmin && (
                         <Modal.Footer>
-                            <Button
-                                className="pull-right"
+                            <a
+                                className="pull-right btn btn-default"
                                 href={manageUrl instanceof AppURL ? manageUrl.toHref() : manageUrl}
                             >
                                 Manage
-                            </Button>
+                            </a>
                         </Modal.Footer>
                     )}
                 </Modal>

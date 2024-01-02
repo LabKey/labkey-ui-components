@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
@@ -282,21 +282,22 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
 
                 <Modal.Footer>
                     {onCancel && (
-                        <Button bsClass="btn btn-default pull-left" onClick={onCancel}>
+                        <button className="btn btn-default pull-left" onClick={onCancel} type="button">
                             Cancel
-                        </Button>
+                        </button>
                     )}
                     <div className="pull-right">
                         <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">
                             BarTender help
                         </HelpLink>
-                        <Button
-                            bsClass="btn btn-success"
-                            onClick={this.onConfirmPrint}
+                        <button
+                            className="btn btn-success"
                             disabled={submitting || !this.isReadyForPrint()}
+                            onClick={this.onConfirmPrint}
+                            type="button"
                         >
                             Yes, Print
-                        </Button>
+                        </button>
                     </div>
                 </Modal.Footer>
             </Modal>

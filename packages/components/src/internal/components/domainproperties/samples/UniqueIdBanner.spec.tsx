@@ -1,8 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { Button } from 'react-bootstrap';
-
 import { fromJS } from 'immutable';
 
 import { Alert } from '../../base/Alert';
@@ -46,12 +44,12 @@ const uniqueIdField2 = {
     propertyURI: 'test',
 };
 
-describe('<UniqueIdBanner/>', () => {
+describe('UniqueIdBanner', () => {
     test('new, in properties panel, no uniqueID fields', () => {
         const wrapper = mount(<UniqueIdBanner model={newSampleTypeModel} isFieldsPanel={false} onAddField={jest.fn} />);
         expect(wrapper.text()).toBe(NEW_TYPE_NO_BARCODE_FIELDS_MSG);
         expect(wrapper.find(Alert)).toHaveLength(0);
-        expect(wrapper.find(Button)).toHaveLength(0);
+        expect(wrapper.find('button')).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -59,7 +57,7 @@ describe('<UniqueIdBanner/>', () => {
         const wrapper = mount(<UniqueIdBanner model={newSampleTypeModel} isFieldsPanel={true} onAddField={jest.fn} />);
         expect(wrapper.text()).toContain(ADD_NEW_UNIQUE_ID_MSG);
         expect(wrapper.find(Alert)).toHaveLength(1);
-        expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find('button')).toHaveLength(1);
         wrapper.unmount();
     });
 
@@ -71,7 +69,7 @@ describe('<UniqueIdBanner/>', () => {
         } as DomainDetails);
         const wrapper = mount(<UniqueIdBanner model={sampleTypeModel} isFieldsPanel={false} onAddField={jest.fn} />);
         expect(wrapper.find(Alert)).toHaveLength(0);
-        expect(wrapper.find(Button)).toHaveLength(0);
+        expect(wrapper.find('button')).toHaveLength(0);
         expect(wrapper.text()).toContain('A Unique ID field for barcodes is defined: ' + uniqueIdField.name);
         wrapper.unmount();
     });
@@ -84,7 +82,7 @@ describe('<UniqueIdBanner/>', () => {
         } as DomainDetails);
         const wrapper = mount(<UniqueIdBanner model={sampleTypeModel} isFieldsPanel={false} onAddField={jest.fn} />);
         expect(wrapper.find(Alert)).toHaveLength(0);
-        expect(wrapper.find(Button)).toHaveLength(0);
+        expect(wrapper.find('button')).toHaveLength(0);
         expect(wrapper.text()).toContain(
             '2 Unique ID fields are defined: ' + uniqueIdField.name + ', ' + uniqueIdField2.name
         );
@@ -99,7 +97,7 @@ describe('<UniqueIdBanner/>', () => {
         } as DomainDetails);
         const wrapper = mount(<UniqueIdBanner model={sampleTypeModel} isFieldsPanel={true} onAddField={jest.fn} />);
         expect(wrapper.find(Alert)).toHaveLength(0);
-        expect(wrapper.find(Button)).toHaveLength(0);
+        expect(wrapper.find('button')).toHaveLength(0);
         expect(wrapper.text()).toHaveLength(0);
         wrapper.unmount();
     });
@@ -115,7 +113,7 @@ describe('<UniqueIdBanner/>', () => {
         } as DomainDetails);
         const wrapper = mount(<UniqueIdBanner model={sampleTypeModel} isFieldsPanel={false} onAddField={jest.fn} />);
         expect(wrapper.find(Alert)).toHaveLength(1);
-        expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find('button')).toHaveLength(1);
         expect(wrapper.text()).toContain(ADD_NEW_UNIQUE_ID_MSG);
         wrapper.unmount();
     });
@@ -131,7 +129,7 @@ describe('<UniqueIdBanner/>', () => {
         } as DomainDetails);
         const wrapper = mount(<UniqueIdBanner model={sampleTypeModel} isFieldsPanel={true} onAddField={jest.fn} />);
         expect(wrapper.find(Alert)).toHaveLength(1);
-        expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find('button')).toHaveLength(1);
         expect(wrapper.text()).toContain(ADD_NEW_UNIQUE_ID_MSG);
         wrapper.unmount();
     });
@@ -147,7 +145,7 @@ describe('<UniqueIdBanner/>', () => {
         } as DomainDetails);
         const wrapper = mount(<UniqueIdBanner model={sampleTypeModel} isFieldsPanel={false} onAddField={jest.fn} />);
         expect(wrapper.find(Alert)).toHaveLength(0);
-        expect(wrapper.find(Button)).toHaveLength(0);
+        expect(wrapper.find('button')).toHaveLength(0);
         expect(wrapper.text()).toContain(
             '2 Unique ID fields are defined: ' + uniqueIdField.name + ', ' + uniqueIdField2.name
         );
@@ -166,7 +164,7 @@ describe('<UniqueIdBanner/>', () => {
         } as DomainDetails);
         const wrapper = mount(<UniqueIdBanner model={sampleTypeModel} isFieldsPanel={true} onAddField={jest.fn} />);
         expect(wrapper.find(Alert)).toHaveLength(0);
-        expect(wrapper.find(Button)).toHaveLength(0);
+        expect(wrapper.find('button')).toHaveLength(0);
         expect(wrapper.text()).toHaveLength(0);
 
         wrapper.unmount();

@@ -1,5 +1,6 @@
 import React, { FC, memo, PureComponent, useCallback } from 'react';
-import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
+import classNames from 'classnames';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
 import { Filter, PermissionTypes, Query } from '@labkey/api';
 
@@ -29,10 +30,11 @@ import { Section } from '../base/Section';
 import { Tip } from '../base/Tip';
 import { RequiresPermission } from '../base/Permissions';
 
+import { useServerContext } from '../base/ServerContext';
+
 import { BarChartConfig, BarChartData, BarChartSelector } from './models';
 import { BaseBarChart } from './BaseBarChart';
 import { processChartData } from './utils';
-import { useServerContext } from '../base/ServerContext';
 
 async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFilter[] = []): Promise<number> {
     try {
@@ -200,7 +202,12 @@ export class BarChartViewer extends PureComponent<Props, State> {
             }
         } else if (!hasData) {
             if (selectedGroup.key === SAMPLES_KEY) {
-                body = <Alert bsStyle="warning">No samples have been created. {user.hasInsertPermission() ? "Use the 'Add Samples' menu above to create samples.": ""}</Alert>
+                body = (
+                    <Alert bsStyle="warning">
+                        No samples have been created.{' '}
+                        {user.hasInsertPermission() ? "Use the 'Add Samples' menu above to create samples." : ''}
+                    </Alert>
+                );
             } else if (selectedGroup.key === ASSAYS_KEY) {
                 body = <Alert bsStyle="warning">No assay runs have been imported.</Alert>;
             }
@@ -256,14 +263,24 @@ export class BarChartViewer extends PureComponent<Props, State> {
                 {!hasError && selectedCharts?.length > 1 && (
                     <div className="btn-group button-left-spacing pull-right">
                         <Tip caption="Previous">
-                            <Button disabled={currentChart === 0} onClick={this.prevChart}>
+                            <button
+                                className="btn btn-default"
+                                disabled={currentChart === 0}
+                                onClick={this.prevChart}
+                                type="button"
+                            >
                                 <i className="fa fa-chevron-left" />
-                            </Button>
+                            </button>
                         </Tip>
                         <Tip caption="Next">
-                            <Button onClick={this.nextChart} disabled={currentChart === selectedCharts.length - 1}>
+                            <button
+                                className="btn btn-default"
+                                onClick={this.nextChart}
+                                disabled={currentChart === selectedCharts.length - 1}
+                                type="button"
+                            >
                                 <i className="fa fa-chevron-right" />
-                            </Button>
+                            </button>
                         </Tip>
                     </div>
                 )}
@@ -285,10 +302,13 @@ export const SampleButtons: FC = memo(() => {
 
     return (
         <div className="pull-right bar-chart-viewer-sample-buttons">
-            <Button bsStyle="primary" onClick={onSampleFinder} href={FIND_SAMPLES_BY_FILTER_HREF.toHref()}
-                    className={user.canInsert ? 'button-right-spacing' : ''}>
+            <a
+                className={classNames('btn btn-primary', { 'button-right-spacing': user.canInsert })}
+                href={FIND_SAMPLES_BY_FILTER_HREF.toHref()}
+                onClick={onSampleFinder}
+            >
                 Go to Sample Finder
-            </Button>
+            </a>
             <RequiresPermission perms={PermissionTypes.Insert}>
                 <DropdownButton title="Add Samples" id="samples-add-menu" bsStyle="success">
                     <MenuItem href={GRID_INSERT_SAMPLES_HREF.toHref()}>Add Manually</MenuItem>

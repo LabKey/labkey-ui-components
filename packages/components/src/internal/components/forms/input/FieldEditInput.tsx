@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Button, Popover } from 'react-bootstrap';
+import { Popover } from 'react-bootstrap';
 import Formsy, { withFormsy } from 'formsy-react';
 import { List, Record } from 'immutable';
 
@@ -169,12 +169,12 @@ class FieldEditInputImpl extends React.Component<FieldEditInputProps> {
                 </div>
                 {showButtons && (
                     <div className="btn-group field-edit--btn-group">
-                        <Button bsStyle="warning" onClick={hideOverlayFn}>
+                        <button className="btn btn-warning" onClick={hideOverlayFn} type="button">
                             <i className="fa fa-times-circle" title="Cancel?" />
-                        </Button>
-                        <Button type="submit" bsStyle="info">
+                        </button>
+                        <button className="btn btn-info" type="submit">
                             <i className="fa fa-check-circle" title={'Update ' + caption + '?'} />
-                        </Button>
+                        </button>
                     </div>
                 )}
             </div>

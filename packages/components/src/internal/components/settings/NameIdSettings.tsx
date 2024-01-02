@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useReducer } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
-import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
+import { Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 
 import { biologicsIsPrimaryApp, sampleManagerIsPrimaryApp } from '../../app/utils';
 
@@ -213,32 +213,21 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         setState({ confirmModalOpen: false });
     }, []);
 
-    const openSetCounterConfirmModal = useCallback((isRoot, isReset) => {
-        setState({
-            confirmCounterModalOpen: true,
-            isRoot,
-            isReset,
-        });
+    const openSetCounterConfirmModal = useCallback((isRoot_: boolean, isReset_: boolean): void => {
+        setState({ confirmCounterModalOpen: true, isReset: isReset_, isRoot: isRoot_ });
     }, []);
 
     const closeCounterConfirmModal = useCallback(() => {
-        setState({
-            confirmCounterModalOpen: false,
-        });
+        setState({ confirmCounterModalOpen: false });
     }, []);
 
     const setNewSampleCount = useCallback(
         (newValue: number, root?: boolean) => {
-            if (root)
-                setState({
-                    newRootSampleCount: newValue,
-                    hasRootSampleCountChange: true,
-                });
-            else
-                setState({
-                    newSampleCount: newValue,
-                    hasSampleCountChange: true,
-                });
+            if (root) {
+                setState({ hasRootSampleCountChange: true, newRootSampleCount: newValue });
+            } else {
+                setState({ hasSampleCountChange: true, newSampleCount: newValue });
+            }
             setIsDirty(true);
         },
         [setIsDirty]
@@ -321,8 +310,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         <div className="list__bold-text margin-bottom margin-top">ID/Name Prefix</div>
                         <div>
                             Enter a prefix to the Naming Pattern for all new Samples and{' '}
-                            {sampleManagerIsPrimaryApp(moduleContext) ? 'Sources' : 'Data Classes'} in this folder.
-                            No existing IDs/Names will be changed.
+                            {sampleManagerIsPrimaryApp(moduleContext) ? 'Sources' : 'Data Classes'} in this folder. No
+                            existing IDs/Names will be changed.
                         </div>
 
                         {loadingNamingOptions && <LoadingSpinner />}
@@ -341,13 +330,14 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         />
                                     </div>
 
-                                    <Button
+                                    <button
                                         className="btn btn-success"
                                         onClick={openConfirmModal}
                                         disabled={savingPrefix || !hasPrefixChange}
+                                        type="button"
                                     >
                                         Apply Prefix
-                                    </Button>
+                                    </button>
                                 </div>
                                 <div className="name-id-setting__prefix-example">
                                     Example: {prefix}Blood-${'{'}GenId{'}'}
@@ -410,25 +400,27 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         />
                                     </Col>
                                     <Col sm={8}>
-                                        <Button
+                                        <button
                                             className="btn btn-success sample-counter-btn"
                                             onClick={() => {
                                                 openSetCounterConfirmModal(false, false);
                                             }}
                                             disabled={updatingCounter || !hasSampleCountChange}
+                                            type="button"
                                         >
                                             Apply New sampleCount
-                                        </Button>
+                                        </button>
                                         {!hasSamples && sampleCount > 0 && (
-                                            <Button
+                                            <button
                                                 className="btn btn-success sample-counter-btn"
                                                 onClick={() => {
                                                     openSetCounterConfirmModal(false, true);
                                                 }}
                                                 disabled={updatingCounter}
+                                                type="button"
                                             >
                                                 Reset sampleCount
-                                            </Button>
+                                            </button>
                                         )}
                                     </Col>
                                 </Row>
@@ -449,25 +441,27 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         />
                                     </Col>
                                     <Col sm={8}>
-                                        <Button
+                                        <button
                                             className="btn btn-success sample-counter-btn"
                                             onClick={() => {
                                                 openSetCounterConfirmModal(true, false);
                                             }}
                                             disabled={updatingCounter || !hasRootSampleCountChange}
+                                            type="button"
                                         >
                                             Apply New rootSampleCount
-                                        </Button>
+                                        </button>
                                         {!hasRootSamples && rootSampleCount > 0 && (
-                                            <Button
+                                            <button
                                                 className="btn btn-success sample-counter-btn"
                                                 onClick={() => {
                                                     openSetCounterConfirmModal(true, true);
                                                 }}
                                                 disabled={updatingCounter}
+                                                type="button"
                                             >
                                                 Reset rootSampleCount
-                                            </Button>
+                                            </button>
                                         )}
                                     </Col>
                                 </Row>

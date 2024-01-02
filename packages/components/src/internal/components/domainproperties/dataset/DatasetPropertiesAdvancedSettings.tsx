@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
+import { Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
 
@@ -236,9 +236,13 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         return (
             <>
-                <Button className="domain-field-float-right" onClick={() => this.toggleModal(true)}>
+                <button
+                    className="domain-field-float-right btn btn-default"
+                    onClick={() => this.toggleModal(true)}
+                    type="button"
+                >
                     {title}
-                </Button>
+                </button>
 
                 <Modal show={modalOpen} onHide={() => this.toggleModal(false)}>
                     <Modal.Header closeButton>
@@ -331,24 +335,25 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                     <Modal.Footer>
                         <>
-                            <Button
+                            <button
+                                className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
                                 onClick={() => this.toggleModal(false)}
-                                className="domain-adv-footer domain-adv-cancel-btn"
+                                type="button"
                             >
                                 Cancel
-                            </Button>
+                            </button>
 
                             <HelpLink topic={DATASET_PROPERTIES_TOPIC} className="domain-adv-footer domain-adv-link">
                                 Get help with dataset settings
                             </HelpLink>
 
-                            <Button
+                            <button
+                                className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
                                 onClick={this.applyChanges}
-                                bsStyle={getSubmitButtonClass()}
-                                className="domain-adv-footer domain-adv-apply-btn"
+                                type="button"
                             >
                                 Apply
-                            </Button>
+                            </button>
                         </>
                     </Modal.Footer>
                 </Modal>

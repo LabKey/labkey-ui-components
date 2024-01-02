@@ -1,5 +1,5 @@
 import React, { FC, PureComponent, ReactNode } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';
@@ -125,19 +125,20 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
                     />
                 </div>
                 <div>
-                    <Button
-                        className="domain-validation-button"
-                        name={createFormInputName(range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR)}
+                    <button
+                        className="domain-validation-button btn btn-default"
+                        disabled={isFieldFullyLocked(field.lockType)}
                         id={createFormInputId(
                             range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR,
                             domainIndex,
                             index
                         )}
-                        disabled={isFieldFullyLocked(field.lockType)}
+                        name={createFormInputName(range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR)}
                         onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}
+                        type="button"
                     >
                         {count > 0 ? (range ? 'Edit Ranges' : 'Edit Regex') : range ? 'Add Range' : 'Add Regex'}
-                    </Button>
+                    </button>
                     {count === 0 ? (
                         <span className="domain-text-label">None Set</span>
                     ) : (
@@ -174,15 +175,16 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
                     />
                 </div>
                 <div>
-                    <Button
-                        className="domain-validation-button"
-                        name={createFormInputName(DOMAIN_COND_FORMAT)}
-                        id={createFormInputId(DOMAIN_COND_FORMAT, domainIndex, index)}
+                    <button
+                        className="domain-validation-button btn btn-default"
                         disabled={isFieldFullyLocked(field.lockType)}
+                        id={createFormInputId(DOMAIN_COND_FORMAT, domainIndex, index)}
+                        name={createFormInputName(DOMAIN_COND_FORMAT)}
                         onClick={this.showHideConditionalFormat}
+                        type="button"
                     >
                         {count > 0 ? 'Edit Formats' : 'Add Format'}
-                    </Button>
+                    </button>
                     {count === 0 ? (
                         <span className="domain-text-label">None Set</span>
                     ) : (

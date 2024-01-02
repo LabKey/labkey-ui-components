@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Button, FormControl, Modal } from 'react-bootstrap';
+import { FormControl, Modal } from 'react-bootstrap';
 
 import { TEST_USER_READER } from '../../userFixtures';
 
@@ -11,7 +11,7 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 import { ChangePasswordModel } from './models';
 import { ChangePasswordModal } from './ChangePasswordModal';
 
-describe('<ChangePasswordModal/>', () => {
+describe('ChangePasswordModal', () => {
     test('without state', () => {
         const wrapper = mount(<ChangePasswordModal user={TEST_USER_READER} onSuccess={jest.fn()} onHide={jest.fn()} />);
 
@@ -20,8 +20,8 @@ describe('<ChangePasswordModal/>', () => {
         expect(modal.find(Alert)).toHaveLength(0);
         expect(modal.find(FormControl)).toHaveLength(3);
         expect(modal.find(LabelHelpTip)).toHaveLength(0);
-        expect(modal.find(Button)).toHaveLength(2);
-        expect(modal.find(Button).findWhere(btn => btn.prop('disabled'))).toHaveLength(0);
+        expect(modal.find('button')).toHaveLength(2);
+        expect(modal.find('button').findWhere(btn => btn.prop('disabled'))).toHaveLength(0);
 
         wrapper.unmount();
     });
@@ -43,10 +43,10 @@ describe('<ChangePasswordModal/>', () => {
         expect(modal.find(Alert)).toHaveLength(1);
         expect(modal.find(FormControl)).toHaveLength(3);
         expect(modal.find(LabelHelpTip)).toHaveLength(1);
-        expect(modal.find(Button)).toHaveLength(2);
+        expect(modal.find('button')).toHaveLength(2);
         expect(
             modal
-                .find(Button)
+                .find('button')
                 .findWhere(btn => btn.prop('disabled'))
                 .hostNodes()
         ).toHaveLength(1);

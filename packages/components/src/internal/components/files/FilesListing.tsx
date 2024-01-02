@@ -1,6 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
 
-import { Button } from 'react-bootstrap';
 import { List, Set } from 'immutable';
 
 import { IFile } from './models';
@@ -60,14 +59,14 @@ export class FilesListing extends PureComponent<FilesListingProps, State> {
         return (
             <div>
                 {headerText && <div className="file-listing--header bottom-spacing">{headerText}</div>}
-                {files.map((file: IFile, key) => {
+                {files.map((file, key) => {
                     const { description, downloadUrl, name } = file;
                     const confirmDelete = confirmDeletionSet.has(name);
 
                     return (
                         <div className="component file-listing-row--container" key={key}>
                             <div className="detail-component">
-                                <div className="row" key={key}>
+                                <div className="row">
                                     <div className="col-xs-4 file-listing-icon--container">
                                         <input
                                             checked={selectedFiles.contains(name)}
@@ -99,16 +98,21 @@ export class FilesListing extends PureComponent<FilesListingProps, State> {
                                                 <div className="pull-right">Permanently delete?</div>
                                                 <br />
                                                 <span className="file-listing-canceldel-icon">
-                                                    <Button
-                                                        bsStyle="default"
+                                                    <button
+                                                        className="btn btn-default"
                                                         onClick={() => this.toggleDeleteConfirmation(name)}
+                                                        type="button"
                                                     >
                                                         Cancel
-                                                    </Button>
+                                                    </button>
                                                 </span>
-                                                <Button bsStyle="danger" onClick={() => this.deleteFile(name)}>
+                                                <button
+                                                    className="btn btn-danger"
+                                                    onClick={() => this.deleteFile(name)}
+                                                    type="button"
+                                                >
                                                     Delete File
-                                                </Button>
+                                                </button>
                                             </span>
                                         ) : (
                                             canDelete && (

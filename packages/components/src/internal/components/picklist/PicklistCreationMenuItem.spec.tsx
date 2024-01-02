@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, MenuItem } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 
 import { mount } from 'enzyme';
 
@@ -14,20 +14,11 @@ beforeAll(() => {
 
 describe('PicklistCreationMenuItem', () => {
     const key = 'picklists';
-    const selectionKey = 'test-selection';
-    const selectedQuantity = 4;
     const text = 'Picklist';
 
     test('editor, as menu item', () => {
         const wrapper = mount(
-            <PicklistCreationMenuItem
-                itemText={text}
-                selectionKey={selectionKey}
-                selectedQuantity={selectedQuantity}
-                key={key}
-                user={TEST_USER_EDITOR}
-                asMenuItem={true}
-            />
+            <PicklistCreationMenuItem itemText={text} key={key} user={TEST_USER_EDITOR} asMenuItem />
         );
         const menuItem = wrapper.find(MenuItem);
         expect(menuItem).toHaveLength(1);
@@ -38,18 +29,9 @@ describe('PicklistCreationMenuItem', () => {
     });
 
     test('editor, not as menu item', () => {
-        const wrapper = mount(
-            <PicklistCreationMenuItem
-                itemText={text}
-                selectionKey={selectionKey}
-                selectedQuantity={selectedQuantity}
-                key={key}
-                user={TEST_USER_EDITOR}
-            />
-        );
+        const wrapper = mount(<PicklistCreationMenuItem itemText={text} key={key} user={TEST_USER_EDITOR} />);
         expect(wrapper.find(MenuItem)).toHaveLength(0);
-        const button = wrapper.find(Button);
-        expect(button.text()).toBe(text);
+        expect(wrapper.find('button').text()).toBe(text);
         expect(wrapper.find(PicklistEditModal).exists()).toBeFalsy();
 
         wrapper.unmount();
@@ -57,14 +39,7 @@ describe('PicklistCreationMenuItem', () => {
 
     test('not Editor', () => {
         const wrapper = mount(
-            <PicklistCreationMenuItem
-                itemText={text}
-                selectionKey={selectionKey}
-                selectedQuantity={selectedQuantity}
-                key={key}
-                user={TEST_USER_READER}
-                asMenuItem={true}
-            />
+            <PicklistCreationMenuItem itemText={text} key={key} user={TEST_USER_READER} asMenuItem />
         );
         expect(wrapper.find('MenuItem')).toHaveLength(0);
         wrapper.unmount();

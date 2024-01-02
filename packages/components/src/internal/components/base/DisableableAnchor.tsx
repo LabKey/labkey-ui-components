@@ -1,23 +1,34 @@
-import React, { AnchorHTMLAttributes, FC } from 'react';
+import React, { AnchorHTMLAttributes, FC, MouseEventHandler, useCallback } from 'react';
 import classNames from 'classnames';
 
 export interface DisableableAnchorProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     disabled?: boolean;
 }
 
+/**
+ * An <a> tag which supports the "disabled" attribute.
+ * The "disabled" CSS class is also applied to allow for customization of disabled anchor styling.
+ */
 export const DisableableAnchor: FC<DisableableAnchorProps> = props => {
     const { disabled, ...anchorProps } = props;
     const { children, className } = anchorProps;
 
+    const onClick = useCallback<MouseEventHandler<HTMLAnchorElement>>(
+        event => {
+            if (!disabled) return;
+            event.preventDefault();
+        },
+        [disabled]
+    );
+
     if (disabled) {
-        // TODO: Consider an alternative class in addition to 'disabled' that takes away the active link coloring
-        // TODO: Need to override onClick to ensure it doesn't navigate (like SafeAnchor does)
         return (
             <a
-                style={{ pointerEvents: 'none', ...(anchorProps.style ?? {}) }}
                 tabIndex={-1}
                 {...anchorProps}
                 className={classNames(className, 'disabled')}
+                onClick={onClick}
+                style={{ pointerEvents: 'none', ...anchorProps.style }}
             >
                 {children}
             </a>

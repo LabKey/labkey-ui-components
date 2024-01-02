@@ -235,7 +235,8 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
             setDirty(false);
             onActionCompleted(rowId);
         } catch (reason) {
-            setError(resolveErrorMessage(reason, 'template', 'templates', 'update'));
+            const exception = reason?.error ?? reason;
+            setError(resolveErrorMessage(exception, 'template', 'templates', 'update'));
         } finally {
             setSaving(false);
         }

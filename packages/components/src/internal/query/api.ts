@@ -996,27 +996,25 @@ export function deleteRowsByContainer(options: DeleteRowsOptions, containerField
 
     return new Promise((resolve, reject) => {
         saveRows({
-            commands,
-            success: response => {
-                const rows = [];
-                response.result.forEach((resp, ind) => {
-                    rows.push(resp.rows);
-                });
-                resolve(new QueryCommandResponse({
-                            schemaQuery: options.schemaQuery,
-                            rows,
-                            transactionAuditId: response.result[0]?.['transactionAuditId'],
-                        }
-                    )
-                );
-            },
-            failure: error => {
-                reject({
-                    schemaQuery: options.schemaQuery,
-                    error,
-                });
-            },
-        });
+            commands
+        }).then(response => {
+            const rows = [];
+            response.result.forEach((resp, ind) => {
+                rows.push(resp.rows);
+            });
+            resolve(new QueryCommandResponse({
+                        schemaQuery: options.schemaQuery,
+                        rows,
+                        transactionAuditId: response.result[0]?.['transactionAuditId'],
+                    }
+                )
+            );
+        }).catch(error => {
+            reject({
+                schemaQuery: options.schemaQuery,
+                error,
+            });
+        })
     });
 }
 

@@ -33,7 +33,7 @@ describe('CreateUsersModal', () => {
         const component = <CreateUsersModal show onCancel={jest.fn()} onComplete={jest.fn()} />;
 
         const wrapper = mount(component);
-        expect(wrapper.find('.alert-danger')).toHaveLength(0);
+        expect(wrapper.find('Alert')).toHaveLength(0);
         expect(wrapper.find('.create-users-limit-message')).toHaveLength(0);
         expect(wrapper.find('textarea')).toHaveLength(2);
         expect(wrapper.find('textarea#create-users-email-input').props().value).toBe('');
@@ -51,7 +51,7 @@ describe('CreateUsersModal', () => {
         );
 
         const wrapper = mount(component);
-        expect(wrapper.find('.alert-danger')).toHaveLength(0);
+        expect(wrapper.find('Alert')).toHaveLength(0);
         expect(wrapper.find('.create-users-limit-message')).toHaveLength(0);
         expect(wrapper.find('textarea')).toHaveLength(2);
         expect(wrapper.find('textarea#create-users-email-input').props().value).toBe('');
@@ -93,7 +93,7 @@ describe('CreateUsersModal', () => {
             roles: [ROLE_OPTIONS[1].id],
         });
 
-        expect(wrapper.find('.alert-danger')).toHaveLength(1);
+        expect(wrapper.find('Alert')).toHaveLength(1);
         expect(wrapper.find('.create-users-limit-message')).toHaveLength(0);
         expect(wrapper.find('textarea')).toHaveLength(2);
         expect(wrapper.find('textarea#create-users-email-input').props().value).toBe('TestEmailText');

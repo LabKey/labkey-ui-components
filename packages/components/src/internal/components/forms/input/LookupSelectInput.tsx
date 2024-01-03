@@ -26,8 +26,9 @@ import { generateId } from '../../../util/utils';
 import { resolveKey } from '../../../../public/SchemaQuery';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 
-import { SelectInput, SelectInputProps } from './SelectInput';
 import { ViewInfo } from '../../../ViewInfo';
+
+import { SelectInput, SelectInputProps } from './SelectInput';
 
 interface LookupSelectOption {
     label: string;
@@ -87,40 +88,42 @@ export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps>
 
         this.state = {
             isLoading: false,
-            options: this.getOptionsFromSelectedRows(props, props.selectedRows),
+            options: this.getOptionsFromSelectedRows(props.selectedRows),
         };
     }
 
-    UNSAFE_componentWillMount(): void {
+    componentDidMount(): void {
         if (!this.state.options && !this.state.isLoading) {
-            this.getOptions();
+            this.loadOptions();
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: OwnProps): void {
-        if (nextProps.selectedRows) {
-            this.setState(() => ({
+    componentDidUpdate(prevProps: OwnProps): void {
+        const { selectedRows } = this.props;
+
+        if (prevProps.selectedRows !== selectedRows) {
+            this.setState({
                 isLoading: false,
-                options: this.getOptionsFromSelectedRows(nextProps, nextProps.selectedRows),
-            }));
+                options: this.getOptionsFromSelectedRows(selectedRows),
+            });
         }
     }
 
-    getOptionsFromSelectedRows(props: OwnProps, selectedRows: ISelectRowsResult) {
-        if (selectedRows) {
-            const models = Map<string, any>(fromJS(selectedRows.models));
-            const { schemaName, queryName } = props.queryColumn.lookup;
-            return formatLookupSelectInputOptions(
-                props.queryColumn.lookup,
-                models.get(resolveKey(schemaName, queryName)),
-                props.sort === undefined
-            );
-        } else {
-            return undefined;
-        }
+    getOptionsFromSelectedRows(selectedRows: ISelectRowsResult) {
+        if (!selectedRows) return undefined;
+
+        const { queryColumn, sort } = this.props;
+        const models = Map<string, any>(fromJS(selectedRows.models));
+        const { schemaName, queryName } = queryColumn.lookup;
+
+        return formatLookupSelectInputOptions(
+            queryColumn.lookup,
+            models.get(resolveKey(schemaName, queryName)),
+            sort === undefined
+        );
     }
 
-    getOptions() {
+    loadOptions() {
         const { containerFilter, containerPath, filterArray, queryColumn, sort } = this.props;
 
         if (!queryColumn || !queryColumn.isLookup()) {
@@ -130,20 +133,24 @@ export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps>
                 'querygrid forms/input/<LookupSelectInput> received lookup column that is explicitly set displayAsLookup = false'
             );
         }
-        this.setState(() => ({ isLoading: true }));
+        this.setState({ isLoading: true });
 
         const { schemaName, queryName } = queryColumn.lookup;
         // using Details view name to assure we get values even when the default view is filtered.
-        selectRowsDeprecated({ containerFilter, containerPath, schemaName, queryName, viewName: ViewInfo.DETAIL_NAME, filterArray, sort })
+        selectRowsDeprecated({
+            containerFilter,
+            containerPath,
+            schemaName,
+            queryName,
+            viewName: ViewInfo.DETAIL_NAME,
+            filterArray,
+            sort,
+        })
             .then(response => {
-                this.setState(() => ({
-                    isLoading: false,
-                    options: this.getOptionsFromSelectedRows(this.props, response),
-                }));
+                this.setState({ isLoading: false, options: this.getOptionsFromSelectedRows(response) });
             })
-            .catch(reason => {
-                console.error(reason);
-                this.setState(() => ({ isLoading: false, options: [] }));
+            .catch(() => {
+                this.setState({ isLoading: false, options: [] });
             });
     }
 

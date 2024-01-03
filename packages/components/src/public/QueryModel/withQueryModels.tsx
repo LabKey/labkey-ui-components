@@ -22,6 +22,7 @@ import {
     locationHasQueryParamSettings,
     QueryConfig,
     QueryModel,
+    removeSettingsFromLocalStorage,
     saveSettingsToLocalStorage,
 } from './QueryModel';
 
@@ -391,6 +392,7 @@ export function withQueryModels<Props>(
 
                     console.error(`Error setting selections for model ${id}:`, selectionsError);
                     model.selectionsError = selectionsError;
+                    removeSettingsFromLocalStorage(this.state.queryModels[id]);
                 })
             );
         };
@@ -647,6 +649,7 @@ export function withQueryModels<Props>(
                         }
 
                         console.error(`Error loading rows for model ${id}: `, rowsError);
+                        removeSettingsFromLocalStorage(this.state.queryModels[id]);
                         model.rowsLoadingState = LoadingState.LOADED;
                         model.rowsError = rowsError;
                         model.selectionPivot = undefined;
@@ -720,6 +723,7 @@ export function withQueryModels<Props>(
                         }
 
                         console.error(`Error loading rows for model ${id}: `, rowsError);
+                        removeSettingsFromLocalStorage(this.state.queryModels[id]);
                         model.totalCountLoadingState = LoadingState.LOADED;
                         model.totalCountError = rowsError;
                     })
@@ -763,7 +767,7 @@ export function withQueryModels<Props>(
                         }
 
                         console.error(`Error loading QueryInfo for model ${id}:`, queryInfoError);
-
+                        removeSettingsFromLocalStorage(this.state.queryModels[id]);
                         model.queryInfoLoadingState = LoadingState.LOADED;
                         model.queryInfoError = queryInfoError;
                     })
@@ -909,6 +913,7 @@ export function withQueryModels<Props>(
                         }
 
                         console.error(`Error loading charts for model ${id}`, chartsError);
+                        removeSettingsFromLocalStorage(this.state.queryModels[id]);
                         model.chartsLoadingState = LoadingState.LOADED;
                         model.chartsError = chartsError;
                     })

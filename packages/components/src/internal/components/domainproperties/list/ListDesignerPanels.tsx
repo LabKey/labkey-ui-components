@@ -8,7 +8,7 @@ import { getDomainPanelStatus, saveDomain } from '../actions';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { PropDescType } from '../PropDescType';
+import { AUTOINT_TYPE, PropDescType } from '../PropDescType';
 
 import ConfirmImportTypes from '../ConfirmImportTypes';
 
@@ -16,6 +16,8 @@ import { importData } from '../../../query/api';
 import { buildURL } from '../../../url/AppURL';
 import { resolveErrorMessage } from '../../../util/messaging';
 import { Progress } from '../../base/Progress';
+
+import { AUTO_INT_CONCEPT_URI } from '../constants';
 
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
@@ -155,8 +157,13 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
                 const keyName = pkField.get('name');
 
                 let keyType;
-                // TODO this autoIncrement check doesn't seem to work for importing from JSON as the data type will just be INTEGER_TYPE and not AUTOINT_TYPE
-                if (PropDescType.isAutoIncrement(pkField.dataType)) {
+                let domain = model.domain;
+                // Issue 41718: Domain Designer Field Imports should observe auto-increment fields
+                if (pkField.conceptURI === AUTO_INT_CONCEPT_URI) {
+                    keyType = 'AutoIncrementInteger';
+                    const updatedFields = fields.map(f => (f.isPrimaryKey ? f.merge({ dataType: AUTOINT_TYPE }) : f));
+                    domain = model.domain.set('fields', updatedFields) as DomainDesign;
+                } else if (PropDescType.isAutoIncrement(pkField.dataType)) {
                     keyType = 'AutoIncrementInteger';
                 } else if (PropDescType.isInteger(pkField.dataType.rangeURI)) {
                     keyType = 'Integer';
@@ -164,7 +171,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
                     keyType = 'Varchar';
                 }
 
-                this.onPropertiesChange(model.merge({ keyName, keyType }) as ListModel);
+                this.onPropertiesChange(model.merge({ keyName, keyType, domain }) as ListModel);
             }
         }
     }

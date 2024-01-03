@@ -1059,38 +1059,30 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
     <hr
       className="principal-hr"
     />
-    <Button
-      active={false}
-      block={false}
-      bsClass="btn"
-      bsStyle="default"
-      className="pull-right"
-      disabled={false}
+    <button
+      className="pull-right btn btn-default"
       onClick={[Function]}
       style={
         {
           "marginLeft": "10px",
         }
       }
+      type="button"
     >
       Delete
-    </Button>
-    <Button
-      active={false}
-      block={false}
-      bsClass="btn"
-      bsStyle="default"
-      className="pull-right"
-      disabled={false}
+    </button>
+    <button
+      className="pull-right btn btn-default"
       onClick={[Function]}
       style={
         {
           "marginLeft": "10px",
         }
       }
+      type="button"
     >
       Reactivate
-    </Button>
+    </button>
   </PanelBody>
 </ForwardRef>
 `;
@@ -2133,22 +2125,18 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
     <hr
       className="principal-hr"
     />
-    <Button
-      active={false}
-      block={false}
-      bsClass="btn"
-      bsStyle="default"
-      className="pull-right"
-      disabled={false}
+    <button
+      className="pull-right btn btn-default"
       onClick={[Function]}
       style={
         {
           "marginLeft": "10px",
         }
       }
+      type="button"
     >
       Reactivate
-    </Button>
+    </button>
   </PanelBody>
 </ForwardRef>
 `;

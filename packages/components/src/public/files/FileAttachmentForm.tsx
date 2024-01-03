@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { Button } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import classNames from 'classnames';
 
@@ -225,33 +224,35 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         const { cancelText, onCancel, submitText, compact } = this.props;
 
         const button = (
-            <Button
-                className={classNames('file-form-submit-btn', { 'file-form-submit-btn--compact': compact })}
-                onClick={this.handleSubmit}
-                bsStyle="success"
+            <button
+                className={classNames('file-form-submit-btn btn btn-success', {
+                    'file-form-submit-btn--compact': compact,
+                })}
                 disabled={this.state.attachedFiles.size === 0}
+                onClick={this.handleSubmit}
                 title={submitText}
+                type="button"
             >
                 {submitText}
-            </Button>
+            </button>
         );
 
         if (compact) {
             return button;
-        } else {
-            return (
-                <div className="row top-spacing bottom-spacing">
-                    <div className="col-xs-6">
-                        <Button onClick={onCancel} bsStyle="default" title={cancelText}>
-                            {cancelText}
-                        </Button>
-                    </div>
-                    <div className="col-xs-6">
-                        <div className="pull-right">{button}</div>
-                    </div>
-                </div>
-            );
         }
+
+        return (
+            <div className="row top-spacing bottom-spacing">
+                <div className="col-xs-6">
+                    <button className="btn btn-default" onClick={onCancel} title={cancelText} type="button">
+                        {cancelText}
+                    </button>
+                </div>
+                <div className="col-xs-6">
+                    <div className="pull-right">{button}</div>
+                </div>
+            </div>
+        );
     }
 
     isShowPreviewGrid() {

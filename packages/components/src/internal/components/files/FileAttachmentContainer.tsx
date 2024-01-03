@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Alert } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
 import { Map, Set } from 'immutable';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
+
+import { Alert } from '../base/Alert';
 
 import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
@@ -296,9 +297,7 @@ export class FileAttachmentContainer extends React.Component<
 
         if (errorMsg !== '' && errorMsg !== undefined) {
             return (
-                <Alert className={this.props.compact ? 'file-upload--error-message--compact' : null} bsStyle="danger">
-                    {errorMsg}
-                </Alert>
+                <Alert className={this.props.compact ? 'file-upload--error-message--compact' : null}>{errorMsg}</Alert>
             );
         }
     }

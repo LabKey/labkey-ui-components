@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Button, Col, FormControl, Panel, Row } from 'react-bootstrap';
+import { Col, FormControl, Panel, Row } from 'react-bootstrap';
 
 import { Container } from '@labkey/api';
 
@@ -120,14 +120,14 @@ export const ProjectLookAndFeelForm: FC<Props> = memo(props => {
                             </Col>
                         </Row>
                         <div className="pull-right">
-                            <Button
-                                className="pull-right alert-button"
-                                bsStyle="success"
+                            <button
+                                className="pull-right alert-button btn btn-success"
                                 disabled={isSaving || !dirty}
                                 onClick={onSave}
+                                type="button"
                             >
                                 {isSaving ? 'Saving...' : 'Save'}
-                            </Button>
+                            </button>
                         </div>
                     </Panel.Body>
                 </Panel>

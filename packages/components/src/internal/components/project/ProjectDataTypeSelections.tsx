@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
@@ -92,14 +92,14 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
 
                     {project && (
                         <div className="pull-right">
-                            <Button
-                                className="pull-right alert-button"
-                                bsStyle="success"
+                            <button
+                                className="pull-right alert-button btn btn-success"
                                 disabled={isSaving || !dirty}
                                 onClick={onSave}
+                                type="button"
                             >
                                 {isSaving ? 'Saving...' : 'Save'}
-                            </Button>
+                            </button>
                         </div>
                     )}
                 </div>

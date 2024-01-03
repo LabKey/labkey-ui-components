@@ -77,6 +77,7 @@ const DEFAULT_OPTIONS = List<string>([
 describe('DomainRow', () => {
     function getDefaultProps(): DomainRowProps {
         return {
+            allowUniqueConstraintProperties: false,
             availableTypes: PROP_DESC_TYPES,
             defaultDefaultValueType: DOMAIN_EDITABLE_DEFAULT,
             defaultValueOptions: DEFAULT_OPTIONS,
@@ -331,7 +332,6 @@ describe('DomainRow', () => {
 
         const advButton = row.find({
             id: createFormInputId(DOMAIN_FIELD_ADV, _domainIndex, _index),
-            bsStyle: 'default',
         });
         expect(advButton.length).toEqual(1);
 

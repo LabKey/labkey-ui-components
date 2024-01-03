@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import classNames from 'classnames';
 
 import { Alert } from '../base/Alert';
 
@@ -89,9 +89,13 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
         <>
             {selectedPath && (
                 <div className="path-button-container">
-                    <Button className={showPath ? 'show-path' : ''} onClick={handleShowPath}>
+                    <button
+                        className={classNames('btn btn-default', { 'show-path': showPath })}
+                        onClick={handleShowPath}
+                        type="button"
+                    >
                         {showPath ? 'Hide' : 'Show'} Path
-                    </Button>
+                    </button>
                 </div>
             )}
             {label && <div className="title small-margin-bottom">{label}</div>}

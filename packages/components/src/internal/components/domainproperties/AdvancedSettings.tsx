@@ -1,6 +1,6 @@
 import React from 'react';
 import { List } from 'immutable';
-import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
+import { Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
 import { getSubmitButtonClass } from '../../app/utils';
@@ -517,21 +517,25 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.handleClose} className="domain-adv-footer domain-adv-cancel-btn">
+                    <button
+                        className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
+                        onClick={this.handleClose}
+                        type="button"
+                    >
                         Cancel
-                    </Button>
+                    </button>
                     {helpLinkNode(
                         ADVANCED_FIELD_EDITOR_TOPIC,
                         'Get help with field designer settings',
                         'domain-adv-footer domain-adv-link'
                     )}
-                    <Button
+                    <button
+                        className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
                         onClick={this.handleApply}
-                        bsStyle={getSubmitButtonClass()}
-                        className="domain-adv-footer domain-adv-apply-btn"
+                        type="button"
                     >
                         Apply
-                    </Button>
+                    </button>
                 </Modal.Footer>
             </Modal>
         );

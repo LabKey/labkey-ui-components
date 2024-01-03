@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Button } from 'react-bootstrap';
-
 import { TEST_FOLDER_CONTAINER } from '../../containerFixtures';
 
 import { TEST_USER_APP_ADMIN } from '../../userFixtures';
@@ -66,7 +64,7 @@ describe('ProjectSettings', () => {
         expect(wrapper.find({ children: 'This project and all of its data will be permanently deleted.' }).length).toBe(
             1
         );
-        expect(wrapper.find(Button).last().prop('disabled')).toBeFalsy();
+        expect(wrapper.find('button').last().prop('disabled')).toBeFalsy();
 
         wrapper.unmount();
     });
@@ -81,7 +79,7 @@ describe('ProjectSettings', () => {
 
         expect(wrapper.find(LoadingSpinner).length).toBe(0);
         expect(wrapper.find(Alert).length).toBe(1);
-        expect(wrapper.find(Button).last().prop('disabled')).toBeFalsy();
+        expect(wrapper.find('button').last().prop('disabled')).toBeFalsy();
 
         wrapper.unmount();
     });
@@ -99,7 +97,7 @@ describe('ProjectSettings', () => {
         expect(
             wrapper.find({ children: 'This project will be permanently deleted. It contains no data.' }).length
         ).toBe(1);
-        expect(wrapper.find(Button).last().prop('disabled')).toBeFalsy();
+        expect(wrapper.find('button').last().prop('disabled')).toBeFalsy();
 
         wrapper.unmount();
     });
@@ -124,7 +122,7 @@ describe('ProjectSettings', () => {
             }).length
         ).toBe(1);
         expect(wrapper.find('.delete-project-modal__table').length).toBe(1);
-        expect(wrapper.find(Button).last().prop('disabled')).toBeFalsy();
+        expect(wrapper.find('button').last().prop('disabled')).toBeFalsy();
 
         wrapper.unmount();
     });
@@ -136,13 +134,13 @@ describe('ProjectSettings', () => {
             getServerContext()
         );
 
-        wrapper.find(Button).last().simulate('click');
+        wrapper.find('button').last().simulate('click');
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find(LoadingSpinner).length).toBe(0);
         expect(wrapper.find(Progress).length).toBe(1);
         expect(wrapper.find({ children: "Please don't close this page until deletion is complete." }).length).toBe(1);
-        expect(wrapper.find(Button).length).toBe(0);
+        expect(wrapper.find('button').length).toBe(0);
 
         wrapper.unmount();
     });

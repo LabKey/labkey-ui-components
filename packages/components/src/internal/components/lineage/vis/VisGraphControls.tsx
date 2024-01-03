@@ -1,5 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { Network } from 'vis-network';
 
 const PAN_INCREMENT = 20;
@@ -57,9 +57,9 @@ export class VisGraphControls extends PureComponent<GraphControlsProps> {
                 <div className="lineage-visgraph-control-settings">
                     <div className="btn-group">
                         {!!this.props.onToggleSettings && (
-                            <Button onClick={this.props.onToggleSettings}>
+                            <button className="btn btn-default" onClick={this.props.onToggleSettings} type="button">
                                 <i className="fa fa-gear" />
-                            </Button>
+                            </button>
                         )}
                         <DropdownButton id="graph-control-dd" title={<i className="fa fa-undo" />} pullRight>
                             <MenuItem onClick={this.resetSelect}>Reset view and select seed</MenuItem>
@@ -69,28 +69,28 @@ export class VisGraphControls extends PureComponent<GraphControlsProps> {
                 </div>
                 <div className="lineage-visgraph-control-zoom">
                     <div className="btn-group">
-                        <Button onClick={this.zoomOut}>
+                        <button className="btn btn-default" onClick={this.zoomOut} type="button">
                             <i className="fa fa-search-minus" />
-                        </Button>
-                        <Button onClick={this.zoomIn}>
+                        </button>
+                        <button className="btn btn-default" onClick={this.zoomIn} type="button">
                             <i className="fa fa-search-plus" />
-                        </Button>
+                        </button>
                     </div>
                 </div>
                 <div className="lineage-visgraph-control-pan">
-                    <Button className="lineage-visgraph-control-pan-up" onClick={this.panUp}>
+                    <button className="lineage-visgraph-control-pan-up btn btn-default" onClick={this.panUp} type="button">
                         <i className="fa fa-arrow-up" />
-                    </Button>
+                    </button>
                     <div className="btn-group">
-                        <Button onClick={this.panLeft}>
+                        <button className="btn btn-default" onClick={this.panLeft} type="button">
                             <i className="fa fa-arrow-left" />
-                        </Button>
-                        <Button onClick={this.panDown}>
+                        </button>
+                        <button className="btn btn-default" onClick={this.panDown} type="button">
                             <i className="fa fa-arrow-down" />
-                        </Button>
-                        <Button onClick={this.panRight}>
+                        </button>
+                        <button className="btn btn-default" onClick={this.panRight} type="button">
                             <i className="fa fa-arrow-right" />
-                        </Button>
+                        </button>
                     </div>
                 </div>
             </div>

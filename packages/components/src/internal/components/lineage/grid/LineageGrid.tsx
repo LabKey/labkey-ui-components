@@ -63,7 +63,7 @@ function ensureNumber(value: string): number {
 }
 
 export const LineageGridFromLocation: FC = memo(() => {
-    const [searchParams, _] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const { distance, members, p, seeds } = useMemo(() => Object.fromEntries(searchParams.entries()), [searchParams]);
 
     return (

@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, useCallback, useState } from 'react';
-import { Button } from 'react-bootstrap';
 
 import { isLoginAutoRedirectEnabled } from '../administration/utils';
 import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
@@ -21,6 +20,7 @@ import { getDateFormat } from '../../util/Date';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { useRouteLeave } from '../../util/RouteLeave';
+
 import { useAccountSubNav } from './AccountSubNav';
 
 import { UserDetailHeader } from './UserDetailHeader';
@@ -96,7 +96,11 @@ export const ProfilePage: FC<Props> = props => {
                 description={getUserRoleDisplay(user)}
                 dateFormat={getDateFormat().toUpperCase()}
                 renderButtons={
-                    allowChangePassword ? <Button onClick={toggleChangePassword}>Change Password</Button> : null
+                    allowChangePassword ? (
+                        <button className="btn btn-default" onClick={toggleChangePassword} type="button">
+                            Change Password
+                        </button>
+                    ) : null
                 }
             />
             <Notifications />

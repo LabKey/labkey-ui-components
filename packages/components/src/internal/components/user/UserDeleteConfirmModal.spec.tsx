@@ -18,7 +18,7 @@ import { mount } from 'enzyme';
 
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 
-describe('<UserDeleteConfirmModal/>', () => {
+describe('UserDeleteConfirmModal', () => {
     test('single user selected', () => {
         const component = <UserDeleteConfirmModal userIds={[1]} onCancel={jest.fn()} onComplete={jest.fn()} />;
 
@@ -53,7 +53,7 @@ describe('<UserDeleteConfirmModal/>', () => {
         const wrapper = mount(component);
         wrapper.setState({ submitting: true, error: 'Test Error' });
 
-        expect(wrapper.find('Alert')).toHaveLength(2);
+        expect(wrapper.find('Alert')).toHaveLength(1);
         expect(wrapper.find('.modal-title').text()).toBe('Delete 3 Users?');
         expect(wrapper.find('.modal-body').text()).toContain('Deletion of a user is');
         expect(wrapper.find('.modal-body').text()).toContain('3 users will be deleted.');

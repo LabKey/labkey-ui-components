@@ -3,7 +3,6 @@
 exports[`AdvancedSettings existing list, existing properties 1`] = `
 <button
   className="domain-field-float-right btn btn-default"
-  disabled={false}
   onClick={[Function]}
   type="button"
 >
@@ -14,7 +13,6 @@ exports[`AdvancedSettings existing list, existing properties 1`] = `
 exports[`AdvancedSettings new list, default properties 1`] = `
 <button
   className="domain-field-float-right btn btn-default"
-  disabled={false}
   onClick={[Function]}
   type="button"
 >

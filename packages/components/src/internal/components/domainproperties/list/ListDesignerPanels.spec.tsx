@@ -1,5 +1,4 @@
 import React from 'react';
-import { Alert } from 'react-bootstrap';
 import { mount, shallow } from 'enzyme';
 
 import { List } from 'immutable';
@@ -11,6 +10,8 @@ import DomainForm from '../DomainForm';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
 import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
+
+import { Alert } from '../../base/Alert';
 
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';

@@ -1,5 +1,5 @@
 import React, { ChangeEventHandler, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -200,13 +200,13 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
 
             {!isDeleting && (
                 <Modal.Footer>
-                    <Button className="btn btn-default pull-left" type="button" onClick={onCancel}>
+                    <button className="btn btn-default pull-left" onClick={onCancel} type="button">
                         Cancel
-                    </Button>
+                    </button>
 
-                    <Button className="btn btn-danger" type="button" onClick={onDeleteProject}>
+                    <button className="btn btn-danger" onClick={onDeleteProject} type="button">
                         Yes, Delete
-                    </Button>
+                    </button>
                 </Modal.Footer>
             )}
         </Modal>

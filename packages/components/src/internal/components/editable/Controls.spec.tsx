@@ -22,7 +22,7 @@ describe('Controls', () => {
     test('default properties', () => {
         const addFn = jest.fn();
         const wrapper = shallow(<AddRowsControl onAdd={addFn} />);
-        wrapper.find('Button').simulate('click');
+        wrapper.find('button').simulate('click');
         expect(addFn).toHaveBeenCalledTimes(1);
     });
 
@@ -89,6 +89,5 @@ describe('Controls', () => {
         wrapper.update();
         expect(wrapper.find('.text-danger')).toHaveLength(1);
         expect(wrapper.find('.text-danger').text()).toBe('At most 5,000 rows can be added at once (10 remaining).');
-
     })
 });

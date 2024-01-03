@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Button, FormGroup } from 'react-bootstrap';
+import { FormGroup } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
@@ -330,13 +330,18 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                             </DisableableButton>
                         )}
                         {isNew && (
-                            <Button bsStyle="default" disabled={saving} onClick={onCancel}>
+                            <button className="btn btn-default" disabled={saving} onClick={onCancel} type="button">
                                 Cancel
-                            </Button>
+                            </button>
                         )}
-                        <Button bsStyle="success" className="pull-right" disabled={!dirty || saving} onClick={onSave}>
+                        <button
+                            className="pull-right btn btn-success"
+                            disabled={!dirty || saving}
+                            onClick={onSave}
+                            type="button"
+                        >
                             {saving ? 'Saving...' : 'Save'}
-                        </Button>
+                        </button>
                     </div>
                 </form>
             )}

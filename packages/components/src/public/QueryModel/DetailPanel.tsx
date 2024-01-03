@@ -15,11 +15,11 @@
  */
 import React, { FC, memo, useMemo } from 'react';
 import { fromJS, List } from 'immutable';
-import { Alert } from 'react-bootstrap';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../../internal/components/forms/detail/DetailDisplay';
 
 import { QueryColumn } from '../QueryColumn';
+import { Alert } from '../../internal/components/base/Alert';
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
@@ -44,7 +44,7 @@ export const DetailPanel: FC<DetailPanelProps & RequiresModel> = memo(props => {
     let displayColumns: List<QueryColumn>;
 
     if (error !== undefined) {
-        return <Alert>{error}</Alert>;
+        return <Alert bsStyle="info">{error}</Alert>;
     } else if (model.isLoading) {
         return <LoadingSpinner />;
     }

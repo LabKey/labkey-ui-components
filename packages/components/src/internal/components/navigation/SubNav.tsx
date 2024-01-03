@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { FC, useRef, useState, useCallback, useEffect, memo, useMemo } from 'react';
-import { Button } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
 import { useLocation } from 'react-router-dom';
@@ -90,11 +89,7 @@ const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
     return (
         <nav className="navbar navbar-inverse sub-nav">
             <div className="sub-nav-container">
-                {noun && (
-                    <ParentNavItem to={noun.url}>
-                        {noun.text}
-                    </ParentNavItem>
-                )}
+                {noun && <ParentNavItem to={noun.url}>{noun.text}</ParentNavItem>}
 
                 <div className="tab-scroll-ct" ref={scrollable}>
                     <ul className="nav navbar-nav">
@@ -112,12 +107,12 @@ const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
 
                 {isScrollable && (
                     <div className="btn-group scroll-btn-group">
-                        <Button onClick={scrollLeft}>
+                        <button className="btn btn-default" onClick={scrollLeft} type="button">
                             <i className="fa fa-chevron-left" />
-                        </Button>
-                        <Button onClick={scrollRight}>
+                        </button>
+                        <button className="btn btn-default" onClick={scrollRight} type="button">
                             <i className="fa fa-chevron-right" />
-                        </Button>
+                        </button>
                     </div>
                 )}
 

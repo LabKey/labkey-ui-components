@@ -13,16 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC } from 'react';
-import { Alert as BootstrapAlert, AlertProps } from 'react-bootstrap';
+import React, { FC, HTMLProps, ReactNode } from 'react';
+import classNames from 'classnames';
+
+export interface AlertProps extends HTMLProps<HTMLDivElement> {
+    // bsClass?: string; -- not used by us
+    // bsSize?: string; -- not supported by bootstrap
+    bsStyle?: string;
+    closeLabel?: ReactNode;
+    onDismiss?: () => void;
+}
 
 /**
  * An Alert that will only display if children are available. Defaults to bsStyle "danger".
  */
 export const Alert: FC<AlertProps> = props => {
-    const { children } = props;
+    const { bsStyle, children, className, closeLabel, onDismiss, ...divProps } = props;
     if (!children) return null;
-    return <BootstrapAlert {...props}>{children}</BootstrapAlert>;
+
+    const dismissible = !!onDismiss;
+    return (
+        <div
+            {...divProps}
+            className={classNames(className, `alert alert-${bsStyle}`, { 'alert-dismissable': dismissible })}
+            role="alert"
+        >
+            {dismissible && (
+                <button className="close" onClick={onDismiss} type="button">
+                    <span aria-hidden="true">&times;</span>
+                    <span className="sr-only">{closeLabel}</span>
+                </button>
+            )}
+            {children}
+        </div>
+    );
 };
 
 Alert.defaultProps = {

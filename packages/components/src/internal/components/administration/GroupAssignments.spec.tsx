@@ -1,6 +1,5 @@
 import React from 'react';
 import { fromJS, List, Map } from 'immutable';
-import { Button } from 'react-bootstrap';
 import PanelBody from 'react-bootstrap/lib/PanelBody';
 
 import { Principal, SecurityPolicy } from '../permissions/models';
@@ -121,8 +120,8 @@ describe('GroupAssignments', () => {
 
         expect(wrapper.find(PanelBody).last().text()).toBe('No user selected.');
         // 'Create Group' and 'Save' button are disabled
-        expect(wrapper.find(Button).first().prop('disabled')).toBeTruthy();
-        expect(wrapper.find(Button).last().prop('disabled')).toBeTruthy();
+        expect(wrapper.find('button').first().prop('disabled')).toBeTruthy();
+        expect(wrapper.find('button').last().prop('disabled')).toBeTruthy();
         expect(wrapper.find(ExpandableContainer)).toHaveLength(0);
 
         wrapper.unmount();
@@ -149,13 +148,13 @@ describe('GroupAssignments', () => {
 
         // Does not create duplicate 'group1' group
         wrapper.find('.create-group__input').simulate('change', { target: { value: 'group1' } });
-        expect(wrapper.find(Button).first().prop('disabled')).toBeFalsy();
-        wrapper.find(Button).first().simulate('click');
+        expect(wrapper.find('button').first().prop('disabled')).toBeFalsy();
+        wrapper.find('button').first().simulate('click');
         expect(DEFAULT_PROPS.createGroup).toHaveBeenCalledTimes(0);
 
         // Does create new 'group3' group
         wrapper.find('.create-group__input').simulate('change', { target: { value: 'group3' } });
-        wrapper.find(Button).first().simulate('click');
+        wrapper.find('button').first().simulate('click');
         expect(DEFAULT_PROPS.createGroup).toHaveBeenCalledTimes(1);
         expect(wrapper.find('.create-group__input').prop('value')).toBe('');
 
@@ -166,7 +165,7 @@ describe('GroupAssignments', () => {
         const wrapper = mountWithServerContext(<GroupAssignments {...DEFAULT_PROPS} />, { user: TEST_USER_APP_ADMIN });
 
         wrapper.find('.create-group__input').simulate('change', { target: { value: 'group3' } });
-        wrapper.find(Button).first().simulate('click');
+        wrapper.find('button').first().simulate('click');
         expect(DEFAULT_PROPS.setIsDirty).toHaveBeenCalledWith(true);
 
         wrapper.unmount();

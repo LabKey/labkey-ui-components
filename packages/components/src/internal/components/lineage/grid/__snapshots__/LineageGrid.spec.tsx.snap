@@ -205,6 +205,7 @@ exports[`<LineageGrid/> with data 1`] = `
           <a
             className="btn btn-success disabled"
             href="#/lineage?seeds=urn%3Alsid%3Alabkey.com%3ASample.61.Hemoglobin%3AHgb3.3&distance=5&members=children"
+            onClick={[Function]}
             style={
               {
                 "pointerEvents": "none",

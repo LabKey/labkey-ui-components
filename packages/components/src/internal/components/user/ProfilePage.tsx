@@ -73,6 +73,7 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
         });
         actions.clearSelections(model.id);
         actions.loadModel(model.id, true, true);
+        actions.loadFirstPage(model.id);
         closeDeleteModal();
         onDelete();
     }, [model, actions, model.id]);

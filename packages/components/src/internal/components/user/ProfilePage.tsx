@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 
 import {
     getApiExpirationMessage,
@@ -51,14 +51,17 @@ import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { deleteRows } from '../../query/api';
 
+interface ButtonsComponentProps extends RequiresModelAndActions {
+    onDelete: () => void;
+}
 
-const APIKeysButtonsComponent: FC<RequiresModelAndActions> = props => {
-    const { model, actions } = props;
+const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
+    const { model, actions, onDelete } = props;
     const [ showConfirmDelete, setShowConfirmDelete ] = useState<boolean>(false);
 
     const onDeleteClicked = useCallback(() => setShowConfirmDelete(true), []);
     const closeDeleteModal = useCallback(() => setShowConfirmDelete(false), []);
-    const onDelete = useCallback(async () => {
+    const onConfirmDelete = useCallback(async () => {
         const rows = [];
         model.selections.forEach(selection => {
             rows.push({rowId: selection});
@@ -71,6 +74,7 @@ const APIKeysButtonsComponent: FC<RequiresModelAndActions> = props => {
         actions.clearSelections(model.id);
         actions.loadModel(model.id, true, true);
         closeDeleteModal();
+        onDelete();
     }, [model, actions, model.id]);
 
     const noun = model?.selections?.size > 1 ? "Keys" : "Key";
@@ -84,7 +88,7 @@ const APIKeysButtonsComponent: FC<RequiresModelAndActions> = props => {
                 <ConfirmModal
                     confirmVariant="danger"
                     onCancel={closeDeleteModal}
-                    onConfirm={onDelete}
+                    onConfirm={onConfirmDelete}
                     confirmButtonText={"Yes, Delete"}
                     cancelButtonText={"Cancel"}
                     title={`Delete ${model?.selections?.size} API ${noun}`}
@@ -96,15 +100,19 @@ const APIKeysButtonsComponent: FC<RequiresModelAndActions> = props => {
     )
 }
 
-export type APIKeysPanelBodyProps = InjectedQueryModels;
+type APIKeysPanelBodyProps = InjectedQueryModels;
 
 export const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
     const { actions, queryModels } = props;
-    const  { model } =  queryModels;
-    const {user, moduleContext, impersonatingUser } = useServerContext();
+    const { model } =  queryModels;
+    const { user, moduleContext, impersonatingUser } = useServerContext();
     const { api } = useAppContext<AppContext>();
     const [ error, setError ] = useState<boolean>(false);
     const [ generatedKey, setGeneratedKey ] = useState<string>();
+
+    const onDelete = useCallback(() => {
+        setGeneratedKey("");
+    }, []);
 
     const onGenerateKey = useCallback(async () => {
         try {
@@ -178,7 +186,8 @@ export const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
                         showViewMenu={false}
                         buttonsComponentProps={{
                             model,
-                            actions
+                            actions,
+                            onDelete
                         }}
                         ButtonsComponent={APIKeysButtonsComponent}
                         emptyText="You currently do not have any API keys"

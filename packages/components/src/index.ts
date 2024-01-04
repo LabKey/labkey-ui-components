@@ -833,6 +833,8 @@ import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 import { FormButtons } from './internal/FormButtons';
 import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
+import { Tooltip } from './internal/Tooltip';
+import { Popover } from './internal/Popover';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1669,6 +1671,8 @@ export {
     ExtendedMap,
     FormButtons,
     ModalButtons,
+    Tooltip,
+    Popover,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

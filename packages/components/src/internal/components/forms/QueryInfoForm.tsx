@@ -66,6 +66,7 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     singularNoun?: string;
     submitForEditText?: string;
     submitText?: string;
+    stickyButtons?: boolean;
     title?: string;
 }
 
@@ -89,6 +90,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         includeCountField: true,
         countText: 'Quantity',
         cancelText: 'Cancel',
+        stickyButtons: true,
         submitForEditText: 'Edit with Grid',
         submitText: 'Submit',
         isSubmittedText: 'Submitted',
@@ -269,6 +271,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             onSubmitForEdit,
             pluralNoun,
             singularNoun,
+            stickyButtons,
             hideButtons,
         } = this.props;
 
@@ -281,7 +284,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         const showCancel = this.props.onHide !== undefined || this.props.asModal;
 
         return (
-            <FormButtons sticky={!asModal}>
+            <FormButtons sticky={stickyButtons && !asModal}>
                 {showCancel && (
                     <button className="test-loc-cancel-button btn btn-default" onClick={this.onHide} type="button">
                         {cancelText}

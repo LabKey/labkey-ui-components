@@ -219,6 +219,7 @@ export class UserProfile extends PureComponent<Props, State> {
                             onSuccess={this.onSuccess}
                             disabledFields={DISABLED_FIELDS}
                             footer={this.footer()}
+                            stickyButtons={false}
                             showErrorsAtBottom
                         />
                     </>

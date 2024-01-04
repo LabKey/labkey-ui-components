@@ -1,6 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { fromJS, List } from 'immutable';
-import { Alert } from 'react-bootstrap';
 
 import { SchemaQuery } from '../../public/SchemaQuery';
 import { QueryInfo } from '../../public/QueryInfo';
@@ -11,6 +10,7 @@ import { getQueryDetails, selectRowsDeprecated } from '../query/api';
 
 import { LoadingSpinner } from './base/LoadingSpinner';
 import { Grid } from './base/Grid';
+import { Alert } from './base/Alert';
 
 interface PreviewGridProps {
     numCols: number;
@@ -53,11 +53,7 @@ export class StatelessPreviewGrid extends PureComponent<StatelessPreviewGridProp
                 </>
             );
         } else if (loading === false && error !== null) {
-            body = (
-                <>
-                    <Alert bsStyle="danger">{error}</Alert>
-                </>
-            );
+            body = <Alert>{error}</Alert>;
         }
 
         return <div className="preview-grid">{body}</div>;

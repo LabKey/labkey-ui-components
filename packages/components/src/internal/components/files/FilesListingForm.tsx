@@ -1,5 +1,4 @@
 import React, { Component, ReactNode } from 'react';
-import { Button } from 'react-bootstrap';
 import { Map, Set, List } from 'immutable';
 
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
@@ -132,21 +131,28 @@ export class FilesListingForm extends Component<Props, State> {
                 <div className="row bottom-spacing">
                     <div className="col-md-7">
                         {canInsert && (
-                            <Button onClick={this.toggleUploadSection} bsStyle="primary" title={addFileText}>
+                            <button
+                                className="btn btn-primary"
+                                onClick={this.toggleUploadSection}
+                                title={addFileText}
+                                type="button"
+                            >
                                 {addFileText}
-                            </Button>
+                            </button>
                         )}
                     </div>
                     <div className="col-md-5">
                         {hasFiles && (
                             <div className="pull-right">
-                                <Button
+                                <button
+                                    className="btn btn-default"
                                     disabled={selectedFiles.size === 0}
                                     onClick={this.downloadSelectedFiles}
                                     title="Download selected files"
+                                    type="button"
                                 >
                                     <i className="fa fa-download" />
-                                </Button>
+                                </button>
                             </div>
                         )}
                     </div>

@@ -1,7 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
 
-import { Button } from 'react-bootstrap';
-
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 
 import { RequiresModelAndActions } from './withQueryModels';
@@ -44,15 +42,16 @@ export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
         if (selectionSize > 0) {
             selectionCount = (
                 <span className="selection-status__count">
-                    {selectionSize.toLocaleString()} of {isLoadingTotalCount ? <LoadingSpinner msg="" /> : rowCount.toLocaleString()} selected
+                    {selectionSize.toLocaleString()} of{' '}
+                    {isLoadingTotalCount ? <LoadingSpinner msg="" /> : rowCount.toLocaleString()} selected
                 </span>
             );
 
             clearAllButton = (
                 <span className="selection-status__clear-all">
-                    <Button bsSize="xsmall" onClick={this.clearSelections}>
+                    <button className="btn btn-default btn-xs" onClick={this.clearSelections} type="button">
                         {this.clearText()}
-                    </Button>
+                    </button>
                 </span>
             );
         }
@@ -60,9 +59,9 @@ export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
         if (rowCount > maxRows && selectionSize !== rowCount && rowCount > 0) {
             selectAllButton = (
                 <span className="selection-status__select-all">
-                    <Button bsSize="xsmall" onClick={this.selectAll}>
+                    <button className="btn btn-default btn-xs" onClick={this.selectAll} type="button">
                         Select all {!isLoadingTotalCount ? rowCount.toLocaleString() : ''}
-                    </Button>
+                    </button>
                 </span>
             );
         }

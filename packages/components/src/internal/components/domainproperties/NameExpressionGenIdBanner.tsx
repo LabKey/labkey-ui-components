@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Button, Col, FormControl, Row } from 'react-bootstrap';
+import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
@@ -114,7 +114,7 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
             console.error(reason);
             setError(resolveErrorMessage(reason, 'genId', 'genId', 'reset'));
         }
-    }, [rowId, kindName, _createNotification]);
+    }, [api, rowId, kindName, _createNotification, init]);
 
     if (currentGenId === undefined) return <LoadingSpinner />;
 
@@ -122,13 +122,21 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
         <>
             <Alert bsStyle="info" className="genid-alert">
                 Current genId: {currentGenId}
-                <Button className="pull-right alert-button edit-genid-btn" bsStyle="info" onClick={onEditClick}>
+                <button
+                    className="pull-right alert-button edit-genid-btn btn btn-info"
+                    onClick={onEditClick}
+                    type="button"
+                >
                     Edit genId
-                </Button>
+                </button>
                 {canReset && currentGenId > 1 && (
-                    <Button className="pull-right alert-button reset-genid-btn" bsStyle="info" onClick={onResetClick}>
+                    <button
+                        className="pull-right alert-button reset-genid-btn btn btn-info"
+                        onClick={onResetClick}
+                        type="button"
+                    >
                         Reset genId
-                    </Button>
+                    </button>
                 )}
             </Alert>
             {showResetDialog && (

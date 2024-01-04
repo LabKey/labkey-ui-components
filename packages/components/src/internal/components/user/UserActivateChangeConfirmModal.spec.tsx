@@ -18,7 +18,7 @@ import { mount } from 'enzyme';
 
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 
-describe('<UserActivateChangeConfirmModal/>', () => {
+describe('UserActivateChangeConfirmModal', () => {
     test('reactivate single user selected', () => {
         const component = (
             <UserActivateChangeConfirmModal
@@ -76,7 +76,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
         const wrapper = mount(component);
         wrapper.setState({ submitting: true, error: 'Test Error' });
 
-        expect(wrapper.find('Alert')).toHaveLength(2);
+        expect(wrapper.find('Alert')).toHaveLength(1);
         expect(wrapper.find('.modal-title').text()).toBe('Reactivate 3 Users?');
         expect(wrapper.find('.modal-body').text()).toContain('Reactivated users');
         expect(wrapper.find('.modal-body').text()).toContain('3 users will be updated.');
@@ -144,7 +144,7 @@ describe('<UserActivateChangeConfirmModal/>', () => {
         const wrapper = mount(component);
         wrapper.setState({ submitting: true, error: 'Test Error' });
 
-        expect(wrapper.find('Alert')).toHaveLength(2);
+        expect(wrapper.find('Alert')).toHaveLength(1);
         expect(wrapper.find('.modal-title').text()).toBe('Deactivate 3 Users?');
         expect(wrapper.find('.modal-body').text()).toContain('Deactivated users');
         expect(wrapper.find('.modal-body').text()).toContain('3 users will be updated.');

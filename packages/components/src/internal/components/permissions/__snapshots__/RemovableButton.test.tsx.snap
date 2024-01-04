@@ -19,7 +19,7 @@ exports[`<RemovableButton/> custom props 1`] = `
       </button>
     </div>
     <button
-      class="permissions-button-display permissions-button-added btn btn-primary"
+      class="permissions-button-display btn btn-primary permissions-button-added"
       type="button"
     >
       Display Text (Custom)
@@ -34,7 +34,7 @@ exports[`<RemovableButton/> default props 1`] = `
     class="permissions-button-group btn-group"
   >
     <button
-      class="btn btn-default"
+      class=" btn btn-default"
       type="button"
     >
       <i

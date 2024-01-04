@@ -175,20 +175,23 @@ function updateUsersState(userIds: number[], isDelete: boolean, isActivate: bool
     });
 }
 
-export function resetPassword(email: string): Promise<any> {
+export type ResetPasswordResponse = {
+    email: string;
+    resetPassword: boolean;
+};
+
+export function resetPassword(email: string): Promise<ResetPasswordResponse> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('security', 'adminResetPassword.api'),
             method: 'POST',
             params: { email },
-            success: Utils.getCallbackWrapper(response => {
-                resolve({
-                    resetPassword: true,
-                    email,
-                });
+            success: Utils.getCallbackWrapper(() => {
+                resolve({ email, resetPassword: true });
             }),
-            failure: Utils.getCallbackWrapper(response => {
-                reject(response);
+            failure: Utils.getCallbackWrapper(error => {
+                console.error('Failed to reset password.', error);
+                reject(error);
             }),
         });
     });

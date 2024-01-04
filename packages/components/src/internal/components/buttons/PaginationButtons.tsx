@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { Button } from 'react-bootstrap';
+import React, { FC, memo } from 'react';
 
 export interface PaginationButtonsProps {
     total: number;
@@ -24,47 +23,53 @@ export interface PaginationButtonsProps {
     nextPage(): void;
 }
 
-export class PaginationButtons extends React.PureComponent<PaginationButtonsProps> {
-    render() {
-        const { total, currentPage, perPage, previousPage, nextPage } = this.props;
-        const pageStart = currentPage * perPage + 1;
-        let pageEnd = (currentPage + 1) * perPage;
-        const previousDisabled = currentPage === 0;
+export const PaginationButtons: FC<PaginationButtonsProps> = memo(props => {
+    const { total, currentPage, perPage, previousPage, nextPage } = props;
+    const pageStart = currentPage * perPage + 1;
+    let pageEnd = (currentPage + 1) * perPage;
+    const previousDisabled = currentPage === 0;
 
-        if (pageEnd >= total) {
-            pageEnd = total;
-        }
-
-        const nextDisabled = pageEnd >= total;
-        const isValid = !isNaN(pageStart) && !isNaN(pageEnd) && !isNaN(total) && pageStart <= pageEnd;
-        let pageInfo;
-
-        if (isValid) {
-            pageInfo = (
-                <>
-                    <span className="pagination-info__start">{pageStart}</span>
-                    <span> - </span>
-                    <span className="pagination-info__end">{pageEnd}</span>
-                    <span> of </span>
-                    <span className="pagination-info__total">{total}</span>
-                </>
-            );
-        }
-
-        return (
-            <div className="pagination-buttons">
-                <div className="pagination-buttons__info">{pageInfo}</div>
-
-                <div className="pagination-buttons__buttons btn-group">
-                    <Button className="pagination-buttons__prev" onClick={previousPage} disabled={previousDisabled}>
-                        <i className="fa fa-chevron-left" />
-                    </Button>
-
-                    <Button className="pagination-buttons__next" onClick={nextPage} disabled={nextDisabled}>
-                        <i className="fa fa-chevron-right" />
-                    </Button>
-                </div>
-            </div>
-        );
+    if (pageEnd >= total) {
+        pageEnd = total;
     }
-}
+
+    const isValid = !isNaN(pageStart) && !isNaN(pageEnd) && !isNaN(total) && pageStart <= pageEnd;
+
+    return (
+        <div className="pagination-buttons">
+            <div className="pagination-buttons__info">
+                {isValid && (
+                    <>
+                        <span className="pagination-info__start">{pageStart}</span>
+                        <span> - </span>
+                        <span className="pagination-info__end">{pageEnd}</span>
+                        <span> of </span>
+                        <span className="pagination-info__total">{total}</span>
+                    </>
+                )}
+            </div>
+
+            <div className="pagination-buttons__buttons btn-group">
+                <button
+                    className="pagination-buttons__prev btn btn-default"
+                    onClick={previousPage}
+                    disabled={previousDisabled}
+                    type="button"
+                >
+                    <i className="fa fa-chevron-left" />
+                </button>
+
+                <button
+                    className="pagination-buttons__next btn btn-default"
+                    onClick={nextPage}
+                    disabled={pageEnd >= total}
+                    type="button"
+                >
+                    <i className="fa fa-chevron-right" />
+                </button>
+            </div>
+        </div>
+    );
+});
+
+PaginationButtons.displayName = 'PaginationButtons';

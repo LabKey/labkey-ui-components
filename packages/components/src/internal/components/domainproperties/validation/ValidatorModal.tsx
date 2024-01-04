@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { List } from 'immutable';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 import { getSubmitButtonClass } from '../../../app/utils';
 
@@ -160,17 +160,21 @@ export function ValidatorModal(WrappedComponent: any) {
                             />
                         </div>
                         <div className="domain-validation-btn-row">
-                            <Button onClick={onHide} className="domain-adv-footer domain-adv-cancel-btn">
+                            <button
+                                className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
+                                onClick={onHide}
+                                type="button"
+                            >
                                 Cancel
-                            </Button>
-                            <Button
-                                bsStyle={getSubmitButtonClass()}
-                                onClick={this.handleApply}
-                                className="domain-adv-footer domain-adv-apply-btn"
+                            </button>
+                            <button
+                                className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
                                 disabled={!this.isValid(validators)}
+                                onClick={this.handleApply}
+                                type="button"
                             >
                                 Apply
-                            </Button>
+                            </button>
                         </div>
                     </Modal.Footer>
                 </Modal>

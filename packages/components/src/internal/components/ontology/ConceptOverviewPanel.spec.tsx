@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { Alert } from '../base/Alert';
@@ -65,9 +64,9 @@ describe('ConceptOverviewPanelImpl', () => {
         expect(wrapper.find('div')).toHaveLength(divCount);
         expect(wrapper.find(ConceptPathDisplay)).toHaveLength(showPath ? 1 : 0);
 
-        expect(wrapper.find(Button)).toHaveLength(hasSelectedPath ? 1 : 0);
+        expect(wrapper.find('button')).toHaveLength(hasSelectedPath ? 1 : 0);
         if (hasSelectedPath) {
-            expect(wrapper.find(Button).text()).toBe(showPath ? 'Hide Path' : 'Show Path');
+            expect(wrapper.find('button').text()).toBe(showPath ? 'Hide Path' : 'Show Path');
         }
 
         if (concept) {
@@ -98,7 +97,7 @@ describe('ConceptOverviewPanelImpl', () => {
 
     test('with selected path, shown', () => {
         const wrapper = mount(<ConceptOverviewPanelImpl concept={TEST_CONCEPT} selectedPath={TEST_PATH} />);
-        wrapper.find(Button).simulate('click');
+        wrapper.find('button').simulate('click');
         validate(wrapper, TEST_CONCEPT, 8, true, true);
         expect(wrapper.find(ConceptPathDisplay).prop('title')).toBe('Current Path');
         expect(wrapper.find(ConceptPathDisplay).prop('path')).toBe(TEST_PATH);

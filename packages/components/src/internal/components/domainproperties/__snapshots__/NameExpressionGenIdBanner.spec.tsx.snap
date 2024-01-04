@@ -9,7 +9,6 @@ exports[`NameExpressionGenIdBanner with existing data 1`] = `
   124
   <button
     className="pull-right alert-button edit-genid-btn btn btn-info"
-    disabled={false}
     onClick={[Function]}
     type="button"
   >
@@ -27,7 +26,6 @@ exports[`NameExpressionGenIdBanner without existing data, genId = 1 (0) 1`] = `
   1
   <button
     className="pull-right alert-button edit-genid-btn btn btn-info"
-    disabled={false}
     onClick={[Function]}
     type="button"
   >
@@ -45,7 +43,6 @@ exports[`NameExpressionGenIdBanner without existing data, genId > 1 1`] = `
   124
   <button
     className="pull-right alert-button edit-genid-btn btn btn-info"
-    disabled={false}
     onClick={[Function]}
     type="button"
   >
@@ -53,7 +50,6 @@ exports[`NameExpressionGenIdBanner without existing data, genId > 1 1`] = `
   </button>
   <button
     className="pull-right alert-button reset-genid-btn btn btn-info"
-    disabled={false}
     onClick={[Function]}
     type="button"
   >

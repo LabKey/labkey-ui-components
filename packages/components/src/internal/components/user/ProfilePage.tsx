@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 
 import {
     getApiExpirationMessage,
@@ -24,6 +24,7 @@ import { getDateFormat } from '../../util/Date';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { useRouteLeave } from '../../util/RouteLeave';
+
 import { useAccountSubNav } from './AccountSubNav';
 
 import { UserDetailHeader } from './UserDetailHeader';
@@ -313,7 +314,11 @@ export const ProfilePage: FC<Props> = props => {
                 description={getUserRoleDisplay(user)}
                 dateFormat={getDateFormat().toUpperCase()}
                 renderButtons={
-                    allowChangePassword ? <button className={"btn btn-default"} onClick={toggleChangePassword} type={"button"}>Change Password</button> : null
+                    allowChangePassword ? (
+                        <button className="btn btn-default" onClick={toggleChangePassword} type="button">
+                            Change Password
+                        </button>
+                    ) : null
                 }
             />
             <Notifications />

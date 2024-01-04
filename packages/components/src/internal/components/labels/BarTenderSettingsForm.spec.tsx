@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl, Button } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import { ReactWrapper } from 'enzyme';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
@@ -32,15 +32,15 @@ describe('BarTenderSettingsForm', () => {
         expect(wrapper.find('.panel-heading')).toHaveLength(withHeading ? 1 : 0);
         expect(wrapper.find('.permissions-save-alert')).toHaveLength(0);
         expect(wrapper.find('.label-printing--help-link').hostNodes()).toHaveLength(1);
-        expect(wrapper.find(Button)).toHaveLength(2);
+        expect(wrapper.find('button')).toHaveLength(2);
     }
 
     function validateUrlInput(wrapper: ReactWrapper): void {
         expect(wrapper.find(FormControl).first().prop('type')).toBe('url');
-        expect(wrapper.find(Button).first().text()).toBe('Save');
-        expect(wrapper.find(Button).first().prop('disabled')).toBeTruthy();
-        expect(wrapper.find(Button).last().text()).toBe('Test Connection');
-        expect(wrapper.find(Button).last().prop('disabled')).toBeTruthy();
+        expect(wrapper.find('button').first().text()).toBe('Save');
+        expect(wrapper.find('button').first().prop('disabled')).toBeTruthy();
+        expect(wrapper.find('button').last().text()).toBe('Test Connection');
+        expect(wrapper.find('button').last().prop('disabled')).toBeTruthy();
     }
 
     test('default props, home project', async () => {
@@ -111,10 +111,10 @@ describe('BarTenderSettingsForm', () => {
         validate(wrapper);
         expect(wrapper.find(FormControl).first().prop('type')).toBe('url');
         expect(wrapper.find(FormControl).first().prop('value')).toBe('testServerURL');
-        expect(wrapper.find(Button).first().text()).toBe('Save');
-        expect(wrapper.find(Button).first().prop('disabled')).toBeTruthy();
-        expect(wrapper.find(Button).last().text()).toBe('Test Connection');
-        expect(wrapper.find(Button).last().prop('disabled')).toBeFalsy();
+        expect(wrapper.find('button').first().text()).toBe('Save');
+        expect(wrapper.find('button').first().prop('disabled')).toBeTruthy();
+        expect(wrapper.find('button').last().text()).toBe('Test Connection');
+        expect(wrapper.find('button').last().prop('disabled')).toBeFalsy();
         wrapper.unmount();
     });
 });

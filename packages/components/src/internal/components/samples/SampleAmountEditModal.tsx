@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { useServerContext } from '../base/ServerContext';
@@ -177,19 +177,17 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <>
-                    <Button className="pull-left" disabled={submitting} onClick={onCancel}>
-                        Cancel
-                    </Button>
-                    <Button
-                        className="pull-right"
-                        bsStyle="success"
-                        disabled={submitting || !canSubmit}
-                        onClick={onSubmit}
-                    >
-                        Update {noun}
-                    </Button>
-                </>
+                <button className="pull-left btn btn-default" disabled={submitting} onClick={onCancel} type="button">
+                    Cancel
+                </button>
+                <button
+                    className="pull-right btn btn-success"
+                    disabled={submitting || !canSubmit}
+                    onClick={onSubmit}
+                    type="button"
+                >
+                    Update {noun}
+                </button>
             </Modal.Footer>
         </Modal>
     );

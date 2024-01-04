@@ -15,12 +15,12 @@ const DEFAULT_PROPS = {
     selectedPrincipalId: 2,
 };
 
-describe('<MemberButtons />', () => {
+describe('MemberButtons', () => {
     test('Default', () => {
         const wrapper = shallow(<MemberButtons {...DEFAULT_PROPS} />);
 
         expect(wrapper.find(RemovableButton)).toHaveLength(1);
-        expect(wrapper.find(RemovableButton).prop('bsStyle')).toBe(undefined);
+        expect(wrapper.find(RemovableButton).prop('bsStyle')).toBe('default');
         expect(wrapper.find('.permissions-groups-member-none')).toHaveLength(0);
     });
 

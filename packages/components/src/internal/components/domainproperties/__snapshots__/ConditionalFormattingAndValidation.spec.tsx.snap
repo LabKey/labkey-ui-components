@@ -242,28 +242,16 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
                 </DomainFieldLabel>
               </div>
               <div>
-                <Button
-                  active={false}
-                  block={false}
-                  bsClass="btn"
-                  bsStyle="default"
-                  className="domain-validation-button"
+                <button
+                  className="domain-validation-button btn btn-default"
                   disabled={false}
                   id="domainpropertiesrow-conditionalFormat-1-1"
                   name="domainpropertiesrow-conditionalFormat"
                   onClick={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="domain-validation-button btn btn-default"
-                    disabled={false}
-                    id="domainpropertiesrow-conditionalFormat-1-1"
-                    name="domainpropertiesrow-conditionalFormat"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    Edit Formats
-                  </button>
-                </Button>
+                  Edit Formats
+                </button>
                 <a
                   className="domain-validator-link"
                   onClick={[Function]}
@@ -318,28 +306,16 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
                 </DomainFieldLabel>
               </div>
               <div>
-                <Button
-                  active={false}
-                  block={false}
-                  bsClass="btn"
-                  bsStyle="default"
-                  className="domain-validation-button"
+                <button
+                  className="domain-validation-button btn btn-default"
                   disabled={false}
                   id="domainpropertiesrow-regexValidator-1-1"
                   name="domainpropertiesrow-regexValidator"
                   onClick={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="domain-validation-button btn btn-default"
-                    disabled={false}
-                    id="domainpropertiesrow-regexValidator-1-1"
-                    name="domainpropertiesrow-regexValidator"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    Add Regex
-                  </button>
-                </Button>
+                  Add Regex
+                </button>
                 <span
                   className="domain-text-label"
                 >
@@ -551,28 +527,16 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
                 </DomainFieldLabel>
               </div>
               <div>
-                <Button
-                  active={false}
-                  block={false}
-                  bsClass="btn"
-                  bsStyle="default"
-                  className="domain-validation-button"
+                <button
+                  className="domain-validation-button btn btn-default"
                   disabled={false}
                   id="domainpropertiesrow-conditionalFormat-1-1"
                   name="domainpropertiesrow-conditionalFormat"
                   onClick={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="domain-validation-button btn btn-default"
-                    disabled={false}
-                    id="domainpropertiesrow-conditionalFormat-1-1"
-                    name="domainpropertiesrow-conditionalFormat"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    Add Format
-                  </button>
-                </Button>
+                  Add Format
+                </button>
                 <span
                   className="domain-text-label"
                 >
@@ -813,28 +777,16 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                 </DomainFieldLabel>
               </div>
               <div>
-                <Button
-                  active={false}
-                  block={false}
-                  bsClass="btn"
-                  bsStyle="default"
-                  className="domain-validation-button"
+                <button
+                  className="domain-validation-button btn btn-default"
                   disabled={false}
                   id="domainpropertiesrow-conditionalFormat-1-1"
                   name="domainpropertiesrow-conditionalFormat"
                   onClick={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="domain-validation-button btn btn-default"
-                    disabled={false}
-                    id="domainpropertiesrow-conditionalFormat-1-1"
-                    name="domainpropertiesrow-conditionalFormat"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    Add Format
-                  </button>
-                </Button>
+                  Add Format
+                </button>
                 <span
                   className="domain-text-label"
                 >
@@ -888,28 +840,16 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                 </DomainFieldLabel>
               </div>
               <div>
-                <Button
-                  active={false}
-                  block={false}
-                  bsClass="btn"
-                  bsStyle="default"
-                  className="domain-validation-button"
+                <button
+                  className="domain-validation-button btn btn-default"
                   disabled={false}
                   id="domainpropertiesrow-regexValidator-1-1"
                   name="domainpropertiesrow-regexValidator"
                   onClick={[Function]}
+                  type="button"
                 >
-                  <button
-                    className="domain-validation-button btn btn-default"
-                    disabled={false}
-                    id="domainpropertiesrow-regexValidator-1-1"
-                    name="domainpropertiesrow-regexValidator"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    Add Regex
-                  </button>
-                </Button>
+                  Add Regex
+                </button>
                 <span
                   className="domain-text-label"
                 >

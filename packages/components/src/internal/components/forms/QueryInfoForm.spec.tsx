@@ -17,7 +17,7 @@ import React from 'react';
 
 import { mount, shallow } from 'enzyme';
 
-import { Button, Modal, ModalTitle } from 'react-bootstrap';
+import { Modal, ModalTitle } from 'react-bootstrap';
 
 import { makeQueryInfo } from '../../test/testHelpers';
 import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
@@ -33,7 +33,7 @@ describe('QueryInfoForm', () => {
     test('default props', () => {
         const formWrapper = shallow(<QueryInfoForm queryInfo={QUERY_INFO} onHide={jest.fn()} onSubmit={jest.fn()} />);
         expect(formWrapper.find(QueryFormInputs)).toHaveLength(1);
-        expect(formWrapper.find(Button)).toHaveLength(2);
+        expect(formWrapper.find('button')).toHaveLength(2);
     });
 
     test('with header', () => {
@@ -198,7 +198,7 @@ describe('QueryInfoForm', () => {
         const formWrapper = mount(
             <QueryInfoForm queryInfo={QUERY_INFO} initiallyDisableFields={true} onSubmit={jest.fn()} />
         );
-        expect(formWrapper.find('Button[type="submit"]').prop('disabled')).toBeTruthy();
+        expect(formWrapper.find('button[type="submit"]').prop('disabled')).toBeTruthy();
         formWrapper.unmount();
     });
 });

@@ -16,7 +16,7 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Button, Checkbox, Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
+import { Checkbox, Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';
@@ -1099,13 +1099,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <Row>
                         <div className="domain-field-header">
                             {visibleSelection.size} {fieldPlural} selected
-                            <Button
-                                className="domain-panel-header-clear-all"
+                            <button
+                                className="domain-panel-header-clear-all btn btn-default"
                                 disabled={visibleSelection.size === 0}
                                 onClick={this.clearAllSelection}
+                                type="button"
                             >
                                 {clearText}
-                            </Button>
+                            </button>
                         </div>
                     </Row>
                     <Row className="domain-row-container">

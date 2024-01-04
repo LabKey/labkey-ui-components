@@ -15,7 +15,7 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import { List, OrderedMap } from 'immutable';
-import { Alert, Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import Formsy from 'formsy-react';
 import { Filter, Utils } from '@labkey/api';
 
@@ -27,6 +27,7 @@ import { FormButtons } from '../../FormButtons';
 import { SampleCreationTypeModel } from '../samples/models';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { formatDateTime } from '../../util/Date';
+import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { QueryInfoQuantity } from './QueryInfoQuantity';
@@ -222,7 +223,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         const { errorMsg } = this.state;
         if (errorMsg) {
             return (
-                <Alert bsStyle="danger">
+                <Alert>
                     {errorMessagePrefix && <strong>{errorMessagePrefix}</strong>} {errorMsg}
                 </Alert>
             );
@@ -282,27 +283,25 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         return (
             <FormButtons sticky={!asModal}>
                 {showCancel && (
-                    <Button className="test-loc-cancel-button" onClick={this.onHide}>
+                    <button className="test-loc-cancel-button btn btn-default" onClick={this.onHide} type="button">
                         {cancelText}
-                    </Button>
+                    </button>
                 )}
 
                 {onSubmitForEdit && submitForEditText && (
-                    <Button
-                        className="test-loc-submit-for-edit-button"
-                        bsStyle={onSubmit ? 'default' : 'success'}
+                    <button
+                        className={`test-loc-submit-for-edit-button btn btn-${onSubmit ? 'default' : 'success'}`}
                         disabled={isSubmitting || !canSubmit || count === 0}
                         onClick={this.setSubmittingForEdit}
                         type="submit"
                     >
                         {submitForEdit && inProgressText ? inProgressText : submitForEditText}
-                    </Button>
+                    </button>
                 )}
 
                 {submitText && onSubmit && (
-                    <Button
-                        className="test-loc-submit-button"
-                        bsStyle="success"
+                    <button
+                        className="test-loc-submit-button btn btn-success"
                         disabled={
                             isSubmitting ||
                             fieldEnabledCount === 0 ||
@@ -315,7 +314,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                     >
                         {!submitForEdit && inProgressText ? inProgressText : submitText}
                         {suffix ? ' ' + suffix : null}
-                    </Button>
+                    </button>
                 )}
             </FormButtons>
         );

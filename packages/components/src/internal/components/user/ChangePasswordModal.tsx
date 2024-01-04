@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
+import { Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 
 import { User } from '../base/models/User';
 import { resolveErrorMessage } from '../../util/messaging';
@@ -107,17 +107,17 @@ export class ChangePasswordModal extends React.Component<Props, State> {
                     {error && <Alert>{error}</Alert>}
                     <Row>
                         <Col xs={12}>
-                            <Button onClick={onHide} className="pull-left">
+                            <button className="pull-left btn btn-default" onClick={onHide} type="button">
                                 Cancel
-                            </Button>
-                            <Button
-                                className="pull-right"
-                                bsStyle="success"
+                            </button>
+                            <button
+                                className="pull-right btn btn-success"
                                 disabled={submitting}
                                 onClick={this.submitChangePassword}
+                                type="button"
                             >
                                 Submit
-                            </Button>
+                            </button>
                         </Col>
                     </Row>
                 </Modal.Body>

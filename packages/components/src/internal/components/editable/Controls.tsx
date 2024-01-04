@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
@@ -170,14 +169,15 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                         value={count ? count.toString() : undefined}
                     />
                     <span className="input-group-btn">
-                        <Button
-                            bsStyle="primary"
-                            title={disable ? disabledMsg : undefined}
+                        <button
+                            className="btn btn-primary"
                             disabled={disable || this.hasError()}
                             onClick={this.onAdd}
+                            title={disable ? disabledMsg : undefined}
+                            type="button"
                         >
                             {title}
-                        </Button>
+                        </button>
                     </span>
                 </span>
                 {hasError && count > 0 && (

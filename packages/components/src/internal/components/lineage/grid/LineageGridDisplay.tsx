@@ -4,8 +4,8 @@
  */
 import React, { FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import { List, Map } from 'immutable';
-import { Button } from 'react-bootstrap';
 import { useSearchParams } from 'react-router-dom';
+
 import { getQueryParams } from '../../../util/URL';
 
 import { LineageGridModel } from '../models';
@@ -16,13 +16,14 @@ import { LineageDepthLimitMessage } from '../LineageGraph';
 import { AppURL } from '../../../url/AppURL';
 import { Alert } from '../../base/Alert';
 import { Grid, GridProps } from '../../base/Grid';
+import { DisableableAnchor } from '../../base/DisableableAnchor';
 
 interface LineagePagingProps {
     model: LineageGridModel;
 }
 
 export const LineagePaging: FC<LineagePagingProps> = memo(({ model }) => {
-    const [searchParams, _] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const { maxRowIndex, minRowIndex, pageNumber, seedNode, totalRows } = model;
 
     // hidden when "0 of 0" or "1 - N of N"
@@ -51,18 +52,20 @@ export const LineagePaging: FC<LineagePagingProps> = memo(({ model }) => {
                 )}
                 {showButtons && (
                     <div className="btn-group">
-                        <Button
-                            href={getPageNumberChangeURL(queryParams, seedNode.lsid, pageNumber - 1).toHref()}
+                        <DisableableAnchor
+                            className="btn btn-default"
                             disabled={pageNumber <= 1}
+                            href={getPageNumberChangeURL(queryParams, seedNode.lsid, pageNumber - 1).toHref()}
                         >
                             <i className="fa fa-chevron-left" />
-                        </Button>
-                        <Button
-                            href={getPageNumberChangeURL(queryParams, seedNode.lsid, pageNumber + 1).toHref()}
+                        </DisableableAnchor>
+                        <DisableableAnchor
+                            className="btn btn-default"
                             disabled={maxRowIndex === totalRows}
+                            href={getPageNumberChangeURL(queryParams, seedNode.lsid, pageNumber + 1).toHref()}
                         >
                             <i className="fa fa-chevron-right" />
-                        </Button>
+                        </DisableableAnchor>
                     </div>
                 )}
             </div>
@@ -98,13 +101,21 @@ class LineageButtons extends PureComponent<LineageGridProps> {
 
             return (
                 <div className="text-nowrap">
-                    <Button bsStyle="success" href={parentNodesURL.toHref()} disabled={disableParents}>
+                    <DisableableAnchor
+                        className="btn btn-success"
+                        disabled={disableParents}
+                        href={parentNodesURL.toHref()}
+                    >
                         Show Parents
-                    </Button>
+                    </DisableableAnchor>
                     <span style={{ margin: '0 10px' }}>
-                        <Button bsStyle="success" href={childrenNodesURL.toHref()} disabled={disableChildren}>
+                        <DisableableAnchor
+                            className="btn btn-success"
+                            disabled={disableChildren}
+                            href={childrenNodesURL.toHref()}
+                        >
                             Show Children
-                        </Button>
+                        </DisableableAnchor>
                     </span>
                 </div>
             );

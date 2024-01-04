@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Add API Keys panel to profile page
 
+### version 3.3.0
+*Released*: 3 January 2024
+- Update `Alert` to accept additional props and match behavior of `react-bootstrap`.
+- Introduce `DisableableAnchor` which is an `a` tag that supports `disabled`.
+- Replace all other usages of `Button` with `button` or `a` in the case where `href` is supplied.
+
 ### version 3.2.4
 *Released*: 29 December 2023
 - remove AliquotedFrom from samples grid export/editable grid export

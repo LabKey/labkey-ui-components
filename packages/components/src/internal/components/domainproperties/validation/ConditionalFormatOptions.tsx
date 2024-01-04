@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { PureComponent, ReactNode } from 'react';
-import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
+import { Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 import { CompactPicker } from 'react-color';
 
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
@@ -200,16 +200,17 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
 
         return (
             <div style={{ width: '100%' }}>
-                <Button
+                <button
+                    className="domain-color-picker-btn btn btn-default"
                     id={createFormInputId(name, domainIndex, validatorIndex)}
                     key={createFormInputId(name, domainIndex, validatorIndex)}
                     name={createFormInputName(name)}
                     onClick={this.onColorShow}
-                    className="domain-color-picker-btn"
+                    type="button"
                 >
                     {label}
                     <span className={iconClassName} />
-                </Button>
+                </button>
                 {showColorPicker && (
                     <div className="domain-validator-color-popover">
                         <div
@@ -258,14 +259,15 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
 
                         <Row className="domain-validator-color-row">
                             <Col xs={12}>
-                                <Button
-                                    className="domain-validation-delete"
-                                    name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
+                                <button
+                                    className="domain-validation-delete btn btn-default"
                                     id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
+                                    name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
                                     onClick={this.onDelete}
+                                    type="button"
                                 >
                                     Remove Formatting
-                                </Button>
+                                </button>
                             </Col>
                         </Row>
                     </div>

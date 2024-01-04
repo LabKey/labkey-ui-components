@@ -104,7 +104,7 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
 
 type APIKeysPanelBodyProps = InjectedQueryModels;
 
-export const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
+const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
     const { actions, queryModels } = props;
     const { model } =  queryModels;
     const { user, moduleContext, impersonatingUser } = useServerContext();
@@ -246,7 +246,7 @@ export const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
 
 const APIKeysPanelWithQueryModels = withQueryModels(APIKeysPanelBody)
 
-const APIKeysPanel: FC<any> = () => {
+export const APIKeysPanel: FC<any> = () => {
     const configs: QueryConfigMap = {
        model: {
             id: 'model',

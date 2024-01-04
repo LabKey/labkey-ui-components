@@ -39,23 +39,81 @@ import { AppContext, useAppContext } from '../../AppContext';
 import { setCopyValue } from '../../events';
 import { isFeatureEnabled } from '../../app/utils';
 import { ProductFeature } from '../../app/constants';
+import {
+    InjectedQueryModels,
+    QueryConfigMap,
+    RequiresModelAndActions,
+    withQueryModels
+} from '../../../public/QueryModel/withQueryModels';
+import { SCHEMAS } from '../../schemas';
+import { GridPanel } from '../../../public/QueryModel/GridPanel';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { deleteRows } from '../../query/api';
 
 
-export const APIKeysPanel: FC<any> = () => {
-    const { user, moduleContext, impersonatingUser } = useServerContext();
+const APIKeysButtonsComponent: FC<RequiresModelAndActions> = props => {
+    const { model, actions } = props;
+    const [ showConfirmDelete, setShowConfirmDelete ] = useState<boolean>(false);
+
+    const onDeleteClicked = useCallback(() => setShowConfirmDelete(true), []);
+    const closeDeleteModal = useCallback(() => setShowConfirmDelete(false), []);
+    const onDelete = useCallback(async () => {
+        const rows = [];
+        model.selections.forEach(selection => {
+            rows.push({rowId: selection});
+        });
+
+        await deleteRows({
+            schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
+            rows,
+        });
+        actions.clearSelections(model.id);
+        actions.loadModel(model.id, true, true);
+        closeDeleteModal();
+    }, [model, actions, model.id]);
+
+    const noun = model?.selections?.size > 1 ? "Keys" : "Key";
+    return (
+        <div className="btn-group">
+
+            <button type="button" className="btn btn-default" disabled={!model.hasSelections} onClick={onDeleteClicked}>
+                <span className="fa fa-trash"/> Delete
+            </button>
+            {showConfirmDelete && (
+                <ConfirmModal
+                    confirmVariant="danger"
+                    onCancel={closeDeleteModal}
+                    onConfirm={onDelete}
+                    confirmButtonText={"Yes, Delete"}
+                    cancelButtonText={"Cancel"}
+                    title={`Delete ${model?.selections?.size} API ${noun}`}
+                >
+                    <strong>Deletion cannot be undone.</strong> Do you want to proceed?
+                </ConfirmModal>
+            )}
+        </div>
+    )
+}
+
+export type APIKeysPanelBodyProps = InjectedQueryModels;
+
+export const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
+    const { actions, queryModels } = props;
+    const  { model } =  queryModels;
+    const {user, moduleContext, impersonatingUser } = useServerContext();
     const { api } = useAppContext<AppContext>();
     const [ error, setError ] = useState<boolean>(false);
     const [ generatedKey, setGeneratedKey ] = useState<string>();
-    // const [ expirationDate, setExpirationDae ] = useState<number>();
 
     const onGenerateKey = useCallback(async () => {
         try {
             const key =  await api.security.createApiKey();
+            actions.loadModel(model.id, true, true);
             setGeneratedKey(key);
         } catch (e) {
             setError(true);
         }
-    }, []);
+    }, [api, actions, model.id]);
 
     const onCopyKey = useCallback(()  => {
         const handleCopy = (event: ClipboardEvent): void => {
@@ -106,6 +164,26 @@ export const APIKeysPanel: FC<any> = () => {
 
                 {configMsg}
                 {adminMsg}
+
+                {!impersonatingUser &&
+                    <GridPanel
+                        actions={actions}
+                        model={model}
+                        asPanel={false}
+                        showSearchInput={false}
+                        showFiltersButton={false}
+                        showPagination={true}
+                        showExport={false}
+                        showViewMenu={false}
+                        buttonsComponentProps={{
+                            model,
+                            actions
+                        }}
+                        ButtonsComponent={APIKeysButtonsComponent}
+                        emptyText="You currently do not have any API keys"
+                    />
+                }
+
                 {isApiKeyGenerationEnabled(moduleContext) && (
                     <>
                         {impersonatingUser !== undefined && (
@@ -124,7 +202,9 @@ export const APIKeysPanel: FC<any> = () => {
                                         Generate API Key
                                     </button>
 
-                                    <input disabled type="text" className="form-control api-key__input"
+                                    <input disabled
+                                           type="text"
+                                           className="form-control api-key__input"
                                            name={"key_input"}
                                            value={generatedKey}
                                     />
@@ -136,11 +216,6 @@ export const APIKeysPanel: FC<any> = () => {
                                     >
                                         <i className="fa fa-clipboard"></i>
                                     </button>
-                                    {/*{expirationDate && <span className="left-spacing">Expiration Date: {expirationDate}</span>}*/}
-                                    {/*<button className=" btn btn-default api-key__button pull-right" title="Delete key"*/}
-                                    {/*        disabled={!generatedKey}>*/}
-                                    {/*    Delete <i className="fa fa-trash"></i>*/}
-                                    {/*</button>*/}
                                 </div>
                                 {error && (
                                     <Alert className={"margin-top"}>
@@ -154,6 +229,22 @@ export const APIKeysPanel: FC<any> = () => {
                 )}
             </div>
         </div>
+    )
+}
+
+const APIKeysPanelWithQueryModels = withQueryModels(APIKeysPanelBody)
+
+const APIKeysPanel: FC<any> = () => {
+    const configs: QueryConfigMap = {
+       model: {
+            id: 'model',
+            title: 'Current API Keys',
+            schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
+            includeTotalCount: true,
+        }
+    }
+    return (
+        <APIKeysPanelWithQueryModels autoLoad queryConfigs={configs} />
     )
 }
 

@@ -17,6 +17,10 @@ export function isApiKeyGenerationEnabled(moduleContext: ModuleContext): boolean
     return !!moduleContext?.api?.allowApiKeys;
 }
 
+export function isSessionKeyGenerationEnabled(moduleContext: ModuleContext): boolean {
+    return !!moduleContext?.api?.allowSessionKeys;
+}
+
 export function getApiExpirationMessage(moduleContext: ModuleContext): string {
     const expSeconds = moduleContext?.api?.apiKeyExpirationSeconds;
     if (!expSeconds || expSeconds === -1)

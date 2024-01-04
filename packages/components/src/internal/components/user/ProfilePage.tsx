@@ -7,7 +7,8 @@ import React, { FC, useCallback, useMemo, useState } from 'react';
 import {
     getApiExpirationMessage,
     isApiKeyGenerationEnabled,
-    isLoginAutoRedirectEnabled
+    isLoginAutoRedirectEnabled,
+    isSessionKeyGenerationEnabled
 } from '../administration/utils';
 import { InsufficientPermissionsPage } from '../permissions/InsufficientPermissionsPage';
 
@@ -50,7 +51,6 @@ import { SCHEMAS } from '../../schemas';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { deleteRows } from '../../query/api';
-import { getPrincipals } from '../permissions/actions';
 
 interface ButtonsComponentProps extends RequiresModelAndActions {
     onDelete: () => void;
@@ -102,39 +102,98 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
     )
 }
 
-type APIKeysPanelBodyProps = InjectedQueryModels;
+interface KeyGeneratorProps {
+    type: string;
+    afterCreate: (key: string) => void;
+    keyValue?: string;
+    noun: string;
+}
 
-const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
-    const { actions, queryModels } = props;
-    const { model } =  queryModels;
-    const { user, moduleContext, impersonatingUser } = useServerContext();
+const KeyGenerator: FC<KeyGeneratorProps> = props => {
+    const { afterCreate, type, keyValue, noun } = props;
     const { api } = useAppContext<AppContext>();
-    const [ error, setError ] = useState<boolean>(false);
-    const [ generatedKey, setGeneratedKey ] = useState<string>();
 
-    const onDelete = useCallback(() => {
-        setGeneratedKey("");
-    }, []);
+    const [ error, setError ] = useState<boolean>(false);
 
     const onGenerateKey = useCallback(async () => {
         try {
-            const key =  await api.security.createApiKey();
-            actions.loadModel(model.id, true, true);
-            setGeneratedKey(key);
+            const key =  await api.security.createApiKey(type);
+            afterCreate(key);
         } catch (e) {
             setError(true);
         }
-    }, [api, actions, model.id]);
+    }, [type, api]);
 
     const onCopyKey = useCallback(()  => {
         const handleCopy = (event: ClipboardEvent): void => {
-            setCopyValue(event, generatedKey);
+            setCopyValue(event, keyValue);
             event.preventDefault();
             document.removeEventListener('copy', handleCopy, true);
         };
         document.addEventListener('copy', handleCopy, true);
         document.execCommand('copy');
-    }, [generatedKey]);
+    }, [keyValue]);
+
+    return (
+        <>
+            <div className="top-spacing form-group">
+                <button className="btn btn-success api-key__button"
+                        onClick={onGenerateKey}
+                        disabled={!!keyValue}
+                >
+                    Generate {noun}
+                </button>
+
+                <input disabled
+                       type="text"
+                       className="form-control api-key__input"
+                       name={"key_input"}
+                       value={keyValue}
+                />
+                <button className="btn btn-default api-key__button"
+                        title="Copy to clipboard"
+                        name={"copy_key"}
+                        onClick={onCopyKey}
+                        disabled={!keyValue}
+                >
+                    <i className="fa fa-clipboard"></i>
+                </button>
+
+            </div>
+            {!!keyValue && (
+                <div>Copy this key value and save it for use in authenticating to the server. This key value will not be shown again.</div>
+            )}
+            {error && (
+                <Alert className={"margin-top"}>
+                    There was a problem generating your API key.
+                    If the problem persists, please contact your system administrator.
+                </Alert>
+            )}
+        </>
+    )
+}
+
+interface APIKeysPanelBodyProps {
+    includeSessionKeys?: boolean;
+}
+
+const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props => {
+    const { includeSessionKeys, actions, queryModels } = props;
+    const { model } =  queryModels;
+    const { user, moduleContext, impersonatingUser } = useServerContext();
+    const [ apiKey, setApiKey ] = useState<string>();
+    const [ sessionKey, setSessionKey ] = useState<string>();
+    const apiEnabled = isApiKeyGenerationEnabled(moduleContext);
+    const sessionEnabled = isSessionKeyGenerationEnabled(moduleContext);
+
+    const onDelete = useCallback(() => {
+        setApiKey("");
+    }, []);
+
+    const onApiKeyCreate = useCallback((key: string)  => {
+        setApiKey(key);
+        actions?.loadModel(model?.id, true, true);
+    }, []);
 
     const adminMsg = useMemo(() => user.isSystemAdmin ? (
         <Alert bsStyle="info" id={"admin-msg"}>
@@ -146,16 +205,14 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
         </Alert>
     ) : null, [user]);
 
-    const configMsg = useMemo(() => isApiKeyGenerationEnabled(moduleContext) ?
+    const configMsg = useMemo(() => apiEnabled ?
         <p id={"config-msg"}>
             API keys are currently configured to <span className="api-key__expiration-config">{getApiExpirationMessage(moduleContext)}</span>.{' '}
             <span><a href={'https://www.labkey.org/Documentation/wiki-page.view?name=apiKey#usage'}>More info</a></span>
         </p>
-        :
-        <Alert bsStyle="warning" id={"config-msg"}>
-            API keys are currently not enabled on this server.
-        </Alert>,
-    [moduleContext]);
+        : null
+        ,
+    [moduleContext, apiEnabled]);
 
     if (!isFeatureEnabled(ProductFeature.ApiKeys, moduleContext))
         return null;
@@ -196,7 +253,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
                     />
                 }
 
-                {isApiKeyGenerationEnabled(moduleContext) && (
+                {apiEnabled && (
                     <>
                         {impersonatingUser !== undefined && (
                             <Alert bsStyle="warning" id={"impersonating-msg"}>
@@ -205,36 +262,37 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
                             )
                         }
                         {!impersonatingUser && (
+                            <KeyGenerator type={"apikey"} keyValue={apiKey} afterCreate={onApiKeyCreate} noun={"API Key"}/>
+                        )}
+                    </>
+                )}
+                {!apiEnabled && (
+                    <Alert bsStyle="warning" id={"config-msg"}>
+                        API key generation is currently not enabled on this server.
+                    </Alert>
+                )}
+                {sessionEnabled && includeSessionKeys && (
+                    <>
+                        {impersonatingUser !== undefined && (
+                            <div className={'user-section-header bottom-spacing'}>Session Keys</div>
+                        )}
+                        {impersonatingUser !== undefined && !apiEnabled && (
+                            <Alert bsStyle="warning" id={'impersonating-msg'}>
+                                API key generation is not available while impersonating.
+                            </Alert>
+                        )}
+                        {!impersonatingUser && (
                             <>
-                                <div className="top-spacing form-group">
-                                    <button className="btn btn-success api-key__button"
-                                            onClick={onGenerateKey}
-                                            disabled={!!generatedKey}
-                                    >
-                                        Generate API Key
-                                    </button>
-
-                                    <input disabled
-                                           type="text"
-                                           className="form-control api-key__input"
-                                           name={"key_input"}
-                                           value={generatedKey}
-                                    />
-                                    <button className="btn btn-default api-key__button"
-                                            title="Copy to clipboard"
-                                            name={"copy_key"}
-                                            onClick={onCopyKey}
-                                            disabled={!generatedKey}
-                                    >
-                                        <i className="fa fa-clipboard"></i>
-                                    </button>
-                                </div>
-                                {error && (
-                                    <Alert className={"margin-top"}>
-                                        There was a problem generating your API key.
-                                        If the problem persists, please contact your system administrator.
-                                    </Alert>
-                                )}
+                                <p>
+                                    A session key is tied to your current browser session, which means all API calls
+                                    execute in your current context (e.g., your user, your authorizations, etc.).
+                                    It also means the key will no longer represent a logged in user when the session
+                                    expires, e.g., when you sign out via the browser or the server automatically times
+                                    out your session. Since they expire quickly, session keys are most appropriate for
+                                    deployments with regulatory compliance requirements.
+                                </p>
+                                <KeyGenerator type={'session'} keyValue={sessionKey} afterCreate={setSessionKey}
+                                              noun={'Session Key'}/>
                             </>
                         )}
                     </>
@@ -246,7 +304,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
 
 const APIKeysPanelWithQueryModels = withQueryModels(APIKeysPanelBody)
 
-export const APIKeysPanel: FC<any> = () => {
+export const APIKeysPanel: FC<APIKeysPanelBodyProps> = (props) => {
     const configs: QueryConfigMap = {
        model: {
             id: 'model',
@@ -256,7 +314,7 @@ export const APIKeysPanel: FC<any> = () => {
         }
     }
     return (
-        <APIKeysPanelWithQueryModels autoLoad queryConfigs={configs} />
+        <APIKeysPanelWithQueryModels autoLoad queryConfigs={configs} {...props} />
     )
 }
 

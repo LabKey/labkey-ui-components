@@ -38,7 +38,7 @@ import { Alert } from '../base/Alert';
 import { ActionURL } from '@labkey/api';
 import { AppContext, useAppContext } from '../../AppContext';
 import { setCopyValue } from '../../events';
-import { isFeatureEnabled } from '../../app/utils';
+import { getPrimaryAppProperties, isFeatureEnabled } from '../../app/utils';
 import { ProductFeature } from '../../app/constants';
 import {
     InjectedQueryModels,
@@ -50,6 +50,7 @@ import { SCHEMAS } from '../../schemas';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { deleteRows } from '../../query/api';
+import { getPrincipals } from '../permissions/actions';
 
 interface ButtonsComponentProps extends RequiresModelAndActions {
     onDelete: () => void;
@@ -164,7 +165,7 @@ export const APIKeysPanelBody: FC<APIKeysPanelBodyProps> = props => {
             <div className="panel-heading">API Keys</div>
             <div className="panel-body">
                 <p>
-                    API keys are used to authorize client code accessing LabKey Sample Manager using one of the{' '}
+                    API keys are used to authorize client code accessing {getPrimaryAppProperties(moduleContext).name} using one of the{' '}
                     <a href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=viewApis">LabKey Client APIs</a>
                     . API keys are appropriate for authenticating ad hoc interactions within statistical tools
                     (e.g., R, RStudio, SAS) or programming languages (e.g., Java, Python), as well as

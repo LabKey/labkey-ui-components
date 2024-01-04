@@ -161,7 +161,7 @@ describe('AdvancedSettings', () => {
         // Verify buttons
         expect(advSettings.find('.btn')).toHaveLength(2);
         expect(advSettings.find('.btn-primary')).toHaveLength(1);
-        expect(advSettings.find('.btn-primary').props().disabled).toBe(false);
+        expect(advSettings.find('.btn-primary').props().disabled).toBeFalsy();
 
         const testStateUpdates = function () {
             // Verify hidden

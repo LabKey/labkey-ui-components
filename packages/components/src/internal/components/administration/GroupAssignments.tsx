@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback, useMemo, useState } from 'react';
-import { Button, Panel } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -156,14 +156,14 @@ export const GroupAssignments: FC<GroupAssignmentsProps> = memo(props => {
                                 onChange={onChangeNewGroupName}
                             />
 
-                            <Button
-                                className="alert-button"
-                                bsStyle="info"
+                            <button
+                                className="alert-button btn btn-info"
                                 disabled={newGroupName.trim() === ''}
                                 onClick={onCreateGroup}
+                                type="button"
                             >
                                 Create Group
-                            </Button>
+                            </button>
                         </div>
                         {orderedGroupMembership.map(id => (
                             <Group

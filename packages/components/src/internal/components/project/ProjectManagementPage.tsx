@@ -1,7 +1,7 @@
 import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { Security } from '@labkey/api';
 import { useSearchParams } from 'react-router-dom';
+
 import { useAdministrationSubNav } from '../administration/useAdministrationSubNav';
 
 import { useServerContext } from '../base/ServerContext';
@@ -26,13 +26,9 @@ import { ProjectListing } from './ProjectListing';
 
 const renderButtons = (): ReactNode => (
     <>
-        <Button
-            bsStyle="success"
-            className="button-right-spacing"
-            href={AppURL.create('admin', 'projects', 'new').toHref()}
-        >
+        <a className="button-right-spacing btn btn-success" href={AppURL.create('admin', 'projects', 'new').toHref()}>
             Create a Project
-        </Button>
+        </a>
         <a href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value).toHref()}>
             View Audit History
         </a>
@@ -49,8 +45,8 @@ export const ProjectManagementPage: FC = memo(() => {
     // TODO: get rid of reloadCounter, instead create a load callback for loading data, and call load when needed
     //  (on mount, on success) instead of incrementing the counter.
     const [reloadCounter, setReloadCounter] = useState<number>(0);
-    const [projects, setProjects] = useState<Container[]>(undefined);
-    const [selectedProject, setSelectedProject] = useState<Container>(undefined);
+    const [projects, setProjects] = useState<Container[]>();
+    const [selectedProject, setSelectedProject] = useState<Container>();
     const [error, setError] = useState<string>();
     const [loaded, setLoaded] = useState<boolean>(false);
     useEffect(() => {

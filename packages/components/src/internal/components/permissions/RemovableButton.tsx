@@ -3,16 +3,16 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
-import { List } from 'immutable';
+import classNames from 'classnames';
+import { ButtonGroup } from 'react-bootstrap';
 
 import { DisableableButton } from '../buttons/DisableableButton';
 
 interface Props {
     id: number;
     display: string;
-    onRemove?: (userId: number) => any;
-    onClick: (userId: number) => any;
+    onRemove?: (userId: number) => void;
+    onClick: (userId: number) => void;
     bsStyle?: string;
     added?: boolean;
     disabledMsg?: string;
@@ -23,15 +23,18 @@ interface State {
 }
 
 export class RemovableButton extends React.PureComponent<Props, State> {
-    constructor(props: Props) {
-        super(props);
+    static defaultProps = {
+        bsStyle: 'default',
+    };
 
-        this.state = {
-            removed: false,
-        };
-    }
+    state: Readonly<State> = { removed: false };
 
-    onRemoveClick = () => {
+    onClick = (): void => {
+        const { id, onClick } = this.props;
+        onClick?.(id);
+    };
+
+    onRemoveClick = (): void => {
         if (!this.state.removed) {
             // set the button state as removed and then wait for fade out animation before calling onRemove
             this.setState(
@@ -43,36 +46,34 @@ export class RemovableButton extends React.PureComponent<Props, State> {
         }
     };
 
-    onRemove = () => {
+    onRemove = (): void => {
         const { id, onRemove } = this.props;
-        if (onRemove) {
-            onRemove(id);
-        }
+        onRemove?.(id);
     };
 
     render() {
-        const { id, display, onClick, bsStyle, added, disabledMsg, onRemove } = this.props;
-
-        let btnGroupCls = List<string>(['permissions-button-group']);
-        if (this.state.removed) {
-            btnGroupCls = btnGroupCls.push('permissions-button-removed');
-        }
-
-        let btnCls = List<string>(['permissions-button-display']);
-        if (added) {
-            btnCls = btnCls.push('permissions-button-added');
-        }
+        const { display, bsStyle, added, disabledMsg, onRemove } = this.props;
 
         const btn = (
-            <Button className={btnCls.join(' ')} bsStyle={bsStyle} onClick={() => onClick(id)}>
+            <button
+                className={classNames(`permissions-button-display btn btn-${bsStyle}`, {
+                    'permissions-button-added': added,
+                })}
+                onClick={this.onClick}
+                type="button"
+            >
                 {display}
-            </Button>
+            </button>
         );
 
         return (
             <>
                 {onRemove ? (
-                    <ButtonGroup className={btnGroupCls.join(' ')}>
+                    <ButtonGroup
+                        className={classNames('permissions-button-group', {
+                            'permissions-button-removed': this.state.removed,
+                        })}
+                    >
                         <DisableableButton disabledMsg={disabledMsg} onClick={this.onRemoveClick} bsStyle={bsStyle}>
                             <i className="fa fa-remove" />
                         </DisableableButton>

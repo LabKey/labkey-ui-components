@@ -1,7 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
-import { Button } from 'react-bootstrap';
-
 import { useAppContext } from '../../AppContext';
 import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
 
@@ -34,7 +32,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const { onChange, onSuccess, onPageError, project } = props;
 
     const [loaded, setLoaded] = useState<boolean>(false);
-    const [disabledTypesMap, setDisabledTypesMap] = useState<{ [key: string]: number[] }>(undefined);
+    const [disabledTypesMap, setDisabledTypesMap] = useState<{ [key: string]: number[] }>();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [nameDirty, setNameDirty] = useState<boolean>(false);
     const [dataTypeDirty, setDataTypeDirty] = useState<boolean>(false);
@@ -205,13 +203,13 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                         />
 
                         <div className="pull-right">
-                            <Button
+                            <button
                                 className="btn btn-default delete-project-button"
-                                type="button"
                                 onClick={openModalHandler}
+                                type="button"
                             >
                                 <i className="fa fa-trash" /> Delete Project
-                            </Button>
+                            </button>
 
                             <button className="btn btn-success" disabled={isSaving || !nameDirty} type="submit">
                                 {isSaving ? 'Saving...' : 'Save'}

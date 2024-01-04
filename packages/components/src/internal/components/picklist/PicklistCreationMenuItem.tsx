@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Button, MenuItem } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 
 import { userCanManagePicklists } from '../../app/utils';
 
@@ -52,9 +52,9 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
             )}
             {!queryModel && asMenuItem && <MenuItem onClick={onClick}>{itemText}</MenuItem>}
             {!queryModel && !asMenuItem && (
-                <Button bsStyle="success" onClick={onClick}>
+                <button className="btn btn-success" onClick={onClick} type="button">
                     {itemText}
-                </Button>
+                </button>
             )}
             {showModal && (
                 <PicklistEditModal

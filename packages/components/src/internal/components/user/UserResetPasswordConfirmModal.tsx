@@ -1,76 +1,66 @@
-import React from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { Alert } from '../base/Alert';
 
-import { resetPassword } from './actions';
+import { resetPassword, ResetPasswordResponse } from './actions';
 
-interface Props {
+export interface UserResetPasswordConfirmModalProps {
     email: string;
     hasLogin: boolean;
-    onCancel: () => any;
-    onComplete: (response: any) => any;
+    onCancel: () => void;
+    onComplete: (response: ResetPasswordResponse) => void;
+    resetPasswordApi?: (email: string) => Promise<ResetPasswordResponse>;
 }
 
-interface State {
-    error: React.ReactNode;
-    submitting: boolean;
-}
+export const UserResetPasswordConfirmModal: FC<UserResetPasswordConfirmModalProps> = memo(props => {
+    const { email, hasLogin, onCancel, onComplete, resetPasswordApi } = props;
+    const [error, setError] = useState<string>();
+    const [submitting, setSubmitting] = useState<boolean>(false);
 
-export class UserResetPasswordConfirmModal extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
+    const onConfirm = useCallback(async () => {
+        setSubmitting(true);
 
-        this.state = {
-            submitting: false,
-            error: undefined,
-        };
-    }
+        try {
+            const response = await resetPasswordApi(email);
+            onComplete(response);
+        } catch (e) {
+            setError(resolveErrorMessage(e, 'user', 'users', 'update') ?? 'Failed to reset password');
+        } finally {
+            setSubmitting(false);
+        }
+    }, [email, onComplete, resetPasswordApi]);
 
-    onConfirm = () => {
-        const { email, onComplete } = this.props;
+    return (
+        <ConfirmModal
+            title="Reset Password?"
+            onConfirm={onConfirm}
+            onCancel={onCancel}
+            confirmVariant="success"
+            confirmButtonText="Yes, Reset Password"
+            cancelButtonText="Cancel"
+            submitting={submitting}
+        >
+            {hasLogin ? (
+                <p>
+                    You are about to clear the current password for <b>{email}</b>. This will send the user a reset
+                    password email and force them to pick a new password to access the site.
+                </p>
+            ) : (
+                <p>
+                    You are about to send <b>{email}</b> a reset password email. This will let them pick a password to
+                    access the site.
+                </p>
+            )}
+            <p>Do you want to proceed?</p>
+            {error && <Alert>{error}</Alert>}
+        </ConfirmModal>
+    );
+});
 
-        this.setState(() => ({ submitting: true }));
-        resetPassword(email)
-            .then(onComplete)
-            .catch(error => {
-                console.error(error);
-                this.setState(() => ({
-                    error: resolveErrorMessage(error, 'user', 'users', 'update'),
-                    submitting: false,
-                }));
-            });
-    };
+UserResetPasswordConfirmModal.defaultProps = {
+    resetPasswordApi: resetPassword,
+};
 
-    render() {
-        const { onCancel, hasLogin, email } = this.props;
-        const { error, submitting } = this.state;
-
-        return (
-            <ConfirmModal
-                title="Reset Password?"
-                onConfirm={this.onConfirm}
-                onCancel={onCancel}
-                confirmVariant="success"
-                confirmButtonText="Yes, Reset Password"
-                cancelButtonText="Cancel"
-                submitting={submitting}
-            >
-                {hasLogin ? (
-                    <p>
-                        You are about to clear the current password for <b>{email}</b>. This will send the user a reset
-                        password email and force them to pick a new password to access the site.
-                    </p>
-                ) : (
-                    <p>
-                        You are about to send <b>{email}</b> a reset password email. This will let them pick a password
-                        to access the site.
-                    </p>
-                )}
-                <p>Do you want to proceed?</p>
-                {error && <Alert>{error}</Alert>}
-            </ConfirmModal>
-        );
-    }
-}
+UserResetPasswordConfirmModal.displayName = 'UserResetPasswordConfirmModal';

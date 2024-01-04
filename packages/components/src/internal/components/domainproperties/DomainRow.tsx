@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { ReactNode, RefObject } from 'react';
-import { Button, Checkbox, Col, Collapse, FormControl, Row } from 'react-bootstrap';
+import { Checkbox, Col, Collapse, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
@@ -70,6 +70,7 @@ import { DomainRowWarning } from './DomainRowWarning';
 import { ConfirmDataTypeChangeModal } from './ConfirmDataTypeChangeModal';
 
 export interface DomainRowProps {
+    allowUniqueConstraintProperties: boolean;
     appPropertiesOnly?: boolean;
     availableTypes: List<PropDescType>;
     defaultDefaultValueType: string;
@@ -95,7 +96,6 @@ export interface DomainRowProps {
     queryName?: string;
     schemaName?: string;
     showDefaultValueSettings: boolean;
-    allowUniqueConstraintProperties: boolean;
 }
 
 interface DomainRowState {
@@ -423,15 +423,16 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         return (
             <div className={expanded ? 'domain-field-buttons-expanded' : 'domain-field-buttons'}>
                 {(expanded || closing) && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && (
-                    <Button
+                    <button
+                        className="domain-row-button btn btn-default"
                         disabled={isFieldFullyLocked(field.lockType)}
-                        name={createFormInputName(DOMAIN_FIELD_ADV)}
                         id={createFormInputId(DOMAIN_FIELD_ADV, domainIndex, index)}
+                        name={createFormInputName(DOMAIN_FIELD_ADV)}
                         onClick={this.onShowAdvanced}
-                        className="domain-row-button"
+                        type="button"
                     >
                         Advanced Settings
-                    </Button>
+                    </button>
                 )}
                 {isFieldDeletable(field) && (
                     <DeleteIcon

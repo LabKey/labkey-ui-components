@@ -4,7 +4,6 @@
  */
 import { List, Map } from 'immutable';
 import React from 'react';
-import { Button } from 'react-bootstrap';
 
 import { AppURL } from '../../url/AppURL';
 import { GridColumn } from '../base/models/GridColumn';
@@ -105,46 +104,42 @@ export const LINEAGE_GRID_COLUMNS = List([
                 <div className="text-nowrap">
                     {parents.size > 0 ? (
                         membersShown === LINEAGE_DIRECTIONS.Parent && nodeDistance === 0 ? (
-                            <Button bsSize="xs" bsStyle="primary" className="lineage-btn-seed" disabled>
+                            <button className="lineage-btn-seed btn btn-primary btn-xs" disabled type="button">
                                 <span className="fa fa-arrow-up" />
-                            </Button>
+                            </button>
                         ) : (
-                            <Button
-                                bsSize="xs"
-                                bsStyle="primary"
-                                className="lineage-btn-seed"
+                            <a
+                                className="lineage-btn-seed btn btn-primary btn-xs"
                                 href={parentUrl.toHref()}
                                 title={'Parents for ' + node.get('name')}
                             >
                                 <span className="fa fa-arrow-up" />
-                            </Button>
+                            </a>
                         )
                     ) : (
-                        <Button bsSize="xs" bsStyle="primary" className="lineage-btn-seed" disabled>
+                        <button className="lineage-btn-seed btn btn-primary btn-xs" disabled type="button">
                             <span className="fa fa-arrow-up" />
-                        </Button>
+                        </button>
                     )}
                     <span style={{ paddingRight: '5px' }}>&nbsp;</span>
                     {children.size > 0 ? (
                         membersShown === LINEAGE_DIRECTIONS.Children && nodeDistance === 0 ? (
-                            <Button bsSize="xs" bsStyle="primary" className="lineage-btn-seed" disabled>
+                            <button className="lineage-btn-seed btn btn-primary btn-xs" disabled type="button">
                                 <span className="fa fa-arrow-down" />
-                            </Button>
+                            </button>
                         ) : (
-                            <Button
-                                bsSize="xs"
-                                bsStyle="primary"
-                                className="lineage-btn-seed"
+                            <a
+                                className="lineage-btn-seed btn btn-primary btn-xs"
                                 href={childrenUrl.toHref()}
                                 title={'Children for ' + node.get('name')}
                             >
                                 <span className="fa fa-arrow-down" />
-                            </Button>
+                            </a>
                         )
                     ) : (
-                        <Button bsSize="xs" bsStyle="primary" className="lineage-btn-seed" disabled>
+                        <button className="lineage-btn-seed btn btn-primary btn-xs" disabled type="button">
                             <span className="fa fa-arrow-down" />
-                        </Button>
+                        </button>
                     )}
                 </div>
             );

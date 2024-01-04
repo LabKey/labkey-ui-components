@@ -1,7 +1,5 @@
 import React, { ChangeEvent, FC, FormEvent, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Button } from 'react-bootstrap';
-
 import { Section } from '../base/Section';
 
 import { HelpLink } from '../../util/helpLinks';
@@ -116,9 +114,13 @@ export const SearchPanelImpl: FC<SearchPanelImplProps> = memo(props => {
                         />
                     </span>
                 </form>
-                <Button type="submit" className="margin-left success submit-button" onClick={onSearchClick}>
+                <button
+                    className="margin-left success submit-button btn btn-default"
+                    onClick={onSearchClick}
+                    type="submit"
+                >
                     Search
-                </Button>
+                </button>
                 {hasPages && (
                     <div className="page-buttons">
                         <PaginationButtons

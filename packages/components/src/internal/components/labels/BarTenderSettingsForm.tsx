@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Col, Panel, FormControl, Row, Button } from 'react-bootstrap';
+import { Col, Panel, FormControl, Row } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
 
@@ -37,24 +37,6 @@ const SUCCESSFUL_NOTIFICATION_MESSAGE = 'Successfully connected to BarTender web
 const FAILED_NOTIFICATION_MESSAGE = 'Failed to connect to BarTender web service.';
 const UNKNOWN_STATUS_MESSAGE = 'Unrecognized status code returned from BarTender service';
 const FAILED_TO_SAVE_MESSAGE = 'Failed to save connection configuration';
-
-interface SaveButtonProps {
-    dirty: boolean;
-    onSave: () => void;
-    submitting: boolean;
-    testing: boolean;
-}
-
-const SaveButton: FC<SaveButtonProps> = memo(({ dirty, onSave, submitting, testing }) => (
-    <Button
-        className="pull-right alert-button"
-        bsStyle="success"
-        disabled={submitting || !dirty || testing}
-        onClick={onSave}
-    >
-        Save
-    </Button>
-));
 
 interface SettingsInputProps {
     description: string;
@@ -225,21 +207,23 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
                                 </SettingsInput>
 
                                 <div className="bt-service-buttons">
-                                    <SaveButton
-                                        dirty={dirty}
-                                        onSave={onSave}
-                                        submitting={submitting}
-                                        testing={testing}
-                                    />
+                                    <button
+                                        className="pull-right alert-button btn btn-success"
+                                        disabled={submitting || !dirty || testing}
+                                        onClick={onSave}
+                                        type="button"
+                                    >
+                                        Save
+                                    </button>
 
-                                    <Button
-                                        className="button-right-spacing pull-right"
-                                        bsStyle="default"
+                                    <button
+                                        className="button-right-spacing pull-right btn btn-default"
                                         disabled={!btServiceURL || btServiceURL.trim() === ''}
                                         onClick={onVerifyBarTenderConfiguration}
+                                        type="button"
                                     >
                                         Test Connection
-                                    </Button>
+                                    </button>
                                 </div>
                                 {isAppHomeFolder(container, moduleContext) && (
                                     <div className="label-templates-panel">

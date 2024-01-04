@@ -23,7 +23,7 @@ describe('OntologyConceptAnnotation', () => {
     function validate(wrapper: ReactWrapper, hasCode: boolean, canRemove = true): void {
         expect(wrapper.find(DomainFieldLabel)).toHaveLength(1);
         expect(wrapper.find('.domain-annotation-table')).toHaveLength(1);
-        expect(wrapper.find('.domain-validation-button')).toHaveLength(2);
+        expect(wrapper.find('.domain-validation-button')).toHaveLength(1);
         expect(getSelectButton(wrapper).text()).toBe('Select Concept');
         expect(wrapper.find('.domain-text-label')).toHaveLength(!hasCode || !canRemove ? 1 : 0);
         if (!hasCode) {

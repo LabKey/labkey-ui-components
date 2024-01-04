@@ -45,17 +45,14 @@ exports[`<FilesListingForm/> with editable and noReadOnlyFilesMessage 1`] = `
     <div
       className="col-md-7"
     >
-      <Button
-        active={false}
-        block={false}
-        bsClass="btn"
-        bsStyle="primary"
-        disabled={false}
+      <button
+        className="btn btn-primary"
         onClick={[Function]}
         title="more files"
+        type="button"
       >
         more files
-      </Button>
+      </button>
     </div>
     <div
       className="col-md-5"
@@ -63,19 +60,17 @@ exports[`<FilesListingForm/> with editable and noReadOnlyFilesMessage 1`] = `
       <div
         className="pull-right"
       >
-        <Button
-          active={false}
-          block={false}
-          bsClass="btn"
-          bsStyle="default"
+        <button
+          className="btn btn-default"
           disabled={true}
           onClick={[Function]}
           title="Download selected files"
+          type="button"
         >
           <i
             className="fa fa-download"
           />
-        </Button>
+        </button>
       </div>
     </div>
   </div>
@@ -138,17 +133,14 @@ exports[`<FilesListingForm/> with files custom props 1`] = `
     <div
       className="col-md-7"
     >
-      <Button
-        active={false}
-        block={false}
-        bsClass="btn"
-        bsStyle="primary"
-        disabled={false}
+      <button
+        className="btn btn-primary"
         onClick={[Function]}
         title="add more files"
+        type="button"
       >
         add more files
-      </Button>
+      </button>
     </div>
     <div
       className="col-md-5"
@@ -156,19 +148,17 @@ exports[`<FilesListingForm/> with files custom props 1`] = `
       <div
         className="pull-right"
       >
-        <Button
-          active={false}
-          block={false}
-          bsClass="btn"
-          bsStyle="default"
+        <button
+          className="btn btn-default"
           disabled={true}
           onClick={[Function]}
           title="Download selected files"
+          type="button"
         >
           <i
             className="fa fa-download"
           />
-        </Button>
+        </button>
       </div>
     </div>
   </div>
@@ -227,19 +217,17 @@ exports[`<FilesListingForm/> with files default props 1`] = `
       <div
         className="pull-right"
       >
-        <Button
-          active={false}
-          block={false}
-          bsClass="btn"
-          bsStyle="default"
+        <button
+          className="btn btn-default"
           disabled={true}
           onClick={[Function]}
           title="Download selected files"
+          type="button"
         >
           <i
             className="fa fa-download"
           />
-        </Button>
+        </button>
       </div>
     </div>
   </div>
@@ -290,17 +278,14 @@ exports[`<FilesListingForm/> with no files and both messages 1`] = `
     <div
       className="col-md-7"
     >
-      <Button
-        active={false}
-        block={false}
-        bsClass="btn"
-        bsStyle="primary"
-        disabled={false}
+      <button
+        className="btn btn-primary"
         onClick={[Function]}
         title="more files"
+        type="button"
       >
         more files
-      </Button>
+      </button>
     </div>
     <div
       className="col-md-5"
@@ -338,19 +323,17 @@ exports[`<FilesListingForm/> with only readOnly files 1`] = `
       <div
         className="pull-right"
       >
-        <Button
-          active={false}
-          block={false}
-          bsClass="btn"
-          bsStyle="default"
+        <button
+          className="btn btn-default"
           disabled={true}
           onClick={[Function]}
           title="Download selected files"
+          type="button"
         >
           <i
             className="fa fa-download"
           />
-        </Button>
+        </button>
       </div>
     </div>
   </div>
@@ -402,17 +385,14 @@ exports[`<FilesListingForm/> with readOnly and editable files 1`] = `
     <div
       className="col-md-7"
     >
-      <Button
-        active={false}
-        block={false}
-        bsClass="btn"
-        bsStyle="primary"
-        disabled={false}
+      <button
+        className="btn btn-primary"
         onClick={[Function]}
         title="more files"
+        type="button"
       >
         more files
-      </Button>
+      </button>
     </div>
     <div
       className="col-md-5"
@@ -420,19 +400,17 @@ exports[`<FilesListingForm/> with readOnly and editable files 1`] = `
       <div
         className="pull-right"
       >
-        <Button
-          active={false}
-          block={false}
-          bsClass="btn"
-          bsStyle="default"
+        <button
+          className="btn btn-default"
           disabled={true}
           onClick={[Function]}
           title="Download selected files"
+          type="button"
         >
           <i
             className="fa fa-download"
           />
-        </Button>
+        </button>
       </div>
     </div>
   </div>
@@ -517,17 +495,14 @@ exports[`<FilesListingForm/> with readOnly and noFilesMessage 1`] = `
     <div
       className="col-md-7"
     >
-      <Button
-        active={false}
-        block={false}
-        bsClass="btn"
-        bsStyle="primary"
-        disabled={false}
+      <button
+        className="btn btn-primary"
         onClick={[Function]}
         title="more files"
+        type="button"
       >
         more files
-      </Button>
+      </button>
     </div>
     <div
       className="col-md-5"
@@ -535,19 +510,17 @@ exports[`<FilesListingForm/> with readOnly and noFilesMessage 1`] = `
       <div
         className="pull-right"
       >
-        <Button
-          active={false}
-          block={false}
-          bsClass="btn"
-          bsStyle="default"
+        <button
+          className="btn btn-default"
           disabled={true}
           onClick={[Function]}
           title="Download selected files"
+          type="button"
         >
           <i
             className="fa fa-download"
           />
-        </Button>
+        </button>
       </div>
     </div>
   </div>

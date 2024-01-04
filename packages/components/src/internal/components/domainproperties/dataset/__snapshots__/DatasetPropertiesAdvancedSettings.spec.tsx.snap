@@ -3,7 +3,6 @@
 exports[`Dataset Advanced Settings Edit Dataset, with dataspace options 1`] = `
 <button
   className="domain-field-float-right btn btn-default"
-  disabled={false}
   onClick={[Function]}
   type="button"
 >
@@ -14,7 +13,6 @@ exports[`Dataset Advanced Settings Edit Dataset, with dataspace options 1`] = `
 exports[`Dataset Advanced Settings Edit Dataset, without dataspace options 1`] = `
 <button
   className="domain-field-float-right btn btn-default"
-  disabled={false}
   onClick={[Function]}
   type="button"
 >
@@ -25,7 +23,6 @@ exports[`Dataset Advanced Settings Edit Dataset, without dataspace options 1`] =
 exports[`Dataset Advanced Settings New Dataset, with dataspace options 1`] = `
 <button
   className="domain-field-float-right btn btn-default"
-  disabled={false}
   onClick={[Function]}
   type="button"
 >
@@ -36,7 +33,6 @@ exports[`Dataset Advanced Settings New Dataset, with dataspace options 1`] = `
 exports[`Dataset Advanced Settings New Dataset, without dataspace options 1`] = `
 <button
   className="domain-field-float-right btn btn-default"
-  disabled={false}
   onClick={[Function]}
   type="button"
 >

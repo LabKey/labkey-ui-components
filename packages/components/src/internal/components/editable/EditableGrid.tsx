@@ -17,7 +17,7 @@ import { Query, Utils } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
-import { Button, Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
+import { Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -1383,24 +1383,35 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {showAddOnTop && <div className="col-sm-3">{this.renderAddRowsControl('top')}</div>}
                 <div className={actionButtonClassNames}>
                     {!showAsTab && allowBulkAdd && (
-                        <Button
-                            className="bulk-add-button"
-                            title={addTitle}
+                        <button
+                            className="bulk-add-button btn btn-default"
                             disabled={!canAddRows}
                             onClick={this.toggleBulkAdd}
+                            title={addTitle}
+                            type="button"
                         >
                             {bulkAddText}
-                        </Button>
+                        </button>
                     )}
                     {!showAsTab && allowBulkUpdate && (
-                        <Button className="bulk-update-button" disabled={invalidSel} onClick={this.toggleBulkUpdate}>
+                        <button
+                            className="bulk-update-button btn btn-default"
+                            disabled={invalidSel}
+                            onClick={this.toggleBulkUpdate}
+                            type="button"
+                        >
                             {bulkUpdateText}
-                        </Button>
+                        </button>
                     )}
                     {allowBulkRemove && (
-                        <Button className="bulk-remove-button" disabled={invalidSel} onClick={this.removeSelected}>
+                        <button
+                            className="bulk-remove-button btn btn-default"
+                            disabled={invalidSel}
+                            onClick={this.removeSelected}
+                            type="button"
+                        >
                             {bulkRemoveText}
-                        </Button>
+                        </button>
                     )}
                     {allowExport && (
                         <span className="pull-right">
@@ -1521,17 +1532,18 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { primaryBtnProps, tabAdditionalBtn, tabBtnProps } = this.props;
         if (!tabBtnProps?.show) return null;
 
+        const btnClass = primaryBtnProps.cls ?? 'btn';
         return (
             <div className={tabBtnProps?.cls}>
                 {tabAdditionalBtn}
-                <Button
-                    bsStyle="primary"
-                    bsClass={primaryBtnProps.cls}
+                <button
+                    className={`${btnClass} ${btnClass}-primary`}
                     disabled={primaryBtnProps.disabled}
                     onClick={this.onSaveClick}
+                    type="button"
                 >
                     {primaryBtnProps.caption ?? 'Save'}
-                </Button>
+                </button>
             </div>
         );
     };
@@ -1544,13 +1556,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return (
             <>
                 {bulkUpdateProps?.applyBulkUpdateBtnText && (
-                    <Button
-                        bsStyle="primary"
-                        onClick={this.applyPendingBulkFormData}
+                    <button
+                        className="btn btn-primary"
                         disabled={Utils.isEmptyObj(pendingBulkFormData?.toJS())}
+                        onClick={this.applyPendingBulkFormData}
+                        type="button"
                     >
-                        {bulkUpdateProps?.applyBulkUpdateBtnText}
-                    </Button>
+                        {bulkUpdateProps.applyBulkUpdateBtnText}
+                    </button>
                 )}
                 <BulkAddUpdateForm
                     asModal={!showAsTab}

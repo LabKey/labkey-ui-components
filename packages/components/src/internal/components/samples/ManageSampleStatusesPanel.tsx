@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { FormGroup, Button } from 'react-bootstrap';
+import { FormGroup } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -245,19 +245,19 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                             </DisableableButton>
                         )}
                         {addNew && (
-                            <Button bsStyle="default" disabled={saving} onClick={onCancel}>
+                            <button className="btn btn-default" disabled={saving} onClick={onCancel} type="button">
                                 Cancel
-                            </Button>
+                            </button>
                         )}
                         {updatedState.isLocal && (
-                            <Button
-                                bsStyle="success"
-                                className="pull-right"
+                            <button
+                                className="pull-right btn btn-success"
                                 disabled={!dirty || saving}
                                 onClick={onSave}
+                                type="button"
                             >
                                 {saving ? 'Saving...' : 'Save'}
-                            </Button>
+                            </button>
                         )}
                     </div>
                 </form>

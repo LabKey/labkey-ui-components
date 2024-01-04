@@ -22,7 +22,6 @@ exports[`<FilesListing> with files custom header 1`] = `
     >
       <div
         className="row"
-        key="0"
       >
         <div
           className="col-xs-4 file-listing-icon--container"
@@ -88,7 +87,6 @@ exports[`<FilesListing> with files custom header 1`] = `
     >
       <div
         className="row"
-        key="1"
       >
         <div
           className="col-xs-4 file-listing-icon--container"
@@ -154,7 +152,6 @@ exports[`<FilesListing> with files custom header 1`] = `
     >
       <div
         className="row"
-        key="2"
       >
         <div
           className="col-xs-4 file-listing-icon--container"
@@ -225,7 +222,6 @@ exports[`<FilesListing> with files deletable 1`] = `
     >
       <div
         className="row"
-        key="0"
       >
         <div
           className="col-xs-4 file-listing-icon--container"
@@ -300,7 +296,6 @@ exports[`<FilesListing> with files deletable 1`] = `
     >
       <div
         className="row"
-        key="1"
       >
         <div
           className="col-xs-4 file-listing-icon--container"
@@ -375,7 +370,6 @@ exports[`<FilesListing> with files deletable 1`] = `
     >
       <div
         className="row"
-        key="2"
       >
         <div
           className="col-xs-4 file-listing-icon--container"
@@ -455,7 +449,6 @@ exports[`<FilesListing> with files not deletable 1`] = `
     >
       <div
         className="row"
-        key="0"
       >
         <div
           className="col-xs-4 file-listing-icon--container"
@@ -521,7 +514,6 @@ exports[`<FilesListing> with files not deletable 1`] = `
     >
       <div
         className="row"
-        key="1"
       >
         <div
           className="col-xs-4 file-listing-icon--container"
@@ -587,7 +579,6 @@ exports[`<FilesListing> with files not deletable 1`] = `
     >
       <div
         className="row"
-        key="2"
       >
         <div
           className="col-xs-4 file-listing-icon--container"

@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import { Button, OverlayTrigger } from 'react-bootstrap';
+import { OverlayTrigger } from 'react-bootstrap';
 
 import { DisableableButton } from './DisableableButton';
 
@@ -28,6 +28,6 @@ describe('DisableableButton', () => {
     test('With styles', () => {
         const wrapper = shallow(<DisableableButton bsStyle="primary" onClick={jest.fn()} className="classname1" />);
 
-        expect(wrapper.find(Button).prop('className')).toBe('classname1');
+        expect(wrapper.find('button').prop('className')).toBe('classname1 btn btn-primary');
     });
 });

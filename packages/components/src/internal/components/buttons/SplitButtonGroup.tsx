@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Button, DropdownButton } from 'react-bootstrap';
+import React, { FC, memo } from 'react';
+import { DropdownButton } from 'react-bootstrap';
 
 interface Props {
     defaultBtnLabel: string;
@@ -11,39 +11,29 @@ interface Props {
 
 // react-bootstrap's native SplitButton can only disable/enable both main and dropdown buttons at the same time
 // SplitButtonGroup allow disable/enable buttons separately
-export class SplitButtonGroup extends Component<Props, any> {
-    static defaultProps = {
-        defaultBtnDisabled: false,
-        dropdownBtnDisabled: false,
-    };
+export const SplitButtonGroup: FC<Props> = memo(props => {
+    const {
+        children,
+        defaultBtnLabel,
+        btnGroupClass,
+        onClickDefaultBtn,
+        defaultBtnDisabled = false,
+        dropdownBtnDisabled = false,
+    } = props;
 
-    render() {
-        const {
-            children,
-            defaultBtnLabel,
-            btnGroupClass,
-            onClickDefaultBtn,
-            defaultBtnDisabled,
-            dropdownBtnDisabled,
-        } = this.props;
+    let btnClass = 'btn-group split-btn-group';
+    if (btnGroupClass) btnClass = btnClass + ' ' + btnGroupClass;
 
-        let btnClass = 'btn-group split-btn-group';
-        if (btnGroupClass) btnClass = btnClass + ' ' + btnGroupClass;
+    return (
+        <div className={btnClass}>
+            <button className="btn btn-success" onClick={onClickDefaultBtn} disabled={defaultBtnDisabled} type="button">
+                {defaultBtnLabel}
+            </button>
+            <DropdownButton bsStyle="success" disabled={dropdownBtnDisabled} id="split-btn-group-dropdown-btn" title="">
+                {children}
+            </DropdownButton>
+        </div>
+    );
+});
 
-        return (
-            <div className={btnClass}>
-                <Button bsStyle="success" onClick={onClickDefaultBtn} disabled={defaultBtnDisabled}>
-                    {defaultBtnLabel}
-                </Button>
-                <DropdownButton
-                    bsStyle="success"
-                    disabled={dropdownBtnDisabled}
-                    id="split-btn-group-dropdown-btn"
-                    title=""
-                >
-                    {children}
-                </DropdownButton>
-            </div>
-        );
-    }
-}
+SplitButtonGroup.displayName = 'SplitButtonGroup';

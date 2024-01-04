@@ -1,5 +1,4 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { blurActiveElement } from '../../util/utils';
@@ -21,13 +20,15 @@ export class PaginationButton extends PureComponent<Props> {
 
     render(): ReactNode {
         const { className, disabled, iconClass, tooltip } = this.props;
-        const clsName = classNames(className, 'pagination-button', { 'disabled-button-with-tooltip': disabled });
+        const clsName = classNames(className, 'pagination-button btn btn-default', {
+            'disabled-button-with-tooltip': disabled,
+        });
 
         return (
             <Tip caption={tooltip}>
-                <Button onClick={this.onClick} disabled={disabled} className={clsName}>
+                <button disabled={disabled} className={clsName} onClick={this.onClick} type="button">
                     <i className={`fa ${iconClass}`} />
-                </Button>
+                </button>
             </Tip>
         );
     }

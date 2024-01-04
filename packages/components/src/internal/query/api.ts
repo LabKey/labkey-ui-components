@@ -883,14 +883,12 @@ export function updateRows(options: UpdateRowsOptions): Promise<QueryCommandResp
                 if (processRequest(response, request, reject)) return;
 
                 resolve(
-                    new QueryCommandResponse(
-                        {
-                            schemaQuery,
-                            rows: response.rows,
-                            transactionAuditId: response.transactionAuditId,
-                            reselectRowCount: response.reselectRowCount
-                        }
-                    )
+                    new QueryCommandResponse({
+                        schemaQuery,
+                        rows: response.rows,
+                        transactionAuditId: response.transactionAuditId,
+                        reselectRowCount: response.reselectRowCount,
+                    })
                 );
             },
             failure: error => {
@@ -923,19 +921,17 @@ export function deleteRows(options: DeleteRowsOptions): Promise<QueryCommandResp
             queryName: schemaQuery.queryName,
             success: response => {
                 resolve(
-                    new QueryCommandResponse(
-                        {
-                            schemaQuery: options.schemaQuery,
-                            rows: response.rows,
-                            transactionAuditId: response.transactionAuditId,
-                        }
-                    )
+                    new QueryCommandResponse({
+                        schemaQuery: options.schemaQuery,
+                        rows: response.rows,
+                        transactionAuditId: response.transactionAuditId,
+                    })
                 );
             },
             failure: error => {
                 reject({
                     schemaQuery: options.schemaQuery,
-                    error
+                    error,
                 });
             },
         });
@@ -957,30 +953,35 @@ export function saveRows(options: Query.SaveRowsOptions): Promise<Query.SaveRows
     });
 }
 
-export function deleteRowsByContainer(options: DeleteRowsOptions, containerField : string = 'ContainerPath'): Promise<QueryCommandResponse> {
+export function deleteRowsByContainer(
+    options: DeleteRowsOptions,
+    containerField: string = 'ContainerPath'
+): Promise<QueryCommandResponse> {
     const commands = [];
 
     const allRows = options.rows;
-    if (!allRows || Object.keys(allRows[0]).map(key => key.toLowerCase()).indexOf(containerField.toLowerCase()) === -1)
+    if (
+        !allRows ||
+        Object.keys(allRows[0])
+            .map(key => key.toLowerCase())
+            .indexOf(containerField.toLowerCase()) === -1
+    )
         return deleteRows(options);
 
     const containerRows = {};
     allRows.forEach(row => {
         const container = caseInsensitive(row, containerField);
-        if (!containerRows[container])
-            containerRows[container] = [];
+        if (!containerRows[container]) containerRows[container] = [];
         containerRows[container].push(row);
-    })
+    });
 
-    if (Object.keys(containerRows).length <= 1)
-    {
+    if (Object.keys(containerRows).length <= 1) {
         const containerPath = Object.keys(containerRows)?.[0];
         return deleteRows({
             ...options,
             containerPath,
         });
     }
-
 
     Object.keys(containerRows).forEach(containerPath => {
         const rows = containerRows[containerPath];
@@ -992,29 +993,31 @@ export function deleteRowsByContainer(options: DeleteRowsOptions, containerField
             rows,
             containerPath,
         });
-    })
+    });
 
     return new Promise((resolve, reject) => {
         saveRows({
-            commands
-        }).then(response => {
-            const rows = [];
-            response.result.forEach((resp, ind) => {
-                rows.push(resp.rows);
-            });
-            resolve(new QueryCommandResponse({
+            commands,
+        })
+            .then(response => {
+                const rows = [];
+                response.result.forEach((resp, ind) => {
+                    rows.push(resp.rows);
+                });
+                resolve(
+                    new QueryCommandResponse({
                         schemaQuery: options.schemaQuery,
                         rows,
                         transactionAuditId: response.result[0]?.['transactionAuditId'],
-                    }
-                )
-            );
-        }).catch(error => {
-            reject({
-                schemaQuery: options.schemaQuery,
-                error,
+                    })
+                );
+            })
+            .catch(error => {
+                reject({
+                    schemaQuery: options.schemaQuery,
+                    error,
+                });
             });
-        })
     });
 }
 

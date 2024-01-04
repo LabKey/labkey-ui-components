@@ -1,7 +1,5 @@
 import React, { FC, memo, useCallback } from 'react';
 
-import { Button } from 'react-bootstrap';
-
 import { Alert } from '../../base/Alert';
 import { IDomainField } from '../models';
 import { UNIQUE_ID_TYPE } from '../PropDescType';
@@ -39,9 +37,9 @@ export const UniqueIdBanner: FC<Props> = memo(({ model, isFieldsPanel, onAddFiel
             return (
                 <Alert bsStyle="info" className="uniqueid-alert">
                     {ADD_NEW_UNIQUE_ID_MSG}
-                    <Button className="pull-right alert-button" bsStyle="info" onClick={onClick}>
+                    <button className="pull-right alert-button btn btn-info" onClick={onClick} type="button">
                         Yes, Add Unique ID Field
-                    </Button>
+                    </button>
                 </Alert>
             );
         } else if (!isFieldsPanel) {

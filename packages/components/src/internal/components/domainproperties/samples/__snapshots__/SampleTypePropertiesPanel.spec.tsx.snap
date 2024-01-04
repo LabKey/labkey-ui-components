@@ -2658,37 +2658,19 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                               bsStyle="info"
                               className="uniqueid-alert"
                             >
-                              <Alert
-                                bsClass="alert"
-                                bsStyle="info"
-                                className="uniqueid-alert"
-                                closeLabel="Close alert"
+                              <div
+                                className="uniqueid-alert alert alert-info"
+                                role="alert"
                               >
-                                <div
-                                  className="uniqueid-alert alert alert-info"
-                                  role="alert"
+                                Do you want to add a unique ID field to create barcodes for this sample type?
+                                <button
+                                  className="pull-right alert-button btn btn-info"
+                                  onClick={[Function]}
+                                  type="button"
                                 >
-                                  Do you want to add a unique ID field to create barcodes for this sample type?
-                                  <Button
-                                    active={false}
-                                    block={false}
-                                    bsClass="btn"
-                                    bsStyle="info"
-                                    className="pull-right alert-button"
-                                    disabled={false}
-                                    onClick={[Function]}
-                                  >
-                                    <button
-                                      className="pull-right alert-button btn btn-info"
-                                      disabled={false}
-                                      onClick={[Function]}
-                                      type="button"
-                                    >
-                                      Yes, Add Unique ID Field
-                                    </button>
-                                  </Button>
-                                </div>
-                              </Alert>
+                                  Yes, Add Unique ID Field
+                                </button>
+                              </div>
                             </Alert>
                           </Memo()>
                         </div>

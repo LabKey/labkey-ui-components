@@ -482,28 +482,15 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
             <div
               className="col-xs-12"
             >
-              <Button
-                active={false}
-                block={false}
-                bsClass="btn"
-                bsStyle="default"
-                className="domain-validation-delete"
-                disabled={false}
+              <button
+                className="domain-validation-delete btn btn-default"
                 id="domainpropertiesrow-removeValidator-1-0"
                 name="domainpropertiesrow-removeValidator"
                 onClick={[Function]}
+                type="button"
               >
-                <button
-                  className="domain-validation-delete btn btn-default"
-                  disabled={false}
-                  id="domainpropertiesrow-removeValidator-1-0"
-                  name="domainpropertiesrow-removeValidator"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Remove Validator
-                </button>
-              </Button>
+                Remove Validator
+              </button>
             </div>
           </Col>
         </div>

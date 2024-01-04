@@ -1,6 +1,5 @@
 import React from 'react';
 import { ReactWrapper } from 'enzyme';
-import { Button } from 'react-bootstrap';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -41,7 +40,7 @@ describe('SampleAmountEditModal', () => {
     }
 
     function validateSubmitButton(wrapper: ReactWrapper, noun: string, canSave: boolean): void {
-        const success = wrapper.find(Button).at(1);
+        const success = wrapper.find('button').at(2);
         expect(success.text()).toBe('Update ' + noun);
         expect(success.prop('disabled')).toBe(!canSave);
     }
@@ -59,7 +58,7 @@ describe('SampleAmountEditModal', () => {
             { user: TEST_USER_EDITOR }
         );
 
-        expect(wrapper.find(Button).at(0).text()).toBe('Cancel');
+        expect(wrapper.find('button').at(1).text()).toBe('Cancel');
         validate(wrapper, undefined, undefined, false, undefined, noun, false);
 
         wrapper.unmount();

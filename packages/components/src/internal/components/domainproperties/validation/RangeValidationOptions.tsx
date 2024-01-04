@@ -1,5 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { Button, Col, FormControl, Row } from 'react-bootstrap';
+import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
@@ -145,14 +145,15 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
 
                         <Row>
                             <Col xs={12}>
-                                <Button
-                                    className="domain-validation-delete"
-                                    name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
+                                <button
+                                    className="domain-validation-delete btn btn-default"
                                     id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
+                                    name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
                                     onClick={this.onDelete}
+                                    type="button"
                                 >
                                     Remove Validator
-                                </Button>
+                                </button>
                             </Col>
                         </Row>
                     </div>

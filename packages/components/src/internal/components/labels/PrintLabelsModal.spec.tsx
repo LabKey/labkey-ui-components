@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import { shallow } from 'enzyme';
 
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
@@ -16,7 +15,7 @@ import { QuerySelect } from '../forms/QuerySelect';
 
 import { PrintLabelsModalImpl, PrintModalProps } from './PrintLabelsModal';
 
-describe('<PrintLabelsModal/>', () => {
+describe('PrintLabelsModal', () => {
     let actions;
     let queryModels;
     const TEST_SCHEMA = 'testSchema';
@@ -56,7 +55,7 @@ describe('<PrintLabelsModal/>', () => {
         expect(wrapper.find('.modal-title').text()).toBe('Print Labels with BarTender');
         expect(wrapper.find(QuerySelect)).toHaveLength(2);
         expect(wrapper.find('div.modal-body').text()).toContain('Select samples to print labels for.');
-        expect(wrapper.find(Button).prop('disabled')).toBe(true);
+        expect(wrapper.find('button').prop('disabled')).toBe(true);
     });
 
     test('single sample with selection', async () => {
@@ -69,7 +68,7 @@ describe('<PrintLabelsModal/>', () => {
         expect(wrapper.find('div.modal-body').text()).toContain(
             "Confirm you've selected the samples you want and the proper label template."
         );
-        expect(wrapper.find(Button).prop('disabled')).toBe(false);
+        expect(wrapper.find('button').prop('disabled')).toBe(false);
     });
 
     test('single sample without selection', async () => {
@@ -83,7 +82,7 @@ describe('<PrintLabelsModal/>', () => {
         expect(wrapper.find('div.modal-body').text()).toContain(
             'Choose the number of copies of the label for this sample'
         );
-        expect(wrapper.find(Button).prop('disabled')).toBe(false);
+        expect(wrapper.find('button').prop('disabled')).toBe(false);
     });
 
     test('multiple labels', async () => {
@@ -97,24 +96,24 @@ describe('<PrintLabelsModal/>', () => {
         expect(wrapper.find('div.modal-body').text()).toContain(
             "Confirm you've selected the samples you want and the proper label template."
         );
-        expect(wrapper.find(Button).prop('disabled')).toBe(false);
+        expect(wrapper.find('button').prop('disabled')).toBe(false);
     });
 
     test('no label template', () => {
         const wrapper = shallow(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
-        expect(wrapper.find(Button).prop('disabled')).toBe(true);
+        expect(wrapper.find('button').prop('disabled')).toBe(true);
     });
 
     test('no copy count', () => {
         const wrapper = shallow(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
         wrapper.setState({ numCopies: undefined });
-        expect(wrapper.find(Button).prop('disabled')).toBe(true);
+        expect(wrapper.find('button').prop('disabled')).toBe(true);
     });
 
     test('submitting', () => {
         const wrapper = shallow(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
         wrapper.setState({ submitting: true });
-        expect(wrapper.find(Button).prop('disabled')).toBe(true);
+        expect(wrapper.find('button').prop('disabled')).toBe(true);
     });
 
     test('error', async () => {

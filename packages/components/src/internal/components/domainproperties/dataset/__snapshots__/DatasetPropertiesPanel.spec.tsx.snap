@@ -583,7 +583,6 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
         >
           <button
             className="domain-field-float-right btn btn-default"
-            disabled={false}
             onClick={[Function]}
             type="button"
           >
@@ -1159,7 +1158,6 @@ exports[`Dataset Properties Panel New dataset 1`] = `
         >
           <button
             className="domain-field-float-right btn btn-default"
-            disabled={false}
             onClick={[Function]}
             type="button"
           >

@@ -649,11 +649,7 @@ import { BarTenderConfiguration } from './internal/components/labels/models';
 import { useLabelPrintingContext } from './internal/components/labels/LabelPrintingContextProvider';
 import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal';
 
-import {
-    AppReducers,
-    ProductMenuReducers,
-    ServerNotificationReducers,
-} from './internal/app/reducers';
+import { AppReducers, ProductMenuReducers, ServerNotificationReducers } from './internal/app/reducers';
 
 import {
     CloseEventCode,
@@ -1749,11 +1745,7 @@ export type { WithFormStepsProps } from './internal/components/forms/FormStep';
 export type { BulkAddData, SharedEditableGridPanelProps } from './internal/components/editable/EditableGrid';
 export type { IImportData, ISelectRowsResult } from './internal/query/api';
 export type { Row, RowValue, SelectRowsOptions, SelectRowsResponse } from './internal/query/selectRows';
-export type {
-    ServerNotificationState,
-    ProductMenuState,
-    AppReducerState,
-} from './internal/app/reducers';
+export type { ServerNotificationState, ProductMenuState, AppReducerState } from './internal/app/reducers';
 export type { IAttachment } from './internal/renderers/AttachmentCard';
 export type { Field, FormSchema, Option } from './internal/components/AutoForm';
 export type { FileSizeLimitProps } from './public/files/models';

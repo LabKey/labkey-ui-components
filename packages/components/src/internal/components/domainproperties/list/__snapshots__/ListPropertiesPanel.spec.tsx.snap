@@ -189,7 +189,6 @@ exports[`ListPropertiesPanel existing list 1`] = `
       </div>
       <button
         className="domain-field-float-right btn btn-default"
-        disabled={false}
         onClick={[Function]}
         type="button"
       >
@@ -395,7 +394,6 @@ exports[`ListPropertiesPanel list with error 1`] = `
       </div>
       <button
         className="domain-field-float-right btn btn-default"
-        disabled={false}
         onClick={[Function]}
         type="button"
       >
@@ -588,7 +586,6 @@ exports[`ListPropertiesPanel new list 1`] = `
       </div>
       <button
         className="domain-field-float-right btn btn-default"
-        disabled={false}
         onClick={[Function]}
         type="button"
       >

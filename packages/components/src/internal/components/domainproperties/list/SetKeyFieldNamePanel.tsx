@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Col, FormControl, Row } from 'react-bootstrap';
+import { Col, FormControl, Row } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 
 import { DomainField, IAppDomainHeader, IDomainField } from '../models';
@@ -10,6 +10,8 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 import { AUTO_INT_CONCEPT_URI, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from '../constants';
 
 import { AUTOINT_TYPE, PropDescType } from '../PropDescType';
+
+import { Alert } from '../../base/Alert';
 
 import { ListModel } from './models';
 
@@ -31,7 +33,7 @@ interface Props extends IAppDomainHeader {
 }
 
 export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
-    onSelectionChange = (e: any) => {
+    onSelectionChange = (e: any): void => {
         const { model, onModelChange } = this.props;
         const { value } = e.target;
         const selectedRowIndex = Utils.isNumber(parseInt(value)) ? parseInt(value) : undefined;
@@ -97,7 +99,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
         const isAutoIncPk = pkField !== undefined && PropDescType.isAutoIncrement(pkField.dataType);
 
         return (
-            <Alert className="list__set-key-alert">
+            <Alert bsStyle="info" className="list__set-key-alert">
                 <div>
                     Select a key value for this list which uniquely identifies the item. You can use "
                     {AUTO_INC_KEY_OPTION_TEXT}" to define your own below.

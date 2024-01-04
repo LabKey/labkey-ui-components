@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useState } from 'react';
 import classNames from 'classnames';
-import { Button, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
+import { FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
+
 import { getSubmitButtonClass } from '../../../app/utils';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
@@ -502,9 +503,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
         return (
             <>
-                <Button className="domain-field-float-right" onClick={this.openModal}>
+                <button className="domain-field-float-right btn btn-default" onClick={this.openModal} type="button">
                     {title}
-                </Button>
+                </button>
 
                 <Modal show={modalOpen} onHide={this.closeModal}>
                     <Modal.Header closeButton>
@@ -542,21 +543,25 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button onClick={this.closeModal} className="domain-adv-footer domain-adv-cancel-btn">
+                        <button
+                            className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
+                            onClick={this.closeModal}
+                            type="button"
+                        >
                             Cancel
-                        </Button>
+                        </button>
 
                         <HelpLink className="domain-adv-footer domain-adv-link" topic="createListOptions#advanced">
                             Get help with list settings
                         </HelpLink>
 
-                        <Button
+                        <button
+                            className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
                             onClick={this.applyChanges}
-                            bsStyle={getSubmitButtonClass()}
-                            className="domain-adv-footer domain-adv-apply-btn"
+                            type="button"
                         >
                             Apply
-                        </Button>
+                        </button>
                     </Modal.Footer>
                 </Modal>
             </>

@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { createFormInputName } from '../domainproperties/utils';
@@ -64,15 +63,15 @@ export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> =
     }, [fieldValue, path]);
 
     const toggleSelectModal = useCallback(() => {
-        setShowSelectModal(!showSelectModal);
-    }, [showSelectModal, setShowSelectModal]);
+        setShowSelectModal(s => !s);
+    }, []);
 
     const onApply = useCallback(
         (selectedPath: PathModel, selectedConcept: ConceptModel) => {
             onChange(id, selectedPath, selectedConcept);
             setShowSelectModal(false);
         },
-        [onChange, id, setShowSelectModal]
+        [onChange, id]
     );
 
     const onRemove = useCallback(() => {
@@ -85,15 +84,16 @@ export const OntologyConceptSelectButton: FC<OntologyConceptSelectButtonProps> =
                 <tbody>
                     <tr>
                         <td>
-                            <Button
-                                className="domain-validation-button"
-                                name={createFormInputName(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT)}
-                                id={id}
+                            <button
+                                className="domain-validation-button btn btn-default"
                                 disabled={isFieldLocked}
+                                id={id}
+                                name={createFormInputName(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT)}
                                 onClick={toggleSelectModal}
+                                type="button"
                             >
                                 {title}
-                            </Button>
+                            </button>
                         </td>
                         {!fieldValue && (
                             <td className="content">

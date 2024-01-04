@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
@@ -284,18 +284,18 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                         <span className="fa fa-trash" />
                                         <span>&nbsp;Delete</span>
                                     </DisableableButton>
-                                    <Button
-                                        bsStyle="success"
-                                        className="pull-right"
+                                    <button
+                                        className="pull-right btn btn-success"
                                         disabled={
                                             currentError !== undefined ||
                                             currentValue === selectedValue ||
                                             currentValue.trim() === ''
                                         }
                                         onClick={onApply}
+                                        type="button"
                                     >
                                         Apply
-                                    </Button>
+                                    </button>
                                 </div>
                                 {fieldValueUpdates[selectedValue] !== undefined &&
                                     selectedValue !== fieldValueUpdates[selectedValue] && (

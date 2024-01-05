@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Language Consistency: 'My' vs. 'Your' and 'Shared' vs. 'Public'
+
 ### version 3.3.0
 *Released*: 3 January 2023
 - Update `Alert` to accept additional props and match behavior of `react-bootstrap`.

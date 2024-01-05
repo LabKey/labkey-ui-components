@@ -32,7 +32,7 @@ describe('PicklistEditModal', () => {
         expect(labels).toHaveLength(3);
         expect(labels.at(0).text()).toBe('Name *');
         expect(labels.at(1).text()).toBe('Description');
-        expect(labels.at(2).text()).toBe('Share this picklist publicly with team members');
+        expect(labels.at(2).text()).toBe('Share this picklist');
         if (existingList) {
             expect(wrapper.find('input').at(0).prop('value')).toBe(existingList.name);
         } else {
@@ -124,7 +124,7 @@ describe('PicklistEditModal', () => {
         expect(labels).toHaveLength(3);
         expect(labels.at(0).text()).toBe('Name *');
         expect(labels.at(1).text()).toBe('Description');
-        expect(labels.at(2).text()).toBe('Share this picklist publicly with team members');
+        expect(labels.at(2).text()).toBe('Share this picklist');
         expect(wrapper.find('input').at(0).prop('value')).toBe(existingList.name);
         expect(wrapper.find('input').at(1).prop('checked')).toBe(false);
         expect(wrapper.find('textarea').prop('value')).toBe(existingList.Description);

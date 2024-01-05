@@ -15,7 +15,15 @@ import { isAppHomeFolder, isProductProjectsEnabled, userCanEditSharedViews } fro
 import { useServerContext } from '../../internal/components/base/ServerContext';
 
 const MAX_VIEW_NAME_LENGTH = 200;
-const RESERVED_VIEW_NAMES = ['default', 'your default', '~~details~~', '~~insert~~', '~~update~~', '~~samplefinder~~'];
+const RESERVED_VIEW_NAMES = [
+    'default',
+    'my default',
+    'your default',
+    '~~details~~',
+    '~~insert~~',
+    '~~update~~',
+    '~~samplefinder~~',
+];
 
 interface ViewNameInputProps {
     autoFocus?: boolean;

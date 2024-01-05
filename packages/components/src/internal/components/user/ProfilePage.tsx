@@ -50,7 +50,6 @@ import {
 import { SCHEMAS } from '../../schemas';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { ConfirmModal } from '../base/ConfirmModal';
-import { deleteRows } from '../../query/api';
 
 interface ButtonsComponentProps extends RequiresModelAndActions {
     onDelete: () => void;

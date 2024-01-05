@@ -140,12 +140,12 @@ const KeyGenerator: FC<KeyGeneratorProps> = props => {
                 <input disabled
                        type="text"
                        className="form-control api-key__input"
-                       name={"key_input"}
+                       name={type + "_token"}
                        value={keyValue}
                 />
                 <button className="btn btn-default api-key__button"
                         title="Copy to clipboard"
-                        name={"copy_key"}
+                        name={"copy_" + type + "_token"}
                         onClick={onCopyKey}
                         disabled={!keyValue}
                 >
@@ -214,11 +214,8 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
     [moduleContext, apiEnabled]);
 
     // We are meant to not show this panel for LKSM Starter, but show it in LKS and LKSM Prof+
-
     if (primaryApp && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext))
         return null;
-
-
 
     return (
         <div className="panel panel-content panel-default">
@@ -276,7 +273,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
                 )}
                 {sessionEnabled && includeSessionKeys && (
                     <>
-                        <div className={'user-section-header bottom-spacing'}>Session Keys</div>
+                        <div className={'user-section-header top-spacing bottom-spacing'}>Session Keys</div>
                         {impersonatingUser !== undefined && (
                             <Alert bsStyle="warning" id={'session-impersonating-msg'}>
                                 Session key generation is not available while impersonating.

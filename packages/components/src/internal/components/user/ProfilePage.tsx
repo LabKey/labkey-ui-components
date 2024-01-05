@@ -58,20 +58,13 @@ interface ButtonsComponentProps extends RequiresModelAndActions {
 
 const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
     const { model, actions, onDelete } = props;
+    const { api } = useAppContext<AppContext>();
     const [ showConfirmDelete, setShowConfirmDelete ] = useState<boolean>(false);
 
     const onDeleteClicked = useCallback(() => setShowConfirmDelete(true), []);
     const closeDeleteModal = useCallback(() => setShowConfirmDelete(false), []);
     const onConfirmDelete = useCallback(async () => {
-        const rows = [];
-        model.selections.forEach(selection => {
-            rows.push({rowId: selection});
-        });
-
-        await deleteRows({
-            schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
-            rows,
-        });
+        await api.security.deleteApiKeys(model.selections);
         actions.clearSelections(model.id);
         actions.loadModel(model.id, true, true);
         actions.loadFirstPage(model.id);
@@ -187,7 +180,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
     const sessionEnabled = isSessionKeyGenerationEnabled(moduleContext);
 
     const onDelete = useCallback(() => {
-        setApiKey("");
+        setApiKey(""); // undefined and null here will not have the desired effect
     }, []);
 
     const onApiKeyCreate = useCallback((key: string)  => {
@@ -214,7 +207,9 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
         ,
     [moduleContext, apiEnabled]);
 
-    if (!isFeatureEnabled(ProductFeature.ApiKeys, moduleContext))
+    // We are meant to not show this panel for LKSM Starter, but show it in LKS and LKSM Prof+
+    const primaryApp = getPrimaryAppProperties(moduleContext)?.name;
+    if (primaryApp && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext))
         return null;
 
     return (
@@ -222,7 +217,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
             <div className="panel-heading">API Keys</div>
             <div className="panel-body">
                 <p>
-                    API keys are used to authorize client code accessing {getPrimaryAppProperties(moduleContext)?.name ?? "LabKey Server"} using one of the{' '}
+                    API keys are used to authorize client code accessing {primaryApp ?? "LabKey Server"} using one of the{' '}
                     <a href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=viewApis">LabKey Client APIs</a>
                     . API keys are appropriate for authenticating ad hoc interactions within statistical tools
                     (e.g., R, RStudio, SAS) or programming languages (e.g., Java, Python), as well as
@@ -273,12 +268,10 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
                 )}
                 {sessionEnabled && includeSessionKeys && (
                     <>
+                        <div className={'user-section-header bottom-spacing'}>Session Keys</div>
                         {impersonatingUser !== undefined && (
-                            <div className={'user-section-header bottom-spacing'}>Session Keys</div>
-                        )}
-                        {impersonatingUser !== undefined && !apiEnabled && (
                             <Alert bsStyle="warning" id={'impersonating-msg'}>
-                                API key generation is not available while impersonating.
+                                Session key generation is not available while impersonating.
                             </Alert>
                         )}
                         {!impersonatingUser && (

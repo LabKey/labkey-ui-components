@@ -18,7 +18,7 @@ import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 import { getUserProperties } from '../user/actions';
 import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { processRequest } from '../../query/api';
+import { deleteRows, DeleteRowsResponse, processRequest } from '../../query/api';
 import { GroupMembership } from '../administration/models';
 
 type NonRequestCallback<T extends Utils.RequestCallbackOptions> = Omit<T, 'success' | 'failure' | 'scope'>;
@@ -52,6 +52,7 @@ export interface RemoveGroupMembersResponse {
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
     createApiKey: (type?: string) => Promise<string>;
+    deleteApiKeys: (selections: Set<string>) => Promise<DeleteRowsResponse>;
     createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
     deleteContainer: (options: DeleteContainerOptions) => Promise<Record<string, unknown>>;
     deleteGroup: (id: number, projectPath: string) => Promise<DeleteGroupResponse>;
@@ -116,6 +117,18 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
             });
         });
     };
+
+    deleteApiKeys(selections: Set<string>): Promise<DeleteRowsResponse> {
+        const rows = [];
+        selections.forEach(selection => {
+            rows.push({rowId: selection});
+        });
+
+        return deleteRows({
+            schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
+            rows,
+        });
+    }
 
     createGroup = (groupName: string, projectPath: string): Promise<Security.CreateGroupResponse> => {
         return new Promise((resolve, reject) => {
@@ -389,6 +402,7 @@ export function getSecurityTestAPIWrapper(
     return {
         addGroupMembers: mockFn(),
         createApiKey: mockFn(),
+        deleteApiKeys: mockFn(),
         createGroup: mockFn(),
         deleteContainer: mockFn(),
         deleteGroup: mockFn(),

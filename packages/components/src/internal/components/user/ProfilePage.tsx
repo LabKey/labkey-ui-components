@@ -50,6 +50,7 @@ import {
 import { SCHEMAS } from '../../schemas';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
 import { ConfirmModal } from '../base/ConfirmModal';
+import { HelpLink } from '../../util/helpLinks';
 
 interface ButtonsComponentProps extends RequiresModelAndActions {
     onDelete: () => void;
@@ -177,6 +178,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
     const [ sessionKey, setSessionKey ] = useState<string>();
     const apiEnabled = isApiKeyGenerationEnabled(moduleContext);
     const sessionEnabled = isSessionKeyGenerationEnabled(moduleContext);
+    const primaryApp = getPrimaryAppProperties(moduleContext)?.name;
 
     const onDelete = useCallback(() => {
         setApiKey(""); // undefined and null here will not have the desired effect
@@ -200,16 +202,23 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
     const configMsg = useMemo(() => apiEnabled ?
         <p id={"config-msg"}>
             API keys are currently configured to <span className="api-key__expiration-config">{getApiExpirationMessage(moduleContext)}</span>.{' '}
-            <span><a href={'https://www.labkey.org/Documentation/wiki-page.view?name=apiKey#usage'}>More info</a></span>
+            <span>
+                {primaryApp ?
+                <HelpLink topic={"myAccount#apikey"}>More info</HelpLink> :
+                <a href={'https://www.labkey.org/Documentation/wiki-page.view?name=apiKey#usage'}>More info</a>
+                }
+            </span>
         </p>
         : null
         ,
     [moduleContext, apiEnabled]);
 
     // We are meant to not show this panel for LKSM Starter, but show it in LKS and LKSM Prof+
-    const primaryApp = getPrimaryAppProperties(moduleContext)?.name;
+
     if (primaryApp && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext))
         return null;
+
+
 
     return (
         <div className="panel panel-content panel-default">
@@ -251,7 +260,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
                     <>
                         {impersonatingUser !== undefined && (
                             <Alert bsStyle="warning" id={"impersonating-msg"}>
-                                API Key generation is not available while impersonating.
+                                API key generation is not available while impersonating.
                             </Alert>
                             )
                         }
@@ -269,7 +278,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
                     <>
                         <div className={'user-section-header bottom-spacing'}>Session Keys</div>
                         {impersonatingUser !== undefined && (
-                            <Alert bsStyle="warning" id={'impersonating-msg'}>
+                            <Alert bsStyle="warning" id={'session-impersonating-msg'}>
                                 Session key generation is not available while impersonating.
                             </Alert>
                         )}

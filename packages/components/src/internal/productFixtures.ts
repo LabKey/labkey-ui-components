@@ -63,7 +63,7 @@ export const TEST_LKS_STARTER_MODULE_CONTEXT = {
         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
     },
     core: {
-        productFeatures: [ProductFeature.Assay],
+        productFeatures: [ProductFeature.ApiKeys, ProductFeature.Assay],
     },
 };
 

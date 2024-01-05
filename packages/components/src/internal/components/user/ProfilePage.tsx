@@ -222,7 +222,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
             <div className="panel-heading">API Keys</div>
             <div className="panel-body">
                 <p>
-                    API keys are used to authorize client code accessing {getPrimaryAppProperties(moduleContext).name} using one of the{' '}
+                    API keys are used to authorize client code accessing {getPrimaryAppProperties(moduleContext)?.name ?? "LabKey Server"} using one of the{' '}
                     <a href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=viewApis">LabKey Client APIs</a>
                     . API keys are appropriate for authenticating ad hoc interactions within statistical tools
                     (e.g., R, RStudio, SAS) or programming languages (e.g., Java, Python), as well as

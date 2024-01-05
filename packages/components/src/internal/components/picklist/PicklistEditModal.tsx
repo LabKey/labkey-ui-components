@@ -232,7 +232,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
                         />
 
                         <Checkbox checked={shared} onChange={onSharedChanged}>
-                            <span>Share this picklist publicly with team members</span>
+                            <span>Share this picklist</span>
                         </Checkbox>
                     </div>
                 </form>

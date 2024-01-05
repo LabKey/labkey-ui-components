@@ -3,6 +3,8 @@ import { Modal } from 'react-bootstrap';
 
 import { PermissionTypes } from '@labkey/api';
 
+import classNames from 'classnames';
+
 import { ModalButtons } from '../../internal/ModalButtons';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { Alert } from '../../internal/components/base/Alert';
@@ -11,10 +13,9 @@ import { CUSTOM_VIEW, HelpLink } from '../../internal/util/helpLinks';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
 import { isAppHomeFolder, isProductProjectsEnabled, userCanEditSharedViews } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
-import classNames from 'classnames';
 
 const MAX_VIEW_NAME_LENGTH = 200;
-const RESERVED_VIEW_NAMES = ['default', 'my default', '~~details~~', '~~insert~~', '~~update~~', '~~samplefinder~~'];
+const RESERVED_VIEW_NAMES = ['default', 'your default', '~~details~~', '~~insert~~', '~~update~~', '~~samplefinder~~'];
 
 interface ViewNameInputProps {
     autoFocus?: boolean;
@@ -223,18 +224,20 @@ export const SaveViewModal: FC<Props> = memo(props => {
                                 <span className="margin-left">Make this grid view available to all users</span>
                             </div>
                         )}
-                        {isProductProjectsEnabled(moduleContext) && isAppHomeFolder(container, moduleContext) && canEditShared && (
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    name="setInherit"
-                                    onChange={toggleInherit}
-                                    checked={canInherit}
-                                />
-                                <span className="margin-left">Make this grid view available in child folders</span>
-                            </div>
-                        )}
+                        {isProductProjectsEnabled(moduleContext) &&
+                            isAppHomeFolder(container, moduleContext) &&
+                            canEditShared && (
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        name="setInherit"
+                                        onChange={toggleInherit}
+                                        checked={canInherit}
+                                    />
+                                    <span className="margin-left">Make this grid view available in all Projects</span>
+                                </div>
+                            )}
                         <div className="top-spacing">
                             Learn more about <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                         </div>

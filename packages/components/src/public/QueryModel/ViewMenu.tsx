@@ -47,7 +47,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
 
         const viewMapper = (viewInfo): ReactNode => {
             const { name, isDefault, saved, shared } = viewInfo;
-            const label = isDefault && saved && !shared ? 'My Default' : viewInfo.label;
+            const label = isDefault && saved && !shared ? 'Your Default' : viewInfo.label;
             const view = isDefault ? undefined : name;
             const onSelect = (): void => {
                 onViewSelect(view);
@@ -78,7 +78,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
                 >
                     {defaultView && viewMapper(defaultView)}
                     {privateViews.length > 0 && <MenuItem divider />}
-                    {privateViews.length > 0 && <MenuItem header>My Saved Views</MenuItem>}
+                    {privateViews.length > 0 && <MenuItem header>Your Saved Views</MenuItem>}
                     {privateViews.length > 0 && privateViews.map(viewMapper)}
                     {publicViews.length > 0 && <MenuItem divider />}
                     {publicViews.length > 0 && <MenuItem header>Shared Saved Views</MenuItem>}

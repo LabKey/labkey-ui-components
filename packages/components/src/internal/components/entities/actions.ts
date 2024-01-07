@@ -28,7 +28,13 @@ import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
-import { getInitialParentChoices, isAssayDesignEntity, isDataClassEntity, isSampleEntity } from './utils';
+import {
+    getInitialParentChoices,
+    isAssayDesignEntity,
+    isAssayResultEntity,
+    isDataClassEntity,
+    isSampleEntity
+} from './utils';
 import {
     AssayRunOperation,
     DATA_CLASS_IMPORT_PREFIX,
@@ -106,8 +112,14 @@ export function getDeleteConfirmationData(
     dataType: EntityDataType,
     rowIds: string[] | number[],
     selectionKey?: string,
-    useSnapshotSelection?: boolean
+    useSnapshotSelection?: boolean,
+    schemaQuery?: SchemaQuery,
 ): Promise<OperationConfirmationData> {
+    console.log('a');
+    if (isAssayResultEntity(dataType)) {
+        return getAssayResultOperationConfirmationData(AssayRunOperation.Delete, rowIds, schemaQuery);
+    }
+
     if (isSampleEntity(dataType)) {
         return getSampleOperationConfirmationData(SampleOperation.Delete, rowIds, selectionKey, useSnapshotSelection);
     }
@@ -124,6 +136,28 @@ export function getDeleteConfirmationData(
             ? { dataOperation: AssayRunOperation.Delete }
             : undefined
     );
+}
+
+export function getAssayResultOperationConfirmationData(operation: AssayRunOperation, rowIds: string[] | number[], schemaQuery: SchemaQuery): Promise<OperationConfirmationData> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            columns: ['RowId', 'Folder/Path'],
+            filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
+            schemaQuery: schemaQuery
+        }).then(response => {
+            const allowed = [];
+            response.rows.forEach(row => {
+                allowed.push({
+                    rowId: caseInsensitive(row, "RowId")?.value,
+                    containerPath: caseInsensitive(row, "Folder/Path")?.value,
+                })
+            });
+            resolve(new OperationConfirmationData({allowed}))
+        }).catch(error => {
+            console.error(error);
+            reject(error);
+        })
+    });
 }
 
 export function getSampleOperationConfirmationData(

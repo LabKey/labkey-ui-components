@@ -121,6 +121,10 @@ export function isAssayDesignEntity(dataType: EntityDataType): boolean {
     return dataType.instanceSchemaName === SCHEMAS.ASSAY_TABLES.SCHEMA;
 }
 
+export function isAssayResultEntity(dataType: EntityDataType): boolean {
+    return dataType.sampleFinderCardType === 'assaydata';
+}
+
 export function getJobCreationHref(
     model: QueryModel,
     templateId?: string | number,

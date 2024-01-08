@@ -30,22 +30,22 @@ import { ViewInfo } from '../ViewInfo';
 
 import {
     deleteRows,
+    deleteRowsByContainer,
     DeleteRowsOptions,
-    DeleteRowsResponse,
     getQueryDetails,
     GetQueryDetailsOptions,
     insertRows,
     InsertRowsOptions,
-    InsertRowsResponse,
+    QueryCommandResponse,
     selectDistinctRows,
     updateRows,
     UpdateRowsOptions,
-    UpdateRowsResponse,
 } from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 
 export interface QueryAPIWrapper {
-    deleteRows: (options: DeleteRowsOptions) => Promise<DeleteRowsResponse>;
+    deleteRows: (options: DeleteRowsOptions) => Promise<QueryCommandResponse>;
+    deleteRowsByContainer: (options: DeleteRowsOptions, containerField: string) => Promise<any>;
     deleteView: (schemaQuery: SchemaQuery, containerPath: string, viewName?: string, revert?: boolean) => Promise<void>;
     getDataTypeProjectDataCount: (
         entityDataType: EntityDataType,
@@ -76,7 +76,7 @@ export interface QueryAPIWrapper {
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
     getSnapshotSelections: (key: string, containerPath?: string) => Promise<GetSelectedResponse>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
-    insertRows: (options: InsertRowsOptions) => Promise<InsertRowsResponse>;
+    insertRows: (options: InsertRowsOptions) => Promise<QueryCommandResponse>;
     renameGridView: (
         schemaQuery: SchemaQuery,
         containerPath: string,
@@ -104,11 +104,12 @@ export interface QueryAPIWrapper {
     selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<Query.SelectDistinctResponse>;
     selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
     setSnapshotSelections: (key: string, ids: string[] | string, containerPath?: string) => Promise<SelectResponse>;
-    updateRows: (options: UpdateRowsOptions) => Promise<UpdateRowsResponse>;
+    updateRows: (options: UpdateRowsOptions) => Promise<QueryCommandResponse>;
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {
     deleteRows = deleteRows;
+    deleteRowsByContainer = deleteRowsByContainer;
     deleteView = deleteView;
     getDataTypeProjectDataCount = getDataTypeProjectDataCount;
     getEntityTypeOptions = getEntityTypeOptions;
@@ -137,6 +138,7 @@ export function getQueryTestAPIWrapper(
 ): QueryAPIWrapper {
     return {
         deleteRows: mockFn(),
+        deleteRowsByContainer: mockFn(),
         deleteView: mockFn(),
         getDataTypeProjectDataCount: mockFn(),
         getEntityTypeOptions: mockFn(),

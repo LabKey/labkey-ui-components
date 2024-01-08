@@ -2,7 +2,7 @@ import { Ajax, Domain, Filter, Query, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
-import { insertRows, InsertRowsResponse, selectRowsDeprecated } from '../../query/api';
+import { insertRows, QueryCommandResponse, selectRowsDeprecated } from '../../query/api';
 import { resolveKey, SchemaQuery } from '../../../public/SchemaQuery';
 import { getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
 import { PICKLIST } from '../domainproperties/list/constants';
@@ -271,7 +271,7 @@ export function addSamplesToPicklist(
     useSnapshotSelection?: boolean,
     selectionKey?: string,
     sampleIds?: string[]
-): Promise<InsertRowsResponse> {
+): Promise<QueryCommandResponse> {
     return new Promise((resolve, reject) => {
         return getSamplesNotInList(listName, selectionKey, useSnapshotSelection, sampleIds)
             .then(sampleIdsToAdd => {
@@ -290,7 +290,7 @@ export function addSamplesToPicklist(
                         .catch(reason => reject(reason));
                 } else {
                     resolve(
-                        new InsertRowsResponse({
+                        new QueryCommandResponse({
                             rows: [],
                             schemaQuery: new SchemaQuery('lists', listName),
                             error: undefined,

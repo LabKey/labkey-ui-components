@@ -9,25 +9,9 @@ export interface TooltipProps {
 }
 
 /**
- * Tooltip is an unusual component, because it needs to be rendered in relation to another element on the page. In order
- * to use this component you'll need to do something like this:
- *
- * const MyComponent = () => {
- *     const buttonRef = useRef(undefined);
- *
- *      // Note: my-component here needs to have position: relative
- *     return (
- *          <div className="my-component">
- *              <button className="btn btn-default" type="button" ref={buttonRef}>
- *                  Button With Tooltip
- *              </button>
- *
- *              <Tooltip targetRef={buttonRef} id="tooltip-top" placement="top">
- *                  I am a tooltip on top of a button
- *              </Tooltip>
- *          </div>
- *     );
- * }
+ * Tooltip is an unusual component, because it needs to be rendered in relation to another element on the page. If you
+ * are using this component you should probably be using it in conjunction with an OverlayTrigger which will inject the
+ * targetRef for you.
  */
 export const Tooltip: FC<TooltipProps> = ({ children, targetRef, id, placement }) => {
     const { overlayRef, style } = useOverlayPositioning(placement, targetRef);

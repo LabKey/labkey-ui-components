@@ -7,6 +7,11 @@ interface PopoverProps extends TooltipProps {
     title?: string;
 }
 
+/**
+ * Popover is an unusual component, because it needs to be rendered in relation to another element on the page. If you
+ * are using this component you should probably be using it in conjunction with an OverlayTrigger which will inject the
+ * targetRef for you.
+ */
 export const Popover: FC<PopoverProps> = ({ children, targetRef, id, placement, title }) => {
     const { overlayRef, style } = useOverlayPositioning(placement, targetRef);
 

@@ -28,6 +28,7 @@ import {
     IParentOption,
     OperationConfirmationData,
 } from './models';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 export interface EntityAPIWrapper {
     getDataOperationConfirmationData: (
@@ -40,7 +41,8 @@ export interface EntityAPIWrapper {
         dataType: EntityDataType,
         rowIds: string[] | number[],
         selectionKey?: string,
-        useSnapshotSelection?: boolean
+        useSnapshotSelection?: boolean,
+        schemaQuery?: SchemaQuery,
     ) => Promise<OperationConfirmationData>;
     getEntityTypeData: (
         model: EntityIdCreationModel,

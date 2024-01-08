@@ -102,7 +102,8 @@ interface KeyGeneratorProps {
     noun: string;
 }
 
-const KeyGenerator: FC<KeyGeneratorProps> = props => {
+// exported for jest testing
+export const KeyGenerator: FC<KeyGeneratorProps> = props => {
     const { afterCreate, type, keyValue, noun } = props;
     const { api } = useAppContext<AppContext>();
 
@@ -154,7 +155,7 @@ const KeyGenerator: FC<KeyGeneratorProps> = props => {
 
             </div>
             {!!keyValue && (
-                <div>Copy this key value and save it for use in authenticating to the server. This key value will not be shown again.</div>
+                <div id={"copy_advice"}>Copy this key value and save it for use in authenticating to the server. This key value will not be shown again.</div>
             )}
             {error && (
                 <Alert className={"margin-top"}>

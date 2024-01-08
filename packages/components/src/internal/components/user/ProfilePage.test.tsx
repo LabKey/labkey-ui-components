@@ -1,7 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
-import { APIKeysPanel } from './ProfilePage';
+import { APIKeysPanel, KeyGenerator } from './ProfilePage';
 import { TEST_USER_APP_ADMIN, TEST_USER_EDITOR, TEST_USER_SITE_ADMIN } from '../../userFixtures';
 import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 import { ServerContext } from '../base/ServerContext';
@@ -10,6 +10,29 @@ import {
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT
 } from '../../productFixtures';
+
+describe("KeyGenerator", () => {
+    test("without key value", () => {
+        const { container } = renderWithAppContext(<KeyGenerator type={"session"} afterCreate={jest.fn()} noun={"Keys"}/>);
+        const buttons = container.querySelectorAll("button");
+        expect(buttons).toHaveLength(2);
+        expect(buttons.item(0).textContent).toBe("Generate Keys");
+        expect(buttons.item(1).name).toBe("copy_session_token");
+        expect(container.querySelector("#copy_advice")).toBeNull();
+        expect(container.querySelector(".alert")).toBeNull();
+    });
+
+    test("with key value", () => {
+        const { container } = renderWithAppContext(<KeyGenerator type={"apikey"} afterCreate={jest.fn()} noun={"Goodwill"} keyValue={"mikey"}/>);
+        const buttons = container.querySelectorAll("button");
+        expect(buttons).toHaveLength(2);
+        expect(buttons.item(0).textContent).toBe("Generate Goodwill");
+        expect(buttons.item(1).name).toBe("copy_apikey_token");
+        expect(container.querySelector("input").value).toBe("mikey")
+        expect(container.querySelector("#copy_advice")).not.toBeNull();
+        expect(container.querySelector(".alert")).toBeNull();
+    });
+});
 
 describe("APIKeysPanel", () => {
     function defaultServerContext(overrides?: Partial<ServerContext>): Partial<ServerContext> {

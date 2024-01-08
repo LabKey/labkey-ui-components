@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.X
-*Released*: X
+### version 3.4.0
+*Released*: 8 January 2023
 - Support cross-folder delete
     - Refactor InsertRowsResponse, UpdateRowsResponse and DeleteRowsResponse into QueryCommandResponse
     - add deleteRowsByContainer util

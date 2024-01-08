@@ -115,7 +115,6 @@ export function getDeleteConfirmationData(
     useSnapshotSelection?: boolean,
     schemaQuery?: SchemaQuery,
 ): Promise<OperationConfirmationData> {
-    console.log('a');
     if (isAssayResultEntity(dataType)) {
         return getAssayResultOperationConfirmationData(AssayRunOperation.Delete, rowIds, schemaQuery);
     }

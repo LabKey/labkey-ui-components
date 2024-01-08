@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 
 import { useAppContext } from '../../AppContext';
 import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
@@ -9,8 +9,6 @@ import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
 
 import { useAdminAppContext } from '../administration/useAdminAppContext';
-import { getFolderDataTypeExclusions } from '../entities/actions';
-import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
 import { NameIdSettings } from '../settings/NameIdSettings';
@@ -31,8 +29,6 @@ export interface ProjectSettingsProps {
 export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const { onChange, onSuccess, onPageError, project } = props;
 
-    const [loaded, setLoaded] = useState<boolean>(false);
-    const [disabledTypesMap, setDisabledTypesMap] = useState<{ [key: string]: number[] }>();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [nameDirty, setNameDirty] = useState<boolean>(false);
     const [dataTypeDirty, setDataTypeDirty] = useState<boolean>(false);
@@ -45,22 +41,6 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const { projectDataTypes, ProjectFreezerSelectionComponent } = useAdminAppContext();
     const { container, user, moduleContext } = useServerContext();
     const dispatch = useServerContextDispatch();
-
-    useEffect(() => {
-        (async () => {
-            setLoaded(false);
-            setError(undefined);
-
-            try {
-                const disabledTypesMap_ = await getFolderDataTypeExclusions(project.path);
-                setDisabledTypesMap(disabledTypesMap_);
-            } catch (e) {
-                setError(`Error: ${resolveErrorMessage(e)}`);
-            } finally {
-                setLoaded(true);
-            }
-        })();
-    }, [project]);
 
     const onNameChange_ = useCallback(() => {
         setNameDirty(true);
@@ -227,46 +207,39 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                     />
                 )}
             </div>
-            {!loaded && <LoadingSpinner />}
-            {loaded && (
-                <>
-                    <ProjectDataTypeSelections
-                        entityDataTypes={projectDataTypes}
-                        project={project}
-                        key={project?.id}
-                        updateDataTypeExclusions={onDataTypeChange_}
-                        disabledTypesMap={disabledTypesMap}
-                        api={api.folder}
-                        onSuccess={onDataTypeSuccess}
-                    />
-                    {!!ProjectFreezerSelectionComponent && (
-                        <ProjectFreezerSelectionComponent
-                            project={project}
-                            updateDataTypeExclusions={onStorageChange_}
-                            disabledTypesMap={disabledTypesMap}
-                            onSuccess={onStorageSuccess}
-                        />
-                    )}
-                    {biologicsIsPrimaryApp(moduleContext) && (
-                        <BarTenderSettingsForm
-                            onChange={onBarChange_}
-                            onSuccess={onBarSuccess_}
-                            container={project}
-                            setIsDirty={null} // used by templates, not needed here
-                            getIsDirty={null}
-                        />
-                    )}
-                    <NameIdSettings
-                        {...props}
-                        container={project}
-                        isAppHome={false}
-                        setIsDirty={onNameIdChange_}
-                        getIsDirty={null}
-                    />
-                    {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) && (
-                        <ProtectedDataSettingsPanel containerPath={project.path} />
-                    )}
-                </>
+            <ProjectDataTypeSelections
+                entityDataTypes={projectDataTypes}
+                project={project}
+                key={project?.id}
+                updateDataTypeExclusions={onDataTypeChange_}
+                api={api.folder}
+                onSuccess={onDataTypeSuccess}
+            />
+            {!!ProjectFreezerSelectionComponent && (
+                <ProjectFreezerSelectionComponent
+                    project={project}
+                    updateDataTypeExclusions={onStorageChange_}
+                    onSuccess={onStorageSuccess}
+                />
+            )}
+            {biologicsIsPrimaryApp(moduleContext) && (
+                <BarTenderSettingsForm
+                    onChange={onBarChange_}
+                    onSuccess={onBarSuccess_}
+                    container={project}
+                    setIsDirty={null} // used by templates, not needed here
+                    getIsDirty={null}
+                />
+            )}
+            <NameIdSettings
+                {...props}
+                container={project}
+                isAppHome={false}
+                setIsDirty={onNameIdChange_}
+                getIsDirty={null}
+            />
+            {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) && (
+                <ProtectedDataSettingsPanel containerPath={project.path} />
             )}
         </div>
     );

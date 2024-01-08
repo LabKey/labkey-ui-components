@@ -14,6 +14,7 @@ export interface ProjectSettingsOptions {
     disabledAssayDesigns?: number[];
     disabledDataClasses?: number[];
     disabledSampleTypes?: number[];
+    disabledDashboardSampleTypes?: number[];
     disabledStorageLocations?: number[];
     name?: string;
     nameAsTitle?: boolean;

@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
@@ -19,14 +18,13 @@ interface Props {
     columns?: number; // partition list to N columns
     dataTypeKey?: string;
     dataTypeLabel?: string;
+    dataTypePrefix?: string;
     disabled?: boolean;
     entityDataType?: EntityDataType;
     isNewFolder?: boolean;
-
     noHeader?: boolean;
-
+    showUncheckedWarning?: boolean;
     toggleSelectAll?: boolean;
-
     uncheckedEntitiesDB: any[]; // number[] | string[]
     updateUncheckedTypes: (dataType: string, unchecked: any[] /* number[] | string[]*/) => void;
 }
@@ -73,6 +71,8 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         columns,
         noHeader,
         isNewFolder,
+        showUncheckedWarning = true,
+        dataTypePrefix = '',
     } = props;
 
     const [dataTypes, setDataTypes] = useState<DataTypeEntity[]>(undefined);
@@ -81,17 +81,6 @@ export const DataTypeSelector: FC<Props> = memo(props => {
     const [loading, setLoading] = useState<boolean>(false);
     const [dataCounts, setDataCounts] = useState<Record<string, number>>(undefined);
     const [uncheckedEntities, setUncheckedEntities] = useState<any[] /* number[] | string[]*/>(undefined);
-
-    useEffect(() => {
-        if (allDataCounts) setDataCounts(allDataCounts);
-
-        if (allDataTypes) setDataTypes(allDataTypes);
-        else if (entityDataType) loadDataTypes(); // use entitydatatype
-
-        setDataType(entityDataType?.projectConfigurableDataType);
-
-        setUncheckedEntities(uncheckedEntitiesDB ?? []);
-    }, [entityDataType, allDataTypes, allDataCounts, uncheckedEntitiesDB]); // include transitive dependency
 
     const loadDataTypes = useCallback(async () => {
         try {
@@ -108,16 +97,23 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         }
     }, [api, entityDataType]);
 
+    useEffect(() => {
+        if (allDataCounts) setDataCounts(allDataCounts);
+
+        if (allDataTypes) setDataTypes(allDataTypes);
+        else if (entityDataType) loadDataTypes(); // use entitydatatype
+
+        setDataType((dataTypePrefix + entityDataType?.projectConfigurableDataType) as ProjectConfigurableDataType);
+
+        setUncheckedEntities(uncheckedEntitiesDB ?? []);
+    }, [entityDataType, allDataTypes, allDataCounts, uncheckedEntitiesDB, dataTypePrefix, loadDataTypes]); // include transitive dependency
+
     const ensureCount = useCallback(async () => {
         if (dataCounts) return;
 
-        const results = await api.query.getProjectDataTypeDataCount(
-            entityDataType.projectConfigurableDataType,
-            dataTypes,
-            isNewFolder
-        );
+        const results = await api.query.getProjectDataTypeDataCount(dataType, dataTypes, isNewFolder);
         setDataCounts(results);
-    }, [api, dataCounts, dataTypes, entityDataType, isNewFolder]);
+    }, [api, dataCounts, dataTypes, isNewFolder, dataType]);
 
     const onChange = useCallback(
         (entityId: number | string, toggle: boolean, check?: boolean) => {
@@ -222,7 +218,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                         )}
                                     </>
                                 )}
-                                {_getUncheckedEntityWarning(entityId)}
+                                {showUncheckedWarning && _getUncheckedEntityWarning(entityId)}
                             </li>
                         );
                     })}
@@ -234,7 +230,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
 
     const getEntitiesList = useCallback((): React.ReactNode => {
         if (!columns || columns === 1) {
-            return <Col xs={12}>{getEntitiesSubList(dataTypes)}</Col>;
+            return <div className="col-xs-12">{getEntitiesSubList(dataTypes)}</div>;
         }
 
         const lists = [];
@@ -244,9 +240,9 @@ export const DataTypeSelector: FC<Props> = memo(props => {
             const maxInd = Math.min(dataTypes.length, (i + 1) * subSize);
             const subList = dataTypes.slice(i * subSize, maxInd);
             lists.push(
-                <Col xs={12} md={colWidth} key={i}>
+                <div className={`col-xs-12 col-md-${colWidth}`} key={i}>
                     {getEntitiesSubList(subList)}
-                </Col>
+                </div>
             );
         }
         return <>{lists}</>;
@@ -260,21 +256,21 @@ export const DataTypeSelector: FC<Props> = memo(props => {
             <div className="">
                 {headerLabel && !noHeader && <div className="bottom-spacing content-group-label">{headerLabel}</div>}
                 {toggleSelectAll && !disabled && dataTypes?.length > 0 && (
-                    <Row>
-                        <Col xs={12} className="bottom-spacing">
+                    <div className="row">
+                        <div className="col-xs-12 bottom-spacing">
                             <div className="clickable-text" onClick={onSelectAll}>
                                 {allSelected ? 'Deselect All' : 'Select All'}
                             </div>
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
                 )}
-                <Row>
-                    {loading && <LoadingSpinner />}
+                <div className="row">
+                    {loading && <LoadingSpinner/>}
                     {!loading && getEntitiesList()}
                     {!loading && dataTypes.length === 0 && (
                         <div className="help-block margin-left-more">No {headerLabel}</div>
                     )}
-                </Row>
+                </div>
             </div>
         </>
     );

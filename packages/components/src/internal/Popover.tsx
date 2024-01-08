@@ -8,7 +8,7 @@ interface PopoverProps extends TooltipProps {
 }
 
 export const Popover: FC<PopoverProps> = ({ children, targetRef, id, placement, title }) => {
-    const { overlayRef, style } = useOverlayPositioning(placement, targetRef, -20);
+    const { overlayRef, style } = useOverlayPositioning(placement, targetRef);
 
     return (
         <div id={id} className={`lk-popover popover ${placement}`} style={style} ref={overlayRef}>

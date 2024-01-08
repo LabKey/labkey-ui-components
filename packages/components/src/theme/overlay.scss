@@ -1,10 +1,16 @@
 
 .tooltip.lk-tooltip {
     z-index: 900;
+    margin: 0;
 }
 
 .popover.lk-popover {
     display: block;
     z-index: 900;
     max-width: 276px;
+}
+
+.overlay-trigger {
+    position: relative;
+    display: inline-block;
 }

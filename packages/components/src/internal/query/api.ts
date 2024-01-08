@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
+import { immerable } from 'immer';
 import { normalize, schema } from 'normalizr';
 import { Filter, Query, QueryDOM } from '@labkey/api';
 
@@ -751,18 +752,20 @@ export interface InsertRowsOptions
     schemaQuery: SchemaQuery;
 }
 
-export class InsertRowsResponse extends ImmutableRecord({
-    rows: Array<any>(),
-    schemaQuery: undefined,
-    error: undefined,
-    transactionAuditId: undefined,
-    reselectRowCount: undefined,
-}) {
-    declare rows: any[];
-    declare schemaQuery: SchemaQuery;
-    declare error: InsertRowsErrorResponse;
-    declare transactionAuditId?: number;
-    declare reselectRowCount?: boolean;
+export class QueryCommandResponse {
+    [immerable] = true;
+
+    rows: any[];
+    schemaQuery: SchemaQuery;
+    error?: InsertRowsErrorResponse;
+    transactionAuditId?: number;
+    reselectRowCount?: boolean;
+
+    constructor(values?: Partial<QueryCommandResponse>) {
+        Object.assign(this, values);
+
+        this.rows = this.rows ?? Array<any>();
+    }
 
     getFilter(): Filter.IFilter {
         const rowIds = [];
@@ -780,7 +783,7 @@ export class InsertRowsResponse extends ImmutableRecord({
     }
 }
 
-export function insertRows(options: InsertRowsOptions): Promise<InsertRowsResponse> {
+export function insertRows(options: InsertRowsOptions): Promise<QueryCommandResponse> {
     return new Promise((resolve, reject) => {
         const { fillEmptyFields, rows, schemaQuery, ...insertRowsOptions } = options;
         const _rows = fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows;
@@ -800,7 +803,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
                 if (processRequest(response, request, reject)) return;
 
                 resolve(
-                    new InsertRowsResponse({
+                    new QueryCommandResponse({
                         schemaQuery,
                         rows: response.rows,
                         transactionAuditId: response.transactionAuditId,
@@ -811,7 +814,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
             failure: error => {
                 console.error(error);
                 reject(
-                    new InsertRowsResponse({
+                    new QueryCommandResponse({
                         schemaQuery,
                         error,
                     })
@@ -864,14 +867,7 @@ export interface UpdateRowsOptions extends Omit<Query.QueryRequestOptions, 'sche
     schemaQuery: SchemaQuery;
 }
 
-export interface UpdateRowsResponse {
-    rows: any[];
-    schemaQuery: SchemaQuery;
-    transactionAuditId?: number;
-    reselectRowCount?: boolean;
-}
-
-export function updateRows(options: UpdateRowsOptions): Promise<UpdateRowsResponse> {
+export function updateRows(options: UpdateRowsOptions): Promise<QueryCommandResponse> {
     return new Promise((resolve, reject) => {
         const { schemaQuery, ...updateRowOptions } = options;
         Query.updateRows({
@@ -887,15 +883,12 @@ export function updateRows(options: UpdateRowsOptions): Promise<UpdateRowsRespon
                 if (processRequest(response, request, reject)) return;
 
                 resolve(
-                    Object.assign(
-                        {},
-                        {
-                            schemaQuery,
-                            rows: response.rows,
-                            transactionAuditId: response.transactionAuditId,
-                            reselectRowCount: response.reselectRowCount
-                        }
-                    )
+                    new QueryCommandResponse({
+                        schemaQuery,
+                        rows: response.rows,
+                        transactionAuditId: response.transactionAuditId,
+                        reselectRowCount: response.reselectRowCount,
+                    })
                 );
             },
             failure: error => {
@@ -918,13 +911,7 @@ export interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'sche
     schemaQuery: SchemaQuery;
 }
 
-export interface DeleteRowsResponse {
-    rows: any[];
-    schemaQuery: SchemaQuery;
-    transactionAuditId?: number;
-}
-
-export function deleteRows(options: DeleteRowsOptions): Promise<DeleteRowsResponse> {
+export function deleteRows(options: DeleteRowsOptions): Promise<QueryCommandResponse> {
     return new Promise((resolve, reject) => {
         const { schemaQuery, ...deleteRowsOptions } = options;
         Query.deleteRows({
@@ -934,28 +921,103 @@ export function deleteRows(options: DeleteRowsOptions): Promise<DeleteRowsRespon
             queryName: schemaQuery.queryName,
             success: response => {
                 resolve(
-                    Object.assign(
-                        {},
-                        {
-                            schemaQuery: options.schemaQuery,
-                            rows: response.rows,
-                            transactionAuditId: response.transactionAuditId,
-                        }
-                    )
+                    new QueryCommandResponse({
+                        schemaQuery: options.schemaQuery,
+                        rows: response.rows,
+                        transactionAuditId: response.transactionAuditId,
+                    })
                 );
             },
             failure: error => {
-                reject(
-                    Object.assign(
-                        {},
-                        {
-                            schemaQuery: options.schemaQuery,
-                        },
-                        error
-                    )
-                );
+                reject({
+                    schemaQuery: options.schemaQuery,
+                    error,
+                });
             },
         });
+    });
+}
+
+export function saveRows(options: Query.SaveRowsOptions): Promise<Query.SaveRowsResponse> {
+    return new Promise((resolve, reject) => {
+        Query.saveRows({
+            apiVersion: 13.2,
+            ...options,
+            success: response => {
+                resolve(response);
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
+
+export function deleteRowsByContainer(
+    options: DeleteRowsOptions,
+    containerField: string = 'ContainerPath'
+): Promise<QueryCommandResponse> {
+    const commands = [];
+
+    const allRows = options.rows;
+    if (
+        !allRows ||
+        Object.keys(allRows[0])
+            .map(key => key.toLowerCase())
+            .indexOf(containerField.toLowerCase()) === -1
+    )
+        return deleteRows(options);
+
+    const containerRows = {};
+    allRows.forEach(row => {
+        const container = caseInsensitive(row, containerField);
+        if (!containerRows[container]) containerRows[container] = [];
+        containerRows[container].push(row);
+    });
+
+    if (Object.keys(containerRows).length <= 1) {
+        const containerPath = Object.keys(containerRows)?.[0];
+        return deleteRows({
+            ...options,
+            containerPath,
+        });
+    }
+
+    Object.keys(containerRows).forEach(containerPath => {
+        const rows = containerRows[containerPath];
+        commands.push({
+            ...options,
+            command: 'delete',
+            schemaName: options.schemaQuery.schemaName,
+            queryName: options.schemaQuery.queryName,
+            rows,
+            containerPath,
+        });
+    });
+
+    return new Promise((resolve, reject) => {
+        saveRows({
+            commands,
+        })
+            .then(response => {
+                const rows = [];
+                response.result.forEach((resp, ind) => {
+                    rows.push(resp.rows);
+                });
+                resolve(
+                    new QueryCommandResponse({
+                        schemaQuery: options.schemaQuery,
+                        rows,
+                        transactionAuditId: response.result[0]?.['transactionAuditId'],
+                    })
+                );
+            })
+            .catch(error => {
+                reject({
+                    schemaQuery: options.schemaQuery,
+                    error,
+                });
+            });
     });
 }
 

@@ -14,6 +14,7 @@ import {
     isELNEnabled,
     isProtectedDataEnabled,
     isSampleStatusEnabled,
+    hasProductProjects,
 } from '../../app/utils';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 
@@ -26,6 +27,10 @@ import { ProjectLookAndFeelForm } from '../project/ProjectLookAndFeelForm';
 import { useContainerUser } from '../container/actions';
 
 import { LoadingPage } from '../base/LoadingPage';
+
+import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
+
+import { SampleTypeDataType } from '../entities/constants';
 
 import { useAdministrationSubNav } from './useAdministrationSubNav';
 
@@ -100,6 +105,19 @@ export const AdminSettingsPage: FC = () => {
                         container={homeProjectContainer.container}
                         getIsDirty={getIsDirty}
                         setIsDirty={setIsDirty}
+                    />
+                )}
+                {!hasProductProjects() && (
+                    <ProjectDataTypeSelections
+                        api={api.folder}
+                        panelTitle="Dashboard"
+                        panelDescription="Select the data types to include in the Dashboard Insights graphs."
+                        dataTypePrefix="Dashboard"
+                        entityDataTypes={[SampleTypeDataType]}
+                        project={homeProjectContainer.container}
+                        showUncheckedWarning={false}
+                        updateDataTypeExclusions={onSettingsChange}
+                        onSuccess={onSettingsSuccess}
                     />
                 )}
                 {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) && (

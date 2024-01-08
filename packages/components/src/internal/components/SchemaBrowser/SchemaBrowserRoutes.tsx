@@ -1,73 +1,165 @@
 import React, { CSSProperties, FC, useRef } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+import { Button } from 'react-bootstrap';
+
 import { Tooltip } from '../../Tooltip';
 import { Popover } from '../../Popover';
+
+import { OverlayTrigger } from '../../OverlayTrigger';
 
 import { QueriesListingPage } from './pages/QueriesListingPage';
 import { QueryDetailPage } from './pages/QueryDetailPage';
 import { QueryListingPage } from './pages/QueryListingPage';
 import { SchemaListingPage } from './pages/SchemaListingPage';
 
+const Thing = () => {
+    return (
+        <Button bsStyle="default" type="button">
+            I am a thing
+        </Button>
+    );
+};
+
 // FIXME: DO NOT COMMIT THIS, THIS IS JUST A DEMO PAGE SO WE CAN TEST LAYOUT OF Tooltip and Popover
 const OverlayTest: FC = () => {
     const baseStyle: CSSProperties = { position: 'relative' };
     const tooltipRef = useRef(undefined);
     const popoverRef = useRef(undefined);
+
+    const topTooltip = (
+        <Tooltip id="tooltip-right" placement="top">
+            top tooltip
+        </Tooltip>
+    );
+    const rightTooltip = (
+        <Tooltip id="tooltip-right" placement="right">
+            right tooltip
+        </Tooltip>
+    );
+    const bottomTooltip = (
+        <Tooltip id="tooltip-right" placement="bottom">
+            bottom tooltip
+        </Tooltip>
+    );
+    const leftTooltip = (
+        <Tooltip id="tooltip-right" placement="left">
+            left tooltip
+        </Tooltip>
+    );
+
+    const topPopover = (
+        <Popover id="popover-top" title="top popover" placement="top">
+            top popover content
+        </Popover>
+    );
+    const rightPopover = (
+        <Popover id="popover-right" title="right popover" placement="right">
+            right popover content
+        </Popover>
+    );
+    const bottomPopover = (
+        <Popover id="popover-bottom" title="bottom popover" placement="bottom">
+            bottom popover content
+        </Popover>
+    );
+    const leftPopover = (
+        <Popover id="popover-left" title="left popover" placement="left">
+            left popover content
+        </Popover>
+    );
+
     return (
         <div className="app-page">
             <div className="panel panel-default">
-                <div className="panel-heading">Tooltips</div>
+                <div className="panel-heading">Click OverlayTrigger</div>
                 <div className="panel-body">
-                    <div style={baseStyle}>
-                        {/* content before the button:*/}
-                        <button className="btn btn-default" type="button" ref={tooltipRef}>
-                            Button With Tooltip
+                    <OverlayTrigger id="overlay-test-left" overlay={leftTooltip} triggerType="click">
+                        <button type="button" className="btn btn-default">
+                            Button with left tooltip
                         </button>
-                        content after the button
-                        <Tooltip targetRef={tooltipRef} id="tooltip-top" placement="top">
-                            top tooltip
-                        </Tooltip>
-                        <Tooltip targetRef={tooltipRef} id="tooltip-right" placement="right">
-                            right tooltip
-                        </Tooltip>
-                        <Tooltip targetRef={tooltipRef} id="tooltip-bottom" placement="bottom">
-                            bottom tooltip
-                        </Tooltip>
-                        <Tooltip targetRef={tooltipRef} id="tooltip-left" placement="left">
-                            left tooltip
-                        </Tooltip>
-                    </div>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger id="overlay-test-top" overlay={topTooltip} triggerType="click">
+                        <button type="button" className="btn btn-default">
+                            Button with top tooltip
+                        </button>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger id="overlay-test-bottom" overlay={bottomTooltip} triggerType="click">
+                        <button type="button" className="btn btn-default">
+                            Button with bottom tooltip
+                        </button>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger id="overlay-test-right" overlay={rightTooltip} triggerType="click">
+                        <button type="button" className="btn btn-default">
+                            Button with right tooltip
+                        </button>
+                    </OverlayTrigger>
                 </div>
             </div>
 
             <div className="panel panel-default">
-                <div className="panel-heading">Popovers</div>
+                <div className="panel-heading">Hover OverlayTrigger</div>
                 <div className="panel-body">
-                    <div style={baseStyle}>
-                        content before the button:
-                        <button className="btn btn-default" type="button" ref={popoverRef}>
-                            Button With Popover
+                    <OverlayTrigger id="overlay-hover-test-left" overlay={leftTooltip}>
+                        <button type="button" className="btn btn-default">
+                            Button with left tooltip
                         </button>
-                        content after the button
-                        <Popover targetRef={popoverRef} title="top" id="popover-top" placement="top">
-                            top popover
-                        </Popover>
-                        <Popover targetRef={popoverRef} title="right" id="popover-right" placement="right">
-                            right popover
-                        </Popover>
-                        <Popover targetRef={popoverRef} title="bottom" id="popover-bottom" placement="bottom">
-                            bottom popover
-                        </Popover>
-                        <Popover targetRef={popoverRef} title="left" id="popover-left" placement="left">
-                            left popover
-                        </Popover>
-                    </div>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger id="overlay-hover-test-top" overlay={topTooltip}>
+                        <button type="button" className="btn btn-default">
+                            Button with top tooltip
+                        </button>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger id="overlay-hover-test-bottom" overlay={bottomTooltip}>
+                        <button type="button" className="btn btn-default">
+                            Button with bottom tooltip
+                        </button>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger id="overlay-hover-test-right" overlay={rightTooltip}>
+                        <button type="button" className="btn btn-default">
+                            Button with right tooltip
+                        </button>
+                    </OverlayTrigger>
                 </div>
             </div>
 
             <div className="panel panel-default">
-                <div className="panel-heading">Popovers</div>
+                <div className="panel-heading">OverlayTrigger Popovers</div>
+                <div className="panel-body">
+                    <OverlayTrigger id="overlay-hover-popover-left" overlay={leftPopover}>
+                        <button type="button" className="btn btn-default">
+                            Button with left popover
+                        </button>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger id="overlay-hover-popover-top" overlay={topPopover}>
+                        <button type="button" className="btn btn-default">
+                            Button with top popover
+                        </button>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger id="overlay-hover-popover-right" overlay={bottomPopover} triggerType="click">
+                        <button type="button" className="btn btn-default">
+                            Button with bottom popover on click
+                        </button>
+                    </OverlayTrigger>
+
+                    <OverlayTrigger id="overlay-hover-popover-bottom" overlay={rightPopover} triggerType="click">
+                        <button type="button" className="btn btn-default">
+                            Button with right popover
+                        </button>
+                    </OverlayTrigger>
+                </div>
+            </div>
+
+            <div className="panel panel-default">
+                <div className="panel-heading">Long Content</div>
                 <div className="panel-body">
                     <p>
                         John Singer Sargent (/ˈsɑːrdʒənt/; January 12, 1856 – April 14, 1925)[1] was an American

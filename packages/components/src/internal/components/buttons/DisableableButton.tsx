@@ -1,5 +1,9 @@
-import React, { memo, FC } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import React, { memo, FC, useMemo, LegacyRef } from 'react';
+
+import { createPortal } from 'react-dom';
+
+import { Popover } from '../../Popover';
+import { useOverlayTriggerState } from '../../OverlayTrigger';
 
 interface Props {
     bsStyle?: string;
@@ -10,31 +14,35 @@ interface Props {
 }
 
 export const DisableableButton: FC<Props> = memo(props => {
-    const { bsStyle = 'default', className = '', disabledMsg, title, onClick, children } = props;
+    const { bsStyle = 'default', className = '', disabledMsg, title, children } = props;
+    const { onMouseEnter, onMouseLeave, onClick, portalEl, show, targetRef } = useOverlayTriggerState(
+        'disabled-button-overlay',
+        disabledMsg !== undefined,
+        false
+    );
+    const popover = useMemo(
+        () => (
+            <Popover id="disabled-button-popover" title={title} placement="bottom" targetRef={targetRef}>
+                {disabledMsg}
+            </Popover>
+        ),
+        [disabledMsg, title]
+    );
 
+    // Note: we use onPointerEnter/Leave so events propagate when the button is disabled
     return (
-        <>
-            {disabledMsg ? (
-                <OverlayTrigger
-                    placement="bottom"
-                    overlay={
-                        <Popover id="disabled-button-popover" title={title}>
-                            {disabledMsg}
-                        </Popover>
-                    }
-                >
-                    <div className={'disabled-button-with-tooltip ' + className}>
-                        <button className={`btn btn-${bsStyle}`} disabled type="button">
-                            {children}
-                        </button>
-                    </div>
-                </OverlayTrigger>
-            ) : (
-                <button className={`${className} btn btn-${bsStyle}`} onClick={onClick} type="button">
-                    {children}
-                </button>
-            )}
-        </>
+        <button
+            className={`${className} btn btn-${bsStyle}`}
+            disabled={disabledMsg !== undefined}
+            onClick={onClick}
+            onPointerEnter={onMouseEnter}
+            onPointerLeave={onMouseLeave}
+            type="button"
+            ref={targetRef as LegacyRef<HTMLButtonElement>}
+        >
+            {children}
+            {show && createPortal(popover, portalEl)}
+        </button>
     );
 });
 

@@ -15,6 +15,53 @@ import classNames from 'classnames';
 
 import { usePortalRef } from './hooks';
 
+interface OverlayTriggerState {
+    onMouseEnter: () => void;
+    onMouseLeave: () => void;
+    onClick: () => void;
+    portalEl: HTMLElement;
+    show: boolean;
+    targetRef: MutableRefObject<HTMLElement>;
+}
+
+/**
+ * useOverlayTriggerState is a useful hook for when you want to render an overlay, but you can't use OverlayTrigger
+ * because you can't wrap your component in an arbitrary div.
+ * @param id the id to use for the portal
+ * @param hoverEventsEnabled whether onMouseEnter/Leave will trigger the show state
+ * @param clickEventEnabled whether onClick with trigger the showState
+ */
+export const useOverlayTriggerState = (
+    id: string,
+    hoverEventsEnabled: boolean,
+    clickEventEnabled: boolean
+): OverlayTriggerState => {
+    const targetRef = useRef(null);
+    const portalEl = usePortalRef('overlay-trigger-portal-' + id);
+    const [show, setShow] = useState<boolean>(false);
+    const onMouseEnter = useCallback(() => {
+        if (!hoverEventsEnabled) return;
+        setShow(true);
+    }, [hoverEventsEnabled]);
+    const onMouseLeave = useCallback(() => {
+        if (!hoverEventsEnabled) return;
+        setShow(false);
+    }, [hoverEventsEnabled]);
+    const onClick = useCallback(() => {
+        if (!clickEventEnabled) return;
+        setShow(_show => !_show);
+    }, [clickEventEnabled]);
+
+    return {
+        onClick,
+        onMouseEnter,
+        onMouseLeave,
+        portalEl,
+        show,
+        targetRef,
+    };
+};
+
 export interface OverlayComponent {
     targetRef?: MutableRefObject<HTMLElement>;
 }
@@ -48,38 +95,20 @@ export const OverlayTrigger: FC<Props> = ({
     overlay,
     triggerType = 'hover',
 }) => {
-    const portalElement = usePortalRef('inline-overlay-portal-' + id);
-    const [show, setShow] = useState<boolean>(false);
-    const targetRef = useRef(undefined);
+    const { onMouseEnter, onMouseLeave, onClick, portalEl, show, targetRef } = useOverlayTriggerState(
+        id,
+        triggerType === 'hover',
+        triggerType === 'click'
+    );
     const clonedChild = cloneElement(Children.only(children) as ReactElement, { ref: targetRef });
     const className_ = classNames('overlay-trigger', className);
-
-    let overlayContent: ReactElement;
-
-    if (show) {
-        const clonedContent = cloneElement(overlay, { targetRef });
-        overlayContent = createPortal(clonedContent, portalElement);
-    }
-
-    const onMouseEnter = useCallback(() => {
-        if (triggerType !== 'hover') return;
-
-        setShow(true);
-    }, [triggerType]);
-    const onMouseLeave = useCallback(() => {
-        if (triggerType !== 'hover') return;
-        setShow(false);
-    }, [triggerType]);
-    const onClick = useCallback(() => {
-        if (triggerType !== 'click') return;
-        setShow(_show => !_show);
-    }, [triggerType]);
+    const clonedContent = cloneElement(overlay, { targetRef });
 
     const body = (
         <>
             {clonedChild}
 
-            {overlayContent}
+            {show && createPortal(clonedContent, portalEl)}
         </>
     );
 

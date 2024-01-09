@@ -91,7 +91,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
 
     firstFilterTooltip = (): ReactNode => {
         return (
-            <LabelHelpTip title="First Condition" required={true}>
+            <LabelHelpTip title="First Condition" required>
                 Add a condition to this validation rule that will be tested against the value for this field.
             </LabelHelpTip>
         );

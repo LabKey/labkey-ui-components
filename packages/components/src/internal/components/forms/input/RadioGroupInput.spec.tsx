@@ -71,7 +71,7 @@ describe('<RadioGroupInput>', () => {
         ];
 
         const wrapper = mount(<RadioGroupInput formsy={false} options={options} name="testRadio" />);
-        const divs = wrapper.find('div');
+        const divs = wrapper.find('.radio-input-wrapper');
         expect(divs).toHaveLength(3);
         validateOptionDisplay(divs.at(0), options[0], false, false);
         validateOptionDisplay(divs.at(1), options[1], true, false);

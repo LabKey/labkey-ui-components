@@ -76,7 +76,7 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
                     const selected = selectedValue === option.value;
 
                     inputs.push(
-                        <div key={option.value}>
+                        <div key={option.value} className="radio-input-wrapper">
                             <input
                                 className="radioinput-input"
                                 checked={selected && !option.disabled}

@@ -202,22 +202,6 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                 {!!dataType.sublabel && (
                                     <div className="help-block margin-left-more">{dataType.sublabel}</div>
                                 )}
-                                {!!dataType.description && (
-                                    <>
-                                        {dataType.description.length > 30 && (
-                                            <Tip caption={dataType.description}>
-                                                <div className="help-block margin-left-more short_description">
-                                                    {dataType.description}
-                                                </div>
-                                            </Tip>
-                                        )}
-                                        {dataType.description.length <= 30 && (
-                                            <div className="help-block margin-left-more short_description">
-                                                {dataType.description}
-                                            </div>
-                                        )}
-                                    </>
-                                )}
                                 {showUncheckedWarning && _getUncheckedEntityWarning(entityId)}
                             </li>
                         );
@@ -225,7 +209,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                 </ul>
             );
         },
-        [uncheckedEntities, onChange, disabled, _getUncheckedEntityWarning]
+        [uncheckedEntities, disabled, showUncheckedWarning, _getUncheckedEntityWarning, onChange]
     );
 
     const getEntitiesList = useCallback((): React.ReactNode => {

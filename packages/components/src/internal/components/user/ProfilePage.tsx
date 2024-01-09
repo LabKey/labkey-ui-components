@@ -306,10 +306,11 @@ const APIKeysPanelWithQueryModels = withQueryModels(APIKeysPanelBody)
 export const APIKeysPanel: FC<APIKeysPanelBodyProps> = (props) => {
     const configs: QueryConfigMap = {
        model: {
-            id: 'model',
-            title: 'Current API Keys',
-            schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
-            includeTotalCount: true,
+           id: 'model',
+           title: 'Current API Keys',
+           schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
+           includeTotalCount: true,
+           containerPath: "/"
         }
     }
     return (

@@ -2,22 +2,22 @@ import { CSSProperties, MutableRefObject, useEffect, useRef, useState } from 're
 
 export type Placement = 'top' | 'right' | 'bottom' | 'left';
 
-export interface OverlayPositioning {
-    overlayRef: MutableRefObject<HTMLElement>;
+export interface OverlayPositioning<O extends Element = HTMLDivElement> {
+    overlayRef: MutableRefObject<O>;
     style: CSSProperties;
 }
 
-export const useOverlayPositioning = (
+export function useOverlayPositioning<T extends Element = HTMLDivElement, O extends Element = HTMLDivElement>(
     placement: Placement,
-    targetRef: MutableRefObject<HTMLElement>
-): OverlayPositioning => {
-    const overlayRef = useRef(undefined);
+    targetRef: MutableRefObject<T>
+): OverlayPositioning<O> {
+    const overlayRef = useRef<O>(undefined);
     const [style, setStyle] = useState<CSSProperties>({});
 
     useEffect(() => {
         if (targetRef === undefined) return;
         const targetEl = targetRef.current;
-        const overlayEl: HTMLElement = overlayRef.current;
+        const overlayEl = overlayRef.current;
         // We have to be a little paranoid because if our refs aren't configured exactly right, or if things render in
         // an odd manner this code can cause a whole page to fall over.
         const canComputeStyle =
@@ -57,4 +57,4 @@ export const useOverlayPositioning = (
     }, [targetRef, placement]);
 
     return { overlayRef, style };
-};
+}

@@ -1,4 +1,4 @@
-import React, { FC, LegacyRef } from 'react';
+import React, { FC } from 'react';
 
 import { useOverlayPositioning } from './useOverlayPositioning';
 import { TooltipProps } from './Tooltip';
@@ -17,7 +17,7 @@ export const Popover: FC<PopoverProps> = ({ children, targetRef, id, placement, 
     const className = `lk-popover popover ${placement}`;
 
     return (
-        <div id={id} className={className} style={style} ref={overlayRef as LegacyRef<HTMLDivElement>}>
+        <div id={id} className={className} style={style} ref={overlayRef}>
             <div className="arrow" />
             {title && <h3 className="popover-title">{title}</h3>}
             <div className="popover-content">{children}</div>

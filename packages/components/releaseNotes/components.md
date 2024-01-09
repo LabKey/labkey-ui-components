@@ -1,11 +1,21 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD January 2023
+- Sample Type exclusions from Dashboard Insights charts
+  - Support for DashboardSampleType as a data type exclusion for projects
+  - ProjectDataTypeSelections panelTitle, panelDescription, and showUncheckedWarning
+  - DataTypeSelector to load via useFolderDataTypeExclusions hook
+  - AdminSettingsPage to show Dashboard data type exclusions panel when no projects configured
+  - Dashboard chart config update to getProjectExclusionFilter to account for an array of exclusion types
+  - changes sample chart configs to exclude based on both 'SampleType' and 'DashboardSampleType' exclusions
+
 ### version 3.4.0
 *Released*: 8 January 2023
 - Support cross-folder delete
-    - Refactor InsertRowsResponse, UpdateRowsResponse and DeleteRowsResponse into QueryCommandResponse
-    - add deleteRowsByContainer util
+  - Refactor InsertRowsResponse, UpdateRowsResponse and DeleteRowsResponse into QueryCommandResponse
+  - add deleteRowsByContainer util
 
 ### version 3.3.0
 *Released*: 3 January 2023

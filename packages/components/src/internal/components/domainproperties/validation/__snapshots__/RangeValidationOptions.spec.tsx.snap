@@ -121,7 +121,6 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
         expression="~gt=0&~lt=10"
         firstFilterTooltip={
           <Memo(LabelHelpTip)
-            id="tooltip"
             required={true}
             title="First Condition"
           >
@@ -135,7 +134,6 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
         range={true}
         secondFilterTooltip={
           <Memo(LabelHelpTip)
-            id="tooltip"
             title="Second Condition"
           >
             Add a condition to this validation rule that will be tested against the value for this field. Both the first and second conditions will be tested for this field.
@@ -166,34 +164,42 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   id="domain-filter-type-label-1"
                 >
                   First Condition *
-                  <Component
-                    id="tooltip"
+                  <LabelHelpTip
                     required={true}
                     title="First Condition"
                   >
-                    <span
-                      className="label-help-target"
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
+                    <OverlayTrigger
+                      id="tooltip"
+                      overlay={
+                        <Popover
+                          id="tooltip"
+                          title="First Condition"
+                        >
+                          Add a condition to this validation rule that will be tested against the value for this field.
+                          <div
+                            className="label-help-required"
+                          >
+                            This field is required.
+                          </div>
+                        </Popover>
+                      }
                     >
-                      <span
-                        className="label-help-icon fa fa-question-circle"
-                      />
-                      <Overlay
-                        animation={[Function]}
-                        placement="right"
-                        rootClose={false}
-                        show={false}
+                      <div
+                        className="overlay-trigger"
+                        onClick={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
                       >
-                        <Overlay
-                          placement="right"
-                          rootClose={false}
-                          show={false}
-                          transition={[Function]}
-                        />
-                      </Overlay>
-                    </span>
-                  </Component>
+                        <span
+                          className="label-help-target"
+                        >
+                          <span
+                            className="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </OverlayTrigger>
+                  </LabelHelpTip>
                 </div>
               </div>
             </Col>
@@ -343,33 +349,36 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   id="domain-filter-type-label-2"
                 >
                   Second Condition
-                  <Component
-                    id="tooltip"
+                  <LabelHelpTip
                     title="Second Condition"
                   >
-                    <span
-                      className="label-help-target"
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
+                    <OverlayTrigger
+                      id="tooltip"
+                      overlay={
+                        <Popover
+                          id="tooltip"
+                          title="Second Condition"
+                        >
+                          Add a condition to this validation rule that will be tested against the value for this field. Both the first and second conditions will be tested for this field.
+                        </Popover>
+                      }
                     >
-                      <span
-                        className="label-help-icon fa fa-question-circle"
-                      />
-                      <Overlay
-                        animation={[Function]}
-                        placement="right"
-                        rootClose={false}
-                        show={false}
+                      <div
+                        className="overlay-trigger"
+                        onClick={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
                       >
-                        <Overlay
-                          placement="right"
-                          rootClose={false}
-                          show={false}
-                          transition={[Function]}
-                        />
-                      </Overlay>
-                    </span>
-                  </Component>
+                        <span
+                          className="label-help-target"
+                        >
+                          <span
+                            className="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </OverlayTrigger>
+                  </LabelHelpTip>
                 </div>
               </div>
             </Col>

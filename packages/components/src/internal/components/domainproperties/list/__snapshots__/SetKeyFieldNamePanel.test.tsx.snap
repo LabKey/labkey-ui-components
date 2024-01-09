@@ -22,13 +22,17 @@ exports[`SetKeyFieldNamePanel existing list, given properties 1`] = `
           class="domain-no-wrap"
         >
           Name
-          <span
-            class="label-help-target"
+          <div
+            class="overlay-trigger"
           >
             <span
-              class="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
            *
         </span>
       </div>
@@ -108,13 +112,17 @@ exports[`SetKeyFieldNamePanel list with auto integer key 1`] = `
           class="domain-no-wrap"
         >
           Name
-          <span
-            class="label-help-target"
+          <div
+            class="overlay-trigger"
           >
             <span
-              class="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
            *
         </span>
       </div>
@@ -194,13 +202,17 @@ exports[`SetKeyFieldNamePanel new list, default properties 1`] = `
           class="domain-no-wrap"
         >
           Name
-          <span
-            class="label-help-target"
+          <div
+            class="overlay-trigger"
           >
             <span
-              class="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
            *
         </span>
       </div>

@@ -766,33 +766,38 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                             className="domain-no-wrap"
                           >
                             Description
-                            <Component
-                              id="tooltip"
+                            <LabelHelpTip
                               title="Description"
                             >
-                              <span
-                                className="label-help-target"
-                                onMouseOut={[Function]}
-                                onMouseOver={[Function]}
+                              <OverlayTrigger
+                                id="tooltip"
+                                overlay={
+                                  <Popover
+                                    id="tooltip"
+                                    title="Description"
+                                  >
+                                    <p>
+                                      A short description for this assay design.
+                                    </p>
+                                  </Popover>
+                                }
                               >
-                                <span
-                                  className="label-help-icon fa fa-question-circle"
-                                />
-                                <Overlay
-                                  animation={[Function]}
-                                  placement="right"
-                                  rootClose={false}
-                                  show={false}
+                                <div
+                                  className="overlay-trigger"
+                                  onClick={[Function]}
+                                  onMouseEnter={[Function]}
+                                  onMouseLeave={[Function]}
                                 >
-                                  <Overlay
-                                    placement="right"
-                                    rootClose={false}
-                                    show={false}
-                                    transition={[Function]}
-                                  />
-                                </Overlay>
-                              </span>
-                            </Component>
+                                  <span
+                                    className="label-help-target"
+                                  >
+                                    <span
+                                      className="label-help-icon fa fa-question-circle"
+                                    />
+                                  </span>
+                                </div>
+                              </OverlayTrigger>
+                            </LabelHelpTip>
                           </span>
                         </DomainFieldLabel>
                       </div>
@@ -979,33 +984,38 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                             className="domain-no-wrap"
                           >
                             Runs
-                            <Component
-                              id="tooltip"
+                            <LabelHelpTip
                               title="Editable Runs"
                             >
-                              <span
-                                className="label-help-target"
-                                onMouseOut={[Function]}
-                                onMouseOver={[Function]}
+                              <OverlayTrigger
+                                id="tooltip"
+                                overlay={
+                                  <Popover
+                                    id="tooltip"
+                                    title="Editable Runs"
+                                  >
+                                    <p>
+                                      If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                    </p>
+                                  </Popover>
+                                }
                               >
-                                <span
-                                  className="label-help-icon fa fa-question-circle"
-                                />
-                                <Overlay
-                                  animation={[Function]}
-                                  placement="right"
-                                  rootClose={false}
-                                  show={false}
+                                <div
+                                  className="overlay-trigger"
+                                  onClick={[Function]}
+                                  onMouseEnter={[Function]}
+                                  onMouseLeave={[Function]}
                                 >
-                                  <Overlay
-                                    placement="right"
-                                    rootClose={false}
-                                    show={false}
-                                    transition={[Function]}
-                                  />
-                                </Overlay>
-                              </span>
-                            </Component>
+                                  <span
+                                    className="label-help-target"
+                                  >
+                                    <span
+                                      className="label-help-icon fa fa-question-circle"
+                                    />
+                                  </span>
+                                </div>
+                              </OverlayTrigger>
+                            </LabelHelpTip>
                           </span>
                         </DomainFieldLabel>
                       </div>
@@ -2022,33 +2032,38 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                           className="domain-no-wrap"
                                         >
                                           Description
-                                          <Component
-                                            id="tooltip"
+                                          <LabelHelpTip
                                             title="Description"
                                           >
-                                            <span
-                                              className="label-help-target"
-                                              onMouseOut={[Function]}
-                                              onMouseOver={[Function]}
+                                            <OverlayTrigger
+                                              id="tooltip"
+                                              overlay={
+                                                <Popover
+                                                  id="tooltip"
+                                                  title="Description"
+                                                >
+                                                  <p>
+                                                    A short description for this assay design.
+                                                  </p>
+                                                </Popover>
+                                              }
                                             >
-                                              <span
-                                                className="label-help-icon fa fa-question-circle"
-                                              />
-                                              <Overlay
-                                                animation={[Function]}
-                                                placement="right"
-                                                rootClose={false}
-                                                show={false}
+                                              <div
+                                                className="overlay-trigger"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                onMouseLeave={[Function]}
                                               >
-                                                <Overlay
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  transition={[Function]}
-                                                />
-                                              </Overlay>
-                                            </span>
-                                          </Component>
+                                                <span
+                                                  className="label-help-target"
+                                                >
+                                                  <span
+                                                    className="label-help-icon fa fa-question-circle"
+                                                  />
+                                                </span>
+                                              </div>
+                                            </OverlayTrigger>
+                                          </LabelHelpTip>
                                         </span>
                                       </DomainFieldLabel>
                                     </div>
@@ -2235,33 +2250,38 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                           className="domain-no-wrap"
                                         >
                                           Runs
-                                          <Component
-                                            id="tooltip"
+                                          <LabelHelpTip
                                             title="Editable Runs"
                                           >
-                                            <span
-                                              className="label-help-target"
-                                              onMouseOut={[Function]}
-                                              onMouseOver={[Function]}
+                                            <OverlayTrigger
+                                              id="tooltip"
+                                              overlay={
+                                                <Popover
+                                                  id="tooltip"
+                                                  title="Editable Runs"
+                                                >
+                                                  <p>
+                                                    If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                                  </p>
+                                                </Popover>
+                                              }
                                             >
-                                              <span
-                                                className="label-help-icon fa fa-question-circle"
-                                              />
-                                              <Overlay
-                                                animation={[Function]}
-                                                placement="right"
-                                                rootClose={false}
-                                                show={false}
+                                              <div
+                                                className="overlay-trigger"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                onMouseLeave={[Function]}
                                               >
-                                                <Overlay
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  transition={[Function]}
-                                                />
-                                              </Overlay>
-                                            </span>
-                                          </Component>
+                                                <span
+                                                  className="label-help-target"
+                                                >
+                                                  <span
+                                                    className="label-help-icon fa fa-question-circle"
+                                                  />
+                                                </span>
+                                              </div>
+                                            </OverlayTrigger>
+                                          </LabelHelpTip>
                                         </span>
                                       </DomainFieldLabel>
                                     </div>
@@ -3309,33 +3329,38 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                           className="domain-no-wrap"
                                         >
                                           Description
-                                          <Component
-                                            id="tooltip"
+                                          <LabelHelpTip
                                             title="Description"
                                           >
-                                            <span
-                                              className="label-help-target"
-                                              onMouseOut={[Function]}
-                                              onMouseOver={[Function]}
+                                            <OverlayTrigger
+                                              id="tooltip"
+                                              overlay={
+                                                <Popover
+                                                  id="tooltip"
+                                                  title="Description"
+                                                >
+                                                  <p>
+                                                    A short description for this assay design.
+                                                  </p>
+                                                </Popover>
+                                              }
                                             >
-                                              <span
-                                                className="label-help-icon fa fa-question-circle"
-                                              />
-                                              <Overlay
-                                                animation={[Function]}
-                                                placement="right"
-                                                rootClose={false}
-                                                show={false}
+                                              <div
+                                                className="overlay-trigger"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                onMouseLeave={[Function]}
                                               >
-                                                <Overlay
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  transition={[Function]}
-                                                />
-                                              </Overlay>
-                                            </span>
-                                          </Component>
+                                                <span
+                                                  className="label-help-target"
+                                                >
+                                                  <span
+                                                    className="label-help-icon fa fa-question-circle"
+                                                  />
+                                                </span>
+                                              </div>
+                                            </OverlayTrigger>
+                                          </LabelHelpTip>
                                         </span>
                                       </DomainFieldLabel>
                                     </div>
@@ -3522,33 +3547,38 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                           className="domain-no-wrap"
                                         >
                                           Runs
-                                          <Component
-                                            id="tooltip"
+                                          <LabelHelpTip
                                             title="Editable Runs"
                                           >
-                                            <span
-                                              className="label-help-target"
-                                              onMouseOut={[Function]}
-                                              onMouseOver={[Function]}
+                                            <OverlayTrigger
+                                              id="tooltip"
+                                              overlay={
+                                                <Popover
+                                                  id="tooltip"
+                                                  title="Editable Runs"
+                                                >
+                                                  <p>
+                                                    If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                                  </p>
+                                                </Popover>
+                                              }
                                             >
-                                              <span
-                                                className="label-help-icon fa fa-question-circle"
-                                              />
-                                              <Overlay
-                                                animation={[Function]}
-                                                placement="right"
-                                                rootClose={false}
-                                                show={false}
+                                              <div
+                                                className="overlay-trigger"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                onMouseLeave={[Function]}
                                               >
-                                                <Overlay
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  transition={[Function]}
-                                                />
-                                              </Overlay>
-                                            </span>
-                                          </Component>
+                                                <span
+                                                  className="label-help-target"
+                                                >
+                                                  <span
+                                                    className="label-help-icon fa fa-question-circle"
+                                                  />
+                                                </span>
+                                              </div>
+                                            </OverlayTrigger>
+                                          </LabelHelpTip>
                                         </span>
                                       </DomainFieldLabel>
                                     </div>
@@ -4068,33 +4098,38 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                           className="domain-no-wrap"
                                         >
                                           Description
-                                          <Component
-                                            id="tooltip"
+                                          <LabelHelpTip
                                             title="Description"
                                           >
-                                            <span
-                                              className="label-help-target"
-                                              onMouseOut={[Function]}
-                                              onMouseOver={[Function]}
+                                            <OverlayTrigger
+                                              id="tooltip"
+                                              overlay={
+                                                <Popover
+                                                  id="tooltip"
+                                                  title="Description"
+                                                >
+                                                  <p>
+                                                    A short description for this assay design.
+                                                  </p>
+                                                </Popover>
+                                              }
                                             >
-                                              <span
-                                                className="label-help-icon fa fa-question-circle"
-                                              />
-                                              <Overlay
-                                                animation={[Function]}
-                                                placement="right"
-                                                rootClose={false}
-                                                show={false}
+                                              <div
+                                                className="overlay-trigger"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                onMouseLeave={[Function]}
                                               >
-                                                <Overlay
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  transition={[Function]}
-                                                />
-                                              </Overlay>
-                                            </span>
-                                          </Component>
+                                                <span
+                                                  className="label-help-target"
+                                                >
+                                                  <span
+                                                    className="label-help-icon fa fa-question-circle"
+                                                  />
+                                                </span>
+                                              </div>
+                                            </OverlayTrigger>
+                                          </LabelHelpTip>
                                         </span>
                                       </DomainFieldLabel>
                                     </div>
@@ -4193,33 +4228,38 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                           className="domain-no-wrap"
                                         >
                                           Runs
-                                          <Component
-                                            id="tooltip"
+                                          <LabelHelpTip
                                             title="Editable Runs"
                                           >
-                                            <span
-                                              className="label-help-target"
-                                              onMouseOut={[Function]}
-                                              onMouseOver={[Function]}
+                                            <OverlayTrigger
+                                              id="tooltip"
+                                              overlay={
+                                                <Popover
+                                                  id="tooltip"
+                                                  title="Editable Runs"
+                                                >
+                                                  <p>
+                                                    If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                                  </p>
+                                                </Popover>
+                                              }
                                             >
-                                              <span
-                                                className="label-help-icon fa fa-question-circle"
-                                              />
-                                              <Overlay
-                                                animation={[Function]}
-                                                placement="right"
-                                                rootClose={false}
-                                                show={false}
+                                              <div
+                                                className="overlay-trigger"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                onMouseLeave={[Function]}
                                               >
-                                                <Overlay
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  transition={[Function]}
-                                                />
-                                              </Overlay>
-                                            </span>
-                                          </Component>
+                                                <span
+                                                  className="label-help-target"
+                                                >
+                                                  <span
+                                                    className="label-help-icon fa fa-question-circle"
+                                                  />
+                                                </span>
+                                              </div>
+                                            </OverlayTrigger>
+                                          </LabelHelpTip>
                                         </span>
                                       </DomainFieldLabel>
                                     </div>
@@ -5232,33 +5272,38 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                           className="domain-no-wrap"
                                         >
                                           Description
-                                          <Component
-                                            id="tooltip"
+                                          <LabelHelpTip
                                             title="Description"
                                           >
-                                            <span
-                                              className="label-help-target"
-                                              onMouseOut={[Function]}
-                                              onMouseOver={[Function]}
+                                            <OverlayTrigger
+                                              id="tooltip"
+                                              overlay={
+                                                <Popover
+                                                  id="tooltip"
+                                                  title="Description"
+                                                >
+                                                  <p>
+                                                    A short description for this assay design.
+                                                  </p>
+                                                </Popover>
+                                              }
                                             >
-                                              <span
-                                                className="label-help-icon fa fa-question-circle"
-                                              />
-                                              <Overlay
-                                                animation={[Function]}
-                                                placement="right"
-                                                rootClose={false}
-                                                show={false}
+                                              <div
+                                                className="overlay-trigger"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                onMouseLeave={[Function]}
                                               >
-                                                <Overlay
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  transition={[Function]}
-                                                />
-                                              </Overlay>
-                                            </span>
-                                          </Component>
+                                                <span
+                                                  className="label-help-target"
+                                                >
+                                                  <span
+                                                    className="label-help-icon fa fa-question-circle"
+                                                  />
+                                                </span>
+                                              </div>
+                                            </OverlayTrigger>
+                                          </LabelHelpTip>
                                         </span>
                                       </DomainFieldLabel>
                                     </div>
@@ -5445,33 +5490,38 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                           className="domain-no-wrap"
                                         >
                                           Runs
-                                          <Component
-                                            id="tooltip"
+                                          <LabelHelpTip
                                             title="Editable Runs"
                                           >
-                                            <span
-                                              className="label-help-target"
-                                              onMouseOut={[Function]}
-                                              onMouseOver={[Function]}
+                                            <OverlayTrigger
+                                              id="tooltip"
+                                              overlay={
+                                                <Popover
+                                                  id="tooltip"
+                                                  title="Editable Runs"
+                                                >
+                                                  <p>
+                                                    If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                                  </p>
+                                                </Popover>
+                                              }
                                             >
-                                              <span
-                                                className="label-help-icon fa fa-question-circle"
-                                              />
-                                              <Overlay
-                                                animation={[Function]}
-                                                placement="right"
-                                                rootClose={false}
-                                                show={false}
+                                              <div
+                                                className="overlay-trigger"
+                                                onClick={[Function]}
+                                                onMouseEnter={[Function]}
+                                                onMouseLeave={[Function]}
                                               >
-                                                <Overlay
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  transition={[Function]}
-                                                />
-                                              </Overlay>
-                                            </span>
-                                          </Component>
+                                                <span
+                                                  className="label-help-target"
+                                                >
+                                                  <span
+                                                    className="label-help-icon fa fa-question-circle"
+                                                  />
+                                                </span>
+                                              </div>
+                                            </OverlayTrigger>
+                                          </LabelHelpTip>
                                         </span>
                                       </DomainFieldLabel>
                                     </div>

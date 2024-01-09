@@ -39,33 +39,40 @@ exports[`FileAttachmentOptions Attachment data type download 1`] = `
                 className="domain-field-section-heading"
               >
                 Attachment Behavior
-                <Component
-                  id="tooltip"
+                <LabelHelpTip
                   title="Attachment Behavior"
                 >
-                  <span
-                    className="label-help-target"
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
+                  <OverlayTrigger
+                    id="tooltip"
+                    overlay={
+                      <Popover
+                        id="tooltip"
+                        title="Attachment Behavior"
+                      >
+                        <React.Fragment>
+                          <p>
+                            Set the default behavior of attachment links when clicked in grids and elsewhere in LabKey.
+                          </p>
+                        </React.Fragment>
+                      </Popover>
+                    }
                   >
-                    <span
-                      className="label-help-icon fa fa-question-circle"
-                    />
-                    <Overlay
-                      animation={[Function]}
-                      placement="right"
-                      rootClose={false}
-                      show={false}
+                    <div
+                      className="overlay-trigger"
+                      onClick={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
                     >
-                      <Overlay
-                        placement="right"
-                        rootClose={false}
-                        show={false}
-                        transition={[Function]}
-                      />
-                    </Overlay>
-                  </span>
-                </Component>
+                      <span
+                        className="label-help-target"
+                      >
+                        <span
+                          className="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </OverlayTrigger>
+                </LabelHelpTip>
               </div>
             </SectionHeading>
           </div>
@@ -166,33 +173,40 @@ exports[`FileAttachmentOptions File data type inline 1`] = `
                 className="domain-field-section-heading"
               >
                 File Behavior
-                <Component
-                  id="tooltip"
+                <LabelHelpTip
                   title="File Behavior"
                 >
-                  <span
-                    className="label-help-target"
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
+                  <OverlayTrigger
+                    id="tooltip"
+                    overlay={
+                      <Popover
+                        id="tooltip"
+                        title="File Behavior"
+                      >
+                        <React.Fragment>
+                          <p>
+                            Set the default behavior of file links when clicked in grids and elsewhere in LabKey.
+                          </p>
+                        </React.Fragment>
+                      </Popover>
+                    }
                   >
-                    <span
-                      className="label-help-icon fa fa-question-circle"
-                    />
-                    <Overlay
-                      animation={[Function]}
-                      placement="right"
-                      rootClose={false}
-                      show={false}
+                    <div
+                      className="overlay-trigger"
+                      onClick={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
                     >
-                      <Overlay
-                        placement="right"
-                        rootClose={false}
-                        show={false}
-                        transition={[Function]}
-                      />
-                    </Overlay>
-                  </span>
-                </Component>
+                      <span
+                        className="label-help-target"
+                      >
+                        <span
+                          className="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </OverlayTrigger>
+                </LabelHelpTip>
               </div>
             </SectionHeading>
           </div>

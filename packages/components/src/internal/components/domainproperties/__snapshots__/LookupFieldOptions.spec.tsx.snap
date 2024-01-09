@@ -584,33 +584,38 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     >
                       Ensure Value Exists in Lookup Target
                     </span>
-                    <Component
-                      id="tooltip"
+                    <LabelHelpTip
                       title="Lookup Validator"
                     >
-                      <span
-                        className="label-help-target"
-                        onMouseOut={[Function]}
-                        onMouseOver={[Function]}
+                      <OverlayTrigger
+                        id="tooltip"
+                        overlay={
+                          <Popover
+                            id="tooltip"
+                            title="Lookup Validator"
+                          >
+                            <div>
+                              Lookup validators allow you to require that any value is present in the lookup's target table or query
+                            </div>
+                          </Popover>
+                        }
                       >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                        <Overlay
-                          animation={[Function]}
-                          placement="right"
-                          rootClose={false}
-                          show={false}
+                        <div
+                          className="overlay-trigger"
+                          onClick={[Function]}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
                         >
-                          <Overlay
-                            placement="right"
-                            rootClose={false}
-                            show={false}
-                            transition={[Function]}
-                          />
-                        </Overlay>
-                      </span>
-                    </Component>
+                          <span
+                            className="label-help-target"
+                          >
+                            <span
+                              className="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </OverlayTrigger>
+                    </LabelHelpTip>
                   </label>
                 </div>
               </Checkbox>
@@ -1271,51 +1276,38 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     >
                       Ensure Value Exists in Lookup Target
                     </span>
-                    <Component
-                      id="tooltip"
+                    <LabelHelpTip
                       title="Lookup Validator"
                     >
-                      <span
-                        className="label-help-target"
-                        onMouseOut={[Function]}
-                        onMouseOver={[Function]}
+                      <OverlayTrigger
+                        id="tooltip"
+                        overlay={
+                          <Popover
+                            id="tooltip"
+                            title="Lookup Validator"
+                          >
+                            <div>
+                              Lookup validators allow you to require that any value is present in the lookup's target table or query
+                            </div>
+                          </Popover>
+                        }
                       >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                        <Overlay
-                          animation={[Function]}
-                          placement="right"
-                          rootClose={false}
-                          show={false}
-                          target={
-                            <span
-                              class="label-help-target"
-                            >
-                              <span
-                                class="label-help-icon fa fa-question-circle"
-                              />
-                            </span>
-                          }
+                        <div
+                          className="overlay-trigger"
+                          onClick={[Function]}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
                         >
-                          <Overlay
-                            placement="right"
-                            rootClose={false}
-                            show={false}
-                            target={
-                              <span
-                                class="label-help-target"
-                              >
-                                <span
-                                  class="label-help-icon fa fa-question-circle"
-                                />
-                              </span>
-                            }
-                            transition={[Function]}
-                          />
-                        </Overlay>
-                      </span>
-                    </Component>
+                          <span
+                            className="label-help-target"
+                          >
+                            <span
+                              className="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </OverlayTrigger>
+                    </LabelHelpTip>
                   </label>
                 </div>
               </Checkbox>
@@ -1980,51 +1972,38 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     >
                       Ensure Value Exists in Lookup Target
                     </span>
-                    <Component
-                      id="tooltip"
+                    <LabelHelpTip
                       title="Lookup Validator"
                     >
-                      <span
-                        className="label-help-target"
-                        onMouseOut={[Function]}
-                        onMouseOver={[Function]}
+                      <OverlayTrigger
+                        id="tooltip"
+                        overlay={
+                          <Popover
+                            id="tooltip"
+                            title="Lookup Validator"
+                          >
+                            <div>
+                              Lookup validators allow you to require that any value is present in the lookup's target table or query
+                            </div>
+                          </Popover>
+                        }
                       >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                        <Overlay
-                          animation={[Function]}
-                          placement="right"
-                          rootClose={false}
-                          show={false}
-                          target={
-                            <span
-                              class="label-help-target"
-                            >
-                              <span
-                                class="label-help-icon fa fa-question-circle"
-                              />
-                            </span>
-                          }
+                        <div
+                          className="overlay-trigger"
+                          onClick={[Function]}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
                         >
-                          <Overlay
-                            placement="right"
-                            rootClose={false}
-                            show={false}
-                            target={
-                              <span
-                                class="label-help-target"
-                              >
-                                <span
-                                  class="label-help-icon fa fa-question-circle"
-                                />
-                              </span>
-                            }
-                            transition={[Function]}
-                          />
-                        </Overlay>
-                      </span>
-                    </Component>
+                          <span
+                            className="label-help-target"
+                          >
+                            <span
+                              className="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </OverlayTrigger>
+                    </LabelHelpTip>
                   </label>
                 </div>
               </Checkbox>
@@ -2689,51 +2668,38 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     >
                       Ensure Value Exists in Lookup Target
                     </span>
-                    <Component
-                      id="tooltip"
+                    <LabelHelpTip
                       title="Lookup Validator"
                     >
-                      <span
-                        className="label-help-target"
-                        onMouseOut={[Function]}
-                        onMouseOver={[Function]}
+                      <OverlayTrigger
+                        id="tooltip"
+                        overlay={
+                          <Popover
+                            id="tooltip"
+                            title="Lookup Validator"
+                          >
+                            <div>
+                              Lookup validators allow you to require that any value is present in the lookup's target table or query
+                            </div>
+                          </Popover>
+                        }
                       >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                        <Overlay
-                          animation={[Function]}
-                          placement="right"
-                          rootClose={false}
-                          show={false}
-                          target={
-                            <span
-                              class="label-help-target"
-                            >
-                              <span
-                                class="label-help-icon fa fa-question-circle"
-                              />
-                            </span>
-                          }
+                        <div
+                          className="overlay-trigger"
+                          onClick={[Function]}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
                         >
-                          <Overlay
-                            placement="right"
-                            rootClose={false}
-                            show={false}
-                            target={
-                              <span
-                                class="label-help-target"
-                              >
-                                <span
-                                  class="label-help-icon fa fa-question-circle"
-                                />
-                              </span>
-                            }
-                            transition={[Function]}
-                          />
-                        </Overlay>
-                      </span>
-                    </Component>
+                          <span
+                            className="label-help-target"
+                          >
+                            <span
+                              className="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </OverlayTrigger>
+                    </LabelHelpTip>
                   </label>
                 </div>
               </Checkbox>

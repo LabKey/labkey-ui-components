@@ -12,15 +12,20 @@ exports[`<ParentAliasRow/> With parent value not an option in select 1`] = `
       className="domain-no-wrap"
     >
       Alias
-      <span
-        className="label-help-target"
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
+      <div
+        className="overlay-trigger"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <span
-          className="label-help-icon fa fa-question-circle"
-        />
-      </span>
+          className="label-help-target"
+        >
+          <span
+            className="label-help-icon fa fa-question-circle"
+          />
+        </span>
+      </div>
        *
     </span>
   </div>
@@ -203,15 +208,20 @@ exports[`<ParentAliasRow/> With values 1`] = `
       className="domain-no-wrap"
     >
       Alias
-      <span
-        className="label-help-target"
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
+      <div
+        className="overlay-trigger"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <span
-          className="label-help-icon fa fa-question-circle"
-        />
-      </span>
+          className="label-help-target"
+        >
+          <span
+            className="label-help-icon fa fa-question-circle"
+          />
+        </span>
+      </div>
        *
     </span>
   </div>

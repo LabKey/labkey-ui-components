@@ -40,13 +40,17 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
           class="domain-no-wrap"
         >
           Description
-          <span
-            class="label-help-target"
+          <div
+            class="overlay-trigger"
           >
             <span
-              class="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
           
         </span>
       </div>
@@ -73,13 +77,17 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
             class="domain-no-wrap"
           >
             Pattern
-            <span
-              class="label-help-target"
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
             
           </span>
         </div>
@@ -139,13 +147,17 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
           class="domain-no-wrap"
         >
           Description
-          <span
-            class="label-help-target"
+          <div
+            class="overlay-trigger"
           >
             <span
-              class="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
           
         </span>
       </div>
@@ -174,13 +186,17 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
             class="domain-no-wrap"
           >
             Pattern
-            <span
-              class="label-help-target"
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
             
           </span>
         </div>
@@ -240,13 +256,17 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
           class="domain-no-wrap"
         >
           Description
-          <span
-            class="label-help-target"
+          <div
+            class="overlay-trigger"
           >
             <span
-              class="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
           
         </span>
       </div>
@@ -273,13 +293,17 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
             class="domain-no-wrap"
           >
             Pattern
-            <span
-              class="label-help-target"
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
             
           </span>
         </div>
@@ -340,13 +364,17 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
           class="domain-no-wrap"
         >
           Description
-          <span
-            class="label-help-target"
+          <div
+            class="overlay-trigger"
           >
             <span
-              class="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
           
         </span>
       </div>
@@ -375,13 +403,17 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
             class="domain-no-wrap"
           >
             Pattern
-            <span
-              class="label-help-target"
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
             
           </span>
         </div>
@@ -441,13 +473,17 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
           class="domain-no-wrap"
         >
           Description
-          <span
-            class="label-help-target"
+          <div
+            class="overlay-trigger"
           >
             <span
-              class="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              class="label-help-target"
+            >
+              <span
+                class="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
           
         </span>
       </div>
@@ -476,13 +512,17 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
             class="domain-no-wrap"
           >
             Pattern
-            <span
-              class="label-help-target"
+            <div
+              class="overlay-trigger"
             >
               <span
-                class="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
             
           </span>
         </div>

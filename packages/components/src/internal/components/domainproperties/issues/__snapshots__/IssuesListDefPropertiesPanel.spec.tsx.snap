@@ -68,15 +68,20 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   className="domain-no-wrap"
                 >
                   Direction
-                  <span
-                    className="label-help-target"
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
+                  <div
+                    className="overlay-trigger"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
                     <span
-                      className="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
+                      className="label-help-target"
+                    >
+                      <span
+                        className="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
                   
                 </span>
               </div>
@@ -207,15 +212,20 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   className="domain-no-wrap"
                 >
                   Name
-                  <span
-                    className="label-help-target"
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
+                  <div
+                    className="overlay-trigger"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
                     <span
-                      className="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
+                      className="label-help-target"
+                    >
+                      <span
+                        className="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
                   
                 </span>
               </div>
@@ -242,15 +252,20 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   className="domain-no-wrap"
                 >
                   Name
-                  <span
-                    className="label-help-target"
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
+                  <div
+                    className="overlay-trigger"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
                     <span
-                      className="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
+                      className="label-help-target"
+                    >
+                      <span
+                        className="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
                   
                 </span>
               </div>
@@ -288,15 +303,20 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               className="domain-no-wrap"
             >
               from
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
               
             </span>
           </div>
@@ -326,15 +346,20 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               className="domain-no-wrap"
             >
               Assignment
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
               
             </span>
           </div>
@@ -364,15 +389,20 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
               className="domain-no-wrap"
             >
               Folder
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
               
             </span>
           </div>

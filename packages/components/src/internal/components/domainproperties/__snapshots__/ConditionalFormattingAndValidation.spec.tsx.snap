@@ -193,51 +193,36 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
                     className="domain-no-wrap"
                   >
                     Criteria
-                    <Component
-                      id="tooltip"
+                    <LabelHelpTip
                       title="Create Conditional Format Criteria"
                     >
-                      <span
-                        className="label-help-target"
-                        onMouseOut={[Function]}
-                        onMouseOver={[Function]}
+                      <OverlayTrigger
+                        id="tooltip"
+                        overlay={
+                          <Popover
+                            id="tooltip"
+                            title="Create Conditional Format Criteria"
+                          >
+                            <ConditionalFormatHelpText />
+                          </Popover>
+                        }
                       >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                        <Overlay
-                          animation={[Function]}
-                          placement="right"
-                          rootClose={false}
-                          show={false}
-                          target={
-                            <span
-                              class="label-help-target"
-                            >
-                              <span
-                                class="label-help-icon fa fa-question-circle"
-                              />
-                            </span>
-                          }
+                        <div
+                          className="overlay-trigger"
+                          onClick={[Function]}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
                         >
-                          <Overlay
-                            placement="right"
-                            rootClose={false}
-                            show={false}
-                            target={
-                              <span
-                                class="label-help-target"
-                              >
-                                <span
-                                  class="label-help-icon fa fa-question-circle"
-                                />
-                              </span>
-                            }
-                            transition={[Function]}
-                          />
-                        </Overlay>
-                      </span>
-                    </Component>
+                          <span
+                            className="label-help-target"
+                          >
+                            <span
+                              className="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </OverlayTrigger>
+                    </LabelHelpTip>
                   </span>
                 </DomainFieldLabel>
               </div>
@@ -275,33 +260,36 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
                     className="domain-no-wrap"
                   >
                     Validator
-                    <Component
-                      id="tooltip"
+                    <LabelHelpTip
                       title="Create Regular Expression Validator"
                     >
-                      <span
-                        className="label-help-target"
-                        onMouseOut={[Function]}
-                        onMouseOver={[Function]}
+                      <OverlayTrigger
+                        id="tooltip"
+                        overlay={
+                          <Popover
+                            id="tooltip"
+                            title="Create Regular Expression Validator"
+                          >
+                            <RegexValidatorHelpText />
+                          </Popover>
+                        }
                       >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                        <Overlay
-                          animation={[Function]}
-                          placement="right"
-                          rootClose={false}
-                          show={false}
+                        <div
+                          className="overlay-trigger"
+                          onClick={[Function]}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
                         >
-                          <Overlay
-                            placement="right"
-                            rootClose={false}
-                            show={false}
-                            transition={[Function]}
-                          />
-                        </Overlay>
-                      </span>
-                    </Component>
+                          <span
+                            className="label-help-target"
+                          >
+                            <span
+                              className="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </OverlayTrigger>
+                    </LabelHelpTip>
                   </span>
                 </DomainFieldLabel>
               </div>
@@ -496,33 +484,36 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
                     className="domain-no-wrap"
                   >
                     Criteria
-                    <Component
-                      id="tooltip"
+                    <LabelHelpTip
                       title="Create Conditional Format Criteria"
                     >
-                      <span
-                        className="label-help-target"
-                        onMouseOut={[Function]}
-                        onMouseOver={[Function]}
+                      <OverlayTrigger
+                        id="tooltip"
+                        overlay={
+                          <Popover
+                            id="tooltip"
+                            title="Create Conditional Format Criteria"
+                          >
+                            <ConditionalFormatHelpText />
+                          </Popover>
+                        }
                       >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                        <Overlay
-                          animation={[Function]}
-                          placement="right"
-                          rootClose={false}
-                          show={false}
+                        <div
+                          className="overlay-trigger"
+                          onClick={[Function]}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
                         >
-                          <Overlay
-                            placement="right"
-                            rootClose={false}
-                            show={false}
-                            transition={[Function]}
-                          />
-                        </Overlay>
-                      </span>
-                    </Component>
+                          <span
+                            className="label-help-target"
+                          >
+                            <span
+                              className="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </OverlayTrigger>
+                    </LabelHelpTip>
                   </span>
                 </DomainFieldLabel>
               </div>
@@ -728,51 +719,36 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                     className="domain-no-wrap"
                   >
                     Criteria
-                    <Component
-                      id="tooltip"
+                    <LabelHelpTip
                       title="Create Conditional Format Criteria"
                     >
-                      <span
-                        className="label-help-target"
-                        onMouseOut={[Function]}
-                        onMouseOver={[Function]}
+                      <OverlayTrigger
+                        id="tooltip"
+                        overlay={
+                          <Popover
+                            id="tooltip"
+                            title="Create Conditional Format Criteria"
+                          >
+                            <ConditionalFormatHelpText />
+                          </Popover>
+                        }
                       >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                        <Overlay
-                          animation={[Function]}
-                          placement="right"
-                          rootClose={false}
-                          show={false}
-                          target={
-                            <span
-                              class="label-help-target"
-                            >
-                              <span
-                                class="label-help-icon fa fa-question-circle"
-                              />
-                            </span>
-                          }
+                        <div
+                          className="overlay-trigger"
+                          onClick={[Function]}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
                         >
-                          <Overlay
-                            placement="right"
-                            rootClose={false}
-                            show={false}
-                            target={
-                              <span
-                                class="label-help-target"
-                              >
-                                <span
-                                  class="label-help-icon fa fa-question-circle"
-                                />
-                              </span>
-                            }
-                            transition={[Function]}
-                          />
-                        </Overlay>
-                      </span>
-                    </Component>
+                          <span
+                            className="label-help-target"
+                          >
+                            <span
+                              className="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </OverlayTrigger>
+                    </LabelHelpTip>
                   </span>
                 </DomainFieldLabel>
               </div>
@@ -809,33 +785,36 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                     className="domain-no-wrap"
                   >
                     Validator
-                    <Component
-                      id="tooltip"
+                    <LabelHelpTip
                       title="Create Regular Expression Validator"
                     >
-                      <span
-                        className="label-help-target"
-                        onMouseOut={[Function]}
-                        onMouseOver={[Function]}
+                      <OverlayTrigger
+                        id="tooltip"
+                        overlay={
+                          <Popover
+                            id="tooltip"
+                            title="Create Regular Expression Validator"
+                          >
+                            <RegexValidatorHelpText />
+                          </Popover>
+                        }
                       >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                        <Overlay
-                          animation={[Function]}
-                          placement="right"
-                          rootClose={false}
-                          show={false}
+                        <div
+                          className="overlay-trigger"
+                          onClick={[Function]}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
                         >
-                          <Overlay
-                            placement="right"
-                            rootClose={false}
-                            show={false}
-                            transition={[Function]}
-                          />
-                        </Overlay>
-                      </span>
-                    </Component>
+                          <span
+                            className="label-help-target"
+                          >
+                            <span
+                              className="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </OverlayTrigger>
+                    </LabelHelpTip>
                   </span>
                 </DomainFieldLabel>
               </div>

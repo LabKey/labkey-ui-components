@@ -15,7 +15,6 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
-import { InsertRowsResponse } from '../../query/api';
 import { resolveErrorMessage } from '../../util/messaging';
 import { DisableableButton } from '../buttons/DisableableButton';
 
@@ -236,8 +235,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
             setDirty(false);
             onActionCompleted(rowId);
         } catch (reason) {
-            // The InsertRowsResponse object uses an Immutable map so try to pull out the error object so it can be parsed.
-            const exception = reason instanceof InsertRowsResponse ? reason.get('error') : reason;
+            const exception = reason?.error ?? reason;
             setError(resolveErrorMessage(exception, 'template', 'templates', 'update'));
         } finally {
             setSaving(false);

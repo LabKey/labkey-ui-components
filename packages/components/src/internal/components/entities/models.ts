@@ -29,7 +29,7 @@ import { SCHEMAS } from '../../schemas';
 import { SampleCreationType } from '../samples/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { EditorModel } from '../editable/models';
-import { InsertRowsResponse } from '../../query/api';
+import { QueryCommandResponse } from '../../query/api';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { ViewInfo } from '../../ViewInfo';
 import { FieldFilter } from '../search/models';
@@ -366,7 +366,7 @@ export class EntityIdCreationModel extends Record({
         dataModel: QueryModel,
         editorModel: EditorModel,
         extraColumnsToInclude?: QueryColumn[]
-    ): Promise<InsertRowsResponse> {
+    ): Promise<QueryCommandResponse> {
         const rows = editorModel
             .getRawDataFromModel(dataModel, false, false)
             .valueSeq()

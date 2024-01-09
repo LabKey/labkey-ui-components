@@ -304,13 +304,14 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
 const APIKeysPanelWithQueryModels = withQueryModels(APIKeysPanelBody)
 
 export const APIKeysPanel: FC<APIKeysPanelBodyProps> = (props) => {
+    const { homeContainer } = useServerContext();
     const configs: QueryConfigMap = {
        model: {
            id: 'model',
            title: 'Current API Keys',
            schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
            includeTotalCount: true,
-           containerPath: "/"
+           containerPath: homeContainer,
         }
     }
     return (

@@ -7,7 +7,10 @@ export interface OverlayPositioning {
     style: CSSProperties;
 }
 
-export const useOverlayPositioning = (placement: Placement, targetRef: MutableRefObject<HTMLElement>) => {
+export const useOverlayPositioning = (
+    placement: Placement,
+    targetRef: MutableRefObject<HTMLElement>
+): OverlayPositioning => {
     const overlayRef = useRef(undefined);
     const [style, setStyle] = useState<CSSProperties>({});
 
@@ -15,8 +18,15 @@ export const useOverlayPositioning = (placement: Placement, targetRef: MutableRe
         if (targetRef === undefined) return;
         const targetEl = targetRef.current;
         const overlayEl: HTMLElement = overlayRef.current;
+        // We have to be a little paranoid because if our refs aren't configured exactly right, or if things render in
+        // an odd manner this code can cause a whole page to fall over.
+        const canComputeStyle =
+            targetEl !== undefined &&
+            targetEl.getBoundingClientRect !== undefined &&
+            overlayEl !== undefined &&
+            overlayEl.getBoundingClientRect !== undefined;
 
-        if (targetEl !== undefined && overlayEl !== undefined) {
+        if (canComputeStyle) {
             const overlayRect = overlayEl.getBoundingClientRect();
             const targetRect = targetEl.getBoundingClientRect();
             const updatedStyle: CSSProperties = {

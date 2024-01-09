@@ -134,3 +134,4 @@ export const OverlayTrigger: FC<Props> = ({
 
     return createElement(elementType, { className: className_, onMouseEnter, onMouseLeave, onClick }, body);
 };
+OverlayTrigger.displayName = 'OverlayTrigger';

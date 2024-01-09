@@ -31,6 +31,7 @@ export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableData
 
 export function getProjectDataTypeDataCount(
     dataType: ProjectConfigurableDataType,
+    containerPath?: string,
     allDataTypes?: DataTypeEntity[],
     isNewFolder?: boolean
 ): Promise<Record<string, number>> {
@@ -56,6 +57,7 @@ export function getProjectDataTypeDataCount(
         }
 
         Query.executeSql({
+            containerPath,
             containerFilter: cf,
             schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
             sql: getProjectDataTypeDataCountSql(dataType),

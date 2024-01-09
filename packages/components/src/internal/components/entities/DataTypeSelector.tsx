@@ -7,7 +7,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { ColorIcon } from '../base/ColorIcon';
-import { Tip } from '../base/Tip';
+
+import { Container } from '../base/models/Container';
 
 import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from './models';
 
@@ -23,6 +24,7 @@ interface Props {
     entityDataType?: EntityDataType;
     isNewFolder?: boolean;
     noHeader?: boolean;
+    project?: Container;
     showUncheckedWarning?: boolean;
     toggleSelectAll?: boolean;
     uncheckedEntitiesDB: any[]; // number[] | string[]
@@ -71,6 +73,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         columns,
         noHeader,
         isNewFolder,
+        project,
         showUncheckedWarning = true,
         dataTypePrefix = '',
     } = props;
@@ -87,7 +90,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
             setLoading(true);
             setError(undefined);
 
-            const results = await api.query.getProjectConfigurableEntityTypeOptions(entityDataType);
+            const results = await api.query.getProjectConfigurableEntityTypeOptions(entityDataType, project?.path);
             setDataTypes(results);
         } catch (e) {
             console.error(e);
@@ -95,7 +98,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         } finally {
             setLoading(false);
         }
-    }, [api, entityDataType]);
+    }, [api.query, entityDataType, project?.path]);
 
     useEffect(() => {
         if (allDataCounts) setDataCounts(allDataCounts);
@@ -111,9 +114,9 @@ export const DataTypeSelector: FC<Props> = memo(props => {
     const ensureCount = useCallback(async () => {
         if (dataCounts) return;
 
-        const results = await api.query.getProjectDataTypeDataCount(dataType, dataTypes, isNewFolder);
+        const results = await api.query.getProjectDataTypeDataCount(dataType, project?.path, dataTypes, isNewFolder);
         setDataCounts(results);
-    }, [api, dataCounts, dataTypes, isNewFolder, dataType]);
+    }, [api.query, dataCounts, dataType, dataTypes, isNewFolder, project?.path]);
 
     const onChange = useCallback(
         (entityId: number | string, toggle: boolean, check?: boolean) => {
@@ -249,7 +252,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                     </div>
                 )}
                 <div className="row">
-                    {loading && <LoadingSpinner/>}
+                    {loading && <LoadingSpinner />}
                     {!loading && getEntitiesList()}
                     {!loading && dataTypes.length === 0 && (
                         <div className="help-block margin-left-more">No {headerLabel}</div>

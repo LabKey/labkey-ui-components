@@ -107,6 +107,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                                         className={'bottom-spacing ' + perEntityTypeColCls}
                                     >
                                         <DataTypeSelector
+                                            project={project}
                                             columns={perDataTypeColumns}
                                             dataTypePrefix={dataTypePrefix}
                                             entityDataType={entityDataType}

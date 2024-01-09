@@ -2,9 +2,11 @@ import React, { FC } from 'react';
 
 import { useOverlayPositioning } from './useOverlayPositioning';
 import { TooltipProps } from './Tooltip';
+import classNames from 'classnames';
 
 interface PopoverProps extends TooltipProps {
     title?: string;
+    className?: string;
 }
 
 /**
@@ -12,12 +14,12 @@ interface PopoverProps extends TooltipProps {
  * are using this component you should probably be using it in conjunction with an OverlayTrigger which will inject the
  * targetRef for you.
  */
-export const Popover: FC<PopoverProps> = ({ children, targetRef, id, placement, title }) => {
+export const Popover: FC<PopoverProps> = ({ children, className, targetRef, id, placement, title }) => {
     const { overlayRef, style } = useOverlayPositioning(placement, targetRef);
-    const className = `lk-popover popover ${placement}`;
+    const className_ = classNames('lk-popover', 'popover', placement, className);
 
     return (
-        <div id={id} className={className} style={style} ref={overlayRef}>
+        <div id={id} className={className_} style={style} ref={overlayRef}>
             <div className="arrow" />
             {title && <h3 className="popover-title">{title}</h3>}
             <div className="popover-content">{children}</div>

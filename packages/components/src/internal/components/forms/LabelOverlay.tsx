@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 import React from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { generateId } from '../../util/utils';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { HelpTipRenderer } from './HelpTipRenderer';
+import { Popover } from '../../Popover';
+import { OverlayTrigger } from '../../OverlayTrigger';
+import { Placement } from '../../useOverlayPositioning';
 
 export interface LabelOverlayProps {
     addLabelAsterisk?: boolean;
+    // canMouseOverTooltip is only used by the Provenance Run Builder. Can we drop this and render that the same as our
+    // other forms? The main difference is that this flag doesn't render a question mark for tooltips.
     canMouseOverTooltip?: boolean;
     column?: QueryColumn;
     content?: any; // other content to render to the popover
@@ -33,7 +37,7 @@ export interface LabelOverlayProps {
     isFormsy?: boolean;
     label?: string;
     labelClass?: string;
-    placement?: any;
+    placement?: Placement;
     required?: boolean;
     type?: string;
 }
@@ -44,6 +48,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         addLabelAsterisk: false,
         labelClass: 'control-label col-sm-3 col-xs-12 text-left',
         canMouseOverTooltip: false,
+        placement: 'right',
     };
 
     _popoverId: string;
@@ -102,12 +107,12 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
     };
 
     overlayContent() {
-        const { column, helpTipRenderer } = this.props;
+        const { column, helpTipRenderer, placement } = this.props;
         const label = this.props.label ? this.props.label : column ? column.caption : null;
         const popoverClassName = column?.helpTipRenderer || helpTipRenderer ? 'label-help-arrow-top' : undefined;
         const body = this.overlayBody();
         return (
-            <Popover id={this._popoverId} title={label} bsClass="popover" className={popoverClassName}>
+            <Popover id={this._popoverId} title={label} placement={placement} className={popoverClassName}>
                 {body}
             </Popover>
         );
@@ -120,7 +125,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         if (helpTipRenderer === 'NONE') return null;
 
         return !canMouseOverTooltip ? (
-            <OverlayTrigger placement={placement} overlay={this.overlayContent()}>
+            <OverlayTrigger id={this._popoverId} overlay={this.overlayContent()}>
                 <i className="fa fa-question-circle" />
             </OverlayTrigger>
         ) : (

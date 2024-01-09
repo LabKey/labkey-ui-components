@@ -14,9 +14,12 @@ interface Props {
 }
 
 export const DisableableButton: FC<Props> = memo(props => {
-    const { bsStyle = 'default', className = '', disabledMsg, title, children } = props;
-    const { onMouseEnter, onMouseLeave, onClick, portalEl, show, targetRef } =
-        useOverlayTriggerState<HTMLButtonElement>('disabled-button-overlay', disabledMsg !== undefined, false);
+    const { bsStyle = 'default', children, className = '', disabledMsg, onClick, title } = props;
+    const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLButtonElement>(
+        'disabled-button-overlay',
+        disabledMsg !== undefined,
+        false
+    );
     const popover = useMemo(
         () => (
             <Popover id="disabled-button-popover" title={title} placement="bottom" targetRef={targetRef}>

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.2.5
+*Released*: 9 January 2024
 - Issue 49357: Fix error in editable grid when checking for values on undefined set
 
 ### version 3.2.4

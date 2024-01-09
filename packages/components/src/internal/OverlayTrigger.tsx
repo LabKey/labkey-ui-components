@@ -30,21 +30,36 @@ interface OverlayTriggerState {
  * @param id the id to use for the portal
  * @param hoverEventsEnabled whether onMouseEnter/Leave will trigger the show state
  * @param clickEventEnabled whether onClick with trigger the showState
+ * @param delay the amount, in ms, to delay before showing the overlay
  */
 export const useOverlayTriggerState = (
     id: string,
     hoverEventsEnabled: boolean,
-    clickEventEnabled: boolean
+    clickEventEnabled: boolean,
+    delay: number = undefined
 ): OverlayTriggerState => {
     const targetRef = useRef(null);
     const portalEl = usePortalRef('overlay-trigger-portal-' + id);
     const [show, setShow] = useState<boolean>(false);
+    const [_, setTimeoutId] = useState<number>(undefined);
     const onMouseEnter = useCallback(() => {
         if (!hoverEventsEnabled) return;
+
+        if (delay) {
+            setTimeoutId(window.setTimeout(() => setShow(true), delay));
+            return;
+        }
+
         setShow(true);
-    }, [hoverEventsEnabled]);
+    }, [delay, hoverEventsEnabled]);
     const onMouseLeave = useCallback(() => {
         if (!hoverEventsEnabled) return;
+
+        setTimeoutId(currentId => {
+            if (currentId) window.clearTimeout(currentId);
+            return undefined;
+        });
+
         setShow(false);
     }, [hoverEventsEnabled]);
     const onClick = useCallback(() => {
@@ -68,6 +83,7 @@ export interface OverlayComponent {
 
 interface Props {
     className?: string;
+    delay?: number;
     elementType?: 'div' | 'span' | 'li'; // intentionally limiting the elements we'll render
     id: string;
     overlay: ReactElement<OverlayComponent>;
@@ -90,6 +106,7 @@ interface Props {
 export const OverlayTrigger: FC<Props> = ({
     children,
     className,
+    delay = undefined,
     elementType = 'div',
     id,
     overlay,
@@ -98,7 +115,8 @@ export const OverlayTrigger: FC<Props> = ({
     const { onMouseEnter, onMouseLeave, onClick, portalEl, show, targetRef } = useOverlayTriggerState(
         id,
         triggerType === 'hover',
-        triggerType === 'click'
+        triggerType === 'click',
+        delay
     );
     const clonedChild = cloneElement(Children.only(children) as ReactElement, { ref: targetRef });
     const className_ = classNames('overlay-trigger', className);

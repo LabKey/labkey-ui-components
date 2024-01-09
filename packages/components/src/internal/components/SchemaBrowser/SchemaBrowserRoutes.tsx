@@ -109,13 +109,13 @@ const OverlayTest: FC = () => {
                         </button>
                     </OverlayTrigger>
 
-                    <OverlayTrigger id="overlay-hover-test-top" overlay={topTooltip}>
+                    <OverlayTrigger id="overlay-hover-test-top" overlay={topTooltip} delay={200}>
                         <button type="button" className="btn btn-default">
                             Button with top tooltip
                         </button>
                     </OverlayTrigger>
 
-                    <OverlayTrigger id="overlay-hover-test-bottom" overlay={bottomTooltip}>
+                    <OverlayTrigger id="overlay-hover-test-bottom" overlay={bottomTooltip} delay={1000}>
                         <button type="button" className="btn btn-default">
                             Button with bottom tooltip
                         </button>

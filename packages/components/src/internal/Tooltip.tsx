@@ -3,7 +3,7 @@ import React, { FC, MutableRefObject } from 'react';
 import { Placement, useOverlayPositioning } from './useOverlayPositioning';
 
 export interface TooltipProps {
-    targetRef?: MutableRefObject<HTMLDivElement>;
+    targetRef?: MutableRefObject<HTMLElement>;
     id: string;
     placement: Placement;
 }

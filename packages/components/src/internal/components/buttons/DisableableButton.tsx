@@ -15,11 +15,8 @@ interface Props {
 
 export const DisableableButton: FC<Props> = memo(props => {
     const { bsStyle = 'default', className = '', disabledMsg, title, children } = props;
-    const { onMouseEnter, onMouseLeave, onClick, portalEl, show, targetRef } = useOverlayTriggerState(
-        'disabled-button-overlay',
-        disabledMsg !== undefined,
-        false
-    );
+    const { onMouseEnter, onMouseLeave, onClick, portalEl, show, targetRef } =
+        useOverlayTriggerState<HTMLButtonElement>('disabled-button-overlay', disabledMsg !== undefined, false);
     const popover = useMemo(
         () => (
             <Popover id="disabled-button-popover" title={title} placement="bottom" targetRef={targetRef}>
@@ -38,7 +35,7 @@ export const DisableableButton: FC<Props> = memo(props => {
             onPointerEnter={onMouseEnter}
             onPointerLeave={onMouseLeave}
             type="button"
-            ref={targetRef as LegacyRef<HTMLButtonElement>}
+            ref={targetRef}
         >
             {children}
             {show && createPortal(popover, portalEl)}

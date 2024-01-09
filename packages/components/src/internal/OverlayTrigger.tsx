@@ -15,13 +15,13 @@ import classNames from 'classnames';
 
 import { usePortalRef } from './hooks';
 
-interface OverlayTriggerState {
+interface OverlayTriggerState<T extends Element = HTMLDivElement> {
     onMouseEnter: () => void;
     onMouseLeave: () => void;
     onClick: () => void;
     portalEl: HTMLElement;
     show: boolean;
-    targetRef: MutableRefObject<HTMLElement>;
+    targetRef: MutableRefObject<T>;
 }
 
 /**
@@ -32,13 +32,13 @@ interface OverlayTriggerState {
  * @param clickEventEnabled whether onClick with trigger the showState
  * @param delay the amount, in ms, to delay before showing the overlay
  */
-export const useOverlayTriggerState = (
+export function useOverlayTriggerState<T extends Element = HTMLDivElement>(
     id: string,
     hoverEventsEnabled: boolean,
     clickEventEnabled: boolean,
     delay: number = undefined
-): OverlayTriggerState => {
-    const targetRef = useRef(null);
+): OverlayTriggerState<T> {
+    const targetRef = useRef<T>(null);
     const portalEl = usePortalRef('overlay-trigger-portal-' + id);
     const [show, setShow] = useState<boolean>(false);
     const [_, setTimeoutId] = useState<number>(undefined);
@@ -75,10 +75,10 @@ export const useOverlayTriggerState = (
         show,
         targetRef,
     };
-};
+}
 
-export interface OverlayComponent {
-    targetRef?: MutableRefObject<HTMLElement>;
+export interface OverlayComponent<O extends Element = HTMLDivElement> {
+    targetRef?: MutableRefObject<O>;
 }
 
 interface Props {

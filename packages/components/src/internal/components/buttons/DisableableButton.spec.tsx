@@ -1,15 +1,13 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import { OverlayTrigger } from 'react-bootstrap';
-
 import { DisableableButton } from './DisableableButton';
 
 describe('DisableableButton', () => {
     test('No disabled message', () => {
         const wrapper = shallow(<DisableableButton bsStyle="primary" onClick={jest.fn()} />);
 
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        expect(wrapper.find('button').prop('disabled')).toEqual(false);
     });
 
     test('With disabled message', () => {
@@ -22,7 +20,7 @@ describe('DisableableButton', () => {
             />
         );
 
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
+        expect(wrapper.find('button').prop('disabled')).toEqual(true);
     });
 
     test('With styles', () => {

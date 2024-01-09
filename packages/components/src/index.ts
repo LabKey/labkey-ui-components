@@ -833,6 +833,7 @@ import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 import { FormButtons } from './internal/FormButtons';
 import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
+import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
 
@@ -1673,6 +1674,8 @@ export {
     ModalButtons,
     Tooltip,
     Popover,
+    OverlayTrigger,
+    useOverlayTriggerState
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

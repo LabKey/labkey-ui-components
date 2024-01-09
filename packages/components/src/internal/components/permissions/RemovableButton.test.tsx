@@ -69,7 +69,7 @@ describe('<RemovableButton/>', () => {
         );
 
         render(component);
-        expect(document.querySelectorAll('.disabled-button-with-tooltip').length).toBe(1);
+        expect(document.querySelectorAll('.permissions-button-group__remove-button').length).toBe(1);
         expect(screen.getByText('Display Text')).toBeInTheDocument();
     });
 });

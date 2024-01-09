@@ -6,7 +6,7 @@ exports[`<RemovableButton/> custom props 1`] = `
     class="permissions-button-group btn-group"
   >
     <button
-      class=" btn btn-primary"
+      class="permissions-button-group__remove-button btn btn-primary"
       disabled=""
       type="button"
     >
@@ -30,7 +30,7 @@ exports[`<RemovableButton/> default props 1`] = `
     class="permissions-button-group btn-group"
   >
     <button
-      class=" btn btn-default"
+      class="permissions-button-group__remove-button btn btn-default"
       type="button"
     >
       <i

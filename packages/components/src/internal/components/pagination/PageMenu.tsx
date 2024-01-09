@@ -38,7 +38,7 @@ export class PageMenu extends PureComponent<Props> {
         const { currentPage, disabled, id, isFirstPage, isLastPage, pageCount, pageSize, pageSizes } = this.props;
 
         return (
-            <Tip caption="Current Page" trigger={['hover']}>
+            <Tip caption="Current Page">
                 <DropdownButton
                     className="current-page-dropdown"
                     disabled={disabled}

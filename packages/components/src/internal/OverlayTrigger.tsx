@@ -81,13 +81,15 @@ export interface OverlayComponent<O extends Element = HTMLDivElement> {
     targetRef?: MutableRefObject<O>;
 }
 
+export type TriggerType = 'click' | 'hover';
+
 interface Props {
     className?: string;
     delay?: number;
     elementType?: 'div' | 'span' | 'li'; // intentionally limiting the elements we'll render, feels useless given useOverlayTriggerState
     id: string;
     overlay: ReactElement<OverlayComponent>;
-    triggerType?: 'click' | 'hover';
+    triggerType?: TriggerType;
 }
 
 /**

@@ -510,7 +510,7 @@ export class EditorModel
     get hasData(): boolean {
         return (
             this.cellValues.find(valueList => {
-                return valueList.find(value => this.hasRawValue(value)) !== undefined;
+                return valueList?.find(value => this.hasRawValue(value)) !== undefined;
             }) !== undefined
         );
     }

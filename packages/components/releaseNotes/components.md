@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.2.5
+*Released*: 9 January 2024
+- Issue 49357: Fix error in editable grid when checking for values on undefined set
+
 ### version 3.2.4
 *Released*: 29 December 2023
 - remove AliquotedFrom from samples grid export/editable grid export

@@ -39,7 +39,7 @@ import { Alert } from '../base/Alert';
 import { ActionURL } from '@labkey/api';
 import { AppContext, useAppContext } from '../../AppContext';
 import { setCopyValue } from '../../events';
-import { getPrimaryAppProperties, isFeatureEnabled } from '../../app/utils';
+import { biologicsIsPrimaryApp, getPrimaryAppProperties, isFeatureEnabled } from '../../app/utils';
 import { ProductFeature } from '../../app/constants';
 import {
     InjectedQueryModels,
@@ -53,7 +53,7 @@ import { ConfirmModal } from '../base/ConfirmModal';
 import { HelpLink } from '../../util/helpLinks';
 
 interface ButtonsComponentProps extends RequiresModelAndActions {
-    onDelete: () => void;
+    onDelete: (error?: string) => void;
 }
 
 const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
@@ -64,12 +64,17 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
     const onDeleteClicked = useCallback(() => setShowConfirmDelete(true), []);
     const closeDeleteModal = useCallback(() => setShowConfirmDelete(false), []);
     const onConfirmDelete = useCallback(async () => {
-        await api.security.deleteApiKeys(model.selections);
-        actions.clearSelections(model.id);
-        actions.loadModel(model.id, true, true);
-        actions.loadFirstPage(model.id);
-        closeDeleteModal();
-        onDelete();
+        try {
+            await api.security.deleteApiKeys(model.selections);
+            actions.clearSelections(model.id);
+            actions.loadModel(model.id, true, true);
+            actions.loadFirstPage(model.id);
+            closeDeleteModal();
+            onDelete();
+        } catch (e) {
+            console.error("Unable to delete selected api keys", e);
+            onDelete("Unable to delete the selected keys. If the problem persists, please contact your system administrator.");
+        }
     }, [model, actions, model.id]);
 
     const noun = model?.selections?.size > 1 ? "Keys" : "Key";
@@ -177,12 +182,19 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
     const { user, moduleContext, impersonatingUser } = useServerContext();
     const [ apiKey, setApiKey ] = useState<string>(""); // start with empty string not undefined to avoid warnings about controlled vs. uncontrolled inputs
     const [ sessionKey, setSessionKey ] = useState<string>("");
+    const [ error, setError ] = useState<string>();
     const apiEnabled = isApiKeyGenerationEnabled(moduleContext);
     const sessionEnabled = isSessionKeyGenerationEnabled(moduleContext);
     const primaryApp = getPrimaryAppProperties(moduleContext)?.name;
 
-    const onDelete = useCallback(() => {
-        setApiKey(""); // undefined and null here will not have the desired effect
+    const onDelete = useCallback((deleteError?: string) => {
+        if (deleteError) {
+            setError(deleteError);
+        }
+        else {
+            setError(undefined);
+            setApiKey(""); // undefined and null here will not have the desired effect
+        }
     }, []);
 
     const onApiKeyCreate = useCallback((key: string)  => {
@@ -205,7 +217,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
             API keys are currently configured to <span className="api-key__expiration-config">{getApiExpirationMessage(moduleContext)}</span>.{' '}
             <span>
                 {primaryApp ?
-                <HelpLink topic={"myAccount#apikey"}>More info</HelpLink> :
+                <HelpLink topic={"myAccount#apikey"} useDefaultUrl={biologicsIsPrimaryApp(moduleContext)}>More info</HelpLink> :
                 <a href={'https://www.labkey.org/Documentation/wiki-page.view?name=apiKey#usage'}>More info</a>
                 }
             </span>
@@ -235,23 +247,27 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
                 {adminMsg}
 
                 {!impersonatingUser &&
-                    <GridPanel
-                        actions={actions}
-                        model={model}
-                        asPanel={false}
-                        showSearchInput={false}
-                        showFiltersButton={false}
-                        showPagination={true}
-                        showExport={false}
-                        showViewMenu={false}
-                        buttonsComponentProps={{
-                            model,
-                            actions,
-                            onDelete
-                        }}
-                        ButtonsComponent={APIKeysButtonsComponent}
-                        emptyText="You currently do not have any API keys"
-                    />
+                    <>
+                        <GridPanel
+                            actions={actions}
+                            model={model}
+                            asPanel={false}
+                            showSearchInput={false}
+                            showFiltersButton={false}
+                            showPagination={true}
+                            showExport={false}
+                            showViewMenu={false}
+                            allowViewCustomization={false}
+                            buttonsComponentProps={{
+                                model,
+                                actions,
+                                onDelete
+                            }}
+                            ButtonsComponent={APIKeysButtonsComponent}
+                            emptyText="You currently do not have any API keys."
+                        />
+                        <Alert>{error}</Alert>
+                    </>
                 }
 
                 {apiEnabled && (

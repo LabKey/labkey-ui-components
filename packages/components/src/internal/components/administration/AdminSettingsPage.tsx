@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import { useRouteLeave } from '../../util/RouteLeave';
 import { useServerContext } from '../base/ServerContext';
@@ -30,8 +30,6 @@ import { LoadingPage } from '../base/LoadingPage';
 
 import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
 
-import { SampleTypeDataType } from '../entities/constants';
-
 import { useAdministrationSubNav } from './useAdministrationSubNav';
 
 import { useAdminAppContext } from './useAdminAppContext';
@@ -45,16 +43,9 @@ export const AdminSettingsPage: FC = () => {
     const { moduleContext, container } = useServerContext();
     const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
     const { createNotification, dismissNotifications } = useNotificationsContext();
-    const { NotebookProjectSettingsComponent, projectDataTypes } = useAdminAppContext();
+    const { NotebookProjectSettingsComponent, sampleTypeDataType } = useAdminAppContext();
     const { api } = useAppContext<AppContext>();
     const homeProjectContainer = useContainerUser(homeFolderPath, { includeStandardProperties: true });
-    const sampleTypeDataType = useMemo(
-        () =>
-            projectDataTypes.find(
-                dt => dt.projectConfigurableDataType === SampleTypeDataType.projectConfigurableDataType
-            ),
-        [projectDataTypes]
-    );
 
     const onSettingsChange = useCallback(() => {
         setIsDirty(true);

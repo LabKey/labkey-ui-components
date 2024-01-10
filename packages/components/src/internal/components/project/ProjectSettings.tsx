@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 
 import { useAppContext } from '../../AppContext';
 import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
@@ -14,8 +14,6 @@ import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
 import { NameIdSettings } from '../settings/NameIdSettings';
 import { biologicsIsPrimaryApp, isProtectedDataEnabled } from '../../app/utils';
 import { ProtectedDataSettingsPanel } from '../administration/ProtectedDataSettingsPanel';
-
-import { SampleTypeDataType } from '../entities/constants';
 
 import { ProjectNameSetting } from './ProjectNameSetting';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
@@ -41,16 +39,9 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const { api } = useAppContext();
-    const { projectDataTypes, ProjectFreezerSelectionComponent } = useAdminAppContext();
+    const { projectDataTypes, sampleTypeDataType, ProjectFreezerSelectionComponent } = useAdminAppContext();
     const { container, user, moduleContext } = useServerContext();
     const dispatch = useServerContextDispatch();
-    const sampleTypeDataType = useMemo(
-        () =>
-            projectDataTypes.find(
-                dt => dt.projectConfigurableDataType === SampleTypeDataType.projectConfigurableDataType
-            ),
-        [projectDataTypes]
-    );
 
     const onNameChange_ = useCallback(() => {
         setNameDirty(true);

@@ -6,7 +6,6 @@ import React, {
     ReactElement,
     useState,
     useCallback,
-    createElement,
     MutableRefObject,
 } from 'react';
 import { createPortal } from 'react-dom';
@@ -86,7 +85,6 @@ export type TriggerType = 'click' | 'hover';
 interface Props {
     className?: string;
     delay?: number;
-    elementType?: 'div' | 'span' | 'li'; // intentionally limiting the elements we'll render, feels useless given useOverlayTriggerState
     id: string;
     overlay: ReactElement<OverlayComponent>; // See note in doc string below
     triggerType?: TriggerType;
@@ -110,7 +108,6 @@ export const OverlayTrigger: FC<Props> = ({
     children,
     className,
     delay = undefined,
-    elementType = 'div',
     id,
     overlay,
     triggerType = 'hover',
@@ -125,14 +122,12 @@ export const OverlayTrigger: FC<Props> = ({
     const className_ = classNames('overlay-trigger', className);
     const clonedContent = cloneElement(overlay, { targetRef });
 
-    const body = (
-        <>
+    return (
+        <div className={className_} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick}>
             {clonedChild}
 
             {show && createPortal(clonedContent, portalEl)}
-        </>
+        </div>
     );
-
-    return createElement(elementType, { className: className_, onMouseEnter, onMouseLeave, onClick }, body);
 };
 OverlayTrigger.displayName = 'OverlayTrigger';

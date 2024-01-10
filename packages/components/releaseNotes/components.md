@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.5.1
+*Released*: 10 January 2024
+* Merge release24.1-SNAPSHOT to develop:
+    * includes changes from 3.2.5
+
 ### version 3.5.0
 *Released*: 9 January 2024
 - Add API Keys panel to profile page

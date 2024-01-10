@@ -16,7 +16,7 @@ export const TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT = {
         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
     },
     core: {
-        productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay],
+        productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay, ProductFeature.ApiKeys],
     },
 };
 
@@ -63,7 +63,7 @@ export const TEST_LKS_STARTER_MODULE_CONTEXT = {
         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
     },
     core: {
-        productFeatures: [ProductFeature.Assay],
+        productFeatures: [ProductFeature.ApiKeys, ProductFeature.Assay],
     },
 };
 
@@ -79,6 +79,7 @@ export const TEST_LIMS_STARTER_MODULE_CONTEXT = {
             ProductFeature.Projects,
             ProductFeature.SampleManagement,
             ProductFeature.Workflow,
+            ProductFeature.ApiKeys,
         ],
     },
     inventory: {

@@ -18,7 +18,7 @@ import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 import { getUserProperties } from '../user/actions';
 import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { processRequest } from '../../query/api';
+import { deleteRows, processRequest, QueryCommandResponse } from '../../query/api';
 import { GroupMembership } from '../administration/models';
 
 type NonRequestCallback<T extends Utils.RequestCallbackOptions> = Omit<T, 'success' | 'failure' | 'scope'>;
@@ -51,6 +51,8 @@ export interface RemoveGroupMembersResponse {
 
 export interface SecurityAPIWrapper {
     addGroupMembers: (groupId: number, principalIds: number[], projectPath: string) => Promise<AddGroupMembersResponse>;
+    createApiKey: (type?: string) => Promise<string>;
+    deleteApiKeys: (selections: Set<string>) => Promise<QueryCommandResponse>;
     createGroup: (groupName: string, projectPath: string) => Promise<Security.CreateGroupResponse>;
     deleteContainer: (options: DeleteContainerOptions) => Promise<Record<string, unknown>>;
     deleteGroup: (id: number, projectPath: string) => Promise<DeleteGroupResponse>;
@@ -101,6 +103,32 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
             });
         });
     };
+
+    createApiKey(type = 'apikey'): Promise<string> {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: buildURL('security', 'CreateApiKey.api'),
+                method: 'POST',
+                params: {type: type},
+                success: Utils.getCallbackWrapper(response => {
+                    resolve(response.apikey);
+                }),
+                failure: handleRequestFailure(reject, 'Problem generating the apiKey for this user.'),
+            });
+        });
+    };
+
+    deleteApiKeys(selections: Set<string>): Promise<QueryCommandResponse> {
+        const rows = [];
+        selections.forEach(selection => {
+            rows.push({rowId: selection});
+        });
+
+        return deleteRows({
+            schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
+            rows,
+        });
+    }
 
     createGroup = (groupName: string, projectPath: string): Promise<Security.CreateGroupResponse> => {
         return new Promise((resolve, reject) => {
@@ -373,6 +401,8 @@ export function getSecurityTestAPIWrapper(
 ): SecurityAPIWrapper {
     return {
         addGroupMembers: mockFn(),
+        createApiKey: mockFn(),
+        deleteApiKeys: mockFn(),
         createGroup: mockFn(),
         deleteContainer: mockFn(),
         deleteGroup: mockFn(),

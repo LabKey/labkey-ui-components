@@ -52,6 +52,7 @@ export const CORE_TABLES = {
     SCHEMA: CORE_SCHEMA,
     DATA_STATES: new SchemaQuery(CORE_SCHEMA, 'DataStates'),
     USERS: new SchemaQuery(CORE_SCHEMA, 'Users'),
+    USER_API_KEYS: new SchemaQuery(CORE_SCHEMA, 'UserApiKeys'),
 };
 
 // DATA CLASSES

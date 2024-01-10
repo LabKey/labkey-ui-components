@@ -2,6 +2,7 @@ import React, { FC, memo, ReactNode, useMemo } from 'react';
 
 import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
+import { generateId } from '../../util/utils';
 
 interface Props {
     iconComponent?: ReactNode; // use a different icon than the question mark circle
@@ -13,10 +14,11 @@ interface Props {
 }
 
 export const LabelHelpTip: FC<Props> = memo(props => {
-    const { children, title, placement, id = 'tooltip', required, iconComponent, popoverClassName } = props;
+    const { children, title, placement, id = 'label-help-tip', required, iconComponent, popoverClassName } = props;
+    const id_ = useMemo(() => generateId(id), [id]);
     const popover = useMemo(
         () => (
-            <Popover id={id} title={title} className={popoverClassName} placement={placement}>
+            <Popover id={id_} title={title} className={popoverClassName} placement={placement}>
                 {children}
                 {required && <div className="label-help-required">This field is required.</div>}
             </Popover>
@@ -25,7 +27,7 @@ export const LabelHelpTip: FC<Props> = memo(props => {
     );
     // Need to have both icon and overlay inside mouse handlers div so overlay stays visible when moused over
     return (
-        <OverlayTrigger id={id} overlay={popover}>
+        <OverlayTrigger id={id_} overlay={popover}>
             <span className="label-help-target">
                 {iconComponent ?? <span className="label-help-icon fa fa-question-circle" />}
             </span>

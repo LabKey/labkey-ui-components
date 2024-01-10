@@ -26,7 +26,7 @@ export const DisableableButton: FC<Props> = memo(props => {
                 {disabledMsg}
             </Popover>
         ),
-        [disabledMsg, title]
+        [disabledMsg, targetRef, title]
     );
 
     // Note: we use onPointerEnter/Leave so events propagate when the button is disabled

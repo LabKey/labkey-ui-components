@@ -8,6 +8,7 @@ import { isAppHomeFolder } from '../../app/utils';
 import { fetchContainers } from '../permissions/actions';
 import { ModuleContext } from '../base/ServerContext';
 import { naturalSortByProperty } from '../../../public/sort';
+import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 
 export interface ProjectSettingsOptions {
     allowUserSpecifiedNames?: boolean;
@@ -164,7 +165,9 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                         resolve(childProjects);
                     } else {
                         const top = projects.find(c => c.path === topFolderPath);
-                        const allProject = top ? [top] : [];
+                        const allProject = top
+                            ? [{ ...top, title: top.path === HOME_PATH ? HOME_TITLE : top.title } as Container]
+                            : [];
                         allProject.push(...childProjects);
                         resolve(allProject);
                     }

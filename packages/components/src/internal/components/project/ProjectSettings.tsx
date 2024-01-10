@@ -12,7 +12,7 @@ import { useAdminAppContext } from '../administration/useAdminAppContext';
 
 import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
 import { NameIdSettings } from '../settings/NameIdSettings';
-import { biologicsIsPrimaryApp, isProtectedDataEnabled } from '../../app/utils';
+import { biologicsIsPrimaryApp, isAppHomeFolder, isProtectedDataEnabled } from '../../app/utils';
 import { ProtectedDataSettingsPanel } from '../administration/ProtectedDataSettingsPanel';
 
 import { ProjectNameSetting } from './ProjectNameSetting';
@@ -41,6 +41,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const { api } = useAppContext();
     const { projectDataTypes, sampleTypeDataType, ProjectFreezerSelectionComponent } = useAdminAppContext();
     const { container, user, moduleContext } = useServerContext();
+    const isAppHomeSelected = isAppHomeFolder(project, moduleContext);
     const dispatch = useServerContextDispatch();
 
     const onNameChange_ = useCallback(() => {
@@ -179,8 +180,28 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
         [onSuccess, nameDirty, dataTypeDirty, dashboardDirty, barDirty, nameIdDirty]
     );
 
-    if (!project || project.isProject || !user.isAdmin) {
+    if (!project || !user.isAdmin) {
         return null;
+    }
+
+    if (isAppHomeSelected) {
+        return (
+            <div className="project-settings-container">
+                <div className="project-settings panel panel-default">
+                    <ProjectDataTypeSelections
+                        api={api.folder}
+                        panelTitle="Dashboard"
+                        panelDescription="Select the data types to include in the Dashboard Insights graphs."
+                        dataTypePrefix="Dashboard"
+                        entityDataTypes={[sampleTypeDataType]}
+                        project={project}
+                        showUncheckedWarning={false}
+                        updateDataTypeExclusions={onDashboardChange_}
+                        onSuccess={onDashboardSuccess}
+                    />
+                </div>
+            </div>
+        );
     }
 
     return (

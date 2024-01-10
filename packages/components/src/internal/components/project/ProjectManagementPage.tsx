@@ -48,7 +48,7 @@ export const ProjectManagementPage: FC = memo(() => {
             setError(undefined);
 
             try {
-                let projects_ = await api.folder.getProjects(container, moduleContext, true, true, false);
+                let projects_ = await api.folder.getProjects(container, moduleContext, true, true, true);
                 projects_ = projects_.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Admin) > -1);
                 setProjects(projects_);
 
@@ -59,7 +59,7 @@ export const ProjectManagementPage: FC = memo(() => {
                     }
                 }
 
-                let defaultContainer = container?.isFolder ? container : projects_?.[0];
+                let defaultContainer = container;
                 const createdProjectName = searchParams.get('created');
                 if (createdProjectName) {
                     removeParameters(setSearchParams, 'created');
@@ -149,13 +149,13 @@ export const ProjectManagementPage: FC = memo(() => {
             >
                 <Alert>{error}</Alert>
                 {!loaded && !error && <LoadingSpinner />}
-                {loaded && !error && projects?.length === 0 && (
+                {loaded && !error && projects?.length === 1 && (
                     <Alert bsStyle="warning">
                         No projects have been created. Click{' '}
                         <a href={AppURL.create('admin', 'projects', 'new').toHref()}>here</a> to get started.
                     </Alert>
                 )}
-                {projects?.length > 0 && (
+                {projects?.length > 1 && (
                     <div className="side-panels-container">
                         <ProjectListing
                             projects={projects}

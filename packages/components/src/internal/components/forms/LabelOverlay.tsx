@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { generateId } from '../../util/utils';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { HelpTipRenderer } from './HelpTipRenderer';
 import { Popover } from '../../Popover';
@@ -26,11 +25,8 @@ import { Placement } from '../../useOverlayPositioning';
 
 export interface LabelOverlayProps {
     addLabelAsterisk?: boolean;
-    // canMouseOverTooltip is only used by the Provenance Run Builder. Can we drop this and render that the same as our
-    // other forms? The main difference is that this flag doesn't render a question mark for tooltips.
-    canMouseOverTooltip?: boolean;
     column?: QueryColumn;
-    content?: any; // other content to render to the popover
+    content?: ReactNode; // other content to render in the popover
     description?: string;
     helpTipRenderer?: string;
     inputId?: string;
@@ -47,7 +43,6 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         isFormsy: true,
         addLabelAsterisk: false,
         labelClass: 'control-label col-sm-3 col-xs-12 text-left',
-        canMouseOverTooltip: false,
         placement: 'right',
     };
 
@@ -119,19 +114,14 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
     }
 
     getOverlay() {
-        const { column, placement, canMouseOverTooltip, helpTipRenderer } = this.props;
-        const label = this.props.label ? this.props.label : column ? column.caption : null;
+        const { helpTipRenderer } = this.props;
 
         if (helpTipRenderer === 'NONE') return null;
 
-        return !canMouseOverTooltip ? (
+        return (
             <OverlayTrigger id={this._popoverId} overlay={this.overlayContent()}>
                 <i className="fa fa-question-circle" />
             </OverlayTrigger>
-        ) : (
-            <LabelHelpTip id={this._popoverId} title={label} placement={placement}>
-                {this.overlayBody()}
-            </LabelHelpTip>
         );
     }
 

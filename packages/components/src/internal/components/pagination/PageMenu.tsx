@@ -1,8 +1,7 @@
-import React, { FC, PureComponent, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { blurActiveElement } from '../../util/utils';
-import { Tip } from '../base/Tip';
 
 interface Props {
     currentPage: number;

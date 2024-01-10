@@ -1,10 +1,9 @@
-import React, { FC, PureComponent, ReactNode, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 
 import { createPortal } from 'react-dom';
 
 import { blurActiveElement } from '../../util/utils';
-import { Tip } from '../base/Tip';
 import { useOverlayTriggerState } from '../../OverlayTrigger';
 import { Tooltip } from '../../Tooltip';
 
@@ -23,7 +22,7 @@ export const PaginationButton: FC<Props> = ({ className, disabled, iconClass, on
     const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLButtonElement>(
         'pagination-button-overlay',
         true,
-        true,
+        false,
         200
     );
     const onClick_ = useCallback((): void => {

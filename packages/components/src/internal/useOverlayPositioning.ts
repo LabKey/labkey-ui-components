@@ -12,12 +12,15 @@ export function useOverlayPositioning<T extends Element = HTMLDivElement, O exte
     targetRef: MutableRefObject<T>
 ): OverlayPositioning<O> {
     const overlayRef = useRef<O>(undefined);
-    const [style, setStyle] = useState<CSSProperties>({});
+    // Sometimes it takes a little extra time before the useEffect below can compute the style, so we default the
+    // position to be (hopefully) very far off-screen, otherwise you see the overlay flash from one spot to another.
+    const [style, setStyle] = useState<CSSProperties>({ top: -10000, left: -10000 });
 
     useEffect(() => {
         if (targetRef === undefined) return;
         const targetEl = targetRef.current;
         const overlayEl = overlayRef.current;
+
         // We have to be a little paranoid because if our refs aren't configured exactly right, or if things render in
         // an odd manner this code can cause a whole page to fall over.
         const canComputeStyle =

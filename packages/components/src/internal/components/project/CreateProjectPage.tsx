@@ -39,7 +39,7 @@ export interface CreateProjectContainerProps {
 
 export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(props => {
     const { api, onCancel, onCreated } = props;
-    const { projectDataTypes, ProjectFreezerSelectionComponent } = useAdminAppContext();
+    const { projectDataTypes, sampleTypeDataType, ProjectFreezerSelectionComponent } = useAdminAppContext();
 
     const { moduleContext, container } = useServerContext();
 
@@ -47,16 +47,13 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [dataTypeExclusion, setDataTypeExclusion] = useState<{ [key: string]: number[] }>({});
 
-    const updateDataTypeExclusions = useCallback(
-        (dataType: ProjectConfigurableDataType, exclusions: number[]) => {
-            setDataTypeExclusion(prevState => {
-                const uncheckedUpdates = { ...prevState };
-                uncheckedUpdates[dataType] = exclusions;
-                return uncheckedUpdates;
-            });
-        },
-        [dataTypeExclusion]
-    );
+    const updateDataTypeExclusions = useCallback((dataType: ProjectConfigurableDataType, exclusions: number[]) => {
+        setDataTypeExclusion(prevState => {
+            const uncheckedUpdates = { ...prevState };
+            uncheckedUpdates[dataType] = exclusions;
+            return uncheckedUpdates;
+        });
+    }, []);
 
     const onSubmit = useCallback(
         async evt => {
@@ -70,6 +67,7 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                 nameAsTitle: !!formData.get('nameAsTitle'),
                 title: formData.get('title') as string,
                 disabledSampleTypes: dataTypeExclusion?.['SampleType'],
+                disabledDashboardSampleTypes: dataTypeExclusion?.['DashboardSampleType'],
                 disabledDataClasses: dataTypeExclusion?.['DataClass'],
                 disabledAssayDesigns: dataTypeExclusion?.['AssayDesign'],
                 disabledStorageLocations: dataTypeExclusion?.['StorageLocation'],
@@ -89,7 +87,7 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
             setIsSaving(false);
             onCreated(project);
         },
-        [api, onCreated, dataTypeExclusion]
+        [dataTypeExclusion, container, moduleContext, onCreated, api]
     );
 
     return (
@@ -113,6 +111,17 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                     project={null}
                     updateDataTypeExclusions={updateDataTypeExclusions}
                 />
+                {sampleTypeDataType && (
+                    <ProjectDataTypeSelections
+                        panelTitle="Dashboard"
+                        panelDescription="Select the data types to include in the Dashboard Insights graphs."
+                        dataTypePrefix="Dashboard"
+                        entityDataTypes={[sampleTypeDataType]}
+                        project={null}
+                        showUncheckedWarning={false}
+                        updateDataTypeExclusions={updateDataTypeExclusions}
+                    />
+                )}
                 {ProjectFreezerSelectionComponent && (
                     <ProjectFreezerSelectionComponent updateDataTypeExclusions={updateDataTypeExclusions} />
                 )}

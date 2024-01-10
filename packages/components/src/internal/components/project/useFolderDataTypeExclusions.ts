@@ -5,7 +5,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { Container } from '../base/models/Container';
 
 export const useFolderDataTypeExclusions = (
-    project?: Container
+    project: Container
 ): { loaded: boolean; error: string; disabledTypesMap: Record<string, number[]> } => {
     const [loaded, setLoaded] = useState<boolean>(false);
     const [error, setError] = useState<string>();
@@ -17,8 +17,12 @@ export const useFolderDataTypeExclusions = (
             setError(undefined);
 
             try {
-                const disabledTypesMap_ = await getFolderDataTypeExclusions(project?.path);
-                setDisabledTypesMap(disabledTypesMap_);
+                if (project) {
+                    const disabledTypesMap_ = await getFolderDataTypeExclusions(project?.path);
+                    setDisabledTypesMap(disabledTypesMap_);
+                } else {
+                    setDisabledTypesMap({});
+                }
             } catch (e) {
                 setError(`Error: ${resolveErrorMessage(e)}`);
             } finally {

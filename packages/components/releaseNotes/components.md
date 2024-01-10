@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - ProjectDataTypeSelections panelTitle, panelDescription, and showUncheckedWarning
   - DataTypeSelector to load via useFolderDataTypeExclusions hook
   - AdminSettingsPage to show Dashboard data type exclusions panel when no projects configured
+  - CreateProjectPage and ProjectSettings to show Dashboard data type exclusions panel
   - Dashboard chart config update to getProjectExclusionFilter to account for an array of exclusion types
   - changes sample chart configs to exclude based on both 'SampleType' and 'DashboardSampleType' exclusions
   - add sampleTypeDataType to AppAdminContext

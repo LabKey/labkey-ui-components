@@ -22,6 +22,7 @@ interface Props {
     dataTypePrefix?: string;
     disabled?: boolean;
     entityDataType?: EntityDataType;
+    hiddenEntities?: any[]; // number[] | string[]
     isNewFolder?: boolean;
     noHeader?: boolean;
     project?: Container;
@@ -67,6 +68,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         entityDataType,
         allDataTypes,
         dataTypeLabel,
+        hiddenEntities,
         uncheckedEntitiesDB,
         allDataCounts,
         updateUncheckedTypes,
@@ -91,14 +93,20 @@ export const DataTypeSelector: FC<Props> = memo(props => {
             setError(undefined);
 
             const results = await api.query.getProjectConfigurableEntityTypeOptions(entityDataType, project?.path);
-            setDataTypes(results);
+
+            // the Dashboard related data type exclusions should hide entities from the parent/related exclusion
+            const results_ = results?.filter(
+                type => !hiddenEntities || hiddenEntities?.indexOf(type.rowId ?? type.lsid) === -1
+            );
+
+            setDataTypes(results_);
         } catch (e) {
             console.error(e);
             setError(resolveErrorMessage(e));
         } finally {
             setLoading(false);
         }
-    }, [api.query, entityDataType, project?.path]);
+    }, [api.query, entityDataType, hiddenEntities, project?.path]);
 
     useEffect(() => {
         if (allDataCounts) setDataCounts(allDataCounts);
@@ -176,8 +184,8 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         (dataTypeEntities: DataTypeEntity[]): React.ReactNode => {
             return (
                 <ul className="nav nav-stacked labkey-wizard-pills">
-                    {dataTypeEntities?.map((dataType, index) => {
-                        const entityId = dataType.rowId ?? dataType.lsid;
+                    {dataTypeEntities?.map((type, index) => {
+                        const entityId = type.rowId ?? type.lsid;
                         return (
                             <li key={entityId} className="project-faceted__li">
                                 <div className="form-check">
@@ -193,18 +201,16 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                                         className="margin-left-more project-datatype-faceted__value"
                                         onClick={() => onChange(entityId, true)}
                                     >
-                                        {dataType.labelColor && (
+                                        {type.labelColor && (
                                             <ColorIcon
                                                 cls="label_color color-icon__circle-small"
-                                                value={dataType.labelColor}
+                                                value={type.labelColor}
                                             />
                                         )}
-                                        {dataType.label}
+                                        {type.label}
                                     </div>
                                 </div>
-                                {!!dataType.sublabel && (
-                                    <div className="help-block margin-left-more">{dataType.sublabel}</div>
-                                )}
+                                {!!type.sublabel && <div className="help-block margin-left-more">{type.sublabel}</div>}
                                 {showUncheckedWarning && _getUncheckedEntityWarning(entityId)}
                             </li>
                         );
@@ -255,7 +261,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
                     {loading && <LoadingSpinner />}
                     {!loading && getEntitiesList()}
                     {!loading && dataTypes.length === 0 && (
-                        <div className="help-block margin-left-more">No {headerLabel}</div>
+                        <div className="help-block margin-left-more">No {headerLabel.toLowerCase()}</div>
                     )}
                 </div>
             </div>

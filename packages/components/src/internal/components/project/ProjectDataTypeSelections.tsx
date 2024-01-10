@@ -99,7 +99,11 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                     <div className="row">
                         {loaded &&
                             entityDataTypes?.map(entityDataType => {
-                                const dataType = dataTypePrefix + entityDataType.projectConfigurableDataType;
+                                const uncheckedDataTypes =
+                                    disabledTypesMap?.[dataTypePrefix + entityDataType.projectConfigurableDataType];
+                                const hiddenDataTypes = dataTypePrefix
+                                    ? disabledTypesMap?.[entityDataType.projectConfigurableDataType]
+                                    : undefined;
 
                                 return (
                                     <div
@@ -112,7 +116,8 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                                             dataTypePrefix={dataTypePrefix}
                                             entityDataType={entityDataType}
                                             updateUncheckedTypes={updateDataTypeExclusions_}
-                                            uncheckedEntitiesDB={disabledTypesMap?.[dataType]}
+                                            uncheckedEntitiesDB={uncheckedDataTypes}
+                                            hiddenEntities={hiddenDataTypes}
                                             showUncheckedWarning={showUncheckedWarning}
                                             isNewFolder={!project}
                                         />

@@ -15,6 +15,8 @@ import { NameIdSettings } from '../settings/NameIdSettings';
 import { biologicsIsPrimaryApp, isProtectedDataEnabled } from '../../app/utils';
 import { ProtectedDataSettingsPanel } from '../administration/ProtectedDataSettingsPanel';
 
+import { SampleTypeDataType } from '../entities/constants';
+
 import { ProjectNameSetting } from './ProjectNameSetting';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 import { DeleteProjectModal } from './DeleteProjectModal';
@@ -32,6 +34,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [nameDirty, setNameDirty] = useState<boolean>(false);
     const [dataTypeDirty, setDataTypeDirty] = useState<boolean>(false);
+    const [dashboardDirty, setDashboardDirty] = useState<boolean>(false);
     const [storageDirty, setStorageDirty] = useState<boolean>(false);
     const [barDirty, setBarDirty] = useState<boolean>(false);
     const [nameIdDirty, setNameIdDirty] = useState<boolean>(false);
@@ -52,6 +55,11 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
         onChange(true);
     }, [onChange]);
 
+    const onDashboardChange_ = useCallback(() => {
+        setDashboardDirty(true);
+        onChange(true);
+    }, [onChange]);
+
     const onStorageChange_ = useCallback(() => {
         setStorageDirty(true);
         onChange(true);
@@ -64,16 +72,16 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
 
     const onBarSuccess_ = useCallback(() => {
         setBarDirty(false);
-        onSuccess(nameDirty || dataTypeDirty || storageDirty || nameIdDirty, false);
-    }, [nameDirty, dataTypeDirty, storageDirty, nameIdDirty]);
+        onSuccess(nameDirty || dataTypeDirty || dashboardDirty || storageDirty || nameIdDirty, false);
+    }, [onSuccess, nameDirty, dataTypeDirty, dashboardDirty, storageDirty, nameIdDirty]);
 
     const onNameIdChange_ = useCallback(
         dirty => {
             setNameIdDirty(dirty);
             if (dirty) onChange(true);
-            else onSuccess(nameDirty || dataTypeDirty || storageDirty || barDirty, false);
+            else onSuccess(nameDirty || dataTypeDirty || dashboardDirty || storageDirty || barDirty, false);
         },
-        [onChange, nameDirty, dataTypeDirty, storageDirty, barDirty]
+        [onChange, onSuccess, nameDirty, dataTypeDirty, dashboardDirty, storageDirty, barDirty]
     );
 
     const onSubmitName = useCallback(
@@ -94,7 +102,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
 
                 renamedProject = await api.folder.renameProject(options, project.path);
                 setNameDirty(false);
-                onSuccess(dataTypeDirty || storageDirty || barDirty || nameIdDirty);
+                onSuccess(dataTypeDirty || dashboardDirty || storageDirty || barDirty || nameIdDirty);
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to update project settings');
             } finally {
@@ -121,6 +129,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
             isSaving,
             onSuccess,
             dataTypeDirty,
+            dashboardDirty,
             storageDirty,
             barDirty,
             nameIdDirty,
@@ -151,17 +160,25 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const onDataTypeSuccess = useCallback(
         (reload?: boolean) => {
             setDataTypeDirty(false);
-            onSuccess(nameDirty || storageDirty || barDirty || nameIdDirty, reload);
+            onSuccess(nameDirty || dashboardDirty || storageDirty || barDirty || nameIdDirty, reload);
         },
-        [nameDirty, storageDirty, barDirty, nameIdDirty]
+        [onSuccess, nameDirty, dashboardDirty, storageDirty, barDirty, nameIdDirty]
+    );
+
+    const onDashboardSuccess = useCallback(
+        (reload?: boolean) => {
+            setDashboardDirty(false);
+            onSuccess(nameDirty || dataTypeDirty || storageDirty || barDirty || nameIdDirty, reload);
+        },
+        [onSuccess, nameDirty, dataTypeDirty, storageDirty, barDirty, nameIdDirty]
     );
 
     const onStorageSuccess = useCallback(
         (reload?: boolean) => {
             setStorageDirty(false);
-            onSuccess(nameDirty || dataTypeDirty || barDirty || nameIdDirty, reload);
+            onSuccess(nameDirty || dataTypeDirty || dashboardDirty || barDirty || nameIdDirty, reload);
         },
-        [nameDirty, dataTypeDirty, barDirty, nameIdDirty]
+        [onSuccess, nameDirty, dataTypeDirty, dashboardDirty, barDirty, nameIdDirty]
     );
 
     if (!project || project.isProject || !user.isAdmin) {
@@ -214,6 +231,17 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                 updateDataTypeExclusions={onDataTypeChange_}
                 api={api.folder}
                 onSuccess={onDataTypeSuccess}
+            />
+            <ProjectDataTypeSelections
+                api={api.folder}
+                panelTitle="Dashboard"
+                panelDescription="Select the data types to include in the Dashboard Insights graphs."
+                dataTypePrefix="Dashboard"
+                entityDataTypes={[SampleTypeDataType]}
+                project={project}
+                showUncheckedWarning={false}
+                updateDataTypeExclusions={onDashboardChange_}
+                onSuccess={onDashboardSuccess}
             />
             {!!ProjectFreezerSelectionComponent && (
                 <ProjectFreezerSelectionComponent

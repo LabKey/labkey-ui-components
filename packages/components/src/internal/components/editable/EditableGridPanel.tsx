@@ -19,6 +19,7 @@ import { EditableGrid, EditableGridChange, SharedEditableGridPanelProps } from '
 import { exportEditedData, getEditorExportData } from './utils';
 
 interface Props extends SharedEditableGridPanelProps {
+    allowExport?: boolean;
     editorModel: EditorModel | EditorModel[];
     getIsDirty?: () => boolean;
     model: QueryModel | QueryModel[];
@@ -60,6 +61,7 @@ const exportHandler = (
  */
 export const EditableGridPanel: FC<Props> = memo(props => {
     const {
+        allowExport = true,
         editorModel,
         model,
         onChange,
@@ -172,7 +174,7 @@ export const EditableGridPanel: FC<Props> = memo(props => {
             readonlyRows={activeReadOnlyRows}
             readOnlyColumns={readOnlyColumns}
             updateColumns={activeUpdateColumns}
-            exportHandler={exportHandlerCallback}
+            exportHandler={allowExport ? exportHandlerCallback : undefined}
             exportColFilter={exportColFilter}
             insertColumns={insertColumns}
             forUpdate={forUpdate}

@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 
 import { useAppContext } from '../../AppContext';
 import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
@@ -44,6 +44,13 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const { projectDataTypes, ProjectFreezerSelectionComponent } = useAdminAppContext();
     const { container, user, moduleContext } = useServerContext();
     const dispatch = useServerContextDispatch();
+    const sampleTypeDataType = useMemo(
+        () =>
+            projectDataTypes.find(
+                dt => dt.projectConfigurableDataType === SampleTypeDataType.projectConfigurableDataType
+            ),
+        [projectDataTypes]
+    );
 
     const onNameChange_ = useCallback(() => {
         setNameDirty(true);
@@ -232,17 +239,19 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                 api={api.folder}
                 onSuccess={onDataTypeSuccess}
             />
-            <ProjectDataTypeSelections
-                api={api.folder}
-                panelTitle="Dashboard"
-                panelDescription="Select the data types to include in the Dashboard Insights graphs."
-                dataTypePrefix="Dashboard"
-                entityDataTypes={[SampleTypeDataType]}
-                project={project}
-                showUncheckedWarning={false}
-                updateDataTypeExclusions={onDashboardChange_}
-                onSuccess={onDashboardSuccess}
-            />
+            {sampleTypeDataType && (
+                <ProjectDataTypeSelections
+                    api={api.folder}
+                    panelTitle="Dashboard"
+                    panelDescription="Select the data types to include in the Dashboard Insights graphs."
+                    dataTypePrefix="Dashboard"
+                    entityDataTypes={[sampleTypeDataType]}
+                    project={project}
+                    showUncheckedWarning={false}
+                    updateDataTypeExclusions={onDashboardChange_}
+                    onSuccess={onDashboardSuccess}
+                />
+            )}
             {!!ProjectFreezerSelectionComponent && (
                 <ProjectFreezerSelectionComponent
                     project={project}

@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 
 import { useRouteLeave } from '../../util/RouteLeave';
 import { useServerContext } from '../base/ServerContext';
@@ -45,9 +45,16 @@ export const AdminSettingsPage: FC = () => {
     const { moduleContext, container } = useServerContext();
     const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
     const { createNotification, dismissNotifications } = useNotificationsContext();
-    const { NotebookProjectSettingsComponent } = useAdminAppContext();
+    const { NotebookProjectSettingsComponent, projectDataTypes } = useAdminAppContext();
     const { api } = useAppContext<AppContext>();
     const homeProjectContainer = useContainerUser(homeFolderPath, { includeStandardProperties: true });
+    const sampleTypeDataType = useMemo(
+        () =>
+            projectDataTypes.find(
+                dt => dt.projectConfigurableDataType === SampleTypeDataType.projectConfigurableDataType
+            ),
+        [projectDataTypes]
+    );
 
     const onSettingsChange = useCallback(() => {
         setIsDirty(true);
@@ -107,13 +114,13 @@ export const AdminSettingsPage: FC = () => {
                         setIsDirty={setIsDirty}
                     />
                 )}
-                {!hasProductProjects() && (
+                {!hasProductProjects() && sampleTypeDataType && (
                     <ProjectDataTypeSelections
                         api={api.folder}
                         panelTitle="Dashboard"
                         panelDescription="Select the data types to include in the Dashboard Insights graphs."
                         dataTypePrefix="Dashboard"
-                        entityDataTypes={[SampleTypeDataType]}
+                        entityDataTypes={[sampleTypeDataType]}
                         project={homeProjectContainer.container}
                         showUncheckedWarning={false}
                         updateDataTypeExclusions={onSettingsChange}

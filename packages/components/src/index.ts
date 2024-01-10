@@ -1815,3 +1815,4 @@ export type {
     FormsyTextAreaProps,
 } from './internal/components/forms/input/FormsyReactComponents';
 export type { QueryParams } from './internal/util/URL';
+export type { TriggerType } from './internal/OverlayTrigger';

@@ -1,14 +1,14 @@
+.tooltip.lk-tooltip,
+.popover.lk-popover {
+    z-index: 1000;
+}
 
 .tooltip.lk-tooltip {
-    // We render some tooltips inside of our nav/mega-menu, so z-index has to be 1000+ or they'll render underneath
-    z-index: 1000;
     margin: 0;
 }
 
 .popover.lk-popover {
     display: block;
-    // We probably don't want any popovers to render above our nav/mega-menu, so set z-index below 1000
-    z-index: 995;
     max-width: 276px;
 }
 

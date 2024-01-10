@@ -14,7 +14,7 @@ interface PopoverProps extends TooltipProps {
  * are using this component you should probably be using it in conjunction with an OverlayTrigger which will inject the
  * targetRef for you.
  */
-export const Popover: FC<PopoverProps> = ({ children, className, targetRef, id, placement, title }) => {
+export const Popover: FC<PopoverProps> = ({ children, className, targetRef, id, placement = 'right', title }) => {
     const { overlayRef, style } = useOverlayPositioning(placement, targetRef);
     const className_ = classNames('lk-popover', 'popover', placement, className);
 

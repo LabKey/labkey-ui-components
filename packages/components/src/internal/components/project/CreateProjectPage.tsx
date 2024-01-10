@@ -26,6 +26,10 @@ import { ProjectConfigurableDataType } from '../entities/models';
 
 import { PageDetailHeader } from '../forms/PageDetailHeader';
 
+import { useContainerUser } from '../container/actions';
+
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { ProjectNameSetting } from './ProjectNameSetting';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 
@@ -142,11 +146,14 @@ export const CreateProjectPage = memo(() => {
     const navigate = useNavigate();
     const { api } = useAppContext<AppContext>();
     const { createNotification } = useNotificationsContext();
-    const { moduleContext, user } = useServerContext();
+    const { moduleContext, container } = useServerContext();
+    const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
+    const homeContainer = useContainerUser(homeFolderPath);
     const { reload } = useFolderMenuContext();
     const dispatch = useServerContextDispatch();
     const hasProjects = hasProductProjects(moduleContext);
     const onCancel = useCallback(() => navigate(-1), [navigate]);
+    const notAuthorized = homeContainer.user && !homeContainer.user?.isAdmin;
 
     const onCreated = useCallback(
         (project: Container) => {
@@ -184,9 +191,12 @@ export const CreateProjectPage = memo(() => {
     );
 
     return (
-        <Page notAuthorized={!user.isAdmin} hasHeader title={TITLE}>
+        <Page notAuthorized={notAuthorized} hasHeader title={TITLE}>
             <PageDetailHeader title={TITLE} />
-            <CreateProjectContainer api={api.folder} onCancel={onCancel} onCreated={onCreated} />
+            {!homeContainer.isLoaded && <LoadingSpinner />}
+            {homeContainer.isLoaded && (
+                <CreateProjectContainer api={api.folder} onCancel={onCancel} onCreated={onCreated} />
+            )}
         </Page>
     );
 });

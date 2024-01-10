@@ -17,23 +17,14 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { useRouteLeave } from '../../util/RouteLeave';
-import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { getAppHomeFolderPath, getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 import { VerticalScrollPanel } from '../base/VeriticalScrollPanel';
+
+import { useContainerUser } from '../container/actions';
 
 import { ProjectSettings } from './ProjectSettings';
 
 import { ProjectListing } from './ProjectListing';
-
-const renderButtons = (): ReactNode => (
-    <>
-        <a className="button-right-spacing btn btn-success" href={AppURL.create('admin', 'projects', 'new').toHref()}>
-            Create a Project
-        </a>
-        <a href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value).toHref()}>
-            View Audit History
-        </a>
-    </>
-);
 
 export const ProjectManagementPage: FC = memo(() => {
     useAdministrationSubNav();
@@ -41,6 +32,8 @@ export const ProjectManagementPage: FC = memo(() => {
     const [getIsDirty, setIsDirty] = useRouteLeave();
     const [successMsg, setSuccessMsg] = useState<string>();
     const { user, moduleContext, container } = useServerContext();
+    const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
+    const homeContainer = useContainerUser(homeFolderPath);
     const { api } = useAppContext<AppContext>();
     // TODO: get rid of reloadCounter, instead create a load callback for loading data, and call load when needed
     //  (on mount, on success) instead of incrementing the counter.
@@ -121,6 +114,24 @@ export const ProjectManagementPage: FC = memo(() => {
         },
         [setIsDirty, selectedProject, container]
     );
+
+    const renderButtons = useCallback(() => {
+        return (
+            <>
+                {homeContainer.user?.isAdmin && (
+                    <a
+                        className="button-right-spacing btn btn-success"
+                        href={AppURL.create('admin', 'projects', 'new').toHref()}
+                    >
+                        Create a Project
+                    </a>
+                )}
+                <a href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value).toHref()}>
+                    View Audit History
+                </a>
+            </>
+        );
+    }, [homeContainer.user]);
 
     return (
         <>

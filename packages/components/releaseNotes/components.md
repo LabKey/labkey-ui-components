@@ -13,6 +13,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Update LabelOverlay to use internal implementations of OverlayTrigger and Popover
 - Change LabelHelpTip to use internal implementations of OverlayTrigger and Popover
 - Update DisableableButton to use internal version of Popover and useOverlayTriggerState
+- LabelOverlay: remove canMouseOverTooltip prop
 
 ### version 3.6.0
 *Released*: 15 January 2024

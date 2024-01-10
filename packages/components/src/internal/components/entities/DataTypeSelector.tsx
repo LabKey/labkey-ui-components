@@ -22,11 +22,8 @@ interface Props {
     disabled?: boolean;
     entityDataType?: EntityDataType;
     isNewFolder?: boolean;
-
     noHeader?: boolean;
-
     toggleSelectAll?: boolean;
-
     uncheckedEntitiesDB: any[]; // number[] | string[]
     updateUncheckedTypes: (dataType: string, unchecked: any[] /* number[] | string[]*/) => void;
 }
@@ -173,14 +170,16 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         return null;
     }, [dataTypeLabel, entityDataType]);
 
+    // FIXME: This should be a comonent, not a callback
     const getEntitiesSubList = useCallback(
         (dataTypeEntities: DataTypeEntity[]): React.ReactNode => {
             return (
                 <ul className="nav nav-stacked labkey-wizard-pills">
                     {dataTypeEntities?.map((dataType, index) => {
                         const entityId = dataType.rowId ?? dataType.lsid;
+                        // FIXME: This should be a component so we can use useCallback for the onChange/onClick below
                         return (
-                            <li key={entityId} className="project-faceted__li">
+                            <li key={entityId} className="project-faceted-data-type">
                                 <div className="form-check">
                                     <input
                                         className="form-check-input filter-faceted__checkbox"
@@ -232,6 +231,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         [uncheckedEntities, onChange, disabled, _getUncheckedEntityWarning]
     );
 
+    // FIXME: this should be a component, not a callback
     const getEntitiesList = useCallback((): React.ReactNode => {
         if (!columns || columns === 1) {
             return <Col xs={12}>{getEntitiesSubList(dataTypes)}</Col>;
@@ -252,12 +252,14 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         return <>{lists}</>;
     }, [dataTypes, columns, getEntitiesSubList]);
 
+    // Note: because we return LoadingSpinner here when loading we can remove all the stuff below that renders based on
+    // loading status
     if (!dataTypes || loading) return <LoadingSpinner />;
 
     return (
         <>
             <Alert>{error}</Alert>
-            <div className="">
+            <div>
                 {headerLabel && !noHeader && <div className="bottom-spacing content-group-label">{headerLabel}</div>}
                 {toggleSelectAll && !disabled && dataTypes?.length > 0 && (
                     <Row>

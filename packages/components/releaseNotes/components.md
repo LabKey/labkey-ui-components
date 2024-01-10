@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.5.0
+*Released*: 9 January 2024
 - Add API Keys panel to profile page
 - Update QueryInfoForm to optionally not have the buttons stick to the bottom.
 - Update SecurityApi with `createApiKey` and `deleteApiKeys` actions

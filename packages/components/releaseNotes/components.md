@@ -5,17 +5,37 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Language Consistency: 'My' vs. 'Your' and 'Shared' vs. 'Public'
 
+### version 3.5.2
+*Released*: 10 January 2024
+* Make menuReload action actually reload the menu
+* Use menuReload action in registerWebsocketListeners
+
+### version 3.5.1
+*Released*: 10 January 2024
+* Merge release24.1-SNAPSHOT to develop:
+    * includes changes from 3.2.5
+
+### version 3.5.0
+*Released*: 9 January 2024
+- Add API Keys panel to profile page
+- Update QueryInfoForm to optionally not have the buttons stick to the bottom.
+- Update SecurityApi with `createApiKey` and `deleteApiKeys` actions
+
 ### version 3.4.0
-*Released*: 8 January 2023
+*Released*: 8 January 2024
 - Support cross-folder delete
     - Refactor InsertRowsResponse, UpdateRowsResponse and DeleteRowsResponse into QueryCommandResponse
     - add deleteRowsByContainer util
 
 ### version 3.3.0
-*Released*: 3 January 2023
+*Released*: 3 January 2024
 - Update `Alert` to accept additional props and match behavior of `react-bootstrap`.
 - Introduce `DisableableAnchor` which is an `a` tag that supports `disabled`.
 - Replace all other usages of `Button` with `button` or `a` in the case where `href` is supplied.
+
+### version 3.2.5
+*Released*: 9 January 2024
+- Issue 49357: Fix error in editable grid when checking for values on undefined set
 
 ### version 3.2.4
 *Released*: 29 December 2023

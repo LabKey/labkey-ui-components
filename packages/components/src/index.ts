@@ -445,7 +445,7 @@ import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
 import { useUserProperties } from './internal/components/user/hooks';
 import { UserLink, UserLinkList } from './internal/components/user/UserLink';
-import { ProfilePage } from './internal/components/user/ProfilePage';
+import { ProfilePage, APIKeysPanel } from './internal/components/user/ProfilePage';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DERIVATION_DATA_SCOPES,
@@ -687,7 +687,6 @@ import {
     isSampleStatusEnabled,
     isSharedDefinition,
     isWorkflowEnabled,
-    registerWebSocketListeners,
     sampleManagerIsPrimaryApp,
     useMenuSectionConfigs,
     userCanDeletePublicPicklists,
@@ -708,6 +707,7 @@ import {
     menuInit,
     menuInvalidate,
     menuReload,
+    registerWebSocketListeners,
     serverNotificationInit,
     serverNotificationInvalidate,
     updateUser,
@@ -1135,6 +1135,7 @@ export {
     EditInlineField,
     updateRowFieldValue,
     // user/permissions related items
+    APIKeysPanel,
     getUsersWithPermissions,
     useUsersWithPermissions,
     getUserProperties,

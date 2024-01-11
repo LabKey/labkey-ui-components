@@ -3,11 +3,9 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map } from 'immutable';
-import { ActionURL, LabKey, getServerContext, PermissionTypes } from '@labkey/api';
+import { ActionURL, getServerContext, LabKey, PermissionTypes } from '@labkey/api';
 
 import { useMemo } from 'react';
-
-import { LABKEY_WEBSOCKET } from '../constants';
 
 import { hasAllPermissions, hasPermissions, User } from '../components/base/models/User';
 
@@ -23,6 +21,7 @@ import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
     EXPERIMENTAL_APP_PLATE_SUPPORT,
+    EXPERIMENTAL_APP_R_SUPPORT,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED,
     EXPERIMENTAL_REQUESTS_MENU,
@@ -32,25 +31,22 @@ import {
     HOME_KEY,
     LABKEY_SERVER_PRODUCT_NAME,
     MEDIA_KEY,
-    MENU_RELOAD,
     NEW_ASSAY_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_SOURCE_TYPE_HREF,
     NEW_STANDARD_ASSAY_DESIGN_HREF,
     NOTEBOOKS_KEY,
-    PLATES_KEY,
     PICKLIST_KEY,
+    PLATES_KEY,
     ProductFeature,
     PROJECT_DATA_TYPE_EXCLUSIONS,
     REGISTRY_KEY,
     REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
-    SERVER_NOTIFICATIONS_INVALIDATE,
     SOURCES_KEY,
     USER_KEY,
     WORKFLOW_KEY,
-    EXPERIMENTAL_APP_R_SUPPORT,
 } from './constants';
 
 declare var LABKEY: LabKey;
@@ -74,30 +70,6 @@ export enum CloseEventCode {
     TRY_AGAIN_LATER = 1013,
     BAD_GATEWAY = 1014,
     TLS_HANDSHAKE = 1015,
-}
-
-export function registerWebSocketListeners(
-    store,
-    notificationListeners?: string[],
-    menuReloadListeners?: string[]
-): void {
-    if (notificationListeners) {
-        notificationListeners.forEach(listener => {
-            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
-                // not checking evt.wasClean since we want this event for all user sessions
-                window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
-            });
-        });
-    }
-
-    if (menuReloadListeners) {
-        menuReloadListeners.forEach(listener => {
-            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
-                // not checking evt.wasClean since we want this event for all user sessions
-                window.setTimeout(() => store.dispatch({ type: MENU_RELOAD }), 1000);
-            });
-        });
-    }
 }
 
 export function resolveModuleContext(moduleContext?: ModuleContext): ModuleContext {
@@ -400,6 +372,12 @@ export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {
     return (
         hasModule(SAMPLE_MANAGER_APP_PROPERTIES.moduleName, moduleContext) &&
         isFeatureEnabled(ProductFeature.Workflow, moduleContext)
+    );
+}
+
+export function isApiKeyGenerationEnabled(moduleContext?: ModuleContext): boolean {
+    return (
+        isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)
     );
 }
 

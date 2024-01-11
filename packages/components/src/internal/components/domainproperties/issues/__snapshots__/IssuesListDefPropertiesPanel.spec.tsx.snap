@@ -96,7 +96,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                   >
                     <div
                       className="select-input css-b62m3t-container"
-                      id="selectinput-0"
+                      id="selectinput-1"
                       onKeyDown={[Function]}
                     >
                       <span

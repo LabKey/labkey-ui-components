@@ -704,7 +704,7 @@ exports[`DataClassDesigner default properties 1`] = `
                 >
                   <div
                     class="select-input select-input--is-disabled css-3iigni-container"
-                    id="selectinput-0"
+                    id="selectinput-2"
                   >
                     <span
                       class="css-1f43avz-a11yText-A11yText"
@@ -819,7 +819,7 @@ exports[`DataClassDesigner default properties 1`] = `
                 >
                   <div
                     class="select-input select-input--is-disabled css-3iigni-container"
-                    id="selectinput-1"
+                    id="selectinput-4"
                   >
                     <span
                       class="css-1f43avz-a11yText-A11yText"
@@ -1444,7 +1444,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 >
                   <div
                     class="select-input select-input--is-disabled css-3iigni-container"
-                    id="selectinput-2"
+                    id="selectinput-11"
                   >
                     <span
                       class="css-1f43avz-a11yText-A11yText"
@@ -1559,7 +1559,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 >
                   <div
                     class="select-input select-input--is-disabled css-3iigni-container"
-                    id="selectinput-3"
+                    id="selectinput-13"
                   >
                     <span
                       class="css-1f43avz-a11yText-A11yText"

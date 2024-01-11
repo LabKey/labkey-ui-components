@@ -92,10 +92,10 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
                     title="Format for Dates"
                   >
                     <OverlayTrigger
-                      id="tooltip"
+                      id="label-help-tip0"
                       overlay={
                         <Popover
-                          id="tooltip"
+                          id="label-help-tip-popover"
                           title="Format for Dates"
                         >
                           <React.Fragment>

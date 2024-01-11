@@ -588,10 +588,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       title="Lookup Validator"
                     >
                       <OverlayTrigger
-                        id="tooltip"
+                        id="label-help-tip0"
                         overlay={
                           <Popover
-                            id="tooltip"
+                            id="label-help-tip-popover"
                             title="Lookup Validator"
                           >
                             <div>
@@ -1280,10 +1280,10 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       title="Lookup Validator"
                     >
                       <OverlayTrigger
-                        id="tooltip"
+                        id="label-help-tip3"
                         overlay={
                           <Popover
-                            id="tooltip"
+                            id="label-help-tip-popover"
                             title="Lookup Validator"
                           >
                             <div>
@@ -1976,10 +1976,10 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       title="Lookup Validator"
                     >
                       <OverlayTrigger
-                        id="tooltip"
+                        id="label-help-tip1"
                         overlay={
                           <Popover
-                            id="tooltip"
+                            id="label-help-tip-popover"
                             title="Lookup Validator"
                           >
                             <div>
@@ -2672,10 +2672,10 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       title="Lookup Validator"
                     >
                       <OverlayTrigger
-                        id="tooltip"
+                        id="label-help-tip2"
                         overlay={
                           <Popover
-                            id="tooltip"
+                            id="label-help-tip-popover"
                             title="Lookup Validator"
                           >
                             <div>

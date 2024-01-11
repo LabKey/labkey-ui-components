@@ -139,10 +139,10 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                   title="Regular Expression"
                 >
                   <OverlayTrigger
-                    id="tooltip"
+                    id="label-help-tip0"
                     overlay={
                       <Popover
-                        id="tooltip"
+                        id="label-help-tip-popover"
                         title="Regular Expression"
                       >
                         <p>
@@ -291,10 +291,10 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                   title="Error Message"
                 >
                   <OverlayTrigger
-                    id="tooltip"
+                    id="label-help-tip1"
                     overlay={
                       <Popover
-                        id="tooltip"
+                        id="label-help-tip-popover"
                         title="Error Message"
                       >
                         The message that will be displayed to the user in the event that validation fails for this field.
@@ -407,10 +407,10 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                       title="Fail when pattern matches?"
                     >
                       <OverlayTrigger
-                        id="tooltip"
+                        id="label-help-tip2"
                         overlay={
                           <Popover
-                            id="tooltip"
+                            id="label-help-tip-popover"
                             title="Fail when pattern matches?"
                           >
                             By default, validation will fail if the field value does not match the specified regular expression. Check this box if you want validation to fail when the pattern matches the field value.

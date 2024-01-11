@@ -227,10 +227,10 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                     title="Import Aliases"
                   >
                     <OverlayTrigger
-                      id="tooltip"
+                      id="label-help-tip0"
                       overlay={
                         <Popover
-                          id="tooltip"
+                          id="label-help-tip-popover"
                           title="Import Aliases"
                         >
                           <React.Fragment>
@@ -319,10 +319,10 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                     title="URL"
                   >
                     <OverlayTrigger
-                      id="tooltip"
+                      id="label-help-tip1"
                       overlay={
                         <Popover
-                          id="tooltip"
+                          id="label-help-tip-popover"
                           title="URL"
                         >
                           <React.Fragment>

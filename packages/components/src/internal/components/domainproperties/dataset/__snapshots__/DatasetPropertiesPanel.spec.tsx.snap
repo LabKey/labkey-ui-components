@@ -223,7 +223,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 >
                   <div
                     className="select-input css-b62m3t-container"
-                    id="selectinput-2"
+                    id="selectinput-10"
                     onKeyDown={[Function]}
                   >
                     <span
@@ -476,7 +476,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                   >
                     <div
                       className="select-input css-b62m3t-container"
-                      id="selectinput-3"
+                      id="selectinput-13"
                       onKeyDown={[Function]}
                     >
                       <span
@@ -843,7 +843,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                 >
                   <div
                     className="select-input css-b62m3t-container"
-                    id="selectinput-0"
+                    id="selectinput-3"
                     onKeyDown={[Function]}
                   >
                     <span
@@ -1079,7 +1079,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                   >
                     <div
                       className="select-input select-input--is-disabled css-3iigni-container"
-                      id="selectinput-1"
+                      id="selectinput-6"
                       onKeyDown={[Function]}
                     >
                       <span

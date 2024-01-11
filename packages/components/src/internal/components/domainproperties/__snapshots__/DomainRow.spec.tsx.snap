@@ -1188,10 +1188,10 @@ exports[`DomainRow Sample Field 1`] = `
                                                           title="Sample Reference"
                                                         >
                                                           <OverlayTrigger
-                                                            id="tooltip"
+                                                            id="label-help-tip28"
                                                             overlay={
                                                               <Popover
-                                                                id="tooltip"
+                                                                id="label-help-tip-popover"
                                                                 title="Sample Reference"
                                                               >
                                                                 <p>
@@ -1534,10 +1534,10 @@ exports[`DomainRow Sample Field 1`] = `
                                                               title="Import Aliases"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip29"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Import Aliases"
                                                                   >
                                                                     <React.Fragment>
@@ -1626,10 +1626,10 @@ exports[`DomainRow Sample Field 1`] = `
                                                               title="URL"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip30"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="URL"
                                                                   >
                                                                     <React.Fragment>
@@ -1880,10 +1880,10 @@ exports[`DomainRow Sample Field 1`] = `
                                                                 title="Create Conditional Format Criteria"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip31"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Conditional Format Criteria"
                                                                     >
                                                                       <ConditionalFormatHelpText />
@@ -2986,10 +2986,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                             title="Warning"
                                           >
                                             <OverlayTrigger
-                                              id="tooltip"
+                                              id="label-help-tip32"
                                               overlay={
                                                 <Popover
-                                                  id="tooltip"
+                                                  id="label-help-tip-popover"
                                                   title="Warning"
                                                 >
                                                   SQL queries, R scripts, and other code are easiest to write when field names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore. Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, SPSS, and MATLAB.
@@ -3249,10 +3249,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                                             title="Attachment Behavior"
                                                           >
                                                             <OverlayTrigger
-                                                              id="tooltip"
+                                                              id="label-help-tip33"
                                                               overlay={
                                                                 <Popover
-                                                                  id="tooltip"
+                                                                  id="label-help-tip-popover"
                                                                   title="Attachment Behavior"
                                                                 >
                                                                   <React.Fragment>
@@ -3587,10 +3587,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                                               title="Import Aliases"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip34"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Import Aliases"
                                                                   >
                                                                     <React.Fragment>
@@ -3679,10 +3679,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                                               title="URL"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip35"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="URL"
                                                                   >
                                                                     <React.Fragment>
@@ -3933,10 +3933,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                 title="Create Conditional Format Criteria"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip36"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Conditional Format Criteria"
                                                                     >
                                                                       <ConditionalFormatHelpText />
@@ -5188,10 +5188,10 @@ exports[`DomainRow date time field 1`] = `
                                                               title="Format for Dates"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip15"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Format for Dates"
                                                                   >
                                                                     <React.Fragment>
@@ -5551,10 +5551,10 @@ exports[`DomainRow date time field 1`] = `
                                                               title="Import Aliases"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip16"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Import Aliases"
                                                                   >
                                                                     <React.Fragment>
@@ -5643,10 +5643,10 @@ exports[`DomainRow date time field 1`] = `
                                                               title="URL"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip17"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="URL"
                                                                   >
                                                                     <React.Fragment>
@@ -5897,10 +5897,10 @@ exports[`DomainRow date time field 1`] = `
                                                                 title="Create Conditional Format Criteria"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip18"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Conditional Format Criteria"
                                                                     >
                                                                       <ConditionalFormatHelpText />
@@ -5963,10 +5963,10 @@ exports[`DomainRow date time field 1`] = `
                                                                 title="Create Range Validator"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip19"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Range Validator"
                                                                     >
                                                                       <RangeValidatorHelpText />
@@ -7218,10 +7218,10 @@ exports[`DomainRow decimal field 1`] = `
                                                               title="Format for Numbers"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip10"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Format for Numbers"
                                                                   >
                                                                     <React.Fragment>
@@ -7625,10 +7625,10 @@ exports[`DomainRow decimal field 1`] = `
                                                               title="Import Aliases"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip11"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Import Aliases"
                                                                   >
                                                                     <React.Fragment>
@@ -7717,10 +7717,10 @@ exports[`DomainRow decimal field 1`] = `
                                                               title="URL"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip12"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="URL"
                                                                   >
                                                                     <React.Fragment>
@@ -7971,10 +7971,10 @@ exports[`DomainRow decimal field 1`] = `
                                                                 title="Create Conditional Format Criteria"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip13"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Conditional Format Criteria"
                                                                     >
                                                                       <ConditionalFormatHelpText />
@@ -8037,10 +8037,10 @@ exports[`DomainRow decimal field 1`] = `
                                                                 title="Create Range Validator"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip14"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Range Validator"
                                                                     >
                                                                       <RangeValidatorHelpText />
@@ -9476,10 +9476,10 @@ exports[`DomainRow participant id field 1`] = `
                                                               title="Import Aliases"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip20"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Import Aliases"
                                                                   >
                                                                     <React.Fragment>
@@ -9568,10 +9568,10 @@ exports[`DomainRow participant id field 1`] = `
                                                               title="URL"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip21"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="URL"
                                                                   >
                                                                     <React.Fragment>
@@ -9822,10 +9822,10 @@ exports[`DomainRow participant id field 1`] = `
                                                                 title="Create Conditional Format Criteria"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip22"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Conditional Format Criteria"
                                                                     >
                                                                       <ConditionalFormatHelpText />
@@ -9888,10 +9888,10 @@ exports[`DomainRow participant id field 1`] = `
                                                                 title="Create Regular Expression Validator"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip23"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Regular Expression Validator"
                                                                     >
                                                                       <RegexValidatorHelpText />
@@ -11219,10 +11219,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                             title="Attachment Behavior"
                                                           >
                                                             <OverlayTrigger
-                                                              id="tooltip"
+                                                              id="label-help-tip37"
                                                               overlay={
                                                                 <Popover
-                                                                  id="tooltip"
+                                                                  id="label-help-tip-popover"
                                                                   title="Attachment Behavior"
                                                                 >
                                                                   <React.Fragment>
@@ -11557,10 +11557,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                               title="Import Aliases"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip38"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Import Aliases"
                                                                   >
                                                                     <React.Fragment>
@@ -11649,10 +11649,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                               title="URL"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip39"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="URL"
                                                                   >
                                                                     <React.Fragment>
@@ -11903,10 +11903,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                 title="Create Conditional Format Criteria"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip40"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Conditional Format Criteria"
                                                                     >
                                                                       <ConditionalFormatHelpText />
@@ -13170,10 +13170,10 @@ exports[`DomainRow string field test 1`] = `
                                                               title="Maximum Text Length"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip5"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Maximum Text Length"
                                                                   >
                                                                     <React.Fragment>
@@ -13581,10 +13581,10 @@ exports[`DomainRow string field test 1`] = `
                                                               title="Import Aliases"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip6"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Import Aliases"
                                                                   >
                                                                     <React.Fragment>
@@ -13673,10 +13673,10 @@ exports[`DomainRow string field test 1`] = `
                                                               title="URL"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip7"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="URL"
                                                                   >
                                                                     <React.Fragment>
@@ -13927,10 +13927,10 @@ exports[`DomainRow string field test 1`] = `
                                                                 title="Create Conditional Format Criteria"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip8"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Conditional Format Criteria"
                                                                     >
                                                                       <ConditionalFormatHelpText />
@@ -13993,10 +13993,10 @@ exports[`DomainRow string field test 1`] = `
                                                                 title="Create Regular Expression Validator"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip9"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Regular Expression Validator"
                                                                     >
                                                                       <RegexValidatorHelpText />
@@ -15327,10 +15327,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                                               title="Maximum Text Length"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip0"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Maximum Text Length"
                                                                   >
                                                                     <React.Fragment>
@@ -15738,10 +15738,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                                               title="Import Aliases"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip1"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="Import Aliases"
                                                                   >
                                                                     <React.Fragment>
@@ -15830,10 +15830,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                                               title="URL"
                                                             >
                                                               <OverlayTrigger
-                                                                id="tooltip"
+                                                                id="label-help-tip2"
                                                                 overlay={
                                                                   <Popover
-                                                                    id="tooltip"
+                                                                    id="label-help-tip-popover"
                                                                     title="URL"
                                                                   >
                                                                     <React.Fragment>
@@ -16084,10 +16084,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 title="Create Conditional Format Criteria"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip3"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Conditional Format Criteria"
                                                                     >
                                                                       <ConditionalFormatHelpText />
@@ -16150,10 +16150,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 title="Create Regular Expression Validator"
                                                               >
                                                                 <OverlayTrigger
-                                                                  id="tooltip"
+                                                                  id="label-help-tip4"
                                                                   overlay={
                                                                     <Popover
-                                                                      id="tooltip"
+                                                                      id="label-help-tip-popover"
                                                                       title="Create Regular Expression Validator"
                                                                     >
                                                                       <RegexValidatorHelpText />

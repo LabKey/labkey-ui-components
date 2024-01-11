@@ -770,10 +770,10 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                               title="Description"
                             >
                               <OverlayTrigger
-                                id="tooltip"
+                                id="label-help-tip2"
                                 overlay={
                                   <Popover
-                                    id="tooltip"
+                                    id="label-help-tip-popover"
                                     title="Description"
                                   >
                                     <p>
@@ -988,10 +988,10 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                               title="Editable Runs"
                             >
                               <OverlayTrigger
-                                id="tooltip"
+                                id="label-help-tip3"
                                 overlay={
                                   <Popover
-                                    id="tooltip"
+                                    id="label-help-tip-popover"
                                     title="Editable Runs"
                                   >
                                     <p>
@@ -2036,10 +2036,10 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                             title="Description"
                                           >
                                             <OverlayTrigger
-                                              id="tooltip"
+                                              id="label-help-tip0"
                                               overlay={
                                                 <Popover
-                                                  id="tooltip"
+                                                  id="label-help-tip-popover"
                                                   title="Description"
                                                 >
                                                   <p>
@@ -2254,10 +2254,10 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                             title="Editable Runs"
                                           >
                                             <OverlayTrigger
-                                              id="tooltip"
+                                              id="label-help-tip1"
                                               overlay={
                                                 <Popover
-                                                  id="tooltip"
+                                                  id="label-help-tip-popover"
                                                   title="Editable Runs"
                                                 >
                                                   <p>
@@ -3333,10 +3333,10 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                             title="Description"
                                           >
                                             <OverlayTrigger
-                                              id="tooltip"
+                                              id="label-help-tip6"
                                               overlay={
                                                 <Popover
-                                                  id="tooltip"
+                                                  id="label-help-tip-popover"
                                                   title="Description"
                                                 >
                                                   <p>
@@ -3551,10 +3551,10 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                             title="Editable Runs"
                                           >
                                             <OverlayTrigger
-                                              id="tooltip"
+                                              id="label-help-tip7"
                                               overlay={
                                                 <Popover
-                                                  id="tooltip"
+                                                  id="label-help-tip-popover"
                                                   title="Editable Runs"
                                                 >
                                                   <p>
@@ -4102,10 +4102,10 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                             title="Description"
                                           >
                                             <OverlayTrigger
-                                              id="tooltip"
+                                              id="label-help-tip8"
                                               overlay={
                                                 <Popover
-                                                  id="tooltip"
+                                                  id="label-help-tip-popover"
                                                   title="Description"
                                                 >
                                                   <p>
@@ -4232,10 +4232,10 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                             title="Editable Runs"
                                           >
                                             <OverlayTrigger
-                                              id="tooltip"
+                                              id="label-help-tip9"
                                               overlay={
                                                 <Popover
-                                                  id="tooltip"
+                                                  id="label-help-tip-popover"
                                                   title="Editable Runs"
                                                 >
                                                   <p>
@@ -5276,10 +5276,10 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                             title="Description"
                                           >
                                             <OverlayTrigger
-                                              id="tooltip"
+                                              id="label-help-tip4"
                                               overlay={
                                                 <Popover
-                                                  id="tooltip"
+                                                  id="label-help-tip-popover"
                                                   title="Description"
                                                 >
                                                   <p>
@@ -5494,10 +5494,10 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                             title="Editable Runs"
                                           >
                                             <OverlayTrigger
-                                              id="tooltip"
+                                              id="label-help-tip5"
                                               overlay={
                                                 <Popover
-                                                  id="tooltip"
+                                                  id="label-help-tip-popover"
                                                   title="Editable Runs"
                                                 >
                                                   <p>

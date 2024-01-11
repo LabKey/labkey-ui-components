@@ -43,10 +43,10 @@ exports[`FileAttachmentOptions Attachment data type download 1`] = `
                   title="Attachment Behavior"
                 >
                   <OverlayTrigger
-                    id="tooltip"
+                    id="label-help-tip1"
                     overlay={
                       <Popover
-                        id="tooltip"
+                        id="label-help-tip-popover"
                         title="Attachment Behavior"
                       >
                         <React.Fragment>
@@ -177,10 +177,10 @@ exports[`FileAttachmentOptions File data type inline 1`] = `
                   title="File Behavior"
                 >
                   <OverlayTrigger
-                    id="tooltip"
+                    id="label-help-tip0"
                     overlay={
                       <Popover
-                        id="tooltip"
+                        id="label-help-tip-popover"
                         title="File Behavior"
                       >
                         <React.Fragment>

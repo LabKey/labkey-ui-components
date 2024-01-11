@@ -169,10 +169,10 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                     title="First Condition"
                   >
                     <OverlayTrigger
-                      id="tooltip"
+                      id="label-help-tip0"
                       overlay={
                         <Popover
-                          id="tooltip"
+                          id="label-help-tip-popover"
                           title="First Condition"
                         >
                           Add a condition to this validation rule that will be tested against the value for this field.
@@ -353,10 +353,10 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                     title="Second Condition"
                   >
                     <OverlayTrigger
-                      id="tooltip"
+                      id="label-help-tip1"
                       overlay={
                         <Popover
-                          id="tooltip"
+                          id="label-help-tip-popover"
                           title="Second Condition"
                         >
                           Add a condition to this validation rule that will be tested against the value for this field. Both the first and second conditions will be tested for this field.

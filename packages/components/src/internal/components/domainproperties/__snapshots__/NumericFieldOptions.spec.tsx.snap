@@ -92,10 +92,10 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
                     title="Format for Numbers"
                   >
                     <OverlayTrigger
-                      id="tooltip"
+                      id="label-help-tip0"
                       overlay={
                         <Popover
-                          id="tooltip"
+                          id="label-help-tip-popover"
                           title="Format for Numbers"
                         >
                           <React.Fragment>

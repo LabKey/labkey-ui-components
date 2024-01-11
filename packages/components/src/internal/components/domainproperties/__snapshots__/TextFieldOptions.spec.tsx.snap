@@ -78,10 +78,10 @@ exports[`TextFieldOptions Text data type 1`] = `
                     title="Maximum Text Length"
                   >
                     <OverlayTrigger
-                      id="tooltip"
+                      id="label-help-tip2"
                       overlay={
                         <Popover
-                          id="tooltip"
+                          id="label-help-tip-popover"
                           title="Maximum Text Length"
                         >
                           <React.Fragment>

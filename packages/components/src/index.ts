@@ -223,7 +223,11 @@ import {
 import {
     COLUMN_IN_FILTER_TYPE,
     COLUMN_NOT_IN_FILTER_TYPE,
+    ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE,
+    IN_EXP_DESCENDANTS_OF_FILTER_TYPE,
+    NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE,
     getFilterLabKeySql,
+    isNegativeFilterType,
     getLegalIdentifier,
     registerFilterType,
 } from './internal/query/filter';
@@ -493,6 +497,7 @@ import {
     getJobCreationHref,
     getUniqueIdColumnMetadata,
     isSampleEntity,
+    isDataClassEntity,
     sampleDeleteDependencyText,
 } from './internal/components/entities/utils';
 import {
@@ -868,6 +873,7 @@ const App = {
     isCrossProjectImportEnabled,
     isAllProductFoldersFilteringEnabled,
     isSampleEntity,
+    isDataClassEntity,
     getPrimaryAppProperties,
     getProjectDataExclusion,
     getProjectAssayDesignExclusion,
@@ -1038,7 +1044,11 @@ export {
     registerFilterType,
     COLUMN_IN_FILTER_TYPE,
     COLUMN_NOT_IN_FILTER_TYPE,
+    ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE,
+    IN_EXP_DESCENDANTS_OF_FILTER_TYPE,
+    NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE,
     getFilterLabKeySql,
+    isNegativeFilterType,
     getLegalIdentifier,
     loadQueries,
     loadQueriesFromTable,

@@ -10,7 +10,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
-import { CONCEPT_COLUMN_FILTER_TYPES } from '../../query/filter';
+import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE, CONCEPT_COLUMN_FILTER_TYPES } from '../../query/filter';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -37,7 +37,7 @@ export function isBetweenOperator(urlSuffix: string): boolean {
 
 export const FILTER_URL_SUFFIX_ANY_ALT = 'any';
 
-export function getFilterOptionsForType(field: QueryColumn): FieldFilterOption[] {
+export function getFilterOptionsForType(field: QueryColumn, isAncestor: boolean): FieldFilterOption[] {
     if (!field) return null;
 
     const jsonType = field.getDisplayFieldJsonType() as JsonType;
@@ -54,6 +54,9 @@ export function getFilterOptionsForType(field: QueryColumn): FieldFilterOption[]
         filterList.push(Filter.Types.BETWEEN);
         filterList.push(Filter.Types.NOT_BETWEEN);
     }
+
+    if (!useConceptFilters && isAncestor)
+        filterList.push(ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
 
     return filterList.map(filter => {
         let urlSuffix = filter.getURLSuffix();
@@ -117,8 +120,9 @@ export function getFieldFiltersValidationResult(
     dataTypeFilters: { [key: string]: FieldFilter[] },
     queryLabels?: { [key: string]: string }
 ): string {
-    let parentFields = {},
-        hasError = false;
+    let missingValueFields = {},
+        hasMissingError = false,
+        hasMaxMatchAllError = false;
     Object.keys(dataTypeFilters).forEach(parent => {
         const filters = dataTypeFilters[parent];
         filters.forEach(fieldFilter => {
@@ -127,39 +131,48 @@ export function getFieldFiltersValidationResult(
                 const value = filter.getValue();
                 const isBetween = isBetweenOperator(filter.getFilterType().getURLSuffix());
 
-                let fieldError = false;
+                let missingValueError = false;
                 if (value === undefined || value === null || (Utils.isString(value) && !value)) {
-                    fieldError = true;
+                    missingValueError = true;
                 } else if (isBetween) {
                     if (!Array.isArray(value) || value.length < 2) {
-                        fieldError = true;
+                        missingValueError = true;
                     } else {
                         if ((Utils.isString(value[0]) && !value[0]) || (Utils.isString(value[1]) && !value[1])) {
-                            fieldError = true;
+                            missingValueError = true;
                         }
                     }
                 }
 
-                if (fieldError == true) {
-                    hasError = true;
-                    const fields = parentFields[parent] ?? [];
+                if (filter.getFilterType().getURLSuffix === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix) {
+                    if (!Array.isArray(value) || value.length > 10) {
+                        hasMaxMatchAllError = true;
+                    }
+                }
+
+                if (missingValueError == true) {
+                    hasMissingError = true;
+                    const fields = missingValueFields[parent] ?? [];
                     if (fields.indexOf(fieldFilter.fieldCaption) === -1) {
                         fields.push(fieldFilter.fieldCaption);
-                        parentFields[parent] = fields;
+                        missingValueFields[parent] = fields;
                     }
                 }
             }
         });
     });
 
-    if (hasError) {
+    if (hasMissingError) {
         const parentMsgs = [];
-        Object.keys(parentFields).forEach(parent => {
+        Object.keys(missingValueFields).forEach(parent => {
             const parentLabel = queryLabels?.[parent];
-            parentMsgs.push((parentLabel ? parentLabel + ': ' : '') + parentFields[parent].join(', '));
+            parentMsgs.push((parentLabel ? parentLabel + ': ' : '') + missingValueFields[parent].join(', '));
         });
         return 'Missing filter values for: ' + parentMsgs.join('; ') + '.';
     }
+
+    if (hasMaxMatchAllError)
+        return 'A max of 10 values can be selected for \'Equals All Of\' filter type.';
 
     return null;
 }
@@ -189,7 +202,7 @@ export function getUpdateFilterExpressionFilter(
         return null;
     }
 
-    const filterType = resolveFilterType(newFilterType?.value, field);
+    const filterType = newFilterType?.value === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix() ? ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE : resolveFilterType(newFilterType?.value, field);
     if (!filterType) return null;
 
     let filter: Filter.IFilter;
@@ -255,6 +268,7 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
             return allValues.filter(value => value !== filterValues[0] && value !== ALL_VALUE_DISPLAY);
         case 'eq':
         case 'in':
+        case 'ancestormatchesallof':
             return filterValues;
         case 'notin':
             return allValues.filter(value => filterValues.indexOf(value) === -1 && value !== ALL_VALUE_DISPLAY);
@@ -291,7 +305,7 @@ export function getUpdatedChooseValuesFilter(
     fieldKey: string,
     newValue: string,
     check: boolean,
-    oldFilter: Filter.IFilter,
+    oldFilter?: Filter.IFilter,
     uncheckOthers?: /* click on the row but not on the checkbox would check the row value and uncheck everything else*/ boolean
 ): Filter.IFilter {
     const hasBlank = allValues ? allValues.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1 : false;
@@ -308,6 +322,11 @@ export function getUpdatedChooseValuesFilter(
     newCheckedDisplayValues.forEach(v => {
         newCheckedValues.push(v === EMPTY_VALUE_DISPLAY ? '' : v);
     });
+
+    // skip optimization for ANCESTOR_MATCHES_ALL filter type
+    if (oldFilter?.getFilterType().getURLSuffix() === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix()) {
+        return Filter.create(fieldKey, newCheckedValues, ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
+    }
 
     // if everything is checked, this is the same as not filtering
     if ((newValue === ALL_VALUE_DISPLAY && check) || (allValues && newCheckedValues.length === allValues.length)) {

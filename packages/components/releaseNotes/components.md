@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.X
+*Released*: X January 2024
+- Multi-Parent Matching in Sample Finder
+    - TODO
+
 ### version 3.5.1
 *Released*: 10 January 2024
 * Merge release24.1-SNAPSHOT to develop:

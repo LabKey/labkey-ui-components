@@ -121,7 +121,7 @@ export function getFieldFiltersValidationResult(
 ): string {
     let missingValueFields = {},
         hasMissingError = false,
-        hasMaxMatchAllError = false;
+        maxMatchAllErrorField = null;
     Object.keys(dataTypeFilters).forEach(parent => {
         const filters = dataTypeFilters[parent];
         filters.forEach(fieldFilter => {
@@ -129,6 +129,7 @@ export function getFieldFiltersValidationResult(
             if (filter.getFilterType().isDataValueRequired()) {
                 const value = filter.getValue();
                 const isBetween = isBetweenOperator(filter.getFilterType().getURLSuffix());
+                const isMatchesAll = filter.getFilterType().getURLSuffix() === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix();
 
                 let missingValueError = false;
                 if (value === undefined || value === null || (Utils.isString(value) && !value)) {
@@ -143,9 +144,12 @@ export function getFieldFiltersValidationResult(
                     }
                 }
 
-                if (filter.getFilterType().getURLSuffix === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix) {
+                if (isMatchesAll) {
+                    if (!value || (Array.isArray(value) && value.length === 0))
+                        missingValueError = true;
+
                     if (!Array.isArray(value) || value.length > 10) {
-                        hasMaxMatchAllError = true;
+                        maxMatchAllErrorField = fieldFilter.fieldCaption;
                     }
                 }
 
@@ -170,7 +174,7 @@ export function getFieldFiltersValidationResult(
         return 'Missing filter values for: ' + parentMsgs.join('; ') + '.';
     }
 
-    if (hasMaxMatchAllError) return "A max of 10 values can be selected for 'Equals All Of' filter type.";
+    if (maxMatchAllErrorField) return "A max of 10 values can be selected for 'Equals All Of' filter type for '" + maxMatchAllErrorField + "'.";
 
     return null;
 }
@@ -254,6 +258,12 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
     const filterValues = getFilterValuesAsArray(filter);
     const hasBlank = allValues.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1;
 
+    if (filterUrlSuffix === 'ancestormatchesallof') {
+        if (filterValues?.length === allValues.length - 1 /** except [All] **/)
+            return allValues;
+        return filterValues;
+    }
+
     switch (filterUrlSuffix) {
         case '':
         case 'any':
@@ -269,7 +279,6 @@ export function getCheckedFilterValues(filter: Filter.IFilter, allValues: string
             return allValues.filter(value => value !== filterValues[0] && value !== ALL_VALUE_DISPLAY);
         case 'eq':
         case 'in':
-        case 'ancestormatchesallof':
             return filterValues;
         case 'notin':
             return allValues.filter(value => filterValues.indexOf(value) === -1 && value !== ALL_VALUE_DISPLAY);
@@ -309,10 +318,13 @@ export function getUpdatedChooseValuesFilter(
     oldFilter?: Filter.IFilter,
     uncheckOthers?: /* click on the row but not on the checkbox would check the row value and uncheck everything else*/ boolean
 ): Filter.IFilter {
+    const isAncestorMatchesAllFilter = oldFilter?.getFilterType().getURLSuffix() === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix();
     const hasBlank = allValues ? allValues.findIndex(value => value === EMPTY_VALUE_DISPLAY) !== -1 : false;
     // if check all, or everything is checked, this is essentially "no filter", unless there is no blank value
     // then it's an NONBLANK filter
     if (newValue === ALL_VALUE_DISPLAY && check) {
+        if (isAncestorMatchesAllFilter)
+            return Filter.create(fieldKey, allValues.filter(v => v !== ALL_VALUE_DISPLAY), ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
         return hasBlank ? null : Filter.create(fieldKey, null, Filter.Types.NONBLANK);
     }
 
@@ -325,7 +337,9 @@ export function getUpdatedChooseValuesFilter(
     });
 
     // skip optimization for ANCESTOR_MATCHES_ALL filter type
-    if (oldFilter?.getFilterType().getURLSuffix() === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix()) {
+    if (isAncestorMatchesAllFilter) {
+        if ((newValue === ALL_VALUE_DISPLAY && !check) || newCheckedValues.length === 0)
+            return Filter.create(fieldKey, [], ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
         return Filter.create(fieldKey, newCheckedValues, ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
     }
 

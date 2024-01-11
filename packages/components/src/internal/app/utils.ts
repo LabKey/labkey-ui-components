@@ -7,8 +7,6 @@ import { ActionURL, getServerContext, LabKey, PermissionTypes } from '@labkey/ap
 
 import { useMemo } from 'react';
 
-import { LABKEY_WEBSOCKET } from '../constants';
-
 import { hasAllPermissions, hasPermissions, User } from '../components/base/models/User';
 
 import { MenuSectionConfig } from '../components/navigation/model';
@@ -33,7 +31,6 @@ import {
     HOME_KEY,
     LABKEY_SERVER_PRODUCT_NAME,
     MEDIA_KEY,
-    MENU_RELOAD,
     NEW_ASSAY_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
     NEW_SOURCE_TYPE_HREF,
@@ -47,7 +44,6 @@ import {
     REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
     SAMPLES_KEY,
-    SERVER_NOTIFICATIONS_INVALIDATE,
     SOURCES_KEY,
     USER_KEY,
     WORKFLOW_KEY,
@@ -74,30 +70,6 @@ export enum CloseEventCode {
     TRY_AGAIN_LATER = 1013,
     BAD_GATEWAY = 1014,
     TLS_HANDSHAKE = 1015,
-}
-
-export function registerWebSocketListeners(
-    store,
-    notificationListeners?: string[],
-    menuReloadListeners?: string[]
-): void {
-    if (notificationListeners) {
-        notificationListeners.forEach(listener => {
-            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
-                // not checking evt.wasClean since we want this event for all user sessions
-                window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
-            });
-        });
-    }
-
-    if (menuReloadListeners) {
-        menuReloadListeners.forEach(listener => {
-            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
-                // not checking evt.wasClean since we want this event for all user sessions
-                window.setTimeout(() => store.dispatch({ type: MENU_RELOAD }), 1000);
-            });
-        });
-    }
 }
 
 export function resolveModuleContext(moduleContext?: ModuleContext): ModuleContext {

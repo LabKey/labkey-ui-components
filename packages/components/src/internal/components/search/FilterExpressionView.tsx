@@ -33,7 +33,8 @@ interface Props {
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { allowRelativeDateFilter, field, fieldFilters, onFieldFilterUpdate, disabled, includeAllAncestorFilter } = props;
+    const { allowRelativeDateFilter, field, fieldFilters, onFieldFilterUpdate, disabled, includeAllAncestorFilter } =
+        props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
     const [activeFilters, setActiveFilters] = useState<FilterSelection[]>([]);

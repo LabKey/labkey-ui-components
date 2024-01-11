@@ -55,8 +55,7 @@ export function getFilterOptionsForType(field: QueryColumn, isAncestor: boolean)
         filterList.push(Filter.Types.NOT_BETWEEN);
     }
 
-    if (!useConceptFilters && isAncestor)
-        filterList.push(ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
+    if (!useConceptFilters && isAncestor) filterList.push(ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
 
     return filterList.map(filter => {
         let urlSuffix = filter.getURLSuffix();
@@ -171,8 +170,7 @@ export function getFieldFiltersValidationResult(
         return 'Missing filter values for: ' + parentMsgs.join('; ') + '.';
     }
 
-    if (hasMaxMatchAllError)
-        return 'A max of 10 values can be selected for \'Equals All Of\' filter type.';
+    if (hasMaxMatchAllError) return "A max of 10 values can be selected for 'Equals All Of' filter type.";
 
     return null;
 }
@@ -202,7 +200,10 @@ export function getUpdateFilterExpressionFilter(
         return null;
     }
 
-    const filterType = newFilterType?.value === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix() ? ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE : resolveFilterType(newFilterType?.value, field);
+    const filterType =
+        newFilterType?.value === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix()
+            ? ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE
+            : resolveFilterType(newFilterType?.value, field);
     if (!filterType) return null;
 
     let filter: Filter.IFilter;

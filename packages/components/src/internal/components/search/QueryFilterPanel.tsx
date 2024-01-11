@@ -16,11 +16,12 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../query/filter';
+
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
-import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../query/filter';
 
 enum FieldFilterTabs {
     ChooseValues = 'ChooseValues',
@@ -52,7 +53,7 @@ interface Props {
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
-    isAncestor?: boolean
+    isAncestor?: boolean;
 }
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
@@ -316,7 +317,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                     onFilterUpdate(activeField, newFilters, index)
                                                 }
                                                 disabled={hasNotInQueryFilter}
-                                                includeAllAncestorFilter={isAncestor && activeField?.fieldKey.toLowerCase() === 'name'}
+                                                includeAllAncestorFilter={
+                                                    isAncestor && activeField?.fieldKey.toLowerCase() === 'name'
+                                                }
                                             />
                                         )}
                                     </Tab.Pane>

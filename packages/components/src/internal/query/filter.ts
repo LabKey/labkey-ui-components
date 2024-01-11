@@ -192,7 +192,12 @@ export function getDateFieldLabKeySql(filter: Filter.IFilter, tableAlias?: strin
     return null;
 }
 
-function getInClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string, flipNegate?: boolean): string {
+function getInClauseLabKeySql(
+    filter: Filter.IFilter,
+    jsonType: JsonType,
+    tableAlias?: string,
+    flipNegate?: boolean
+): string {
     const filterType = filter.getFilterType();
     const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
     let operatorSql = null;
@@ -307,7 +312,12 @@ function getInSubTreeClause(filter: Filter.IFilter, jsonType: JsonType, not?: bo
     return notFrag + 'IsInSubtree(' + columnNameSelect + ', ConceptPath(' + sqlValue + '))';
 }
 
-function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string, flipNegate?: boolean): string {
+function getInContainsClauseLabKeySql(
+    filter: Filter.IFilter,
+    jsonType: JsonType,
+    tableAlias?: string,
+    flipNegate?: boolean
+): string {
     const filterType = filter.getFilterType();
     const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
 
@@ -353,8 +363,7 @@ function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType
 
 export function isNegativeFilterType(filterType: Filter.IFilterType) {
     const urlSuffix = filterType.getURLSuffix;
-    switch (filterType)
-    {
+    switch (filterType) {
         case Filter.Types.NOT_IN:
         case Filter.Types.CONTAINS_NONE_OF:
         case Filter.Types.NOT_BETWEEN:
@@ -380,7 +389,12 @@ export function isNegativeFilterType(filterType: Filter.IFilterType) {
  * @param negate If true, use the negate version of the current negative filter type: not equal -> equal, not in -> in. This is used to generate a ~notinexpdescendantsof filter, when the field contains another ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE
  * @return labkey sql fragment
  */
-export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string, negate?: boolean): string {
+export function getFilterLabKeySql(
+    filter: Filter.IFilter,
+    jsonType: JsonType,
+    tableAlias?: string,
+    negate?: boolean
+): string {
     if (!filter) return null;
 
     const filterType = filter.getFilterType();
@@ -464,20 +478,17 @@ export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType, t
     } else if (filterType.getURLSuffix() === Filter.Types.CONTAINS.getURLSuffix()) {
         return getContainsFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.DOES_NOT_CONTAIN.getURLSuffix()) {
-        if (negate)
-            return getContainsFullClause(filter, jsonType, tableAlias);
+        if (negate) return getContainsFullClause(filter, jsonType, tableAlias);
         return getNotContainsFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.STARTS_WITH.getURLSuffix()) {
         return getStartsWithFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.DOES_NOT_START_WITH.getURLSuffix()) {
-        if (negate)
-            return getStartsWithFullClause(filter, jsonType, tableAlias);
+        if (negate) return getStartsWithFullClause(filter, jsonType, tableAlias);
         return getNotStartsWithFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix()) {
         return getInSubTreeClause(filter, jsonType, false, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix()) {
-        if (negate)
-            return getInSubTreeClause(filter, jsonType, false, tableAlias);
+        if (negate) return getInSubTreeClause(filter, jsonType, false, tableAlias);
         return getInSubTreeClause(filter, jsonType, true, tableAlias);
     }
 
@@ -522,9 +533,32 @@ export function registerFilterType(
 export const COLUMN_IN_FILTER_TYPE = registerFilterType('COLUMN IN', null, 'columnin', true);
 export const COLUMN_NOT_IN_FILTER_TYPE = registerFilterType('COLUMN NOT IN', null, 'columnnotin', true);
 
+export const ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE = registerFilterType(
+    'Equals All Of',
+    null,
+    'ancestormatchesallof',
+    true,
+    ';'
+);
 
-export const ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE = registerFilterType('Equals All Of', null, 'ancestormatchesallof', true, ';');
-
-export const IN_EXP_DESCENDANTS_OF_FILTER_TYPE = registerFilterType('IN DESCENDANTS OF', null, 'inexpdescendantsof', true, ';');
-export const NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE = registerFilterType('NOT IN DESCENDANTS OF', null, 'notinexpdescendantsof', true, ';');
-export const IN_EXP_ANCESTORS_OF_FILTER_TYPE = registerFilterType('IN ANCESTORS OF', null, 'inexpancestorsof', true, ';');
+export const IN_EXP_DESCENDANTS_OF_FILTER_TYPE = registerFilterType(
+    'IN DESCENDANTS OF',
+    null,
+    'inexpdescendantsof',
+    true,
+    ';'
+);
+export const NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE = registerFilterType(
+    'NOT IN DESCENDANTS OF',
+    null,
+    'notinexpdescendantsof',
+    true,
+    ';'
+);
+export const IN_EXP_ANCESTORS_OF_FILTER_TYPE = registerFilterType(
+    'IN ANCESTORS OF',
+    null,
+    'inexpancestorsof',
+    true,
+    ';'
+);

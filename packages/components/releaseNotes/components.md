@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update `EntityIdCreationModel.postEntityGrid` to accept optional `containerPath`
+
 ### version 3.5.1
 *Released*: 10 January 2024
 * Merge release24.1-SNAPSHOT to develop:

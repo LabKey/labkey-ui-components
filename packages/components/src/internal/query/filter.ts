@@ -361,23 +361,20 @@ function getInContainsClauseLabKeySql(
     return likeClause + nullClause;
 }
 
+const NEGATIVE_FILTERS = [
+    Filter.Types.NOT_IN.getURLSuffix(),
+    Filter.Types.CONTAINS_NONE_OF.getURLSuffix(),
+    Filter.Types.NOT_BETWEEN.getURLSuffix(),
+    Filter.Types.NEQ_OR_NULL.getURLSuffix(),
+    Filter.Types.DOES_NOT_CONTAIN.getURLSuffix(),
+    Filter.Types.DOES_NOT_START_WITH.getURLSuffix(),
+    Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix(),
+    Filter.Types.NOT_EQUAL.getURLSuffix(),
+    Filter.Types.DATE_NOT_EQUAL.getURLSuffix()
+];
+
 export function isNegativeFilterType(filterType: Filter.IFilterType) {
-    const urlSuffix = filterType.getURLSuffix;
-    switch (filterType) {
-        case Filter.Types.NOT_IN:
-        case Filter.Types.CONTAINS_NONE_OF:
-        case Filter.Types.NOT_BETWEEN:
-        case Filter.Types.NEQ_OR_NULL:
-        case Filter.Types.DOES_NOT_CONTAIN:
-        case Filter.Types.DOES_NOT_START_WITH:
-        case Filter.Types.ONTOLOGY_NOT_IN_SUBTREE:
-        case Filter.Types.NOT_EQUAL:
-        case Filter.Types.DATE_NOT_EQUAL:
-            return true;
-        default:
-            return false;
-    }
-    return false;
+    return NEGATIVE_FILTERS.indexOf(filterType.getURLSuffix()) > -1;
 }
 
 /**

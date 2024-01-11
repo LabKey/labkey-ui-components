@@ -365,6 +365,7 @@ export class EntityIdCreationModel extends Record({
         api: ComponentsAPIWrapper,
         dataModel: QueryModel,
         editorModel: EditorModel,
+        containerPath?: string,
         extraColumnsToInclude?: QueryColumn[]
     ): Promise<QueryCommandResponse> {
         const rows = editorModel
@@ -384,6 +385,7 @@ export class EntityIdCreationModel extends Record({
             fillEmptyFields: true,
             rows,
             schemaQuery: this.getSchemaQuery(),
+            containerPath,
         });
     }
 

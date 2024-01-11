@@ -115,7 +115,12 @@ describe('getFilterLabKeySql', () => {
 
     test('not startsWith, flip negate', () => {
         expect(
-            getFilterLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.DOES_NOT_START_WITH), 'string', null, true)
+            getFilterLabKeySql(
+                Filter.create('StringField', 'ABC', Filter.Types.DOES_NOT_START_WITH),
+                'string',
+                null,
+                true
+            )
         ).toEqual("LOWER(\"StringField\") LIKE LOWER('ABC%') ESCAPE '!'");
     });
 
@@ -150,9 +155,9 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('neq OR null, flip negate', () => {
-        expect(getFilterLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.NEQ_OR_NULL), 'string', null, true)).toEqual(
-            "\"StringField\" = 'ABC'"
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('StringField', 'ABC', Filter.Types.NEQ_OR_NULL), 'string', null, true)
+        ).toEqual('"StringField" = \'ABC\'');
     });
 
     test('>, int', () => {
@@ -190,9 +195,7 @@ describe('getFilterLabKeySql', () => {
                 null,
                 true
             )
-        ).toEqual(
-            "(\"StringField\" IN ('value1', 'value2', 'value3', 'value4', 'value5', 'value6', 'value7'))"
-        );
+        ).toEqual("(\"StringField\" IN ('value1', 'value2', 'value3', 'value4', 'value5', 'value6', 'value7'))");
     });
 
     test('value list, string, exclusion, exclude null', () => {
@@ -219,9 +222,9 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('value list, float, exclusion, flip negate', () => {
-        expect(getFilterLabKeySql(Filter.create('FloatField', '1.1;2.2;3.3', Filter.Types.NOT_IN), 'float', null, true)).toEqual(
-            "(\"FloatField\" IN (1.1, 2.2, 3.3))"
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('FloatField', '1.1;2.2;3.3', Filter.Types.NOT_IN), 'float', null, true)
+        ).toEqual('("FloatField" IN (1.1, 2.2, 3.3))');
     });
 
     test('between, int', () => {
@@ -237,9 +240,9 @@ describe('getFilterLabKeySql', () => {
     });
 
     test('not between, int, flip negate', () => {
-        expect(getFilterLabKeySql(Filter.create('IntField', '1,100', Filter.Types.NOT_BETWEEN), 'int', null, true)).toEqual(
-            "\"IntField\" BETWEEN 1 AND 100"
-        );
+        expect(
+            getFilterLabKeySql(Filter.create('IntField', '1,100', Filter.Types.NOT_BETWEEN), 'int', null, true)
+        ).toEqual('"IntField" BETWEEN 1 AND 100');
     });
 
     test('between, float', () => {

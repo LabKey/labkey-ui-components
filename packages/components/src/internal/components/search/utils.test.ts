@@ -12,6 +12,8 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
 import { SampleTypeDataType } from '../entities/constants';
 
+import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../query/filter';
+
 import {
     ALL_VALUE_DISPLAY,
     decodeErrorMessage,
@@ -30,7 +32,6 @@ import {
 } from './utils';
 import { SearchCategory } from './constants';
 import { FieldFilter } from './models';
-import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../query/filter';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -59,7 +60,11 @@ const matchesAllFilter = {
 const matchesAllBadFilter = {
     fieldKey: 'textField',
     fieldCaption: 'textField',
-    filter: Filter.create('textField', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'], ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE),
+    filter: Filter.create(
+        'textField',
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'],
+        ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE
+    ),
     jsonType: 'string',
 } as FieldFilter;
 
@@ -241,7 +246,7 @@ describe('getFieldFiltersValidationResult', () => {
                 sampleType1: [matchesAllEmptyFilter, stringBetweenFilter],
                 sampleType2: [intEqFilter],
             })
-        ).toEqual("Missing filter values for: textField.");
+        ).toEqual('Missing filter values for: textField.');
     });
 
     test('exceed max allowed', () => {
@@ -370,7 +375,6 @@ const matchAll0Filter = Filter.create(fieldKey, [], ANCESTOR_MATCHES_ALL_OF_FILT
 const matchAll1Filter = Filter.create(fieldKey, 'ed', ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
 const matchAllEveryFilter = Filter.create(fieldKey, distinctValuesExcludeAll, ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
 
-
 describe('getCheckedFilterValues', () => {
     test('no filter or values', () => {
         expect(getCheckedFilterValues(null, undefined)).toEqual([]);
@@ -423,7 +427,7 @@ describe('getCheckedFilterValues', () => {
     test('ancestor matches all', () => {
         expect(getCheckedFilterValues(matchAllFilter, [])).toEqual(['ed', 'ned', 'ted']);
         expect(getCheckedFilterValues(matchAllFilter, distinctValues)).toEqual(['ed', 'ned', 'ted']);
-    })
+    });
 });
 
 describe('getUpdatedCheckedValues', () => {
@@ -519,15 +523,26 @@ describe('getUpdatedChooseValuesFilter', () => {
 
     test('check ALL, from eq one', () => {
         expect(getUpdatedChooseValuesFilter(distinctValues, fieldKey, ALL_VALUE_DISPLAY, true, checkedOne)).toBeNull();
-        validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, ALL_VALUE_DISPLAY, true, matchAll1Filter), 'ancestormatchesallof', distinctValuesExcludeAll);
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, ALL_VALUE_DISPLAY, true, matchAll1Filter),
+            'ancestormatchesallof',
+            distinctValuesExcludeAll
+        );
     });
 
     test('check another, from eq one', () => {
         validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ned', true, checkedOne), 'in', ['ed', 'ned']);
         validate(getUpdatedChooseValuesFilter(undefined, fieldKey, 'ned', true, checkedOne), 'in', ['ed', 'ned']);
-        validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ned', true, matchAll1Filter), 'ancestormatchesallof', ['ed', 'ned']);
-        validate(getUpdatedChooseValuesFilter(undefined, fieldKey, 'ned', true, matchAll1Filter), 'ancestormatchesallof', ['ed', 'ned']);
-
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ned', true, matchAll1Filter),
+            'ancestormatchesallof',
+            ['ed', 'ned']
+        );
+        validate(
+            getUpdatedChooseValuesFilter(undefined, fieldKey, 'ned', true, matchAll1Filter),
+            'ancestormatchesallof',
+            ['ed', 'ned']
+        );
     });
 
     test('check blank, from eq one', () => {
@@ -539,7 +554,11 @@ describe('getUpdatedChooseValuesFilter', () => {
 
     test('all checked, then uncheck one', () => {
         validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'red', false, null), 'neqornull', 'red');
-        validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'red', false, matchAllEveryFilter), 'ancestormatchesallof', ["", "ed", "ned", "ted", "bed"]);
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'red', false, matchAllEveryFilter),
+            'ancestormatchesallof',
+            ['', 'ed', 'ned', 'ted', 'bed']
+        );
     });
 
     test('two checked, then uncheck one', () => {
@@ -552,9 +571,16 @@ describe('getUpdatedChooseValuesFilter', () => {
     });
 
     test('uncheck all', () => {
-        validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, ALL_VALUE_DISPLAY, false, checkedTwo), 'notany', null);
-        validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, ALL_VALUE_DISPLAY, false, matchAllEveryFilter), 'ancestormatchesallof', []);
-
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, ALL_VALUE_DISPLAY, false, checkedTwo),
+            'notany',
+            null
+        );
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, ALL_VALUE_DISPLAY, false, matchAllEveryFilter),
+            'ancestormatchesallof',
+            []
+        );
     });
 
     test('all checked, then uncheck blank', () => {
@@ -574,7 +600,11 @@ describe('getUpdatedChooseValuesFilter', () => {
     test('none checked, then check one', () => {
         validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ed', true, checkedZero), 'eq', 'ed');
         validate(getUpdatedChooseValuesFilter(undefined, fieldKey, 'ed', true, checkedZero), 'eq', 'ed');
-        validate(getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ed', true, matchAll0Filter), 'ancestormatchesallof', ['ed']);
+        validate(
+            getUpdatedChooseValuesFilter(distinctValues, fieldKey, 'ed', true, matchAll0Filter),
+            'ancestormatchesallof',
+            ['ed']
+        );
     });
 
     test('all checked, then check blank and uncheck everything else', () => {
@@ -785,13 +815,12 @@ describe('getFilterSelections', () => {
                 isSoleFilter: false,
             },
         ];
-        const filterSelections = getFilterSelections(
-            [Filter.create('strField', 'test')],
-            filterOptions
-        );
-        expect(filterSelections).toStrictEqual([{
+        const filterSelections = getFilterSelections([Filter.create('strField', 'test')], filterOptions);
+        expect(filterSelections).toStrictEqual([
+            {
                 filterType: filterOptions[0],
-            }]);
+            },
+        ]);
     });
 
     test('single filter, single value', () => {

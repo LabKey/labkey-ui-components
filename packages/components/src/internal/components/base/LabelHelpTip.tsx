@@ -17,7 +17,7 @@ export const LabelHelpTip: FC<Props> = memo(props => {
     const id_ = useMemo(() => generateId('label-help-tip'), []);
     const popover = useMemo(
         () => (
-            <Popover id="'label-help-tip-popover'" title={title} className={popoverClassName} placement={placement}>
+            <Popover id="label-help-tip-popover" title={title} className={popoverClassName} placement={placement}>
                 {children}
                 {required && <div className="label-help-required">This field is required.</div>}
             </Popover>

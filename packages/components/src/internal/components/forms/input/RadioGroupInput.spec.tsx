@@ -23,10 +23,10 @@ describe('<RadioGroupInput>', () => {
             expect(input.prop('disabled')).toBe(true);
         }
         if (showDescription) {
-            expect(wrapper.find({ id: 'tooltip' })).toHaveLength(0);
+            expect(wrapper.find('.label-help-target')).toHaveLength(0);
             expect(wrapper.find('.radioinput-description')).toHaveLength(!hidden && option.description ? 1 : 0);
         } else {
-            expect(wrapper.find({ id: 'tooltip' })).toHaveLength(!hidden && option.description ? 1 : 0);
+            expect(wrapper.find('.label-help-target')).toHaveLength(!hidden && option.description ? 1 : 0);
             expect(wrapper.find('.radioinput-description')).toHaveLength(0);
         }
     }

@@ -374,7 +374,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                     <div className="row choices-container">
                         <div className="col-md-6">
                             <Tabs id="choose-items-tabs" className="choose-items-tabs" animation={false}>
-                                <Tab eventKey={1} title="My Picklists">
+                                <Tab eventKey={1} title="Your Picklists">
                                     <PicklistList
                                         activeItem={activeItem}
                                         emptyMessage={myEmptyMessage}
@@ -384,7 +384,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                                     />
                                 </Tab>
 
-                                <Tab eventKey={2} title="Team Picklists">
+                                <Tab eventKey={2} title="Shared Picklists">
                                     <PicklistList
                                         activeItem={activeItem}
                                         emptyMessage={teamEmptyMessage}

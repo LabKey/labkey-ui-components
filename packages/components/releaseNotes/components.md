@@ -6,6 +6,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Multi-Parent Matching in Sample Finder
     - TODO
 
+### version 3.5.3
+*Released*: 11 January 2024
+- Language Consistency: 'My' vs. 'Your' and 'Shared' vs. 'Public'
+
+### version 3.5.2
+*Released*: 10 January 2024
+* Make menuReload action actually reload the menu
+* Use menuReload action in registerWebsocketListeners
+
 ### version 3.5.1
 *Released*: 10 January 2024
 * Merge release24.1-SNAPSHOT to develop:

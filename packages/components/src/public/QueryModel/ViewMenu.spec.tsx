@@ -80,7 +80,7 @@ describe('ViewMenu', () => {
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PRIVATE_VIEWS, {}, []);
         wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
         items = wrapper.find('MenuItem');
-        expect(items.at(2).text()).toBe('My Saved Views');
+        expect(items.at(2).text()).toBe('Your Saved Views');
         expect(items.at(3).text()).toBe('No Extra Column');
 
         // Same as previous, but the No Extra Column view is set to active.
@@ -89,7 +89,7 @@ describe('ViewMenu', () => {
         });
         wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
         items = wrapper.find('MenuItem');
-        expect(items.at(2).text()).toBe('My Saved Views');
+        expect(items.at(2).text()).toBe('Your Saved Views');
         expect(items.at(3).text()).toBe('No Extra Column');
         expect(items.at(3).prop('active')).toBe(true);
 

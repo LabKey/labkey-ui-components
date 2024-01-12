@@ -1,12 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.5.4
+*Released*: 11 January 2024
+- Refactor all UNSAFE_ usages
+
 ### version 3.5.3
 *Released*: 11 January 2024
 - Language Consistency: 'My' vs. 'Your' and 'Shared' vs. 'Public'
 
 ### version 3.5.2
-*Released*: 10 January 2024
+*Released*: 11 January 2024
 * Make menuReload action actually reload the menu
 * Use menuReload action in registerWebsocketListeners
 

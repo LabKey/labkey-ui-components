@@ -246,16 +246,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.setState({ isLoading: false });
     };
 
-    UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>): void {
-        const { controlledCollapse, initCollapsed, validate, onChange } = this.props;
+    componentDidUpdate(prevProps: IDomainFormInput): void {
+        const { controlledCollapse, domain, initCollapsed, validate, onChange } = this.props;
 
         // if controlled collapsible, allow the prop change to update the collapsed state
-        if (controlledCollapse && nextProps.initCollapsed !== initCollapsed) {
-            this.toggleLocalPanel(nextProps.initCollapsed);
+        if (controlledCollapse && prevProps.initCollapsed !== initCollapsed) {
+            this.toggleLocalPanel(initCollapsed);
         }
 
-        if (nextProps.validate && validate !== nextProps.validate) {
-            onChange?.(this.validateDomain(nextProps.domain), false);
+        if (validate && validate !== prevProps.validate) {
+            onChange?.(this.validateDomain(domain), false);
         }
     }
 

@@ -48,7 +48,7 @@ const DeleteThreadModal: FC<DeleteThreadModalProps> = ({ cancel, onDelete }) => 
 const DeleteReplyModal: FC<DeleteThreadModalProps> = ({ cancel, onDelete }) => (
     <Modal show onHide={cancel} className="delete-thread-modal">
         <Modal.Header>
-            <Modal.Title>Delete This Reply?</Modal.Title>
+            <Modal.Title>Delete this reply?</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>Are you sure you want to delete this reply?</Modal.Body>

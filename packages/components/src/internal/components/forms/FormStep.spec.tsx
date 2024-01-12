@@ -25,8 +25,8 @@ interface OwnProps {
 }
 type Props = OwnProps & WithFormStepsProps;
 
-class FormStepTestImpl extends React.Component<Props, any> {
-    UNSAFE_componentWillMount(): void {
+class FormStepTestImpl extends React.Component<Props> {
+    componentDidMount(): void {
         if (this.props.step !== undefined) {
             this.props.selectStep(this.props.step);
         }

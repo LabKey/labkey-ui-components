@@ -40,13 +40,13 @@ interface FileAttachmentContainerProps {
     index?: number;
     labelLong?: string;
     initialFileNames?: string[];
-    initialFiles?: { [key: string]: File };
+    initialFiles?: Record<string, File>;
     compact?: boolean;
 }
 
 interface FileAttachmentContainerState {
     errorMsg?: React.ReactNode;
-    files?: { [key: string]: File };
+    files?: Record<string, File>;
     isDirty?: boolean;
     fileNames?: string[]; // separate list of names for the case when an initial set of file names is provided for which we have no file object
     isHover?: boolean;
@@ -71,32 +71,31 @@ export class FileAttachmentContainer extends React.Component<
         };
     }
 
-    UNSAFE_componentWillMount(): void {
-        this.initFileNames(this.props);
+    componentDidMount(): void {
+        this.initFileNames();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: FileAttachmentContainerProps): void {
-        if (this.props.initialFileNames != nextProps.initialFileNames && !this.state.isDirty) {
-            this.initFileNames(nextProps);
+    componentDidUpdate(prevProps: FileAttachmentContainerProps): void {
+        if (!this.state.isDirty && this.props.initialFileNames !== prevProps.initialFileNames) {
+            this.initFileNames();
         }
     }
 
-    initFileNames(props: FileAttachmentContainerProps) {
+    initFileNames = (): void => {
+        const { initialFileNames, initialFiles } = this.props;
+
         // since we do not have the file objects themselves, we do not check if the
         // file "type" is valid.  There is presumably nothing a user could do if it were
         // invalid.
-        this.setState(() => ({
-            fileNames: props.initialFileNames || (props.initialFiles && Object.keys(props.initialFiles)) || [],
-        }));
-    }
+        this.setState({
+            fileNames: initialFileNames || (initialFiles && Object.keys(initialFiles)) || [],
+        });
+    };
 
     validateFiles = (fileList: FileList, transferItems?: DataTransferItemList): Set<string> => {
         const { acceptedFormats, allowDirectories, sizeLimits } = this.props;
 
-        this.setState({
-            errorMsg: undefined,
-            isHover: false,
-        });
+        this.setState({ errorMsg: undefined, isHover: false });
 
         if (!acceptedFormats && allowDirectories && !sizeLimits) {
             return Set<string>();
@@ -164,13 +163,12 @@ export class FileAttachmentContainer extends React.Component<
                             These files are larger than their maximum allowed sizes:
                             <ul>
                                 {oversizedFiles
-                                    .map((limit, fileName) => {
-                                        return (
-                                            <li key={fileName}>
-                                                {fileName} (max size: {limit})
-                                            </li>
-                                        );
-                                    })
+                                    .map((limit, fileName) => (
+                                        // eslint-disable-next-line react/no-array-index-key
+                                        <li key={fileName}>
+                                            {fileName} (max size: {limit})
+                                        </li>
+                                    ))
                                     .toArray()}
                             </ul>
                             {this.props.sizeLimitsHelpText}

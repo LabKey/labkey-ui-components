@@ -135,10 +135,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         this.ref.current.scrollIntoView({ behavior: 'smooth' });
     };
 
-    UNSAFE_componentWillReceiveProps(nextProps: DomainRowProps): void {
+    componentDidUpdate(prevProps: DomainRowProps): void {
         // if there was a prop change to isDragDisabled, need to call setDragDisabled
-        if (nextProps.isDragDisabled !== this.props.isDragDisabled) {
-            this.setDragDisabled(nextProps.isDragDisabled, false);
+        if (prevProps.isDragDisabled !== this.props.isDragDisabled) {
+            this.setDragDisabled(this.props.isDragDisabled, false);
         }
     }
 

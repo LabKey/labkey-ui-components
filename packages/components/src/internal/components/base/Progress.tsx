@@ -26,9 +26,9 @@ interface Props {
 }
 
 interface State {
-    duration?: number;
-    percent?: number;
-    show?: boolean;
+    duration: number;
+    percent: number;
+    show: boolean;
 }
 
 export class Progress extends React.Component<Props, State> {
@@ -42,39 +42,29 @@ export class Progress extends React.Component<Props, State> {
     delayTimer: number;
     timer: number;
 
-    constructor(props: Props) {
-        super(props);
+    state: Readonly<State> = { duration: 0, percent: 0, show: false };
 
-        this.end = this.end.bind(this);
-        this.start = this.start.bind(this);
-
-        this.state = {
-            duration: 0,
-            percent: 0,
-            show: false,
-        };
-    }
-
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         this.end(true);
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
-        if (!this.props.toggle && nextProps.toggle) {
-            if (this.props.delay) {
+    componentDidUpdate(prevProps: Props): void {
+        const { delay, toggle } = this.props;
+        if (!prevProps.toggle && toggle) {
+            if (delay) {
                 this.delayTimer = window.setTimeout(() => {
                     this.cycle(true);
                     this.start();
-                }, this.props.delay);
+                }, delay);
             } else {
                 this.start();
             }
-        } else if (this.props.toggle && !nextProps.toggle) {
+        } else if (prevProps.toggle && !toggle) {
             this.end();
         }
     }
 
-    cycle(fromDelay?: boolean) {
+    cycle = (fromDelay?: boolean): void => {
         const newDuration = this.state.duration + (fromDelay ? this.props.delay : this.props.updateIncrement);
         const newPercent = Math.ceil((newDuration / this.props.estimate) * 100);
 
@@ -83,39 +73,36 @@ export class Progress extends React.Component<Props, State> {
             percent: newPercent > 100 ? 100 : newPercent,
             show: true,
         });
-    }
+    };
 
-    end(fromUnmount?: boolean) {
+    end = (fromUnmount?: boolean): void => {
         clearTimeout(this.delayTimer);
         clearTimeout(this.timer);
 
         if (fromUnmount !== true) {
-            this.setState({
-                percent: 0,
-                show: false,
-            });
+            this.setState({ percent: 0, show: false });
         }
-    }
+    };
 
-    start() {
+    start = (): void => {
         clearTimeout(this.timer);
         this.timer = window.setTimeout(() => {
             this.timer = null;
             this.cycle();
             this.start();
         }, this.props.updateIncrement);
-    }
+    };
 
     render() {
         const { children, modal, title } = this.props;
-        const { show } = this.state;
-        let element = null;
+        const { percent, show } = this.state;
+
         const indicator = show && (
-            <ProgressBar active now={this.state.percent} bsStyle={this.state.percent === 100 ? 'success' : undefined} />
+            <ProgressBar active now={percent} bsStyle={percent === 100 ? 'success' : undefined} />
         );
 
         if (modal) {
-            element = (
+            return (
                 <Modal bsSize="large" show={show} onHide={() => {}}>
                     {title && (
                         <Modal.Header>
@@ -129,9 +116,9 @@ export class Progress extends React.Component<Props, State> {
                 </Modal>
             );
         } else if (show) {
-            element = indicator;
+            return indicator;
         }
 
-        return element;
+        return null;
     }
 }

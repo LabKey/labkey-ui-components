@@ -12,6 +12,10 @@ import { Container } from '../base/models/Container';
 
 import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from './models';
 
+const filterDataTypeHiddenEntity = (dataType: DataTypeEntity, hiddenEntities?: any[]): boolean => {
+    return !hiddenEntities || hiddenEntities?.indexOf(dataType.rowId ?? dataType.lsid) === -1;
+};
+
 interface Props {
     allDataCounts?: Record<string, number>;
     allDataTypes?: DataTypeEntity[]; // either use allDataTypes to pass in dataTypes, or specify entityDataType to query dataTypes
@@ -95,9 +99,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
             const results = await api.query.getProjectConfigurableEntityTypeOptions(entityDataType, project?.path);
 
             // the Dashboard related data type exclusions should hide entities from the parent/related exclusion
-            const results_ = results?.filter(
-                type => !hiddenEntities || hiddenEntities?.indexOf(type.rowId ?? type.lsid) === -1
-            );
+            const results_ = results?.filter(type => filterDataTypeHiddenEntity(type, hiddenEntities));
 
             setDataTypes(results_);
         } catch (e) {
@@ -109,15 +111,27 @@ export const DataTypeSelector: FC<Props> = memo(props => {
     }, [api.query, entityDataType, hiddenEntities, project?.path]);
 
     useEffect(() => {
-        if (allDataCounts) setDataCounts(allDataCounts);
+        if (dataTypes !== undefined && allDataTypes) {
+            setDataTypes(allDataTypes.filter(type => filterDataTypeHiddenEntity(type, hiddenEntities)));
+        }
+    }, [hiddenEntities /* only called on changes to hiddenEntities */]);
 
-        if (allDataTypes) setDataTypes(allDataTypes);
-        else if (entityDataType) loadDataTypes(); // use entitydatatype
+    useEffect(
+        () => {
+            if (allDataCounts) setDataCounts(allDataCounts);
 
-        setDataType((dataTypePrefix + entityDataType?.projectConfigurableDataType) as ProjectConfigurableDataType);
+            if (allDataTypes)
+                setDataTypes(allDataTypes.filter(type => filterDataTypeHiddenEntity(type, hiddenEntities)));
+            else if (entityDataType) loadDataTypes(); // use entitydatatype
 
-        setUncheckedEntities(uncheckedEntitiesDB ?? []);
-    }, [entityDataType, allDataTypes, allDataCounts, uncheckedEntitiesDB, dataTypePrefix, loadDataTypes]); // include transitive dependency
+            setDataType((dataTypePrefix + entityDataType?.projectConfigurableDataType) as ProjectConfigurableDataType);
+
+            setUncheckedEntities(uncheckedEntitiesDB ?? []);
+        },
+        [
+            /* mount only */
+        ]
+    );
 
     const ensureCount = useCallback(async () => {
         if (dataCounts) return;

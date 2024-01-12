@@ -25,7 +25,9 @@ interface OwnProps {
     dataTypeName?: string;
     dataTypeRowId?: number;
     entityDataType: EntityDataType;
-    onUpdateExcludedProjects: (excludedProjects: string[]) => void;
+    onUpdateExcludedProjects: (dataType: ProjectConfigurableDataType, excludedProjects: string[]) => void;
+    relatedDataTypeLabel?: string;
+    relatedProjectConfigurableDataType?: ProjectConfigurableDataType;
 }
 
 // export for jest testing
@@ -38,6 +40,8 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
         dataTypeName,
         onUpdateExcludedProjects,
         entityDataType,
+        relatedDataTypeLabel,
+        relatedProjectConfigurableDataType,
     } = props;
     const { moduleContext, container } = useServerContext();
     const { api } = useAppContext<AppContext>();
@@ -48,6 +52,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
     const [allProjects, setAllProjects] = useState<DataTypeEntity[]>();
     const [excludedProjectIdsDB, setExcludedProjectIdsDB] = useState<string[]>();
     const [excludedProjectIds, setExcludedProjectIds] = useState<string[]>();
+    const [relatedExcludedProjectIdsDB, setRelatedExcludedProjectIdsDB] = useState<string[]>();
 
     useEffect(
         () => {
@@ -77,6 +82,14 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                         dataTypeName
                     );
                     setAllDataCounts(allDataCounts_);
+
+                    if (relatedProjectConfigurableDataType) {
+                        const relatedExcludedProjectIds_ = await api.folder.getDataTypeExcludedProjects(
+                            relatedProjectConfigurableDataType,
+                            dataTypeRowId
+                        );
+                        setRelatedExcludedProjectIdsDB(relatedExcludedProjectIds_);
+                    }
                 } catch (e) {
                     setError(`Error: ${resolveErrorMessage(e)}`);
                 } finally {
@@ -99,9 +112,16 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
     }, []);
 
     const updateExcludedProjects = useCallback(
-        (_: ProjectConfigurableDataType, exclusions: string[]) => {
-            onUpdateExcludedProjects(exclusions);
+        (dataType: ProjectConfigurableDataType, exclusions: string[]) => {
+            onUpdateExcludedProjects(dataType, exclusions);
             setExcludedProjectIds(exclusions);
+        },
+        [onUpdateExcludedProjects]
+    );
+
+    const updateRelatedExcludedProjects = useCallback(
+        (dataType: ProjectConfigurableDataType, exclusions: string[]) => {
+            onUpdateExcludedProjects(dataType, exclusions);
         },
         [onUpdateExcludedProjects]
     );
@@ -127,7 +147,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
             togglePanel={togglePanel}
         >
             <div className="bottom-spacing">
-                Select which projects use this {entityDataType.typeNounSingular.toLowerCase()}.
+                Select which projects will use this {entityDataType.typeNounSingular.toLowerCase()}.
             </div>
             {!!allProjects && allProjects?.length === excludedProjectIds?.length && (
                 <Alert bsStyle="warning">
@@ -140,18 +160,45 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                 <LoadingSpinner />
             ) : (
                 <Row>
-                    <Col xs={12} className="bottom-spacing">
-                        <DataTypeSelector
-                            entityDataType={entityDataType}
-                            allDataCounts={allDataCounts}
-                            allDataTypes={allProjects}
-                            updateUncheckedTypes={updateExcludedProjects}
-                            uncheckedEntitiesDB={excludedProjectIdsDB}
-                            dataTypeLabel="projects"
-                            noHeader={true}
-                            columns={2}
-                        />
-                    </Col>
+                    {!relatedProjectConfigurableDataType && (
+                        <Col xs={12} className="bottom-spacing">
+                            <DataTypeSelector
+                                entityDataType={entityDataType}
+                                allDataCounts={allDataCounts}
+                                allDataTypes={allProjects}
+                                updateUncheckedTypes={updateExcludedProjects}
+                                uncheckedEntitiesDB={excludedProjectIdsDB}
+                                dataTypeLabel="projects"
+                                noHeader
+                                columns={2}
+                            />
+                        </Col>
+                    )}
+                    {!!relatedProjectConfigurableDataType && (
+                        <>
+                            <Col xs={6} className="bottom-spacing">
+                                <DataTypeSelector
+                                    entityDataType={entityDataType}
+                                    allDataCounts={allDataCounts}
+                                    allDataTypes={allProjects}
+                                    updateUncheckedTypes={updateExcludedProjects}
+                                    uncheckedEntitiesDB={excludedProjectIdsDB}
+                                    dataTypeLabel="Include in Projects"
+                                />
+                            </Col>
+                            <Col xs={6} className="bottom-spacing">
+                                <DataTypeSelector
+                                    dataTypePrefix="Dashboard"
+                                    entityDataType={entityDataType}
+                                    allDataTypes={allProjects}
+                                    updateUncheckedTypes={updateRelatedExcludedProjects}
+                                    uncheckedEntitiesDB={relatedExcludedProjectIdsDB}
+                                    hiddenEntities={excludedProjectIds}
+                                    dataTypeLabel={relatedDataTypeLabel}
+                                />
+                            </Col>
+                        </>
+                    )}
                 </Row>
             )}
         </BasePropertiesPanel>

@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD January 2023
 - Sample Type exclusions from Dashboard Insights charts
   - support for DashboardSampleType as a data type exclusion for projects
+  - support for DashboardSampleType as a data type exclusion for sample type designer
   - ProjectDataTypeSelections panelTitle, panelDescription, and showUncheckedWarning
   - DataTypeSelector to load via useFolderDataTypeExclusions hook
   - AdminSettingsPage to show Dashboard data type exclusions panel when no projects configured

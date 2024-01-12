@@ -49,6 +49,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [allDataCounts, setAllDataCounts] = useState<Record<string, number>>({});
+    const [childProjects, setChildProjects] = useState<DataTypeEntity[]>();
     const [allProjects, setAllProjects] = useState<DataTypeEntity[]>();
     const [excludedProjectIdsDB, setExcludedProjectIdsDB] = useState<string[]>();
     const [excludedProjectIds, setExcludedProjectIds] = useState<string[]>();
@@ -61,12 +62,13 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                 setError(undefined);
 
                 try {
-                    const containers = await api.folder.getProjects(container, moduleContext, true, true);
+                    const containers = await api.folder.getProjects(container, moduleContext, true, true, true);
 
                     const allProjects_ = containers.map(project => {
                         return { label: project.title, lsid: project.id, type: 'Project' } as DataTypeEntity;
                     });
 
+                    setChildProjects(allProjects_.slice(1));
                     setAllProjects(allProjects_);
 
                     const excludedProjectIds_ = await api.folder.getDataTypeExcludedProjects(
@@ -165,7 +167,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                             <DataTypeSelector
                                 entityDataType={entityDataType}
                                 allDataCounts={allDataCounts}
-                                allDataTypes={allProjects}
+                                allDataTypes={childProjects}
                                 updateUncheckedTypes={updateExcludedProjects}
                                 uncheckedEntitiesDB={excludedProjectIdsDB}
                                 dataTypeLabel="projects"
@@ -180,7 +182,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                                 <DataTypeSelector
                                     entityDataType={entityDataType}
                                     allDataCounts={allDataCounts}
-                                    allDataTypes={allProjects}
+                                    allDataTypes={childProjects}
                                     updateUncheckedTypes={updateExcludedProjects}
                                     uncheckedEntitiesDB={excludedProjectIdsDB}
                                     dataTypeLabel="Include in Projects"

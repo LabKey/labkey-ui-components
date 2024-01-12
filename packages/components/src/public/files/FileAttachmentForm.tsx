@@ -47,16 +47,16 @@ interface FileAttachmentFormProps {
     allowMultiple?: boolean;
     cancelText?: string;
     initialFileNames?: string[];
-    initialFiles?: { [key: string]: File };
+    initialFiles?: Record<string, File>;
     index?: number;
     label?: string;
     labelLong?: string;
-    onCancel?: () => any;
-    onFileChange?: (files: Map<string, File>) => any;
-    onFileRemoval?: (attachmentName: string) => any;
+    onCancel?: () => void;
+    onFileChange?: (files: Map<string, File>) => void;
+    onFileRemoval?: (attachmentName: string) => void;
     // map between file extension and the callback function to use instead of the standard uploadDataFileForPreview
     fileSpecificCallback?: Map<string, (file: File) => Promise<SimpleResponse>>;
-    onSubmit?: (files: Map<string, File>) => any;
+    onSubmit?: (files: Map<string, File>) => void;
     isSubmitting?: boolean;
     showButtons?: boolean;
     showLabel?: boolean;
@@ -112,24 +112,26 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         };
     }
 
-    UNSAFE_componentWillMount(): void {
-        this.initPreviewData(this.props);
+    componentDidMount(): void {
+        this.initPreviewData();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: FileAttachmentFormProps): void {
-        if (this.props.previewGridProps !== nextProps.previewGridProps) {
-            this.initPreviewData(nextProps);
+    componentDidUpdate(prevProps: FileAttachmentFormProps): void {
+        if (prevProps.previewGridProps !== this.props.previewGridProps) {
+            this.initPreviewData();
         }
     }
 
-    initPreviewData(props: FileAttachmentFormProps): void {
-        let previewData;
-        if (props.previewGridProps && props.previewGridProps.initialData) {
-            previewData = convertRowDataIntoPreviewData(
-                props.previewGridProps.initialData.get('data'),
-                props.previewGridProps.previewCount
-            );
-            this.setState(() => ({ previewData }));
+    initPreviewData(): void {
+        const { previewGridProps } = this.props;
+
+        if (previewGridProps?.initialData) {
+            this.setState({
+                previewData: convertRowDataIntoPreviewData(
+                    previewGridProps.initialData.get('data'),
+                    previewGridProps.previewCount
+                ),
+            });
         }
     }
 
@@ -147,7 +149,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         }));
     };
 
-    handleFileChange = (fileList: { [key: string]: File }): void => {
+    handleFileChange = (fileList: Record<string, File>): void => {
         const { onFileChange, sizeLimits, fileSpecificCallback, allowMultiple } = this.props;
         const attachedFiles = this.state.attachedFiles.merge(fileList);
 
@@ -181,9 +183,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                     }
                 }
 
-                if (onFileChange) {
-                    onFileChange(attachedFiles);
-                }
+                onFileChange?.(attachedFiles);
             }
         );
     };
@@ -192,16 +192,14 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         const { onFileRemoval } = this.props;
 
         this.setState(
-            () => ({
-                attachedFiles: this.state.attachedFiles.remove(attachmentName),
+            state => ({
+                attachedFiles: state.attachedFiles.remove(attachmentName),
                 previewData: undefined,
                 previewStatus: undefined,
                 errorMessage: undefined,
             }),
             () => {
-                if (onFileRemoval) {
-                    onFileRemoval(attachmentName);
-                }
+                onFileRemoval?.(attachmentName);
             }
         );
     };
@@ -211,13 +209,10 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     };
 
     handleSubmit = (): void => {
-        const { onSubmit } = this.props;
+        this.props.onSubmit?.(this.state.attachedFiles);
 
-        if (onSubmit) onSubmit(this.state.attachedFiles);
         // clear out attached files once they have been submitted.
-        this.setState(() => ({
-            attachedFiles: Map<string, File>(),
-        }));
+        this.setState({ attachedFiles: Map<string, File>() });
     };
 
     renderButtons(): ReactNode {

@@ -5,6 +5,8 @@
 import { User } from '../components/base/models/User';
 import { ServerActivity } from '../components/notifications/model';
 
+import { LABKEY_WEBSOCKET } from '../constants';
+
 import {
     MENU_INVALIDATE,
     MENU_LOADING_END,
@@ -57,7 +59,26 @@ export function menuInit(currentProductId: string, appProductId: string) {
 export const menuInvalidate = () => ({ type: MENU_INVALIDATE });
 
 // an alternative to menuInvalidate, which doesn't erase current menu during reload
-export const menuReload = () => ({ type: MENU_RELOAD });
+export function menuReload() {
+    return (dispatch, getState) => {
+        dispatch({ type: MENU_RELOAD });
+        const menu = getState().routing.menu;
+        menu.getMenuSections()
+            .then(sections => {
+                dispatch({
+                    type: MENU_LOADING_END,
+                    sections,
+                });
+            })
+            .catch(reason => {
+                console.error('Problem retrieving product menu data.', reason);
+                dispatch({
+                    type: MENU_LOADING_ERROR,
+                    message: 'Error in retrieving product menu data. Please contact your site administrator.',
+                });
+            });
+    };
+}
 
 export function serverNotificationInit(serverActivitiesLoaderFn: (maxRows?: number) => Promise<ServerActivity>) {
     return (dispatch, getState) => {
@@ -86,3 +107,30 @@ export function serverNotificationInit(serverActivitiesLoaderFn: (maxRows?: numb
 }
 
 export const serverNotificationInvalidate = () => ({ type: SERVER_NOTIFICATIONS_INVALIDATE });
+
+// This isn't really an action, but it needs to be here to prevent circular dependencies
+export function registerWebSocketListeners(
+    store,
+    notificationListeners?: string[],
+    menuReloadListeners?: string[]
+): void {
+    if (notificationListeners) {
+        notificationListeners.forEach(listener => {
+            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
+                // not checking evt.wasClean since we want this event for all user sessions
+                window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
+            });
+        });
+    }
+
+    if (menuReloadListeners) {
+        menuReloadListeners.forEach(listener => {
+            LABKEY_WEBSOCKET.addServerEventListener(listener, function (evt) {
+                // not checking evt.wasClean since we want this event for all user sessions
+                window.setTimeout(() => {
+                    store.dispatch(menuReload());
+                }, 1000);
+            });
+        });
+    }
+}

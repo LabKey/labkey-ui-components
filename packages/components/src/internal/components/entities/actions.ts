@@ -60,36 +60,40 @@ import {
     RemappedKeyValues,
 } from './models';
 
-export function getOperationConfirmationData(
+export async function getOperationConfirmationData(
     dataType: EntityDataType,
     rowIds: string[] | number[],
     selectionKey?: string,
     useSnapshotSelection?: boolean,
-    extraParams?: Record<string, any>
+    extraParams?: Record<string, any>,
+    containerPath?: string
 ): Promise<OperationConfirmationData> {
     if (!selectionKey && !rowIds?.length) {
-        return Promise.resolve(new OperationConfirmationData());
+        return new OperationConfirmationData();
     }
 
     return new Promise((resolve, reject) => {
-        let params;
+        let params: Record<string, any>;
         if (selectionKey) {
             params = {
                 dataRegionSelectionKey: selectionKey,
             };
             if (useSnapshotSelection) {
-                params['useSnapshotSelection'] = true;
+                params.useSnapshotSelection = true;
             }
         } else {
-            params = {
-                rowIds,
-            };
+            params = { rowIds };
         }
         if (extraParams) {
             params = Object.assign(params, extraParams);
         }
+
         return Ajax.request({
-            url: buildURL(dataType.operationConfirmationControllerName, dataType.operationConfirmationActionName),
+            url: ActionURL.buildURL(
+                dataType.operationConfirmationControllerName,
+                dataType.operationConfirmationActionName,
+                containerPath
+            ),
             method: 'POST',
             jsonData: params,
             success: Utils.getCallbackWrapper(response => {
@@ -108,66 +112,89 @@ export function getOperationConfirmationData(
     });
 }
 
+export type GetDeleteConfirmationDataOptions = {
+    containerPath?: string;
+    dataType: EntityDataType;
+    rowIds: string[] | number[];
+    schemaQuery?: SchemaQuery;
+    selectionKey?: string;
+    useSnapshotSelection?: boolean;
+};
+
 export function getDeleteConfirmationData(
-    dataType: EntityDataType,
-    rowIds: string[] | number[],
-    selectionKey?: string,
-    useSnapshotSelection?: boolean,
-    schemaQuery?: SchemaQuery,
+    options: GetDeleteConfirmationDataOptions
 ): Promise<OperationConfirmationData> {
+    const { containerPath, dataType, rowIds, schemaQuery } = options;
     if (isAssayResultEntity(dataType)) {
-        return getAssayResultOperationConfirmationData(AssayRunOperation.Delete, rowIds, schemaQuery);
+        return getAssayResultOperationConfirmationData(rowIds, schemaQuery, containerPath);
     }
 
+    const { selectionKey, useSnapshotSelection } = options;
     if (isSampleEntity(dataType)) {
-        return getSampleOperationConfirmationData(SampleOperation.Delete, rowIds, selectionKey, useSnapshotSelection);
+        return getSampleOperationConfirmationData(
+            SampleOperation.Delete,
+            rowIds,
+            selectionKey,
+            useSnapshotSelection,
+            containerPath
+        );
     }
+
+    let extraParams: Record<string, any>;
+    if (isDataClassEntity(dataType)) {
+        extraParams = { dataOperation: DataOperation.Delete };
+    } else if (isAssayDesignEntity(dataType)) {
+        extraParams = { dataOperation: AssayRunOperation.Delete };
+    }
+
     return getOperationConfirmationData(
         dataType,
         rowIds,
         selectionKey,
         useSnapshotSelection,
-        isDataClassEntity(dataType)
-            ? {
-                  dataOperation: DataOperation.Delete,
-              }
-            : isAssayDesignEntity(dataType)
-            ? { dataOperation: AssayRunOperation.Delete }
-            : undefined
+        extraParams,
+        containerPath
     );
 }
 
-export function getAssayResultOperationConfirmationData(operation: AssayRunOperation, rowIds: string[] | number[], schemaQuery: SchemaQuery): Promise<OperationConfirmationData> {
-    return new Promise((resolve, reject) => {
-        selectRows({
-            columns: ['RowId', 'Folder/Path'],
-            filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
-            schemaQuery: schemaQuery
-        }).then(response => {
-            const allowed = [];
-            response.rows.forEach(row => {
-                allowed.push({
-                    rowId: caseInsensitive(row, "RowId")?.value,
-                    containerPath: caseInsensitive(row, "Folder/Path")?.value,
-                })
-            });
-            resolve(new OperationConfirmationData({allowed}))
-        }).catch(error => {
-            console.error(error);
-            reject(error);
-        })
+async function getAssayResultOperationConfirmationData(
+    rowIds: string[] | number[],
+    schemaQuery: SchemaQuery,
+    containerPath?: string
+): Promise<OperationConfirmationData> {
+    const response = await selectRows({
+        columns: ['RowId', 'Folder/Path'],
+        containerPath,
+        filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
+        schemaQuery,
     });
+
+    const allowed = response.rows.reduce((agg, row) => {
+        agg.push({
+            rowId: caseInsensitive(row, 'RowId')?.value,
+            containerPath: caseInsensitive(row, 'Folder/Path')?.value,
+        });
+        return agg;
+    }, []);
+
+    return new OperationConfirmationData({ allowed });
 }
 
 export function getSampleOperationConfirmationData(
     operation: SampleOperation,
     rowIds?: string[] | number[],
     selectionKey?: string,
-    useSnapshotSelection?: boolean
+    useSnapshotSelection?: boolean,
+    containerPath?: string
 ): Promise<OperationConfirmationData> {
-    return getOperationConfirmationData(SampleTypeDataType, rowIds, selectionKey, useSnapshotSelection, {
-        sampleOperation: SampleOperation[operation],
-    });
+    return getOperationConfirmationData(
+        SampleTypeDataType,
+        rowIds,
+        selectionKey,
+        useSnapshotSelection,
+        { sampleOperation: SampleOperation[operation] },
+        containerPath
+    );
 }
 
 async function getSelectedParents(

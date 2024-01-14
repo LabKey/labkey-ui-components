@@ -9,6 +9,7 @@ import { InsertOptions } from '../../query/api';
 
 import {
     getDataOperationConfirmationData,
+    GetDeleteConfirmationDataOptions,
     getDeleteConfirmationData,
     getMoveConfirmationData,
     getEntityTypeData,
@@ -37,13 +38,7 @@ export interface EntityAPIWrapper {
         selectionKey?: string,
         useSnapshotSelection?: boolean
     ) => Promise<OperationConfirmationData>;
-    getDeleteConfirmationData: (
-        dataType: EntityDataType,
-        rowIds: string[] | number[],
-        selectionKey?: string,
-        useSnapshotSelection?: boolean,
-        schemaQuery?: SchemaQuery,
-    ) => Promise<OperationConfirmationData>;
+    getDeleteConfirmationData: (options: GetDeleteConfirmationDataOptions) => Promise<OperationConfirmationData>;
     getEntityTypeData: (
         model: EntityIdCreationModel,
         entityDataType: EntityDataType,

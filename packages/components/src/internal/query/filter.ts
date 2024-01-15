@@ -196,7 +196,7 @@ function getInClauseLabKeySql(
     filter: Filter.IFilter,
     jsonType: JsonType,
     tableAlias?: string,
-    noNegate?: boolean
+    flipNegative?: boolean
 ): string {
     const filterType = filter.getFilterType();
     const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
@@ -205,7 +205,7 @@ function getInClauseLabKeySql(
     const values = filterType.parseValue(filter.getValue());
 
     const sqlValues = [];
-    const negate = filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix() && !noNegate;
+    const negate = filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix() && !flipNegative;
     const includeNull = values.indexOf(null) > -1 || values.indexOf('') > -1;
     values.forEach(val => {
         sqlValues.push(getLabKeySqlValue(val, jsonType));
@@ -316,14 +316,14 @@ function getInContainsClauseLabKeySql(
     filter: Filter.IFilter,
     jsonType: JsonType,
     tableAlias?: string,
-    noNegate?: boolean
+    flipNegative?: boolean
 ): string {
     const filterType = filter.getFilterType();
     const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
 
     const values = filterType.parseValue(filter.getValue());
 
-    const negate = filterType.getURLSuffix() === Filter.Types.CONTAINS_NONE_OF.getURLSuffix() && !noNegate;
+    const negate = filterType.getURLSuffix() === Filter.Types.CONTAINS_NONE_OF.getURLSuffix() && !flipNegative;
 
     if (values.length === 0) return '';
 

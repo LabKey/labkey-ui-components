@@ -255,7 +255,7 @@ describe('getFieldFiltersValidationResult', () => {
                 sampleType1: [matchesAllBadFilter, stringBetweenFilter],
                 sampleType2: [intEqFilter],
             })
-        ).toEqual("A max of 10 values can be selected for 'Equals All Of' filter type for 'textField'.");
+        ).toEqual("At most 10 values can be selected for 'Equals All Of' filter type for 'textField'.");
     });
 });
 

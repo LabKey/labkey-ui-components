@@ -25,6 +25,7 @@ import { getColFormattedDateFilterValue } from '../../../../internal/util/Date';
 import { QueryColumn } from '../../../QueryColumn';
 
 import { Action, ActionValue } from './Action';
+import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../../../internal/query/filter';
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances
@@ -87,6 +88,9 @@ export function resolveFilterType(token: string, column: QueryColumn): Filter.IF
     if (SUFFIX_MAP.has(token)) {
         return SUFFIX_MAP.get(token);
     }
+
+    if (token === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix())
+        return ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE;
 
     if (SYMBOL_MAP.has(token)) {
         const symbolTypes = SYMBOL_MAP.get(token);

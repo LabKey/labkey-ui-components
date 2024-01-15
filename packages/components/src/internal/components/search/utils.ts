@@ -176,7 +176,7 @@ export function getFieldFiltersValidationResult(
 
     if (maxMatchAllErrorField)
         return (
-            "A max of 10 values can be selected for 'Equals All Of' filter type for '" + maxMatchAllErrorField + "'."
+            "At most 10 values can be selected for 'Equals All Of' filter type for '" + maxMatchAllErrorField + "'."
         );
 
     return null;
@@ -207,10 +207,7 @@ export function getUpdateFilterExpressionFilter(
         return null;
     }
 
-    const filterType =
-        newFilterType?.value === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix()
-            ? ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE
-            : resolveFilterType(newFilterType?.value, field);
+    const filterType = resolveFilterType(newFilterType?.value, field);
     if (!filterType) return null;
 
     let filter: Filter.IFilter;

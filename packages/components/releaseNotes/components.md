@@ -1,17 +1,22 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.X
-*Released*: X January 2024
+### version 3.5.5
+*Released*: 15 January 2024
 - Multi-Parent Matching in Sample Finder
-    - TODO
+    - add support for NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE and IN_EXP_ANCESTORS_OF_FILTER_TYPE
+    - show equals all for parent card id columns
+
+### version 3.5.4
+*Released*: 11 January 2024
+- Refactor all UNSAFE_ usages
 
 ### version 3.5.3
 *Released*: 11 January 2024
 - Language Consistency: 'My' vs. 'Your' and 'Shared' vs. 'Public'
 
 ### version 3.5.2
-*Released*: 10 January 2024
+*Released*: 11 January 2024
 * Make menuReload action actually reload the menu
 * Use menuReload action in registerWebsocketListeners
 

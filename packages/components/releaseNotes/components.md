@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Update `EntityIdCreationModel.postEntityGrid` to accept optional `containerPath`
+* Issue 49414: Add prop in EntityDataType to indicate if cross-type import is supported
 
 ### version 3.5.4
 *Released*: 11 January 2024

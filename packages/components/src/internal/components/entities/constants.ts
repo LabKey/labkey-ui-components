@@ -133,6 +133,7 @@ export const SampleTypeDataType: EntityDataType = {
     exprColumnsWithSubSelect: SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR,
     typeIcon: 'sample_set',
     sampleFinderCardType: 'sampleparent',
+    supportsCrossTypeImport: true,
     projectConfigurableDataType: 'SampleType',
     labelColorCol: 'labelcolor',
 };

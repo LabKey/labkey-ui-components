@@ -514,6 +514,7 @@ export interface EntityDataType {
     projectConfigurableDataType?: ProjectConfigurableDataType;
     sampleFinderCardType?: SampleFinderCardType;
     supportHasNoValueInQuery?: boolean;
+    supportsCrossTypeImport?: boolean;
     typeIcon?: string;
     typeListingSchemaQuery: SchemaQuery;
     typeNounAsParentSingular: string;

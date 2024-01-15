@@ -1,8 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.?.0
-*Released*: ?? January 2023
+### version 3.6.0
+*Released*: 16 January 2024
+- RReport: use dataRegionName
+  - Fixes Issue 49348
 - Add OverlayTrigger and useOverlayTriggerState
   - internal version to be used in place of the react-bootstrap version
 - Add Tooltip

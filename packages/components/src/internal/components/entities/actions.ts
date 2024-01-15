@@ -33,7 +33,7 @@ import {
     isAssayDesignEntity,
     isAssayResultEntity,
     isDataClassEntity,
-    isSampleEntity
+    isSampleEntity,
 } from './utils';
 import {
     AssayRunOperation,
@@ -635,7 +635,7 @@ export function handleEntityFileImport(
     importParameters?: Record<string, any>,
     importFileController?: string,
     saveToPipeline?: boolean,
-    containerPath?: string,
+    containerPath?: string
 ): Promise<any> {
     return new Promise((resolve, reject) => {
         return importData({

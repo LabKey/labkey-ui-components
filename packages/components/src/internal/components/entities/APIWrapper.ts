@@ -29,7 +29,6 @@ import {
     IParentOption,
     OperationConfirmationData,
 } from './models';
-import { SchemaQuery } from '../../../public/SchemaQuery';
 
 export interface EntityAPIWrapper {
     getDataOperationConfirmationData: (
@@ -71,7 +70,7 @@ export interface EntityAPIWrapper {
         importParameters?: Record<string, any>,
         importFileController?: string,
         saveToPipeline?: boolean,
-        containerPath?: string,
+        containerPath?: string
     ) => Promise<any>;
     initParentOptionsSelects: (
         includeSampleTypes: boolean,

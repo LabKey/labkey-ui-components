@@ -44,7 +44,7 @@ export function getFilterOptionsForType(field: QueryColumn, isAncestor: boolean)
 
     const useConceptFilters = field.isConceptCodeColumn && isOntologyEnabled();
 
-    const filterList = (
+    let filterList = (
         useConceptFilters ? CONCEPT_COLUMN_FILTER_TYPES : Filter.getFilterTypesForType(jsonType)
     ).filter(function (result) {
         return Filter.Types.HAS_ANY_VALUE.getURLSuffix() !== result.getURLSuffix();
@@ -55,7 +55,18 @@ export function getFilterOptionsForType(field: QueryColumn, isAncestor: boolean)
         filterList.push(Filter.Types.NOT_BETWEEN);
     }
 
-    if (!useConceptFilters && isAncestor) filterList.push(ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
+    if (!useConceptFilters && isAncestor) {
+        const equalsOneOfInd = filterList.map(type => type.getURLSuffix()).indexOf('in');
+        if (equalsOneOfInd) {
+            filterList = [
+                ...filterList.slice(0, equalsOneOfInd),
+                ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE,
+                ...filterList.slice(equalsOneOfInd)
+            ];
+        }
+        else
+            filterList.push(ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE);
+    }
 
     return filterList.map(filter => {
         let urlSuffix = filter.getURLSuffix();

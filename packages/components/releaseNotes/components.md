@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.5.5
+*Released*: 15 January 2024
+- Multi-Parent Matching in Sample Finder
+    - add support for NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE and IN_EXP_ANCESTORS_OF_FILTER_TYPE
+    - show equals all for parent card id columns
+
 ### version 3.5.4
 *Released*: 11 January 2024
 - Refactor all UNSAFE_ usages

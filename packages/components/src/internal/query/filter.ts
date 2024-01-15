@@ -192,7 +192,12 @@ export function getDateFieldLabKeySql(filter: Filter.IFilter, tableAlias?: strin
     return null;
 }
 
-function getInClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string): string {
+function getInClauseLabKeySql(
+    filter: Filter.IFilter,
+    jsonType: JsonType,
+    tableAlias?: string,
+    flipNegative?: boolean
+): string {
     const filterType = filter.getFilterType();
     const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
     let operatorSql = null;
@@ -200,7 +205,7 @@ function getInClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType, tableA
     const values = filterType.parseValue(filter.getValue());
 
     const sqlValues = [];
-    const negate = filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix();
+    const negate = filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix() && !flipNegative;
     const includeNull = values.indexOf(null) > -1 || values.indexOf('') > -1;
     values.forEach(val => {
         sqlValues.push(getLabKeySqlValue(val, jsonType));
@@ -307,13 +312,18 @@ function getInSubTreeClause(filter: Filter.IFilter, jsonType: JsonType, not?: bo
     return notFrag + 'IsInSubtree(' + columnNameSelect + ', ConceptPath(' + sqlValue + '))';
 }
 
-function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string): string {
+function getInContainsClauseLabKeySql(
+    filter: Filter.IFilter,
+    jsonType: JsonType,
+    tableAlias?: string,
+    flipNegative?: boolean
+): string {
     const filterType = filter.getFilterType();
     const columnNameSelect = getLegalIdentifier(filter.getColumnName(), tableAlias);
 
     const values = filterType.parseValue(filter.getValue());
 
-    const negate = filterType.getURLSuffix() === Filter.Types.CONTAINS_NONE_OF.getURLSuffix();
+    const negate = filterType.getURLSuffix() === Filter.Types.CONTAINS_NONE_OF.getURLSuffix() && !flipNegative;
 
     if (values.length === 0) return '';
 
@@ -351,14 +361,37 @@ function getInContainsClauseLabKeySql(filter: Filter.IFilter, jsonType: JsonType
     return likeClause + nullClause;
 }
 
+const NEGATIVE_FILTERS = [
+    Filter.Types.NOT_IN.getURLSuffix(),
+    Filter.Types.CONTAINS_NONE_OF.getURLSuffix(),
+    Filter.Types.NOT_BETWEEN.getURLSuffix(),
+    Filter.Types.NEQ_OR_NULL.getURLSuffix(),
+    Filter.Types.DOES_NOT_CONTAIN.getURLSuffix(),
+    Filter.Types.DOES_NOT_START_WITH.getURLSuffix(),
+    Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix(),
+    Filter.Types.NOT_EQUAL.getURLSuffix(),
+    Filter.Types.DATE_NOT_EQUAL.getURLSuffix()
+];
+
+export function isNegativeFilterType(filterType: Filter.IFilterType) {
+    return NEGATIVE_FILTERS.indexOf(filterType.getURLSuffix()) > -1;
+}
+
 /**
  * Note: this is an experimental API that may change unexpectedly in future releases.
  * From a filter and its column jsonType, return the LabKey sql operator clause
  * @param filter The Filter
  * @param jsonType The json type ("string", "int", "float", "date", or "boolean") of the field
+ * @param tableAlias
+ * @param flipNegative If true, use the non-negative version of the current negative filter type: not equal -> equal, not in -> in. This is used to generate a ~notinexpdescendantsof filter, when the field contains another ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE
  * @return labkey sql fragment
  */
-export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType, tableAlias?: string): string {
+export function getFilterLabKeySql(
+    filter: Filter.IFilter,
+    jsonType: JsonType,
+    tableAlias?: string,
+    flipNegative?: boolean
+): string {
     if (!filter) return null;
 
     const filterType = filter.getFilterType();
@@ -401,12 +434,12 @@ export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType, t
             filterType.getURLSuffix() === Filter.Types.IN.getURLSuffix() ||
             filterType.getURLSuffix() === Filter.Types.NOT_IN.getURLSuffix()
         ) {
-            return getInClauseLabKeySql(filter, jsonType, tableAlias);
+            return getInClauseLabKeySql(filter, jsonType, tableAlias, flipNegative);
         } else if (
             filterType.getURLSuffix() === Filter.Types.CONTAINS_ONE_OF.getURLSuffix() ||
             filterType.getURLSuffix() === Filter.Types.CONTAINS_NONE_OF.getURLSuffix()
         ) {
-            return getInContainsClauseLabKeySql(filter, jsonType, tableAlias);
+            return getInContainsClauseLabKeySql(filter, jsonType, tableAlias, flipNegative);
         } else if (
             filterType.getURLSuffix() === Filter.Types.BETWEEN.getURLSuffix() ||
             filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix()
@@ -414,7 +447,7 @@ export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType, t
             const values = filterType.parseValue(filter.getValue());
 
             operatorSql =
-                (filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix() ? 'NOT ' : '') +
+                (filterType.getURLSuffix() === Filter.Types.NOT_BETWEEN.getURLSuffix() && !flipNegative ? 'NOT ' : '') +
                 'BETWEEN ' +
                 getLabKeySqlValue(values[0], jsonType) +
                 ' AND ' +
@@ -423,6 +456,9 @@ export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType, t
             return columnNameSelect + ' ' + operatorSql;
         }
     } else if (filterType.getURLSuffix() === Filter.Types.NEQ_OR_NULL.getURLSuffix()) {
+        if (flipNegative) {
+            return columnNameSelect + ' = ' + getLabKeySqlValue(filter.getValue(), jsonType);
+        }
         return (
             '(' +
             columnNameSelect +
@@ -439,14 +475,17 @@ export function getFilterLabKeySql(filter: Filter.IFilter, jsonType: JsonType, t
     } else if (filterType.getURLSuffix() === Filter.Types.CONTAINS.getURLSuffix()) {
         return getContainsFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.DOES_NOT_CONTAIN.getURLSuffix()) {
+        if (flipNegative) return getContainsFullClause(filter, jsonType, tableAlias);
         return getNotContainsFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.STARTS_WITH.getURLSuffix()) {
         return getStartsWithFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.DOES_NOT_START_WITH.getURLSuffix()) {
+        if (flipNegative) return getStartsWithFullClause(filter, jsonType, tableAlias);
         return getNotStartsWithFullClause(filter, jsonType, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.ONTOLOGY_IN_SUBTREE.getURLSuffix()) {
         return getInSubTreeClause(filter, jsonType, false, tableAlias);
     } else if (filterType.getURLSuffix() === Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix()) {
+        if (flipNegative) return getInSubTreeClause(filter, jsonType, false, tableAlias);
         return getInSubTreeClause(filter, jsonType, true, tableAlias);
     }
 
@@ -490,3 +529,33 @@ export function registerFilterType(
  */
 export const COLUMN_IN_FILTER_TYPE = registerFilterType('COLUMN IN', null, 'columnin', true);
 export const COLUMN_NOT_IN_FILTER_TYPE = registerFilterType('COLUMN NOT IN', null, 'columnnotin', true);
+
+export const ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE = registerFilterType(
+    'Equals All Of',
+    null,
+    'ancestormatchesallof',
+    true,
+    ';'
+);
+
+export const IN_EXP_DESCENDANTS_OF_FILTER_TYPE = registerFilterType(
+    'IN DESCENDANTS OF',
+    null,
+    'inexpdescendantsof',
+    true,
+    ';'
+);
+export const NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE = registerFilterType(
+    'NOT IN DESCENDANTS OF',
+    null,
+    'notinexpdescendantsof',
+    true,
+    ';'
+);
+export const IN_EXP_ANCESTORS_OF_FILTER_TYPE = registerFilterType(
+    'IN ANCESTORS OF',
+    null,
+    'inexpancestorsof',
+    true,
+    ';'
+);

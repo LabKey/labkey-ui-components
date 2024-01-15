@@ -98,6 +98,7 @@ exports[`SampleTypeDesigner custom properties 1`] = `
         "autoLinkTargetContainerId": undefined,
         "autoLinkCategory": undefined,
         "excludedContainerIds": undefined,
+        "excludedDashboardContainerIds": undefined,
         "exception": undefined,
       }
     }
@@ -354,6 +355,7 @@ exports[`SampleTypeDesigner default properties 1`] = `
         "autoLinkTargetContainerId": undefined,
         "autoLinkCategory": undefined,
         "excludedContainerIds": undefined,
+        "excludedDashboardContainerIds": undefined,
         "exception": undefined,
       }
     }
@@ -562,6 +564,8 @@ exports[`SampleTypeDesigner default properties 1`] = `
     initCollapsed={true}
     onToggle={[Function]}
     onUpdateExcludedProjects={[Function]}
+    relatedDataTypeLabel="Include in Dashboard Insights graphs"
+    relatedProjectConfigurableDataType="DashboardSampleType"
   />
   <NameExpressionValidationModal
     onConfirm={[Function]}
@@ -850,6 +854,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "autoLinkTargetContainerId": undefined,
         "autoLinkCategory": undefined,
         "excludedContainerIds": undefined,
+        "excludedDashboardContainerIds": undefined,
         "exception": undefined,
       }
     }
@@ -1139,6 +1144,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     initCollapsed={true}
     onToggle={[Function]}
     onUpdateExcludedProjects={[Function]}
+    relatedDataTypeLabel="Include in Dashboard Insights graphs"
+    relatedProjectConfigurableDataType="DashboardSampleType"
   />
   <NameExpressionValidationModal
     onConfirm={[Function]}

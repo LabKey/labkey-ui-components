@@ -121,9 +121,12 @@ describe('CreateProjectPage', () => {
         const mockNavigate = jest.fn();
         rrd.__setNavigate(mockNavigate);
         const wrapper = mountWithAppServerContext(<CreateProjectPage />, getDefaultAppContext(), {
+            container: TEST_PROJECT_CONTAINER,
             moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT,
             user: TEST_USER_APP_ADMIN,
         });
+        await waitForLifecycle(wrapper);
+
         const container = wrapper.find(CreateProjectContainer);
         expect(container.exists()).toBe(true);
         const onCreated = container.prop('onCreated');

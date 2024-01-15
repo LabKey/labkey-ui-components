@@ -41,7 +41,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
     const [saveError, setSaveError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [dataTypeExclusion, setDataTypeExclusion] = useState<{ [key: string]: number[] }>({});
-    const { loaded, error, disabledTypesMap } = useFolderDataTypeExclusions(project);
+    const { loaded, error, disabledTypesMap } = useFolderDataTypeExclusions(api, project);
     const perDataTypeColumns = useMemo(() => (entityDataTypes?.length === 1 ? 2 : 1), [entityDataTypes]);
     const perEntityTypeColCls = useMemo(
         () => (entityDataTypes?.length === 1 ? 'col-xs-12' : 'col-xs-12 col-md-4'),
@@ -108,7 +108,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                                 return (
                                     <div
                                         key={entityDataType.nounSingular}
-                                        className={'bottom-spacing ' + perEntityTypeColCls}
+                                        className={'bottom-spacing project-datatype-col ' + perEntityTypeColCls}
                                     >
                                         <DataTypeSelector
                                             project={project}

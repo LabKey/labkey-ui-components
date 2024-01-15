@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Col } from 'react-bootstrap';
-
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
@@ -127,7 +125,7 @@ describe('DataTypeSelector', () => {
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         const list = wrapper.find('li.project-faceted__li');
         expect(list).toHaveLength(0);
-        expect(wrapper.text()).toEqual('Sample TypesNo Sample Types');
+        expect(wrapper.text()).toEqual('Sample TypesNo sample types');
     });
 
     test('with data types', async () => {
@@ -140,9 +138,8 @@ describe('DataTypeSelector', () => {
         expect(list).toHaveLength(2);
         expect(wrapper.text()).toEqual('Sample TypesDeselect AllBloodDNA');
 
-        const columns = wrapper.find(Col);
-        expect(columns).toHaveLength(2); // outer col + 1 inner col
-        expect(columns.at(1).prop('md')).toBeUndefined();
+        expect(wrapper.find('.col-xs-12')).toHaveLength(2); // outer col + 1 inner col
+        expect(wrapper.find('.col-md-6')).toHaveLength(0);
 
         const checkboxes = wrapper.find('.filter-faceted__checkbox');
         expect(checkboxes).toHaveLength(2);
@@ -158,9 +155,8 @@ describe('DataTypeSelector', () => {
         await waitForLifecycle(wrapper);
         const list = wrapper.find('li.project-faceted__li');
         expect(list).toHaveLength(2);
-        const columns = wrapper.find(Col);
-        expect(columns).toHaveLength(3); // outer col + 2 inner col
-        expect(columns.at(1).prop('md')).toEqual(6);
+        expect(wrapper.find('.col-xs-12')).toHaveLength(3); // outer col + 2 inner col
+        expect(wrapper.find('.col-md-6')).toHaveLength(2);
     });
 
     test('toggleSelectAll = false', async () => {
@@ -218,8 +214,6 @@ describe('DataTypeSelector', () => {
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         const list = wrapper.find('li.project-faceted__li');
         expect(list).toHaveLength(2);
-        expect(wrapper.text()).toEqual(
-            'storageDeselect Allfreezer1Floor1/Room2This is freezer 1freezer2This is freezer 2'
-        );
+        expect(wrapper.text()).toEqual('storageDeselect Allfreezer1Floor1/Room2freezer2');
     });
 });

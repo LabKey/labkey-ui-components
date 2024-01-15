@@ -1,38 +1,53 @@
 import React from 'react';
-import { Col } from 'react-bootstrap';
 
-import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { AssayRunDataType, SampleTypeDataType } from '../entities/constants';
 
 import { TEST_FOLDER_CONTAINER } from '../../containerFixtures';
 
+import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
+
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 
 describe('ProjectDataTypeSelections', () => {
-    test('without selected project - new project', () => {
-        const wrapper = mountWithAppServerContext(<ProjectDataTypeSelections entityDataTypes={[SampleTypeDataType]} />);
+    const API = getFolderTestAPIWrapper(jest.fn, {
+        getFolderDataTypeExclusions: jest.fn().mockResolvedValue({}),
+    });
+
+    test('without selected project - new project', async () => {
+        const wrapper = mountWithAppServerContext(
+            <ProjectDataTypeSelections api={API} entityDataTypes={[SampleTypeDataType]} />
+        );
+        await waitForLifecycle(wrapper);
         expect(wrapper.find('button')).toHaveLength(0);
     });
 
-    test('with project', () => {
-        const wrapper = mountWithAppServerContext(
-            <ProjectDataTypeSelections entityDataTypes={[SampleTypeDataType]} project={TEST_FOLDER_CONTAINER} />
-        );
-        expect(wrapper.find('button')).toHaveLength(1);
-        expect(wrapper.find('button').text()).toBe('Save');
-        expect(wrapper.find(Col)).toHaveLength(1);
-    });
-
-    test('with 2 entityDataTypes', () => {
+    test('with project', async () => {
         const wrapper = mountWithAppServerContext(
             <ProjectDataTypeSelections
+                api={API}
+                entityDataTypes={[SampleTypeDataType]}
+                project={TEST_FOLDER_CONTAINER}
+            />
+        );
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('button')).toHaveLength(1);
+        expect(wrapper.find('button').text()).toBe('Save');
+        expect(wrapper.find('.project-datatype-col')).toHaveLength(1);
+    });
+
+    test('with 2 entityDataTypes', async () => {
+        const wrapper = mountWithAppServerContext(
+            <ProjectDataTypeSelections
+                api={API}
                 entityDataTypes={[SampleTypeDataType, AssayRunDataType]}
                 project={TEST_FOLDER_CONTAINER}
             />
         );
+        await waitForLifecycle(wrapper);
         expect(wrapper.find('button')).toHaveLength(1);
         expect(wrapper.find('button').text()).toBe('Save');
-        expect(wrapper.find(Col)).toHaveLength(2);
+        expect(wrapper.find('.project-datatype-col')).toHaveLength(2);
     });
 });

@@ -3,7 +3,7 @@ import React from 'react';
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { SampleTypeDataType } from '../entities/constants';
 import { getTestAPIWrapper } from '../../APIWrapper';
-import { TEST_FOLDER_CONTAINER } from '../../containerFixtures';
+import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 import { DataTypeSelector } from '../entities/DataTypeSelector';
@@ -16,7 +16,7 @@ describe('DataTypeProjectsPanel', () => {
         api: getTestAPIWrapper(jest.fn, {
             folder: getFolderTestAPIWrapper(jest.fn, {
                 getDataTypeExcludedProjects: jest.fn().mockResolvedValue([]),
-                getProjects: jest.fn().mockResolvedValue([TEST_FOLDER_CONTAINER]),
+                getProjects: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
             }),
             query: getQueryTestAPIWrapper(jest.fn, {
                 getDataTypeProjectDataCount: jest.fn().mockResolvedValue({}),
@@ -62,7 +62,7 @@ describe('DataTypeProjectsPanel', () => {
                     ...APP_CONTEXT.api,
                     folder: getFolderTestAPIWrapper(jest.fn, {
                         getDataTypeExcludedProjects: jest.fn().mockResolvedValue([TEST_FOLDER_CONTAINER.id]),
-                        getProjects: jest.fn().mockResolvedValue([TEST_FOLDER_CONTAINER]),
+                        getProjects: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
                     }),
                 }),
             },
@@ -91,7 +91,7 @@ describe('DataTypeProjectsPanel', () => {
                     ...APP_CONTEXT.api,
                     folder: getFolderTestAPIWrapper(jest.fn, {
                         getDataTypeExcludedProjects: jest.fn().mockResolvedValue([]),
-                        getProjects: jest.fn().mockResolvedValue([]),
+                        getProjects: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER]),
                     }),
                 }),
             },

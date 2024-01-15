@@ -4,6 +4,7 @@ import { Container } from '../base/models/Container';
 import { handleRequestFailure } from '../../util/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { ProjectConfigurableDataType } from '../entities/models';
+import { getFolderDataTypeExclusions } from '../entities/actions';
 import { isAppHomeFolder } from '../../app/utils';
 import { fetchContainers } from '../permissions/actions';
 import { ModuleContext } from '../base/ServerContext';
@@ -31,6 +32,7 @@ export interface UpdateProjectSettingsOptions {
 export interface FolderAPIWrapper {
     createProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
     getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
+    getFolderDataTypeExclusions: (excludedContainer?: string) => Promise<{ [key: string]: number[] }>;
     getProjects: (
         container?: Container,
         moduleContext?: ModuleContext,
@@ -177,6 +179,8 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 });
         });
     };
+
+    getFolderDataTypeExclusions = getFolderDataTypeExclusions;
 }
 
 /**
@@ -191,6 +195,7 @@ export function getFolderTestAPIWrapper(
         renameProject: mockFn(),
         updateProjectDataExclusions: mockFn(),
         getDataTypeExcludedProjects: mockFn(),
+        getFolderDataTypeExclusions: mockFn(),
         updateProjectLookAndFeelSettings: mockFn(),
         getProjects: mockFn,
         ...overrides,

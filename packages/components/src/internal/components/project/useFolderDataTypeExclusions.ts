@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { getFolderDataTypeExclusions } from '../entities/actions';
 import { resolveErrorMessage } from '../../util/messaging';
 import { Container } from '../base/models/Container';
+import { FolderAPIWrapper } from '../container/FolderAPIWrapper';
 
 export const useFolderDataTypeExclusions = (
+    api: FolderAPIWrapper,
     project: Container
 ): { loaded: boolean; error: string; disabledTypesMap: Record<string, number[]> } => {
     const [loaded, setLoaded] = useState<boolean>(false);
@@ -18,7 +19,7 @@ export const useFolderDataTypeExclusions = (
 
             try {
                 if (project) {
-                    const disabledTypesMap_ = await getFolderDataTypeExclusions(project?.path);
+                    const disabledTypesMap_ = await api.getFolderDataTypeExclusions(project?.path);
                     setDisabledTypesMap(disabledTypesMap_);
                 } else {
                     setDisabledTypesMap({});

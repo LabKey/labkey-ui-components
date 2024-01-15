@@ -13,6 +13,8 @@ import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
 import { AdminAppContext, AppContext } from '../../AppContext';
 
+import { SampleTypeDataType } from '../entities/constants';
+
 import { ProjectNameSetting } from './ProjectNameSetting';
 import { ProjectSettings, ProjectSettingsProps } from './ProjectSettings';
 
@@ -21,12 +23,16 @@ describe('ProjectSettings', () => {
         return {
             onChange: jest.fn(),
             onSuccess: jest.fn(),
+            onPageError: jest.fn(),
         };
     }
 
-    function getDefaultAppContext(admin = {}): Partial<AppContext> {
+    function getDefaultAppContext(): Partial<AppContext> {
         return {
-            admin: admin as AdminAppContext,
+            admin: {
+                projectDataTypes: [SampleTypeDataType],
+                sampleTypeDataType: SampleTypeDataType,
+            } as AdminAppContext,
             api: getTestAPIWrapper(),
         };
     }
@@ -34,6 +40,7 @@ describe('ProjectSettings', () => {
     function getChildServerContext(): Partial<ServerContext> {
         return {
             container: TEST_FOLDER_CONTAINER,
+            moduleContext: { query: { isProductProjectsEnabled: true } },
             user: TEST_USER_APP_ADMIN,
         };
     }
@@ -41,6 +48,7 @@ describe('ProjectSettings', () => {
     function getHomeServerContext(): Partial<ServerContext> {
         return {
             container: TEST_PROJECT_CONTAINER,
+            moduleContext: { query: { isProductProjectsEnabled: true } },
             user: TEST_USER_APP_ADMIN,
         };
     }
@@ -102,22 +110,7 @@ describe('ProjectSettings', () => {
         );
 
         expect(wrapper.find('.project-settings')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').text()).toBe('Settings');
-        expect(wrapper.find('.delete-project-button').hostNodes()).toHaveLength(1);
-        expect(wrapper.find('.delete-project-button').hostNodes().text()).toBe(' Delete Project');
-        wrapper.unmount();
-
-        wrapper = mountWithAppServerContext(
-            <ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_CONTAINER} />,
-            getDefaultAppContext(),
-            {
-                container: TEST_FOLDER_CONTAINER,
-                user: TEST_USER_APP_ADMIN,
-            }
-        );
-
-        expect(wrapper.find('.project-settings')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').text()).toBe('Settings');
+        expect(wrapper.find('.panel-heading').first().text()).toBe('Settings');
         expect(wrapper.find('.delete-project-button').hostNodes()).toHaveLength(1);
         expect(wrapper.find('.delete-project-button').hostNodes().text()).toBe(' Delete Project');
         wrapper.unmount();
@@ -125,16 +118,30 @@ describe('ProjectSettings', () => {
         wrapper = mountWithAppServerContext(
             <ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_OTHER_CONTAINER} />,
             getDefaultAppContext(),
+            getChildServerContext()
+        );
+
+        expect(wrapper.find('.project-settings')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').first().text()).toBe('Settings');
+        expect(wrapper.find('.delete-project-button').hostNodes()).toHaveLength(1);
+        expect(wrapper.find('.delete-project-button').hostNodes().text()).toBe(' Delete Project');
+        wrapper.unmount();
+    });
+
+    test('app without projects', () => {
+        const wrapper = mountWithAppServerContext(
+            <ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER} />,
+            getDefaultAppContext(),
             {
-                container: TEST_FOLDER_CONTAINER,
+                container: TEST_PROJECT_CONTAINER,
+                moduleContext: { query: { isProductProjectsEnabled: false } },
                 user: TEST_USER_APP_ADMIN,
             }
         );
 
         expect(wrapper.find('.project-settings')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').text()).toBe('Settings');
-        expect(wrapper.find('.delete-project-button').hostNodes()).toHaveLength(1);
-        expect(wrapper.find('.delete-project-button').hostNodes().text()).toBe(' Delete Project');
+        expect(wrapper.find('.panel-heading').text()).toBe('Dashboard');
+        expect(wrapper.find('.delete-project-button')).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -145,7 +152,7 @@ describe('ProjectSettings', () => {
         const wrapper = mountWithAppServerContext(
             <ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_CONTAINER} />,
             {
-                admin: {} as AdminAppContext,
+                ...getDefaultAppContext(),
                 api: getTestAPIWrapper(jest.fn, {
                     folder: getFolderTestAPIWrapper(jest.fn, {
                         renameProject,
@@ -183,7 +190,7 @@ describe('ProjectSettings', () => {
         const wrapper = mountWithAppServerContext(
             <ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_OTHER_CONTAINER} />,
             {
-                admin: {} as AdminAppContext,
+                ...getDefaultAppContext(),
                 api: getTestAPIWrapper(jest.fn, {
                     folder: getFolderTestAPIWrapper(jest.fn, {
                         renameProject,
@@ -220,7 +227,7 @@ describe('ProjectSettings', () => {
         const wrapper = mountWithAppServerContext(
             <ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_OTHER_CONTAINER} />,
             {
-                admin: {} as AdminAppContext,
+                ...getDefaultAppContext(),
                 api: getTestAPIWrapper(jest.fn, {
                     folder: getFolderTestAPIWrapper(jest.fn, {
                         renameProject,

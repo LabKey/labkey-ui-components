@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.6.0
+*Released*: 15 January 2024
+- Publicly export `PlacementType`
+- Add `allowExport` prop on `EditableGridPanel`
+- Add `plate.PlateSet` to schema constants
+- `entity.getDeleteConfirmationData`: support containerPath
+
 ### version 3.5.5
 *Released*: 15 January 2024
 - Multi-Parent Matching in Sample Finder

@@ -14,6 +14,19 @@ Components, models, actions, and utility functions for LabKey applications and p
   - changes sample chart configs to exclude based on both 'SampleType' and 'DashboardSampleType' exclusions
   - add sampleTypeDataType to AppAdminContext
 
+### version 3.6.0
+*Released*: 15 January 2024
+- Publicly export `PlacementType`
+- Add `allowExport` prop on `EditableGridPanel`
+- Add `plate.PlateSet` to schema constants
+- `entity.getDeleteConfirmationData`: support containerPath
+
+### version 3.5.5
+*Released*: 15 January 2024
+- Multi-Parent Matching in Sample Finder
+    - add support for NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE and IN_EXP_ANCESTORS_OF_FILTER_TYPE
+    - show equals all for parent card id columns
+
 ### version 3.5.4
 *Released*: 11 January 2024
 - Refactor all UNSAFE_ usages

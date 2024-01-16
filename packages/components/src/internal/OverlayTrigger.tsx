@@ -26,6 +26,9 @@ interface OverlayTriggerState<T extends Element = HTMLDivElement> {
 /**
  * useOverlayTriggerState is a useful hook for when you want to render an overlay, but you can't use OverlayTrigger
  * because you can't wrap your component in an arbitrary div.
+ *
+ * See additional docs at components/docs/overlays.md
+ *
  * @param id the id to use for the portal
  * @param hoverEventsEnabled whether onMouseEnter/Leave will trigger the show state
  * @param clickEventEnabled whether onClick with trigger the showState
@@ -103,6 +106,8 @@ interface Props {
  *      - If you need to make a proper component the direct child of this you can wrap your component with forwardRef,
  *      but you will still need to pass that injected ref to a low level tag like div, span, etc.
  *          - https://react.dev/reference/react/forwardRef
+ *
+ * See additional docs at components/docs/overlays.md
  */
 export const OverlayTrigger: FC<Props> = ({
     children,

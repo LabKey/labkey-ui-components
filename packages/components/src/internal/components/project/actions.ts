@@ -49,7 +49,7 @@ export function getProjectDataTypeDataCount(
                 lookup[type.lsid] = type.rowId;
             });
         }
-        let cf = getContainerFilterForFolder();
+        let cf = getContainerFilterForFolder(containerPath);
         if (isNewFolder) {
             cf = isAllProductFoldersFilteringEnabled()
                 ? Query.ContainerFilter.allInProjectPlusShared

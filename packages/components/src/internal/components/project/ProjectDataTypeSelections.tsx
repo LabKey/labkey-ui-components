@@ -99,6 +99,9 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                     <div className="row">
                         {loaded &&
                             entityDataTypes?.map(entityDataType => {
+                                // uncheck those data types that have been configured  to be excluded, but if this
+                                // is a "child/related" exclusion type, then use the parent exclusions to hide options
+                                // (i.e. for the "Sample Type" exclusions and the "Dashboard Sample Type" exclusions)
                                 const uncheckedDataTypes =
                                     disabledTypesMap?.[dataTypePrefix + entityDataType.projectConfigurableDataType];
                                 const hiddenDataTypes = dataTypePrefix

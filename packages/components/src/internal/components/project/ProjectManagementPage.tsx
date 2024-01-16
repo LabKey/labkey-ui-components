@@ -42,6 +42,7 @@ export const ProjectManagementPage: FC = memo(() => {
     const [selectedProject, setSelectedProject] = useState<Container>();
     const [error, setError] = useState<string>();
     const [loaded, setLoaded] = useState<boolean>(false);
+    const [includesChildProject, setIncludesChildProject] = useState<boolean>(false);
     useEffect(() => {
         (async () => {
             setLoaded(false);
@@ -68,6 +69,8 @@ export const ProjectManagementPage: FC = memo(() => {
                 }
 
                 setSelectedProject(defaultContainer);
+
+                setIncludesChildProject(projects_.some(proj => proj.path !== homeFolderPath));
             } catch (e) {
                 setError(`Error: ${resolveErrorMessage(e)}`);
             } finally {
@@ -149,13 +152,13 @@ export const ProjectManagementPage: FC = memo(() => {
             >
                 <Alert>{error}</Alert>
                 {!loaded && !error && <LoadingSpinner />}
-                {loaded && !error && projects?.length === 1 && (
+                {loaded && !error && !includesChildProject && (
                     <Alert bsStyle="warning">
                         No projects have been created. Click{' '}
                         <a href={AppURL.create('admin', 'projects', 'new').toHref()}>here</a> to get started.
                     </Alert>
                 )}
-                {projects?.length > 1 && (
+                {includesChildProject && (
                     <div className="side-panels-container">
                         <ProjectListing
                             projects={projects}

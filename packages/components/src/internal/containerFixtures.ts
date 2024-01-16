@@ -28,7 +28,10 @@ const TEST_PROJECT_CONTAINER_CONFIG = {
 export const TEST_PROJECT_CONTAINER = new Container(TEST_PROJECT_CONTAINER_CONFIG);
 export const TEST_PROJECT_CONTAINER_ADMIN = new Container({
     ...TEST_PROJECT_CONTAINER_CONFIG,
-    effectivePermissions: ['org.labkey.api.security.permissions.AdminPermission'],
+    effectivePermissions: [
+        'org.labkey.api.security.permissions.AdminPermission',
+        'org.labkey.api.security.permissions.AddUserPermission',
+    ],
 });
 export const TEST_PROJECT: Project = {
     id: TEST_PROJECT_CONTAINER.id,

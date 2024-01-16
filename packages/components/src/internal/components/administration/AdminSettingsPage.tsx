@@ -105,7 +105,7 @@ export const AdminSettingsPage: FC = () => {
                         setIsDirty={setIsDirty}
                     />
                 )}
-                {!hasProductProjects() && sampleTypeDataType && (
+                {!hasProductProjects(moduleContext) && sampleTypeDataType && (
                     <ProjectDataTypeSelections
                         api={api.folder}
                         panelTitle="Dashboard"

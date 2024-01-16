@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.6.0
+### version 3.7.0
 *Released*: 16 January 2024
 - RReport: use dataRegionName
   - Fixes Issue 49348

@@ -29,10 +29,12 @@ interface Props {
     field: QueryColumn;
     fieldFilters: Filter.IFilter[];
     onFieldFilterUpdate?: (newFilters: Filter.IFilter[], index: number) => void;
+    includeAllAncestorFilter?: boolean;
 }
 
 export const FilterExpressionView: FC<Props> = memo(props => {
-    const { allowRelativeDateFilter, field, fieldFilters, onFieldFilterUpdate, disabled } = props;
+    const { allowRelativeDateFilter, field, fieldFilters, onFieldFilterUpdate, disabled, includeAllAncestorFilter } =
+        props;
 
     const [fieldFilterOptions, setFieldFilterOptions] = useState<FieldFilterOption[]>(undefined);
     const [activeFilters, setActiveFilters] = useState<FilterSelection[]>([]);
@@ -40,7 +42,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
     const [expandedOntologyKey, setExpandedOntologyKey] = useState<string>(undefined);
 
     useEffect(() => {
-        const filterOptions = getFilterOptionsForType(field);
+        const filterOptions = getFilterOptionsForType(field, includeAllAncestorFilter);
         setFieldFilterOptions(filterOptions);
         setActiveFilters(getFilterSelections(fieldFilters, filterOptions));
     }, [field]); // leave fieldFilters out of deps list, fieldFilters is used to init once

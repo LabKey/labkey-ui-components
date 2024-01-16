@@ -223,7 +223,11 @@ import {
 import {
     COLUMN_IN_FILTER_TYPE,
     COLUMN_NOT_IN_FILTER_TYPE,
+    ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE,
+    IN_EXP_DESCENDANTS_OF_FILTER_TYPE,
+    NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE,
     getFilterLabKeySql,
+    isNegativeFilterType,
     getLegalIdentifier,
     registerFilterType,
 } from './internal/query/filter';
@@ -493,6 +497,7 @@ import {
     getJobCreationHref,
     getUniqueIdColumnMetadata,
     isSampleEntity,
+    isDataClassEntity,
     sampleDeleteDependencyText,
 } from './internal/components/entities/utils';
 import {
@@ -868,6 +873,7 @@ const App = {
     isCrossProjectImportEnabled,
     isAllProductFoldersFilteringEnabled,
     isSampleEntity,
+    isDataClassEntity,
     getPrimaryAppProperties,
     getProjectDataExclusion,
     getProjectAssayDesignExclusion,
@@ -1038,7 +1044,11 @@ export {
     registerFilterType,
     COLUMN_IN_FILTER_TYPE,
     COLUMN_NOT_IN_FILTER_TYPE,
+    ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE,
+    IN_EXP_DESCENDANTS_OF_FILTER_TYPE,
+    NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE,
     getFilterLabKeySql,
+    isNegativeFilterType,
     getLegalIdentifier,
     loadQueries,
     loadQueriesFromTable,
@@ -1788,6 +1798,7 @@ export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
 export type { URLMapper } from './internal/url/URLResolver';
 export type { EditableGridEvent } from './internal/components/editable/constants';
+export type { PlacementType } from './internal/components/editable/Controls';
 export type { EditableGridChange } from './internal/components/editable/EditableGrid';
 export type { GetAssayDefinitionsOptions, GetProtocolOptions } from './internal/components/assay/actions';
 export type {

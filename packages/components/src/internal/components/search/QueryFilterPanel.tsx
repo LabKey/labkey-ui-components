@@ -16,6 +16,8 @@ import { NOT_ANY_FILTER_TYPE } from '../../url/NotAnyFilterType';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../query/filter';
+
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter } from './models';
@@ -51,6 +53,7 @@ interface Props {
     skipDefaultViewCheck?: boolean;
     validFilterField?: (field: QueryColumn, queryInfo: QueryInfo, exprColumnsWithSubSelect?: string[]) => boolean;
     viewName?: string;
+    isAncestor?: boolean;
 }
 
 export const QueryFilterPanel: FC<Props> = memo(props => {
@@ -74,6 +77,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         hasNotInQueryFilterLabel,
         altQueryName,
         fields,
+        isAncestor,
     } = props;
     const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
@@ -195,7 +199,13 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
 
         // use active filters to filter distinct values, but exclude filters on current field
         filters?.[filterQueryKey]?.forEach(field => {
-            if (field.fieldKey !== activeFieldKey) valueFilters.push(field.filter);
+            if (field.fieldKey !== activeFieldKey) {
+                let filter = field.filter;
+                // convert ancestor matches all to IN filter type for distinct value selection
+                if (filter.getFilterType().getURLSuffix() === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix())
+                    filter = Filter.create(filter.getColumnName(), filter.getValue(), Filter.Types.IN);
+                valueFilters.push(filter);
+            }
         });
 
         return valueFilters;
@@ -307,6 +317,9 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                                                     onFilterUpdate(activeField, newFilters, index)
                                                 }
                                                 disabled={hasNotInQueryFilter}
+                                                includeAllAncestorFilter={
+                                                    isAncestor && activeField?.fieldKey.toLowerCase() === 'name'
+                                                }
                                             />
                                         )}
                                     </Tab.Pane>

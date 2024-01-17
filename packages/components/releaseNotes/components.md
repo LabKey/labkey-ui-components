@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Add `AuditSettings` panel for configuring whether user comments are required for data changes
 
+### version 3.7.1
+*Released*: 17 January 2024
+* Update `EntityIdCreationModel.postEntityGrid` to accept optional `containerPath`
+* Issue 49414: Add prop in EntityDataType to indicate if cross-type import is supported
+
 ### version 3.7.0
 *Released*: 16 January 2024
 - RReport: use dataRegionName

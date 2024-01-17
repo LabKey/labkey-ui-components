@@ -12,7 +12,7 @@ import { Container } from '../base/models/Container';
 
 import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from './models';
 
-const filterDataTypeHiddenEntity = (dataType: DataTypeEntity, hiddenEntities?: any[]): boolean => {
+export const filterDataTypeHiddenEntity = (dataType: DataTypeEntity, hiddenEntities?: any[]): boolean => {
     return !hiddenEntities || hiddenEntities?.indexOf(dataType.rowId ?? dataType.lsid) === -1;
 };
 

@@ -126,4 +126,50 @@ describe('DataTypeProjectsPanel', () => {
 
         wrapper.unmount();
     });
+
+    test('with a project and related exclusion type', async () => {
+        const wrapper = mountWithAppServerContext(
+            <DataTypeProjectsPanelImpl entityDataType={SampleTypeDataType} relatedDataTypeLabel="Include in Dashboard" relatedProjectConfigurableDataType="DashboardSampleType" onUpdateExcludedProjects={jest.fn()} />,
+            {
+                api: getTestAPIWrapper(jest.fn, {
+                    ...APP_CONTEXT.api,
+                    folder: getFolderTestAPIWrapper(jest.fn, {
+                        getDataTypeExcludedProjects: jest.fn().mockResolvedValue([]),
+                        getProjects: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
+                    }),
+                }),
+            },
+            SERVER_CONTEXT
+        );
+        await waitForLifecycle(wrapper, 50);
+
+        expect(wrapper.find(DataTypeSelector)).toHaveLength(2);
+        expect(wrapper.find(DataTypeSelector).first().text()).toBe('Include in ProjectsDeselect AllTest Folder Container');
+        expect(wrapper.find(DataTypeSelector).last().text()).toBe('Include in DashboardDeselect AllTest Project ContainerTest Folder Container');
+
+        wrapper.unmount();
+    });
+
+    test('with a project and related exclusion type, all excluded', async () => {
+        const wrapper = mountWithAppServerContext(
+            <DataTypeProjectsPanelImpl entityDataType={SampleTypeDataType} relatedDataTypeLabel="Include in Dashboard" relatedProjectConfigurableDataType="DashboardSampleType" onUpdateExcludedProjects={jest.fn()} />,
+            {
+                api: getTestAPIWrapper(jest.fn, {
+                    ...APP_CONTEXT.api,
+                    folder: getFolderTestAPIWrapper(jest.fn, {
+                        getDataTypeExcludedProjects: jest.fn().mockResolvedValue([TEST_FOLDER_CONTAINER.id]),
+                        getProjects: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER, TEST_FOLDER_CONTAINER]),
+                    }),
+                }),
+            },
+            SERVER_CONTEXT
+        );
+        await waitForLifecycle(wrapper, 50);
+
+        expect(wrapper.find(DataTypeSelector)).toHaveLength(2);
+        expect(wrapper.find(DataTypeSelector).first().text()).toBe('Include in ProjectsSelect AllTest Folder Container');
+        expect(wrapper.find(DataTypeSelector).last().text()).toBe('Include in DashboardSelect AllTest Project Container');
+
+        wrapper.unmount();
+    });
 });

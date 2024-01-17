@@ -74,51 +74,43 @@ exports[`TextFieldOptions Text data type 1`] = `
                   className="domain-no-wrap"
                 >
                   Length
-                  <Component
-                    id="tooltip"
+                  <LabelHelpTip
                     title="Maximum Text Length"
                   >
-                    <span
-                      className="label-help-target"
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
+                    <OverlayTrigger
+                      id="label-help-tip2"
+                      overlay={
+                        <Popover
+                          id="label-help-tip-popover"
+                          title="Maximum Text Length"
+                        >
+                          <React.Fragment>
+                            <p>
+                              Sets the maximum character count for a text field.
+                            </p>
+                            <p>
+                              Anything over 4,000 characters will use the 'Unlimited' designation.
+                            </p>
+                          </React.Fragment>
+                        </Popover>
+                      }
                     >
-                      <span
-                        className="label-help-icon fa fa-question-circle"
-                      />
-                      <Overlay
-                        animation={[Function]}
-                        placement="right"
-                        rootClose={false}
-                        show={false}
-                        target={
-                          <span
-                            class="label-help-target"
-                          >
-                            <span
-                              class="label-help-icon fa fa-question-circle"
-                            />
-                          </span>
-                        }
+                      <div
+                        className="overlay-trigger"
+                        onClick={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
                       >
-                        <Overlay
-                          placement="right"
-                          rootClose={false}
-                          show={false}
-                          target={
-                            <span
-                              class="label-help-target"
-                            >
-                              <span
-                                class="label-help-icon fa fa-question-circle"
-                              />
-                            </span>
-                          }
-                          transition={[Function]}
-                        />
-                      </Overlay>
-                    </span>
-                  </Component>
+                        <span
+                          className="label-help-target"
+                        >
+                          <span
+                            className="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </OverlayTrigger>
+                  </LabelHelpTip>
                 </span>
               </DomainFieldLabel>
             </div>

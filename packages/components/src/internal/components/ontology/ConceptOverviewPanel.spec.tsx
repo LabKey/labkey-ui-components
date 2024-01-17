@@ -13,6 +13,7 @@ import {
 } from './ConceptOverviewPanel';
 import { ConceptPathDisplay } from './ConceptPathDisplay';
 import { ConceptModel, PathModel } from './models';
+import { waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 const TEST_CONCEPT = new ConceptModel({ code: 'a', label: 'b', description: 'c' });
 const TEST_PATH = new PathModel({});
@@ -107,7 +108,7 @@ describe('ConceptOverviewPanelImpl', () => {
 });
 
 describe('ConceptOverviewToolTip', () => {
-    function validate(wrapper: ReactWrapper, concept?: ConceptModel, errorTxt?: string): void {
+    async function validate(wrapper: ReactWrapper, concept?: ConceptModel, errorTxt?: string): void {
         expect(wrapper.find(LabelHelpTip)).toHaveLength(errorTxt ? 0 : 1);
         expect(wrapper.find(Alert)).toHaveLength(1);
         expect(wrapper.find(Alert).text()).toBe(errorTxt ?? '');
@@ -115,36 +116,37 @@ describe('ConceptOverviewToolTip', () => {
         expect(infoIcon).toHaveLength(errorTxt ? 0 : !concept ? 0 : 1);
 
         if (infoIcon.length > 0) {
-            infoIcon.simulate('mouseover');
+            wrapper.find('.overlay-trigger').simulate('mouseenter');
+            await waitForLifecycle(wrapper);
             const over = wrapper.find('.ontology-concept-overview-container');
-            expect(over.find('.ontology-concept-overview-container')).toHaveLength(errorTxt ? 0 : 1);
+            expect(over).toHaveLength(errorTxt ? 0 : 1);
             expect(over.find(ConceptOverviewPanelImpl)).toHaveLength(errorTxt ? 0 : 1);
         }
     }
 
-    test('no concept', () => {
+    test('no concept', async () => {
         const wrapper = mount(<ConceptOverviewTooltip concept={undefined} />);
-        validate(wrapper);
+        await validate(wrapper);
         wrapper.unmount();
     });
 
-    test('with concept', () => {
+    test('with concept', async () => {
         const wrapper = mount(<ConceptOverviewTooltip concept={TEST_CONCEPT} />);
-        validate(wrapper, TEST_CONCEPT);
+        await validate(wrapper, TEST_CONCEPT);
         expect(wrapper.find(ConceptOverviewPanelImpl).prop('concept')).toBe(TEST_CONCEPT);
         wrapper.unmount();
     });
 
-    test('with path', () => {
+    test('with path', async () => {
         const wrapper = mount(<ConceptOverviewTooltip concept={TEST_CONCEPT} path={TEST_PATH} />);
-        validate(wrapper, TEST_CONCEPT);
+        await validate(wrapper, TEST_CONCEPT);
         expect(wrapper.find(ConceptOverviewPanelImpl).prop('selectedPath')).toBe(TEST_PATH);
         wrapper.unmount();
     });
 
-    test('error', () => {
+    test('error', async () => {
         const wrapper = mount(<ConceptOverviewTooltip error="test error" concept={TEST_CONCEPT} />);
-        validate(wrapper, TEST_CONCEPT, 'test error');
+        await validate(wrapper, TEST_CONCEPT, 'test error');
         wrapper.unmount();
     });
 });

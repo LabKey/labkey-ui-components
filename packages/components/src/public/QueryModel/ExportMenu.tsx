@@ -59,7 +59,7 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
     return (
         hasData && (
             <div className="export-menu">
-                <Tip caption="Export" trigger={['hover']}>
+                <Tip caption="Export">
                     <DropdownButton
                         id={`export-drop-${id}`}
                         noCaret

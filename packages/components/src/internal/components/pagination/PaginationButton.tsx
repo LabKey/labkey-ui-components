@@ -1,8 +1,11 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 
+import { createPortal } from 'react-dom';
+
 import { blurActiveElement } from '../../util/utils';
-import { Tip } from '../base/Tip';
+import { useOverlayTriggerState } from '../../OverlayTrigger';
+import { Tooltip } from '../../Tooltip';
 
 interface Props {
     className?: string;
@@ -12,24 +15,41 @@ interface Props {
     tooltip: string;
 }
 
-export class PaginationButton extends PureComponent<Props> {
-    onClick = (): void => {
-        this.props.onClick();
+export const PaginationButton: FC<Props> = ({ className, disabled, iconClass, onClick, tooltip }) => {
+    const clsName = classNames(className, 'pagination-button btn btn-default', {
+        'disabled-button-with-tooltip': disabled,
+    });
+    const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLButtonElement>(
+        'pagination-button-overlay',
+        true,
+        false,
+        200
+    );
+    const onClick_ = useCallback((): void => {
+        onClick();
         blurActiveElement();
-    };
+    }, [onClick]);
+    const tooltip_ = useMemo(
+        () => (
+            <Tooltip id="pagination-button-tooltip" placement="top" targetRef={targetRef}>
+                {tooltip}
+            </Tooltip>
+        ),
+        [targetRef, tooltip]
+    );
 
-    render(): ReactNode {
-        const { className, disabled, iconClass, tooltip } = this.props;
-        const clsName = classNames(className, 'pagination-button btn btn-default', {
-            'disabled-button-with-tooltip': disabled,
-        });
-
-        return (
-            <Tip caption={tooltip}>
-                <button disabled={disabled} className={clsName} onClick={this.onClick} type="button">
-                    <i className={`fa ${iconClass}`} />
-                </button>
-            </Tip>
-        );
-    }
-}
+    return (
+        <button
+            disabled={disabled}
+            className={clsName}
+            onClick={onClick_}
+            onPointerEnter={onMouseEnter}
+            onPointerLeave={onMouseLeave}
+            ref={targetRef}
+            type="button"
+        >
+            <i className={`fa ${iconClass}`} />
+            {show && createPortal(tooltip_, portalEl)}
+        </button>
+    );
+};

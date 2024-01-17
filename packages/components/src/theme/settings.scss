@@ -74,7 +74,7 @@
     margin-bottom: 10px;
 }
 
-.project-faceted__li {
+.project-faceted-data-type {
     margin-bottom: 5px;
 
     .help-block {
@@ -95,7 +95,9 @@
             margin-right: 5px;
         }
     }
-
+    .overlay-trigger {
+        max-width: 100%;
+    }
     .short_description {
         overflow: hidden;
         text-overflow: ellipsis;

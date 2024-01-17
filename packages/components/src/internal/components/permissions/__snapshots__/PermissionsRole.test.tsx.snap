@@ -188,7 +188,7 @@ exports[`<PermissionsRole/> showing a selected and disabled principal 1`] = `
                 class="permissions-button-group btn-group"
               >
                 <button
-                  class=" btn btn-default"
+                  class="permissions-button-group__remove-button btn btn-default"
                   type="button"
                 >
                   <i
@@ -220,19 +220,15 @@ exports[`<PermissionsRole/> showing a selected and disabled principal 1`] = `
               <div
                 class="permissions-button-group btn-group"
               >
-                <div
-                  class="disabled-button-with-tooltip "
+                <button
+                  class="permissions-button-group__remove-button btn btn-primary"
+                  disabled=""
+                  type="button"
                 >
-                  <button
-                    class="btn btn-primary"
-                    disabled=""
-                    type="button"
-                  >
-                    <i
-                      class="fa fa-remove"
-                    />
-                  </button>
-                </div>
+                  <i
+                    class="fa fa-remove"
+                  />
+                </button>
                 <button
                   class="permissions-button-display btn btn-primary"
                   type="button"
@@ -248,7 +244,7 @@ exports[`<PermissionsRole/> showing a selected and disabled principal 1`] = `
                 class="permissions-button-group btn-group"
               >
                 <button
-                  class=" btn btn-default"
+                  class="permissions-button-group__remove-button btn btn-default"
                   type="button"
                 >
                   <i
@@ -432,7 +428,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
                 class="permissions-button-group btn-group"
               >
                 <button
-                  class=" btn btn-default"
+                  class="permissions-button-group__remove-button btn btn-default"
                   type="button"
                 >
                   <i
@@ -465,7 +461,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
                 class="permissions-button-group btn-group"
               >
                 <button
-                  class=" btn btn-default"
+                  class="permissions-button-group__remove-button btn btn-default"
                   type="button"
                 >
                   <i
@@ -487,7 +483,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
                 class="permissions-button-group btn-group"
               >
                 <button
-                  class=" btn btn-default"
+                  class="permissions-button-group__remove-button btn btn-default"
                   type="button"
                 >
                   <i

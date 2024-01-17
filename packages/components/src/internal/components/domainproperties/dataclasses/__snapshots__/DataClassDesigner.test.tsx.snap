@@ -102,13 +102,17 @@ exports[`DataClassDesigner custom properties 1`] = `
                   class="domain-no-wrap"
                 >
                   Description
-                  <span
-                    class="label-help-target"
+                  <div
+                    class="overlay-trigger"
                   >
                     <span
-                      class="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
                   
                 </span>
               </div>
@@ -135,13 +139,17 @@ exports[`DataClassDesigner custom properties 1`] = `
                     class="domain-no-wrap"
                   >
                     Pattern
-                    <span
-                      class="label-help-target"
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
                     
                   </span>
                 </div>
@@ -169,17 +177,21 @@ exports[`DataClassDesigner custom properties 1`] = `
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
         id="domain-header"
       >
-        <span
-          class="label-help-target"
+        <div
+          class="overlay-trigger"
         >
           <span
-            class="domain-panel-status-icon domain-panel-status-icon-blue"
+            class="label-help-target"
           >
             <span
-              class="fa fa-exclamation-circle"
-            />
+              class="domain-panel-status-icon domain-panel-status-icon-blue"
+            >
+              <span
+                class="fa fa-exclamation-circle"
+              />
+            </span>
           </span>
-        </span>
+        </div>
         <span
           class="domain-panel-title"
         >
@@ -603,13 +615,17 @@ exports[`DataClassDesigner default properties 1`] = `
                   class="domain-no-wrap"
                 >
                   Description
-                  <span
-                    class="label-help-target"
+                  <div
+                    class="overlay-trigger"
                   >
                     <span
-                      class="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
                   
                 </span>
               </div>
@@ -636,13 +652,17 @@ exports[`DataClassDesigner default properties 1`] = `
                     class="domain-no-wrap"
                   >
                     Pattern
-                    <span
-                      class="label-help-target"
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
                     
                   </span>
                 </div>
@@ -684,7 +704,7 @@ exports[`DataClassDesigner default properties 1`] = `
                 >
                   <div
                     class="select-input select-input--is-disabled css-3iigni-container"
-                    id="selectinput-0"
+                    id="selectinput-2"
                   >
                     <span
                       class="css-1f43avz-a11yText-A11yText"
@@ -774,13 +794,17 @@ exports[`DataClassDesigner default properties 1`] = `
                 class="domain-no-wrap"
               >
                 Type
-                <span
-                  class="label-help-target"
+                <div
+                  class="overlay-trigger"
                 >
                   <span
-                    class="label-help-icon fa fa-question-circle"
-                  />
-                </span>
+                    class="label-help-target"
+                  >
+                    <span
+                      class="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
                 
               </span>
             </div>
@@ -795,7 +819,7 @@ exports[`DataClassDesigner default properties 1`] = `
                 >
                   <div
                     class="select-input select-input--is-disabled css-3iigni-container"
-                    id="selectinput-1"
+                    id="selectinput-4"
                   >
                     <span
                       class="css-1f43avz-a11yText-A11yText"
@@ -884,17 +908,21 @@ exports[`DataClassDesigner default properties 1`] = `
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
         id="domain-header"
       >
-        <span
-          class="label-help-target"
+        <div
+          class="overlay-trigger"
         >
           <span
-            class="domain-panel-status-icon domain-panel-status-icon-blue"
+            class="label-help-target"
           >
             <span
-              class="fa fa-exclamation-circle"
-            />
+              class="domain-panel-status-icon domain-panel-status-icon-blue"
+            >
+              <span
+                class="fa fa-exclamation-circle"
+              />
+            </span>
           </span>
-        </span>
+        </div>
         <span
           class="domain-panel-title"
         >
@@ -1325,13 +1353,17 @@ exports[`DataClassDesigner initModel 1`] = `
                   class="domain-no-wrap"
                 >
                   Description
-                  <span
-                    class="label-help-target"
+                  <div
+                    class="overlay-trigger"
                   >
                     <span
-                      class="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
                   
                 </span>
               </div>
@@ -1360,13 +1392,17 @@ exports[`DataClassDesigner initModel 1`] = `
                     class="domain-no-wrap"
                   >
                     Pattern
-                    <span
-                      class="label-help-target"
+                    <div
+                      class="overlay-trigger"
                     >
                       <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
                     
                   </span>
                 </div>
@@ -1408,7 +1444,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 >
                   <div
                     class="select-input select-input--is-disabled css-3iigni-container"
-                    id="selectinput-2"
+                    id="selectinput-11"
                   >
                     <span
                       class="css-1f43avz-a11yText-A11yText"
@@ -1498,13 +1534,17 @@ exports[`DataClassDesigner initModel 1`] = `
                 class="domain-no-wrap"
               >
                 Type
-                <span
-                  class="label-help-target"
+                <div
+                  class="overlay-trigger"
                 >
                   <span
-                    class="label-help-icon fa fa-question-circle"
-                  />
-                </span>
+                    class="label-help-target"
+                  >
+                    <span
+                      class="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
                 
               </span>
             </div>
@@ -1519,7 +1559,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 >
                   <div
                     class="select-input select-input--is-disabled css-3iigni-container"
-                    id="selectinput-3"
+                    id="selectinput-13"
                   >
                     <span
                       class="css-1f43avz-a11yText-A11yText"
@@ -2185,13 +2225,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                   class="domain-no-wrap"
                                 >
                                   Length
-                                  <span
-                                    class="label-help-target"
+                                  <div
+                                    class="overlay-trigger"
                                   >
                                     <span
-                                      class="label-help-icon fa fa-question-circle"
-                                    />
-                                  </span>
+                                      class="label-help-target"
+                                    >
+                                      <span
+                                        class="label-help-icon fa fa-question-circle"
+                                      />
+                                    </span>
+                                  </div>
                                   
                                 </span>
                               </div>
@@ -2303,13 +2347,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                   class="domain-no-wrap"
                                 >
                                   Aliases
-                                  <span
-                                    class="label-help-target"
+                                  <div
+                                    class="overlay-trigger"
                                   >
                                     <span
-                                      class="label-help-icon fa fa-question-circle"
-                                    />
-                                  </span>
+                                      class="label-help-target"
+                                    >
+                                      <span
+                                        class="label-help-icon fa fa-question-circle"
+                                      />
+                                    </span>
+                                  </div>
                                   
                                 </span>
                               </div>
@@ -2331,13 +2379,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                   class="domain-no-wrap"
                                 >
                                   URL
-                                  <span
-                                    class="label-help-target"
+                                  <div
+                                    class="overlay-trigger"
                                   >
                                     <span
-                                      class="label-help-icon fa fa-question-circle"
-                                    />
-                                  </span>
+                                      class="label-help-target"
+                                    >
+                                      <span
+                                        class="label-help-icon fa fa-question-circle"
+                                      />
+                                    </span>
+                                  </div>
                                   
                                 </span>
                               </div>
@@ -2386,13 +2438,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                     class="domain-no-wrap"
                                   >
                                     Criteria
-                                    <span
-                                      class="label-help-target"
+                                    <div
+                                      class="overlay-trigger"
                                     >
                                       <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
+                                        class="label-help-target"
+                                      >
+                                        <span
+                                          class="label-help-icon fa fa-question-circle"
+                                        />
+                                      </span>
+                                    </div>
                                     
                                   </span>
                                 </div>
@@ -2423,13 +2479,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                     class="domain-no-wrap"
                                   >
                                     Validator
-                                    <span
-                                      class="label-help-target"
+                                    <div
+                                      class="overlay-trigger"
                                     >
                                       <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
+                                        class="label-help-target"
+                                      >
+                                        <span
+                                          class="label-help-icon fa fa-question-circle"
+                                        />
+                                      </span>
+                                    </div>
                                     
                                   </span>
                                 </div>
@@ -2666,13 +2726,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                   class="domain-no-wrap"
                                 >
                                   Numbers
-                                  <span
-                                    class="label-help-target"
+                                  <div
+                                    class="overlay-trigger"
                                   >
                                     <span
-                                      class="label-help-icon fa fa-question-circle"
-                                    />
-                                  </span>
+                                      class="label-help-target"
+                                    >
+                                      <span
+                                        class="label-help-icon fa fa-question-circle"
+                                      />
+                                    </span>
+                                  </div>
                                   
                                 </span>
                               </div>
@@ -2782,13 +2846,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                   class="domain-no-wrap"
                                 >
                                   Aliases
-                                  <span
-                                    class="label-help-target"
+                                  <div
+                                    class="overlay-trigger"
                                   >
                                     <span
-                                      class="label-help-icon fa fa-question-circle"
-                                    />
-                                  </span>
+                                      class="label-help-target"
+                                    >
+                                      <span
+                                        class="label-help-icon fa fa-question-circle"
+                                      />
+                                    </span>
+                                  </div>
                                   
                                 </span>
                               </div>
@@ -2810,13 +2878,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                   class="domain-no-wrap"
                                 >
                                   URL
-                                  <span
-                                    class="label-help-target"
+                                  <div
+                                    class="overlay-trigger"
                                   >
                                     <span
-                                      class="label-help-icon fa fa-question-circle"
-                                    />
-                                  </span>
+                                      class="label-help-target"
+                                    >
+                                      <span
+                                        class="label-help-icon fa fa-question-circle"
+                                      />
+                                    </span>
+                                  </div>
                                   
                                 </span>
                               </div>
@@ -2865,13 +2937,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                     class="domain-no-wrap"
                                   >
                                     Criteria
-                                    <span
-                                      class="label-help-target"
+                                    <div
+                                      class="overlay-trigger"
                                     >
                                       <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
+                                        class="label-help-target"
+                                      >
+                                        <span
+                                          class="label-help-icon fa fa-question-circle"
+                                        />
+                                      </span>
+                                    </div>
                                     
                                   </span>
                                 </div>
@@ -2902,13 +2978,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                     class="domain-no-wrap"
                                   >
                                     Validator
-                                    <span
-                                      class="label-help-target"
+                                    <div
+                                      class="overlay-trigger"
                                     >
                                       <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
+                                        class="label-help-target"
+                                      >
+                                        <span
+                                          class="label-help-icon fa fa-question-circle"
+                                        />
+                                      </span>
+                                    </div>
                                     
                                   </span>
                                 </div>
@@ -3125,13 +3205,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                   class="domain-no-wrap"
                                 >
                                   Dates
-                                  <span
-                                    class="label-help-target"
+                                  <div
+                                    class="overlay-trigger"
                                   >
                                     <span
-                                      class="label-help-icon fa fa-question-circle"
-                                    />
-                                  </span>
+                                      class="label-help-target"
+                                    >
+                                      <span
+                                        class="label-help-icon fa fa-question-circle"
+                                      />
+                                    </span>
+                                  </div>
                                   
                                 </span>
                               </div>
@@ -3218,13 +3302,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                   class="domain-no-wrap"
                                 >
                                   Aliases
-                                  <span
-                                    class="label-help-target"
+                                  <div
+                                    class="overlay-trigger"
                                   >
                                     <span
-                                      class="label-help-icon fa fa-question-circle"
-                                    />
-                                  </span>
+                                      class="label-help-target"
+                                    >
+                                      <span
+                                        class="label-help-icon fa fa-question-circle"
+                                      />
+                                    </span>
+                                  </div>
                                   
                                 </span>
                               </div>
@@ -3246,13 +3334,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                   class="domain-no-wrap"
                                 >
                                   URL
-                                  <span
-                                    class="label-help-target"
+                                  <div
+                                    class="overlay-trigger"
                                   >
                                     <span
-                                      class="label-help-icon fa fa-question-circle"
-                                    />
-                                  </span>
+                                      class="label-help-target"
+                                    >
+                                      <span
+                                        class="label-help-icon fa fa-question-circle"
+                                      />
+                                    </span>
+                                  </div>
                                   
                                 </span>
                               </div>
@@ -3301,13 +3393,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                     class="domain-no-wrap"
                                   >
                                     Criteria
-                                    <span
-                                      class="label-help-target"
+                                    <div
+                                      class="overlay-trigger"
                                     >
                                       <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
+                                        class="label-help-target"
+                                      >
+                                        <span
+                                          class="label-help-icon fa fa-question-circle"
+                                        />
+                                      </span>
+                                    </div>
                                     
                                   </span>
                                 </div>
@@ -3338,13 +3434,17 @@ exports[`DataClassDesigner initModel 1`] = `
                                     class="domain-no-wrap"
                                   >
                                     Validator
-                                    <span
-                                      class="label-help-target"
+                                    <div
+                                      class="overlay-trigger"
                                     >
                                       <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
+                                        class="label-help-target"
+                                      >
+                                        <span
+                                          class="label-help-icon fa fa-question-circle"
+                                        />
+                                      </span>
+                                    </div>
                                     
                                   </span>
                                 </div>

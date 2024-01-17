@@ -425,7 +425,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
                 )}
                 {!editingTitle && column.helpTipRenderer && (
-                    <LabelHelpTip id={column.index} title={column.title} popoverClassName="label-help-arrow-top">
+                    <LabelHelpTip title={column.title} popoverClassName="label-help-arrow-top">
                         <HelpTipRenderer type={column.helpTipRenderer} />
                     </LabelHelpTip>
                 )}

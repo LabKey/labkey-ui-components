@@ -24,6 +24,8 @@ export const ConceptPathDisplay: FC<ConceptPathDisplayProps> = memo(props => {
     useEffect(() => {
         if (path) {
             setParentPaths(undefined);
+            // FIXME: this should be in an APIWrapper, it's causing console errors in our tests, and was causing
+            //  intermittent test failures in ConceptOverviewPanel.spec.tsx
             fetchParentPaths(path.path)
                 .then(response => {
                     setParentPaths(response);

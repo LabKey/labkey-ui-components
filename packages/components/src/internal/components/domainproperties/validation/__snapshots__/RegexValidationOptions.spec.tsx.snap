@@ -134,34 +134,51 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
             >
               <div>
                 Regular Expression *
-                <Component
-                  id="tooltip"
+                <LabelHelpTip
                   required={true}
                   title="Regular Expression"
                 >
-                  <span
-                    className="label-help-target"
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
+                  <OverlayTrigger
+                    id="label-help-tip0"
+                    overlay={
+                      <Popover
+                        id="label-help-tip-popover"
+                        title="Regular Expression"
+                      >
+                        <p>
+                          The regular expression that this field's value will be evaluated against. All regular expressions must be compatible with Java regular expressions as implemented in the
+                           
+                          <Memo
+                            urlSuffix="java/util/regex/Pattern.html"
+                          >
+                            Pattern
+                          </Memo>
+                           class.
+                        </p>
+                        <div
+                          className="label-help-required"
+                        >
+                          This field is required.
+                        </div>
+                      </Popover>
+                    }
                   >
-                    <span
-                      className="label-help-icon fa fa-question-circle"
-                    />
-                    <Overlay
-                      animation={[Function]}
-                      placement="right"
-                      rootClose={false}
-                      show={false}
+                    <div
+                      className="overlay-trigger"
+                      onClick={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
                     >
-                      <Overlay
-                        placement="right"
-                        rootClose={false}
-                        show={false}
-                        transition={[Function]}
-                      />
-                    </Overlay>
-                  </span>
-                </Component>
+                      <span
+                        className="label-help-target"
+                      >
+                        <span
+                          className="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </OverlayTrigger>
+                </LabelHelpTip>
               </div>
             </div>
           </Col>
@@ -270,33 +287,36 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
             >
               <div>
                 Error Message
-                <Component
-                  id="tooltip"
+                <LabelHelpTip
                   title="Error Message"
                 >
-                  <span
-                    className="label-help-target"
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
+                  <OverlayTrigger
+                    id="label-help-tip1"
+                    overlay={
+                      <Popover
+                        id="label-help-tip-popover"
+                        title="Error Message"
+                      >
+                        The message that will be displayed to the user in the event that validation fails for this field.
+                      </Popover>
+                    }
                   >
-                    <span
-                      className="label-help-icon fa fa-question-circle"
-                    />
-                    <Overlay
-                      animation={[Function]}
-                      placement="right"
-                      rootClose={false}
-                      show={false}
+                    <div
+                      className="overlay-trigger"
+                      onClick={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
                     >
-                      <Overlay
-                        placement="right"
-                        rootClose={false}
-                        show={false}
-                        transition={[Function]}
-                      />
-                    </Overlay>
-                  </span>
-                </Component>
+                      <span
+                        className="label-help-target"
+                      >
+                        <span
+                          className="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </OverlayTrigger>
+                </LabelHelpTip>
               </div>
             </div>
           </Col>
@@ -383,33 +403,36 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                       type="checkbox"
                     />
                     Fail validation when pattern matches field value
-                    <Component
-                      id="tooltip"
+                    <LabelHelpTip
                       title="Fail when pattern matches?"
                     >
-                      <span
-                        className="label-help-target"
-                        onMouseOut={[Function]}
-                        onMouseOver={[Function]}
+                      <OverlayTrigger
+                        id="label-help-tip2"
+                        overlay={
+                          <Popover
+                            id="label-help-tip-popover"
+                            title="Fail when pattern matches?"
+                          >
+                            By default, validation will fail if the field value does not match the specified regular expression. Check this box if you want validation to fail when the pattern matches the field value.
+                          </Popover>
+                        }
                       >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                        <Overlay
-                          animation={[Function]}
-                          placement="right"
-                          rootClose={false}
-                          show={false}
+                        <div
+                          className="overlay-trigger"
+                          onClick={[Function]}
+                          onMouseEnter={[Function]}
+                          onMouseLeave={[Function]}
                         >
-                          <Overlay
-                            placement="right"
-                            rootClose={false}
-                            show={false}
-                            transition={[Function]}
-                          />
-                        </Overlay>
-                      </span>
-                    </Component>
+                          <span
+                            className="label-help-target"
+                          >
+                            <span
+                              className="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                      </OverlayTrigger>
+                    </LabelHelpTip>
                   </label>
                 </div>
               </Checkbox>

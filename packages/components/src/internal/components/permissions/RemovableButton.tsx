@@ -74,7 +74,7 @@ export class RemovableButton extends React.PureComponent<Props, State> {
                             'permissions-button-removed': this.state.removed,
                         })}
                     >
-                        <DisableableButton disabledMsg={disabledMsg} onClick={this.onRemoveClick} bsStyle={bsStyle}>
+                        <DisableableButton className="permissions-button-group__remove-button" disabledMsg={disabledMsg} onClick={this.onRemoveClick} bsStyle={bsStyle}>
                             <i className="fa fa-remove" />
                         </DisableableButton>
                         {btn}

@@ -100,6 +100,7 @@ export class DataViewInfo {
     declare schemaName?: string;
     declare queryName?: string;
     declare viewName?: string;
+    declare dataRegionName: string;
 
     // Client Side only attributes
     declare appUrl?: AppURL;

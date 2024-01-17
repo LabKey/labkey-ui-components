@@ -12,15 +12,20 @@ exports[`<ParentAliasRow/> With parent value not an option in select 1`] = `
       className="domain-no-wrap"
     >
       Alias
-      <span
-        className="label-help-target"
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
+      <div
+        className="overlay-trigger"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <span
-          className="label-help-icon fa fa-question-circle"
-        />
-      </span>
+          className="label-help-target"
+        >
+          <span
+            className="label-help-icon fa fa-question-circle"
+          />
+        </span>
+      </div>
        *
     </span>
   </div>
@@ -48,7 +53,7 @@ exports[`<ParentAliasRow/> With parent value not an option in select 1`] = `
       >
         <div
           className="select-input css-b62m3t-container"
-          id="selectinput-4"
+          id="selectinput-9"
           onKeyDown={[Function]}
         >
           <span
@@ -203,15 +208,20 @@ exports[`<ParentAliasRow/> With values 1`] = `
       className="domain-no-wrap"
     >
       Alias
-      <span
-        className="label-help-target"
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
+      <div
+        className="overlay-trigger"
+        onClick={[Function]}
+        onMouseEnter={[Function]}
+        onMouseLeave={[Function]}
       >
         <span
-          className="label-help-icon fa fa-question-circle"
-        />
-      </span>
+          className="label-help-target"
+        >
+          <span
+            className="label-help-icon fa fa-question-circle"
+          />
+        </span>
+      </div>
        *
     </span>
   </div>
@@ -239,7 +249,7 @@ exports[`<ParentAliasRow/> With values 1`] = `
       >
         <div
           className="select-input css-b62m3t-container"
-          id="selectinput-2"
+          id="selectinput-5"
           onKeyDown={[Function]}
         >
           <span

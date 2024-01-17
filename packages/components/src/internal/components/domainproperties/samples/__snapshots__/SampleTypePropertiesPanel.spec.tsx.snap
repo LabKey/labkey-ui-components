@@ -86,15 +86,20 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
             className="domain-no-wrap"
           >
             Description
-            <span
-              className="label-help-target"
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
+            <div
+              className="overlay-trigger"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
               <span
-                className="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                className="label-help-target"
+              >
+                <span
+                  className="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
             
           </span>
         </div>
@@ -124,15 +129,20 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               className="domain-no-wrap"
             >
               Pattern
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
               
             </span>
           </div>
@@ -174,15 +184,20 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
                 />
                  Add 
               </span>
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
             </div>
           </div>
         </span>
@@ -204,15 +219,20 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
           className="domain-no-wrap"
         >
           Color
-          <span
-            className="label-help-target"
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
+          <div
+            className="overlay-trigger"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
           >
             <span
-              className="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              className="label-help-target"
+            >
+              <span
+                className="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
           
         </span>
       </div>
@@ -323,15 +343,20 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
             className="domain-no-wrap"
           >
             Description
-            <span
-              className="label-help-target"
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
+            <div
+              className="overlay-trigger"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
               <span
-                className="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                className="label-help-target"
+              >
+                <span
+                  className="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
             
           </span>
         </div>
@@ -361,15 +386,20 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
               className="domain-no-wrap"
             >
               Pattern
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
               
             </span>
           </div>
@@ -411,15 +441,20 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
                 />
                  Add 
               </span>
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
             </div>
           </div>
         </span>
@@ -510,15 +545,20 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
             className="domain-no-wrap"
           >
             Description
-            <span
-              className="label-help-target"
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
+            <div
+              className="overlay-trigger"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
               <span
-                className="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                className="label-help-target"
+              >
+                <span
+                  className="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
             
           </span>
         </div>
@@ -548,15 +588,20 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
               className="domain-no-wrap"
             >
               Pattern
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
               
             </span>
           </div>
@@ -598,15 +643,20 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                 />
                  Add 
               </span>
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
             </div>
           </div>
         </span>
@@ -635,15 +685,20 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                 />
                  Add 
               </span>
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
             </div>
           </div>
         </span>
@@ -739,15 +794,20 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
             className="domain-no-wrap"
           >
             Description
-            <span
-              className="label-help-target"
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
+            <div
+              className="overlay-trigger"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
               <span
-                className="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                className="label-help-target"
+              >
+                <span
+                  className="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
             
           </span>
         </div>
@@ -777,15 +837,20 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
               className="domain-no-wrap"
             >
               Pattern
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
               
             </span>
           </div>
@@ -827,15 +892,20 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
                 />
                  Add 
               </span>
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
             </div>
           </div>
         </span>
@@ -857,15 +927,20 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
           className="domain-no-wrap"
         >
           Color
-          <span
-            className="label-help-target"
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
+          <div
+            className="overlay-trigger"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
           >
             <span
-              className="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              className="label-help-target"
+            >
+              <span
+                className="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
           
         </span>
       </div>
@@ -902,15 +977,20 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
           className="domain-no-wrap"
         >
           Unit
-          <span
-            className="label-help-target"
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
+          <div
+            className="overlay-trigger"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
           >
             <span
-              className="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              className="label-help-target"
+            >
+              <span
+                className="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
           
         </span>
       </div>
@@ -1016,15 +1096,20 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
             className="domain-no-wrap"
           >
             Description
-            <span
-              className="label-help-target"
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
+            <div
+              className="overlay-trigger"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
               <span
-                className="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                className="label-help-target"
+              >
+                <span
+                  className="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
             
           </span>
         </div>
@@ -1054,15 +1139,20 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
               className="domain-no-wrap"
             >
               Pattern
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
               
             </span>
           </div>
@@ -1104,15 +1194,20 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
                 />
                  Add 
               </span>
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
             </div>
           </div>
         </span>
@@ -1134,15 +1229,20 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
           className="domain-no-wrap"
         >
           Color
-          <span
-            className="label-help-target"
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
+          <div
+            className="overlay-trigger"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
           >
             <span
-              className="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              className="label-help-target"
+            >
+              <span
+                className="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
           
         </span>
       </div>
@@ -1179,15 +1279,20 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
           className="domain-no-wrap"
         >
           Unit
-          <span
-            className="label-help-target"
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
+          <div
+            className="overlay-trigger"
+            onClick={[Function]}
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
           >
             <span
-              className="label-help-icon fa fa-question-circle"
-            />
-          </span>
+              className="label-help-target"
+            >
+              <span
+                className="label-help-icon fa fa-question-circle"
+              />
+            </span>
+          </div>
            *
         </span>
       </div>
@@ -1202,7 +1307,7 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
           >
             <div
               className="select-input css-b62m3t-container"
-              id="selectinput-0"
+              id="selectinput-30"
               onKeyDown={[Function]}
             >
               <span
@@ -1394,15 +1499,20 @@ exports[`SampleTypePropertiesPanel nameExpressionInfoUrl 1`] = `
             className="domain-no-wrap"
           >
             Description
-            <span
-              className="label-help-target"
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
+            <div
+              className="overlay-trigger"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
               <span
-                className="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                className="label-help-target"
+              >
+                <span
+                  className="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
             
           </span>
         </div>
@@ -1432,15 +1542,20 @@ exports[`SampleTypePropertiesPanel nameExpressionInfoUrl 1`] = `
               className="domain-no-wrap"
             >
               Pattern
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
               
             </span>
           </div>
@@ -1482,15 +1597,20 @@ exports[`SampleTypePropertiesPanel nameExpressionInfoUrl 1`] = `
                 />
                  Add 
               </span>
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
             </div>
           </div>
         </span>
@@ -2015,33 +2135,36 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                                     className="domain-no-wrap"
                                   >
                                     Description
-                                    <Component
-                                      id="tooltip"
+                                    <LabelHelpTip
                                       title="Description"
                                     >
-                                      <span
-                                        className="label-help-target"
-                                        onMouseOut={[Function]}
-                                        onMouseOver={[Function]}
+                                      <OverlayTrigger
+                                        id="label-help-tip43"
+                                        overlay={
+                                          <Popover
+                                            id="label-help-tip-popover"
+                                            title="Description"
+                                          >
+                                            A short description for this sample type.
+                                          </Popover>
+                                        }
                                       >
-                                        <span
-                                          className="label-help-icon fa fa-question-circle"
-                                        />
-                                        <Overlay
-                                          animation={[Function]}
-                                          placement="right"
-                                          rootClose={false}
-                                          show={false}
+                                        <div
+                                          className="overlay-trigger"
+                                          onClick={[Function]}
+                                          onMouseEnter={[Function]}
+                                          onMouseLeave={[Function]}
                                         >
-                                          <Overlay
-                                            placement="right"
-                                            rootClose={false}
-                                            show={false}
-                                            transition={[Function]}
-                                          />
-                                        </Overlay>
-                                      </span>
-                                    </Component>
+                                          <span
+                                            className="label-help-target"
+                                          >
+                                            <span
+                                              className="label-help-icon fa fa-question-circle"
+                                            />
+                                          </span>
+                                        </div>
+                                      </OverlayTrigger>
+                                    </LabelHelpTip>
                                   </span>
                                 </DomainFieldLabel>
                               </div>
@@ -2110,33 +2233,51 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                                       className="domain-no-wrap"
                                     >
                                       Pattern
-                                      <Component
-                                        id="tooltip"
+                                      <LabelHelpTip
                                         title="Naming Pattern"
                                       >
-                                        <span
-                                          className="label-help-target"
-                                          onMouseOut={[Function]}
-                                          onMouseOver={[Function]}
+                                        <OverlayTrigger
+                                          id="label-help-tip44"
+                                          overlay={
+                                            <Popover
+                                              id="label-help-tip-popover"
+                                              title="Naming Pattern"
+                                            >
+                                              <React.Fragment>
+                                                <p>
+                                                  Pattern used for generating unique IDs for this 
+                                                  sample type
+                                                  .
+                                                </p>
+                                                <p>
+                                                  <a
+                                                    href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=sampleIDs"
+                                                    rel="noopener noreferrer"
+                                                    target="_blank"
+                                                  >
+                                                    More info
+                                                  </a>
+                                                </p>
+                                              </React.Fragment>
+                                            </Popover>
+                                          }
                                         >
-                                          <span
-                                            className="label-help-icon fa fa-question-circle"
-                                          />
-                                          <Overlay
-                                            animation={[Function]}
-                                            placement="right"
-                                            rootClose={false}
-                                            show={false}
+                                          <div
+                                            className="overlay-trigger"
+                                            onClick={[Function]}
+                                            onMouseEnter={[Function]}
+                                            onMouseLeave={[Function]}
                                           >
-                                            <Overlay
-                                              placement="right"
-                                              rootClose={false}
-                                              show={false}
-                                              transition={[Function]}
-                                            />
-                                          </Overlay>
-                                        </span>
-                                      </Component>
+                                            <span
+                                              className="label-help-target"
+                                            >
+                                              <span
+                                                className="label-help-icon fa fa-question-circle"
+                                              />
+                                            </span>
+                                          </div>
+                                        </OverlayTrigger>
+                                      </LabelHelpTip>
                                     </span>
                                   </DomainFieldLabel>
                                 </div>
@@ -2228,33 +2369,58 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                                 className="domain-no-wrap"
                               >
                                 Pattern
-                                <Component
-                                  id="tooltip"
+                                <LabelHelpTip
                                   title="Aliquot Naming Pattern"
                                 >
-                                  <span
-                                    className="label-help-target"
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
+                                  <OverlayTrigger
+                                    id="label-help-tip45"
+                                    overlay={
+                                      <Popover
+                                        id="label-help-tip-popover"
+                                        title="Aliquot Naming Pattern"
+                                      >
+                                        <React.Fragment>
+                                          <p>
+                                            Pattern used for generating unique Ids for Aliquots.
+                                          </p>
+                                          <p>
+                                            By default, the name of the aliquot will use the name of its parent followed by a dash and a counter for that parent’s aliquots.
+                                          </p>
+                                          <p>
+                                            For example, if the original sample is S1, aliquots of that sample will be named S1-1, S1-2, etc.
+                                          </p>
+                                          <NameExpressionPreview
+                                            previewName="S-parentSample-1"
+                                          />
+                                          <p>
+                                            <a
+                                              href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=aliquotIDs"
+                                              rel="noopener noreferrer"
+                                              target="_blank"
+                                            >
+                                              More info
+                                            </a>
+                                          </p>
+                                        </React.Fragment>
+                                      </Popover>
+                                    }
                                   >
-                                    <span
-                                      className="label-help-icon fa fa-question-circle"
-                                    />
-                                    <Overlay
-                                      animation={[Function]}
-                                      placement="right"
-                                      rootClose={false}
-                                      show={false}
+                                    <div
+                                      className="overlay-trigger"
+                                      onClick={[Function]}
+                                      onMouseEnter={[Function]}
+                                      onMouseLeave={[Function]}
                                     >
-                                      <Overlay
-                                        placement="right"
-                                        rootClose={false}
-                                        show={false}
-                                        transition={[Function]}
-                                      />
-                                    </Overlay>
-                                  </span>
-                                </Component>
+                                      <span
+                                        className="label-help-target"
+                                      >
+                                        <span
+                                          className="label-help-icon fa fa-question-circle"
+                                        />
+                                      </span>
+                                    </div>
+                                  </OverlayTrigger>
+                                </LabelHelpTip>
                               </span>
                             </DomainFieldLabel>
                           </div>
@@ -2474,33 +2640,47 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                                         />
                                          Add 
                                       </span>
-                                      <Component
-                                        id="tooltip"
+                                      <LabelHelpTip
                                         title="More Info"
                                       >
-                                        <span
-                                          className="label-help-target"
-                                          onMouseOut={[Function]}
-                                          onMouseOver={[Function]}
+                                        <OverlayTrigger
+                                          id="label-help-tip46"
+                                          overlay={
+                                            <Popover
+                                              id="label-help-tip-popover"
+                                              title="More Info"
+                                            >
+                                              <React.Fragment>
+                                                <p>
+                                                  Column headings used during import to set a sample's parentage. The referenced type will also be added as a parent type by default when adding samples manually.
+                                                </p>
+                                                <p>
+                                                  <HelpLink
+                                                    topic="deriveSamples#alias"
+                                                  >
+                                                    More info
+                                                  </HelpLink>
+                                                </p>
+                                              </React.Fragment>
+                                            </Popover>
+                                          }
                                         >
-                                          <span
-                                            className="label-help-icon fa fa-question-circle"
-                                          />
-                                          <Overlay
-                                            animation={[Function]}
-                                            placement="right"
-                                            rootClose={false}
-                                            show={false}
+                                          <div
+                                            className="overlay-trigger"
+                                            onClick={[Function]}
+                                            onMouseEnter={[Function]}
+                                            onMouseLeave={[Function]}
                                           >
-                                            <Overlay
-                                              placement="right"
-                                              rootClose={false}
-                                              show={false}
-                                              transition={[Function]}
-                                            />
-                                          </Overlay>
-                                        </span>
-                                      </Component>
+                                            <span
+                                              className="label-help-target"
+                                            >
+                                              <span
+                                                className="label-help-icon fa fa-question-circle"
+                                              />
+                                            </span>
+                                          </div>
+                                        </OverlayTrigger>
+                                      </LabelHelpTip>
                                     </div>
                                   </div>
                                 </ActionButton>
@@ -2563,33 +2743,52 @@ exports[`SampleTypePropertiesPanel with aliquot preview name 1`] = `
                               className="domain-no-wrap"
                             >
                               Barcodes
-                              <Component
-                                id="tooltip"
+                              <LabelHelpTip
                                 title="Barcodes"
                               >
-                                <span
-                                  className="label-help-target"
-                                  onMouseOut={[Function]}
-                                  onMouseOver={[Function]}
+                                <OverlayTrigger
+                                  id="label-help-tip47"
+                                  overlay={
+                                    <Popover
+                                      id="label-help-tip-popover"
+                                      title="Barcodes"
+                                    >
+                                      <React.Fragment>
+                                        <p>
+                                          Use a Unique ID field to represent barcodes or other ID fields in use in your lab.
+                                        </p>
+                                        <p>
+                                          Learn more about using 
+                                          <HelpLink
+                                            topic="uniqueStorageIds"
+                                          >
+                                            barcodes and unique IDs
+                                          </HelpLink>
+                                           in
+                                           
+                                          LabKey Server
+                                          .
+                                        </p>
+                                      </React.Fragment>
+                                    </Popover>
+                                  }
                                 >
-                                  <span
-                                    className="label-help-icon fa fa-question-circle"
-                                  />
-                                  <Overlay
-                                    animation={[Function]}
-                                    placement="right"
-                                    rootClose={false}
-                                    show={false}
+                                  <div
+                                    className="overlay-trigger"
+                                    onClick={[Function]}
+                                    onMouseEnter={[Function]}
+                                    onMouseLeave={[Function]}
                                   >
-                                    <Overlay
-                                      placement="right"
-                                      rootClose={false}
-                                      show={false}
-                                      transition={[Function]}
-                                    />
-                                  </Overlay>
-                                </span>
-                              </Component>
+                                    <span
+                                      className="label-help-target"
+                                    >
+                                      <span
+                                        className="label-help-icon fa fa-question-circle"
+                                      />
+                                    </span>
+                                  </div>
+                                </OverlayTrigger>
+                              </LabelHelpTip>
                             </span>
                           </DomainFieldLabel>
                         </div>

@@ -211,7 +211,12 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
                                                 <td>
                                                     {field.titleRenderer}
                                                     {labelHelp && (
-                                                        <LabelHelpTip title={field.title}>{labelHelp}</LabelHelpTip>
+                                                        <LabelHelpTip
+                                                            popoverClassName="detail-display-label-help-tip-popover"
+                                                            title={field.title}
+                                                        >
+                                                            {labelHelp}
+                                                        </LabelHelpTip>
                                                     )}
                                                 </td>
                                                 <td

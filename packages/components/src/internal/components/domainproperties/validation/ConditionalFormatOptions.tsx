@@ -90,7 +90,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
 
     firstFilterTooltip = (): ReactNode => {
         return (
-            <LabelHelpTip title="First Condition" required={true}>
+            <LabelHelpTip title="First Condition" required>
                 Add a condition to this format rule that will be tested against the value for this field.
             </LabelHelpTip>
         );

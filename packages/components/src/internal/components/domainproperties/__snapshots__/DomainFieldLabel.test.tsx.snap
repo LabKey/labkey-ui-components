@@ -7,13 +7,17 @@ exports[`<DomainFieldLabel/> label and helpTip 1`] = `
     class="domain-no-wrap"
   >
     Label
-    <span
-      class="label-help-target"
+    <div
+      class="overlay-trigger"
     >
       <span
-        class="label-help-icon fa fa-question-circle"
-      />
-    </span>
+        class="label-help-target"
+      >
+        <span
+          class="label-help-icon fa fa-question-circle"
+        />
+      </span>
+    </div>
     
   </span>
 </div>
@@ -50,13 +54,17 @@ exports[`<DomainFieldLabel/> label, required, and helpTip 1`] = `
     class="domain-no-wrap"
   >
     Label
-    <span
-      class="label-help-target"
+    <div
+      class="overlay-trigger"
     >
       <span
-        class="label-help-icon fa fa-question-circle"
-      />
-    </span>
+        class="label-help-target"
+      >
+        <span
+          class="label-help-icon fa fa-question-circle"
+        />
+      </span>
+    </div>
      *
   </span>
 </div>

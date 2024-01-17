@@ -548,6 +548,7 @@ exports[`SampleTypeDesigner default properties 1`] = `
         "operationConfirmationControllerName": "experiment",
         "projectConfigurableDataType": "SampleType",
         "sampleFinderCardType": "sampleparent",
+        "supportsCrossTypeImport": true,
         "typeIcon": "sample_set",
         "typeListingSchemaQuery": SchemaQuery {
           "queryName": "SampleSets",
@@ -1125,6 +1126,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "operationConfirmationControllerName": "experiment",
         "projectConfigurableDataType": "SampleType",
         "sampleFinderCardType": "sampleparent",
+        "supportsCrossTypeImport": true,
         "typeIcon": "sample_set",
         "typeListingSchemaQuery": SchemaQuery {
           "queryName": "SampleSets",

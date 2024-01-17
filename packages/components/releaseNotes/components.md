@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.7.1
+*Released*: 17 January 2024
+* Update `EntityIdCreationModel.postEntityGrid` to accept optional `containerPath`
+* Issue 49414: Add prop in EntityDataType to indicate if cross-type import is supported
+
 ### version 3.7.0
 *Released*: 16 January 2024
 - RReport: use dataRegionName

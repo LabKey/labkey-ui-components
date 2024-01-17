@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Add `AuditSettings` panel for configuring whether user comments are required for data changes
+
 ### version 3.6.0
 *Released*: 15 January 2024
 - Publicly export `PlacementType`

@@ -32,6 +32,7 @@ import { useAdministrationSubNav } from './useAdministrationSubNav';
 import { useAdminAppContext } from './useAdminAppContext';
 import { ProtectedDataSettingsPanel } from './ProtectedDataSettingsPanel';
 import { RequestsSettingsPanel } from './RequestsSettingsPanel';
+import { AuditSettings } from '../settings/AuditSettings';
 
 // export for jest testing
 export const AdminSettingsPage: FC = () => {
@@ -102,6 +103,7 @@ export const AdminSettingsPage: FC = () => {
                         setIsDirty={setIsDirty}
                     />
                 )}
+                <AuditSettings />
                 {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) && (
                     <ProtectedDataSettingsPanel containerPath={homeProjectContainer.container.path} />
                 )}

@@ -121,13 +121,13 @@ export enum ProductFeature {
     Assay = 'Assay',
     AssayQC = 'AssayQC',
     ApiKeys = 'ApiKeys',
+    DataChangeCommentRequirement = 'DataChangeCommentRequirement',
     ELN = 'ELN',
     FreezerManagement = 'FreezerManagement',
     Media = 'Media',
     Projects = 'Projects',
     SampleManagement = 'SampleManagement',
     Workflow = 'Workflow',
-
 }
 
 export const BIOLOGICS_APP_PROPERTIES: AppProperties = {

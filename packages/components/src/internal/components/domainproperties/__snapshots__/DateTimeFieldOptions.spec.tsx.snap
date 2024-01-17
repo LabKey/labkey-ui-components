@@ -88,51 +88,56 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
                   className="domain-no-wrap"
                 >
                   Dates
-                  <Component
-                    id="tooltip"
+                  <LabelHelpTip
                     title="Format for Dates"
                   >
-                    <span
-                      className="label-help-target"
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
+                    <OverlayTrigger
+                      id="label-help-tip0"
+                      overlay={
+                        <Popover
+                          id="label-help-tip-popover"
+                          title="Format for Dates"
+                        >
+                          <React.Fragment>
+                            <p>
+                              To control how a date or time value is displayed, provide a string format compatible with the Java
+                               
+                              <Memo
+                                urlSuffix="java/text/SimpleDateFormat.html"
+                              >
+                                SimpleDateFormat
+                              </Memo>
+                               class.
+                            </p>
+                            <p>
+                              Learn more about using 
+                              <HelpLink
+                                topic="dateFormats#date"
+                              >
+                                Date and Time formats
+                              </HelpLink>
+                               in LabKey.
+                            </p>
+                          </React.Fragment>
+                        </Popover>
+                      }
                     >
-                      <span
-                        className="label-help-icon fa fa-question-circle"
-                      />
-                      <Overlay
-                        animation={[Function]}
-                        placement="right"
-                        rootClose={false}
-                        show={false}
-                        target={
-                          <span
-                            class="label-help-target"
-                          >
-                            <span
-                              class="label-help-icon fa fa-question-circle"
-                            />
-                          </span>
-                        }
+                      <div
+                        className="overlay-trigger"
+                        onClick={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
                       >
-                        <Overlay
-                          placement="right"
-                          rootClose={false}
-                          show={false}
-                          target={
-                            <span
-                              class="label-help-target"
-                            >
-                              <span
-                                class="label-help-icon fa fa-question-circle"
-                              />
-                            </span>
-                          }
-                          transition={[Function]}
-                        />
-                      </Overlay>
-                    </span>
-                  </Component>
+                        <span
+                          className="label-help-target"
+                        >
+                          <span
+                            className="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </OverlayTrigger>
+                  </LabelHelpTip>
                 </span>
               </DomainFieldLabel>
             </div>

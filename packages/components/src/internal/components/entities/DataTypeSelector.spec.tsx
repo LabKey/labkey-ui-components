@@ -123,7 +123,7 @@ describe('DataTypeSelector', () => {
 
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
-        const list = wrapper.find('li.project-faceted__li');
+        const list = wrapper.find('li.project-faceted-data-type');
         expect(list).toHaveLength(0);
         expect(wrapper.text()).toEqual('Sample TypesNo sample types');
     });
@@ -134,7 +134,7 @@ describe('DataTypeSelector', () => {
         );
 
         await waitForLifecycle(wrapper);
-        const list = wrapper.find('li.project-faceted__li');
+        const list = wrapper.find('li.project-faceted-data-type');
         expect(list).toHaveLength(2);
         expect(wrapper.text()).toEqual('Sample TypesDeselect AllBloodDNA');
 
@@ -153,7 +153,7 @@ describe('DataTypeSelector', () => {
         );
 
         await waitForLifecycle(wrapper);
-        const list = wrapper.find('li.project-faceted__li');
+        const list = wrapper.find('li.project-faceted-data-type');
         expect(list).toHaveLength(2);
         expect(wrapper.find('.col-xs-12')).toHaveLength(3); // outer col + 2 inner col
         expect(wrapper.find('.col-md-6')).toHaveLength(2);
@@ -165,7 +165,7 @@ describe('DataTypeSelector', () => {
         );
 
         await waitForLifecycle(wrapper);
-        const list = wrapper.find('li.project-faceted__li');
+        const list = wrapper.find('li.project-faceted-data-type');
         expect(list).toHaveLength(2);
         expect(wrapper.text()).toEqual('Sample TypesBloodDNA');
     });
@@ -176,7 +176,7 @@ describe('DataTypeSelector', () => {
         );
 
         await waitForLifecycle(wrapper);
-        const list = wrapper.find('li.project-faceted__li');
+        const list = wrapper.find('li.project-faceted-data-type');
         expect(list).toHaveLength(2);
         expect(wrapper.text()).toEqual('Sample TypesSelect AllBloodDNA');
 
@@ -212,7 +212,7 @@ describe('DataTypeSelector', () => {
         );
 
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
-        const list = wrapper.find('li.project-faceted__li');
+        const list = wrapper.find('li.project-faceted-data-type');
         expect(list).toHaveLength(2);
         expect(wrapper.text()).toEqual('storageDeselect Allfreezer1Floor1/Room2freezer2');
     });

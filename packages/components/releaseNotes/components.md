@@ -14,6 +14,27 @@ Components, models, actions, and utility functions for LabKey applications and p
   - changes sample chart configs to exclude based on both 'SampleType' and 'DashboardSampleType' exclusions
   - add sampleTypeDataType to AppAdminContext
 
+### version 3.7.1
+*Released*: 17 January 2024
+* Update `EntityIdCreationModel.postEntityGrid` to accept optional `containerPath`
+* Issue 49414: Add prop in EntityDataType to indicate if cross-type import is supported
+
+### version 3.7.0
+*Released*: 16 January 2024
+- RReport: use dataRegionName
+  - Fixes Issue 49348
+- Add OverlayTrigger and useOverlayTriggerState
+  - internal version to be used in place of the react-bootstrap version
+- Add Tooltip
+  - internal version to be used in place of the react-bootstrap version
+- Add Popover
+  - internal version to be used in place of the react-bootstrap version
+- Update Tip to use internal implementations of OverlayTrigger and Tooltip
+- Update LabelOverlay to use internal implementations of OverlayTrigger and Popover
+- Change LabelHelpTip to use internal implementations of OverlayTrigger and Popover
+- Update DisableableButton to use internal version of Popover and useOverlayTriggerState
+- LabelOverlay: remove canMouseOverTooltip prop
+
 ### version 3.6.0
 *Released*: 15 January 2024
 - Publicly export `PlacementType`

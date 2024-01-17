@@ -70,15 +70,20 @@ exports[`ListPropertiesPanel existing list 1`] = `
               className="domain-no-wrap"
             >
               Name
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
                *
             </span>
           </div>
@@ -208,19 +213,24 @@ exports[`ListPropertiesPanel list with error 1`] = `
     id="list-properties-hdr"
     onClick={[Function]}
   >
-    <span
-      className="label-help-target"
-      onMouseOut={[Function]}
-      onMouseOver={[Function]}
+    <div
+      className="overlay-trigger"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
     >
       <span
-        className="domain-panel-status-icon"
+        className="label-help-target"
       >
         <span
-          className="fa fa-exclamation-circle"
-        />
+          className="domain-panel-status-icon"
+        >
+          <span
+            className="fa fa-exclamation-circle"
+          />
+        </span>
       </span>
-    </span>
+    </div>
     <span
       className="domain-panel-title"
     >
@@ -275,15 +285,20 @@ exports[`ListPropertiesPanel list with error 1`] = `
               className="domain-no-wrap"
             >
               Name
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
                *
             </span>
           </div>
@@ -467,15 +482,20 @@ exports[`ListPropertiesPanel new list 1`] = `
               className="domain-no-wrap"
             >
               Name
-              <span
-                className="label-help-target"
-                onMouseOut={[Function]}
-                onMouseOver={[Function]}
+              <div
+                className="overlay-trigger"
+                onClick={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
               >
                 <span
-                  className="label-help-icon fa fa-question-circle"
-                />
-              </span>
+                  className="label-help-target"
+                >
+                  <span
+                    className="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
                *
             </span>
           </div>

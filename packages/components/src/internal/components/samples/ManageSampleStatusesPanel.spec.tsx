@@ -342,7 +342,7 @@ describe('SampleStatusDetail', () => {
         await waitForLifecycle(wrapper);
         validate(wrapper);
         expect(wrapper.find(ConfirmModal)).toHaveLength(0);
-        wrapper.find('button').first().simulate('click'); // click delete button
+        wrapper.find('button').at(0).simulate('click'); // click delete button
         await waitForLifecycle(wrapper);
         expect(wrapper.find(ConfirmModal)).toHaveLength(1);
         wrapper.unmount();

@@ -137,7 +137,7 @@ export const ConceptOverviewTooltip: FC<ConceptOverviewModalProps> = memo(props 
                     title="Concept Overview"
                     placement="bottom"
                     iconComponent={!!concept && <i className="fa fa-info-circle" />}
-                    bsStyle="concept-overview"
+                    popoverClassName="concept-overview"
                 >
                     <div className="ontology-concept-overview-container">
                         <ConceptOverviewPanelImpl

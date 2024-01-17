@@ -223,33 +223,41 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                   className="domain-no-wrap"
                 >
                   Aliases
-                  <Component
-                    id="tooltip"
+                  <LabelHelpTip
                     title="Import Aliases"
                   >
-                    <span
-                      className="label-help-target"
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
+                    <OverlayTrigger
+                      id="label-help-tip0"
+                      overlay={
+                        <Popover
+                          id="label-help-tip-popover"
+                          title="Import Aliases"
+                        >
+                          <React.Fragment>
+                            Define alternate field names to be used when importing from a file.
+                            <br />
+                            <br />
+                            Multiple aliases may be separated by spaces or commas. To define an alias that contains spaces, use double-quotes (") around it.
+                          </React.Fragment>
+                        </Popover>
+                      }
                     >
-                      <span
-                        className="label-help-icon fa fa-question-circle"
-                      />
-                      <Overlay
-                        animation={[Function]}
-                        placement="right"
-                        rootClose={false}
-                        show={false}
+                      <div
+                        className="overlay-trigger"
+                        onClick={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
                       >
-                        <Overlay
-                          placement="right"
-                          rootClose={false}
-                          show={false}
-                          transition={[Function]}
-                        />
-                      </Overlay>
-                    </span>
-                  </Component>
+                        <span
+                          className="label-help-target"
+                        >
+                          <span
+                            className="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </OverlayTrigger>
+                  </LabelHelpTip>
                 </span>
               </DomainFieldLabel>
             </div>
@@ -307,33 +315,47 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                   className="domain-no-wrap"
                 >
                   URL
-                  <Component
-                    id="tooltip"
+                  <LabelHelpTip
                     title="URL"
                   >
-                    <span
-                      className="label-help-target"
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
+                    <OverlayTrigger
+                      id="label-help-tip1"
+                      overlay={
+                        <Popover
+                          id="label-help-tip-popover"
+                          title="URL"
+                        >
+                          <React.Fragment>
+                            Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
+                            <br />
+                            <br />
+                            Learn more about using 
+                            <HelpLink
+                              topic="urlEncoding"
+                            >
+                              URL Formatting Options
+                            </HelpLink>
+                            .
+                          </React.Fragment>
+                        </Popover>
+                      }
                     >
-                      <span
-                        className="label-help-icon fa fa-question-circle"
-                      />
-                      <Overlay
-                        animation={[Function]}
-                        placement="right"
-                        rootClose={false}
-                        show={false}
+                      <div
+                        className="overlay-trigger"
+                        onClick={[Function]}
+                        onMouseEnter={[Function]}
+                        onMouseLeave={[Function]}
                       >
-                        <Overlay
-                          placement="right"
-                          rootClose={false}
-                          show={false}
-                          transition={[Function]}
-                        />
-                      </Overlay>
-                    </span>
-                  </Component>
+                        <span
+                          className="label-help-target"
+                        >
+                          <span
+                            className="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                    </OverlayTrigger>
+                  </LabelHelpTip>
                 </span>
               </DomainFieldLabel>
             </div>

@@ -107,8 +107,6 @@ export const SERVER_NOTIFICATION_MAX_ROWS = 8;
 
 export const EXPERIMENTAL_APP_PLATE_SUPPORT = 'experimental-app-plate-support';
 
-export const EXPERIMENTAL_APP_R_SUPPORT = 'experimental-app-r-support';
-
 export const EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS = 'queryProductAllFolderLookups';
 export const EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED = 'queryProductProjectDataListingScoped';
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';

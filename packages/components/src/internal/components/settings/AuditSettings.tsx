@@ -13,29 +13,27 @@ interface AuditSettingProps {
     api?: ComponentsAPIWrapper;
 }
 
-export const AuditSettings: FC<AuditSettingProps> = (props) => {
-    const [isRequired, setIsRequired] = useState<string>('false');
-    const { moduleContext } = useServerContext();
+export const AuditSettings: FC<AuditSettingProps> = props => {
+    const { api } = props;
+    const { container, moduleContext } = useServerContext();
+    const [isRequired, setIsRequired] = useState<string>();
 
     useEffect(() => {
-        // TODO
-        // setIsRequired(container.requireComments)
+        (async () => {
+            const settings = await api.folder.getAuditSettings(container.path);
+            setIsRequired(settings.requireUserComments + '');
+        })();
     }, []);
 
     const onDisableRequirement = useCallback(() => {
         setIsRequired('false');
-        // TODO API call
-    }, []);
+        api.folder.setAuditCommentsRequired(false);
+    }, [api]);
 
     const onEnableRequired = useCallback(() => {
         setIsRequired('true');
-        // TODO API call
-    }, []);
-
-    const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
-        const newValue = e.target.value;
-        setIsRequired(newValue);
-    }, []);
+        api.folder.setAuditCommentsRequired(true);
+    }, [api]);
 
     if (!isDataChangeCommentRequirementFeatureEnabled(moduleContext)) {
         return null;
@@ -81,7 +79,7 @@ export const AuditSettings: FC<AuditSettingProps> = (props) => {
                                 <input
                                     name="requireComments"
                                     type="radio"
-                                    onChange={onChange}
+                                    onChange={onEnableRequired}
                                     value="true"
                                     checked={isRequired === 'true'}
                                 />{' '}

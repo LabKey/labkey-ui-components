@@ -26,8 +26,13 @@ export interface UpdateProjectSettingsOptions {
     defaultDateTimeFormat?: string;
 }
 
+export interface AuditSettingsResponse {
+    requireUserComments: boolean;
+}
+
 export interface FolderAPIWrapper {
     createProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
+    getAuditSettings: (containerPath?: string) => Promise<AuditSettingsResponse>;
     getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
     getProjects: (
         container?: Container,
@@ -37,6 +42,7 @@ export interface FolderAPIWrapper {
         includeTopFolder?: boolean
     ) => Promise<Container[]>;
     renameProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
+    setAuditCommentsRequired: (isRequired: boolean, containerPath?: string) => Promise<void>;
     updateProjectDataExclusions: (options: ProjectSettingsOptions, containerPath?: string) => Promise<void>;
     updateProjectLookAndFeelSettings: (options: UpdateProjectSettingsOptions, containerPath?: string) => Promise<void>;
 }
@@ -74,6 +80,33 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                     resolve(new Container(data.project));
                 }),
                 failure: handleRequestFailure(reject, 'Failed to rename project'),
+            });
+        });
+    };
+
+    getAuditSettings = (containerPath?: string): Promise<AuditSettingsResponse> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: ActionURL.buildURL('audit', 'getAuditSettings', containerPath),
+                method: 'POST',
+                success: Utils.getCallbackWrapper(response => {
+                    resolve(response);
+                }),
+                failure: handleRequestFailure(reject, 'Failed to retrieve audit settings.'),
+            });
+        });
+    };
+
+    setAuditCommentsRequired = (requireUserComments: boolean, containerPath?: string): Promise<void> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: ActionURL.buildURL('audit', 'saveAuditSettings', containerPath),
+                method: 'POST',
+                jsonData: { requireUserComments },
+                success: Utils.getCallbackWrapper(() => {
+                    resolve();
+                }),
+                failure: handleRequestFailure(reject, 'Failed to save setting for audit comment requirements.'),
             });
         });
     };
@@ -185,6 +218,8 @@ export function getFolderTestAPIWrapper(
     return {
         createProject: mockFn(),
         renameProject: mockFn(),
+        getAuditSettings: mockFn(),
+        setAuditCommentsRequired: mockFn(),
         updateProjectDataExclusions: mockFn(),
         getDataTypeExcludedProjects: mockFn(),
         updateProjectLookAndFeelSettings: mockFn(),

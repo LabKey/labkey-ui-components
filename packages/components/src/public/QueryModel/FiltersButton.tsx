@@ -12,7 +12,7 @@ export const FiltersButton: FC<Props> = memo(props => {
 
     if (iconOnly) {
         return (
-            <Tip caption="Filters" trigger={['hover']}>
+            <Tip caption="Filters">
                 <button className="grid-panel__button btn btn-default" onClick={onFilter} type="button">
                     <i className="fa fa-filter" />
                 </button>

@@ -147,15 +147,20 @@ exports[`BasicPropertiesFields existing list, existing properties 1`] = `
         className="domain-no-wrap"
       >
         Name
-        <span
-          className="label-help-target"
-          onMouseOut={[Function]}
-          onMouseOver={[Function]}
+        <div
+          className="overlay-trigger"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
         >
           <span
-            className="label-help-icon fa fa-question-circle"
-          />
-        </span>
+            className="label-help-target"
+          >
+            <span
+              className="label-help-icon fa fa-question-circle"
+            />
+          </span>
+        </div>
          *
       </span>
     </div>
@@ -224,15 +229,20 @@ exports[`BasicPropertiesFields new list, default properties 1`] = `
         className="domain-no-wrap"
       >
         Name
-        <span
-          className="label-help-target"
-          onMouseOut={[Function]}
-          onMouseOver={[Function]}
+        <div
+          className="overlay-trigger"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
         >
           <span
-            className="label-help-icon fa fa-question-circle"
-          />
-        </span>
+            className="label-help-target"
+          >
+            <span
+              className="label-help-icon fa fa-question-circle"
+            />
+          </span>
+        </div>
          *
       </span>
     </div>

@@ -81,15 +81,20 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 className="domain-no-wrap"
               >
                 Name
-                <span
-                  className="label-help-target"
-                  onMouseOut={[Function]}
-                  onMouseOver={[Function]}
+                <div
+                  className="overlay-trigger"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
                 >
                   <span
-                    className="label-help-icon fa fa-question-circle"
-                  />
-                </span>
+                    className="label-help-target"
+                  >
+                    <span
+                      className="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
                  *
               </span>
             </div>
@@ -120,15 +125,20 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 className="domain-no-wrap"
               >
                 Label
-                <span
-                  className="label-help-target"
-                  onMouseOut={[Function]}
-                  onMouseOver={[Function]}
+                <div
+                  className="overlay-trigger"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
                 >
                   <span
-                    className="label-help-icon fa fa-question-circle"
-                  />
-                </span>
+                    className="label-help-target"
+                  >
+                    <span
+                      className="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
                  *
               </span>
             </div>
@@ -185,15 +195,20 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 className="domain-no-wrap"
               >
                 Category
-                <span
-                  className="label-help-target"
-                  onMouseOut={[Function]}
-                  onMouseOver={[Function]}
+                <div
+                  className="overlay-trigger"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
                 >
                   <span
-                    className="label-help-icon fa fa-question-circle"
-                  />
-                </span>
+                    className="label-help-target"
+                  >
+                    <span
+                      className="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
                 
               </span>
             </div>
@@ -208,7 +223,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 >
                   <div
                     className="select-input css-b62m3t-container"
-                    id="selectinput-2"
+                    id="selectinput-10"
                     onKeyDown={[Function]}
                   >
                     <span
@@ -343,15 +358,20 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
             className="domain-field-section-heading"
           >
             Data Row Uniqueness
-            <span
-              className="label-help-target"
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
+            <div
+              className="overlay-trigger"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
               <span
-                className="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                className="label-help-target"
+              >
+                <span
+                  className="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
           </div>
           <div
             className="dataset_data_row_uniqueness_container"
@@ -428,15 +448,20 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                   className="domain-no-wrap"
                 >
                   Field
-                  <span
-                    className="label-help-target"
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
+                  <div
+                    className="overlay-trigger"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
                     <span
-                      className="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
+                      className="label-help-target"
+                    >
+                      <span
+                        className="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
                   
                 </span>
               </div>
@@ -451,7 +476,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                   >
                     <div
                       className="select-input css-b62m3t-container"
-                      id="selectinput-3"
+                      id="selectinput-13"
                       onKeyDown={[Function]}
                     >
                       <span
@@ -676,15 +701,20 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                 className="domain-no-wrap"
               >
                 Name
-                <span
-                  className="label-help-target"
-                  onMouseOut={[Function]}
-                  onMouseOver={[Function]}
+                <div
+                  className="overlay-trigger"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
                 >
                   <span
-                    className="label-help-icon fa fa-question-circle"
-                  />
-                </span>
+                    className="label-help-target"
+                  >
+                    <span
+                      className="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
                  *
               </span>
             </div>
@@ -715,15 +745,20 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                 className="domain-no-wrap"
               >
                 Label
-                <span
-                  className="label-help-target"
-                  onMouseOut={[Function]}
-                  onMouseOver={[Function]}
+                <div
+                  className="overlay-trigger"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
                 >
                   <span
-                    className="label-help-icon fa fa-question-circle"
-                  />
-                </span>
+                    className="label-help-target"
+                  >
+                    <span
+                      className="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
                 
               </span>
             </div>
@@ -780,15 +815,20 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                 className="domain-no-wrap"
               >
                 Category
-                <span
-                  className="label-help-target"
-                  onMouseOut={[Function]}
-                  onMouseOver={[Function]}
+                <div
+                  className="overlay-trigger"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
                 >
                   <span
-                    className="label-help-icon fa fa-question-circle"
-                  />
-                </span>
+                    className="label-help-target"
+                  >
+                    <span
+                      className="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
                 
               </span>
             </div>
@@ -803,7 +843,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                 >
                   <div
                     className="select-input css-b62m3t-container"
-                    id="selectinput-0"
+                    id="selectinput-3"
                     onKeyDown={[Function]}
                   >
                     <span
@@ -921,15 +961,20 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             className="domain-field-section-heading"
           >
             Data Row Uniqueness
-            <span
-              className="label-help-target"
-              onMouseOut={[Function]}
-              onMouseOver={[Function]}
+            <div
+              className="overlay-trigger"
+              onClick={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
             >
               <span
-                className="label-help-icon fa fa-question-circle"
-              />
-            </span>
+                className="label-help-target"
+              >
+                <span
+                  className="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
           </div>
           <div
             className="dataset_data_row_uniqueness_container"
@@ -1006,15 +1051,20 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                   className="domain-no-wrap"
                 >
                   Field
-                  <span
-                    className="label-help-target"
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
+                  <div
+                    className="overlay-trigger"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
                   >
                     <span
-                      className="label-help-icon fa fa-question-circle"
-                    />
-                  </span>
+                      className="label-help-target"
+                    >
+                      <span
+                        className="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
                   
                 </span>
               </div>
@@ -1029,7 +1079,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                   >
                     <div
                       className="select-input select-input--is-disabled css-3iigni-container"
-                      id="selectinput-1"
+                      id="selectinput-6"
                       onKeyDown={[Function]}
                     >
                       <span

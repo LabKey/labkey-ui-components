@@ -1,8 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { DropdownButton, MenuItem, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { blurActiveElement } from '../../util/utils';
-import { Tip } from '../base/Tip';
 
 interface Props {
     currentPage: number;
@@ -37,8 +36,10 @@ export class PageMenu extends PureComponent<Props> {
     render(): ReactNode {
         const { currentPage, disabled, id, isFirstPage, isLastPage, pageCount, pageSize, pageSizes } = this.props;
 
+        // Note: intentionally using react-bootstrap OverlayTrigger/Tooltip here because our current version is not
+        // compatible with react-bootstrap Dropdown menus.
         return (
-            <Tip caption="Current Page" trigger={['hover']}>
+            <OverlayTrigger delay={200} placement="top" overlay={<Tooltip>Current Page</Tooltip>}>
                 <DropdownButton
                     className="current-page-dropdown"
                     disabled={disabled}
@@ -64,7 +65,7 @@ export class PageMenu extends PureComponent<Props> {
                         </MenuItem>
                     ))}
                 </DropdownButton>
-            </Tip>
+            </OverlayTrigger>
         );
     }
 }

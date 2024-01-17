@@ -13,31 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import React, { FC, useMemo } from 'react';
+
+import { OverlayTrigger, TriggerType } from '../../OverlayTrigger';
+import { Tooltip } from '../../Tooltip';
+import { generateId } from '../../util/utils';
 
 interface Props {
     caption: React.ReactNode;
-    trigger?: string[];
+    triggerType?: TriggerType;
 }
 
-export class Tip extends React.Component<Props, any> {
-    static defaultProps = {
-        trigger: ['focus', 'hover'],
-    };
-
-    render() {
-        const { caption, trigger } = this.props;
-
-        return (
-            <OverlayTrigger
-                delay={200}
-                overlay={<Tooltip id="tooltip">{caption}</Tooltip>}
-                placement="top"
-                trigger={trigger}
-            >
-                {this.props.children}
-            </OverlayTrigger>
-        );
-    }
-}
+export const Tip: FC<Props> = ({ caption, children, triggerType }) => {
+    const id = useMemo(() => generateId('tip-'), []);
+    return (
+        <OverlayTrigger
+            delay={200}
+            id={id}
+            overlay={
+                <Tooltip id={id} placement="top">
+                    {caption}
+                </Tooltip>
+            }
+            triggerType={triggerType}
+        >
+            {children}
+        </OverlayTrigger>
+    );
+};

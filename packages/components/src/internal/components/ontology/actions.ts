@@ -149,7 +149,8 @@ function getConceptParentPaths(conceptPath: string, container: string = SHARED_C
             failure: Utils.getCallbackWrapper(
                 response => {
                     console.error(response);
-                    reject(response.errors);
+                    // Defensive only because it causes test failures, response should always be present
+                    reject(response?.errors);
                 },
                 null,
                 false

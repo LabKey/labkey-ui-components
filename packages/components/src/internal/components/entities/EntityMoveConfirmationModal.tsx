@@ -14,6 +14,7 @@ import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 import { Container } from '../base/models/Container';
 
 import { ProjectConfigurableDataType } from './models';
+import { areCommentsRequired } from '../container/actions';
 
 export interface EntityMoveConfirmationModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
     currentContainer?: Container;
@@ -30,9 +31,11 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
     const [containerOptions, setContainerOptions] = useState<SelectInputOption[]>();
     const [selectedContainerOption, setSelectedContainerOption] = useState<SelectInputOption>();
     const [auditUserComment, setAuditUserComment] = useState<string>();
+    const [requiresUserComment, setRequiresUserComment] = useState<boolean>();
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
     const container_ = currentContainer ?? container;
+    const hasValidUserComment = auditUserComment?.trim()?.length > 0;
 
     useEffect(
         () => {
@@ -63,6 +66,8 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                             data: f,
                         }))
                     );
+                    const commentsRequired = await areCommentsRequired(container_, moduleContext);
+                    setRequiresUserComment(commentsRequired);
                 } catch (e) {
                     setError(`Error: ${resolveErrorMessage(e)}`);
                 } finally {
@@ -133,7 +138,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
             confirmVariant="success"
             {...confirmModalProps}
             onConfirm={onConfirmCallback}
-            canConfirm={!!selectedContainerOption}
+            canConfirm={!!selectedContainerOption && (!requiresUserComment || hasValidUserComment)}
         >
             {children}
             <div className="top-spacing">
@@ -147,12 +152,12 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
             </div>
             <div className="top-spacing">
                 <div className="bottom-spacing">
-                    <strong>Reason(s) for moving</strong>
+                    <strong>Reason for moving{requiresUserComment ? ' *' : ''}</strong>
                 </div>
                 <div>
                     <textarea
                         className="form-control"
-                        placeholder="Enter comments (optional)"
+                        placeholder={'Enter reason(s)' + (requiresUserComment ? '' : ' (optional)')}
                         onChange={onCommentChange}
                         rows={5}
                     />

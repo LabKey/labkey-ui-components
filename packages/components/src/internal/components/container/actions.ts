@@ -3,11 +3,13 @@ import { PermissionTypes } from '@labkey/api';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { useAppContext } from '../../AppContext';
-import { useServerContext } from '../base/ServerContext';
+import { ModuleContext, useServerContext } from '../base/ServerContext';
 import { Container } from '../base/models/Container';
 import { User } from '../base/models/User';
 import { resolveErrorMessage } from '../../util/messaging';
 import { FetchContainerOptions } from '../security/APIWrapper';
+import { isProductProjectsEnabled, resolveModuleContext } from '../../app/utils';
+import { getDefaultAPIWrapper } from '../../APIWrapper';
 
 /**
  * Applies the permissions on the container to the user. Only permission related User fields are mutated.
@@ -130,4 +132,13 @@ export function useContainerUser(containerIdOrPath: string, options?: UseContain
         isLoaded: !isLoading(loadingState),
         user: containerUsers[containerIdOrPath]?.user,
     };
+}
+
+export async function areCommentsRequired(container: Container, moduleContext?: ModuleContext): Promise<boolean> {
+    let path = container.path;
+    if (isProductProjectsEnabled(resolveModuleContext(moduleContext)) && !container.isProject) {
+        path = container.parentPath;
+    }
+    const { requireUserComments } = await getDefaultAPIWrapper().folder.getAuditSettings(path);
+    return requireUserComments;
 }

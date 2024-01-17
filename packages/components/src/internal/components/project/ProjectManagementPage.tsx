@@ -35,8 +35,6 @@ export const ProjectManagementPage: FC = memo(() => {
     const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
     const homeContainer = useContainerUser(homeFolderPath);
     const { api } = useAppContext<AppContext>();
-    // TODO: get rid of reloadCounter, instead create a load callback for loading data, and call load when needed
-    //  (on mount, on success) instead of incrementing the counter.
     const [reloadCounter, setReloadCounter] = useState<number>(0);
     const [projects, setProjects] = useState<Container[]>();
     const [selectedProject, setSelectedProject] = useState<Container>();
@@ -100,7 +98,14 @@ export const ProjectManagementPage: FC = memo(() => {
             setIsDirty(dirty);
             const isCurrentContainerSelected = selectedProject.id === container.id;
             if (maybeReload) {
-                if (isCurrentContainerSelected) window.location.reload();
+                if (isCurrentContainerSelected) {
+                    window.location.reload();
+                }
+                else {
+                    // we are going to reload the data for the selected project, so clear dirty state
+                    setIsDirty(false);
+                    setReloadCounter(prevState => prevState + 1);
+                }
             } else {
                 if (isCurrentContainerSelected && isDelete)
                     window.location.href = createProductUrl(
@@ -174,7 +179,7 @@ export const ProjectManagementPage: FC = memo(() => {
                                     onSuccess={onSettingsSuccess}
                                     onPageError={onError}
                                     project={selectedProject}
-                                    key={selectedProject?.id}
+                                    key={selectedProject?.id + reloadCounter}
                                 />
                             )}
                         </VerticalScrollPanel>

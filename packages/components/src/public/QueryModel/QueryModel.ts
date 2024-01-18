@@ -1025,7 +1025,6 @@ export class QueryModel {
         return {
             currentPage: this.currentPage,
             disabled: this.isLoading,
-            id: this.id,
             isFirstPage: this.isFirstPage,
             isLastPage: this.isLastPage,
             offset: this.offset,

@@ -55,6 +55,7 @@ export interface AdminAppContext {
     WorkflowNotificationSettingsComponent: WorkflowNotificationSettings;
     extraPermissionRoles: string[][];
     projectDataTypes?: EntityDataType[];
+    sampleTypeDataType?: EntityDataType;
 }
 
 export interface SampleTypeAppContext {

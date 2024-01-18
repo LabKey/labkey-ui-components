@@ -17,23 +17,14 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { useRouteLeave } from '../../util/RouteLeave';
-import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { getAppHomeFolderPath, getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
 import { VerticalScrollPanel } from '../base/VeriticalScrollPanel';
+
+import { useContainerUser } from '../container/actions';
 
 import { ProjectSettings } from './ProjectSettings';
 
 import { ProjectListing } from './ProjectListing';
-
-const renderButtons = (): ReactNode => (
-    <>
-        <a className="button-right-spacing btn btn-success" href={AppURL.create('admin', 'projects', 'new').toHref()}>
-            Create a Project
-        </a>
-        <a href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value).toHref()}>
-            View Audit History
-        </a>
-    </>
-);
 
 export const ProjectManagementPage: FC = memo(() => {
     useAdministrationSubNav();
@@ -41,21 +32,22 @@ export const ProjectManagementPage: FC = memo(() => {
     const [getIsDirty, setIsDirty] = useRouteLeave();
     const [successMsg, setSuccessMsg] = useState<string>();
     const { user, moduleContext, container } = useServerContext();
+    const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
+    const homeContainer = useContainerUser(homeFolderPath);
     const { api } = useAppContext<AppContext>();
-    // TODO: get rid of reloadCounter, instead create a load callback for loading data, and call load when needed
-    //  (on mount, on success) instead of incrementing the counter.
     const [reloadCounter, setReloadCounter] = useState<number>(0);
     const [projects, setProjects] = useState<Container[]>();
     const [selectedProject, setSelectedProject] = useState<Container>();
     const [error, setError] = useState<string>();
     const [loaded, setLoaded] = useState<boolean>(false);
+    const [includesChildProject, setIncludesChildProject] = useState<boolean>(false);
     useEffect(() => {
         (async () => {
             setLoaded(false);
             setError(undefined);
 
             try {
-                let projects_ = await api.folder.getProjects(container, moduleContext, true, true, false);
+                let projects_ = await api.folder.getProjects(container, moduleContext, true, true, true);
                 projects_ = projects_.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Admin) > -1);
                 setProjects(projects_);
 
@@ -66,7 +58,7 @@ export const ProjectManagementPage: FC = memo(() => {
                     }
                 }
 
-                let defaultContainer = container?.isFolder ? container : projects_?.[0];
+                let defaultContainer = container;
                 const createdProjectName = searchParams.get('created');
                 if (createdProjectName) {
                     removeParameters(setSearchParams, 'created');
@@ -75,6 +67,8 @@ export const ProjectManagementPage: FC = memo(() => {
                 }
 
                 setSelectedProject(defaultContainer);
+
+                setIncludesChildProject(projects_.some(proj => proj.path !== homeFolderPath));
             } catch (e) {
                 setError(`Error: ${resolveErrorMessage(e)}`);
             } finally {
@@ -104,7 +98,13 @@ export const ProjectManagementPage: FC = memo(() => {
             setIsDirty(dirty);
             const isCurrentContainerSelected = selectedProject.id === container.id;
             if (maybeReload) {
-                if (isCurrentContainerSelected) window.location.reload();
+                if (isCurrentContainerSelected) {
+                    window.location.reload();
+                } else {
+                    // we are going to reload the data for the selected project, so clear dirty state
+                    setIsDirty(false);
+                    setReloadCounter(prevState => prevState + 1);
+                }
             } else {
                 if (isCurrentContainerSelected && isDelete)
                     window.location.href = createProductUrl(
@@ -122,6 +122,24 @@ export const ProjectManagementPage: FC = memo(() => {
         [setIsDirty, selectedProject, container]
     );
 
+    const renderButtons = useCallback(() => {
+        return (
+            <>
+                {homeContainer.user?.isAdmin && (
+                    <a
+                        className="button-right-spacing btn btn-success"
+                        href={AppURL.create('admin', 'projects', 'new').toHref()}
+                    >
+                        Create a Project
+                    </a>
+                )}
+                <a href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, PROJECT_AUDIT_QUERY.value).toHref()}>
+                    View Audit History
+                </a>
+            </>
+        );
+    }, [homeContainer.user]);
+
     return (
         <>
             {successMsg && (
@@ -138,13 +156,19 @@ export const ProjectManagementPage: FC = memo(() => {
             >
                 <Alert>{error}</Alert>
                 {!loaded && !error && <LoadingSpinner />}
-                {loaded && !error && projects?.length === 0 && (
+                {loaded && !error && !includesChildProject && (
                     <Alert bsStyle="warning">
-                        No projects have been created. Click{' '}
-                        <a href={AppURL.create('admin', 'projects', 'new').toHref()}>here</a> to get started.
+                        No projects have been created.
+                        {homeContainer.user?.isAdmin && (
+                            <>
+                                {' '}
+                                Click <a href={AppURL.create('admin', 'projects', 'new').toHref()}>here</a> to get
+                                started.
+                            </>
+                        )}
                     </Alert>
                 )}
-                {projects?.length > 0 && (
+                {includesChildProject && (
                     <div className="side-panels-container">
                         <ProjectListing
                             projects={projects}
@@ -160,7 +184,7 @@ export const ProjectManagementPage: FC = memo(() => {
                                     onSuccess={onSettingsSuccess}
                                     onPageError={onError}
                                     project={selectedProject}
-                                    key={selectedProject?.id}
+                                    key={selectedProject?.id + reloadCounter}
                                 />
                             )}
                         </VerticalScrollPanel>

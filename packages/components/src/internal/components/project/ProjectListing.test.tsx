@@ -29,6 +29,10 @@ describe('ProjectListing', () => {
         render(<ProjectListing {...DEFAULT_PROPS} projects={allProjects} selectedProject={allProjects[0]} />);
 
         verify(3, 0);
+
+        expect(document.querySelectorAll('.menu-section-item')[0].textContent).toBe('Test Project Container');
+        expect(document.querySelectorAll('.menu-section-item')[1].textContent).toBe('Test Folder Container');
+        expect(document.querySelectorAll('.menu-section-item')[2].textContent).toBe('Other Test Folder Container');
     });
 
     test('has inherited', () => {
@@ -42,6 +46,10 @@ describe('ProjectListing', () => {
         );
 
         verify(3, 1);
+
+        expect(document.querySelectorAll('.menu-section-item')[0].textContent).toBe('Test Project Container');
+        expect(document.querySelectorAll('.menu-section-item')[1].textContent).toBe('Test Folder Container');
+        expect(document.querySelectorAll('.menu-section-item')[2].textContent).toBe('Other Test Folder Container');
     });
 
     test('all inherited', () => {
@@ -55,5 +63,26 @@ describe('ProjectListing', () => {
         );
 
         verify(3, 2);
+
+        expect(document.querySelectorAll('.menu-section-item')[0].textContent).toBe('Test Project Container');
+        expect(document.querySelectorAll('.menu-section-item')[1].textContent).toBe('Test Folder Container');
+        expect(document.querySelectorAll('.menu-section-item')[2].textContent).toBe('Other Test Folder Container');
+    });
+
+    test('app at home project', () => {
+        const homeContainer = { ...TEST_PROJECT_CONTAINER, path: '/home' };
+        render(
+            <ProjectListing
+                {...DEFAULT_PROPS}
+                projects={[homeContainer, TEST_FOLDER_CONTAINER, TEST_FOLDER_OTHER_CONTAINER]}
+                selectedProject={homeContainer}
+            />
+        );
+
+        verify(3, 0);
+
+        expect(document.querySelectorAll('.menu-section-item')[0].textContent).toBe('Home Project');
+        expect(document.querySelectorAll('.menu-section-item')[1].textContent).toBe('Test Folder Container');
+        expect(document.querySelectorAll('.menu-section-item')[2].textContent).toBe('Other Test Folder Container');
     });
 });

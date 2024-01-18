@@ -301,6 +301,10 @@ export function getProjectDataExclusion(moduleContext?: ModuleContext): { [key: 
     return resolveModuleContext(moduleContext)?.samplemanagement?.[PROJECT_DATA_TYPE_EXCLUSIONS];
 }
 
+export function getProjectDashboardSampleTypeExclusion(moduleContext?: ModuleContext): number[] {
+    return getProjectDataExclusion(moduleContext)?.['DashboardSampleType'];
+}
+
 export function getProjectSampleTypeExclusion(moduleContext?: ModuleContext): number[] {
     return getProjectDataExclusion(moduleContext)?.['SampleType'];
 }
@@ -372,9 +376,7 @@ export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isApiKeyGenerationEnabled(moduleContext?: ModuleContext): boolean {
-    return (
-        isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)
-    );
+    return isFeatureEnabled(ProductFeature.ApiKeys, moduleContext);
 }
 
 export function isFeatureEnabled(flag: ProductFeature, moduleContext?: ModuleContext): boolean {

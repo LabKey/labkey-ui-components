@@ -31,6 +31,7 @@ export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableData
 
 export function getProjectDataTypeDataCount(
     dataType: ProjectConfigurableDataType,
+    containerPath?: string,
     allDataTypes?: DataTypeEntity[],
     isNewFolder?: boolean
 ): Promise<Record<string, number>> {
@@ -48,7 +49,7 @@ export function getProjectDataTypeDataCount(
                 lookup[type.lsid] = type.rowId;
             });
         }
-        let cf = getContainerFilterForFolder();
+        let cf = getContainerFilterForFolder(containerPath);
         if (isNewFolder) {
             cf = isAllProductFoldersFilteringEnabled()
                 ? Query.ContainerFilter.allInProjectPlusShared
@@ -56,6 +57,7 @@ export function getProjectDataTypeDataCount(
         }
 
         Query.executeSql({
+            containerPath,
             containerFilter: cf,
             schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
             sql: getProjectDataTypeDataCountSql(dataType),

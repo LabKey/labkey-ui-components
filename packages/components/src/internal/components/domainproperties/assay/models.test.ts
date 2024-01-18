@@ -288,4 +288,29 @@ describe('AssayProtocolModel', () => {
         });
         expect(existingModel.container).toBe('Test Container');
     });
+
+    test('domainContainerId', () => {
+        const newModel = AssayProtocolModel.create({
+            name: 'Test Assay Protocol',
+            domains: [
+                {
+                    name: 'Sample Fields',
+                    container: 'Test Container',
+                },
+            ],
+        });
+        expect(newModel.domainContainerId).toBe('Test Container');
+
+        const existingModel = AssayProtocolModel.create({
+            protocolId: 1,
+            name: 'Test Assay Protocol',
+            domains: [
+                {
+                    name: 'Sample Fields',
+                    container: 'Test Container',
+                },
+            ],
+        });
+        expect(existingModel.domainContainerId).toBe('Test Container');
+    });
 });

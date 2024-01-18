@@ -4,16 +4,19 @@ import { Container } from '../base/models/Container';
 import { handleRequestFailure } from '../../util/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { ProjectConfigurableDataType } from '../entities/models';
+import { getFolderDataTypeExclusions } from '../entities/actions';
 import { isAppHomeFolder } from '../../app/utils';
 import { fetchContainers } from '../permissions/actions';
 import { ModuleContext } from '../base/ServerContext';
 import { naturalSortByProperty } from '../../../public/sort';
+import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 
 export interface ProjectSettingsOptions {
     allowUserSpecifiedNames?: boolean;
     disabledAssayDesigns?: number[];
     disabledDataClasses?: number[];
     disabledSampleTypes?: number[];
+    disabledDashboardSampleTypes?: number[];
     disabledStorageLocations?: number[];
     name?: string;
     nameAsTitle?: boolean;
@@ -29,6 +32,7 @@ export interface UpdateProjectSettingsOptions {
 export interface FolderAPIWrapper {
     createProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
     getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
+    getFolderDataTypeExclusions: (excludedContainer?: string) => Promise<{ [key: string]: number[] }>;
     getProjects: (
         container?: Container,
         moduleContext?: ModuleContext,
@@ -163,7 +167,9 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                         resolve(childProjects);
                     } else {
                         const top = projects.find(c => c.path === topFolderPath);
-                        const allProject = top ? [top] : [];
+                        const allProject = top
+                            ? [{ ...top, title: top.path === HOME_PATH ? HOME_TITLE : top.title } as Container]
+                            : [];
                         allProject.push(...childProjects);
                         resolve(allProject);
                     }
@@ -173,6 +179,8 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 });
         });
     };
+
+    getFolderDataTypeExclusions = getFolderDataTypeExclusions;
 }
 
 /**
@@ -187,6 +195,7 @@ export function getFolderTestAPIWrapper(
         renameProject: mockFn(),
         updateProjectDataExclusions: mockFn(),
         getDataTypeExcludedProjects: mockFn(),
+        getFolderDataTypeExclusions: mockFn(),
         updateProjectLookAndFeelSettings: mockFn(),
         getProjects: mockFn,
         ...overrides,

@@ -1,0 +1,245 @@
+import React from 'react';
+import { screen, act } from '@testing-library/react';
+
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
+
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+
+import { AssayRunDataType, DataClassDataType, SampleTypeDataType } from './constants';
+import { DataTypeSelector, getUncheckedEntityWarning, filterDataTypeHiddenEntity } from './DataTypeSelector';
+
+describe('getUncheckedEntityWarning', () => {
+    test('rowId in uncheckedEntitiesDB', () => {
+        let warning = getUncheckedEntityWarning([1, 2], [1], null, SampleTypeDataType, 1);
+        expect(warning).toBeNull();
+
+        warning = getUncheckedEntityWarning([1, 2], [1], {}, SampleTypeDataType, 1);
+        expect(warning).toBeNull();
+
+        warning = getUncheckedEntityWarning([1, 2], [1], { '1': 2 }, SampleTypeDataType, 1);
+        expect(warning).toBeNull();
+    });
+
+    test('rowId not in uncheckedEntities', () => {
+        let warning = getUncheckedEntityWarning([1], [1], {}, SampleTypeDataType, 2);
+        expect(warning).toBeNull();
+
+        warning = getUncheckedEntityWarning([1], [1], { '1': 1, '2': 2 }, SampleTypeDataType, 2);
+        expect(warning).toBeNull();
+
+        warning = getUncheckedEntityWarning([1], [1], null, SampleTypeDataType, 2);
+        expect(warning).toBeNull();
+    });
+
+    test('rowId not in uncheckedEntitiesDB', () => {
+        let warning = getUncheckedEntityWarning([1, 2], [1], {}, SampleTypeDataType, 2);
+        expect(warning).toBeNull();
+
+        warning = getUncheckedEntityWarning([1, 2], [1], { '1': 2 }, SampleTypeDataType, 2);
+        expect(warning).toBeNull();
+    });
+
+    test('dataCounts null', () => {
+        const warning = getUncheckedEntityWarning([1, 2], [1], null, SampleTypeDataType, 2);
+        expect(JSON.stringify(warning)).toContain('Loading...');
+    });
+
+    test('dataCounts empty', () => {
+        const warning = getUncheckedEntityWarning([1, 2], [1], {}, SampleTypeDataType, 2);
+        expect(warning).toBeNull();
+    });
+
+    test('dataCounts not empty', () => {
+        let warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, SampleTypeDataType, 2);
+        expect(JSON.stringify(warning)).toContain(
+            '2," ","samples"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+        );
+
+        warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, SampleTypeDataType, 1);
+        expect(JSON.stringify(warning)).toContain(
+            '1," ","sample"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+        );
+
+        warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, AssayRunDataType, 2);
+        expect(JSON.stringify(warning)).toContain(
+            '2," ","runs"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+        );
+
+        warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, DataClassDataType, 2);
+        expect(JSON.stringify(warning)).toContain(
+            '2," ","sources"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+        );
+
+        warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, null, 2);
+        expect(JSON.stringify(warning)).toContain(
+            '2," ","samples"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+        );
+    });
+});
+
+describe('filterDataTypeHiddenEntity', () => {
+    test('no hiddenEntities', () => {
+        expect(filterDataTypeHiddenEntity({ rowId: 1 }, undefined)).toBe(true);
+        expect(filterDataTypeHiddenEntity({ rowId: 1 }, [])).toBe(true);
+    });
+
+    test('hiddenEntities', () => {
+        expect(filterDataTypeHiddenEntity({ rowId: 1 }, [1])).toBe(false);
+        expect(filterDataTypeHiddenEntity({ rowId: 1 }, [2])).toBe(true);
+        expect(filterDataTypeHiddenEntity({ rowId: 1 }, [2, 3])).toBe(true);
+        expect(filterDataTypeHiddenEntity({ rowId: 1 }, [1, 2])).toBe(false);
+    });
+
+    test('by lsid', () => {
+        expect(filterDataTypeHiddenEntity({ lsid: 'test1' }, [1])).toBe(true);
+        expect(filterDataTypeHiddenEntity({ lsid: 'test1' }, ['test'])).toBe(true);
+        expect(filterDataTypeHiddenEntity({ lsid: 'test1' }, ['test1'])).toBe(false);
+        expect(filterDataTypeHiddenEntity({ lsid: 'test1' }, ['test1', 'test2'])).toBe(false);
+        expect(filterDataTypeHiddenEntity({ lsid: 'test1' }, ['test0', 'test2'])).toBe(true);
+    });
+});
+
+describe('DataTypeSelector', () => {
+    beforeAll(() => {
+        global.console.error = jest.fn();
+    });
+
+    const sampleTypes = [
+        {
+            label: 'Blood',
+            labelColor: '#2980b9',
+            rowId: 56,
+            description: null,
+            type: 'SampleType',
+            lsid: 'urn:lsid:labkey.com:SampleSet.Folder-107:9',
+        },
+        {
+            label: 'DNA',
+            labelColor: '#6E1A1A',
+            rowId: 111,
+            description: null,
+            type: 'SampleType',
+            lsid: 'urn:lsid:labkey.com:SampleSet.Folder-107:11',
+        },
+    ];
+    const apiWithResults = getTestAPIWrapper(jest.fn, {
+        query: getQueryTestAPIWrapper(jest.fn, {
+            getProjectConfigurableEntityTypeOptions: jest.fn().mockResolvedValue(sampleTypes),
+        }),
+    });
+    const apiWithNoResults = getTestAPIWrapper(jest.fn, {
+        query: getQueryTestAPIWrapper(jest.fn, {
+            getProjectConfigurableEntityTypeOptions: jest.fn().mockResolvedValue([]),
+        }),
+    });
+
+    test('loading', async () => {
+        renderWithAppContext(<DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithNoResults} />);
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
+    });
+
+    test('data types blank', async () => {
+        await act(async () => {
+            renderWithAppContext(<DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithNoResults} />);
+        });
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+        expect(document.querySelector('.content-group-label').textContent).toBe('Sample Types');
+        expect(document.querySelector('.help-block').textContent).toBe('No sample types');
+        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(0);
+    });
+
+    test('with data types', async () => {
+        await act(async () => {
+            renderWithAppContext(<DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithResults} />);
+        });
+        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
+        expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('Blood');
+        expect(document.querySelectorAll('.filter-faceted__checkbox')[0].getAttribute('checked')).toBe('');
+        expect(document.querySelectorAll('.project-faceted-data-type')[1].textContent).toBe('DNA');
+        expect(document.querySelectorAll('.filter-faceted__checkbox')[1].getAttribute('checked')).toBe('');
+        expect(document.querySelectorAll('.col-xs-12')).toHaveLength(2); // outer col + 1 inner col
+        expect(document.querySelectorAll('.col-md-6')).toHaveLength(0);
+    });
+
+    test('with 2 columns', async () => {
+        await act(async () => {
+            renderWithAppContext(
+                <DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithResults} columns={2} />
+            );
+        });
+        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
+        expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('Blood');
+        expect(document.querySelectorAll('.filter-faceted__checkbox')[0].getAttribute('checked')).toBe('');
+        expect(document.querySelectorAll('.project-faceted-data-type')[1].textContent).toBe('DNA');
+        expect(document.querySelectorAll('.filter-faceted__checkbox')[1].getAttribute('checked')).toBe('');
+        expect(document.querySelectorAll('.col-xs-12')).toHaveLength(3); // outer col + 2 inner col
+        expect(document.querySelectorAll('.col-md-6')).toHaveLength(2);
+    });
+
+    test('toggleSelectAll = false', async () => {
+        await act(async () => {
+            renderWithAppContext(
+                <DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithResults} toggleSelectAll={false} />
+            );
+        });
+        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
+        expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('Blood');
+        expect(document.querySelectorAll('.filter-faceted__checkbox')[0].getAttribute('checked')).toBe('');
+        expect(document.querySelectorAll('.project-faceted-data-type')[1].textContent).toBe('DNA');
+        expect(document.querySelectorAll('.filter-faceted__checkbox')[1].getAttribute('checked')).toBe('');
+        expect(document.querySelectorAll('.col-xs-12')).toHaveLength(1);
+        expect(document.querySelectorAll('.col-md-6')).toHaveLength(0);
+    });
+
+    test('with uncheckedEntitiesDB', async () => {
+        await act(async () => {
+            renderWithAppContext(
+                <DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithResults} uncheckedEntitiesDB={[56]} />
+            );
+        });
+        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
+        expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('Blood');
+        expect(document.querySelectorAll('.filter-faceted__checkbox')[0].getAttribute('checked')).toBe(null);
+        expect(document.querySelectorAll('.project-faceted-data-type')[1].textContent).toBe('DNA');
+        expect(document.querySelectorAll('.filter-faceted__checkbox')[1].getAttribute('checked')).toBe('');
+        expect(document.querySelectorAll('.col-xs-12')).toHaveLength(2);
+        expect(document.querySelectorAll('.col-md-6')).toHaveLength(0);
+    });
+
+    test('when allDataCounts and allDataTypes are provided', async () => {
+        const allDataTypes = [
+            {
+                label: 'freezer1',
+                rowId: 12035,
+                sublabel: 'Floor1/Room2',
+                description: 'This is freezer 1',
+                type: 'StorageLocation',
+            },
+            {
+                label: 'freezer2',
+                rowId: 12047,
+                sublabel: null,
+                description: 'This is freezer 2',
+                type: 'StorageLocation',
+            },
+        ];
+        const allDataCounts = {
+            '12035': 7,
+            '12047': 0,
+        };
+
+        await act(async () => {
+            renderWithAppContext(
+                <DataTypeSelector allDataTypes={allDataTypes} allDataCounts={allDataCounts} dataTypeLabel="storage" />
+            );
+        });
+        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
+        expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('freezer1Floor1/Room2');
+        expect(document.querySelectorAll('.filter-faceted__checkbox')[0].getAttribute('checked')).toBe('');
+        expect(document.querySelectorAll('.project-faceted-data-type')[1].textContent).toBe('freezer2');
+        expect(document.querySelectorAll('.filter-faceted__checkbox')[1].getAttribute('checked')).toBe('');
+        expect(document.querySelectorAll('.col-xs-12')).toHaveLength(2);
+        expect(document.querySelectorAll('.col-md-6')).toHaveLength(0);
+    });
+});

@@ -4,9 +4,10 @@ import { screen, act } from '@testing-library/react';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+
 import { AssayRunDataType, DataClassDataType, SampleTypeDataType } from './constants';
 import { DataTypeSelector, getUncheckedEntityWarning, filterDataTypeHiddenEntity } from './DataTypeSelector';
-import {renderWithAppContext} from "../../test/reactTestLibraryHelpers";
 
 describe('getUncheckedEntityWarning', () => {
     test('rowId in uncheckedEntitiesDB', () => {
@@ -163,7 +164,9 @@ describe('DataTypeSelector', () => {
 
     test('with 2 columns', async () => {
         await act(async () => {
-            renderWithAppContext(<DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithResults} columns={2} />);
+            renderWithAppContext(
+                <DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithResults} columns={2} />
+            );
         });
         expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
         expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('Blood');
@@ -176,7 +179,9 @@ describe('DataTypeSelector', () => {
 
     test('toggleSelectAll = false', async () => {
         await act(async () => {
-            renderWithAppContext(<DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithResults} toggleSelectAll={false} />);
+            renderWithAppContext(
+                <DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithResults} toggleSelectAll={false} />
+            );
         });
         expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
         expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('Blood');
@@ -189,7 +194,9 @@ describe('DataTypeSelector', () => {
 
     test('with uncheckedEntitiesDB', async () => {
         await act(async () => {
-            renderWithAppContext(<DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithResults} uncheckedEntitiesDB={[56]} />);
+            renderWithAppContext(
+                <DataTypeSelector entityDataType={SampleTypeDataType} api={apiWithResults} uncheckedEntitiesDB={[56]} />
+            );
         });
         expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
         expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('Blood');
@@ -223,7 +230,9 @@ describe('DataTypeSelector', () => {
         };
 
         await act(async () => {
-            renderWithAppContext(<DataTypeSelector allDataTypes={allDataTypes} allDataCounts={allDataCounts} dataTypeLabel="storage" />);
+            renderWithAppContext(
+                <DataTypeSelector allDataTypes={allDataTypes} allDataCounts={allDataCounts} dataTypeLabel="storage" />
+            );
         });
         expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
         expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('freezer1Floor1/Room2');

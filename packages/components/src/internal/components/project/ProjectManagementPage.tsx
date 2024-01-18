@@ -100,8 +100,7 @@ export const ProjectManagementPage: FC = memo(() => {
             if (maybeReload) {
                 if (isCurrentContainerSelected) {
                     window.location.reload();
-                }
-                else {
+                } else {
                     // we are going to reload the data for the selected project, so clear dirty state
                     setIsDirty(false);
                     setReloadCounter(prevState => prevState + 1);
@@ -161,7 +160,11 @@ export const ProjectManagementPage: FC = memo(() => {
                     <Alert bsStyle="warning">
                         No projects have been created.
                         {homeContainer.user?.isAdmin && (
-                            <> Click <a href={AppURL.create('admin', 'projects', 'new').toHref()}>here</a> to get started.</>
+                            <>
+                                {' '}
+                                Click <a href={AppURL.create('admin', 'projects', 'new').toHref()}>here</a> to get
+                                started.
+                            </>
                         )}
                     </Alert>
                 )}

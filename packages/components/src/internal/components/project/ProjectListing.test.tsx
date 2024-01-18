@@ -71,7 +71,13 @@ describe('ProjectListing', () => {
 
     test('app at home project', () => {
         const homeContainer = { ...TEST_PROJECT_CONTAINER, path: '/home' };
-        render(<ProjectListing {...DEFAULT_PROPS} projects={[homeContainer, TEST_FOLDER_CONTAINER, TEST_FOLDER_OTHER_CONTAINER]} selectedProject={homeContainer} />);
+        render(
+            <ProjectListing
+                {...DEFAULT_PROPS}
+                projects={[homeContainer, TEST_FOLDER_CONTAINER, TEST_FOLDER_OTHER_CONTAINER]}
+                selectedProject={homeContainer}
+            />
+        );
 
         verify(3, 0);
 

@@ -79,21 +79,20 @@ export const TEST_FOLDER_OTHER_CONTAINER_ADMIN = new Container({
     effectivePermissions: ['org.labkey.api.security.permissions.AdminPermission'],
 });
 
-export const createTestProjectAppContextAdmin = (
-    mockFn = (): any => () => {},
-): Partial<AppContext> => {
+export const createTestProjectAppContextAdmin = (mockFn = (): any => () => {}): Partial<AppContext> => {
     return {
         api: getTestAPIWrapper(mockFn, {
             security: getSecurityTestAPIWrapper(mockFn, {
-                fetchContainers: mockFn().mockResolvedValue([TEST_PROJECT_CONTAINER_ADMIN, TEST_FOLDER_CONTAINER_ADMIN]),
+                fetchContainers: mockFn().mockResolvedValue([
+                    TEST_PROJECT_CONTAINER_ADMIN,
+                    TEST_FOLDER_CONTAINER_ADMIN,
+                ]),
             }),
         }),
     };
 };
 
-export const createTestProjectAppContextNonAdmin = (
-    mockFn = (): any => () => {}
-): Partial<AppContext> => {
+export const createTestProjectAppContextNonAdmin = (mockFn = (): any => () => {}): Partial<AppContext> => {
     return {
         api: getTestAPIWrapper(mockFn, {
             security: getSecurityTestAPIWrapper(mockFn, {

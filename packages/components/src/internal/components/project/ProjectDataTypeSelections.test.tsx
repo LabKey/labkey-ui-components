@@ -7,8 +7,9 @@ import { TEST_FOLDER_CONTAINER } from '../../containerFixtures';
 
 import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
-import {renderWithAppContext} from "../../test/reactTestLibraryHelpers";
 
 describe('ProjectDataTypeSelections', () => {
     beforeAll(() => {
@@ -21,7 +22,7 @@ describe('ProjectDataTypeSelections', () => {
 
     test('without selected project - new project', async () => {
         await act(async () => {
-            renderWithAppContext(<ProjectDataTypeSelections api={API} entityDataTypes={[SampleTypeDataType]} />)
+            renderWithAppContext(<ProjectDataTypeSelections api={API} entityDataTypes={[SampleTypeDataType]} />);
         });
         expect(document.querySelectorAll('button')).toHaveLength(0);
     });
@@ -34,7 +35,7 @@ describe('ProjectDataTypeSelections', () => {
                     entityDataTypes={[SampleTypeDataType]}
                     project={TEST_FOLDER_CONTAINER}
                 />
-            )
+            );
         });
         expect(document.querySelectorAll('button')).toHaveLength(1);
         expect(document.querySelector('button').textContent).toBe('Save');
@@ -49,7 +50,7 @@ describe('ProjectDataTypeSelections', () => {
                     entityDataTypes={[SampleTypeDataType, AssayRunDataType]}
                     project={TEST_FOLDER_CONTAINER}
                 />
-            )
+            );
         });
         expect(document.querySelectorAll('button')).toHaveLength(1);
         expect(document.querySelector('button').textContent).toBe('Save');

@@ -19,10 +19,11 @@ import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
 import { AssayRunDataType } from '../../entities/constants';
 
+import { ProjectConfigurableDataType } from '../../entities/models';
+
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
-import {ProjectConfigurableDataType} from "../../entities/models";
 
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;

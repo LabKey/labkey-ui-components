@@ -1676,7 +1676,7 @@ export {
     Tooltip,
     Popover,
     OverlayTrigger,
-    useOverlayTriggerState
+    useOverlayTriggerState,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

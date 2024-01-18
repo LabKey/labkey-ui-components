@@ -21,7 +21,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
-import {IParentAlias, IParentOption, ProjectConfigurableDataType} from '../../entities/models';
+import { IParentAlias, IParentOption, ProjectConfigurableDataType } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 import {
     getHelpLink,
@@ -40,10 +40,11 @@ import { SAMPLE_SET_IMPORT_PREFIX, SampleTypeDataType } from '../../entities/con
 
 import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
+import { Container } from '../../base/models/Container';
+
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
-import { Container } from '../../base/models/Container';
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -386,9 +387,12 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
             const updatedModel = model.set('exception', exception) as SampleTypeModel;
             setSubmitting(false, () => {
-                this.setState(() => ({ model: updatedModel }), () => {
-                    scrollDomainErrorIntoView();
-                });
+                this.setState(
+                    () => ({ model: updatedModel }),
+                    () => {
+                        scrollDomainErrorIntoView();
+                    }
+                );
             });
         }
     };
@@ -475,7 +479,9 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
         try {
             const response: DomainDesign = await saveDomain({
-                containerPath: model.isNew() ? getAppHomeFolderPath(new Container(getServerContext().container)) : model.containerPath,
+                containerPath: model.isNew()
+                    ? getAppHomeFolderPath(new Container(getServerContext().container))
+                    : model.containerPath,
                 domain: domainDesign,
                 kind: Domain.KINDS.SAMPLE_TYPE,
                 name,
@@ -495,10 +501,12 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                   }) as SampleTypeModel);
 
             setSubmitting(false, () => {
-                this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false }),
-                     () => {
-                         scrollDomainErrorIntoView();
-                    });
+                this.setState(
+                    () => ({ model: updatedModel, showUniqueIdConfirmation: false }),
+                    () => {
+                        scrollDomainErrorIntoView();
+                    }
+                );
             });
         }
     };

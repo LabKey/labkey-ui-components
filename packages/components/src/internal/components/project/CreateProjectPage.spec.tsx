@@ -10,7 +10,7 @@ import {
     TEST_PROJECT_CONTAINER_ADMIN,
 } from '../../containerFixtures';
 
-import {TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN} from '../../userFixtures';
+import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN } from '../../userFixtures';
 
 import { FolderAPIWrapper, getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
@@ -21,10 +21,12 @@ import { TEST_LIMS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 import { AdminAppContext, AppContext } from '../../AppContext';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
+import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
+
+import { SampleTypeDataType } from '../entities/constants';
+
 import { CreateProjectContainer, CreateProjectContainerProps, CreateProjectPage } from './CreateProjectPage';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
-import {getSecurityTestAPIWrapper} from "../security/APIWrapper";
-import {SampleTypeDataType} from "../entities/constants";
 
 describe('CreateProjectPage', () => {
     function getDefaultProps(overrides?: Partial<FolderAPIWrapper>): CreateProjectContainerProps {
@@ -171,22 +173,26 @@ describe('CreateProjectPage', () => {
     });
 
     test('with sampleTypeDataType', async () => {
-        const wrapper = mountWithAppServerContext(<CreateProjectPage />, {
-            admin: {
-                projectDataTypes: [],
-                ProjectFreezerSelectionComponent: null,
-                sampleTypeDataType: SampleTypeDataType,
-            } as AdminAppContext,
-            api: getTestAPIWrapper(jest.fn, {
-                security: getSecurityTestAPIWrapper(jest.fn, {
-                    fetchContainers: () => Promise.resolve([TEST_PROJECT_CONTAINER_ADMIN]),
+        const wrapper = mountWithAppServerContext(
+            <CreateProjectPage />,
+            {
+                admin: {
+                    projectDataTypes: [],
+                    ProjectFreezerSelectionComponent: null,
+                    sampleTypeDataType: SampleTypeDataType,
+                } as AdminAppContext,
+                api: getTestAPIWrapper(jest.fn, {
+                    security: getSecurityTestAPIWrapper(jest.fn, {
+                        fetchContainers: () => Promise.resolve([TEST_PROJECT_CONTAINER_ADMIN]),
+                    }),
                 }),
-            }),
-        }, {
-            container: TEST_PROJECT_CONTAINER,
-            moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT,
-            user: TEST_USER_APP_ADMIN,
-        });
+            },
+            {
+                container: TEST_PROJECT_CONTAINER,
+                moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT,
+                user: TEST_USER_APP_ADMIN,
+            }
+        );
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find('.panel-heading')).toHaveLength(3);

@@ -21,7 +21,7 @@ import { loadNameExpressionOptions } from '../../settings/actions';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 import { resolveErrorMessage } from '../../../util/messaging';
 
-import {IParentAlias, IParentOption, ProjectConfigurableDataType} from '../../entities/models';
+import { IParentAlias, IParentOption, ProjectConfigurableDataType } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';

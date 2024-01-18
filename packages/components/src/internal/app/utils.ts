@@ -376,9 +376,7 @@ export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isApiKeyGenerationEnabled(moduleContext?: ModuleContext): boolean {
-    return (
-        isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)
-    );
+    return isFeatureEnabled(ProductFeature.ApiKeys, moduleContext);
 }
 
 export function isFeatureEnabled(flag: ProductFeature, moduleContext?: ModuleContext): boolean {

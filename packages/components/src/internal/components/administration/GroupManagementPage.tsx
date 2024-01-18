@@ -174,7 +174,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
         return (
             <>
                 <CreatedModified row={row} useServerDate={false} />
-                <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
+                <ManageDropdownButton collapsed pullRight>
                     <MenuItem
                         href={AppURL.create(AUDIT_KEY)
                             .addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value)

@@ -22,7 +22,7 @@ import { ManageDropdownButton } from './ManageDropdownButton';
 
 describe('<ManageDropdownButton/>', () => {
     test('default props', () => {
-        const component = <ManageDropdownButton id="jest-manage-1" />;
+        const component = <ManageDropdownButton />;
 
         const wrapper = shallow(component);
         const dropdown = wrapper.find(DropdownButton);
@@ -31,7 +31,7 @@ describe('<ManageDropdownButton/>', () => {
     });
 
     test('custom props', () => {
-        const component = <ManageDropdownButton id="jest-manage-2" collapsed={true} pullRight={true} />;
+        const component = <ManageDropdownButton collapsed pullRight />;
 
         const wrapper = shallow(component);
         const dropdown = wrapper.find(DropdownButton);

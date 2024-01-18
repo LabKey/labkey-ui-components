@@ -259,7 +259,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                         Create
                     </DisableableButton>
                 )}
-                <ManageDropdownButton id="users-manage-btn">
+                <ManageDropdownButton>
                     {user.hasManageUsersPermission() && usersView === 'active' && (
                         <SelectionMenuItem
                             id="deactivate-users-menu-item"

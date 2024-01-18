@@ -10,6 +10,8 @@ export const ProductNavigation: FC = memo(() => {
         setShow(current => !current);
     }, []);
 
+    // TODO: This seems to be a misuse of DropdownButton, it is not rendering any MenuItems and we're controlling when
+    //  we render children via onToggle. We should probably use something else.
     return (
         <DropdownButton
             id="product-navigation-button"

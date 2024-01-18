@@ -14,6 +14,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - changes sample chart configs to exclude based on both 'SampleType' and 'DashboardSampleType' exclusions
   - add sampleTypeDataType to AppAdminContext
 
+### version 3.7.2
+*Released*: 17 January 2024
+- Remove experimental feature flag for R report capabilities
+
 ### version 3.7.1
 *Released*: 17 January 2024
 * Update `EntityIdCreationModel.postEntityGrid` to accept optional `containerPath`

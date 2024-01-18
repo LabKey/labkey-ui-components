@@ -82,6 +82,7 @@ export class SubMenu extends React.Component<SubMenuProps> {
         return items;
     }
 
+    // FIXME: this should be a component, not a static method on this class.
     static renderMenuItem(option: MenuOption, key: any) {
         const itemProps = Object.assign({}, option);
 

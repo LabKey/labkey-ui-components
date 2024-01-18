@@ -1,12 +1,14 @@
-import React, { PureComponent, ReactNode } from 'react';
-import { DropdownButton, MenuItem, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import React, { FC } from 'react';
 
-import { blurActiveElement } from '../../util/utils';
+import { createPortal } from 'react-dom';
+
+import { DropdownButton, MenuDivider, MenuHeader, MenuItem } from '../../dropdowns';
+import { useOverlayTriggerState } from '../../OverlayTrigger';
+import { Tooltip } from '../../Tooltip';
 
 interface Props {
     currentPage: number;
     disabled: boolean;
-    id: string;
     isFirstPage: boolean;
     isLastPage: boolean;
     loadFirstPage: () => void;
@@ -17,55 +19,60 @@ interface Props {
     setPageSize: (size: number) => void;
 }
 
-export class PageMenu extends PureComponent<Props> {
-    loadFirstPage = (): void => {
-        this.props.loadFirstPage();
-        blurActiveElement();
-    };
+export const PageMenu: FC<Props> = props => {
+    const {
+        currentPage,
+        disabled,
+        isFirstPage,
+        isLastPage,
+        loadFirstPage,
+        loadLastPage,
+        pageCount,
+        pageSize,
+        pageSizes,
+        setPageSize,
+    } = props;
+    const totalPagesText = disabled ? '...' : `${pageCount} Total Pages`;
+    // We have to manually wire up a Tooltip here because we're rendering PageMenu within a btn-group so any extra
+    // wrapping elements cause it to render incorrectly.
+    const { onMouseEnter, onMouseOut, portalEl, show, targetRef } = useOverlayTriggerState<HTMLDivElement>(
+        'page-menu-overlay',
+        true,
+        false,
+        200
+    );
+    const tooltip = (
+        <Tooltip id="view-menu-tooltip" placement="top" targetRef={targetRef}>
+            Current Page
+        </Tooltip>
+    );
 
-    loadLastPage = (): void => {
-        this.props.loadLastPage();
-        blurActiveElement();
-    };
-
-    setPageSize = (size: number): void => {
-        this.props.setPageSize(size);
-        blurActiveElement();
-    };
-
-    render(): ReactNode {
-        const { currentPage, disabled, id, isFirstPage, isLastPage, pageCount, pageSize, pageSizes } = this.props;
-
-        // Note: intentionally using react-bootstrap OverlayTrigger/Tooltip here because our current version is not
-        // compatible with react-bootstrap Dropdown menus.
-        return (
-            <OverlayTrigger delay={200} placement="top" overlay={<Tooltip>Current Page</Tooltip>}>
-                <DropdownButton
-                    className="current-page-dropdown"
-                    disabled={disabled}
-                    id={`current-page-drop-${id}`}
-                    pullRight
-                    title={currentPage}
-                >
-                    <MenuItem header>Jump To</MenuItem>
-                    <MenuItem disabled={disabled || isFirstPage} onClick={this.loadFirstPage}>
-                        First Page
-                    </MenuItem>
-                    <MenuItem disabled={disabled || isLastPage} onClick={this.loadLastPage}>
-                        Last Page
-                    </MenuItem>
-                    <MenuItem header className="submenu-footer">
-                        {disabled ? '...' : `${pageCount} Total Pages`}
-                    </MenuItem>
-                    <MenuItem divider />
-                    <MenuItem header>Page Size</MenuItem>
-                    {pageSizes?.map(size => (
-                        <MenuItem key={size} active={size === pageSize} onClick={() => this.setPageSize(size)}>
-                            {size}
-                        </MenuItem>
-                    ))}
-                </DropdownButton>
-            </OverlayTrigger>
-        );
-    }
-}
+    return (
+        <DropdownButton
+            className="current-page-dropdown"
+            disabled={disabled}
+            pullRight
+            onMouseEnter={onMouseEnter}
+            onMouseOut={onMouseOut}
+            title={currentPage}
+            ref={targetRef}
+        >
+            <MenuHeader text="Jump To" />
+            <MenuItem disabled={disabled || isFirstPage} onClick={loadFirstPage}>
+                First Page
+            </MenuItem>
+            <MenuItem disabled={disabled || isLastPage} onClick={loadLastPage}>
+                Last Page
+            </MenuItem>
+            <MenuHeader className="submenu-footer" text={totalPagesText} />
+            <MenuDivider />
+            <MenuHeader text="Page Size" />
+            {pageSizes?.map(size => (
+                <MenuItem key={size} active={size === pageSize} onClick={() => setPageSize(size)}>
+                    {size}
+                </MenuItem>
+            ))}
+            {show && createPortal(tooltip, portalEl)}
+        </DropdownButton>
+    );
+};

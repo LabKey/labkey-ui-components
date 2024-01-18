@@ -40,6 +40,7 @@ import { SchemaDetails } from './internal/SchemaDetails';
 import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { ExtendedMap } from './public/ExtendedMap';
+import { areDataChangeCommentsRequired } from './internal/components/container/actions';
 
 import {
     ServerContextConsumer,
@@ -1623,6 +1624,7 @@ export {
     getTimelineEntityUrl,
     TimelineEventModel,
     TimelineView,
+    areDataChangeCommentsRequired,
     // pipeline
     hasActivePipelineJob,
     getTitleDisplay,

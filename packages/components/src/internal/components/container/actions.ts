@@ -134,7 +134,7 @@ export function useContainerUser(containerIdOrPath: string, options?: UseContain
     };
 }
 
-export async function areCommentsRequired(container: Container, moduleContext?: ModuleContext): Promise<boolean> {
+export async function areDataChangeCommentsRequired(container: Container, moduleContext?: ModuleContext): Promise<boolean> {
     let path = container.path;
     if (isProductProjectsEnabled(resolveModuleContext(moduleContext)) && !container.isProject) {
         path = container.parentPath;

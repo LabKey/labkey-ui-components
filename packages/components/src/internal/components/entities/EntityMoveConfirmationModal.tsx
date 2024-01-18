@@ -14,7 +14,7 @@ import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 import { Container } from '../base/models/Container';
 
 import { ProjectConfigurableDataType } from './models';
-import { areCommentsRequired } from '../container/actions';
+import { areDataChangeCommentsRequired } from '../container/actions';
 
 export interface EntityMoveConfirmationModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
     currentContainer?: Container;
@@ -66,7 +66,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                             data: f,
                         }))
                     );
-                    const commentsRequired = await areCommentsRequired(container_, moduleContext);
+                    const commentsRequired = await areDataChangeCommentsRequired(container_, moduleContext);
                     setRequiresUserComment(commentsRequired);
                 } catch (e) {
                     setError(`Error: ${resolveErrorMessage(e)}`);

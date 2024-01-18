@@ -159,8 +159,10 @@ export const ProjectManagementPage: FC = memo(() => {
                 {!loaded && !error && <LoadingSpinner />}
                 {loaded && !error && !includesChildProject && (
                     <Alert bsStyle="warning">
-                        No projects have been created. Click{' '}
-                        <a href={AppURL.create('admin', 'projects', 'new').toHref()}>here</a> to get started.
+                        No projects have been created.
+                        {homeContainer.user?.isAdmin && (
+                            <> Click <a href={AppURL.create('admin', 'projects', 'new').toHref()}>here</a> to get started.</>
+                        )}
                     </Alert>
                 )}
                 {includesChildProject && (

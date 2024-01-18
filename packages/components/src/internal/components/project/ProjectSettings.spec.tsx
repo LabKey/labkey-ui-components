@@ -53,13 +53,16 @@ describe('ProjectSettings', () => {
         };
     }
 
-    test('Selected project is home', () => {
+    test('Selected project is home', async () => {
         let wrapper = mountWithAppServerContext(
             <ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER} />,
             getDefaultAppContext(),
             getHomeServerContext()
         );
-        expect(wrapper).toEqual({});
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.project-settings')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').text()).toBe('Dashboard');
+        wrapper.unmount();
 
         wrapper = mountWithAppServerContext(
             <ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER} />,
@@ -69,14 +72,19 @@ describe('ProjectSettings', () => {
                 user: TEST_USER_EDITOR,
             }
         );
-        expect(wrapper).toEqual({});
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.project-settings')).toHaveLength(0);
+        wrapper.unmount();
 
         wrapper = mountWithAppServerContext(
             <ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER} />,
             getDefaultAppContext(),
             getChildServerContext()
         );
-        expect(wrapper).toEqual({});
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.project-settings')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').text()).toBe('Dashboard');
+        wrapper.unmount();
 
         wrapper = mountWithAppServerContext(
             <ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER} />,
@@ -86,10 +94,13 @@ describe('ProjectSettings', () => {
                 user: TEST_USER_APP_ADMIN,
             }
         );
-        expect(wrapper).toEqual({});
+        await waitForLifecycle(wrapper);
+        expect(wrapper.find('.project-settings')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').text()).toBe('Dashboard');
+        wrapper.unmount();
     });
 
-    test('permission/type checks', () => {
+    test('permission/type checks', async () => {
         let wrapper = mountWithAppServerContext(
             <ProjectSettings {...getDefaultProps()} project={TEST_FOLDER_CONTAINER} />,
             getDefaultAppContext(),
@@ -98,7 +109,7 @@ describe('ProjectSettings', () => {
                 user: TEST_USER_EDITOR,
             }
         );
-
+        await waitForLifecycle(wrapper);
         expect(wrapper.find('.project-settings')).toHaveLength(0);
         expect(wrapper.find('.delete-project-button')).toHaveLength(0);
         wrapper.unmount();
@@ -108,8 +119,9 @@ describe('ProjectSettings', () => {
             getDefaultAppContext(),
             getChildServerContext()
         );
-
+        await waitForLifecycle(wrapper);
         expect(wrapper.find('.project-settings')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading')).toHaveLength(4);
         expect(wrapper.find('.panel-heading').first().text()).toBe('Settings');
         expect(wrapper.find('.delete-project-button').hostNodes()).toHaveLength(1);
         expect(wrapper.find('.delete-project-button').hostNodes().text()).toBe(' Delete Project');
@@ -120,15 +132,16 @@ describe('ProjectSettings', () => {
             getDefaultAppContext(),
             getChildServerContext()
         );
-
+        await waitForLifecycle(wrapper);
         expect(wrapper.find('.project-settings')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading')).toHaveLength(4);
         expect(wrapper.find('.panel-heading').first().text()).toBe('Settings');
         expect(wrapper.find('.delete-project-button').hostNodes()).toHaveLength(1);
         expect(wrapper.find('.delete-project-button').hostNodes().text()).toBe(' Delete Project');
         wrapper.unmount();
     });
 
-    test('app without projects', () => {
+    test('app without projects', async () => {
         const wrapper = mountWithAppServerContext(
             <ProjectSettings {...getDefaultProps()} project={TEST_PROJECT_CONTAINER} />,
             getDefaultAppContext(),
@@ -138,7 +151,7 @@ describe('ProjectSettings', () => {
                 user: TEST_USER_APP_ADMIN,
             }
         );
-
+        await waitForLifecycle(wrapper);
         expect(wrapper.find('.project-settings')).toHaveLength(1);
         expect(wrapper.find('.panel-heading').text()).toBe('Dashboard');
         expect(wrapper.find('.delete-project-button')).toHaveLength(0);
@@ -161,7 +174,7 @@ describe('ProjectSettings', () => {
             },
             serverCtx
         );
-
+        await waitForLifecycle(wrapper);
         const properties = wrapper.find(ProjectNameSetting);
         expect(properties.exists()).toBe(true);
         expect(properties.prop('defaultName')).toEqual(container.name);
@@ -199,7 +212,7 @@ describe('ProjectSettings', () => {
             },
             serverCtx
         );
-
+        await waitForLifecycle(wrapper);
         const properties = wrapper.find(ProjectNameSetting);
         expect(properties.exists()).toBe(true);
         expect(properties.prop('defaultName')).toEqual(TEST_FOLDER_OTHER_CONTAINER.name);

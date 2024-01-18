@@ -99,7 +99,6 @@ import { LockIcon } from './internal/components/base/LockIcon';
 import { ExpandableFilterToggle } from './internal/components/base/ExpandableFilterToggle';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
-import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
 import { SubMenu } from './internal/components/menus/SubMenu';
 import { SubMenuItem } from './internal/components/menus/SubMenuItem';
 import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem';
@@ -1511,7 +1510,6 @@ export {
     parseCsvString,
     quoteValueWithDelimiters,
     // buttons and menus
-    MultiMenuButton,
     SubMenu,
     SubMenuItem,
     SelectionMenuItem,

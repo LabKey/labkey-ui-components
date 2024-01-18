@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Security } from '@labkey/api';
 
-import { ConfirmModalProps, ConfirmModal } from '../base/ConfirmModal';
+import { ConfirmModal, ConfirmModalProps } from '../base/ConfirmModal';
 import { Alert } from '../base/Alert';
 import { useServerContext } from '../base/ServerContext';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -14,7 +14,8 @@ import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 import { Container } from '../base/models/Container';
 
 import { ProjectConfigurableDataType } from './models';
-import { areDataChangeCommentsRequired } from '../container/actions';
+import { CommentTextArea } from '../forms/input/CommentTextArea';
+import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 export interface EntityMoveConfirmationModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
     currentContainer?: Container;
@@ -31,11 +32,11 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
     const [containerOptions, setContainerOptions] = useState<SelectInputOption[]>();
     const [selectedContainerOption, setSelectedContainerOption] = useState<SelectInputOption>();
     const [auditUserComment, setAuditUserComment] = useState<string>();
-    const [requiresUserComment, setRequiresUserComment] = useState<boolean>();
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
     const container_ = currentContainer ?? container;
     const hasValidUserComment = auditUserComment?.trim()?.length > 0;
+    const { requiresUserComment } = useDataChangeCommentsRequired();
 
     useEffect(
         () => {
@@ -66,8 +67,6 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                             data: f,
                         }))
                     );
-                    const commentsRequired = await areDataChangeCommentsRequired(container_, moduleContext);
-                    setRequiresUserComment(commentsRequired);
                 } catch (e) {
                     setError(`Error: ${resolveErrorMessage(e)}`);
                 } finally {
@@ -150,19 +149,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                     required
                 />
             </div>
-            <div className="top-spacing">
-                <div className="bottom-spacing">
-                    <strong>Reason for moving{requiresUserComment ? ' *' : ''}</strong>
-                </div>
-                <div>
-                    <textarea
-                        className="form-control"
-                        placeholder={'Enter reason ' + (requiresUserComment ? '(required)' : '(optional)')}
-                        onChange={onCommentChange}
-                        rows={5}
-                    />
-                </div>
-            </div>
+            <CommentTextArea actionName="Moving" onChange={onCommentChange} requiresUserComment={requiresUserComment} />
         </ConfirmModal>
     );
 });

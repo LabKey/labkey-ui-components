@@ -40,7 +40,7 @@ import { SchemaDetails } from './internal/SchemaDetails';
 import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { ExtendedMap } from './public/ExtendedMap';
-import { areDataChangeCommentsRequired } from './internal/components/container/actions';
+import { useContainerUser } from './internal/components/container/actions';
 
 import {
     ServerContextConsumer,
@@ -296,11 +296,13 @@ import { TextInput } from './internal/components/forms/input/TextInput';
 import { TextAreaInput } from './internal/components/forms/input/TextAreaInput';
 import { FieldEditForm, FieldEditProps } from './internal/components/forms/input/FieldEditInput';
 import { ColorPickerInput } from './internal/components/forms/input/ColorPickerInput';
+import { CommentTextArea } from './internal/components/forms/input/CommentTextArea';
 import { ColorIcon } from './internal/components/base/ColorIcon';
 import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailDisplay';
+import { useDataChangeCommentsRequired } from './internal/components/forms/input/useDataChangeCommentsRequired';
 
 import {
     getUsersWithPermissions,
@@ -372,7 +374,6 @@ import { StorageAmountInput } from './internal/components/samples/StorageAmountI
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
-import { useContainerUser } from './internal/components/container/actions';
 
 import { BaseDomainDesigner } from './internal/components/domainproperties/BaseDomainDesigner';
 import {
@@ -1123,6 +1124,8 @@ export {
     TextInput,
     ColorPickerInput,
     ColorIcon,
+    CommentTextArea,
+    useDataChangeCommentsRequired,
     FieldEditForm,
     FieldEditProps,
     QuerySelect,
@@ -1624,7 +1627,6 @@ export {
     getTimelineEntityUrl,
     TimelineEventModel,
     TimelineView,
-    areDataChangeCommentsRequired,
     // pipeline
     hasActivePipelineJob,
     getTitleDisplay,

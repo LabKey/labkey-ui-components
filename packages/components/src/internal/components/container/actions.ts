@@ -133,12 +133,3 @@ export function useContainerUser(containerIdOrPath: string, options?: UseContain
         user: containerUsers[containerIdOrPath]?.user,
     };
 }
-
-export async function areDataChangeCommentsRequired(container: Container, moduleContext?: ModuleContext): Promise<boolean> {
-    let path = container.path;
-    if (isProductProjectsEnabled(resolveModuleContext(moduleContext)) && !container.isProject) {
-        path = container.parentPath;
-    }
-    const { requireUserComments } = await getDefaultAPIWrapper().folder.getAuditSettings(path);
-    return requireUserComments;
-}

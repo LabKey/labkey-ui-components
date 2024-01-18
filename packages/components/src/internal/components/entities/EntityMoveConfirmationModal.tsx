@@ -157,7 +157,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                 <div>
                     <textarea
                         className="form-control"
-                        placeholder={'Enter reason' + (requiresUserComment ? '' : ' (optional)')}
+                        placeholder={'Enter reason ' + (requiresUserComment ? '(required)' : '(optional)')}
                         onChange={onCommentChange}
                         rows={5}
                     />

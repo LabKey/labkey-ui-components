@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD January 2023
+### version 3.8.0
+*Released*: 18 January 2024
 - Sample Type exclusions from Dashboard Insights charts
   - support for DashboardSampleType as a data type exclusion for projects
   - support for DashboardSampleType as a data type exclusion for sample type designer

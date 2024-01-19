@@ -19,6 +19,8 @@ import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
 import { AssayRunDataType } from '../../entities/constants';
 
+import { ProjectConfigurableDataType } from '../../entities/models';
+
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
@@ -195,7 +197,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
         return appDomainHeaders.filter((v, k) => domain.isNameSuffixMatch(k)).first();
     };
 
-    onUpdateExcludedProjects = (excludedContainerIds: string[]): void => {
+    onUpdateExcludedProjects = (_: ProjectConfigurableDataType, excludedContainerIds: string[]): void => {
         const { protocolModel } = this.state;
         const newModel = protocolModel.merge({ excludedContainerIds }) as AssayProtocolModel;
         this.onAssayPropertiesChange(newModel);

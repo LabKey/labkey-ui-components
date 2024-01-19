@@ -5,6 +5,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Add `AuditSettings` panel for configuring whether user comments are required for data changes
 
+### version 3.8.0
+*Released*: 18 January 2024
+- Sample Type exclusions from Dashboard Insights charts
+  - support for DashboardSampleType as a data type exclusion for projects
+  - support for DashboardSampleType as a data type exclusion for sample type designer
+  - ProjectDataTypeSelections panelTitle, panelDescription, and showUncheckedWarning
+  - DataTypeSelector to load via useFolderDataTypeExclusions hook
+  - AdminSettingsPage to show Dashboard data type exclusions panel when no projects configured
+  - CreateProjectPage and ProjectSettings to show Dashboard data type exclusions panel
+  - Dashboard chart config update to getProjectExclusionFilter to account for an array of exclusion types
+  - changes sample chart configs to exclude based on both 'SampleType' and 'DashboardSampleType' exclusions
+  - add sampleTypeDataType to AppAdminContext
+
 ### version 3.7.2
 *Released*: 17 January 2024
 - Remove experimental feature flag for R report capabilities
@@ -70,8 +83,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.4.0
 *Released*: 8 January 2024
 - Support cross-folder delete
-    - Refactor InsertRowsResponse, UpdateRowsResponse and DeleteRowsResponse into QueryCommandResponse
-    - add deleteRowsByContainer util
+  - Refactor InsertRowsResponse, UpdateRowsResponse and DeleteRowsResponse into QueryCommandResponse
+  - add deleteRowsByContainer util
 
 ### version 3.3.0
 *Released*: 3 January 2024

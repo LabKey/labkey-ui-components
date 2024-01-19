@@ -15,9 +15,17 @@ const CHART_SELECTORS: Record<string, BarChartSelector> = {
     Year: { name: 'Last365DaysCount', label: 'In the Last Year', filter: -364 },
 };
 
-const getExclusionFilter = (dataType: string): ((projectExclusions: { [key: string]: number[] }) => Filter.IFilter) => {
+const getExclusionFilter = (
+    dataTypes: string[]
+): ((projectExclusions: { [key: string]: number[] }) => Filter.IFilter) => {
     return (projectExclusions: { [key: string]: number[] }): Filter.IFilter => {
-        const exclusions = projectExclusions?.[dataType];
+        const exclusions = dataTypes.reduce((acc, dataType) => {
+            const dataTypeExclusions = projectExclusions?.[dataType];
+            if (dataTypeExclusions?.length > 0) {
+                acc.push(...dataTypeExclusions);
+            }
+            return acc;
+        }, []);
         if (exclusions?.length > 0) return Filter.create('RowId', exclusions, Filter.Types.NOT_IN);
         return null;
     };
@@ -40,7 +48,7 @@ export const CHART_GROUPS: Record<string, BarChartConfig> = {
         label: 'Assay Run Count by Assay',
         queryName: 'AssayRunCounts',
         schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-        getProjectExclusionFilter: getExclusionFilter('AssayDesign'),
+        getProjectExclusionFilter: getExclusionFilter(['AssayDesign']),
     },
     Samples: {
         charts: [
@@ -58,7 +66,7 @@ export const CHART_GROUPS: Record<string, BarChartConfig> = {
         label: 'Sample Count by Sample Type',
         queryName: 'SampleSetCounts',
         schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-        getProjectExclusionFilter: getExclusionFilter('SampleType'),
+        getProjectExclusionFilter: getExclusionFilter(['SampleType', 'DashboardSampleType']),
     },
     SampleStatuses: {
         charts: [
@@ -86,6 +94,6 @@ export const CHART_GROUPS: Record<string, BarChartConfig> = {
         label: 'Sample Count by Status',
         queryName: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_STATUS_COUNTS.queryName,
         schemaName: SCHEMAS.SAMPLE_MANAGEMENT.SAMPLE_STATUS_COUNTS.schemaName,
-        getProjectExclusionFilter: getExclusionFilter('SampleType'),
+        getProjectExclusionFilter: getExclusionFilter(['SampleType', 'DashboardSampleType']),
     },
 };

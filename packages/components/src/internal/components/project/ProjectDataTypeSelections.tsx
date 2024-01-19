@@ -1,5 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
@@ -9,28 +8,49 @@ import { DataTypeSelector } from '../entities/DataTypeSelector';
 
 import { FolderAPIWrapper, ProjectSettingsOptions } from '../container/FolderAPIWrapper';
 import { Container } from '../base/models/Container';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { useFolderDataTypeExclusions } from './useFolderDataTypeExclusions';
 
 interface Props {
     api?: FolderAPIWrapper;
-    disabledTypesMap?: { [key: string]: number[] };
+    dataTypePrefix?: string;
     entityDataTypes?: EntityDataType[];
     onSuccess?: (reload?: boolean) => void;
+    panelTitle?: string;
+    panelDescription?: string;
     project?: Container;
+    showUncheckedWarning?: boolean;
     updateDataTypeExclusions: (dataType: ProjectConfigurableDataType, exclusions: number[]) => void;
 }
 
 export const ProjectDataTypeSelections: FC<Props> = memo(props => {
-    const { api, entityDataTypes, project, updateDataTypeExclusions, onSuccess, disabledTypesMap } = props;
+    const {
+        api,
+        entityDataTypes,
+        panelTitle,
+        panelDescription,
+        project,
+        updateDataTypeExclusions,
+        onSuccess,
+        showUncheckedWarning,
+        dataTypePrefix,
+    } = props;
 
     const [dirty, setDirty] = useState<boolean>(false);
-    const [error, setError] = useState<string>();
+    const [saveError, setSaveError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
-
     const [dataTypeExclusion, setDataTypeExclusion] = useState<{ [key: string]: number[] }>({});
+    const { loaded, error, disabledTypesMap } = useFolderDataTypeExclusions(api, project);
+    const perDataTypeColumns = useMemo(() => (entityDataTypes?.length === 1 ? 2 : 1), [entityDataTypes]);
+    const perEntityTypeColCls = useMemo(
+        () => (entityDataTypes?.length === 1 ? 'col-xs-12' : 'col-xs-12 col-md-4'),
+        [entityDataTypes]
+    );
 
     const updateDataTypeExclusions_ = useCallback(
         (dataType: ProjectConfigurableDataType, exclusions: number[]) => {
-            if (updateDataTypeExclusions) updateDataTypeExclusions(dataType, exclusions);
+            updateDataTypeExclusions?.(dataType, exclusions);
 
             if (project) {
                 setDataTypeExclusion(prev => {
@@ -51,6 +71,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
         try {
             const options: ProjectSettingsOptions = {
                 disabledSampleTypes: dataTypeExclusion?.['SampleType'],
+                disabledDashboardSampleTypes: dataTypeExclusion?.['DashboardSampleType'],
                 disabledDataClasses: dataTypeExclusion?.['DataClass'],
                 disabledAssayDesigns: dataTypeExclusion?.['AssayDesign'],
             };
@@ -60,35 +81,53 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
             setDirty(false);
             onSuccess(true);
         } catch (e) {
-            setError(resolveErrorMessage(e) ?? 'Failed to update project settings');
+            setSaveError(resolveErrorMessage(e) ?? 'Failed to update project settings');
         } finally {
             setIsSaving(false);
         }
-    }, [isSaving, onSuccess, project, dataTypeExclusion]);
+    }, [isSaving, dataTypeExclusion, api, project?.path, onSuccess]);
 
     return (
         <div className="panel panel-default">
-            <div className="panel-heading">Data in Project</div>
+            <div className="panel-heading">{panelTitle}</div>
             <div className="panel-body">
                 <div className="form-horizontal">
                     {error && <Alert>{error}</Alert>}
-                    <div className="bottom-spacing">Select the types of data that will be used in this project.</div>
-                    <Row>
-                        {entityDataTypes?.map((entityDataType, index) => {
-                            return (
-                                <Col key={index} xs={12} md={4} className="bottom-spacing">
-                                    <DataTypeSelector
-                                        entityDataType={entityDataType}
-                                        updateUncheckedTypes={updateDataTypeExclusions_}
-                                        uncheckedEntitiesDB={
-                                            disabledTypesMap?.[entityDataType.projectConfigurableDataType]
-                                        }
-                                        isNewFolder={!project}
-                                    />
-                                </Col>
-                            );
-                        })}
-                    </Row>
+                    {saveError && <Alert>{saveError}</Alert>}
+                    <div className="bottom-spacing">{panelDescription}</div>
+                    {!loaded && <LoadingSpinner />}
+                    <div className="row">
+                        {loaded &&
+                            entityDataTypes?.map(entityDataType => {
+                                // uncheck those data types that have been configured  to be excluded, but if this
+                                // is a "child/related" exclusion type, then use the parent exclusions to hide options
+                                // (i.e. for the "Sample Type" exclusions and the "Dashboard Sample Type" exclusions)
+                                const uncheckedDataTypes =
+                                    disabledTypesMap?.[dataTypePrefix + entityDataType.projectConfigurableDataType];
+                                const hiddenDataTypes = dataTypePrefix
+                                    ? disabledTypesMap?.[entityDataType.projectConfigurableDataType]
+                                    : undefined;
+
+                                return (
+                                    <div
+                                        key={entityDataType.nounSingular}
+                                        className={'bottom-spacing project-datatype-col ' + perEntityTypeColCls}
+                                    >
+                                        <DataTypeSelector
+                                            project={project}
+                                            columns={perDataTypeColumns}
+                                            dataTypePrefix={dataTypePrefix}
+                                            entityDataType={entityDataType}
+                                            updateUncheckedTypes={updateDataTypeExclusions_}
+                                            uncheckedEntitiesDB={uncheckedDataTypes}
+                                            hiddenEntities={hiddenDataTypes}
+                                            showUncheckedWarning={showUncheckedWarning}
+                                            isNewFolder={!project}
+                                        />
+                                    </div>
+                                );
+                            })}
+                    </div>
 
                     {project && (
                         <div className="pull-right">
@@ -107,3 +146,12 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
         </div>
     );
 });
+
+ProjectDataTypeSelections.defaultProps = {
+    dataTypePrefix: '',
+    panelTitle: 'Data in Project',
+    panelDescription: 'Select the types of data that will be used in this project.',
+    showUncheckedWarning: true,
+};
+
+ProjectDataTypeSelections.displayName = 'ProjectDataTypeSelections';

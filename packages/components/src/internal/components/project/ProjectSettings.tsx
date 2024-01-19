@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 
 import { useAppContext } from '../../AppContext';
 import { useServerContext, useServerContextDispatch } from '../base/ServerContext';
@@ -9,12 +9,10 @@ import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
 
 import { useAdminAppContext } from '../administration/useAdminAppContext';
-import { getFolderDataTypeExclusions } from '../entities/actions';
-import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
 import { NameIdSettings } from '../settings/NameIdSettings';
-import { biologicsIsPrimaryApp, isProtectedDataEnabled } from '../../app/utils';
+import { biologicsIsPrimaryApp, isAppHomeFolder, isProtectedDataEnabled } from '../../app/utils';
 import { ProtectedDataSettingsPanel } from '../administration/ProtectedDataSettingsPanel';
 
 import { ProjectNameSetting } from './ProjectNameSetting';
@@ -31,36 +29,20 @@ export interface ProjectSettingsProps {
 export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const { onChange, onSuccess, onPageError, project } = props;
 
-    const [loaded, setLoaded] = useState<boolean>(false);
-    const [disabledTypesMap, setDisabledTypesMap] = useState<{ [key: string]: number[] }>();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [nameDirty, setNameDirty] = useState<boolean>(false);
     const [dataTypeDirty, setDataTypeDirty] = useState<boolean>(false);
+    const [dashboardDirty, setDashboardDirty] = useState<boolean>(false);
     const [storageDirty, setStorageDirty] = useState<boolean>(false);
     const [barDirty, setBarDirty] = useState<boolean>(false);
     const [nameIdDirty, setNameIdDirty] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const { api } = useAppContext();
-    const { projectDataTypes, ProjectFreezerSelectionComponent } = useAdminAppContext();
+    const { projectDataTypes, sampleTypeDataType, ProjectFreezerSelectionComponent } = useAdminAppContext();
     const { container, user, moduleContext } = useServerContext();
+    const isAppHomeSelected = isAppHomeFolder(project, moduleContext);
     const dispatch = useServerContextDispatch();
-
-    useEffect(() => {
-        (async () => {
-            setLoaded(false);
-            setError(undefined);
-
-            try {
-                const disabledTypesMap_ = await getFolderDataTypeExclusions(project.path);
-                setDisabledTypesMap(disabledTypesMap_);
-            } catch (e) {
-                setError(`Error: ${resolveErrorMessage(e)}`);
-            } finally {
-                setLoaded(true);
-            }
-        })();
-    }, [project]);
 
     const onNameChange_ = useCallback(() => {
         setNameDirty(true);
@@ -69,6 +51,11 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
 
     const onDataTypeChange_ = useCallback(() => {
         setDataTypeDirty(true);
+        onChange(true);
+    }, [onChange]);
+
+    const onDashboardChange_ = useCallback(() => {
+        setDashboardDirty(true);
         onChange(true);
     }, [onChange]);
 
@@ -84,16 +71,16 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
 
     const onBarSuccess_ = useCallback(() => {
         setBarDirty(false);
-        onSuccess(nameDirty || dataTypeDirty || storageDirty || nameIdDirty, false);
-    }, [nameDirty, dataTypeDirty, storageDirty, nameIdDirty]);
+        onSuccess(nameDirty || dataTypeDirty || dashboardDirty || storageDirty || nameIdDirty, false);
+    }, [onSuccess, nameDirty, dataTypeDirty, dashboardDirty, storageDirty, nameIdDirty]);
 
     const onNameIdChange_ = useCallback(
         dirty => {
             setNameIdDirty(dirty);
             if (dirty) onChange(true);
-            else onSuccess(nameDirty || dataTypeDirty || storageDirty || barDirty, false);
+            else onSuccess(nameDirty || dataTypeDirty || dashboardDirty || storageDirty || barDirty, false);
         },
-        [onChange, nameDirty, dataTypeDirty, storageDirty, barDirty]
+        [onChange, onSuccess, nameDirty, dataTypeDirty, dashboardDirty, storageDirty, barDirty]
     );
 
     const onSubmitName = useCallback(
@@ -114,7 +101,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
 
                 renamedProject = await api.folder.renameProject(options, project.path);
                 setNameDirty(false);
-                onSuccess(dataTypeDirty || storageDirty || barDirty || nameIdDirty);
+                onSuccess(dataTypeDirty || dashboardDirty || storageDirty || barDirty || nameIdDirty);
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to update project settings');
             } finally {
@@ -141,6 +128,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
             isSaving,
             onSuccess,
             dataTypeDirty,
+            dashboardDirty,
             storageDirty,
             barDirty,
             nameIdDirty,
@@ -171,21 +159,49 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const onDataTypeSuccess = useCallback(
         (reload?: boolean) => {
             setDataTypeDirty(false);
-            onSuccess(nameDirty || storageDirty || barDirty || nameIdDirty, reload);
+            onSuccess(nameDirty || dashboardDirty || storageDirty || barDirty || nameIdDirty, reload);
         },
-        [nameDirty, storageDirty, barDirty, nameIdDirty]
+        [onSuccess, nameDirty, dashboardDirty, storageDirty, barDirty, nameIdDirty]
+    );
+
+    const onDashboardSuccess = useCallback(
+        (reload?: boolean) => {
+            setDashboardDirty(false);
+            onSuccess(nameDirty || dataTypeDirty || storageDirty || barDirty || nameIdDirty, reload);
+        },
+        [onSuccess, nameDirty, dataTypeDirty, storageDirty, barDirty, nameIdDirty]
     );
 
     const onStorageSuccess = useCallback(
         (reload?: boolean) => {
             setStorageDirty(false);
-            onSuccess(nameDirty || dataTypeDirty || barDirty || nameIdDirty, reload);
+            onSuccess(nameDirty || dataTypeDirty || dashboardDirty || barDirty || nameIdDirty, reload);
         },
-        [nameDirty, dataTypeDirty, barDirty, nameIdDirty]
+        [onSuccess, nameDirty, dataTypeDirty, dashboardDirty, barDirty, nameIdDirty]
     );
 
-    if (!project || project.isProject || !user.isAdmin) {
+    if (!project || !user.isAdmin) {
         return null;
+    }
+
+    if (isAppHomeSelected) {
+        return (
+            <div className="project-settings-container">
+                <div className="project-settings panel panel-default">
+                    <ProjectDataTypeSelections
+                        api={api.folder}
+                        panelTitle="Dashboard"
+                        panelDescription="Select the data types to include in the Dashboard Insights graphs."
+                        dataTypePrefix="Dashboard"
+                        entityDataTypes={[sampleTypeDataType]}
+                        project={project}
+                        showUncheckedWarning={false}
+                        updateDataTypeExclusions={onDashboardChange_}
+                        onSuccess={onDashboardSuccess}
+                    />
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -227,46 +243,52 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                     />
                 )}
             </div>
-            {!loaded && <LoadingSpinner />}
-            {loaded && (
-                <>
-                    <ProjectDataTypeSelections
-                        entityDataTypes={projectDataTypes}
-                        project={project}
-                        key={project?.id}
-                        updateDataTypeExclusions={onDataTypeChange_}
-                        disabledTypesMap={disabledTypesMap}
-                        api={api.folder}
-                        onSuccess={onDataTypeSuccess}
-                    />
-                    {!!ProjectFreezerSelectionComponent && (
-                        <ProjectFreezerSelectionComponent
-                            project={project}
-                            updateDataTypeExclusions={onStorageChange_}
-                            disabledTypesMap={disabledTypesMap}
-                            onSuccess={onStorageSuccess}
-                        />
-                    )}
-                    {biologicsIsPrimaryApp(moduleContext) && (
-                        <BarTenderSettingsForm
-                            onChange={onBarChange_}
-                            onSuccess={onBarSuccess_}
-                            container={project}
-                            setIsDirty={null} // used by templates, not needed here
-                            getIsDirty={null}
-                        />
-                    )}
-                    <NameIdSettings
-                        {...props}
-                        container={project}
-                        isAppHome={false}
-                        setIsDirty={onNameIdChange_}
-                        getIsDirty={null}
-                    />
-                    {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) && (
-                        <ProtectedDataSettingsPanel containerPath={project.path} />
-                    )}
-                </>
+            <ProjectDataTypeSelections
+                entityDataTypes={projectDataTypes}
+                project={project}
+                key={project?.id}
+                updateDataTypeExclusions={onDataTypeChange_}
+                api={api.folder}
+                onSuccess={onDataTypeSuccess}
+            />
+            {sampleTypeDataType && (
+                <ProjectDataTypeSelections
+                    api={api.folder}
+                    panelTitle="Dashboard"
+                    panelDescription="Select the data types to include in the Dashboard Insights graphs."
+                    dataTypePrefix="Dashboard"
+                    entityDataTypes={[sampleTypeDataType]}
+                    project={project}
+                    showUncheckedWarning={false}
+                    updateDataTypeExclusions={onDashboardChange_}
+                    onSuccess={onDashboardSuccess}
+                />
+            )}
+            {!!ProjectFreezerSelectionComponent && (
+                <ProjectFreezerSelectionComponent
+                    project={project}
+                    updateDataTypeExclusions={onStorageChange_}
+                    onSuccess={onStorageSuccess}
+                />
+            )}
+            {biologicsIsPrimaryApp(moduleContext) && (
+                <BarTenderSettingsForm
+                    onChange={onBarChange_}
+                    onSuccess={onBarSuccess_}
+                    container={project}
+                    setIsDirty={null} // used by templates, not needed here
+                    getIsDirty={null}
+                />
+            )}
+            <NameIdSettings
+                {...props}
+                container={project}
+                isAppHome={false}
+                setIsDirty={onNameIdChange_}
+                getIsDirty={null}
+            />
+            {biologicsIsPrimaryApp(moduleContext) && isProtectedDataEnabled(moduleContext) && (
+                <ProtectedDataSettingsPanel containerPath={project.path} />
             )}
         </div>
     );

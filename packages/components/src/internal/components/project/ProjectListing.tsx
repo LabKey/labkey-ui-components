@@ -6,6 +6,7 @@ import { CONFIRM_MESSAGE, InjectedRouteLeaveProps } from '../../util/RouteLeave'
 import { Container } from '../base/models/Container';
 import { VerticalScrollPanel } from '../base/VeriticalScrollPanel';
 import { SVGIcon } from '../base/SVGIcon';
+import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 
 export interface WithDirtyCheckLinkProps {
     className?: string;
@@ -41,12 +42,10 @@ interface Props {
     selectedProject: Container;
     setIsDirty: (isDirty: boolean) => void;
     setSelectedProject: (c: Container) => void;
-    homeFolderPath?: string;
 }
 
 export const ProjectListing: FC<Props> = memo(props => {
-    const { homeFolderPath, projects, selectedProject, inheritedProjects, setSelectedProject, getIsDirty, setIsDirty } =
-        props;
+    const { projects, selectedProject, inheritedProjects, setSelectedProject, getIsDirty, setIsDirty } = props;
 
     const dividerInd = inheritedProjects?.length > 0 ? inheritedProjects.length + 1 : -1;
     return (
@@ -55,7 +54,7 @@ export const ProjectListing: FC<Props> = memo(props => {
             <ul className="project-listing-left">
                 {projects?.map((project, ind) => {
                     const showInherited = inheritedProjects?.indexOf(project.name) > -1;
-                    let projectTitle = project.path === homeFolderPath ? 'Application' : project.title;
+                    let projectTitle = project.path === HOME_PATH ? HOME_TITLE : project.title;
                     if (!projectTitle) projectTitle = project.name;
                     return (
                         <Fragment key={project.id}>

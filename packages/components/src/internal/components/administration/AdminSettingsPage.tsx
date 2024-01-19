@@ -14,6 +14,7 @@ import {
     isELNEnabled,
     isProtectedDataEnabled,
     isSampleStatusEnabled,
+    hasProductProjects,
 } from '../../app/utils';
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
 
@@ -26,6 +27,8 @@ import { ProjectLookAndFeelForm } from '../project/ProjectLookAndFeelForm';
 import { useContainerUser } from '../container/actions';
 
 import { LoadingPage } from '../base/LoadingPage';
+
+import { ProjectDataTypeSelections } from '../project/ProjectDataTypeSelections';
 
 import { useAdministrationSubNav } from './useAdministrationSubNav';
 
@@ -41,7 +44,7 @@ export const AdminSettingsPage: FC = () => {
     const { moduleContext, container } = useServerContext();
     const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
     const { createNotification, dismissNotifications } = useNotificationsContext();
-    const { NotebookProjectSettingsComponent } = useAdminAppContext();
+    const { NotebookProjectSettingsComponent, sampleTypeDataType } = useAdminAppContext();
     const { api } = useAppContext<AppContext>();
     const homeProjectContainer = useContainerUser(homeFolderPath, { includeStandardProperties: true });
 
@@ -101,6 +104,19 @@ export const AdminSettingsPage: FC = () => {
                         container={homeProjectContainer.container}
                         getIsDirty={getIsDirty}
                         setIsDirty={setIsDirty}
+                    />
+                )}
+                {!hasProductProjects(moduleContext) && sampleTypeDataType && (
+                    <ProjectDataTypeSelections
+                        api={api.folder}
+                        panelTitle="Dashboard"
+                        panelDescription="Select the data types to include in the Dashboard Insights graphs."
+                        dataTypePrefix="Dashboard"
+                        entityDataTypes={[sampleTypeDataType]}
+                        project={homeProjectContainer.container}
+                        showUncheckedWarning={false}
+                        updateDataTypeExclusions={onSettingsChange}
+                        onSuccess={onSettingsSuccess}
                     />
                 )}
                 <AuditSettings />

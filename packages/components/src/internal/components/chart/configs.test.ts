@@ -17,4 +17,20 @@ describe('CHART_GROUPS', () => {
             '#/samples/xSub?query.SampleState/Label~isblank='
         );
     });
+
+    test('getProjectExclusionFilter', () => {
+        const projectExclusions = {
+            AssayDesign: [5, 6],
+            DashboardSampleType: [1, 2],
+            SampleType: [3, 4],
+        };
+
+        expect(CHART_GROUPS.Assays.getProjectExclusionFilter(projectExclusions).getValue()).toStrictEqual([5, 6]);
+        expect(CHART_GROUPS.Samples.getProjectExclusionFilter(projectExclusions).getValue()).toStrictEqual([
+            3, 4, 1, 2,
+        ]);
+        expect(CHART_GROUPS.SampleStatuses.getProjectExclusionFilter(projectExclusions).getValue()).toStrictEqual([
+            3, 4, 1, 2,
+        ]);
+    });
 });

@@ -43,6 +43,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { naturalSortByProperty } from '../../../public/sort';
 
+import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
+
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
@@ -96,8 +98,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     const { api } = useAppContext<AppContext>();
     const { container, project, user, moduleContext } = useServerContext();
 
-    const isAppHome = isAppHomeFolder(container, moduleContext);
-    const homeFolderPath = isAppHome ? container.path : container.parentPath;
     const selectedPrincipal = principalsById?.get(selectedUserId);
     const [searchParams] = useSearchParams();
     const initExpandedRole = searchParams.get('expand');
@@ -420,10 +420,9 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
     }, [roles, rootPolicy, rootRolesToShow]);
 
     const panelTitle = useMemo(() => {
-        if (!isAppHomeFolder(selectedProject, moduleContext) && selectedProject)
-            return selectedProject.name + ' Permissions';
-        return 'Application Permissions';
-    }, [selectedProject, moduleContext]);
+        if (!selectedProject) return 'Application Permissions';
+        return (selectedProject.path === HOME_PATH ? HOME_TITLE : selectedProject.name) + ' Permissions';
+    }, [selectedProject]);
 
     if (error) {
         return <Alert>{error}</Alert>;
@@ -512,7 +511,6 @@ export const PermissionAssignments: FC<PermissionAssignmentsProps> = memo(props 
                                 setIsDirty={setIsDirty}
                                 getIsDirty={getIsDirty}
                                 inheritedProjects={inheritedProjects}
-                                homeFolderPath={homeFolderPath}
                             />
                             <VerticalScrollPanel
                                 key={selectedProject?.id}

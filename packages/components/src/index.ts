@@ -350,12 +350,12 @@ import {
     SAMPLE_FILTER_METRIC_AREA,
 } from './internal/components/search/utils';
 import { UserManagementPage } from './internal/components/administration/UserManagement';
+import { useFolderDataTypeExclusions } from './internal/components/project/useFolderDataTypeExclusions';
 import { CreateProjectPage } from './internal/components/project/CreateProjectPage';
 import { ProjectManagementPage } from './internal/components/project/ProjectManagementPage';
 import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
-import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
     fetchSamples,
@@ -1316,6 +1316,7 @@ export {
     GroupManagementPage,
     PermissionManagementPage,
     AdminSettingsPage,
+    useFolderDataTypeExclusions,
     // assay
     AssayUploadResultModel,
     AssayStateModel,
@@ -1679,7 +1680,7 @@ export {
     Tooltip,
     Popover,
     OverlayTrigger,
-    useOverlayTriggerState
+    useOverlayTriggerState,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

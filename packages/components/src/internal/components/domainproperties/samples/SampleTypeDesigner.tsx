@@ -21,7 +21,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
-import { IParentAlias, IParentOption } from '../../entities/models';
+import { IParentAlias, IParentOption, ProjectConfigurableDataType } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 import {
     getHelpLink,
@@ -40,10 +40,11 @@ import { SAMPLE_SET_IMPORT_PREFIX, SampleTypeDataType } from '../../entities/con
 
 import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
+import { Container } from '../../base/models/Container';
+
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { AliquotNamePatternProps, MetricUnitProps, SampleTypeModel } from './models';
-import { Container } from '../../base/models/Container';
 
 const NEW_SAMPLE_SET_OPTION: IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
@@ -287,10 +288,15 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         this.onFieldChange(newModel);
     };
 
-    onUpdateExcludedProjects = (excludedContainerIds: string[]): void => {
+    onUpdateExcludedProjects = (dataType: ProjectConfigurableDataType, excludedContainerIds: string[]): void => {
         const { model } = this.state;
-        const newModel = model.set('excludedContainerIds', excludedContainerIds) as SampleTypeModel;
-        this.onFieldChange(newModel);
+        if (dataType === 'SampleType') {
+            const newModel = model.set('excludedContainerIds', excludedContainerIds) as SampleTypeModel;
+            this.onFieldChange(newModel);
+        } else if (dataType === 'DashboardSampleType') {
+            const newModel = model.set('excludedDashboardContainerIds', excludedContainerIds) as SampleTypeModel;
+            this.onFieldChange(newModel);
+        }
     };
 
     domainChangeHandler = (domain: DomainDesign, dirty: boolean): void => {
@@ -381,9 +387,12 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
             const updatedModel = model.set('exception', exception) as SampleTypeModel;
             setSubmitting(false, () => {
-                this.setState(() => ({ model: updatedModel }), () => {
-                    scrollDomainErrorIntoView();
-                });
+                this.setState(
+                    () => ({ model: updatedModel }),
+                    () => {
+                        scrollDomainErrorIntoView();
+                    }
+                );
             });
         }
     };
@@ -470,7 +479,9 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
         try {
             const response: DomainDesign = await saveDomain({
-                containerPath: model.isNew() ? getAppHomeFolderPath(new Container(getServerContext().container)) : model.containerPath,
+                containerPath: model.isNew()
+                    ? getAppHomeFolderPath(new Container(getServerContext().container))
+                    : model.containerPath,
                 domain: domainDesign,
                 kind: Domain.KINDS.SAMPLE_TYPE,
                 name,
@@ -490,10 +501,12 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                   }) as SampleTypeModel);
 
             setSubmitting(false, () => {
-                this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false }),
-                     () => {
-                         scrollDomainErrorIntoView();
-                    });
+                this.setState(
+                    () => ({ model: updatedModel, showUniqueIdConfirmation: false }),
+                    () => {
+                        scrollDomainErrorIntoView();
+                    }
+                );
             });
         }
     };
@@ -529,6 +542,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             autoLinkTargetContainerId,
             autoLinkCategory,
             excludedContainerIds,
+            excludedDashboardContainerIds,
         } = model;
 
         return {
@@ -541,6 +555,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             autoLinkCategory,
             importAliases: this.getImportAliasesAsMap(model).toJS(),
             excludedContainerIds,
+            excludedDashboardContainerIds,
         };
     };
 
@@ -767,6 +782,8 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                         dataTypeRowId={model?.rowId}
                         dataTypeName={model?.name}
                         entityDataType={SampleTypeDataType}
+                        relatedProjectConfigurableDataType="DashboardSampleType"
+                        relatedDataTypeLabel="Include in Dashboard Insights graphs"
                         initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
                         onToggle={this.projectsToggle}
                         onUpdateExcludedProjects={this.onUpdateExcludedProjects}

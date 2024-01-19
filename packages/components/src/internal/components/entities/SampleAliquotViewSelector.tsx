@@ -45,6 +45,7 @@ export class SampleAliquotViewSelector extends Component<Props> {
         }
     }
 
+    // TODO: convert createItem to component (ViewMenuItem?)
     createItem = (key: string, label: string, targetMode: ALIQUOT_FILTER_MODE, active: boolean): ReactNode => {
         const { updateAliquotFilter } = this.props;
         return (
@@ -64,13 +65,13 @@ export class SampleAliquotViewSelector extends Component<Props> {
             </MenuItem>
         );
 
-        items.push(this.createItem('all', allLabel, ALIQUOT_FILTER_MODE.all, filterMode == ALIQUOT_FILTER_MODE.all));
+        items.push(this.createItem('all', allLabel, ALIQUOT_FILTER_MODE.all, filterMode === ALIQUOT_FILTER_MODE.all));
         items.push(
             this.createItem(
                 'sample',
                 samplesLabel,
                 ALIQUOT_FILTER_MODE.samples,
-                filterMode == ALIQUOT_FILTER_MODE.samples
+                filterMode === ALIQUOT_FILTER_MODE.samples
             )
         );
         items.push(
@@ -78,7 +79,7 @@ export class SampleAliquotViewSelector extends Component<Props> {
                 'aliquot',
                 aliquotsLabel,
                 ALIQUOT_FILTER_MODE.aliquots,
-                filterMode == ALIQUOT_FILTER_MODE.aliquots
+                filterMode === ALIQUOT_FILTER_MODE.aliquots
             )
         );
 

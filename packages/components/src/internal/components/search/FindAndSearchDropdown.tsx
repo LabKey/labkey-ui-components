@@ -1,5 +1,4 @@
 import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { capitalizeFirstChar } from '../../util/utils';
 
@@ -10,6 +9,8 @@ import { createProductUrl } from '../../url/AppURL';
 import { FIND_SAMPLES_BY_FILTER_HREF } from '../../app/constants';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { DropdownButton, MenuItem } from '../../dropdowns';
+
 import { FindByIdsModal } from './FindByIdsModal';
 import { SAMPLE_FILTER_METRIC_AREA } from './utils';
 
@@ -18,7 +19,7 @@ interface Props {
     className?: string;
     findNounPlural?: string;
     onFindByIds?: (sessionKey: string) => void;
-    onSearch?: (form: any) => void;
+    onSearch?: () => void;
     title: ReactNode;
 }
 
@@ -54,26 +55,23 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
     }, [api]);
 
     const capNoun = capitalizeFirstChar(findNounPlural);
+    const findByBarcodeClicked = useCallback(() => onShowFind(UNIQUE_ID_FIND_FIELD), []);
+    const findByIdClicked = useCallback(() => onShowFind(SAMPLE_ID_FIND_FIELD), []);
 
     return (
         <>
-            <DropdownButton
-                id="find-and-search-menu"
-                title={title}
-                className={'navbar__find-and-search-button ' + className}
-            >
+            <DropdownButton title={title} className={'navbar__find-and-search-button ' + className}>
                 {!!onFindByIds && (
                     <>
-                        <MenuItem key="findByBarcode" onClick={() => onShowFind(UNIQUE_ID_FIND_FIELD)}>
+                        <MenuItem onClick={findByBarcodeClicked}>
                             <i className="fa fa-barcode" /> Find {capNoun} by Barcode
                         </MenuItem>
-                        <MenuItem key="findById" onClick={() => onShowFind(SAMPLE_ID_FIND_FIELD)}>
+                        <MenuItem onClick={findByIdClicked}>
                             <i className="fa fa-hashtag" /> Find {capNoun} by ID
                         </MenuItem>
                     </>
                 )}
                 <MenuItem
-                    key="sampleFinder"
                     onClick={onSampleFinder}
                     href={
                         createProductUrl(
@@ -86,7 +84,7 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
                     <i className="fa fa-sitemap" /> Sample Finder
                 </MenuItem>
                 {!!onSearch && (
-                    <MenuItem key="search" onClick={onSearch}>
+                    <MenuItem onClick={onSearch}>
                         <i className="fa fa-search" /> Search
                     </MenuItem>
                 )}

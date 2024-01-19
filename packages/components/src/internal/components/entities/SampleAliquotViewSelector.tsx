@@ -1,9 +1,23 @@
-import React, { Component, ReactNode } from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
-import { List } from 'immutable';
+import React, { FC, useCallback } from 'react';
 
 import { ALIQUOT_FILTER_MODE } from '../samples/constants';
-import { generateId } from '../../util/utils';
+import { DropdownButton, MenuHeader, MenuItem } from '../../dropdowns';
+
+interface ViewMenuItemProps {
+    currentFilterMode: ALIQUOT_FILTER_MODE;
+    filterMode: ALIQUOT_FILTER_MODE;
+    label: string;
+    onClick: (filterMode: ALIQUOT_FILTER_MODE) => void;
+}
+
+const ViewMenuItem: FC<ViewMenuItemProps> = ({ currentFilterMode, filterMode, label, onClick }) => {
+    const onClick_ = useCallback(() => onClick(filterMode), [filterMode, onClick]);
+    return (
+        <MenuItem active={filterMode === currentFilterMode} onClick={onClick_}>
+            {label}
+        </MenuItem>
+    );
+};
 
 interface Props {
     aliquotFilterMode: ALIQUOT_FILTER_MODE;
@@ -11,90 +25,50 @@ interface Props {
     allLabel?: string;
     headerLabel?: string;
     samplesLabel?: string;
-    updateAliquotFilter: (newMode?: ALIQUOT_FILTER_MODE) => any;
+    updateAliquotFilter: (newMode?: ALIQUOT_FILTER_MODE) => void;
 }
 
-export class SampleAliquotViewSelector extends Component<Props> {
-    dropId: string;
+export const SampleAliquotViewSelector: FC<Props> = props => {
+    const {
+        aliquotsLabel = 'Aliquots Only',
+        aliquotFilterMode = ALIQUOT_FILTER_MODE.all,
+        allLabel = 'Samples and Aliquots',
+        headerLabel = 'Show Samples',
+        samplesLabel = 'Samples Only',
+        updateAliquotFilter,
+    } = props;
+    let title = 'All Samples';
 
-    static defaultProps = {
-        aliquotFilterMode: ALIQUOT_FILTER_MODE.all,
-        headerLabel: 'Show Samples',
-        samplesLabel: 'Samples Only',
-        aliquotsLabel: 'Aliquots Only',
-        allLabel: 'Samples and Aliquots',
-    };
-
-    constructor(props: Props) {
-        super(props);
-
-        this.dropId = generateId('aliquotviewselector-');
+    if (aliquotFilterMode === ALIQUOT_FILTER_MODE.samples) {
+        title = samplesLabel;
+    } else if (aliquotFilterMode === ALIQUOT_FILTER_MODE.aliquots) {
+        title = aliquotsLabel;
+    } else if (aliquotFilterMode === ALIQUOT_FILTER_MODE.none) {
+        title = 'None';
     }
 
-    getTitle(mode: ALIQUOT_FILTER_MODE) {
-        const { samplesLabel, aliquotsLabel } = this.props;
-        switch (mode) {
-            case ALIQUOT_FILTER_MODE.samples:
-                return samplesLabel;
-            case ALIQUOT_FILTER_MODE.aliquots:
-                return aliquotsLabel;
-            case ALIQUOT_FILTER_MODE.none:
-                return 'None';
-            default:
-                return 'All Samples';
-        }
-    }
-
-    // TODO: convert createItem to component (ViewMenuItem?)
-    createItem = (key: string, label: string, targetMode: ALIQUOT_FILTER_MODE, active: boolean): ReactNode => {
-        const { updateAliquotFilter } = this.props;
-        return (
-            <MenuItem active={active} key={key} onSelect={() => updateAliquotFilter(targetMode)}>
-                {label}
-            </MenuItem>
-        );
-    };
-
-    createMenuItems(filterMode: ALIQUOT_FILTER_MODE): List<ReactNode> {
-        const { headerLabel, samplesLabel, aliquotsLabel, allLabel } = this.props;
-
-        const items = List<ReactNode>().asMutable();
-        items.push(
-            <MenuItem header key="aliquot-selector-header">
-                {headerLabel}
-            </MenuItem>
-        );
-
-        items.push(this.createItem('all', allLabel, ALIQUOT_FILTER_MODE.all, filterMode === ALIQUOT_FILTER_MODE.all));
-        items.push(
-            this.createItem(
-                'sample',
-                samplesLabel,
-                ALIQUOT_FILTER_MODE.samples,
-                filterMode === ALIQUOT_FILTER_MODE.samples
-            )
-        );
-        items.push(
-            this.createItem(
-                'aliquot',
-                aliquotsLabel,
-                ALIQUOT_FILTER_MODE.aliquots,
-                filterMode === ALIQUOT_FILTER_MODE.aliquots
-            )
-        );
-
-        return items.asImmutable();
-    }
-
-    render(): ReactNode {
-        const { aliquotFilterMode } = this.props;
-
-        const viewItems = this.createMenuItems(aliquotFilterMode);
-
-        return (
-            <DropdownButton id={this.dropId} pullRight title={this.getTitle(aliquotFilterMode)}>
-                {viewItems.toArray()}
-            </DropdownButton>
-        );
-    }
-}
+    return (
+        <DropdownButton pullRight title={title}>
+            <MenuHeader key="aliquot-selector-header" text={headerLabel} />
+            <ViewMenuItem
+                currentFilterMode={aliquotFilterMode}
+                filterMode={ALIQUOT_FILTER_MODE.all}
+                label={allLabel}
+                onClick={updateAliquotFilter}
+            />
+            <ViewMenuItem
+                currentFilterMode={aliquotFilterMode}
+                filterMode={ALIQUOT_FILTER_MODE.samples}
+                label={samplesLabel}
+                onClick={updateAliquotFilter}
+            />
+            <ViewMenuItem
+                currentFilterMode={aliquotFilterMode}
+                filterMode={ALIQUOT_FILTER_MODE.aliquots}
+                label={aliquotsLabel}
+                onClick={updateAliquotFilter}
+            />
+        </DropdownButton>
+    );
+};
+SampleAliquotViewSelector.displayName = 'SampleAliquotViewSelector';

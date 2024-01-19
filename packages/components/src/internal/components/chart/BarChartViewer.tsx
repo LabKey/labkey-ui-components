@@ -1,6 +1,5 @@
 import React, { FC, memo, PureComponent, useCallback } from 'react';
 import classNames from 'classnames';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
 import { Filter, PermissionTypes, Query } from '@labkey/api';
 
@@ -35,6 +34,7 @@ import { useServerContext } from '../base/ServerContext';
 import { BarChartConfig, BarChartData, BarChartSelector } from './models';
 import { BaseBarChart } from './BaseBarChart';
 import { processChartData } from './utils';
+import { DropdownButton, MenuItem } from '../../dropdowns';
 
 async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFilter[] = []): Promise<number> {
     try {
@@ -238,11 +238,11 @@ export class BarChartViewer extends PureComponent<Props, State> {
             >
                 {!hasError && (
                     <div className="btn-group">
-                        <DropdownButton id="sample-set-chart-menu" title={selectedGroup.label}>
+                        <DropdownButton title={selectedGroup.label}>
                             {chartConfigs.map(({ label }, i) => (
                                 <MenuItem
                                     active={selectedGroup.label === label}
-                                    key={i}
+                                    key={label}
                                     onClick={() => this.selectChartGroup(i)}
                                 >
                                     {label}
@@ -250,9 +250,13 @@ export class BarChartViewer extends PureComponent<Props, State> {
                             ))}
                         </DropdownButton>
                         {selectedCharts?.length > 1 && (
-                            <DropdownButton id="sample-set-selected-chart-menu" title={currentChartOptions.label}>
+                            <DropdownButton title={currentChartOptions.label}>
                                 {selectedCharts.map((chart, i) => (
-                                    <MenuItem active={currentChart === i} key={i} onClick={() => this.selectChart(i)}>
+                                    <MenuItem
+                                        active={currentChart === i}
+                                        key={chart.label}
+                                        onClick={() => this.selectChart(i)}
+                                    >
                                         {chart.label}
                                     </MenuItem>
                                 ))}
@@ -310,7 +314,7 @@ export const SampleButtons: FC = memo(() => {
                 Go to Sample Finder
             </a>
             <RequiresPermission perms={PermissionTypes.Insert}>
-                <DropdownButton title="Add Samples" id="samples-add-menu" bsStyle="success">
+                <DropdownButton title="Add Samples" bsStyle="success">
                     <MenuItem href={GRID_INSERT_SAMPLES_HREF.toHref()}>Add Manually</MenuItem>
                     <MenuItem href={FILE_IMPORT_SAMPLES_HREF.toHref()}>Import from File</MenuItem>
                 </DropdownButton>

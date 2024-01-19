@@ -164,7 +164,6 @@ import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons } from './internal/components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './internal/components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
-import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
 import { ToggleButtons, ToggleIcon } from './internal/components/buttons/ToggleButtons';
 import { DisableableButton } from './internal/components/buttons/DisableableButton';
 import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMenuButton';
@@ -837,6 +836,7 @@ import { getFolderTestAPIWrapper } from './internal/components/container/FolderA
 import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
+import { DropdownButton, MenuDivider, MenuItem, MenuHeader, SplitButton } from './internal/dropdowns';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1514,7 +1514,6 @@ export {
     SubMenuItem,
     SelectionMenuItem,
     ManageDropdownButton,
-    SplitButtonGroup,
     PaginationButtons,
     ToggleButtons,
     ToggleIcon,
@@ -1679,6 +1678,11 @@ export {
     Popover,
     OverlayTrigger,
     useOverlayTriggerState,
+    DropdownButton,
+    MenuDivider,
+    MenuItem,
+    MenuHeader,
+    SplitButton
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

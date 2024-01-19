@@ -1,6 +1,7 @@
 import React, {
     FC,
     forwardRef,
+    memo,
     MouseEvent,
     ReactElement,
     ReactNode,
@@ -16,6 +17,12 @@ import classNames from 'classnames';
 import { generateId } from './util/utils';
 
 export type BSStyle = 'success' | 'danger' | 'default' | 'primary';
+
+// TODO: DropdownAnchor (needed for ELN menus to replace Dropdown, Dropdown.Toggle, etc.)
+
+// TODO: SplitButton
+
+// TODO: factor out generic Dropdown or maybe a hook for the state and callbacks?
 
 /**
  * Use this when you want to prevent the document click handler from handling a click event.
@@ -117,6 +124,43 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
         </div>
     );
 });
+
+interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret'> {
+    buttonClassName?: string;
+    buttonDisabled?: boolean;
+    menuDisabled?: boolean;
+    onClick: () => any;
+}
+
+export const SplitButton: FC<SplitButtonProps> = memo(props => {
+    const {
+        buttonClassName,
+        buttonDisabled = false,
+        bsStyle = 'default',
+        children,
+        className,
+        menuDisabled = false,
+        title,
+        onClick,
+        ...buttonProps
+    } = props;
+
+    const wrapperClassName = classNames('btn-group', className);
+    const buttonClassName_ = classNames('btn', 'btn-' + bsStyle, buttonClassName);
+
+    return (
+        <div className={wrapperClassName}>
+            <button className={buttonClassName_} onClick={onClick} disabled={buttonDisabled} type="button">
+                {title}
+            </button>
+            <DropdownButton {...buttonProps} bsStyle={bsStyle} title="" disabled={menuDisabled}>
+                {children}
+            </DropdownButton>
+        </div>
+    );
+});
+
+SplitButton.displayName = 'SplitButton';
 
 interface MenuHeaderProps {
     className?: string;

@@ -128,8 +128,9 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
 interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret'> {
     buttonClassName?: string;
     buttonDisabled?: boolean;
+    href?: string;
     menuDisabled?: boolean;
-    onClick: () => any;
+    onClick?: () => any;
 }
 
 export const SplitButton: FC<SplitButtonProps> = memo(props => {
@@ -139,6 +140,7 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
         bsStyle = 'default',
         children,
         className,
+        href,
         menuDisabled = false,
         title,
         onClick,
@@ -148,11 +150,29 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
     const wrapperClassName = classNames('btn-group', className);
     const buttonClassName_ = classNames('btn', 'btn-' + bsStyle, buttonClassName);
 
-    return (
-        <div className={wrapperClassName}>
+    if (!href && !onClick) {
+        console.warn('SplitButton is missing href and onClick, did you forget to add one of these props?');
+    }
+
+    let button;
+
+    if (href !== undefined) {
+        button = (
+            <a href={href} className={buttonClassName_}>
+                {title}
+            </a>
+        );
+    } else {
+        button = (
             <button className={buttonClassName_} onClick={onClick} disabled={buttonDisabled} type="button">
                 {title}
             </button>
+        );
+    }
+
+    return (
+        <div className={wrapperClassName}>
+            {button}
             <DropdownButton {...buttonProps} bsStyle={bsStyle} title="" disabled={menuDisabled}>
                 {children}
             </DropdownButton>

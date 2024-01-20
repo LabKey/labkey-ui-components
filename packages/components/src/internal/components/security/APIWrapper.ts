@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import { ActionURL, Ajax, Filter, Query, Security, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, Query, Security, Utils, User } from '@labkey/api';
 
 import { Container } from '../base/models/Container';
 import {
@@ -20,6 +20,7 @@ import { flattenValuesFromRow } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { deleteRows, processRequest, QueryCommandResponse } from '../../query/api';
 import { GroupMembership } from '../administration/models';
+import { getUsersWithPermissions } from '../forms/actions';
 
 type NonRequestCallback<T extends Utils.RequestCallbackOptions> = Omit<T, 'success' | 'failure' | 'scope'>;
 export type DeleteContainerOptions = NonRequestCallback<Security.DeleteContainerOptions>;
@@ -73,6 +74,11 @@ export interface SecurityAPIWrapper {
     getUserPermissions: (options: GetUserPermissionsOptions) => Promise<string[]>;
     getUserProperties: (userId: number) => Promise<any>;
     getUserPropertiesForOther: (userId: number) => Promise<Record<string, any>>;
+    getUsersWithPermissions: (
+        permissions?: string | string[],
+        containerPath?: string,
+        includeInactive?: boolean
+    ) => Promise<User[]>;
     removeGroupMembers: (
         groupId: number,
         principalIds: number[],
@@ -104,12 +110,12 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    createApiKey(type = 'apikey'): Promise<string> {
+    createApiKey = (type = 'apikey'): Promise<string> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
-                url: buildURL('security', 'CreateApiKey.api'),
+                url: buildURL('security', 'createApiKey.api'),
                 method: 'POST',
-                params: {type: type},
+                jsonData: { type },
                 success: Utils.getCallbackWrapper(response => {
                     resolve(response.apikey);
                 }),
@@ -121,7 +127,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
     deleteApiKeys(selections: Set<string>): Promise<QueryCommandResponse> {
         const rows = [];
         selections.forEach(selection => {
-            rows.push({rowId: selection});
+            rows.push({ rowId: selection });
         });
 
         return deleteRows({
@@ -299,6 +305,8 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         return rowValues;
     };
 
+    getUsersWithPermissions = getUsersWithPermissions;
+
     removeGroupMembers = (
         groupId: number,
         principalIds: number[],
@@ -417,6 +425,7 @@ export function getSecurityTestAPIWrapper(
         getUserPermissions: mockFn(),
         getUserProperties: mockFn(),
         getUserPropertiesForOther: mockFn(),
+        getUsersWithPermissions: mockFn(),
         removeGroupMembers: mockFn(),
         updateUserDetails: mockFn(),
         savePolicy: mockFn(),

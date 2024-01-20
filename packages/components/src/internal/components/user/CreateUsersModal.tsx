@@ -11,7 +11,7 @@ interface Props {
     onCancel: () => void;
     onComplete: (response: any, roles: string[]) => void;
     show: boolean;
-    userLimitSettings?: UserLimitSettings;
+    userLimitSettings?: Partial<UserLimitSettings>;
 
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onComplete

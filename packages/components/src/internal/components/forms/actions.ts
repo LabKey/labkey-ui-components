@@ -59,14 +59,14 @@ export function handleTabKeyOnTextArea(evt: ITargetElementEvent): void {
  * @param includeInactive flag to optionally return inactive users
  */
 export function getUsersWithPermissions(
-    permissions: string | string[] = PermissionTypes.Read,
+    permissions?: string | string[],
     containerPath?: string,
     includeInactive?: boolean
 ): Promise<User[]> {
     return new Promise((resolve, reject) => {
         return Security.getUsersWithPermissions({
             containerPath,
-            permissions,
+            permissions: permissions ?? PermissionTypes.Read,
             includeInactive,
             requiredVersion: 23.11,
             success: ({ users }) => {
@@ -94,9 +94,9 @@ export function useUsersWithPermissions(
     containerPath?: string,
     loader: UsersLoader = getUsersWithPermissions
 ): UsersState {
-    const [users, setUsers_] = useState<User[]>(undefined);
+    const [users, setUsers_] = useState<User[]>();
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
-    const [error, setError] = useState<string>(undefined);
+    const [error, setError] = useState<string>();
     const load = useCallback(async () => {
         setLoadingState(LoadingState.LOADING);
 

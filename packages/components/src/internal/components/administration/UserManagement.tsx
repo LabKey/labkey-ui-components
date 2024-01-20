@@ -317,7 +317,9 @@ export const UserManagementPageImpl: FC<InjectedPermissionsPage> = props => {
     const { container, moduleContext, project, user } = useServerContext();
     const { extraPermissionRoles } = useAdminAppContext();
 
-    if (isProductProjectsEnabled() && !container.isProject) return <NotFound />;
+    if (isProductProjectsEnabled(moduleContext) && !container.isProject) {
+        return <NotFound />;
+    }
 
     return (
         <UserManagement

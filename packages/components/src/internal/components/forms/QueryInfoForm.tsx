@@ -168,7 +168,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                     // Date values are Dates not strings. We convert them to strings in the desired format here.
                     // They are converted back to Dates when saving to the server.
                     const col = this.props.queryInfo?.getColumn(key);
-                    if (submitForEdit && (col?.jsonType === 'date' && col?.sqlType !== 'time')) {
+                    if (submitForEdit && col?.jsonType === 'date' && col?.sqlType !== 'time') {
                         filteredData = filteredData.set(key, formatDateTime(data[key], null, col.format));
                     } else if (col?.jsonType === 'string' && typeof data[key] === 'string') {
                         filteredData = filteredData.set(key, data[key]?.trim());

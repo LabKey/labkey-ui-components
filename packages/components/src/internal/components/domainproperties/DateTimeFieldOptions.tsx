@@ -33,7 +33,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
 
     getFormatHelpText = (): ReactNode => {
         const { type } = this.props;
-        const noun = type === 'dateTime' ? "date or time" : type;
+        const noun = type === 'dateTime' ? 'date or time' : type;
         return (
             <>
                 <p>
@@ -62,7 +62,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                 <Row>
                     <Col xs={3}>
                         <div className="domain-field-label">
-                            <DomainFieldLabel label={"Format for " + noun} helpTipBody={this.getFormatHelpText()} />
+                            <DomainFieldLabel label={'Format for ' + noun} helpTipBody={this.getFormatHelpText()} />
                         </div>
                     </Col>
                     <Col xs={9} />

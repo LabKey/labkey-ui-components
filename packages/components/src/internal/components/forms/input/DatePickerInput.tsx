@@ -20,11 +20,14 @@ import DatePicker from 'react-datepicker';
 import { FieldLabel } from '../FieldLabel';
 import {
     getColDateFormat,
-    getJsonDateTimeFormatString, getJsonTimeFormatString,
+    getJsonDateTimeFormatString,
+    getJsonTimeFormatString,
     isDateTimeCol,
-    isRelativeDateFilterValue, isTimeCol,
+    isRelativeDateFilterValue,
+    isTimeCol,
     parseDate,
-    parseDateFNSTimeFormat, parseFNSTimeFormat,
+    parseDateFNSTimeFormat,
+    parseFNSTimeFormat,
 } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
@@ -147,8 +150,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             if (this.props.formsy) {
                 this.props.setValue?.(timePortion);
             }
-        }
-        else {
+        } else {
             this.props.onChange?.(this.state.relativeInputValue ? this.state.relativeInputValue : date);
 
             // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
@@ -175,11 +177,12 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
     getTimeFormat(): string {
         const { queryColumn, hideTime } = this.props;
-        if (hideTime)
-            return undefined;
+        if (hideTime) return undefined;
 
         const isTimeOnly = isTimeCol(queryColumn);
-        return isTimeOnly ? parseFNSTimeFormat(getColDateFormat(queryColumn, 'Time')) : parseDateFNSTimeFormat(this.getDateFormat());
+        return isTimeOnly
+            ? parseFNSTimeFormat(getColDateFormat(queryColumn, 'Time'))
+            : parseDateFNSTimeFormat(this.getDateFormat());
     }
 
     render(): ReactNode {
@@ -228,7 +231,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 selected={selectedDate}
                 showTimeSelect={!hideTime && isDateTimeCol(queryColumn)}
                 showTimeSelectOnly={!hideTime && isTimeOnly}
-                timeIntervals={isTimeOnly ? 10: 30}
+                timeIntervals={isTimeOnly ? 10 : 30}
                 timeFormat={this.getTimeFormat()}
                 value={allowRelativeInput && !isTimeOnly && isRelativeDateFilterValue(value) ? value : undefined}
                 wrapperClassName={inputWrapperClassName}

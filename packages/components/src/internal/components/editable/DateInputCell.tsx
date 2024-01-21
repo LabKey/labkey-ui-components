@@ -30,8 +30,7 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
     const onDateInputChange = useCallback(
         (newDate: Date | string) => {
             let display = null;
-            if (newDate && typeof newDate === 'string')
-                display = newDate
+            if (newDate && typeof newDate === 'string') display = newDate;
             else if (newDate && newDate instanceof Date) {
                 display = isDateTimeCol(col) ? formatDateTime(newDate) : formatDate(newDate);
             }

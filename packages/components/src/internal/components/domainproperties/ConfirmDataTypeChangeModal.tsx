@@ -8,7 +8,8 @@ import {
     DATETIME_RANGE_URI,
     FILELINK_RANGE_URI,
     INT_RANGE_URI,
-    MULTILINE_RANGE_URI, TIME_RANGE_URI
+    MULTILINE_RANGE_URI,
+    TIME_RANGE_URI,
 } from './constants';
 
 interface Props {
@@ -23,15 +24,21 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
     const origTypeLabel = getDataTypeConfirmDisplayText(originalRangeURI);
     const newTypeLabel = getDataTypeConfirmDisplayText(newDataType.rangeURI);
 
-    const reversible = (originalRangeURI === DATE_RANGE_URI && newDataType.rangeURI === DATETIME_RANGE_URI)
-                        || (originalRangeURI === DATETIME_RANGE_URI && newDataType.rangeURI === DATE_RANGE_URI);
+    const reversible =
+        (originalRangeURI === DATE_RANGE_URI && newDataType.rangeURI === DATETIME_RANGE_URI) ||
+        (originalRangeURI === DATETIME_RANGE_URI && newDataType.rangeURI === DATE_RANGE_URI);
 
     let dataLossWarning = null;
-    if (originalRangeURI === DATETIME_RANGE_URI &&
-        (newDataType.rangeURI === DATE_RANGE_URI || newDataType.rangeURI === TIME_RANGE_URI)) {
-        dataLossWarning = (<>
-            This will cause the {newDataType.rangeURI === DATE_RANGE_URI ? 'Time' : 'Date'} portion of the value to be <span className="domain-field-confirm-datatype">removed</span>.{' '}
-        </>)
+    if (
+        originalRangeURI === DATETIME_RANGE_URI &&
+        (newDataType.rangeURI === DATE_RANGE_URI || newDataType.rangeURI === TIME_RANGE_URI)
+    ) {
+        dataLossWarning = (
+            <>
+                This will cause the {newDataType.rangeURI === DATE_RANGE_URI ? 'Time' : 'Date'} portion of the value to
+                be <span className="domain-field-confirm-datatype">removed</span>.{' '}
+            </>
+        );
     }
 
     return (
@@ -46,12 +53,13 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
             <div>
                 This change will convert the values in the field from{' '}
                 <span className="domain-field-confirm-datatype">{origTypeLabel}</span> to{' '}
-                <span className="domain-field-confirm-datatype">{newTypeLabel}</span>.{' '}
-                {dataLossWarning}
-                {!reversible && <>
-                    Once you save your changes, you will not be able to change it back to{' '}
-                    <span className="domain-field-confirm-datatype">{origTypeLabel}</span>.{' '}
-                </>}
+                <span className="domain-field-confirm-datatype">{newTypeLabel}</span>. {dataLossWarning}
+                {!reversible && (
+                    <>
+                        Once you save your changes, you will not be able to change it back to{' '}
+                        <span className="domain-field-confirm-datatype">{origTypeLabel}</span>.{' '}
+                    </>
+                )}
                 Would you like to continue?
             </div>
         </ConfirmModal>

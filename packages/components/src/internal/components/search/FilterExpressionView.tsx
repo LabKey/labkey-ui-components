@@ -231,7 +231,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         disabled={disabled}
                         onChange={newDate => {
                             let dateStr = newDate;
-                            if (typeof newDate !== 'string') dateStr = isTimeOnly ? getJsonTimeFormatString(newDate) : getJsonDateFormatString(newDate);
+                            if (typeof newDate !== 'string')
+                                dateStr = isTimeOnly
+                                    ? getJsonTimeFormatString(newDate)
+                                    : getJsonDateFormatString(newDate);
                             updateDateFilterFieldValue(filterIndex, dateStr, isSecondInput);
                         }}
                     />

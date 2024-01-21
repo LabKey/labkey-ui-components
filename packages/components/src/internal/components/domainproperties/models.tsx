@@ -62,7 +62,8 @@ import {
     USER_RANGE_URI,
 } from './constants';
 import {
-    CONCEPT_URIS_NOT_USED_IN_TYPES, DATE_TYPE,
+    CONCEPT_URIS_NOT_USED_IN_TYPES,
+    DATE_TYPE,
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,

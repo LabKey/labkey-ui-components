@@ -296,8 +296,7 @@ export class EditorModel
                     let dateVal;
                     if (col.sqlType === 'time') {
                         row = row.set(col.name, values.first().raw);
-                    }
-                    else {
+                    } else {
                         if (values.size === 1) {
                             dateVal = values.first().raw;
                             dateVal = parseDate(dateVal, getColDateFormat(col));

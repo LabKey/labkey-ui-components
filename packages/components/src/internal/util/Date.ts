@@ -20,8 +20,9 @@ import { Container, getServerContext } from '@labkey/api';
 
 import { QueryColumn } from '../../public/QueryColumn';
 
-import { formatWithJDF, toMomentFormatString } from './jDateFormatParser';
 import { TIME_RANGE_URI } from '../components/domainproperties/constants';
+
+import { formatWithJDF, toMomentFormatString } from './jDateFormatParser';
 
 export function datePlaceholder(col: QueryColumn): string {
     let placeholder: string;
@@ -55,7 +56,8 @@ export function isDateTimeCol(col: QueryColumn): boolean {
             return true;
         }
 
-        if (rangeURI?.indexOf('time') > -1) { // TODO needed?
+        if (rangeURI?.indexOf('time') > -1) {
+            // TODO needed?
             return true;
         }
 
@@ -119,8 +121,7 @@ export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, 
 }
 
 export function parseFNSTimeFormat(timePart: string): string {
-    if (!timePart || timePart.indexOf(':') == -1)
-        return undefined;
+    if (!timePart || timePart.indexOf(':') == -1) return undefined;
 
     if (timePart.indexOf('H') > -1 || timePart.indexOf('k') > -1) {
         return 'HH:mm'; // 13:30
@@ -199,7 +200,7 @@ export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date, 
 
     // Issue 45140: if a dateFormat was provided here and the date didn't parse, try the default container format and no format
     if (!validDate) {
-        const date = moment(dateStr, timeOnly ? getMomentTimeFormat(): getMomentDateTimeFormat(), !timeOnly);
+        const date = moment(dateStr, timeOnly ? getMomentTimeFormat() : getMomentDateTimeFormat(), !timeOnly);
         // console.log(date);
         if (date && date.isValid()) {
             validDate = date;

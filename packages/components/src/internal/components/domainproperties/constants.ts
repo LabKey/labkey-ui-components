@@ -142,7 +142,7 @@ export const RANGE_URIS = {
     ATTACHMENT: ATTACHMENT_RANGE_URI,
     USER: USER_RANGE_URI,
     DATE: DATE_RANGE_URI,
-    TIME: TIME_RANGE_URI
+    TIME: TIME_RANGE_URI,
 };
 
 export const STRING_CONVERT_URIS = [STRING_RANGE_URI, MULTILINE_RANGE_URI];
@@ -232,4 +232,4 @@ export const MAX_VALID_TEXT_CHOICES = 200;
 
 export const LOOKUP_VALIDATOR_VALUES = { type: 'Lookup', name: 'Lookup Validator' };
 
-export const DOMAIN_ERROR_ID = "domain-error";
+export const DOMAIN_ERROR_ID = 'domain-error';

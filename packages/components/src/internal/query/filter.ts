@@ -91,7 +91,7 @@ export function getLegalIdentifier(columnName: string, tableAlias?: string): str
 }
 
 function getLabKeySqlValue(value: any, jsonType: JsonType, suppressQuote?: boolean): any {
-    if (jsonType === 'string' || jsonType === 'date') {
+    if (jsonType === 'string' || jsonType === 'date' || jsonType === 'time') {
         const quote = suppressQuote ? '' : "'";
         return quote + value.toString().replace(/'/g, "''") + quote;
     }

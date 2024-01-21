@@ -28,7 +28,7 @@ import {
     VISITID_CONCEPT_URI,
 } from './constants';
 
-export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
+export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string' | 'time';
 
 interface IPropDescType {
     conceptURI: string;

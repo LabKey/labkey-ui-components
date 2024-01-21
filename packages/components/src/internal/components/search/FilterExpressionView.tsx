@@ -214,7 +214,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             const isConceptColumn = field.isConceptCodeColumn && isOntologyEnabled();
             const isTimeOnly = field.isTimeColumn;
 
-            if (jsonType === 'date') {
+            if (jsonType === 'date' || jsonType === 'time') {
                 return (
                     <DatePickerInput
                         allowRelativeInput={allowRelativeDateFilter}

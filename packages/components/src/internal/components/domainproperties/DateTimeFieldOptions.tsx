@@ -13,6 +13,7 @@ import { DomainFieldLabel } from './DomainFieldLabel';
 interface DateTimeFieldProps extends ITypeDependentProps {
     excludeFromShifting: boolean;
     format: string;
+    type: 'dateTime' | 'date' | 'time';
 }
 
 export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps> {
@@ -31,10 +32,12 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
     };
 
     getFormatHelpText = (): ReactNode => {
+        const { type } = this.props;
+        const noun = type === 'dateTime' ? "date or time" : type;
         return (
             <>
                 <p>
-                    To control how a date or time value is displayed, provide a string format compatible with the Java{' '}
+                    To control how a {noun} value is displayed, provide a string format compatible with the Java{' '}
                     <JavaDocsLink urlSuffix="java/text/SimpleDateFormat.html">SimpleDateFormat</JavaDocsLink> class.
                 </p>
                 <p>
@@ -46,8 +49,9 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
     };
 
     render(): ReactNode {
-        const { index, label, format, lockType, domainIndex } = this.props;
+        const { index, label, format, lockType, domainIndex, type } = this.props;
 
+        const noun = type === 'time' ? 'Times' : 'Dates';
         return (
             <div>
                 <Row>
@@ -58,7 +62,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                 <Row>
                     <Col xs={3}>
                         <div className="domain-field-label">
-                            <DomainFieldLabel label="Format for Dates" helpTipBody={this.getFormatHelpText()} />
+                            <DomainFieldLabel label={"Format for " + noun} helpTipBody={this.getFormatHelpText()} />
                         </div>
                     </Col>
                     <Col xs={9} />

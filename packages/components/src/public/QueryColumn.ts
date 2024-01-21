@@ -5,7 +5,7 @@ import { Filter, Query } from '@labkey/api';
 import {
     CONCEPT_CODE_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
-    STORAGE_UNIQUE_ID_CONCEPT_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI, TIME_RANGE_URI,
 } from '../internal/components/domainproperties/constants';
 import { SCHEMAS } from '../internal/schemas';
 
@@ -229,7 +229,7 @@ export class QueryColumn implements IQueryColumn {
     declare shownInLookupView: boolean;
     declare shownInUpdateView: boolean;
     declare sortable: boolean;
-    // declare sqlType: string;
+    declare sqlType: string;
     declare type: string;
     declare userEditable: boolean;
     declare validValues: string[];
@@ -387,6 +387,10 @@ export class QueryColumn implements IQueryColumn {
 
     get isConceptCodeColumn(): boolean {
         return this.conceptURI === CONCEPT_CODE_CONCEPT_URI;
+    }
+
+    get isTimeColumn(): boolean {
+        return this.rangeURI === TIME_RANGE_URI;
     }
 
     isImportColumn(importName: string): boolean {

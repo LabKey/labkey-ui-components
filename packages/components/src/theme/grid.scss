@@ -183,6 +183,12 @@
   table {
     margin-bottom: 15px;
   }
+
+  .react-datepicker--time-only {
+      .react-datepicker__triangle {
+            left: -10px !important;
+        }
+  }
 }
 
 .editable-grid__bulk-header {

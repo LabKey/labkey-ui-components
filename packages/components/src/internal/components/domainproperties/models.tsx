@@ -62,7 +62,7 @@ import {
     USER_RANGE_URI,
 } from './constants';
 import {
-    CONCEPT_URIS_NOT_USED_IN_TYPES,
+    CONCEPT_URIS_NOT_USED_IN_TYPES, DATE_TYPE,
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
@@ -1216,6 +1216,7 @@ export class DomainField
             field.dataType === INTEGER_TYPE ||
             field.dataType === DOUBLE_TYPE ||
             field.dataType === DATETIME_TYPE ||
+            field.dataType === DATE_TYPE ||
             field.dataType === USERS_TYPE ||
             field.dataType === LOOKUP_TYPE
         );
@@ -1528,6 +1529,16 @@ export function acceptablePropertyType(type: PropDescType, rangeURI: string): bo
 
     // Original field is a uniqueId, text, or multi-line text, can convert to a string type
     if (type.isString() && PropDescType.isString(rangeURI)) {
+        return true;
+    }
+
+    // Original field is a datetime, can convert to a date or time
+    if ((type.isTime() || type.isDate()) && PropDescType.isDateTime(rangeURI)) {
+        return true;
+    }
+
+    // Original field is a date, can convert to a datetime
+    if (type.isDateTime() && PropDescType.isDate(rangeURI)) {
         return true;
     }
 

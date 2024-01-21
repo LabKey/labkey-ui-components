@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.X
+*Released*: X January 2024
+- Support Date-only or Time-only fields
+  - TODO
+
 ### version 3.8.0
 *Released*: 18 January 2024
 - Sample Type exclusions from Dashboard Insights charts

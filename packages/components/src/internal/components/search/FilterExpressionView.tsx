@@ -6,7 +6,7 @@ import { Filter } from '@labkey/api';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
 
-import { getJsonDateFormatString } from '../../util/Date';
+import { getJsonDateFormatString, getJsonTimeFormatString } from '../../util/Date';
 
 import { isOntologyEnabled } from '../../app/utils';
 
@@ -212,6 +212,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
             const jsonType = field.getDisplayFieldJsonType();
             const isConceptColumn = field.isConceptCodeColumn && isOntologyEnabled();
+            const isTimeOnly = field.isTimeColumn;
 
             if (jsonType === 'date') {
                 return (
@@ -226,11 +227,11 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         initValueFormatted={false}
                         showLabel={false}
                         isClearable
-                        hideTime={true} // always filter by date only, without timepicker
+                        hideTime={!isTimeOnly} // filter date and datetime by date only, without timepicker
                         disabled={disabled}
                         onChange={newDate => {
                             let dateStr = newDate;
-                            if (typeof newDate !== 'string') dateStr = getJsonDateFormatString(newDate);
+                            if (typeof newDate !== 'string') dateStr = isTimeOnly ? getJsonTimeFormatString(newDate) : getJsonDateFormatString(newDate);
                             updateDateFilterFieldValue(filterIndex, dateStr, isSecondInput);
                         }}
                     />

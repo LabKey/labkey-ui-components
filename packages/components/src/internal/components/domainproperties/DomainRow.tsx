@@ -28,6 +28,7 @@ import { DragDropHandle } from '../base/DragDropHandle';
 import { FieldExpansionToggle } from '../base/FieldExpansionToggle';
 
 import {
+    DATETIME_CONVERT_URIS,
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_FIELD_ADV,
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -588,7 +589,8 @@ const shouldShowConfirmDataTypeChange = (originalRangeURI: string, newRangeURI: 
         const wasString = STRING_CONVERT_URIS.indexOf(originalRangeURI) > -1;
         const toString = STRING_CONVERT_URIS.indexOf(newRangeURI) > -1;
         const toNumber = NUMBER_CONVERT_URIS.indexOf(newRangeURI) > -1;
-        return toNumber || (toString && !wasString);
+        const toDate = DATETIME_CONVERT_URIS.indexOf(newRangeURI) > -1;
+        return toNumber || (toString && !wasString) || toDate;
     }
     return false;
 };

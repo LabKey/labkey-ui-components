@@ -124,6 +124,8 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                     />
                 );
             case 'dateTime':
+            case 'date':
+            case 'time':
                 return (
                     <DateTimeFieldOptions
                         index={index}
@@ -133,6 +135,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                         excludeFromShifting={field.excludeFromShifting}
                         onChange={onChange}
                         lockType={field.lockType}
+                        type={field.dataType.name}
                     />
                 );
             case 'int':

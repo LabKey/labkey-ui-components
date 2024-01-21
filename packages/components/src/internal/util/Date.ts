@@ -21,6 +21,7 @@ import { Container, getServerContext } from '@labkey/api';
 import { QueryColumn } from '../../public/QueryColumn';
 
 import { formatWithJDF, toMomentFormatString } from './jDateFormatParser';
+import { TIME_RANGE_URI } from '../components/domainproperties/constants';
 
 export function datePlaceholder(col: QueryColumn): string {
     let placeholder: string;
@@ -34,6 +35,8 @@ export function datePlaceholder(col: QueryColumn): string {
             placeholder = getMomentDateTimeFormat();
         } else if (rangeURI.indexOf('date') > -1) {
             placeholder = getMomentDateFormat();
+        } else if (rangeURI === TIME_RANGE_URI.toLowerCase()) {
+            placeholder = getMomentTimeFormat();
         } else {
             placeholder = getMomentDateTimeFormat();
         }
@@ -52,8 +55,28 @@ export function isDateTimeCol(col: QueryColumn): boolean {
             return true;
         }
 
+        if (rangeURI?.indexOf('time') > -1) { // TODO needed?
+            return true;
+        }
+
         // material.materialexpdate is a non domain property datetime field that doesn't have rangeURI, but should be treated as datetime
         if (!rangeURI && col?.jsonType === 'date' && col?.name.toLowerCase() === 'materialexpdate') {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+export function isTimeCol(col: QueryColumn): boolean {
+    if (col) {
+        const rangeURI = col.rangeURI?.toLowerCase();
+
+        if (rangeURI === TIME_RANGE_URI.toLowerCase()) {
+            return true;
+        }
+
+        if (!rangeURI && col?.sqlType === 'time') {
             return true;
         }
     }
@@ -95,6 +118,19 @@ export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, 
     return momentToDateFNS(rawFormat);
 }
 
+export function parseFNSTimeFormat(timePart: string): string {
+    if (!timePart || timePart.indexOf(':') == -1)
+        return undefined;
+
+    if (timePart.indexOf('H') > -1 || timePart.indexOf('k') > -1) {
+        return 'HH:mm'; // 13:30
+    } else if (timePart.indexOf('h') > -1 || timePart.indexOf('K') > -1) {
+        return 'h:mm a'; // 1:30 PM
+    }
+
+    return undefined;
+}
+
 // Issue 48300: Respect 12-hour vs 24-hour time display format
 // This method attempts to determine if the time portion of date format is in either 12-hour or 24-hour format.
 // If the time format can be determined, then it will return a constant dateFNS time format.
@@ -108,13 +144,8 @@ export function parseDateFNSTimeFormat(dateFormat: string): string {
     if (!dateFormat) return undefined;
     const parts = dateFormat.split(' ');
 
-    if (parts.length > 1 && parts[1].indexOf(':') > -1) {
-        const timePart = parts[1];
-        if (timePart.indexOf('H') > -1 || timePart.indexOf('k') > -1) {
-            return 'HH:mm'; // 13:30
-        } else if (timePart.indexOf('h') > -1 || timePart.indexOf('K') > -1) {
-            return 'h:mm a'; // 1:30 PM
-        }
+    if (parts.length > 1) {
+        return parseFNSTimeFormat(parts[1]);
     }
 
     return undefined;
@@ -147,11 +178,11 @@ export function getMomentDateTimeFormat(container?: Partial<Container>): string 
 }
 
 // hard-coded value, see docs: https://www.labkey.org/Documentation/Archive/21.7/wiki-page.view?name=studyDateNumber#short
-function getMomentTimeFormat(): string {
-    return toMomentFormatString('HH:mm:ss');
+function getMomentTimeFormat(container?: Partial<Container>): string {
+    return toMomentFormatString((container ?? getServerContext().container).formats.timeFormat);
 }
 
-export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date): Date {
+export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date, timeOnly?: boolean): Date {
     if (!dateStr) return null;
 
     // Moment.js and react datepicker date format is different
@@ -168,7 +199,8 @@ export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date):
 
     // Issue 45140: if a dateFormat was provided here and the date didn't parse, try the default container format and no format
     if (!validDate) {
-        const date = moment(dateStr, getMomentDateTimeFormat(), true);
+        const date = moment(dateStr, timeOnly ? getMomentTimeFormat(): getMomentDateTimeFormat(), !timeOnly);
+        // console.log(date);
         if (date && date.isValid()) {
             validDate = date;
         }
@@ -216,6 +248,10 @@ export function getUnFormattedNumber(n): number {
 // provided by the LabKey server for the API response, from a JS Date object
 export function getJsonDateTimeFormatString(date: Date): string {
     return _formatDate(date, 'YYYY-MM-dd HH:mm:ss');
+}
+
+export function getJsonTimeFormatString(date: Date): string {
+    return _formatDate(date, 'YYYY-MM-dd HH:mm:ss').split(' ')[1];
 }
 
 export function getJsonDateFormatString(date: Date): string {

@@ -216,7 +216,7 @@ export class FilterAction implements Action {
         let value = filter.getValue();
 
         // Issue 45140: match date display format in grid filter status pill display
-        if (column?.getDisplayFieldJsonType() === 'date') {
+        if (column?.getDisplayFieldJsonType() === 'date' && !column?.isTimeColumn) {
             value = getColFormattedDateFilterValue(column, value);
         }
 

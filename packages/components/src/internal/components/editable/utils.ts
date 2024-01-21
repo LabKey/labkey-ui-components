@@ -86,6 +86,7 @@ export function getUpdatedDataFromGrid(
                 let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
                 const col = queryInfo.getColumn(key);
                 const isDate = col?.jsonType === 'date';
+                const isTimeOnly = col?.sqlType === 'time';
                 // Convert empty cell to null
                 if (value === '') value = null;
 
@@ -127,8 +128,13 @@ export function getUpdatedDataFromGrid(
 
                     // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
                     // Issue 45140: use QueryColumn date format for parseDate()
-                    row[key] =
-                        (isDate ? getJsonDateTimeFormatString(parseDate(value, getColDateFormat(col))) : value) ?? null;
+                    // TODO fix date
+                    if (isTimeOnly)
+                        row[key] = value;
+                    else if (isDate)
+                        row[key] = getJsonDateTimeFormatString(parseDate(value, getColDateFormat(col)));
+                    else
+                        row[key] = value ?? null;
                 }
                 return row;
             }, {});

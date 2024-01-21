@@ -198,6 +198,14 @@ div.react-datepicker__current-month {
     // Issue 49164: set z-index greater than the sticky footer (which is 10)
     z-index: 11;
 }
+
+.form-group {
+    .react-datepicker--time-only {
+        .react-datepicker__triangle {
+            left: -10px !important;
+        }
+    }
+}
 .add-control--error-message {
     padding-top: 5px;
 }

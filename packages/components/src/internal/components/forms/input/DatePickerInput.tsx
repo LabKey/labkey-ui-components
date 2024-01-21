@@ -20,11 +20,11 @@ import DatePicker from 'react-datepicker';
 import { FieldLabel } from '../FieldLabel';
 import {
     getColDateFormat,
-    getJsonDateTimeFormatString,
+    getJsonDateTimeFormatString, getJsonTimeFormatString,
     isDateTimeCol,
-    isRelativeDateFilterValue,
+    isRelativeDateFilterValue, isTimeCol,
     parseDate,
-    parseDateFNSTimeFormat,
+    parseDateFNSTimeFormat, parseFNSTimeFormat,
 } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
@@ -84,20 +84,22 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
     constructor(props: DatePickerInputProps) {
         super(props);
 
+        const { queryColumn } = props;
+        const isTimeOnly = isTimeCol(queryColumn);
+
         this.toggleDisabled = this.toggleDisabled.bind(this);
 
         // Issue 45140: formsy values will hold on to the initial formatted value until onChange.
         // We instead need to make sure that the unformatted Date value is passed to setValue if there is an init value.
         const initDate = this.getInitDate(props);
-        if (props.formsy) {
+        if (props.formsy && !isTimeOnly) {
             props.setValue?.(initDate);
         }
 
         let invalid = false;
         if (props.value && !isRelativeDateFilterValue(props.value)) {
             // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
-            const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
-            invalid = parseDate(props.value, dateFormat, new Date('1000-01-01')) === null;
+            invalid = this.getInitDate(props, new Date('1000-01-01')) === null;
         }
 
         this.state = {
@@ -120,23 +122,39 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         );
     };
 
-    getInitDate(props: DatePickerInputProps): Date {
+    getInitDate(props: DatePickerInputProps, minDate?: Date): Date {
+        const { queryColumn } = props;
+        const isTimeOnly = isTimeCol(queryColumn);
         // Issue 45140: props.value is the original formatted date, so pass the date format
         // to parseDate when getting the initial value.
         const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
 
         if (props.allowRelativeInput && isRelativeDateFilterValue(props.value)) return undefined;
 
-        return props.value ? parseDate(props.value, dateFormat) : undefined;
+        return props.value ? parseDate(props.value, dateFormat, minDate, isTimeOnly) : undefined;
     }
 
     onChange = (date: Date): void => {
+        const { queryColumn } = this.props;
+        const isTimeOnly = isTimeCol(queryColumn);
         this.setState({ selectedDate: date, invalid: false });
-        this.props.onChange?.(this.state.relativeInputValue ? this.state.relativeInputValue : date);
 
-        // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-        if (this.props.formsy) {
-            this.props.setValue?.(getJsonDateTimeFormatString(date));
+        if (isTimeOnly) {
+            const timePortion = getJsonTimeFormatString(date);
+            this.props.onChange?.(timePortion);
+
+            // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+            if (this.props.formsy) {
+                this.props.setValue?.(timePortion);
+            }
+        }
+        else {
+            this.props.onChange?.(this.state.relativeInputValue ? this.state.relativeInputValue : date);
+
+            // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+            if (this.props.formsy) {
+                this.props.setValue?.(getJsonDateTimeFormatString(date));
+            }
         }
     };
 
@@ -153,6 +171,15 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
     getDateFormat(): string {
         const { dateFormat, queryColumn, hideTime } = this.props;
         return getColDateFormat(queryColumn, hideTime ? 'Date' : dateFormat);
+    }
+
+    getTimeFormat(): string {
+        const { queryColumn, hideTime } = this.props;
+        if (hideTime)
+            return undefined;
+
+        const isTimeOnly = isTimeCol(queryColumn);
+        return isTimeOnly ? parseFNSTimeFormat(getColDateFormat(queryColumn, 'Time')) : parseDateFNSTimeFormat(this.getDateFormat());
     }
 
     render(): ReactNode {
@@ -181,6 +208,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         const { isDisabled, selectedDate, invalid } = this.state;
         const dateFormat = this.getDateFormat();
 
+        const isTimeOnly = isTimeCol(queryColumn);
         const picker = (
             <DatePicker
                 autoComplete="off"
@@ -193,14 +221,16 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 name={name ? name : queryColumn.fieldKey}
                 onCalendarClose={onCalendarClose}
                 onChange={this.onChange}
-                onChangeRaw={allowRelativeInput ? this.onChangeRaw : undefined}
+                onChangeRaw={allowRelativeInput || isTimeOnly ? this.onChangeRaw : undefined}
                 onKeyDown={onKeyDown}
                 onMonthChange={this.onChange}
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
                 selected={selectedDate}
                 showTimeSelect={!hideTime && isDateTimeCol(queryColumn)}
-                timeFormat={parseDateFNSTimeFormat(dateFormat)}
-                value={allowRelativeInput && isRelativeDateFilterValue(value) ? value : undefined}
+                showTimeSelectOnly={!hideTime && isTimeOnly}
+                timeIntervals={isTimeOnly ? 10: 30}
+                timeFormat={this.getTimeFormat()}
+                value={allowRelativeInput && !isTimeOnly && isRelativeDateFilterValue(value) ? value : undefined}
                 wrapperClassName={inputWrapperClassName}
             />
         );

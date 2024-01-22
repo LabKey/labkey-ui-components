@@ -115,10 +115,16 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
                 role="button"
                 type="button"
             >
-                {title}&nbsp;
+                {title}
                 {!noCaret && <span className="caret" />}
             </button>
-            <ul className={menuClassName} ref={menuRef} aria-labelledby={id} onClick={preventDocumentHandler}>
+            <ul
+                className={menuClassName}
+                ref={menuRef}
+                aria-labelledby={id}
+                onClick={preventDocumentHandler}
+                role="menu"
+            >
                 {children}
             </ul>
         </div>

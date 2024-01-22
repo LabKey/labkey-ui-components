@@ -8,7 +8,7 @@ import { ProductMenuModel } from '../components/navigation/model';
 
 import { ServerNotificationModel } from '../components/notifications/model';
 
-import { AppModel } from './models';
+import { AppModel, newAppModel } from './models';
 import {
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
@@ -17,6 +17,7 @@ import {
     MENU_LOADING_ERROR,
     MENU_LOADING_END,
     MENU_RELOAD,
+    SERVER_CONTEXT_RELOAD,
     SERVER_NOTIFICATIONS_INVALIDATE,
     SERVER_NOTIFICATIONS_LOADING_START,
     SERVER_NOTIFICATIONS_LOADING_ERROR,
@@ -25,8 +26,12 @@ import {
 
 export type AppReducerState = AppModel;
 
-export function AppReducers(state = new AppModel(), action): AppReducerState {
+const initialAppModel = newAppModel();
+
+export function AppReducers(state = initialAppModel, action): AppReducerState {
     switch (action.type) {
+        case SERVER_CONTEXT_RELOAD:
+            return newAppModel();
         case UPDATE_USER:
             return state.merge({ user: new User({ ...state.user, ...action.userProps }) }) as AppModel;
         case UPDATE_USER_DISPLAY_NAME:

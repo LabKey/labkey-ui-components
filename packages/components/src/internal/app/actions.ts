@@ -15,6 +15,7 @@ import {
     MENU_RELOAD,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
+    SERVER_CONTEXT_RELOAD,
     SERVER_NOTIFICATIONS_LOADING_START,
     SERVER_NOTIFICATIONS_LOADING_END,
     SERVER_NOTIFICATIONS_LOADING_ERROR,
@@ -79,6 +80,8 @@ export function menuReload() {
             });
     };
 }
+
+export const serverContextReload = () => ({ type: SERVER_CONTEXT_RELOAD });
 
 export function serverNotificationInit(serverActivitiesLoaderFn: (maxRows?: number) => Promise<ServerActivity>) {
     return (dispatch, getState) => {

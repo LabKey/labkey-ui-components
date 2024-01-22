@@ -10,16 +10,11 @@ import { ComponentType } from 'react';
 import { Container } from '../components/base/models/Container';
 import { User } from '../components/base/models/User';
 
-const user = new User({
-    ...getServerContext().user,
-    permissionsList: getServerContext().container?.effectivePermissions ?? [],
-});
-
 export class AppModel extends Record({
-    container: new Container(getServerContext().container),
-    contextPath: ActionURL.getContextPath(),
-    initialUserId: user.id,
-    user,
+    container: undefined,
+    contextPath: undefined,
+    initialUserId: undefined,
+    user: undefined,
 }) {
     declare container: Container;
     declare contextPath: string;
@@ -33,6 +28,18 @@ export class AppModel extends Record({
     shouldReload(): boolean {
         return this.hasUserChanged();
     }
+}
+
+export function newAppModel(): AppModel {
+    const { container, user } = getServerContext();
+    const appUser = new User({ ...user, permissionsList: container?.effectivePermissions ?? [] });
+
+    return new AppModel({
+        container: new Container(container),
+        contextPath: ActionURL.getContextPath(),
+        initialUserId: appUser.id,
+        user: appUser,
+    });
 }
 
 export interface AppProperties {

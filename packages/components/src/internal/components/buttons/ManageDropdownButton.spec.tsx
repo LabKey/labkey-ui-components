@@ -26,21 +26,7 @@ describe('<ManageDropdownButton/>', () => {
 
         const wrapper = shallow(component);
         const dropdown = wrapper.find(DropdownButton);
-        expect(dropdown.prop('noCaret')).toBe(false);
-        expect(dropdown.prop('title')).toBe('Manage');
-    });
-
-    test('custom props', () => {
-        const component = <ManageDropdownButton collapsed pullRight />;
-
-        const wrapper = shallow(component);
-        const dropdown = wrapper.find(DropdownButton);
         expect(dropdown.prop('noCaret')).toBe(true);
-        expect(dropdown.prop('pullRight')).toBe(true);
-        expect(dropdown.prop('title')).toStrictEqual(
-            <span>
-                <i className="fa fa-bars" /> Manage
-            </span>
-        );
+        expect(dropdown.prop('title')).toBe('Manage');
     });
 });

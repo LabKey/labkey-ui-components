@@ -13,40 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 
 import { DropdownButton } from '../../dropdowns';
 
-interface Props {
-    className?: string;
-    collapsed?: boolean;
-    disabled?: boolean;
-    pullRight?: boolean;
-    title?: string;
-}
-
-export const ManageDropdownButton: FC<Props> = props => {
-    const { children, className, collapsed = false, disabled = false, pullRight = false, title = 'Manage' } = props;
-    let buttonLabel: ReactNode = title;
-    let noCaret = false;
-
-    if (collapsed) {
-        buttonLabel = (
+export const ManageDropdownButton: FC = props => {
+    const { children } = props;
+    const buttonLabel: ReactNode = useMemo(
+        () => (
             <span>
                 <i className="fa fa-bars" /> Manage
             </span>
-        );
-        noCaret = true;
-    }
+        ),
+        []
+    );
 
     return (
-        <DropdownButton
-            disabled={disabled}
-            title={buttonLabel}
-            noCaret={noCaret}
-            pullRight={pullRight}
-            className={className}
-        >
+        <DropdownButton title={buttonLabel} noCaret pullRight>
             {children}
         </DropdownButton>
     );

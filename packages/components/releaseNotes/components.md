@@ -11,6 +11,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add MenuHeader
 - Add MenuDivider
 - Update usages of react-bootstrap DropdownButton, SplitButton, MenuItem to internal versions
+- ManageDropdownMenu: remove all props
 
 ### version 3.10.0
 *Released*: 26 January 2024

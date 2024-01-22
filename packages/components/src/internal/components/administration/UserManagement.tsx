@@ -269,7 +269,7 @@ export class UserManagement extends PureComponent<UserManagementProps, State> {
 
     renderButtons = (): ReactNode => {
         return (
-            <ManageDropdownButton collapsed pullRight>
+            <ManageDropdownButton>
                 <MenuItem
                     href={AppURL.create(AUDIT_KEY).addParam(AUDIT_EVENT_TYPE_PARAM, USER_AUDIT_QUERY.value).toHref()}
                 >

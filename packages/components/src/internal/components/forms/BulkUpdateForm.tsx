@@ -15,6 +15,7 @@ import { QueryInfoForm } from './QueryInfoForm';
 
 interface Props {
     containerFilter?: Query.ContainerFilter;
+    disabled?: boolean;
     displayValueFields?: string[];
     getUpdateColumnsOnly?: boolean;
     header?: ReactNode;
@@ -223,6 +224,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             queryFilters,
             queryInfo,
             onAdditionalFormDataChange,
+            disabled,
         } = this.props;
         const fieldValues =
             isLoadingDataForSelection || !dataForSelection ? undefined : getCommonDataValues(dataForSelection);
@@ -234,6 +236,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 checkRequiredFields={false}
                 columnFilter={this.columnFilter}
                 containerFilter={containerFilter}
+                disabled={disabled}
                 fieldValues={fieldValues}
                 header={this.renderBulkUpdateHeader()}
                 includeCountField={false}

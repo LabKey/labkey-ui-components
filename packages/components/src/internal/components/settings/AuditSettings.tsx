@@ -6,7 +6,12 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { RequiresPermission } from '../base/Permissions';
 import { LabelHelpTip } from '../base/LabelHelpTip';
-import { isDataChangeCommentRequirementFeatureEnabled } from '../../app/utils';
+import {
+    isAssayEnabled,
+    isDataChangeCommentRequirementFeatureEnabled,
+    isELNEnabled,
+    isWorkflowEnabled,
+} from '../../app/utils';
 import { useServerContext } from '../base/ServerContext';
 
 interface AuditSettingProps {
@@ -46,15 +51,19 @@ export const AuditSettings: FC<AuditSettingProps> = props => {
                 <div className="panel-body">
                     Would you like to require that users provide a reason before completing certain actions?
                     <LabelHelpTip>
-                        Some actions allow users to enter a reason for the action, which will be recorded in the audit
-                        log. CFR part 11 and Annex 11 compliance both require that users enter reasons for the following
-                        actions:
+                        The following actions allow users to enter a reason for the action, which will be recorded in the audit
+                        log:
                         <ul>
-                            <li>Delete any data</li>
-                            <li>Update sample amount or freeze/thaw count</li>
-                            <li>Check samples in or out of storage</li>
-                            <li>Discard samples from storage</li>
-                            <li>Move data between projects</li>
+                            <li>Deletion of samples and sample types</li>
+                            <li>Deletion of sources and source types</li>
+                            {isAssayEnabled(moduleContext) && <li>Delete of assay runs and assay designs</li>}
+                            {isELNEnabled(moduleContext) && <li>Deletion of notebooks</li>}
+                            {isWorkflowEnabled(moduleContext) && <li>Deletion of jobs</li>}
+                            <li>Deletion of storage units</li>
+                            <li>Updating sample amount or freeze/thaw count</li>
+                            <li>Checking samples in or out of storage</li>
+                            <li>Discarding samples from storage</li>
+                            <li>Moving data between projects</li>
                         </ul>
                     </LabelHelpTip>
                     <div className="framed-input__container top-spacing">

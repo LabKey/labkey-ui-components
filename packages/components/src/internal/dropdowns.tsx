@@ -137,7 +137,7 @@ interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret'> {
     buttonDisabled?: boolean;
     href?: string;
     menuDisabled?: boolean;
-    onClick?: () => any;
+    onClick?: () => void;
 }
 
 export const SplitButton: FC<SplitButtonProps> = memo(props => {

@@ -48,8 +48,8 @@ export const SampleAliquotViewSelector: FC<Props> = props => {
     }
 
     return (
-        <DropdownButton pullRight title={title}>
-            <MenuHeader key="aliquot-selector-header" text={headerLabel} />
+        <DropdownButton className="aliquot-view-selector" pullRight title={title}>
+            <MenuHeader text={headerLabel} />
             <ViewMenuItem
                 currentFilterMode={aliquotFilterMode}
                 filterMode={ALIQUOT_FILTER_MODE.all}

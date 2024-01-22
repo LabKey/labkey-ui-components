@@ -58,7 +58,10 @@ export const AuditSettings: FC<AuditSettingProps> = props => {
                         </ul>
                     </LabelHelpTip>
                     <div className="framed-input__container top-spacing">
-                        <div className={'framed-input ' + (isRequired === 'false' ? 'active' : '')} onClick={onDisableRequirement}>
+                        <div
+                            className={'framed-input ' + (isRequired === 'false' ? 'active' : '')}
+                            onClick={onDisableRequirement}
+                        >
                             <label>
                                 <input
                                     name="requireComments"
@@ -69,12 +72,12 @@ export const AuditSettings: FC<AuditSettingProps> = props => {
                                 />{' '}
                                 <span className="label-text">No, reasons are optional.</span>
                             </label>
-                            <div className="description">
-                                Users will see the reasons field but can leave it blank. Not CFR part 11 or Annex 11
-                                compliant.
-                            </div>
+                            <div className="description">Users will see the reasons field but can leave it blank.</div>
                         </div>
-                        <div className={'framed-input margin-left ' + (isRequired === 'true' ? 'active' : '')} onClick={onEnableRequired}>
+                        <div
+                            className={'framed-input margin-left ' + (isRequired === 'true' ? 'active' : '')}
+                            onClick={onEnableRequired}
+                        >
                             <label>
                                 <input
                                     name="requireComments"
@@ -85,10 +88,7 @@ export const AuditSettings: FC<AuditSettingProps> = props => {
                                 />{' '}
                                 <span className="label-text">Yes, reasons are required.</span>
                             </label>
-                            <div className="description">
-                                Users must enter a reason for any of these actions. Compliant with CFR part 11 and Annex
-                                11.
-                            </div>
+                            <div className="description">Users must enter a reason for any of these actions.</div>
                         </div>
                     </div>
                 </div>

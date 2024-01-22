@@ -178,7 +178,9 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             <>
                 <hr className="principal-hr" />
                 {allowResetPassword && isActive && (
-                    <button className="btn btn-default" onClick={() => this.toggleDialog('reset')} type="button">Reset Password</button>
+                    <button className="btn btn-default" onClick={() => this.toggleDialog('reset')} type="button">
+                        Reset Password
+                    </button>
                 )}
                 {allowDelete && (
                     <button

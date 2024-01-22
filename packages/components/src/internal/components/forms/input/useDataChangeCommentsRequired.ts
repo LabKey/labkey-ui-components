@@ -11,14 +11,14 @@ export const useDataChangeCommentsRequired = (): { requiresUserComment: boolean 
     useEffect(
         () => {
             (async () => {
-                let path = container.path;
-                if (isProductProjectsEnabled(resolveModuleContext(moduleContext)) && !container.isProject) {
-                    path = container.parentPath;
+                let path = container?.path;
+                if (isProductProjectsEnabled(resolveModuleContext(moduleContext)) && !container?.isProject) {
+                    path = container?.parentPath;
                 }
                 const response = await api.folder.getAuditSettings(path);
-                setRequiresUserComment(response.requireUserComments);
+                setRequiresUserComment(!!response?.requireUserComments);
             })();
-        }, [ /** on load only */]);
+        }, [ /** on load only */ ]);
 
     return { requiresUserComment };
 };

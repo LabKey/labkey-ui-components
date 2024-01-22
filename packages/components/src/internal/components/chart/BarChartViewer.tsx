@@ -238,7 +238,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
             >
                 {!hasError && (
                     <div className="btn-group">
-                        <DropdownButton title={selectedGroup.label}>
+                        <DropdownButton className="insight-type-menu" title={selectedGroup.label}>
                             {chartConfigs.map(({ label }, i) => (
                                 <MenuItem
                                     active={selectedGroup.label === label}

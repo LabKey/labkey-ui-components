@@ -86,6 +86,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
     const className = classNames('lk-dropdown', 'btn-group', { open, dropdown: !dropup, dropup });
     const buttonClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.className);
     const menuClassName = classNames('dropdown-menu', { 'dropdown-menu-right': pullRight });
+    const caretClassName = classNames('caret', { 'no-margin': !title });
     // onDocumentClick closes the menu if the user clicks on a MenuItem or outside the menu, we prevent closing the menu
     // when the user clicks headers, dividers, or the <ul> element by using preventDocumentHandler. See note in
     // preventDocumentHandler for more details on the nuances of our document click handler.
@@ -116,7 +117,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
                 type="button"
             >
                 {title}
-                {!noCaret && <span className="caret" />}
+                {!noCaret && <span className={caretClassName} />}
             </button>
             <ul
                 className={menuClassName}

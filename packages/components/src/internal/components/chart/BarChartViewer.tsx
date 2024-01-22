@@ -250,7 +250,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                             ))}
                         </DropdownButton>
                         {selectedCharts?.length > 1 && (
-                            <DropdownButton title={currentChartOptions.label}>
+                            <DropdownButton className="insight-chart-menu" title={currentChartOptions.label}>
                                 {selectedCharts.map((chart, i) => (
                                     <MenuItem
                                         active={currentChart === i}

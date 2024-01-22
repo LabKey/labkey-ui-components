@@ -2,6 +2,7 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { loadServerContext } from '@labkey/api';
 import { User } from '../components/base/models/User';
 import { ServerActivity } from '../components/notifications/model';
 
@@ -81,7 +82,16 @@ export function menuReload() {
     };
 }
 
-export const serverContextReload = () => ({ type: SERVER_CONTEXT_RELOAD });
+export function serverContextReload() {
+    return async (dispatch) => {
+        try {
+            const serverContext = await loadServerContext({ applyContextGlobally: true });
+            dispatch({ type: SERVER_CONTEXT_RELOAD, serverContext });
+        } catch (e) {
+            console.error('Failed to reload server context', e);
+        }
+    };
+}
 
 export function serverNotificationInit(serverActivitiesLoaderFn: (maxRows?: number) => Promise<ServerActivity>) {
     return (dispatch, getState) => {

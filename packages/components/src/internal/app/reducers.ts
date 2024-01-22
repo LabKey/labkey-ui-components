@@ -2,13 +2,15 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { getServerContext } from '@labkey/api';
+
 import { User } from '../components/base/models/User';
 
 import { ProductMenuModel } from '../components/navigation/model';
 
 import { ServerNotificationModel } from '../components/notifications/model';
 
-import { AppModel, newAppModel } from './models';
+import { AppModel } from './models';
 import {
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
@@ -26,16 +28,16 @@ import {
 
 export type AppReducerState = AppModel;
 
-const initialAppModel = newAppModel();
-
-export function AppReducers(state = initialAppModel, action): AppReducerState {
+export function AppReducers(state = new AppModel(getServerContext()), action): AppReducerState {
     switch (action.type) {
         case SERVER_CONTEXT_RELOAD:
-            return newAppModel();
+            return new AppModel(action.serverContext);
         case UPDATE_USER:
-            return state.merge({ user: new User({ ...state.user, ...action.userProps }) }) as AppModel;
+            state.user = new User({ ...state.user, ...action.userProps });
+            return state;
         case UPDATE_USER_DISPLAY_NAME:
-            return state.merge({ user: new User({ ...state.user, displayName: action.displayName }) }) as AppModel;
+            state.user = new User({ ...state.user, displayName: action.displayName });
+            return state;
         default:
             return state;
     }

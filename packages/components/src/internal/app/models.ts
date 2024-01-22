@@ -2,24 +2,28 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Record } from 'immutable';
-import { ActionURL, getServerContext } from '@labkey/api';
+import { ActionURL, LabKey } from '@labkey/api';
 
 import { ComponentType } from 'react';
 
 import { Container } from '../components/base/models/Container';
 import { User } from '../components/base/models/User';
 
-export class AppModel extends Record({
-    container: undefined,
-    contextPath: undefined,
-    initialUserId: undefined,
-    user: undefined,
-}) {
+export class AppModel {
     declare container: Container;
     declare contextPath: string;
     declare initialUserId: number;
     declare user: User;
+
+    constructor(serverContext: LabKey) {
+        const { container, user } = serverContext;
+        const appUser = new User({ ...user, permissionsList: container?.effectivePermissions ?? [] });
+
+        this.container = new Container(container);
+        this.contextPath = ActionURL.getContextPath();
+        this.initialUserId = appUser.id;
+        this.user = appUser;
+    }
 
     hasUserChanged(): boolean {
         return this.initialUserId !== this.user.id;
@@ -28,18 +32,6 @@ export class AppModel extends Record({
     shouldReload(): boolean {
         return this.hasUserChanged();
     }
-}
-
-export function newAppModel(): AppModel {
-    const { container, user } = getServerContext();
-    const appUser = new User({ ...user, permissionsList: container?.effectivePermissions ?? [] });
-
-    return new AppModel({
-        container: new Container(container),
-        contextPath: ActionURL.getContextPath(),
-        initialUserId: appUser.id,
-        user: appUser,
-    });
 }
 
 export interface AppProperties {

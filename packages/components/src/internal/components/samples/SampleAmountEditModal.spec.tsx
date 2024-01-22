@@ -8,6 +8,7 @@ import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { SampleAmountEditModal } from './SampleAmountEditModal';
+import { act } from 'react-dom/test-utils';
 
 describe('SampleAmountEditModal', () => {
     const testSchemaQuery = new SchemaQuery('schema', 'query', 'view');
@@ -32,10 +33,9 @@ describe('SampleAmountEditModal', () => {
         expect(wrapper.find('.checkin-unit-select')).toHaveLength(hasSelect ? 1 : 0);
         expect(wrapper.find('input.checkin-unit-input')).toHaveLength(hasSelect ? 0 : 1);
 
-        expect(wrapper.find('textarea').prop('value')).toBe(comment ?? '');
+        expect(wrapper.find('textarea').prop('value')).toBe(comment ?? undefined);
         expect(wrapper.find(Alert)).toHaveLength(isNegative ? 2 : 1);
         if (isNegative) expect(wrapper.find(Alert).at(1).text()).toBe('Amount must be a positive value.');
-        validateSubmitButton(wrapper, noun, canSave);
         validateSubmitButton(wrapper, noun, canSave);
     }
 
@@ -84,7 +84,7 @@ describe('SampleAmountEditModal', () => {
             { user: TEST_USER_EDITOR }
         );
 
-        validate(wrapper, undefined, row.Units.value, true, '', noun, false);
+        validate(wrapper, undefined, row.Units.value, true, undefined, noun, false);
 
         wrapper.unmount();
     });
@@ -109,7 +109,7 @@ describe('SampleAmountEditModal', () => {
             { user: TEST_USER_EDITOR }
         );
 
-        validate(wrapper, row.StoredAmount.value, row.Units.value, true, '', noun, false, true);
+        validate(wrapper, row.StoredAmount.value, row.Units.value, true, undefined, noun, false, true);
 
         wrapper.unmount();
     });
@@ -134,7 +134,7 @@ describe('SampleAmountEditModal', () => {
             { user: TEST_USER_EDITOR }
         );
 
-        validate(wrapper, row.StoredAmount.value, row.Units.value, false, '', noun, false);
+        validate(wrapper, row.StoredAmount.value, row.Units.value, false, undefined, noun, false);
 
         wrapper.unmount();
     });
@@ -159,7 +159,7 @@ describe('SampleAmountEditModal', () => {
             { user: TEST_USER_EDITOR }
         );
 
-        validate(wrapper, row.StoredAmount.value, row.Units.value, false, '', noun, false);
+        validate(wrapper, row.StoredAmount.value, row.Units.value, false, undefined, noun, false);
 
         wrapper.unmount();
     });
@@ -184,10 +184,12 @@ describe('SampleAmountEditModal', () => {
             { user: TEST_USER_EDITOR }
         );
 
-        validate(wrapper, row.StoredAmount.value, row.Units.value, true, '', noun, false);
+        validate(wrapper, row.StoredAmount.value, row.Units.value, true, undefined, noun, false);
 
         const userComment = 'Additional text for the audit log';
-        wrapper.find('#userComment').simulate('change', { target: { name: 'body', value: userComment } });
+        act(() => {
+            wrapper.find('#actionComments').simulate('change', { target: { name: 'body', value: userComment } });
+        });
         validate(wrapper, row.StoredAmount.value, row.Units.value, true, userComment, noun, false);
 
         wrapper.unmount();
@@ -213,14 +215,16 @@ describe('SampleAmountEditModal', () => {
             { user: TEST_USER_EDITOR }
         );
 
-        validate(wrapper, row.StoredAmount.value, row.Units.value, true, '', noun, false);
+        validate(wrapper, row.StoredAmount.value, row.Units.value, true, undefined, noun, false);
 
         const userComment = 'Additional text for the audit log';
         const newStoredAmount = 5;
-        wrapper.find('#userComment').simulate('change', { target: { name: 'body', value: userComment } });
-        wrapper
-            .find('input.storage-amount-input')
-            .simulate('change', { target: { name: 'amountDelta', value: newStoredAmount } });
+        act(() => {
+            wrapper.find('#actionComments').simulate('change', { target: { name: 'body', value: userComment } });
+            wrapper
+                .find('input.storage-amount-input')
+                .simulate('change', { target: { name: 'amountDelta', value: newStoredAmount } });
+        });
         validate(wrapper, newStoredAmount, row.Units.value, true, userComment, noun, true);
 
         wrapper.unmount();
@@ -246,11 +250,13 @@ describe('SampleAmountEditModal', () => {
             { user: TEST_USER_EDITOR }
         );
 
-        validate(wrapper, row.StoredAmount.value, row.Units.value, false, '', noun, false);
+        validate(wrapper, row.StoredAmount.value, row.Units.value, false, undefined, noun, false);
 
         const newUnits = 'newUnits';
-        wrapper.find('input.checkin-unit-input').simulate('change', { target: { value: newUnits } });
-        validate(wrapper, row.StoredAmount.value, newUnits, false, '', noun, true, false, false);
+        act(() => {
+            wrapper.find('input.checkin-unit-input').simulate('change', { target: { value: newUnits } });
+        });
+        validate(wrapper, row.StoredAmount.value, newUnits, false, undefined, noun, true, false, false);
 
         wrapper.unmount();
     });

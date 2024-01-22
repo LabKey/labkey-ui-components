@@ -296,7 +296,7 @@ import { TextInput } from './internal/components/forms/input/TextInput';
 import { TextAreaInput } from './internal/components/forms/input/TextAreaInput';
 import { FieldEditForm, FieldEditProps } from './internal/components/forms/input/FieldEditInput';
 import { ColorPickerInput } from './internal/components/forms/input/ColorPickerInput';
-import { CommentTextArea } from './internal/components/forms/input/CommentTextArea';
+import { CommentTextArea, COMMENT_FIELD_ID } from './internal/components/forms/input/CommentTextArea';
 import { ColorIcon } from './internal/components/base/ColorIcon';
 import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
@@ -827,7 +827,6 @@ import {
 import { DELIMITER, DETAIL_TABLE_CLASSES } from './internal/components/forms/constants';
 import {
     DISCARD_CONSUMED_CHECKBOX_FIELD,
-    DISCARD_CONSUMED_COMMENT_FIELD,
     DiscardConsumedSamplesPanel,
 } from './internal/components/samples/DiscardConsumedSamplesPanel';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './internal/components/picklist/constants';
@@ -983,13 +982,13 @@ const App = {
     DELIMITER,
     DETAIL_TABLE_CLASSES,
     DISCARD_CONSUMED_CHECKBOX_FIELD,
-    DISCARD_CONSUMED_COMMENT_FIELD,
     SAMPLE_FILTER_METRIC_AREA,
     ALIQUOTED_FROM_COL,
     PRIVATE_PICKLIST_CATEGORY,
     PUBLIC_PICKLIST_CATEGORY,
     DATA_IMPORT_TOPIC,
     PLATES_KEY,
+    COMMENT_FIELD_ID,
 };
 
 const Hooks = {

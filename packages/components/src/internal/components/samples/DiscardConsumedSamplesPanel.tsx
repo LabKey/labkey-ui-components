@@ -10,7 +10,6 @@ interface Props {
 }
 
 export const DISCARD_CONSUMED_CHECKBOX_FIELD = 'discardcheckbox';
-export const DISCARD_CONSUMED_COMMENT_FIELD = 'discardcomments';
 
 export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
     const { discardTitle, shouldDiscard, toggleShouldDiscard, onCommentChange } = props;
@@ -33,7 +32,9 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
             </div>
             <CommentTextArea
                 onChange={onCommentChange}
+                disabled={!shouldDiscard}
                 actionName="Discarding"
+                containerClassName="top-spacing bottom-spacing"
                 requiresUserComment={requiresUserComment}
             />
         </>
@@ -41,5 +42,5 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
 });
 
 DiscardConsumedSamplesPanel.defaultProps = {
-    discardTitle: 'Discard sample(s) from storage?',
+    discardTitle: 'Discard Sample(s) from Storage?',
 };

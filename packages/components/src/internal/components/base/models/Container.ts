@@ -8,7 +8,6 @@ export interface ContainerDateFormats {
 
 const defaultContainer: IContainer = {
     activeModules: [],
-    auditCommentsRequired: false,
     effectivePermissions: [],
     folderType: '',
     formats: {
@@ -36,7 +35,6 @@ const defaultContainer: IContainer = {
  */
 export class Container implements IContainer {
     declare activeModules: string[];
-    declare auditCommentsRequired: boolean;
     declare effectivePermissions: string[];
     declare folderType: string;
     declare formats: ContainerDateFormats;

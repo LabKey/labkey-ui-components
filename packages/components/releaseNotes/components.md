@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Remove MultiMenuButton
   - it was unused
 - Add DropdownButton
+- Add DropdownAnchor
 - Add SplitButton
 - Add MenuItem
 - Add MenuHeader

@@ -4,7 +4,7 @@ import { Utils, UtilsDOM } from '@labkey/api';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
+import { getColDateFormat, getJsonDateFormatString, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 import { quoteValueWithDelimiters } from '../../util/utils';
@@ -85,8 +85,9 @@ export function getUpdatedDataFromGrid(
 
                 let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
                 const col = queryInfo.getColumn(key);
-                const isDate = col?.jsonType === 'date';
-                const isTimeOnly = col?.sqlType === 'time';
+                const isDateTime = col?.jsonType === 'date';
+                const isDate = isDateTime && col.isDateOnlyColumn;
+                const isTime = col?.jsonType === 'time';
                 // Convert empty cell to null
                 if (value === '') value = null;
 
@@ -129,8 +130,12 @@ export function getUpdatedDataFromGrid(
                     // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
                     // Issue 45140: use QueryColumn date format for parseDate()
                     // TODO fix date
-                    if (isTimeOnly) row[key] = value;
-                    else if (isDate) row[key] = getJsonDateTimeFormatString(parseDate(value, getColDateFormat(col)));
+                    if (isTime) row[key] = value;
+                    else if (isDate || isDateTime) {
+                        const dateVal = parseDate(value, getColDateFormat(col));
+                        row[key] = isDate ? getJsonDateFormatString(dateVal) : getJsonDateTimeFormatString(dateVal);
+                        console.log(row[key]);
+                    }
                     else row[key] = value ?? null;
                 }
                 return row;

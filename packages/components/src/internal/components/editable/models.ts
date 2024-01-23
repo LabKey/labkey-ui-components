@@ -292,19 +292,18 @@ export class EditorModel
                         if (values.size === 1) val = forExport ? values.first()?.display : values.first()?.raw;
                         row = row.set(col.name, val);
                     }
-                } else if (col.jsonType === 'date' && !displayValues) {
+                } else if (col.jsonType === 'time') {
+                    row = row.set(col.name, values.first().raw);
+                } if (col.jsonType === 'date' && !displayValues) {
                     let dateVal;
-                    if (col.sqlType === 'time') {
-                        row = row.set(col.name, values.first().raw);
-                    } else {
-                        if (values.size === 1) {
-                            dateVal = values.first().raw;
-                            dateVal = parseDate(dateVal, getColDateFormat(col));
-                        }
-
-                        // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-                        row = row.set(col.name, getJsonDateTimeFormatString(dateVal));
+                    if (values.size === 1) {
+                        dateVal = values.first().raw;
+                        dateVal = parseDate(dateVal, getColDateFormat(col));
                     }
+
+                    // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+                    console.log(dateVal);
+                    row = row.set(col.name, getJsonDateTimeFormatString(dateVal));
                 } else {
                     row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
                 }

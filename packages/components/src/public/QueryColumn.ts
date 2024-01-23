@@ -3,7 +3,7 @@
 import { Filter, Query } from '@labkey/api';
 
 import {
-    CONCEPT_CODE_CONCEPT_URI,
+    CONCEPT_CODE_CONCEPT_URI, DATE_RANGE_URI,
     SAMPLE_TYPE_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     TIME_RANGE_URI,
@@ -392,6 +392,10 @@ export class QueryColumn implements IQueryColumn {
 
     get isTimeColumn(): boolean {
         return this.rangeURI === TIME_RANGE_URI;
+    }
+
+    get isDateOnlyColumn(): boolean {
+        return this.rangeURI === DATE_RANGE_URI;
     }
 
     isImportColumn(importName: string): boolean {

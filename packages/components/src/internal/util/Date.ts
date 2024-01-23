@@ -56,11 +56,6 @@ export function isDateTimeCol(col: QueryColumn): boolean {
             return true;
         }
 
-        if (rangeURI?.indexOf('time') > -1) {
-            // TODO needed?
-            return true;
-        }
-
         // material.materialexpdate is a non domain property datetime field that doesn't have rangeURI, but should be treated as datetime
         if (!rangeURI && col?.jsonType === 'date' && col?.name.toLowerCase() === 'materialexpdate') {
             return true;

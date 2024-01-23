@@ -320,6 +320,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
                     switch (col.jsonType) {
                         case 'date':
+                        case 'time':
                             return (
                                 <DatePickerInput
                                     key={i}

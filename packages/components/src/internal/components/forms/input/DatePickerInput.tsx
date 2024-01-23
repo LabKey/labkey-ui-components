@@ -19,7 +19,7 @@ import DatePicker from 'react-datepicker';
 
 import { FieldLabel } from '../FieldLabel';
 import {
-    getColDateFormat,
+    getColDateFormat, getJsonDateFormatString,
     getJsonDateTimeFormatString,
     getJsonTimeFormatString,
     isDateTimeCol,
@@ -140,6 +140,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
     onChange = (date: Date): void => {
         const { queryColumn } = this.props;
         const isTimeOnly = isTimeCol(queryColumn);
+        const isDateOnly = queryColumn.isDateOnlyColumn;
         this.setState({ selectedDate: date, invalid: false });
 
         if (isTimeOnly) {
@@ -155,7 +156,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
             // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
             if (this.props.formsy) {
-                this.props.setValue?.(getJsonDateTimeFormatString(date));
+                this.props.setValue?.(isDateOnly ? getJsonDateFormatString(date) : getJsonDateTimeFormatString(date));
             }
         }
     };
@@ -172,7 +173,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
     getDateFormat(): string {
         const { dateFormat, queryColumn, hideTime } = this.props;
-        return getColDateFormat(queryColumn, hideTime ? 'Date' : dateFormat);
+        return getColDateFormat(queryColumn, hideTime ? 'Date' : dateFormat, queryColumn.isDateOnlyColumn);
     }
 
     getTimeFormat(): string {
@@ -229,7 +230,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 onMonthChange={this.onChange}
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
                 selected={selectedDate}
-                showTimeSelect={!hideTime && isDateTimeCol(queryColumn)}
+                showTimeSelect={!hideTime && (isDateTimeCol(queryColumn) || isTimeOnly)}
                 showTimeSelectOnly={!hideTime && isTimeOnly}
                 timeIntervals={isTimeOnly ? 10 : 30}
                 timeFormat={this.getTimeFormat()}

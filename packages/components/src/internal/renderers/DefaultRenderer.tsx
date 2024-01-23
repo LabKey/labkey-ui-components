@@ -36,7 +36,7 @@ const URL_REL = 'noopener noreferrer';
 export const DefaultRenderer: FC<Props> = memo(({ col, data }) => {
     let display = null;
     // Issue 43474: Prevent text wrapping for date columns
-    const noWrap = col?.jsonType === 'date';
+    const noWrap = col?.jsonType === 'date' || col?.jsonType === 'time';
     // Issue 36941: when using the default renderer, add css so that line breaks as preserved
     const className = noWrap ? 'ws-no-wrap' : 'ws-pre-wrap';
 

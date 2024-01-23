@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Add `AuditSettings` panel for configuring whether user comments are required for data changes
 - Add `CommentTextArea` as a general component for entering reasons for data changes
+- Add `useDataChangeCommentsRequired` hook to retrieve the setting for whether comments/reasons are required
 
 ### version 3.8.0
 *Released*: 18 January 2024

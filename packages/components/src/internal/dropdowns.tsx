@@ -90,7 +90,10 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
     // onDocumentClick closes the menu if the user clicks on a MenuItem or outside the menu, we prevent closing the menu
     // when the user clicks headers, dividers, or the <ul> element by using preventDocumentHandler. See note in
     // preventDocumentHandler for more details on the nuances of our document click handler.
-    const onDocumentClick = useCallback(() => setOpen(false), []);
+    const onDocumentClick = useCallback((event) => {
+        console.log('document click', event.target);
+        setOpen(false)
+    }, []);
 
     useEffect(() => {
         // We only want to listen for clicks on the document if the menu is open
@@ -154,8 +157,8 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
         ...buttonProps
     } = props;
 
-    const wrapperClassName = classNames('btn-group', className);
-    const buttonClassName_ = classNames('btn', 'btn-' + bsStyle, buttonClassName);
+    const wrapperClassName = classNames('split-button-menu btn-group', className);
+    const buttonClassName_ = classNames('split-button-menu__button', 'btn', 'btn-' + bsStyle, buttonClassName);
 
     if (!href && !onClick) {
         console.warn('SplitButton is missing href and onClick, did you forget to add one of these props?');

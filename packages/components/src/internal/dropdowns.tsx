@@ -119,6 +119,7 @@ export const DropdownAnchor: FC<DropdownAnchorProps> = props => {
         </div>
     );
 };
+DropdownAnchor.displayName = 'DropdownAnchor';
 
 interface DropdownButtonProps {
     bsStyle?: BSStyle;
@@ -181,6 +182,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
         </div>
     );
 });
+DropdownButton.displayName = 'DropdownButton';
 
 interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret'> {
     buttonClassName?: string;
@@ -247,6 +249,7 @@ export const MenuHeader: FC<MenuHeaderProps> = ({ className, text }) => (
         {text}
     </li>
 );
+MenuHeader.displayName = 'MenuHeader';
 
 export const MenuDivider = (): ReactElement => (
     <li className="divider" role="separator" onClick={preventDocumentHandler} />
@@ -306,3 +309,4 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
         </li>
     );
 });
+MenuItem.displayName = 'MenuItem';

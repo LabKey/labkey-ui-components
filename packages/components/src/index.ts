@@ -834,6 +834,7 @@ import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 import { FormButtons } from './internal/FormButtons';
 import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
+import { getFolderTestAPIWrapper } from './internal/components/container/FolderAPIWrapper';
 import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
@@ -884,6 +885,7 @@ const App = {
     getProjectDataClassExclusion,
     getProjectSampleTypeExclusion,
     getProjectPath,
+    getFolderTestAPIWrapper,
     getSecurityTestAPIWrapper,
     hasPremiumModule,
     hasProductProjects,

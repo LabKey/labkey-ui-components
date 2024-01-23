@@ -16,21 +16,17 @@ import { MAX_SELECTIONS_PER_ADD } from './constants';
 
 interface Props {
     currentProductId?: string;
-    itemText?: string;
     metricFeatureArea?: string;
     picklistProductId?: string;
     queryModel?: QueryModel;
     sampleFieldKey?: string;
     sampleIds?: string[];
-    selectionMenuId?: string;
     user: User;
 }
 
 export const AddToPicklistMenuItem: FC<Props> = memo(props => {
     const {
         sampleIds,
-        selectionMenuId,
-        itemText,
         user,
         queryModel,
         currentProductId,
@@ -78,8 +74,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         <>
             {useSelection ? (
                 <SelectionMenuItem
-                    id={selectionMenuId}
-                    text={itemText}
+                    text="Add to Picklist"
                     onClick={onClick}
                     queryModel={queryModel}
                     maxSelection={MAX_SELECTIONS_PER_ADD}
@@ -93,7 +88,7 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
                         SampleOperation.AddToPicklist
                     )}
                 >
-                    {itemText}
+                    Add to Picklist
                 </DisableableMenuItem>
             )}
             {showChoosePicklist && (
@@ -125,8 +120,3 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
         </>
     );
 });
-
-AddToPicklistMenuItem.defaultProps = {
-    itemText: 'Add to Picklist',
-    selectionMenuId: 'add-to-picklist-menu-item',
-};

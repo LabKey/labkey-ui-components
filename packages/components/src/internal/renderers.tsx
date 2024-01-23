@@ -188,14 +188,10 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     const sortAsc = useCallback((_: any, event: SyntheticEvent): void => sort(event, '+'), [sort]) as SelectCallback;
     const sortDesc = useCallback((_: any, event: SyntheticEvent): void => sort(event, '-'), [sort]) as SelectCallback;
     const clearSort = useCallback((_: any, event: SyntheticEvent): void => sort(event), [sort]) as SelectCallback;
-    const hideColumn = useCallback(
-        (_: any, event: SyntheticEvent): void => {
-            cancelEvent(event);
-            setOpen(false);
-            handleHideColumn(queryColumn);
-        },
-        [queryColumn, handleHideColumn, setOpen]
-    ) as SelectCallback;
+    const hideColumn = useCallback((): void => {
+        setOpen(false);
+        handleHideColumn(queryColumn);
+    }, [queryColumn, handleHideColumn, setOpen]);
     const addColumn = useCallback(
         (_: any, event: SyntheticEvent): void => {
             cancelEvent(event);
@@ -319,7 +315,7 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
                     )}
                     <DisableableMenuItem
                         operationPermitted={handleHideColumn && !!model}
-                        onSelect={hideColumn}
+                        onClick={hideColumn}
                         disabledMessage={APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
                     >
                         <span className="fa fa-eye-slash grid-panel__menu-icon" />

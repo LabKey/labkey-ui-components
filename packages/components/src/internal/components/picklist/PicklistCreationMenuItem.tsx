@@ -42,7 +42,6 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
         <>
             {queryModel && (
                 <SelectionMenuItem
-                    id="create-picklist-menu-id"
                     text={itemText}
                     onClick={onClick}
                     queryModel={queryModel}

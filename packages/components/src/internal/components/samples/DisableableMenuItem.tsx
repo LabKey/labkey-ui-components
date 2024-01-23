@@ -1,12 +1,19 @@
 import React, { FC, memo, ReactNode } from 'react';
-import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { ReactBootstrapMenuItemProps } from '../menus/types';
+import { createPortal } from 'react-dom';
 
-interface Props extends ReactBootstrapMenuItemProps {
+import { useOverlayTriggerState } from '../../OverlayTrigger';
+import { MenuItem } from '../../dropdowns';
+import { Popover } from '../../Popover';
+import { Placement } from '../../useOverlayPositioning';
+
+interface Props {
+    className?: string;
     disabledMessage?: ReactNode;
+    href?: string;
+    onClick?: () => void;
     operationPermitted: boolean;
-    placement?: string;
+    placement?: Placement;
 }
 
 const SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE = 'The current status of the sample does not permit this operation.';
@@ -14,25 +21,43 @@ const SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE = 'The current status of the sample
 export const DisableableMenuItem: FC<Props> = memo(props => {
     const {
         children,
+        className,
         disabledMessage = SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE,
         operationPermitted,
+        onClick,
         placement = 'left',
-        ...menuItemProps
     } = props;
+    const { onMouseEnter, onMouseOut, portalEl, show, targetRef } = useOverlayTriggerState<HTMLLIElement>(
+        'disabled-selection-menu-item',
+        true,
+        false
+    );
 
     if (operationPermitted) {
-        return <MenuItem {...menuItemProps}>{children}</MenuItem>;
+        return (
+            <MenuItem className={className} onClick={onClick}>
+                {children}
+            </MenuItem>
+        );
     }
 
     const overlay = (
-        <Popover id="disable-operation-warning" className="popover-message">
+        <Popover id="disable-operation-warning" className="popover-message" placement={placement} targetRef={targetRef}>
             {disabledMessage}
         </Popover>
     );
 
     return (
-        <OverlayTrigger overlay={overlay} placement={placement}>
-            <MenuItem disabled>{children}</MenuItem>
-        </OverlayTrigger>
+        <MenuItem
+            className={className}
+            disabled
+            onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseOut={onMouseOut}
+            ref={targetRef}
+        >
+            {children}
+            {show && createPortal(overlay, portalEl)}
+        </MenuItem>
     );
 });

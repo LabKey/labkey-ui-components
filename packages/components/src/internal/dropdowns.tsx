@@ -79,10 +79,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
     const menuRef = useRef<HTMLUListElement>();
     const toggleRef = useRef<HTMLButtonElement>();
     const [open, setOpen] = useState<boolean>(false);
-    const onClick = useCallback(event => {
-        preventDocumentHandler(event);
-        setOpen(o => !o);
-    }, []);
+    const onClick = useCallback(() => setOpen(o => !o), []);
     const className = classNames('lk-dropdown', 'btn-group', { open, dropdown: !dropup, dropup });
     const buttonClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.className);
     const menuClassName = classNames('dropdown-menu', { 'dropdown-menu-right': pullRight });
@@ -90,9 +87,11 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
     // onDocumentClick closes the menu if the user clicks on a MenuItem or outside the menu, we prevent closing the menu
     // when the user clicks headers, dividers, or the <ul> element by using preventDocumentHandler. See note in
     // preventDocumentHandler for more details on the nuances of our document click handler.
-    const onDocumentClick = useCallback((event) => {
-        console.log('document click', event.target);
-        setOpen(false)
+    const onDocumentClick = useCallback(event => {
+        // Don't take action if we're clicking the toggle, as that handles open/close on its own, and we can't use
+        // preventDocumentHandler in the toggle onClick, or we'll keep the menu open if the user clicks another menu.
+        if (event.target === toggleRef.current) return;
+        setOpen(false);
     }, []);
 
     useEffect(() => {
@@ -208,16 +207,19 @@ export const MenuDivider = (): ReactElement => (
 
 interface MenuItemProps {
     active?: boolean;
+    children: ReactNode;
     className?: string;
     disabled?: boolean;
     href?: string;
     onClick?: () => void;
+    onMouseEnter?: () => void;
+    onMouseOut?: () => void;
     target?: string;
     title?: string;
 }
 
-export const MenuItem: FC<MenuItemProps> = props => {
-    const { active = false, children, disabled, href = '#', onClick, target, title } = props;
+export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) => {
+    const { active = false, children, disabled, href = '#', onClick, onMouseEnter, onMouseOut, target, title } = props;
     const className = classNames('lk-menu-item', props.className, { active, disabled });
     const onClick_ = useCallback(
         (e: MouseEvent<HTMLAnchorElement>) => {
@@ -238,10 +240,10 @@ export const MenuItem: FC<MenuItemProps> = props => {
         [disabled, href, onClick]
     );
     return (
-        <li className={className} role="presentation">
+        <li className={className} role="presentation" ref={ref} onMouseEnter={onMouseEnter} onMouseOut={onMouseOut}>
             <a onClick={onClick_} href={href} role="menuitem" target={target} title={title}>
                 {children}
             </a>
         </li>
     );
-};
+});

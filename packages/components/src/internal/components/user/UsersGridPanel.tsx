@@ -262,7 +262,6 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                 <ManageDropdownButton>
                     {user.hasManageUsersPermission() && usersView === 'active' && (
                         <SelectionMenuItem
-                            id="deactivate-users-menu-item"
                             text="Deactivate Users"
                             onClick={() => this.toggleDialog('deactivate', true)}
                             queryModel={model}
@@ -271,7 +270,6 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                     )}
                     {user.hasManageUsersPermission() && (
                         <SelectionMenuItem
-                            id="delete-users-menu-item"
                             text="Delete Users"
                             onClick={() => this.toggleDialog('delete', true)}
                             queryModel={model}
@@ -280,7 +278,6 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                     )}
                     {user.hasManageUsersPermission() && usersView === 'inactive' && (
                         <SelectionMenuItem
-                            id="reactivate-users-menu-item"
                             text="Reactivate Users"
                             maxSelection={this.getUserLimitRemainingUsers()}
                             maxSelectionDisabledMsg={

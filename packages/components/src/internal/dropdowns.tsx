@@ -3,6 +3,7 @@ import React, {
     forwardRef,
     memo,
     MouseEvent,
+    MutableRefObject,
     ReactElement,
     ReactNode,
     SyntheticEvent,
@@ -17,12 +18,6 @@ import classNames from 'classnames';
 import { generateId } from './util/utils';
 
 export type BSStyle = 'success' | 'danger' | 'default' | 'primary';
-
-// TODO: DropdownAnchor (needed for ELN menus to replace Dropdown, Dropdown.Toggle, etc.)
-
-// TODO: SplitButton
-
-// TODO: factor out generic Dropdown or maybe a hook for the state and callbacks?
 
 /**
  * Use this when you want to prevent the document click handler from handling a click event.
@@ -50,6 +45,81 @@ function preventDocumentHandler(event: SyntheticEvent): void {
     event.nativeEvent.stopImmediatePropagation();
 }
 
+interface ToggleState<T> {
+    onClick: (event: MouseEvent<T>) => void;
+    open: boolean;
+    setOpen: (show: boolean) => void;
+    toggleRef: MutableRefObject<T>;
+}
+
+function useToggleState<T>(): ToggleState<T> {
+    const toggleRef = useRef<T>();
+    const [open, setOpen] = useState<boolean>(false);
+    const onClick = useCallback(event => {
+        event.preventDefault(); // Needed so DropdownAnchor doesn't navigate to home page on click
+        setOpen(o => !o);
+    }, []);
+
+    // onDocumentClick closes the menu if the user clicks on a MenuItem or outside the menu, we prevent closing the menu
+    // when the user clicks headers, dividers, or the <ul> element by using preventDocumentHandler. See note in
+    // preventDocumentHandler for more details on the nuances of our document click handler.
+    const onDocumentClick = useCallback(event => {
+        // Don't take action if we're clicking the toggle, as that handles open/close on its own, and we can't use
+        // preventDocumentHandler in the toggle onClick, or we'll keep the menu open if the user clicks another menu.
+        if (event.target === toggleRef.current) return;
+        setOpen(false);
+    }, []);
+
+    useEffect(() => {
+        // We only want to listen for clicks on the document if the menu is open
+        if (open) {
+            document.addEventListener('click', onDocumentClick);
+        }
+
+        return () => {
+            document.removeEventListener('click', onDocumentClick);
+        };
+    }, [open, onDocumentClick]);
+
+    return { onClick, open, setOpen, toggleRef };
+}
+
+interface DropdownAnchorProps {
+    className?: string;
+    pullRight?: boolean;
+    title: ReactNode;
+    label?: string;
+}
+
+export const DropdownAnchor: FC<DropdownAnchorProps> = props => {
+    const { children, label, pullRight, title } = props;
+    const id = useMemo(() => generateId('dropdown-anchor-'), []);
+    const { onClick, open, toggleRef } = useToggleState<HTMLAnchorElement>();
+    const className = classNames('lk-dropdown', 'dropdown', props.className, { open });
+    const menuClassName = classNames('dropdown-menu', { 'dropdown-menu-right': pullRight });
+
+    return (
+        <div className={className}>
+            <a
+                aria-haspopup="true"
+                aria-expanded={open}
+                className="dropdown-toggle"
+                href="#"
+                id={id}
+                onClick={onClick}
+                ref={toggleRef}
+                role="button"
+                title={label}
+            >
+                {title}
+                <span className="caret" />
+            </a>
+
+            <ul className={menuClassName}>{children}</ul>
+        </div>
+    );
+};
+
 interface DropdownButtonProps {
     bsStyle?: BSStyle;
     children: ReactNode;
@@ -76,40 +146,18 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
         title,
     } = props;
     const id = useMemo(() => generateId('dropdown-button-'), []);
+    const { onClick, open, toggleRef } = useToggleState<HTMLButtonElement>();
     const menuRef = useRef<HTMLUListElement>();
-    const toggleRef = useRef<HTMLButtonElement>();
-    const [open, setOpen] = useState<boolean>(false);
-    const onClick = useCallback(() => setOpen(o => !o), []);
     const className = classNames('lk-dropdown', 'btn-group', { open, dropdown: !dropup, dropup });
     const buttonClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.className);
     const menuClassName = classNames('dropdown-menu', { 'dropdown-menu-right': pullRight });
     const caretClassName = classNames('caret', { 'no-margin': !title });
-    // onDocumentClick closes the menu if the user clicks on a MenuItem or outside the menu, we prevent closing the menu
-    // when the user clicks headers, dividers, or the <ul> element by using preventDocumentHandler. See note in
-    // preventDocumentHandler for more details on the nuances of our document click handler.
-    const onDocumentClick = useCallback(event => {
-        // Don't take action if we're clicking the toggle, as that handles open/close on its own, and we can't use
-        // preventDocumentHandler in the toggle onClick, or we'll keep the menu open if the user clicks another menu.
-        if (event.target === toggleRef.current) return;
-        setOpen(false);
-    }, []);
-
-    useEffect(() => {
-        // We only want to listen for clicks on the document if the menu is open
-        if (open) {
-            document.addEventListener('click', onDocumentClick);
-        }
-
-        return () => {
-            document.removeEventListener('click', onDocumentClick);
-        };
-    }, [open, onDocumentClick]);
 
     return (
         <div className={className} ref={ref} onMouseEnter={onMouseEnter} onMouseOut={onMouseOut}>
             <button
                 aria-haspopup="true"
-                aria-expanded={open ? 'true' : 'false'}
+                aria-expanded={open}
                 className={buttonClassName}
                 disabled={disabled}
                 id={id}
@@ -188,7 +236,6 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
         </div>
     );
 });
-
 SplitButton.displayName = 'SplitButton';
 
 interface MenuHeaderProps {

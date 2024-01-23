@@ -836,7 +836,7 @@ import { getFolderTestAPIWrapper } from './internal/components/container/FolderA
 import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
-import { DropdownButton, MenuDivider, MenuItem, MenuHeader, SplitButton } from './internal/dropdowns';
+import { DropdownAnchor, DropdownButton, MenuDivider, MenuItem, MenuHeader, SplitButton } from './internal/dropdowns';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1678,11 +1678,12 @@ export {
     Popover,
     OverlayTrigger,
     useOverlayTriggerState,
+    DropdownAnchor,
     DropdownButton,
     MenuDivider,
     MenuItem,
     MenuHeader,
-    SplitButton
+    SplitButton,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

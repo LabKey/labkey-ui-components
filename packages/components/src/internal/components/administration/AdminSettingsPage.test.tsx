@@ -26,6 +26,7 @@ import { UserLimitSettings } from '../permissions/actions';
 import { SampleTypeDataType } from '../entities/constants';
 
 import { AdminSettingsPage } from './AdminSettingsPage';
+import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
 const TEST_POLICY = SecurityPolicy.create(policyJSON);
 
@@ -50,6 +51,9 @@ describe('AdminSettingsPage', () => {
                 fetchPolicy: jest.fn().mockResolvedValue(TEST_POLICY),
                 fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER_ADMIN]),
                 getUserLimitSettings: jest.fn().mockResolvedValue(USER_LIMIT_ENABLED),
+            }),
+            folder: getFolderTestAPIWrapper(jest.fn, {
+                getAuditSettings: jest.fn().mockResolvedValue({ requireUserComments: true }),
             }),
         }),
     };

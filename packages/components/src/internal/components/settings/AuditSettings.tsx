@@ -13,30 +13,27 @@ import {
     isWorkflowEnabled,
 } from '../../app/utils';
 import { useServerContext } from '../base/ServerContext';
+import { useAppContext } from '../../AppContext';
 
-interface AuditSettingProps {
-    api?: ComponentsAPIWrapper;
-}
-
-export const AuditSettings: FC<AuditSettingProps> = props => {
-    const { api } = props;
+export const AuditSettings: FC = () => {
+    const { api } = useAppContext();
     const { container, moduleContext } = useServerContext();
-    const [isRequired, setIsRequired] = useState<string>();
+    const [isRequired, setIsRequired] = useState<boolean>(false);
 
     useEffect(() => {
         (async () => {
             const settings = await api.folder.getAuditSettings(container.path);
-            setIsRequired(settings.requireUserComments + '');
+            setIsRequired(settings.requireUserComments);
         })();
     }, []);
 
     const onDisableRequirement = useCallback(() => {
-        setIsRequired('false');
+        setIsRequired(false);
         api.folder.setAuditCommentsRequired(false);
     }, [api]);
 
     const onEnableRequired = useCallback(() => {
-        setIsRequired('true');
+        setIsRequired(true);
         api.folder.setAuditCommentsRequired(true);
     }, [api]);
 
@@ -68,7 +65,7 @@ export const AuditSettings: FC<AuditSettingProps> = props => {
                     </LabelHelpTip>
                     <div className="framed-input__container top-spacing">
                         <div
-                            className={'framed-input ' + (isRequired === 'false' ? 'active' : '')}
+                            className={'framed-input ' + (!isRequired ? 'active' : '')}
                             onClick={onDisableRequirement}
                         >
                             <label>
@@ -77,14 +74,14 @@ export const AuditSettings: FC<AuditSettingProps> = props => {
                                     type="radio"
                                     onChange={onDisableRequirement}
                                     value="false"
-                                    checked={isRequired === 'false'}
+                                    checked={!isRequired}
                                 />{' '}
                                 <span className="label-text">No, reasons are optional.</span>
                             </label>
                             <div className="description">Users will see the reasons field but can leave it blank.</div>
                         </div>
                         <div
-                            className={'framed-input margin-left ' + (isRequired === 'true' ? 'active' : '')}
+                            className={'framed-input margin-left ' + (isRequired ? 'active' : '')}
                             onClick={onEnableRequired}
                         >
                             <label>
@@ -93,7 +90,7 @@ export const AuditSettings: FC<AuditSettingProps> = props => {
                                     type="radio"
                                     onChange={onEnableRequired}
                                     value="true"
-                                    checked={isRequired === 'true'}
+                                    checked={isRequired}
                                 />{' '}
                                 <span className="label-text">Yes, reasons are required.</span>
                             </label>
@@ -104,8 +101,4 @@ export const AuditSettings: FC<AuditSettingProps> = props => {
             </div>
         </RequiresPermission>
     );
-};
-
-AuditSettings.defaultProps = {
-    api: getDefaultAPIWrapper(),
 };

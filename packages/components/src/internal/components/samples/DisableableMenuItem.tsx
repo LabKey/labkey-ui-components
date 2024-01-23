@@ -28,7 +28,7 @@ export const DisableableMenuItem: FC<Props> = memo(props => {
         placement = 'left',
     } = props;
     const { onMouseEnter, onMouseOut, portalEl, show, targetRef } = useOverlayTriggerState<HTMLLIElement>(
-        'disabled-selection-menu-item',
+        'disableable-menu-item',
         true,
         false
     );

@@ -138,7 +138,17 @@ describe('SampleStatusInput', () => {
 
     test('change to consumed status, storage editor, no allowDisable', async () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />;
-        const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
+        const wrapper = mountWithAppServerContext(
+            component,
+            {
+                api: getTestAPIWrapper(jest.fn, {
+                    folder: getFolderTestAPIWrapper(jest.fn, {
+                        getAuditSettings: jest.fn().mockResolvedValue({ requireUserComments: false }),
+                    }),
+                }),
+            },
+            { user: TEST_USER_STORAGE_EDITOR }
+        );
 
         await waitForLifecycle(wrapper, 50);
         act(() => {

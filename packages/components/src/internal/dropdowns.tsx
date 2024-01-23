@@ -261,12 +261,24 @@ interface MenuItemProps {
     onClick?: () => void;
     onMouseEnter?: () => void;
     onMouseOut?: () => void;
+    rel?: string;
     target?: string;
     title?: string;
 }
 
 export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) => {
-    const { active = false, children, disabled, href = '#', onClick, onMouseEnter, onMouseOut, target, title } = props;
+    const {
+        active = false,
+        children,
+        disabled,
+        href = '#',
+        onClick,
+        onMouseEnter,
+        onMouseOut,
+        rel,
+        target,
+        title,
+    } = props;
     const className = classNames('lk-menu-item', props.className, { active, disabled });
     const onClick_ = useCallback(
         (e: MouseEvent<HTMLAnchorElement>) => {
@@ -288,7 +300,7 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
     );
     return (
         <li className={className} role="presentation" ref={ref} onMouseEnter={onMouseEnter} onMouseOut={onMouseOut}>
-            <a onClick={onClick_} href={href} role="menuitem" target={target} title={title}>
+            <a onClick={onClick_} href={href} rel={rel} role="menuitem" target={target} title={title}>
                 {children}
             </a>
         </li>

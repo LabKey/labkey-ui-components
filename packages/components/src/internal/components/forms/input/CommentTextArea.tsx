@@ -8,9 +8,9 @@ interface Props {
     requiresUserComment?: boolean;
 }
 
-export const COMMENT_FIELD_ID = "actionComments";
+export const COMMENT_FIELD_ID = 'actionComments';
 
-export const CommentTextArea: FC<Props> = (props) => {
+export const CommentTextArea: FC<Props> = props => {
     const { actionName, containerClassName, disabled, onChange, requiresUserComment } = props;
 
     return (

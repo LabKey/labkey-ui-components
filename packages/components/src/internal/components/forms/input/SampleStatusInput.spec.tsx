@@ -8,7 +8,7 @@ import { SampleState } from '../../samples/models';
 import { QueryColumn, QueryLookup } from '../../../../public/QueryColumn';
 
 import { DiscardConsumedSamplesPanel } from '../../samples/DiscardConsumedSamplesPanel';
-import { mountWithServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
+import { mountWithAppServerContext, mountWithServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
 
 import { getSamplesTestAPIWrapper } from '../../samples/APIWrapper';
 
@@ -18,6 +18,7 @@ import { TEST_USER_EDITOR, TEST_USER_STORAGE_EDITOR } from '../../../userFixture
 import { QuerySelect } from '../QuerySelect';
 
 import { SampleStatusInput } from './SampleStatusInput';
+import { getFolderTestAPIWrapper } from '../../container/FolderAPIWrapper';
 
 describe('SampleStatusInput', () => {
     const COLUMN_STATUS = new QueryColumn({
@@ -87,7 +88,17 @@ describe('SampleStatusInput', () => {
 
     test('change to consumed status, editor', async () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />;
-        const wrapper = mountWithServerContext(component, { user: TEST_USER_EDITOR });
+        const wrapper = mountWithAppServerContext(
+            component,
+            {
+                api: getTestAPIWrapper(jest.fn, {
+                    folder: getFolderTestAPIWrapper(jest.fn, {
+                        getAuditSettings: jest.fn().mockResolvedValue({ requireUserComments: false }),
+                    }),
+                }),
+            },
+            { user: TEST_USER_EDITOR }
+        );
 
         await waitForLifecycle(wrapper, 50); // retrieve statuses
         act(() => {
@@ -101,7 +112,17 @@ describe('SampleStatusInput', () => {
 
     test('change to consumed status, storage editor, allow disable (bulk edit)', async () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />;
-        const wrapper = mountWithServerContext(component, { user: TEST_USER_STORAGE_EDITOR });
+        const wrapper = mountWithAppServerContext(
+            component,
+            {
+                api: getTestAPIWrapper(jest.fn, {
+                    folder: getFolderTestAPIWrapper(jest.fn, {
+                        getAuditSettings: jest.fn().mockResolvedValue({ requireUserComments: false }),
+                    }),
+                }),
+            },
+            { user: TEST_USER_STORAGE_EDITOR }
+        );
 
         await waitForLifecycle(wrapper, 50);
         act(() => {

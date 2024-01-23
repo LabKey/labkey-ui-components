@@ -19,7 +19,8 @@ import DatePicker from 'react-datepicker';
 
 import { FieldLabel } from '../FieldLabel';
 import {
-    getColDateFormat, getJsonDateFormatString,
+    getColDateFormat,
+    getJsonDateFormatString,
     getJsonDateTimeFormatString,
     getJsonTimeFormatString,
     isDateTimeCol,

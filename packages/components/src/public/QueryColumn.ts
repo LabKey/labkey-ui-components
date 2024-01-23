@@ -3,7 +3,8 @@
 import { Filter, Query } from '@labkey/api';
 
 import {
-    CONCEPT_CODE_CONCEPT_URI, DATE_RANGE_URI,
+    CONCEPT_CODE_CONCEPT_URI,
+    DATE_RANGE_URI,
     SAMPLE_TYPE_CONCEPT_URI,
     STORAGE_UNIQUE_ID_CONCEPT_URI,
     TIME_RANGE_URI,

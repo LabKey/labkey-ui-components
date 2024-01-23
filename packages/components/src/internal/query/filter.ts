@@ -370,7 +370,7 @@ const NEGATIVE_FILTERS = [
     Filter.Types.DOES_NOT_START_WITH.getURLSuffix(),
     Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix(),
     Filter.Types.NOT_EQUAL.getURLSuffix(),
-    Filter.Types.DATE_NOT_EQUAL.getURLSuffix()
+    Filter.Types.DATE_NOT_EQUAL.getURLSuffix(),
 ];
 
 export function isNegativeFilterType(filterType: Filter.IFilterType) {

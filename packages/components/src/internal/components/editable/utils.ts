@@ -135,8 +135,7 @@ export function getUpdatedDataFromGrid(
                         const dateVal = parseDate(value, getColDateFormat(col));
                         row[key] = isDate ? getJsonDateFormatString(dateVal) : getJsonDateTimeFormatString(dateVal);
                         console.log(row[key]);
-                    }
-                    else row[key] = value ?? null;
+                    } else row[key] = value ?? null;
                 }
                 return row;
             }, {});

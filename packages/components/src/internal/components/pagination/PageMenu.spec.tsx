@@ -1,10 +1,7 @@
 import React from 'react';
-import { MenuItem } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { PageMenu } from './PageMenu';
-
-type PageMenuWrapper = ReactWrapper<Readonly<PageMenu['props']>, Readonly<PageMenu['state']>, PageMenu>;
 
 describe('PageMenu', () => {
     let props;
@@ -26,7 +23,7 @@ describe('PageMenu', () => {
     });
 
     const expectPageMenuItems = (
-        wrapper: PageMenuWrapper,
+        wrapper: ReactWrapper,
         menuDisabled: boolean,
         firstDisabled: boolean,
         lastDisabled: boolean,
@@ -43,7 +40,7 @@ describe('PageMenu', () => {
     };
 
     test('render', () => {
-        const wrapper = mount<PageMenu>(<PageMenu {...props} />);
+        const wrapper = mount(<PageMenu {...props} />);
         expectPageMenuItems(wrapper, false, false, false, '2', '34 Total Pages');
 
         wrapper.setProps({ disabled: true });
@@ -59,7 +56,7 @@ describe('PageMenu', () => {
     });
 
     test('interactions', () => {
-        const wrapper = mount<PageMenu>(<PageMenu {...props} />);
+        const wrapper = mount(<PageMenu {...props} />);
         wrapper.find('MenuItem').at(1).find('a').simulate('click');
         expect(props.loadFirstPage).toHaveBeenCalled();
         wrapper.find('MenuItem').at(2).find('a').simulate('click');
@@ -68,8 +65,8 @@ describe('PageMenu', () => {
     });
 
     test('showPageSizeMenu', () => {
-        const wrapper = mount<PageMenu>(<PageMenu {...props} showPageSizeMenu />);
-        const menuItems = wrapper.find(MenuItem);
+        const wrapper = mount(<PageMenu {...props} showPageSizeMenu />);
+        const menuItems = wrapper.find('MenuItem');
         expect(menuItems).toHaveLength(11);
         // page size menu items start with header at index 5
         expect(menuItems.at(5).text()).toBe('Page Size');

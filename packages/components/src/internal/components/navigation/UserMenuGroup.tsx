@@ -116,7 +116,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     return (
         <>
             <div className="navbar-item pull-right">
-                <DropdownAnchor className="user-menu-dropdown" title={userToggle} pullRight>
+                <DropdownAnchor className="user-dropdown-menu" title={userToggle} pullRight>
                     <div className="navbar-connector" />
                     {userMenuItems}
                     {extraUserItems}
@@ -129,7 +129,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                 </DropdownAnchor>
             </div>
             {(adminMenuItems?.length > 0 || getServerContext().devMode) && (
-                <div className="navbar-item pull-right navbar-item-product-navigation">
+                <div className="settings-dropdown navbar-item pull-right navbar-item__dropdown">
                     <DropdownButton
                         className="navbar-icon-button-right admin-menu-nav-dropdown"
                         title={<i className="fa fa-cog navbar-header-icon" />}
@@ -152,7 +152,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                 </div>
             )}
             {(!!helpHref || !!releaseNoteHref) && (
-                <div className="navbar-item pull-right navbar-item-product-navigation">
+                <div className="help-dropdown navbar-item pull-right navbar-item__dropdown">
                     <DropdownButton
                         className="navbar-icon-button-right"
                         title={<i className="fa fa-question-circle navbar-header-icon" />}

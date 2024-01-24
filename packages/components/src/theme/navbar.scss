@@ -430,7 +430,7 @@
     }
 }
 
-.navbar-item.navbar-item-notification, .navbar-item.navbar-item-product-navigation {
+.navbar-item.navbar-item-notification, .navbar-item.navbar-item__dropdown {
     .navbar-icon-button-right ~ ul.dropdown-menu {
         padding: 0;
     }
@@ -599,7 +599,7 @@
   padding: 8px 12px 10px 12px;
 }
 
-.user-menu-dropdown {
+.user-dropdown {
   box-shadow: none;
   text-decoration: none;
 

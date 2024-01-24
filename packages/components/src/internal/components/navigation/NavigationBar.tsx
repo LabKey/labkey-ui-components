@@ -133,9 +133,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                                 </div>
                             )}
                             {_showProductNav && (
-                                <div className="navbar-item pull-right navbar-item-product-navigation hidden-xs">
-                                    <ProductNavigation />
-                                </div>
+                                <ProductNavigation />
                             )}
                             {showSearchBox && !isAdminPage && (
                                 <div className="navbar-item pull-right">

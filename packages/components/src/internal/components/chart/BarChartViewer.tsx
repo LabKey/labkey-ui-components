@@ -238,7 +238,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
             >
                 {!hasError && (
                     <div className="btn-group">
-                        <DropdownButton className="insight-type-menu" title={selectedGroup.label}>
+                        <DropdownButton buttonClassName="insight-type-menu" title={selectedGroup.label}>
                             {chartConfigs.map(({ label }, i) => (
                                 <MenuItem
                                     active={selectedGroup.label === label}
@@ -250,7 +250,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                             ))}
                         </DropdownButton>
                         {selectedCharts?.length > 1 && (
-                            <DropdownButton className="insight-chart-menu" title={currentChartOptions.label}>
+                            <DropdownButton buttonClassName="insight-chart-menu" title={currentChartOptions.label}>
                                 {selectedCharts.map((chart, i) => (
                                     <MenuItem
                                         active={currentChart === i}

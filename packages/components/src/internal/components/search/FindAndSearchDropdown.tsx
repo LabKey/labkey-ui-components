@@ -60,7 +60,7 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
 
     return (
         <>
-            <DropdownButton title={title} className={'navbar__find-and-search-button ' + className}>
+            <DropdownButton title={title} buttonClassName={'navbar__find-and-search-button ' + className}>
                 {!!onFindByIds && (
                     <>
                         <MenuItem onClick={findByBarcodeClicked}>

@@ -49,7 +49,7 @@ export const PageMenu: FC<Props> = props => {
 
     return (
         <DropdownButton
-            className="current-page-dropdown"
+            buttonClassName="current-page-dropdown"
             disabled={disabled}
             pullRight
             onMouseEnter={onMouseEnter}

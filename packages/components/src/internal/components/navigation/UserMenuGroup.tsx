@@ -131,7 +131,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
             {(adminMenuItems?.length > 0 || getServerContext().devMode) && (
                 <div className="settings-dropdown navbar-item pull-right navbar-item__dropdown">
                     <DropdownButton
-                        className="navbar-icon-button-right admin-menu-nav-dropdown"
+                        buttonClassName="navbar-icon-button-right admin-menu-nav-dropdown"
                         title={<i className="fa fa-cog navbar-header-icon" />}
                         noCaret
                         pullRight
@@ -154,7 +154,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
             {(!!helpHref || !!releaseNoteHref) && (
                 <div className="help-dropdown navbar-item pull-right navbar-item__dropdown">
                     <DropdownButton
-                        className="navbar-icon-button-right"
+                        buttonClassName="navbar-icon-button-right"
                         title={<i className="fa fa-question-circle navbar-header-icon" />}
                         noCaret
                         pullRight

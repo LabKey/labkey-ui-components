@@ -431,11 +431,7 @@
 }
 
 .navbar-item.navbar-item-notification, .navbar-item.navbar-item__dropdown {
-    .navbar-icon-button-right ~ ul.dropdown-menu {
-        padding: 0;
-    }
-
-    .navbar-icon-button-right.admin-menu-nav-dropdown ~ ul.dropdown-menu {
+    .dropdown-menu {
         padding: 5px 0;
     }
 
@@ -665,7 +661,6 @@
 }
 
 .navbar-icon-button-right {
-    margin-top: 0;
     background-color: transparent !important;
     border: none;
     box-shadow: none !important;

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.8.1
+*Released*: 23 January 2024
+- Add optional `onBeforeUpdate` to `EditableDetailPanel`
+- Add `plate.PlateType` to schema constants
+
 ### version 3.8.0
 *Released*: 18 January 2024
 - Sample Type exclusions from Dashboard Insights charts

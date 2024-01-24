@@ -124,7 +124,7 @@ DropdownAnchor.displayName = 'DropdownAnchor';
 interface DropdownButtonProps {
     bsStyle?: BSStyle;
     children: ReactNode;
-    // TODO: re-add className prop to be used as wrapper class
+    className?: string;
     buttonClassName?: string;
     disabled?: boolean;
     dropup?: boolean;
@@ -149,8 +149,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
     } = props;
     const id = useMemo(() => generateId('dropdown-button-'), []);
     const { onClick, open, toggleRef } = useToggleState<HTMLButtonElement>();
-    const menuRef = useRef<HTMLUListElement>();
-    const className = classNames('lk-dropdown', 'btn-group', { open, dropdown: !dropup, dropup });
+    const className = classNames('lk-dropdown', 'btn-group', props.className, { open, dropdown: !dropup, dropup });
     const buttonClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.buttonClassName);
     const menuClassName = classNames('dropdown-menu', { 'dropdown-menu-right': pullRight });
     const caretClassName = classNames('caret', { 'no-margin': !title });
@@ -173,7 +172,6 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
             </button>
             <ul
                 className={menuClassName}
-                ref={menuRef}
                 aria-labelledby={id}
                 onClick={preventDocumentHandler}
                 role="menu"
@@ -187,48 +185,47 @@ DropdownButton.displayName = 'DropdownButton';
 
 interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret'> {
     toggleClassName?: string;
-    // buttonClassName?: string;
-    buttonDisabled?: boolean;
+    buttonDisabled?: boolean; // Used to disable the main button
     href?: string;
-    menuDisabled?: boolean;
+    menuDisabled?: boolean; // Used to disable the menu toggle button
     onClick?: () => void;
 }
 
 export const SplitButton: FC<SplitButtonProps> = memo(props => {
     const {
-        buttonClassName,
         buttonDisabled = false,
         bsStyle = 'default',
         children,
-        // className,
+        disabled = false, // Used to disable the main button and menu toggle
+        dropup,
         href,
         menuDisabled = false,
-        title,
-        toggleClassName,
         onClick,
-        ...buttonProps
+        pullRight,
+        title,
     } = props;
-
-    // TODO: re-enable className prop
-    // const wrapperClassName = classNames('split-button-menu btn-group', className);
-    const wrapperClassName = classNames('split-button-menu btn-group');
-    const buttonClassName_ = classNames('split-button-menu__button', 'btn', 'btn-' + bsStyle, buttonClassName);
+    const { onClick: onToggleClick, open, toggleRef } = useToggleState<HTMLButtonElement>();
+    const wrapperClassName = classNames('split-button-menu', 'btn-group', props.className, { open, dropdown: !dropup, dropup });
+    const buttonClassName = classNames('split-button-menu__button', 'btn', 'btn-' + bsStyle, props.buttonClassName);
+    const toggleClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.toggleClassName);
+    const menuClassName = classNames('dropdown-menu', { 'dropdown-menu-right': pullRight });
+    const id = useMemo(() => generateId('dropdown-button-'), []);
 
     if (!href && !onClick) {
         console.warn('SplitButton is missing href and onClick, did you forget to add one of these props?');
     }
 
-    let button;
+    let button: ReactElement;
 
     if (href !== undefined) {
         button = (
-            <a href={href} className={buttonClassName_}>
+            <a href={href} className={buttonClassName}>
                 {title}
             </a>
         );
     } else {
         button = (
-            <button className={buttonClassName_} onClick={onClick} disabled={buttonDisabled} type="button">
+            <button className={buttonClassName} onClick={onClick} disabled={disabled || buttonDisabled} type="button">
                 {title}
             </button>
         );
@@ -237,15 +234,27 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
     return (
         <div className={wrapperClassName}>
             {button}
-            <DropdownButton
-                {...buttonProps}
-                buttonClassName={toggleClassName}
-                bsStyle={bsStyle}
-                title=""
-                disabled={menuDisabled}
+            <button
+                aria-haspopup="true"
+                aria-expanded={open}
+                className={toggleClassName}
+                disabled={disabled || menuDisabled}
+                id={id}
+                onClick={onToggleClick}
+                ref={toggleRef}
+                role="button"
+                type="button"
+            >
+                <span className="caret no-margin"/>
+            </button>
+            <ul
+                className={menuClassName}
+                aria-labelledby={id}
+                onClick={preventDocumentHandler}
+                role="menu"
             >
                 {children}
-            </DropdownButton>
+            </ul>
         </div>
     );
 });
@@ -255,6 +264,7 @@ interface MenuHeaderProps {
     className?: string;
     text: string;
 }
+
 export const MenuHeader: FC<MenuHeaderProps> = ({ className, text }) => (
     <li className={classNames('dropdown-header', className)} role="heading" onClick={preventDocumentHandler}>
         {text}

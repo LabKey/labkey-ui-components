@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "3.9.1-fb-timeFields.1",
+  "version": "3.9.1-fb-timeFields.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

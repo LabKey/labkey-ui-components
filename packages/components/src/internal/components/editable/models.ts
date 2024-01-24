@@ -294,8 +294,7 @@ export class EditorModel
                     }
                 } else if (col.jsonType === 'time') {
                     row = row.set(col.name, values.first().raw);
-                }
-                if (col.jsonType === 'date' && !displayValues) {
+                } else if (col.jsonType === 'date' && !displayValues) {
                     let dateVal;
                     if (values.size === 1) {
                         dateVal = values.first().raw;

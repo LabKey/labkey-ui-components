@@ -18,8 +18,6 @@ import { mount } from 'enzyme';
 
 import { SECURITY_ROLE_AUTHOR, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from '../../../test/data/constants';
 
-import { UserLimitSettings } from '../permissions/actions';
-
 import { CreateUsersModal } from './CreateUsersModal';
 
 const ROLE_OPTIONS = [
@@ -110,7 +108,7 @@ describe('CreateUsersModal', () => {
         const component = (
             <CreateUsersModal
                 show
-                userLimitSettings={{ userLimit: true, remainingUsers: 2 } as UserLimitSettings}
+                userLimitSettings={{ userLimit: true, remainingUsers: 2 }}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
             />

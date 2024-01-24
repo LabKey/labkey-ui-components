@@ -35,6 +35,7 @@ import { AUDIT_KEY } from '../../app/constants';
 import { NotFound } from '../base/NotFound';
 
 import { isProductProjectsEnabled } from '../../app/utils';
+
 import { useAdministrationSubNav } from './useAdministrationSubNav';
 
 import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './utils';
@@ -317,7 +318,9 @@ export const UserManagementPageImpl: FC<InjectedPermissionsPage> = props => {
     const { container, moduleContext, project, user } = useServerContext();
     const { extraPermissionRoles } = useAdminAppContext();
 
-    if (isProductProjectsEnabled() && !container.isProject) return <NotFound />;
+    if (isProductProjectsEnabled(moduleContext) && !container.isProject) {
+        return <NotFound />;
+    }
 
     return (
         <UserManagement

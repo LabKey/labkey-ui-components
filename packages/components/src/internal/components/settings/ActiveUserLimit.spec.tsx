@@ -16,7 +16,7 @@ import { ActiveUserLimit, ActiveUserLimitMessage } from './ActiveUserLimit';
 describe('ActiveUserLimitMessage', () => {
     test('without message', () => {
         const wrapper = mountWithAppServerContext(
-            <ActiveUserLimitMessage settings={{} as UserLimitSettings} />,
+            <ActiveUserLimitMessage />,
             { api: getTestAPIWrapper(jest.fn) },
             { user: TEST_USER_APP_ADMIN }
         );
@@ -26,7 +26,7 @@ describe('ActiveUserLimitMessage', () => {
 
     test('with message', () => {
         const wrapper = mountWithAppServerContext(
-            <ActiveUserLimitMessage settings={{ messageHtml: 'test' } as UserLimitSettings} />,
+            <ActiveUserLimitMessage settings={{ messageHtml: 'test' }} />,
             { api: getTestAPIWrapper(jest.fn) },
             { user: TEST_USER_APP_ADMIN }
         );
@@ -37,7 +37,7 @@ describe('ActiveUserLimitMessage', () => {
 
     test('with html message', () => {
         const wrapper = mountWithAppServerContext(
-            <ActiveUserLimitMessage settings={{ messageHtml: '<b>test</b>' } as UserLimitSettings} />,
+            <ActiveUserLimitMessage settings={{ messageHtml: '<b>test</b>' }} />,
             { api: getTestAPIWrapper(jest.fn) },
             { user: TEST_USER_APP_ADMIN }
         );
@@ -48,16 +48,16 @@ describe('ActiveUserLimitMessage', () => {
 });
 
 describe('ActiveUserLimit', () => {
-    const USER_LIMIT_ENABLED = {
+    const USER_LIMIT_ENABLED: Partial<UserLimitSettings> = {
         userLimit: true,
         userLimitLevel: 10,
         remainingUsers: 1,
-    } as UserLimitSettings;
-    const USER_LIMIT_DISABLED = {
+    };
+    const USER_LIMIT_DISABLED: Partial<UserLimitSettings> = {
         userLimit: false,
         userLimitLevel: 10,
         remainingUsers: 1,
-    } as UserLimitSettings;
+    };
     const DEFAULT_PROPS = {
         user: TEST_USER_PROJECT_ADMIN,
         container: TEST_PROJECT_CONTAINER,

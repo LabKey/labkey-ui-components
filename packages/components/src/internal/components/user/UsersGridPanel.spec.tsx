@@ -16,7 +16,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { getRolesByUniqueName, processGetRolesResponse, UserLimitSettings } from '../permissions/actions';
+import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
 import { TEST_USER_APP_ADMIN, TEST_USER_FOLDER_ADMIN, TEST_USER_PROJECT_ADMIN } from '../../userFixtures';
@@ -174,10 +174,7 @@ describe('<UsersGridPanel/>', () => {
 
     test('active user limit reached', () => {
         const component = (
-            <UsersGridPanelImpl
-                {...DEFAULT_PROPS}
-                userLimitSettings={{ userLimit: true, remainingUsers: 0 } as UserLimitSettings}
-            />
+            <UsersGridPanelImpl {...DEFAULT_PROPS} userLimitSettings={{ userLimit: true, remainingUsers: 0 }} />
         );
         const wrapper = mount(component);
         wrapper.setState({ usersView: 'inactive' });
@@ -192,10 +189,7 @@ describe('<UsersGridPanel/>', () => {
 
     test('active user limit not reached', () => {
         const component = (
-            <UsersGridPanelImpl
-                {...DEFAULT_PROPS}
-                userLimitSettings={{ userLimit: true, remainingUsers: 2 } as UserLimitSettings}
-            />
+            <UsersGridPanelImpl {...DEFAULT_PROPS} userLimitSettings={{ userLimit: true, remainingUsers: 2 }} />
         );
         const wrapper = mount(component);
         wrapper.setState({ usersView: 'inactive' });
@@ -210,10 +204,7 @@ describe('<UsersGridPanel/>', () => {
 
     test('active user limit disabled', () => {
         const component = (
-            <UsersGridPanelImpl
-                {...DEFAULT_PROPS}
-                userLimitSettings={{ userLimit: false, remainingUsers: 0 } as UserLimitSettings}
-            />
+            <UsersGridPanelImpl {...DEFAULT_PROPS} userLimitSettings={{ userLimit: false, remainingUsers: 0 }} />
         );
         const wrapper = mount(component);
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button

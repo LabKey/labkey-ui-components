@@ -196,7 +196,6 @@ export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date, 
     // Issue 45140: if a dateFormat was provided here and the date didn't parse, try the default container format and no format
     if (!validDate) {
         const date = moment(dateStr, timeOnly ? getMomentTimeFormat() : getMomentDateTimeFormat(), !timeOnly);
-        // console.log(date);
         if (date && date.isValid()) {
             validDate = date;
         }

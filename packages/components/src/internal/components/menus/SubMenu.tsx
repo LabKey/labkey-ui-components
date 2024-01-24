@@ -90,6 +90,7 @@ export class SubMenu extends React.Component<SubMenuProps> {
         delete itemProps.name;
         delete itemProps.disabledMsg;
 
+        // TODO: We will be refactoring SubMenu (and SubMenuItem) to use internal versions of MenuItem in a future PR
         const menuItem = (
             <MenuItem {...itemProps} key={key}>
                 {option.name}

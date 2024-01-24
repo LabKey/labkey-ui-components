@@ -1,5 +1,4 @@
 import React from 'react';
-import { MenuItem } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
 
@@ -78,7 +77,7 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.grid-panel__menu-toggle .fa-chevron-circle-down')).toHaveLength(
             menuItemCount > 0 ? 1 : 0
         );
-        expect(wrapper.find(MenuItem)).toHaveLength(menuItemCount);
+        expect(wrapper.find('MenuItem')).toHaveLength(menuItemCount);
     }
 
     test('default props', () => {
@@ -88,7 +87,7 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.grid-panel__menu-icon')).toHaveLength(3);
         expect(wrapper.find('.grid-panel__menu-icon-spacer')).toHaveLength(2);
         // the two remove/clear options should be disabled
-        const menuItems = wrapper.find(MenuItem);
+        const menuItems = wrapper.find('MenuItem');
         const removeFilterItem = menuItems.at(1);
         expect(removeFilterItem.text()).toContain('Remove filter');
         expect(removeFilterItem.prop('disabled')).toBe(true);
@@ -280,13 +279,13 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(2);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
-        const sortAscItem = wrapper.find(MenuItem).at(3);
+        const sortAscItem = wrapper.find('MenuItem').at(3);
         expect(sortAscItem.text()).toContain('Sort ascending');
         expect(sortAscItem.prop('disabled')).toBe(true);
-        const sortDescItem = wrapper.find(MenuItem).at(4);
+        const sortDescItem = wrapper.find('MenuItem').at(4);
         expect(sortDescItem.text()).toContain('Sort descending');
         expect(sortDescItem.prop('disabled')).toBe(false);
-        const clearSortItem = wrapper.find(MenuItem).at(5);
+        const clearSortItem = wrapper.find('MenuItem').at(5);
         expect(clearSortItem.text()).toContain('Clear sort');
         expect(clearSortItem.prop('disabled')).toBe(false);
         wrapper.unmount();
@@ -307,13 +306,13 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(2);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
-        const sortAscItem = wrapper.find(MenuItem).at(3);
+        const sortAscItem = wrapper.find('MenuItem').at(3);
         expect(sortAscItem.text()).toContain('Sort ascending');
         expect(sortAscItem.prop('disabled')).toBe(true);
-        const sortDescItem = wrapper.find(MenuItem).at(4);
+        const sortDescItem = wrapper.find('MenuItem').at(4);
         expect(sortDescItem.text()).toContain('Sort descending');
         expect(sortDescItem.prop('disabled')).toBe(false);
-        const clearSortItem = wrapper.find(MenuItem).at(5);
+        const clearSortItem = wrapper.find('MenuItem').at(5);
         expect(clearSortItem.text()).toContain('Clear sort');
         expect(clearSortItem.prop('disabled')).toBe(false);
         wrapper.unmount();
@@ -328,13 +327,13 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(2);
-        const sortAscItem = wrapper.find(MenuItem).at(3);
+        const sortAscItem = wrapper.find('MenuItem').at(3);
         expect(sortAscItem.text()).toContain('Sort ascending');
         expect(sortAscItem.prop('disabled')).toBe(false);
-        const sortDescItem = wrapper.find(MenuItem).at(4);
+        const sortDescItem = wrapper.find('MenuItem').at(4);
         expect(sortDescItem.text()).toContain('Sort descending');
         expect(sortDescItem.prop('disabled')).toBe(true);
-        const clearSortItem = wrapper.find(MenuItem).at(5);
+        const clearSortItem = wrapper.find('MenuItem').at(5);
         expect(clearSortItem.text()).toContain('Clear sort');
         expect(clearSortItem.prop('disabled')).toBe(false);
         wrapper.unmount();
@@ -355,13 +354,13 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.fa-filter')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(2);
-        const sortAscItem = wrapper.find(MenuItem).at(3);
+        const sortAscItem = wrapper.find('MenuItem').at(3);
         expect(sortAscItem.text()).toContain('Sort ascending');
         expect(sortAscItem.prop('disabled')).toBe(false);
-        const sortDescItem = wrapper.find(MenuItem).at(4);
+        const sortDescItem = wrapper.find('MenuItem').at(4);
         expect(sortDescItem.text()).toContain('Sort descending');
         expect(sortDescItem.prop('disabled')).toBe(true);
-        const clearSortItem = wrapper.find(MenuItem).at(5);
+        const clearSortItem = wrapper.find('MenuItem').at(5);
         expect(clearSortItem.text()).toContain('Clear sort');
         expect(clearSortItem.prop('disabled')).toBe(false);
         wrapper.unmount();
@@ -376,7 +375,7 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.fa-filter')).toHaveLength(2);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
-        const removeFilterItem = wrapper.find(MenuItem).at(1);
+        const removeFilterItem = wrapper.find('MenuItem').at(1);
         expect(removeFilterItem.text()).toBe('Remove filter');
         expect(removeFilterItem.prop('disabled')).toBe(false);
         wrapper.unmount();
@@ -397,7 +396,7 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.fa-filter')).toHaveLength(2);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
-        const removeFilterItem = wrapper.find(MenuItem).at(1);
+        const removeFilterItem = wrapper.find('MenuItem').at(1);
         expect(removeFilterItem.text()).toBe('Remove filter');
         expect(removeFilterItem.prop('disabled')).toBe(false);
         wrapper.unmount();
@@ -418,7 +417,7 @@ describe('HeaderCellDropdown', () => {
         expect(wrapper.find('.fa-filter')).toHaveLength(2);
         expect(wrapper.find('.fa-sort-amount-asc')).toHaveLength(1);
         expect(wrapper.find('.fa-sort-amount-desc')).toHaveLength(1);
-        const removeFilterItem = wrapper.find(MenuItem).at(1);
+        const removeFilterItem = wrapper.find('MenuItem').at(1);
         expect(removeFilterItem.text()).toBe('Remove filters');
         expect(removeFilterItem.prop('disabled')).toBe(false);
         wrapper.unmount();

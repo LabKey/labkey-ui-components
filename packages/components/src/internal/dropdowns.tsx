@@ -138,9 +138,9 @@ interface DropdownButtonProps {
 export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((props, ref) => {
     const {
         bsStyle = 'default',
+        children,
         disabled = false,
         dropup = false,
-        children,
         noCaret = false,
         onMouseEnter,
         onMouseOut,
@@ -170,12 +170,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
                 {title}
                 {!noCaret && <span className={caretClassName} />}
             </button>
-            <ul
-                className={menuClassName}
-                aria-labelledby={id}
-                onClick={preventDocumentHandler}
-                role="menu"
-            >
+            <ul className={menuClassName} aria-labelledby={id} onClick={preventDocumentHandler} role="menu">
                 {children}
             </ul>
         </div>
@@ -183,7 +178,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
 });
 DropdownButton.displayName = 'DropdownButton';
 
-interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret'> {
+interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret' | 'onMouseEnter' | 'onMouseOut'> {
     toggleClassName?: string;
     buttonDisabled?: boolean; // Used to disable the main button
     href?: string;
@@ -193,11 +188,11 @@ interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret'> {
 
 export const SplitButton: FC<SplitButtonProps> = memo(props => {
     const {
-        buttonDisabled = false,
         bsStyle = 'default',
+        buttonDisabled = false,
         children,
-        disabled = false, // Used to disable the main button and menu toggle
-        dropup,
+        disabled = false, // Used to disable the main button and menu toggle at the same time
+        dropup = false,
         href,
         menuDisabled = false,
         onClick,
@@ -205,8 +200,12 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
         title,
     } = props;
     const { onClick: onToggleClick, open, toggleRef } = useToggleState<HTMLButtonElement>();
-    const wrapperClassName = classNames('split-button-menu', 'btn-group', props.className, { open, dropdown: !dropup, dropup });
-    const buttonClassName = classNames('split-button-menu__button', 'btn', 'btn-' + bsStyle, props.buttonClassName);
+    const wrapperClassName = classNames('split-button-dropdown', 'btn-group', props.className, {
+        open,
+        dropdown: !dropup,
+        dropup,
+    });
+    const buttonClassName = classNames('split-button-dropdown__button', 'btn', 'btn-' + bsStyle, props.buttonClassName);
     const toggleClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.toggleClassName);
     const menuClassName = classNames('dropdown-menu', { 'dropdown-menu-right': pullRight });
     const id = useMemo(() => generateId('dropdown-button-'), []);
@@ -245,14 +244,9 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
                 role="button"
                 type="button"
             >
-                <span className="caret no-margin"/>
+                <span className="caret no-margin" />
             </button>
-            <ul
-                className={menuClassName}
-                aria-labelledby={id}
-                onClick={preventDocumentHandler}
-                role="menu"
-            >
+            <ul className={menuClassName} aria-labelledby={id} onClick={preventDocumentHandler} role="menu">
                 {children}
             </ul>
         </div>

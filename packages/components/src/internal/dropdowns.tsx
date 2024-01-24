@@ -129,6 +129,7 @@ interface DropdownButtonProps {
     disabled?: boolean;
     dropup?: boolean;
     noCaret?: boolean;
+    onClick?: () => void;
     onMouseEnter?: () => void;
     onMouseOut?: () => void;
     pullRight?: boolean;
@@ -142,17 +143,25 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
         disabled = false,
         dropup = false,
         noCaret = false,
+        onClick,
         onMouseEnter,
         onMouseOut,
         pullRight = false,
         title,
     } = props;
     const id = useMemo(() => generateId('dropdown-button-'), []);
-    const { onClick, open, toggleRef } = useToggleState<HTMLButtonElement>();
+    const { onClick: onToggleClick, open, toggleRef } = useToggleState<HTMLButtonElement>();
     const className = classNames('lk-dropdown', 'btn-group', props.className, { open, dropdown: !dropup, dropup });
     const buttonClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.buttonClassName);
     const menuClassName = classNames('dropdown-menu', { 'dropdown-menu-right': pullRight });
     const caretClassName = classNames('caret', { 'no-margin': !title });
+    const onClick_ = useCallback(
+        event => {
+            onToggleClick(event);
+            onClick?.();
+        },
+        [onToggleClick, onClick]
+    );
 
     return (
         <div className={className} ref={ref} onMouseEnter={onMouseEnter} onMouseOut={onMouseOut}>
@@ -162,7 +171,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
                 className={buttonClassName}
                 disabled={disabled}
                 id={id}
-                onClick={onClick}
+                onClick={onClick_}
                 ref={toggleRef}
                 role="button"
                 type="button"
@@ -183,7 +192,6 @@ interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret' | 'onMous
     buttonDisabled?: boolean; // Used to disable the main button
     href?: string;
     menuDisabled?: boolean; // Used to disable the menu toggle button
-    onClick?: () => void;
 }
 
 export const SplitButton: FC<SplitButtonProps> = memo(props => {

@@ -148,6 +148,7 @@ const PLATE_SCHEMA = 'plate';
 const PLATE_TABLES = {
     PLATE: new SchemaQuery(PLATE_SCHEMA, 'Plate'),
     PLATE_SET: new SchemaQuery(PLATE_SCHEMA, 'PlateSet'),
+    PLATE_TYPE: new SchemaQuery(PLATE_SCHEMA, 'PlateType'),
     SCHEMA: PLATE_SCHEMA,
     WELL: new SchemaQuery(PLATE_SCHEMA, 'Well'),
     WELL_GROUP: new SchemaQuery(PLATE_SCHEMA, 'WellGroup'),

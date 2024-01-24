@@ -172,9 +172,7 @@ export type UserLimitSettings = {
 export function getUserLimitSettings(containerPath?: string): Promise<UserLimitSettings> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('user', 'getuserLimitSettings.api', containerPath),
-            method: 'GET',
-            scope: this,
+            url: ActionURL.buildURL('user', 'getUserLimitSettings.api', containerPath),
             success: Utils.getCallbackWrapper(settings => {
                 resolve(settings as UserLimitSettings);
             }),

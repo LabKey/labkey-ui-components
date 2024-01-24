@@ -465,7 +465,7 @@ import {
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { withPermissionsPage } from './internal/components/permissions/withPermissionsPage';
 import { Principal, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
-import { fetchContainerSecurityPolicy, getUserLimitSettings } from './internal/components/permissions/actions';
+import { fetchContainerSecurityPolicy } from './internal/components/permissions/actions';
 import {
     getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
@@ -1172,7 +1172,6 @@ export {
     hasAnyPermissions,
     hasPermissions,
     fetchContainerSecurityPolicy,
-    getUserLimitSettings,
     withPermissionsPage,
     SecurityPolicy,
     SecurityRole,

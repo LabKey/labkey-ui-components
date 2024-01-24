@@ -14,6 +14,7 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 import { Alert } from '../../internal/components/base/Alert';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWrapper';
+
 import { QueryModel } from './QueryModel';
 
 import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
@@ -31,6 +32,7 @@ export interface EditableDetailPanelProps {
     editColumns?: QueryColumn[];
     model: QueryModel;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
+    onBeforeUpdate?: (row: Record<string, any>) => void;
     onEditToggle?: (editing: boolean) => void;
     onUpdate: () => void;
     queryColumns?: QueryColumn[];
@@ -85,17 +87,17 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handleSubmit = async (values: Record<string, any>): Promise<void> => {
-        const { api, containerPath, model, onEditToggle, onUpdate } = this.props;
+        const { api, containerPath, model, onBeforeUpdate, onEditToggle, onUpdate } = this.props;
         const { queryInfo } = model;
         const row = model.getRow();
         const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
 
         if (Object.keys(updatedValues).length === 0) {
-            this.setState(() => ({
+            this.setState({
                 canSubmit: false,
                 error: undefined,
                 warning: 'No changes detected. Please update the form and click save.',
-            }));
+            });
 
             return;
         }
@@ -112,6 +114,8 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         });
 
         try {
+            onBeforeUpdate?.(updatedValues);
+
             await api.query.updateRows({
                 auditBehavior: AuditBehaviorTypes.DETAILED,
                 containerPath,

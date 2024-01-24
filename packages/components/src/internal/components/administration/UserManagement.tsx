@@ -4,7 +4,6 @@
  */
 import React, { FC, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
-import { MenuItem } from 'react-bootstrap';
 import { PermissionRoles, Project, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
@@ -35,6 +34,8 @@ import { AUDIT_KEY } from '../../app/constants';
 import { NotFound } from '../base/NotFound';
 
 import { isProductProjectsEnabled } from '../../app/utils';
+
+import { MenuItem } from '../../dropdowns';
 
 import { useAdministrationSubNav } from './useAdministrationSubNav';
 

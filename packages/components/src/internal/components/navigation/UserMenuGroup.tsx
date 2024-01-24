@@ -116,7 +116,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     return (
         <>
             <div className="navbar-item pull-right">
-                <DropdownAnchor className="user-dropdown-menu" title={userToggle} pullRight>
+                <DropdownAnchor className="user-dropdown" title={userToggle} pullRight>
                     <div className="navbar-connector" />
                     {userMenuItems}
                     {extraUserItems}

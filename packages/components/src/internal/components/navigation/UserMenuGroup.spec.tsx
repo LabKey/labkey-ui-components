@@ -16,13 +16,12 @@
 import React from 'react';
 import { ReactWrapper } from 'enzyme';
 
-import { Dropdown, DropdownButton, MenuItem } from 'react-bootstrap';
-
 import { User } from '../base/models/User';
 
 import { UserMenuGroupImpl } from './UserMenuGroup';
 import { MenuSectionModel } from './model';
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
+import { MenuItem } from '../../dropdowns';
 
 beforeEach(() => {
     LABKEY.devMode = false;
@@ -100,7 +99,7 @@ describe('UserMenuGroup', () => {
     });
 
     function verifyMenuOptions(menu: any, options: string[]) {
-        const menuOptions = menu.find(MenuItem);
+        const menuOptions = menu.find('MenuItem');
         expect(menuOptions).toHaveLength(options?.length);
         expect(menuOptions.at(0).text()).toEqual(options[0]);
         for (let i = 0; i < options.length; i++) {
@@ -109,14 +108,14 @@ describe('UserMenuGroup', () => {
     }
 
     function verify(wrapper: ReactWrapper, userOptions?: string[], adminOptions?: string[], helpOptions?: string[]) {
-        const userMenu = wrapper.find(Dropdown);
-        const userMenuOptions = userMenu.at(0).find(MenuItem);
+        const userMenu = wrapper.find('DropdownAnchor');
+        const userMenuOptions = userMenu.at(0).find('MenuItem');
         expect(userMenuOptions).toHaveLength(userOptions?.length);
         for (let i = 0; i < userOptions.length; i++) {
             expect(userMenuOptions.at(i).text()).toEqual(userOptions[i]);
         }
 
-        const dropdowns = wrapper.find(DropdownButton);
+        const dropdowns = wrapper.find('DropdownButton');
 
         let dropdownCount = 0,
             helpMenu,

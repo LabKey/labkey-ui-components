@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useState } from 'react';
-import { MenuItem } from 'react-bootstrap';
 
 import { userCanManagePicklists } from '../../app/utils';
 
@@ -9,6 +8,7 @@ import { User } from '../base/models/User';
 
 import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
 import { MAX_SELECTIONS_PER_ADD } from './constants';
+import { MenuItem } from '../../dropdowns';
 
 interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
     asMenuItem?: boolean;

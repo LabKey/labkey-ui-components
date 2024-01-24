@@ -55,7 +55,7 @@ interface Props {
     container?: Container;
     currentUser: User;
     isSelf?: boolean;
-    onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => any;
+    onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => void;
     policy?: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
     rootPolicy?: SecurityPolicy;
@@ -78,7 +78,6 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         allowDelete: true,
         allowResetPassword: true,
         api: getDefaultAPIWrapper().security,
-        onUsersStateChangeComplete: undefined,
         showGroupListLinks: true,
         showPermissionListLinks: true,
     };
@@ -95,12 +94,12 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.loadUserDetails();
         this.loadPolicyAndRoles();
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>) {
+    componentDidUpdate(prevProps: Readonly<Props>): void {
         if (this.props.userId !== prevProps.userId) {
             this.loadUserDetails();
         }
@@ -113,59 +112,49 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             try {
                 const policy_ = await api.fetchPolicy(container.id);
                 const roles = await api.fetchRoles();
-                const rolesByUniqueName_ = getRolesByUniqueName(roles);
-
-                this.setState(() => ({
-                    policy: policy_,
-                    rolesByUniqueName: rolesByUniqueName_,
-                }));
+                this.setState({ policy: policy_, rolesByUniqueName: getRolesByUniqueName(roles) });
             } catch (e) {
                 console.error(e);
             }
         }
     };
 
-    loadUserDetails = (): void => {
+    loadUserDetails = async (): Promise<void> => {
         const { userId, isSelf, api } = this.props;
 
-        if (userId) {
-            this.setState(() => ({ loading: true }));
-
-            if (isSelf) {
-                api.getUserProperties(userId)
-                    .then(response => {
-                        this.setState(() => ({ userProperties: response.props, loading: false }));
-                    })
-                    .catch(() => {
-                        this.setState(() => ({ userProperties: undefined, loading: false }));
-                    });
-            } else {
-                api.getUserPropertiesForOther(userId)
-                    .then(response => {
-                        this.setState(() => ({ userProperties: response, loading: false }));
-                    })
-                    .catch(() => {
-                        this.setState(() => ({ userProperties: undefined, loading: false }));
-                    });
-            }
-        } else {
-            this.setState(() => ({ userProperties: undefined }));
+        if (!userId) {
+            this.setState({ userProperties: undefined });
+            return;
         }
+
+        this.setState({ loading: true });
+
+        try {
+            if (isSelf) {
+                const response = await api.getUserProperties(userId);
+                this.setState({ userProperties: response.props });
+            } else {
+                const response = await api.getUserPropertiesForOther(userId);
+                this.setState({ userProperties: response });
+            }
+        } catch (e) {
+            this.setState({ userProperties: undefined });
+        }
+
+        this.setState({ loading: false });
     };
 
-    toggleDialog = (name: string) => {
-        this.setState(() => ({ showDialog: name }));
+    toggleDialog = (name: string): void => {
+        this.setState({ showDialog: name });
     };
 
-    onUsersStateChangeComplete = (response: any, isDelete: boolean) => {
+    onUsersStateChangeComplete = (response: any, isDelete: boolean): void => {
         this.toggleDialog(undefined); // close dialog
         if (!isDelete) {
             this.loadUserDetails(); // reload to pickup new user state
         }
 
-        if (this.props.onUsersStateChangeComplete) {
-            this.props.onUsersStateChangeComplete(response, isDelete);
-        }
+        this.props.onUsersStateChangeComplete?.(response, isDelete);
     };
 
     renderUserProp(label: string, prop: string, formatDate = false) {
@@ -189,7 +178,9 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             <>
                 <hr className="principal-hr" />
                 {allowResetPassword && isActive && (
-                    <button className="btn btn-default" onClick={() => this.toggleDialog('reset')} type="button">Reset Password</button>
+                    <button className="btn btn-default" onClick={() => this.toggleDialog('reset')} type="button">
+                        Reset Password
+                    </button>
                 )}
                 {allowDelete && (
                     <button
@@ -317,7 +308,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
 
         if (toggleDetailsModal) {
             return (
-                <Modal onHide={toggleDetailsModal} show={true} className="user-detail-modal">
+                <Modal onHide={toggleDetailsModal} show className="user-detail-modal">
                     <Modal.Header closeButton>
                         <Modal.Title>{this.renderHeader()}</Modal.Title>
                     </Modal.Header>

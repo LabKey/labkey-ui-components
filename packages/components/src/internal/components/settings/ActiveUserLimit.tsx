@@ -8,7 +8,20 @@ import { UserLimitSettings } from '../permissions/actions';
 import { User } from '../base/models/User';
 import { Container } from '../base/models/Container';
 
-const TITLE = 'Active Users';
+interface ActiveUserLimitMessageProps {
+    settings?: Partial<UserLimitSettings>;
+}
+
+export const ActiveUserLimitMessage: FC<ActiveUserLimitMessageProps> = memo(({ settings }) => {
+    if (!settings?.messageHtml) return null;
+
+    return (
+        <Alert bsStyle="warning">
+            {/* eslint-disable-next-line react/no-danger */}
+            <div dangerouslySetInnerHTML={{ __html: settings.messageHtml }} />
+        </Alert>
+    );
+});
 
 interface Props {
     container: Container;
@@ -40,7 +53,7 @@ export const ActiveUserLimit: FC<Props> = memo(props => {
 
     return (
         <div className="active-user-limit-panel panel panel-default">
-            <div className="panel-heading">{TITLE}</div>
+            <div className="panel-heading">Active Users</div>
             <div className="panel-body">
                 <Alert>{error}</Alert>
                 {settings && (
@@ -56,21 +69,5 @@ export const ActiveUserLimit: FC<Props> = memo(props => {
                 )}
             </div>
         </div>
-    );
-});
-
-interface ActiveUserLimitMessageProps {
-    settings: UserLimitSettings;
-}
-
-export const ActiveUserLimitMessage: FC<ActiveUserLimitMessageProps> = memo(({ settings }) => {
-    return (
-        <>
-            {settings?.messageHtml && (
-                <Alert bsStyle="warning">
-                    <div dangerouslySetInnerHTML={{ __html: settings.messageHtml }} />
-                </Alert>
-            )}
-        </>
     );
 });

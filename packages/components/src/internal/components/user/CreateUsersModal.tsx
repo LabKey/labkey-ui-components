@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { FormControl, Modal } from 'react-bootstrap';
 import { Security } from '@labkey/api';
+
 import { ModalButtons } from '../../ModalButtons';
 
 import { UserLimitSettings } from '../permissions/actions';
@@ -11,7 +12,7 @@ interface Props {
     onCancel: () => void;
     onComplete: (response: any, roles: string[]) => void;
     show: boolean;
-    userLimitSettings?: UserLimitSettings;
+    userLimitSettings?: Partial<UserLimitSettings>;
 
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onComplete

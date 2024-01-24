@@ -51,8 +51,8 @@ interface OwnProps {
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
     newUserRoleOptions?: any[];
-    onCreateComplete: (response: any, roles: string[]) => any;
-    onUsersStateChangeComplete: (response: any) => any;
+    onCreateComplete: (response: any, roles: string[]) => void;
+    onUsersStateChangeComplete: (response: any) => void;
     policy: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
     // searchParams/setSearchParams can be removed as props if we convert to an FC and use the useSearchParams hook
@@ -60,7 +60,7 @@ interface OwnProps {
     setSearchParams: SetURLSearchParams;
     showDetailsPanel?: boolean;
     user: User;
-    userLimitSettings?: UserLimitSettings;
+    userLimitSettings?: Partial<UserLimitSettings>;
 }
 
 type Props = OwnProps & InjectedQueryModels;
@@ -91,12 +91,12 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.setLastSelectedId();
         this.initQueryModel(this.state.usersView);
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any) {
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
         this.setLastSelectedId();
         if (this.state.usersView !== prevState.usersView) {
             this.initQueryModel(this.state.usersView);
@@ -113,7 +113,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
         }
     }
 
-    initQueryModel(usersView: string) {
+    initQueryModel = (usersView: string): void => {
         const { actions } = this.props;
         const baseFilters = usersView === 'all' ? [] : [Filter.create('active', usersView === 'active')];
 
@@ -131,7 +131,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
             true,
             true
         );
-    }
+    };
 
     getUsersView(paramVal: string): string {
         return paramVal === 'inactive' || paramVal === 'all' ? paramVal : 'active'; // default to view active users
@@ -146,7 +146,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     }
 
     toggleViewActive = (viewName: string): void => {
-        this.setState(() => ({ usersView: viewName }));
+        this.setState({ usersView: viewName });
     };
 
     closeDialog = (): void => {
@@ -155,9 +155,9 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
 
     toggleDialog = (name: string, requiresSelection = false): void => {
         if (requiresSelection && !this.getUsersModel().hasSelections) {
-            this.setState(() => ({ showDialog: undefined }));
+            this.setState({ showDialog: undefined });
         } else {
-            this.setState(() => ({ showDialog: name }));
+            this.setState({ showDialog: name });
         }
     };
 
@@ -370,7 +370,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
     }
 }
 
-const UsersGridPanelWithModels = withQueryModels(UsersGridPanelImpl);
+const UsersGridPanelWithModels = withQueryModels<OwnProps>(UsersGridPanelImpl);
 
 type PanelProps = Omit<OwnProps, 'searchParams' | 'setSearchParams'>;
 

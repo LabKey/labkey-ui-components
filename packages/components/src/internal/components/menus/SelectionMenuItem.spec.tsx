@@ -16,7 +16,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { MenuItem, OverlayTrigger } from 'react-bootstrap';
+import { OverlayTrigger } from 'react-bootstrap';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -33,8 +33,8 @@ describe('SelectionMenuItem', () => {
         const component = <SelectionMenuItem nounPlural="items" queryModel={model} text={text} onClick={jest.fn()} />;
 
         const wrapper = mount(component);
-        expect(wrapper.find(MenuItem)).toHaveLength(1);
-        expect(wrapper.find(MenuItem).text()).toBe(text);
+        expect(wrapper.find('MenuItem')).toHaveLength(1);
+        expect(wrapper.find('MenuItem').text()).toBe(text);
         expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('disabled');
         expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
         wrapper.unmount();
@@ -49,8 +49,8 @@ describe('SelectionMenuItem', () => {
         const component = <SelectionMenuItem nounPlural="items" queryModel={model} text={text} onClick={jest.fn()} />;
 
         const wrapper = mount(component);
-        expect(wrapper.find(MenuItem)).toHaveLength(1);
-        expect(wrapper.find(MenuItem).text()).toBe(text);
+        expect(wrapper.find('MenuItem')).toHaveLength(1);
+        expect(wrapper.find('MenuItem').text()).toBe(text);
         expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('');
         expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
         wrapper.unmount();
@@ -67,7 +67,7 @@ describe('SelectionMenuItem', () => {
         );
 
         const wrapper = mount(component);
-        expect(wrapper.find(MenuItem)).toHaveLength(1);
+        expect(wrapper.find('MenuItem')).toHaveLength(1);
         expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('');
         expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
         wrapper.unmount();
@@ -84,7 +84,7 @@ describe('SelectionMenuItem', () => {
         );
 
         const wrapper = mount(component);
-        expect(wrapper.find(MenuItem)).toHaveLength(1);
+        expect(wrapper.find('MenuItem')).toHaveLength(1);
         expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('disabled');
         expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
         wrapper.unmount();

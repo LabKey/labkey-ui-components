@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useServerContext } from '../../base/ServerContext';
-import { isProductProjectsEnabled, resolveModuleContext } from '../../../app/utils';
+import { getAppHomeFolderPath } from '../../../app/utils';
 import { useAppContext } from '../../../AppContext';
 
 export const useDataChangeCommentsRequired = (): { requiresUserComment: boolean } => {
@@ -11,15 +11,12 @@ export const useDataChangeCommentsRequired = (): { requiresUserComment: boolean 
     useEffect(
         () => {
             (async () => {
-                let path = container?.path;
-                if (isProductProjectsEnabled(moduleContext) && !container?.isProject) {
-                    path = container?.parentPath;
-                }
+                const path = getAppHomeFolderPath(container, moduleContext);
                 try {
                     const response = await api.folder.getAuditSettings(path);
                     setRequiresUserComment(!!response?.requireUserComments);
                 } catch (error) {
-                    console.error("Unable to retrieve audit log settings for " + path, error);
+                    console.error('Unable to retrieve audit log settings for ' + path, error);
                 }
             })();
         }, [ /** on load only */ ]);

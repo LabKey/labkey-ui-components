@@ -2,11 +2,10 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
-
 import { RequiresPermission } from '../base/Permissions';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import {
+    getAppHomeFolderPath,
     isAssayEnabled,
     isDataChangeCommentRequirementFeatureEnabled,
     isELNEnabled,
@@ -22,19 +21,19 @@ export const AuditSettings: FC = () => {
 
     useEffect(() => {
         (async () => {
-            const settings = await api.folder.getAuditSettings(container.path);
+            const settings = await api.folder.getAuditSettings(getAppHomeFolderPath(container, moduleContext));
             setIsRequired(settings.requireUserComments);
         })();
     }, []);
 
     const onDisableRequirement = useCallback(() => {
         setIsRequired(false);
-        api.folder.setAuditCommentsRequired(false);
+        api.folder.setAuditCommentsRequired(false, getAppHomeFolderPath(container, moduleContext));
     }, [api]);
 
     const onEnableRequired = useCallback(() => {
         setIsRequired(true);
-        api.folder.setAuditCommentsRequired(true);
+        api.folder.setAuditCommentsRequired(true, getAppHomeFolderPath(container, moduleContext));
     }, [api]);
 
     if (!isDataChangeCommentRequirementFeatureEnabled(moduleContext)) {

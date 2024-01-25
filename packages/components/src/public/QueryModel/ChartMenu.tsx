@@ -78,7 +78,7 @@ export class ChartMenu extends PureComponent<Props> {
                 >
                     {chartsError !== undefined && <MenuItem>{chartsError}</MenuItem>}
 
-                    {privateCharts.length > 0 && <MenuHeader text="Your Saved CHarts" />}
+                    {privateCharts.length > 0 && <MenuHeader text="Your Saved Charts" />}
 
                     {privateCharts.length > 0 && privateCharts.map(this.chartMapper)}
 

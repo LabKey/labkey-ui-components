@@ -59,16 +59,16 @@ export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({ 
     );
 };
 
-export const SelectionMenuItem: FC<Props> = (props) => {
+export const SelectionMenuItem: FC<Props> = props => {
     const { href, maxSelection, maxSelectionDisabledMsg, nounPlural, onClick, queryModel, text } = props;
-    const tooFewSelected = useMemo(() => {
-        const numSelections = queryModel?.selections?.size;
-        return numSelections !== undefined && numSelections === 0;
-    }, [queryModel?.selections?.size]);
-    const tooManySelected = useMemo(() => {
-        const numSelections = queryModel?.selections?.size;
-        return numSelections !== undefined && numSelections > maxSelection;
-    }, [maxSelection, queryModel?.selections?.size]);
+    const selectionSize = queryModel?.selections?.size;
+    const { tooFewSelected, tooManySelected } = useMemo(
+        () => ({
+            tooFewSelected: selectionSize !== undefined && selectionSize === 0,
+            tooManySelected: selectionSize !== undefined && selectionSize > maxSelection,
+        }),
+        [selectionSize]
+    );
     const disabled = tooFewSelected || tooManySelected;
 
     if (disabled) {

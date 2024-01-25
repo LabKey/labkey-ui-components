@@ -3,13 +3,11 @@ import { PermissionTypes } from '@labkey/api';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { useAppContext } from '../../AppContext';
-import { ModuleContext, useServerContext } from '../base/ServerContext';
+import { useServerContext } from '../base/ServerContext';
 import { Container } from '../base/models/Container';
 import { User } from '../base/models/User';
 import { resolveErrorMessage } from '../../util/messaging';
 import { FetchContainerOptions } from '../security/APIWrapper';
-import { isProductProjectsEnabled, resolveModuleContext } from '../../app/utils';
-import { getDefaultAPIWrapper } from '../../APIWrapper';
 
 /**
  * Applies the permissions on the container to the user. Only permission related User fields are mutated.

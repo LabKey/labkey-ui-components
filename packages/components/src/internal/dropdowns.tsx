@@ -42,7 +42,8 @@ export type BSStyle = 'success' | 'danger' | 'default' | 'primary';
  *      https://github.com/facebook/react/issues/4335#issuecomment-671487964
  */
 function preventDocumentHandler(event: SyntheticEvent): void {
-    event.nativeEvent.stopImmediatePropagation();
+    // Note: nativeEvent is always available, except when running tests
+    event.nativeEvent?.stopImmediatePropagation?.();
 }
 
 interface ToggleState<T> {

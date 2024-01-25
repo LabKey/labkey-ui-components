@@ -85,7 +85,7 @@ export const StorageAmountInput: FC<Props> = memo(props => {
             <div className={containerClassName}>
                 <div className={"checkin-amount-label " + (isDeltaValid ? "" : "has-error ")} >
                     <label>{label}</label>
-                    {tipText && <LabelHelpTip placement="top" title="Stored Amount Delta"><p>{tipText}</p></LabelHelpTip>}
+                    {tipText && <LabelHelpTip title="Stored Amount Delta"><p>{tipText}</p></LabelHelpTip>}
                 </div>
                 <FormControl
                     className="storage-item-check-in-text storage-amount-input "

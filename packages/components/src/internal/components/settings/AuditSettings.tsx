@@ -18,23 +18,24 @@ export const AuditSettings: FC = () => {
     const { api } = useAppContext();
     const { container, moduleContext } = useServerContext();
     const [isRequired, setIsRequired] = useState<boolean>(false);
+    const appFolderPath = getAppHomeFolderPath(container, moduleContext);
 
     useEffect(() => {
         (async () => {
-            const settings = await api.folder.getAuditSettings(getAppHomeFolderPath(container, moduleContext));
+            const settings = await api.folder.getAuditSettings(appFolderPath);
             setIsRequired(settings.requireUserComments);
         })();
-    }, []);
+    }, [appFolderPath]);
 
     const onDisableRequirement = useCallback(() => {
         setIsRequired(false);
-        api.folder.setAuditCommentsRequired(false, getAppHomeFolderPath(container, moduleContext));
-    }, [api]);
+        api.folder.setAuditCommentsRequired(false, appFolderPath);
+    }, [appFolderPath, api]);
 
     const onEnableRequired = useCallback(() => {
         setIsRequired(true);
-        api.folder.setAuditCommentsRequired(true, getAppHomeFolderPath(container, moduleContext));
-    }, [api]);
+        api.folder.setAuditCommentsRequired(true, appFolderPath);
+    }, [appFolderPath, api]);
 
     if (!isDataChangeCommentRequirementFeatureEnabled(moduleContext)) {
         return null;

@@ -19,6 +19,7 @@ import { QuerySelect } from '../QuerySelect';
 
 import { SampleStatusInput } from './SampleStatusInput';
 import { getFolderTestAPIWrapper } from '../../container/FolderAPIWrapper';
+import { TEST_FOLDER_CONTAINER } from '../../../containerFixtures';
 
 describe('SampleStatusInput', () => {
     const COLUMN_STATUS = new QueryColumn({
@@ -63,6 +64,14 @@ describe('SampleStatusInput', () => {
         onAdditionalFormDataChange: jest.fn().mockReturnValue(true),
     };
 
+    const COMMENTS_NOT_REQUIRED = {
+        api: getTestAPIWrapper(jest.fn, {
+            folder: getFolderTestAPIWrapper(jest.fn, {
+                getAuditSettings: jest.fn().mockResolvedValue({ requireUserComments: false }),
+            }),
+        }),
+    };
+
     test('initial value is blank', async () => {
         const component = mountWithServerContext(<SampleStatusInput {...DEFAULT_PROPS} formsy={false} />, {
             user: TEST_USER_STORAGE_EDITOR,
@@ -90,14 +99,8 @@ describe('SampleStatusInput', () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />;
         const wrapper = mountWithAppServerContext(
             component,
-            {
-                api: getTestAPIWrapper(jest.fn, {
-                    folder: getFolderTestAPIWrapper(jest.fn, {
-                        getAuditSettings: jest.fn().mockResolvedValue({ requireUserComments: false }),
-                    }),
-                }),
-            },
-            { user: TEST_USER_EDITOR }
+            COMMENTS_NOT_REQUIRED,
+            { container: TEST_FOLDER_CONTAINER, user: TEST_USER_EDITOR }
         );
 
         await waitForLifecycle(wrapper, 50); // retrieve statuses
@@ -114,14 +117,8 @@ describe('SampleStatusInput', () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} allowDisable />;
         const wrapper = mountWithAppServerContext(
             component,
-            {
-                api: getTestAPIWrapper(jest.fn, {
-                    folder: getFolderTestAPIWrapper(jest.fn, {
-                        getAuditSettings: jest.fn().mockResolvedValue({ requireUserComments: false }),
-                    }),
-                }),
-            },
-            { user: TEST_USER_STORAGE_EDITOR }
+            COMMENTS_NOT_REQUIRED,
+            { container: TEST_FOLDER_CONTAINER, user: TEST_USER_STORAGE_EDITOR }
         );
 
         await waitForLifecycle(wrapper, 50);
@@ -140,14 +137,8 @@ describe('SampleStatusInput', () => {
         const component = <SampleStatusInput {...DEFAULT_PROPS} formsy={false} />;
         const wrapper = mountWithAppServerContext(
             component,
-            {
-                api: getTestAPIWrapper(jest.fn, {
-                    folder: getFolderTestAPIWrapper(jest.fn, {
-                        getAuditSettings: jest.fn().mockResolvedValue({ requireUserComments: false }),
-                    }),
-                }),
-            },
-            { user: TEST_USER_STORAGE_EDITOR }
+            COMMENTS_NOT_REQUIRED,
+            { container: TEST_FOLDER_CONTAINER, user: TEST_USER_STORAGE_EDITOR }
         );
 
         await waitForLifecycle(wrapper, 50);

@@ -34,3 +34,4 @@ export const ManageDropdownButton: FC = props => {
         </DropdownButton>
     );
 };
+ManageDropdownButton.displayName = 'ManageDropdownButton';

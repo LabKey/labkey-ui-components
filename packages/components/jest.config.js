@@ -6,7 +6,8 @@ module.exports = {
                 path: '',
                 formats: {
                     dateFormat: "yyyy-MM-dd",
-                    dateTimeFormat: "yyyy-MM-dd HH:mm"
+                    dateTimeFormat: "yyyy-MM-dd HH:mm",
+                    timeFormat: "HH:mm"
                 }
             },
             project: {

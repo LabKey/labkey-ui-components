@@ -27,6 +27,7 @@ import {
     ATTACHMENT_TYPE,
     AUTOINT_TYPE,
     BOOLEAN_TYPE,
+    DATE_TYPE,
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
@@ -40,6 +41,7 @@ import {
     SAMPLE_TYPE,
     TEXT_CHOICE_TYPE,
     TEXT_TYPE,
+    TIME_TYPE,
     UNIQUE_ID_TYPE,
     USERS_TYPE,
     VISIT_DATE_TYPE,
@@ -418,7 +420,8 @@ describe('PropDescType', () => {
         expect(PropDescType.fromName('string')).toBe(TEXT_TYPE);
         expect(PropDescType.fromName('DateTime')).toBe(undefined);
         expect(PropDescType.fromName('dateTime')).toBe(DATETIME_TYPE);
-        expect(PropDescType.fromName('date')).toBe(undefined); // because not in PROP_DESC_TYPES
+        expect(PropDescType.fromName('date')).toBe(DATE_TYPE);
+        expect(PropDescType.fromName('time')).toBe(TIME_TYPE);
     });
 
     test('isFileType', () => {

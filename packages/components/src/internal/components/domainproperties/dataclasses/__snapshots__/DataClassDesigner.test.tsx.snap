@@ -3100,6 +3100,11 @@ exports[`DataClassDesigner initModel 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
+                              value="date"
+                            >
+                              Date
+                            </option>
+                            <option
                               value="dateTime"
                             >
                               Date Time
@@ -3113,6 +3118,11 @@ exports[`DataClassDesigner initModel 1`] = `
                               value="string"
                             >
                               Text
+                            </option>
+                            <option
+                              value="time"
+                            >
+                              Time
                             </option>
                           </select>
                         </div>

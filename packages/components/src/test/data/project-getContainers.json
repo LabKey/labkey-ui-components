@@ -2,7 +2,8 @@
   "formats" : {
     "dateTimeFormat" : "yyyy-MM-dd HH:mm",
     "numberFormat" : null,
-    "dateFormat" : "yyyy-MM-dd"
+    "dateFormat" : "yyyy-MM-dd",
+    "timeFormat" : "HH:mm"
   },
   "parentPath" : null,
   "type" : "folder",

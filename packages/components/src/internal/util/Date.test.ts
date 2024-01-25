@@ -152,7 +152,7 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'Date')).toBe('yyyy-MM-dd');
             expect(getColDateFormat(col, 'DateTime')).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, 'DateTime', true)).toBe('yyyy-MM-dd HH:mm');
-            expect(getColDateFormat(col, 'Time')).toBe('HH:mm:ss');
+            expect(getColDateFormat(col, 'Time')).toBe('HH:mm');
         });
     });
 

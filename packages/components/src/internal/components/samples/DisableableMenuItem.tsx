@@ -61,3 +61,4 @@ export const DisableableMenuItem: FC<Props> = memo(props => {
         </MenuItem>
     );
 });
+DisableableMenuItem.displayName = 'DisableableMenuItem';

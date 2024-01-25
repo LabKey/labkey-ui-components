@@ -146,7 +146,7 @@ describe('UserMenuGroup', () => {
         });
 
         const tree = mountWithAppServerContext(<UserMenuGroupImpl model={section} user={user} />);
-        verify(tree, ['', 'Sign In'], null, ['Help']);
+        verify(tree, ['Sign In'], null, ['Help']);
     });
 
     test('no help icon', () => {
@@ -155,7 +155,7 @@ describe('UserMenuGroup', () => {
         });
 
         const tree = mountWithAppServerContext(<UserMenuGroupImpl model={noHelpSection} user={user} />);
-        verify(tree, ['Documentation', '', 'Sign In'], null, null);
+        verify(tree, ['Documentation', 'Sign In'], null, null);
     });
 
     test('with admin items', () => {
@@ -165,7 +165,7 @@ describe('UserMenuGroup', () => {
 
         const tree = mountWithAppServerContext(<UserMenuGroupImpl model={withAdmins} user={user} />);
 
-        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Application Settings'], ['Help']);
+        verify(tree, ['Profile', 'Sign Out'], ['Application Settings'], ['Help']);
     });
 
     test('user logged in, but not in dev mode', () => {
@@ -174,7 +174,7 @@ describe('UserMenuGroup', () => {
         });
 
         const tree = mountWithAppServerContext(<UserMenuGroupImpl model={section} user={user} />);
-        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], null, ['Help']);
+        verify(tree, ['Profile', 'Sign Out'], null, ['Help']);
     });
 
     test('user logged in dev mode', () => {
@@ -184,7 +184,7 @@ describe('UserMenuGroup', () => {
         LABKEY.devMode = true;
 
         const tree = mountWithAppServerContext(<UserMenuGroupImpl model={section} user={user} />);
-        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Dev Tools', 'Enable Redux Tools'], ['Help']);
+        verify(tree, ['Profile', 'Sign Out'], ['Enable Redux Tools'], ['Help']);
     });
 
     test('user logged in extra items', () => {
@@ -200,7 +200,7 @@ describe('UserMenuGroup', () => {
         );
         const tree = mountWithAppServerContext(<UserMenuGroupImpl model={section} user={user} extraUserItems={extraUserItems} />);
 
-        verify(tree, ['Profile', 'Extra One', 'Extra Two', '', /* divider*/ 'Sign Out'], null, ['Help']);
+        verify(tree, ['Profile', 'Extra One', 'Extra Two', 'Sign Out'], null, ['Help']);
     });
 
     test('user logged in extra dev mode items', () => {
@@ -233,8 +233,8 @@ describe('UserMenuGroup', () => {
 
         verify(
             tree,
-            ['Profile', 'Extra One', 'Extra Two', '', /* divider*/ 'Sign Out'],
-            ['Dev Tools', 'Enable Redux Tools', 'Extra Dev One', 'Extra Dev Two'],
+            ['Profile', 'Extra One', 'Extra Two', 'Sign Out'],
+            ['Enable Redux Tools', 'Extra Dev One', 'Extra Dev Two'],
             ['Help']
         );
     });
@@ -252,7 +252,7 @@ describe('UserMenuGroup', () => {
 
         const tree = mountWithAppServerContext(<UserMenuGroupImpl model={withAdmins} user={user} />);
 
-        verify(tree, ['Profile', '', /* divider*/ 'Sign Out'], ['Application Settings'], ['Help', 'Release Notes']);
+        verify(tree, ['Profile', 'Sign Out'], ['Application Settings'], ['Help', 'Release Notes']);
     });
 
     test('with release note, without help', () => {
@@ -268,6 +268,6 @@ describe('UserMenuGroup', () => {
 
         const tree = mountWithAppServerContext(<UserMenuGroupImpl model={noHelpSection} user={user} />);
 
-        verify(tree, ['Documentation', '', 'Sign In'], null, ['Release Notes']);
+        verify(tree, ['Documentation', 'Sign In'], null, ['Release Notes']);
     });
 });

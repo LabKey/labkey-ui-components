@@ -31,7 +31,7 @@ describe('FindAndSearchDropdown', () => {
             },
         };
         const wrapper = mount(<FindAndSearchDropdown title="Test title" onSearch={jest.fn} />);
-        expect(wrapper.find('DropdownToggle').text().trim()).toBe('Test title');
+        expect(wrapper.find('.dropdown-toggle').text()).toBe('Test title');
         const items = wrapper.find('MenuItem');
         expect(items).toHaveLength(2);
         expect(items.at(0).text().trim()).toBe('Sample Finder');

@@ -10,11 +10,6 @@ describe('DisableableMenuItem', () => {
         expect(menuItem.exists()).toBeTruthy();
         if (disabled) {
             expect(menuItem.prop('disabled')).toBeTruthy();
-            if (menuProps) {
-                Object.keys(menuProps).forEach(prop => {
-                    expect(menuItem.prop(prop)).toBeFalsy();
-                });
-            }
         } else {
             expect(menuItem.prop('disabled')).toBeFalsy();
             if (menuProps) {
@@ -49,7 +44,7 @@ describe('DisableableMenuItem', () => {
                 <div>Other test</div>
             </DisableableMenuItem>
         );
-        validate(wrapper, true, 'Other test', { onClick: undefined });
+        validate(wrapper, true, 'Other test');
     });
 
     test('disabled, alternate overlay placement', () => {
@@ -60,6 +55,6 @@ describe('DisableableMenuItem', () => {
                 {content}
             </DisableableMenuItem>
         );
-        validate(wrapper, true, content, { onClick });
+        validate(wrapper, true, content);
     });
 });

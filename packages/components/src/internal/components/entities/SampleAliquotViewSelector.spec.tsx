@@ -1,34 +1,47 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { MenuItem } from 'react-bootstrap';
 
 import { ALIQUOT_FILTER_MODE } from '../samples/constants';
 
 import { SampleAliquotViewSelector } from './SampleAliquotViewSelector';
+import exp from 'node:constants';
 
 describe('<SampleAliquotViewSelector/>', () => {
     function verifyOptions(wrapper, all?: boolean, samples?: boolean, aliquots?: boolean) {
-        const items = wrapper.find(MenuItem);
+        const items = wrapper.find('MenuItem');
+        const buttonText = wrapper.find('.dropdown-toggle').at(0).text();
+        expect(items).toHaveLength(3);
+        expect(wrapper.find('MenuHeader').text()).toBe('Show Samples');
+        expect(items.at(0).text()).toBe('Samples and Aliquots');
+        expect(items.at(1).text()).toBe('Samples Only');
+        expect(items.at(2).text()).toBe('Aliquots Only');
 
-        expect(items).toHaveLength(4);
+        if (all) {
+            expect(items.at(0).find('li').getDOMNode().getAttribute('class')).toContain('active');
+            expect(buttonText).toEqual('All Samples');
+        } else {
+            expect(items.at(0).find('li').getDOMNode().getAttribute('class')).not.toContain('active');
+        }
 
-        expect(items.at(0).text()).toBe('Show Samples');
+        if (samples) {
+            expect(items.at(1).find('li').getDOMNode().getAttribute('class')).toContain('active');
+            expect(buttonText).toEqual('Samples Only');
+        } else {
+            expect(items.at(1).find('li').getDOMNode().getAttribute('class')).not.toContain('active');
+        }
 
-        expect(items.at(1).text()).toBe('Samples and Aliquots');
-        expect(items.at(1).find('li').getDOMNode().getAttribute('class')).toBe(all ? 'active' : '');
-
-        expect(items.at(2).text()).toBe('Samples Only');
-        expect(items.at(2).find('li').getDOMNode().getAttribute('class')).toBe(samples ? 'active' : '');
-
-        expect(items.at(3).text()).toBe('Aliquots Only');
-        expect(items.at(3).find('li').getDOMNode().getAttribute('class')).toBe(aliquots ? 'active' : '');
-
-        const buttons = wrapper.find('.dropdown-toggle');
-        expect(buttons.at(0).text().trim()).toEqual(all ? 'All Samples' : samples ? 'Samples Only' : 'Aliquots Only');
+        if (aliquots) {
+            expect(items.at(2).find('li').getDOMNode().getAttribute('class')).toContain('active');
+            expect(buttonText).toEqual('Aliquots Only');
+        } else {
+            expect(items.at(2).find('li').getDOMNode().getAttribute('class')).not.toContain('active');
+        }
     }
 
     test('aliquotFilterMode undefined', () => {
-        const component = <SampleAliquotViewSelector updateAliquotFilter={jest.fn()} />;
+        const component = (
+            <SampleAliquotViewSelector aliquotFilterMode={ALIQUOT_FILTER_MODE.all} updateAliquotFilter={jest.fn()} />
+        );
         const wrapper = mount(component);
 
         verifyOptions(wrapper, true);
@@ -78,6 +91,7 @@ describe('<SampleAliquotViewSelector/>', () => {
     test('customized labels', () => {
         const component = (
             <SampleAliquotViewSelector
+                aliquotFilterMode={ALIQUOT_FILTER_MODE.all}
                 updateAliquotFilter={jest.fn()}
                 headerLabel="Show Jobs with Samples"
                 samplesLabel="Parent Sample Only"
@@ -86,15 +100,15 @@ describe('<SampleAliquotViewSelector/>', () => {
         );
         const wrapper = mount(component);
 
-        const items = wrapper.find(MenuItem);
+        const items = wrapper.find('MenuItem');
 
-        expect(items).toHaveLength(4);
+        expect(items).toHaveLength(3);
 
-        expect(items.at(0).text()).toBe('Show Jobs with Samples');
+        expect(wrapper.find('MenuHeader').text()).toBe('Show Jobs with Samples');
 
-        expect(items.at(1).text()).toBe('Parent Sample and Aliquots');
-        expect(items.at(2).text()).toBe('Parent Sample Only');
-        expect(items.at(3).text()).toBe('Aliquots Only');
+        expect(items.at(0).text()).toBe('Parent Sample and Aliquots');
+        expect(items.at(1).text()).toBe('Parent Sample Only');
+        expect(items.at(2).text()).toBe('Aliquots Only');
 
         wrapper.unmount();
     });

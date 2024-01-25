@@ -84,3 +84,4 @@ export const SelectionMenuItem: FC<Props> = props => {
         </MenuItem>
     );
 };
+SelectionMenuItem.displayName = 'SelectionMenuItem';

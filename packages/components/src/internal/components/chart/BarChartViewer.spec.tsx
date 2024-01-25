@@ -9,7 +9,7 @@ describe('SampleButtons', () => {
     test('with insert and sample finder enabled', () => {
         const wrapper = mountWithAppServerContext(<SampleButtons />, undefined, { user: TEST_USER_AUTHOR });
         expect(wrapper.find('a').first().text()).toBe('Go to Sample Finder');
-        expect(wrapper.find('button').last().text()).toBe('Add Samples ');
+        expect(wrapper.find('button').last().text()).toBe('Add Samples');
         wrapper.unmount();
     });
 

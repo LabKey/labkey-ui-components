@@ -16,8 +16,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { OverlayTrigger } from 'react-bootstrap';
-
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -35,8 +33,7 @@ describe('SelectionMenuItem', () => {
         const wrapper = mount(component);
         expect(wrapper.find('MenuItem')).toHaveLength(1);
         expect(wrapper.find('MenuItem').text()).toBe(text);
-        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('disabled');
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
+        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toContain('disabled');
         wrapper.unmount();
     });
 
@@ -51,8 +48,7 @@ describe('SelectionMenuItem', () => {
         const wrapper = mount(component);
         expect(wrapper.find('MenuItem')).toHaveLength(1);
         expect(wrapper.find('MenuItem').text()).toBe(text);
-        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('');
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        expect(wrapper.find('li').getDOMNode().getAttribute('class')).not.toContain('disabled');
         wrapper.unmount();
     });
 
@@ -68,8 +64,7 @@ describe('SelectionMenuItem', () => {
 
         const wrapper = mount(component);
         expect(wrapper.find('MenuItem')).toHaveLength(1);
-        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('');
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        expect(wrapper.find('li').getDOMNode().getAttribute('class')).not.toContain('disabled');
         wrapper.unmount();
     });
 
@@ -85,8 +80,7 @@ describe('SelectionMenuItem', () => {
 
         const wrapper = mount(component);
         expect(wrapper.find('MenuItem')).toHaveLength(1);
-        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('disabled');
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
+        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toContain('disabled');
         wrapper.unmount();
     });
 

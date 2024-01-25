@@ -23,6 +23,15 @@ $editor-padding-horizontal: 15px;
 }
 .editor-toolbar__section {
     margin-right: 15px;
+
+    .dropdown-toggle {
+        color: #444444;
+        font-weight: 500;
+        text-decoration: none;
+    }
+    .dropdown-toggle:hover {
+        color: rgb(0, 102, 204);
+    }
 }
 .editor-toolbar {
     border-bottom: 1px solid #E5E5E5;
@@ -32,16 +41,6 @@ $editor-padding-horizontal: 15px;
 .editor-toolbar .dropdown-menu h2,
 .editor-toolbar .dropdown-menu h3 {
     margin: .2em 0;
-}
-.insert-menu {
-    .dropdown-toggle {
-        color: #444444;
-        font-weight: 500;
-        text-decoration: none;
-    }
-    .dropdown-toggle:hover {
-        color: rgb(0, 102, 204);
-    }
 }
 .insert-menu__attachment {
     a {

@@ -20,7 +20,7 @@ import { decodePart } from '../../../SchemaQuery';
 
 import { JsonType } from '../../../../internal/components/domainproperties/PropDescType';
 
-import { getColFormattedDateFilterValue } from '../../../../internal/util/Date';
+import { getColFormattedDateFilterValue, getColFormattedTimeFilterValue } from '../../../../internal/util/Date';
 
 import { QueryColumn } from '../../../QueryColumn';
 
@@ -216,7 +216,10 @@ export class FilterAction implements Action {
         let value = filter.getValue();
 
         // Issue 45140: match date display format in grid filter status pill display
-        if (column?.getDisplayFieldJsonType() === 'date' && !column?.isTimeColumn) {
+        if (column?.isTimeColumn) {
+            value = getColFormattedTimeFilterValue(column, value);
+        }
+        else if (column?.getDisplayFieldJsonType() === 'date') {
             value = getColFormattedDateFilterValue(column, value);
         }
 

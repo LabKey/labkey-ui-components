@@ -156,6 +156,16 @@ export function getColFormattedDateFilterValue(column: QueryColumn, value: strin
     return formatDate(new Date(valueFull), null, dateFormat);
 }
 
+export function getColFormattedTimeFilterValue(column: QueryColumn, value: string): string {
+    if (!value)
+        return value;
+    const timeFormat = getColDateFormat(column, column?.format ?? 'Time', false);
+    if (!timeFormat)
+        return value;
+    const valueFormat = value.toLowerCase().indexOf(" am") > 0 || value.toLowerCase().indexOf(" pm") > 0 ? 'hh:mm:ss a' : "HH:mm:ss";
+    return moment(value, valueFormat).format(timeFormat);
+}
+
 export function getDateFormat(container?: Partial<Container>): string {
     return (container ?? getServerContext().container).formats.dateFormat;
 }

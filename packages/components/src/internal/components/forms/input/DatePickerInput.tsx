@@ -183,7 +183,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
         const isTimeOnly = isTimeCol(queryColumn);
         return isTimeOnly
-            ? parseFNSTimeFormat(getColDateFormat(queryColumn, 'Time'))
+            ? parseFNSTimeFormat(getColDateFormat(queryColumn, queryColumn?.format ?? 'Time'))
             : parseDateFNSTimeFormat(this.getDateFormat());
     }
 

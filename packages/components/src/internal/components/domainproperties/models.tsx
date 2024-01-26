@@ -1505,45 +1505,45 @@ export function isPropertyTypeAllowed(
 }
 
 // Determines if a storage type (rangeURI) is a match for a concept type (like User or Subject)
-export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {
-    if (type.isLookup()) {
-        return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
+export function acceptablePropertyType(newType: PropDescType, originalRangeURI: string): boolean {
+    if (newType.isLookup()) {
+        return originalRangeURI === INT_RANGE_URI || originalRangeURI === STRING_RANGE_URI;
     }
 
-    if (type.isSample()) {
-        return rangeURI === INT_RANGE_URI;
+    if (newType.isSample()) {
+        return originalRangeURI === INT_RANGE_URI;
     }
 
-    if (type.isOntologyLookup()) {
-        return rangeURI === STRING_RANGE_URI;
+    if (newType.isOntologyLookup()) {
+        return originalRangeURI === STRING_RANGE_URI;
     }
 
     // Catches Users
-    if (type.isInteger() && PropDescType.isInteger(rangeURI)) {
+    if (newType.isInteger() && PropDescType.isInteger(originalRangeURI)) {
         return true;
     }
 
     // Original field is a string, we can't convert to a unique Id
-    if (type.isUniqueId() && PropDescType.isString(rangeURI)) {
+    if (newType.isUniqueId() && PropDescType.isString(originalRangeURI)) {
         return false;
     }
 
     // Original field is a uniqueId, text, or multi-line text, can convert to a string type
-    if (type.isString() && PropDescType.isString(rangeURI)) {
+    if (newType.isString() && PropDescType.isString(originalRangeURI)) {
         return true;
     }
 
     // Original field is a datetime, can convert to a date or time
-    if ((type.isTime() || type.isDate()) && PropDescType.isDateTime(rangeURI)) {
+    if ((newType.isTime() || newType.isDate()) && PropDescType.isDateTime(originalRangeURI)) {
         return true;
     }
 
     // Original field is a date, can convert to a datetime
-    if (type.isDateTime() && PropDescType.isDate(rangeURI)) {
+    if (newType.isDateTime() && PropDescType.isDate(originalRangeURI)) {
         return true;
     }
 
-    return rangeURI === type.rangeURI;
+    return originalRangeURI === newType.rangeURI;
 }
 
 function resolveDataType(rawField: Partial<IDomainField>): PropDescType {

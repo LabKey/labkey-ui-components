@@ -44,7 +44,7 @@ describe('QueryFormInputs', () => {
 
         expect(formWrapper.find('input').findWhere(input => input.prop('disabled'))).toHaveLength(0);
         expect(formWrapper.find(TextInput)).toHaveLength(3);
-        expect(formWrapper.find(DatePickerInput)).toHaveLength(1);
+        expect(formWrapper.find(DatePickerInput)).toHaveLength(3); // datetime, date, time
         expect(formWrapper.find(CheckboxInput)).toHaveLength(1);
         expect(formWrapper.find(TextChoiceInput)).toHaveLength(1);
         expect(formWrapper.find(SelectInput)).toHaveLength(1); // this is from the TextChoiceInput
@@ -52,7 +52,7 @@ describe('QueryFormInputs', () => {
         expect(formWrapper.find(FileInput)).toHaveLength(0);
 
         // by default all inputs except TextChoiceInput should render labels with FieldLabel
-        expect(formWrapper.find(FieldLabel)).toHaveLength(6);
+        expect(formWrapper.find(FieldLabel)).toHaveLength(8);
 
         formWrapper.unmount();
     });
@@ -70,7 +70,7 @@ describe('QueryFormInputs', () => {
         );
 
         expect(formWrapper.find(FieldLabel)).toHaveLength(0);
-        expect(formWrapper.find('.jest-field-label-test')).toHaveLength(6);
+        expect(formWrapper.find('.jest-field-label-test')).toHaveLength(8);
 
         formWrapper.unmount();
     });
@@ -114,7 +114,7 @@ describe('QueryFormInputs', () => {
             </Formsy>
         );
 
-        expect(formWrapper.find('input').findWhere(input => !input.prop('disabled'))).toHaveLength(6);
+        expect(formWrapper.find('input').findWhere(input => !input.prop('disabled'))).toHaveLength(8);
         expect(formWrapper.find('input').findWhere(input => input.prop('disabled'))).toHaveLength(1);
 
         formWrapper.unmount();

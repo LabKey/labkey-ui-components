@@ -33,6 +33,7 @@ const lookupCol = new QueryColumn({ name: 'test', lookup: { isPublic: false } as
 const publicLookupCol = new QueryColumn({ name: 'test', lookup: { isPublic: true } as QueryLookup });
 const validValuesCol = new QueryColumn({ name: 'test', validValues: ['a', 'b'] });
 const dateCol = new QueryColumn({ name: 'test', jsonType: 'date', caption: 'Test' });
+const timeCol = new QueryColumn({ name: 'test', jsonType: 'time', caption: 'Test' });
 
 describe('Cell', () => {
     function defaultProps(): CellProps {
@@ -206,6 +207,12 @@ describe('Cell', () => {
         cell.unmount();
     });
 
+    test('col is time', () => {
+        const cell = mount(<Cell {...defaultProps()} col={timeCol} />);
+        expectDate(cell);
+        cell.unmount();
+    });
+
     test('col is date, has value', () => {
         const values = List<ValueDescriptor>([
             {
@@ -218,8 +225,26 @@ describe('Cell', () => {
         cell.unmount();
     });
 
+    test('col is time, has value', () => {
+        const values = List<ValueDescriptor>([
+            {
+                display: '13:14',
+                raw: '13:14:00',
+            },
+        ]);
+        const cell = mount(<Cell {...defaultProps()} col={timeCol} values={values} />);
+        expectDate(cell, false, '13:14');
+        cell.unmount();
+    });
+
     test('col is date, focused', () => {
         const cell = mount(<Cell {...defaultProps()} col={dateCol} focused selected />);
+        expectDate(cell, true);
+        cell.unmount();
+    });
+
+    test('col is time, focused', () => {
+        const cell = mount(<Cell {...defaultProps()} col={timeCol} focused selected />);
         expectDate(cell, true);
         cell.unmount();
     });
@@ -233,6 +258,18 @@ describe('Cell', () => {
         ]);
         const cell = mount(<Cell {...defaultProps()} col={dateCol} values={values} focused selected />);
         expectDate(cell, true, '2022-08-05 00:00', '2022-08-05 00:00:00.000');
+        cell.unmount();
+    });
+
+    test('col is time, has value, focused', () => {
+        const values = List<ValueDescriptor>([
+            {
+                display: '13:14',
+                raw: '13:14:00',
+            },
+        ]);
+        const cell = mount(<Cell {...defaultProps()} col={timeCol} values={values} focused selected  />);
+        expectDate(cell, true, '', '13:14:00');
         cell.unmount();
     });
 });

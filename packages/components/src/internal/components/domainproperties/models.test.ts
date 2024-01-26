@@ -81,7 +81,7 @@ import {
     STRING_RANGE_URI,
     TEXT_CHOICE_CONCEPT_URI,
     DERIVATION_DATA_SCOPES,
-    DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
+    DOMAIN_FIELD_PRIMARY_KEY_LOCKED, DATETIME_RANGE_URI, DATE_RANGE_URI, TIME_RANGE_URI,
 } from './constants';
 
 beforeAll(() => {
@@ -520,6 +520,12 @@ describe('PropDescType', () => {
         expect(acceptablePropertyType(BOOLEAN_TYPE, BOOLEAN_RANGE_URI)).toBeTruthy();
         expect(acceptablePropertyType(UNIQUE_ID_TYPE, STRING_RANGE_URI)).toBeFalsy();
         expect(acceptablePropertyType(UNIQUE_ID_TYPE, MULTILINE_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(DATE_TYPE, DATETIME_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(TIME_TYPE, DATETIME_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(DATETIME_TYPE, DATE_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(DATETIME_TYPE, TIME_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(DATE_TYPE, TIME_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(TIME_TYPE, DATE_RANGE_URI)).toBeFalsy();
     });
 });
 

@@ -145,7 +145,7 @@ export interface IQueryColumn {
     nameExpression: string;
     // nullable: boolean;
     phiProtected: boolean;
-    'protected': boolean;
+    protected: boolean;
     rangeURI: string;
     readOnly: boolean;
     // recommendedVariable: boolean;
@@ -266,7 +266,7 @@ export class QueryColumn implements IQueryColumn {
     static ALIQUOTED_FROM = 'AliquotedFrom';
     static ALIQUOTED_FROM_CAPTION = 'Aliquoted From';
     static ALIQUOTED_FROM_LSID = 'AliquotedFromLSID';
-    static MEASUREMENT_UNITS_QUERY = "MeasurementUnits";
+    static MEASUREMENT_UNITS_QUERY = 'MeasurementUnits';
 
     static isUserLookup(lookupInfo: Record<string, any>): boolean {
         if (!lookupInfo) return false;

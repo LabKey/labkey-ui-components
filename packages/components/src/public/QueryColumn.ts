@@ -84,6 +84,10 @@ export class QueryLookup {
 
         return undefined;
     }
+
+    mutate(partial: Partial<QueryLookup>): QueryLookup {
+        return new QueryLookup(Object.assign({}, this, partial));
+    }
 }
 
 const defaultQueryColumn = {

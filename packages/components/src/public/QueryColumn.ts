@@ -56,6 +56,7 @@ export class QueryLookup {
     hasQueryFilters(operation?: Operation): boolean {
         return (
             isAllSamplesSchema(this.schemaQuery) ||
+            QueryColumn.isUserLookup(this) ||
             (operation !== undefined && this.getFilterGroup(operation) !== undefined)
         );
     }
@@ -80,6 +81,9 @@ export class QueryLookup {
                     Filter.Types[filterGroupFilter.operator.toUpperCase()]
                 )
             );
+        } else if (QueryColumn.isUserLookup(this)) {
+            // Issue 49439: filter out inactive users from insert and update form query selects
+            return [Filter.create('Active', true)];
         }
 
         return undefined;

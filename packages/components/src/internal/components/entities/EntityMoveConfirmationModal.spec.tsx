@@ -11,6 +11,8 @@ import { SelectInput } from '../forms/input/SelectInput';
 
 import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
 
+import { TEST_USER_EDITOR } from '../../userFixtures';
+
 import { EntityMoveConfirmationModal, EntityMoveConfirmationModalProps } from './EntityMoveConfirmationModal';
 
 describe('EntityMoveConfirmationModal', () => {
@@ -22,21 +24,31 @@ describe('EntityMoveConfirmationModal', () => {
         };
     }
 
+    const DEFAULT_APP_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
+
     test('loading', () => {
-        const wrapper = mountWithAppServerContext(<EntityMoveConfirmationModal {...getDefaultProps()} />);
+        const wrapper = mountWithAppServerContext(
+            <EntityMoveConfirmationModal {...getDefaultProps()} />,
+            undefined,
+            DEFAULT_APP_CONTEXT
+        );
         expect(wrapper.find(ConfirmModal)).toHaveLength(1);
         expect(wrapper.find(ConfirmModal).text()).toContain('Loading target projects...');
         wrapper.unmount();
     });
 
     test('error', async () => {
-        const wrapper = mountWithAppServerContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
-            api: getTestAPIWrapper(jest.fn, {
-                folder: getFolderTestAPIWrapper(jest.fn, {
-                    getProjects: () => Promise.reject('This is an error message.'),
+        const wrapper = mountWithAppServerContext(
+            <EntityMoveConfirmationModal {...getDefaultProps()} />,
+            {
+                api: getTestAPIWrapper(jest.fn, {
+                    folder: getFolderTestAPIWrapper(jest.fn, {
+                        getProjects: () => Promise.reject('This is an error message.'),
+                    }),
                 }),
-            }),
-        });
+            },
+            DEFAULT_APP_CONTEXT
+        );
         await waitForLifecycle(wrapper);
         expect(wrapper.find(ConfirmModal)).toHaveLength(1);
         expect(wrapper.find(ConfirmModal).text()).toContain('This is an error message.');
@@ -44,23 +56,27 @@ describe('EntityMoveConfirmationModal', () => {
     });
 
     test('no insert perm to any projects', async () => {
-        const wrapper = mountWithAppServerContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
-            api: getTestAPIWrapper(jest.fn, {
-                folder: getFolderTestAPIWrapper(jest.fn, {
-                    getProjects: () =>
-                        Promise.resolve([
-                            {
-                                ...TEST_PROJECT_CONTAINER,
-                                effectivePermissions: [PermissionTypes.Read],
-                            } as Container,
-                            {
-                                ...TEST_FOLDER_CONTAINER,
-                                effectivePermissions: [PermissionTypes.Update, PermissionTypes.Insert],
-                            } as Container,
-                        ]),
+        const wrapper = mountWithAppServerContext(
+            <EntityMoveConfirmationModal {...getDefaultProps()} />,
+            {
+                api: getTestAPIWrapper(jest.fn, {
+                    folder: getFolderTestAPIWrapper(jest.fn, {
+                        getProjects: () =>
+                            Promise.resolve([
+                                {
+                                    ...TEST_PROJECT_CONTAINER,
+                                    effectivePermissions: [PermissionTypes.Read],
+                                } as Container,
+                                {
+                                    ...TEST_FOLDER_CONTAINER,
+                                    effectivePermissions: [PermissionTypes.Update, PermissionTypes.Insert],
+                                } as Container,
+                            ]),
+                    }),
                 }),
-            }),
-        });
+            },
+            DEFAULT_APP_CONTEXT
+        );
         await waitForLifecycle(wrapper);
         expect(wrapper.find(ConfirmModal)).toHaveLength(1);
         expect(wrapper.find(ConfirmModal).text()).toContain(
@@ -70,23 +86,27 @@ describe('EntityMoveConfirmationModal', () => {
     });
 
     test('has perm to move to anothe project', async () => {
-        const wrapper = mountWithAppServerContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
-            api: getTestAPIWrapper(jest.fn, {
-                folder: getFolderTestAPIWrapper(jest.fn, {
-                    getProjects: () =>
-                        Promise.resolve([
-                            {
-                                ...TEST_PROJECT_CONTAINER,
-                                effectivePermissions: [PermissionTypes.Insert],
-                            } as Container,
-                            {
-                                ...TEST_FOLDER_CONTAINER,
-                                effectivePermissions: [PermissionTypes.Update, PermissionTypes.Insert],
-                            } as Container,
-                        ]),
+        const wrapper = mountWithAppServerContext(
+            <EntityMoveConfirmationModal {...getDefaultProps()} />,
+            {
+                api: getTestAPIWrapper(jest.fn, {
+                    folder: getFolderTestAPIWrapper(jest.fn, {
+                        getProjects: () =>
+                            Promise.resolve([
+                                {
+                                    ...TEST_PROJECT_CONTAINER,
+                                    effectivePermissions: [PermissionTypes.Insert],
+                                } as Container,
+                                {
+                                    ...TEST_FOLDER_CONTAINER,
+                                    effectivePermissions: [PermissionTypes.Update, PermissionTypes.Insert],
+                                } as Container,
+                            ]),
+                    }),
                 }),
-            }),
-        });
+            },
+            DEFAULT_APP_CONTEXT
+        );
         await waitForLifecycle(wrapper);
         expect(wrapper.find(ConfirmModal)).toHaveLength(1);
         expect(wrapper.find(SelectInput)).toHaveLength(1);
@@ -98,25 +118,29 @@ describe('EntityMoveConfirmationModal', () => {
     });
 
     test('can move to home project', async () => {
-        const wrapper = mountWithAppServerContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
-            api: getTestAPIWrapper(jest.fn, {
-                folder: getFolderTestAPIWrapper(jest.fn, {
-                    getProjects: () =>
-                        Promise.resolve([
-                            {
-                                ...TEST_PROJECT_CONTAINER,
-                                path: '/home',
-                                title: 'home',
-                                effectivePermissions: [PermissionTypes.Insert],
-                            } as Container,
-                            {
-                                ...TEST_FOLDER_CONTAINER,
-                                effectivePermissions: [PermissionTypes.Update, PermissionTypes.Insert],
-                            } as Container,
-                        ]),
+        const wrapper = mountWithAppServerContext(
+            <EntityMoveConfirmationModal {...getDefaultProps()} />,
+            {
+                api: getTestAPIWrapper(jest.fn, {
+                    folder: getFolderTestAPIWrapper(jest.fn, {
+                        getProjects: () =>
+                            Promise.resolve([
+                                {
+                                    ...TEST_PROJECT_CONTAINER,
+                                    path: '/home',
+                                    title: 'home',
+                                    effectivePermissions: [PermissionTypes.Insert],
+                                } as Container,
+                                {
+                                    ...TEST_FOLDER_CONTAINER,
+                                    effectivePermissions: [PermissionTypes.Update, PermissionTypes.Insert],
+                                } as Container,
+                            ]),
+                    }),
                 }),
-            }),
-        });
+            },
+            DEFAULT_APP_CONTEXT
+        );
         await waitForLifecycle(wrapper);
         expect(wrapper.find(ConfirmModal)).toHaveLength(1);
         expect(wrapper.find(SelectInput)).toHaveLength(1);

@@ -5,6 +5,7 @@ import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { act } from 'react-dom/test-utils';
 import { COMMENT_FIELD_ID } from '../forms/input/CommentTextArea';
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 describe('DiscardConsumedSamplesPanel', () => {
     function getCommentField(): HTMLTextAreaElement {
@@ -22,7 +23,12 @@ describe('DiscardConsumedSamplesPanel', () => {
                 onCommentChange={jest.fn()}
                 shouldDiscard
                 toggleShouldDiscard={jest.fn()}
-            />
+            />,
+            {
+                serverContext: {
+                    container: TEST_PROJECT_CONTAINER,
+                },
+            }
         );
 
         expect(getCommentField().disabled).toBe(false);
@@ -35,7 +41,12 @@ describe('DiscardConsumedSamplesPanel', () => {
                 onCommentChange={jest.fn()}
                 shouldDiscard={false}
                 toggleShouldDiscard={jest.fn()}
-            />
+            />,
+            {
+                serverContext: {
+                    container: TEST_PROJECT_CONTAINER,
+                },
+            }
         );
 
         expect(getCommentField().disabled).toBe(true);
@@ -50,15 +61,19 @@ describe('DiscardConsumedSamplesPanel', () => {
     });
 
     test('discard enabled and comments required', async () => {
-        await act(async() => {
+        await act(async () => {
             renderWithAppContext(
                 <DiscardConsumedSamplesPanel
                     onCommentChange={jest.fn()}
                     shouldDiscard
                     toggleShouldDiscard={jest.fn()}
-                />, {
+                />,
+                {
                     appContext: {
                         api: apiRequireComments,
+                    },
+                    serverContext: {
+                        container: TEST_PROJECT_CONTAINER,
                     },
                 }
             );

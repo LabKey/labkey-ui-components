@@ -226,7 +226,6 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {
@@ -267,7 +266,6 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       {
                         "activeContainer": Container {
                           "activeModules": [],
-                          "auditCommentsRequired": false,
                           "effectivePermissions": [],
                           "folderType": "",
                           "formats": {
@@ -307,7 +305,6 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                         {
                           "activeContainer": Container {
                             "activeModules": [],
-                            "auditCommentsRequired": false,
                             "effectivePermissions": [],
                             "folderType": "",
                             "formats": {
@@ -381,7 +378,6 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {
@@ -478,7 +474,6 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {
@@ -859,7 +854,6 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {
@@ -900,7 +894,6 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       {
                         "activeContainer": Container {
                           "activeModules": [],
-                          "auditCommentsRequired": false,
                           "effectivePermissions": [],
                           "folderType": "",
                           "formats": {
@@ -940,7 +933,6 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                         {
                           "activeContainer": Container {
                             "activeModules": [],
-                            "auditCommentsRequired": false,
                             "effectivePermissions": [],
                             "folderType": "",
                             "formats": {
@@ -1026,7 +1018,6 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {
@@ -1149,7 +1140,6 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {
@@ -1556,7 +1546,6 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {
@@ -1597,7 +1586,6 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       {
                         "activeContainer": Container {
                           "activeModules": [],
-                          "auditCommentsRequired": false,
                           "effectivePermissions": [],
                           "folderType": "",
                           "formats": {
@@ -1637,7 +1625,6 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                         {
                           "activeContainer": Container {
                             "activeModules": [],
-                            "auditCommentsRequired": false,
                             "effectivePermissions": [],
                             "folderType": "",
                             "formats": {
@@ -1723,7 +1710,6 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {
@@ -1844,7 +1830,6 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {
@@ -2257,7 +2242,6 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {
@@ -2298,7 +2282,6 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       {
                         "activeContainer": Container {
                           "activeModules": [],
-                          "auditCommentsRequired": false,
                           "effectivePermissions": [],
                           "folderType": "",
                           "formats": {
@@ -2338,7 +2321,6 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                         {
                           "activeContainer": Container {
                             "activeModules": [],
-                            "auditCommentsRequired": false,
                             "effectivePermissions": [],
                             "folderType": "",
                             "formats": {
@@ -2424,7 +2406,6 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {
@@ -2544,7 +2525,6 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     {
                       "activeContainer": Container {
                         "activeModules": [],
-                        "auditCommentsRequired": false,
                         "effectivePermissions": [],
                         "folderType": "",
                         "formats": {

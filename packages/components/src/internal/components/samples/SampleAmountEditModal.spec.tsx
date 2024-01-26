@@ -11,11 +11,14 @@ import { SampleAmountEditModal } from './SampleAmountEditModal';
 import { act } from 'react-dom/test-utils';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 describe('SampleAmountEditModal', () => {
     const testSchemaQuery = new SchemaQuery('schema', 'query', 'view');
     const emptyRow = {};
     const noun = 'noun';
+
+    const DEFAULT_APP_CONTEXT = { user: TEST_USER_EDITOR, container :TEST_PROJECT_CONTAINER };
 
     function validate(
         wrapper: ReactWrapper,
@@ -57,7 +60,7 @@ describe('SampleAmountEditModal', () => {
                 onClose={jest.fn()}
             />,
             undefined,
-            { user: TEST_USER_EDITOR }
+            DEFAULT_APP_CONTEXT
         );
 
         expect(wrapper.find('button').at(1).text()).toBe('Cancel');
@@ -83,7 +86,7 @@ describe('SampleAmountEditModal', () => {
                 onClose={jest.fn()}
             />,
             undefined,
-            { user: TEST_USER_EDITOR }
+            DEFAULT_APP_CONTEXT
         );
 
         validate(wrapper, undefined, row.Units.value, true, undefined, noun, false);
@@ -108,7 +111,7 @@ describe('SampleAmountEditModal', () => {
                 onClose={jest.fn()}
             />,
             undefined,
-            { user: TEST_USER_EDITOR }
+            DEFAULT_APP_CONTEXT
         );
 
         validate(wrapper, row.StoredAmount.value, row.Units.value, true, undefined, noun, false, true);
@@ -133,7 +136,7 @@ describe('SampleAmountEditModal', () => {
                 onClose={jest.fn()}
             />,
             undefined,
-            { user: TEST_USER_EDITOR }
+            DEFAULT_APP_CONTEXT
         );
 
         validate(wrapper, row.StoredAmount.value, row.Units.value, false, undefined, noun, false);
@@ -158,7 +161,7 @@ describe('SampleAmountEditModal', () => {
                 onClose={jest.fn()}
             />,
             undefined,
-            { user: TEST_USER_EDITOR }
+            DEFAULT_APP_CONTEXT
         );
 
         validate(wrapper, row.StoredAmount.value, row.Units.value, false, undefined, noun, false);
@@ -189,7 +192,7 @@ describe('SampleAmountEditModal', () => {
                     }),
                 }),
             },
-            { user: TEST_USER_EDITOR }
+            DEFAULT_APP_CONTEXT
         );
         await waitForLifecycle(wrapper);
 

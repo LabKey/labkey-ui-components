@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add `CommentTextArea` as a general component for entering reasons for data changes
 - Add `useDataChangeCommentsRequired` hook to retrieve the setting for whether comments/reasons are required
 
+### version 3.9.1
+*Released*: 26 January 2024
+- Add metric for shift-select usage.
+- Update the `SampleStatusTag` component to use app/server context.
+
 ### version 3.9.0
 *Released*: 23 January 2024
 - Add `api.security.getUsersWithPermissions` to `SecurityAPIWrapper`

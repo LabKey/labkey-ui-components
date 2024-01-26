@@ -1,17 +1,19 @@
 import React from 'react';
 
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
+
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
+
+import { TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../productFixtures';
 
 import { SampleStatusTag } from './SampleStatusTag';
 import { SampleStateType } from './constants';
 
-beforeEach(() => {
-    LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement'] } };
-});
-
 describe('SampleStatusTag', () => {
+    const serverContext = { moduleContext: TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
+
     const lockedStatus = {
         label: 'Locked for testing',
         statusType: SampleStateType.Locked,
@@ -35,7 +37,7 @@ describe('SampleStatusTag', () => {
         statusType: SampleStateType.Available,
     };
 
-    function validateIconOnly(wrapper: ReactWrapper, expectedClass: string) {
+    function validateIconOnly(wrapper: ReactWrapper, expectedClass: string): void {
         const helpTip = wrapper.find(LabelHelpTip);
         expect(helpTip.exists()).toBeTruthy();
         const icon = helpTip.find('i');
@@ -49,7 +51,7 @@ describe('SampleStatusTag', () => {
         expectedClass: string,
         expectedText: string,
         hasHelpTip = true
-    ) {
+    ): void {
         const spans = wrapper.find('span');
         expect(spans).toHaveLength(hasHelpTip ? 3 : 1);
         expect(spans.at(0).prop('className')).toContain(expectedClass);
@@ -62,53 +64,84 @@ describe('SampleStatusTag', () => {
     }
 
     test('not enabled', () => {
-        LABKEY.moduleContext = {};
-        const wrapper = mount(<SampleStatusTag status={lockedStatus} />);
+        const wrapper = mountWithAppServerContext(<SampleStatusTag status={lockedStatus} />);
         expect(wrapper.find('span').exists()).toBeFalsy();
     });
 
     test('enabled, no label', () => {
-        const wrapper = mount(<SampleStatusTag status={{ label: undefined, statusType: SampleStateType.Locked }} />);
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusTag status={{ label: undefined, statusType: SampleStateType.Locked }} />,
+            undefined,
+            serverContext
+        );
         expect(wrapper.find('span').exists()).toBeFalsy();
     });
 
     test('iconOnly, locked', () => {
-        const wrapper = mount(<SampleStatusTag status={lockedStatus} iconOnly={true} />);
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusTag status={lockedStatus} iconOnly />,
+            undefined,
+            serverContext
+        );
         validateIconOnly(wrapper, 'danger');
     });
 
     test('iconOnly, consumed', () => {
-        const wrapper = mount(<SampleStatusTag status={consumedStatus} iconOnly={true} />);
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusTag status={consumedStatus} iconOnly />,
+            undefined,
+            serverContext
+        );
         validateIconOnly(wrapper, 'warning');
     });
 
     test('iconOnly, available', () => {
-        const wrapper = mount(<SampleStatusTag status={availableStatus} iconOnly={true} />);
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusTag status={availableStatus} iconOnly />,
+            undefined,
+            serverContext
+        );
         validateIconOnly(wrapper, 'success');
     });
 
     test('iconOnly, no description', () => {
-        const wrapper = mount(<SampleStatusTag status={availableNoDescription} iconOnly={true} />);
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusTag status={availableNoDescription} iconOnly />,
+            undefined,
+            serverContext
+        );
         validateIconOnly(wrapper, 'success');
     });
 
     test('not iconOnly, locked status type', () => {
-        const wrapper = mount(<SampleStatusTag status={lockedStatus} />);
+        const wrapper = mountWithAppServerContext(<SampleStatusTag status={lockedStatus} />, undefined, serverContext);
         validateNotIconOnly(wrapper, 'danger', lockedStatus.label);
     });
 
     test('consumed status type', () => {
-        const wrapper = mount(<SampleStatusTag status={consumedStatus} />);
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusTag status={consumedStatus} />,
+            undefined,
+            serverContext
+        );
         validateNotIconOnly(wrapper, 'warning', consumedStatus.label);
     });
 
     test('available status type with description', () => {
-        const wrapper = mount(<SampleStatusTag status={availableStatus} />);
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusTag status={availableStatus} />,
+            undefined,
+            serverContext
+        );
         validateNotIconOnly(wrapper, 'success', availableStatus.label);
     });
 
     test('available status, hide description', () => {
-        const wrapper = mount(<SampleStatusTag status={availableStatus} hideDescription />);
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusTag status={availableStatus} hideDescription />,
+            undefined,
+            serverContext
+        );
         validateNotIconOnly(wrapper, 'success', availableStatus.label, false);
     });
 
@@ -117,7 +150,7 @@ describe('SampleStatusTag', () => {
             label: 'Also available',
             statusType: SampleStateType.Available,
         };
-        const wrapper = mount(<SampleStatusTag status={status} />);
+        const wrapper = mountWithAppServerContext(<SampleStatusTag status={status} />, undefined, serverContext);
         validateNotIconOnly(wrapper, 'success', status.label, false);
     });
 });

@@ -5,9 +5,12 @@ import { Filter } from '@labkey/api';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { isSampleStatusEnabled } from '../../app/utils';
 
-import { selectRows } from '../../query/selectRows';
 import { SCHEMAS } from '../../schemas';
 import { caseInsensitive } from '../../util/utils';
+
+import { useServerContext } from '../base/ServerContext';
+
+import { useAppContext } from '../../AppContext';
 
 import { SampleStatus } from './models';
 import { SampleStateType } from './constants';
@@ -20,6 +23,8 @@ interface Props {
 }
 
 export const SampleStatusTag: FC<Props> = memo(props => {
+    const { api } = useAppContext();
+    const { moduleContext } = useServerContext();
     const { status, iconOnly, className, hideDescription } = props;
     const { label, statusType, description } = status;
     const [queryStatusType, setQueryStatusType] = useState<SampleStateType>();
@@ -30,20 +35,23 @@ export const SampleStatusTag: FC<Props> = memo(props => {
             // if the queryModel had the status label value but not the type, query to get it from the SampleStatus table
             if (label && !statusType) {
                 try {
-                    const response = await selectRows({
+                    const response = await api.query.selectRows({
+                        columns: ['Label', 'StatusType'],
                         filterArray: [Filter.create('Label', label)],
                         schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_STATUS,
                     });
-                    const statusTypeStr = caseInsensitive(response.rows[0], 'StatusType')?.value;
-                    if (statusTypeStr) setQueryStatusType(SampleStateType[statusTypeStr]);
+                    if (response?.rows.length > 0) {
+                        const statusTypeStr = caseInsensitive(response.rows[0], 'StatusType')?.value;
+                        if (statusTypeStr) setQueryStatusType(SampleStateType[statusTypeStr]);
+                    }
                 } catch (e) {
                     console.error(e);
                 }
             }
         })();
-    }, [label, statusType]);
+    }, [api.query, label, statusType]);
 
-    if (!label || !isSampleStatusEnabled()) return null;
+    if (!label || !isSampleStatusEnabled(moduleContext)) return null;
 
     const icon = iconOnly ? (
         <i

@@ -516,7 +516,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { model, actions } = this.props;
         const checked = event.target.checked === true;
         // Look through to the nativeEvent to determine if the shift key is engaged.
-        actions.selectRow(model.id, checked, row.toJS(), (event.nativeEvent as any).shiftKey ?? false);
+        const useSelectionPivot = (event.nativeEvent as any).shiftKey ?? false;
+        actions.selectRow(model.id, checked, row.toJS(), useSelectionPivot);
+        if (useSelectionPivot) {
+            incrementClientSideMetricCount('grid', 'shiftSelect');
+        }
     };
 
     selectPage = (event): void => {

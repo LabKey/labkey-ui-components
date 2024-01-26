@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD January 2024
 - Issue 49481: Domain designer issue if the field index changes (reordering fields), we need to update the validValues state
+- Issue 49439: filter out inactive users from insert and update form query selects
 
 ### version 3.9.0
 *Released*: 23 January 2024

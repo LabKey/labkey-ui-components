@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.9.1
+*Released*: 26 January 2024
+- Add metric for shift-select usage.
+- Update the `SampleStatusTag` component to use app/server context.
+
 ### version 3.9.0
 *Released*: 23 January 2024
 - Add `api.security.getUsersWithPermissions` to `SecurityAPIWrapper`

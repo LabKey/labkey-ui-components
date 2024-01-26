@@ -256,18 +256,6 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    // test('time field, equal', () => {
-    //     const wrapper = mount(
-    //         <FilterExpressionView
-    //             field={timeField}
-    //             fieldFilters={[Filter.create('TimeField', "03:15:10", Filter.Types.EQ)]}
-    //         />
-    //     );
-    //
-    //     validate(wrapper, timeOps, 0, 2, 1, 0, 'eq', '03:15:10', undefined, false);
-    //     wrapper.unmount();
-    // });
-
     test('boolean field, equal', () => {
         const wrapper = mount(
             <FilterExpressionView field={booleanField} fieldFilters={[Filter.create('BooleanField', 'true')]} />

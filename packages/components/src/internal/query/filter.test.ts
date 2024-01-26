@@ -373,6 +373,12 @@ describe('getFilterLabKeySql', () => {
         ).toEqual('(alias."DateField" >= \'2020-08-06\' AND alias."DateField" < \'2020-08-07\')');
     });
 
+    test('time filter, eq', () => {
+        expect(getFilterLabKeySql(Filter.create('TimeField', '11:30:15', Filter.Types.Equals), 'time')).toEqual(
+            '"TimeField" = \'11:30:15\''
+        );
+    });
+
     test('date filter, eq', () => {
         expect(getFilterLabKeySql(Filter.create('DateField', dateStr, Filter.Types.DATE_EQUAL), 'date')).toEqual(
             '("DateField" >= \'2020-08-06\' AND "DateField" < \'2020-08-07\')'

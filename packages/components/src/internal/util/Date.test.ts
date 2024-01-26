@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { QueryColumn } from '../../public/QueryColumn';
-import { DATE_TYPE, DATETIME_TYPE } from '../components/domainproperties/PropDescType';
+import { DATE_TYPE, DATETIME_TYPE, TIME_TYPE } from '../components/domainproperties/PropDescType';
 
 import {
     formatDate,
@@ -22,6 +22,7 @@ import {
     generateNameWithTimestamp,
     getColDateFormat,
     getColFormattedDateFilterValue,
+    getColFormattedTimeFilterValue,
     getJsonDateTimeFormatString,
     getNDaysStrFromToday,
     getNextDateStr,
@@ -31,6 +32,7 @@ import {
     isRelativeDateFilterValue,
     parseDate,
     parseDateFNSTimeFormat,
+    parseFNSTimeFormat,
 } from './Date';
 
 describe('Date Utilities', () => {
@@ -105,12 +107,19 @@ describe('Date Utilities', () => {
             const col = new QueryColumn({ shortCaption: 'DateCol', rangeURI: DATETIME_TYPE.rangeURI });
             expect(getColDateFormat(col)).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, null, true)).toBe('yyyy-MM-dd');
+
+            const timeCol = new QueryColumn({ shortCaption: 'TimeCol', rangeURI: TIME_TYPE.rangeURI });
+            expect(getColDateFormat(timeCol)).toBe('HH:mm');
+            expect(getColDateFormat(col, 'Time')).toBe('HH:mm');
         });
 
         test('datePlaceholder without col.rangeURI', () => {
             const col = new QueryColumn({ shortCaption: 'DateCol', rangeURI: undefined });
             expect(getColDateFormat(col)).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, null, true)).toBe('yyyy-MM-dd');
+
+            const timeCol = new QueryColumn({ shortCaption: 'TimeCol', rangeURI: undefined });
+            expect(getColDateFormat(timeCol, 'Time')).toBe('HH:mm');
         });
 
         test('queryColumn.format', () => {
@@ -153,6 +162,16 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'DateTime')).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, 'DateTime', true)).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, 'Time')).toBe('HH:mm');
+        });
+    });
+
+    describe('parseFNSTimeFormat', () => {
+        test('various formats', () => {
+            expect(parseFNSTimeFormat('kk:mm aa')).toBe('HH:mm');
+            expect(parseFNSTimeFormat('HH:mm')).toBe('HH:mm');
+            expect(parseFNSTimeFormat('kk:mm')).toBe('HH:mm');
+            expect(parseFNSTimeFormat('hh:mm')).toBe('h:mm a');
+            expect(parseFNSTimeFormat('KK:mm')).toBe('h:mm a');
         });
     });
 
@@ -211,6 +230,44 @@ describe('Date Utilities', () => {
             });
             expect(getColFormattedDateFilterValue(col, '2022-04-19')).toBe('19/04/2022');
         });
+    });
+
+    describe('getColFormattedTimeFilterValue', () => {
+        test('format time with QueryColumn format', () => {
+            let col = new QueryColumn({
+                shortCaption: 'TimeCol',
+                rangeURI: TIME_TYPE.rangeURI,
+                format: 'HH:mm:ss',
+            });
+            expect(getColFormattedTimeFilterValue(col, '01:02 PM')).toBe('13:02:00');
+            expect(getColFormattedTimeFilterValue(col, '01:02:03 AM')).toBe('01:02:03');
+            expect(getColFormattedTimeFilterValue(col, '01:02 AM')).toBe('01:02:00');
+            expect(getColFormattedTimeFilterValue(col, '01:02')).toBe('01:02:00');
+            expect(getColFormattedTimeFilterValue(col, '21:02:30')).toBe('21:02:30');
+
+            col = new QueryColumn({
+                shortCaption: 'TimeCol',
+                rangeURI: TIME_TYPE.rangeURI,
+                format: 'hh:mm a',
+            });
+            expect(getColFormattedTimeFilterValue(col, '01:02 PM')).toBe('01:02 pm');
+            expect(getColFormattedTimeFilterValue(col, '01:02:03 AM')).toBe('01:02 am');
+            expect(getColFormattedTimeFilterValue(col, '01:02')).toBe('01:02 am');
+            expect(getColFormattedTimeFilterValue(col, '21:02:30')).toBe('09:02 pm');
+        });
+
+        test('formatDateTime without QueryColumn format', () => {
+            const col = new QueryColumn({
+                shortCaption: 'TimeCol',
+                rangeURI: TIME_TYPE.rangeURI,
+            });
+            expect(getColFormattedTimeFilterValue(col, '01:02 PM')).toBe('13:02');
+            expect(getColFormattedTimeFilterValue(col, '01:02:03 AM')).toBe('01:02');
+            expect(getColFormattedTimeFilterValue(col, '01:02 AM')).toBe('01:02');
+            expect(getColFormattedTimeFilterValue(col, '01:02:03')).toBe('01:02');
+            expect(getColFormattedTimeFilterValue(col, '21:02:03')).toBe('21:02');
+        });
+
     });
 
     describe('parseDate', () => {

@@ -1,5 +1,7 @@
-import React, { FC, memo, } from 'react';
-import { FormControl, } from 'react-bootstrap';
+import React, { FC, memo } from 'react';
+
+import { FormControl } from 'react-bootstrap';
+
 import { AMOUNT_PRECISION_ERROR_TEXT } from './constants';
 import { Alert } from '../base/Alert';
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
@@ -8,7 +10,9 @@ import {
     getAltMetricUnitOptions,
     getVolumeMinStep,
     isMeasurementUnitIgnoreCase,
-    isValuePrecisionValid, MEASUREMENT_UNITS, UnitModel
+    isValuePrecisionValid,
+    MEASUREMENT_UNITS,
+    UnitModel,
 } from '../../util/measurement';
 
 const deltaTooPreciseMessage = (
@@ -23,7 +27,7 @@ const negativeValueMessage = (
 );
 
 interface Props {
-    className?: string
+    className?: string;
     model: UnitModel;
     preferredUnit: string;
     inputName?: string;
@@ -76,26 +80,28 @@ export const StorageAmountInput: FC<Props> = memo(props => {
     }
 
     const containerClassName = className ?? "form-group storage-item-check-in-sampletype-row ";
-    return (<>
-        <div className={containerClassName}>
-            <div className={"checkin-amount-label " + (isDeltaValid ? "" : "has-error ")} >
-                {label}
-                {tipText && <LabelHelpTip placement="top" title="Stored Amount Delta"><p>{tipText}</p></LabelHelpTip>}
+    return (
+        <>
+            <div className={containerClassName}>
+                <div className={"checkin-amount-label " + (isDeltaValid ? "" : "has-error ")} >
+                    <label>{label}</label>
+                    {tipText && <LabelHelpTip title="Stored Amount Delta"><p>{tipText}</p></LabelHelpTip>}
+                </div>
+                <FormControl
+                    className="storage-item-check-in-text storage-amount-input "
+                    min={0}
+                    step={getVolumeMinStep(model.unit)}
+                    name={inputName ?? "amountDelta"}
+                    onChange={(event:any) => amountChangedHandler(event?.target?.value)}
+                    type="number"
+                    value={model.value}
+                    placeholder={"Enter amount..."}
+                />
+                {unitDisplay}
+                {preferredUnitMessage}
             </div>
-            <FormControl
-                className="storage-item-check-in-text storage-amount-input "
-                min={0}
-                step={getVolumeMinStep(model.unit)}
-                name={inputName ?? "amountDelta"}
-                onChange={(event:any) => amountChangedHandler(event?.target?.value)}
-                type="number"
-                value={model.value}
-                placeholder={"Enter amount..."}
-            />
-            {unitDisplay}
-            {preferredUnitMessage}
-        </div>
-        {isNegativeValue ? negativeValueMessage : undefined}
-        {!isNegativeValue && !isDeltaValid ? deltaTooPreciseMessage : undefined}
-    </>);
+            {isNegativeValue ? negativeValueMessage : undefined}
+            {!isNegativeValue && !isDeltaValid ? deltaTooPreciseMessage : undefined}
+        </>
+    );
 });

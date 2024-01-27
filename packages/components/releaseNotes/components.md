@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.10.0
+*Released*: 26 January 2024
+- Add `AuditSettings` panel for configuring whether user comments are required for data changes
+- Add `CommentTextArea` as a general component for entering reasons for data changes
+- Add `useDataChangeCommentsRequired` hook to retrieve the setting for whether comments/reasons are required
+
 ### version 3.9.1
 *Released*: 26 January 2024
 - Add metric for shift-select usage.

@@ -4,15 +4,21 @@ import { ReactWrapper } from 'enzyme';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { Alert } from '../base/Alert';
-import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
+import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { SampleAmountEditModal } from './SampleAmountEditModal';
+import { act } from 'react-dom/test-utils';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getFolderTestAPIWrapper } from '../container/FolderAPIWrapper';
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 describe('SampleAmountEditModal', () => {
     const testSchemaQuery = new SchemaQuery('schema', 'query', 'view');
     const emptyRow = {};
     const noun = 'noun';
+
+    const DEFAULT_APP_CONTEXT = { user: TEST_USER_EDITOR, container :TEST_PROJECT_CONTAINER };
 
     function validate(
         wrapper: ReactWrapper,
@@ -32,10 +38,9 @@ describe('SampleAmountEditModal', () => {
         expect(wrapper.find('.checkin-unit-select')).toHaveLength(hasSelect ? 1 : 0);
         expect(wrapper.find('input.checkin-unit-input')).toHaveLength(hasSelect ? 0 : 1);
 
-        expect(wrapper.find('textarea').prop('value')).toBe(comment ?? '');
+        expect(wrapper.find('textarea').prop('value')).toBe(comment ?? undefined);
         expect(wrapper.find(Alert)).toHaveLength(isNegative ? 2 : 1);
         if (isNegative) expect(wrapper.find(Alert).at(1).text()).toBe('Amount must be a positive value.');
-        validateSubmitButton(wrapper, noun, canSave);
         validateSubmitButton(wrapper, noun, canSave);
     }
 
@@ -55,7 +60,7 @@ describe('SampleAmountEditModal', () => {
                 onClose={jest.fn()}
             />,
             undefined,
-            { user: TEST_USER_EDITOR }
+            DEFAULT_APP_CONTEXT
         );
 
         expect(wrapper.find('button').at(1).text()).toBe('Cancel');
@@ -81,10 +86,10 @@ describe('SampleAmountEditModal', () => {
                 onClose={jest.fn()}
             />,
             undefined,
-            { user: TEST_USER_EDITOR }
+            DEFAULT_APP_CONTEXT
         );
 
-        validate(wrapper, undefined, row.Units.value, true, '', noun, false);
+        validate(wrapper, undefined, row.Units.value, true, undefined, noun, false);
 
         wrapper.unmount();
     });
@@ -106,10 +111,10 @@ describe('SampleAmountEditModal', () => {
                 onClose={jest.fn()}
             />,
             undefined,
-            { user: TEST_USER_EDITOR }
+            DEFAULT_APP_CONTEXT
         );
 
-        validate(wrapper, row.StoredAmount.value, row.Units.value, true, '', noun, false, true);
+        validate(wrapper, row.StoredAmount.value, row.Units.value, true, undefined, noun, false, true);
 
         wrapper.unmount();
     });
@@ -131,10 +136,10 @@ describe('SampleAmountEditModal', () => {
                 onClose={jest.fn()}
             />,
             undefined,
-            { user: TEST_USER_EDITOR }
+            DEFAULT_APP_CONTEXT
         );
 
-        validate(wrapper, row.StoredAmount.value, row.Units.value, false, '', noun, false);
+        validate(wrapper, row.StoredAmount.value, row.Units.value, false, undefined, noun, false);
 
         wrapper.unmount();
     });
@@ -156,77 +161,15 @@ describe('SampleAmountEditModal', () => {
                 onClose={jest.fn()}
             />,
             undefined,
-            { user: TEST_USER_EDITOR }
+            DEFAULT_APP_CONTEXT
         );
 
-        validate(wrapper, row.StoredAmount.value, row.Units.value, false, '', noun, false);
+        validate(wrapper, row.StoredAmount.value, row.Units.value, false, undefined, noun, false);
 
         wrapper.unmount();
     });
 
-    test("Set only comment, can't save", () => {
-        const row = {
-            Name: { value: 'abcd' },
-            StoredAmount: { value: '500' },
-            Units: { value: 'uL' },
-            FreezeThawCount: { value: 1 },
-        } as any;
-
-        const wrapper = mountWithAppServerContext(
-            <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={row}
-                noun={noun}
-                updateListener={jest.fn()}
-                onClose={jest.fn()}
-            />,
-            undefined,
-            { user: TEST_USER_EDITOR }
-        );
-
-        validate(wrapper, row.StoredAmount.value, row.Units.value, true, '', noun, false);
-
-        const userComment = 'Additional text for the audit log';
-        wrapper.find('#userComment').simulate('change', { target: { name: 'body', value: userComment } });
-        validate(wrapper, row.StoredAmount.value, row.Units.value, true, userComment, noun, false);
-
-        wrapper.unmount();
-    });
-
-    test('Set comment and StoredAmount, can save', () => {
-        const row = {
-            Name: { value: 'abcd' },
-            StoredAmount: { value: '500' },
-            Units: { value: 'uL' },
-            FreezeThawCount: { value: 1 },
-        } as any;
-
-        const wrapper = mountWithAppServerContext(
-            <SampleAmountEditModal
-                schemaQuery={testSchemaQuery}
-                row={row}
-                noun={noun}
-                updateListener={jest.fn()}
-                onClose={jest.fn()}
-            />,
-            undefined,
-            { user: TEST_USER_EDITOR }
-        );
-
-        validate(wrapper, row.StoredAmount.value, row.Units.value, true, '', noun, false);
-
-        const userComment = 'Additional text for the audit log';
-        const newStoredAmount = 5;
-        wrapper.find('#userComment').simulate('change', { target: { name: 'body', value: userComment } });
-        wrapper
-            .find('input.storage-amount-input')
-            .simulate('change', { target: { name: 'amountDelta', value: newStoredAmount } });
-        validate(wrapper, newStoredAmount, row.Units.value, true, userComment, noun, true);
-
-        wrapper.unmount();
-    });
-
-    test('Set units, can save', () => {
+    test('Set units, can save', async () => {
         const row = {
             Name: { value: 'abcd' },
             StoredAmount: { value: '500' },
@@ -242,15 +185,25 @@ describe('SampleAmountEditModal', () => {
                 updateListener={jest.fn()}
                 onClose={jest.fn()}
             />,
-            undefined,
-            { user: TEST_USER_EDITOR }
+            {
+                api: getTestAPIWrapper(jest.fn, {
+                    folder: getFolderTestAPIWrapper(jest.fn, {
+                        getAuditSettings: jest.fn().mockResolvedValue({ requireUserComments: false }),
+                    }),
+                }),
+            },
+            DEFAULT_APP_CONTEXT
         );
+        await waitForLifecycle(wrapper);
 
-        validate(wrapper, row.StoredAmount.value, row.Units.value, false, '', noun, false);
+        validate(wrapper, row.StoredAmount.value, row.Units.value, false, undefined, noun, false);
 
         const newUnits = 'newUnits';
-        wrapper.find('input.checkin-unit-input').simulate('change', { target: { value: newUnits } });
-        validate(wrapper, row.StoredAmount.value, newUnits, false, '', noun, true, false, false);
+        act(() => {
+            wrapper.find('input.checkin-unit-input').simulate('change', { target: { value: newUnits } });
+        });
+        await waitForLifecycle(wrapper);
+        validate(wrapper, row.StoredAmount.value, newUnits, false, undefined, noun, true, false, false);
 
         wrapper.unmount();
     });

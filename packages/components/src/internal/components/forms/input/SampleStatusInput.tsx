@@ -2,7 +2,6 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState }
 
 import {
     DISCARD_CONSUMED_CHECKBOX_FIELD,
-    DISCARD_CONSUMED_COMMENT_FIELD,
     DiscardConsumedSamplesPanel,
 } from '../../samples/DiscardConsumedSamplesPanel';
 
@@ -20,6 +19,7 @@ import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 import { getSampleStatusContainerFilter } from '../../samples/utils';
 
 import { InputRendererProps } from './types';
+import { COMMENT_FIELD_ID } from './CommentTextArea';
 
 interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'containerFilter' | 'schemaQuery' | 'valueColumn'> {
     api?: ComponentsAPIWrapper;
@@ -73,7 +73,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
 
     const onCommentChange = useCallback(
         event => {
-            onAdditionalFormDataChange?.(DISCARD_CONSUMED_COMMENT_FIELD, event.target.value);
+            onAdditionalFormDataChange?.(COMMENT_FIELD_ID, event.target.value);
         },
         [onAdditionalFormDataChange]
     );

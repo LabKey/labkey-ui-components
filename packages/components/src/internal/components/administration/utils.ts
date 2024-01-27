@@ -23,9 +23,10 @@ export function isSessionKeyGenerationEnabled(moduleContext: ModuleContext): boo
 
 export function getApiExpirationMessage(moduleContext: ModuleContext): string {
     const expSeconds = moduleContext?.api?.apiKeyExpirationSeconds;
-    if (!expSeconds || expSeconds === -1)
-        return "never expire";
-    return "expire after " + moment.duration(expSeconds, 'seconds').humanize();
+    if (!expSeconds || expSeconds === -1) {
+        return 'never expire';
+    }
+    return 'expire after ' + moment.duration(expSeconds, 'seconds').humanize();
 }
 
 export function showPremiumFeatures(moduleContext?: ModuleContext): boolean {

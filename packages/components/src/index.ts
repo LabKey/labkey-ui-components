@@ -40,6 +40,7 @@ import { SchemaDetails } from './internal/SchemaDetails';
 import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { ExtendedMap } from './public/ExtendedMap';
+import { useContainerUser } from './internal/components/container/actions';
 
 import {
     ServerContextConsumer,
@@ -295,11 +296,13 @@ import { TextInput } from './internal/components/forms/input/TextInput';
 import { TextAreaInput } from './internal/components/forms/input/TextAreaInput';
 import { FieldEditForm, FieldEditProps } from './internal/components/forms/input/FieldEditInput';
 import { ColorPickerInput } from './internal/components/forms/input/ColorPickerInput';
+import { CommentTextArea, COMMENT_FIELD_ID } from './internal/components/forms/input/CommentTextArea';
 import { ColorIcon } from './internal/components/base/ColorIcon';
 import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailDisplay';
+import { useDataChangeCommentsRequired } from './internal/components/forms/input/useDataChangeCommentsRequired';
 
 import {
     getUsersWithPermissions,
@@ -371,7 +374,6 @@ import { StorageAmountInput } from './internal/components/samples/StorageAmountI
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
-import { useContainerUser } from './internal/components/container/actions';
 
 import { BaseDomainDesigner } from './internal/components/domainproperties/BaseDomainDesigner';
 import {
@@ -825,7 +827,6 @@ import {
 import { DELIMITER, DETAIL_TABLE_CLASSES } from './internal/components/forms/constants';
 import {
     DISCARD_CONSUMED_CHECKBOX_FIELD,
-    DISCARD_CONSUMED_COMMENT_FIELD,
     DiscardConsumedSamplesPanel,
 } from './internal/components/samples/DiscardConsumedSamplesPanel';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './internal/components/picklist/constants';
@@ -833,6 +834,7 @@ import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 import { FormButtons } from './internal/FormButtons';
 import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
+import { getFolderTestAPIWrapper } from './internal/components/container/FolderAPIWrapper';
 import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
@@ -883,6 +885,7 @@ const App = {
     getProjectDataClassExclusion,
     getProjectSampleTypeExclusion,
     getProjectPath,
+    getFolderTestAPIWrapper,
     getSecurityTestAPIWrapper,
     hasPremiumModule,
     hasProductProjects,
@@ -981,13 +984,13 @@ const App = {
     DELIMITER,
     DETAIL_TABLE_CLASSES,
     DISCARD_CONSUMED_CHECKBOX_FIELD,
-    DISCARD_CONSUMED_COMMENT_FIELD,
     SAMPLE_FILTER_METRIC_AREA,
     ALIQUOTED_FROM_COL,
     PRIVATE_PICKLIST_CATEGORY,
     PUBLIC_PICKLIST_CATEGORY,
     DATA_IMPORT_TOPIC,
     PLATES_KEY,
+    COMMENT_FIELD_ID,
 };
 
 const Hooks = {
@@ -1122,6 +1125,8 @@ export {
     TextInput,
     ColorPickerInput,
     ColorIcon,
+    CommentTextArea,
+    useDataChangeCommentsRequired,
     FieldEditForm,
     FieldEditProps,
     QuerySelect,

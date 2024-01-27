@@ -39,6 +39,7 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     canSubmitNotDirty?: boolean;
     cancelText?: string;
     countText?: string;
+    disabled?: boolean;
     creationTypeOptions?: SampleCreationTypeModel[];
     errorCallback?: (error: any) => void;
     errorMessagePrefix?: string;
@@ -263,6 +264,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             asModal,
             cancelText,
             canSubmitNotDirty,
+            disabled,
             submitForEditText,
             submitText,
             isSubmittedText,
@@ -294,7 +296,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                 {onSubmitForEdit && submitForEditText && (
                     <button
                         className={`test-loc-submit-for-edit-button btn btn-${onSubmit ? 'default' : 'success'}`}
-                        disabled={isSubmitting || !canSubmit || count === 0}
+                        disabled={disabled || isSubmitting || !canSubmit || count === 0}
                         onClick={this.setSubmittingForEdit}
                         type="submit"
                     >
@@ -306,6 +308,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                     <button
                         className="test-loc-submit-button btn btn-success"
                         disabled={
+                            disabled ||
                             isSubmitting ||
                             fieldEnabledCount === 0 ||
                             !canSubmit ||

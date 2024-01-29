@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.??.?
+*Released*: ?? ?????? 2024
+- RReport: Render errors encountered when running the R Report
+
 ### version 3.13.0
 *Released*: 31 January 2024
 - Issue 49481: Domain designer issue if the field index changes (reordering fields), we need to update the validValues state

@@ -29,8 +29,8 @@ import { ChartConfig, ChartQueryConfig } from './models';
 
 const ChartLoadingMask: FC = memo(() => (
     <div className="chart-loading-mask">
-        <div className="chart-loading-mask__background" />
-        <LoadingSpinner msg="Loading Chart..." wrapperClassName="loading-spinner" />
+        <div className="chart-loading-mask__background"/>
+        <LoadingSpinner msg="Loading Chart..." wrapperClassName="loading-spinner"/>
     </div>
 ));
 
@@ -153,23 +153,42 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
         <div className="svg-chart chart-body">
             {error !== undefined && <span className="text-danger">{error}</span>}
             {loadError !== undefined && <span className="text-danger">{loadError}</span>}
-            {isLoading(loadingState) && <ChartLoadingMask />}
-            <div className="svg-chart__chart" id={divId} ref={ref} />
+            {isLoading(loadingState) && <ChartLoadingMask/>}
+            <div className="svg-chart__chart" id={divId} ref={ref}/>
         </div>
     );
 });
 SVGChart.displayName = 'SVGChart';
 
+`
+<div><font class="labkey-error">Error executing command</font>
+    <pre>javax.script.ScriptException: javax.script.ScriptException: An error occurred when running the script &#039;script.R&#039;, exit code: 1).
+Error in plot.window(xlim, ylim, log = log, ...) :
+  need finite &#039;xlim&#039; values
+Calls: barplot -&gt; barplot.default -&gt; plot.window
+In addition: Warning messages:
+1: In min(w.l) : no non-missing arguments to min; returning Inf
+2: In max(w.r) : no non-missing arguments to max; returning -Inf
+3: In min(x) : no non-missing arguments to min; returning Inf
+4: In max(x) : no non-missing arguments to max; returning -Inf
+Execution halted
+</pre>
+</div>
+`
+
 interface RReportData {
+    error?: string;
     fileAnchors: Array<{
         href: string;
         text: string;
     }>;
     imageUrls: string[];
 }
+
 function parseRReportHtml(html: string): RReportData {
     let _fileAnchors;
     let _imageUrls;
+    let error = undefined;
     if (html !== undefined) {
         // The HTML returned by our server includes a bunch of stuff we don't want. So instead of inserting it
         // directly we'll just grab the URLs for all the images named "resultImage", which are the outputs from an
@@ -183,16 +202,22 @@ function parseRReportHtml(html: string): RReportData {
         }));
         const resultImages = el.querySelectorAll('img[name="resultImage"]');
         _imageUrls = Array.from(resultImages).map((img: HTMLImageElement) => img.src);
+        const errorEl = el.querySelector('.labkey-error');
+
+        if (errorEl) {
+            error = errorEl.parentElement.querySelector('pre')?.innerText;
+        }
     }
 
     return {
+        error,
         fileAnchors: _fileAnchors?.length > 0 ? _fileAnchors : undefined,
         imageUrls: _imageUrls?.length > 0 ? _imageUrls : undefined,
     };
 }
 
 const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
-    const { dataRegionName, error, reportId } = chart;
+    const { dataRegionName, error: chartError, reportId } = chart;
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [reportHtml, setReportHtml] = useState<string>(undefined);
     const [loadError, setLoadError] = useState<string>(undefined);
@@ -212,28 +237,41 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
         // We purposely don't use filters as a dep, see note in computeFilterKey
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [api, reportId, filterKey]);
-    const { fileAnchors, imageUrls } = useMemo(() => parseRReportHtml(reportHtml), [reportHtml]);
+    const { error: outputError, fileAnchors, imageUrls } = useMemo(() => parseRReportHtml(reportHtml), [reportHtml]);
 
     useEffect(() => {
-        if (error) {
+        if (chartError) {
             // We won't bother loading anything if the chart object has an error
             setLoadingState(LoadingState.LOADED);
         } else {
             loadReport();
         }
-    }, [error, loadReport]);
+    }, [chartError, loadReport]);
 
     const isEmpty =
         loadingState === LoadingState.LOADED &&
-        error === undefined &&
+        chartError === undefined &&
         fileAnchors === undefined &&
         imageUrls === undefined;
 
     return (
         <div className="r-report chart-body">
-            {error !== undefined && <span className="text-danger">{error}</span>}
+            {chartError !== undefined && <span className="text-danger">{chartError}</span>}
             {loadError !== undefined && <span className="text-danger">{loadError}</span>}
-            {isLoading(loadingState) && <ChartLoadingMask />}
+            {outputError !== undefined && (
+                <div>
+                    <span className="text-danger">An error occurred while executing the report:</span>
+                    <pre>
+                        {outputError}
+                    </pre>
+                </div>
+            )}
+            {isLoading(loadingState) && <ChartLoadingMask/>}
+            {isEmpty && (
+                <div className="r-report__errors text-danger">
+                    No output detected, you may not have enough data, or there may be an issue with your R Report
+                </div>
+            )}
             {fileAnchors !== undefined && (
                 <div className="r-report__files">
                     {fileAnchors.map(({ href, text }) => {
@@ -241,7 +279,7 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
                             <a className="attachment-card" href={href} key={href} title={text}>
                                 <div className="attachment-card__body">
                                     <div className="attachment-card__icon">
-                                        <span className="attachment-card__icon_tile fa fa-file-text-o" />
+                                        <span className="attachment-card__icon_tile fa fa-file-text-o"/>
                                     </div>
                                     <div className="attachment-card__content">
                                         <div className="attachment-card__name">{text}</div>
@@ -256,14 +294,9 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
                 <div className="r-report__images">
                     {imageUrls.map(url => (
                         <div key={url} className="r-report__image">
-                            <img alt="R Report Image Output" src={url} />
+                            <img alt="R Report Image Output" src={url}/>
                         </div>
                     ))}
-                </div>
-            )}
-            {isEmpty && (
-                <div className="r-report__errors error-msg">
-                    No output detected, you may not have enough data, or there may be an issue with your R Report
                 </div>
             )}
         </div>
@@ -273,10 +306,10 @@ RReport.displayName = 'RReport';
 
 export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, container, filters }) => {
     if (chart.type === DataViewInfoTypes.RReport) {
-        return <RReport api={api} chart={chart} container={container} filters={filters} />;
+        return <RReport api={api} chart={chart} container={container} filters={filters}/>;
     }
 
-    return <SVGChart api={api} chart={chart} container={container} filters={filters} />;
+    return <SVGChart api={api} chart={chart} container={container} filters={filters}/>;
 });
 
 Chart.displayName = 'Chart';

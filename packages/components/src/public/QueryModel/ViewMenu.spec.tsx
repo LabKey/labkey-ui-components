@@ -71,27 +71,27 @@ describe('ViewMenu', () => {
         // "No Extra Column"  view shows up under "Shared Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
         wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
+        expect(wrapper.find('MenuHeader').at(0).text()).toBe('Shared Saved Views');
         items = wrapper.find('MenuItem');
-        expect(items).toHaveLength(5);
-        expect(items.at(2).text()).toBe('Shared Saved Views');
-        expect(items.at(3).text()).toBe('No Extra Column');
+        expect(items).toHaveLength(3);
+        expect(items.at(1).text()).toBe('No Extra Column');
 
         // "No Extra Column" view shows up under "My Saved Views"
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_PRIVATE_VIEWS, {}, []);
         wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
+        expect(wrapper.find('MenuHeader').at(0).text()).toBe('Your Saved Views');
         items = wrapper.find('MenuItem');
-        expect(items.at(2).text()).toBe('Your Saved Views');
-        expect(items.at(3).text()).toBe('No Extra Column');
+        expect(items.at(1).text()).toBe('No Extra Column');
 
         // Same as previous, but the No Extra Column view is set to active.
         model = model.mutate({
             schemaQuery: new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn'),
         });
         wrapper = mount(<ViewMenu {...DEFAULT_PROPS} hideEmptyViewMenu={true} model={model} />);
+        expect(wrapper.find('MenuHeader').at(0).text()).toBe('Your Saved Views');
         items = wrapper.find('MenuItem');
-        expect(items.at(2).text()).toBe('Your Saved Views');
-        expect(items.at(3).text()).toBe('No Extra Column');
-        expect(items.at(3).prop('active')).toBe(true);
+        expect(items.at(1).text()).toBe('No Extra Column');
+        expect(items.at(1).prop('active')).toBe(true);
 
         // "No Extra Column" view is hidden so does not show up
         model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO_HIDDEN_VIEWS, {}, []);
@@ -110,10 +110,10 @@ describe('ViewMenu', () => {
             <ViewMenu {...DEFAULT_PROPS} allowViewCustomization={true} hideEmptyViewMenu={false} model={model} />
         );
         const items = wrapper.find('MenuItem');
-        expect(items).toHaveLength(5);
-        expect(items.at(2).text()).toBe('Customize Grid View');
-        expect(items.at(3).text()).toBe('Manage Saved Views');
-        expect(items.at(4).text()).toBe('Save Grid View');
+        expect(items).toHaveLength(4);
+        expect(items.at(1).text()).toBe('Customize Grid View');
+        expect(items.at(2).text()).toBe('Manage Saved Views');
+        expect(items.at(3).text()).toBe('Save Grid View');
 
         wrapper.unmount();
     });
@@ -140,10 +140,10 @@ describe('ViewMenu', () => {
             <ViewMenu {...DEFAULT_PROPS} allowViewCustomization={true} hideEmptyViewMenu={false} model={model} />
         );
         const items = wrapper.find('MenuItem');
-        expect(items).toHaveLength(4); // one separator and three options
-        expect(items.at(1).text()).toBe('Customize Grid View');
-        expect(items.at(2).text()).toBe('Manage Saved Views');
-        expect(items.at(3).text()).toBe('Save Grid View');
+        expect(items).toHaveLength(3);
+        expect(items.at(0).text()).toBe('Customize Grid View');
+        expect(items.at(1).text()).toBe('Manage Saved Views');
+        expect(items.at(2).text()).toBe('Save Grid View');
         wrapper.unmount();
     });
 

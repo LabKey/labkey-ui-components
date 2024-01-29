@@ -15,7 +15,7 @@ interface Props {
 
 export const DisableableButton: FC<Props> = memo(props => {
     const { bsStyle = 'default', children, className = '', disabledMsg, onClick, title } = props;
-    const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLButtonElement>(
+    const { onMouseEnter, onMouseOut, portalEl, show, targetRef } = useOverlayTriggerState<HTMLButtonElement>(
         'disabled-button-overlay',
         disabledMsg !== undefined,
         false
@@ -36,7 +36,7 @@ export const DisableableButton: FC<Props> = memo(props => {
             disabled={disabledMsg !== undefined}
             onClick={onClick}
             onPointerEnter={onMouseEnter}
-            onPointerLeave={onMouseLeave}
+            onPointerLeave={onMouseOut}
             type="button"
             ref={targetRef}
         >

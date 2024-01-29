@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
-import { Dropdown, MenuItem, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import moment from 'moment';
 import { User, UserWithPermissions } from '@labkey/api';
 
@@ -8,6 +8,8 @@ import { resolveErrorMessage } from '../util/messaging';
 import { Alert } from '../components/base/Alert';
 
 import { UserLink } from '../components/user/UserLink';
+
+import { DropdownAnchor, MenuItem } from '../dropdowns';
 
 import { AnnouncementModel } from './model';
 import { ThreadEditor, ThreadEditorProps } from './ThreadEditor';
@@ -106,23 +108,22 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
                     {isEdited ? ' (Edited)' : ''}
                 </span>
                 {(onDelete || onEdit) && (
-                    <Dropdown className="thread-block-header__menu" componentClass="span" id="thread-block-header-menu">
-                        <Dropdown.Toggle useAnchor={true}>
-                            <i className="fa fa-ellipsis-v" />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu className="pull-right">
-                            {onEdit !== undefined && (
-                                <MenuItem className="thread-block-header__menu-edit" onClick={onEdit}>
-                                    Edit Comment
-                                </MenuItem>
-                            )}
-                            {onDelete !== undefined && (
-                                <MenuItem className="thread-block-header__menu-delete" onClick={onShowDelete}>
-                                    Delete {isThread ? 'Thread' : 'Reply'}
-                                </MenuItem>
-                            )}
-                        </Dropdown.Menu>
-                    </Dropdown>
+                    <DropdownAnchor
+                        className="thread-block-header__menu"
+                        title={<i className="fa fa-ellipsis-v" />}
+                        pullRight
+                    >
+                        {onEdit !== undefined && (
+                            <MenuItem className="thread-block-header__menu-edit" onClick={onEdit}>
+                                Edit Comment
+                            </MenuItem>
+                        )}
+                        {onDelete !== undefined && (
+                            <MenuItem className="thread-block-header__menu-delete" onClick={onShowDelete}>
+                                Delete {isThread ? 'Thread' : 'Reply'}
+                            </MenuItem>
+                        )}
+                    </DropdownAnchor>
                 )}
             </div>
             {showDeleteModal && isThread && <DeleteThreadModal cancel={onCancelDelete} onDelete={onDelete} />}
@@ -229,7 +230,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                         {error !== undefined && <Alert>{error}</Alert>}
                         <div className="thread-block-body__content" dangerouslySetInnerHTML={threadBody} />
 
-                        <ThreadAttachments attachments={thread.attachments ?? []} containerPath={containerPath}/>
+                        <ThreadAttachments attachments={thread.attachments ?? []} containerPath={containerPath} />
 
                         {allowReply && (
                             <span className="clickable-text thread-block__reply" onClick={onReply}>
@@ -238,7 +239,9 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                         )}
                         {showReplyToggle && (
                             <span className="clickable-text thread-block__toggle-reply" onClick={onToggleResponses}>
-                                {showResponses ? 'Hide all replies' : `Show all replies (${thread.responses.length.toLocaleString()})`}
+                                {showResponses
+                                    ? 'Hide all replies'
+                                    : `Show all replies (${thread.responses.length.toLocaleString()})`}
                             </span>
                         )}
                         {showRecent && (

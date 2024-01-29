@@ -99,7 +99,6 @@ import { LockIcon } from './internal/components/base/LockIcon';
 import { ExpandableFilterToggle } from './internal/components/base/ExpandableFilterToggle';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
-import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
 import { SubMenu } from './internal/components/menus/SubMenu';
 import { SubMenuItem } from './internal/components/menus/SubMenuItem';
 import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem';
@@ -165,7 +164,6 @@ import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons } from './internal/components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './internal/components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
-import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
 import { ToggleButtons, ToggleIcon } from './internal/components/buttons/ToggleButtons';
 import { DisableableButton } from './internal/components/buttons/DisableableButton';
 import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMenuButton';
@@ -838,6 +836,7 @@ import { getFolderTestAPIWrapper } from './internal/components/container/FolderA
 import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
+import { DropdownAnchor, DropdownButton, MenuDivider, MenuItem, MenuHeader, SplitButton } from './internal/dropdowns';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1511,12 +1510,10 @@ export {
     parseCsvString,
     quoteValueWithDelimiters,
     // buttons and menus
-    MultiMenuButton,
     SubMenu,
     SubMenuItem,
     SelectionMenuItem,
     ManageDropdownButton,
-    SplitButtonGroup,
     PaginationButtons,
     ToggleButtons,
     ToggleIcon,
@@ -1681,6 +1678,12 @@ export {
     Popover,
     OverlayTrigger,
     useOverlayTriggerState,
+    DropdownAnchor,
+    DropdownButton,
+    MenuDivider,
+    MenuItem,
+    MenuHeader,
+    SplitButton,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

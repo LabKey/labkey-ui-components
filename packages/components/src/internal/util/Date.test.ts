@@ -27,6 +27,7 @@ import {
     getNDaysStrFromToday,
     getNextDateStr,
     getParsedRelativeDateStr,
+    getPickerDateAndTimeFormat,
     isDateInPast,
     isDateTimeInPast,
     isRelativeDateFilterValue,
@@ -108,9 +109,27 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col)).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, null, true)).toBe('yyyy-MM-dd');
 
+            expect(getPickerDateAndTimeFormat(col)).toEqual({
+                dateFormat: 'yyyy-MM-dd HH:mm',
+                timeFormat: 'HH:mm'
+            });
+            expect(getPickerDateAndTimeFormat(col, null, true)).toEqual({
+                dateFormat: 'yyyy-MM-dd',
+                timeFormat: undefined
+            });
+
             const timeCol = new QueryColumn({ shortCaption: 'TimeCol', rangeURI: TIME_TYPE.rangeURI });
             expect(getColDateFormat(timeCol)).toBe('HH:mm');
             expect(getColDateFormat(col, 'Time')).toBe('HH:mm');
+
+            expect(getPickerDateAndTimeFormat(timeCol)).toEqual({
+                dateFormat: 'HH:mm',
+                timeFormat: 'HH:mm'
+            });
+            expect(getPickerDateAndTimeFormat(timeCol, 'Time')).toEqual({
+                dateFormat: 'HH:mm',
+                timeFormat: 'HH:mm'
+            });
         });
 
         test('datePlaceholder without col.rangeURI', () => {
@@ -118,8 +137,22 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col)).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, null, true)).toBe('yyyy-MM-dd');
 
+            expect(getPickerDateAndTimeFormat(col)).toEqual({
+                dateFormat: 'yyyy-MM-dd HH:mm',
+                timeFormat: 'HH:mm'
+            });
+            expect(getPickerDateAndTimeFormat(col, null, true)).toEqual({
+                dateFormat: 'yyyy-MM-dd',
+                timeFormat: undefined
+            });
+
             const timeCol = new QueryColumn({ shortCaption: 'TimeCol', rangeURI: undefined });
             expect(getColDateFormat(timeCol, 'Time')).toBe('HH:mm');
+
+            expect(getPickerDateAndTimeFormat(timeCol, 'Time')).toEqual({
+                dateFormat: 'HH:mm',
+                timeFormat: undefined
+            });
         });
 
         test('queryColumn.format', () => {
@@ -130,6 +163,16 @@ describe('Date Utilities', () => {
             });
             expect(getColDateFormat(col)).toBe('dd/MM/yyyy HH:mm');
             expect(getColDateFormat(col, null, true)).toBe('dd/MM/yyyy HH:mm');
+
+            expect(getPickerDateAndTimeFormat(col)).toEqual({
+                dateFormat: 'dd/MM/yyyy HH:mm',
+                timeFormat: 'HH:mm'
+            });
+
+            expect(getPickerDateAndTimeFormat(col, null, true)).toEqual({
+                dateFormat: 'yyyy-MM-dd',
+                timeFormat: undefined
+            });
         });
 
         test('provided dateFormat', () => {
@@ -141,6 +184,21 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'yyyy-MM HH')).toBe('yyyy-MM HH');
             expect(getColDateFormat(col, 'yyyy-MM HH HH:mm')).toBe('yyyy-MM HH HH:mm');
             expect(getColDateFormat(col, 'yyyy-MM HH HH:mm', true)).toBe('yyyy-MM HH HH:mm');
+
+            expect(getPickerDateAndTimeFormat(col, 'yyyy-MM HH')).toEqual({
+                dateFormat: 'yyyy-MM HH',
+                timeFormat: undefined
+            });
+
+            expect(getPickerDateAndTimeFormat(col, 'yyyy-MM HH HH:mm')).toEqual({
+                dateFormat: 'yyyy-MM HH HH:mm',
+                timeFormat: undefined
+            });
+
+            expect(getPickerDateAndTimeFormat(col, 'yyyy-MM HH HH:mm', true)).toEqual({
+                dateFormat: 'yyyy-MM-dd',
+                timeFormat: undefined
+            });
         });
 
         test('moment.js replacement', () => {
@@ -162,6 +220,23 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'DateTime')).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, 'DateTime', true)).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, 'Time')).toBe('HH:mm');
+
+            expect(getPickerDateAndTimeFormat(col, 'Date')).toEqual({
+                dateFormat: 'yyyy-MM-dd',
+                timeFormat: undefined
+            });
+            expect(getPickerDateAndTimeFormat(col, 'DateTime')).toEqual({
+                dateFormat: 'yyyy-MM-dd HH:mm',
+                timeFormat: 'HH:mm'
+            });
+            expect(getPickerDateAndTimeFormat(col, 'DateTime', true)).toEqual({
+                dateFormat: 'yyyy-MM-dd',
+                timeFormat: undefined
+            });
+            expect(getPickerDateAndTimeFormat(col, 'Time')).toEqual({
+                dateFormat: 'HH:mm',
+                timeFormat: undefined
+            });
         });
     });
 

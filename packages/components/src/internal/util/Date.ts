@@ -65,22 +65,6 @@ export function isDateTimeCol(col: QueryColumn): boolean {
     return false;
 }
 
-export function isTimeCol(col: QueryColumn): boolean {
-    if (col) {
-        const rangeURI = col.rangeURI?.toLowerCase();
-
-        if (rangeURI === TIME_RANGE_URI.toLowerCase()) {
-            return true;
-        }
-
-        if (!rangeURI && col?.sqlType === 'time') {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 function dateFNSToMoment(dateFNSFormat: string): string {
     return dateFNSFormat?.replace('yyyy', 'YYYY').replace('yy', 'YY').replace('dd', 'DD').replace('xxx', 'ZZ');
 }
@@ -96,6 +80,20 @@ function momentToDateFNS(momentFormat: string): string {
         .replace('YY', 'yy') // 44, 01, 00, 17
         .replace('DD', 'dd') // 01, 02, ..., 31
         .replace(/Z+/gi, 'xxx'); // -08:00, +05:30, +00:00
+}
+
+export function getPickerDateAndTimeFormat(queryColumn: QueryColumn, format?: string, hideTime?: boolean): {dateFormat: string, timeFormat: string} {
+    const dateFormat = getColDateFormat(queryColumn, hideTime ? 'Date' : format, queryColumn.isDateOnlyColumn);
+
+    const isTimeOnly = queryColumn.isTimeColumn;
+    const timeFormat = hideTime ? undefined : (isTimeOnly
+        ? parseFNSTimeFormat(getColDateFormat(queryColumn, queryColumn?.format ?? 'Time'))
+        : parseDateFNSTimeFormat(dateFormat));
+
+    return {
+        dateFormat,
+        timeFormat
+    }
 }
 
 export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {

@@ -129,9 +129,7 @@ export function getUpdatedDataFromGrid(
 
                     // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
                     // Issue 45140: use QueryColumn date format for parseDate()
-                    // TODO fix date?
-                    if (isTime) row[key] = value ?? null;
-                    else if (isDate || isDateTime) {
+                    if (isDate || isDateTime) {
                         const dateVal = parseDate(value, getColDateFormat(col));
                         const dateStrVal = isDate ? getJsonDateFormatString(dateVal) : getJsonDateTimeFormatString(dateVal);
                         row[key] = dateStrVal ?? null;

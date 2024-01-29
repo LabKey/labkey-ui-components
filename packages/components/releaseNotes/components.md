@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD January 2024
 - Issue 49481: Domain designer issue if the field index changes (reordering fields), we need to update the validValues state
 - Issue 49439: filter out inactive users from insert and update form query selects
+- Issue 49502: If the Editable Grid lookup cell is a measurement unit, then we need to use the unit's display value
 
 ### version 3.9.0
 *Released*: 23 January 2024

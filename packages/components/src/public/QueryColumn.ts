@@ -324,7 +324,7 @@ export class QueryColumn implements IQueryColumn {
     }
 
     isUnitsLookup(): boolean {
-        return this.isLookup && this.lookup.queryName === QueryColumn.MEASUREMENT_UNITS_QUERY;
+        return this.isLookup() && this.lookup.queryName === QueryColumn.MEASUREMENT_UNITS_QUERY;
     }
 
     isAliquotParent(): boolean {

@@ -639,6 +639,7 @@ export function withQueryModels<Props>(
                     () => this.maybeLoad(id, false, false, loadSelections)
                 );
             } catch (error) {
+                let shouldLoad = false;
                 this.setState(
                     produce<State>(draft => {
                         const model = draft.queryModels[id];
@@ -650,10 +651,27 @@ export function withQueryModels<Props>(
 
                         console.error(`Error loading rows for model ${id}: `, rowsError);
                         removeSettingsFromLocalStorage(this.state.queryModels[id]);
-                        model.rowsLoadingState = LoadingState.LOADED;
-                        model.rowsError = rowsError;
-                        model.selectionPivot = undefined;
-                    })
+
+                        if (rowsError?.indexOf('The requested view does not exist for this user') > -1) {
+                            // if view doesn't exist, use default view
+                            shouldLoad = true;
+                            model.schemaQuery = new SchemaQuery(model.schemaName, model.queryName);
+                            resetRowsState(model);
+                            resetTotalCountState(model);
+                            resetSelectionState(model);
+                        }
+                        else {
+                            model.rowsLoadingState = LoadingState.LOADED;
+                            model.rowsError = rowsError;
+                            model.selectionPivot = undefined;
+                        }
+                    }),
+                    () => {
+                        if (shouldLoad) {
+                            this.maybeLoad(id, false, true, loadSelections);
+                            saveSettingsToLocalStorage(this.state.queryModels[id]);
+                        }
+                    }
                 );
             }
         };

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.10.0
-*Released*: 26 January 2024
+### version 3.11.0
+*Released*: 29 January 2024
 - Remove MultiMenuButton
   - it was unused
 - Add DropdownButton

@@ -319,21 +319,21 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
 
 const APIKeysPanelWithQueryModels = withQueryModels(APIKeysPanelBody)
 
-export const APIKeysPanel: FC<APIKeysPanelBodyProps> = (props) => {
-    const { homeContainer } = useServerContext();
-    const configs: QueryConfigMap = {
-       model: {
-           id: 'model',
-           title: 'Current API Keys',
-           schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
-           includeTotalCount: true,
-           containerPath: homeContainer,
-        }
+export const APIKeysPanel: FC<APIKeysPanelBodyProps> = props => {
+    const { homeContainer, impersonatingUser } = useServerContext();
+    const configs: QueryConfigMap = {};
+    if (!impersonatingUser) {
+        configs.model = {
+            id: 'model',
+            title: 'Current API Keys',
+            schemaQuery: SCHEMAS.CORE_TABLES.USER_API_KEYS,
+            includeTotalCount: true,
+            containerPath: homeContainer,
+        };
     }
-    return (
-        <APIKeysPanelWithQueryModels autoLoad queryConfigs={configs} {...props} />
-    )
-}
+
+    return <APIKeysPanelWithQueryModels autoLoad queryConfigs={configs} {...props} />;
+};
 
 interface Props {
     updateUserDisplayName: (displayName: string) => void;

@@ -7,7 +7,8 @@ import { fetchGroupMembership } from '../administration/actions';
 import { useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';
 import { Groups, MemberType } from '../administration/models';
-import { getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { getAppHomeFolderPath, getCurrentAppProperties, getPrimaryAppProperties } from '../../app/utils';
+import { useContainerUser } from '../container/actions';
 
 interface Props {
     asRow?: boolean;
@@ -20,18 +21,20 @@ export const GroupsList: FC<Props> = memo(props => {
     const { groups, currentUser, asRow = true, showLinks = true } = props;
     const [groupMembership, setGroupMembership] = useState<Groups>();
     const { api } = useAppContext();
-    const { container } = useServerContext();
+    const { container, moduleContext } = useServerContext();
+    const homeFolderPath = getAppHomeFolderPath(container, moduleContext);
+    const homeContainer = useContainerUser(homeFolderPath);
     const currentProductId = getCurrentAppProperties()?.productId;
     const targetProductId = getPrimaryAppProperties()?.productId;
 
     useEffect(() => {
         (async () => {
-            if (currentUser.hasAdminPermission()) {
-                const groupMembership_ = await fetchGroupMembership(container, api.security);
+            if (homeContainer.isLoaded && homeContainer.user.hasAdminPermission()) {
+                const groupMembership_ = await fetchGroupMembership(homeContainer.container, api.security);
                 setGroupMembership(groupMembership_);
             }
         })();
-    }, [api.security, container, currentUser]);
+    }, [api.security, homeContainer, currentUser]);
 
     if (!groups) return null;
 
@@ -49,7 +52,7 @@ export const GroupsList: FC<Props> = memo(props => {
 
                     return (
                         <li key={group.value} className="principal-detail-li">
-                            {currentUser.isAdmin &&
+                            {homeContainer.user?.isAdmin &&
                             showLinks &&
                             groupMembership?.[group.value].type !== MemberType.siteGroup ? (
                                 <a href={url instanceof AppURL ? url.toHref() : url}>{group.displayValue}</a>

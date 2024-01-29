@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 49507: add `convertUnitsForInput` to avoid commas in editable grid
+
 ### version 3.11.0
 *Released*: 29 January 2024
 - Remove MultiMenuButton

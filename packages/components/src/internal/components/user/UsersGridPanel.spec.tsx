@@ -81,8 +81,8 @@ describe('<UsersGridPanel/>', () => {
         expect(wrapper.find('.view-header').first().text()).toBe('Active Users');
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
         expect(wrapper.find(DisableableButton).prop('disabledMsg')).toBe(undefined);
-        expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
-        wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
+        expect(wrapper.find('.dropdown-toggle').at(0).text().trim()).toEqual('Manage');
+        wrapper.find('.dropdown-toggle').at(0).simulate('click');
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(1);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Reactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(1);
@@ -100,8 +100,8 @@ describe('<UsersGridPanel/>', () => {
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
         expect(wrapper.find('.view-header').first().text()).toBe('Active Users');
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
-        expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
-        wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
+        expect(wrapper.find('.dropdown-toggle').at(0).text().trim()).toEqual('Manage');
+        wrapper.find('.dropdown-toggle').at(0).simulate('click');
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Reactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(0);
@@ -119,8 +119,8 @@ describe('<UsersGridPanel/>', () => {
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
         expect(wrapper.find('.view-header').first().text()).toBe('Active Users');
         expect(wrapper.find(DisableableButton)).toHaveLength(0); // create button
-        expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
-        wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
+        expect(wrapper.find('.dropdown-toggle').at(0).text().trim()).toEqual('Manage');
+        wrapper.find('.dropdown-toggle').at(0).simulate('click');
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Reactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(0);
@@ -140,8 +140,8 @@ describe('<UsersGridPanel/>', () => {
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
         expect(wrapper.find('.view-header').first().text()).toBe('Inactive Users');
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
-        expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
-        wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
+        expect(wrapper.find('.dropdown-toggle').at(0).text().trim()).toEqual('Manage');
+        wrapper.find('.dropdown-toggle').at(0).simulate('click');
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Reactivate Users')).toHaveLength(1);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(1);
@@ -161,8 +161,8 @@ describe('<UsersGridPanel/>', () => {
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
         expect(wrapper.find('.view-header').first().text()).toBe('All Users');
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
-        expect(wrapper.find('#users-manage-btn-managebtn').hostNodes()).toHaveLength(1);
-        wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
+        expect(wrapper.find('.dropdown-toggle').at(0).text().trim()).toEqual('Manage');
+        wrapper.find('.dropdown-toggle').at(0).simulate('click');
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Deactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Reactivate Users')).toHaveLength(0);
         expect(wrapper.find('a').filterWhere(a => a.text() === 'Delete Users')).toHaveLength(1);
@@ -180,8 +180,8 @@ describe('<UsersGridPanel/>', () => {
         wrapper.setState({ usersView: 'inactive' });
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
         expect(wrapper.find(DisableableButton).prop('disabledMsg')).toBe('User limit has been reached');
-        wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
-        const reactivateMenuItem = wrapper.find('#reactivate-users-menu-item');
+        wrapper.find('.dropdown-toggle').at(0).simulate('click');
+        const reactivateMenuItem = wrapper.find('SelectionMenuItem').at(1);
         expect(reactivateMenuItem.prop('maxSelection')).toBe(0);
         expect(reactivateMenuItem.prop('maxSelectionDisabledMsg')).toBe('User limit has been reached');
         wrapper.unmount();
@@ -195,8 +195,8 @@ describe('<UsersGridPanel/>', () => {
         wrapper.setState({ usersView: 'inactive' });
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
         expect(wrapper.find(DisableableButton).prop('disabledMsg')).toBe(undefined);
-        wrapper.find('#users-manage-btn-managebtn').hostNodes().simulate('click');
-        const reactivateMenuItem = wrapper.find('#reactivate-users-menu-item');
+        wrapper.find('.dropdown-toggle').at(0).simulate('click');
+        const reactivateMenuItem = wrapper.find('SelectionMenuItem').at(1);
         expect(reactivateMenuItem.prop('maxSelection')).toBe(2);
         expect(reactivateMenuItem.prop('maxSelectionDisabledMsg')).toBe(undefined);
         wrapper.unmount();

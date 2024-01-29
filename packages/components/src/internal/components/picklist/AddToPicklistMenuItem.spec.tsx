@@ -20,8 +20,7 @@ beforeAll(() => {
 });
 
 describe('AddToPicklistMenuItem', () => {
-    const text = 'Picklist Testing';
-
+    const expectedText = 'Add to Picklist';
     const queryModelWithoutSelections = makeTestQueryModel(new SchemaQuery('test', 'query'));
     let queryModelWithSelections = makeTestQueryModel(new SchemaQuery('test', 'query'));
     queryModelWithSelections = queryModelWithSelections.mutate({
@@ -31,11 +30,11 @@ describe('AddToPicklistMenuItem', () => {
 
     test('with queryModel', () => {
         const wrapper = mountWithAppServerContext(
-            <AddToPicklistMenuItem itemText={text} queryModel={queryModelWithSelections} user={TEST_USER_EDITOR} />
+            <AddToPicklistMenuItem queryModel={queryModelWithSelections} user={TEST_USER_EDITOR} />
         );
         const menuItem = wrapper.find(SelectionMenuItem);
         expect(menuItem).toHaveLength(1);
-        expect(menuItem.text()).toBe(text);
+        expect(menuItem.text()).toBe(expectedText);
 
         validateMenuItemClick(wrapper, true);
         const picklistModal = wrapper.find(ChoosePicklistModal);
@@ -48,7 +47,6 @@ describe('AddToPicklistMenuItem', () => {
     test('with selectedIds', () => {
         const wrapper = mountWithAppServerContext(
             <AddToPicklistMenuItem
-                itemText={text}
                 queryModel={queryModelWithoutSelections}
                 sampleIds={['1']}
                 user={TEST_USER_EDITOR}
@@ -56,7 +54,7 @@ describe('AddToPicklistMenuItem', () => {
         );
         const menuItem = wrapper.find('MenuItem');
         expect(menuItem).toHaveLength(1);
-        expect(menuItem.text()).toBe(text);
+        expect(menuItem.text()).toBe(expectedText);
 
         validateMenuItemClick(wrapper, true);
         const picklistModal = wrapper.find(ChoosePicklistModal);
@@ -68,7 +66,7 @@ describe('AddToPicklistMenuItem', () => {
 
     test('not Editor', () => {
         const wrapper = mountWithAppServerContext(
-            <AddToPicklistMenuItem itemText={text} sampleIds={['1']} user={TEST_USER_READER} />
+            <AddToPicklistMenuItem sampleIds={['1']} user={TEST_USER_READER} />
         );
         expect(wrapper.find('MenuItem')).toHaveLength(0);
         wrapper.unmount();
@@ -83,7 +81,7 @@ describe('AddToPicklistMenuItem', () => {
 
     test('modal open on click, queryModel selections', () => {
         const wrapper = mountWithAppServerContext(
-            <AddToPicklistMenuItem itemText={text} queryModel={queryModelWithoutSelections} user={TEST_USER_EDITOR} />
+            <AddToPicklistMenuItem queryModel={queryModelWithoutSelections} user={TEST_USER_EDITOR} />
         );
         validateMenuItemClick(wrapper, false);
 
@@ -99,7 +97,6 @@ describe('AddToPicklistMenuItem', () => {
     test('modal open on click, sampleIds', () => {
         const wrapper = mountWithAppServerContext(
             <AddToPicklistMenuItem
-                itemText={text}
                 queryModel={queryModelWithoutSelections}
                 sampleIds={['1']}
                 user={TEST_USER_EDITOR}
@@ -121,7 +118,7 @@ describe('AddToPicklistMenuItem', () => {
             orderedRows: ['1'],
         });
         const wrapper = mountWithAppServerContext(
-            <AddToPicklistMenuItem itemText={text} queryModel={model} sampleIds={['1']} user={TEST_USER_EDITOR} />
+            <AddToPicklistMenuItem queryModel={model} sampleIds={['1']} user={TEST_USER_EDITOR} />
         );
         validateMenuItemClick(wrapper, true);
         wrapper.unmount();

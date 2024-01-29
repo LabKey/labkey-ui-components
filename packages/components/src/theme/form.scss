@@ -365,3 +365,31 @@ textarea.form-control {
         padding-top: 0;
     }
 }
+
+.framed-input__container {
+    display: flex;
+}
+
+.framed-input {
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    max-width: 375px;
+    padding: 15px;
+
+    &:hover {
+        cursor: pointer;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.05);
+    }
+
+    &.active {
+        background-color: $blue-bkgrd-selected;
+    }
+
+    >label > .label-text {
+        margin-left: 5px;
+    }
+
+    > .description {
+        margin-left: 20px;
+    }
+}

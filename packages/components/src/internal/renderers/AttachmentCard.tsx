@@ -1,9 +1,10 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Dropdown, MenuItem, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 import { formatBytes, getIconFontCls, isImage } from '../util/utils';
 import { isLoading, LoadingState } from '../../public/LoadingState';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
+import { DropdownAnchor, MenuItem } from '../dropdowns';
 
 const now = (): number => new Date().valueOf();
 
@@ -109,16 +110,15 @@ export const AttachmentCard: FC<Props> = memo(props => {
                     </div>
                 </div>
                 {isLoaded && (
-                    <Dropdown className="attachment-card__menu" componentClass="div" id="attachment-card__menu">
-                        <Dropdown.Toggle useAnchor={true}>
-                            <i className="fa fa-ellipsis-v" />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu className="pull-right">
-                            {onCopyLink && <MenuItem onClick={_onCopyLink}>Copy {copyNoun}</MenuItem>}
-                            {allowDownload && <MenuItem onClick={_onDownload}>Download</MenuItem>}
-                            {allowRemove && <MenuItem onClick={_onRemove}>Remove {noun}</MenuItem>}
-                        </Dropdown.Menu>
-                    </Dropdown>
+                    <DropdownAnchor
+                        className="attachment-card__menu"
+                        title={<i className="fa fa-ellipsis-v" />}
+                        pullRight
+                    >
+                        {onCopyLink && <MenuItem onClick={_onCopyLink}>Copy {copyNoun}</MenuItem>}
+                        {allowDownload && <MenuItem onClick={_onDownload}>Download</MenuItem>}
+                        {allowRemove && <MenuItem onClick={_onRemove}>Remove {noun}</MenuItem>}
+                    </DropdownAnchor>
                 )}
             </div>
 

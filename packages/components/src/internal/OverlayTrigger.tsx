@@ -16,7 +16,7 @@ import { usePortalRef } from './hooks';
 
 interface OverlayTriggerState<T extends Element = HTMLDivElement> {
     onMouseEnter: () => void;
-    onMouseLeave: () => void;
+    onMouseOut: () => void;
     onClick: () => void;
     portalEl: HTMLElement;
     show: boolean;
@@ -54,7 +54,7 @@ export function useOverlayTriggerState<T extends Element = HTMLDivElement>(
 
         setShow(true);
     }, [delay, hoverEventsEnabled]);
-    const onMouseLeave = useCallback(() => {
+    const onMouseOut = useCallback(() => {
         if (!hoverEventsEnabled) return;
 
         setTimeoutId(currentId => {
@@ -72,7 +72,7 @@ export function useOverlayTriggerState<T extends Element = HTMLDivElement>(
     return {
         onClick,
         onMouseEnter,
-        onMouseLeave,
+        onMouseOut,
         portalEl,
         show,
         targetRef,
@@ -117,7 +117,7 @@ export const OverlayTrigger: FC<Props> = ({
     overlay,
     triggerType = 'hover',
 }) => {
-    const { onMouseEnter, onMouseLeave, onClick, portalEl, show, targetRef } = useOverlayTriggerState(
+    const { onMouseEnter, onMouseOut, onClick, portalEl, show, targetRef } = useOverlayTriggerState(
         id,
         triggerType === 'hover',
         triggerType === 'click',
@@ -128,7 +128,7 @@ export const OverlayTrigger: FC<Props> = ({
     const clonedContent = cloneElement(overlay, { targetRef });
 
     return (
-        <div className={className_} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick}>
+        <div className={className_} onMouseEnter={onMouseEnter} onMouseLeave={onMouseOut} onClick={onClick}>
             {clonedChild}
 
             {show && createPortal(clonedContent, portalEl)}

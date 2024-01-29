@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Security } from '@labkey/api';
 
-import { ConfirmModalProps, ConfirmModal } from '../base/ConfirmModal';
+import { ConfirmModal, ConfirmModalProps } from '../base/ConfirmModal';
 import { Alert } from '../base/Alert';
 import { useServerContext } from '../base/ServerContext';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -14,6 +14,8 @@ import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 import { Container } from '../base/models/Container';
 
 import { ProjectConfigurableDataType } from './models';
+import { CommentTextArea } from '../forms/input/CommentTextArea';
+import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 export interface EntityMoveConfirmationModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
     currentContainer?: Container;
@@ -33,6 +35,8 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
     const container_ = currentContainer ?? container;
+    const hasValidUserComment = auditUserComment?.trim()?.length > 0;
+    const { requiresUserComment } = useDataChangeCommentsRequired();
 
     useEffect(
         () => {
@@ -133,7 +137,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
             confirmVariant="success"
             {...confirmModalProps}
             onConfirm={onConfirmCallback}
-            canConfirm={!!selectedContainerOption}
+            canConfirm={!!selectedContainerOption && (!requiresUserComment || hasValidUserComment)}
         >
             {children}
             <div className="top-spacing">
@@ -145,19 +149,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                     required
                 />
             </div>
-            <div className="top-spacing">
-                <div className="bottom-spacing">
-                    <strong>Reason(s) for moving</strong>
-                </div>
-                <div>
-                    <textarea
-                        className="form-control"
-                        placeholder="Enter comments (optional)"
-                        onChange={onCommentChange}
-                        rows={5}
-                    />
-                </div>
-            </div>
+            <CommentTextArea actionName="Moving" onChange={onCommentChange} requiresUserComment={requiresUserComment} />
         </ConfirmModal>
     );
 });

@@ -82,6 +82,7 @@ export class SubMenu extends React.Component<SubMenuProps> {
         return items;
     }
 
+    // FIXME: this should be a component, not a static method on this class.
     static renderMenuItem(option: MenuOption, key: any) {
         const itemProps = Object.assign({}, option);
 
@@ -89,6 +90,7 @@ export class SubMenu extends React.Component<SubMenuProps> {
         delete itemProps.name;
         delete itemProps.disabledMsg;
 
+        // TODO: We will be refactoring SubMenu (and SubMenuItem) to use internal versions of MenuItem in a future PR
         const menuItem = (
             <MenuItem {...itemProps} key={key}>
                 {option.name}

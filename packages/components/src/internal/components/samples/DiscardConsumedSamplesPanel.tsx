@@ -1,4 +1,6 @@
 import React, { ChangeEventHandler, FC, memo } from 'react';
+import { CommentTextArea } from '../forms/input/CommentTextArea';
+import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 interface Props {
     discardTitle?: string;
@@ -8,10 +10,10 @@ interface Props {
 }
 
 export const DISCARD_CONSUMED_CHECKBOX_FIELD = 'discardcheckbox';
-export const DISCARD_CONSUMED_COMMENT_FIELD = 'discardcomments';
 
 export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
     const { discardTitle, shouldDiscard, toggleShouldDiscard, onCommentChange } = props;
+    const { requiresUserComment } = useDataChangeCommentsRequired();
 
     return (
         <>
@@ -28,22 +30,17 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
                     <span className="discard-consumed-title left-spacing">{discardTitle}</span>
                 </div>
             </div>
-            <div className="form-group">
-                <div className="storage-item-data">Reason for discarding</div>
-                <textarea
-                    className="form-control"
-                    id={DISCARD_CONSUMED_COMMENT_FIELD}
-                    name={DISCARD_CONSUMED_COMMENT_FIELD}
-                    placeholder="Enter comments (optional)"
-                    rows={5}
-                    onChange={onCommentChange}
-                    disabled={!shouldDiscard}
-                />
-            </div>
+            <CommentTextArea
+                onChange={onCommentChange}
+                disabled={!shouldDiscard}
+                actionName="Discarding"
+                containerClassName="top-spacing bottom-spacing"
+                requiresUserComment={requiresUserComment}
+            />
         </>
     );
 });
 
 DiscardConsumedSamplesPanel.defaultProps = {
-    discardTitle: 'Discard sample(s) from storage?',
+    discardTitle: 'Discard Sample(s) from Storage?',
 };

@@ -10,21 +10,21 @@ interface Props {
     text: string;
 }
 
-export const ResponsiveMenuButton: FC<Props> = memo(props => {
-    const { asSubMenu, id, items, text } = props;
+// TODO: We're explicitly not replacing this usage of DropdownButton with our internal version at this time, because we
+//  also need to refactor SubMenuItem (and SubMenu) to use our internal components as well, but that is too disruptive
+//  of a change at this time.
+export const ResponsiveMenuButton: FC<Props> = memo(({ asSubMenu, id, items, text }) => {
+    if (asSubMenu) {
+        return (
+            <SubMenuItem text={text} inline>
+                {items}
+            </SubMenuItem>
+        );
+    }
 
     return (
-        <>
-            {!asSubMenu && (
-                <DropdownButton title={text} id={id} className="responsive-menu">
-                    {items}
-                </DropdownButton>
-            )}
-            {asSubMenu && (
-                <SubMenuItem text={text} inline>
-                    {items}
-                </SubMenuItem>
-            )}
-        </>
+        <DropdownButton title={text} id={id} className="responsive-menu">
+            {items}
+        </DropdownButton>
     );
 });

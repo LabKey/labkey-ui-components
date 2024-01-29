@@ -40,6 +40,7 @@ import { SchemaDetails } from './internal/SchemaDetails';
 import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { ExtendedMap } from './public/ExtendedMap';
+import { useContainerUser } from './internal/components/container/actions';
 
 import {
     ServerContextConsumer,
@@ -98,7 +99,6 @@ import { LockIcon } from './internal/components/base/LockIcon';
 import { ExpandableFilterToggle } from './internal/components/base/ExpandableFilterToggle';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
-import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
 import { SubMenu } from './internal/components/menus/SubMenu';
 import { SubMenuItem } from './internal/components/menus/SubMenuItem';
 import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem';
@@ -164,7 +164,6 @@ import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons } from './internal/components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './internal/components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
-import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
 import { ToggleButtons, ToggleIcon } from './internal/components/buttons/ToggleButtons';
 import { DisableableButton } from './internal/components/buttons/DisableableButton';
 import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMenuButton';
@@ -295,11 +294,13 @@ import { TextInput } from './internal/components/forms/input/TextInput';
 import { TextAreaInput } from './internal/components/forms/input/TextAreaInput';
 import { FieldEditForm, FieldEditProps } from './internal/components/forms/input/FieldEditInput';
 import { ColorPickerInput } from './internal/components/forms/input/ColorPickerInput';
+import { CommentTextArea, COMMENT_FIELD_ID } from './internal/components/forms/input/CommentTextArea';
 import { ColorIcon } from './internal/components/base/ColorIcon';
 import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailDisplay';
+import { useDataChangeCommentsRequired } from './internal/components/forms/input/useDataChangeCommentsRequired';
 
 import {
     getUsersWithPermissions,
@@ -371,7 +372,6 @@ import { StorageAmountInput } from './internal/components/samples/StorageAmountI
 
 import { AppContextProvider, useAppContext } from './internal/AppContext';
 import { AppContexts } from './internal/AppContexts';
-import { useContainerUser } from './internal/components/container/actions';
 
 import { BaseDomainDesigner } from './internal/components/domainproperties/BaseDomainDesigner';
 import {
@@ -825,7 +825,6 @@ import {
 import { DELIMITER, DETAIL_TABLE_CLASSES } from './internal/components/forms/constants';
 import {
     DISCARD_CONSUMED_CHECKBOX_FIELD,
-    DISCARD_CONSUMED_COMMENT_FIELD,
     DiscardConsumedSamplesPanel,
 } from './internal/components/samples/DiscardConsumedSamplesPanel';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './internal/components/picklist/constants';
@@ -833,9 +832,11 @@ import { getDefaultAPIWrapper, getTestAPIWrapper } from './internal/APIWrapper';
 import { FormButtons } from './internal/FormButtons';
 import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
+import { getFolderTestAPIWrapper } from './internal/components/container/FolderAPIWrapper';
 import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
+import { DropdownAnchor, DropdownButton, MenuDivider, MenuItem, MenuHeader, SplitButton } from './internal/dropdowns';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -883,6 +884,7 @@ const App = {
     getProjectDataClassExclusion,
     getProjectSampleTypeExclusion,
     getProjectPath,
+    getFolderTestAPIWrapper,
     getSecurityTestAPIWrapper,
     hasPremiumModule,
     hasProductProjects,
@@ -981,13 +983,13 @@ const App = {
     DELIMITER,
     DETAIL_TABLE_CLASSES,
     DISCARD_CONSUMED_CHECKBOX_FIELD,
-    DISCARD_CONSUMED_COMMENT_FIELD,
     SAMPLE_FILTER_METRIC_AREA,
     ALIQUOTED_FROM_COL,
     PRIVATE_PICKLIST_CATEGORY,
     PUBLIC_PICKLIST_CATEGORY,
     DATA_IMPORT_TOPIC,
     PLATES_KEY,
+    COMMENT_FIELD_ID,
 };
 
 const Hooks = {
@@ -1122,6 +1124,8 @@ export {
     TextInput,
     ColorPickerInput,
     ColorIcon,
+    CommentTextArea,
+    useDataChangeCommentsRequired,
     FieldEditForm,
     FieldEditProps,
     QuerySelect,
@@ -1506,12 +1510,10 @@ export {
     parseCsvString,
     quoteValueWithDelimiters,
     // buttons and menus
-    MultiMenuButton,
     SubMenu,
     SubMenuItem,
     SelectionMenuItem,
     ManageDropdownButton,
-    SplitButtonGroup,
     PaginationButtons,
     ToggleButtons,
     ToggleIcon,
@@ -1676,6 +1678,12 @@ export {
     Popover,
     OverlayTrigger,
     useOverlayTriggerState,
+    DropdownAnchor,
+    DropdownButton,
+    MenuDivider,
+    MenuItem,
+    MenuHeader,
+    SplitButton,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

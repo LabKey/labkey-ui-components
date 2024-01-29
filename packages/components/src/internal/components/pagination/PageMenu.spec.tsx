@@ -1,10 +1,7 @@
 import React from 'react';
-import { MenuItem } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { PageMenu } from './PageMenu';
-
-type PageMenuWrapper = ReactWrapper<Readonly<PageMenu['props']>, Readonly<PageMenu['state']>, PageMenu>;
 
 describe('PageMenu', () => {
     let props;
@@ -26,7 +23,7 @@ describe('PageMenu', () => {
     });
 
     const expectPageMenuItems = (
-        wrapper: PageMenuWrapper,
+        wrapper: ReactWrapper,
         menuDisabled: boolean,
         firstDisabled: boolean,
         lastDisabled: boolean,
@@ -35,7 +32,7 @@ describe('PageMenu', () => {
     ): void => {
         const menuButton = wrapper.find('button.dropdown-toggle');
         expect(menuButton.props().disabled).toEqual(menuDisabled);
-        expect(menuButton.text()).toEqual(page + ' '); // there is a space then a caret
+        expect(menuButton.text()).toEqual(page); // there is a space then a caret
         const menuItems = wrapper.find('li');
         expect(menuItems.at(1).hasClass('disabled')).toEqual(firstDisabled);
         expect(menuItems.at(2).hasClass('disabled')).toEqual(lastDisabled);
@@ -43,7 +40,7 @@ describe('PageMenu', () => {
     };
 
     test('render', () => {
-        const wrapper = mount<PageMenu>(<PageMenu {...props} />);
+        const wrapper = mount(<PageMenu {...props} />);
         expectPageMenuItems(wrapper, false, false, false, '2', '34 Total Pages');
 
         wrapper.setProps({ disabled: true });
@@ -59,24 +56,23 @@ describe('PageMenu', () => {
     });
 
     test('interactions', () => {
-        const wrapper = mount<PageMenu>(<PageMenu {...props} />);
-        wrapper.find('MenuItem').at(1).find('a').simulate('click');
+        const wrapper = mount(<PageMenu {...props} />);
+        wrapper.find('MenuItem').at(0).find('a').simulate('click');
         expect(props.loadFirstPage).toHaveBeenCalled();
-        wrapper.find('MenuItem').at(2).find('a').simulate('click');
+        wrapper.find('MenuItem').at(1).find('a').simulate('click');
         expect(props.loadLastPage).toHaveBeenCalled();
         wrapper.unmount();
     });
 
     test('showPageSizeMenu', () => {
-        const wrapper = mount<PageMenu>(<PageMenu {...props} showPageSizeMenu />);
-        const menuItems = wrapper.find(MenuItem);
-        expect(menuItems).toHaveLength(11);
-        // page size menu items start with header at index 5
-        expect(menuItems.at(5).text()).toBe('Page Size');
-        expect(menuItems.at(6).text()).toBe('20');
-        expect(menuItems.at(6).prop('active')).toBeTruthy();
-        expect(menuItems.at(10).text()).toBe('400');
-        expect(menuItems.at(10).prop('active')).toBeFalsy();
+        const wrapper = mount(<PageMenu {...props} showPageSizeMenu />);
+        const menuItems = wrapper.find('MenuItem');
+        expect(menuItems).toHaveLength(7);
+        // page size menu items start with header at index 2
+        expect(menuItems.at(2).text()).toBe('20');
+        expect(menuItems.at(2).prop('active')).toBeTruthy();
+        expect(menuItems.at(6).text()).toBe('400');
+        expect(menuItems.at(6).prop('active')).toBeFalsy();
         wrapper.unmount();
     });
 });

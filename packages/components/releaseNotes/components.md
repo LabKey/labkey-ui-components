@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.11.1
+*Released*: 29 January 2024
+- Issue 49378: use the default view if a view doesn't exist
+
 ### version 3.11.0
 *Released*: 29 January 2024
 - Remove MultiMenuButton

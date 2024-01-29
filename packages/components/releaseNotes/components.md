@@ -5,6 +5,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X January 2024
 - Issue 49378: use the default view if a view doesn't exist
 
+### version 3.11.0
+*Released*: 29 January 2024
+- Remove MultiMenuButton
+  - it was unused
+- Add DropdownButton
+- Add DropdownAnchor
+- Add SplitButton
+- Add MenuItem
+- Add MenuHeader
+- Add MenuDivider
+- Update usages of react-bootstrap DropdownButton, SplitButton, MenuItem to internal versions
+- ManageDropdownMenu: remove all props
+
 ### version 3.10.0
 *Released*: 26 January 2024
 - Add `AuditSettings` panel for configuring whether user comments are required for data changes

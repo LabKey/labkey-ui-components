@@ -15,7 +15,7 @@
  */
 
 import React, { FC, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Dropdown, DropdownButton, Image, MenuItem } from 'react-bootstrap';
+import { Image } from 'react-bootstrap';
 import { getServerContext } from '@labkey/api';
 
 import { User } from '../base/models/User';
@@ -30,9 +30,12 @@ import { AppContext, useAppContext } from '../../AppContext';
 
 import { getHelpLink } from '../../util/helpLinks';
 
+import { RELEASE_NOTES_METRIC } from '../productnavigation/constants';
+
+import { DropdownAnchor, DropdownButton, MenuDivider, MenuHeader, MenuItem } from '../../dropdowns';
+
 import { signIn, signOut } from './actions';
 import { MenuSectionModel } from './model';
-import { RELEASE_NOTES_METRIC } from '../productnavigation/constants';
 
 export interface UserMenuProps {
     appProperties?: AppProperties;
@@ -93,56 +96,53 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     }, [onSignOut, signOutUrl]);
 
     const onReleaseNotesClick = useCallback(() => {
-        api.query.incrementClientSideMetricCount(RELEASE_NOTES_METRIC, "FromHelpMenu");
+        api.query.incrementClientSideMetricCount(RELEASE_NOTES_METRIC, 'FromHelpMenu');
     }, []);
 
     if (!model || !user) {
         return null;
     }
 
+    const userToggle = user.avatar ? (
+        <Image src={user.avatar} alt="User Avatar" rounded height={32} width={32} />
+    ) : (
+        <span className="navbar-item">
+            <span className="user-name">
+                <span className="fas fa-user-circle" /> {user.displayName}{' '}
+            </span>
+        </span>
+    );
+
     return (
         <>
             <div className="navbar-item pull-right">
-                <Dropdown id="user-menu-dropdown">
-                    <Dropdown.Toggle useAnchor>
-                        {user.avatar ? (
-                            <Image src={user.avatar} alt="User Avatar" rounded height={32} width={32} />
-                        ) : (
-                            <span className="navbar-item">
-                                <span className="user-name">
-                                    <span className="fas fa-user-circle" /> {user.displayName}{' '}
-                                </span>
-                            </span>
-                        )}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu className="pull-right" pullRight>
-                        <div className="navbar-connector" />
-                        {userMenuItems}
-                        {extraUserItems}
-                        <MenuItem divider />
-                        {user.isSignedIn ? (
-                            <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
-                        ) : (
-                            <MenuItem onClick={onSignIn}>Sign In</MenuItem>
-                        )}
-                    </Dropdown.Menu>
-                </Dropdown>
+                <DropdownAnchor className="user-dropdown" title={userToggle} pullRight>
+                    <div className="navbar-connector" />
+                    {userMenuItems}
+                    {extraUserItems}
+                    <MenuDivider />
+                    {user.isSignedIn ? (
+                        <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+                    ) : (
+                        <MenuItem onClick={onSignIn}>Sign In</MenuItem>
+                    )}
+                </DropdownAnchor>
             </div>
             {(adminMenuItems?.length > 0 || getServerContext().devMode) && (
-                <div className="navbar-item pull-right navbar-item-product-navigation">
+                <div className="navbar-item pull-right navbar-item__dropdown">
                     <DropdownButton
-                        id="admin-menu-button"
-                        className="navbar-icon-button-right admin-menu-nav-dropdown"
+                        className="admin-dropdown"
+                        buttonClassName="navbar-icon-button-right"
                         title={<i className="fa fa-cog navbar-header-icon" />}
                         noCaret
                         pullRight
                     >
                         <div className="navbar-icon-connector" />
                         {adminMenuItems}
-                        {adminMenuItems?.length > 0 && getServerContext().devMode && <MenuItem divider />}
+                        {adminMenuItems?.length > 0 && getServerContext().devMode && <MenuDivider />}
                         {getServerContext().devMode && (
                             <>
-                                <MenuItem header>Dev Tools</MenuItem>
+                                <MenuHeader text="Dev Tools" />
                                 <MenuItem onClick={toggleDevTools}>
                                     {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
                                 </MenuItem>
@@ -153,22 +153,27 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                 </div>
             )}
             {(!!helpHref || !!releaseNoteHref) && (
-                <div className="navbar-item pull-right navbar-item-product-navigation">
+                <div className="navbar-item pull-right navbar-item__dropdown">
                     <DropdownButton
-                        id="help-menu-button"
-                        className="navbar-icon-button-right"
+                        className="help-dropdown"
+                        buttonClassName="navbar-icon-button-right"
                         title={<i className="fa fa-question-circle navbar-header-icon" />}
                         noCaret
                         pullRight
                     >
                         <div className="navbar-icon-connector" />
                         {helpHref && (
-                            <MenuItem key="help" href={helpHref} target="_blank" rel="noopener noreferrer">
+                            <MenuItem href={helpHref} target="_blank" rel="noopener noreferrer">
                                 Help
                             </MenuItem>
                         )}
                         {releaseNoteHref && (
-                            <MenuItem key="release" href={releaseNoteHref} target="_blank" rel="noopener noreferrer" onClick={onReleaseNotesClick}>
+                            <MenuItem
+                                href={releaseNoteHref}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={onReleaseNotesClick}
+                            >
                                 Release Notes
                             </MenuItem>
                         )}

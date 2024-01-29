@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Dropdown, FormControl } from 'react-bootstrap';
 
 import { Filter } from '@labkey/api';
@@ -196,6 +196,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         else setExpandedOntologyKey(ontologyBrowserKey);
     }, []);
 
+    // FIXME: this is a component, it should be converted to a proper FC
     const renderFilterInput = useCallback(
         (
             placeholder: string,
@@ -317,6 +318,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             if (isConceptColumn) {
                 const ontologyBrowserKey = filterIndex + '-' + (isSecondInput ? '2' : '1');
                 const expanded = expandedOntologyKey === ontologyBrowserKey;
+                // FIXME: This is not a proper usage of Dropdown, as it is not rendering any MenuItems this behavior
+                //  should be accomplished some other way (OverlayTrigger + Popover with click events?)
                 return (
                     <div>
                         {textInput}
@@ -352,6 +355,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         [field, activeFilters, disabled]
     );
 
+    // FIXME: this is a component, it should be converted to a proper FC
     const renderFilterTypeInputs = useCallback(
         (filterIndex: number) => {
             if (filterIndex >= activeFilters.length) return null;
@@ -377,7 +381,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
         [field, activeFilters, expandedOntologyKey, disabled]
     );
 
-    const shouldShowSecondFilter = useCallback((): boolean => {
+    const shouldShowSecondFilter = useMemo((): boolean => {
         if (!activeFilters?.length) return false;
 
         if (activeFilters[0].filterType.isSoleFilter) return false;
@@ -405,7 +409,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 disabled={disabled}
             />
             {renderFilterTypeInputs(0)}
-            {shouldShowSecondFilter() && (
+            {shouldShowSecondFilter && (
                 <>
                     <div className="field-modal__col-sub-title">and</div>
                     <SelectInput

@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { BasePermissionsCheckPage } from '../permissions/BasePermissionsCheckPage';
@@ -31,6 +30,8 @@ import { AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY } from '../auditlog/constants
 import { AUDIT_KEY } from '../../app/constants';
 
 import { NotFound } from '../base/NotFound';
+
+import { MenuItem } from '../../dropdowns';
 
 import { useAdministrationSubNav } from './useAdministrationSubNav';
 
@@ -174,7 +175,7 @@ export const GroupManagementPageImpl: FC<GroupManagementPageProps> = memo(props 
         return (
             <>
                 <CreatedModified row={row} useServerDate={false} />
-                <ManageDropdownButton collapsed id="admin-page-manage" pullRight>
+                <ManageDropdownButton>
                     <MenuItem
                         href={AppURL.create(AUDIT_KEY)
                             .addParam(AUDIT_EVENT_TYPE_PARAM, GROUP_AUDIT_QUERY.value)

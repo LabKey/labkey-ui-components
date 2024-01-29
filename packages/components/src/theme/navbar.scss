@@ -430,12 +430,8 @@
     }
 }
 
-.navbar-item.navbar-item-notification, .navbar-item.navbar-item-product-navigation {
-    .navbar-icon-button-right ~ ul.dropdown-menu {
-        padding: 0;
-    }
-
-    .navbar-icon-button-right.admin-menu-nav-dropdown ~ ul.dropdown-menu {
+.navbar-item.navbar-item-notification, .navbar-item.navbar-item__dropdown {
+    .dropdown-menu {
         padding: 5px 0;
     }
 
@@ -599,7 +595,7 @@
   padding: 8px 12px 10px 12px;
 }
 
-#user-menu-dropdown {
+.user-dropdown {
   box-shadow: none;
   text-decoration: none;
 
@@ -665,7 +661,6 @@
 }
 
 .navbar-icon-button-right {
-    margin-top: 0;
     background-color: transparent !important;
     border: none;
     box-shadow: none !important;

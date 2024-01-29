@@ -13,69 +13,75 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { PureComponent } from 'react';
-import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
+import React, { FC, useMemo } from 'react';
+
+import { createPortal } from 'react-dom';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { MenuItem } from '../../dropdowns';
+import { useOverlayTriggerState } from '../../OverlayTrigger';
+import { Popover } from '../../Popover';
 
 interface Props {
-    disabledMsg: string;
     href?: string;
-    id: string;
     maxSelection?: number;
     maxSelectionDisabledMsg?: string;
-    nounPlural: string;
+    nounPlural: string; // always used, doesn't need default value
     onClick?: () => void;
-    queryModel?: QueryModel;
+    queryModel: QueryModel;
     text: string;
 }
 
-export class SelectionMenuItem extends PureComponent<Props> {
-    static defaultProps = {
-        disabledMsg: 'Select one or more',
-        nounPlural: 'items',
-    };
-
-    get tooManySelected(): boolean {
-        const { maxSelection, queryModel } = this.props;
-        const numSelections = queryModel?.selections?.size;
-        return numSelections !== undefined && numSelections > maxSelection;
-    }
-
-    get tooFewSelected(): boolean {
-        const { queryModel } = this.props;
-        const numSelections = queryModel?.selections?.size;
-        return numSelections !== undefined && numSelections === 0;
-    }
-
-    get disabled(): boolean {
-        const { queryModel } = this.props;
-        return !queryModel || this.tooFewSelected || this.tooManySelected;
-    }
-
-    render() {
-        const { href, id, text, onClick, disabledMsg, maxSelection, maxSelectionDisabledMsg, nounPlural } = this.props;
-        const { disabled, tooFewSelected } = this;
-        const item = (
-            <MenuItem href={disabled ? undefined : href} onClick={disabled ? undefined : onClick} disabled={disabled}>
-                {text}
-            </MenuItem>
-        );
-
-        const message = tooFewSelected
-            ? disabledMsg + ' ' + nounPlural + '.'
-            : maxSelectionDisabledMsg || 'At most ' + maxSelection?.toLocaleString() + ' ' + nounPlural + ' can be selected.';
-
-        if (disabled) {
-            const overlay = <Popover id={id + '-disabled-warning'}>{message}</Popover>;
-
-            return (
-                <OverlayTrigger overlay={overlay} placement="right">
-                    {item}
-                </OverlayTrigger>
-            );
-        }
-
-        return item;
-    }
+interface DisabledSelectionMenuItemProps {
+    message: string;
+    text: string;
 }
+
+export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({ message, text }) => {
+    const { onMouseEnter, onMouseOut, portalEl, show, targetRef } = useOverlayTriggerState<HTMLLIElement>(
+        'disabled-selection-menu-item',
+        true,
+        false
+    );
+    const overlay = useMemo(
+        () => (
+            <Popover placement="right" id="disabled-selection-menu-item-popover" targetRef={targetRef}>
+                {message}
+            </Popover>
+        ),
+        [message, targetRef]
+    );
+    return (
+        <MenuItem disabled onMouseEnter={onMouseEnter} onMouseOut={onMouseOut} ref={targetRef}>
+            {text}
+            {show && createPortal(overlay, portalEl)}
+        </MenuItem>
+    );
+};
+
+export const SelectionMenuItem: FC<Props> = props => {
+    const { href, maxSelection, maxSelectionDisabledMsg, nounPlural, onClick, queryModel, text } = props;
+    const selectionSize = queryModel?.selections?.size;
+    const { tooFewSelected, tooManySelected } = useMemo(
+        () => ({
+            tooFewSelected: selectionSize !== undefined && selectionSize === 0,
+            tooManySelected: selectionSize !== undefined && selectionSize > maxSelection,
+        }),
+        [selectionSize]
+    );
+    const disabled = tooFewSelected || tooManySelected;
+
+    if (disabled) {
+        const message = tooFewSelected
+            ? `Select one or more ${nounPlural}.`
+            : maxSelectionDisabledMsg || `At most ${maxSelection?.toLocaleString()} ${nounPlural} can be selected.`;
+        return <DisabledSelectionMenuItem message={message} text={text} />;
+    }
+
+    return (
+        <MenuItem href={href} onClick={onClick}>
+            {text}
+        </MenuItem>
+    );
+};
+SelectionMenuItem.displayName = 'SelectionMenuItem';

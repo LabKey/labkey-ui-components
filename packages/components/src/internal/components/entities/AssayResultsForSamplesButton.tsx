@@ -51,7 +51,6 @@ export const AssayResultsForSamplesMenuItem: FC<Props> = memo(props => {
 
     return (
         <SelectionMenuItem
-            id="assay-sample-results-menu-item"
             text="View Assay Results for Selected"
             href={getAssayResultsHref(model, picklistName, isAssay, sampleFieldKey, currentProductId, targetProductId)}
             onClick={incrementMetric}

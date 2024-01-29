@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { mount } from 'enzyme';
-import { MenuItem } from 'react-bootstrap';
 
 import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 
@@ -32,8 +31,8 @@ describe('FindAndSearchDropdown', () => {
             },
         };
         const wrapper = mount(<FindAndSearchDropdown title="Test title" onSearch={jest.fn} />);
-        expect(wrapper.find('DropdownToggle').text().trim()).toBe('Test title');
-        const items = wrapper.find(MenuItem);
+        expect(wrapper.find('.dropdown-toggle').text()).toBe('Test title');
+        const items = wrapper.find('MenuItem');
         expect(items).toHaveLength(2);
         expect(items.at(0).text().trim()).toBe('Sample Finder');
         expect(items.at(1).text().trim()).toBe('Search');
@@ -58,7 +57,7 @@ describe('FindAndSearchDropdown', () => {
         const wrapper = mount(
             <FindAndSearchDropdown title="Test title" findNounPlural="tests" onFindByIds={jest.fn} />
         );
-        const items = wrapper.find(MenuItem);
+        const items = wrapper.find('MenuItem');
         expect(items).toHaveLength(3);
         expect(items.at(0).text().trim()).toBe('Find Tests by Barcode');
         expect(items.at(1).text().trim()).toBe('Find Tests by ID');

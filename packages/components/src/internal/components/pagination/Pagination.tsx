@@ -3,15 +3,15 @@ import { ButtonGroup } from 'react-bootstrap';
 
 import { LoadingState } from '../../../public/LoadingState';
 
+import { incrementClientSideMetricCount } from '../../actions';
+
 import { PaginationButton } from './PaginationButton';
 import { PageMenu } from './PageMenu';
 import { PaginationInfo } from './PaginationInfo';
-import { incrementClientSideMetricCount } from '../../actions';
 
 export interface PaginationData {
     currentPage: number;
     disabled: boolean;
-    id: string;
     isFirstPage: boolean;
     isLastPage: boolean;
     offset: number;
@@ -31,7 +31,7 @@ export interface PaginationProps extends PaginationData {
     setPageSize: (pageSize) => void;
 }
 
-const PAGINATION_METRIC_AREA = "pagination";
+const PAGINATION_METRIC_AREA = 'pagination';
 
 export class Pagination extends PureComponent<PaginationProps> {
     static defaultProps = {
@@ -39,35 +39,34 @@ export class Pagination extends PureComponent<PaginationProps> {
     };
 
     onLoadFirstPage = () => {
-        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, "loadFirstPage");
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'loadFirstPage');
         this.props.loadFirstPage();
-    }
+    };
 
     onLoadLastPage = () => {
-        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, "loadLastPage");
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'loadLastPage');
         this.props.loadLastPage();
-    }
+    };
 
     onLoadPreviousPage = () => {
-        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, "loadPreviousPage");
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'loadPreviousPage');
         this.props.loadPreviousPage();
-    }
+    };
 
     onLoadNextPage = () => {
-        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, "loadNextPage");
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'loadNextPage');
         this.props.loadNextPage();
-    }
+    };
 
     onSetPageSize = (pageSize: number) => {
-        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, "setPageSize" + pageSize);
+        incrementClientSideMetricCount(PAGINATION_METRIC_AREA, 'setPageSize' + pageSize);
         this.props.setPageSize(pageSize);
-    }
+    };
 
     render(): ReactNode {
         const {
             currentPage,
             disabled,
-            id,
             isFirstPage,
             isLastPage,
             offset,
@@ -102,7 +101,6 @@ export class Pagination extends PureComponent<PaginationProps> {
                         <PageMenu
                             currentPage={currentPage}
                             disabled={disabled}
-                            id={id}
                             isFirstPage={isFirstPage}
                             isLastPage={isLastPage}
                             pageCount={pageCount}

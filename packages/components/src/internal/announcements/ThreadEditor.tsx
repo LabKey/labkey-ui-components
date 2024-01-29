@@ -11,7 +11,6 @@ import React, {
     useState,
 } from 'react';
 import classNames from 'classnames';
-import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import { generateId, handleFileInputChange } from '../util/utils';
 import { isLoading, LoadingState } from '../../public/LoadingState';
@@ -23,6 +22,7 @@ import { AnnouncementsAPIWrapper } from './APIWrapper';
 
 import { RemoveAttachmentModal, ThreadAttachments } from './ThreadAttachments';
 import { Attachment, AnnouncementModel } from './model';
+import { DropdownAnchor, MenuItem } from '../dropdowns';
 
 // Check if a line starts with any spaces, a number, followed by a period and a space.
 const orderedBulletRe = /^\s*\d+. /;
@@ -160,7 +160,6 @@ interface ThreadEditorToolbarProps {
 }
 
 const ThreadEditorToolbar: FC<ThreadEditorToolbarProps> = memo(({ inputRef, setBody, setView, view }) => {
-    const id = useMemo(() => generateId() + '-thread-editor-dropdown', []);
     const bold = useCallback(() => {
         const [body, selectionStart, selectionEnd] = applyTemplate(inputRef.current, '**', '**');
         setBody(body, selectionStart, selectionEnd);
@@ -188,14 +187,10 @@ const ThreadEditorToolbar: FC<ThreadEditorToolbarProps> = memo(({ inputRef, setB
     return (
         <div className="thread-editor-toolbar editor-toolbar">
             <div className="editor-toolbar__section insert-menu">
-                <Dropdown componentClass="div" id={id}>
-                    <Dropdown.Toggle useAnchor={true}>{view}</Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                        <MenuItem onClick={setEditMode}>{EditorView.edit}</MenuItem>
-                        <MenuItem onClick={setPreviewMode}>{EditorView.preview}</MenuItem>
-                    </Dropdown.Menu>
-                </Dropdown>
+                <DropdownAnchor title={view}>
+                    <MenuItem onClick={setEditMode}>{EditorView.edit}</MenuItem>
+                    <MenuItem onClick={setPreviewMode}>{EditorView.preview}</MenuItem>
+                </DropdownAnchor>
             </div>
 
             <div className="editor-toolbar__section">

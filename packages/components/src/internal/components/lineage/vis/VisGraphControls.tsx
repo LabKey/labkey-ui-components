@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { Network } from 'vis-network';
+import { DropdownButton, MenuItem } from '../../../dropdowns';
 
 const PAN_INCREMENT = 20;
 const ZOOM_INCREMENT = 0.05;
@@ -61,7 +61,7 @@ export class VisGraphControls extends PureComponent<GraphControlsProps> {
                                 <i className="fa fa-gear" />
                             </button>
                         )}
-                        <DropdownButton id="graph-control-dd" title={<i className="fa fa-undo" />} pullRight>
+                        <DropdownButton title={<i className="fa fa-undo" />} pullRight>
                             <MenuItem onClick={this.resetSelect}>Reset view and select seed</MenuItem>
                             <MenuItem onClick={this.reset}>Reset view</MenuItem>
                         </DropdownButton>

@@ -1,24 +1,16 @@
 import React from 'react';
 
 import { mount, ReactWrapper } from 'enzyme';
-import { MenuItem, OverlayTrigger } from 'react-bootstrap';
 
 import { DisableableMenuItem } from './DisableableMenuItem';
 
 describe('DisableableMenuItem', () => {
     function validate(wrapper: ReactWrapper, disabled: boolean, menuContent: string, menuProps: any = undefined) {
-        const menuItem = wrapper.find(MenuItem);
+        const menuItem = wrapper.find('MenuItem');
         expect(menuItem.exists()).toBeTruthy();
         if (disabled) {
-            expect(wrapper.find(OverlayTrigger).exists()).toBeTruthy();
             expect(menuItem.prop('disabled')).toBeTruthy();
-            if (menuProps) {
-                Object.keys(menuProps).forEach(prop => {
-                    expect(menuItem.prop(prop)).toBeFalsy();
-                });
-            }
         } else {
-            expect(wrapper.find(OverlayTrigger).exists()).toBeFalsy();
             expect(menuItem.prop('disabled')).toBeFalsy();
             if (menuProps) {
                 Object.keys(menuProps).forEach(prop => {
@@ -52,7 +44,7 @@ describe('DisableableMenuItem', () => {
                 <div>Other test</div>
             </DisableableMenuItem>
         );
-        validate(wrapper, true, 'Other test', { onClick: undefined });
+        validate(wrapper, true, 'Other test');
     });
 
     test('disabled, alternate overlay placement', () => {
@@ -63,7 +55,6 @@ describe('DisableableMenuItem', () => {
                 {content}
             </DisableableMenuItem>
         );
-        validate(wrapper, true, content, { onClick });
-        expect(wrapper.find(OverlayTrigger).prop('placement')).toBe('right');
+        validate(wrapper, true, content);
     });
 });

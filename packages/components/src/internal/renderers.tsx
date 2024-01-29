@@ -20,14 +20,12 @@ import React, {
     FC,
     memo,
     ReactNode,
-    SyntheticEvent,
     useCallback,
     useEffect,
     useMemo,
     useRef,
     useState,
 } from 'react';
-import { MenuItem, SelectCallback } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 import { createPortal } from 'react-dom';
 
@@ -44,8 +42,8 @@ import { GridColumn } from './components/base/models/GridColumn';
 
 import { LabelHelpTip } from './components/base/LabelHelpTip';
 import { DisableableMenuItem } from './components/samples/DisableableMenuItem';
-import { cancelEvent } from './events';
 import { usePortalRef } from './hooks';
+import { MenuDivider, MenuItem } from './dropdowns';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
@@ -159,25 +157,22 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     // Note: We need to make sure we cancel all events in our menu handlers or we also trigger the click handler in
     // HeaderCellDropdown, which will reset the open value to true, which will keep the menu open.
     const openFilterPanel = useCallback(
-        (_: any, event: SyntheticEvent) => {
-            cancelEvent(event);
+        () => {
             setOpen(false);
             handleFilter(queryColumn, false);
         },
         [setOpen, handleFilter, queryColumn]
-    ) as SelectCallback;
+    );
     const removeFilter = useCallback(
-        (_: any, event: SyntheticEvent) => {
-            cancelEvent(event);
+        () => {
             setOpen(false);
             handleFilter(queryColumn, true);
         },
         [queryColumn, handleFilter, setOpen]
-    ) as SelectCallback;
+    );
 
     const sort = useCallback(
-        (event: SyntheticEvent, dir?: string) => {
-            cancelEvent(event);
+        (dir?: string) => {
             setOpen(false);
             handleSort(queryColumn, dir);
         },
@@ -185,32 +180,26 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     );
     // There is something wrong with the React Bootstrap types, the only way to get these callbacks properly typed is to
     // use "as SelectCallback", even though their type signature matches perfectly.
-    const sortAsc = useCallback((_: any, event: SyntheticEvent): void => sort(event, '+'), [sort]) as SelectCallback;
-    const sortDesc = useCallback((_: any, event: SyntheticEvent): void => sort(event, '-'), [sort]) as SelectCallback;
-    const clearSort = useCallback((_: any, event: SyntheticEvent): void => sort(event), [sort]) as SelectCallback;
-    const hideColumn = useCallback(
-        (_: any, event: SyntheticEvent): void => {
-            cancelEvent(event);
-            setOpen(false);
-            handleHideColumn(queryColumn);
-        },
-        [queryColumn, handleHideColumn, setOpen]
-    ) as SelectCallback;
+    const sortAsc = useCallback((): void => sort('+'), [sort]);
+    const sortDesc = useCallback((): void => sort('-'), [sort]);
+    const clearSort = useCallback((): void => sort(), [sort]);
+    const hideColumn = useCallback((): void => {
+        setOpen(false);
+        handleHideColumn(queryColumn);
+    }, [queryColumn, handleHideColumn, setOpen]);
     const addColumn = useCallback(
-        (_: any, event: SyntheticEvent): void => {
-            cancelEvent(event);
+        (): void => {
             setOpen(false);
             handleAddColumn(queryColumn);
         },
         [queryColumn, handleAddColumn, setOpen]
-    ) as SelectCallback;
+    );
     const editColumnTitle = useCallback(
-        (_: any, event: SyntheticEvent): void => {
-            cancelEvent(event);
+        (): void => {
             onEditTitleClicked();
         },
         [onEditTitleClicked]
-    ) as SelectCallback;
+    );
 
     const [menuStyle, setMenuStyle] = useState<CSSProperties>({});
     const updateMenuStyle = useCallback(() => {
@@ -274,30 +263,30 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
         <ul className={className} ref={menuEl} style={menuStyle}>
             {allowColFilter && (
                 <>
-                    <MenuItem onSelect={openFilterPanel}>
+                    <MenuItem onClick={openFilterPanel}>
                         <span className="fa fa-filter grid-panel__menu-icon" />
                         Filter...
                     </MenuItem>
-                    <MenuItem disabled={!colFilters || colFilters?.length === 0} onSelect={removeFilter}>
+                    <MenuItem disabled={!colFilters || colFilters?.length === 0} onClick={removeFilter}>
                         <span className="grid-panel__menu-icon-spacer" />
                         Remove filter{colFilters?.length > 1 ? 's' : ''}
                     </MenuItem>
-                    {allowColSort && <MenuItem divider />}
+                    {allowColSort && <MenuDivider />}
                 </>
             )}
             {allowColSort && (
                 <>
-                    <MenuItem disabled={isSortAsc} onSelect={sortAsc}>
+                    <MenuItem disabled={isSortAsc} onClick={sortAsc}>
                         <span className="fa fa-sort-amount-asc grid-panel__menu-icon" />
                         Sort ascending
                     </MenuItem>
-                    <MenuItem disabled={isSortDesc} onSelect={sortDesc}>
+                    <MenuItem disabled={isSortDesc} onClick={sortDesc}>
                         <span className="fa fa-sort-amount-desc grid-panel__menu-icon" />
                         Sort descending
                     </MenuItem>
                     {/* Clear sort only applies for the grids that are backed by QueryModel */}
                     {model && (
-                        <MenuItem disabled={!isSortDesc && !isSortAsc} onSelect={clearSort}>
+                        <MenuItem disabled={!isSortDesc && !isSortAsc} onClick={clearSort}>
                             <span className="grid-panel__menu-icon-spacer" />
                             Clear sort
                         </MenuItem>
@@ -306,20 +295,20 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
             )}
             {showGridCustomization && (
                 <>
-                    {(allowColSort || allowColFilter) && <MenuItem divider />}
-                    <MenuItem onSelect={editColumnTitle}>
+                    {(allowColSort || allowColFilter) && <MenuDivider />}
+                    <MenuItem onClick={editColumnTitle}>
                         <span className="fa fa-pencil grid-panel__menu-icon" />
                         Edit Label
                     </MenuItem>
                     {handleAddColumn && (
-                        <MenuItem onSelect={addColumn}>
+                        <MenuItem onClick={addColumn}>
                             <span className="fa fa-plus grid-panel__menu-icon" />
                             Insert Column
                         </MenuItem>
                     )}
                     <DisableableMenuItem
                         operationPermitted={handleHideColumn && !!model}
-                        onSelect={hideColumn}
+                        onClick={hideColumn}
                         disabledMessage={APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
                     >
                         <span className="fa fa-eye-slash grid-panel__menu-icon" />

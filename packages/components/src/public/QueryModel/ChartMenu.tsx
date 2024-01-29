@@ -1,14 +1,13 @@
-import React, { FC, PureComponent, ReactNode, SyntheticEvent, useCallback } from 'react';
-import { DropdownButton, MenuItem, SelectCallback } from 'react-bootstrap';
+import React, { FC, PureComponent, ReactNode, useCallback } from 'react';
 
 import { DataViewInfo } from '../../internal/DataViewInfo';
-import { cancelEvent } from '../../internal/events';
 
 import { blurActiveElement } from '../../internal/util/utils';
 
 import { getQueryMetadata } from '../../internal/global';
 
 import { RequiresModelAndActions } from './withQueryModels';
+import { DropdownButton, MenuDivider, MenuHeader, MenuItem } from '../../internal/dropdowns';
 
 interface ChartMenuItemProps {
     chart: DataViewInfo;
@@ -16,16 +15,10 @@ interface ChartMenuItemProps {
 }
 
 export const ChartMenuItem: FC<ChartMenuItemProps> = ({ chart, showChart }) => {
-    const onSelect = useCallback(
-        (_: never, event: SyntheticEvent) => {
-            cancelEvent(event);
-            showChart(chart);
-        },
-        [showChart, chart]
-    ) as SelectCallback;
+    const onClick = useCallback(() => showChart(chart), [showChart, chart]);
 
     return (
-        <MenuItem onSelect={onSelect}>
+        <MenuItem onClick={onClick}>
             <i className={`chart-menu-icon ${chart.iconCls ?? ''}`} />
             <span className="chart-menu-label">{chart.name}</span>
         </MenuItem>
@@ -69,8 +62,7 @@ export class ChartMenu extends PureComponent<Props> {
         return (
             <div className="chart-menu">
                 <DropdownButton
-                    id={`chart-menu-${id}`}
-                    className="chart-menu-button"
+                    buttonClassName="chart-menu-button"
                     disabled={disabled}
                     pullRight
                     title={
@@ -86,13 +78,13 @@ export class ChartMenu extends PureComponent<Props> {
                 >
                     {chartsError !== undefined && <MenuItem>{chartsError}</MenuItem>}
 
-                    {privateCharts.length > 0 && <MenuItem header>Your Saved Charts</MenuItem>}
+                    {privateCharts.length > 0 && <MenuHeader text="Your Saved Charts" />}
 
                     {privateCharts.length > 0 && privateCharts.map(this.chartMapper)}
 
-                    {privateCharts.length > 0 && publicCharts.length > 0 && <MenuItem divider />}
+                    {privateCharts.length > 0 && publicCharts.length > 0 && <MenuDivider />}
 
-                    {publicCharts.length > 0 && <MenuItem header>All Saved Charts</MenuItem>}
+                    {publicCharts.length > 0 && <MenuHeader text="All Saved Charts" />}
 
                     {publicCharts.length > 0 && publicCharts.map(this.chartMapper)}
                 </DropdownButton>

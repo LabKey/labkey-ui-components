@@ -66,7 +66,7 @@ describe('GridPanel', () => {
 
     const expectChartMenu = (wrapper: GridPanelWrapper, disabledState: boolean): void => {
         expectChartMenuVisible(wrapper, true);
-        expect(wrapper.find(CHART_MENU_SELECTOR).find('.dropdown').at(0).hasClass('disabled')).toEqual(disabledState);
+        expect(wrapper.find(CHART_MENU_SELECTOR).find('.dropdown-toggle').at(0).prop('disabled')).toEqual(disabledState);
     };
 
     const expectChartMenuVisible = (wrapper: GridPanelWrapper, visible: boolean): void => {

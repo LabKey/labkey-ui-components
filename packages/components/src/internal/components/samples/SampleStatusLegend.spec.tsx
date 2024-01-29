@@ -7,12 +7,14 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { LoadingState } from '../../../public/LoadingState';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
+
 import { SampleStatusLegendImpl } from './SampleStatusLegend';
 import { SampleStatusTag } from './SampleStatusTag';
 
 describe('SampleStatusLegend', () => {
     const SQ = new SchemaQuery('schema', 'query');
-    const MODEL_NO_ROWS = makeTestQueryModel(SQ, new QueryInfo(), {}, [], 0).mutate({
+    const MODEL_NO_ROWS = makeTestQueryModel(SQ, new QueryInfo({}), {}, [], 0).mutate({
         queryInfoLoadingState: LoadingState.LOADED,
         rowsLoadingState: LoadingState.LOADED,
     });
@@ -22,7 +24,7 @@ describe('SampleStatusLegend', () => {
     });
     const MODEL_WITH_ROWS = makeTestQueryModel(
         SQ,
-        new QueryInfo(),
+        new QueryInfo({}),
         {
             1: {
                 Label: { value: 'Available' },
@@ -70,7 +72,9 @@ describe('SampleStatusLegend', () => {
     });
 
     test('with rows', () => {
-        const wrapper = mount(<SampleStatusLegendImpl {...DEFAULT_PROPS} queryModels={{ model: MODEL_WITH_ROWS }} />);
+        const wrapper = mountWithAppServerContext(
+            <SampleStatusLegendImpl {...DEFAULT_PROPS} queryModels={{ model: MODEL_WITH_ROWS }} />
+        );
         validate(wrapper, false, 3);
         expect(wrapper.find('.sample-status-legend--description').at(0).text()).toBe('');
         expect(wrapper.find('.sample-status-legend--description').at(1).text()).toBe('');

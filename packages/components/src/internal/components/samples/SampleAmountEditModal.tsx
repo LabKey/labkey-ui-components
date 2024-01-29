@@ -16,6 +16,8 @@ import { useAppContext } from '../../AppContext';
 import { updateSampleStorageData } from './actions';
 import { AMOUNT_PRECISION_ERROR_TEXT, STORED_AMOUNT_FIELDS } from './constants';
 import { StorageAmountInput } from './StorageAmountInput';
+import { CommentTextArea } from '../forms/input/CommentTextArea';
+import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 interface Props {
     noun: string;
@@ -54,6 +56,8 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState();
     const [isDirty, setIsDirty] = useState(false);
+    const { requiresUserComment } = useDataChangeCommentsRequired();
+    const hasValidUserComment = comment?.trim()?.length > 0;
 
     const onCancel = useCallback(() => {
         onClose();
@@ -158,22 +162,12 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
                         unitsChangedHandler={unitsChangeHandler}
                         label={amountCaption}
                     />
-                    <div className="form-group storage-action-form-group">
-                        <span>
-                            User Comment
-                            <LabelHelpTip placement="top" title="Comment">
-                                Additional information about this update.
-                            </LabelHelpTip>
-                        </span>
-                        <textarea
-                            className="form-control"
-                            id="userComment"
-                            placeholder="Enter comments (optional)"
-                            rows={5}
-                            onChange={commentChangeHandler}
-                            value={comment}
-                        />
-                    </div>
+                    <CommentTextArea
+                        containerClassName="form-group storage-action-form-group"
+                        actionName="Update"
+                        onChange={commentChangeHandler}
+                        requiresUserComment={requiresUserComment}
+                    />
                 </div>
             </Modal.Body>
             <Modal.Footer>
@@ -182,7 +176,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
                 </button>
                 <button
                     className="pull-right btn btn-success"
-                    disabled={submitting || !canSubmit}
+                    disabled={submitting || !canSubmit || (requiresUserComment && !hasValidUserComment)}
                     onClick={onSubmit}
                     type="button"
                 >

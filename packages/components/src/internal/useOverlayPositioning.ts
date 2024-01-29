@@ -16,6 +16,12 @@ export function useOverlayPositioning<T extends Element = HTMLDivElement, O exte
     // position to be (hopefully) very far off-screen, otherwise you see the overlay flash from one spot to another.
     const [style, setStyle] = useState<CSSProperties>({ top: -10000, left: -10000 });
 
+    if (targetRef === undefined) {
+        console.warn(
+            'targetRef is undefined, did you forget to pass it to your overlay component (e.g. Tooltip/Popover)?'
+        );
+    }
+
     useEffect(() => {
         if (targetRef === undefined) return;
         const targetEl = targetRef.current;

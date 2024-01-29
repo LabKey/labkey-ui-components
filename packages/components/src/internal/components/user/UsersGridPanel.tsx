@@ -4,7 +4,7 @@
  */
 import React, { FC, memo, PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
-import { Col, MenuItem, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 
@@ -27,6 +27,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { capitalizeFirstChar } from '../../util/utils';
 
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
+import { MenuItem } from '../../dropdowns';
 
 import { CreateUsersModal } from './CreateUsersModal';
 import { UserDetailsPanel } from './UserDetailsPanel';
@@ -259,10 +261,9 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                         Create
                     </DisableableButton>
                 )}
-                <ManageDropdownButton id="users-manage-btn">
+                <ManageDropdownButton>
                     {user.hasManageUsersPermission() && usersView === 'active' && (
                         <SelectionMenuItem
-                            id="deactivate-users-menu-item"
                             text="Deactivate Users"
                             onClick={() => this.toggleDialog('deactivate', true)}
                             queryModel={model}
@@ -271,7 +272,6 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                     )}
                     {user.hasManageUsersPermission() && (
                         <SelectionMenuItem
-                            id="delete-users-menu-item"
                             text="Delete Users"
                             onClick={() => this.toggleDialog('delete', true)}
                             queryModel={model}
@@ -280,7 +280,6 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                     )}
                     {user.hasManageUsersPermission() && usersView === 'inactive' && (
                         <SelectionMenuItem
-                            id="reactivate-users-menu-item"
                             text="Reactivate Users"
                             maxSelection={this.getUserLimitRemainingUsers()}
                             maxSelectionDisabledMsg={
@@ -292,19 +291,13 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                         />
                     )}
                     {usersView !== 'active' && (
-                        <MenuItem id="viewactive-users-menu-item" onClick={() => this.toggleViewActive('active')}>
-                            View Active Users
-                        </MenuItem>
+                        <MenuItem onClick={() => this.toggleViewActive('active')}>View Active Users</MenuItem>
                     )}
                     {usersView !== 'all' && (
-                        <MenuItem id="viewall-users-menu-item" onClick={() => this.toggleViewActive('all')}>
-                            View All Users
-                        </MenuItem>
+                        <MenuItem onClick={() => this.toggleViewActive('all')}>View All Users</MenuItem>
                     )}
                     {usersView !== 'inactive' && (
-                        <MenuItem id="viewinactive-users-menu-item" onClick={() => this.toggleViewActive('inactive')}>
-                            View Inactive Users
-                        </MenuItem>
+                        <MenuItem onClick={() => this.toggleViewActive('inactive')}>View Inactive Users</MenuItem>
                     )}
                 </ManageDropdownButton>
             </div>

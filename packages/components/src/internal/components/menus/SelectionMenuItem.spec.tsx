@@ -16,8 +16,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { MenuItem, OverlayTrigger } from 'react-bootstrap';
-
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -30,13 +28,12 @@ describe('SelectionMenuItem', () => {
             rowCount: 3,
             selections: new Set(),
         });
-        const component = <SelectionMenuItem id="jest-test-1" queryModel={model} text={text} onClick={jest.fn()} />;
+        const component = <SelectionMenuItem nounPlural="items" queryModel={model} text={text} onClick={jest.fn()} />;
 
         const wrapper = mount(component);
-        expect(wrapper.find(MenuItem)).toHaveLength(1);
-        expect(wrapper.find(MenuItem).text()).toBe(text);
-        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('disabled');
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
+        expect(wrapper.find('MenuItem')).toHaveLength(1);
+        expect(wrapper.find('MenuItem').text()).toBe(text);
+        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toContain('disabled');
         wrapper.unmount();
     });
 
@@ -46,13 +43,12 @@ describe('SelectionMenuItem', () => {
             rowCount: 3,
             selections: new Set(['1', '2']),
         });
-        const component = <SelectionMenuItem id="jest-test-1" queryModel={model} text={text} onClick={jest.fn()} />;
+        const component = <SelectionMenuItem nounPlural="items" queryModel={model} text={text} onClick={jest.fn()} />;
 
         const wrapper = mount(component);
-        expect(wrapper.find(MenuItem)).toHaveLength(1);
-        expect(wrapper.find(MenuItem).text()).toBe(text);
-        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('');
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        expect(wrapper.find('MenuItem')).toHaveLength(1);
+        expect(wrapper.find('MenuItem').text()).toBe(text);
+        expect(wrapper.find('li').getDOMNode().getAttribute('class')).not.toContain('disabled');
         wrapper.unmount();
     });
 
@@ -63,13 +59,12 @@ describe('SelectionMenuItem', () => {
             selections: new Set(['1', '2', '3']),
         });
         const component = (
-            <SelectionMenuItem maxSelection={4} id="jest-test-1" queryModel={model} text={text} onClick={jest.fn()} />
+            <SelectionMenuItem nounPlural="items" maxSelection={4} queryModel={model} text={text} onClick={jest.fn()} />
         );
 
         const wrapper = mount(component);
-        expect(wrapper.find(MenuItem)).toHaveLength(1);
-        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('');
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        expect(wrapper.find('MenuItem')).toHaveLength(1);
+        expect(wrapper.find('li').getDOMNode().getAttribute('class')).not.toContain('disabled');
         wrapper.unmount();
     });
 
@@ -80,13 +75,12 @@ describe('SelectionMenuItem', () => {
             selections: new Set(['1', '2', '3']),
         });
         const component = (
-            <SelectionMenuItem maxSelection={2} id="jest-test-1" queryModel={model} text={text} onClick={jest.fn()} />
+            <SelectionMenuItem nounPlural="items" maxSelection={2} queryModel={model} text={text} onClick={jest.fn()} />
         );
 
         const wrapper = mount(component);
-        expect(wrapper.find(MenuItem)).toHaveLength(1);
-        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('disabled');
-        expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
+        expect(wrapper.find('MenuItem')).toHaveLength(1);
+        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toContain('disabled');
         wrapper.unmount();
     });
 
@@ -98,7 +92,7 @@ describe('SelectionMenuItem', () => {
         });
         const href = 'http://my.href.test';
         const wrapper = mount(
-            <SelectionMenuItem maxSelection={2} id="jest-test-1" queryModel={model} text={text} href={href} />
+            <SelectionMenuItem nounPlural="items" maxSelection={2} queryModel={model} text={text} href={href} />
         );
         expect(wrapper.prop('href')).toBe(href);
         expect(wrapper.prop('onClick')).toBe(undefined);

@@ -1,11 +1,12 @@
 import React, { FC, memo, PureComponent, ReactNode, useCallback } from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { Set } from 'immutable';
 
 import { exportRows } from '../../internal/actions';
 
 import { EXPORT_TYPES } from '../../internal/constants';
 import { Tip } from '../../internal/components/base/Tip';
+
+import { DropdownButton, MenuDivider, MenuHeader, MenuItem } from '../../internal/dropdowns';
 
 import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
@@ -34,6 +35,44 @@ const exportOptions = [
     // this implementation until we need them.
 ] as ExportOption[];
 
+interface ExportMenuItemProps {
+    hasSelections: boolean;
+    onExport: (option: ExportOption) => void;
+    option: ExportOption;
+    supportedTypes: Set<EXPORT_TYPES>;
+}
+
+const ExportMenuItem: FC<ExportMenuItemProps> = ({ hasSelections, onExport, option, supportedTypes }) => {
+    const onClick = useCallback(() => {
+        onExport(option);
+    }, [onExport, option]);
+
+    if (option.hidden && !supportedTypes?.includes(option.type)) return null;
+
+    if (option.type === EXPORT_TYPES.LABEL) {
+        const exportAndPrintHeader = 'Export and Print' + (hasSelections ? ' Selected' : '');
+        return (
+            <React.Fragment key={option.type}>
+                <MenuDivider />
+                <MenuHeader text={exportAndPrintHeader} />
+                <MenuItem onClick={onClick}>
+                    <span className={`fa ${option.icon} export-menu-icon`} />
+                    &nbsp; {option.label}
+                </MenuItem>
+            </React.Fragment>
+        );
+    }
+
+    return (
+        <MenuItem key={option.type} onClick={onClick}>
+            <div className="export-menu__item">
+                <span className={`fa ${option.icon} export-menu-icon`} />
+                <span>{option.label}</span>
+            </div>
+        </MenuItem>
+    );
+};
+
 export interface ExportMenuImplProps extends Omit<ExportMenuProps, 'model'> {
     exportHandler: (option: ExportOption) => void;
     hasData: boolean;
@@ -56,45 +95,24 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
         [exportHandler, id, onExport]
     );
 
+    const exportHeader = 'Export' + (hasSelections ? ' Selected' : '');
+
     return (
         hasData && (
             <div className="export-menu">
                 <Tip caption="Export">
-                    <DropdownButton
-                        id={`export-drop-${id}`}
-                        noCaret
-                        pullRight
-                        title={<span className="fa fa-download" />}
-                    >
-                        <MenuItem key="export_header" header>
-                            Export
-                            {hasSelections ? ' Selected' : ''}
-                        </MenuItem>
+                    <DropdownButton noCaret pullRight title={<span className="fa fa-download" />}>
+                        <MenuHeader text={exportHeader} />
 
-                        {exportOptions.map(option => {
-                            if (option.hidden && !supportedTypes?.includes(option.type)) return null;
-
-                            if (option.type === EXPORT_TYPES.LABEL) {
-                                return (
-                                    <React.Fragment key={option.type}>
-                                        <MenuItem divider />
-                                        <MenuItem header>Export and Print {hasSelections ? 'Selected' : ''}</MenuItem>
-                                        <MenuItem onClick={() => exportCallback(option)}>
-                                            <span className={`fa ${option.icon} export-menu-icon`} />
-                                            &nbsp; {option.label}
-                                        </MenuItem>
-                                    </React.Fragment>
-                                );
-                            }
-                            return (
-                                <MenuItem key={option.type} onClick={() => exportCallback(option)}>
-                                    <div className="export-menu__item">
-                                        <span className={`fa ${option.icon} export-menu-icon`} />
-                                        <span>{option.label}</span>
-                                    </div>
-                                </MenuItem>
-                            );
-                        })}
+                        {exportOptions.map(option => (
+                            <ExportMenuItem
+                                key={option.type}
+                                hasSelections={hasSelections}
+                                onExport={exportCallback}
+                                option={option}
+                                supportedTypes={supportedTypes}
+                            />
+                        ))}
                     </DropdownButton>
                 </Tip>
             </div>

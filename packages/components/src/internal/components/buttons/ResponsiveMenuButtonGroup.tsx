@@ -128,6 +128,9 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
 
     if (buttons.length === 0) return null;
 
+    // TODO: We're explicitly not converting this to use our internal DropdownButton at this time, because the
+    //  collapsedItems rendered are all ResponsiveMenuButton components, which render a SubMenuItem when collapsed, and
+    //  it would be too disruptive to update SubMenuItem (and SubMenu) at this time.
     return (
         <span className="responsive-menu-button-group" ref={elRef}>
             {renderedItems.length > 0 &&

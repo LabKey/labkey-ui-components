@@ -1,5 +1,4 @@
 import React from 'react';
-import { MenuItem } from 'react-bootstrap';
 
 import { mount } from 'enzyme';
 
@@ -20,7 +19,7 @@ describe('PicklistCreationMenuItem', () => {
         const wrapper = mount(
             <PicklistCreationMenuItem itemText={text} key={key} user={TEST_USER_EDITOR} asMenuItem />
         );
-        const menuItem = wrapper.find(MenuItem);
+        const menuItem = wrapper.find('MenuItem');
         expect(menuItem).toHaveLength(1);
         expect(menuItem.text()).toBe(text);
         expect(wrapper.find(PicklistEditModal).exists()).toBeFalsy();
@@ -30,7 +29,7 @@ describe('PicklistCreationMenuItem', () => {
 
     test('editor, not as menu item', () => {
         const wrapper = mount(<PicklistCreationMenuItem itemText={text} key={key} user={TEST_USER_EDITOR} />);
-        expect(wrapper.find(MenuItem)).toHaveLength(0);
+        expect(wrapper.find('MenuItem')).toHaveLength(0);
         expect(wrapper.find('button').text()).toBe(text);
         expect(wrapper.find(PicklistEditModal).exists()).toBeFalsy();
 

@@ -129,6 +129,7 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
     if (!isLoaded && !hasError) return null;
     const showFolders = folderItems?.length > 1;
 
+    // TODO: This component should not be using DropdownButton, as it is not rendering any MenuItem components
     return (
         <DropdownButton
             className="product-menu-button"

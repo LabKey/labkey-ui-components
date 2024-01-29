@@ -17,16 +17,19 @@ import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
 import { SampleTypeDataType } from './constants';
 import { EntityMoveModal, EntityMoveModalProps, getMoveConfirmationProperties } from './EntityMoveModal';
 import { OperationConfirmationData } from './models';
+import { TEST_USER_EDITOR } from '../../userFixtures';
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 describe('EntityMoveModal', () => {
+    const DEFAULT_APP_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
+
     function getDefaultProps(): EntityMoveModalProps {
         return {
             entityDataType: SampleTypeDataType,
             maxSelected: 1,
-            moveFn: jest.fn(),
             onAfterMove: jest.fn(),
             onCancel: jest.fn(),
-            queryModel: makeTestQueryModel(new SchemaQuery('schema', 'query'), new QueryInfo(), { 1: {} }, [1], 1),
+            queryModel: makeTestQueryModel(new SchemaQuery('schema', 'query'), new QueryInfo({}), { 1: {} }, [1], 1),
             useSelected: true,
         };
     }
@@ -64,11 +67,13 @@ describe('EntityMoveModal', () => {
                 api={getTestAPIWrapper(jest.fn, {
                     entity: getEntityTestAPIWrapper(jest.fn, {
                         getMoveConfirmationData: () =>
-                            Promise.resolve({
-                                allowed: [],
-                                notAllowed: [1],
-                                idMap: { 1: false },
-                            }),
+                            Promise.resolve(
+                                new OperationConfirmationData({
+                                    allowed: [],
+                                    notAllowed: [1],
+                                    idMap: { 1: false },
+                                })
+                            ),
                     }),
                 })}
             />
@@ -88,14 +93,18 @@ describe('EntityMoveModal', () => {
                 api={getTestAPIWrapper(jest.fn, {
                     entity: getEntityTestAPIWrapper(jest.fn, {
                         getMoveConfirmationData: () =>
-                            Promise.resolve({
-                                allowed: [1],
-                                notAllowed: [],
-                                idMap: { 1: true },
-                            }),
+                            Promise.resolve(
+                                new OperationConfirmationData({
+                                    allowed: [1],
+                                    notAllowed: [],
+                                    idMap: { 1: true },
+                                })
+                            ),
                     }),
                 })}
-            />
+            />,
+            undefined,
+            DEFAULT_APP_CONTEXT
         );
         await waitForLifecycle(wrapper);
         expect(wrapper.find(ConfirmModal)).toHaveLength(1);
@@ -122,7 +131,7 @@ describe('EntityMoveModal', () => {
 
         test('single allowed', () => {
             const props = getMoveConfirmationProperties(
-                { allowed: [1], notAllowed: [], idMap: { 1: true } } as OperationConfirmationData,
+                new OperationConfirmationData({ allowed: [1], notAllowed: [], idMap: { 1: true } }),
                 'sample',
                 'samples'
             );
@@ -133,7 +142,7 @@ describe('EntityMoveModal', () => {
 
         test('multiple allowed', () => {
             const props = getMoveConfirmationProperties(
-                { allowed: [1, 2], notAllowed: [], idMap: { 1: true, 2: true } } as OperationConfirmationData,
+                new OperationConfirmationData({ allowed: [1, 2], notAllowed: [], idMap: { 1: true, 2: true } }),
                 'sample',
                 'samples'
             );
@@ -144,7 +153,7 @@ describe('EntityMoveModal', () => {
 
         test('single not allowed', () => {
             const props = getMoveConfirmationProperties(
-                { allowed: [], notAllowed: [1], idMap: { 1: false } } as OperationConfirmationData,
+                new OperationConfirmationData({ allowed: [], notAllowed: [1], idMap: { 1: false } }),
                 'sample',
                 'samples'
             );
@@ -160,7 +169,7 @@ describe('EntityMoveModal', () => {
 
         test('multiple not allowed', () => {
             const props = getMoveConfirmationProperties(
-                { allowed: [], notAllowed: [1, 2], idMap: { 1: false, 2: false } } as OperationConfirmationData,
+                new OperationConfirmationData({ allowed: [], notAllowed: [1, 2], idMap: { 1: false, 2: false } }),
                 'sample',
                 'samples'
             );
@@ -176,7 +185,7 @@ describe('EntityMoveModal', () => {
 
         test('single allowed, single not allowed', () => {
             const props = getMoveConfirmationProperties(
-                { allowed: [1], notAllowed: [2], idMap: { 1: true, 2: false } } as OperationConfirmationData,
+                new OperationConfirmationData({ allowed: [1], notAllowed: [2], idMap: { 1: true, 2: false } }),
                 'sample',
                 'samples'
             );
@@ -191,11 +200,11 @@ describe('EntityMoveModal', () => {
 
         test('multiple allowed, multiple allowed', () => {
             const props = getMoveConfirmationProperties(
-                {
+                new OperationConfirmationData({
                     allowed: [1, 3],
                     notAllowed: [2, 4],
                     idMap: { 1: true, 2: false, 3: true, 4: false },
-                } as OperationConfirmationData,
+                }),
                 'sample',
                 'samples'
             );

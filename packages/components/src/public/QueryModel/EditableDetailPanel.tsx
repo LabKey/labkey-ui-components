@@ -29,6 +29,7 @@ export interface EditableDetailPanelProps {
     detailEditRenderer?: DetailRenderer;
     detailHeader?: ReactNode;
     detailRenderer?: DetailRenderer;
+    disabled?: boolean;
     editColumns?: QueryColumn[];
     model: QueryModel;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
@@ -140,6 +141,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             appEditable,
             containerFilter,
             containerPath,
+            disabled,
             detailEditRenderer,
             detailHeader,
             detailRenderer,
@@ -221,7 +223,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                         <button className="btn btn-default" type="button" onClick={this.toggleEditing}>
                             Cancel
                         </button>
-                        <button className="btn btn-success" type="submit" disabled={!canSubmit}>
+                        <button className="btn btn-success" type="submit" disabled={!canSubmit || disabled}>
                             {submitText}
                         </button>
                     </FormButtons>

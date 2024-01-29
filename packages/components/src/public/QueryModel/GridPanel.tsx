@@ -13,8 +13,6 @@ import classNames from 'classnames';
 import { fromJS, List, Map, Set } from 'immutable';
 import { Filter, getServerContext, Query } from '@labkey/api';
 
-import { MenuItem, SplitButton } from 'react-bootstrap';
-
 import { EXPORT_TYPES, GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from '../../internal/constants';
 import { headerCell, headerSelectionCell, isFilterColumnNameMatch } from '../../internal/renderers';
 
@@ -48,6 +46,8 @@ import { Alert } from '../../internal/components/base/Alert';
 import { userCanEditSharedViews } from '../../internal/app/utils';
 
 import { User } from '../../internal/components/base/models/User';
+
+import { MenuItem, SplitButton } from '../../internal/dropdowns';
 
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
@@ -347,17 +347,21 @@ export const GridTitle: FC<GridTitleProps> = memo(props => {
             {isUpdated && allowViewCustomization && <span className="alert-success view-edit-alert">Updated</span>}
             {displayTitle ?? 'Default View'}
             {showRevert && (
-                <button className="btn btn-default button-left-spacing button-right-spacing" onClick={_revertViewEdit}>
+                <button
+                    className="btn btn-default button-left-spacing button-right-spacing"
+                    onClick={_revertViewEdit}
+                    type="button"
+                >
                     Undo
                 </button>
             )}
             {showSave && !canSaveCurrent && (
-                <button className="btn btn-success" onClick={onSaveNewView}>
+                <button className="btn btn-success" onClick={onSaveNewView} type="button">
                     Save
                 </button>
             )}
             {showSave && canSaveCurrent && (
-                <SplitButton id="saveViewDropdown" bsStyle="success" onClick={_onSaveCurrentView} title="Save">
+                <SplitButton bsStyle="success" onClick={_onSaveCurrentView} title="Save">
                     <MenuItem title="Save as new view" onClick={onSaveNewView} key="saveNewGridView">
                         Save as...
                     </MenuItem>
@@ -516,7 +520,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { model, actions } = this.props;
         const checked = event.target.checked === true;
         // Look through to the nativeEvent to determine if the shift key is engaged.
-        actions.selectRow(model.id, checked, row.toJS(), (event.nativeEvent as any).shiftKey ?? false);
+        const useSelectionPivot = (event.nativeEvent as any).shiftKey ?? false;
+        actions.selectRow(model.id, checked, row.toJS(), useSelectionPivot);
+        if (useSelectionPivot) {
+            incrementClientSideMetricCount('grid', 'shiftSelect');
+        }
     };
 
     selectPage = (event): void => {

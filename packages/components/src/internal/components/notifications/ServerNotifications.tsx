@@ -121,6 +121,9 @@ export class ServerNotifications extends React.Component<ServerNotificationsConf
                 {this.hasAnyUnread() && <span className="badge">{numUnread}</span>}
             </span>
         );
+
+        // TODO: This should not be using DropdownButton as it is not rendering any MenuItem components. We will address
+        //  this in a future PR
         return (
             <DropdownButton
                 id="server-notifications-button"

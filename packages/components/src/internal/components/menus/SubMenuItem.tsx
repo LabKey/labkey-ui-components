@@ -174,6 +174,10 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                 delete itemProps.text;
                 delete itemProps.disabledMsg;
 
+                // FIXME: the way we are setting active here is incorrect. It makes menu items look active on hover,
+                //  because we are setting activeIdx during mouseEnter, however that is not how a typical menu is
+                //  supposed to work, which makes this menu look odd. It's especially odd within the menu because
+                //  hovering over a Menu header, which is clickable/expandable doesn't highlight blue.
                 const menuItem = (
                     <MenuItem
                         {...itemProps}
@@ -241,6 +245,10 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
             </>
         );
 
+        // FIXME: because we render a <ul> and inside that we render the subMenuItems, which are more MenuItems we are
+        //  generating a DOM structure that is doesn't align with what bootstrap 3 expects, which causes the MenuItems
+        //  to not be highlighted on hover if they were passed as children. This is most apparent in our "More" menu
+        //  rendered by our ResponsiveMenuButton and ResponsiveMenuButtonGroup components.
         return (
             <>
                 {inline && text && <MenuItem header>{text}</MenuItem>}

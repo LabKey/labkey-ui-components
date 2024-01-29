@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 49439: filter out inactive users from insert and update form query selects
 - Issue 49502: If the Editable Grid lookup cell is a measurement unit, then we need to use the unit's display value
 - Issue 49383: App error when a folder admin access profile page from a child folder
+- Issue 49417: App user details modal to show above the app header details popover
 
 ### version 3.11.0
 *Released*: 29 January 2024

@@ -69,7 +69,6 @@ export const DesignerDetailTooltip: FC<DesignerDetailPanelProps> = memo(props =>
             <LabelHelpTip
                 popoverClassName="header-details-hover"
                 iconComponent={<span className="header-details-link">Details</span>}
-                placement="right"
             >
                 <DesignerDetailPanel {...props} />
             </LabelHelpTip>

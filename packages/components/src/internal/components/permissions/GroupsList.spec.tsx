@@ -45,7 +45,7 @@ describe('GroupsList', () => {
 
     test('no groups', async () => {
         const wrapper = mountWithAppServerContext(
-            <GroupsList currentUser={TEST_USER_APP_ADMIN} groups={[]} />,
+            <GroupsList groups={[]} />,
             getDefaultAppContext({ fetchContainers, fetchPolicy, fetchGroups, getGroupMemberships }),
             {
                 container: TEST_PROJECT_CONTAINER,
@@ -65,7 +65,6 @@ describe('GroupsList', () => {
     test('just project groups', async () => {
         const wrapper = mountWithAppServerContext(
             <GroupsList
-                currentUser={TEST_USER_APP_ADMIN}
                 groups={[
                     { value: 1, displayValue: 'Group A' },
                     { value: 2, displayValue: 'Group B' },
@@ -93,7 +92,6 @@ describe('GroupsList', () => {
     test('with site groups', async () => {
         const wrapper = mountWithAppServerContext(
             <GroupsList
-                currentUser={TEST_USER_APP_ADMIN}
                 groups={[
                     { value: 1, displayValue: 'Group A' },
                     { value: 2, displayValue: 'Group B' },
@@ -122,7 +120,6 @@ describe('GroupsList', () => {
     test('non admin', async () => {
         const wrapper = mountWithAppServerContext(
             <GroupsList
-                currentUser={TEST_USER_READER}
                 groups={[
                     { value: 1, displayValue: 'Group A' },
                     { value: 2, displayValue: 'Group B' },
@@ -154,7 +151,6 @@ describe('GroupsList', () => {
     test('admin, showLinks false', async () => {
         const wrapper = mountWithAppServerContext(
             <GroupsList
-                currentUser={TEST_USER_APP_ADMIN}
                 showLinks={false}
                 groups={[
                     { value: 1, displayValue: 'Group A' },

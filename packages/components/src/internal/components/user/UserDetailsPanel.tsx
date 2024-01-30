@@ -254,7 +254,6 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     />
                     <GroupsList
                         groups={caseInsensitive(userProperties, 'groups')}
-                        currentUser={currentUser}
                         showLinks={showGroupListLinks}
                     />
                 </>

@@ -12,13 +12,12 @@ import { useContainerUser } from '../container/actions';
 
 interface Props {
     asRow?: boolean;
-    currentUser: User;
     groups: Array<{ displayValue: string; value: number }>;
     showLinks?: boolean;
 }
 
 export const GroupsList: FC<Props> = memo(props => {
-    const { groups, currentUser, asRow = true, showLinks = true } = props;
+    const { groups, asRow = true, showLinks = true } = props;
     const [groupMembership, setGroupMembership] = useState<Groups>();
     const { api } = useAppContext();
     const { container, moduleContext } = useServerContext();
@@ -34,7 +33,7 @@ export const GroupsList: FC<Props> = memo(props => {
                 setGroupMembership(groupMembership_);
             }
         })();
-    }, [api.security, homeContainer.isLoaded, currentUser]);
+    }, [api.security, homeContainer.isLoaded]);
 
     if (!groups) return null;
 

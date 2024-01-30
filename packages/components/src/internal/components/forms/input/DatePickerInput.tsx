@@ -19,9 +19,9 @@ import DatePicker from 'react-datepicker';
 
 import { FieldLabel } from '../FieldLabel';
 import {
+    getFormattedTimeString,
     getJsonDateFormatString,
     getJsonDateTimeFormatString,
-    getJsonTimeFormatString,
     getPickerDateAndTimeFormat,
     isDateTimeCol,
     isRelativeDateFilterValue,
@@ -142,7 +142,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         this.setState({ selectedDate: date, invalid: false });
 
         if (isTimeOnly) {
-            const timePortion = getJsonTimeFormatString(date);
+            const timePortion = getFormattedTimeString(date, queryColumn.format);
             this.props.onChange?.(timePortion);
 
             // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update

@@ -287,7 +287,7 @@ interface MenuItemProps {
     href?: string;
     onClick?: () => void;
     onMouseEnter?: () => void;
-    onMouseOut?: () => void;
+    onMouseLeave?: () => void;
     rel?: string;
     target?: string;
     title?: string;
@@ -301,7 +301,7 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
         href = '#',
         onClick,
         onMouseEnter,
-        onMouseOut,
+        onMouseLeave,
         rel,
         target,
         title,
@@ -326,7 +326,7 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
         [disabled, href, onClick]
     );
     return (
-        <li className={className} role="presentation" ref={ref} onMouseEnter={onMouseEnter} onMouseOut={onMouseOut}>
+        <li className={className} role="presentation" ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <a onClick={onClick_} href={href} rel={rel} role="menuitem" target={target} title={title}>
                 {children}
             </a>

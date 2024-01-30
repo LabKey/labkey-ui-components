@@ -35,7 +35,7 @@ export const PageMenu: FC<Props> = props => {
     const totalPagesText = disabled ? '...' : `${pageCount} Total Pages`;
     // We have to manually wire up a Tooltip here because we're rendering PageMenu within a btn-group so any extra
     // wrapping elements cause it to render incorrectly.
-    const { onMouseEnter, onMouseOut, portalEl, show, targetRef } = useOverlayTriggerState<HTMLDivElement>(
+    const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLDivElement>(
         'page-menu-overlay',
         true,
         false,
@@ -53,7 +53,7 @@ export const PageMenu: FC<Props> = props => {
             disabled={disabled}
             pullRight
             onMouseEnter={onMouseEnter}
-            onMouseOut={onMouseOut}
+            onMouseOut={onMouseLeave}
             title={currentPage}
             ref={targetRef}
         >

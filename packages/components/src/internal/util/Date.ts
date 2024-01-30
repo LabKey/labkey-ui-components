@@ -217,6 +217,10 @@ export function getDateTimeFormat(container?: Partial<Container>): string {
     return (container ?? getServerContext().container).formats.dateTimeFormat;
 }
 
+export function getTimeFormat(container?: Partial<Container>): string {
+    return (container ?? getServerContext().container).formats.timeFormat;
+}
+
 // Issue 30834: get look and feel display formats
 export function getMomentDateFormat(container?: Partial<Container>): string {
     return toMomentFormatString((container ?? getServerContext().container).formats.dateFormat);

@@ -35,7 +35,7 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
         dataLossWarning = (
             <>
                 This will cause the {newDataType.rangeURI === DATE_RANGE_URI ? 'Time' : 'Date'} portion of the value to
-                be removed.{' '}
+                be <span className="bold-text">removed</span>.{' '}
             </>
         );
     }

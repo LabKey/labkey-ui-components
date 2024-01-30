@@ -293,7 +293,7 @@ export class EditorModel
                         row = row.set(col.name, val);
                     }
                 } else if (col.jsonType === 'time') {
-                    row = row.set(col.name, values.first().raw);
+                    row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
                 } else if (col.jsonType === 'date' && !displayValues) {
                     let dateVal;
                     if (values.size === 1) {

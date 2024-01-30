@@ -87,7 +87,6 @@ export function getUpdatedDataFromGrid(
                 const col = queryInfo.getColumn(key);
                 const isDateTime = col?.jsonType === 'date';
                 const isDate = isDateTime && col.isDateOnlyColumn;
-                const isTime = col?.jsonType === 'time';
                 // Convert empty cell to null
                 if (value === '') value = null;
 

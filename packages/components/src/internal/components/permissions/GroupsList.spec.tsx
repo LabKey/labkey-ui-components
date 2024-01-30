@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
+import { TEST_PROJECT_CONTAINER, TEST_PROJECT_CONTAINER_ADMIN } from '../../containerFixtures';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
@@ -22,6 +22,7 @@ describe('GroupsList', () => {
         };
     }
 
+    const fetchContainers = jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER_ADMIN]);
     const fetchPolicy = jest.fn().mockResolvedValue(SecurityPolicy.create({}));
     const fetchGroups = jest.fn().mockResolvedValue([
         {
@@ -45,7 +46,7 @@ describe('GroupsList', () => {
     test('no groups', async () => {
         const wrapper = mountWithAppServerContext(
             <GroupsList currentUser={TEST_USER_APP_ADMIN} groups={[]} />,
-            getDefaultAppContext({ fetchPolicy, fetchGroups, getGroupMemberships }),
+            getDefaultAppContext({ fetchContainers, fetchPolicy, fetchGroups, getGroupMemberships }),
             {
                 container: TEST_PROJECT_CONTAINER,
                 user: TEST_USER_APP_ADMIN,
@@ -70,7 +71,7 @@ describe('GroupsList', () => {
                     { value: 2, displayValue: 'Group B' },
                 ]}
             />,
-            getDefaultAppContext({ fetchPolicy, fetchGroups, getGroupMemberships }),
+            getDefaultAppContext({ fetchContainers, fetchPolicy, fetchGroups, getGroupMemberships }),
             {
                 container: TEST_PROJECT_CONTAINER,
                 user: TEST_USER_APP_ADMIN,
@@ -99,7 +100,7 @@ describe('GroupsList', () => {
                     { value: 3, displayValue: 'Group Site' },
                 ]}
             />,
-            getDefaultAppContext({ fetchPolicy, fetchGroups, getGroupMemberships }),
+            getDefaultAppContext({ fetchContainers, fetchPolicy, fetchGroups, getGroupMemberships }),
             {
                 container: TEST_PROJECT_CONTAINER,
                 user: TEST_USER_APP_ADMIN,
@@ -128,7 +129,12 @@ describe('GroupsList', () => {
                     { value: 3, displayValue: 'Group Site' },
                 ]}
             />,
-            getDefaultAppContext({ fetchPolicy, fetchGroups, getGroupMemberships }),
+            getDefaultAppContext({
+                fetchContainers: jest.fn().mockResolvedValue([TEST_PROJECT_CONTAINER]),
+                fetchPolicy,
+                fetchGroups,
+                getGroupMemberships,
+            }),
             {
                 container: TEST_PROJECT_CONTAINER,
                 user: TEST_USER_READER,
@@ -156,7 +162,7 @@ describe('GroupsList', () => {
                     { value: 3, displayValue: 'Group Site' },
                 ]}
             />,
-            getDefaultAppContext({ fetchPolicy, fetchGroups, getGroupMemberships }),
+            getDefaultAppContext({ fetchContainers, fetchPolicy, fetchGroups, getGroupMemberships }),
             {
                 container: TEST_PROJECT_CONTAINER,
                 user: TEST_USER_APP_ADMIN,

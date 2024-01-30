@@ -34,7 +34,7 @@ export const GroupsList: FC<Props> = memo(props => {
                 setGroupMembership(groupMembership_);
             }
         })();
-    }, [api.security, homeContainer, currentUser]);
+    }, [api.security, homeContainer.isLoaded, currentUser]);
 
     if (!groups) return null;
 

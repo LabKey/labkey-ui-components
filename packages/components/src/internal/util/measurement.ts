@@ -267,6 +267,19 @@ export function getMultiAltUnitKeys(unitTypeStrs: string[]): string[] {
     return getAltUnitKeys(unitTypeStr);
 }
 
+export function convertUnitsForInput(amount: number, unit: string, displayUnit: string): number {
+    if (!amount || !displayUnit || !unit) {
+        return amount;
+    }
+    const currentUnit: MeasurementUnit = MEASUREMENT_UNITS[unit.toLowerCase()];
+    const targetUnit: MeasurementUnit = MEASUREMENT_UNITS[displayUnit.toLowerCase()];
+    if (!currentUnit || !targetUnit) {
+        return amount;
+    }
+    // show up to 6 decimal places
+    return parseFloat((amount * (currentUnit.ratio / targetUnit.ratio)).toFixed(6));
+}
+
 export function convertUnitDisplay(
     amount: number,
     unit: string,
@@ -274,26 +287,28 @@ export function convertUnitDisplay(
     includeUnits: boolean,
     emptyDisplay?: string
 ): string {
+    const convertedAmount = convertUnitsForInput(amount, unit, displayUnit);
     // Allow for 0 so can't use !amount
-    if (amount == null) {
+    if (convertedAmount == null) {
         return emptyDisplay ? emptyDisplay : '';
     }
     if (!displayUnit) {
-        return amount.toLocaleString() + (includeUnits && unit ? ' ' + unit : '');
+        return convertedAmount.toLocaleString() + (includeUnits && unit ? ' ' + unit : '');
     }
     if (!unit) {
-        return amount.toLocaleString() + (includeUnits && displayUnit ? ' ' + displayUnit : '');
+        return convertedAmount.toLocaleString() + (includeUnits && displayUnit ? ' ' + displayUnit : '');
     }
 
     const currentUnit: MeasurementUnit = MEASUREMENT_UNITS[unit.toLowerCase()];
     const targetUnit: MeasurementUnit = MEASUREMENT_UNITS[displayUnit.toLowerCase()];
     if (!currentUnit || !targetUnit) {
-        return amount.toLocaleString() + (includeUnits ? ' ' + unit : '');
+        return convertedAmount.toLocaleString() + (includeUnits ? ' ' + unit : '');
     }
 
-    // show up to 6 decimal places
-    const newAmount = parseFloat((amount * (currentUnit.ratio / targetUnit.ratio)).toFixed(6));
-    return (newAmount > 1000 ? newAmount.toLocaleString() : newAmount) + (includeUnits ? ' ' + displayUnit : '');
+    return (
+        (convertedAmount > 1000 ? convertedAmount.toLocaleString() : convertedAmount) +
+        (includeUnits ? ' ' + displayUnit : '')
+    );
 }
 
 // volume unit (displayUnit): 10 mL (L)

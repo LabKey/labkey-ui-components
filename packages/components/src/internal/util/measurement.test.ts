@@ -1,15 +1,17 @@
 import {
     convertUnitDisplay,
+    convertUnitsForInput,
     getAltMetricUnitOptions,
     getAltUnitKeys,
     getMetricUnitOptions,
-    getMultiAltUnitKeys, getStoredAmountDisplay, isValuePrecisionValid,
-    UnitModel
+    getMultiAltUnitKeys,
+    getStoredAmountDisplay,
+    isValuePrecisionValid,
+    UnitModel,
 } from './measurement';
 
-describe("UnitModel", () => {
-
-    test("constructor and operators", () => {
+describe('UnitModel', () => {
+    test('constructor and operators', () => {
         expect(new UnitModel(10, null).toString()).toBe('10');
         expect(new UnitModel(10, 'mL').toString()).toBe('10 mL');
 
@@ -17,7 +19,7 @@ describe("UnitModel", () => {
         expect(new UnitModel(99999.133, 'uL').as('L').toString()).toBe('0.099999 L');
         expect(new UnitModel(10, 'mL').as('L').toString()).toBe('0.01 L');
         expect(new UnitModel(10, 'mL').add(10, 'uL').toString()).toBe('10.01 mL');
-        expect(new UnitModel(undefined, 'mL').as('L').toString()).toBe("0 L");
+        expect(new UnitModel(undefined, 'mL').as('L').toString()).toBe('0 L');
 
         expect(new UnitModel(10, 'mL').compareTo(new UnitModel(9, 'mL')) > 0).toBeTruthy();
         expect(new UnitModel(10, 'mL').compareTo(new UnitModel(9, 'L')) > 0).toBeFalsy();
@@ -25,20 +27,18 @@ describe("UnitModel", () => {
         expect(new UnitModel(undefined, 'mL').compareTo(new UnitModel(9, 'L')) > 0).toBeFalsy();
         expect(new UnitModel(undefined, 'mL').compareTo(new UnitModel(undefined, 'L')) > 0).toBeFalsy();
     });
-
 });
 
-describe("MetricUnit utils", () => {
-
-    test("getMetricUnitOptions", () => {
+describe('MetricUnit utils', () => {
+    test('getMetricUnitOptions', () => {
         const expectedMetricUnitOptions = [
-            {"label": "unit", "value": "unit"},
-            {"label": "g (grams)", "value": "g"},
-            {"label": "kg (kilograms)", "value": "kg"},
-            {"label": "mg (milligrams)", "value": "mg"},
-            {"label": "mL (milliliters)", "value": "mL"},
-            {"label": "uL (microliters)", "value": "uL"},
-            {"label": "L (liters)", "value": "L"}
+            { label: 'unit', value: 'unit' },
+            { label: 'g (grams)', value: 'g' },
+            { label: 'kg (kilograms)', value: 'kg' },
+            { label: 'mg (milligrams)', value: 'mg' },
+            { label: 'mL (milliliters)', value: 'mL' },
+            { label: 'uL (microliters)', value: 'uL' },
+            { label: 'L (liters)', value: 'L' },
         ];
 
         const options = getMetricUnitOptions().sort((a, b) => {
@@ -52,15 +52,17 @@ describe("MetricUnit utils", () => {
                 expect.objectContaining(expectedMetricUnitOptions[3]),
                 expect.objectContaining(expectedMetricUnitOptions[4]),
                 expect.objectContaining(expectedMetricUnitOptions[5]),
-                expect.objectContaining(expectedMetricUnitOptions[6])
+                expect.objectContaining(expectedMetricUnitOptions[6]),
             ])
         );
-
     });
 
-    test("getAltMetricUnitOptions", () => {
-
-        const expectedUlOptions = [{"label": "L", "value": "L"}, {"label": "mL", "value": "mL"}, {"label": "uL", "value": "uL"}];
+    test('getAltMetricUnitOptions', () => {
+        const expectedUlOptions = [
+            { label: 'L', value: 'L' },
+            { label: 'mL', value: 'mL' },
+            { label: 'uL', value: 'uL' },
+        ];
         const ulOptions = getAltMetricUnitOptions('uL').sort((a, b) => {
             return a.label.localeCompare(b.label);
         });
@@ -72,7 +74,11 @@ describe("MetricUnit utils", () => {
             ])
         );
 
-        const expectedUlLongLabelOptions = [{"label": "L (liters)", "value": "L"}, {"label": "mL (milliliters)", "value": "mL"}, {"label": "uL (microliters)", "value": "uL"}]
+        const expectedUlLongLabelOptions = [
+            { label: 'L (liters)', value: 'L' },
+            { label: 'mL (milliliters)', value: 'mL' },
+            { label: 'uL (microliters)', value: 'uL' },
+        ];
         const ulLongLabelOptions = getAltMetricUnitOptions('uL', true).sort((a, b) => {
             return a.label.localeCompare(b.label);
         });
@@ -84,7 +90,11 @@ describe("MetricUnit utils", () => {
             ])
         );
 
-        const expectedKgOptions = [{"label": "g", "value": "g"}, {"label": "kg", "value": "kg"}, {"label": "mg", "value": "mg"}];
+        const expectedKgOptions = [
+            { label: 'g', value: 'g' },
+            { label: 'kg', value: 'kg' },
+            { label: 'mg', value: 'mg' },
+        ];
         const kgOptions = getAltMetricUnitOptions('kg').sort((a, b) => {
             return a.label.localeCompare(b.label);
         });
@@ -101,13 +111,12 @@ describe("MetricUnit utils", () => {
         expect(getAltMetricUnitOptions('bad').length).toBe(0);
     });
 
-    test("getAltUnitKeys", () => {
-
-        const expectedUlOptions = ["mL", "uL", "L"];
+    test('getAltUnitKeys', () => {
+        const expectedUlOptions = ['mL', 'uL', 'L'];
         expect(getAltUnitKeys('uL')).toEqual(expectedUlOptions);
         expect(getAltUnitKeys('mL')).toEqual(expectedUlOptions);
 
-        const expectedGOptions = ["g", "mg", "kg"];
+        const expectedGOptions = ['g', 'mg', 'kg'];
         expect(getAltUnitKeys('g')).toEqual(expectedGOptions);
         expect(getAltUnitKeys('kg')).toEqual(expectedGOptions);
 
@@ -116,17 +125,15 @@ describe("MetricUnit utils", () => {
         expect(getAltUnitKeys(null).length).toBe(0);
         expect(getAltUnitKeys('').length).toBe(0);
         expect(getAltUnitKeys('bad').length).toBe(0);
-
     });
 
-    test("getMultiAltUnitKeys", () => {
-
-        const expectedUlOptions = ["mL", "uL", "L"];
+    test('getMultiAltUnitKeys', () => {
+        const expectedUlOptions = ['mL', 'uL', 'L'];
         expect(getMultiAltUnitKeys(['uL'])).toEqual(expectedUlOptions);
         expect(getMultiAltUnitKeys(['mL', 'mL'])).toEqual(expectedUlOptions);
         expect(getMultiAltUnitKeys(['uL', 'mL'])).toEqual(expectedUlOptions);
 
-        const expectedGOptions = ["g", "mg", "kg"];
+        const expectedGOptions = ['g', 'mg', 'kg'];
         expect(getMultiAltUnitKeys(['g'])).toEqual(expectedGOptions);
         expect(getMultiAltUnitKeys(['kg', 'g', 'mg'])).toEqual(expectedGOptions);
 
@@ -140,11 +147,23 @@ describe("MetricUnit utils", () => {
         expect(getMultiAltUnitKeys(['', null])).toEqual(allOptions);
     });
 
+    test('convertUnitsForInput', () => {
+        expect(convertUnitsForInput(null, null, null)).toBeNull();
+        expect(convertUnitsForInput(1000, null, null)).toBe(1000);
+        expect(convertUnitsForInput(1000, 'mL', null)).toBe(1000);
+        expect(convertUnitsForInput(1000, 'mL', null)).toBe(1000);
+        expect(convertUnitsForInput(1000, 'mL', 'mL')).toBe(1000);
+        expect(convertUnitsForInput(1234, 'mL', 'L')).toBe(1.234);
+        expect(convertUnitsForInput(12.34, 'L', 'mL')).toBe(12340);
+        expect(convertUnitsForInput(12, 'g', 'kg')).toBe(0.012);
+    });
+
     test('convertUnitDisplay', () => {
         expect(convertUnitDisplay(null, null, null, false)).toBe('');
         expect(convertUnitDisplay(null, null, null, false, 'empty')).toBe('empty');
 
         expect(convertUnitDisplay(10, null, null, false)).toBe('10');
+        expect(convertUnitDisplay(10000, null, null, false)).toBe('10,000');
         expect(convertUnitDisplay(10, 'mL', null, false)).toBe('10');
         expect(convertUnitDisplay(10, 'mL', null, true)).toBe('10 mL');
         expect(convertUnitDisplay(10, null, 'kg', false)).toBe('10');
@@ -161,10 +180,10 @@ describe("MetricUnit utils", () => {
         expect(convertUnitDisplay(10, 'g', 'kg', false)).toBe('0.01');
 
         expect(convertUnitDisplay(10, 'unit', 'unit', true)).toBe('10 unit');
+        expect(convertUnitDisplay(10000, 'unit', 'unit', true)).toBe('10,000 unit');
     });
 
     test('getStoredAmountDisplay', () => {
-
         expect(getStoredAmountDisplay('99999 uL (L)')).toBe('0.099999');
         expect(getStoredAmountDisplay('99999 uL (L)', true)).toBe('0.099999 L');
         expect(getStoredAmountDisplay('99999.123 uL (L)')).toBe('0.099999');

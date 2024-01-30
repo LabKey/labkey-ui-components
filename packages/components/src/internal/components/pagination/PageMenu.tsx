@@ -53,7 +53,7 @@ export const PageMenu: FC<Props> = props => {
             disabled={disabled}
             pullRight
             onMouseEnter={onMouseEnter}
-            onMouseOut={onMouseLeave}
+            onMouseLeave={onMouseLeave}
             title={currentPage}
             ref={targetRef}
         >

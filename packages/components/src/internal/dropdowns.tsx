@@ -92,6 +92,9 @@ interface DropdownAnchorProps {
     label?: string;
 }
 
+/**
+ * See docs in docs/dropdowns.md
+ */
 export const DropdownAnchor: FC<DropdownAnchorProps> = props => {
     const { children, label, pullRight, title } = props;
     const id = useMemo(() => generateId('dropdown-anchor-'), []);
@@ -132,11 +135,14 @@ interface DropdownButtonProps {
     noCaret?: boolean;
     onClick?: () => void;
     onMouseEnter?: () => void;
-    onMouseOut?: () => void;
+    onMouseLeave?: () => void;
     pullRight?: boolean;
     title: ReactNode;
 }
 
+/**
+ * See docs in docs/dropdowns.md
+ */
 export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((props, ref) => {
     const {
         bsStyle = 'default',
@@ -146,7 +152,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
         noCaret = false,
         onClick,
         onMouseEnter,
-        onMouseOut,
+        onMouseLeave,
         pullRight = false,
         title,
     } = props;
@@ -165,7 +171,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
     );
 
     return (
-        <div className={className} ref={ref} onMouseEnter={onMouseEnter} onMouseOut={onMouseOut}>
+        <div className={className} ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <button
                 aria-haspopup="true"
                 aria-expanded={open}
@@ -188,13 +194,16 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
 });
 DropdownButton.displayName = 'DropdownButton';
 
-interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret' | 'onMouseEnter' | 'onMouseOut'> {
+interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret' | 'onMouseEnter' | 'onMouseLeave'> {
     toggleClassName?: string;
     buttonDisabled?: boolean; // Used to disable the main button
     href?: string;
     menuDisabled?: boolean; // Used to disable the menu toggle button
 }
 
+/**
+ * See docs in docs/dropdowns.md
+ */
 export const SplitButton: FC<SplitButtonProps> = memo(props => {
     const {
         bsStyle = 'default',
@@ -268,6 +277,9 @@ interface MenuHeaderProps {
     text: string;
 }
 
+/**
+ * See docs in docs/dropdowns.md
+ */
 export const MenuHeader: FC<MenuHeaderProps> = ({ className, text }) => (
     <li className={classNames('dropdown-header', className)} role="heading" onClick={preventDocumentHandler}>
         {text}
@@ -275,6 +287,9 @@ export const MenuHeader: FC<MenuHeaderProps> = ({ className, text }) => (
 );
 MenuHeader.displayName = 'MenuHeader';
 
+/**
+ * See docs in docs/dropdowns.md
+ */
 export const MenuDivider = (): ReactElement => (
     <li className="divider" role="separator" onClick={preventDocumentHandler} />
 );
@@ -293,6 +308,9 @@ interface MenuItemProps {
     title?: string;
 }
 
+/**
+ * See docs in docs/dropdowns.md
+ */
 export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) => {
     const {
         active = false,

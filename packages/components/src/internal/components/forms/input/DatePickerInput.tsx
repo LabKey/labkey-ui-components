@@ -198,7 +198,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             wrapperClassName,
         } = this.props;
         const { isDisabled, selectedDate, invalid } = this.state;
-        const {dateFormat, timeFormat} = getPickerDateAndTimeFormat(queryColumn, this.props.dateFormat, hideTime);
+        const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, this.props.dateFormat, hideTime);
 
         const isTimeOnly = queryColumn.isTimeColumn;
         const picker = (

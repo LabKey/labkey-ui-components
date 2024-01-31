@@ -83,32 +83,35 @@ function momentToDateFNS(momentFormat: string): string {
         .replace(/Z+/gi, 'xxx'); // -08:00, +05:30, +00:00
 }
 
-export function getPickerDateAndTimeFormat(queryColumn: QueryColumn, format?: string, hideTime?: boolean): {dateFormat: string, timeFormat: string} {
+export function getPickerDateAndTimeFormat(
+    queryColumn: QueryColumn,
+    format?: string,
+    hideTime?: boolean
+): { dateFormat: string; timeFormat: string } {
     const dateFormat = getColDateFormat(queryColumn, hideTime ? 'Date' : format, queryColumn.isDateOnlyColumn);
 
     const isTimeOnly = queryColumn.isTimeColumn;
-    const timeFormat = hideTime ? undefined : (isTimeOnly
+    const timeFormat = hideTime
+        ? undefined
+        : isTimeOnly
         ? parseFNSTimeFormat(getColDateFormat(queryColumn, queryColumn?.format ?? 'Time'))
-        : parseDateFNSTimeFormat(dateFormat));
+        : parseDateFNSTimeFormat(dateFormat);
 
     return {
         dateFormat,
-        timeFormat
-    }
+        timeFormat,
+    };
 }
 
 export function getFormattedTimeString(date: Date, format?: string) {
-    if (!date)
-        return null;
+    if (!date) return null;
 
     const formatStr = getColDateFormat(null, format ?? 'Time');
-    if (!formatStr)
-        return getJsonTimeFormatString(date);
+    if (!formatStr) return getJsonTimeFormatString(date);
 
     try {
         return moment(date).format(toMomentFormatString(formatStr));
-    }
-    catch (e) {
+    } catch (e) {
         return getJsonTimeFormatString(date);
     }
 }
@@ -134,12 +137,10 @@ export function parseFNSTimeFormat(timePart: string): string {
     if (!timePart || timePart.indexOf(':') == -1) return undefined;
 
     if (timePart.indexOf('H') > -1 || timePart.indexOf('k') > -1) {
-        if (timePart.indexOf('s') > 0)
-            return 'HH:mm:ss'; // 13:30:00
+        if (timePart.indexOf('s') > 0) return 'HH:mm:ss'; // 13:30:00
         return 'HH:mm'; // 13:30
     } else if (timePart.indexOf('h') > -1 || timePart.indexOf('K') > -1) {
-        if (timePart.indexOf('s') > 0)
-            return 'hh:mm:ss a'; // 01:30:00 PM
+        if (timePart.indexOf('s') > 0) return 'hh:mm:ss a'; // 01:30:00 PM
         return 'hh:mm a'; // 01:30 PM
     }
 
@@ -175,13 +176,12 @@ export function _getColFormattedDateFilterValue(column: QueryColumn, value: any)
     return formatDate(new Date(valueFull), null, dateFormat);
 }
 
-
 export function getColFormattedDateFilterValue(column: QueryColumn, value: any): any {
     if (value instanceof Array) {
-        let results = [];
+        const results = [];
         value.forEach(val => {
             results.push(_getColFormattedDateFilterValue(column, val));
-        })
+        });
 
         return results;
     }
@@ -189,21 +189,20 @@ export function getColFormattedDateFilterValue(column: QueryColumn, value: any):
 }
 
 export function _getColFormattedTimeFilterValue(column: QueryColumn, value: any): any {
-    if (!value)
-        return value;
+    if (!value) return value;
     const timeFormat = getColDateFormat(column, column?.format ?? 'Time', false);
-    if (!timeFormat)
-        return value;
-    const valueFormat = value.toLowerCase().indexOf(" am") > 0 || value.toLowerCase().indexOf(" pm") > 0 ? 'hh:mm:ss a' : "HH:mm:ss";
+    if (!timeFormat) return value;
+    const valueFormat =
+        value.toLowerCase().indexOf(' am') > 0 || value.toLowerCase().indexOf(' pm') > 0 ? 'hh:mm:ss a' : 'HH:mm:ss';
     return moment(value, valueFormat).format(toMomentFormatString(timeFormat));
 }
 
 export function getColFormattedTimeFilterValue(column: QueryColumn, value: any): any {
     if (value instanceof Array) {
-        let results = [];
+        const results = [];
         value.forEach(val => {
             results.push(_getColFormattedTimeFilterValue(column, val));
-        })
+        });
 
         return results;
     }

@@ -24,7 +24,8 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
     const origTypeLabel = getDataTypeConfirmDisplayText(originalRangeURI);
     const newTypeLabel = getDataTypeConfirmDisplayText(newDataType.rangeURI);
 
-    const reversible = (PropDescType.isDate(originalRangeURI) && PropDescType.isDateTime(newDataType.rangeURI)) ||
+    const reversible =
+        (PropDescType.isDate(originalRangeURI) && PropDescType.isDateTime(newDataType.rangeURI)) ||
         (PropDescType.isDateTime(originalRangeURI) && PropDescType.isDate(newDataType.rangeURI));
 
     let dataLossWarning = null;

@@ -186,7 +186,7 @@ describe('getUpdatedDataFromGrid', () => {
             Bool: true,
             Int: 0,
             Date: '2020-12-23 14:34',
-            Time: '01:10:00'
+            Time: '01:10:00',
         },
         447: {
             RowId: 447,
@@ -210,7 +210,7 @@ describe('getUpdatedDataFromGrid', () => {
             Bool: true,
             Int: 6,
             Date: '1922-08-21 00:00',
-            Time: '03:30:00'
+            Time: '03:30:00',
         },
         445: {
             RowId: 445,
@@ -280,7 +280,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: true,
                     Int: 0,
                     Date: '2020-12-23 14:34',
-                    Time: '01:10:00'
+                    Time: '01:10:00',
                 }),
                 Map<string, any>({
                     RowId: '447',
@@ -304,7 +304,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: true,
                     Int: '6',
                     Date: '1922-08-21 00:00',
-                    Time: '03:30:00'
+                    Time: '03:30:00',
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -363,7 +363,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: true,
                     Int: 6,
                     Date: '1922-08-21 00:00',
-                    Time: '03:30:00'
+                    Time: '03:30:00',
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -412,7 +412,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: '',
                     Int: '',
                     Date: '2021-12-23 14:34',
-                    Time: '01:18:00'
+                    Time: '01:18:00',
                 }),
                 Map<string, any>({
                     RowId: '447',

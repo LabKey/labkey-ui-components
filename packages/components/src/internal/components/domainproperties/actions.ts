@@ -342,8 +342,7 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
             case Domain.KINDS.STUDY_DATASET_VISIT:
                 return true;
         }
-        if (domain?.domainURI?.indexOf(':AssayDomain-Data.') > 0)
-            return true;
+        if (domain?.domainURI?.indexOf(':AssayDomain-Data.') > 0) return true;
         return false;
     }
 

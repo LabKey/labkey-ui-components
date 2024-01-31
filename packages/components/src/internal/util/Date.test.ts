@@ -111,11 +111,11 @@ describe('Date Utilities', () => {
 
             expect(getPickerDateAndTimeFormat(col)).toEqual({
                 dateFormat: 'yyyy-MM-dd HH:mm',
-                timeFormat: 'HH:mm'
+                timeFormat: 'HH:mm',
             });
             expect(getPickerDateAndTimeFormat(col, null, true)).toEqual({
                 dateFormat: 'yyyy-MM-dd',
-                timeFormat: undefined
+                timeFormat: undefined,
             });
 
             const timeCol = new QueryColumn({ shortCaption: 'TimeCol', rangeURI: TIME_TYPE.rangeURI });
@@ -124,11 +124,11 @@ describe('Date Utilities', () => {
 
             expect(getPickerDateAndTimeFormat(timeCol)).toEqual({
                 dateFormat: 'HH:mm',
-                timeFormat: 'HH:mm'
+                timeFormat: 'HH:mm',
             });
             expect(getPickerDateAndTimeFormat(timeCol, 'Time')).toEqual({
                 dateFormat: 'HH:mm',
-                timeFormat: 'HH:mm'
+                timeFormat: 'HH:mm',
             });
         });
 
@@ -139,11 +139,11 @@ describe('Date Utilities', () => {
 
             expect(getPickerDateAndTimeFormat(col)).toEqual({
                 dateFormat: 'yyyy-MM-dd HH:mm',
-                timeFormat: 'HH:mm'
+                timeFormat: 'HH:mm',
             });
             expect(getPickerDateAndTimeFormat(col, null, true)).toEqual({
                 dateFormat: 'yyyy-MM-dd',
-                timeFormat: undefined
+                timeFormat: undefined,
             });
 
             const timeCol = new QueryColumn({ shortCaption: 'TimeCol', rangeURI: undefined });
@@ -151,7 +151,7 @@ describe('Date Utilities', () => {
 
             expect(getPickerDateAndTimeFormat(timeCol, 'Time')).toEqual({
                 dateFormat: 'HH:mm',
-                timeFormat: undefined
+                timeFormat: undefined,
             });
         });
 
@@ -166,12 +166,12 @@ describe('Date Utilities', () => {
 
             expect(getPickerDateAndTimeFormat(col)).toEqual({
                 dateFormat: 'dd/MM/yyyy HH:mm',
-                timeFormat: 'HH:mm'
+                timeFormat: 'HH:mm',
             });
 
             expect(getPickerDateAndTimeFormat(col, null, true)).toEqual({
                 dateFormat: 'yyyy-MM-dd',
-                timeFormat: undefined
+                timeFormat: undefined,
             });
         });
 
@@ -187,17 +187,17 @@ describe('Date Utilities', () => {
 
             expect(getPickerDateAndTimeFormat(col, 'yyyy-MM HH')).toEqual({
                 dateFormat: 'yyyy-MM HH',
-                timeFormat: undefined
+                timeFormat: undefined,
             });
 
             expect(getPickerDateAndTimeFormat(col, 'yyyy-MM HH HH:mm')).toEqual({
                 dateFormat: 'yyyy-MM HH HH:mm',
-                timeFormat: undefined
+                timeFormat: undefined,
             });
 
             expect(getPickerDateAndTimeFormat(col, 'yyyy-MM HH HH:mm', true)).toEqual({
                 dateFormat: 'yyyy-MM-dd',
-                timeFormat: undefined
+                timeFormat: undefined,
             });
         });
 
@@ -223,19 +223,19 @@ describe('Date Utilities', () => {
 
             expect(getPickerDateAndTimeFormat(col, 'Date')).toEqual({
                 dateFormat: 'yyyy-MM-dd',
-                timeFormat: undefined
+                timeFormat: undefined,
             });
             expect(getPickerDateAndTimeFormat(col, 'DateTime')).toEqual({
                 dateFormat: 'yyyy-MM-dd HH:mm',
-                timeFormat: 'HH:mm'
+                timeFormat: 'HH:mm',
             });
             expect(getPickerDateAndTimeFormat(col, 'DateTime', true)).toEqual({
                 dateFormat: 'yyyy-MM-dd',
-                timeFormat: undefined
+                timeFormat: undefined,
             });
             expect(getPickerDateAndTimeFormat(col, 'Time')).toEqual({
                 dateFormat: 'HH:mm',
-                timeFormat: undefined
+                timeFormat: undefined,
             });
         });
     });
@@ -342,7 +342,6 @@ describe('Date Utilities', () => {
             expect(getColFormattedTimeFilterValue(col, '01:02:03')).toBe('01:02');
             expect(getColFormattedTimeFilterValue(col, '21:02:03')).toBe('21:02');
         });
-
     });
 
     describe('parseDate', () => {

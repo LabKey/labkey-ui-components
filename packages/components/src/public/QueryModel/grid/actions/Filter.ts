@@ -218,8 +218,7 @@ export class FilterAction implements Action {
         // Issue 45140: match date display format in grid filter status pill display
         if (column?.isTimeColumn) {
             value = getColFormattedTimeFilterValue(column, value);
-        }
-        else if (column?.getDisplayFieldJsonType() === 'date') {
+        } else if (column?.getDisplayFieldJsonType() === 'date') {
             value = getColFormattedDateFilterValue(column, value);
         }
 

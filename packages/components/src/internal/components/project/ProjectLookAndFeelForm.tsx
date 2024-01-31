@@ -24,78 +24,78 @@ const DATETIME_HELP_CONTENT = (
         <p>Examples for Jan 20, 2023 01:45 PM:</p>
         <table className="table-bordered margin-bottom help-table">
             <thead>
-            <tr>
-                <th>Format String</th>
-                <th>Display Result</th>
-            </tr>
+                <tr>
+                    <th>Format String</th>
+                    <th>Display Result</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>yyyy-MM-dd HH:mm</td>
-                <td>2023-01-20 13:45</td>
-            </tr>
-            <tr>
-                <td>MM/dd/yyyy hh:mm aa</td>
-                <td>01/20/2023 01:45 PM</td>
-            </tr>
-            <tr>
-                <td>dd-MM-yy</td>
-                <td>20-01-23</td>
-            </tr>
-            <tr>
-                <td>dd-MMM-yyyy</td>
-                <td>20-Jan-2023</td>
-            </tr>
+                <tr>
+                    <td>yyyy-MM-dd HH:mm</td>
+                    <td>2023-01-20 13:45</td>
+                </tr>
+                <tr>
+                    <td>MM/dd/yyyy hh:mm aa</td>
+                    <td>01/20/2023 01:45 PM</td>
+                </tr>
+                <tr>
+                    <td>dd-MM-yy</td>
+                    <td>20-01-23</td>
+                </tr>
+                <tr>
+                    <td>dd-MMM-yyyy</td>
+                    <td>20-Jan-2023</td>
+                </tr>
             </tbody>
         </table>
     </>
-)
+);
 
 const TIME_HELP_CONTENT = (
     <>
         <p>Examples for 01:45:15 PM:</p>
         <table className="table-bordered margin-bottom help-table">
             <thead>
-            <tr>
-                <th>Format String</th>
-                <th>Display Result</th>
-            </tr>
+                <tr>
+                    <th>Format String</th>
+                    <th>Display Result</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>HH:mm</td>
-                <td>13:45</td>
-            </tr>
-            <tr>
-                <td>hh:mm aa</td>
-                <td>01:45 PM</td>
-            </tr>
-            <tr>
-                <td>HH:mm:ss</td>
-                <td>13:45:15</td>
-            </tr>
-            <tr>
-                <td>hh:mm:ss</td>
-                <td>01:45:15 PM</td>
-            </tr>
+                <tr>
+                    <td>HH:mm</td>
+                    <td>13:45</td>
+                </tr>
+                <tr>
+                    <td>hh:mm aa</td>
+                    <td>01:45 PM</td>
+                </tr>
+                <tr>
+                    <td>HH:mm:ss</td>
+                    <td>13:45:15</td>
+                </tr>
+                <tr>
+                    <td>hh:mm:ss</td>
+                    <td>01:45:15 PM</td>
+                </tr>
             </tbody>
         </table>
     </>
-)
+);
 
-const getProjectDateTimeHelp = (content: ReactNode) : ReactNode => {
+const getProjectDateTimeHelp = (content: ReactNode): ReactNode => {
     return (
-    <LabelHelpTip title="Date-time format">
-        <p>
-            To control how a date or time value is displayed, provide a string format compatible with the Java{' '}
-            <JavaDocsLink urlSuffix="java/text/SimpleDateFormat.html">SimpleDateFormat</JavaDocsLink> class.
-        </p>
+        <LabelHelpTip title="Date-time format">
+            <p>
+                To control how a date or time value is displayed, provide a string format compatible with the Java{' '}
+                <JavaDocsLink urlSuffix="java/text/SimpleDateFormat.html">SimpleDateFormat</JavaDocsLink> class.
+            </p>
             {content}
-        <p>
-            Learn more about using <HelpLink topic={DATE_FORMATS_TOPIC}>Date and Time formats</HelpLink> in LabKey.
-        </p>
-    </LabelHelpTip>
-)
+            <p>
+                Learn more about using <HelpLink topic={DATE_FORMATS_TOPIC}>Date and Time formats</HelpLink> in LabKey.
+            </p>
+        </LabelHelpTip>
+    );
 };
 
 export const ProjectLookAndFeelForm: FC<Props> = memo(props => {

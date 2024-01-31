@@ -130,7 +130,9 @@ export function getUpdatedDataFromGrid(
                     // Issue 45140: use QueryColumn date format for parseDate()
                     if (isDate || isDateTime) {
                         const dateVal = parseDate(value, getColDateFormat(col));
-                        const dateStrVal = isDate ? getJsonDateFormatString(dateVal) : getJsonDateTimeFormatString(dateVal);
+                        const dateStrVal = isDate
+                            ? getJsonDateFormatString(dateVal)
+                            : getJsonDateTimeFormatString(dateVal);
                         row[key] = dateStrVal ?? null;
                     } else row[key] = value ?? null;
                 }

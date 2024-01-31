@@ -6,11 +6,12 @@ import { Filter } from '@labkey/api';
 import { QueryColumn } from '../../../public/QueryColumn';
 import {
     BOOLEAN_TYPE,
-    DATE_TYPE, DATETIME_TYPE,
+    DATE_TYPE,
+    DATETIME_TYPE,
     DOUBLE_TYPE,
     INTEGER_TYPE,
     TEXT_TYPE,
-    TIME_TYPE
+    TIME_TYPE,
 } from '../domainproperties/PropDescType';
 import { SelectInput } from '../forms/input/SelectInput';
 
@@ -202,13 +203,8 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('int field, no filter selected',  () => {
-        const wrapper = mount(
-            <FilterExpressionView
-                field={intField}
-                fieldFilters={null}
-            />
-        );
+    test('int field, no filter selected', () => {
+        const wrapper = mount(<FilterExpressionView field={intField} fieldFilters={null} />);
 
         validateFilterTypeDropdown(wrapper, Ops, 0, Ops[0]);
         wrapper.unmount();

@@ -268,7 +268,7 @@ describe('Cell', () => {
                 raw: '13:14:00',
             },
         ]);
-        const cell = mount(<Cell {...defaultProps()} col={timeCol} values={values} focused selected  />);
+        const cell = mount(<Cell {...defaultProps()} col={timeCol} values={values} focused selected />);
         expectDate(cell, true, '', '13:14:00');
         cell.unmount();
     });

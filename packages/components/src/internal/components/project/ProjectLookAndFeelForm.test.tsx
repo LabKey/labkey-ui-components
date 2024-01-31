@@ -84,7 +84,7 @@ describe('ProjectLookAndFeelForm', () => {
             {
                 defaultDateFormat: 'yyyy-MM-dd',
                 defaultDateTimeFormat: 'yyyy-MM-dd HH:mmb',
-                defaultTimeFormat: "HH:mm",
+                defaultTimeFormat: 'HH:mm',
             },
             TEST_PROJECT_CONTAINER.path
         );

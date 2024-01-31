@@ -245,8 +245,8 @@ describe('Date Utilities', () => {
             expect(parseFNSTimeFormat('kk:mm aa')).toBe('HH:mm');
             expect(parseFNSTimeFormat('HH:mm')).toBe('HH:mm');
             expect(parseFNSTimeFormat('kk:mm')).toBe('HH:mm');
-            expect(parseFNSTimeFormat('hh:mm')).toBe('h:mm a');
-            expect(parseFNSTimeFormat('KK:mm')).toBe('h:mm a');
+            expect(parseFNSTimeFormat('hh:mm')).toBe('hh:mm a');
+            expect(parseFNSTimeFormat('KK:mm')).toBe('hh:mm a');
         });
     });
 
@@ -258,8 +258,8 @@ describe('Date Utilities', () => {
             expect(parseDateFNSTimeFormat('yyyy:MM:DD kk:mm aa')).toBe('HH:mm');
             expect(parseDateFNSTimeFormat('yyyy-MM-DD HH:mm')).toBe('HH:mm');
             expect(parseDateFNSTimeFormat('yyyy:MM:DD kk:mm')).toBe('HH:mm');
-            expect(parseDateFNSTimeFormat('yyyy:MM:DD hh:mm')).toBe('h:mm a');
-            expect(parseDateFNSTimeFormat('yyyy:MM:DD KK:mm')).toBe('h:mm a');
+            expect(parseDateFNSTimeFormat('yyyy:MM:DD hh:mm')).toBe('hh:mm a');
+            expect(parseDateFNSTimeFormat('yyyy:MM:DD KK:mm')).toBe('hh:mm a');
         });
     });
 
@@ -325,10 +325,10 @@ describe('Date Utilities', () => {
                 rangeURI: TIME_TYPE.rangeURI,
                 format: 'hh:mm a',
             });
-            expect(getColFormattedTimeFilterValue(col, '01:02 PM')).toBe('01:02 pm');
-            expect(getColFormattedTimeFilterValue(col, '01:02:03 AM')).toBe('01:02 am');
-            expect(getColFormattedTimeFilterValue(col, '01:02')).toBe('01:02 am');
-            expect(getColFormattedTimeFilterValue(col, '21:02:30')).toBe('09:02 pm');
+            expect(getColFormattedTimeFilterValue(col, '01:02 PM')).toBe('01:02 PM');
+            expect(getColFormattedTimeFilterValue(col, '01:02:03 AM')).toBe('01:02 AM');
+            expect(getColFormattedTimeFilterValue(col, '01:02')).toBe('01:02 AM');
+            expect(getColFormattedTimeFilterValue(col, '21:02:30')).toBe('09:02 PM');
         });
 
         test('formatDateTime without QueryColumn format', () => {

@@ -145,7 +145,7 @@ export const ProjectLookAndFeelForm: FC<Props> = memo(props => {
         } finally {
             setIsSaving(false);
         }
-    }, [api, isSaving, onSuccess, dateTimeFormat, container]);
+    }, [api, isSaving, onSuccess, dateTimeFormat, dateFormat, timeFormat, container]);
 
     return (
         <Row>
@@ -164,7 +164,7 @@ export const ProjectLookAndFeelForm: FC<Props> = memo(props => {
                             <Col xs={12} md={9}>
                                 <FormControl
                                     type="text"
-                                    id="date-format-input"
+                                    id="datetime-format-input"
                                     name="datetime"
                                     value={dateTimeFormat}
                                     onChange={_onChange}
@@ -200,7 +200,7 @@ export const ProjectLookAndFeelForm: FC<Props> = memo(props => {
                             <Col xs={12} md={9}>
                                 <FormControl
                                     type="text"
-                                    id="date-format-input"
+                                    id="time-format-input"
                                     name="time"
                                     value={timeFormat}
                                     onChange={_onChange}

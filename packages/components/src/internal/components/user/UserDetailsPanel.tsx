@@ -252,11 +252,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                         showLinks={showPermissionListLinks}
                         userId={userId}
                     />
-                    <GroupsList
-                        groups={caseInsensitive(userProperties, 'groups')}
-                        currentUser={currentUser}
-                        showLinks={showGroupListLinks}
-                    />
+                    <GroupsList groups={caseInsensitive(userProperties, 'groups')} showLinks={showGroupListLinks} />
                 </>
             );
         }

@@ -114,6 +114,12 @@ export class LookupCell extends PureComponent<LookupCellProps> {
             queryFilters = queryFilters.push(...lookup.getQueryFilters(operation));
         }
 
+        let selectValue = isMultiple ? rawValues : rawValues[0];
+        // Issue 49502: If the lookup is a measurement unit, then we need to use the unit's display value
+        if (col.isUnitsLookup()) {
+            selectValue = values.find(vd => vd.display !== undefined)?.display;
+        }
+
         return (
             <QuerySelect
                 {...gridCellSelectInputProps}
@@ -130,7 +136,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 schemaQuery={
                     new SchemaQuery(lookup.schemaQuery.schemaName, lookup.schemaQuery.queryName, ViewInfo.DETAIL_NAME)
                 }
-                value={isMultiple ? rawValues : rawValues[0]}
+                value={selectValue}
             />
         );
     }

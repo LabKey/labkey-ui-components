@@ -813,6 +813,7 @@ import { GlobalStateContextProvider } from './internal/GlobalStateContext';
 import {
     areUnitsCompatible,
     convertUnitDisplay,
+    convertUnitsForInput,
     getAltMetricUnitOptions,
     getAltUnitKeys,
     getMetricUnitOptions,
@@ -1291,6 +1292,7 @@ export {
     UnitModel,
     MEASUREMENT_UNITS,
     areUnitsCompatible,
+    convertUnitsForInput,
     convertUnitDisplay,
     getAltMetricUnitOptions,
     getAltUnitKeys,

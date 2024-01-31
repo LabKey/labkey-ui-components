@@ -9,6 +9,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 49383: App error when a folder admin access profile page from a child folder
 - Issue 49417: App user details modal to show above the app header details popover
 
+### version 3.12.0
+*Released*: 30 January 2024
+- Issue 49507: add `convertUnitsForInput` to avoid commas in editable grid
+
 ### version 3.11.1
 *Released*: 29 January 2024
 - Issue 49378: use the default view if a view doesn't exist

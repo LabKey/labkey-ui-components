@@ -190,7 +190,7 @@ export const FindDerivativesMenuItem: FC<Props> = memo(props => {
 
     return (
         <DisableableMenuItem
-            operationPermitted={!invalidFilterNames}
+            disabled={invalidFilterNames !== ''}
             disabledMessage={DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').'}
             onClick={onClick}
             placement="right"

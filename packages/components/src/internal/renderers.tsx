@@ -307,7 +307,7 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
                         </MenuItem>
                     )}
                     <DisableableMenuItem
-                        operationPermitted={handleHideColumn && !!model}
+                        disabled={!(handleHideColumn && !!model)}
                         onClick={hideColumn}
                         disabledMessage={APP_FIELD_CANNOT_BE_REMOVED_MESSAGE}
                     >

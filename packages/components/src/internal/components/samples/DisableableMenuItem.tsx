@@ -9,10 +9,10 @@ import { Placement } from '../../useOverlayPositioning';
 
 interface Props {
     className?: string;
+    disabled: boolean;
     disabledMessage?: ReactNode;
     href?: string;
     onClick?: () => void;
-    operationPermitted: boolean;
     placement?: Placement;
 }
 
@@ -23,7 +23,7 @@ export const DisableableMenuItem: FC<Props> = memo(props => {
         children,
         className,
         disabledMessage = SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE,
-        operationPermitted,
+        disabled,
         onClick,
         placement = 'left',
     } = props;
@@ -33,7 +33,7 @@ export const DisableableMenuItem: FC<Props> = memo(props => {
         false
     );
 
-    if (operationPermitted) {
+    if (disabled) {
         return (
             <MenuItem className={className} onClick={onClick}>
                 {children}

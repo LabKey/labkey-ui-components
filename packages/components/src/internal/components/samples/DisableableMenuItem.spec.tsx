@@ -24,14 +24,14 @@ describe('DisableableMenuItem', () => {
 
     test('operation permitted', () => {
         const content = 'Test Operation';
-        const wrapper = mount(<DisableableMenuItem operationPermitted>{content}</DisableableMenuItem>);
+        const wrapper = mount(<DisableableMenuItem disabled={false}>{content}</DisableableMenuItem>);
         validate(wrapper, false, content);
     });
 
     test('operation permitted, menu props', () => {
         const onClick = jest.fn();
         const wrapper = mount(
-            <DisableableMenuItem operationPermitted onClick={onClick}>
+            <DisableableMenuItem disabled={false} onClick={onClick}>
                 <span>Test Operation</span>
             </DisableableMenuItem>
         );
@@ -40,7 +40,7 @@ describe('DisableableMenuItem', () => {
 
     test('disabled', () => {
         const wrapper = mount(
-            <DisableableMenuItem operationPermitted={false} onClick={jest.fn()}>
+            <DisableableMenuItem disabled={false} onClick={jest.fn()}>
                 <div>Other test</div>
             </DisableableMenuItem>
         );
@@ -51,7 +51,7 @@ describe('DisableableMenuItem', () => {
         const content = 'Other test';
         const onClick = jest.fn();
         const wrapper = mount(
-            <DisableableMenuItem onClick={onClick} operationPermitted={false} placement="right">
+            <DisableableMenuItem onClick={onClick} disabled={false} placement="right">
                 {content}
             </DisableableMenuItem>
         );

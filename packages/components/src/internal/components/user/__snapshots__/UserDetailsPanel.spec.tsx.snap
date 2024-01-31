@@ -1008,52 +1008,6 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
       userId={1005}
     />
     <Memo()
-      currentUser={
-        User {
-          "avatar": "/labkey/_images/defaultavatar.png",
-          "canDelete": true,
-          "canDeleteOwn": true,
-          "canInsert": true,
-          "canUpdate": true,
-          "canUpdateOwn": true,
-          "displayName": "AppAdminDisplayName",
-          "email": "guest",
-          "id": 1005,
-          "isAdmin": true,
-          "isAnalyst": false,
-          "isDeveloper": false,
-          "isGuest": false,
-          "isRootAdmin": true,
-          "isSignedIn": true,
-          "isSystemAdmin": false,
-          "isTrusted": false,
-          "maxAllowedPhi": undefined,
-          "permissionsList": [
-            "org.labkey.api.security.permissions.DeletePermission",
-            "org.labkey.api.security.permissions.ReadPermission",
-            "org.labkey.api.security.permissions.DesignDataClassPermission",
-            "org.labkey.api.security.permissions.DesignSampleTypePermission",
-            "org.labkey.api.assay.security.DesignAssayPermission",
-            "org.labkey.api.inventory.security.StorageDesignPermission",
-            "org.labkey.api.security.permissions.InsertPermission",
-            "org.labkey.api.security.permissions.UpdatePermission",
-            "org.labkey.api.lists.permissions.ManagePicklistsPermission",
-            "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
-            "org.labkey.api.security.permissions.SampleWorkflowDeletePermission",
-            "org.labkey.api.security.permissions.AdminPermission",
-            "org.labkey.api.security.permissions.UserManagementPermission",
-            "org.labkey.api.security.permissions.ApplicationAdminPermission",
-            "org.labkey.api.security.permissions.AddUserPermission",
-            "org.labkey.api.security.permissions.NotebookReadPermission",
-            "org.labkey.api.security.permissions.DataClassReadPermission",
-            "org.labkey.api.security.permissions.AssayReadPermission",
-            "org.labkey.api.security.permissions.MediaReadPermission",
-            "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
-            "org.labkey.api.security.permissions.SeeUserDetailsPermission",
-          ],
-          "phone": null,
-        }
-      }
       showLinks={true}
     />
     <hr
@@ -2074,52 +2028,6 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
       userId={1005}
     />
     <Memo()
-      currentUser={
-        User {
-          "avatar": "/labkey/_images/defaultavatar.png",
-          "canDelete": true,
-          "canDeleteOwn": true,
-          "canInsert": true,
-          "canUpdate": true,
-          "canUpdateOwn": true,
-          "displayName": "AppAdminDisplayName",
-          "email": "guest",
-          "id": 1005,
-          "isAdmin": true,
-          "isAnalyst": false,
-          "isDeveloper": false,
-          "isGuest": false,
-          "isRootAdmin": true,
-          "isSignedIn": true,
-          "isSystemAdmin": false,
-          "isTrusted": false,
-          "maxAllowedPhi": undefined,
-          "permissionsList": [
-            "org.labkey.api.security.permissions.DeletePermission",
-            "org.labkey.api.security.permissions.ReadPermission",
-            "org.labkey.api.security.permissions.DesignDataClassPermission",
-            "org.labkey.api.security.permissions.DesignSampleTypePermission",
-            "org.labkey.api.assay.security.DesignAssayPermission",
-            "org.labkey.api.inventory.security.StorageDesignPermission",
-            "org.labkey.api.security.permissions.InsertPermission",
-            "org.labkey.api.security.permissions.UpdatePermission",
-            "org.labkey.api.lists.permissions.ManagePicklistsPermission",
-            "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
-            "org.labkey.api.security.permissions.SampleWorkflowDeletePermission",
-            "org.labkey.api.security.permissions.AdminPermission",
-            "org.labkey.api.security.permissions.UserManagementPermission",
-            "org.labkey.api.security.permissions.ApplicationAdminPermission",
-            "org.labkey.api.security.permissions.AddUserPermission",
-            "org.labkey.api.security.permissions.NotebookReadPermission",
-            "org.labkey.api.security.permissions.DataClassReadPermission",
-            "org.labkey.api.security.permissions.AssayReadPermission",
-            "org.labkey.api.security.permissions.MediaReadPermission",
-            "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
-            "org.labkey.api.security.permissions.SeeUserDetailsPermission",
-          ],
-          "phone": null,
-        }
-      }
       showLinks={true}
     />
     <hr
@@ -3145,52 +3053,6 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
       userId={1004}
     />
     <Memo()
-      currentUser={
-        User {
-          "avatar": "/labkey/_images/defaultavatar.png",
-          "canDelete": true,
-          "canDeleteOwn": true,
-          "canInsert": true,
-          "canUpdate": true,
-          "canUpdateOwn": true,
-          "displayName": "AppAdminDisplayName",
-          "email": "guest",
-          "id": 1005,
-          "isAdmin": true,
-          "isAnalyst": false,
-          "isDeveloper": false,
-          "isGuest": false,
-          "isRootAdmin": true,
-          "isSignedIn": true,
-          "isSystemAdmin": false,
-          "isTrusted": false,
-          "maxAllowedPhi": undefined,
-          "permissionsList": [
-            "org.labkey.api.security.permissions.DeletePermission",
-            "org.labkey.api.security.permissions.ReadPermission",
-            "org.labkey.api.security.permissions.DesignDataClassPermission",
-            "org.labkey.api.security.permissions.DesignSampleTypePermission",
-            "org.labkey.api.assay.security.DesignAssayPermission",
-            "org.labkey.api.inventory.security.StorageDesignPermission",
-            "org.labkey.api.security.permissions.InsertPermission",
-            "org.labkey.api.security.permissions.UpdatePermission",
-            "org.labkey.api.lists.permissions.ManagePicklistsPermission",
-            "org.labkey.api.security.permissions.SampleWorkflowJobPermission",
-            "org.labkey.api.security.permissions.SampleWorkflowDeletePermission",
-            "org.labkey.api.security.permissions.AdminPermission",
-            "org.labkey.api.security.permissions.UserManagementPermission",
-            "org.labkey.api.security.permissions.ApplicationAdminPermission",
-            "org.labkey.api.security.permissions.AddUserPermission",
-            "org.labkey.api.security.permissions.NotebookReadPermission",
-            "org.labkey.api.security.permissions.DataClassReadPermission",
-            "org.labkey.api.security.permissions.AssayReadPermission",
-            "org.labkey.api.security.permissions.MediaReadPermission",
-            "org.labkey.api.security.permissions.SeeGroupDetailsPermission",
-            "org.labkey.api.security.permissions.SeeUserDetailsPermission",
-          ],
-          "phone": null,
-        }
-      }
       groups={4973}
       showLinks={true}
     />

@@ -5,7 +5,7 @@ import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainprop
 import { insertColumnFilter, QueryColumn, QueryLookup } from './QueryColumn';
 
 describe('QueryLookup', () => {
-    test('Not samples lookup', () => {
+    test('Not filtered lookup', () => {
         const lookup = new QueryLookup({
             schemaName: 'test',
             queryName: 'lookup',
@@ -18,6 +18,15 @@ describe('QueryLookup', () => {
         const lookup = new QueryLookup({
             schemaName: 'exp',
             queryName: 'materials',
+        });
+        expect(lookup.hasQueryFilters()).toBe(true);
+        expect(lookup.getQueryFilters()).toHaveLength(1);
+    });
+
+    test('User lookup', () => {
+        const lookup = new QueryLookup({
+            schemaName: 'core',
+            queryName: 'users',
         });
         expect(lookup.hasQueryFilters()).toBe(true);
         expect(lookup.getQueryFilters()).toHaveLength(1);

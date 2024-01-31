@@ -6,6 +6,14 @@
   font-size: 18px;
 }
 
+// Issue 49417: user details modal to show above the app header details popover
+div:has(> .user-detail-modal) > .modal-backdrop {
+    z-index: 1140;
+}
+.user-detail-modal {
+    z-index: 1150;
+}
+
 .create-users-label-bottom {
   padding-bottom: 5px;
 }

@@ -109,7 +109,6 @@ export class UserProfile extends PureComponent<Props, State> {
     };
 
     footer(): ReactNode {
-        const { user } = this.props;
         const { groups } = this.state;
 
         if (groups) {
@@ -117,7 +116,7 @@ export class UserProfile extends PureComponent<Props, State> {
                 <div className="form-group row">
                     <label className="control-label col-sm-3 text-left col-xs-12"> Groups </label>
                     <div className="col-sm-9 col-md-9 col-xs-12">
-                        <GroupsList currentUser={user} groups={groups} asRow={false} />
+                        <GroupsList groups={groups} asRow={false} />
                     </div>
                 </div>
             );

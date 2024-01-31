@@ -60,7 +60,7 @@ export const UserLink: FC<UserLinkProps> = props => {
 
         let title = 'User may have been deleted from the system.';
         if (!user.isSystemAdmin) {
-            title = 'User may have been deleted from the system or no longer has permissions within this project.';
+            title = 'User may have been deleted from the system or no longer have permissions within this project.';
         }
 
         return (

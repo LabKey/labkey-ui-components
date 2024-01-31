@@ -1,0 +1,540 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserDetailsPanel/> no principal 1`] = `
+<div>
+  <div
+    class="user-details-panel panel panel-default"
+  >
+    <div
+      class="panel-heading"
+    >
+      User Details
+    </div>
+    <div
+      class="panel-body"
+    >
+      <div>
+        No user selected.
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<UserDetailsPanel/> unknown user props 1`] = `
+<div>
+  <div
+    class="user-details-panel panel panel-default"
+  >
+    <div
+      class="panel-heading"
+    >
+      <span>
+        TestDisplayName
+      </span>
+    </div>
+    <div
+      class="panel-body"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Email
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          unknown
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Last Login
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          unknown
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Created
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          unknown
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          User ID
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          1234
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <button
+        class="pull-right btn btn-default"
+        style="margin-left: 10px;"
+        type="button"
+      >
+        Delete
+      </button>
+      <button
+        class="pull-right btn btn-default"
+        style="margin-left: 10px;"
+        type="button"
+      >
+        Reactivate
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
+<div>
+  <div
+    class="user-details-panel panel panel-default"
+  >
+    <div
+      class="panel-heading"
+    >
+      <span>
+        cnathe
+      </span>
+    </div>
+    <div
+      class="panel-body"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Email
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          cnathe@labkey.com
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Last Login
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          2020-01-06 15:30
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Created
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          2017-05-08 08:43
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          User ID
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          1004
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <button
+        class="pull-right btn btn-default"
+        style="margin-left: 10px;"
+        type="button"
+      >
+        Delete
+      </button>
+      <button
+        class="pull-right btn btn-default"
+        style="margin-left: 10px;"
+        type="button"
+      >
+        Reactivate
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allowResetPassword 1`] = `
+<div>
+  <div
+    class="user-details-panel panel panel-default"
+  >
+    <div
+      class="panel-heading"
+    >
+      <span>
+        cnathe
+      </span>
+    </div>
+    <div
+      class="panel-body"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Email
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          cnathe@labkey.com
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Last Login
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          2020-01-06 15:30
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Created
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          2017-05-08 08:43
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          User ID
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          1004
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <button
+        class="pull-right btn btn-default"
+        style="margin-left: 10px;"
+        type="button"
+      >
+        Reactivate
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
+<div>
+  <div
+    class="user-details-panel panel panel-default"
+  >
+    <div
+      class="panel-heading"
+    >
+      <span>
+        ReaderDisplayName
+      </span>
+      <span
+        class="margin-left status-pill active"
+      >
+        Active
+      </span>
+    </div>
+    <div
+      class="panel-body"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Name
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          test1 test2
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Email
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          reader_email_address_might_be_long@localhost.test
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Description
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          This is my user description of what I do for the company. Isn't it really interesting?
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Last Login
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          2019-11-18 09:15
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Created
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          2017-10-27 11:34
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          User ID
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          4973
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Has Password
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          true
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Effective Roles
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          <ul
+            class="principal-detail-ul"
+          >
+            <li
+              class="principal-detail-li"
+            >
+              <a
+                href="#/admin/permissions?expand=Editor"
+              >
+                Editor
+              </a>
+            </li>
+            <li
+              class="principal-detail-li"
+            >
+              <a
+                href="#/admin/permissions?expand=Folder%20Administrator"
+              >
+                Folder Administrator
+              </a>
+            </li>
+            <li
+              class="principal-detail-li"
+            >
+              <a
+                href="#/admin/permissions?expand=Project%20Administrator"
+              >
+                Project Administrator
+              </a>
+            </li>
+            <li
+              class="principal-detail-li"
+            >
+              <a
+                href="#/admin/permissions?expand=Reader"
+              >
+                Reader
+              </a>
+            </li>
+            <li
+              class="principal-detail-li"
+            >
+              <a
+                href="#/admin/permissions?expand=Restricted%20Reader"
+              >
+                Restricted Reader
+              </a>
+            </li>
+            <li
+              class="principal-detail-li"
+            >
+              <a
+                href="#/admin/permissions?expand=Submitter"
+              >
+                Submitter
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <hr
+        class="principal-hr"
+      />
+      <div
+        class="row"
+      >
+        <div
+          class="principal-detail-label col-xs-4"
+        >
+          Groups
+        </div>
+        <div
+          class="principal-detail-value col-xs-8"
+        >
+          <ul
+            class="principal-detail-ul"
+          >
+            <li
+              class="principal-detail-li"
+            >
+              None
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

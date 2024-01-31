@@ -29,8 +29,8 @@ import { ChartConfig, ChartQueryConfig } from './models';
 
 const ChartLoadingMask: FC = memo(() => (
     <div className="chart-loading-mask">
-        <div className="chart-loading-mask__background"/>
-        <LoadingSpinner msg="Loading Chart..." wrapperClassName="loading-spinner"/>
+        <div className="chart-loading-mask__background" />
+        <LoadingSpinner msg="Loading Chart..." wrapperClassName="loading-spinner" />
     </div>
 ));
 
@@ -153,28 +153,12 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
         <div className="svg-chart chart-body">
             {error !== undefined && <span className="text-danger">{error}</span>}
             {loadError !== undefined && <span className="text-danger">{loadError}</span>}
-            {isLoading(loadingState) && <ChartLoadingMask/>}
-            <div className="svg-chart__chart" id={divId} ref={ref}/>
+            {isLoading(loadingState) && <ChartLoadingMask />}
+            <div className="svg-chart__chart" id={divId} ref={ref} />
         </div>
     );
 });
 SVGChart.displayName = 'SVGChart';
-
-`
-<div><font class="labkey-error">Error executing command</font>
-    <pre>javax.script.ScriptException: javax.script.ScriptException: An error occurred when running the script &#039;script.R&#039;, exit code: 1).
-Error in plot.window(xlim, ylim, log = log, ...) :
-  need finite &#039;xlim&#039; values
-Calls: barplot -&gt; barplot.default -&gt; plot.window
-In addition: Warning messages:
-1: In min(w.l) : no non-missing arguments to min; returning Inf
-2: In max(w.r) : no non-missing arguments to max; returning -Inf
-3: In min(x) : no non-missing arguments to min; returning Inf
-4: In max(x) : no non-missing arguments to max; returning -Inf
-Execution halted
-</pre>
-</div>
-`
 
 interface RReportData {
     error?: string;
@@ -188,7 +172,7 @@ interface RReportData {
 function parseRReportHtml(html: string): RReportData {
     let _fileAnchors;
     let _imageUrls;
-    let error = undefined;
+    let error;
     if (html !== undefined) {
         // The HTML returned by our server includes a bunch of stuff we don't want. So instead of inserting it
         // directly we'll just grab the URLs for all the images named "resultImage", which are the outputs from an
@@ -261,12 +245,10 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
             {outputError !== undefined && (
                 <div>
                     <span className="text-danger">An error occurred while executing the report:</span>
-                    <pre>
-                        {outputError}
-                    </pre>
+                    <pre>{outputError}</pre>
                 </div>
             )}
-            {isLoading(loadingState) && <ChartLoadingMask/>}
+            {isLoading(loadingState) && <ChartLoadingMask />}
             {isEmpty && (
                 <div className="r-report__errors text-danger">
                     No output detected, you may not have enough data, or there may be an issue with your R Report
@@ -279,7 +261,7 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
                             <a className="attachment-card" href={href} key={href} title={text}>
                                 <div className="attachment-card__body">
                                     <div className="attachment-card__icon">
-                                        <span className="attachment-card__icon_tile fa fa-file-text-o"/>
+                                        <span className="attachment-card__icon_tile fa fa-file-text-o" />
                                     </div>
                                     <div className="attachment-card__content">
                                         <div className="attachment-card__name">{text}</div>
@@ -294,7 +276,7 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
                 <div className="r-report__images">
                     {imageUrls.map(url => (
                         <div key={url} className="r-report__image">
-                            <img alt="R Report Image Output" src={url}/>
+                            <img alt="R Report Image Output" src={url} />
                         </div>
                     ))}
                 </div>
@@ -306,10 +288,10 @@ RReport.displayName = 'RReport';
 
 export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, container, filters }) => {
     if (chart.type === DataViewInfoTypes.RReport) {
-        return <RReport api={api} chart={chart} container={container} filters={filters}/>;
+        return <RReport api={api} chart={chart} container={container} filters={filters} />;
     }
 
-    return <SVGChart api={api} chart={chart} container={container} filters={filters}/>;
+    return <SVGChart api={api} chart={chart} container={container} filters={filters} />;
 });
 
 Chart.displayName = 'Chart';

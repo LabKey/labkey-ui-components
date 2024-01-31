@@ -19,6 +19,7 @@ describe('DateTimeFieldOptions', () => {
             excludeFromShifting: true,
             onChange: jest.fn(),
             lockType: DOMAIN_FIELD_NOT_LOCKED,
+            type: 'datetime',
         };
 
         const dateTime = mount(<DateTimeFieldOptions {...props} />);

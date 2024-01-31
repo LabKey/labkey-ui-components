@@ -91,7 +91,7 @@ export function getLegalIdentifier(columnName: string, tableAlias?: string): str
 }
 
 function getLabKeySqlValue(value: any, jsonType: JsonType, suppressQuote?: boolean): any {
-    if (jsonType === 'string' || jsonType === 'date') {
+    if (jsonType === 'string' || jsonType === 'date' || jsonType === 'time') {
         const quote = suppressQuote ? '' : "'";
         return quote + value.toString().replace(/'/g, "''") + quote;
     }
@@ -370,7 +370,7 @@ const NEGATIVE_FILTERS = [
     Filter.Types.DOES_NOT_START_WITH.getURLSuffix(),
     Filter.Types.ONTOLOGY_NOT_IN_SUBTREE.getURLSuffix(),
     Filter.Types.NOT_EQUAL.getURLSuffix(),
-    Filter.Types.DATE_NOT_EQUAL.getURLSuffix()
+    Filter.Types.DATE_NOT_EQUAL.getURLSuffix(),
 ];
 
 export function isNegativeFilterType(filterType: Filter.IFilterType) {

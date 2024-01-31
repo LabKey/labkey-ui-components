@@ -8,13 +8,13 @@ type FormatMapping = Record<string, string>;
 
 /** The format pattern mapping from Java format to moment format. */
 const javaToMomentFormatMapping: FormatMapping = {
-    d: 'D',
+    d: 'DD',
     dd: 'DD',
     y: 'YYYY',
     yy: 'YY',
     yyy: 'YYYY',
     yyyy: 'YYYY',
-    a: 'a',
+    a: 'A',
     A: 'A',
     M: 'M',
     MM: 'MM',

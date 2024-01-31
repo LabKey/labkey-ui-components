@@ -140,6 +140,26 @@ exports[`DomainRow Sample Field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
+                      "display": "Date",
+                      "name": "date",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#date",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Time",
+                      "name": "time",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#time",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
                       "display": "Date Time",
                       "name": "dateTime",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -2100,6 +2120,26 @@ exports[`DomainRow client side warning on field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
+                      "display": "Date",
+                      "name": "date",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#date",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Time",
+                      "name": "time",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#time",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
                       "display": "Date Time",
                       "name": "dateTime",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -2795,6 +2835,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 Boolean
                                               </option>
                                               <option
+                                                key="date"
+                                                value="date"
+                                              >
+                                                Date
+                                              </option>
+                                              <option
                                                 key="dateTime"
                                                 value="dateTime"
                                               >
@@ -2871,6 +2917,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 value="textChoice"
                                               >
                                                 Text Choice
+                                              </option>
+                                              <option
+                                                key="time"
+                                                value="time"
+                                              >
+                                                Time
                                               </option>
                                               <option
                                                 key="uniqueId"
@@ -4153,6 +4205,26 @@ exports[`DomainRow date time field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
+                      "display": "Date",
+                      "name": "date",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#date",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Time",
+                      "name": "time",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#time",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
                       "display": "Date Time",
                       "name": "dateTime",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -4824,6 +4896,12 @@ exports[`DomainRow date time field 1`] = `
                                               value="dateTime"
                                             >
                                               <option
+                                                key="date"
+                                                value="date"
+                                              >
+                                                Date
+                                              </option>
+                                              <option
                                                 key="dateTime"
                                                 value="dateTime"
                                               >
@@ -4840,6 +4918,12 @@ exports[`DomainRow date time field 1`] = `
                                                 value="string"
                                               >
                                                 Text
+                                              </option>
+                                              <option
+                                                key="time"
+                                                value="time"
+                                              >
+                                                Time
                                               </option>
                                               <option
                                                 key="visitDate"
@@ -5105,6 +5189,7 @@ exports[`DomainRow date time field 1`] = `
                                             label="Date and Time Options"
                                             lockType="NotLocked"
                                             onChange={[Function]}
+                                            type="dateTime"
                                           >
                                             <div>
                                               <Row
@@ -5157,7 +5242,9 @@ exports[`DomainRow date time field 1`] = `
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               <p>
-                                                                To control how a date or time value is displayed, provide a string format compatible with the Java
+                                                                To control how a 
+                                                                date or time
+                                                                 value is displayed, provide a string format compatible with the Java
                                                                  
                                                                 <Memo
                                                                   urlSuffix="java/text/SimpleDateFormat.html"
@@ -5196,7 +5283,9 @@ exports[`DomainRow date time field 1`] = `
                                                                   >
                                                                     <React.Fragment>
                                                                       <p>
-                                                                        To control how a date or time value is displayed, provide a string format compatible with the Java
+                                                                        To control how a 
+                                                                        date or time
+                                                                         value is displayed, provide a string format compatible with the Java
                                                                          
                                                                         <Memo
                                                                           urlSuffix="java/text/SimpleDateFormat.html"
@@ -6177,6 +6266,26 @@ exports[`DomainRow decimal field 1`] = `
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": "xsd:double",
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Date",
+                      "name": "date",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#date",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Time",
+                      "name": "time",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#time",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
@@ -8257,6 +8366,26 @@ exports[`DomainRow participant id field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
+                      "display": "Date",
+                      "name": "date",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#date",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Time",
+                      "name": "time",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#time",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
                       "display": "Date Time",
                       "name": "dateTime",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -10108,6 +10237,26 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
+                      "display": "Date",
+                      "name": "date",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#date",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Time",
+                      "name": "time",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#time",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
                       "display": "Date Time",
                       "name": "dateTime",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -10803,6 +10952,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 Boolean
                                               </option>
                                               <option
+                                                key="date"
+                                                value="date"
+                                              >
+                                                Date
+                                              </option>
+                                              <option
                                                 key="dateTime"
                                                 value="dateTime"
                                               >
@@ -10879,6 +11034,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 value="textChoice"
                                               >
                                                 Text Choice
+                                              </option>
+                                              <option
+                                                key="time"
+                                                value="time"
+                                              >
+                                                Time
                                               </option>
                                               <option
                                                 key="uniqueId"
@@ -12117,6 +12278,26 @@ exports[`DomainRow string field test 1`] = `
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": "xsd:double",
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Date",
+                      "name": "date",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#date",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Time",
+                      "name": "time",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#time",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
@@ -14213,6 +14394,26 @@ exports[`DomainRow with empty domain form 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
+                      "display": "Date",
+                      "name": "date",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#date",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Time",
+                      "name": "time",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#time",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": undefined,
                       "display": "Date Time",
                       "name": "dateTime",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -14895,6 +15096,12 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 Boolean
                                               </option>
                                               <option
+                                                key="date"
+                                                value="date"
+                                              >
+                                                Date
+                                              </option>
+                                              <option
                                                 key="dateTime"
                                                 value="dateTime"
                                               >
@@ -14971,6 +15178,12 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 value="textChoice"
                                               >
                                                 Text Choice
+                                              </option>
+                                              <option
+                                                key="time"
+                                                value="time"
+                                              >
+                                                Time
                                               </option>
                                               <option
                                                 key="uniqueId"

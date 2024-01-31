@@ -20,6 +20,8 @@ import { Container, getServerContext } from '@labkey/api';
 
 import { QueryColumn } from '../../public/QueryColumn';
 
+import { TIME_RANGE_URI } from '../components/domainproperties/constants';
+
 import { formatWithJDF, toMomentFormatString } from './jDateFormatParser';
 
 export function datePlaceholder(col: QueryColumn): string {
@@ -34,6 +36,8 @@ export function datePlaceholder(col: QueryColumn): string {
             placeholder = getMomentDateTimeFormat();
         } else if (rangeURI.indexOf('date') > -1) {
             placeholder = getMomentDateFormat();
+        } else if (rangeURI === TIME_RANGE_URI.toLowerCase()) {
+            placeholder = getMomentTimeFormat();
         } else {
             placeholder = getMomentDateTimeFormat();
         }
@@ -75,11 +79,45 @@ function momentToDateFNS(momentFormat: string): string {
         ?.replace('YYYY', 'yyyy') // 0044, 0001, 1900, 2017
         .replace('YY', 'yy') // 44, 01, 00, 17
         .replace('DD', 'dd') // 01, 02, ..., 31
+        .replace('A', 'a')
         .replace(/Z+/gi, 'xxx'); // -08:00, +05:30, +00:00
 }
 
+export function getPickerDateAndTimeFormat(
+    queryColumn: QueryColumn,
+    format?: string,
+    hideTime?: boolean
+): { dateFormat: string; timeFormat: string } {
+    const dateFormat = getColDateFormat(queryColumn, hideTime ? 'Date' : format, queryColumn.isDateOnlyColumn);
+
+    const isTimeOnly = queryColumn.isTimeColumn;
+    const timeFormat = hideTime
+        ? undefined
+        : isTimeOnly
+        ? parseFNSTimeFormat(getColDateFormat(queryColumn, queryColumn?.format ?? 'Time'))
+        : parseDateFNSTimeFormat(dateFormat);
+
+    return {
+        dateFormat,
+        timeFormat,
+    };
+}
+
+export function getFormattedTimeString(date: Date, format?: string) {
+    if (!date) return null;
+
+    const formatStr = getColDateFormat(null, format ?? 'Time');
+    if (!formatStr) return getJsonTimeFormatString(date);
+
+    try {
+        return moment(date).format(toMomentFormatString(formatStr));
+    } catch (e) {
+        return getJsonTimeFormatString(date);
+    }
+}
+
 export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {
-    let rawFormat = dateFormat || queryColumn.format;
+    let rawFormat = dateFormat || queryColumn?.format;
     if (!rawFormat) {
         if (dateOnly) rawFormat = getMomentDateFormat();
         else rawFormat = datePlaceholder(queryColumn);
@@ -95,6 +133,20 @@ export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, 
     return momentToDateFNS(rawFormat);
 }
 
+export function parseFNSTimeFormat(timePart: string): string {
+    if (!timePart || timePart.indexOf(':') == -1) return undefined;
+
+    if (timePart.indexOf('H') > -1 || timePart.indexOf('k') > -1) {
+        if (timePart.indexOf('s') > 0) return 'HH:mm:ss'; // 13:30:00
+        return 'HH:mm'; // 13:30
+    } else if (timePart.indexOf('h') > -1 || timePart.indexOf('K') > -1) {
+        if (timePart.indexOf('s') > 0) return 'hh:mm:ss a'; // 01:30:00 PM
+        return 'hh:mm a'; // 01:30 PM
+    }
+
+    return undefined;
+}
+
 // Issue 48300: Respect 12-hour vs 24-hour time display format
 // This method attempts to determine if the time portion of date format is in either 12-hour or 24-hour format.
 // If the time format can be determined, then it will return a constant dateFNS time format.
@@ -108,19 +160,14 @@ export function parseDateFNSTimeFormat(dateFormat: string): string {
     if (!dateFormat) return undefined;
     const parts = dateFormat.split(' ');
 
-    if (parts.length > 1 && parts[1].indexOf(':') > -1) {
-        const timePart = parts[1];
-        if (timePart.indexOf('H') > -1 || timePart.indexOf('k') > -1) {
-            return 'HH:mm'; // 13:30
-        } else if (timePart.indexOf('h') > -1 || timePart.indexOf('K') > -1) {
-            return 'h:mm a'; // 1:30 PM
-        }
+    if (parts.length > 1) {
+        return parseFNSTimeFormat(parts[1]);
     }
 
     return undefined;
 }
 
-export function getColFormattedDateFilterValue(column: QueryColumn, value: string | Date): string {
+export function _getColFormattedDateFilterValue(column: QueryColumn, value: any): any {
     let valueFull = value;
     if (value && typeof value === 'string' && value.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
         valueFull = value + 'T00:00:00'; // Force local timezone. In ISO format, if you provide time and Z is not present in the end of string, the date will be local time zone instead of UTC time zone.
@@ -129,12 +176,49 @@ export function getColFormattedDateFilterValue(column: QueryColumn, value: strin
     return formatDate(new Date(valueFull), null, dateFormat);
 }
 
+export function getColFormattedDateFilterValue(column: QueryColumn, value: any): any {
+    if (value instanceof Array) {
+        const results = [];
+        value.forEach(val => {
+            results.push(_getColFormattedDateFilterValue(column, val));
+        });
+
+        return results;
+    }
+    return _getColFormattedDateFilterValue(column, value);
+}
+
+export function _getColFormattedTimeFilterValue(column: QueryColumn, value: any): any {
+    if (!value) return value;
+    const timeFormat = getColDateFormat(column, column?.format ?? 'Time', false);
+    if (!timeFormat) return value;
+    const valueFormat =
+        value.toLowerCase().indexOf(' am') > 0 || value.toLowerCase().indexOf(' pm') > 0 ? 'hh:mm:ss a' : 'HH:mm:ss';
+    return moment(value, valueFormat).format(toMomentFormatString(timeFormat));
+}
+
+export function getColFormattedTimeFilterValue(column: QueryColumn, value: any): any {
+    if (value instanceof Array) {
+        const results = [];
+        value.forEach(val => {
+            results.push(_getColFormattedTimeFilterValue(column, val));
+        });
+
+        return results;
+    }
+    return _getColFormattedTimeFilterValue(column, value);
+}
+
 export function getDateFormat(container?: Partial<Container>): string {
     return (container ?? getServerContext().container).formats.dateFormat;
 }
 
 export function getDateTimeFormat(container?: Partial<Container>): string {
     return (container ?? getServerContext().container).formats.dateTimeFormat;
+}
+
+export function getTimeFormat(container?: Partial<Container>): string {
+    return (container ?? getServerContext().container).formats.timeFormat;
 }
 
 // Issue 30834: get look and feel display formats
@@ -147,11 +231,11 @@ export function getMomentDateTimeFormat(container?: Partial<Container>): string 
 }
 
 // hard-coded value, see docs: https://www.labkey.org/Documentation/Archive/21.7/wiki-page.view?name=studyDateNumber#short
-function getMomentTimeFormat(): string {
-    return toMomentFormatString('HH:mm:ss');
+function getMomentTimeFormat(container?: Partial<Container>): string {
+    return toMomentFormatString((container ?? getServerContext().container).formats.timeFormat) ?? 'HH:mm:ss';
 }
 
-export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date): Date {
+export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date, timeOnly?: boolean): Date {
     if (!dateStr) return null;
 
     // Moment.js and react datepicker date format is different
@@ -168,7 +252,7 @@ export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date):
 
     // Issue 45140: if a dateFormat was provided here and the date didn't parse, try the default container format and no format
     if (!validDate) {
-        const date = moment(dateStr, getMomentDateTimeFormat(), true);
+        const date = moment(dateStr, timeOnly ? getMomentTimeFormat() : getMomentDateTimeFormat(), !timeOnly);
         if (date && date.isValid()) {
             validDate = date;
         }
@@ -216,6 +300,10 @@ export function getUnFormattedNumber(n): number {
 // provided by the LabKey server for the API response, from a JS Date object
 export function getJsonDateTimeFormatString(date: Date): string {
     return _formatDate(date, 'YYYY-MM-dd HH:mm:ss');
+}
+
+export function getJsonTimeFormatString(date: Date): string {
+    return _formatDate(date, 'YYYY-MM-dd HH:mm:ss').split(' ')[1];
 }
 
 export function getJsonDateFormatString(date: Date): string {

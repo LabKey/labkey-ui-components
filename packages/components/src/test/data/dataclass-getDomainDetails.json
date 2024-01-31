@@ -13,6 +13,7 @@
     "domainId" : 58021,
     "name" : "test1",
     "domainURI" : "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
+    "domainKindName" : "DataClass",
     "description" : null,
     "container" : "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
     "allowFileLinkProperties" : false,

@@ -10,7 +10,7 @@ describe('jDateFormatParser', () => {
             expect(formatWithJDF(moment('2013-12-24 14:30'), 'dd.MM.yyyy')).toBe('24.12.2013');
             expect(formatWithJDF(moment('2013-12-24 14:30'), 'dd.MM.yyy')).toBe('24.12.2013');
             expect(formatWithJDF(moment('2013-12-24 14:30'), 'd.M.yyyy')).toBe('24.12.2013');
-            expect(formatWithJDF(moment('2013-07-04 14:30'), 'd.M.yyyy')).toBe('4.7.2013');
+            expect(formatWithJDF(moment('2013-07-04 14:30'), 'd.M.yyyy')).toBe('04.7.2013');
             expect(formatWithJDF(moment('2013-07-04 14:30'), 'yyyy')).toBe('2013');
             expect(formatWithJDF(moment('2013-07-04 14:30'), 'yyy')).toBe('2013');
             expect(formatWithJDF(moment('2013-07-04 14:30'), 'yy')).toBe('13');
@@ -25,13 +25,13 @@ describe('jDateFormatParser', () => {
             expect(formatWithJDF(moment('2013-12-24 14:30'), 'HH:mm')).toBe('14:30');
             expect(formatWithJDF(moment('2013-12-24 14:30'), 'hh:mm')).toBe('02:30');
             expect(formatWithJDF(moment('2013-12-24 14:30'), 'hh:mm A')).toBe('02:30 PM');
-            expect(formatWithJDF(moment('2013-12-24 14:30'), 'hh:mm a')).toBe('02:30 pm');
+            expect(formatWithJDF(moment('2013-12-24 14:30'), 'hh:mm a')).toBe('02:30 PM');
             expect(formatWithJDF(moment('2013-12-24 04:30'), 'hh:mm A')).toBe('04:30 AM');
-            expect(formatWithJDF(moment('2013-12-24 04:30'), 'hh:mm a')).toBe('04:30 am');
+            expect(formatWithJDF(moment('2013-12-24 04:30'), 'hh:mm a')).toBe('04:30 AM');
             expect(formatWithJDF(moment('2013-12-24 14:09'), 'h:mm A')).toBe('2:09 PM');
-            expect(formatWithJDF(moment('2013-12-24 14:09'), 'h:mm a')).toBe('2:09 pm');
+            expect(formatWithJDF(moment('2013-12-24 14:09'), 'h:mm a')).toBe('2:09 PM');
             expect(formatWithJDF(moment('2013-12-24 04:09'), 'h:mm A')).toBe('4:09 AM');
-            expect(formatWithJDF(moment('2013-12-24 04:09'), 'h:mm a')).toBe('4:09 am');
+            expect(formatWithJDF(moment('2013-12-24 04:09'), 'h:mm a')).toBe('4:09 AM');
             expect(formatWithJDF(moment('2013-12-24 14:09'), 'm')).toBe('9');
             expect(formatWithJDF(moment('2013-12-24 14:09'), 'h')).toBe('2');
             expect(formatWithJDF(moment('2013-12-24 14:09'), 'H')).toBe('14');
@@ -123,7 +123,7 @@ describe('jDateFormatParser', () => {
             expect(toMomentFormatString('dd.')).toBe('DD.');
             expect(toMomentFormatString('dd.MM.')).toBe('DD.MM.');
             expect(toMomentFormatString('dd.MM.yyyy')).toBe('DD.MM.YYYY');
-            expect(toMomentFormatString('d.M.yyyy')).toBe('D.M.YYYY');
+            expect(toMomentFormatString('d.M.yyyy')).toBe('DD.M.YYYY');
             expect(toMomentFormatString('yyyy')).toBe('YYYY');
             expect(toMomentFormatString('yy')).toBe('YY');
             expect(toMomentFormatString('y')).toBe('YYYY');
@@ -137,9 +137,9 @@ describe('jDateFormatParser', () => {
             expect(toMomentFormatString('HH:mm')).toBe('HH:mm');
             expect(toMomentFormatString('hh:mm')).toBe('hh:mm');
             expect(toMomentFormatString('hh:mm A')).toBe('hh:mm A');
-            expect(toMomentFormatString('hh:mm a')).toBe('hh:mm a');
+            expect(toMomentFormatString('hh:mm a')).toBe('hh:mm A');
             expect(toMomentFormatString('h:mm A')).toBe('h:mm A');
-            expect(toMomentFormatString('h:mm a')).toBe('h:mm a');
+            expect(toMomentFormatString('h:mm a')).toBe('h:mm A');
             expect(toMomentFormatString('m')).toBe('m');
             expect(toMomentFormatString('h')).toBe('h');
             expect(toMomentFormatString('H')).toBe('H');

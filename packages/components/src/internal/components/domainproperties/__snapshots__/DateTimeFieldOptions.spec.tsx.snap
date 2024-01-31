@@ -9,6 +9,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
   label="Date and Time Field Options"
   lockType="NotLocked"
   onChange={[MockFunction]}
+  type="datetime"
 >
   <div>
     <Row
@@ -61,7 +62,9 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
                 helpTipBody={
                   <React.Fragment>
                     <p>
-                      To control how a date or time value is displayed, provide a string format compatible with the Java
+                      To control how a 
+                      datetime
+                       value is displayed, provide a string format compatible with the Java
                        
                       <Memo
                         urlSuffix="java/text/SimpleDateFormat.html"
@@ -100,7 +103,9 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
                         >
                           <React.Fragment>
                             <p>
-                              To control how a date or time value is displayed, provide a string format compatible with the Java
+                              To control how a 
+                              datetime
+                               value is displayed, provide a string format compatible with the Java
                                
                               <Memo
                                 urlSuffix="java/text/SimpleDateFormat.html"

@@ -27,6 +27,7 @@ export interface ProjectSettingsOptions {
 export interface UpdateProjectSettingsOptions {
     defaultDateFormat?: string;
     defaultDateTimeFormat?: string;
+    defaultTimeFormat?: string;
 }
 
 export interface AuditSettingsResponse {

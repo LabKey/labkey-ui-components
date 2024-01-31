@@ -4,7 +4,15 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../public/QueryColumn';
-import { BOOLEAN_TYPE, DATE_TYPE, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE } from '../domainproperties/PropDescType';
+import {
+    BOOLEAN_TYPE,
+    DATE_TYPE,
+    DATETIME_TYPE,
+    DOUBLE_TYPE,
+    INTEGER_TYPE,
+    TEXT_TYPE,
+    TIME_TYPE,
+} from '../domainproperties/PropDescType';
 import { SelectInput } from '../forms/input/SelectInput';
 
 import { FilterExpressionView } from './FilterExpressionView';
@@ -38,6 +46,18 @@ const dateField = new QueryColumn({
     caption: 'DateField',
     rangeURI: DATE_TYPE.rangeURI,
     jsonType: 'date',
+});
+const dateTimeField = new QueryColumn({
+    name: 'DateTimeField',
+    caption: 'DateTimeField',
+    rangeURI: DATETIME_TYPE.rangeURI,
+    jsonType: 'date',
+});
+const timeField = new QueryColumn({
+    name: 'TimeField',
+    caption: 'TimeField',
+    rangeURI: TIME_TYPE.rangeURI,
+    jsonType: 'time',
 });
 
 const Ops = [
@@ -88,6 +108,8 @@ const dateOps = [
     'between',
     'notbetween',
 ];
+
+const timeOps = Ops;
 
 const booleanOps = ['eq', 'neqornull', 'isblank', 'isnonblank'];
 
@@ -181,13 +203,8 @@ describe('FilterExpressionView', () => {
         wrapper.unmount();
     });
 
-    test('int field, no filter selected',  () => {
-        const wrapper = mount(
-            <FilterExpressionView
-                field={intField}
-                fieldFilters={null}
-            />
-        );
+    test('int field, no filter selected', () => {
+        const wrapper = mount(<FilterExpressionView field={intField} fieldFilters={null} />);
 
         validateFilterTypeDropdown(wrapper, Ops, 0, Ops[0]);
         wrapper.unmount();
@@ -202,6 +219,21 @@ describe('FilterExpressionView', () => {
         );
 
         validate(wrapper, Ops, 0, 2, 1, 0, 'gt', 1.23);
+        wrapper.unmount();
+    });
+
+    test('datetime field, not equal', () => {
+        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Los_Angeles
+        const testDate = new Date(datePOSIX);
+
+        const wrapper = mount(
+            <FilterExpressionView
+                field={dateTimeField}
+                fieldFilters={[Filter.create('DateTimeField', testDate, Filter.Types.DATE_NOT_EQUAL)]}
+            />
+        );
+
+        validate(wrapper, dateOps, 0, 2, 1, 0, 'dateneq', '2020-08-06', undefined, false);
         wrapper.unmount();
     });
 

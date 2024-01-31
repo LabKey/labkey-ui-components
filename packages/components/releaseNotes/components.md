@@ -1,6 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.15.0
+*Released*: 31 January 2024
+- Support Date-only or Time-only fields
+  - add container.format.timeFormat
+  - add date and time fields as allowed domain field types
+  - update ConfirmDataTypeChangeModal to allow date/time type convert
+  - modify DatePickerInput/DateInputCell to support time-only fields
+  - wire up time-only fields for QueryFormInputs, DetailDisplay, FilterExpressionView and editable grid
+  - add util for parsing/formatting time only fields
+
 ### version 3.14.0
 *Released*: 31 January 2024
 - RReport: Render errors encountered when running the R Report

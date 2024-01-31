@@ -4,6 +4,7 @@ export interface ContainerDateFormats {
     dateFormat: string;
     dateTimeFormat: string;
     numberFormat: string;
+    timeFormat: string;
 }
 
 const defaultContainer: IContainer = {
@@ -14,6 +15,7 @@ const defaultContainer: IContainer = {
         dateFormat: '',
         dateTimeFormat: '',
         numberFormat: '',
+        timeFormat: '',
     },
     hasRestrictedActiveModule: false,
     iconHref: '',

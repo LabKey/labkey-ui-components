@@ -28,7 +28,7 @@ import {
     VISITID_CONCEPT_URI,
 } from './constants';
 
-export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
+export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string' | 'time';
 
 interface IPropDescType {
     conceptURI: string;
@@ -110,6 +110,18 @@ export class PropDescType
         return rangeURI === STRING_RANGE_URI || rangeURI === MULTILINE_RANGE_URI;
     }
 
+    static isTime(rangeURI: string): boolean {
+        return rangeURI === TIME_RANGE_URI;
+    }
+
+    static isDate(rangeURI: string): boolean {
+        return rangeURI === DATE_RANGE_URI;
+    }
+
+    static isDateTime(rangeURI: string): boolean {
+        return rangeURI === DATETIME_RANGE_URI;
+    }
+
     static isMeasure(rangeURI: string): boolean {
         return rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI;
     }
@@ -141,6 +153,7 @@ export class PropDescType
             case 'double':
                 return 'float';
             case 'dateTime':
+            case 'date':
                 return 'date';
             default:
                 return 'string';
@@ -185,6 +198,18 @@ export class PropDescType
 
     isTextChoice(): boolean {
         return PropDescType.isTextChoice(this.conceptURI);
+    }
+
+    isTime(): boolean {
+        return PropDescType.isTime(this.rangeURI);
+    }
+
+    isDate(): boolean {
+        return PropDescType.isDate(this.rangeURI);
+    }
+
+    isDateTime(): boolean {
+        return PropDescType.isDateTime(this.rangeURI);
     }
 }
 
@@ -320,6 +345,8 @@ export const PROP_DESC_TYPES = List([
     BOOLEAN_TYPE,
     INTEGER_TYPE,
     DOUBLE_TYPE,
+    DATE_TYPE,
+    TIME_TYPE,
     DATETIME_TYPE,
     FLAG_TYPE,
     FILE_TYPE,

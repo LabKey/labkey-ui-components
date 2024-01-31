@@ -12,7 +12,7 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import { QueryColumn } from '../../../public/QueryColumn';
-import { BOOLEAN_TYPE, DATE_TYPE, INTEGER_TYPE, TEXT_TYPE } from '../domainproperties/PropDescType';
+import { BOOLEAN_TYPE, DATE_TYPE, INTEGER_TYPE, TEXT_TYPE, TIME_TYPE } from '../domainproperties/PropDescType';
 
 import { initEditableGridModel } from './actions';
 import { EditorMode, EditorModel, EditableGridLoader, ValueDescriptor } from './models';
@@ -166,6 +166,7 @@ describe('getUpdatedDataFromGrid', () => {
         bool: new QueryColumn({ name: 'Bool', rangeURI: BOOLEAN_TYPE.rangeURI }),
         int: new QueryColumn({ name: 'Int', rangeURI: INTEGER_TYPE.rangeURI }),
         date: new QueryColumn({ name: 'Date', rangeURI: DATE_TYPE.rangeURI }),
+        time: new QueryColumn({ name: 'Time', rangeURI: TIME_TYPE.rangeURI }),
     });
     const queryInfo = new QueryInfo({
         columns: cols,
@@ -185,6 +186,7 @@ describe('getUpdatedDataFromGrid', () => {
             Bool: true,
             Int: 0,
             Date: '2020-12-23 14:34',
+            Time: '01:10:00',
         },
         447: {
             RowId: 447,
@@ -196,6 +198,7 @@ describe('getUpdatedDataFromGrid', () => {
             Bool: false,
             Int: 7,
             Date: null,
+            Time: null,
         },
         446: {
             RowId: 446,
@@ -207,6 +210,7 @@ describe('getUpdatedDataFromGrid', () => {
             Bool: true,
             Int: 6,
             Date: '1922-08-21 00:00',
+            Time: '03:30:00',
         },
         445: {
             RowId: 445,
@@ -218,6 +222,7 @@ describe('getUpdatedDataFromGrid', () => {
             Bool: false,
             Int: 5,
             Date: null,
+            Time: null,
         },
     });
 
@@ -275,6 +280,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: true,
                     Int: 0,
                     Date: '2020-12-23 14:34',
+                    Time: '01:10:00',
                 }),
                 Map<string, any>({
                     RowId: '447',
@@ -286,6 +292,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: false,
                     Int: '7',
                     Date: null,
+                    Time: null,
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -297,6 +304,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: true,
                     Int: '6',
                     Date: '1922-08-21 00:00',
+                    Time: '03:30:00',
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -308,6 +316,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: false,
                     Int: 5,
                     Date: null,
+                    Time: null,
                 }),
             ],
             'RowId',
@@ -330,6 +339,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: undefined,
                     Int: undefined,
                     Date: null,
+                    Time: null,
                 }),
                 Map<string, any>({
                     RowId: '447',
@@ -341,6 +351,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: undefined,
                     Int: undefined,
                     Date: null,
+                    Time: null,
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -352,6 +363,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: true,
                     Int: 6,
                     Date: '1922-08-21 00:00',
+                    Time: '03:30:00',
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -363,6 +375,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: false,
                     Int: 5,
                     Date: null,
+                    Time: null,
                 }),
             ],
             'RowId',
@@ -374,6 +387,7 @@ describe('getUpdatedDataFromGrid', () => {
             Bool: null,
             Data: null,
             Date: null,
+            Time: null,
             RowId: '448',
         });
         expect(updatedData[1]).toStrictEqual({
@@ -398,6 +412,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: '',
                     Int: '',
                     Date: '2021-12-23 14:34',
+                    Time: '01:18:00',
                 }),
                 Map<string, any>({
                     RowId: '447',
@@ -409,6 +424,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: '',
                     Int: '0',
                     Date: null,
+                    Time: null,
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -420,6 +436,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: false,
                     Int: 66,
                     Date: '1922-08-21 00:00',
+                    Time: '03:30:00',
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -431,6 +448,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Bool: true,
                     Int: 5,
                     Date: null,
+                    Time: null,
                 }),
             ],
             'RowId',
@@ -442,6 +460,7 @@ describe('getUpdatedDataFromGrid', () => {
             Bool: null,
             Data: null,
             Date: '2021-12-23 14:34',
+            Time: '01:18:00',
             RowId: '448',
         });
         expect(updatedData[1]).toStrictEqual({

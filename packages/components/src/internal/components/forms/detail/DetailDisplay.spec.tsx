@@ -268,6 +268,20 @@ describe('resolveDetailEditRenderer', () => {
         wrapper.unmount();
     });
 
+    test('jsonType date', () => {
+        const col = new QueryColumn({ ...default_props, jsonType: 'date' });
+        const wrapper = mount(<Formsy>{resolveDetailEditRenderer(col)(Map())}</Formsy>);
+        validate(wrapper, { datepickerinput: 1 });
+        wrapper.unmount();
+    });
+
+    test('jsonType time', () => {
+        const col = new QueryColumn({ ...default_props, jsonType: 'time' });
+        const wrapper = mount(<Formsy>{resolveDetailEditRenderer(col)(Map())}</Formsy>);
+        validate(wrapper, { datepickerinput: 1 });
+        wrapper.unmount();
+    });
+
     test('default input', () => {
         const col = new QueryColumn({ ...default_props });
         const wrapper = mount(<Formsy>{resolveDetailEditRenderer(col)(Map())}</Formsy>);

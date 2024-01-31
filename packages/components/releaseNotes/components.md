@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.??.?
-*Released*: ?? ?????? 2024
+### version 3.14.0
+*Released*: 31 January 2024
 - RReport: Render errors encountered when running the R Report
 
 ### version 3.13.0

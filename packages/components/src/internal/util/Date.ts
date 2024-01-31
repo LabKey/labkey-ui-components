@@ -79,6 +79,7 @@ function momentToDateFNS(momentFormat: string): string {
         ?.replace('YYYY', 'yyyy') // 0044, 0001, 1900, 2017
         .replace('YY', 'yy') // 44, 01, 00, 17
         .replace('DD', 'dd') // 01, 02, ..., 31
+        .replace('A', 'a')
         .replace(/Z+/gi, 'xxx'); // -08:00, +05:30, +00:00
 }
 

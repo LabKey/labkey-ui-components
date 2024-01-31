@@ -60,6 +60,7 @@ import {
 } from './constants';
 import {
     ATTACHMENT_TYPE,
+    DATE_TYPE,
     FILE_TYPE,
     FLAG_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
@@ -69,6 +70,7 @@ import {
     SAMPLE_TYPE,
     SMILES_TYPE,
     TEXT_CHOICE_TYPE,
+    TIME_TYPE,
     UNIQUE_ID_TYPE,
     USERS_TYPE,
     VISIT_DATE_TYPE,
@@ -327,6 +329,21 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === USERS_TYPE && !domain.allowUserProperties) {
+        return false;
+    }
+
+    if (type === TIME_TYPE || type === DATE_TYPE) {
+        switch (domain?.domainKindName) {
+            case Domain.KINDS.SAMPLE_TYPE:
+            case Domain.KINDS.DATA_CLASS:
+            case Domain.KINDS.INT_LIST:
+            case Domain.KINDS.VAR_LIST:
+            case Domain.KINDS.STUDY_DATASET_DATE:
+            case Domain.KINDS.STUDY_DATASET_VISIT:
+                return true;
+        }
+        if (domain?.domainURI?.indexOf(':AssayDomain-Data.') > 0)
+            return true;
         return false;
     }
 

@@ -57,8 +57,14 @@ export const UserLink: FC<UserLinkProps> = props => {
 
     if (!isSelf && (!userCanReadUserDetails(user) || !targetUserDisplayValue)) {
         if (targetUserDisplayValue) return <span>{targetUserDisplayValue}</span>;
+
+        let title = 'User may have been deleted from the system.';
+        if (!user.isSystemAdmin) {
+            title = 'User may have been deleted from the system or no longer has permissions within this project.';
+        }
+
         return (
-            <span className="gray-text" title="User may have been deleted from the system.">
+            <span className="gray-text" title={title}>
                 &lt;{userId}&gt;
             </span>
         );
@@ -74,6 +80,7 @@ export const UserLink: FC<UserLinkProps> = props => {
                     container={container}
                     currentUser={user}
                     userId={userId}
+                    displayName={targetUserDisplayValue}
                     toggleDetailsModal={toggleDetailsModal}
                     isSelf={!userCanReadUserDetails(user) && isSelf}
                 />

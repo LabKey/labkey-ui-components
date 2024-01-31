@@ -54,6 +54,7 @@ interface Props {
     api?: SecurityAPIWrapper;
     container?: Container;
     currentUser: User;
+    displayName?: string;
     isSelf?: boolean;
     onUsersStateChangeComplete?: (response: any, resetSelection: boolean) => void;
     policy?: SecurityPolicy;
@@ -120,7 +121,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     };
 
     loadUserDetails = async (): Promise<void> => {
-        const { userId, isSelf, api } = this.props;
+        const { userId, isSelf, api, displayName } = this.props;
 
         if (!userId) {
             this.setState({ userProperties: undefined });
@@ -135,7 +136,11 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                 this.setState({ userProperties: response.props });
             } else {
                 const response = await api.getUserPropertiesForOther(userId);
-                this.setState({ userProperties: response });
+                if (!Utils.isEmptyObj(response)) {
+                    this.setState({ userProperties: response });
+                } else {
+                    this.setState({ userProperties: { UserId: userId, DisplayName: displayName } });
+                }
             }
         } catch (e) {
             this.setState({ userProperties: undefined });
@@ -161,6 +166,8 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         let value = caseInsensitive(this.state.userProperties, prop);
         if (formatDate && value) {
             value = moment(value).format(getMomentDateTimeFormat());
+        } else if (value === undefined) {
+            value = 'unknown';
         }
 
         return <UserDetailRow label={label} value={value} />;

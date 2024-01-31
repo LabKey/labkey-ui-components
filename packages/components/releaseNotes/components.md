@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 49440: User may not be in the core.Users table (if permission was removed), so check the core.SiteUsers table as well
+
 ### version 3.14.0
 *Released*: 31 January 2024
 - RReport: Render errors encountered when running the R Report

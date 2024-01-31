@@ -10,7 +10,7 @@ describe('jDateFormatParser', () => {
             expect(formatWithJDF(moment('2013-12-24 14:30'), 'dd.MM.yyyy')).toBe('24.12.2013');
             expect(formatWithJDF(moment('2013-12-24 14:30'), 'dd.MM.yyy')).toBe('24.12.2013');
             expect(formatWithJDF(moment('2013-12-24 14:30'), 'd.M.yyyy')).toBe('24.12.2013');
-            expect(formatWithJDF(moment('2013-07-04 14:30'), 'd.M.yyyy')).toBe('4.7.2013');
+            expect(formatWithJDF(moment('2013-07-04 14:30'), 'd.M.yyyy')).toBe('04.7.2013');
             expect(formatWithJDF(moment('2013-07-04 14:30'), 'yyyy')).toBe('2013');
             expect(formatWithJDF(moment('2013-07-04 14:30'), 'yyy')).toBe('2013');
             expect(formatWithJDF(moment('2013-07-04 14:30'), 'yy')).toBe('13');
@@ -123,7 +123,7 @@ describe('jDateFormatParser', () => {
             expect(toMomentFormatString('dd.')).toBe('DD.');
             expect(toMomentFormatString('dd.MM.')).toBe('DD.MM.');
             expect(toMomentFormatString('dd.MM.yyyy')).toBe('DD.MM.YYYY');
-            expect(toMomentFormatString('d.M.yyyy')).toBe('D.M.YYYY');
+            expect(toMomentFormatString('d.M.yyyy')).toBe('DD.M.YYYY');
             expect(toMomentFormatString('yyyy')).toBe('YYYY');
             expect(toMomentFormatString('yy')).toBe('YY');
             expect(toMomentFormatString('y')).toBe('YYYY');

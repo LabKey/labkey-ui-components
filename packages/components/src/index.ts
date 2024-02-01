@@ -168,7 +168,7 @@ import { ToggleButtons, ToggleIcon } from './internal/components/buttons/ToggleB
 import { DisableableButton } from './internal/components/buttons/DisableableButton';
 import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMenuButton';
 import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
-import { getMenuItemForSectionKey, getMenuItemsForSection } from './internal/components/buttons/utils';
+import { getMenuItemForSectionKey } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
 import { Setting } from './internal/components/base/Setting';
 import { ValueList } from './internal/components/base/ValueList';
@@ -839,6 +839,7 @@ import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigge
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
 import { DropdownAnchor, DropdownButton, MenuDivider, MenuItem, MenuHeader, SplitButton } from './internal/dropdowns';
+import { DropdownSection } from './internal/DropdownSection';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1524,7 +1525,6 @@ export {
     DisableableButton,
     ResponsiveMenuButton,
     ResponsiveMenuButtonGroup,
-    getMenuItemsForSection,
     getMenuItemForSectionKey,
     // application page related items
     LoadingPage,
@@ -1684,6 +1684,7 @@ export {
     useOverlayTriggerState,
     DropdownAnchor,
     DropdownButton,
+    DropdownSection,
     MenuDivider,
     MenuItem,
     MenuHeader,
@@ -1828,3 +1829,5 @@ export type {
 } from './internal/components/forms/input/FormsyReactComponents';
 export type { QueryParams } from './internal/util/URL';
 export type { TriggerType } from './internal/OverlayTrigger';
+export type { MenuSectionItem } from './internal/DropdownSection';
+export type { BSStyle } from './internal/dropdowns';

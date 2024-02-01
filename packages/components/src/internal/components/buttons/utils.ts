@@ -1,30 +1,6 @@
-import { List } from 'immutable';
-
 import { MenuSectionModel } from '../navigation/model';
 import { MenuOption } from '../menus/SubMenu';
-import { naturalSort } from '../../../public/sort';
 import { AppURL } from '../../url/AppURL';
-
-export function getMenuItemsForSection(
-    section: MenuSectionModel,
-    useOnClick: boolean,
-    itemActionFn?: (key: string, menuSection?: MenuSectionModel) => any,
-    disabledMsg?: string
-): List<MenuOption> {
-    let items = List<MenuOption>();
-
-    if (section) {
-        section.items
-            .sortBy(item => item.label, naturalSort)
-            .forEach(item => {
-                items = items.push(
-                    getMenuItemForSectionKey(item.key, item.label, section, useOnClick, itemActionFn, disabledMsg)
-                );
-            });
-    }
-
-    return items;
-}
 
 export function getMenuItemForSectionKey(
     key: string,

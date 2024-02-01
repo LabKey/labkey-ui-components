@@ -26,36 +26,22 @@ describe('resolveDetailFieldValue', () => {
     });
 
     test('data value defined', () => {
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: undefined }))).toBe(undefined);
+        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: undefined }))).toBe('test1');
         expect(resolveDetailFieldValue(fromJS({ value: 'test1' }))).toBe('test1');
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: 'Test Display' }))).toBe('Test Display');
-    });
-
-    test('lookup prop', () => {
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: undefined }), false)).toBe(undefined);
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), false)).toBe('test1');
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: 'Test Display' }), false)).toBe(
-            'Test Display'
-        );
-
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: undefined }), true)).toBe('test1');
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), true)).toBe('test1');
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: 'Test Display' }), true)).toBe('test1');
+        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: 'Test Display' }))).toBe('test1');
     });
 
     test('ignoreFormattedValue prop', () => {
         expect(
             resolveDetailFieldValue(
                 fromJS({ value: 'test1', displayValue: undefined, formattedValue: undefined }),
-                false,
                 false
             )
         ).toBe(undefined);
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), false, false)).toBe('test1');
+        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), false)).toBe('test1');
         expect(
             resolveDetailFieldValue(
                 fromJS({ value: 'test1', displayValue: 'Test Display', formattedValue: 'Test Formatted' }),
-                false,
                 false
             )
         ).toBe('Test Formatted');
@@ -63,15 +49,13 @@ describe('resolveDetailFieldValue', () => {
         expect(
             resolveDetailFieldValue(
                 fromJS({ value: 'test1', displayValue: undefined, formattedValue: undefined }),
-                true,
                 true
             )
         ).toBe('test1');
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), true, true)).toBe('test1');
+        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), true)).toBe('test1');
         expect(
             resolveDetailFieldValue(
                 fromJS({ value: 'test1', displayValue: 'Test Display', formattedValue: 'Test Formatted' }),
-                true,
                 true
             )
         ).toBe('test1');

@@ -33,30 +33,29 @@ const isFieldArray = (value: any): value is FieldArray => Array.isArray(value);
 
 const isFieldMap = (value: any): value is FieldMap => Map.isMap(value);
 
-const resolveFieldValue = (data: FieldValue, lookup?: boolean, ignoreFormattedValue?: boolean): string => {
+const resolveFieldValue = (data: FieldValue, ignoreFormattedValue?: boolean): string => {
     if (!ignoreFormattedValue && data.hasOwnProperty('formattedValue')) {
         return data.formattedValue;
     }
 
-    const o = lookup !== true && data.hasOwnProperty('displayValue') ? data.displayValue : data.value;
-    return o !== null && o !== undefined ? o : undefined;
+    // Issue 45256: Ignore the "displayValue" as it may be built from a query XML annotated "textExpression"
+    return data.value === null ? undefined : data.value;
 };
 
 export function resolveDetailFieldValue(
     data: FieldList | FieldArray | FieldMap | FieldValue,
-    lookup?: boolean,
     ignoreFormattedValue?: boolean
 ): string | string[] {
     if (data) {
         if (isFieldList(data) && data.size) {
-            return data.toJS().map(d => resolveFieldValue(d, lookup, ignoreFormattedValue));
+            return data.toJS().map(d => resolveFieldValue(d, ignoreFormattedValue));
         } else if (isFieldArray(data) && data.length) {
-            return data.map(d => resolveFieldValue(d, lookup, ignoreFormattedValue));
+            return data.map(d => resolveFieldValue(d, ignoreFormattedValue));
         } else if (isFieldMap(data)) {
-            return resolveFieldValue(data.toJS(), lookup, ignoreFormattedValue);
+            return resolveFieldValue(data.toJS(), ignoreFormattedValue);
         }
 
-        return resolveFieldValue(data as FieldValue, lookup, ignoreFormattedValue);
+        return resolveFieldValue(data as FieldValue, ignoreFormattedValue);
     }
 
     return undefined;

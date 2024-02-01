@@ -279,7 +279,7 @@ export function resolveDetailEditRenderer(
         }
 
         const showLabel = !options?.hideLabel ?? false;
-        let value = resolveDetailFieldValue(data, col.isLookup());
+        let value = resolveDetailFieldValue(data, true);
 
         const ColumnInputRenderer = resolveInputRenderer(col);
         if (ColumnInputRenderer) {
@@ -377,9 +377,6 @@ export function resolveDetailEditRenderer(
 
         switch (col.jsonType) {
             case 'boolean':
-                // boolean checkbox state needs to be based off of the data value (not formattedValue)
-                value = resolveDetailFieldValue(data, false, true);
-
                 return (
                     <CheckboxInput
                         queryColumn={col}

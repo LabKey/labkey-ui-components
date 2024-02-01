@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 49560: User permissionsList to default to undefined instead of empty array
+
 ### version 3.15.0
 *Released*: 31 January 2024
 - Support Date-only or Time-only fields

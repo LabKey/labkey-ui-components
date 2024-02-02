@@ -9,6 +9,7 @@ const TEST_DATE_FORMATS: ContainerDateFormats = {
     dateFormat: 'yyyy-MM-dd',
     dateTimeFormat: 'yyyy-MM-dd HH:mm',
     numberFormat: null,
+    timeFormat: 'HH:mm',
 };
 
 const TEST_PROJECT_CONTAINER_CONFIG = {

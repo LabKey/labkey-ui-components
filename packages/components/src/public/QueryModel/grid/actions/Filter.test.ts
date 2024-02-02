@@ -17,6 +17,8 @@ import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../QueryColumn';
 
+import { TIME_RANGE_URI } from '../../../../internal/components/domainproperties/constants';
+
 import { FilterAction } from './Filter';
 import { ActionValue } from './Action';
 
@@ -65,5 +67,17 @@ describe('FilterAction::actionValueFromFilter', () => {
         const filter = Filter.create('DateCol', '2022-04-19 01:02', Filter.Types.EQUAL);
         const value: ActionValue = action.actionValueFromFilter(filter, col);
         expect(value.displayValue).toBe('DateCol = 01:02:00');
+    });
+
+    test('time formatting', () => {
+        const col = new QueryColumn({
+            shortCaption: 'TimeCol',
+            jsonType: 'time',
+            format: 'HH:mm:ss',
+            rangeURI: TIME_RANGE_URI,
+        });
+        const filter = Filter.create('TimeCol', '01:02', Filter.Types.EQUAL);
+        const value: ActionValue = action.actionValueFromFilter(filter, col);
+        expect(value.displayValue).toBe('TimeCol = 01:02:00');
     });
 });

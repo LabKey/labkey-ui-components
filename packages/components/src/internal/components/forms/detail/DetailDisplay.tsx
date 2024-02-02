@@ -389,6 +389,7 @@ export function resolveDetailEditRenderer(
                     />
                 );
             case 'date':
+            case 'time':
                 if (!value || typeof value === 'string') {
                     return (
                         <DatePickerInput

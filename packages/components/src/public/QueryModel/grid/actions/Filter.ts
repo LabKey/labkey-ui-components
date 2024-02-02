@@ -20,12 +20,13 @@ import { decodePart } from '../../../SchemaQuery';
 
 import { JsonType } from '../../../../internal/components/domainproperties/PropDescType';
 
-import { getColFormattedDateFilterValue } from '../../../../internal/util/Date';
+import { getColFormattedDateFilterValue, getColFormattedTimeFilterValue } from '../../../../internal/util/Date';
 
 import { QueryColumn } from '../../../QueryColumn';
 
-import { Action, ActionValue } from './Action';
 import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../../../internal/query/filter';
+
+import { Action, ActionValue } from './Action';
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances
@@ -89,8 +90,7 @@ export function resolveFilterType(token: string, column: QueryColumn): Filter.IF
         return SUFFIX_MAP.get(token);
     }
 
-    if (token === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix())
-        return ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE;
+    if (token === ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE.getURLSuffix()) return ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE;
 
     if (SYMBOL_MAP.has(token)) {
         const symbolTypes = SYMBOL_MAP.get(token);
@@ -216,7 +216,9 @@ export class FilterAction implements Action {
         let value = filter.getValue();
 
         // Issue 45140: match date display format in grid filter status pill display
-        if (column?.getDisplayFieldJsonType() === 'date') {
+        if (column?.isTimeColumn) {
+            value = getColFormattedTimeFilterValue(column, value);
+        } else if (column?.getDisplayFieldJsonType() === 'date') {
             value = getColFormattedDateFilterValue(column, value);
         }
 

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.15.1
+*Released*: 2 February 2024
+- Issue 49502: StoredAmount and Units for samples editable grid to use display values instead of raw values
+
 ### version 3.15.0
 *Released*: 31 January 2024
 - Support Date-only or Time-only fields

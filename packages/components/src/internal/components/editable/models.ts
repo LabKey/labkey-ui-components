@@ -282,7 +282,7 @@ export class EditorModel
                                 return arr;
                             }, [])
                         );
-                    } else if (!col.isUnitsLookup() && col.lookup.displayColumn === col.lookup.keyColumn) {
+                    } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
                         row = row.set(
                             col.name,
                             values.size === 1 ? quoteValueWithDelimiters(values.first()?.display, ',') : undefined

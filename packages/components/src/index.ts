@@ -262,6 +262,7 @@ import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
+import { StoredAmountRenderer } from './internal/renderers/StoredAmountRenderer';
 import { SampleStatusRenderer } from './internal/renderers/SampleStatusRenderer';
 import { ExpirationDateColumnRenderer } from './internal/renderers/ExpirationDateColumnRenderer';
 import { AppendUnits } from './internal/renderers/AppendUnits';
@@ -1108,6 +1109,7 @@ export {
     NoLinkRenderer,
     ExpirationDateColumnRenderer,
     StorageStatusRenderer,
+    StoredAmountRenderer,
     SampleStatusRenderer,
     ImportAliasRenderer,
     SampleTypeImportAliasRenderer,

@@ -221,11 +221,11 @@ const InputGroup: FC<InputGroupProps> = props => {
 
     return (
         <div className="input-group">
-            {!!addonBefore && <span className="input-group-prepend">{addonBefore}</span>}
-            {!!buttonBefore && <span className="input-group-prepend">{buttonBefore}</span>}
+            {!!addonBefore && <span className="input-group-addon">{addonBefore}</span>}
+            {!!buttonBefore && <span className="input-group-addon">{buttonBefore}</span>}
             {children}
-            {!!addonAfter && <span className="input-group-append">{addonAfter}</span>}
-            {!!buttonAfter && <span className="input-group-append">{buttonAfter}</span>}
+            {!!addonAfter && <span className="input-group-addon">{addonAfter}</span>}
+            {!!buttonAfter && <span className="input-group-addon">{buttonAfter}</span>}
         </div>
     );
 };

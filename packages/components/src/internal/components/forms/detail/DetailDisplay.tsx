@@ -279,7 +279,7 @@ export function resolveDetailEditRenderer(
         }
 
         const showLabel = !options?.hideLabel ?? false;
-        let value = resolveDetailFieldValue(data, true);
+        let value = resolveDetailFieldValue(data);
 
         const ColumnInputRenderer = resolveInputRenderer(col);
         if (ColumnInputRenderer) {
@@ -334,7 +334,7 @@ export function resolveDetailEditRenderer(
                         required={col.required}
                         schemaQuery={col.lookup.schemaQuery}
                         showLabel={showLabel}
-                        value={resolveDetailFieldValue(data, true)}
+                        value={value}
                         valueColumn={col.lookup.keyColumn}
                     />
                 );

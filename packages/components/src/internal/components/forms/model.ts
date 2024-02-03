@@ -33,7 +33,7 @@ import { parseCsvString } from '../../util/utils';
 import { SelectInputOption } from './input/SelectInput';
 import { DELIMITER } from './constants';
 import { QuerySelectOwnProps } from './QuerySelect';
-import { resolveDetailFieldValue } from './utils';
+import { resolveDetailFieldLabel, resolveDetailFieldValue } from './utils';
 
 function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): SelectInputOption[] {
     const { displayColumn, queryInfo, valueColumn } = model;
@@ -42,11 +42,13 @@ function formatResults(model: QuerySelectModel, results: Map<string, any>, token
         return [];
     }
 
-    let options = results.map(result => ({
-        label: (resolveDetailFieldValue(result.get(displayColumn)) ??
-            resolveDetailFieldValue(result.get(valueColumn))) as string,
-        value: result.getIn([valueColumn, 'value']),
-    }));
+    let options = results.map(result => {
+        return {
+            label: (resolveDetailFieldLabel(result.get(displayColumn)) ??
+                resolveDetailFieldLabel(result.get(valueColumn))) as string,
+            value: resolveDetailFieldValue(result.get(valueColumn)),
+        };
+    });
 
     // Issue 46618: If a sort key is applied, then skip sorting on the client to retain sort done on server.
     if (!queryInfo.getColumn(displayColumn)?.hasSortKey) {

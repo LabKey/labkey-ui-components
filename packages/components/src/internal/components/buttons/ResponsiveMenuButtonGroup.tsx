@@ -1,7 +1,7 @@
 import React, { ReactElement, FC, memo, useState, useEffect, useCallback, useRef, Fragment, useMemo } from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { hasPermissions, User } from '../base/models/User';
+import { DropdownButton, MenuDivider } from '../../dropdowns';
 
 interface ResponsiveMenuItem {
     button: ReactElement;
@@ -15,7 +15,7 @@ interface Props {
 
 // The known size of the More dropdown. Ideally we'd calculate this, but we need to know it before we inject it, so
 // this was calculated by inspecting the DOM in FireFox.
-const MORE_SIZE = 70;
+const MORE_SIZE = 68;
 
 export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
     const { items, user } = props;
@@ -128,9 +128,6 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
 
     if (buttons.length === 0) return null;
 
-    // TODO: We're explicitly not converting this to use our internal DropdownButton at this time, because the
-    //  collapsedItems rendered are all ResponsiveMenuButton components, which render a SubMenuItem when collapsed, and
-    //  it would be too disruptive to update SubMenuItem (and SubMenu) at this time.
     return (
         <span className="responsive-menu-button-group" ref={elRef}>
             {renderedItems.length > 0 &&
@@ -142,12 +139,12 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
                     <Fragment key={idx}>{button}</Fragment>
                 ))}
             {collapsedItems.length > 0 && (
-                <DropdownButton id="responsive-menu-button-group" title="More" className="responsive-menu">
+                <DropdownButton className="responsive-menu-button-group responsive-menu" title="More">
                     {collapsedItems.map((item, index) => {
                         return (
                             <Fragment key={index}>
                                 {React.cloneElement(item, { asSubMenu: true })}
-                                {index < collapsedItems.length - 1 && <MenuItem divider />}
+                                {index < collapsedItems.length - 1 && <MenuDivider />}
                             </Fragment>
                         );
                     })}

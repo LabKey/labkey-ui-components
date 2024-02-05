@@ -15,7 +15,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - add className prop
 - Remove SubMenu
 - Remove SubMenuItem
-- getMenuItemsForSection (unused)
+- Remove getMenuItemsForSection (unused)
 
 ### version 3.18.1
 *Released*: 9 February 2024

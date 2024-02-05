@@ -553,3 +553,16 @@ td > .expired-form-field {
         padding: 8px;
     }
 }
+
+// Issue 49589, 49533 - Chrome 121 scroll-margin behavior is broken
+// This is likely to be fixed in Chrome 123: https://issues.chromium.org/issues/41497496
+.app-body,
+.app-body.with-sub-nav {
+    & .table-responsive {
+        scroll-margin: 0;
+    }
+
+    & .cellular-display {
+        scroll-margin: 0;
+    }
+}

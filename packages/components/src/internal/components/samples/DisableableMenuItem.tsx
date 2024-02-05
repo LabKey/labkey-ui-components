@@ -7,9 +7,9 @@ import { MenuItem } from '../../dropdowns';
 import { Popover } from '../../Popover';
 import { Placement } from '../../useOverlayPositioning';
 
-interface Props {
+export interface DisableableMenuItemProps {
     className?: string;
-    disabled: boolean;
+    disabled?: boolean;
     disabledMessage?: ReactNode;
     href?: string;
     onClick?: () => void;
@@ -18,12 +18,12 @@ interface Props {
 
 const SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE = 'The current status of the sample does not permit this operation.';
 
-export const DisableableMenuItem: FC<Props> = memo(props => {
+export const DisableableMenuItem: FC<DisableableMenuItemProps> = memo(props => {
     const {
         children,
         className,
         disabledMessage = SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE,
-        disabled,
+        disabled = false,
         onClick,
         placement = 'left',
     } = props;
@@ -33,7 +33,7 @@ export const DisableableMenuItem: FC<Props> = memo(props => {
         false
     );
 
-    if (disabled) {
+    if (!disabled) {
         return (
             <MenuItem className={className} onClick={onClick}>
                 {children}

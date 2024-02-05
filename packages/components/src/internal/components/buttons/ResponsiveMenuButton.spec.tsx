@@ -16,7 +16,7 @@ import { ResponsiveMenuButton } from './ResponsiveMenuButton';
 describe('ResponsiveMenuButton', () => {
     const items = <PicklistButton model={makeTestQueryModel(new SchemaQuery('s', 'q'))} user={TEST_USER_READER} />;
     const DEFAULT_PROPS = {
-        id: 'test-id',
+        className: 'test-className',
         items,
         text: 'Test Menu',
     };

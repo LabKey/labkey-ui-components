@@ -41,7 +41,7 @@ export type BSStyle = 'success' | 'danger' | 'default' | 'primary';
  * new behavior is, so this may stop working when we upgrade react:
  *      https://github.com/facebook/react/issues/4335#issuecomment-671487964
  */
-function preventDocumentHandler(event: SyntheticEvent): void {
+export function preventDocumentHandler(event: SyntheticEvent): void {
     // Note: nativeEvent is always available, except when running tests
     event.nativeEvent?.stopImmediatePropagation?.();
 }
@@ -281,7 +281,7 @@ interface MenuHeaderProps {
  * See docs in docs/dropdowns.md
  */
 export const MenuHeader: FC<MenuHeaderProps> = ({ className, text }) => (
-    <li className={classNames('dropdown-header', className)} role="heading" onClick={preventDocumentHandler}>
+    <li className={classNames('lk-dropdown-header', 'dropdown-header', className)} role="heading" onClick={preventDocumentHandler}>
         {text}
     </li>
 );
@@ -294,7 +294,7 @@ export const MenuDivider = (): ReactElement => (
     <li className="divider" role="separator" onClick={preventDocumentHandler} />
 );
 
-interface MenuItemProps {
+export interface MenuItemProps {
     active?: boolean;
     children: ReactNode;
     className?: string;

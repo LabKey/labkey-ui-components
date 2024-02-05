@@ -287,10 +287,18 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
     getUserProperties = getUserProperties;
 
     getUserPropertiesForOther = async (userId: number): Promise<Record<string, any>> => {
-        const response = await selectRows({
+        let response = await selectRows({
             filterArray: [Filter.create('UserId', userId)],
             schemaQuery: SCHEMAS.CORE_TABLES.USERS,
         });
+
+        // Issue 49440: User may not be in the core.Users table (if permission was removed), so check the core.SiteUsers table as well
+        if (response.rows.length === 0) {
+            response = await selectRows({
+                filterArray: [Filter.create('UserId', userId)],
+                schemaQuery: new SchemaQuery('core', 'SiteUsers'),
+            });
+        }
 
         if (response.rows.length === 0) {
             return {};

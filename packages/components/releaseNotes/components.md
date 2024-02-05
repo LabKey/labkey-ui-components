@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 49560: User permissionsList to default to undefined instead of empty array
 
+### version 3.16.0
+*Released*: 2 February 2024
+- Issue 49440: User may not be in the core.Users table (if permission was removed), so check the core.SiteUsers table as well
+
 ### version 3.15.0
 *Released*: 31 January 2024
 - Support Date-only or Time-only fields

@@ -16,6 +16,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Remove SubMenu
 - Remove SubMenuItem
 - Remove getMenuItemsForSection (unused)
+- Remove getMenuItemForSectionKey (unused)
 
 ### version 3.18.1
 *Released*: 9 February 2024

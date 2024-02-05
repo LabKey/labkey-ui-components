@@ -99,8 +99,6 @@ import { LockIcon } from './internal/components/base/LockIcon';
 import { ExpandableFilterToggle } from './internal/components/base/ExpandableFilterToggle';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
-import { SubMenu } from './internal/components/menus/SubMenu';
-import { SubMenuItem } from './internal/components/menus/SubMenuItem';
 import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem';
 import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
@@ -168,7 +166,6 @@ import { ToggleButtons, ToggleIcon } from './internal/components/buttons/ToggleB
 import { DisableableButton } from './internal/components/buttons/DisableableButton';
 import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMenuButton';
 import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
-import { getMenuItemForSectionKey } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
 import { Setting } from './internal/components/base/Setting';
 import { ValueList } from './internal/components/base/ValueList';
@@ -1515,8 +1512,6 @@ export {
     parseCsvString,
     quoteValueWithDelimiters,
     // buttons and menus
-    SubMenu,
-    SubMenuItem,
     SelectionMenuItem,
     ManageDropdownButton,
     PaginationButtons,
@@ -1525,7 +1520,6 @@ export {
     DisableableButton,
     ResponsiveMenuButton,
     ResponsiveMenuButtonGroup,
-    getMenuItemForSectionKey,
     // application page related items
     LoadingPage,
     NotFound,
@@ -1713,9 +1707,7 @@ export type { InjectedRouteLeaveProps, WrappedRouteLeaveProps } from './internal
 export type { PageHeaderProps } from './internal/components/base/PageHeader';
 export type { PageProps } from './internal/components/base/Page';
 export type { LoadingPageProps } from './internal/components/base/LoadingPage';
-export type { ISubItem, SubMenuItemProps } from './internal/components/menus/SubMenuItem';
 export type { PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
-export type { MenuOption } from './internal/components/menus/SubMenu';
 export type { FileAttachmentFormModel, IFile } from './internal/components/files/models';
 export type {
     IAppDomainHeader,

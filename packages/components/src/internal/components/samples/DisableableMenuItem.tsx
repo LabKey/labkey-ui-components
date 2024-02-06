@@ -42,7 +42,7 @@ export const DisableableMenuItem: FC<DisableableMenuItemProps> = memo(props => {
     }
 
     const overlay = (
-        <Popover id="disable-operation-warning" className="popover-message" placement={placement} targetRef={targetRef}>
+        <Popover id="disable-operation-warning" className="disabled-menu-item-popover" placement={placement} targetRef={targetRef}>
             {disabledMessage}
         </Popover>
     );

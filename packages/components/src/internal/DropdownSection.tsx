@@ -3,6 +3,7 @@ import React, { FC, useCallback, useMemo, useState } from 'react';
 
 import { MenuDivider, MenuItem, preventDocumentHandler } from './dropdowns';
 import { DisableableMenuItem, DisableableMenuItemProps } from './components/samples/DisableableMenuItem';
+import classNames from 'classnames';
 
 const SHOW_FILTER_CUTOFF = 10;
 
@@ -61,7 +62,7 @@ export const DropdownSection: FC<MenuSectionProps> = ({ items, showDivider = fal
 
             {expanded &&
                 menuItems.map(({ text: menuItemText, ...props }) => (
-                    <DisableableMenuItem key={menuItemText} {...props}>
+                    <DisableableMenuItem key={menuItemText} {...props} className={classNames('dropdown-section__menu-item', props.className)}>
                         {menuItemText}
                     </DisableableMenuItem>
                 ))}

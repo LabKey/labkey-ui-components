@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react';
+import React, { FC, memo, PureComponent } from 'react';
 import { List } from 'immutable';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
-
 import classNames from 'classnames';
+import { Filter, Query } from '@labkey/api';
 
 import { getFormNameFromId } from '../entities/actions';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
@@ -25,14 +25,11 @@ import { HelpTopicURL } from '../HelpTopicURL';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { SectionHeading } from '../SectionHeading';
 
-import { getValidPublishTargets } from '../assay/actions';
 import { ENTITY_FORM_IDS } from '../entities/constants';
 
 import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { getCurrentProductName, isCommunityDistribution, isSampleManagerEnabled } from '../../../app/utils';
-
-import { loadNameExpressionOptions } from '../../settings/actions';
 
 import { PREFIX_SUBSTITUTION_EXPRESSION, PROPERTIES_PANEL_NAMING_PATTERN_WARNING_MSG } from '../constants';
 
@@ -49,6 +46,8 @@ import { SelectInput, SelectInputOption } from '../../forms/input/SelectInput';
 
 import { dataClassOptionFilterFn, DomainParentAliases } from '../DomainParentAliases';
 
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper';
+
 import { UniqueIdBanner } from './UniqueIdBanner';
 import { AliquotNamePatternProps, DEFAULT_ALIQUOT_NAMING_PATTERN, MetricUnitProps, SampleTypeModel } from './models';
 
@@ -56,9 +55,60 @@ const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 const ALIQUOT_HELP_LINK = getHelpLink('aliquotIDs');
 const ALIQUOT_NAME_PLACEHOLDER = 'Enter a naming pattern for aliquots (e.g., ' + DEFAULT_ALIQUOT_NAMING_PATTERN + ')';
 
+const AddEntityHelpTip: FC<{ parentageLabel?: string }> = memo(({ parentageLabel }) => {
+    const msg = parentageLabel
+        ? PARENT_ALIAS_HELPER_TEXT.replace(/parent(age)?/g, parentageLabel)
+        : PARENT_ALIAS_HELPER_TEXT;
+    return (
+        <>
+            <p>{msg}</p>
+            <p>
+                <HelpLink topic={DERIVE_SAMPLES_ALIAS_TOPIC}>More info</HelpLink>
+            </p>
+        </>
+    );
+});
+
+const AutoLinkDataToStudyHelpTip: FC = () => (
+    <>
+        <p>
+            Automatically link Sample Type data rows to the specified target study. Only rows that include subject and
+            visit/date information will be linked.
+        </p>
+        <p>
+            The user performing the import must have insert permission in the target study and the corresponding
+            dataset.
+        </p>
+    </>
+);
+
+const LinkedDatasetCategoryHelpTip: FC = () => (
+    <>
+        <p>
+            Specify the desired category for the Sample Type Dataset that will be created (or appended to) in the target
+            study when rows are linked. If the category you specify does not exist, it will be created.
+        </p>
+        <p>
+            If the Sample Type Dataset already exists, this setting will not overwrite a previously assigned category.
+            Leave blank to use the default category of "Uncategorized".
+        </p>
+    </>
+);
+
+const UniqueIdHelpTip: FC = () => (
+    <>
+        <p>Use a Unique ID field to represent barcodes or other ID fields in use in your lab.</p>
+        <p>
+            Learn more about using <HelpLink topic={UNIQUE_IDS_TOPIC}>barcodes and unique IDs</HelpLink> in{' '}
+            {getCurrentProductName()}.
+        </p>
+    </>
+);
+
 // Splitting these out to clarify where they end-up
 interface OwnProps {
     aliquotNamePatternProps?: AliquotNamePatternProps;
+    api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     dataClassAliasCaption?: string;
     dataClassParentageLabel?: string;
@@ -73,7 +123,7 @@ interface OwnProps {
     namePreviewsLoading?: boolean;
     onAddParentAlias: (id: string, newAlias: IParentAlias) => void;
     onAddUniqueIdField: (fieldConfig: Partial<IDomainField>) => void;
-    onNameFieldHover?: () => any;
+    onNameFieldHover?: () => void;
     onParentAliasChange: (id: string, field: string, newValue: any) => void;
     onRemoveParentAlias: (id: string) => void;
     parentAliasHelpText?: string;
@@ -99,15 +149,14 @@ interface State {
     isValid: boolean;
     loadingError: string;
     prefix: string;
+    sampleTypeCategory: string;
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
 
-class SampleTypePropertiesPanelImpl extends React.PureComponent<
-    Props & InjectedDomainPropertiesPanelCollapseProps,
-    State
-> {
+class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomainPropertiesPanelCollapseProps, State> {
     static defaultProps = {
+        api: getDefaultAPIWrapper(),
         nounSingular: SAMPLE_SET_DISPLAY_TEXT,
         nounPlural: SAMPLE_SET_DISPLAY_TEXT + 's',
         nameExpressionInfoUrl: getHelpLink('sampleIDs'),
@@ -128,31 +177,39 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         parentAliasHelpText: PARENT_ALIAS_HELPER_TEXT,
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isValid: true,
-            containers: undefined,
-            prefix: undefined,
-            loadingError: undefined,
-        };
-    }
+    state: Readonly<State> = {
+        containers: undefined,
+        isValid: true,
+        loadingError: undefined,
+        prefix: undefined,
+        sampleTypeCategory: undefined,
+    };
 
     componentDidMount = async (): Promise<void> => {
-        const { model } = this.props;
+        const { api, model } = this.props;
 
         try {
-            const containers = await getValidPublishTargets(model.containerPath);
-            this.setState({ containers });
+            const result = await api.query.selectRows({
+                columns: ['Category'],
+                containerFilter: Query.ContainerFilter.currentPlusProjectAndShared,
+                filterArray: [Filter.create('RowId', model.rowId)],
+                schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+            });
+            this.setState({ sampleTypeCategory: result.rows[0]?.Category.value });
         } catch (e) {
-            console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
+            this.setState({ loadingError: 'There was a problem retrieving the Sample Type category.' });
+        }
+
+        try {
+            const containers = await api.domain.getValidPublishTargets(model.containerPath);
+            this.setState({ containers: List(containers) });
+        } catch (e) {
             this.setState({ containers: List() });
         }
 
         if (isSampleManagerEnabled()) {
             try {
-                const response = await loadNameExpressionOptions(model.containerPath);
+                const response = await api.entity.loadNameExpressionOptions(model.containerPath);
                 this.setState({ prefix: response.prefix ?? null });
             } catch (error) {
                 this.setState({ loadingError: 'There was a problem retrieving the Naming Pattern prefix.' });
@@ -185,40 +242,16 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
     };
 
     onFieldChange = (key: string, value: any): void => {
-        const { model } = this.props;
-        const newModel = model.set(key, value) as SampleTypeModel;
-        this.updateValidStatus(newModel);
+        this.updateValidStatus(this.props.model.set(key, value) as SampleTypeModel);
     };
 
-    renderAddEntityHelper = (parentageLabel?: string): any => {
-        const msg = parentageLabel
-            ? PARENT_ALIAS_HELPER_TEXT.replace(/parent(age)?/g, parentageLabel)
-            : PARENT_ALIAS_HELPER_TEXT;
-        return (
-            <>
-                <p>{msg}</p>
-                <p>
-                    <HelpLink topic={DERIVE_SAMPLES_ALIAS_TOPIC}>More info</HelpLink>
-                </p>
-            </>
-        );
+    onNameFieldHover = (): void => {
+        this.props.onNameFieldHover?.();
     };
 
     containsDataClassOptions(): boolean {
         return this.props.parentOptions?.filter(dataClassOptionFilterFn).length > 0;
     }
-
-    renderUniqueIdHelpText = (): ReactNode => {
-        return (
-            <>
-                <p>Use a Unique ID field to represent barcodes or other ID fields in use in your lab.</p>
-                <p>
-                    Learn more about using <HelpLink topic={UNIQUE_IDS_TOPIC}>barcodes and unique IDs</HelpLink> in{' '}
-                    {getCurrentProductName()}.
-                </p>
-            </>
-        );
-    };
 
     render() {
         const {
@@ -240,26 +273,28 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             metricUnitProps,
             namePreviews,
             namePreviewsLoading,
-            onNameFieldHover,
             nameExpressionGenIdProps,
         } = this.props;
-        const { isValid, containers, prefix, loadingError } = this.state;
+        const { isValid, containers, prefix, loadingError, sampleTypeCategory } = this.state;
 
         const showAliquotNameExpression = aliquotNamePatternProps?.showAliquotNameExpression;
         const aliquotNameExpressionInfoUrl = aliquotNamePatternProps?.aliquotNameExpressionInfoUrl;
         const aliquotNameExpressionPlaceholder = aliquotNamePatternProps?.aliquotNameExpressionPlaceholder;
 
-        const includeMetricUnitProperty = metricUnitProps?.includeMetricUnitProperty,
-            metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit',
-            metricUnitHelpMsg =
-                metricUnitProps?.metricUnitHelpMsg || 'The unit of measurement used for the sample type.',
-            metricUnitOptions = metricUnitProps?.metricUnitOptions,
-            metricUnitRequired = metricUnitProps?.metricUnitRequired;
+        const includeMetricUnitProperty = metricUnitProps?.includeMetricUnitProperty;
+        const metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit';
+        const metricUnitHelpMsg =
+            metricUnitProps?.metricUnitHelpMsg || 'The unit of measurement used for the sample type.';
+        const metricUnitRequired = !!metricUnitProps?.metricUnitRequired;
         const allowTimepointProperties = model.domain.get('allowTimepointProperties');
 
+        // Issue 48776: Suppress import parent aliasing for media Mixture Batches
+        const showAddParentAlias =
+            !!parentOptions &&
+            (model.name !== SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName || sampleTypeCategory !== 'media');
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
 
-        let warning;
+        let warning: string;
         if (
             prefix &&
             !model.isNew() &&
@@ -277,32 +312,6 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         } else if (loadingError !== undefined) {
             warning = loadingError;
         }
-
-        const autoLinkDataToStudyHelpTip = (
-            <>
-                <p>
-                    Automatically link Sample Type data rows to the specified target study. Only rows that include
-                    subject and visit/date information will be linked.
-                </p>
-                <p>
-                    The user performing the import must have insert permission in the target study and the corresponding
-                    dataset.
-                </p>
-            </>
-        );
-        const linkedDatasetCategoryHelpTip = (
-            <>
-                <p>
-                    Specify the desired category for the Sample Type Dataset that will be created (or appended to) in
-                    the target study when rows are linked. If the category you specify does not exist, it will be
-                    created.
-                </p>
-                <p>
-                    If the Sample Type Dataset already exists, this setting will not overwrite a previously assigned
-                    category. Leave blank to use the default category of "Uncategorized".
-                </p>
-            </>
-        );
 
         return (
             <BasePropertiesPanel
@@ -333,7 +342,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     nameExpressionPlaceholder={nameExpressionPlaceholder}
                     warning={warning}
                     showPreviewName={!!model.nameExpression}
-                    onNameFieldHover={onNameFieldHover}
+                    onNameFieldHover={this.onNameFieldHover}
                     namePreviewsLoading={namePreviewsLoading}
                     previewName={namePreviews?.[0]}
                     nameExpressionGenIdProps={nameExpressionGenIdProps}
@@ -341,7 +350,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 {showAliquotNameExpression && (
                     <Row className="margin-bottom">
                         <Col xs={2}>
-                            <div onMouseEnter={() => onNameFieldHover()}>
+                            <div onMouseEnter={this.onNameFieldHover}>
                                 <DomainFieldLabel
                                     label="Aliquot Naming Pattern"
                                     helpTipBody={
@@ -396,10 +405,10 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     parentAliases={model.parentAliases}
                     idPrefix="sampletype-parent-import-alias-"
                     schema={SCHEMAS.SAMPLE_SETS.SCHEMA}
-                    addEntityHelp={this.renderAddEntityHelper()}
-                    includeSampleSet={true}
+                    addEntityHelp={<AddEntityHelpTip />}
+                    includeSampleSet
                     includeDataClass={includeDataClasses && !useSeparateDataClassesAliasMenu}
-                    showAddBtn={!!parentOptions}
+                    showAddBtn={showAddParentAlias}
                 />
                 {showDataClass && (
                     <DomainParentAliases
@@ -407,10 +416,10 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         parentAliases={model.parentAliases}
                         idPrefix="sampletype-parent-import-alias-"
                         schema={SCHEMAS.DATA_CLASSES.SCHEMA}
-                        addEntityHelp={this.renderAddEntityHelper(dataClassParentageLabel)}
+                        addEntityHelp={<AddEntityHelpTip parentageLabel={dataClassParentageLabel} />}
                         includeSampleSet={false}
-                        includeDataClass={true}
-                        showAddBtn={true}
+                        includeDataClass
+                        showAddBtn
                     />
                 )}
                 {allowTimepointProperties && showLinkToStudy && (
@@ -419,7 +428,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                             <Col xs={2}>
                                 <DomainFieldLabel
                                     label="Auto-Link Data to Study"
-                                    helpTipBody={autoLinkDataToStudyHelpTip}
+                                    helpTipBody={<AutoLinkDataToStudyHelpTip />}
                                 />
                             </Col>
                             <Col xs={5}>
@@ -435,7 +444,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                             <Col xs={2}>
                                 <DomainFieldLabel
                                     label="Linked Dataset Category"
-                                    helpTipBody={linkedDatasetCategoryHelpTip}
+                                    helpTipBody={<LinkedDatasetCategoryHelpTip />}
                                 />
                             </Col>
 
@@ -468,7 +477,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                     name="labelColor"
                                     value={model.labelColor}
                                     onChange={this.onFieldChange}
-                                    allowRemove={true}
+                                    allowRemove
                                 />
                             </Col>
                         </Row>
@@ -482,12 +491,12 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                     />
                                 </Col>
                                 <Col xs={3}>
-                                    {metricUnitOptions ? (
+                                    {metricUnitProps?.metricUnitOptions ? (
                                         <SelectInput
                                             containerClass="sampleset-metric-unit-select-container"
                                             inputClass="sampleset-metric-unit-select"
                                             name="metricUnit"
-                                            options={metricUnitOptions}
+                                            options={metricUnitProps.metricUnitOptions}
                                             required={metricUnitRequired}
                                             clearable={!metricUnitRequired}
                                             onChange={(name, formValue, option: SelectInputOption) => {
@@ -519,7 +528,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 {!isCommunityDistribution() && (
                     <Row className="margin-top">
                         <Col xs={2}>
-                            <DomainFieldLabel label="Barcodes" helpTipBody={this.renderUniqueIdHelpText()} />
+                            <DomainFieldLabel label="Barcodes" helpTipBody={<UniqueIdHelpTip />} />
                         </Col>
                         <Col xs={10}>
                             <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField} />

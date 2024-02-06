@@ -15,9 +15,11 @@ import {
     saveDomain,
     SaveDomainOptions,
 } from './actions';
+import { getValidPublishTargets } from './assay/actions';
 import { PHILEVEL_FULL_PHI } from './constants';
 import { getDataClassDetails } from './dataclasses/actions';
 import { DomainDesign, DomainDetails, NameExpressionsValidationResults } from './models';
+import { Container } from '../base/models/Container';
 
 export interface DomainPropertiesAPIWrapper {
     fetchDomainDetails: (options: FetchDomainDetailsOptions) => Promise<DomainDetails>;
@@ -26,6 +28,7 @@ export interface DomainPropertiesAPIWrapper {
     getDomainNamePreviews: (schemaQuery?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<string[]>;
     getGenId: (rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string) => Promise<number>;
     getMaxPhiLevel: (containerPath?: string) => Promise<string>;
+    getValidPublishTargets: (containerPath?: string) => Promise<Container[]>;
     hasExistingDomainData: (
         kindName: 'SampleSet' | 'DataClass',
         dataTypeLSID?: string,
@@ -54,6 +57,7 @@ export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {
     getDomainNamePreviews = getDomainNamePreviews;
     getGenId = getGenId;
     getMaxPhiLevel = getMaxPhiLevel;
+    getValidPublishTargets = getValidPublishTargets;
     hasExistingDomainData = hasExistingDomainData;
     saveDomain = saveDomain;
     setGenId = setGenId;
@@ -77,6 +81,7 @@ export function getDomainPropertiesTestAPIWrapper(
         // like we should be able to, because the default implementation for our mockFn cannot be Jest. We should
         // probably make Jest an explicit dependency since we are actually exporting test utilities.
         getMaxPhiLevel: () => Promise.resolve(PHILEVEL_FULL_PHI),
+        getValidPublishTargets: mockFn(),
         hasExistingDomainData: mockFn(),
         saveDomain: mockFn(),
         setGenId: mockFn(),

@@ -13,26 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable';
-import { Ajax, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { SEVERITY_LEVEL_ERROR } from '../constants';
 import { DomainException } from '../models';
 
 import { setDomainException } from '../actions';
 
-import { buildURL } from '../../../url/AppURL';
 import { Container } from '../../base/models/Container';
 import { isAssayEnabled } from '../../../app/utils';
 
 import { AssayProtocolModel } from './models';
+import { handleRequestFailure } from '../../../util/utils';
 
 export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('assay', 'saveProtocol.api', undefined, {
-                container: model.container,
-            }),
+            url: ActionURL.buildURL('assay', 'saveProtocol.api', model.container),
             jsonData: AssayProtocolModel.serialize(model),
             success: Utils.getCallbackWrapper(response => {
                 resolve(AssayProtocolModel.create(response.data));
@@ -64,7 +61,7 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
 }
 
 function setAssayDomainException(model: AssayProtocolModel, exception: DomainException): AssayProtocolModel {
-    let updatedModel;
+    let updatedModel: AssayProtocolModel;
 
     // If a domain is identified in the exception, attach to that domain
     if (exception.domainName) {
@@ -86,21 +83,17 @@ function setAssayDomainException(model: AssayProtocolModel, exception: DomainExc
     return updatedModel;
 }
 
-export function getValidPublishTargets(containerPath?: string): Promise<List<Container>> {
+export function getValidPublishTargets(containerPath?: string): Promise<Container[]> {
     if (!isAssayEnabled()) {
-        return Promise.resolve(List<Container>());
+        return Promise.resolve([]);
     }
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('assay', 'getValidPublishTargets.api', undefined, {
-                container: containerPath,
-            }),
+            url: ActionURL.buildURL('assay', 'getValidPublishTargets.api', containerPath),
             success: Utils.getCallbackWrapper(response => {
-                resolve(List<Container>(response.containers.map(container => new Container(container))));
+                resolve(response.containers.map(c => new Container(c)));
             }),
-            failure: Utils.getCallbackWrapper(error => {
-                reject(error);
-            }),
+            failure: handleRequestFailure(reject, 'Unable to load valid study targets for Auto-Link Data to Study input.'),
         });
     });
 }
@@ -108,17 +101,12 @@ export function getValidPublishTargets(containerPath?: string): Promise<List<Con
 export function getScriptEngineForExtension(extension: string, containerPath?: string): Promise<Record<string, any>> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('core', 'getScriptEngineForExtension.api', undefined, {
-                container: containerPath,
-            }),
+            url: ActionURL.buildURL('core', 'getScriptEngineForExtension.api', containerPath),
             params: { extension },
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
-            failure: Utils.getCallbackWrapper(error => {
-                console.error(error);
-                reject(error);
-            }),
+            failure: handleRequestFailure(reject, `Failed to get script engine for extension "${extension}".`),
         });
     });
 }

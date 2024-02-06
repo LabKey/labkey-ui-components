@@ -13,22 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, memo } from 'react';
 
 import { ActionButton, ActionButtonProps } from './ActionButton';
 
 export interface AddEntityButtonProps extends ActionButtonProps {
-    entity?: string;
+    entity: string;
 }
 
-export class AddEntityButton extends React.PureComponent<AddEntityButtonProps> {
-    render() {
-        const { entity, ...rest } = this.props;
+export const AddEntityButton: FC<AddEntityButtonProps> = memo(({ entity, ...actionButtonProps}) => {
+    return (
+        <ActionButton {...actionButtonProps}>
+            <i className="fa fa-plus-circle container--addition-icon" /> Add {entity}
+        </ActionButton>
+    );
+});
 
-        return (
-            <ActionButton {...rest}>
-                <i className="fa fa-plus-circle container--addition-icon" /> Add {entity}
-            </ActionButton>
-        );
-    }
-}
+AddEntityButton.displayName = 'AddEntityButton';

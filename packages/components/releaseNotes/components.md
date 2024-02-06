@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.15.2
+*Released*: 6 February 2024
+- Merge release23.11-SNAPSHOT to release24.2-SNAPSHOT:
+  - includes changes from 2.390.6
+
 ### version 3.15.1
 *Released*: 2 February 2024
 - Issue 49502: StoredAmount and Units for samples editable grid to use display values instead of raw values

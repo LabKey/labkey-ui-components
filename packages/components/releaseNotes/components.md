@@ -363,6 +363,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 48828: Don't show sample insights panel while editing in the grid
   -  add `onEditToggle` optional prop for `SampleTabbedGridPanel`
 
+### version 2.390.6
+*Released*: 5 February 2023
+* Issue 49589: LKSM/LKB: More jumping behavior on Chrome & not Firefox
+
 ### version 2.390.5
 *Released*: 27 November 2023
 * Issue 49155: Get proper raw value for measurement units in grid

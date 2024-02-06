@@ -40,8 +40,8 @@ export const DropdownSection: FC<MenuSectionProps> = ({ items, showDivider = fal
     return (
         <>
             {toggleText && (
-                <li className="dropdown-section-toggle">
-                    <a href="#" onClick={onHeaderClick}>
+                <li className="dropdown-section-toggle" role="presentation">
+                    <a href="#" onClick={onHeaderClick} role="menuitem">
                         <span className="dropdown-section-toggle__text">{toggleText}</span>
                         <span className={`fa fa-chevron-${expanded ? 'up' : 'down'}`} />
                     </a>

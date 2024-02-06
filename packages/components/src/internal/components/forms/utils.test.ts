@@ -35,7 +35,7 @@ describe('resolveDetailFieldValue', () => {
         expect(
             resolveDetailFieldValue(
                 fromJS({ value: 'test1', displayValue: undefined, formattedValue: 'Formatted Test 1' }),
-                true,
+                true
             )
         ).toBe(undefined);
         expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), true)).toBe('test1');

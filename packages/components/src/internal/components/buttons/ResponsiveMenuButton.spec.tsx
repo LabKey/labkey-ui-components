@@ -23,7 +23,7 @@ describe('ResponsiveMenuButton', () => {
             user: TEST_USER_READER,
         });
         expect(wrapper.find('DropdownButton')).toHaveLength(1);
-        expect(wrapper.find('MenuItem')).toHaveLength(0);
+        expect(wrapper.find('MenuHeader')).toHaveLength(0);
         expect(wrapper.find(PicklistButton)).toHaveLength(1);
         wrapper.unmount();
     });
@@ -33,7 +33,7 @@ describe('ResponsiveMenuButton', () => {
             user: TEST_USER_READER,
         });
         expect(wrapper.find('DropdownButton')).toHaveLength(0);
-        expect(wrapper.find('MenuItem')).toHaveLength(1);
+        expect(wrapper.find('MenuHeader')).toHaveLength(1);
         expect(wrapper.find(PicklistButton)).toHaveLength(1);
         wrapper.unmount();
     });

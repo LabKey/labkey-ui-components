@@ -40,7 +40,7 @@ describe('DisableableMenuItem', () => {
 
     test('disabled', () => {
         const wrapper = mount(
-            <DisableableMenuItem disabled={false} onClick={jest.fn()}>
+            <DisableableMenuItem disabled={true} onClick={jest.fn()}>
                 <div>Other test</div>
             </DisableableMenuItem>
         );
@@ -51,7 +51,7 @@ describe('DisableableMenuItem', () => {
         const content = 'Other test';
         const onClick = jest.fn();
         const wrapper = mount(
-            <DisableableMenuItem onClick={onClick} disabled={false} placement="right">
+            <DisableableMenuItem onClick={onClick} disabled={true} placement="right">
                 {content}
             </DisableableMenuItem>
         );

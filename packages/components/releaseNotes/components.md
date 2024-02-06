@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Plate Set assay import
+  - AssayImportPanels to use plateSet id in URL and to show Plate Set select instead of Plate select in input form
+
 ### version 3.16.0
 *Released*: 2 February 2024
 - Issue 49440: User may not be in the core.Users table (if permission was removed), so check the core.SiteUsers table as well

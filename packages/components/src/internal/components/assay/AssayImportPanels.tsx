@@ -47,10 +47,7 @@ import { AssayProtocolModel } from '../domainproperties/assay/models';
 import { EditorModel } from '../editable/models';
 import { getSampleOperationConfirmationData } from '../entities/actions';
 import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
-import {
-    NotificationsContextProps,
-    useNotificationsContext,
-} from '../notifications/NotificationsContext';
+import { NotificationsContextProps, useNotificationsContext } from '../notifications/NotificationsContext';
 
 import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
@@ -79,7 +76,7 @@ import {
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { AssayWizardModel, AssayUploadOptions } from './AssayWizardModel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
-import { PLATE_TEMPLATE_COLUMN, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
+import { PLATE_SET_COLUMN, PLATE_TEMPLATE_COLUMN, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 
 import { AssayUploadResultModel } from './models';
@@ -254,8 +251,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const { plateColumns, runColumns } = this.getRunColumns(runQueryInfo);
 
         if (this.plateSupportEnabled) {
-            if (searchParams.get('plateLsid')) {
-                plateProperties = plateProperties.set(PLATE_TEMPLATE_COLUMN, searchParams.get('plateLsid'));
+            if (searchParams.get('plateSet')) {
+                plateProperties = plateProperties.set(PLATE_SET_COLUMN, searchParams.get('plateSet'));
             }
         }
 
@@ -302,12 +299,12 @@ class AssayImportPanelsBody extends Component<Props, State> {
         if (this.plateSupportEnabled) {
             const plateTemplateFieldKey = PLATE_TEMPLATE_COLUMN.toLowerCase();
             if (runColumns.has(plateTemplateFieldKey)) {
-                const column = runColumns.get(plateTemplateFieldKey);
-                column.caption = 'Plate';
-                column.shortCaption = 'Short Plate';
-                column.description = 'Select a plate.';
-                plateColumns = plateColumns.set(plateTemplateFieldKey, runColumns.get(plateTemplateFieldKey));
                 runColumns = runColumns.remove(plateTemplateFieldKey);
+            }
+            const plateSetFieldKey = PLATE_SET_COLUMN.toLowerCase();
+            if (runColumns.has(plateSetFieldKey)) {
+                plateColumns = plateColumns.set(plateSetFieldKey, runColumns.get(plateSetFieldKey));
+                runColumns = runColumns.remove(plateSetFieldKey);
             }
         }
 

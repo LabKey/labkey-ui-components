@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.17.0
+*Released*: 6 February 2024
+- Issue 45256: Support "formattedValue" for display
+- Switch arguments to `resolveDetailFieldValue` to optionally resolve `formattedValue` and `displayValue`.
+- Introduce `resolveDetailFieldLabel` to make it more clear what is being resolved when reading a usage.
+
 ### version 3.16.0
 *Released*: 2 February 2024
 - Issue 49440: User may not be in the core.Users table (if permission was removed), so check the core.SiteUsers table as well

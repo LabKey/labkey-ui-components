@@ -26,6 +26,7 @@ interface FieldValue {
 type FieldArray = FieldValue[];
 type FieldMap = Map<string, any>;
 type FieldList = List<FieldMap>;
+type Field = FieldList | FieldArray | FieldMap | FieldValue;
 
 const isFieldList = (value: any): value is FieldList => List.isList(value);
 
@@ -33,31 +34,42 @@ const isFieldArray = (value: any): value is FieldArray => Array.isArray(value);
 
 const isFieldMap = (value: any): value is FieldMap => Map.isMap(value);
 
-const resolveFieldValue = (data: FieldValue, lookup?: boolean, ignoreFormattedValue?: boolean): string => {
-    if (!ignoreFormattedValue && data.hasOwnProperty('formattedValue')) {
-        return data.formattedValue;
+const resolveFieldValue = (
+    fieldValue: FieldValue,
+    resolveDisplayValue?: boolean,
+    resolveFormattedValue?: boolean
+): string => {
+    if (resolveFormattedValue && fieldValue.hasOwnProperty('formattedValue')) {
+        return fieldValue.formattedValue;
     }
 
-    const o = lookup !== true && data.hasOwnProperty('displayValue') ? data.displayValue : data.value;
-    return o !== null && o !== undefined ? o : undefined;
+    if (resolveDisplayValue && fieldValue.hasOwnProperty('displayValue')) {
+        return fieldValue.displayValue;
+    }
+
+    return fieldValue.value === null ? undefined : fieldValue.value;
 };
 
 export function resolveDetailFieldValue(
-    data: FieldList | FieldArray | FieldMap | FieldValue,
-    lookup?: boolean,
-    ignoreFormattedValue?: boolean
+    field: Field,
+    resolveDisplayValue?: boolean,
+    resolveFormattedValue?: boolean
 ): string | string[] {
-    if (data) {
-        if (isFieldList(data) && data.size) {
-            return data.toJS().map(d => resolveFieldValue(d, lookup, ignoreFormattedValue));
-        } else if (isFieldArray(data) && data.length) {
-            return data.map(d => resolveFieldValue(d, lookup, ignoreFormattedValue));
-        } else if (isFieldMap(data)) {
-            return resolveFieldValue(data.toJS(), lookup, ignoreFormattedValue);
+    if (field) {
+        if (isFieldList(field) && field.size) {
+            return field.toJS().map(d => resolveFieldValue(d, resolveDisplayValue, resolveFormattedValue));
+        } else if (isFieldArray(field) && field.length) {
+            return field.map(d => resolveFieldValue(d, resolveDisplayValue, resolveFormattedValue));
+        } else if (isFieldMap(field)) {
+            return resolveFieldValue(field.toJS(), resolveDisplayValue, resolveFormattedValue);
         }
 
-        return resolveFieldValue(data as FieldValue, lookup, ignoreFormattedValue);
+        return resolveFieldValue(field as FieldValue, resolveDisplayValue, resolveFormattedValue);
     }
 
     return undefined;
+}
+
+export function resolveDetailFieldLabel(field: Field): string | string[] {
+    return resolveDetailFieldValue(field, true, true);
 }

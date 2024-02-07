@@ -26,53 +26,71 @@ describe('resolveDetailFieldValue', () => {
     });
 
     test('data value defined', () => {
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: undefined }))).toBe(undefined);
+        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: undefined }))).toBe('test1');
         expect(resolveDetailFieldValue(fromJS({ value: 'test1' }))).toBe('test1');
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: 'Test Display' }))).toBe('Test Display');
+        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: 'Test Display' }))).toBe('test1');
     });
 
-    test('lookup prop', () => {
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: undefined }), false)).toBe(undefined);
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), false)).toBe('test1');
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: 'Test Display' }), false)).toBe(
-            'Test Display'
-        );
-
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: undefined }), true)).toBe('test1');
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), true)).toBe('test1');
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1', displayValue: 'Test Display' }), true)).toBe('test1');
-    });
-
-    test('ignoreFormattedValue prop', () => {
+    test('resolveDisplayValue prop', () => {
         expect(
             resolveDetailFieldValue(
-                fromJS({ value: 'test1', displayValue: undefined, formattedValue: undefined }),
-                false,
-                false
+                fromJS({ value: 'test1', displayValue: undefined, formattedValue: 'Formatted Test 1' }),
+                true
             )
         ).toBe(undefined);
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), false, false)).toBe('test1');
+        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), true)).toBe('test1');
         expect(
             resolveDetailFieldValue(
                 fromJS({ value: 'test1', displayValue: 'Test Display', formattedValue: 'Test Formatted' }),
-                false,
+                true
+            )
+        ).toBe('Test Display');
+
+        expect(
+            resolveDetailFieldValue(
+                fromJS({ value: 'test1', displayValue: undefined, formattedValue: undefined }),
                 false
+            )
+        ).toBe('test1');
+        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), false)).toBe('test1');
+        expect(
+            resolveDetailFieldValue(
+                fromJS({ value: 'test1', displayValue: 'Test Display', formattedValue: 'Test Formatted' }),
+                false
+            )
+        ).toBe('test1');
+    });
+
+    test('resolveFormattedValue prop', () => {
+        expect(
+            resolveDetailFieldValue(
+                fromJS({ value: 'test1', displayValue: undefined, formattedValue: undefined }),
+                undefined,
+                true
+            )
+        ).toBe(undefined);
+        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), undefined, true)).toBe('test1');
+        expect(
+            resolveDetailFieldValue(
+                fromJS({ value: 'test1', displayValue: 'Test Display', formattedValue: 'Test Formatted' }),
+                undefined,
+                true
             )
         ).toBe('Test Formatted');
 
         expect(
             resolveDetailFieldValue(
                 fromJS({ value: 'test1', displayValue: undefined, formattedValue: undefined }),
-                true,
-                true
+                undefined,
+                false
             )
         ).toBe('test1');
-        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), true, true)).toBe('test1');
+        expect(resolveDetailFieldValue(fromJS({ value: 'test1' }), undefined, false)).toBe('test1');
         expect(
             resolveDetailFieldValue(
                 fromJS({ value: 'test1', displayValue: 'Test Display', formattedValue: 'Test Formatted' }),
-                true,
-                true
+                undefined,
+                false
             )
         ).toBe('test1');
     });

@@ -22,7 +22,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { resolveErrorMessage } from '../../util/messaging';
 
 import { SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
-import { resolveDetailFieldValue } from './utils';
+import { resolveDetailFieldLabel } from './utils';
 import { initSelect, QuerySelectModel } from './model';
 import { DELIMITER } from './constants';
 
@@ -79,7 +79,7 @@ const PreviewOption: FC<any> = props => {
             <>
                 {columns.map((column, i) => {
                     if (item !== undefined) {
-                        let text = resolveDetailFieldValue(item.get(column.name));
+                        let text = resolveDetailFieldLabel(item.get(column.name));
                         if (!Utils.isString(text)) {
                             text = text ? text.toString() : '';
                         }

@@ -28,6 +28,8 @@ import { SelectInputChange } from '../forms/input/SelectInput';
 import { TextChoiceInput } from '../forms/input/TextChoiceInput';
 import { QuerySelect } from '../forms/QuerySelect';
 
+import { getQueryColumnRenderers } from '../../global';
+
 import { MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { ValueDescriptor } from './models';
 
@@ -115,9 +117,13 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         }
 
         let selectValue = isMultiple ? rawValues : rawValues[0];
-        // Issue 49502: If the lookup is a measurement unit, then we need to use the unit's display value
-        if (col.isUnitsLookup()) {
-            selectValue = values.find(vd => vd.display !== undefined)?.display;
+
+        // Some column types have special handling of raw data, i.e. StoredAmount and Units (issue 49502)
+        if (col.columnRenderer) {
+            const renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
+            if (renderer?.getEditableRawValue) {
+                selectValue = renderer.getEditableRawValue(values);
+            }
         }
 
         return (

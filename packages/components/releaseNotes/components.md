@@ -11,6 +11,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 2 February 2024
 - Issue 49440: User may not be in the core.Users table (if permission was removed), so check the core.SiteUsers table as well
 
+### version 3.15.2
+*Released*: 6 February 2024
+- Merge release23.11-SNAPSHOT to release24.2-SNAPSHOT:
+  - includes changes from 2.390.6
+
+### version 3.15.1
+*Released*: 2 February 2024
+- Issue 49502: StoredAmount and Units for samples editable grid to use display values instead of raw values
+
 ### version 3.15.0
 *Released*: 31 January 2024
 - Support Date-only or Time-only fields
@@ -368,6 +377,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 1 November 2023
 * Issue 48828: Don't show sample insights panel while editing in the grid
   -  add `onEditToggle` optional prop for `SampleTabbedGridPanel`
+
+### version 2.390.6
+*Released*: 5 February 2023
+* Issue 49589: LKSM/LKB: More jumping behavior on Chrome & not Firefox
 
 ### version 2.390.5
 *Released*: 27 November 2023

@@ -13,6 +13,8 @@ import { EXPORT_TYPES } from '../../constants';
 
 import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
 
+import { getQueryColumnRenderers } from '../../global';
+
 import { EditorModel, EditorModelProps, EditableGridModels } from './models';
 import { CellActions, CellCoordinates, MODIFICATION_TYPES } from './constants';
 
@@ -89,6 +91,14 @@ export function getUpdatedDataFromGrid(
                 const isDate = isDateTime && col.isDateOnlyColumn;
                 // Convert empty cell to null
                 if (value === '') value = null;
+
+                // Some column types have special handling of raw data, i.e. StoredAmount and Units (issue 49502)
+                if (col?.columnRenderer) {
+                    const renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
+                    if (renderer?.getOriginalRawValue) {
+                        originalValue = renderer.getOriginalRawValue(originalValue);
+                    }
+                }
 
                 // Lookup columns store a list but grid only holds a single value
                 if (List.isList(originalValue) && !Array.isArray(value)) {

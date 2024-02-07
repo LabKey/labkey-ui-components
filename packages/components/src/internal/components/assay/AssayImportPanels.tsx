@@ -740,6 +740,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const operation = isReimport ? Operation.update : Operation.insert;
         const runContainerId = runPropsModel.getRowValue('Folder');
         const folderNoun = isPremiumProductEnabled() ? 'project' : 'folder';
+        const plateSupportEnabled = this.plateSupportEnabled;
 
         if (isReimport && !allowReimportAssayRun(user, runContainerId, container.id)) {
             const runName = runPropsModel.getRowValue('Name');
@@ -790,6 +791,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     onGridChange={this.onGridChange}
                     operation={operation}
                     onTextChange={this.handleDataTextChange}
+                    plateSupportEnabled={plateSupportEnabled}
                     queryModel={dataModel}
                     runPropertiesRow={runProps}
                     showTabs={showUploadTabs}

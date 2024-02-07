@@ -16,11 +16,13 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Map } from 'immutable';
 
+import { Filter } from '@labkey/api';
+
 import { Operation } from '../../../public/QueryColumn';
 
 import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
-import { EditorModel } from '../editable/models';
+import { EditableColumnMetadata, EditorModel } from '../editable/models';
 
 import { DATA_IMPORT_TOPIC, HelpLink } from '../../util/helpLinks';
 import { EditableGridChange } from '../editable/EditableGrid';
@@ -59,6 +61,7 @@ interface Props {
     onGridChange: EditableGridChange;
     onTextChange: (value: any) => any;
     operation: Operation;
+    plateSupportEnabled?: boolean;
     queryModel: QueryModel;
     runPropertiesRow?: Record<string, any>;
     setIsDirty?: (isDirty: boolean) => void;
@@ -202,6 +205,17 @@ export class RunDataPanel extends PureComponent<Props, State> {
         this.props.onTextChange('');
     };
 
+    getEditableGridColumnMetadata = (): Map<string, EditableColumnMetadata> => {
+        const { wizardModel, plateSupportEnabled } = this.props;
+        if (!plateSupportEnabled) return undefined;
+
+        return Map({
+            Plate: {
+                lookupValueFilters: [Filter.create('PlateSet', wizardModel.runProperties?.get('PlateSet'))],
+            },
+        });
+    };
+
     render() {
         const {
             acceptedPreviewFileFormats,
@@ -220,6 +234,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || queryModel.isLoading;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
+        const columnMetadata = this.getEditableGridColumnMetadata();
 
         return (
             <div className="panel panel-default">
@@ -250,6 +265,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 title: 'Bulk Insert Assay Rows',
                                                 header: 'Add a batch of assay data rows that will share the properties set below.',
                                             }}
+                                            columnMetadata={columnMetadata}
                                             containerFilter={getContainerFilterForLookups()}
                                             disabled={currentStep !== AssayUploadTabs.Grid}
                                             editorModel={editorModel}

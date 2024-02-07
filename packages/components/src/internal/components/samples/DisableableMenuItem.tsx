@@ -24,6 +24,7 @@ export const DisableableMenuItem: FC<DisableableMenuItemProps> = memo(props => {
         className,
         disabledMessage = SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE,
         disabled = false,
+        href,
         onClick,
         placement = 'left',
     } = props;
@@ -35,14 +36,19 @@ export const DisableableMenuItem: FC<DisableableMenuItemProps> = memo(props => {
 
     if (!disabled) {
         return (
-            <MenuItem className={className} onClick={onClick}>
+            <MenuItem className={className} href={href} onClick={onClick}>
                 {children}
             </MenuItem>
         );
     }
 
     const overlay = (
-        <Popover id="disable-operation-warning" className="disabled-menu-item-popover" placement={placement} targetRef={targetRef}>
+        <Popover
+            id="disable-operation-warning"
+            className="disabled-menu-item-popover"
+            placement={placement}
+            targetRef={targetRef}
+        >
             {disabledMessage}
         </Popover>
     );

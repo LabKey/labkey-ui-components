@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.17.1
+*Released*: 6 February 2024
+- Merge release24.2-SNAPSHOT to develop:
+  - includes changes from 3.15.1 and 3.15.2
+
 ### version 3.17.0
 *Released*: 6 February 2024
 - Issue 45256: Support "formattedValue" for display

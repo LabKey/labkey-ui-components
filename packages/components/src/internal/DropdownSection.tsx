@@ -35,7 +35,10 @@ export const DropdownSection: FC<MenuSectionProps> = ({ items, showDivider = fal
         preventDocumentHandler(event);
     }, []);
     const menuItems = useMemo(() => {
-        if (filterValue.trim()) return items.filter(item => item.text.toLowerCase().indexOf(filterValue) > -1);
+        if (filterValue.trim()) {
+            const filterValueLC = filterValue.toLowerCase();
+            return items.filter(item => item.text.toLowerCase().indexOf(filterValueLC) > -1)
+        }
         return items;
     }, [filterValue, items]);
     return (

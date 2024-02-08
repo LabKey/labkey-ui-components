@@ -57,7 +57,6 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
             // We're just going to assume we can look at our parent for all the information we need. This scenario is
             // needed by FM ItemDetailHeader/ItemSamplesActionMenu
             const siblingSize = Array.from(parent.childNodes).reduce((reduction, node: HTMLElement) => {
-                // if (node.getAttribute('class')?.includes('storage-item-detail-buttons'))
                 if (!node.getAttribute('class')?.includes('responsive-menu-button-group')) {
                     const computedStyle = getComputedStyle(node);
                     // We often put margin on items that we render next to ResponsiveMenuButtonGroup, so we count it
@@ -66,6 +65,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
                 }
                 return reduction;
             }, 0);
+
             availableSpace = parent.getBoundingClientRect().width - siblingSize;
         }
 
@@ -120,7 +120,15 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
         if (navigator.userAgent.includes('jsdom')) return;
         const itemEls = elRef.current?.childNodes ?? [];
         // childNodes is a nodeList which does not have the map method
-        const widths = Array.from(itemEls).map((element: HTMLElement) => element.getBoundingClientRect().width);
+        const widths = Array.from(itemEls).map((element: HTMLElement) => {
+            // Include margin for buttons in size
+            const computedStyle = getComputedStyle(element);
+            return (
+                element.getBoundingClientRect().width +
+                parseInt(computedStyle.marginLeft, 10) +
+                parseInt(computedStyle.marginRight, 10)
+            );
+        });
         setItemWidths(widths);
     }, []);
 

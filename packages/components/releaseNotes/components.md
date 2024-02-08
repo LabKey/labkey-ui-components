@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.??.0
-*Released*: ?? February 2024
+### version 3.18.0
+*Released*: 8 February 2024
 - DisableableMenuItem: change operationPermitted prop to disabled
   - not just a rename, this inverts the expected value
 - Add DropdownSection

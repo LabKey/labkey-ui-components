@@ -22,6 +22,10 @@ interface MenuSectionProps {
  * many items in a menu that would make it overwhelmingly long.
  */
 export const DropdownSection: FC<MenuSectionProps> = ({ items, showDivider = false, toggleText }) => {
+    // We default expanded when there is no toggle text, which also means there is no way to expand or collapse the
+    // children when there is no toggleText; this is by design. We want to always render the children when toggleText
+    // is undefined because that means we're rendering the items as the only menu items; this is typically when we're
+    // rendering a DropdownButton that gets condensed into a "More" menu on smaller screens.
     const [expanded, setExpanded] = useState<boolean>(!toggleText);
     const onHeaderClick = useCallback(event => {
         preventDocumentHandler(event);

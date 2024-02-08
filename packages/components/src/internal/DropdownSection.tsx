@@ -1,4 +1,3 @@
-// We show the filter input after 10 items
 import React, { FC, useCallback, useMemo, useState } from 'react';
 
 import { MenuDivider, MenuItem, preventDocumentHandler } from './dropdowns';

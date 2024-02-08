@@ -281,7 +281,11 @@ interface MenuHeaderProps {
  * See docs in docs/dropdowns.md
  */
 export const MenuHeader: FC<MenuHeaderProps> = ({ className, text }) => (
-    <li className={classNames('lk-dropdown-header', 'dropdown-header', className)} role="heading" onClick={preventDocumentHandler}>
+    <li
+        className={classNames('lk-dropdown-header', 'dropdown-header', className)}
+        role="heading"
+        onClick={preventDocumentHandler}
+    >
         {text}
     </li>
 );

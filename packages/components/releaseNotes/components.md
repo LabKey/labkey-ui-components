@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.18.0
+### version 3.18.1
 *Released*: 9 February 2024
 - Issue 48776: Suppress import parent aliasing for media Mixture Batches
 - Resolve sample type `category` in `SampleTypePropertiesPanel` and display add parent alias button accordingly.

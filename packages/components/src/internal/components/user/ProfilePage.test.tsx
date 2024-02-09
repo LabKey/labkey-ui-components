@@ -11,6 +11,10 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT
 } from '../../productFixtures';
 
+beforeAll(() => {
+    global.console.error = jest.fn();
+});
+
 describe("KeyGenerator", () => {
     test("without key value", () => {
         const { container } = renderWithAppContext(<KeyGenerator type={"session"} afterCreate={jest.fn()} noun={"Keys"}/>);

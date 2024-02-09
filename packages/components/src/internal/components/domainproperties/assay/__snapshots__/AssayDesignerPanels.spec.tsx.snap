@@ -451,6 +451,11 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
     }
     domainIndex={1}
     helpTopic={null}
+    hiddenFieldNames={
+      [
+        "PlateTemplate",
+      ]
+    }
     index={1}
     initCollapsed={true}
     key="1"

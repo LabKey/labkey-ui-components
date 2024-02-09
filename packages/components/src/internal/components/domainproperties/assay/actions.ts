@@ -23,8 +23,9 @@ import { setDomainException } from '../actions';
 import { Container } from '../../base/models/Container';
 import { isAssayEnabled } from '../../../app/utils';
 
-import { AssayProtocolModel } from './models';
 import { handleRequestFailure } from '../../../util/utils';
+
+import { AssayProtocolModel } from './models';
 
 export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
@@ -93,7 +94,10 @@ export function getValidPublishTargets(containerPath?: string): Promise<Containe
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.containers.map(c => new Container(c)));
             }),
-            failure: handleRequestFailure(reject, 'Unable to load valid study targets for Auto-Link Data to Study input.'),
+            failure: handleRequestFailure(
+                reject,
+                'Unable to load valid study targets for Auto-Link Data to Study input.'
+            ),
         });
     });
 }

@@ -25,10 +25,11 @@ import { sleep } from '../../../test/testHelpers';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
+import { getTestAPIWrapper } from '../../../APIWrapper';
+
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
-import { getTestAPIWrapper } from '../../../APIWrapper';
 
 describe('SampleTypePropertiesPanel', () => {
     const BASE_PROPS = {

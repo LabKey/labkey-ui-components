@@ -2,6 +2,8 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { OntologyModel } from '../ontology/models';
 
+import { Container } from '../base/models/Container';
+
 import {
     getDomainNamePreviews,
     validateDomainNameExpressions,
@@ -19,7 +21,6 @@ import { getValidPublishTargets } from './assay/actions';
 import { PHILEVEL_FULL_PHI } from './constants';
 import { getDataClassDetails } from './dataclasses/actions';
 import { DomainDesign, DomainDetails, NameExpressionsValidationResults } from './models';
-import { Container } from '../base/models/Container';
 
 export interface DomainPropertiesAPIWrapper {
     fetchDomainDetails: (options: FetchDomainDetailsOptions) => Promise<DomainDetails>;

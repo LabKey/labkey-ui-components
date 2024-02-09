@@ -21,7 +21,7 @@ export interface AddEntityButtonProps extends ActionButtonProps {
     entity: string;
 }
 
-export const AddEntityButton: FC<AddEntityButtonProps> = memo(({ entity, ...actionButtonProps}) => {
+export const AddEntityButton: FC<AddEntityButtonProps> = memo(({ entity, ...actionButtonProps }) => {
     return (
         <ActionButton {...actionButtonProps}>
             <i className="fa fa-plus-circle container--addition-icon" /> Add {entity}

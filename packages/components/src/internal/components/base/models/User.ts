@@ -28,7 +28,7 @@ const defaultUser: IUserProps = {
     isTrusted: false,
 
     maxAllowedPhi: undefined,
-    permissionsList: [],
+    permissionsList: undefined,
 };
 
 /**
@@ -127,7 +127,7 @@ export function hasPermissions(
     if (checkIsAdmin && user.isAdmin) {
         return perms?.length > 0;
     } else if (perms) {
-        const allPerms = user.permissionsList;
+        const allPerms = user.permissionsList ?? [];
 
         if (permissionCheck === 'any') {
             return perms.some(p => allPerms.indexOf(p) > -1);

@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - App editable grid assay import to filter plate by selected plate set
   - Hide PlateTemplate field from assay designer Run Domain fields in app
 
+### version 3.17.2
+*Released*: 8 February 2024
+- Issue 49560: User permissionsList to default to undefined instead of empty array
+
 ### version 3.17.1
 *Released*: 6 February 2024
 - Merge release24.2-SNAPSHOT to develop:

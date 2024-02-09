@@ -19,6 +19,7 @@ import DatePicker from 'react-datepicker';
 
 import { FieldLabel } from '../FieldLabel';
 import {
+    getFormattedStringFromDate,
     getFormattedTimeString,
     getJsonDateFormatString,
     getJsonDateTimeFormatString,
@@ -37,7 +38,6 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     addLabelAsterisk?: boolean;
     allowRelativeInput?: boolean;
     autoFocus?: boolean;
-    dateFormat?: string;
     disabled?: boolean;
     formsy?: boolean;
     hideTime?: boolean;
@@ -50,7 +50,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     labelClassName?: string;
     name?: string;
     onCalendarClose?: () => void;
-    onChange?: (newDate?: Date | string) => void;
+    onChange?: (rawDate?: Date | string, dateStr?: string) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
@@ -77,7 +77,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         inputWrapperClassName: 'block',
         showLabel: true,
         addLabelAsterisk: false,
-        initValueFormatted: true,
+        initValueFormatted: false,
         isFormInput: true,
         labelClassName: 'control-label col-sm-3 text-left col-xs-12',
     };
@@ -126,35 +126,43 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
     getInitDate(props: DatePickerInputProps, minDate?: Date): Date {
         const { queryColumn } = props;
         const isTimeOnly = queryColumn.isTimeColumn;
+        const isDateOnly = queryColumn.isDateOnlyColumn;
         // Issue 45140: props.value is the original formatted date, so pass the date format
         // to parseDate when getting the initial value.
         const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
 
         if (props.allowRelativeInput && isRelativeDateFilterValue(props.value)) return undefined;
 
-        return props.value ? parseDate(props.value, dateFormat, minDate, isTimeOnly) : undefined;
+        return props.value ? parseDate(props.value, dateFormat, minDate, isTimeOnly, isDateOnly) : undefined;
     }
 
     onChange = (date: Date): void => {
-        const { queryColumn } = this.props;
+        const { hideTime, queryColumn } = this.props;
         const isTimeOnly = queryColumn.isTimeColumn;
         const isDateOnly = queryColumn.isDateOnlyColumn;
         this.setState({ selectedDate: date, invalid: false });
 
-        if (isTimeOnly) {
-            const timePortion = getFormattedTimeString(date, queryColumn.format);
-            this.props.onChange?.(timePortion);
+        if (this.state.relativeInputValue) {
+            this.props.onChange?.(this.state.relativeInputValue, this.state.relativeInputValue);
+        }
+        else {
+            const formatted = getFormattedStringFromDate(date, queryColumn, hideTime);
 
-            // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-            if (this.props.formsy) {
-                this.props.setValue?.(timePortion);
-            }
-        } else {
-            this.props.onChange?.(this.state.relativeInputValue ? this.state.relativeInputValue : date);
+            if (isTimeOnly) {
+                this.props.onChange?.(formatted, formatted);
 
-            // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-            if (this.props.formsy) {
-                this.props.setValue?.(isDateOnly ? getJsonDateFormatString(date) : getJsonDateTimeFormatString(date));
+                // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+                if (this.props.formsy) {
+                    this.props.setValue?.(formatted);
+                }
+            } else {
+                this.props.onChange?.(date, formatted);
+
+                // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+                if (this.props.formsy) {
+                    this.props.setValue?.(isDateOnly ? getJsonDateFormatString(date) : getJsonDateTimeFormatString(date));
+                }
+
             }
         }
     };
@@ -171,7 +179,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
     getDateFormat(): string {
         const { queryColumn, hideTime } = this.props;
-        return getPickerDateAndTimeFormat(queryColumn, this.props.dateFormat, hideTime).dateFormat;
+        return getPickerDateAndTimeFormat(queryColumn, hideTime).dateFormat;
     }
 
     render(): ReactNode {
@@ -198,7 +206,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             wrapperClassName,
         } = this.props;
         const { isDisabled, selectedDate, invalid } = this.state;
-        const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, this.props.dateFormat, hideTime);
+        const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, hideTime);
 
         const isTimeOnly = queryColumn.isTimeColumn;
         const picker = (

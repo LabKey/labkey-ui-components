@@ -6,7 +6,10 @@ import { Filter } from '@labkey/api';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
 
-import { getJsonDateFormatString, getJsonTimeFormatString } from '../../util/Date';
+import {
+    getJsonDateFormatString,
+    getJsonTimeFormatString,
+} from '../../util/Date';
 
 import { isOntologyEnabled } from '../../app/utils';
 
@@ -225,7 +228,6 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         queryColumn={field}
                         name={'field-value-date' + suffix}
                         value={valueRaw}
-                        initValueFormatted={false}
                         showLabel={false}
                         isClearable
                         hideTime={!isTimeOnly} // filter date and datetime by date only, without timepicker

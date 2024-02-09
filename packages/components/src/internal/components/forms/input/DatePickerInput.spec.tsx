@@ -12,6 +12,7 @@ beforeAll(() => {
         formats: {
             dateFormat: 'yyyy-MM-dd',
             dateTimeFormat: 'yyyy-MM-dd HH:mm',
+            timeFormat: 'HH:mm',
             numberFormat: null,
         },
     };
@@ -52,7 +53,10 @@ describe('DatePickerInput', () => {
     });
 
     test('with time-formatted dateFormat', () => {
-        const wrapper = mount(<DatePickerInputImpl {...DEFAULT_PROPS} dateFormat="yyyy-MM-dd kk:mm a" />);
+        const wrapper = mount(
+                <DatePickerInputImpl {...DEFAULT_PROPS}
+                    queryColumn={new QueryColumn({ fieldKey: 'col', caption: 'Test Column', required: true, format: 'yyyy-MM-dd kk:mm a' })}
+                />);
         const datePicker = wrapper.find(DatePicker);
         expect(datePicker.prop('dateFormat')).toBe('yyyy-MM-dd kk:mm a');
         expect(datePicker.prop('timeFormat')).toBe('HH:mm');
@@ -60,7 +64,10 @@ describe('DatePickerInput', () => {
     });
 
     test('without time-formatted dateFormat', () => {
-        const wrapper = mount(<DatePickerInputImpl {...DEFAULT_PROPS} dateFormat="yyyy-MM-dd" />);
+        const wrapper = mount(
+            <DatePickerInputImpl {...DEFAULT_PROPS}
+                                 queryColumn={new QueryColumn({ fieldKey: 'col', caption: 'Test Column', required: true, format: 'yyyy-MM-dd' })}
+            />);
         const datePicker = wrapper.find(DatePicker);
         expect(datePicker.prop('dateFormat')).toBe('yyyy-MM-dd');
         expect(datePicker.prop('timeFormat')).toBeUndefined();

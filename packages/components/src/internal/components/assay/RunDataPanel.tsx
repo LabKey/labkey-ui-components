@@ -207,11 +207,12 @@ export class RunDataPanel extends PureComponent<Props, State> {
 
     getEditableGridColumnMetadata = (): Map<string, EditableColumnMetadata> => {
         const { wizardModel, plateSupportEnabled } = this.props;
-        if (!plateSupportEnabled) return undefined;
+        const selectedPlateSet = wizardModel.runProperties?.get('PlateSet');
+        if (!plateSupportEnabled || !selectedPlateSet) return undefined;
 
         return Map({
             Plate: {
-                lookupValueFilters: [Filter.create('PlateSet', wizardModel.runProperties?.get('PlateSet'))],
+                lookupValueFilters: [Filter.create('PlateSet', selectedPlateSet)],
             },
         });
     };

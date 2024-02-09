@@ -114,6 +114,7 @@ export function getQueryModelExportParams(
         schemaQuery,
         sortString,
         selectionKey,
+        queryParameters,
     } = model;
     const exportOptions: ExportOptions = {
         filters: List(filters),
@@ -124,7 +125,7 @@ export function getQueryModelExportParams(
         selectionKey,
         showRows: hasSelections ? 'SELECTED' : 'ALL',
     };
-    return getExportParams(type, schemaQuery, exportOptions, advancedOptions);
+    return getExportParams(type, schemaQuery, exportOptions, advancedOptions, queryParameters);
 }
 
 export function getSelectRowCountColumnsStr(

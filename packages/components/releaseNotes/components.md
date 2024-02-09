@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 49418: When exporting, include any query parameters from model
+
 ### version 3.17.2
 *Released*: 8 February 2024
 - Issue 49560: User permissionsList to default to undefined instead of empty array

@@ -31,7 +31,7 @@ import { isPlatesEnabled, isPremiumProductEnabled } from '../../app/utils';
 
 import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
 
-import { AssayUploadTabs } from '../../constants';
+import { AssayUploadTabs, MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { FormButtons } from '../../FormButtons';
 import { getQueryDetails } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
@@ -139,6 +139,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         fileSizeLimits: DATA_IMPORT_FILE_SIZE_LIMITS,
         loadSelectedSamples,
         showUploadTabs: true,
+        maxRows: MAX_EDITABLE_GRID_ROWS,
     };
 
     assayUploadTimer: number;
@@ -784,7 +785,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     currentStep={currentStep}
                     editorModel={editorModel}
                     fileSizeLimits={fileSizeLimits}
-                    maxEditableGridRowMsg={`A max of ${maxRows} rows are allowed. Please use the 'Import Data from File' tab if you need to import more than ${maxRows} rows.`}
+                    maxEditableGridRowMsg={`A max of ${maxRows?.toLocaleString()} rows are allowed. Please use the 'Import Data from File' tab if you need to import more than ${maxRows?.toLocaleString()} rows.`}
                     maxRows={maxRows}
                     onFileChange={this.handleFileChange}
                     onFileRemoval={this.handleFileRemove}

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### verstion 3.15.X
+*Released*: ? February 2024
+- Issue 49569: Remove direct use of `LabelOverlay` for `TextChoiceInput` `SelectInput` usage
+
 ### version 3.15.2
 *Released*: 6 February 2024
 - Merge release23.11-SNAPSHOT to release24.2-SNAPSHOT:

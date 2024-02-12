@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { MouseEvent, FC, memo, useCallback, useState, useEffect, useRef, useMemo } from 'react';
+import React, { MouseEvent, FC, memo, useCallback, useState, useEffect, useMemo, MutableRefObject } from 'react';
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
-import { DropdownButton } from 'react-bootstrap';
 import { Location } from 'history';
 import { ActionURL } from '@labkey/api';
 import { useLocation } from 'react-router-dom';
@@ -54,6 +53,8 @@ import {
     PLATES_KEY,
 } from '../../app/constants';
 
+import { useNavMenuState } from '../../useNavMenuState';
+
 import { FolderMenu, FolderMenuItem } from './FolderMenu';
 import { ProductMenuSection } from './ProductMenuSection';
 import { MenuSectionConfig, MenuSectionModel, ProductMenuModel } from './model';
@@ -68,7 +69,7 @@ export interface ProductMenuButtonProps {
 export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
     const { appProperties = getCurrentAppProperties() } = props;
     const location = useLocation();
-    const [menuOpen, setMenuOpen] = useState(false);
+    const { show, setShow, menuRef, toggleRef } = useNavMenuState();
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [folderItems, setFolderItems] = useState<FolderMenuItem[]>([]);
@@ -105,9 +106,9 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
     }, [api, container, moduleContext, appProperties?.controllerName]);
 
     const toggleMenu = useCallback(() => {
-        setMenuOpen(!menuOpen);
+        setShow(!show);
         blurActiveElement();
-    }, [menuOpen, setMenuOpen]);
+    }, [show, setShow]);
 
     // Only toggle the menu closing if a menu section link has been clicked or a project icon (issue 48283).
     // Clicking anywhere else inside the menu will not toggle the menu, including side panel folder clicks.
@@ -129,38 +130,39 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
     if (!isLoaded && !hasError) return null;
     const showFolders = folderItems?.length > 1;
 
-    // TODO: This component should not be using DropdownButton, as it is not rendering any MenuItem components
     return (
-        <DropdownButton
-            className="product-menu-button"
-            id="product-menu"
-            onToggle={toggleMenu}
-            open={menuOpen}
-            title={<ProductMenuButtonTitle container={container} folderItems={folderItems} location={location} />}
-        >
-            {menuOpen && (
+        <div className="product-menu">
+            <button className="product-menu-button" onClick={toggleMenu} ref={toggleRef} type="button">
+                <ProductMenuButtonTitle container={container} folderItems={folderItems} location={location} />
+                <span className="caret" />
+            </button>
+
+            {show && (
                 <ProductMenu
                     {...props}
                     className={classNames({ 'with-col-folders': showFolders })}
-                    onClick={onClick}
                     error={error}
                     folderItems={folderItems}
+                    menuRef={menuRef}
+                    onClick={onClick}
                     showFolderMenu={showFolders}
                 />
             )}
-        </DropdownButton>
+        </div>
     );
 });
 export interface ProductMenuProps extends ProductMenuButtonProps {
     className: string;
     error: string;
     folderItems: FolderMenuItem[];
+    menuRef: MutableRefObject<HTMLDivElement>;
     onClick: (evt: MouseEvent<HTMLDivElement>) => void;
 }
 
 export const ProductMenu: FC<ProductMenuProps> = memo(props => {
     const {
         className,
+        menuRef,
         onClick,
         error,
         folderItems,
@@ -171,7 +173,6 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
     const { api } = useAppContext<AppContext>();
     const { container, moduleContext } = useServerContext();
     const [menuModel, setMenuModel] = useState<ProductMenuModel>(new ProductMenuModel({ containerId: container.id }));
-    const contentRef = useRef<HTMLDivElement>();
 
     useEffect(() => {
         if (!menuModel.isLoaded) return;
@@ -181,15 +182,15 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         // is longer.
         let height = 400; // match navbar.scss product-menu-content min-height
         const maxHeight = window.innerHeight * 0.8;
-        const sections = Array.from(contentRef.current.getElementsByClassName('menu-section'));
+        const sections = Array.from(menuRef.current.getElementsByClassName('menu-section'));
         sections.forEach(section => (height = Math.max(height, section.clientHeight)));
-        contentRef.current.style.height = Math.min(height, maxHeight) + 'px';
+        menuRef.current.style.height = Math.min(height, maxHeight) + 'px';
 
         // if the selected project is out of view, scrollIntoView
-        const activeProject = contentRef.current.getElementsByClassName('active')?.[0];
+        const activeProject = menuRef.current.getElementsByClassName('active')?.[0];
         if (activeProject) {
-            if (activeProject.getBoundingClientRect().bottom > contentRef.current.getBoundingClientRect().bottom) {
-                contentRef.current.getElementsByClassName('active')?.[0].scrollIntoView({ behavior: 'smooth' });
+            if (activeProject.getBoundingClientRect().bottom > menuRef.current.getBoundingClientRect().bottom) {
+                menuRef.current.getElementsByClassName('active')?.[0].scrollIntoView({ behavior: 'smooth' });
             }
         }
     }, [menuModel.isLoaded]);
@@ -241,7 +242,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                 'with-section-count-4': colsWithSectionCount === 4,
             })}
             onClick={onClick}
-            ref={contentRef}
+            ref={menuRef}
         >
             <div className="navbar-connector" />
             {error && <Alert>{error}</Alert>}

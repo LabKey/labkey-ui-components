@@ -1,7 +1,7 @@
 import React, { ReactElement, FC, memo, useState, useEffect, useCallback, useRef, Fragment, useMemo } from 'react';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { hasPermissions, User } from '../base/models/User';
+import { DropdownButton, MenuDivider } from '../../dropdowns';
 
 interface ResponsiveMenuItem {
     button: ReactElement;
@@ -15,7 +15,7 @@ interface Props {
 
 // The known size of the More dropdown. Ideally we'd calculate this, but we need to know it before we inject it, so
 // this was calculated by inspecting the DOM in FireFox.
-const MORE_SIZE = 70;
+const MORE_SIZE = 68;
 
 export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
     const { items, user } = props;
@@ -57,7 +57,6 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
             // We're just going to assume we can look at our parent for all the information we need. This scenario is
             // needed by FM ItemDetailHeader/ItemSamplesActionMenu
             const siblingSize = Array.from(parent.childNodes).reduce((reduction, node: HTMLElement) => {
-                // if (node.getAttribute('class')?.includes('storage-item-detail-buttons'))
                 if (!node.getAttribute('class')?.includes('responsive-menu-button-group')) {
                     const computedStyle = getComputedStyle(node);
                     // We often put margin on items that we render next to ResponsiveMenuButtonGroup, so we count it
@@ -66,6 +65,7 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
                 }
                 return reduction;
             }, 0);
+
             availableSpace = parent.getBoundingClientRect().width - siblingSize;
         }
 
@@ -120,7 +120,15 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
         if (navigator.userAgent.includes('jsdom')) return;
         const itemEls = elRef.current?.childNodes ?? [];
         // childNodes is a nodeList which does not have the map method
-        const widths = Array.from(itemEls).map((element: HTMLElement) => element.getBoundingClientRect().width);
+        const widths = Array.from(itemEls).map((element: HTMLElement) => {
+            // Include margin for buttons in size
+            const computedStyle = getComputedStyle(element);
+            return (
+                element.getBoundingClientRect().width +
+                parseInt(computedStyle.marginLeft, 10) +
+                parseInt(computedStyle.marginRight, 10)
+            );
+        });
         setItemWidths(widths);
     }, []);
 
@@ -128,9 +136,6 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
 
     if (buttons.length === 0) return null;
 
-    // TODO: We're explicitly not converting this to use our internal DropdownButton at this time, because the
-    //  collapsedItems rendered are all ResponsiveMenuButton components, which render a SubMenuItem when collapsed, and
-    //  it would be too disruptive to update SubMenuItem (and SubMenu) at this time.
     return (
         <span className="responsive-menu-button-group" ref={elRef}>
             {renderedItems.length > 0 &&
@@ -142,12 +147,12 @@ export const ResponsiveMenuButtonGroup: FC<Props> = memo(props => {
                     <Fragment key={idx}>{button}</Fragment>
                 ))}
             {collapsedItems.length > 0 && (
-                <DropdownButton id="responsive-menu-button-group" title="More" className="responsive-menu">
+                <DropdownButton className="responsive-menu-button-group responsive-menu" title="More">
                     {collapsedItems.map((item, index) => {
                         return (
                             <Fragment key={index}>
                                 {React.cloneElement(item, { asSubMenu: true })}
-                                {index < collapsedItems.length - 1 && <MenuItem divider />}
+                                {index < collapsedItems.length - 1 && <MenuDivider />}
                             </Fragment>
                         );
                     })}

@@ -8,6 +8,23 @@ Components, models, actions, and utility functions for LabKey applications and p
   - App editable grid assay import to filter plate by selected plate set
   - Hide PlateTemplate field from assay designer Run Domain fields in app
 
+### version 3.19.0
+*Released*: 8 February 2024
+- DisableableMenuItem: change operationPermitted prop to disabled
+  - not just a rename, this inverts the expected value
+- Add DropdownSection
+  - Replaces SubMenuItem, but outputs DOM structure expected by Bootstrap
+- Add DropdownWithSections
+  - Replaces SubMenu, but outputs DOM structure expected by Bootstrap
+- ResponsiveMenuButton:
+  - use DropdownSection
+  - remove id prop
+  - add className prop
+- Remove SubMenu
+- Remove SubMenuItem
+- Remove getMenuItemsForSection (unused)
+- Remove getMenuItemForSectionKey (unused)
+
 ### version 3.18.1
 *Released*: 9 February 2024
 - Issue 48776: Suppress import parent aliasing for media Mixture Batches

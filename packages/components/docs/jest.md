@@ -99,7 +99,6 @@ has its own jest tests will currently need to mock the `LABKEY` object if that m
 ## Examples
 1. Testing of utility functions
     1. [util/Date.test.ts](../src/internal/util/Date.test.ts)
-    1. [internal/app/utils.test.ts](../src/internal/app/utils.test.ts)
 1. Enzyme examples of using `.find()`
     1. [base/ConfirmModal.spec.tsx](../src/internal/components/base/ConfirmModal.spec.tsx)
     1. [assay/RunPropertiesPanel.spec.tsx](../src/internal/components/assay/RunPropertiesPanel.spec.tsx)

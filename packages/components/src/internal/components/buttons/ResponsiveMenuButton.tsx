@@ -1,29 +1,26 @@
 import React, { ReactElement, FC, memo } from 'react';
-import { DropdownButton } from 'react-bootstrap';
 
-import { SubMenuItem } from '../menus/SubMenuItem';
+import { DropdownButton, MenuHeader } from '../../dropdowns';
 
 interface Props {
+    className?: string;
     asSubMenu?: boolean;
-    id: string;
-    items: ReactElement;
+    items: ReactElement; // TODO: convert to children
     text: string;
 }
 
-// TODO: We're explicitly not replacing this usage of DropdownButton with our internal version at this time, because we
-//  also need to refactor SubMenuItem (and SubMenu) to use our internal components as well, but that is too disruptive
-//  of a change at this time.
-export const ResponsiveMenuButton: FC<Props> = memo(({ asSubMenu, id, items, text }) => {
+export const ResponsiveMenuButton: FC<Props> = memo(({ asSubMenu, className, items, text }) => {
     if (asSubMenu) {
         return (
-            <SubMenuItem text={text} inline>
+            <>
+                <MenuHeader text={text} />
                 {items}
-            </SubMenuItem>
+            </>
         );
     }
 
     return (
-        <DropdownButton title={text} id={id} className="responsive-menu">
+        <DropdownButton className={className + ' responsive-menu'} title={text}>
             {items}
         </DropdownButton>
     );

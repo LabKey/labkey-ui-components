@@ -7,42 +7,48 @@ import { MenuItem } from '../../dropdowns';
 import { Popover } from '../../Popover';
 import { Placement } from '../../useOverlayPositioning';
 
-interface Props {
+export interface DisableableMenuItemProps {
     className?: string;
+    disabled?: boolean;
     disabledMessage?: ReactNode;
     href?: string;
     onClick?: () => void;
-    operationPermitted: boolean;
     placement?: Placement;
 }
 
 const SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE = 'The current status of the sample does not permit this operation.';
 
-export const DisableableMenuItem: FC<Props> = memo(props => {
+export const DisableableMenuItem: FC<DisableableMenuItemProps> = memo(props => {
     const {
         children,
         className,
         disabledMessage = SAMPLE_OPERATION_NOT_PERMITTED_MESSAGE,
-        operationPermitted,
+        disabled = false,
+        href,
         onClick,
         placement = 'left',
     } = props;
-    const { onMouseEnter, onMouseOut, portalEl, show, targetRef } = useOverlayTriggerState<HTMLLIElement>(
+    const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLLIElement>(
         'disableable-menu-item',
         true,
         false
     );
 
-    if (operationPermitted) {
+    if (!disabled) {
         return (
-            <MenuItem className={className} onClick={onClick}>
+            <MenuItem className={className} href={href} onClick={onClick}>
                 {children}
             </MenuItem>
         );
     }
 
     const overlay = (
-        <Popover id="disable-operation-warning" className="popover-message" placement={placement} targetRef={targetRef}>
+        <Popover
+            id="disable-operation-warning"
+            className="disabled-menu-item-popover"
+            placement={placement}
+            targetRef={targetRef}
+        >
             {disabledMessage}
         </Popover>
     );
@@ -53,7 +59,7 @@ export const DisableableMenuItem: FC<Props> = memo(props => {
             disabled
             onClick={onClick}
             onMouseEnter={onMouseEnter}
-            onMouseOut={onMouseOut}
+            onMouseLeave={onMouseLeave}
             ref={targetRef}
         >
             {children}

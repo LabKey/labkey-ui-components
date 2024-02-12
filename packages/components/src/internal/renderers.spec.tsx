@@ -166,7 +166,7 @@ describe('HeaderCellDropdown', () => {
         validate(wrapper, 0, 3);
         expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
         expect(wrapper.find(DisableableMenuItem).text()).toContain('Hide Column');
-        expect(wrapper.find(DisableableMenuItem).prop('operationPermitted')).toBe(true);
+        expect(wrapper.find(DisableableMenuItem).prop('disabled')).toBe(false);
         wrapper.unmount();
     });
 

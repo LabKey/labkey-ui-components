@@ -98,7 +98,7 @@ describe('FindDerivativesButton', () => {
     test('default props', () => {
         const wrapper = mountWithAppServerContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} asSubMenu />);
         expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
-        expect(wrapper.find(DisableableMenuItem).prop('operationPermitted')).toBe(true);
+        expect(wrapper.find(DisableableMenuItem).prop('disabled')).toBe(false);
         expect(wrapper.find(DisableableMenuItem).prop('disabledMessage')).toContain(' ()');
         wrapper.unmount();
     });
@@ -112,7 +112,7 @@ describe('FindDerivativesButton', () => {
         });
         const wrapper = mountWithAppServerContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} model={model2} />);
         expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
-        expect(wrapper.find(DisableableMenuItem).prop('operationPermitted')).toBe(false);
+        expect(wrapper.find(DisableableMenuItem).prop('disabled')).toBe(true);
         expect(wrapper.find(DisableableMenuItem).prop('disabledMessage')).toContain(' (Search Filter)');
         wrapper.unmount();
     });
@@ -123,7 +123,7 @@ describe('FindDerivativesButton', () => {
         });
         const wrapper = mountWithAppServerContext(<FindDerivativesMenuItem {...DEFAULT_PROPS} model={model2} />);
         expect(wrapper.find(DisableableMenuItem)).toHaveLength(1);
-        expect(wrapper.find(DisableableMenuItem).prop('operationPermitted')).toBe(false);
+        expect(wrapper.find(DisableableMenuItem).prop('disabled')).toBe(true);
         expect(wrapper.find(DisableableMenuItem).prop('disabledMessage')).toContain(' (FieldE)');
         wrapper.unmount();
     });

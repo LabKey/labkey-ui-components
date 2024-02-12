@@ -180,7 +180,7 @@ export function parseDateFNSTimeFormat(dateFormat: string): string {
     if (splitIndex > -1) {
         const remaining = dateFormat.substring(splitIndex + 1);
         format = parseFNSTimeFormat(remaining);
-        if (!format && remaining.indexOf(' h') > 0) {
+        if (!format && remaining.indexOf(' h') > 0) { // yyyy MM dd hh:mm
             splitIndex = remaining.indexOf(' h');
             format = parseFNSTimeFormat(remaining.substring(splitIndex + 1));
         }
@@ -339,8 +339,10 @@ export function getJsonDateFormatString(date: Date): string {
 }
 
 export function getJsonFormatString(date: Date, rawFormat: string): string {
+    if (!date)
+        return undefined;
     if (rawFormat === 'DateTime') return getJsonDateTimeFormatString(date);
-    if (rawFormat === 'Time') return getJsonDateTimeFormatString(date);
+    if (rawFormat === 'Time') return getJsonTimeFormatString(date);
     return getJsonDateFormatString(date);
 }
 

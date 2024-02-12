@@ -24,6 +24,7 @@ import {
     getColFormattedDateFilterValue,
     getColFormattedTimeFilterValue,
     getJsonDateTimeFormatString,
+    getJsonFormatString,
     getNDaysStrFromToday,
     getNextDateStr,
     getParsedRelativeDateStr,
@@ -103,6 +104,26 @@ describe('Date Utilities', () => {
         });
     });
 
+    describe('getJsonFormatString', () => {
+        test('without date', () => {
+            expect(getJsonFormatString(undefined, 'Date')).toBe(undefined);
+            expect(getJsonFormatString(null, 'Date')).toBe(undefined);
+            expect(getJsonFormatString(undefined, 'DateTime')).toBe(undefined);
+            expect(getJsonFormatString(null, 'DateTime')).toBe(undefined);
+            expect(getJsonFormatString(undefined, 'Time')).toBe(undefined);
+            expect(getJsonFormatString(null, 'Time')).toBe(undefined);
+        });
+
+        test('with date', () => {
+            expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'Date')).toBe('2021-12-03');
+            expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'Date')).toBe('2021-12-03');
+            expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'DateTime')).toBe('2021-12-03 00:00:00');
+            expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'DateTime')).toBe('2021-12-03 23:59:00');
+            expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'Time')).toBe('00:00:00');
+            expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'Time')).toBe('23:59:00');
+        });
+    });
+
     describe('getColDateFormat', () => {
         test('datePlaceholder', () => {
             const col = new QueryColumn({ shortCaption: 'DateCol', rangeURI: DATETIME_TYPE.rangeURI });
@@ -147,8 +168,8 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(timeCol, 'Time')).toBe('HH:mm');
 
             expect(getPickerDateAndTimeFormat(timeCol,)).toEqual({
-                dateFormat: 'HH:mm',
-                timeFormat: undefined,
+                dateFormat: 'yyyy-MM-dd HH:mm',
+                timeFormat: 'HH:mm',
             });
         });
 
@@ -220,7 +241,7 @@ describe('Date Utilities', () => {
         test('various formats', () => {
             expect(parseDateFNSTimeFormat('yyyy-MM HH')).toBeUndefined();
             expect(parseDateFNSTimeFormat('yyyy-MM-DD HHmm')).toBeUndefined();
-            expect(parseDateFNSTimeFormat('yyyy-MM HH HH:mm')).toBeUndefined();
+            expect(parseDateFNSTimeFormat('yyyy-MM HH HH:mm')).toBe('HH:mm');
             expect(parseDateFNSTimeFormat('yyyy:MM:DD kk:mm aa')).toBe('HH:mm');
             expect(parseDateFNSTimeFormat('yyyy-MM-DD HH:mm')).toBe('HH:mm');
             expect(parseDateFNSTimeFormat('yyyy:MM:DD kk:mm')).toBe('HH:mm');

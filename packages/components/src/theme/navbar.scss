@@ -114,26 +114,17 @@
             font-weight: 400;
         }
     }
-
-    .btn-group.open .dropdown-toggle {
-        background-color: $brand-secondary;
-        border: none;
-        box-shadow: none;
-    }
-
-    .dropdown-menu {
-        padding: 0;
-        margin: 0;
-        width: 925px;
-        left: -62px;
-    }
 }
-
+.navbar-item .dropdown-menu {
+    right: -22px;
+}
 .navbar-menu {
     position: relative;
     display: inline-block;
 }
+.navbar-menu-button {
 
+}
 .navbar-menu__content {
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -446,7 +437,7 @@
     }
 
     .open .dropdown-menu {
-      top: 125%;
+      margin-top: 13px;
     }
   }
 }

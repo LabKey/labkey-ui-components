@@ -674,6 +674,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 saveBtnText={saveBtnText}
             >
                 <SampleTypePropertiesPanel
+                    api={api}
                     nounSingular={nounSingular}
                     nounPlural={nounPlural}
                     nameExpressionInfoUrl={nameExpressionInfoUrl}

@@ -322,11 +322,10 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
     componentDidMount(): void {
         getValidPublishTargets(this.props.model.container)
             .then(containers => {
-                this.setState(() => ({ containers }));
+                this.setState({ containers: List(containers) });
             })
             .catch(response => {
-                console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
-                this.setState(() => ({ containers: List<Container>() }));
+                this.setState({ containers: List<Container>() });
             });
     }
 

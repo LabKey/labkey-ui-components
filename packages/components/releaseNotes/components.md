@@ -8,6 +8,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   - App editable grid assay import to filter plate by selected plate set
   - Hide PlateTemplate field from assay designer Run Domain fields in app
 
+### version 3.18.1
+*Released*: 9 February 2024
+- Issue 48776: Suppress import parent aliasing for media Mixture Batches
+- Resolve sample type `category` in `SampleTypePropertiesPanel` and display add parent alias button accordingly.
+- Use API wrappers in `SampleTypePropertiesPanelImpl`.
+- Add `getValidPublishTargets` to `DomainPropertiesAPIWrapper`. Update to return a `Container[]` instead of `List<Container>`.
+
 ### version 3.17.2
 *Released*: 8 February 2024
 - Issue 49560: User permissionsList to default to undefined instead of empty array

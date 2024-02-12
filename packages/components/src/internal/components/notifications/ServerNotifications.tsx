@@ -1,142 +1,100 @@
-import React, { ReactNode } from 'react';
-import { DropdownButton } from 'react-bootstrap';
+import React, { FC, ReactNode, useCallback, useMemo } from 'react';
+
+import classNames from 'classnames';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { markNotificationsAsRead } from './actions';
 import { ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
+import { useNavMenuState } from '../../useNavMenuState';
 
-interface State {
-    show: boolean;
-}
+export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
+    const { markAllNotificationsRead, maxRows, serverActivity } = props;
+    const { show, setShow, menuRef, toggleRef } = useNavMenuState();
+    const toggleMenu = useCallback(() => setShow(s => !s), []);
 
-export class ServerNotifications extends React.Component<ServerNotificationsConfig, State> {
-    static defaultProps = {
-        maxRows: 8,
-    };
-
-    constructor(props: ServerNotificationsConfig) {
-        super(props);
-
-        this.state = {
-            show: false,
-        };
-    }
-
-    markAllRead = (): void => {
-        this.props
-            .markAllNotificationsRead()
-            .then(() => {
-                if (this.props.onRead) this.props.onRead();
-            })
-            .catch(() => {
-                console.error('Unable to mark all notifications as read');
-            });
-    };
-
-    onRead = (id: number): void => {
-        markNotificationsAsRead([id])
-            .then(() => {
-                if (this.props.onRead) this.props.onRead();
-            })
-            .catch(() => {
+    const onRead = useCallback(
+        async (id: number) => {
+            try {
+                await markNotificationsAsRead([id]);
+                props.onRead?.();
+            } catch (e) {
                 console.error('Unable to mark notification ' + id + ' as read');
-            });
-    };
+            }
+        },
+        [props.onRead]
+    );
 
-    hasAnyUnread(): boolean {
-        return this.getNumUnread() > 0;
-    }
-
-    getNumUnread(): number {
-        if (!this.props.serverActivity || !this.props.serverActivity.isLoaded) {
-            return 0;
+    const markAllRead = useCallback(async () => {
+        try {
+            await markAllNotificationsRead();
+            props.onRead?.();
+        } catch (e) {
+            console.error('Unable to mark all notifications as read');
         }
+    }, [props.onRead]);
 
-        return this.props.serverActivity.unreadCount;
-    }
+    const unreadCount = useMemo(() => {
+        if (!serverActivity || !serverActivity.isLoaded) return 0;
+        return 5;
+        // return serverActivity.unreadCount;
+    }, [serverActivity]);
+    const hasAnyInProgress = serverActivity?.inProgressCount > 0;
+    const onViewAll = useCallback(() => {
+        toggleMenu();
+        props.onViewAll();
+    }, [props.onViewAll, toggleMenu]);
 
-    hasAnyInProgress(): boolean {
-        return this.props.serverActivity?.inProgressCount > 0;
-    }
-
-    toggleMenu = (): void => {
-        this.setState(state => ({ show: !state.show }));
-    };
-
-    _onViewAll = (): void => {
-        this.toggleMenu();
-        this.props.onViewAll();
-    };
-
-    render(): ReactNode {
-        const { serverActivity, maxRows, onViewAll } = this.props;
-        const { show } = this.state;
-
-        const numUnread = this.getNumUnread();
-        const title = (
-            <h3 className="navbar-menu-header">
-                <div className={'navbar-icon-connector' + (numUnread > 0 ? ' has-unread' : '')} />
-                Notifications
-                {numUnread > 0 && (
-                    <div className="pull-right server-notifications-link" onClick={this.markAllRead}>
-                        Mark all as read
-                    </div>
-                )}
-            </h3>
+    let body: ReactNode;
+    if (serverActivity?.isError) {
+        body = (
+            <div className="server-notifications-footer server-notifications-error">{serverActivity.errorMessage}</div>
         );
-        let body;
-        if (serverActivity?.isError) {
-            body = (
-                <div className="server-notifications-footer server-notifications-error">
-                    {serverActivity.errorMessage}
+    } else if (!serverActivity || !serverActivity.isLoaded) {
+        body = (
+            <div className="server-notifications-footer">
+                <LoadingSpinner />
+            </div>
+        );
+    } else {
+        body = (
+            <ServerActivityList
+                maxRows={maxRows}
+                serverActivity={serverActivity}
+                onViewAll={onViewAll}
+                onViewClick={toggleMenu}
+                onRead={onRead}
+            />
+        );
+    }
+    const iconClassName = classNames('navbar-header-icon', 'fa', {
+        'fa-spinner fa-pulse': hasAnyInProgress,
+        'fa-bell': !hasAnyInProgress,
+    });
+    const buttonClassName = 'btn btn-default navbar-icon-button-right server-notifications-button navbar-menu-button';
+
+    return (
+        <div className="navbar-item pull-right navbar-item-notification navbar-menu">
+            <button type="button" className={buttonClassName} onClick={toggleMenu} ref={toggleRef}>
+                <span className={iconClassName} />
+                {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+            </button>
+
+            {show && (
+                <div className="navbar-menu__content" ref={menuRef}>
+                    <h3 className="navbar-menu-header">
+                        <div className={'navbar-icon-connector' + (unreadCount > 0 ? ' has-unread' : '')} />
+                        Notifications
+                        {unreadCount > 0 && (
+                            <div className="pull-right server-notifications-link" onClick={markAllRead}>
+                                Mark all as read
+                            </div>
+                        )}
+                    </h3>
+                    {body}
                 </div>
-            );
-        } else if (!serverActivity || !serverActivity.isLoaded) {
-            body = (
-                <div className="server-notifications-footer">
-                    <LoadingSpinner />
-                </div>
-            );
-        } else {
-            body = (
-                <ServerActivityList
-                    maxRows={maxRows}
-                    serverActivity={serverActivity}
-                    onViewAll={this._onViewAll}
-                    onViewClick={this.toggleMenu}
-                    onRead={this.onRead}
-                />
-            );
-        }
-
-        const icon = (
-            <span>
-                <i
-                    className={
-                        'fa ' + (this.hasAnyInProgress() ? 'fa-spinner fa-pulse' : 'fa-bell') + ' navbar-header-icon'
-                    }
-                />
-                {this.hasAnyUnread() && <span className="badge">{numUnread}</span>}
-            </span>
-        );
-
-        // TODO: This should not be using DropdownButton as it is not rendering any MenuItem components. We will address
-        //  this in a future PR
-        return (
-            <DropdownButton
-                id="server-notifications-button"
-                className="navbar-icon-button-right server-notifications-button"
-                noCaret={true}
-                title={icon}
-                open={show}
-                onToggle={this.toggleMenu}
-                pullRight={true}
-            >
-                {title}
-                {body}
-            </DropdownButton>
-        );
-    }
-}
+            )}
+        </div>
+    );
+};

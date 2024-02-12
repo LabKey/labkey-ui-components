@@ -91,8 +91,8 @@ const TIME_HELP_CONTENT = (
             <thead>
             <tr>
                 <th>Format String</th>
-                    <th>Display Result</th>
-                </tr>
+                <th>Display Result</th>
+            </tr>
             </thead>
             <tbody>
                 <tr>

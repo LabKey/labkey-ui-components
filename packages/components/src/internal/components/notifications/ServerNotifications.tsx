@@ -72,11 +72,9 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
         'fa-spinner fa-pulse': hasAnyInProgress,
         'fa-bell': !hasAnyInProgress,
     });
-    const buttonClassName = 'btn btn-default navbar-icon-button-right server-notifications-button navbar-menu-button';
-
     return (
-        <div className="navbar-item pull-right navbar-item-notification navbar-menu">
-            <button type="button" className={buttonClassName} onClick={toggleMenu} ref={toggleRef}>
+        <div className="navbar-item pull-right server-notifications navbar-menu">
+            <button type="button" className="navbar-menu-button" onClick={toggleMenu} ref={toggleRef}>
                 <span className={iconClassName} />
                 {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
             </button>

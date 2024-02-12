@@ -107,8 +107,9 @@
     color: $brand-danger;
 }
 
-.btn.server-notifications-button {
+.server-notifications {
     .badge {
+        display: inline-block;
         padding-left: 6px;
         background: $badge-color;
     }

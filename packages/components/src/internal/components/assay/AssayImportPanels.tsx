@@ -204,6 +204,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
             runProperties = runProperties.set('assayRequest', searchParams.get('assayRequest'));
         }
 
+        if (searchParams.get('plateSet')) {
+            runProperties = runProperties.set(PLATE_SET_COLUMN, searchParams.get('plateSet'));
+        }
+
         return runProperties;
     };
 
@@ -250,11 +254,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const dataQueryInfo = await getQueryDetails(schemaQuery);
 
         const { plateColumns, runColumns } = this.getRunColumns(runQueryInfo);
+        const runProperties = this.getRunPropertiesMap();
 
-        if (this.plateSupportEnabled) {
-            if (searchParams.get('plateSet')) {
-                plateProperties = plateProperties.set(PLATE_SET_COLUMN, searchParams.get('plateSet'));
-            }
+        if (this.plateSupportEnabled && runProperties.get(PLATE_SET_COLUMN)) {
+            plateProperties = plateProperties.set(PLATE_SET_COLUMN, runProperties.get(PLATE_SET_COLUMN));
         }
 
         this.setState(
@@ -271,7 +274,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     runId,
                     usePreviousRunFile: this.isReimport(),
                     batchProperties: this.getBatchPropertiesMap(),
-                    runProperties: this.getRunPropertiesMap(),
+                    runProperties,
                     queryInfo: dataQueryInfo,
                     workflowTask,
                 }),

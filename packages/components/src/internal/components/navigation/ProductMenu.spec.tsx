@@ -17,8 +17,6 @@ import React from 'react';
 import { ReactWrapper } from 'enzyme';
 import { List, Map } from 'immutable';
 
-import { DropdownButton } from 'react-bootstrap';
-
 import { AppContext } from '../../AppContext';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
@@ -186,8 +184,8 @@ describe('ProductMenuButton', () => {
     }
 
     function validate(wrapper: ReactWrapper) {
-        expect(wrapper.find(DropdownButton)).toHaveLength(1);
-        expect(wrapper.find(DropdownButton).prop('open')).toBe(false);
+        expect(wrapper.find('DropdownButton')).toHaveLength(1);
+        expect(wrapper.find('DropdownButton').prop('open')).toBe(false);
         expect(wrapper.find('.product-menu-button')).toHaveLength(4);
         expect(wrapper.find(ProductMenuButtonTitle)).toHaveLength(1);
         expect(wrapper.find(ProductMenu)).toHaveLength(0);

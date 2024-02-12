@@ -76,10 +76,12 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
             ) : (
                 <DisableableMenuItem
                     onClick={onClick}
-                    operationPermitted={isSampleOperationPermitted(
-                        getSampleStatusType(queryModel.getRow()),
-                        SampleOperation.AddToPicklist
-                    )}
+                    disabled={
+                        !isSampleOperationPermitted(
+                            getSampleStatusType(queryModel.getRow()),
+                            SampleOperation.AddToPicklist
+                        )
+                    }
                 >
                     Add to Picklist
                 </DisableableMenuItem>

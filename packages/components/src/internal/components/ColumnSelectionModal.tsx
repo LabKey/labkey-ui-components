@@ -451,7 +451,7 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
     }, []);
 
     const availableColumns = useMemo<QueryColumn[]>(() => {
-        if (!isLoaded) return [];
+        if (!isLoaded || !queryInfo) return [];
         return queryInfo.columns.valueArray
             .filter(c => expandedColumnFilter?.(c, showAllColumns) ?? true)
             .filter(c => c.fieldKeyArray.length === 1); // at the top level don't include lookup fields

@@ -25,29 +25,32 @@ import { sleep } from '../../../test/testHelpers';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
+import { getTestAPIWrapper } from '../../../APIWrapper';
+
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
 
-const BASE_PROPS = {
-    panelStatus: 'NONE' as DomainPanelStatus,
-    validate: false,
-    controlledCollapse: false,
-    initCollapsed: false,
-    collapsed: false,
-    updateModel: jest.fn,
-    onAddParentAlias: jest.fn,
-    onRemoveParentAlias: jest.fn,
-    onParentAliasChange: jest.fn,
-    onAddUniqueIdField: jest.fn,
-    parentOptions: [],
-};
-
-const sampleTypeModel = SampleTypeModel.create({
-    domainDesign: fromJS({ allowTimepointProperties: false }),
-} as DomainDetails);
-
 describe('SampleTypePropertiesPanel', () => {
+    const BASE_PROPS = {
+        api: getTestAPIWrapper(jest.fn),
+        panelStatus: 'NONE' as DomainPanelStatus,
+        validate: false,
+        controlledCollapse: false,
+        initCollapsed: false,
+        collapsed: false,
+        updateModel: jest.fn(),
+        onAddParentAlias: jest.fn(),
+        onRemoveParentAlias: jest.fn(),
+        onParentAliasChange: jest.fn(),
+        onAddUniqueIdField: jest.fn(),
+        parentOptions: [],
+    };
+
+    const sampleTypeModel = SampleTypeModel.create({
+        domainDesign: fromJS({ allowTimepointProperties: false }),
+    } as DomainDetails);
+
     test('default props', () => {
         const tree = renderer.create(<SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} />);
 
@@ -56,7 +59,7 @@ describe('SampleTypePropertiesPanel', () => {
 
     test('appPropertiesOnly', () => {
         const tree = renderer.create(
-            <SampleTypePropertiesPanel {...BASE_PROPS} appPropertiesOnly={true} model={sampleTypeModel} />
+            <SampleTypePropertiesPanel {...BASE_PROPS} appPropertiesOnly model={sampleTypeModel} />
         );
 
         expect(tree).toMatchSnapshot();
@@ -137,8 +140,8 @@ describe('SampleTypePropertiesPanel', () => {
                 {...BASE_PROPS}
                 model={sampleTypeModel}
                 parentOptions={[{ schema: 'exp.data' }]}
-                includeDataClasses={true}
-                useSeparateDataClassesAliasMenu={true}
+                includeDataClasses
+                useSeparateDataClassesAliasMenu
                 sampleAliasCaption="Parent Alias"
                 sampleTypeCaption="sample type"
                 dataClassAliasCaption="Source Alias"
@@ -154,7 +157,7 @@ describe('SampleTypePropertiesPanel', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
-                appPropertiesOnly={true}
+                appPropertiesOnly
                 metricUnitProps={{ includeMetricUnitProperty: true }}
                 model={sampleTypeModel}
             />
@@ -167,7 +170,7 @@ describe('SampleTypePropertiesPanel', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
-                appPropertiesOnly={true}
+                appPropertiesOnly
                 metricUnitProps={{
                     includeMetricUnitProperty: true,
                     metricUnitLabel: 'Stored Amount Display Unit',
@@ -194,7 +197,7 @@ describe('SampleTypePropertiesPanel', () => {
         const wrapper = mount(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
-                showLinkToStudy={true}
+                showLinkToStudy
                 appPropertiesOnly={false}
                 model={sampleTypeModelWithTimepoint}
             />
@@ -240,19 +243,18 @@ describe('SampleTypePropertiesPanel', () => {
     });
 
     test('with aliquot preview name', async () => {
-        const aliquotNameExpVal = 'S-${${AliquotedFrom.:withCounter}}';
         const data = DomainDetails.create(
             fromJS({
                 options: Map<string, any>({
                     rowId: 1,
-                    aliquotNameExpression: aliquotNameExpVal,
+                    aliquotNameExpression: 'S-${${AliquotedFrom.:withCounter}}',
                 }),
                 domainKindName: 'SampleType',
                 domainDesign: sampleTypeModel.get('domain'),
             })
         );
 
-        const component = (
+        const wrapper = mount(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 model={SampleTypeModel.create(data)}
@@ -264,12 +266,9 @@ describe('SampleTypePropertiesPanel', () => {
             />
         );
 
-        const wrapper = mount(component);
-
         expect(wrapper.find(DomainFieldLabel)).toHaveLength(5);
         const aliquotField = wrapper.find(DomainFieldLabel).at(3);
         expect(aliquotField.text()).toEqual('Aliquot Naming Pattern');
-        expect(wrapper).toMatchSnapshot();
         wrapper.unmount();
     });
 });

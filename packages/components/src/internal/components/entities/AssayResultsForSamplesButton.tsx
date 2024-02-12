@@ -65,5 +65,5 @@ export const AssayResultsForSamplesButton: FC<Props> = memo(props => {
     if (!userCanReadAssays(user)) return null;
 
     const items = <AssayResultsForSamplesMenuItem {...props} />;
-    return <ResponsiveMenuButton id="sample-reports-menu" items={items} text="Reports" asSubMenu={asSubMenu} />;
+    return <ResponsiveMenuButton className="sample-reports-menu" items={items} text="Reports" asSubMenu={asSubMenu} />;
 });

@@ -72,21 +72,21 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         useSeparateDataClassesAliasMenu,
     } = props;
 
-    const [aliasCaption, setAliasCaption] = useState<string>(undefined);
-    const [helpMsg, setHelpMsg] = useState<string>(undefined);
-    const [parentTypeCaption, setParentTypeCaption] = useState<string>(undefined);
-    const [filteredParentOptions, setFilteredParentOptions] = useState<IParentOption[]>(undefined);
-    const [filteredParentAliases, setFilteredParentAliases] = useState<IParentAlias[]>(undefined);
+    const [aliasCaption, setAliasCaption] = useState<string>();
+    const [helpMsg, setHelpMsg] = useState<string>();
+    const [parentTypeCaption, setParentTypeCaption] = useState<string>();
+    const [filteredParentOptions, setFilteredParentOptions] = useState<IParentOption[]>();
+    const [filteredParentAliases, setFilteredParentAliases] = useState<IParentAlias[]>();
 
     useEffect(() => {
         if (!parentAliases || !parentOptions) return;
 
         let filteredParentAliases = OrderedMap<string, IParentAlias>();
-        let filteredParentOptions = [];
-        let aliasCaption;
-        let parentTypeCaption;
+        let filteredParentOptions: IParentOption[] = [];
+        let aliasCaption: string;
+        let parentTypeCaption: string;
+        let helpMsg: string;
 
-        let helpMsg;
         if (includeSampleSet && includeDataClass) {
             filteredParentAliases = parentAliases;
             filteredParentOptions = parentOptions;
@@ -156,7 +156,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
                         <span>
                             <AddEntityButton
                                 entity={aliasCaption}
-                                onClick={() => addParentAlias()}
+                                onClick={addParentAlias}
                                 helperBody={addEntityHelp}
                             />
                         </span>

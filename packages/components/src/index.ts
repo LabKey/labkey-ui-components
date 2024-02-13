@@ -99,8 +99,6 @@ import { LockIcon } from './internal/components/base/LockIcon';
 import { ExpandableFilterToggle } from './internal/components/base/ExpandableFilterToggle';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
-import { SubMenu } from './internal/components/menus/SubMenu';
-import { SubMenuItem } from './internal/components/menus/SubMenuItem';
 import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem';
 import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
@@ -168,7 +166,6 @@ import { ToggleButtons, ToggleIcon } from './internal/components/buttons/ToggleB
 import { DisableableButton } from './internal/components/buttons/DisableableButton';
 import { ResponsiveMenuButton } from './internal/components/buttons/ResponsiveMenuButton';
 import { ResponsiveMenuButtonGroup } from './internal/components/buttons/ResponsiveMenuButtonGroup';
-import { getMenuItemForSectionKey, getMenuItemsForSection } from './internal/components/buttons/utils';
 import { Cards } from './internal/components/base/Cards';
 import { Setting } from './internal/components/base/Setting';
 import { ValueList } from './internal/components/base/ValueList';
@@ -839,6 +836,7 @@ import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigge
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
 import { DropdownAnchor, DropdownButton, MenuDivider, MenuItem, MenuHeader, SplitButton } from './internal/dropdowns';
+import { DropdownSection } from './internal/DropdownSection';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1514,8 +1512,6 @@ export {
     parseCsvString,
     quoteValueWithDelimiters,
     // buttons and menus
-    SubMenu,
-    SubMenuItem,
     SelectionMenuItem,
     ManageDropdownButton,
     PaginationButtons,
@@ -1524,8 +1520,6 @@ export {
     DisableableButton,
     ResponsiveMenuButton,
     ResponsiveMenuButtonGroup,
-    getMenuItemsForSection,
-    getMenuItemForSectionKey,
     // application page related items
     LoadingPage,
     NotFound,
@@ -1684,6 +1678,7 @@ export {
     useOverlayTriggerState,
     DropdownAnchor,
     DropdownButton,
+    DropdownSection,
     MenuDivider,
     MenuItem,
     MenuHeader,
@@ -1712,9 +1707,7 @@ export type { InjectedRouteLeaveProps, WrappedRouteLeaveProps } from './internal
 export type { PageHeaderProps } from './internal/components/base/PageHeader';
 export type { PageProps } from './internal/components/base/Page';
 export type { LoadingPageProps } from './internal/components/base/LoadingPage';
-export type { ISubItem, SubMenuItemProps } from './internal/components/menus/SubMenuItem';
 export type { PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
-export type { MenuOption } from './internal/components/menus/SubMenu';
 export type { FileAttachmentFormModel, IFile } from './internal/components/files/models';
 export type {
     IAppDomainHeader,
@@ -1828,3 +1821,5 @@ export type {
 } from './internal/components/forms/input/FormsyReactComponents';
 export type { QueryParams } from './internal/util/URL';
 export type { TriggerType } from './internal/OverlayTrigger';
+export type { MenuSectionItem } from './internal/DropdownSection';
+export type { BSStyle } from './internal/dropdowns';

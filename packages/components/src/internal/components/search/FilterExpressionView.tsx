@@ -225,7 +225,6 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         queryColumn={field}
                         name={'field-value-date' + suffix}
                         value={valueRaw}
-                        initValueFormatted={false}
                         showLabel={false}
                         isClearable
                         hideTime={!isTimeOnly} // filter date and datetime by date only, without timepicker
@@ -324,6 +323,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 const expanded = expandedOntologyKey === ontologyBrowserKey;
                 // FIXME: This is not a proper usage of Dropdown, as it is not rendering any MenuItems this behavior
                 //  should be accomplished some other way (OverlayTrigger + Popover with click events?)
+                //  Note: we can just replace this with some basic logic to show/hide it and render it inline, it does
+                //  not need to render as a floating item, so Dropdown is very unnecessary.
                 return (
                     <div>
                         {textInput}

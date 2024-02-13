@@ -38,7 +38,7 @@ interface DisabledSelectionMenuItemProps {
 }
 
 export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({ message, text }) => {
-    const { onMouseEnter, onMouseOut, portalEl, show, targetRef } = useOverlayTriggerState<HTMLLIElement>(
+    const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLLIElement>(
         'disabled-selection-menu-item',
         true,
         false
@@ -52,7 +52,7 @@ export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({ 
         [message, targetRef]
     );
     return (
-        <MenuItem disabled onMouseEnter={onMouseEnter} onMouseOut={onMouseOut} ref={targetRef}>
+        <MenuItem disabled onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} ref={targetRef}>
             {text}
             {show && createPortal(overlay, portalEl)}
         </MenuItem>

@@ -50,7 +50,12 @@ export const PicklistButton: FC<Props> = memo(props => {
 
     return (
         <RequiresPermission permissionCheck="any" perms={PermissionTypes.ManagePicklists}>
-            <ResponsiveMenuButton id="samples-picklist-menu" items={items} text="Picklists" asSubMenu={asSubMenu} />
+            <ResponsiveMenuButton
+                className="samples-picklist-menu"
+                items={items}
+                text="Picklists"
+                asSubMenu={asSubMenu}
+            />
         </RequiresPermission>
     );
 });

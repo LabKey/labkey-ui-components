@@ -190,7 +190,7 @@ export const FindDerivativesMenuItem: FC<Props> = memo(props => {
 
     return (
         <DisableableMenuItem
-            operationPermitted={!invalidFilterNames}
+            disabled={invalidFilterNames !== ''}
             disabledMessage={DISABLED_FIND_DERIVATIVES_MSG + ' (' + invalidFilterNames + ').'}
             onClick={onClick}
             placement="right"
@@ -202,5 +202,12 @@ export const FindDerivativesMenuItem: FC<Props> = memo(props => {
 
 export const FindDerivativesButton: FC<Props> = memo(props => {
     const items = <FindDerivativesMenuItem {...props} />;
-    return <ResponsiveMenuButton id="sample-reports-menu" items={items} text="Reports" asSubMenu={props.asSubMenu} />;
+    return (
+        <ResponsiveMenuButton
+            className="sample-reports-menu"
+            items={items}
+            text="Reports"
+            asSubMenu={props.asSubMenu}
+        />
+    );
 });

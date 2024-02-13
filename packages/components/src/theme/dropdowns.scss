@@ -1,4 +1,3 @@
-
 .lk-dropdown.dropdown .dropdown-menu {
     z-index: 990; // render under our main navigation, but above most everything else
 }
@@ -9,4 +8,23 @@
 
 .caret.no-margin {
     margin: 0;
+}
+
+.dropdown-menu .dropdown-section-toggle a {
+    display: flex;
+}
+
+.dropdown-section-toggle__text {
+    flex: 1;
+}
+
+.dropdown-section-toggle .fa {
+    color: lightgray;
+    font-size: 8pt;
+    padding: 4px 0;
+    margin-left: 4px;
+
+    &:hover {
+        color: darken(lightgray, 10%);
+    }
 }

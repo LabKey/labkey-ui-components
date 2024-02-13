@@ -123,6 +123,7 @@ interface IDomainFormInput {
     headerTitle?: string;
     helpNoun?: string;
     helpTopic?: string;
+    hiddenFieldNames?: string[];
     // Used in AssayDesignerPanels for distinguishing FileAttachmentForms
     index?: number;
     initCollapsed?: boolean;
@@ -289,12 +290,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             }),
             () => {
                 let newDomain = this.validateDomain(domain);
-
-                // clear the search/filter state if collapsed
-                if (this.state.collapsed) {
-                    newDomain = this.getFilteredFields(newDomain);
-                }
-
+                newDomain = this.getFilteredFields(newDomain);
                 onChange?.(newDomain, false);
             }
         );
@@ -1023,11 +1019,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     getFilteredFields = (domain: DomainDesign, value?: string): DomainDesign => {
+        const { hiddenFieldNames } = this.props;
+
         const filteredFields = domain.fields.map(field => {
-            if (!value || (field.name && field.name.toLowerCase().indexOf(value.toLowerCase()) !== -1)) {
+            const fieldHidden = hiddenFieldNames?.indexOf(field.name) > -1;
+            const fieldSearchMatch =
+                !value || (field.name && field.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+
+            if (!fieldHidden && fieldSearchMatch) {
                 return field.set('visible', true);
             }
-
             return field.set('visible', false);
         });
 
@@ -1212,6 +1213,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             systemFields,
             testMode,
             todoIconHelpMsg,
+            hiddenFieldNames,
         } = this.props;
         const {
             bulkDeleteConfirmInfo,
@@ -1226,8 +1228,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             visibleSelection,
         } = this.state;
         const { fields } = domain;
+        const fieldSize = fields.size - (hiddenFieldNames?.length ?? 0);
         const headerDetails =
-            fields.size > 0 ? '' + fields.size + ' Field' + (fields.size > 1 ? 's' : '') + ' Defined' : undefined;
+            fieldSize > 0 ? '' + fieldSize + ' Field' + (fieldSize > 1 ? 's' : '') + ' Defined' : undefined;
         const hasFields = fields.size > 0;
         const styleToolbar =
             !hasFields && !systemFields && (this.shouldShowInferFromFile() || this.shouldShowImportExport());
@@ -1314,7 +1317,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 {!valueIsEmpty(search) && (
                                                     <span className="domain-search-text">
                                                         Showing {fields.filter(f => f.visible).size} of {fields.size}{' '}
-                                                        field {fields.size > 1 ? 's' : ''}.
+                                                        field{fields.size > 1 ? 's' : ''}.
                                                     </span>
                                                 )}
                                                 <FormControl

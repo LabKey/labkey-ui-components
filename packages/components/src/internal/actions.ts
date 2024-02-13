@@ -145,16 +145,19 @@ export function getExportParams(
     schemaQuery: SchemaQuery,
     options?: ExportOptions,
     advancedOptions?: Record<string, any>,
-    queryParameters?: Record<string, any>,
+    queryParameters?: Record<string, any>
 ): Record<string, any> {
     let params: any = {
         schemaName: schemaQuery.schemaName,
         'query.queryName': schemaQuery.queryName,
         'query.showRows': options?.showRows ? [options.showRows] : ['ALL'],
     };
-    Object.keys(queryParameters).forEach(param => {
-        params['query.param.' + param] = queryParameters[param];
-    });
+    if (queryParameters) {
+        Object.keys(queryParameters).forEach(param => {
+            params['query.param.' + param] = queryParameters[param];
+        });
+    }
+
     if (advancedOptions) params = { ...params, ...advancedOptions };
 
     if (schemaQuery.viewName) {

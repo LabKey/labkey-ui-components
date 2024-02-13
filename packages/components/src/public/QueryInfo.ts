@@ -319,16 +319,14 @@ export class QueryInfo {
         return this.getDisplayColumns(view, omittedColumns).filter(col => col.isUpdateColumn);
     }
 
-    getFilters(view?: string): Filter.IFilter[] {
-        if (view) {
-            const viewInfo = this.getView(view);
+    getFilters(view = ViewInfo.DEFAULT_NAME): Filter.IFilter[] {
+        const viewInfo = this.getView(view);
 
-            if (viewInfo) {
-                return viewInfo.filters;
-            }
-
-            console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
+        if (viewInfo) {
+            return viewInfo.filters;
         }
+
+        console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
 
         return [];
     }

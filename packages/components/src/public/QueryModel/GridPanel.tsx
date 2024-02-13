@@ -64,7 +64,7 @@ import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 import { SearchBox } from './SearchBox';
-import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
+import { actionValuesToString, filterArraysEqual, filtersEqual, sortsEqual } from './utils';
 import { GridFilterModal } from './GridFilterModal';
 import { FiltersButton } from './FiltersButton';
 import { FilterStatus } from './FilterStatus';
@@ -111,6 +111,7 @@ type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
     actionValues: ActionValue[];
+    searchActionValues: ActionValue[];
     onCustomizeView: () => void;
     onFilter: () => void;
     onManageViews: () => void;
@@ -147,7 +148,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 
     render(): ReactNode {
         const {
-            actionValues,
+            searchActionValues,
             allowViewCustomization,
             model,
             actions,
@@ -209,7 +210,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 
                             <div className={'button-bar__filter-search ' + hiddenWithLeftButtonsCls}>
                                 {showFiltersButton && <FiltersButton onFilter={onFilter} />}
-                                {showSearchInput && <SearchBox actionValues={actionValues} onSearch={onSearch} />}
+                                {showSearchInput && <SearchBox actionValues={searchActionValues} onSearch={onSearch} />}
                             </div>
                         </div>
                     </div>
@@ -260,7 +261,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                         <div className="grid-panel__button-bar-left">
                             <div className="button-bar__section">
                                 {showFiltersButton && <FiltersButton onFilter={onFilter} iconOnly />}
-                                {showSearchInput && <SearchBox actionValues={actionValues} onSearch={onSearch} />}
+                                {showSearchInput && <SearchBox actionValues={searchActionValues} onSearch={onSearch} />}
                             </div>
                         </div>
                         <div className="grid-panel__button-bar-right">
@@ -376,6 +377,7 @@ interface State {
     // TODO: replace actionValues with individual properties tracking searches, sorts, filters, and views separately.
     //  actionValues is a vestigal structure left behind from OmniBox which required us to store everything together.
     actionValues: ActionValue[];
+    searchActionValues: ActionValue[];
     disableColumnDrag: boolean;
     errorMsg: React.ReactNode;
     isViewSaved: boolean;
@@ -425,6 +427,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
         this.state = {
             actionValues: [],
+            searchActionValues: [],
             disableColumnDrag: false,
             showFilterModalFieldKey: undefined,
             showSaveViewModal: false,
@@ -456,11 +459,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         view: ViewAction;
     };
 
-    createGridActionValues = (): ActionValue[] => {
+    createGridActionValues = (): { actionValues: ActionValue[], searchActionValues: ActionValue[] } => {
         const { model } = this.props;
         const { filterArray, sorts } = model;
         const view = model.currentView;
         const actionValues = [];
+        const searchActionValues = [];
 
         const _sorts = view ? sorts.concat(view.sorts) : sorts;
         _sorts.forEach((sort): void => {
@@ -478,6 +482,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     actionValues.push(
                         this.gridActions.filter.actionValueFromFilter(filter, column, 'Locked (saved with view)')
                     );
+                } else if (filter.getColumnName() === '*') {
+                    actionValues.push(
+                        this.gridActions.search.actionValueFromFilter(filter, 'Locked (saved with view)')
+                    );
                 }
             });
         }
@@ -485,7 +493,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         // handle the model.filterArray (user-defined filters)
         filterArray.forEach((filter): void => {
             if (filter.getColumnName() === '*') {
-                actionValues.push(this.gridActions.search.actionValueFromFilter(filter));
+                const searchAction = this.gridActions.search.actionValueFromFilter(filter);
+                searchActionValues.push(searchAction);
             } else {
                 const column = model.getColumn(filter.getColumnName());
                 if (column) {
@@ -497,7 +506,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             }
         });
 
-        return actionValues;
+        return {
+            actionValues,
+            searchActionValues,
+        };
     };
 
     /**
@@ -505,14 +517,16 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
      * so we can properly render Column and View labels.
      */
     populateGridActions = (): void => {
-        const modelActionValues = this.createGridActionValues();
-        const modelActionValuesStr = actionValuesToString(modelActionValues);
+        const { actionValues, searchActionValues } = this.createGridActionValues();
+        const modelActionValuesStr = actionValuesToString(actionValues);
         const currentActionValuesStr = actionValuesToString(this.state.actionValues);
+        const searchActionsValuesStr = actionValuesToString(searchActionValues);
+        const currentSearchActionValuesStr = actionValuesToString(this.state.searchActionValues);
 
-        if (modelActionValuesStr !== currentActionValuesStr) {
+        if (modelActionValuesStr !== currentActionValuesStr || searchActionsValuesStr !== currentSearchActionValuesStr) {
             // The action values have changed due to external model changes (likely URL changes), so we need to
             // update the actionValues state with the newest values.
-            this.setState({ actionValues: modelActionValues, errorMsg: undefined });
+            this.setState({ actionValues, searchActionValues, errorMsg: undefined });
         }
     };
 
@@ -573,10 +587,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     viewUpdates = { filters: view.filters.filter(filter => !isFilterColumnNameMatch(filter, column)) };
                 }
             } else {
-                // remove all filters, but keep the search
+                // remove all filters, but keep the search that's not part of the view
                 newFilters = newFilters.filter(filter => filter.getFilterType() === Filter.Types.Q);
                 if (view?.filters.length) {
-                    viewUpdates = { filters: view.filters.filter(filter => filter.getFilterType() === Filter.Types.Q) };
+                    viewUpdates = { filters: [] };
                 }
             }
 
@@ -636,15 +650,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     onSearch = (value: string): void => {
         const { model, actions, allowSelections } = this.props;
-        const { actionValues } = this.state;
+        const { searchActionValues } = this.state;
 
-        const change = getSearchValueAction(actionValues, value);
+        const change = getSearchValueAction(searchActionValues, value);
         if (!change) return;
 
         let newFilters = model.filterArray;
         if (change.type === ChangeType.modify || change.type === ChangeType.remove) {
             // Remove the filter with the value of oldValue
-            const oldValue = actionValues[change.index].valueObject;
+            const oldValue = searchActionValues[change.index].valueObject;
             newFilters = newFilters.filter(filter => !filtersEqual(filter, oldValue));
         }
 
@@ -763,18 +777,19 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     saveAsSessionView = (updates: Partial<ViewInfo>): void => {
         const { model } = this.props;
         const { schemaQuery, containerPath } = model;
+        const changedFilters = updates.filters && !filterArraysEqual(updates.filters, model.currentView.filters);
         const viewInfo = model.currentView.mutate(updates);
 
         saveAsSessionView(schemaQuery, containerPath, viewInfo)
-            .then(this.afterViewChange)
+            .then(() => this.afterViewChange(changedFilters))
             .catch(errorMsg => {
                 this.setState({ errorMsg });
             });
     };
 
-    afterViewChange = (): void => {
+    afterViewChange = (reloadTotalCount?: boolean): void => {
         const { actions, model, allowSelections } = this.props;
-        actions.loadModel(model.id, allowSelections);
+        actions.loadModel(model.id, allowSelections, reloadTotalCount);
         this.setState({
             errorMsg: undefined,
         });
@@ -1036,6 +1051,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             showManageViewsModal,
             showSaveViewModal,
             actionValues,
+            searchActionValues,
             errorMsg,
             isViewSaved,
             disableColumnDrag,
@@ -1092,6 +1108,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                             <ButtonBar
                                 {...this.props}
                                 actionValues={actionValues}
+                                searchActionValues={searchActionValues}
                                 onExport={onExport}
                                 onFilter={this.showFilterModal}
                                 onSearch={this.onSearch}

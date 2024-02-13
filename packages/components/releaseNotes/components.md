@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.20.1
+*Released*: 13 February 2024
+- Issue 49612: Handle ending drag action "mouse up" outside the editable grid
+
 ### version 3.20.0
 *Released*: 13 February 2024
 - Plate Set assay import

@@ -702,7 +702,7 @@
     height: 0;
     border-style: solid;
     border-width: 0 10px 10px 10px;
-    border-color: transparent transparent $white transparent;
+    border-color: transparent transparent $gray-lighter transparent;
 }
 .navbar-icon-connector.has-unread {
     right: 28px;
@@ -725,10 +725,6 @@
     background-color: $gray-shadow;
     border-bottom: 1px solid $gray-border;
     border-radius: 5px 5px 0 0;
-
-    .navbar-icon-connector {
-        border-color: transparent transparent $gray-lighter transparent;
-    }
 }
 
 .navbar-item.visible-xs.pull-right > .dropdown.open > .btn-default.dropdown-toggle,

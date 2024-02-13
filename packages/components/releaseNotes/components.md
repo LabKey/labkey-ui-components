@@ -4,7 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.X
 *Released*: X February 2024
 - Date and Time fields polish
-  - TODO
+  - Fix app editable grid with 'aa' time format
+  - Fix date picker time picker with 'MMMM dd yyyy HH:mm:ss'
+  - Fix editable grid date/datetime field level format
 
 ### version 3.19.0
 *Released*: 8 February 2024

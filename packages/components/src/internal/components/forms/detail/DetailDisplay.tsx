@@ -394,6 +394,7 @@ export function resolveDetailEditRenderer(
                             showLabel={showLabel}
                             value={value}
                             wrapperClassName="col-sm-12"
+                            initValueFormatted={true}
                         />
                     );
                 }

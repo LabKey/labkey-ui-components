@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.20.2
+*Released*: 13 February 2024
+- Date and Time fields polish
+  - Fix app editable grid with 'aa' time format
+  - Fix date picker time picker with 'MMMM dd yyyy HH:mm:ss'
+  - Fix editable grid date/datetime field level format
+
 ### version 3.20.1
 *Released*: 13 February 2024
 - Issue 49612: Handle ending drag action "mouse up" outside the editable grid

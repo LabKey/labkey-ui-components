@@ -225,7 +225,6 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         queryColumn={field}
                         name={'field-value-date' + suffix}
                         value={valueRaw}
-                        initValueFormatted={false}
                         showLabel={false}
                         isClearable
                         hideTime={!isTimeOnly} // filter date and datetime by date only, without timepicker

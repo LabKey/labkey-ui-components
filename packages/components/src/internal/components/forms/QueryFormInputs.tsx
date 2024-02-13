@@ -326,7 +326,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     key={i}
                                     queryColumn={col}
                                     value={value}
-                                    initValueFormatted={false}
                                     allowDisable={allowFieldDisable}
                                     initiallyDisabled={shouldDisableField}
                                     onToggleDisable={this.onToggleDisable}

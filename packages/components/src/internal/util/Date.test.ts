@@ -24,6 +24,7 @@ import {
     getColFormattedDateFilterValue,
     getColFormattedTimeFilterValue,
     getJsonDateTimeFormatString,
+    getJsonFormatString,
     getNDaysStrFromToday,
     getNextDateStr,
     getParsedRelativeDateStr,
@@ -103,6 +104,26 @@ describe('Date Utilities', () => {
         });
     });
 
+    describe('getJsonFormatString', () => {
+        test('without date', () => {
+            expect(getJsonFormatString(undefined, 'Date')).toBe(undefined);
+            expect(getJsonFormatString(null, 'Date')).toBe(undefined);
+            expect(getJsonFormatString(undefined, 'DateTime')).toBe(undefined);
+            expect(getJsonFormatString(null, 'DateTime')).toBe(undefined);
+            expect(getJsonFormatString(undefined, 'Time')).toBe(undefined);
+            expect(getJsonFormatString(null, 'Time')).toBe(undefined);
+        });
+
+        test('with date', () => {
+            expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'Date')).toBe('2021-12-03');
+            expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'Date')).toBe('2021-12-03');
+            expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'DateTime')).toBe('2021-12-03 00:00:00');
+            expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'DateTime')).toBe('2021-12-03 23:59:00');
+            expect(getJsonFormatString(new Date('2021-12-03 00:00'), 'Time')).toBe('00:00:00');
+            expect(getJsonFormatString(new Date('2021-12-03 23:59'), 'Time')).toBe('23:59:00');
+        });
+    });
+
     describe('getColDateFormat', () => {
         test('datePlaceholder', () => {
             const col = new QueryColumn({ shortCaption: 'DateCol', rangeURI: DATETIME_TYPE.rangeURI });
@@ -113,7 +134,7 @@ describe('Date Utilities', () => {
                 dateFormat: 'yyyy-MM-dd HH:mm',
                 timeFormat: 'HH:mm',
             });
-            expect(getPickerDateAndTimeFormat(col, null, true)).toEqual({
+            expect(getPickerDateAndTimeFormat(col, true)).toEqual({
                 dateFormat: 'yyyy-MM-dd',
                 timeFormat: undefined,
             });
@@ -123,10 +144,6 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'Time')).toBe('HH:mm');
 
             expect(getPickerDateAndTimeFormat(timeCol)).toEqual({
-                dateFormat: 'HH:mm',
-                timeFormat: 'HH:mm',
-            });
-            expect(getPickerDateAndTimeFormat(timeCol, 'Time')).toEqual({
                 dateFormat: 'HH:mm',
                 timeFormat: 'HH:mm',
             });
@@ -141,7 +158,7 @@ describe('Date Utilities', () => {
                 dateFormat: 'yyyy-MM-dd HH:mm',
                 timeFormat: 'HH:mm',
             });
-            expect(getPickerDateAndTimeFormat(col, null, true)).toEqual({
+            expect(getPickerDateAndTimeFormat(col, true)).toEqual({
                 dateFormat: 'yyyy-MM-dd',
                 timeFormat: undefined,
             });
@@ -149,9 +166,9 @@ describe('Date Utilities', () => {
             const timeCol = new QueryColumn({ shortCaption: 'TimeCol', rangeURI: undefined });
             expect(getColDateFormat(timeCol, 'Time')).toBe('HH:mm');
 
-            expect(getPickerDateAndTimeFormat(timeCol, 'Time')).toEqual({
-                dateFormat: 'HH:mm',
-                timeFormat: undefined,
+            expect(getPickerDateAndTimeFormat(timeCol)).toEqual({
+                dateFormat: 'yyyy-MM-dd HH:mm',
+                timeFormat: 'HH:mm',
             });
         });
 
@@ -169,7 +186,7 @@ describe('Date Utilities', () => {
                 timeFormat: 'HH:mm',
             });
 
-            expect(getPickerDateAndTimeFormat(col, null, true)).toEqual({
+            expect(getPickerDateAndTimeFormat(col, true)).toEqual({
                 dateFormat: 'yyyy-MM-dd',
                 timeFormat: undefined,
             });
@@ -184,21 +201,6 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'yyyy-MM HH')).toBe('yyyy-MM HH');
             expect(getColDateFormat(col, 'yyyy-MM HH HH:mm')).toBe('yyyy-MM HH HH:mm');
             expect(getColDateFormat(col, 'yyyy-MM HH HH:mm', true)).toBe('yyyy-MM HH HH:mm');
-
-            expect(getPickerDateAndTimeFormat(col, 'yyyy-MM HH')).toEqual({
-                dateFormat: 'yyyy-MM HH',
-                timeFormat: undefined,
-            });
-
-            expect(getPickerDateAndTimeFormat(col, 'yyyy-MM HH HH:mm')).toEqual({
-                dateFormat: 'yyyy-MM HH HH:mm',
-                timeFormat: undefined,
-            });
-
-            expect(getPickerDateAndTimeFormat(col, 'yyyy-MM HH HH:mm', true)).toEqual({
-                dateFormat: 'yyyy-MM-dd',
-                timeFormat: undefined,
-            });
         });
 
         test('moment.js replacement', () => {
@@ -220,23 +222,6 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'DateTime')).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, 'DateTime', true)).toBe('yyyy-MM-dd HH:mm');
             expect(getColDateFormat(col, 'Time')).toBe('HH:mm');
-
-            expect(getPickerDateAndTimeFormat(col, 'Date')).toEqual({
-                dateFormat: 'yyyy-MM-dd',
-                timeFormat: undefined,
-            });
-            expect(getPickerDateAndTimeFormat(col, 'DateTime')).toEqual({
-                dateFormat: 'yyyy-MM-dd HH:mm',
-                timeFormat: 'HH:mm',
-            });
-            expect(getPickerDateAndTimeFormat(col, 'DateTime', true)).toEqual({
-                dateFormat: 'yyyy-MM-dd',
-                timeFormat: undefined,
-            });
-            expect(getPickerDateAndTimeFormat(col, 'Time')).toEqual({
-                dateFormat: 'HH:mm',
-                timeFormat: undefined,
-            });
         });
     });
 
@@ -254,12 +239,16 @@ describe('Date Utilities', () => {
         test('various formats', () => {
             expect(parseDateFNSTimeFormat('yyyy-MM HH')).toBeUndefined();
             expect(parseDateFNSTimeFormat('yyyy-MM-DD HHmm')).toBeUndefined();
-            expect(parseDateFNSTimeFormat('yyyy-MM HH HH:mm')).toBeUndefined();
+            expect(parseDateFNSTimeFormat('yyyy-MM HH HH:mm')).toBe('HH:mm');
             expect(parseDateFNSTimeFormat('yyyy:MM:DD kk:mm aa')).toBe('HH:mm');
             expect(parseDateFNSTimeFormat('yyyy-MM-DD HH:mm')).toBe('HH:mm');
             expect(parseDateFNSTimeFormat('yyyy:MM:DD kk:mm')).toBe('HH:mm');
             expect(parseDateFNSTimeFormat('yyyy:MM:DD hh:mm')).toBe('hh:mm a');
             expect(parseDateFNSTimeFormat('yyyy:MM:DD KK:mm')).toBe('hh:mm a');
+            expect(parseDateFNSTimeFormat('MMMM dd yyyy HH:mm')).toBe('HH:mm');
+            expect(parseDateFNSTimeFormat('MMMM dd yyyy HH:mm:ss')).toBe('HH:mm:ss');
+            expect(parseDateFNSTimeFormat('MMMM dd yyyy hh:mm:ss a')).toBe('hh:mm:ss a');
+            expect(parseDateFNSTimeFormat('MMMM dd yyyy hh:mm:ss aa')).toBe('hh:mm:ss a');
         });
     });
 

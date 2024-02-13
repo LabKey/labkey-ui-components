@@ -1,15 +1,26 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.X
-*Released*: X February 2024
+### version 3.20.2
+*Released*: 13 February 2024
 - Date and Time fields polish
   - Fix app editable grid with 'aa' time format
   - Fix date picker time picker with 'MMMM dd yyyy HH:mm:ss'
   - Fix editable grid date/datetime field level format
 
+### version 3.20.1
+*Released*: 13 February 2024
+- Issue 49612: Handle ending drag action "mouse up" outside the editable grid
+
+### version 3.20.0
+*Released*: 13 February 2024
+- Plate Set assay import
+  - AssayImportPanels to use plateSet id in URL and to show Plate Set select instead of Plate select in input form
+  - App editable grid assay import to filter plate by selected plate set
+  - Hide PlateTemplate field from assay designer Run Domain fields in app
+
 ### version 3.19.0
-*Released*: 8 February 2024
+*Released*: 12 February 2024
 - DisableableMenuItem: change operationPermitted prop to disabled
   - not just a rename, this inverts the expected value
 - Add DropdownSection

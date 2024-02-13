@@ -10,6 +10,10 @@ import { TEST_USER_EDITOR } from '../userFixtures';
 
 import { EditInlineField } from './EditInlineField';
 
+beforeAll(() => {
+    global.console.warn = jest.fn();
+});
+
 describe('EditInlineField', () => {
     const DEFAULT_PROPS = {
         name: 'name',

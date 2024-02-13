@@ -16,7 +16,7 @@
 import { Query, Utils } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
-import React, { ChangeEvent, MouseEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
+import React, { ChangeEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
 import { Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
@@ -140,6 +140,8 @@ const COUNT_COL = new GridColumn({
         </td>
     ),
 });
+
+type GridMouseEvent = React.MouseEvent<HTMLDivElement> | MouseEvent;
 
 // the column index for cell values and cell messages does not include either the selection
 // column or the row number column, so we adjust the value passed to <Cell> to accommodate.
@@ -907,7 +909,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     headerCell = (col: GridColumn): ReactNode => {
         const { allowBulkRemove, allowBulkUpdate, queryInfo } = this.props;
 
-        if ((allowBulkRemove || allowBulkUpdate) && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
+        if ((allowBulkRemove || allowBulkUpdate) && col.index.toLowerCase() === GRID_SELECTION_INDEX) {
             return headerSelectionCell(this.selectAll, this.state.selectedState, false);
         }
 
@@ -928,7 +930,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         this.toggleMask(false);
     };
 
-    handleDrag = (event: MouseEvent): boolean => {
+    handleDrag = (event: GridMouseEvent): boolean => {
         if (!this.props.editorModel.hasFocus) {
             event.preventDefault();
             return true;
@@ -937,7 +939,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return false;
     };
 
-    beginDrag = (event: MouseEvent): void => {
+    beginDrag = (event: GridMouseEvent): void => {
         const { disabled, editorModel } = this.props;
         if (this.handleDrag(event) && !disabled) {
             clearTimeout(this.dragDelay);
@@ -956,18 +958,20 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     nextState.initialSelection = initialSelection;
                 }
                 this.setState(nextState as EditableGridState);
+                document.addEventListener('mouseup', this.onDocumentMouseUp);
             }, 150);
         }
     };
 
     inDrag = (): boolean => this.state.inDrag;
 
-    endDrag = (event: MouseEvent): void => {
+    endDrag = (event: GridMouseEvent): void => {
         if (this.handleDrag(event)) {
             if (this.dragDelay) {
                 clearTimeout(this.dragDelay);
                 this.dragDelay = undefined;
             } else {
+                document.removeEventListener('mouseup', this.onDocumentMouseUp);
                 this.setState({ inDrag: false });
             }
         }
@@ -1004,8 +1008,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const isShift = event.shiftKey;
         const colIdx = editorModel.selectedColIdx;
         const rowIdx = editorModel.selectedRowIdx;
-        let nextCol;
-        let nextRow;
+        let nextCol: number;
+        let nextRow: number;
 
         switch (event.key) {
             case Key.ARROW_LEFT:
@@ -1093,7 +1097,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
-    _dragFill = async (initialSelection: string[]) => {
+    _dragFill = async (initialSelection: string[]): Promise<void> => {
         const { editorModel, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
 
         if (editorModel.isMultiSelect) {
@@ -1116,14 +1120,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
-    onMouseUp = (event: MouseEvent): void => {
-        const { disabled } = this.props;
-
-        if (disabled) return;
-
+    onMouseUp = (event: GridMouseEvent): void => {
+        if (this.props.disabled) return;
         this.endDrag(event);
         const initialSelection = this.state.initialSelection;
         if (initialSelection?.length > 0) this._dragFill(initialSelection);
+    };
+
+    // Issue 49612: Handle ending drag action "mouse up" outside the editable grid
+    onDocumentMouseUp = (event: MouseEvent): void => {
+        this.onMouseUp(event);
     };
 
     fillDown = (): void => {

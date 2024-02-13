@@ -144,8 +144,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
         if (this.state.relativeInputValue) {
             this.props.onChange?.(this.state.relativeInputValue, this.state.relativeInputValue);
-        }
-        else {
+        } else {
             const formatted = getFormattedStringFromDate(date, queryColumn, hideTime);
 
             if (isTimeOnly) {
@@ -160,9 +159,10 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
                 // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
                 if (this.props.formsy) {
-                    this.props.setValue?.(isDateOnly ? getJsonDateFormatString(date) : getJsonDateTimeFormatString(date));
+                    this.props.setValue?.(
+                        isDateOnly ? getJsonDateFormatString(date) : getJsonDateTimeFormatString(date)
+                    );
                 }
-
             }
         }
     };

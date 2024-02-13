@@ -147,7 +147,6 @@ describe('Date Utilities', () => {
                 dateFormat: 'HH:mm',
                 timeFormat: 'HH:mm',
             });
-
         });
 
         test('datePlaceholder without col.rangeURI', () => {
@@ -167,7 +166,7 @@ describe('Date Utilities', () => {
             const timeCol = new QueryColumn({ shortCaption: 'TimeCol', rangeURI: undefined });
             expect(getColDateFormat(timeCol, 'Time')).toBe('HH:mm');
 
-            expect(getPickerDateAndTimeFormat(timeCol,)).toEqual({
+            expect(getPickerDateAndTimeFormat(timeCol)).toEqual({
                 dateFormat: 'yyyy-MM-dd HH:mm',
                 timeFormat: 'HH:mm',
             });
@@ -202,7 +201,6 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'yyyy-MM HH')).toBe('yyyy-MM HH');
             expect(getColDateFormat(col, 'yyyy-MM HH HH:mm')).toBe('yyyy-MM HH HH:mm');
             expect(getColDateFormat(col, 'yyyy-MM HH HH:mm', true)).toBe('yyyy-MM HH HH:mm');
-
         });
 
         test('moment.js replacement', () => {
@@ -251,7 +249,6 @@ describe('Date Utilities', () => {
             expect(parseDateFNSTimeFormat('MMMM dd yyyy HH:mm:ss')).toBe('HH:mm:ss');
             expect(parseDateFNSTimeFormat('MMMM dd yyyy hh:mm:ss a')).toBe('hh:mm:ss a');
             expect(parseDateFNSTimeFormat('MMMM dd yyyy hh:mm:ss aa')).toBe('hh:mm:ss a');
-
         });
     });
 

@@ -121,9 +121,11 @@ export function getFormattedStringFromDate(date: Date, queryColumn: QueryColumn,
     const isTimeOnly = queryColumn.isTimeColumn;
     const isDateOnly = queryColumn.isDateOnlyColumn || hideTime;
 
-    const rawType = isTimeOnly ? 'Time' : (isDateOnly ? 'Date' : 'DateTime');
+    const rawType = isTimeOnly ? 'Time' : isDateOnly ? 'Date' : 'DateTime';
     const formatStr = getColDateFormat(queryColumn, queryColumn.format ?? rawType);
-    if (!formatStr) {return getJsonFormatString(date, rawType)};
+    if (!formatStr) {
+        return getJsonFormatString(date, rawType);
+    }
 
     try {
         return moment(date).format(toMomentFormatString(formatStr));
@@ -180,7 +182,8 @@ export function parseDateFNSTimeFormat(dateFormat: string): string {
     if (splitIndex > -1) {
         const remaining = dateFormat.substring(splitIndex + 1);
         format = parseFNSTimeFormat(remaining);
-        if (!format && remaining.indexOf(' h') > 0) { // yyyy MM dd hh:mm
+        if (!format && remaining.indexOf(' h') > 0) {
+            // yyyy MM dd hh:mm
             splitIndex = remaining.indexOf(' h');
             format = parseFNSTimeFormat(remaining.substring(splitIndex + 1));
         }
@@ -257,7 +260,13 @@ function getMomentTimeFormat(container?: Partial<Container>): string {
     return toMomentFormatString((container ?? getServerContext().container).formats.timeFormat) ?? 'HH:mm:ss';
 }
 
-export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date, timeOnly?: boolean, dateOnly?: boolean): Date {
+export function parseDate(
+    dateStr: string,
+    dateFormat?: string,
+    minDate?: Date,
+    timeOnly?: boolean,
+    dateOnly?: boolean
+): Date {
     if (!dateStr) return null;
 
     // Moment.js and react datepicker date format is different
@@ -277,8 +286,7 @@ export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date, 
         let date;
         if (timeOnly) {
             date = moment(dateStr, getMomentTimeFormat(), false);
-        }
-        else {
+        } else {
             date = moment(dateStr, dateOnly ? getMomentDateFormat() : getMomentDateTimeFormat(), true);
         }
         if (date && date.isValid()) {
@@ -339,8 +347,7 @@ export function getJsonDateFormatString(date: Date): string {
 }
 
 export function getJsonFormatString(date: Date, rawFormat: string): string {
-    if (!date)
-        return undefined;
+    if (!date) return undefined;
     if (rawFormat === 'DateTime') return getJsonDateTimeFormatString(date);
     if (rawFormat === 'Time') return getJsonTimeFormatString(date);
     return getJsonDateFormatString(date);

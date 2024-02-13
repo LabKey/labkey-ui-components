@@ -6,10 +6,7 @@ import { Filter } from '@labkey/api';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SelectInput } from '../forms/input/SelectInput';
 
-import {
-    getJsonDateFormatString,
-    getJsonTimeFormatString,
-} from '../../util/Date';
+import { getJsonDateFormatString, getJsonTimeFormatString } from '../../util/Date';
 
 import { isOntologyEnabled } from '../../app/utils';
 

@@ -56,43 +56,41 @@ const DATE_HELP_CONTENT = (
         <p>Examples for Jan 20, 2023:</p>
         <table className="table-bordered margin-bottom help-table">
             <thead>
-            <tr>
-                <th>Format String</th>
-                <th>Display Result</th>
-            </tr>
+                <tr>
+                    <th>Format String</th>
+                    <th>Display Result</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>yyyy-MM-dd</td>
-                <td>2023-01-20</td>
-            </tr>
-            <tr>
-                <td>MM/dd/yyyy</td>
-                <td>01/20/2023</td>
-            </tr>
-            <tr>
-                <td>dd-MM-yy</td>
-                <td>20-01-23</td>
-            </tr>
-            <tr>
-                <td>dd-MMM-yyyy</td>
-                <td>20-Jan-2023</td>
-            </tr>
+                <tr>
+                    <td>yyyy-MM-dd</td>
+                    <td>2023-01-20</td>
+                </tr>
+                <tr>
+                    <td>MM/dd/yyyy</td>
+                    <td>01/20/2023</td>
+                </tr>
+                <tr>
+                    <td>dd-MM-yy</td>
+                    <td>20-01-23</td>
+                </tr>
+                <tr>
+                    <td>dd-MMM-yyyy</td>
+                    <td>20-Jan-2023</td>
+                </tr>
             </tbody>
         </table>
-</>
-)
-;
-
+    </>
+);
 const TIME_HELP_CONTENT = (
     <>
         <p>Examples for 01:45:15 PM:</p>
         <table className="table-bordered margin-bottom help-table">
             <thead>
-            <tr>
-                <th>Format String</th>
-                <th>Display Result</th>
-            </tr>
+                <tr>
+                    <th>Format String</th>
+                    <th>Display Result</th>
+                </tr>
             </thead>
             <tbody>
                 <tr>
@@ -116,11 +114,11 @@ const TIME_HELP_CONTENT = (
     </>
 );
 
-const getProjectDateTimeHelp = (content: ReactNode, isDate : boolean = true, isTime : boolean = true): ReactNode => {
-    const titleLabel = isDate && isTime ? 'Date-time' : (isDate ? 'Date' : 'Time');
-    const contentLabel = isDate && isTime ? 'date or time' : (isDate ? 'date' : 'time');
+const getProjectDateTimeHelp = (content: ReactNode, isDate: boolean = true, isTime: boolean = true): ReactNode => {
+    const titleLabel = isDate && isTime ? 'Date-time' : isDate ? 'Date' : 'Time';
+    const contentLabel = isDate && isTime ? 'date or time' : isDate ? 'date' : 'time';
     return (
-        <LabelHelpTip title={titleLabel + " format"}>
+        <LabelHelpTip title={titleLabel + ' format'}>
             <p>
                 To control how a {contentLabel} value is displayed, provide a string format compatible with the Java{' '}
                 <JavaDocsLink urlSuffix="java/text/SimpleDateFormat.html">SimpleDateFormat</JavaDocsLink> class.

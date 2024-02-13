@@ -1,15 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.20.0
+*Released*: 13 February 2024
 - Plate Set assay import
   - AssayImportPanels to use plateSet id in URL and to show Plate Set select instead of Plate select in input form
   - App editable grid assay import to filter plate by selected plate set
   - Hide PlateTemplate field from assay designer Run Domain fields in app
 
 ### version 3.19.0
-*Released*: 8 February 2024
+*Released*: 12 February 2024
 - DisableableMenuItem: change operationPermitted prop to disabled
   - not just a rename, this inverts the expected value
 - Add DropdownSection

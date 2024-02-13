@@ -132,7 +132,15 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
 
     return (
         <div className="product-menu">
-            <button className="product-menu-button" onClick={toggleMenu} ref={toggleRef} type="button">
+            <button
+                aria-haspopup="true"
+                aria-expanded={show}
+                className="product-menu-button"
+                onClick={toggleMenu}
+                ref={toggleRef}
+                role="button"
+                type="button"
+            >
                 <ProductMenuButtonTitle container={container} folderItems={folderItems} location={location} />
                 <span className="caret" />
             </button>

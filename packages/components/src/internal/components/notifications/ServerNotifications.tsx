@@ -4,10 +4,11 @@ import classNames from 'classnames';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { useNavMenuState } from '../../useNavMenuState';
+
 import { markNotificationsAsRead } from './actions';
 import { ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
-import { useNavMenuState } from '../../useNavMenuState';
 
 export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
     const { markAllNotificationsRead, maxRows, serverActivity } = props;
@@ -37,8 +38,7 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
 
     const unreadCount = useMemo(() => {
         if (!serverActivity || !serverActivity.isLoaded) return 0;
-        return 5;
-        // return serverActivity.unreadCount;
+        return serverActivity.unreadCount;
     }, [serverActivity]);
     const hasAnyInProgress = serverActivity?.inProgressCount > 0;
     const onViewAll = useCallback(() => {
@@ -74,7 +74,15 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
     });
     return (
         <div className="navbar-item pull-right server-notifications navbar-menu">
-            <button type="button" className="navbar-menu-button" onClick={toggleMenu} ref={toggleRef}>
+            <button
+                aria-haspopup="true"
+                aria-expanded={show}
+                className="navbar-menu-button"
+                onClick={toggleMenu}
+                ref={toggleRef}
+                role="button"
+                type="button"
+            >
                 <span className={iconClassName} />
                 {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
             </button>

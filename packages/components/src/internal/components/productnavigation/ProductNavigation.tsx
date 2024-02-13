@@ -1,7 +1,8 @@
 import React, { FC, memo, useCallback } from 'react';
 
-import { ProductNavigationMenu } from './ProductNavigationMenu';
 import { useNavMenuState } from '../../useNavMenuState';
+
+import { ProductNavigationMenu } from './ProductNavigationMenu';
 
 export const ProductNavigation: FC = memo(() => {
     const { show, setShow, menuRef, toggleRef } = useNavMenuState();
@@ -9,7 +10,15 @@ export const ProductNavigation: FC = memo(() => {
     const toggleMenu = useCallback(() => setShow(s => !s), []);
     return (
         <div className="navbar-item pull-right product-navigation-menu hidden-xs navbar-menu">
-            <button type="button" className="navbar-menu-button" onClick={toggleMenu} ref={toggleRef}>
+            <button
+                aria-haspopup="true"
+                aria-expanded={show}
+                className="navbar-menu-button"
+                onClick={toggleMenu}
+                ref={toggleRef}
+                role="button"
+                type="button"
+            >
                 <span className="fa fa-th-large navbar-header-icon" />
             </button>
 

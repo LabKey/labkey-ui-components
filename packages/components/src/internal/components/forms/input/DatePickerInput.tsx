@@ -15,7 +15,7 @@
  */
 import React, { FC, ReactNode, RefObject } from 'react';
 import { withFormsy } from 'formsy-react';
-import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
+import DatePicker from 'react-datepicker';
 
 import { FieldLabel } from '../FieldLabel';
 import {
@@ -195,21 +195,9 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         this.input.current?.setFocus();
     };
 
-    onSelect = (date: Date, event: React.SyntheticEvent<any> | undefined): void => {
+    onSelect = (): void => {
         // focus the input so an onBlur action gets triggered after selection has been made
         this.input.current?.setFocus();
-    };
-
-    getAdditionalConfig = (): Partial<ReactDatePickerProps> => {
-        const { inlineEdit, onBlur } = this.props;
-        if (inlineEdit)
-            return {
-                onSelect: this.onSelect,
-                onBlur,
-                shouldCloseOnSelect: false,
-            };
-
-        return {};
     };
 
     render(): ReactNode {
@@ -234,6 +222,8 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             showLabel,
             value,
             wrapperClassName,
+            onBlur,
+            inlineEdit
         } = this.props;
         const { isDisabled, selectedDate, invalid } = this.state;
         const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, hideTime);
@@ -241,7 +231,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         const isTimeOnly = queryColumn.isTimeColumn;
         const picker = (
             <DatePicker
-                {...this.getAdditionalConfig()}
                 ref={this.input}
                 autoComplete="off"
                 autoFocus={autoFocus}
@@ -264,6 +253,9 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 timeFormat={timeFormat}
                 value={allowRelativeInput && !isTimeOnly && isRelativeDateFilterValue(value) ? value : undefined}
                 wrapperClassName={inputWrapperClassName}
+                onSelect={inlineEdit ? this.onSelect : undefined}
+                onBlur={inlineEdit ? onBlur : undefined}
+                shouldCloseOnSelect={inlineEdit ? false : undefined}
             />
         );
 

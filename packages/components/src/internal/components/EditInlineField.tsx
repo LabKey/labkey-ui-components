@@ -144,7 +144,7 @@ export const EditInlineField: FC<Props> = memo(props => {
             if (typeof date === 'string') setTimeJsonValue(date);
             else setDateValue(date);
         },
-        [isTime]
+        []
     );
 
     const onFormsyColumnChange = useCallback(

@@ -28,7 +28,12 @@ const LineageDetailImpl: FC<LineageDetailProps & InjectedQueryModels> = memo(pro
     const detailColumns = [...queryModels.model.detailColumns, ...additionalCols];
 
     return (
-        <DetailPanel model={queryModels.model} queryColumns={detailColumns} detailRenderer={_resolveDetailRenderer} />
+        <DetailPanel
+            tableCls="detail-component--table__auto"
+            model={queryModels.model}
+            queryColumns={detailColumns}
+            detailRenderer={_resolveDetailRenderer}
+        />
     );
 });
 

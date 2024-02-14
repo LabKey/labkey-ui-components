@@ -3,6 +3,8 @@ import { List, OrderedMap } from 'immutable';
 import { Panel } from 'react-bootstrap';
 import { Query } from '@labkey/api';
 
+import classNames from 'classnames';
+
 import { DETAIL_TABLE_CLASSES } from '../constants';
 
 import { decodePart } from '../../../../public/SchemaQuery';
@@ -142,6 +144,7 @@ export interface DetailDisplaySharedProps extends RenderOptions {
     fieldHelpTexts?: Record<string, string>;
     fileInputRenderer?: (col: QueryColumn, data: any) => ReactNode;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
+    tableCls?: string;
     titleRenderer?: TitleRenderer;
 }
 
@@ -161,6 +164,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
         fileInputRenderer,
         fieldHelpTexts,
         onAdditionalFormDataChange,
+        tableCls,
     } = props;
 
     const detailRenderer = useMemo(() => {
@@ -200,7 +204,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
                     }, OrderedMap<string, any>());
 
                     return (
-                        <table className={DETAIL_TABLE_CLASSES} key={i}>
+                        <table className={classNames(DETAIL_TABLE_CLASSES, tableCls)} key={i}>
                             <tbody>
                                 {fields
                                     .map((field, key) => {

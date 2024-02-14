@@ -8,6 +8,20 @@
   }
 }
 
+.detail-component--table__auto {
+    table-layout: auto;
+    border: unset;
+
+    tbody tr:first-child td {
+        border-top: none;
+    }
+
+    // first child td width is 20%
+    tbody tr td:first-child {
+        width: 50%;
+    }
+}
+
 .detail-component--sequence--container__relative {
   position: relative;
   height: 300px;

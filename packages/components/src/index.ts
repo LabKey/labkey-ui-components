@@ -100,7 +100,6 @@ import { ExpandableFilterToggle } from './internal/components/base/ExpandableFil
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
 import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem';
-import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
 import { InsufficientPermissionsAlert } from './internal/components/permissions/InsufficientPermissionsAlert';
 import { GroupDetailsPanel } from './internal/components/permissions/GroupDetailsPanel';
@@ -1619,7 +1618,6 @@ export {
     DisableableAnchor,
     DragDropHandle,
     FieldExpansionToggle,
-    LoadingModal,
     LoadingSpinner,
     CreatedModified,
     DeleteIcon,

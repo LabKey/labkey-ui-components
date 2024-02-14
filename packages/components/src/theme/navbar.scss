@@ -139,21 +139,16 @@
         background-color: transparent;
     }
 }
+
 .navbar-menu__content {
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     margin-top: 5px;
-    position: absolute;
-    z-index: 1000;
     right: -21px;
     top: 125%;
 }
 
 .product-menu-content,
-.navbar-menu-content {
-    background-color: #fff;
+.navbar-menu__content {
+    background-color: $white;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 4px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);

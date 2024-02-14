@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal as BSModal } from 'react-bootstrap';
 import moment from 'moment';
 import { User, UserWithPermissions } from '@labkey/api';
 
@@ -11,63 +11,41 @@ import { UserLink } from '../components/user/UserLink';
 
 import { DropdownAnchor, MenuItem } from '../dropdowns';
 
+import { Modal } from '../Modal';
+
 import { AnnouncementModel } from './model';
 import { ThreadEditor, ThreadEditorProps } from './ThreadEditor';
 import { ThreadAttachments } from './ThreadAttachments';
 
-interface DeleteThreadModalProps {
+interface DeleteThreadBSModalProps {
     cancel: () => void;
     onDelete: () => void;
 }
 
-const DeleteThreadModal: FC<DeleteThreadModalProps> = ({ cancel, onDelete }) => (
-    <Modal show onHide={cancel} className="delete-thread-modal">
-        <Modal.Header>
-            <Modal.Title>Delete this comment thread?</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-            Deleting this comment will also delete any replies to the original comment. Are you sure you want to delete
-            this thread?
-        </Modal.Body>
-
-        <Modal.Footer>
-            <div className="pull-left">
-                <button className="btn btn-default" onClick={cancel}>
-                    Cancel
-                </button>
-            </div>
-
-            <div className="pull-right">
-                <button className="btn btn-danger delete-thread-modal__confirm" onClick={onDelete}>
-                    Yes, Delete Thread
-                </button>
-            </div>
-        </Modal.Footer>
+const DeleteThreadModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) => (
+    <Modal
+        canConfirm
+        confirmText="Yes, delete thread"
+        confirmClass="btn-danger"
+        onCancel={cancel}
+        onConfirm={onDelete}
+        titleText="Delete this comment thread?"
+    >
+        Deleting this comment will also delete any replies to the original comment. Are you sure you want to delete this
+        thread?
     </Modal>
 );
 
-const DeleteReplyModal: FC<DeleteThreadModalProps> = ({ cancel, onDelete }) => (
-    <Modal show onHide={cancel} className="delete-thread-modal">
-        <Modal.Header>
-            <Modal.Title>Delete this reply?</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>Are you sure you want to delete this reply?</Modal.Body>
-
-        <Modal.Footer>
-            <div className="pull-left">
-                <button className="btn btn-default" onClick={cancel}>
-                    Cancel
-                </button>
-            </div>
-
-            <div className="pull-right">
-                <button className="btn btn-danger delete-thread-modal__confirm" onClick={onDelete}>
-                    Yes, Delete Reply
-                </button>
-            </div>
-        </Modal.Footer>
+const DeleteReplyModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) => (
+    <Modal
+        canConfirm
+        confirmText="Yes, delete reply"
+        confirmClass="btn-danger"
+        onCancel={cancel}
+        onConfirm={onDelete}
+        titleText="Delete this reply?"
+    >
+        Are you sure you want to delete this reply?
     </Modal>
 );
 
@@ -82,7 +60,7 @@ interface ThreadBlockHeaderProps {
 
 const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
     const { created, modified, onDelete, onEdit, author, isThread } = props;
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showDeleteBSModal, setShowDeleteBSModal] = useState(false);
 
     const formattedCreate = useMemo(() => moment(created).fromNow(), [created]);
     const isEdited = useMemo(() => {
@@ -90,11 +68,11 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
     }, [created, modified]);
 
     const onCancelDelete = useCallback(() => {
-        setShowDeleteModal(false);
+        setShowDeleteBSModal(false);
     }, []);
 
     const onShowDelete = useCallback(() => {
-        setShowDeleteModal(true);
+        setShowDeleteBSModal(true);
     }, []);
 
     return (
@@ -126,8 +104,8 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
                     </DropdownAnchor>
                 )}
             </div>
-            {showDeleteModal && isThread && <DeleteThreadModal cancel={onCancelDelete} onDelete={onDelete} />}
-            {showDeleteModal && !isThread && <DeleteReplyModal cancel={onCancelDelete} onDelete={onDelete} />}
+            {showDeleteBSModal && isThread && <DeleteThreadModal cancel={onCancelDelete} onDelete={onDelete} />}
+            {showDeleteBSModal && !isThread && <DeleteReplyModal cancel={onCancelDelete} onDelete={onDelete} />}
         </div>
     );
 };

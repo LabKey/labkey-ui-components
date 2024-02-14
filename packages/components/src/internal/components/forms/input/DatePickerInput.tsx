@@ -177,8 +177,15 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
     };
 
     onChangeRaw = (event?: any): void => {
+        const { queryColumn } = this.props;
+        const isTime = queryColumn.isTimeColumn;
         const value = event?.target?.value;
-        if (isRelativeDateFilterValue(value)) {
+
+        if (isTime) {
+            if (!value) {
+                this.onChange(null);
+            }
+        } else if (isRelativeDateFilterValue(value)) {
             this.setState({ relativeInputValue: value });
             this.props.onChange?.(value);
         } else {

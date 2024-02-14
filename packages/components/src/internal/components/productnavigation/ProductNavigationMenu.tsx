@@ -1,5 +1,7 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, MutableRefObject, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext, Security } from '@labkey/api';
+
+import classNames from 'classnames';
 
 import { LKS_PRODUCT_ID } from '../../app/constants';
 import { hasPremiumModule } from '../../app/utils';
@@ -21,6 +23,7 @@ import { ProductNavigationHeader } from './ProductNavigationHeader';
 interface ProductNavigationMenuProps {
     disableLKSContainerLink?: boolean;
     onCloseMenu?: () => void;
+    menuRef: MutableRefObject<HTMLDivElement>;
 }
 
 export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
@@ -60,14 +63,15 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
 
     return (
         <ProductNavigationMenuImpl
+            disableLKSContainerLink={disableLKSContainerLink}
             error={error}
             homeVisible={homeVisible}
-            disableLKSContainerLink={disableLKSContainerLink}
-            tabs={tabs}
-            products={products?.sort(naturalSortByProperty('productName'))}
             onCloseMenu={props.onCloseMenu}
-            selectedProductId={selectedProductId}
             onSelection={onSelection}
+            menuRef={props.menuRef}
+            products={products?.sort(naturalSortByProperty('productName'))}
+            selectedProductId={selectedProductId}
+            tabs={tabs}
         />
     );
 });
@@ -87,14 +91,6 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
     const { error, products, homeVisible, disableLKSContainerLink, tabs, onCloseMenu, selectedProductId, onSelection } =
         props;
 
-    if (error) {
-        return <Alert>{error}</Alert>;
-    }
-
-    if (!products || !tabs) {
-        return <LoadingSpinner wrapperClassName="product-navigation-loading-item" />;
-    }
-
     const selectedProduct = getSelectedProduct(products, selectedProductId);
     const showProductDrawer = selectedProductId === undefined;
     const showLKSDrawer = selectedProductId === LKS_PRODUCT_ID;
@@ -102,26 +98,39 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
     const { user } = getServerContext();
     const showMenuSettings = useMemo(() => {
         return hasPremiumModule() && user.isRootAdmin;
-    }, [user, hasPremiumModule]);
+    }, [user]);
+    const className = classNames('product-navigation-container', 'navbar-menu__content', { wider: showProductDrawer });
+    const onHeaderClick = useCallback(() => onSelection(undefined), [onSelection]);
+    const loading = !products || !tabs;
 
     return (
-        <div className={'product-navigation-container' + (showProductDrawer ? ' wider' : '')}>
+        <div className={className} ref={props.menuRef}>
             <ProductNavigationHeader
                 productId={selectedProductId}
-                onClick={() => onSelection(undefined)}
+                onClick={onHeaderClick}
                 title={selectedProduct?.productName}
             />
-            <ul className="product-navigation-listing">
-                {showProductDrawer && <ProductAppsDrawer {...props} onClick={onSelection} />}
-                {showLKSDrawer && (
-                    <ProductLKSDrawer
-                        disableLKSContainerLink={disableLKSContainerLink}
-                        showHome={homeVisible}
-                        tabs={tabs}
-                    />
-                )}
-                {showSectionsDrawer && <ProductSectionsDrawer product={selectedProduct} onCloseMenu={onCloseMenu} />}
-            </ul>
+
+            {loading && <LoadingSpinner wrapperClassName="product-navigation-loading-item" />}
+
+            {error && <Alert>{error}</Alert>}
+
+            {!loading && !error && (
+                <ul className="product-navigation-listing">
+                    {showProductDrawer && <ProductAppsDrawer products={products} onClick={onSelection} />}
+                    {showLKSDrawer && (
+                        <ProductLKSDrawer
+                            disableLKSContainerLink={disableLKSContainerLink}
+                            showHome={homeVisible}
+                            tabs={tabs}
+                        />
+                    )}
+                    {showSectionsDrawer && (
+                        <ProductSectionsDrawer product={selectedProduct} onCloseMenu={onCloseMenu} />
+                    )}
+                </ul>
+            )}
+
             {selectedProductId === undefined && (
                 <div className="product-navigation-footer">
                     {showMenuSettings && (

@@ -5,21 +5,30 @@ interface ProductAppMenuItemProps {
     disabled?: boolean;
     iconUrl: string;
     iconUrlAlt?: string;
-    onClick: () => void;
+    onClick: (productId: string) => void;
+    productId: string;
     subtitle?: string;
     title: string;
 }
 
 export const ProductAppMenuItem: FC<ProductAppMenuItemProps> = memo(props => {
-    const { iconUrl, iconUrlAlt, title, subtitle, onClick, disabled } = props;
+    const { iconUrl, iconUrlAlt, title, subtitle, onClick, disabled, productId } = props;
     const [hovered, setHovered] = useState<boolean>(false);
     const onEnter = useCallback(() => setHovered(true), [setHovered]);
     const onLeave = useCallback(() => setHovered(false), [setHovered]);
+    const onClick_ = useCallback(
+        event => {
+            // stopImmediatePropagation in order to prevent the document click handler from closing the menu
+            event.nativeEvent.stopImmediatePropagation();
+            onClick(productId);
+        },
+        [onClick, productId]
+    );
 
     return (
         <li
             className={classNames({ 'labkey-page-nav': hovered && !disabled, 'labkey-page-nav-disabled': disabled })}
-            onClick={disabled ? undefined : onClick}
+            onClick={disabled ? undefined : onClick_}
             onMouseEnter={onEnter}
             onMouseLeave={onLeave}
         >

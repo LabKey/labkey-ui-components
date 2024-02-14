@@ -173,8 +173,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         }
 
         // event is null when selecting time picker
-        if (!event && this.props.inlineEdit)
-            this.input.current.setFocus();
+        if (!event && this.props.inlineEdit) this.input.current.setFocus();
     };
 
     onChangeRaw = (event?: any): void => {
@@ -201,18 +200,17 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         this.input.current?.setFocus();
     };
 
-
-    getAdditionalConfig = () : Partial<ReactDatePickerProps> => {
+    getAdditionalConfig = (): Partial<ReactDatePickerProps> => {
         const { inlineEdit, onBlur } = this.props;
         if (inlineEdit)
             return {
                 onSelect: this.onSelect,
-                onBlur: onBlur,
+                onBlur,
                 shouldCloseOnSelect: false,
-            }
+            };
 
         return {};
-    }
+    };
 
     render(): ReactNode {
         const {

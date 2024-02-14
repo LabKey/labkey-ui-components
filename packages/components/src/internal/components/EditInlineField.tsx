@@ -100,10 +100,10 @@ export const EditInlineField: FC<Props> = memo(props => {
     }, [dateFormat, emptyText, isDate, value, _value]);
 
     const getInputValue = useCallback((): any => {
-        if (isTime)
-            return timeJsonValue;
+        if (isTime) return timeJsonValue;
         if (isDate) {
-            if (useJsonDateFormat) return isDateOnly? getJsonDateFormatString(dateValue) : getJsonDateTimeFormatString(dateValue);
+            if (useJsonDateFormat)
+                return isDateOnly ? getJsonDateFormatString(dateValue) : getJsonDateTimeFormatString(dateValue);
             return dateValue?.valueOf();
         }
         if (column) return columnBasedValue;
@@ -138,13 +138,14 @@ export const EditInlineField: FC<Props> = memo(props => {
         setState({ ignoreBlur: false });
     }, [allowBlank, getInputValue, isDate, saveEdit, state.ignoreBlur]);
 
-    const onDateChange = useCallback((date: Date | string) => {
-        if (date instanceof Array) throw new Error('Unsupported date/time type');
-        if (typeof date === 'string')
-            setTimeJsonValue(date);
-        else
-            setDateValue(date);
-    }, [isTime]);
+    const onDateChange = useCallback(
+        (date: Date | string) => {
+            if (date instanceof Array) throw new Error('Unsupported date/time type');
+            if (typeof date === 'string') setTimeJsonValue(date);
+            else setDateValue(date);
+        },
+        [isTime]
+    );
 
     const onFormsyColumnChange = useCallback(
         (data: Record<string, any>) => {
@@ -192,35 +193,36 @@ export const EditInlineField: FC<Props> = memo(props => {
 
     return (
         <div className={className}>
-            {state.editing && isDateOrTime && (
-                !!column ?
-                    <DatePickerInput
-                        autoFocus
-                        name={name}
-                        formsy={false}
-                        queryColumn={column}
-                        showLabel={false}
-                        value={isDate ? dateValue : _value}
-                        inputWrapperClassName="form-control"
-                        onBlur={onBlur}
-                        onKeyDown={onKeyDown}
-                        onChange={onDateChange}
-                        placeholderText={placeholder}
-                        inlineEdit={true}
-                    /> :
-                    <DateInput
-                        autoFocus
-                        name={name}
-                        onBlur={onBlur}
-                        onKeyDown={onKeyDown}
-                        onChange={onDateChange}
-                        onMonthChange={onDateChange}
-                        placeholderText={placeholder}
-                        selected={dateValue}
-                        showTimeSelect={!!column}
-                        dateFormat={dateInputDateFormat}
-                        timeFormat={parseDateFNSTimeFormat(dateInputDateFormat)}
-                    />
+            {state.editing && isDateOrTime && !!column && (
+                <DatePickerInput
+                    autoFocus
+                    name={name}
+                    formsy={false}
+                    queryColumn={column}
+                    showLabel={false}
+                    value={isDate ? dateValue : _value}
+                    inputWrapperClassName="form-control"
+                    onBlur={onBlur}
+                    onKeyDown={onKeyDown}
+                    onChange={onDateChange}
+                    placeholderText={placeholder}
+                    inlineEdit={true}
+                />
+            )}
+            {state.editing && isDateOrTime && !column && (
+                <DateInput
+                    autoFocus
+                    name={name}
+                    onBlur={onBlur}
+                    onKeyDown={onKeyDown}
+                    onChange={onDateChange}
+                    onMonthChange={onDateChange}
+                    placeholderText={placeholder}
+                    selected={dateValue}
+                    showTimeSelect={!!column}
+                    dateFormat={dateInputDateFormat}
+                    timeFormat={parseDateFNSTimeFormat(dateInputDateFormat)}
+                />
             )}
             {state.editing && isTextArea && (
                 <span className="input-group">

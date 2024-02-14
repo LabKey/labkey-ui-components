@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issues 49634 and 49629: Update behavior for saved views that include query filters
 - Issue 49402: Implement new default Sample Status when discarding samples from storage
 
+### version 3.20.3
+*Released*: 14 February 2024
+- Merge release24.2-SNAPSHOT to develop:
+    - includes changes from 3.15.3
+
 ### version 3.20.2
 *Released*: 13 February 2024
 - Date and Time fields polish
@@ -68,6 +73,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.16.0
 *Released*: 2 February 2024
 - Issue 49440: User may not be in the core.Users table (if permission was removed), so check the core.SiteUsers table as well
+
+### version 3.15.3
+*Released*: 12 February 2024
+- Issue 49569: Remove direct use of `LabelOverlay` for `TextChoiceInput` `SelectInput` usage
 
 ### version 3.15.2
 *Released*: 6 February 2024

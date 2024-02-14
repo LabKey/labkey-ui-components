@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 49602: Update wording in audit settings help tip
 - Issues 49634 and 49629: Update behavior for saved views that include query filters
 - Issue 49402: Implement new default Sample Status when discarding samples from storage
+- Issue 49639: Remove reference to the product name in API Keys panel.
 
 ### version 3.20.3
 *Released*: 14 February 2024

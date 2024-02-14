@@ -11,15 +11,15 @@ import { ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
 
 export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
-    const { markAllNotificationsRead, maxRows, serverActivity } = props;
+    const { markAllNotificationsRead, maxRows, onRead, serverActivity } = props;
     const { show, setShow, menuRef, toggleRef } = useNavMenuState();
     const toggleMenu = useCallback(() => setShow(s => !s), []);
 
-    const onRead = useCallback(
+    const onRead_ = useCallback(
         async (id: number) => {
             try {
                 await markNotificationsAsRead([id]);
-                props.onRead?.();
+                onRead?.();
             } catch (e) {
                 console.error('Unable to mark notification ' + id + ' as read');
             }
@@ -30,11 +30,11 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
     const markAllRead = useCallback(async () => {
         try {
             await markAllNotificationsRead();
-            props.onRead?.();
+            onRead?.();
         } catch (e) {
             console.error('Unable to mark all notifications as read');
         }
-    }, [props.onRead]);
+    }, [markAllNotificationsRead, props]);
 
     const unreadCount = useMemo(() => {
         if (!serverActivity || !serverActivity.isLoaded) return 0;
@@ -64,7 +64,7 @@ export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
                 serverActivity={serverActivity}
                 onViewAll={onViewAll}
                 onViewClick={toggleMenu}
-                onRead={onRead}
+                onRead={onRead_}
             />
         );
     }

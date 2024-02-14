@@ -32,12 +32,16 @@ describe('<ServerNotificaitons/>', () => {
     test('loading', () => {
         const wrapper = mount(
             <ServerNotifications
+                maxRows={8}
                 serverActivity={new ServerNotificationModel({ isLoading: true })}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
             />
         );
-        expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
+        expect(wrapper.find(ServerActivityList)).toHaveLength(0);
+        wrapper.find('button').simulate('click');
+        expect(wrapper.find('LoadingSpinner')).toHaveLength(1);
         const title = wrapper.find('.navbar-menu-header');
         expect(title.text()).toBe('Notifications');
         expect(wrapper.find(ServerActivityList)).toHaveLength(0);
@@ -59,11 +63,14 @@ describe('<ServerNotificaitons/>', () => {
         });
         const wrapper = mount(
             <ServerNotifications
-                serverActivity={new ServerNotificationModel(serverActivity)}
+                maxRows={8}
+                serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
             />
         );
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
+        wrapper.find('button').simulate('click');
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         const error = wrapper.find('.server-notifications-error');
         expect(error).toHaveLength(1);
@@ -85,12 +92,14 @@ describe('<ServerNotificaitons/>', () => {
 
         const wrapper = mount(
             <ServerNotifications
+                maxRows={8}
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
             />
         );
 
+        wrapper.find('button').simulate('click');
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);
         const title = wrapper.find('.navbar-menu-header');
         expect(title.text()).toBe('Notifications');
@@ -112,12 +121,14 @@ describe('<ServerNotificaitons/>', () => {
 
         const wrapper = mount(
             <ServerNotifications
+                maxRows={8}
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
             />
         );
 
+        wrapper.find('button').simulate('click');
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);
         const title = wrapper.find('.navbar-menu-header');
         expect(title.text()).toContain('Mark all as read');
@@ -139,12 +150,14 @@ describe('<ServerNotificaitons/>', () => {
 
         const wrapper = mount(
             <ServerNotifications
+                maxRows={8}
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
             />
         );
 
+        wrapper.find('button').simulate('click');
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);
         expect(wrapper.find('.fa-spinner')).toHaveLength(0);
         expect(wrapper.find('.fa-bell')).toHaveLength(1);
@@ -165,12 +178,14 @@ describe('<ServerNotificaitons/>', () => {
 
         const wrapper = mount(
             <ServerNotifications
+                maxRows={8}
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
             />
         );
 
+        wrapper.find('button').simulate('click');
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);
         // one spinner for the menu icon and one within the menu itself.
         expect(wrapper.find('.fa-spinner')).toHaveLength(2);

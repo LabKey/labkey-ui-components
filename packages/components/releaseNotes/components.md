@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD February 2024
+- Issue 49352: Breadcrumb fix to remove CSS content and replace with new `<li>` separator
+- Issue 48834: Lineage detail panel to use table-layout auto instead of fixed
+
 ### version 3.21.0
 *Released*: 14 February 2024
 - Refactor ProductMenu, ServerNotifications, ProductNavigation, FilterExpressionView to no longer use DropdownButton

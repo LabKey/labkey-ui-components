@@ -10,3 +10,14 @@
     text-align: right;
   }
 }
+
+// Issue 49352: Breadcrumb seprator should be selectable / copyable
+.breadcrumb > li + li:before {
+    padding: 0 2px;
+    content: '';
+}
+.breadcrumb > li.separator {
+    color: $gray-light;
+    font-weight: bold;
+    padding-left: 0;
+}

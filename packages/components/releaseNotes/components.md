@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.21.0
+*Released*: 14 February 2024
+- Refactor ProductMenu, ServerNotifications, ProductNavigation, FilterExpressionView to no longer use DropdownButton
+- Update styling for ServerNotifications, ProductNavigation
+
 ### version 3.20.3
 *Released*: 14 February 2024
 - Merge release24.2-SNAPSHOT to develop:

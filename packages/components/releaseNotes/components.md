@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.X
+*Released*: X February 2024
+- Support date/time fields for all domain kinds
+
 ### version 3.20.3
 *Released*: 14 February 2024
 - Merge release24.2-SNAPSHOT to develop:

@@ -339,7 +339,7 @@ export function getJsonDateTimeFormatString(date: Date): string {
 }
 
 export function getJsonTimeFormatString(date: Date): string {
-    return _formatDate(date, 'YYYY-MM-dd HH:mm:ss').split(' ')[1];
+    return _formatDate(date, 'YYYY-MM-dd HH:mm:ss')?.split(' ')[1];
 }
 
 export function getJsonDateFormatString(date: Date): string {

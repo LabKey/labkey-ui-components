@@ -8,6 +8,7 @@ import {
     getMomentDateFormat,
     getJsonDateTimeFormatString,
     parseDateFNSTimeFormat,
+    getJsonDateFormatString,
 } from '../util/Date';
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
@@ -17,6 +18,7 @@ import { DateInput } from './DateInput';
 import { useServerContext } from './base/ServerContext';
 import { resolveDetailEditRenderer } from './forms/detail/DetailDisplay';
 import { UserLink } from './user/UserLink';
+import { DatePickerInput } from './forms/input/DatePickerInput';
 
 interface Props {
     allowBlank?: boolean;
@@ -51,8 +53,11 @@ export const EditInlineField: FC<Props> = memo(props => {
         tooltip,
     } = props;
     const { container } = useServerContext();
-    const dateFormat = getMomentDateFormat(container);
-    const isDate = type === 'date';
+    const dateFormat = column?.format ?? getMomentDateFormat(container);
+    const isDate = type === 'date' || column?.jsonType === 'date';
+    const isDateOnly = column?.isDateOnlyColumn;
+    const isTime = type === 'time' || column?.jsonType === 'time';
+    const isDateOrTime = isDate || isTime;
     const isTextArea = type === 'textarea';
     const isText = !isDate && !isTextArea;
     const isUser = QueryColumn.isUserLookup(column?.lookup);
@@ -60,6 +65,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     const inputRef = useRef(null);
     const _value = typeof value === 'object' ? value?.value : value;
     const [dateValue, setDateValue] = useState<Date>(isDate && _value ? new Date(_value) : undefined);
+    const [timeJsonValue, setTimeJsonValue] = useState<string>(undefined);
     const [columnBasedValue, setColumnBasedValue] = useState();
 
     // Utilizing useReducer here so multiple state attributes can be updated at once
@@ -94,13 +100,15 @@ export const EditInlineField: FC<Props> = memo(props => {
     }, [dateFormat, emptyText, isDate, value, _value]);
 
     const getInputValue = useCallback((): any => {
+        if (isTime)
+            return timeJsonValue;
         if (isDate) {
-            if (useJsonDateFormat) return getJsonDateTimeFormatString(dateValue);
+            if (useJsonDateFormat) return isDateOnly? getJsonDateFormatString(dateValue) : getJsonDateTimeFormatString(dateValue);
             return dateValue?.valueOf();
         }
         if (column) return columnBasedValue;
         return inputRef.current?.value;
-    }, [dateValue, isDate, columnBasedValue, column, useJsonDateFormat]);
+    }, [dateValue, timeJsonValue, isDate, isTime, columnBasedValue, column, useJsonDateFormat, isDateOnly]);
 
     const onCancel = (): void => {
         setState({ editing: false, ignoreBlur: true });
@@ -130,10 +138,13 @@ export const EditInlineField: FC<Props> = memo(props => {
         setState({ ignoreBlur: false });
     }, [allowBlank, getInputValue, isDate, saveEdit, state.ignoreBlur]);
 
-    const onDateChange = useCallback((date: Date | [Date, Date]) => {
-        if (date instanceof Array) throw new Error('Unsupported date type');
-        setDateValue(date);
-    }, []);
+    const onDateChange = useCallback((date: Date | string) => {
+        if (date instanceof Array) throw new Error('Unsupported date/time type');
+        if (typeof date === 'string')
+            setTimeJsonValue(date);
+        else
+            setDateValue(date);
+    }, [isTime]);
 
     const onFormsyColumnChange = useCallback(
         (data: Record<string, any>) => {
@@ -181,20 +192,35 @@ export const EditInlineField: FC<Props> = memo(props => {
 
     return (
         <div className={className}>
-            {state.editing && isDate && (
-                <DateInput
-                    autoFocus
-                    name={name}
-                    onBlur={onBlur}
-                    onKeyDown={onKeyDown}
-                    onChange={onDateChange}
-                    onMonthChange={onDateChange}
-                    placeholderText={placeholder}
-                    selected={dateValue}
-                    showTimeSelect={!!column}
-                    dateFormat={dateInputDateFormat}
-                    timeFormat={parseDateFNSTimeFormat(dateInputDateFormat)}
-                />
+            {state.editing && isDateOrTime && (
+                !!column ?
+                    <DatePickerInput
+                        autoFocus
+                        name={name}
+                        formsy={false}
+                        queryColumn={column}
+                        showLabel={false}
+                        value={isDate ? dateValue : _value}
+                        inputWrapperClassName="form-control"
+                        onBlur={onBlur}
+                        onKeyDown={onKeyDown}
+                        onChange={onDateChange}
+                        placeholderText={placeholder}
+                        inlineEdit={true}
+                    /> :
+                    <DateInput
+                        autoFocus
+                        name={name}
+                        onBlur={onBlur}
+                        onKeyDown={onKeyDown}
+                        onChange={onDateChange}
+                        onMonthChange={onDateChange}
+                        placeholderText={placeholder}
+                        selected={dateValue}
+                        showTimeSelect={!!column}
+                        dateFormat={dateInputDateFormat}
+                        timeFormat={parseDateFNSTimeFormat(dateInputDateFormat)}
+                    />
             )}
             {state.editing && isTextArea && (
                 <span className="input-group">
@@ -213,7 +239,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                     />
                 </span>
             )}
-            {state.editing && column && !isDate && (
+            {state.editing && column && !isDateOrTime && (
                 <Formsy className="form-horizontal" onChange={onFormsyColumnChange}>
                     {resolveDetailEditRenderer(column, { hideLabel: true, autoFocus: true, onBlur, placeholder })(
                         value

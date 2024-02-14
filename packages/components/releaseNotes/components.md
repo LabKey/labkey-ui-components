@@ -4,6 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.X
 *Released*: X February 2024
 - Support date/time fields for all domain kinds
+  - Enable date and time field type for all domain kinds
+  - Update DatePickerInput to support inline edit mode
+  - Update EditInlineField to use DatePickerInput for date/time type query column
 
 ### version 3.21.0
 *Released*: 14 February 2024

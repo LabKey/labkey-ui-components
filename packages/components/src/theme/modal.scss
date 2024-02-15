@@ -1,5 +1,16 @@
 
 .lk-modal {
+    // Have to set these because the defaults for bootstrap modals are display: none and opacity 0.
     display: block;
     opacity: 1;
+}
+
+.lk-modal .modal-content {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.lk-modal .modal-body {
+    overflow-y: auto;
 }

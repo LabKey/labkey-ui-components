@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+
 import { useSubNavTabsContext } from '../navigation/hooks';
 
 import { ITab } from '../navigation/types';

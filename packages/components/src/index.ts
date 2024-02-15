@@ -139,6 +139,7 @@ import {
     withNotificationsContext,
 } from './internal/components/notifications/NotificationsContext';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
+import { DisableableAnchor } from './internal/components/base/DisableableAnchor';
 import {
     filterDate,
     formatDate,
@@ -255,7 +256,6 @@ import { EditableGridPanelForUpdate } from './internal/components/editable/Edita
 
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 
-import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
 import { ANCESTOR_LOOKUP_CONCEPT_URI, AncestorRenderer } from './internal/renderers/AncestorRenderer';
 import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
@@ -352,6 +352,7 @@ import { ProjectManagementPage } from './internal/components/project/ProjectMana
 import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
+import { useAdministrationSubNav } from './internal/components/administration/useAdministrationSubNav';
 import {
     deleteSampleSet,
     fetchSamples,
@@ -413,6 +414,8 @@ import {
     getImmediateChildLineageFilterValue,
     getLineageFilterValue,
     invalidateLineageResults,
+    createGridModel,
+    getPageNumberChangeURL,
 } from './internal/components/lineage/actions';
 import { withLineage } from './internal/components/lineage/withLineage';
 import { DEFAULT_LINEAGE_DISTANCE } from './internal/components/lineage/constants';
@@ -423,7 +426,6 @@ import {
     LineageURLResolvers,
 } from './internal/components/lineage/types';
 import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
-import { LineageGrid, LineageGridFromLocation, LineagePage } from './internal/components/lineage/grid/LineageGrid';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
 import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
@@ -447,7 +449,7 @@ import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
 import { useUserProperties } from './internal/components/user/hooks';
 import { UserLink, UserLinkList } from './internal/components/user/UserLink';
-import { ProfilePage, APIKeysPanel } from './internal/components/user/ProfilePage';
+import { APIKeysPanel } from './internal/components/user/APIKeysPanel';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DERIVATION_DATA_SCOPES,
@@ -518,19 +520,21 @@ import { CHART_GROUPS } from './internal/components/chart/configs';
 import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
 import {
     ASSAY_AUDIT_QUERY,
+    AUDIT_EVENT_TYPE_PARAM,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
+    EXPERIMENT_AUDIT_EVENT,
     GROUP_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
+    PROJECT_AUDIT_QUERY,
     QUERY_UPDATE_AUDIT_QUERY,
     SAMPLE_TIMELINE_AUDIT_QUERY,
     SAMPLE_TYPE_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
 } from './internal/components/auditlog/constants';
-import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
-import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
+import { getAuditQueries, getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
 import {
     fetchDomain,
     fetchDomainDetails,
@@ -592,15 +596,10 @@ import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPan
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { SchemaBrowserRoutes } from './internal/components/SchemaBrowser/SchemaBrowserRoutes';
 import {
-    ACTIVE_JOB_INDICATOR_CLS,
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
-    PIPELINE_PROVIDER_FILTER_LKB,
-    PIPELINE_PROVIDER_FILTER_LKSM,
 } from './internal/components/pipeline/constants';
-import { PipelineRoutes } from './internal/components/pipeline/PipelineRoutes';
-import { getTitleDisplay, hasActivePipelineJob } from './internal/components/pipeline/utils';
 import { DisableableMenuItem } from './internal/components/samples/DisableableMenuItem';
 import { SampleStatusTag } from './internal/components/samples/SampleStatusTag';
 import { ManageSampleStatusesPanel } from './internal/components/samples/ManageSampleStatusesPanel';
@@ -655,6 +654,7 @@ import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal
 import { AppReducers, ProductMenuReducers, ServerNotificationReducers } from './internal/app/reducers';
 
 import {
+    biologicsIsPrimaryApp,
     CloseEventCode,
     freezerManagerIsCurrentApp,
     getAppHomeFolderPath,
@@ -837,6 +837,9 @@ import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
 import { DropdownAnchor, DropdownButton, MenuDivider, MenuItem, MenuHeader, SplitButton } from './internal/dropdowns';
 import { DropdownSection } from './internal/DropdownSection';
+import { isLoginAutoRedirectEnabled } from './internal/components/administration/utils';
+import { useAccountSubNav } from './internal/components/user/AccountSubNav';
+import { LineageGridModel } from './internal/components/lineage/models';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -848,6 +851,7 @@ const App = {
     ServerNotificationReducers,
     CloseEventCode,
     EntityCreationMode,
+    biologicsIsPrimaryApp,
     createTestProjectAppContextAdmin,
     createTestProjectAppContextNonAdmin,
     getCurrentAppProperties,
@@ -1079,6 +1083,7 @@ export {
     URLService,
     ListResolver,
     ExperimentRunResolver,
+    getPageNumberChangeURL,
     getQueryParams,
     pushParameters,
     removeParameters,
@@ -1162,7 +1167,6 @@ export {
     UserProfile,
     UserLink,
     UserLinkList,
-    ProfilePage,
     ChangePasswordModal,
     InsufficientPermissionsAlert,
     InsufficientPermissionsPage,
@@ -1177,6 +1181,7 @@ export {
     SecurityRole,
     Principal,
     useUserProperties,
+    isLoginAutoRedirectEnabled,
     // sample picklist items
     AddToPicklistMenuItem,
     PicklistButton,
@@ -1318,6 +1323,7 @@ export {
     PermissionManagementPage,
     AdminSettingsPage,
     useFolderDataTypeExclusions,
+    useAdministrationSubNav,
     // assay
     AssayUploadResultModel,
     AssayStateModel,
@@ -1361,11 +1367,10 @@ export {
     LineageDepthLimitMessage,
     LineageFilter,
     LineageGraph,
-    LineageGrid,
-    LineageGridFromLocation,
-    LineagePage,
+    LineageGridModel,
     LineageURLResolvers,
     SampleTypeLineageCounts,
+    createGridModel,
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,
     getLineageFilterValue,
@@ -1526,7 +1531,6 @@ export {
     Page,
     PageHeader,
     PageDetailHeader,
-    ErrorBoundary,
     BeforeUnload,
     useRouteLeave,
     SchemaBrowserRoutes,
@@ -1547,6 +1551,7 @@ export {
     Section,
     ConfirmModal,
     Cards,
+    DisableableAnchor,
     DragDropHandle,
     FieldExpansionToggle,
     LoadingModal,
@@ -1611,28 +1616,25 @@ export {
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     GROUP_AUDIT_QUERY,
     ASSAY_AUDIT_QUERY,
+    AUDIT_EVENT_TYPE_PARAM,
     SAMPLE_TIMELINE_AUDIT_QUERY,
     SAMPLE_TYPE_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
+    EXPERIMENT_AUDIT_EVENT,
+    PROJECT_AUDIT_QUERY,
     AuditDetailsModel,
-    AuditQueriesListingPage,
     AuditDetails,
+    getAuditQueries,
     getEventDataValueDisplay,
     getTimelineEntityUrl,
     TimelineEventModel,
     TimelineView,
     // pipeline
-    hasActivePipelineJob,
-    getTitleDisplay,
-    PipelineRoutes,
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
-    ACTIVE_JOB_INDICATOR_CLS,
-    PIPELINE_PROVIDER_FILTER_LKSM,
-    PIPELINE_PROVIDER_FILTER_LKB,
     // Test Helpers
     sleep,
     createMockWithRouteLeave,
@@ -1662,6 +1664,7 @@ export {
     // hooks
     useNotAuthorized,
     useNotFound,
+    useAccountSubNav,
     // SubNavTabsWithContext
     useSubNavTabsContext,
     // BarTender
@@ -1698,6 +1701,7 @@ export type {
     QueryModelMap,
 } from './public/QueryModel/withQueryModels';
 export type { TimelineGroupedEventInfo } from './internal/components/auditlog/models';
+export type { AuditQuery } from './internal/components/auditlog/constants';
 export type { PaginationData } from './internal/components/pagination/Pagination';
 export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
 export type { QueryConfig } from './public/QueryModel/QueryModel';
@@ -1788,7 +1792,7 @@ export type { ContainerUser, UseContainerUser } from './internal/components/cont
 export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
-export type { InjectedLineage } from './internal/components/lineage/withLineage';
+export type { InjectedLineage, WithLineageOptions } from './internal/components/lineage/withLineage';
 export type {
     LabelPrintingContext,
     LabelPrintingContextProps,

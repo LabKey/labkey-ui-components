@@ -22,6 +22,7 @@ interface State {
     submitting: boolean;
 }
 
+// flag, might want to pull this to premium as well
 export class ChangePasswordModal extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);

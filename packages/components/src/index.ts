@@ -416,6 +416,7 @@ import {
     invalidateLineageResults,
     createGridModel,
     getPageNumberChangeURL,
+    TestLineageAPIWrapper,
 } from './internal/components/lineage/actions';
 import { withLineage } from './internal/components/lineage/withLineage';
 import { DEFAULT_LINEAGE_DISTANCE } from './internal/components/lineage/constants';
@@ -579,7 +580,13 @@ import { DataTypeProjectsPanel } from './internal/components/domainproperties/Da
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
-import { makeQueryInfo, sleep, wrapDraggable } from './internal/test/testHelpers';
+import {
+    makeQueryInfo,
+    sleep,
+    wrapDraggable,
+    makeTestISelectRowsResult,
+    registerDefaultURLMappers,
+} from './internal/test/testHelpers';
 import {
     mountWithAppServerContext,
     mountWithAppServerContextOptions,
@@ -839,7 +846,7 @@ import { DropdownAnchor, DropdownButton, MenuDivider, MenuItem, MenuHeader, Spli
 import { DropdownSection } from './internal/DropdownSection';
 import { isLoginAutoRedirectEnabled } from './internal/components/administration/utils';
 import { useAccountSubNav } from './internal/components/user/AccountSubNav';
-import { LineageGridModel } from './internal/components/lineage/models';
+import { LineageGridModel, LineageResult } from './internal/components/lineage/models';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1375,6 +1382,8 @@ export {
     getImmediateChildLineageFilterValue,
     getLineageFilterValue,
     withLineage,
+    TestLineageAPIWrapper,
+    LineageResult,
     // Navigation
     ProductMenuModel,
     MenuSectionModel,
@@ -1648,6 +1657,8 @@ export {
     wrapDraggable,
     selectOptionByText,
     getTestAPIWrapper,
+    makeTestISelectRowsResult,
+    registerDefaultURLMappers,
     // Ontology
     OntologyBrowserPage,
     OntologyConceptOverviewPanel,

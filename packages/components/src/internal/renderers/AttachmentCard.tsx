@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Modal } from 'react-bootstrap';
 
+import { Modal } from '../Modal';
 import { formatBytes, getIconFontCls, isImage } from '../util/utils';
 import { isLoading, LoadingState } from '../../public/LoadingState';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
@@ -80,6 +80,11 @@ export const AttachmentCard: FC<Props> = memo(props => {
     const isLoaded = !isLoading(loadingState);
     const recentlyCreated = attachment.created ? attachment.created > now() - 30000 : false;
     const _isImage = isImage(attachment.name);
+    const modalTitle = (
+        <a onClick={_onDownload} className="clickable" title={'Download ' + noun}>
+            {title ?? name}
+        </a>
+    );
 
     return (
         <>
@@ -122,18 +127,11 @@ export const AttachmentCard: FC<Props> = memo(props => {
                 )}
             </div>
 
-            <Modal bsSize="large" show={showModal} onHide={_hideModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        <a onClick={_onDownload} className="clickable" title={'Download ' + noun}>
-                            {title ?? name}
-                        </a>
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+            {showModal && (
+                <Modal bsSize="lg" onCancel={_hideModal} titleNode={modalTitle}>
                     <img src={imageURL} alt={`${name} image`} title={name} className="attachment-card__img_modal" />
-                </Modal.Body>
-            </Modal>
+                </Modal>
+            )}
         </>
     );
 });

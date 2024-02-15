@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 import React, { PureComponent } from 'react';
-import { Image, Media, Modal, Panel } from 'react-bootstrap';
+import { Image, Media, Panel } from 'react-bootstrap';
 
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
 
+import { Modal } from '../../Modal';
 import { DataViewInfo, IDataViewInfo } from '../../DataViewInfo';
 import { DataViewInfoTypes, GRID_REPORTS, VISUALIZATION_REPORTS } from '../../constants';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -166,14 +167,8 @@ export class ReportItemModal extends PureComponent<ReportItemModalProps> {
 
         return (
             <div className="report-item-modal">
-                <Modal show onHide={onClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>{name}</Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
-                        <BodyRenderer report={this.props.report} />
-                    </Modal.Body>
+                <Modal onCancel={onClose} titleText={name}>
+                    <BodyRenderer report={this.props.report} />
                 </Modal>
             </div>
         );

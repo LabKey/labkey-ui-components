@@ -217,6 +217,7 @@ import {
     selectRowsDeprecated,
     updateRows,
 } from './internal/query/api';
+import { processSchemas } from './internal/query/utils';
 import {
     COLUMN_IN_FILTER_TYPE,
     COLUMN_NOT_IN_FILTER_TYPE,
@@ -601,7 +602,6 @@ import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
-import { SchemaBrowserRoutes } from './internal/components/SchemaBrowser/SchemaBrowserRoutes';
 import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
@@ -1068,6 +1068,7 @@ export {
     getLegalIdentifier,
     loadQueries,
     loadQueriesFromTable,
+    processSchemas,
     // editable grid related items
     loadEditorModelData,
     applyEditableGridChangesToModels,
@@ -1542,7 +1543,6 @@ export {
     PageDetailHeader,
     BeforeUnload,
     useRouteLeave,
-    SchemaBrowserRoutes,
     Theme,
     SVGIcon,
     useWindowFocusCheckExpiredSession,

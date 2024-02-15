@@ -1,9 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { List } from 'immutable';
 import { Filter } from '@labkey/api';
-
-import { QueryInfo } from '../QueryInfo';
 
 import { Value } from './grid/Value';
 import { SearchAction } from './grid/actions/Search';
@@ -11,6 +8,7 @@ import { ViewAction } from './grid/actions/View';
 import { FilterAction } from './grid/actions/Filter';
 
 import { FilterStatus } from './FilterStatus';
+import { SortAction } from './grid/actions/Sort';
 
 describe('FilterStatus', () => {
     const ON_CLICK = jest.fn();
@@ -24,35 +22,26 @@ describe('FilterStatus', () => {
     };
 
     const filterAction1 = {
-        action: new FilterAction(
-            'query',
-            () => List(),
-            () => new QueryInfo({})
-        ),
+        action: new FilterAction(() => 'display'),
         value: 'test1',
         valueObject: Filter.create('A', 'test1', Filter.Types.EQUAL),
     };
     const filterAction2 = {
-        action: new FilterAction(
-            'query',
-            () => List(),
-            () => new QueryInfo({})
-        ),
+        action: new FilterAction(() => 'display'),
         value: 'test2',
         valueObject: Filter.create('A', undefined, Filter.Types.NONBLANK),
     };
     const searchAction = {
-        action: new SearchAction('query'),
+        action: new SearchAction(),
         value: 'foo',
         valueObject: Filter.create('*', 'foo', Filter.Types.Q),
     };
     const viewAction = {
-        action: new ViewAction(
-            'query',
-            () => List(),
-            () => new QueryInfo({})
-        ),
+        action: new ViewAction(),
         value: 'view',
+    };
+    const sortAction = {
+        action: new SortAction(),
     };
 
     function validate(wrapper: ReactWrapper, valueCount: number, filterCount: number): void {
@@ -67,17 +56,23 @@ describe('FilterStatus', () => {
         wrapper.unmount();
     });
 
-    test('no filter or view actionValues', () => {
+    test('search actionValue', () => {
         const wrapper = mount(<FilterStatus {...DEFAULT_PROPS} actionValues={[searchAction]} />);
+        validate(wrapper, 1, 1);
+        wrapper.unmount();
+    });
+
+    test('only sortAction', () => {
+        const wrapper = mount(<FilterStatus {...DEFAULT_PROPS} actionValues={[sortAction]} />);
         validate(wrapper, 0, 0);
         wrapper.unmount();
     });
 
-    test('view and one filter actionValue', () => {
+    test('view, search and one filter actionValue', () => {
         const wrapper = mount(
             <FilterStatus {...DEFAULT_PROPS} actionValues={[viewAction, searchAction, filterAction1]} />
         );
-        validate(wrapper, 2, 1);
+        validate(wrapper, 3, 1);
         expect(wrapper.find(Value).first().prop('index')).toBe(0);
         expect(wrapper.find(Value).first().prop('actionValue')).toBe(viewAction);
         expect(wrapper.find(Value).first().prop('onClick')).toBeUndefined();

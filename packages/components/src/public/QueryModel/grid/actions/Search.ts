@@ -23,11 +23,13 @@ export class SearchAction implements Action {
     param = 'q';
     keyword = 'search';
 
-    actionValueFromFilter(filter: Filter.IFilter): ActionValue {
+    actionValueFromFilter(filter: Filter.IFilter, isReadOnly?: string): ActionValue {
         return {
             value: filter.getValue(),
             valueObject: filter,
             action: this,
+            isReadOnly,
+            isRemovable: true,
         };
     }
 }

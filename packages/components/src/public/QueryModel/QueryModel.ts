@@ -111,7 +111,7 @@ export interface QueryConfig {
      */
     baseFilters?: Filter.IFilter[];
     /**
-     * Flag used to indicate whether or not filters/sorts/etc. should be persisted on the URL. Defaults to false.
+     * Flag used to indicate whether filters/sorts/etc. should be persisted on the URL. Defaults to false.
      */
     bindURL?: boolean;
     /**

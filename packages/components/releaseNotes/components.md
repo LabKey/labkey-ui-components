@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.22.0
+*Released*: 15 February 2024
+- Issue 49418: When exporting, include any query parameters from model
+- Issue 49602: Update wording in audit settings help tip
+- Issues 49634 and 49629: Update behavior for saved views that include query filters
+- Issue 49402: Implement new default Sample Status when discarding samples from storage
+- Issue 49639: Remove reference to the product name in API Keys panel.
+
 ### version 3.21.0
 *Released*: 14 February 2024
 - Refactor ProductMenu, ServerNotifications, ProductNavigation, FilterExpressionView to no longer use DropdownButton

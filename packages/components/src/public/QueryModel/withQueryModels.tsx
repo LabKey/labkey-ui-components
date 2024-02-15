@@ -659,8 +659,7 @@ export function withQueryModels<Props>(
                             resetRowsState(model);
                             resetTotalCountState(model);
                             resetSelectionState(model);
-                        }
-                        else {
+                        } else {
                             model.rowsLoadingState = LoadingState.LOADED;
                             model.rowsError = rowsError;
                             model.selectionPivot = undefined;
@@ -1068,8 +1067,8 @@ export function withQueryModels<Props>(
                     }
                 }),
                 () => {
-                    // When filters change we need to reload selections.
-                    this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections);
+                    // When filters change we need to reload selections and counts.
+                    this.maybeLoad(id, false, shouldLoad, shouldLoad && loadSelections, true);
                     saveSettingsToLocalStorage(this.state.queryModels[id]);
                 }
             );

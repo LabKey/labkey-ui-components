@@ -191,7 +191,6 @@ export const CreateProjectPage = memo(() => {
     );
 
     return (
-        // seems kinda hard
         <Page notAuthorized={notAuthorized} hasHeader title={TITLE}>
             <PageDetailHeader title={TITLE} />
             {!homeContainer.isLoaded && <LoadingSpinner />}

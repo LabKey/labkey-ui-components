@@ -216,6 +216,7 @@ import {
     selectDistinctRows,
     selectRowsDeprecated,
     updateRows,
+    invalidateFullQueryDetailsCache,
 } from './internal/query/api';
 import { processSchemas } from './internal/query/utils';
 import {
@@ -350,6 +351,8 @@ import { UserManagementPage } from './internal/components/administration/UserMan
 import { useFolderDataTypeExclusions } from './internal/components/project/useFolderDataTypeExclusions';
 import { CreateProjectPage } from './internal/components/project/CreateProjectPage';
 import { ProjectManagementPage } from './internal/components/project/ProjectManagementPage';
+import { ProjectNameSetting } from './internal/components/project/ProjectNameSetting';
+import { ProjectDataTypeSelections } from './internal/components/project/ProjectDataTypeSelections';
 import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
 import { useAdministrationSubNav } from './internal/components/administration/useAdministrationSubNav';
@@ -434,7 +437,7 @@ import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { QueryFilterPanel } from './internal/components/search/QueryFilterPanel';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
-import { useSubNavTabsContext } from './internal/components/navigation/hooks';
+import { useSubNavTabsContext, useFolderMenuContext } from './internal/components/navigation/hooks';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
@@ -712,6 +715,7 @@ import {
     userCanReadNotebooks,
     userCanReadRegistry,
     userCanReadSources,
+    setProductProjects,
 } from './internal/app/utils';
 import {
     menuInit,
@@ -743,6 +747,8 @@ import {
     createTestProjectAppContextNonAdmin,
     TEST_FOLDER_CONTAINER,
     TEST_PROJECT_CONTAINER,
+    TEST_PROJECT_CONTAINER_ADMIN,
+    TEST_FOLDER_OTHER_CONTAINER,
 } from './internal/containerFixtures';
 import {
     ASSAY_DESIGN_KEY,
@@ -807,6 +813,7 @@ import {
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
+    TEST_LIMS_STARTER_MODULE_CONTEXT,
 } from './internal/productFixtures';
 import {
     GENERAL_ASSAY_PROVIDER_NAME,
@@ -924,6 +931,7 @@ const App = {
     userCanEditSharedViews,
     userCanDeletePublicPicklists,
     getCurrentProductName,
+    setProductProjects,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     BIOLOGICS: BIOLOGICS_APP_PROPERTIES,
@@ -977,12 +985,15 @@ const App = {
     TEST_USER_STORAGE_EDITOR,
     TEST_USER_QC_ANALYST,
     TEST_USER_WORKFLOW_EDITOR,
+    TEST_LIMS_STARTER_MODULE_CONTEXT,
     TEST_LKS_STARTER_MODULE_CONTEXT,
     TEST_LKSM_STARTER_MODULE_CONTEXT,
     TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
     TEST_PROJECT_CONTAINER,
+    TEST_PROJECT_CONTAINER_ADMIN,
     TEST_FOLDER_CONTAINER,
+    TEST_FOLDER_OTHER_CONTAINER,
     MEDIA_KEY,
     REGISTRY_KEY,
     CROSS_TYPE_KEY,
@@ -1069,6 +1080,7 @@ export {
     loadQueries,
     loadQueriesFromTable,
     processSchemas,
+    invalidateFullQueryDetailsCache,
     // editable grid related items
     loadEditorModelData,
     applyEditableGridChangesToModels,
@@ -1326,6 +1338,8 @@ export {
     UserManagementPage,
     CreateProjectPage,
     ProjectManagementPage,
+    ProjectNameSetting,
+    ProjectDataTypeSelections,
     GroupManagementPage,
     PermissionManagementPage,
     AdminSettingsPage,
@@ -1676,6 +1690,7 @@ export {
     useNotAuthorized,
     useNotFound,
     useAccountSubNav,
+    useFolderMenuContext,
     // SubNavTabsWithContext
     useSubNavTabsContext,
     // BarTender
@@ -1760,6 +1775,7 @@ export type {
     DataTypeEntity,
     DisplayObject,
     FilterProps,
+    ProjectConfigurableDataType,
 } from './internal/components/entities/models';
 export type {
     SelectInputChange,
@@ -1800,6 +1816,7 @@ export type { WithAdminAppContext } from './internal/components/administration/u
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';
+export type { FolderAPIWrapper, ProjectSettingsOptions } from './internal/components/container/FolderAPIWrapper';
 export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';

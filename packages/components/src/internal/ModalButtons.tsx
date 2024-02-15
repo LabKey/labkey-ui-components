@@ -6,7 +6,7 @@ import { FormButtons } from './FormButtons';
 
 export interface ModalButtonsProps {
     cancelText?: string;
-    canConfirm: boolean;
+    canConfirm?: boolean;
     confirmClass?: string;
     confirmText?: string;
     confirmingText?: string;
@@ -18,7 +18,7 @@ export interface ModalButtonsProps {
 export const ModalButtons: FC<ModalButtonsProps> = memo(props => {
     const {
         cancelText = 'Cancel',
-        canConfirm,
+        canConfirm = true,
         confirmClass = 'btn-success',
         confirmText = 'Save',
         confirmingText = 'Saving...',

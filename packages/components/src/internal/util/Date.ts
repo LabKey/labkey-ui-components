@@ -116,7 +116,7 @@ export function getFormattedTimeString(date: Date, queryColumn?: QueryColumn) {
 }
 
 export function getFormattedStringFromDate(date: Date, queryColumn: QueryColumn, hideTime?: boolean) {
-    if (!date) return null;
+    if (!date) return undefined;
 
     const isTimeOnly = queryColumn.isTimeColumn;
     const isDateOnly = queryColumn.isDateOnlyColumn || hideTime;
@@ -339,7 +339,7 @@ export function getJsonDateTimeFormatString(date: Date): string {
 }
 
 export function getJsonTimeFormatString(date: Date): string {
-    return _formatDate(date, 'YYYY-MM-dd HH:mm:ss').split(' ')[1];
+    return _formatDate(date, 'YYYY-MM-dd HH:mm:ss')?.split(' ')[1];
 }
 
 export function getJsonDateFormatString(date: Date): string {

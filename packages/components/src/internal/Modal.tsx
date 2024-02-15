@@ -6,9 +6,11 @@ import classNames from 'classnames';
 import { usePortalRef } from './hooks';
 import { ModalButtons, ModalButtonsProps } from './ModalButtons';
 
-interface ModalProps extends ModalButtonsProps {
+interface ModalProps extends Omit<ModalButtonsProps, 'onCancel' | 'onConfirm'> {
     bsSize?: 'lg' | 'sm';
     className?: string;
+    onCancel?: () => void;
+    onConfirm?: () => void;
     titleNode?: ReactNode;
     titleText?: string;
 }

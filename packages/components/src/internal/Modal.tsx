@@ -9,6 +9,8 @@ import { ModalButtons, ModalButtonsProps } from './ModalButtons';
 interface ModalProps extends Omit<ModalButtonsProps, 'onCancel' | 'onConfirm'> {
     bsSize?: 'lg' | 'sm';
     className?: string;
+    // Note: you probably shouldn't use footer, instead use the other props to render the appropriate footer
+    footer?: ReactNode;
     onCancel?: () => void;
     onConfirm?: () => void;
     titleNode?: ReactNode;
@@ -25,6 +27,7 @@ export const Modal: FC<ModalProps> = memo(props => {
         confirmClass,
         confirmText,
         confirmingText,
+        footer,
         isConfirming,
         onCancel,
         onConfirm,
@@ -57,7 +60,7 @@ export const Modal: FC<ModalProps> = memo(props => {
 
                         <div className="modal-body">{children}</div>
 
-                        {showButtons && (
+                        {!footer && showButtons && (
                             <div className="modal-footer">
                                 <ModalButtons
                                     cancelText={cancelText}
@@ -71,6 +74,8 @@ export const Modal: FC<ModalProps> = memo(props => {
                                 />
                             </div>
                         )}
+
+                        {footer && <div className="modal-footer">{footer}</div>}
                     </div>
                 </div>
             </div>

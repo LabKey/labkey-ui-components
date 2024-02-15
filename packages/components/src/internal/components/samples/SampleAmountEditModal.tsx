@@ -1,23 +1,23 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { Modal } from 'react-bootstrap';
-
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { useServerContext } from '../base/ServerContext';
 import { caseInsensitive } from '../../util/utils';
 import { Alert } from '../base/Alert';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { isValuePrecisionValid, MEASUREMENT_UNITS, UnitModel } from '../../util/measurement';
 
 import { useAppContext } from '../../AppContext';
+import { Modal } from '../../Modal';
+
+import { CommentTextArea } from '../forms/input/CommentTextArea';
+
+import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 import { updateSampleStorageData } from './actions';
 import { AMOUNT_PRECISION_ERROR_TEXT, STORED_AMOUNT_FIELDS } from './constants';
 import { StorageAmountInput } from './StorageAmountInput';
-import { CommentTextArea } from '../forms/input/CommentTextArea';
-import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 interface Props {
     noun: string;
@@ -37,7 +37,6 @@ const isValid = (amount: number, units: string): boolean => {
 };
 
 export const SampleAmountEditModal: FC<Props> = memo(props => {
-    const title = 'Edit Sample Amounts';
     const { schemaQuery, noun, onClose, updateListener, row } = props;
     const { api } = useAppContext();
     const { user } = useServerContext();
@@ -145,44 +144,33 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
 
     const amountCaption = initStorageUnits === storageUnits ? `Amount (${storageUnits})` : 'Amount';
 
-    const canSubmit = isDirty && isValid(amount, storageUnits);
+    let canConfirm = isDirty && isValid(amount, storageUnits);
+    if (requiresUserComment) canConfirm = canConfirm && hasValidUserComment;
+
     const unitModel = new UnitModel(amount, storageUnits);
     return (
-        <Modal onHide={onCancel} show>
-            <Modal.Header closeButton>
-                <Modal.Title>{title}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Alert bsStyle="danger">{error}</Alert>
-                <div>
-                    <StorageAmountInput
-                        model={unitModel}
-                        preferredUnit={initStorageUnits}
-                        amountChangedHandler={amountChangeHandler}
-                        unitsChangedHandler={unitsChangeHandler}
-                        label={amountCaption}
-                    />
-                    <CommentTextArea
-                        containerClassName="form-group storage-action-form-group"
-                        actionName="Update"
-                        onChange={commentChangeHandler}
-                        requiresUserComment={requiresUserComment}
-                    />
-                </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <button className="pull-left btn btn-default" disabled={submitting} onClick={onCancel} type="button">
-                    Cancel
-                </button>
-                <button
-                    className="pull-right btn btn-success"
-                    disabled={submitting || !canSubmit || (requiresUserComment && !hasValidUserComment)}
-                    onClick={onSubmit}
-                    type="button"
-                >
-                    Update {noun}
-                </button>
-            </Modal.Footer>
+        <Modal
+            canConfirm={canConfirm}
+            confirmText={`Update ${noun}`}
+            isConfirming={submitting}
+            onCancel={onCancel}
+            onConfirm={onSubmit}
+            titleText="Edit Sample Amounts"
+        >
+            <Alert bsStyle="danger">{error}</Alert>
+            <StorageAmountInput
+                model={unitModel}
+                preferredUnit={initStorageUnits}
+                amountChangedHandler={amountChangeHandler}
+                unitsChangedHandler={unitsChangeHandler}
+                label={amountCaption}
+            />
+            <CommentTextArea
+                containerClassName="form-group storage-action-form-group"
+                actionName="update"
+                onChange={commentChangeHandler}
+                requiresUserComment={requiresUserComment}
+            />
         </Modal>
     );
 });

@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, RefObject } from 'react';
 import { withFormsy } from 'formsy-react';
 import DatePicker from 'react-datepicker';
 
 import { FieldLabel } from '../FieldLabel';
 import {
-    getFormattedTimeString,
+    getFormattedStringFromDate,
     getJsonDateFormatString,
     getJsonDateTimeFormatString,
+    getJsonTimeFormatString,
     getPickerDateAndTimeFormat,
     isDateTimeCol,
     isRelativeDateFilterValue,
@@ -37,7 +38,6 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     addLabelAsterisk?: boolean;
     allowRelativeInput?: boolean;
     autoFocus?: boolean;
-    dateFormat?: string;
     disabled?: boolean;
     formsy?: boolean;
     hideTime?: boolean;
@@ -50,7 +50,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     labelClassName?: string;
     name?: string;
     onCalendarClose?: () => void;
-    onChange?: (newDate?: Date | string) => void;
+    onChange?: (rawDate?: Date | string, dateStr?: string) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
@@ -58,6 +58,8 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     showLabel?: boolean;
     value?: any;
     wrapperClassName?: string;
+    inlineEdit?: boolean;
+    onBlur?: () => void;
 }
 
 interface DatePickerInputState extends DisableableInputState {
@@ -77,10 +79,12 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         inputWrapperClassName: 'block',
         showLabel: true,
         addLabelAsterisk: false,
-        initValueFormatted: true,
+        initValueFormatted: false,
         isFormInput: true,
         labelClassName: 'control-label col-sm-3 text-left col-xs-12',
     };
+
+    input: RefObject<DatePicker>;
 
     constructor(props: DatePickerInputProps) {
         super(props);
@@ -102,6 +106,8 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
             invalid = this.getInitDate(props, new Date('1000-01-01')) === null;
         }
+
+        this.input = React.createRef();
 
         this.state = {
             isDisabled: props.initiallyDisabled,
@@ -126,42 +132,60 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
     getInitDate(props: DatePickerInputProps, minDate?: Date): Date {
         const { queryColumn } = props;
         const isTimeOnly = queryColumn.isTimeColumn;
+        const isDateOnly = queryColumn.isDateOnlyColumn;
         // Issue 45140: props.value is the original formatted date, so pass the date format
         // to parseDate when getting the initial value.
         const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
 
         if (props.allowRelativeInput && isRelativeDateFilterValue(props.value)) return undefined;
 
-        return props.value ? parseDate(props.value, dateFormat, minDate, isTimeOnly) : undefined;
+        return props.value ? parseDate(props.value, dateFormat, minDate, isTimeOnly, isDateOnly) : undefined;
     }
 
-    onChange = (date: Date): void => {
-        const { queryColumn } = this.props;
+    onChange = (date: Date, event?: any): void => {
+        const { hideTime, queryColumn } = this.props;
         const isTimeOnly = queryColumn.isTimeColumn;
         const isDateOnly = queryColumn.isDateOnlyColumn;
         this.setState({ selectedDate: date, invalid: false });
 
-        if (isTimeOnly) {
-            const timePortion = getFormattedTimeString(date, queryColumn.format);
-            this.props.onChange?.(timePortion);
-
-            // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-            if (this.props.formsy) {
-                this.props.setValue?.(timePortion);
-            }
+        if (this.state.relativeInputValue) {
+            this.props.onChange?.(this.state.relativeInputValue, this.state.relativeInputValue);
         } else {
-            this.props.onChange?.(this.state.relativeInputValue ? this.state.relativeInputValue : date);
+            const formatted = getFormattedStringFromDate(date, queryColumn, hideTime);
 
-            // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-            if (this.props.formsy) {
-                this.props.setValue?.(isDateOnly ? getJsonDateFormatString(date) : getJsonDateTimeFormatString(date));
+            if (isTimeOnly) {
+                this.props.onChange?.(formatted, formatted);
+
+                // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+                if (this.props.formsy) {
+                    this.props.setValue?.(getJsonTimeFormatString(date));
+                }
+            } else {
+                this.props.onChange?.(date, formatted);
+
+                // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+                if (this.props.formsy) {
+                    this.props.setValue?.(
+                        isDateOnly ? getJsonDateFormatString(date) : getJsonDateTimeFormatString(date)
+                    );
+                }
             }
         }
+
+        // event is null when selecting time picker
+        if (!event && this.props.inlineEdit) this.input.current.setFocus();
     };
 
     onChangeRaw = (event?: any): void => {
+        const { queryColumn } = this.props;
+        const isTime = queryColumn.isTimeColumn;
         const value = event?.target?.value;
-        if (isRelativeDateFilterValue(value)) {
+
+        if (isTime) {
+            if (!value) {
+                this.onChange(null);
+            }
+        } else if (isRelativeDateFilterValue(value)) {
             this.setState({ relativeInputValue: value });
             this.props.onChange?.(value);
         } else {
@@ -171,8 +195,17 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
     getDateFormat(): string {
         const { queryColumn, hideTime } = this.props;
-        return getPickerDateAndTimeFormat(queryColumn, this.props.dateFormat, hideTime).dateFormat;
+        return getPickerDateAndTimeFormat(queryColumn, hideTime).dateFormat;
     }
+
+    onIconClick = (): void => {
+        this.input.current?.setFocus();
+    };
+
+    onSelect = (): void => {
+        // focus the input so an onBlur action gets triggered after selection has been made
+        this.input.current?.setFocus();
+    };
 
     render(): ReactNode {
         const {
@@ -196,13 +229,16 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             showLabel,
             value,
             wrapperClassName,
+            onBlur,
+            inlineEdit
         } = this.props;
         const { isDisabled, selectedDate, invalid } = this.state;
-        const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, this.props.dateFormat, hideTime);
+        const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, hideTime);
 
         const isTimeOnly = queryColumn.isTimeColumn;
         const picker = (
             <DatePicker
+                ref={this.input}
                 autoComplete="off"
                 autoFocus={autoFocus}
                 className={inputClassName}
@@ -224,8 +260,21 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 timeFormat={timeFormat}
                 value={allowRelativeInput && !isTimeOnly && isRelativeDateFilterValue(value) ? value : undefined}
                 wrapperClassName={inputWrapperClassName}
+                onSelect={inlineEdit ? this.onSelect : undefined}
+                onBlur={inlineEdit ? onBlur : undefined}
+                shouldCloseOnSelect={inlineEdit ? false : undefined}
             />
         );
+
+        if (this.props.inlineEdit)
+            return (
+                <span className="input-group date-input">
+                    {picker}
+                    <span className="input-group-addon" onClick={this.onIconClick}>
+                        <i className="fa fa-calendar" />
+                    </span>
+                </span>
+            );
 
         if (!isFormInput) return picker;
 

@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Dropdown, FormControl } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { Filter } from '@labkey/api';
 
@@ -49,10 +49,10 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
     const unusedFilterOptions = useCallback(
         (thisIndex: number): FieldFilterOption[] => {
-            const otherIndex = thisIndex == 1 ? 0 : 1;
+            const otherIndex = thisIndex === 1 ? 0 : 1;
             return fieldFilterOptions?.filter(
                 option =>
-                    (thisIndex == 0 || !option.isSoleFilter) &&
+                    (thisIndex === 0 || !option.isSoleFilter) &&
                     activeFilters[otherIndex]?.filterType.value !== option.value
             );
         },
@@ -225,7 +225,6 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                         queryColumn={field}
                         name={'field-value-date' + suffix}
                         value={valueRaw}
-                        initValueFormatted={false}
                         showLabel={false}
                         isClearable
                         hideTime={!isTimeOnly} // filter date and datetime by date only, without timepicker
@@ -322,25 +321,20 @@ export const FilterExpressionView: FC<Props> = memo(props => {
             if (isConceptColumn) {
                 const ontologyBrowserKey = filterIndex + '-' + (isSecondInput ? '2' : '1');
                 const expanded = expandedOntologyKey === ontologyBrowserKey;
-                // FIXME: This is not a proper usage of Dropdown, as it is not rendering any MenuItems this behavior
-                //  should be accomplished some other way (OverlayTrigger + Popover with click events?)
-                //  Note: we can just replace this with some basic logic to show/hide it and render it inline, it does
-                //  not need to render as a floating item, so Dropdown is very unnecessary.
+                const onBrowserToggle = (event): void => {
+                    event.preventDefault();
+                    if (disabled) return;
+                    onOntologyFilterExpand(ontologyBrowserKey, !expanded);
+                };
                 return (
-                    <div>
+                    <div className="ontology-input">
                         {textInput}
-                        <Dropdown
-                            className="ontology-browser__menu"
-                            componentClass="div"
-                            id="ontology-browser__menu"
-                            onToggle={() => onOntologyFilterExpand(ontologyBrowserKey, !expanded)}
-                            open={expanded}
-                            disabled={disabled}
-                        >
-                            <Dropdown.Toggle useAnchor={true}>
-                                <span>{expanded ? 'Close Browser' : `Find ${field.caption} By Tree`}</span>
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
+                        <div className="ontology-browser__menu">
+                            <a href="#" onClick={onBrowserToggle}>
+                                {expanded ? 'Close Browser' : `Find ${field.caption} By Tree`}
+                                <span className="caret" />
+                            </a>
+                            {expanded && (
                                 <OntologyBrowserFilterPanel
                                     ontologyId={field.sourceOntology}
                                     conceptSubtree={field.conceptSubtree}
@@ -350,8 +344,8 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                                         updateOntologyFieldValue(filterIndex, filterValue, isSecondInput)
                                     }
                                 />
-                            </Dropdown.Menu>
-                        </Dropdown>
+                            )}
+                        </div>
                     </div>
                 );
             }

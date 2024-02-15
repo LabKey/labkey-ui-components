@@ -28,11 +28,13 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
     }, [colIdx, rowIdx, select]);
 
     const onDateInputChange = useCallback(
-        (newDate: Date | string) => {
-            let display = null;
-            if (newDate && typeof newDate === 'string') display = newDate;
-            else if (newDate && newDate instanceof Date) {
-                display = isDateTimeCol(col) ? formatDateTime(newDate) : formatDate(newDate);
+        (newDate: Date | string, formatted?: string) => {
+            let display = formatted;
+            if (!display) {
+                if (newDate && typeof newDate === 'string') display = newDate;
+                else if (newDate && newDate instanceof Date) {
+                    display = isDateTimeCol(col) ? formatDateTime(newDate) : formatDate(newDate);
+                }
             }
 
             modifyCell(colIdx, rowIdx, [{ raw: newDate, display }], MODIFICATION_TYPES.REPLACE);
@@ -46,7 +48,6 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
             autoFocus
             disabled={disabled}
             formsy={false}
-            initValueFormatted={false}
             inputClassName="date-input-cell cellular-input"
             inputWrapperClassName=""
             isClearable={false}

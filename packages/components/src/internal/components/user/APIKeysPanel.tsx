@@ -232,8 +232,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
             <div className="panel-heading">API Keys</div>
             <div className="panel-body">
                 <p>
-                    API keys are used to authorize client code accessing {primaryApp ?? 'LabKey Server'} using one of
-                    the{' '}
+                    API keys are used to authorize client code using one of the{' '}
                     <a href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=viewApis">
                         LabKey Client APIs
                     </a>

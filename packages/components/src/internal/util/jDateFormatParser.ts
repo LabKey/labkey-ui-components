@@ -15,6 +15,7 @@ const javaToMomentFormatMapping: FormatMapping = {
     yyy: 'YYYY',
     yyyy: 'YYYY',
     a: 'A',
+    aa: 'A',
     A: 'A',
     M: 'M',
     MM: 'MM',

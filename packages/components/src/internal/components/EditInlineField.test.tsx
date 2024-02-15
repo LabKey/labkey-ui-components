@@ -10,6 +10,10 @@ import { TEST_USER_EDITOR } from '../userFixtures';
 
 import { EditInlineField } from './EditInlineField';
 
+beforeAll(() => {
+    global.console.warn = jest.fn();
+});
+
 describe('EditInlineField', () => {
     const DEFAULT_PROPS = {
         name: 'name',
@@ -164,7 +168,7 @@ describe('EditInlineField', () => {
                 {...DEFAULT_PROPS}
                 type="date"
                 value="2022-08-11 18:00:00"
-                column={new QueryColumn({ format: 'MM/dd/YYYY HH:mm:ss' })}
+                column={new QueryColumn({ format: 'MM/dd/YYYY HH:mm:ss', caption: 'DateField' })}
             />,
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );

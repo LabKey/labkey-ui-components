@@ -1,8 +1,51 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.22.1
+*Released*: 15 February 2024
+- Support date/time fields for all domain kinds
+  - Enable date and time field type for all domain kinds
+  - Update DatePickerInput to support inline edit mode
+  - Update EditInlineField to use DatePickerInput for date/time type query column
+
+### version 3.22.0
+*Released*: 15 February 2024
+- Issue 49418: When exporting, include any query parameters from model
+- Issue 49602: Update wording in audit settings help tip
+- Issues 49634 and 49629: Update behavior for saved views that include query filters
+- Issue 49402: Implement new default Sample Status when discarding samples from storage
+- Issue 49639: Remove reference to the product name in API Keys panel.
+
+### version 3.21.0
+*Released*: 14 February 2024
+- Refactor ProductMenu, ServerNotifications, ProductNavigation, FilterExpressionView to no longer use DropdownButton
+- Update styling for ServerNotifications, ProductNavigation
+
+### version 3.20.3
+*Released*: 14 February 2024
+- Merge release24.2-SNAPSHOT to develop:
+    - includes changes from 3.15.3
+
+### version 3.20.2
+*Released*: 13 February 2024
+- Date and Time fields polish
+  - Fix app editable grid with 'aa' time format
+  - Fix date picker time picker with 'MMMM dd yyyy HH:mm:ss'
+  - Fix editable grid date/datetime field level format
+
+### version 3.20.1
+*Released*: 13 February 2024
+- Issue 49612: Handle ending drag action "mouse up" outside the editable grid
+
+### version 3.20.0
+*Released*: 13 February 2024
+- Plate Set assay import
+  - AssayImportPanels to use plateSet id in URL and to show Plate Set select instead of Plate select in input form
+  - App editable grid assay import to filter plate by selected plate set
+  - Hide PlateTemplate field from assay designer Run Domain fields in app
+
 ### version 3.19.0
-*Released*: 8 February 2024
+*Released*: 12 February 2024
 - DisableableMenuItem: change operationPermitted prop to disabled
   - not just a rename, this inverts the expected value
 - Add DropdownSection
@@ -43,6 +86,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.16.0
 *Released*: 2 February 2024
 - Issue 49440: User may not be in the core.Users table (if permission was removed), so check the core.SiteUsers table as well
+
+### version 3.15.3
+*Released*: 12 February 2024
+- Issue 49569: Remove direct use of `LabelOverlay` for `TextChoiceInput` `SelectInput` usage
 
 ### version 3.15.2
 *Released*: 6 February 2024

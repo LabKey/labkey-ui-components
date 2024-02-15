@@ -6,16 +6,16 @@
 }
 
 .server-notifications-listing-container {
-    max-height: 500px;
-    overflow-y: scroll;
     border-bottom: 1px solid lightgray;
+    max-height: 500px;
+    overflow-y: auto;
+    width: 350px;
 }
 
 .server-notifications-listing {
     list-style-type: none;
-    padding-left: 0;
-    margin-top: 5px;
-    width: 350px;
+    margin: 0;
+    padding: 0;
 
     & > li {
         border-bottom: 1px solid $gray-lighter;
@@ -39,7 +39,10 @@
                 font-weight: bold;
             }
         }
-  }
+    }
+    & > li:last-of-type {
+        border-bottom: none;
+    }
 }
 
 .server-notification-message {
@@ -72,8 +75,8 @@
 }
 
 .server-notifications-footer {
-    margin: 15px 0 5px 15px;
-    width: 350px;
+    padding: 15px;
+
     &.server-notifications-error {
         color: $brand-danger;
     }
@@ -104,8 +107,9 @@
     color: $brand-danger;
 }
 
-.btn.server-notifications-button {
+.server-notifications {
     .badge {
+        display: inline-block;
         padding-left: 6px;
         background: $badge-color;
     }

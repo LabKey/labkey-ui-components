@@ -31,7 +31,7 @@ import { isPlatesEnabled, isPremiumProductEnabled } from '../../app/utils';
 
 import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
 
-import { AssayUploadTabs } from '../../constants';
+import { AssayUploadTabs, MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { FormButtons } from '../../FormButtons';
 import { getQueryDetails } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
@@ -47,10 +47,7 @@ import { AssayProtocolModel } from '../domainproperties/assay/models';
 import { EditorModel } from '../editable/models';
 import { getSampleOperationConfirmationData } from '../entities/actions';
 import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
-import {
-    NotificationsContextProps,
-    useNotificationsContext,
-} from '../notifications/NotificationsContext';
+import { NotificationsContextProps, useNotificationsContext } from '../notifications/NotificationsContext';
 
 import {
     BACKGROUND_IMPORT_MIN_FILE_SIZE,
@@ -79,7 +76,7 @@ import {
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { AssayWizardModel, AssayUploadOptions } from './AssayWizardModel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
-import { PLATE_TEMPLATE_COLUMN, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
+import { PLATE_SET_COLUMN, PLATE_TEMPLATE_COLUMN, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 
 import { AssayUploadResultModel } from './models';
@@ -142,6 +139,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         fileSizeLimits: DATA_IMPORT_FILE_SIZE_LIMITS,
         loadSelectedSamples,
         showUploadTabs: true,
+        maxRows: MAX_EDITABLE_GRID_ROWS,
     };
 
     assayUploadTimer: number;
@@ -206,6 +204,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
             runProperties = runProperties.set('assayRequest', searchParams.get('assayRequest'));
         }
 
+        if (searchParams.get('plateSet')) {
+            runProperties = runProperties.set(PLATE_SET_COLUMN, searchParams.get('plateSet'));
+        }
+
         return runProperties;
     };
 
@@ -252,11 +254,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const dataQueryInfo = await getQueryDetails(schemaQuery);
 
         const { plateColumns, runColumns } = this.getRunColumns(runQueryInfo);
+        const runProperties = this.getRunPropertiesMap();
 
-        if (this.plateSupportEnabled) {
-            if (searchParams.get('plateLsid')) {
-                plateProperties = plateProperties.set(PLATE_TEMPLATE_COLUMN, searchParams.get('plateLsid'));
-            }
+        if (this.plateSupportEnabled && runProperties.get(PLATE_SET_COLUMN)) {
+            plateProperties = plateProperties.set(PLATE_SET_COLUMN, runProperties.get(PLATE_SET_COLUMN));
         }
 
         this.setState(
@@ -273,7 +274,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     runId,
                     usePreviousRunFile: this.isReimport(),
                     batchProperties: this.getBatchPropertiesMap(),
-                    runProperties: this.getRunPropertiesMap(),
+                    runProperties,
                     queryInfo: dataQueryInfo,
                     workflowTask,
                 }),
@@ -302,12 +303,12 @@ class AssayImportPanelsBody extends Component<Props, State> {
         if (this.plateSupportEnabled) {
             const plateTemplateFieldKey = PLATE_TEMPLATE_COLUMN.toLowerCase();
             if (runColumns.has(plateTemplateFieldKey)) {
-                const column = runColumns.get(plateTemplateFieldKey);
-                column.caption = 'Plate';
-                column.shortCaption = 'Short Plate';
-                column.description = 'Select a plate.';
-                plateColumns = plateColumns.set(plateTemplateFieldKey, runColumns.get(plateTemplateFieldKey));
                 runColumns = runColumns.remove(plateTemplateFieldKey);
+            }
+            const plateSetFieldKey = PLATE_SET_COLUMN.toLowerCase();
+            if (runColumns.has(plateSetFieldKey)) {
+                plateColumns = plateColumns.set(plateSetFieldKey, runColumns.get(plateSetFieldKey));
+                runColumns = runColumns.remove(plateSetFieldKey);
             }
         }
 
@@ -453,7 +454,15 @@ class AssayImportPanelsBody extends Component<Props, State> {
             this.props.setIsDirty?.(true);
         }
 
-        this.handleChange('batchProperties', Map<string, any>(values ? values : {}));
+        const cleanedValues = Object.keys(values).reduce((result, key) => {
+            const value = values[key];
+            if (value !== undefined) {
+                result[key] = value;
+            }
+            return result;
+        }, {});
+
+        this.handleChange('batchProperties', OrderedMap<string, any>(cleanedValues));
     };
 
     handleWorkflowTaskChange = (name: string, value: any): void => {
@@ -743,6 +752,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const operation = isReimport ? Operation.update : Operation.insert;
         const runContainerId = runPropsModel.getRowValue('Folder');
         const folderNoun = isPremiumProductEnabled() ? 'project' : 'folder';
+        const plateSupportEnabled = this.plateSupportEnabled;
 
         if (isReimport && !allowReimportAssayRun(user, runContainerId, container.id)) {
             const runName = runPropsModel.getRowValue('Name');
@@ -786,13 +796,14 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     currentStep={currentStep}
                     editorModel={editorModel}
                     fileSizeLimits={fileSizeLimits}
-                    maxEditableGridRowMsg={`A max of ${maxRows} rows are allowed. Please use the 'Import Data from File' tab if you need to import more than ${maxRows} rows.`}
+                    maxEditableGridRowMsg={`A max of ${maxRows?.toLocaleString()} rows are allowed. Please use the 'Import Data from File' tab if you need to import more than ${maxRows?.toLocaleString()} rows.`}
                     maxRows={maxRows}
                     onFileChange={this.handleFileChange}
                     onFileRemoval={this.handleFileRemove}
                     onGridChange={this.onGridChange}
                     operation={operation}
                     onTextChange={this.handleDataTextChange}
+                    plateSupportEnabled={plateSupportEnabled}
                     queryModel={dataModel}
                     runPropertiesRow={runProps}
                     showTabs={showUploadTabs}

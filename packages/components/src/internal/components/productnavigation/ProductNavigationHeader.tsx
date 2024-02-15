@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 import classNames from 'classnames';
 
 import { LKS_PRODUCT_ID } from '../../app/constants';
@@ -10,8 +10,16 @@ interface ProductNavigationHeaderProps {
 }
 
 export const ProductNavigationHeader: FC<ProductNavigationHeaderProps> = memo(props => {
-    const { productId, title, onClick } = props;
+    const { productId, title } = props;
     const contentCls = classNames('header-title', { clickable: !!productId });
+    const onClick = useCallback(
+        event => {
+            // stopImmediatePropagation in order to prevent the document click handler from closing the menu
+            event.nativeEvent.stopImmediatePropagation();
+            props.onClick();
+        },
+        [props.onClick]
+    );
 
     return (
         <h3 className="product-navigation-header navbar-menu-header">

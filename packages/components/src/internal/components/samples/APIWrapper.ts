@@ -13,21 +13,22 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { DomainDetails } from '../domainproperties/models';
 
 import {
+    createSessionAssayRunSummaryQuery,
+    getDefaultDiscardStatus,
+    getDistinctAssaysPerSample,
+    getFieldLookupFromSelection,
     getGroupedSampleDomainFields,
     getSampleAliquotRows,
     getSampleAssayResultViewConfigs,
-    getFieldLookupFromSelection,
-    getSelectionLineageData,
+    getSampleCounter,
     getSampleStatuses,
     getSampleStorageId,
-    getTimelineEvents,
     getSampleTypeDetails,
-    SampleAssayResultViewConfig,
-    createSessionAssayRunSummaryQuery,
-    getDistinctAssaysPerSample,
-    getSampleCounter,
-    saveSampleCounter,
+    getSelectionLineageData,
+    getTimelineEvents,
     hasExistingSamples,
+    SampleAssayResultViewConfig,
+    saveSampleCounter,
 } from './actions';
 import { GroupedSampleFields, SampleState } from './models';
 import { SampleOperation } from './constants';
@@ -60,6 +61,8 @@ export interface SamplesAPIWrapper {
     ) => Promise<OperationConfirmationData>;
 
     getSampleStatuses: (includeInUse?: boolean, containerPath?: string) => Promise<SampleState[]>;
+
+    getDefaultDiscardStatus: (containerPath?: string) => Promise<number>;
 
     getSampleStorageId: (sampleRowId: number) => Promise<number>;
 
@@ -96,6 +99,7 @@ export class SamplesServerAPIWrapper implements SamplesAPIWrapper {
     getSampleAssayResultViewConfigs = getSampleAssayResultViewConfigs;
     getSelectionLineageData = getSelectionLineageData;
     getSampleStatuses = getSampleStatuses;
+    getDefaultDiscardStatus = getDefaultDiscardStatus;
     getSampleOperationConfirmationData = getSampleOperationConfirmationData;
     getSampleStorageId = getSampleStorageId;
     getFieldLookupFromSelection = getFieldLookupFromSelection;
@@ -121,6 +125,7 @@ export function getSamplesTestAPIWrapper(
         getSampleAssayResultViewConfigs: mockFn(),
         getSelectionLineageData: mockFn(),
         getSampleStatuses: mockFn(),
+        getDefaultDiscardStatus: mockFn(),
         getSampleOperationConfirmationData: mockFn(),
         getSampleStorageId: mockFn(),
         getFieldLookupFromSelection: mockFn(),

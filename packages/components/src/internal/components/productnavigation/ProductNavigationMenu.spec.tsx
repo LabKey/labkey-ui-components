@@ -25,18 +25,16 @@ const DEFAULT_PROPS = {
     products: TEST_PRODUCTS,
     disableLKSContainerLink: false,
     homeVisible: true,
-    tabs: [],
+    menuRef: undefined,
+    onSelection: jest.fn,
     selectedProductId: undefined,
     selectedProject: undefined,
-    onSelection: jest.fn,
+    tabs: [],
 };
 
 describe('ProductNavigationMenu', () => {
     function validate(wrapper: ReactWrapper, rendered = true, wide = false, componentCounts?: Record<string, number>) {
         const count = rendered ? 1 : 0;
-        expect(wrapper.find('.product-navigation-container')).toHaveLength(count);
-        expect(wrapper.find('.navbar-icon-connector')).toHaveLength(count);
-        expect(wrapper.find(ProductNavigationHeader)).toHaveLength(count);
         expect(wrapper.find('.product-navigation-listing')).toHaveLength(count);
         expect(wrapper.find('.wider')).toHaveLength(wide ? 1 : 0);
 
@@ -47,19 +45,19 @@ describe('ProductNavigationMenu', () => {
 
     test('error', () => {
         const wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} error="Test error" />);
-        validate(wrapper, false);
+        validate(wrapper, false, true);
         expect(wrapper.find(Alert).text()).toBe('Test error');
         wrapper.unmount();
     });
 
     test('loading', () => {
         let wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} products={undefined} />);
-        validate(wrapper, false);
+        validate(wrapper, false, true);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
         wrapper.unmount();
 
         wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} tabs={undefined} />);
-        validate(wrapper, false);
+        validate(wrapper, false, true);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
         wrapper.unmount();
     });

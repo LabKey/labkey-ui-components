@@ -127,14 +127,8 @@ export const NavigationBar: FC<Props> = memo(props => {
                                     user={user}
                                 />
                             )}
-                            {_showNotifications && !isAdminPage && (
-                                <div className="navbar-item pull-right navbar-item-notification">
-                                    <ServerNotifications {...notificationsConfig} />
-                                </div>
-                            )}
-                            {_showProductNav && (
-                                <ProductNavigation />
-                            )}
+                            {_showNotifications && !isAdminPage && <ServerNotifications {...notificationsConfig} />}
+                            {_showProductNav && <ProductNavigation />}
                             {showSearchBox && !isAdminPage && (
                                 <div className="navbar-item pull-right">
                                     <div className="hidden-md hidden-sm hidden-xs">

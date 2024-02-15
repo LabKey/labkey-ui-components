@@ -85,10 +85,9 @@ function momentToDateFNS(momentFormat: string): string {
 
 export function getPickerDateAndTimeFormat(
     queryColumn: QueryColumn,
-    format?: string,
     hideTime?: boolean
 ): { dateFormat: string; timeFormat: string } {
-    const dateFormat = getColDateFormat(queryColumn, hideTime ? 'Date' : format, queryColumn.isDateOnlyColumn);
+    const dateFormat = getColDateFormat(queryColumn, hideTime ? 'Date' : undefined, queryColumn.isDateOnlyColumn);
 
     const isTimeOnly = queryColumn.isTimeColumn;
     const timeFormat = hideTime
@@ -103,16 +102,35 @@ export function getPickerDateAndTimeFormat(
     };
 }
 
-export function getFormattedTimeString(date: Date, format?: string) {
+export function getFormattedTimeString(date: Date, queryColumn?: QueryColumn) {
     if (!date) return null;
 
-    const formatStr = getColDateFormat(null, format ?? 'Time');
+    const formatStr = getColDateFormat(queryColumn, queryColumn.format ?? 'Time');
     if (!formatStr) return getJsonTimeFormatString(date);
 
     try {
         return moment(date).format(toMomentFormatString(formatStr));
     } catch (e) {
         return getJsonTimeFormatString(date);
+    }
+}
+
+export function getFormattedStringFromDate(date: Date, queryColumn: QueryColumn, hideTime?: boolean) {
+    if (!date) return undefined;
+
+    const isTimeOnly = queryColumn.isTimeColumn;
+    const isDateOnly = queryColumn.isDateOnlyColumn || hideTime;
+
+    const rawType = isTimeOnly ? 'Time' : isDateOnly ? 'Date' : 'DateTime';
+    const formatStr = getColDateFormat(queryColumn, queryColumn.format ?? rawType);
+    if (!formatStr) {
+        return getJsonFormatString(date, rawType);
+    }
+
+    try {
+        return moment(date).format(toMomentFormatString(formatStr));
+    } catch (e) {
+        return getJsonFormatString(date, rawType);
     }
 }
 
@@ -158,13 +176,20 @@ export function parseFNSTimeFormat(timePart: string): string {
 // format (e.g. it supports formats similar to "yyyy-MM-dd hh:mm" or "yyyy-MM-dd hh:mm a").
 export function parseDateFNSTimeFormat(dateFormat: string): string {
     if (!dateFormat) return undefined;
-    const parts = dateFormat.split(' ');
+    let splitIndex = dateFormat.indexOf(' ');
 
-    if (parts.length > 1) {
-        return parseFNSTimeFormat(parts[1]);
+    let format;
+    if (splitIndex > -1) {
+        const remaining = dateFormat.substring(splitIndex + 1);
+        format = parseFNSTimeFormat(remaining);
+        if (!format && remaining.indexOf(' h') > 0) {
+            // yyyy MM dd hh:mm
+            splitIndex = remaining.indexOf(' h');
+            format = parseFNSTimeFormat(remaining.substring(splitIndex + 1));
+        }
     }
 
-    return undefined;
+    return format;
 }
 
 export function _getColFormattedDateFilterValue(column: QueryColumn, value: any): any {
@@ -235,7 +260,13 @@ function getMomentTimeFormat(container?: Partial<Container>): string {
     return toMomentFormatString((container ?? getServerContext().container).formats.timeFormat) ?? 'HH:mm:ss';
 }
 
-export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date, timeOnly?: boolean): Date {
+export function parseDate(
+    dateStr: string,
+    dateFormat?: string,
+    minDate?: Date,
+    timeOnly?: boolean,
+    dateOnly?: boolean
+): Date {
     if (!dateStr) return null;
 
     // Moment.js and react datepicker date format is different
@@ -252,7 +283,12 @@ export function parseDate(dateStr: string, dateFormat?: string, minDate?: Date, 
 
     // Issue 45140: if a dateFormat was provided here and the date didn't parse, try the default container format and no format
     if (!validDate) {
-        const date = moment(dateStr, timeOnly ? getMomentTimeFormat() : getMomentDateTimeFormat(), !timeOnly);
+        let date;
+        if (timeOnly) {
+            date = moment(dateStr, getMomentTimeFormat(), false);
+        } else {
+            date = moment(dateStr, dateOnly ? getMomentDateFormat() : getMomentDateTimeFormat(), true);
+        }
         if (date && date.isValid()) {
             validDate = date;
         }
@@ -303,11 +339,18 @@ export function getJsonDateTimeFormatString(date: Date): string {
 }
 
 export function getJsonTimeFormatString(date: Date): string {
-    return _formatDate(date, 'YYYY-MM-dd HH:mm:ss').split(' ')[1];
+    return _formatDate(date, 'YYYY-MM-dd HH:mm:ss')?.split(' ')[1];
 }
 
 export function getJsonDateFormatString(date: Date): string {
     return _formatDate(date, 'YYYY-MM-dd');
+}
+
+export function getJsonFormatString(date: Date, rawFormat: string): string {
+    if (!date) return undefined;
+    if (rawFormat === 'DateTime') return getJsonDateTimeFormatString(date);
+    if (rawFormat === 'Time') return getJsonTimeFormatString(date);
+    return getJsonDateFormatString(date);
 }
 
 export function generateNameWithTimestamp(name: string): string {

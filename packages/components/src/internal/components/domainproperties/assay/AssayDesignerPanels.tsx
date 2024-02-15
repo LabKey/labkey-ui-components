@@ -13,7 +13,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 
-import { GENERAL_ASSAY_PROVIDER_NAME } from '../../assay/constants';
+import { GENERAL_ASSAY_PROVIDER_NAME, PLATE_TEMPLATE_COLUMN } from '../../assay/constants';
 
 import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
@@ -273,6 +273,12 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                         (domain.isNameSuffixMatch('Data') && protocolModel.editableResults)
                     );
 
+                    // hide PlateTemplate run field for app
+                    let hiddenFieldNames;
+                    if (appPropertiesOnly && domain.isNameSuffixMatch('Run')) {
+                        hiddenFieldNames = [PLATE_TEMPLATE_COLUMN];
+                    }
+
                     return (
                         <DomainForm
                             key={domain.domainId || i}
@@ -304,6 +310,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             appDomainHeaderRenderer={appDomainHeaderRenderer}
                             modelDomains={protocolModel.domains}
                             appPropertiesOnly={hideAdvancedProperties}
+                            hiddenFieldNames={hiddenFieldNames}
                             testMode={testMode}
                             domainFormDisplayOptions={{
                                 ...domainFormDisplayOptions,

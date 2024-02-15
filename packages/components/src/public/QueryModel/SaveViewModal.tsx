@@ -1,11 +1,10 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useState } from 'react';
-import { Modal } from 'react-bootstrap';
 
 import { PermissionTypes } from '@labkey/api';
 
 import classNames from 'classnames';
 
-import { ModalButtons } from '../../internal/ModalButtons';
+import { Modal } from '../../internal/Modal';
 import { ViewInfo } from '../../internal/ViewInfo';
 import { Alert } from '../../internal/components/base/Alert';
 import { resolveErrorMessage } from '../../internal/util/messaging';
@@ -165,101 +164,94 @@ export const SaveViewModal: FC<Props> = memo(props => {
     const toggleShared = useCallback((evt: ChangeEvent<HTMLInputElement>) => setIsShared(evt.target.checked), []);
 
     return (
-        <Modal onHide={onCancel} show>
-            <Modal.Header closeButton>
-                <Modal.Title>Save Grid View</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Alert>{errorMessage}</Alert>
-                <form onSubmit={saveView}>
-                    <div className="form-group">
-                        <div className="bottom-spacing">
-                            Columns, sort order, and filters will be saved. Once saved, this view will be available for
-                            all {gridLabel} grids throughout the application.
-                        </div>
+        <Modal
+            canConfirm={(!!viewName && !nameError) || isDefaultView}
+            isConfirming={isSubmitting}
+            onCancel={onCancel}
+            onConfirm={saveView}
+            titleText="Save Grid View"
+        >
+            <Alert>{errorMessage}</Alert>
+            <form onSubmit={saveView}>
+                <div className="form-group">
+                    <div className="bottom-spacing">
+                        Columns, sort order, and filters will be saved. Once saved, this view will be available for all{' '}
+                        {gridLabel} grids throughout the application.
+                    </div>
 
-                        <RequiresPermission perms={PermissionTypes.Admin}>
-                            {/* Only allow admins to create custom default views in app. Note this is different from LKS*/}
-                            <div className="content-form">
-                                <label className="clickable">
-                                    <input
-                                        className="form-check-input"
-                                        type="radio"
-                                        name="setSaveType"
-                                        id="defaultView"
-                                        onChange={toggleDefaultView}
-                                        checked={isDefaultView}
-                                    />
-                                    <span className="margin-left">Save as default view for all users</span>
-                                </label>
-                            </div>
-                            <div className="content-form">
-                                <label className="clickable">
-                                    <input
-                                        checked={!isDefaultView}
-                                        name="setSaveType"
-                                        id="customView"
-                                        onChange={toggleDefaultView}
-                                        type="radio"
-                                    />
-                                    <span className="margin-left">Save as a custom view</span>
-                                </label>
-                            </div>
-                        </RequiresPermission>
-                        {!isDefaultView && (
-                            <div
-                                className={classNames('bottom-spacing', {
-                                    'margin-left-more': user.hasAdminPermission(),
-                                })}
-                            >
-                                <ViewNameInput
-                                    onChange={onViewNameChange}
-                                    onBlur={onViewNameChange}
-                                    view={currentView}
-                                    isDefaultView={isDefaultView}
+                    <RequiresPermission perms={PermissionTypes.Admin}>
+                        {/* Only allow admins to create custom default views in app. Note this is different from LKS*/}
+                        <div className="content-form">
+                            <label className="clickable">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="setSaveType"
+                                    id="defaultView"
+                                    onChange={toggleDefaultView}
+                                    checked={isDefaultView}
                                 />
-                            </div>
-                        )}
-                        {!isDefaultView && canEditShared && (
+                                <span className="margin-left">Save as default view for all users</span>
+                            </label>
+                        </div>
+                        <div className="content-form">
+                            <label className="clickable">
+                                <input
+                                    checked={!isDefaultView}
+                                    name="setSaveType"
+                                    id="customView"
+                                    onChange={toggleDefaultView}
+                                    type="radio"
+                                />
+                                <span className="margin-left">Save as a custom view</span>
+                            </label>
+                        </div>
+                    </RequiresPermission>
+                    {!isDefaultView && (
+                        <div
+                            className={classNames('bottom-spacing', {
+                                'margin-left-more': user.hasAdminPermission(),
+                            })}
+                        >
+                            <ViewNameInput
+                                onChange={onViewNameChange}
+                                onBlur={onViewNameChange}
+                                view={currentView}
+                                isDefaultView={isDefaultView}
+                            />
+                        </div>
+                    )}
+                    {!isDefaultView && canEditShared && (
+                        <div className="form-check">
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                name="setShared"
+                                onChange={toggleShared}
+                                checked={isShared}
+                            />
+                            <span className="margin-left">Make this grid view available to all users</span>
+                        </div>
+                    )}
+                    {isProductProjectsEnabled(moduleContext) &&
+                        isAppHomeFolder(container, moduleContext) &&
+                        canEditShared && (
                             <div className="form-check">
                                 <input
                                     className="form-check-input"
                                     type="checkbox"
-                                    name="setShared"
-                                    onChange={toggleShared}
-                                    checked={isShared}
+                                    name="setInherit"
+                                    onChange={toggleInherit}
+                                    checked={canInherit}
                                 />
-                                <span className="margin-left">Make this grid view available to all users</span>
+                                <span className="margin-left">Make this grid view available in all Projects</span>
                             </div>
                         )}
-                        {isProductProjectsEnabled(moduleContext) &&
-                            isAppHomeFolder(container, moduleContext) &&
-                            canEditShared && (
-                                <div className="form-check">
-                                    <input
-                                        className="form-check-input"
-                                        type="checkbox"
-                                        name="setInherit"
-                                        onChange={toggleInherit}
-                                        checked={canInherit}
-                                    />
-                                    <span className="margin-left">Make this grid view available in all Projects</span>
-                                </div>
-                            )}
-                        <div className="top-spacing">
-                            Learn more about <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
-                        </div>
+                    <div className="top-spacing">
+                        Learn more about <HelpLink topic={CUSTOM_VIEW}>custom grid views</HelpLink> in LabKey.
                     </div>
-                </form>
-            </Modal.Body>
-            <Modal.Footer>
-                <ModalButtons
-                    canConfirm={(!!viewName && !nameError) || isDefaultView}
-                    isConfirming={isSubmitting}
-                    onCancel={onCancel}
-                    onConfirm={saveView}
-                />
-            </Modal.Footer>
+                </div>
+            </form>
         </Modal>
     );
 });

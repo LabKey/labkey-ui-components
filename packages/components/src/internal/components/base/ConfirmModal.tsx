@@ -31,6 +31,9 @@ export interface ConfirmModalProps {
     title?: ReactNode;
 }
 
+/**
+ *  @deprecated use @labkey/components Modal
+ */
 export class ConfirmModal extends React.PureComponent<ConfirmModalProps> {
     static defaultProps = {
         show: true,

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.X
-*Released*: X February 2024
+### version 3.22.1
+*Released*: 15 February 2024
 - Support date/time fields for all domain kinds
   - Enable date and time field type for all domain kinds
   - Update DatePickerInput to support inline edit mode

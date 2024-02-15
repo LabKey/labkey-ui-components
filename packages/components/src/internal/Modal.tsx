@@ -35,7 +35,8 @@ export const Modal: FC<ModalProps> = memo(props => {
         titleText,
     } = props;
     const title = titleNode ? titleNode : <h4 className="modal-title">{titleText}</h4>;
-    const showButtons = onCancel !== undefined && onConfirm !== undefined;
+    const showButtons = !footer && onCancel && onConfirm;
+    const showHeader = onCancel || titleNode || titleText;
     const portalRef = usePortalRef('modal');
     const className_ = classNames('modal-dialog', className, {
         'modal-sm': bsSize === 'sm',
@@ -48,19 +49,21 @@ export const Modal: FC<ModalProps> = memo(props => {
             <div className="lk-modal modal">
                 <div className={className_}>
                     <div className="modal-content">
-                        <div className="modal-header">
-                            {onCancel !== undefined && (
-                                <button className="close" onClick={onCancel} type="button">
-                                    <span aria-hidden="true">×</span>
-                                    <span className="sr-only">Close</span>
-                                </button>
-                            )}
-                            {title}
-                        </div>
+                        {showHeader && (
+                            <div className="modal-header">
+                                {onCancel !== undefined && (
+                                    <button className="close" onClick={onCancel} type="button">
+                                        <span aria-hidden="true">×</span>
+                                        <span className="sr-only">Close</span>
+                                    </button>
+                                )}
+                                {title}
+                            </div>
+                        )}
 
                         <div className="modal-body">{children}</div>
 
-                        {!footer && showButtons && (
+                        {showButtons && (
                             <div className="modal-footer">
                                 <ModalButtons
                                     cancelText={cancelText}

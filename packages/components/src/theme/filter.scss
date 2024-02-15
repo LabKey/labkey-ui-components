@@ -109,7 +109,7 @@
             height: 150px;
         }
 
-        overflow: scroll;
+        overflow: auto;
         border: 1px solid $light-gray;
         margin-bottom: 20px;
 
@@ -140,7 +140,6 @@
         }
 
         &.field-modal__values {
-            height: 465px;
             overflow: visible;
         }
     }
@@ -232,9 +231,9 @@
 
 .filter-faceted__panel,
 .filter-expression__panel {
-    height: 355px;
+    height: 357px;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .filter-faceted__checkbox {

@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
-import { Modal } from 'react-bootstrap';
 import { Filter, Query } from '@labkey/api';
 
+import { Modal } from '../../internal/Modal';
 import { FieldFilter } from '../../internal/components/search/models';
 import { QueryColumn } from '../QueryColumn';
 
@@ -84,45 +84,29 @@ export const GridFilterModal: FC<Props> = memo(props => {
         },
         [filters]
     );
-
+    const canConfirm = validFieldFilters && Object.keys(validFieldFilters).length >= 0;
     return (
-        <Modal show bsSize="lg" onHide={closeModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Filter {queryInfo.title}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Alert>{filterError}</Alert>
-                <QueryFilterPanel
-                    asRow
-                    api={api}
-                    fieldKey={fieldKey}
-                    filters={{ [queryInfo.name.toLowerCase()]: filters }}
-                    fullWidth
-                    onFilterUpdate={onFilterUpdate}
-                    queryInfo={queryInfo}
-                    selectDistinctOptions={selectDistinctOptions}
-                    skipDefaultViewCheck={skipDefaultViewCheck}
-                    validFilterField={isValidFilterField}
-                    viewName={model.viewName}
-                />
-            </Modal.Body>
-            <Modal.Footer>
-                <div className="pull-left">
-                    <button type="button" className="btn btn-default" onClick={closeModal}>
-                        Cancel
-                    </button>
-                </div>
-                <div className="pull-right">
-                    <button
-                        type="button"
-                        className="btn btn-success"
-                        onClick={_onApply}
-                        disabled={validFieldFilters && Object.keys(validFieldFilters).length === 0}
-                    >
-                        Apply
-                    </button>
-                </div>
-            </Modal.Footer>
+        <Modal
+            bsSize="lg"
+            canConfirm={canConfirm}
+            onCancel={closeModal}
+            onConfirm={_onApply}
+            titleText={`Filter ${queryInfo.title}`}
+        >
+            <Alert>{filterError}</Alert>
+            <QueryFilterPanel
+                asRow
+                api={api}
+                fieldKey={fieldKey}
+                filters={{ [queryInfo.name.toLowerCase()]: filters }}
+                fullWidth
+                onFilterUpdate={onFilterUpdate}
+                queryInfo={queryInfo}
+                selectDistinctOptions={selectDistinctOptions}
+                skipDefaultViewCheck={skipDefaultViewCheck}
+                validFilterField={isValidFilterField}
+                viewName={model.viewName}
+            />
         </Modal>
     );
 });

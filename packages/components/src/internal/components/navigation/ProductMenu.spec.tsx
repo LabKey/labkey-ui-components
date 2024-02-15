@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { createRef } from 'react';
 import { ReactWrapper } from 'enzyme';
 import { List, Map } from 'immutable';
 
@@ -184,9 +184,8 @@ describe('ProductMenuButton', () => {
     }
 
     function validate(wrapper: ReactWrapper) {
-        expect(wrapper.find('DropdownButton')).toHaveLength(1);
-        expect(wrapper.find('DropdownButton').prop('open')).toBe(false);
-        expect(wrapper.find('.product-menu-button')).toHaveLength(4);
+        expect(wrapper.find('.product-menu-button')).toHaveLength(1);
+        expect(wrapper.find('button').prop('aria-expanded')).toBe(false);
         expect(wrapper.find(ProductMenuButtonTitle)).toHaveLength(1);
         expect(wrapper.find(ProductMenu)).toHaveLength(0);
         expect(wrapper.find('.with-col-folders')).toHaveLength(0);
@@ -286,6 +285,7 @@ describe('ProductMenu', () => {
             className: 'test-cls',
             error: undefined,
             folderItems: [],
+            menuRef: createRef(),
             onClick: jest.fn(),
             sectionConfigs,
             showFolderMenu: true,

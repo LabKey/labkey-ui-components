@@ -132,7 +132,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                 <div className="navbar-item pull-right navbar-item__dropdown">
                     <DropdownButton
                         className="admin-dropdown"
-                        buttonClassName="navbar-icon-button-right"
+                        buttonClassName="navbar-menu-button"
                         title={<i className="fa fa-cog navbar-header-icon" />}
                         noCaret
                         pullRight
@@ -156,7 +156,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                 <div className="navbar-item pull-right navbar-item__dropdown">
                     <DropdownButton
                         className="help-dropdown"
-                        buttonClassName="navbar-icon-button-right"
+                        buttonClassName="navbar-menu-button"
                         title={<i className="fa fa-question-circle navbar-header-icon" />}
                         noCaret
                         pullRight

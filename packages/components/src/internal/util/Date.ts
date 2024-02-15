@@ -116,7 +116,7 @@ export function getFormattedTimeString(date: Date, queryColumn?: QueryColumn) {
 }
 
 export function getFormattedStringFromDate(date: Date, queryColumn: QueryColumn, hideTime?: boolean) {
-    if (!date) return null;
+    if (!date) return undefined;
 
     const isTimeOnly = queryColumn.isTimeColumn;
     const isDateOnly = queryColumn.isDateOnlyColumn || hideTime;

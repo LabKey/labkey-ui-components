@@ -53,6 +53,7 @@ import { selectRows } from '../../query/selectRows';
 import {
     AMOUNT_AND_UNITS_COLUMNS_LC,
     SAMPLE_STORAGE_COLUMNS_LC,
+    SampleStateType,
     SELECTION_KEY_TYPE,
     STORED_AMOUNT_FIELDS,
 } from './constants';
@@ -542,6 +543,32 @@ export function getSampleStatuses(includeInUse = false, containerPath?: string):
             }),
         });
     });
+}
+
+/**
+ * The default status for a discarded sample should be Consumed. This method compensates for the
+ * possibility that there may be more than one sample status with of type 'consumed'.
+ * - If there is only one status of type 'consumed', this is the default, regardless of the label
+ * - If there are multiple 'consumed' statuses, use the one labeled 'Consumed' as the default, if it exists.
+ * - In other cases, do not choose a default.
+ */
+export async function getDefaultDiscardStatus(containerPath?: string): Promise<number> {
+    try {
+        const allStatuses = await getSampleStatuses(false, containerPath);
+        const consumedStatuses = allStatuses.filter(state => state.stateType === SampleStateType.Consumed);
+        if (consumedStatuses.length === 1) {
+            return consumedStatuses[0].rowId;
+        }
+        const consumedLabels = consumedStatuses.filter(
+            status => status.label.toLowerCase() === SampleStateType.Consumed.toLowerCase()
+        );
+        if (consumedLabels.length === 1) {
+            return consumedLabels[0].rowId;
+        }
+        return undefined;
+    } catch (error) {
+        return undefined;
+    }
 }
 
 /**

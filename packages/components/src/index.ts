@@ -351,8 +351,8 @@ import { CreateProjectPage } from './internal/components/project/CreateProjectPa
 import { ProjectManagementPage } from './internal/components/project/ProjectManagementPage';
 import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
 import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
-import { AccountSettingsPage } from './internal/components/administration/AccountSettingsPage';
 import { useAdministrationSubNav } from './internal/components/administration/useAdministrationSubNav';
+import { useAdminAppContext } from './internal/components/administration/useAdminAppContext';
 import {
     deleteSampleSet,
     fetchSamples,
@@ -1315,7 +1315,6 @@ export {
     getFilterValuesAsArray,
     getFieldFiltersValidationResult,
     // administration
-    AccountSettingsPage,
     UserManagementPage,
     CreateProjectPage,
     ProjectManagementPage,
@@ -1324,6 +1323,7 @@ export {
     AdminSettingsPage,
     useFolderDataTypeExclusions,
     useAdministrationSubNav,
+    useAdminAppContext,
     // assay
     AssayUploadResultModel,
     AssayStateModel,

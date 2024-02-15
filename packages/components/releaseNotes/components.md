@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.22.0
+*Released*: 15 February 2024
 - Issue 49418: When exporting, include any query parameters from model
 - Issue 49602: Update wording in audit settings help tip
 - Issues 49634 and 49629: Update behavior for saved views that include query filters

@@ -1,7 +1,6 @@
 import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useEffect, useState, useMemo } from 'react';
 
 import { ActionValue } from './grid/actions/Action';
-import { filterActionValuesByType } from './grid/utils';
 
 interface Props {
     actionValues: ActionValue[];
@@ -11,10 +10,14 @@ interface Props {
 export const SearchBox: FC<Props> = memo(props => {
     const { actionValues, onSearch } = props;
     const [searchValue, setSearchValue] = useState('');
-    const appliedSearch = useMemo(() => filterActionValuesByType(actionValues, 'search')?.[0]?.value, [actionValues]);
+    const appliedSearch = useMemo(() => actionValues?.[0]?.value, [actionValues]);
 
     useEffect(() => {
-        if (appliedSearch) setSearchValue(appliedSearch);
+        if (appliedSearch) {
+            setSearchValue(appliedSearch);
+        } else {
+            setSearchValue('');
+        }
     }, [appliedSearch]);
 
     const onChange = useCallback(

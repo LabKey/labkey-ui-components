@@ -68,6 +68,10 @@
 .edit-inline-field {
     padding-top: 10px;
     word-break: break-word;
+
+    .react-datepicker__triangle {
+        left: -10px !important;
+    }
 }
 
 .edit-inline-field__label {

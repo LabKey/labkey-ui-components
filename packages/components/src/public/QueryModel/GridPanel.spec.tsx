@@ -253,17 +253,19 @@ describe('GridPanel', () => {
     const expectBoundState = (
         wrapper: GridPanelWrapper,
         attrs: Partial<QueryModel>,
-        expectedLen: number,
-        expectedValues: any[]
+        expectedValues: any[],
+        expectedSearchValues: any[]
     ): void => {
         const model = wrapper.props().model;
         wrapper.setProps({ model: model.mutate(attrs) });
-        expect(wrapper.state('actionValues').length).toEqual(expectedLen);
+        expect(wrapper.state('actionValues').length).toEqual(expectedValues.length);
 
         expectedValues.forEach((value): void => {
             const findByValue = (av: ActionValue): boolean => av.valueObject === value || av.value === value;
             expect(wrapper.state('actionValues').find(findByValue)).not.toEqual(undefined);
         });
+        expect(wrapper.state('searchActionValues').length).toEqual(expectedSearchValues.length);
+
     };
 
     test('FilterStatus Model Binding', () => {
@@ -279,13 +281,13 @@ describe('GridPanel', () => {
         const noMixturesSQ = new SchemaQuery(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, viewName);
         const search = Filter.create('*', 'foobar', Filter.Types.Q);
 
-        expectBoundState(wrapper, {}, 0, []);
-        expectBoundState(wrapper, { sorts: [nameSort] }, 1, [nameSort]);
-        expectBoundState(wrapper, { filterArray: [nameFilter] }, 2, [nameSort, nameFilter]);
-        expectBoundState(wrapper, { filterArray: [expirFilter] }, 2, [nameSort, expirFilter]);
-        expectBoundState(wrapper, { schemaQuery: noMixturesSQ }, 2, [nameSort, expirFilter]);
-        expectBoundState(wrapper, { filterArray: [expirFilter, search] }, 3, [nameSort, expirFilter, search]);
-        expectBoundState(wrapper, { sorts: [], filterArray: [], schemaQuery: SCHEMA_QUERY }, 0, []);
+        expectBoundState(wrapper, {}, [], []);
+        expectBoundState(wrapper, {sorts: [nameSort]}, [nameSort], []);
+        expectBoundState(wrapper, {filterArray: [nameFilter]}, [nameSort, nameFilter], []);
+        expectBoundState(wrapper, {filterArray: [expirFilter]}, [nameSort, expirFilter], []);
+        expectBoundState(wrapper, {schemaQuery: noMixturesSQ}, [nameSort, expirFilter], []);
+        expectBoundState(wrapper, {filterArray: [expirFilter, search]}, [nameSort, expirFilter], [search]);
+        expectBoundState(wrapper, {sorts: [], filterArray: [], schemaQuery: SCHEMA_QUERY}, [], []);
     });
 
     test('FilterStatus from saved view', () => {
@@ -307,13 +309,13 @@ describe('GridPanel', () => {
 
         const expirSort = new QuerySort({ fieldKey: 'expirationTime', dir: '-' });
         const expirFilter2 = Filter.create('expirationTime', '2');
-        expectBoundState(wrapper, { sorts: [expirSort], filterArray: [expirFilter2] }, 5, [
+        expectBoundState(wrapper, {sorts: [expirSort], filterArray: [expirFilter2]}, [
             'Name ASC',
             'expirationTime DESC',
             '"Name" = DMXP',
             '"Expiration Time" = 1',
             '"Expiration Time" = 2',
-        ]);
+        ], []);
 
         // verify that the view based filters are locked and model filters are not
         const actionValues = wrapper.state('actionValues');

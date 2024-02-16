@@ -332,20 +332,6 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
         return false;
     }
 
-    if (type === TIME_TYPE || type === DATE_TYPE) {
-        switch (domain?.domainKindName) {
-            case Domain.KINDS.SAMPLE_TYPE:
-            case Domain.KINDS.DATA_CLASS:
-            case Domain.KINDS.INT_LIST:
-            case Domain.KINDS.VAR_LIST:
-            case Domain.KINDS.STUDY_DATASET_DATE:
-            case Domain.KINDS.STUDY_DATASET_VISIT:
-                return true;
-        }
-        if (domain?.domainURI?.indexOf(':AssayDomain-Data.') > 0) return true;
-        return false;
-    }
-
     return true;
 }
 

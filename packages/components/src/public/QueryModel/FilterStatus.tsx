@@ -30,14 +30,18 @@ export const FilterStatus: FC<Props> = memo(props => {
                     return aDisplayValue > bDisplayValue ? 1 : aDisplayValue < bDisplayValue ? -1 : 0;
                 })
                 .map((actionValue, index) => {
-                    // loop over all actionValues so that the index remains consistent, but don't show search or sort actions
-                    if (!(actionValue.action.keyword === 'filter' || actionValue.action.keyword === 'view')) {
+                    // loop over all actionValues so that the index remains consistent, but don't show sort actions
+                    if (actionValue.action.keyword === 'sort') {
                         return null;
                     }
 
-                    // only FilterActions can be edited via clicked and removed
+                    // only FilterActions can be edited via click
                     const _onClick = actionValue.action.keyword === 'filter' ? onClick : undefined;
-                    const _onRemove = actionValue.action.keyword === 'filter' ? onRemove : undefined;
+                    // search and filter actions can be removed via click
+                    const _onRemove =
+                        actionValue.action.keyword === 'filter' || actionValue.action.keyword === 'search'
+                            ? onRemove
+                            : undefined;
 
                     return (
                         <Value

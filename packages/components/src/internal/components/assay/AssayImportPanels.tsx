@@ -454,7 +454,15 @@ class AssayImportPanelsBody extends Component<Props, State> {
             this.props.setIsDirty?.(true);
         }
 
-        this.handleChange('batchProperties', Map<string, any>(values ? values : {}));
+        const cleanedValues = Object.keys(values).reduce((result, key) => {
+            const value = values[key];
+            if (value !== undefined) {
+                result[key] = value;
+            }
+            return result;
+        }, {});
+
+        this.handleChange('batchProperties', OrderedMap<string, any>(cleanedValues));
     };
 
     handleWorkflowTaskChange = (name: string, value: any): void => {

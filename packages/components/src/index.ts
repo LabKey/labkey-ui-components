@@ -103,11 +103,9 @@ import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem
 import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
 import { InsufficientPermissionsAlert } from './internal/components/permissions/InsufficientPermissionsAlert';
-import { InsufficientPermissionsPage } from './internal/components/permissions/InsufficientPermissionsPage';
-import { BasePermissionsCheckPage } from './internal/components/permissions/BasePermissionsCheckPage';
+import { GroupDetailsPanel } from './internal/components/permissions/GroupDetailsPanel';
 import { NotFound } from './internal/components/base/NotFound';
 import { Page } from './internal/components/base/Page';
-import { LoadingPage } from './internal/components/base/LoadingPage';
 import { PageHeader } from './internal/components/base/PageHeader';
 import { Progress } from './internal/components/base/Progress';
 import { LabelHelpTip } from './internal/components/base/LabelHelpTip';
@@ -116,6 +114,7 @@ import { Grid } from './internal/components/base/Grid';
 import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
 import { ContentGroup, ContentGroupLabel } from './internal/components/base/ContentGroup';
+import { VerticalScrollPanel } from './internal/components/base/VerticalScrollPanel';
 import { FileAttachmentForm } from './public/files/FileAttachmentForm';
 import { TemplateDownloadButton } from './public/files/TemplateDownloadButton';
 import { DEFAULT_FILE } from './internal/components/files/models';
@@ -146,6 +145,7 @@ import {
     formatDateTime,
     getDateFormat,
     getDateTimeFormat,
+    getTimeFormat,
     getParsedRelativeDateStr,
     isDateTimeInPast,
     isRelativeDateFilterValue,
@@ -248,7 +248,14 @@ import {
 } from './internal/constants';
 import { getQueryParams, pushParameters, removeParameters, replaceParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
-import { DATA_IMPORT_TOPIC, getHelpLink, HELP_LINK_REFERRER, HelpLink } from './internal/util/helpLinks';
+import {
+    DATA_IMPORT_TOPIC,
+    getHelpLink,
+    HELP_LINK_REFERRER,
+    HelpLink,
+    JavaDocsLink,
+    DATE_FORMATS_TOPIC,
+} from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid } from './internal/components/editable/utils';
@@ -347,16 +354,15 @@ import {
     isValidFilterField,
     SAMPLE_FILTER_METRIC_AREA,
 } from './internal/components/search/utils';
-import { UserManagementPage } from './internal/components/administration/UserManagement';
 import { useFolderDataTypeExclusions } from './internal/components/project/useFolderDataTypeExclusions';
-import { CreateProjectPage } from './internal/components/project/CreateProjectPage';
-import { ProjectManagementPage } from './internal/components/project/ProjectManagementPage';
 import { ProjectNameSetting } from './internal/components/project/ProjectNameSetting';
 import { ProjectDataTypeSelections } from './internal/components/project/ProjectDataTypeSelections';
-import { GroupManagementPage } from './internal/components/administration/GroupManagementPage';
-import { PermissionManagementPage } from './internal/components/administration/PermissionManagementPage';
+import { ProjectSettings } from './internal/components/project/ProjectSettings';
 import { useAdministrationSubNav } from './internal/components/administration/useAdministrationSubNav';
 import { useAdminAppContext } from './internal/components/administration/useAdminAppContext';
+import { ProtectedDataSettingsPanel } from './internal/components/administration/ProtectedDataSettingsPanel';
+import { fetchGroupMembership, getGroupMembership } from './internal/components/administration/actions';
+import { MemberType } from './internal/components/administration/models'; // flag
 import {
     deleteSampleSet,
     fetchSamples,
@@ -433,10 +439,11 @@ import {
 import { LineageDepthLimitMessage, LineageGraph } from './internal/components/lineage/LineageGraph';
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
-import { SEARCH_PLACEHOLDER } from './internal/components/navigation/constants';
+import { SEARCH_PLACEHOLDER, HOME_PATH, HOME_TITLE } from './internal/components/navigation/constants';
 import { FindByIdsModal } from './internal/components/search/FindByIdsModal';
 import { QueryFilterPanel } from './internal/components/search/QueryFilterPanel';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
+import { LOOK_AND_FEEL_METRIC } from './internal/components/productnavigation/constants';
 import { useSubNavTabsContext, useFolderMenuContext } from './internal/components/navigation/hooks';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
@@ -455,6 +462,9 @@ import { ChangePasswordModal } from './internal/components/user/ChangePasswordMo
 import { useUserProperties } from './internal/components/user/hooks';
 import { UserLink, UserLinkList } from './internal/components/user/UserLink';
 import { APIKeysPanel } from './internal/components/user/APIKeysPanel';
+import { UserDetailsPanel } from './internal/components/user/UserDetailsPanel';
+import { useAccountSubNav } from './internal/components/user/AccountSubNav';
+import { UsersGridPanel } from './internal/components/user/UsersGridPanel';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DERIVATION_DATA_SCOPES,
@@ -466,9 +476,15 @@ import {
     STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
-import { withPermissionsPage } from './internal/components/permissions/withPermissionsPage';
-import { Principal, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
-import { fetchContainerSecurityPolicy } from './internal/components/permissions/actions';
+import { Principal, SecurityPolicy, SecurityAssignment, SecurityRole } from './internal/components/permissions/models';
+import {
+    fetchContainerSecurityPolicy,
+    getInactiveUsers,
+    getPrincipals,
+    getPrincipalsById,
+    processGetRolesResponse,
+    getRolesByUniqueName,
+} from './internal/components/permissions/actions';
 import {
     getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
@@ -517,7 +533,7 @@ import { DEFAULT_ALIQUOT_NAMING_PATTERN, SampleTypeModel } from './internal/comp
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
 import { getQueryModelExportParams, runDetailsColumnsForQueryModel } from './public/QueryModel/utils';
-import { useRouteLeave } from './internal/util/RouteLeave';
+import { useRouteLeave, CONFIRM_MESSAGE } from './internal/util/RouteLeave';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
 import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
 import { ItemsLegend } from './internal/components/chart/ItemsLegend';
@@ -535,6 +551,7 @@ import {
     SAMPLE_TIMELINE_AUDIT_QUERY,
     SAMPLE_TYPE_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
+    USER_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
 } from './internal/components/auditlog/constants';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
@@ -659,6 +676,7 @@ import {
 import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
 import { BarTenderConfiguration } from './internal/components/labels/models';
 import { useLabelPrintingContext } from './internal/components/labels/LabelPrintingContextProvider';
+import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
 import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal';
 
 import { AppReducers, ProductMenuReducers, ServerNotificationReducers } from './internal/app/reducers';
@@ -711,6 +729,7 @@ import {
     userCanManageSampleWorkflow,
     userCanReadAssays,
     userCanReadDataClasses,
+    userCanReadGroupDetails,
     userCanReadMedia,
     userCanReadNotebooks,
     userCanReadRegistry,
@@ -746,9 +765,12 @@ import {
     createTestProjectAppContextAdmin,
     createTestProjectAppContextNonAdmin,
     TEST_FOLDER_CONTAINER,
+    TEST_FOLDER_CONTAINER_ADMIN,
+    TEST_PROJECT,
     TEST_PROJECT_CONTAINER,
     TEST_PROJECT_CONTAINER_ADMIN,
     TEST_FOLDER_OTHER_CONTAINER,
+    TEST_FOLDER_OTHER_CONTAINER_ADMIN,
 } from './internal/containerFixtures';
 import {
     ASSAY_DESIGN_KEY,
@@ -820,7 +842,6 @@ import {
     RUN_PROPERTIES_REQUIRED_COLUMNS,
     WORKFLOW_TASK_PROPERTIES_REQUIRED_COLUMNS,
 } from './internal/components/assay/constants';
-import { AdminSettingsPage } from './internal/components/administration/AdminSettingsPage';
 import { GlobalStateContextProvider } from './internal/GlobalStateContext';
 import {
     areUnitsCompatible,
@@ -851,9 +872,11 @@ import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
 import { DropdownAnchor, DropdownButton, MenuDivider, MenuItem, MenuHeader, SplitButton } from './internal/dropdowns';
 import { DropdownSection } from './internal/DropdownSection';
-import { isLoginAutoRedirectEnabled } from './internal/components/administration/utils';
-import { useAccountSubNav } from './internal/components/user/AccountSubNav';
+import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './internal/components/administration/utils';
 import { LineageGridModel, LineageResult } from './internal/components/lineage/models';
+import { ActiveUserLimit, ActiveUserLimitMessage } from './internal/components/settings/ActiveUserLimit';
+import { NameIdSettings } from './internal/components/settings/NameIdSettings';
+import { AuditSettings } from './internal/components/settings/AuditSettings';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -909,6 +932,7 @@ const App = {
     hasModule,
     getDateFormat,
     getDateTimeFormat,
+    getTimeFormat,
     useMenuSectionConfigs,
     menuInit,
     menuInvalidate,
@@ -926,6 +950,7 @@ const App = {
     userCanReadNotebooks,
     userCanReadMedia,
     userCanReadDataClasses,
+    userCanReadGroupDetails,
     userCanReadRegistry,
     userCanReadSources,
     userCanEditSharedViews,
@@ -990,10 +1015,13 @@ const App = {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
     TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT,
     TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_PROJECT,
     TEST_PROJECT_CONTAINER,
     TEST_PROJECT_CONTAINER_ADMIN,
     TEST_FOLDER_CONTAINER,
+    TEST_FOLDER_CONTAINER_ADMIN,
     TEST_FOLDER_OTHER_CONTAINER,
+    TEST_FOLDER_OTHER_CONTAINER_ADMIN,
     MEDIA_KEY,
     REGISTRY_KEY,
     CROSS_TYPE_KEY,
@@ -1189,19 +1217,27 @@ export {
     UserLinkList,
     ChangePasswordModal,
     InsufficientPermissionsAlert,
-    InsufficientPermissionsPage,
-    BasePermissionsCheckPage,
     RequiresPermission,
     hasAllPermissions,
     hasAnyPermissions,
     hasPermissions,
     fetchContainerSecurityPolicy,
-    withPermissionsPage,
+    getInactiveUsers,
+    getPrincipals,
+    getPrincipalsById,
     SecurityPolicy,
+    SecurityAssignment,
     SecurityRole,
     Principal,
     useUserProperties,
     isLoginAutoRedirectEnabled,
+    GroupDetailsPanel,
+    UserDetailsPanel,
+    UsersGridPanel,
+    processGetRolesResponse,
+    getRolesByUniqueName,
+    ActiveUserLimit,
+    ActiveUserLimitMessage,
     // sample picklist items
     AddToPicklistMenuItem,
     PicklistButton,
@@ -1335,17 +1371,19 @@ export {
     getFilterValuesAsArray,
     getFieldFiltersValidationResult,
     // administration
-    UserManagementPage,
-    CreateProjectPage,
-    ProjectManagementPage,
     ProjectNameSetting,
     ProjectDataTypeSelections,
-    GroupManagementPage,
-    PermissionManagementPage,
-    AdminSettingsPage,
+    ProjectSettings,
+    ProtectedDataSettingsPanel,
+    NameIdSettings,
+    AuditSettings,
     useFolderDataTypeExclusions,
     useAdministrationSubNav,
     useAdminAppContext,
+    showPremiumFeatures,
+    fetchGroupMembership,
+    getGroupMembership,
+    MemberType,
     // assay
     AssayUploadResultModel,
     AssayStateModel,
@@ -1410,6 +1448,8 @@ export {
     QueryFilterPanel,
     Breadcrumb,
     BreadcrumbCreate,
+    HOME_PATH,
+    HOME_TITLE,
     // notification related items
     NotificationsContextProvider,
     NO_UPDATES_MESSAGE,
@@ -1527,6 +1567,7 @@ export {
     resolveErrorMessage,
     getHelpLink,
     HelpLink,
+    JavaDocsLink,
     HELP_LINK_REFERRER,
     HelpIcon,
     incrementClientSideMetricCount,
@@ -1534,6 +1575,7 @@ export {
     useEnterEscape,
     encodePart,
     decodePart,
+    DATE_FORMATS_TOPIC,
     // devTools functions
     applyDevTools,
     devToolsActive,
@@ -1550,7 +1592,6 @@ export {
     ResponsiveMenuButton,
     ResponsiveMenuButtonGroup,
     // application page related items
-    LoadingPage,
     NotFound,
     Page,
     PageHeader,
@@ -1560,6 +1601,7 @@ export {
     Theme,
     SVGIcon,
     useWindowFocusCheckExpiredSession,
+    CONFIRM_MESSAGE,
     // general components
     Alert,
     ColumnSelectionModal,
@@ -1587,6 +1629,7 @@ export {
     ValueList,
     DataTypeSelector,
     ChoicesListItem,
+    VerticalScrollPanel,
     // base models, enums, constants
     Container,
     User,
@@ -1643,6 +1686,7 @@ export {
     SAMPLE_TIMELINE_AUDIT_QUERY,
     SAMPLE_TYPE_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
+    USER_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
     EXPERIMENT_AUDIT_EVENT,
@@ -1712,6 +1756,9 @@ export {
     MenuItem,
     MenuHeader,
     SplitButton,
+    BarTenderSettingsForm,
+    // Metrics
+    LOOK_AND_FEEL_METRIC,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
@@ -1736,7 +1783,6 @@ export type { GridProps } from './internal/components/base/Grid';
 export type { InjectedRouteLeaveProps, WrappedRouteLeaveProps } from './internal/util/RouteLeave';
 export type { PageHeaderProps } from './internal/components/base/PageHeader';
 export type { PageProps } from './internal/components/base/Page';
-export type { LoadingPageProps } from './internal/components/base/LoadingPage';
 export type { PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
 export type { FileAttachmentFormModel, IFile } from './internal/components/files/models';
 export type {
@@ -1782,7 +1828,6 @@ export type {
     SelectInputOption,
     SelectInputProps,
 } from './internal/components/forms/input/SelectInput';
-export type { InjectedPermissionsPage } from './internal/components/permissions/withPermissionsPage';
 export type { ISelectInitData } from './internal/components/forms/model';
 export type { QuerySelectChange, QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
 export type {
@@ -1813,10 +1858,15 @@ export type {
     SampleTypeAppContext,
 } from './internal/AppContext';
 export type { WithAdminAppContext } from './internal/components/administration/useAdminAppContext';
+export type { Groups, Member, GroupMembership } from './internal/components/administration/models'; // flag
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';
-export type { FolderAPIWrapper, ProjectSettingsOptions } from './internal/components/container/FolderAPIWrapper';
+export type {
+    FolderAPIWrapper,
+    ProjectSettingsOptions,
+    UpdateProjectSettingsOptions,
+} from './internal/components/container/FolderAPIWrapper';
 export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';
 export type { HorizontalBarLegendData } from './internal/components/chart/utils';
@@ -1855,3 +1905,5 @@ export type { QueryParams } from './internal/util/URL';
 export type { TriggerType } from './internal/OverlayTrigger';
 export type { MenuSectionItem } from './internal/DropdownSection';
 export type { BSStyle } from './internal/dropdowns';
+export type { FetchedGroup, SecurityAPIWrapper } from './internal/components/security/APIWrapper';
+export type { UserLimitSettings } from './internal/components/permissions/actions';

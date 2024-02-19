@@ -6,13 +6,11 @@ import classNames from 'classnames';
 import { usePortalRef } from './hooks';
 import { ModalButtons, ModalButtonsProps } from './ModalButtons';
 
-interface ModalProps extends Omit<ModalButtonsProps, 'onCancel' | 'onConfirm'> {
+interface ModalProps extends ModalButtonsProps {
     bsSize?: 'lg' | 'sm';
     className?: string;
     // Note: you probably shouldn't use footer, instead use the other props to render the appropriate footer
     footer?: ReactNode;
-    onCancel?: () => void;
-    onConfirm?: () => void;
     titleNode?: ReactNode;
     titleText?: string;
 }
@@ -35,7 +33,6 @@ export const Modal: FC<ModalProps> = memo(props => {
         titleText,
     } = props;
     const title = titleNode ? titleNode : <h4 className="modal-title">{titleText}</h4>;
-    const showButtons = !footer && onCancel && onConfirm;
     const showHeader = onCancel || titleNode || titleText;
     const portalRef = usePortalRef('modal');
     const className_ = classNames('modal-dialog', className, {
@@ -63,19 +60,17 @@ export const Modal: FC<ModalProps> = memo(props => {
 
                         <div className="modal-body">{children}</div>
 
-                        {showButtons && (
-                            <div className="modal-footer">
-                                <ModalButtons
-                                    cancelText={cancelText}
-                                    canConfirm={canConfirm}
-                                    confirmClass={confirmClass}
-                                    confirmText={confirmText}
-                                    confirmingText={confirmingText}
-                                    isConfirming={isConfirming}
-                                    onConfirm={onConfirm}
-                                    onCancel={onCancel}
-                                />
-                            </div>
+                        {!footer && (
+                            <ModalButtons
+                                cancelText={cancelText}
+                                canConfirm={canConfirm}
+                                confirmClass={confirmClass}
+                                confirmText={confirmText}
+                                confirmingText={confirmingText}
+                                isConfirming={isConfirming}
+                                onConfirm={onConfirm}
+                                onCancel={onCancel}
+                            />
                         )}
 
                         {footer && <div className="modal-footer">{footer}</div>}

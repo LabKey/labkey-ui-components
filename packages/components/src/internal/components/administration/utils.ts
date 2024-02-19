@@ -28,4 +28,3 @@ export function getApiExpirationMessage(moduleContext: ModuleContext): string {
 export function showPremiumFeatures(moduleContext?: ModuleContext): boolean {
     return hasPremiumModule(moduleContext) && !ActionURL.getParameter('excludePremium');
 }
-

@@ -1,7 +1,4 @@
-import {
-    getGroupMembership,
-
-} from './actions';
+import { getGroupMembership } from './actions';
 import { GroupMembership, Groups, MemberType } from './models';
 
 describe('Administration actions', () => {

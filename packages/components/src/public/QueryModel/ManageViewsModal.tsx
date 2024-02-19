@@ -183,13 +183,8 @@ export const ManageViewsModal: FC<Props> = memo(props => {
         [api, selectedView, handleAction, schemaQuery, containerPath, currentView]
     );
 
-    const footer = (
-        <button disabled={isSubmitting} onClick={onClose} className="btn btn-default pull-right" type="button">
-            Done
-        </button>
-    );
     return (
-        <Modal footer={footer} onCancel={onClose} onConfirm={onClose} titleText="Manage Saved Views">
+        <Modal cancelText="Done" onCancel={onClose} titleText="Manage Saved Views">
             <Alert>{errorMessage}</Alert>
             {!views && !errorMessage && <LoadingSpinner />}
             {views &&

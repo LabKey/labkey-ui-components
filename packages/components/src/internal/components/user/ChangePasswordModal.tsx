@@ -110,7 +110,7 @@ export class ChangePasswordModal extends React.Component<Props, State> {
                 isConfirming={submitting}
                 onCancel={onHide}
                 onConfirm={this.submitChangePassword}
-                titleText="Change Password"
+                title="Change Password"
             >
                 <form>
                     <PasswordInput

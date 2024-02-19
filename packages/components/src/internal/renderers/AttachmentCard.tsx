@@ -128,7 +128,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
             </div>
 
             {showModal && (
-                <Modal bsSize="lg" onCancel={_hideModal} titleNode={modalTitle}>
+                <Modal bsSize="lg" onCancel={_hideModal} title={modalTitle}>
                     <img src={imageURL} alt={`${name} image`} title={name} className="attachment-card__img_modal" />
                 </Modal>
             )}

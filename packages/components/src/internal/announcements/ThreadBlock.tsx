@@ -28,7 +28,7 @@ const DeleteThreadModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) =
         confirmClass="btn-danger"
         onCancel={cancel}
         onConfirm={onDelete}
-        titleText="Delete this comment thread?"
+        title="Delete this comment thread?"
     >
         Deleting this comment will also delete any replies to the original comment. Are you sure you want to delete this
         thread?
@@ -41,7 +41,7 @@ const DeleteReplyModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) =>
         confirmClass="btn-danger"
         onCancel={cancel}
         onConfirm={onDelete}
-        titleText="Delete this reply?"
+        title="Delete this reply?"
     >
         Are you sure you want to delete this reply?
     </Modal>

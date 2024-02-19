@@ -324,7 +324,7 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                     onCancel={toggleDetailsModal}
                     className="user-detail-modal"
                     footer={user.isAdmin ? footer : undefined}
-                    titleNode={this.renderHeader()}
+                    title={this.renderHeader()}
                 >
                     {this.renderBody()}
                 </Modal>

@@ -91,7 +91,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
             canConfirm={canConfirm}
             onCancel={closeModal}
             onConfirm={_onApply}
-            titleText={`Filter ${queryInfo.title}`}
+            title={`Filter ${queryInfo.title}`}
         >
             <Alert>{filterError}</Alert>
             <QueryFilterPanel

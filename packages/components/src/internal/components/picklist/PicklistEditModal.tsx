@@ -221,7 +221,7 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
             isConfirming={isSubmitting}
             onCancel={onHide}
             onConfirm={onSavePicklist}
-            titleText={title}
+            title={title}
         >
             <Alert>{picklistError}</Alert>
             <form>

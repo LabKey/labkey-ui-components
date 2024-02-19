@@ -11,8 +11,7 @@ interface ModalProps extends ModalButtonsProps {
     className?: string;
     // Note: you probably shouldn't use footer, instead use the other props to render the appropriate footer
     footer?: ReactNode;
-    titleNode?: ReactNode;
-    titleText?: string;
+    title?: ReactNode;
 }
 
 export const Modal: FC<ModalProps> = memo(props => {
@@ -29,11 +28,9 @@ export const Modal: FC<ModalProps> = memo(props => {
         isConfirming,
         onCancel,
         onConfirm,
-        titleNode,
-        titleText,
+        title,
     } = props;
-    const title = titleNode ? titleNode : <h4 className="modal-title">{titleText}</h4>;
-    const showHeader = onCancel || titleNode || titleText;
+    const showHeader = onCancel || title;
     const portalRef = usePortalRef('modal');
     const className_ = classNames('modal-dialog', className, {
         'modal-sm': bsSize === 'sm',
@@ -54,7 +51,7 @@ export const Modal: FC<ModalProps> = memo(props => {
                                         <span className="sr-only">Close</span>
                                     </button>
                                 )}
-                                {title}
+                                {title && <h4 className="modal-title">{title}</h4>}
                             </div>
                         )}
 

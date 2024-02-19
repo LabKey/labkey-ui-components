@@ -167,7 +167,7 @@ export class ReportItemModal extends PureComponent<ReportItemModalProps> {
 
         return (
             <div className="report-item-modal">
-                <Modal onCancel={onClose} titleText={name}>
+                <Modal onCancel={onClose} title={name}>
                     <BodyRenderer report={this.props.report} />
                 </Modal>
             </div>

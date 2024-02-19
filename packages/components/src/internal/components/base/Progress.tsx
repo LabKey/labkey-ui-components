@@ -107,7 +107,7 @@ export class Progress extends React.Component<Props, State> {
 
         if (modal) {
             return (
-                <Modal bsSize="lg" onCancel={undefined} onConfirm={undefined} canConfirm={false} titleNode={title}>
+                <Modal bsSize="lg" onCancel={undefined} onConfirm={undefined} canConfirm={false} title={title}>
                     {children}
                     {indicator}
                 </Modal>

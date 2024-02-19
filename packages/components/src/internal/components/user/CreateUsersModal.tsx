@@ -154,7 +154,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
                 isConfirming={this.state.isSubmitting}
                 onCancel={onCancel}
                 onConfirm={this.createUsers}
-                titleText="Create New Users"
+                title="Create New Users"
             >
                 {this.renderForm()}
                 {error && <Alert style={{ marginTop: '10px' }}>{error}</Alert>}

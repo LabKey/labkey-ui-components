@@ -99,7 +99,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
             isConfirming={submitting}
             onCancel={closeModal}
             onConfirm={_onFind}
-            titleText={`Find ${capitalNounPlural}`}
+            title={`Find ${capitalNounPlural}`}
         >
             <Alert>{error}</Alert>
             <p>Find {nounPlural} using:</p>

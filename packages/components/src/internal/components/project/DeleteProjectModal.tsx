@@ -133,7 +133,7 @@ export const DeleteProjectModal: FC<Props> = memo(props => {
             isConfirming={isDeleting}
             onCancel={isDeleting ? undefined : onHide}
             onConfirm={isDeleting ? undefined : onDeleteProject}
-            titleText={titleText}
+            title={titleText}
         >
             {body}
             {!isDeleting && (

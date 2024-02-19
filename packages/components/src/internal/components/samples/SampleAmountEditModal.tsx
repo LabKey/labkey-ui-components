@@ -155,7 +155,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
             isConfirming={submitting}
             onCancel={onCancel}
             onConfirm={onSubmit}
-            titleText="Edit Sample Amounts"
+            title="Edit Sample Amounts"
         >
             <Alert bsStyle="danger">{error}</Alert>
             <StorageAmountInput

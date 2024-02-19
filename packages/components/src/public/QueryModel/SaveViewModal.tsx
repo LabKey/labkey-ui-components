@@ -169,7 +169,7 @@ export const SaveViewModal: FC<Props> = memo(props => {
             isConfirming={isSubmitting}
             onCancel={onCancel}
             onConfirm={saveView}
-            titleText="Save Grid View"
+            title="Save Grid View"
         >
             <Alert>{errorMessage}</Alert>
             <form onSubmit={saveView}>

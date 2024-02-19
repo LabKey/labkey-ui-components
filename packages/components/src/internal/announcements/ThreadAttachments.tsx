@@ -79,7 +79,7 @@ export const RemoveAttachmentModal: FC<RemoveAttachmentModalProps> = memo(props 
         confirmText="Yes, delete attachment"
         onCancel={props.cancel}
         onConfirm={props.remove}
-        titleText="Delete Attachment?"
+        title="Delete Attachment?"
     >
         <Alert>{props.error}</Alert>
         Are you sure you want to delete the attachment "{props.name}"?

@@ -34,7 +34,7 @@ export const TextChoiceAddValuesModal: FC<Props> = memo(props => {
     const title = `Add Text Choice Values${hasFieldName ? ' for' + fieldName : ''}`;
     const valueNoun = Utils.pluralize(maxValuesToAdd, 'value', 'values');
     return (
-        <Modal canConfirm={canConfirm} confirmText="Apply" onCancel={onCancel} onConfirm={onConfirm} titleText={title}>
+        <Modal canConfirm={canConfirm} confirmText="Apply" onCancel={onCancel} onConfirm={onConfirm} title={title}>
             <p>
                 Enter each value on a new line. {valueNoun} can be added.
             </p>

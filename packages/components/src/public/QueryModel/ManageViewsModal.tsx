@@ -184,7 +184,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     );
 
     return (
-        <Modal cancelText="Done" onCancel={onClose} titleText="Manage Saved Views">
+        <Modal cancelText="Done" onCancel={onClose} title="Manage Saved Views">
             <Alert>{errorMessage}</Alert>
             {!views && !errorMessage && <LoadingSpinner />}
             {views &&

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.22.2
+*Released*: 19 February 2024
+- Issue 49352: Breadcrumb fix to remove CSS content and replace with new `<li>` separator
+- Issue 48834: Lineage detail panel to use table-layout auto instead of fixed
+
 ### version 3.22.1
 *Released*: 15 February 2024
 - Support date/time fields for all domain kinds

@@ -875,7 +875,7 @@ import { LineageGridModel, LineageResult } from './internal/components/lineage/m
 import { ActiveUserLimit, ActiveUserLimitMessage } from './internal/components/settings/ActiveUserLimit';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { AuditSettings } from './internal/components/settings/AuditSettings';
-import { Modal } from './internal/Modal';
+import { BaseModal, Modal, ModalHeader } from './internal/Modal';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1757,7 +1757,9 @@ export {
     BarTenderSettingsForm,
     // Metrics
     LOOK_AND_FEEL_METRIC,
+    BaseModal,
     Modal,
+    ModalHeader,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

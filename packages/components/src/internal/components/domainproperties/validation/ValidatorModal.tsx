@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { List } from 'immutable';
-import { Modal } from 'react-bootstrap';
 
+import { Modal } from '../../../Modal'
 import { getSubmitButtonClass } from '../../../app/utils';
 
 import { ConditionalFormat, PropertyValidator } from '../models';
@@ -23,7 +23,6 @@ export interface ValidatorModalProps {
     mvEnabled: boolean;
     onApply: (validators: List<PropertyValidator | ConditionalFormat>, type: string) => void;
     onHide: () => void;
-    show: boolean;
     title: string;
     type: string;
     validators: List<PropertyValidator | ConditionalFormat>;
@@ -124,59 +123,56 @@ export function ValidatorModal(WrappedComponent: any) {
         };
 
         render(): ReactNode {
-            const { show, title, onHide, addName, index, dataType, mvEnabled } = this.props;
+            const { title, onHide, addName, index, dataType, mvEnabled } = this.props;
             const { expanded, validators } = this.state;
+            const footer = (
+                <>
+                    <div className="domain-field-float-left">
+                        <AddEntityButton
+                            entity={addName}
+                            buttonClass="domain-validation-add-btn"
+                            onClick={this.onAdd}
+                        />
+                    </div>
+                    <div className="domain-validation-btn-row">
+                        <button
+                            className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
+                            onClick={onHide}
+                            type="button"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
+                            disabled={!this.isValid(validators)}
+                            onClick={this.handleApply}
+                            type="button"
+                        >
+                            Apply
+                        </button>
+                    </div>
+                </>
+            );
 
             return (
-                <Modal show={show} onHide={onHide}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>{title}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="domain-modal">
-                            {validators.map((validator, i) => (
-                                <div key={i}>
-                                    <WrappedComponent
-                                        validatorIndex={i}
-                                        validator={validator}
-                                        index={index}
-                                        expanded={i === expanded}
-                                        dataType={dataType}
-                                        mvEnabled={mvEnabled}
-                                        onExpand={this.onExpand}
-                                        onChange={this.onChange}
-                                        onDelete={this.onDelete}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <div className="domain-field-float-left">
-                            <AddEntityButton
-                                entity={addName}
-                                buttonClass="domain-validation-add-btn"
-                                onClick={this.onAdd}
-                            />
-                        </div>
-                        <div className="domain-validation-btn-row">
-                            <button
-                                className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
-                                onClick={onHide}
-                                type="button"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
-                                disabled={!this.isValid(validators)}
-                                onClick={this.handleApply}
-                                type="button"
-                            >
-                                Apply
-                            </button>
-                        </div>
-                    </Modal.Footer>
+                <Modal footer={footer} onCancel={onHide} title={title}>
+                    <div className="domain-modal">
+                        {validators.map((validator, i) => (
+                            <div key={i}>
+                                <WrappedComponent
+                                    validatorIndex={i}
+                                    validator={validator}
+                                    index={index}
+                                    expanded={i === expanded}
+                                    dataType={dataType}
+                                    mvEnabled={mvEnabled}
+                                    onExpand={this.onExpand}
+                                    onChange={this.onChange}
+                                    onDelete={this.onDelete}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </Modal>
             );
         }

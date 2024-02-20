@@ -15,12 +15,12 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import { List, OrderedMap } from 'immutable';
-import { Modal } from 'react-bootstrap';
 import Formsy from 'formsy-react';
 import { Filter, Utils } from '@labkey/api';
 
 import { Operation } from '../../../public/QueryColumn';
 
+import { Modal } from '../../Modal';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { FormButtons } from '../../FormButtons';
 
@@ -79,7 +79,6 @@ interface State {
     isDirty: boolean;
     isSubmitted: boolean;
     isSubmitting: boolean;
-    show: boolean;
     submitForEdit: boolean;
 }
 
@@ -106,7 +105,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         this.formRef = React.createRef();
 
         this.state = {
-            show: true,
             fieldEnabledCount: !props.allowFieldDisable || !props.initiallyDisableFields ? 1 : 0, // initial value of 1 is really just a boolean at this point
             canSubmit: !props.includeCountField && !props.checkRequiredFields,
             isSubmitted: false,
@@ -250,7 +248,6 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
 
     onHide = (): void => {
         this.props.onHide?.();
-        this.setState({ show: false });
     };
 
     onCountChange = (count: number): void => {
@@ -390,7 +387,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                         <QueryFormInputs {...queryFormInputProps} onFieldsEnabledChange={this.onFieldsEnabledChange} />
                         {footer}
                         {showErrorsAtBottom && this.renderError()}
-                        {this.renderButtons()}
+                        {!asModal && this.renderButtons()}
                     </Formsy>
                 </div>
             );
@@ -398,13 +395,14 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
 
         if (asModal) {
             return (
-                <Modal bsSize="large" dialogClassName="form-modal" show={this.state.show} onHide={this.onHide}>
-                    {title && (
-                        <Modal.Header>
-                            <Modal.Title>{title}</Modal.Title>
-                        </Modal.Header>
-                    )}
-                    <Modal.Body>{content}</Modal.Body>
+                <Modal
+                    bsSize="lg"
+                    className="form-modal"
+                    footer={this.renderButtons()}
+                    onCancel={this.onHide}
+                    title={title}
+                >
+                    {content}
                 </Modal>
             );
         }

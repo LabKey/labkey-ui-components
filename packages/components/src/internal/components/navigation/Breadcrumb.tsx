@@ -34,9 +34,14 @@ export const Breadcrumb: FC<Props> = props => {
 
     return (
         <ol className={classNames('breadcrumb', props.className)}>
-            {React.Children.map(children, child => (
-                <li>{child}</li>
-            ))}
+            {React.Children.map(children, (child, i) => {
+                return (
+                    <>
+                        {i > 0 && <li className="separator">&nbsp;/&nbsp;</li>}
+                        <li>{child}</li>
+                    </>
+                );
+            })}
         </ol>
     );
 };

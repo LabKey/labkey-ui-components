@@ -533,7 +533,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 </button>
 
                 {modalOpen && (
-                    <Modal onCancel={this.closeModal} title="Advanced List Settings" footer={footer}>
+                    <Modal footer={footer} onCancel={this.closeModal} title="Advanced List Settings">
                         <SettingsContainer title="Default Display Field" tipBody={DISPLAY_TITLE_TIP}>
                             <DisplayTitle
                                 model={model}

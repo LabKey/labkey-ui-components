@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react';
-import { Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
+import { Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
 
+import { Modal } from '../../../Modal';
 import { getSubmitButtonClass } from '../../../app/utils';
 
 import { DATASET_PROPERTIES_TOPIC, HelpLink } from '../../../util/helpLinks';
@@ -186,6 +187,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         }
     };
 
+    closeModal = () => {
+        this.toggleModal(false);
+    };
+
     onInputChange = e => {
         const id = e.target.id;
         let value = e.target.value;
@@ -233,6 +238,29 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const showInOverviewLabel = 'Show dataset in overview';
         const visitDateColumns = getVisitDateColumns(model.domain).toArray();
         const visitDateProperty = this.getVisitDatePropertyName();
+        const footer = (
+            <>
+                <button
+                    className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
+                    onClick={this.closeModal}
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+                <HelpLink topic={DATASET_PROPERTIES_TOPIC} className="domain-adv-footer domain-adv-link">
+                    Get help with dataset settings
+                </HelpLink>
+
+                <button
+                    className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
+                    onClick={this.applyChanges}
+                    type="button"
+                >
+                    Apply
+                </button>
+            </>
+        );
 
         return (
             <>
@@ -244,12 +272,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     {title}
                 </button>
 
-                <Modal show={modalOpen} onHide={() => this.toggleModal(false)}>
-                    <Modal.Header closeButton>
-                        <Modal.Title> Advanced Dataset Settings </Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
+                {modalOpen && (
+                    <Modal footer={footer} onCancel={this.closeModal} title="Advanced Dataset Settings">
                         <SectionHeading title="Miscellaneous Options" />
 
                         <Row className="margin-top">
@@ -331,32 +355,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </div>
                             </>
                         )}
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <>
-                            <button
-                                className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
-                                onClick={() => this.toggleModal(false)}
-                                type="button"
-                            >
-                                Cancel
-                            </button>
-
-                            <HelpLink topic={DATASET_PROPERTIES_TOPIC} className="domain-adv-footer domain-adv-link">
-                                Get help with dataset settings
-                            </HelpLink>
-
-                            <button
-                                className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
-                                onClick={this.applyChanges}
-                                type="button"
-                            >
-                                Apply
-                            </button>
-                        </>
-                    </Modal.Footer>
-                </Modal>
+                    </Modal>
+                )}
             </>
         );
     }

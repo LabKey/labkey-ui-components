@@ -12,7 +12,7 @@ import {
     TEST_LKSM_STARTER_MODULE_CONTEXT,
 } from '../../productFixtures';
 
-import { APIKeysPanel, KeyGenerator } from './ProfilePage';
+import { APIKeysPanel, KeyGenerator } from './APIKeysPanel';
 
 beforeAll(() => {
     global.console.error = jest.fn();

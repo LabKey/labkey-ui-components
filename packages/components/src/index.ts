@@ -104,8 +104,6 @@ import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
 import { InsufficientPermissionsAlert } from './internal/components/permissions/InsufficientPermissionsAlert';
 import { GroupDetailsPanel } from './internal/components/permissions/GroupDetailsPanel';
-import { NotFound } from './internal/components/base/NotFound';
-import { Page } from './internal/components/base/Page';
 import { PageHeader } from './internal/components/base/PageHeader';
 import { Progress } from './internal/components/base/Progress';
 import { LabelHelpTip } from './internal/components/base/LabelHelpTip';
@@ -293,7 +291,7 @@ import {
 } from './internal/components/forms/utils';
 import { QueryFormInputs } from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
-import { SelectInput } from './internal/components/forms/input/SelectInput';
+import { SelectInput, SelectInputImpl } from './internal/components/forms/input/SelectInput';
 import { selectOptionByText } from './internal/components/forms/input/SelectInputTestUtils';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
 import { FileInput } from './internal/components/forms/input/FileInput';
@@ -362,7 +360,7 @@ import { useAdministrationSubNav } from './internal/components/administration/us
 import { useAdminAppContext } from './internal/components/administration/useAdminAppContext';
 import { ProtectedDataSettingsPanel } from './internal/components/administration/ProtectedDataSettingsPanel';
 import { fetchGroupMembership, getGroupMembership } from './internal/components/administration/actions';
-import { MemberType } from './internal/components/administration/models'; // flag
+import { MemberType } from './internal/components/administration/models';
 import {
     deleteSampleSet,
     fetchSamples,
@@ -698,6 +696,7 @@ import {
     hasPremiumModule,
     hasProductProjects,
     isAllProductFoldersFilteringEnabled,
+    isApp,
     isAppHomeFolder,
     isAssayDesignExportEnabled,
     isAssayEnabled,
@@ -894,6 +893,7 @@ const App = {
     getCurrentAppProperties,
     registerWebSocketListeners,
     getAppHomeFolderPath,
+    isApp,
     isAppHomeFolder,
     isAssayDesignExportEnabled,
     isAssayEnabled,
@@ -1172,6 +1172,7 @@ export {
     QueryFormInputs,
     LookupSelectInput,
     SelectInput,
+    SelectInputImpl,
     DatePickerInput,
     FileInput,
     TextAreaInput,
@@ -1592,8 +1593,6 @@ export {
     ResponsiveMenuButton,
     ResponsiveMenuButtonGroup,
     // application page related items
-    NotFound,
-    Page,
     PageHeader,
     PageDetailHeader,
     BeforeUnload,
@@ -1782,7 +1781,6 @@ export type { ServerContext, ModuleContext } from './internal/components/base/Se
 export type { GridProps } from './internal/components/base/Grid';
 export type { InjectedRouteLeaveProps, WrappedRouteLeaveProps } from './internal/util/RouteLeave';
 export type { PageHeaderProps } from './internal/components/base/PageHeader';
-export type { PageProps } from './internal/components/base/Page';
 export type { PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
 export type { FileAttachmentFormModel, IFile } from './internal/components/files/models';
 export type {
@@ -1858,7 +1856,7 @@ export type {
     SampleTypeAppContext,
 } from './internal/AppContext';
 export type { WithAdminAppContext } from './internal/components/administration/useAdminAppContext';
-export type { Groups, Member, GroupMembership } from './internal/components/administration/models'; // flag
+export type { Groups, Member, GroupMembership } from './internal/components/administration/models';
 export type { ThreadBlockProps } from './internal/announcements/ThreadBlock';
 export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';

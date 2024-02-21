@@ -120,7 +120,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     <div className="navbar-connector" />
                     {userMenuItems}
                     {extraUserItems}
-                    <MenuDivider />
+                    {(userMenuItems.length > 0 || extraUserItems) && <MenuDivider />}
                     {user.isSignedIn ? (
                         <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
                     ) : (

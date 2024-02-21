@@ -24,7 +24,7 @@ interface DeleteThreadBSModalProps {
 
 const DeleteThreadModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) => (
     <Modal
-        confirmText="Yes, delete thread"
+        confirmText="Yes, Delete Thread"
         confirmClass="btn-danger"
         onCancel={cancel}
         onConfirm={onDelete}
@@ -37,7 +37,7 @@ const DeleteThreadModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) =
 
 const DeleteReplyModal: FC<DeleteThreadBSModalProps> = ({ cancel, onDelete }) => (
     <Modal
-        confirmText="Yes, delete reply"
+        confirmText="Yes, Delete Reply"
         confirmClass="btn-danger"
         onCancel={cancel}
         onConfirm={onDelete}

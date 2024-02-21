@@ -243,7 +243,14 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
     };
 
     setSubmitting = (submitForEdit: boolean): void => {
-        this.setState({ submitForEdit });
+        this.setState({ submitForEdit }, () => {
+            // HACK: when we're rendering as a modal we render the buttons outside the Formsy form, so we need to
+            // manually trigger submit via the ref, and we have to do it after the state has been updated or the Edit in
+            // Grid button will not work.
+            if (this.props.asModal) {
+                this.formRef.current.submit();
+            }
+        });
     };
 
     onHide = (): void => {

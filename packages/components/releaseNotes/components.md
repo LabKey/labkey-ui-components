@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: ?? February 2024
 - Add Modal
 - Delete LoadingModal
+- Delete ConfirmModal
 
 ### version 3.23.0
 *Released*: 23 February 2024

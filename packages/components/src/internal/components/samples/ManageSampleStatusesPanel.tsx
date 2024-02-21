@@ -6,7 +6,7 @@ import { List } from 'immutable';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { LockIcon } from '../base/LockIcon';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { AddEntityButton } from '../buttons/AddEntityButton';
@@ -263,9 +263,9 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                 </form>
             )}
             {showDeleteConfirm && (
-                <ConfirmModal
-                    cancelButtonText="Cancel"
-                    confirmButtonText="Yes, Delete"
+                <Modal
+                    confirmClass="btn-danger"
+                    confirmText="Yes, Delete"
                     onCancel={onToggleDeleteConfirm}
                     onConfirm={onDeleteConfirm}
                     title="Permanently Delete Status?"
@@ -276,7 +276,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                             <strong>Deletion cannot be undone.</strong> Do you want to proceed?
                         </p>
                     </span>
-                </ConfirmModal>
+                </Modal>
             )}
         </>
     );

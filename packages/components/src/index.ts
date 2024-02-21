@@ -134,7 +134,6 @@ import {
     useNotificationsContext,
     withNotificationsContext,
 } from './internal/components/notifications/NotificationsContext';
-import { ConfirmModal } from './internal/components/base/ConfirmModal';
 import { DisableableAnchor } from './internal/components/base/DisableableAnchor';
 import {
     filterDate,
@@ -1613,7 +1612,6 @@ export {
     ContentGroup,
     ContentGroupLabel,
     Section,
-    ConfirmModal,
     Cards,
     DisableableAnchor,
     DragDropHandle,
@@ -1886,7 +1884,6 @@ export type { SearchHit, SearchMetadata, SearchResult, SearchOptions } from './i
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';
 export type { PicklistDeletionData } from './internal/components/picklist/actions';
-export type { ConfirmModalProps } from './internal/components/base/ConfirmModal';
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
@@ -1907,3 +1904,4 @@ export type { MenuSectionItem } from './internal/DropdownSection';
 export type { BSStyle } from './internal/dropdowns';
 export type { FetchedGroup, SecurityAPIWrapper } from './internal/components/security/APIWrapper';
 export type { UserLimitSettings } from './internal/components/permissions/actions';
+export type { ModalProps } from './internal/Modal';

@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
@@ -36,8 +36,8 @@ describe('EntityMoveModal', () => {
 
     test('loading', () => {
         const wrapper = mountWithAppServerContext(<EntityMoveModal {...getDefaultProps()} />);
-        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
-        expect(wrapper.find(ConfirmModal).text()).toContain('Loading confirmation data...');
+        expect(wrapper.find(Modal)).toHaveLength(1);
+        expect(wrapper.find(Modal).text()).toContain('Loading confirmation data...');
         wrapper.unmount();
     });
 
@@ -53,8 +53,8 @@ describe('EntityMoveModal', () => {
             />
         );
         await waitForLifecycle(wrapper);
-        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
-        expect(wrapper.find(ConfirmModal).text()).toContain(
+        expect(wrapper.find(Modal)).toHaveLength(1);
+        expect(wrapper.find(Modal).text()).toContain(
             'There was a problem retrieving the move confirmation data.'
         );
         wrapper.unmount();
@@ -79,8 +79,8 @@ describe('EntityMoveModal', () => {
             />
         );
         await waitForLifecycle(wrapper);
-        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
-        expect(wrapper.find(ConfirmModal).text()).toContain(
+        expect(wrapper.find(Modal)).toHaveLength(1);
+        expect(wrapper.find(Modal).text()).toContain(
             "The sample you've selected cannot be moved because it has a status that prevents moving.   (more info)"
         );
         wrapper.unmount();
@@ -107,7 +107,7 @@ describe('EntityMoveModal', () => {
             DEFAULT_APP_CONTEXT
         );
         await waitForLifecycle(wrapper);
-        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
+        expect(wrapper.find(Modal)).toHaveLength(1);
         expect(wrapper.find(EntityMoveConfirmationModal)).toHaveLength(1);
         expect(wrapper.find(Progress)).toHaveLength(1);
         wrapper.unmount();

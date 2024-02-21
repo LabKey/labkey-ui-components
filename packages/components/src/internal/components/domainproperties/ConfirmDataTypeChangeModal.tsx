@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 
 import { PropDescType } from './PropDescType';
 import {
@@ -42,13 +42,12 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
     }
 
     return (
-        <ConfirmModal
+        <Modal
             title="Confirm Data Type Change"
             onConfirm={onConfirm}
             onCancel={onCancel}
-            confirmVariant="danger"
-            confirmButtonText="Yes, Change Data Type"
-            cancelButtonText="Cancel"
+            confirmClass="btn-danger"
+            confirmText="Yes, Change Data Type"
         >
             <div>
                 This change will convert the values in the field from{' '}
@@ -62,7 +61,7 @@ export const ConfirmDataTypeChangeModal: FC<Props> = memo(props => {
                 )}
                 Would you like to continue?
             </div>
-        </ConfirmModal>
+        </Modal>
     );
 });
 

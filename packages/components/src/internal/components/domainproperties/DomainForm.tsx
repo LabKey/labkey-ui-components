@@ -33,7 +33,7 @@ import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
 import { hasModule, isApp } from '../../app/utils';
 
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 
 import { AddEntityButton } from '../buttons/AddEntityButton';
 
@@ -499,15 +499,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         if (deletableSelectedFieldsCount === 0) {
             return (
-                <ConfirmModal
+                <Modal
                     title="Cannot Delete Required Fields"
                     onCancel={this.onConfirmBulkCancel}
-                    cancelButtonText="Close"
+                    cancelText="Close"
+                    confirmClass="btn-danger"
                 >
                     <div>
                         <p> None of the selected fields can be deleted. </p>
                     </div>
-                </ConfirmModal>
+                </Modal>
             );
         }
 
@@ -517,13 +518,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
 
         return (
-            <ConfirmModal
+            <Modal
                 title="Confirm Delete Selected Fields"
                 onConfirm={this.onBulkDeleteConfirm}
                 onCancel={this.onConfirmBulkCancel}
-                confirmVariant="danger"
-                confirmButtonText="Yes, Delete Fields"
-                cancelButtonText="Cancel"
+                confirmClass="btn-danger"
+                confirmText="Yes, Delete Fields"
             >
                 <div>
                     <p>{howManyDeleted} will be deleted.</p>
@@ -534,7 +534,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         data will also be deleted.
                     </p>
                 </div>
-            </ConfirmModal>
+            </Modal>
         );
     };
 
@@ -847,16 +847,15 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const field = this.props.domain.fields.get(confirmDeleteRowIndex);
         const fieldName = field && field.name && field.name.trim().length > 0 ? <b>{field.name}</b> : 'this field';
         return (
-            <ConfirmModal
+            <Modal
                 title="Confirm Remove Field"
                 onConfirm={() => this.onDeleteConfirm(confirmDeleteRowIndex)}
                 onCancel={this.onConfirmCancel}
-                confirmVariant="danger"
-                confirmButtonText="Yes, Remove Field"
-                cancelButtonText="Cancel"
+                confirmClass="btn-danger"
+                confirmText="Yes, Remove Field"
             >
                 <div>Are you sure you want to remove {fieldName}? All of its data will be deleted as well.</div>
-            </ConfirmModal>
+            </Modal>
         );
     }
 

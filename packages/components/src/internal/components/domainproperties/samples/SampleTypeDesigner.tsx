@@ -31,7 +31,7 @@ import {
 } from '../../../util/helpLinks';
 import { initQueryGridState } from '../../../global';
 import { resolveErrorMessage } from '../../../util/messaging';
-import { ConfirmModal } from '../../base/ConfirmModal';
+import { Modal } from '../../../Modal';
 import { Alert } from '../../base/Alert';
 
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
@@ -792,7 +792,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 )}
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
                 {showUniqueIdConfirmation && (
-                    <ConfirmModal
+                    <Modal
                         title={
                             'Updating ' +
                             SampleTypeDataType.typeNounSingular +
@@ -801,15 +801,13 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                         }
                         onCancel={this.onUniqueIdCancel}
                         onConfirm={this.onUniqueIdConfirm}
-                        confirmButtonText={
+                        confirmText={
                             submitting ? 'Finishing ...' : 'Finish Updating ' + SampleTypeDataType.typeNounSingular
                         }
-                        confirmVariant="success"
-                        cancelButtonText="Cancel"
-                        submitting={submitting}
+                        isConfirming={submitting}
                     >
                         {confirmModalMessage}
-                    </ConfirmModal>
+                    </Modal>
                 )}
                 <NameExpressionValidationModal
                     onHide={this.onNameExpressionWarningCancel}

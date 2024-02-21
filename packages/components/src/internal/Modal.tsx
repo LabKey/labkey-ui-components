@@ -57,7 +57,7 @@ export const ModalHeader: FC<ModalHeaderProps> = ({ title, onCancel }) => {
     );
 };
 
-interface ModalProps extends BaseModalProps, ModalButtonsProps {
+export interface ModalProps extends BaseModalProps, ModalButtonsProps {
     // Note: you probably shouldn't use footer, instead use the other props to render the appropriate footer
     footer?: ReactNode;
     title?: ReactNode;

@@ -20,7 +20,7 @@ import { Filter, Utils } from '@labkey/api';
 
 import { Operation } from '../../../public/QueryColumn';
 
-import { Modal } from '../../Modal';
+import { BaseModal, Modal, ModalHeader } from '../../Modal';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { FormButtons } from '../../FormButtons';
 
@@ -359,23 +359,17 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         if (!queryInfo || queryInfo.isLoading) {
             return null;
         }
-        let content;
         const showQuantityHeader = includeCountField || creationTypeOptions.length > 0;
-        if (isLoading) {
-            content = <LoadingSpinner />;
-        } else {
-            content = (
-                <div className="query-info-form">
-                    {header}
-                    {!showErrorsAtBottom && this.renderError()}
-                    <Formsy
-                        className="form-horizontal"
-                        onValidSubmit={this.handleValidSubmit}
-                        onValid={this.enableSubmitButton}
-                        onChange={this.handleChange}
-                        onInvalid={this.disableSubmitButton}
-                        ref={this.formRef}
-                    >
+
+        if (asModal) {
+            let content: ReactNode;
+            if (isLoading) {
+                content = <LoadingSpinner />;
+            } else {
+                content = (
+                    <div className="query-info-form">
+                        {header}
+                        {!showErrorsAtBottom && this.renderError()}
                         <QueryInfoQuantity
                             creationTypeOptions={creationTypeOptions}
                             includeCountField={includeCountField}
@@ -388,25 +382,59 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                         {footer}
                         {showErrorsAtBottom && this.renderError()}
                         {!asModal && this.renderButtons()}
-                    </Formsy>
-                </div>
-            );
-        }
+                    </div>
+                );
+            }
 
-        if (asModal) {
+            // We have to wrap the modal-body and modal-footer in the Formsy form or the buttons won't work
             return (
-                <Modal
-                    bsSize="lg"
-                    className="form-modal"
-                    footer={this.renderButtons()}
-                    onCancel={this.onHide}
-                    title={title}
-                >
-                    {content}
-                </Modal>
+                <BaseModal bsSize="lg" className="form-modal">
+                    <ModalHeader onCancel={this.onHide} title={title} />
+                    <Formsy
+                        className="form-horizontal"
+                        onValidSubmit={this.handleValidSubmit}
+                        onValid={this.enableSubmitButton}
+                        onChange={this.handleChange}
+                        onInvalid={this.disableSubmitButton}
+                        ref={this.formRef}
+                    >
+                        <div className="modal-body">{content}</div>
+                        <div className="modal-footer">{this.renderButtons()}</div>
+                    </Formsy>
+                </BaseModal>
             );
         }
 
-        return content;
+        if (isLoading) {
+            return <LoadingSpinner />;
+        }
+
+        return (
+            <div className="query-info-form">
+                {header}
+                {!showErrorsAtBottom && this.renderError()}
+                <Formsy
+                    className="form-horizontal"
+                    onValidSubmit={this.handleValidSubmit}
+                    onValid={this.enableSubmitButton}
+                    onChange={this.handleChange}
+                    onInvalid={this.disableSubmitButton}
+                    ref={this.formRef}
+                >
+                    <QueryInfoQuantity
+                        creationTypeOptions={creationTypeOptions}
+                        includeCountField={includeCountField}
+                        maxCount={maxCount}
+                        countText={countText}
+                        onCountChange={this.onCountChange}
+                    />
+                    {(header || showQuantityHeader) && <hr />}
+                    <QueryFormInputs {...queryFormInputProps} onFieldsEnabledChange={this.onFieldsEnabledChange} />
+                    {footer}
+                    {showErrorsAtBottom && this.renderError()}
+                    {this.renderButtons()}
+                </Formsy>
+            </div>
+        );
     }
 }

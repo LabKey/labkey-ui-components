@@ -31,7 +31,12 @@ import { useRouteLeave } from '../../util/RouteLeave';
 import { Alert } from '../base/Alert';
 import { AppContext, useAppContext } from '../../AppContext';
 import { setCopyValue } from '../../events';
-import { biologicsIsPrimaryApp, getPrimaryAppProperties, isFeatureEnabled } from '../../app/utils';
+import {
+    biologicsIsPrimaryApp,
+    getCurrentAppProperties,
+    getPrimaryAppProperties,
+    isFeatureEnabled
+} from '../../app/utils';
 import { ProductFeature } from '../../app/constants';
 import {
     InjectedQueryModels,
@@ -187,7 +192,6 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
     const [error, setError] = useState<string>();
     const apiEnabled = isApiKeyGenerationEnabled(moduleContext);
     const sessionEnabled = isSessionKeyGenerationEnabled(moduleContext);
-    const primaryApp = getPrimaryAppProperties(moduleContext)?.name;
 
     const onDelete = useCallback((deleteError?: string) => {
         if (deleteError) {
@@ -198,10 +202,13 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
         }
     }, []);
 
-    const onApiKeyCreate = useCallback((key: string) => {
-        setApiKey(key);
-        actions?.loadModel(model?.id, true, true);
-    }, []);
+    const onApiKeyCreate = useCallback(
+        (key: string) => {
+            setApiKey(key);
+            actions?.loadModel(model?.id, true, true);
+        },
+        [actions, model?.id]
+    );
 
     const adminMsg = useMemo(
         () =>
@@ -231,7 +238,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
                     API keys are currently configured to{' '}
                     <span className="api-key__expiration-config">{getApiExpirationMessage(moduleContext)}</span>.{' '}
                     <span>
-                        {primaryApp ? (
+                        {getCurrentAppProperties() ? (
                             <HelpLink topic="myAccount#apikey" useDefaultUrl={biologicsIsPrimaryApp(moduleContext)}>
                                 More info
                             </HelpLink>
@@ -247,7 +254,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
     );
 
     // We are meant to not show this panel for LKSM Starter, but show it in LKS and LKSM Prof+
-    if (primaryApp && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)) return null;
+    if (getPrimaryAppProperties(moduleContext) && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)) return null;
 
     return (
         <div className="panel panel-content panel-default">

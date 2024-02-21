@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 49639: Update more info link in admin page
+
 ### version 3.22.2
 *Released*: 19 February 2024
 - Issue 49352: Breadcrumb fix to remove CSS content and replace with new `<li>` separator

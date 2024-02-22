@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { ReactWrapper } from 'enzyme';
-import { Modal } from 'react-bootstrap';
 
 import { TEST_USER_EDITOR, TEST_USER_READER } from '../../userFixtures';
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
@@ -76,7 +75,7 @@ describe('AddToPicklistMenuItem', () => {
         const menuItem = wrapper.find('MenuItem a');
         expect(menuItem).toHaveLength(1);
         menuItem.simulate('click');
-        expect(wrapper.find(Modal)).toHaveLength(shouldOpen ? 1 : 0);
+        expect(wrapper.find('Modal')).toHaveLength(shouldOpen ? 1 : 0);
     }
 
     test('modal open on click, queryModel selections', () => {

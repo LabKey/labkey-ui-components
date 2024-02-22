@@ -1,5 +1,4 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
 import { mount, ReactWrapper, shallow } from 'enzyme';
 
 import { OntologyBrowserModal } from './OntologyBrowserModal';
@@ -13,10 +12,9 @@ const DEFAULT_PROPS = {
 
 describe('OntologyBrowserModal', () => {
     function validate(wrapper: ReactWrapper): void {
-        expect(wrapper.find(Modal).prop('bsSize')).toBe('large');
-        expect(wrapper.find(Modal).prop('onHide')).toBe(DEFAULT_PROPS.onCancel);
-        expect(wrapper.find(Modal.Header).prop('closeButton')).toBe(true);
-        expect(wrapper.find(Modal.Title).text()).toBe(DEFAULT_PROPS.title);
+        expect(wrapper.find('Modal').prop('bsSize')).toBe('lg');
+        expect(wrapper.find('Modal').prop('onCancel')).toBe(DEFAULT_PROPS.onCancel);
+        expect(wrapper.find('.modal-title').text()).toBe(DEFAULT_PROPS.title);
         expect(wrapper.find(OntologyBrowserPanel)).toHaveLength(1);
         expect(wrapper.find('button')).toHaveLength(3);
     }

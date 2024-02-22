@@ -84,7 +84,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
         },
         [filters]
     );
-    const canConfirm = validFieldFilters && Object.keys(validFieldFilters).length >= 0;
+    const canConfirm = validFieldFilters && Object.keys(validFieldFilters).length > 0;
     return (
         <Modal
             bsSize="lg"

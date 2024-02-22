@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { Modal } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
 import { SchemaQuery } from '../SchemaQuery';
@@ -29,7 +28,6 @@ describe('GridFilterModal', () => {
     };
 
     function validate(wrapper: ReactWrapper): void {
-        expect(wrapper.find(Modal)).toHaveLength(1);
         expect(wrapper.find('.modal-title').text()).toBe('Filter Query Title');
         expect(wrapper.find(Alert)).toHaveLength(1);
         expect(wrapper.find(QueryFilterPanel)).toHaveLength(1);

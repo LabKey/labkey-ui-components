@@ -134,7 +134,7 @@ describe('ListPropertiesPanel', () => {
         advancedSettingsButton.simulate('click');
 
         expect(listPropertiesPanel.find('.modal-title')).toHaveLength(1);
-        expect(listPropertiesPanel.find('.modal-title').text()).toEqual(' Advanced List Settings ');
+        expect(listPropertiesPanel.find('.modal-title').text()).toEqual('Advanced List Settings');
         listPropertiesPanel.unmount();
     });
 });

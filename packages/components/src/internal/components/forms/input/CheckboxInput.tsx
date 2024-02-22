@@ -45,7 +45,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
     static defaultProps = {
         ...DisableableInput.defaultProps,
         showLabel: true,
-        wrapperClassName: 'col-sm-9 col-md-9 col-xs-12',
+        wrapperClassName: 'col-sm-9 col-xs-12',
     };
 
     constructor(props: CheckboxInputProps) {

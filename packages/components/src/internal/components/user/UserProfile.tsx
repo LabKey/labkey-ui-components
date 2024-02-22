@@ -4,7 +4,6 @@
  */
 import React, { PureComponent, ReactNode } from 'react';
 import { List, OrderedMap } from 'immutable';
-import { Col, Row } from 'react-bootstrap';
 import { ActionURL, PermissionTypes } from '@labkey/api';
 
 import { QueryInfoForm } from '../forms/QueryInfoForm';
@@ -115,7 +114,7 @@ export class UserProfile extends PureComponent<Props, State> {
             return (
                 <div className="form-group row">
                     <label className="control-label col-sm-3 text-left col-xs-12"> Groups </label>
-                    <div className="col-sm-9 col-md-9 col-xs-12">
+                    <div className="col-sm-9 col-xs-12">
                         <GroupsList groups={groups} asRow={false} />
                     </div>
                 </div>
@@ -174,14 +173,14 @@ export class UserProfile extends PureComponent<Props, State> {
                 {isLoading && <LoadingSpinner />}
                 {!isLoading && (
                     <>
-                        <Row>
-                            <Col sm={3} xs={12}>
+                        <div className="row">
+                            <div className="col-sm-3 col-xs-12">
                                 <p className="user-section-header">Avatar</p>
-                            </Col>
-                            <Col sm={2} xs={12}>
+                            </div>
+                            <div className="col-sm-2 col-xs-12">
                                 <img src={avatarSrc} className="detail__header-icon" />
-                            </Col>
-                            <Col sm={7} xs={12}>
+                            </div>
+                            <div className="col-sm-7 col-xs-12">
                                 <FileInput
                                     key={USER_AVATAR_FILE}
                                     showLabel={false}
@@ -195,13 +194,13 @@ export class UserProfile extends PureComponent<Props, State> {
                                         </a>
                                     </div>
                                 )}
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col xs={12}>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-xs-12">
                                 <hr />
-                            </Col>
-                        </Row>
+                            </div>
+                        </div>
 
                         <p className="user-section-header">User Details</p>
 

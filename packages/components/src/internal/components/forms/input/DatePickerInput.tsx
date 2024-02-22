@@ -46,7 +46,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     inputWrapperClassName?: string;
     isClearable?: boolean;
     isFormInput?: boolean;
-    label?: any;
+    label?: ReactNode;
     labelClassName?: string;
     name?: string;
     onCalendarClose?: () => void;
@@ -74,7 +74,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         allowDisable: false,
         initiallyDisabled: false,
         isClearable: true,
-        wrapperClassName: 'col-sm-9 col-md-9 col-xs-12',
+        wrapperClassName: 'col-sm-9 col-xs-12',
         inputClassName: 'form-control',
         inputWrapperClassName: 'block',
         showLabel: true,
@@ -266,7 +266,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             />
         );
 
-        if (this.props.inlineEdit)
+        if (inlineEdit) {
             return (
                 <span className="input-group date-input">
                     {picker}
@@ -275,6 +275,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                     </span>
                 </span>
             );
+        }
 
         if (!isFormInput) return picker;
 

@@ -235,7 +235,11 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                                 <i className="fa fa-trash" /> Delete Project
                             </button>
 
-                            <button className="btn btn-success" disabled={isSaving || !nameDirty || !hasValidName} type="submit">
+                            <button
+                                className="btn btn-success"
+                                disabled={isSaving || !nameDirty || !hasValidName}
+                                type="submit"
+                            >
                                 {isSaving ? 'Saving...' : 'Save'}
                             </button>
                         </div>

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "3.22.2",
+  "version": "3.22.3-fb-storageOrder.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

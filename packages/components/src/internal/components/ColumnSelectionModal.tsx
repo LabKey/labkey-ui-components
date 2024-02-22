@@ -534,7 +534,6 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
     );
 });
 
-// TODO: check how many of these defaults are actually necessary
 ColumnSelectionModal.defaultProps = {
     allowEditLabel: false,
     allowShowAll: false,

@@ -40,7 +40,7 @@ export const BaseModal: FC<BaseModalProps> = ({ bsSize, children, className }) =
 BaseModal.displayName = 'BaseModal';
 
 interface ModalHeaderProps {
-    title?: ReactNode;
+    title: ReactNode;
     onCancel?: () => void;
 }
 export const ModalHeader: FC<ModalHeaderProps> = ({ title, onCancel }) => {
@@ -56,6 +56,7 @@ export const ModalHeader: FC<ModalHeaderProps> = ({ title, onCancel }) => {
         </div>
     );
 };
+ModalHeader.displayName = 'ModalHeader';
 
 export interface ModalProps extends BaseModalProps, ModalButtonsProps {
     // Note: you probably shouldn't use footer, instead use the other props to render the appropriate footer

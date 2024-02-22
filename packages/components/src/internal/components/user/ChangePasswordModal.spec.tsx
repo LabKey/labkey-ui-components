@@ -39,7 +39,7 @@ describe('ChangePasswordModal', () => {
         expect(modal.find('input')).toHaveLength(3);
         expect(modal.find(LabelHelpTip)).toHaveLength(1);
         expect(modal.find('.btn')).toHaveLength(2);
-        expect(wrapper.find('.alert').text()).toEqual('Test Error')
+        expect(wrapper.find('.alert').text()).toEqual('Test Error');
         expect(
             modal
                 .find('.btn')

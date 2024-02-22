@@ -26,8 +26,6 @@ export const ModalButtons: FC<ModalButtonsProps> = memo(props => {
         onCancel,
         onConfirm,
     } = props;
-    // Note: This component seems very generic right now, but in a near-future PR we will be introducing our own Modal
-    // component, and we will expand this component to have more modal-specific stuff in it at that time.
     const confirmButtonClass = classNames('btn', confirmClass);
 
     if (!onCancel && !onConfirm) return null;

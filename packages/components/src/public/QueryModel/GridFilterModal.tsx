@@ -89,6 +89,7 @@ export const GridFilterModal: FC<Props> = memo(props => {
         <Modal
             bsSize="lg"
             canConfirm={canConfirm}
+            confirmText="Apply"
             onCancel={closeModal}
             onConfirm={_onApply}
             title={`Filter ${queryInfo.title}`}

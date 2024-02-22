@@ -167,7 +167,7 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
             />
             <CommentTextArea
                 containerClassName="form-group storage-action-form-group"
-                actionName="update"
+                actionName="Update"
                 onChange={commentChangeHandler}
                 requiresUserComment={requiresUserComment}
             />

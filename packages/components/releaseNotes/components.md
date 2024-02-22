@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.X
+*Released*: X February 2024
+- Update EditableGrid to use alternative row background style
+
 ### version 3.22.2
 *Released*: 19 February 2024
 - Issue 49352: Breadcrumb fix to remove CSS content and replace with new `<li>` separator

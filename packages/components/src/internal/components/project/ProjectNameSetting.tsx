@@ -1,37 +1,42 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { Col, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
-interface Props {
+interface Props extends InjectedRouteLeaveProps {
     autoFocus?: boolean;
     defaultName?: string;
     defaultTitle?: string;
-    onChange?: () => void;
+    onChange?: (name?: string) => void;
 }
 
 const MAX_FOLDER_NAME_LENGTH = 255;
 
 export const ProjectNameSetting: FC<Props> = memo(props => {
-    const { autoFocus, defaultTitle, defaultName, onChange } = props;
+    const { autoFocus, defaultTitle, defaultName, onChange, setIsDirty } = props;
     const [name, setName] = useState<string>(defaultName);
     const [nameIsTitle, setNameIsTitle] = useState<boolean>(defaultName ? defaultName === defaultTitle : true);
     const toggleLabel = 'Use Project Name for Project Label';
 
     const onNameChange = useCallback(
         evt => {
-            setName(evt.target.value);
-            onChange?.();
+            const _name = evt.target.value;
+            setName(_name);
+            setIsDirty(true);
+            onChange?.(_name);
         },
-        [onChange]
+        [onChange, setIsDirty]
     );
 
     const onTitleChange = useCallback(() => {
+        setIsDirty(true);
         onChange?.();
-    }, [onChange]);
+    }, [onChange, setIsDirty]);
 
     const toggleNameIsTitle = useCallback(() => {
         setNameIsTitle(_nameIsTitle => !_nameIsTitle);
+        setIsDirty(true);
         onChange?.();
-    }, [onChange]);
+    }, [onChange, setIsDirty]);
 
     return (
         <div className="project-name-properties">

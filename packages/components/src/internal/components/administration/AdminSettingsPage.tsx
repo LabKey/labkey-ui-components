@@ -117,6 +117,8 @@ export const AdminSettingsPage: FC = () => {
                         showUncheckedWarning={false}
                         updateDataTypeExclusions={onSettingsChange}
                         onSuccess={onSettingsSuccess}
+                        getIsDirty={getIsDirty}
+                        setIsDirty={setIsDirty}
                     />
                 )}
                 <AuditSettings />

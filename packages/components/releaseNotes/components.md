@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 49639: Update more info link in admin page
 - Remove extraneous horizontal line in User menu when not logged in
+- Issue 49428: Add dirty page warning for createProject page
 
 ### version 3.22.2
 *Released*: 19 February 2024

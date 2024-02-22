@@ -32,6 +32,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { ProjectNameSetting } from './ProjectNameSetting';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
+import { useRouteLeave } from '../../util/RouteLeave';
 
 const TITLE = 'Create New Project';
 
@@ -46,10 +47,11 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
     const { projectDataTypes, sampleTypeDataType, ProjectFreezerSelectionComponent } = useAdminAppContext();
 
     const { moduleContext, container } = useServerContext();
-
+    const [hasValidName, setHasValidName] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [dataTypeExclusion, setDataTypeExclusion] = useState<{ [key: string]: number[] }>({});
+    const [getIsDirty, setIsDirty] = useRouteLeave();
 
     const updateDataTypeExclusions = useCallback((dataType: ProjectConfigurableDataType, exclusions: number[]) => {
         setDataTypeExclusion(prevState => {
@@ -58,6 +60,15 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
             return uncheckedUpdates;
         });
     }, []);
+
+    const onNameChange = useCallback((name: string) => {
+        setHasValidName(name?.trim().length > 0);
+    }, []);
+
+    const _onCancel = useCallback(() => {
+        setIsDirty(false);
+        onCancel();
+    }, [onCancel]);
 
     const onSubmit = useCallback(
         async evt => {
@@ -103,7 +114,12 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                     <div className="panel-heading">Name of Project</div>
                     <div className="panel-body">
                         <div className="form-horizontal">
-                            <ProjectNameSetting autoFocus />
+                            <ProjectNameSetting
+                                autoFocus
+                                setIsDirty={setIsDirty}
+                                getIsDirty={getIsDirty}
+                                onChange={onNameChange}
+                            />
 
                             {/* Dummy submit button so browsers trigger onSubmit with enter key */}
                             <button type="submit" className="dummy-input" tabIndex={-1} />
@@ -114,6 +130,8 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                     entityDataTypes={projectDataTypes}
                     project={null}
                     updateDataTypeExclusions={updateDataTypeExclusions}
+                    setIsDirty={setIsDirty}
+                    getIsDirty={getIsDirty}
                 />
                 {sampleTypeDataType && (
                     <ProjectDataTypeSelections
@@ -124,16 +142,26 @@ export const CreateProjectContainer: FC<CreateProjectContainerProps> = memo(prop
                         project={null}
                         showUncheckedWarning={false}
                         updateDataTypeExclusions={updateDataTypeExclusions}
+                        setIsDirty={setIsDirty}
+                        getIsDirty={getIsDirty}
                     />
                 )}
                 {ProjectFreezerSelectionComponent && (
-                    <ProjectFreezerSelectionComponent updateDataTypeExclusions={updateDataTypeExclusions} />
+                    <ProjectFreezerSelectionComponent
+                        updateDataTypeExclusions={updateDataTypeExclusions}
+                        getIsDirty={getIsDirty}
+                        setIsDirty={setIsDirty}
+                    />
                 )}
                 <FormButtons>
-                    <button className="project-cancel-button btn btn-default" onClick={onCancel} type="button">
+                    <button className="project-cancel-button btn btn-default" onClick={_onCancel} type="button">
                         Cancel
                     </button>
-                    <button className="create-project-button btn btn-success" disabled={isSaving} type="submit">
+                    <button
+                        className="create-project-button btn btn-success"
+                        disabled={isSaving || !hasValidName}
+                        type="submit"
+                    >
                         {isSaving ? 'Creating Project' : 'Create Project'}
                     </button>
                 </FormButtons>

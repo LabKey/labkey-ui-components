@@ -18,6 +18,7 @@ import { ProtectedDataSettingsPanel } from '../administration/ProtectedDataSetti
 import { ProjectNameSetting } from './ProjectNameSetting';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 import { DeleteProjectModal } from './DeleteProjectModal';
+import { useRouteLeave } from '../../util/RouteLeave';
 
 export interface ProjectSettingsProps {
     onChange: (dirty?: boolean) => void;
@@ -31,6 +32,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
 
     const [showModal, setShowModal] = useState<boolean>(false);
     const [nameDirty, setNameDirty] = useState<boolean>(false);
+    const [hasValidName, setHasValidName] = useState<boolean>(project.name.length > 0);
     const [dataTypeDirty, setDataTypeDirty] = useState<boolean>(false);
     const [dashboardDirty, setDashboardDirty] = useState<boolean>(false);
     const [storageDirty, setStorageDirty] = useState<boolean>(false);
@@ -43,9 +45,11 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const { container, user, moduleContext } = useServerContext();
     const isAppHomeSelected = isAppHomeFolder(project, moduleContext);
     const dispatch = useServerContextDispatch();
+    const [getIsDirty, setIsDirty] = useRouteLeave();
 
-    const onNameChange_ = useCallback(() => {
+    const onNameChange_ = useCallback((name: string) => {
         setNameDirty(true);
+        setHasValidName(name?.trim().length > 0);
         onChange(true);
     }, [onChange]);
 
@@ -198,6 +202,8 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                         showUncheckedWarning={false}
                         updateDataTypeExclusions={onDashboardChange_}
                         onSuccess={onDashboardSuccess}
+                        setIsDirty={setIsDirty}
+                        getIsDirty={getIsDirty}
                     />
                 </div>
             </div>
@@ -216,6 +222,8 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                             defaultName={project.name}
                             defaultTitle={project.title}
                             onChange={onNameChange_}
+                            setIsDirty={setIsDirty}
+                            getIsDirty={getIsDirty}
                         />
 
                         <div className="pull-right">
@@ -227,7 +235,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                                 <i className="fa fa-trash" /> Delete Project
                             </button>
 
-                            <button className="btn btn-success" disabled={isSaving || !nameDirty} type="submit">
+                            <button className="btn btn-success" disabled={isSaving || !nameDirty || !hasValidName} type="submit">
                                 {isSaving ? 'Saving...' : 'Save'}
                             </button>
                         </div>
@@ -250,6 +258,8 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                 updateDataTypeExclusions={onDataTypeChange_}
                 api={api.folder}
                 onSuccess={onDataTypeSuccess}
+                setIsDirty={setIsDirty}
+                getIsDirty={getIsDirty}
             />
             {sampleTypeDataType && (
                 <ProjectDataTypeSelections
@@ -262,6 +272,8 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                     showUncheckedWarning={false}
                     updateDataTypeExclusions={onDashboardChange_}
                     onSuccess={onDashboardSuccess}
+                    setIsDirty={setIsDirty}
+                    getIsDirty={getIsDirty}
                 />
             )}
             {!!ProjectFreezerSelectionComponent && (
@@ -269,6 +281,8 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                     project={project}
                     updateDataTypeExclusions={onStorageChange_}
                     onSuccess={onStorageSuccess}
+                    setIsDirty={setIsDirty}
+                    getIsDirty={getIsDirty}
                 />
             )}
             {biologicsIsPrimaryApp(moduleContext) && (

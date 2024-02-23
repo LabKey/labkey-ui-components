@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.23.0
+*Released*: 23 February 2024
+- Google Analytics Improvements
+    - Move files from ui-components to ui-premium
+    - Use <Page/> component that passes new analytics titles
+
 ### version 3.22.2
 *Released*: 19 February 2024
 - Issue 49352: Breadcrumb fix to remove CSS content and replace with new `<li>` separator

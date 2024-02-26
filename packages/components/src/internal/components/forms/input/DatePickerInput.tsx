@@ -30,7 +30,12 @@ import {
 } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
-import { WithFormsyProps } from '../constants';
+import {
+    INPUT_CONTAINER_CLASS_NAME,
+    INPUT_LABEL_CLASS_NAME,
+    INPUT_WRAPPER_CLASS_NAME,
+    WithFormsyProps,
+} from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -38,6 +43,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     addLabelAsterisk?: boolean;
     allowRelativeInput?: boolean;
     autoFocus?: boolean;
+    containerClassName?: string;
     disabled?: boolean;
     formsy?: boolean;
     hideTime?: boolean;
@@ -71,17 +77,18 @@ interface DatePickerInputState extends DisableableInputState {
 // export for jest testing
 export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePickerInputState> {
     static defaultProps = {
+        addLabelAsterisk: false,
         allowDisable: false,
+        containerClassName: INPUT_CONTAINER_CLASS_NAME,
         initiallyDisabled: false,
-        isClearable: true,
-        wrapperClassName: 'col-sm-9 col-xs-12',
+        initValueFormatted: false,
         inputClassName: 'form-control',
         inputWrapperClassName: 'block',
-        showLabel: true,
-        addLabelAsterisk: false,
-        initValueFormatted: false,
+        isClearable: true,
         isFormInput: true,
-        labelClassName: 'control-label col-sm-3 text-left col-xs-12',
+        labelClassName: INPUT_LABEL_CLASS_NAME,
+        showLabel: true,
+        wrapperClassName: INPUT_WRAPPER_CLASS_NAME,
     };
 
     input: RefObject<DatePicker>;
@@ -212,6 +219,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             addLabelAsterisk,
             allowDisable,
             allowRelativeInput,
+            containerClassName,
             autoFocus,
             hideTime,
             inputClassName,
@@ -230,7 +238,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             value,
             wrapperClassName,
             onBlur,
-            inlineEdit
+            inlineEdit,
         } = this.props;
         const { isDisabled, selectedDate, invalid } = this.state;
         const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, hideTime);
@@ -280,7 +288,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         if (!isFormInput) return picker;
 
         return (
-            <div className="form-group row">
+            <div className={containerClassName}>
                 {renderFieldLabel ? (
                     <label className={labelClassName}>
                         {renderFieldLabel(queryColumn)}

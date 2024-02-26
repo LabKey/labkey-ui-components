@@ -21,6 +21,7 @@ import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { FormsyInput, FormsyInputProps } from './FormsyReactComponents';
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
 
 export interface TextInputProps extends DisableableInputProps, Omit<FormsyInputProps, 'onChange'> {
     addLabelAsterisk?: boolean;
@@ -39,8 +40,8 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
     static defaultProps = {
         ...DisableableInput.defaultProps,
         ...{
-            elementWrapperClassName: 'col-sm-9 col-xs-12',
-            labelClassName: 'control-label text-left col-xs-12',
+            elementWrapperClassName: INPUT_WRAPPER_CLASS_NAME,
+            labelClassName: INPUT_LABEL_CLASS_NAME,
             showLabel: true,
             startFocused: false,
         },

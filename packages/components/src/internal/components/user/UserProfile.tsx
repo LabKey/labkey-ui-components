@@ -12,6 +12,7 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { hasPermissions, User } from '../base/models/User';
 import { SCHEMAS } from '../../schemas';
 import { insertColumnFilter, QueryColumn } from '../../../public/QueryColumn';
+import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../forms/constants';
 import { FileInput } from '../forms/input/FileInput';
 import { Alert } from '../base/Alert';
 import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
@@ -109,17 +110,16 @@ export class UserProfile extends PureComponent<Props, State> {
 
     footer(): ReactNode {
         const { groups } = this.state;
+        if (!groups) return null;
 
-        if (groups) {
-            return (
-                <div className="form-group row">
-                    <label className="control-label col-sm-3 text-left col-xs-12"> Groups </label>
-                    <div className="col-sm-9 col-xs-12">
-                        <GroupsList groups={groups} asRow={false} />
-                    </div>
+        return (
+            <div className="form-group row">
+                <label className={INPUT_LABEL_CLASS_NAME}>Groups</label>
+                <div className={INPUT_WRAPPER_CLASS_NAME}>
+                    <GroupsList groups={groups} asRow={false} />
                 </div>
-            );
-        }
+            </div>
+        );
     }
 
     onAvatarFileChange = (files: {}): void => {

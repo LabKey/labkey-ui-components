@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.XX.0
-*Released*: ?? February 2024
+### version 3.24.0
+*Released*: 26 February 2024
 - Add Modal
 - Delete LoadingModal
 - Delete ConfirmModal

@@ -24,7 +24,11 @@ import {
 } from './AppURL';
 
 describe('AppURL', () => {
-    test('Empty values', () => {
+    beforeAll(() => {
+        LABKEY.devMode = true;
+    });
+
+    test('Empty values dev mode', () => {
         expect(AppURL.create().toHref()).toEqual('#');
         expect(() => AppURL.create('')).toThrow('AppURL: Unable to create URL with empty parts. Parts are [].');
         expect(() => AppURL.create('path', undefined)).toThrow(

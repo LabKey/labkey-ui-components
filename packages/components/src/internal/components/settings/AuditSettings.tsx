@@ -8,7 +8,6 @@ import {
     getAppHomeFolderPath,
     isAssayEnabled,
     isDataChangeCommentRequirementFeatureEnabled,
-    isELNEnabled,
     isWorkflowEnabled,
 } from '../../app/utils';
 import { useServerContext } from '../base/ServerContext';

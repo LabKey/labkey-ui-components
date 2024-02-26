@@ -2,7 +2,6 @@ import React, { FC, memo, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
-import { User } from '../base/models/User';
 import { fetchGroupMembership } from '../administration/actions';
 import { useAppContext } from '../../AppContext';
 import { useServerContext } from '../base/ServerContext';

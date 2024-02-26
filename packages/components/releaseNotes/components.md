@@ -8,6 +8,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 49428: Add dirty page warning for createProject page
 - Issue 49679: change AppURL.create to not throw an exception in production mode when there are empty parts
 
+### version 3.23.0
+*Released*: 23 February 2024
+- Google Analytics Improvements
+    - Move files from ui-components to ui-premium
+    - Use <Page/> component that passes new analytics titles
+
 ### version 3.22.2
 *Released*: 19 February 2024
 - Issue 49352: Breadcrumb fix to remove CSS content and replace with new `<li>` separator

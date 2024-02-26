@@ -13,7 +13,7 @@ export const FormButtons: FC<Props> = memo(({ children, sticky = true }) => {
     let submit;
     const childCount = Children.count(children);
 
-    // Note: we split children in to separate variables because if we just split the children into two arrays consumers
+    // Note: we split children into separate variables because if we just split the children into two arrays, consumers
     // would need to remember to supply a key prop for each button, which is easy to forget, and would result in
     // warnings from React.
     if (childCount === 0) {

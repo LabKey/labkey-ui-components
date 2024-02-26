@@ -19,9 +19,10 @@ import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
+import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
+
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 import { FormsyTextArea, FormsyTextAreaProps } from './FormsyReactComponents';
-import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
 
 interface TextAreaInputProps extends DisableableInputProps, Omit<FormsyTextAreaProps, 'onChange'> {
     addLabelAsterisk?: boolean;

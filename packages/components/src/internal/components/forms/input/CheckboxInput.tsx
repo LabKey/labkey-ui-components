@@ -20,7 +20,12 @@ import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
-import { INPUT_CONTAINER_CLASS_NAME, INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME, WithFormsyProps } from '../constants';
+import {
+    INPUT_CONTAINER_CLASS_NAME,
+    INPUT_LABEL_CLASS_NAME,
+    INPUT_WRAPPER_CLASS_NAME,
+    WithFormsyProps,
+} from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 

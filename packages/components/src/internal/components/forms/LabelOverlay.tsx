@@ -18,10 +18,11 @@ import React, { ReactNode } from 'react';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { generateId } from '../../util/utils';
 
-import { HelpTipRenderer } from './HelpTipRenderer';
 import { Popover } from '../../Popover';
 import { OverlayTrigger } from '../../OverlayTrigger';
 import { Placement } from '../../useOverlayPositioning';
+
+import { HelpTipRenderer } from './HelpTipRenderer';
 import { INPUT_LABEL_CLASS_NAME } from './constants';
 
 export interface LabelOverlayProps {

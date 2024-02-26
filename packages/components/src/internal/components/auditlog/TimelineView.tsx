@@ -163,7 +163,6 @@ export class TimelineView extends React.Component<Props, any> {
             <LabelHelpTip
                 iconComponent={<i className="timeline-comments-icon fa fa-comments" />}
                 placement="bottom"
-                title="Comment"
             >
                 <div className="ws-pre-wrap">{comment}</div>
             </LabelHelpTip>

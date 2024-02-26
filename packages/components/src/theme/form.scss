@@ -342,6 +342,7 @@ textarea.form-control {
 .form-buttons__right {
     display: flex;
     gap: 8px;
+    align-items: flex-end;
 }
 
 .modal-footer .form-buttons {
@@ -390,4 +391,26 @@ textarea.form-control {
     > .description {
         margin-left: 20px;
     }
+}
+
+.inline-comment {
+    display: inline-flex;
+    margin-right: 15px;
+    >.form-group {
+        margin-bottom: 0;
+        >textarea {
+            min-height: 20px;
+            min-width: 450px;
+            resize: none;
+            overflow-y: hidden;
+        }
+    }
+    align-items: end;
+}
+
+.inline-comment-label {
+    white-space: nowrap;
+    font-weight: bold;
+    margin-right: 5px;
+    margin-bottom: 8px;
 }

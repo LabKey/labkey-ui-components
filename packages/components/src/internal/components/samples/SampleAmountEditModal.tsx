@@ -139,8 +139,8 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
         [initStorageUnits]
     );
 
-    const commentChangeHandler = useCallback(evt => {
-        setComment(evt.target.value);
+    const commentChangeHandler = useCallback(_comment => {
+        setComment(_comment);
     }, []);
 
     const amountCaption = initStorageUnits === storageUnits ? `Amount (${storageUnits})` : 'Amount';

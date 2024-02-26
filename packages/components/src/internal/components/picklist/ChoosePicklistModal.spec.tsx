@@ -2,8 +2,6 @@ import React from 'react';
 
 import { mount, shallow } from 'enzyme';
 
-import { ModalBody } from 'react-bootstrap';
-
 import { TEST_USER_EDITOR } from '../../userFixtures';
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
@@ -318,7 +316,7 @@ describe('ChoosePicklistModalDisplay', () => {
         await waitForLifecycle(wrapper);
         const alert = wrapper.find('.alert-info');
         expect(alert).toHaveLength(0);
-        const body = wrapper.find(ModalBody);
+        const body = wrapper.find('.modal-body');
         expect(body.text()).toBe(' Loading...');
         wrapper.unmount();
     });

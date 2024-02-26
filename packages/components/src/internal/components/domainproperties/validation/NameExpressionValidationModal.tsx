@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ConfirmModal } from '../../base/ConfirmModal';
+import { Modal } from '../../../Modal';
 
 export interface Props {
     onConfirm: () => any;
@@ -76,17 +76,16 @@ export class NameExpressionValidationModal extends React.PureComponent<Props> {
         }
 
         return (
-            <ConfirmModal
+            <Modal
                 title={warnTitle}
                 onCancel={onHide}
                 onConfirm={onConfirm}
-                confirmButtonText="Save anyways..."
-                confirmVariant="danger"
-                cancelButtonText="Cancel"
+                confirmText="Save anyways..."
+                confirmClass="btn-danger"
             >
                 {nameWarnDisplay}
                 {aliquotNameWarnDisplay}
-            </ConfirmModal>
+            </Modal>
         );
     }
 }

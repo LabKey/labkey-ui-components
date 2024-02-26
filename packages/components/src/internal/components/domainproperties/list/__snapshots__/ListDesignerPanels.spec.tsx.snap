@@ -3991,12 +3991,6 @@ exports[`ListDesignerPanel existing list 1`] = `
     toggle={false}
     updateIncrement={50}
   />
-  <ConfirmImportTypes
-    designerType="list"
-    onCancel={[Function]}
-    onConfirm={[Function]}
-    show={false}
-  />
 </BaseDomainDesigner>
 `;
 
@@ -4171,12 +4165,6 @@ exports[`ListDesignerPanel new list 1`] = `
     title="Importing data from selected file..."
     toggle={false}
     updateIncrement={50}
-  />
-  <ConfirmImportTypes
-    designerType="list"
-    onCancel={[Function]}
-    onConfirm={[Function]}
-    show={false}
   />
 </BaseDomainDesigner>
 `;

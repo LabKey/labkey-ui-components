@@ -3,7 +3,7 @@ import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { ActionURL, AuditBehaviorTypes } from '@labkey/api';
 
 import { Progress } from '../base/Progress';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { Container } from '../base/models/Container';
@@ -180,30 +180,30 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 
     if (useSelected && maxSelected && numSelected > maxSelected) {
         return (
-            <ConfirmModal
+            <Modal
                 title={'Cannot Move ' + capitalizeFirstChar(nounPlural)}
                 onCancel={onCancel}
-                cancelButtonText="Dismiss"
+                cancelText="Dismiss"
             >
                 You cannot move more than {maxSelected} individual {nounPlural.toLowerCase()} at a time. Please select
                 fewer {nounPlural.toLowerCase()} and try again.
-            </ConfirmModal>
+            </Modal>
         );
     }
 
     if (isLoading(loading)) {
         return (
-            <ConfirmModal title="Move to Project" onCancel={onCancel} cancelButtonText="Cancel">
+            <Modal title="Move to Project" onCancel={onCancel}>
                 <LoadingSpinner msg="Loading confirmation data..." />
-            </ConfirmModal>
+            </Modal>
         );
     }
 
     if (error) {
         return (
-            <ConfirmModal title="Move to Project" onCancel={onCancel} cancelButtonText="Dismiss">
+            <Modal title="Move to Project" onCancel={onCancel} cancelText="Dismiss">
                 <Alert>{error}</Alert>
-            </ConfirmModal>
+            </Modal>
         );
     }
 
@@ -215,13 +215,13 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 
     if (!canMove) {
         return (
-            <ConfirmModal
+            <Modal
                 title={'Cannot Move ' + capitalizeFirstChar(nounPlural)}
                 onCancel={onCancel}
-                cancelButtonText="Dismiss"
+                cancelText="Dismiss"
             >
                 {message}
-            </ConfirmModal>
+            </Modal>
         );
     }
 
@@ -229,8 +229,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
         <>
             {!showProgress && (
                 <EntityMoveConfirmationModal
-                    cancelButtonText="Cancel"
-                    confirmButtonText="Move"
+                    confirmText="Move"
                     nounPlural={nounPlural}
                     onCancel={onCancel}
                     onConfirm={onConfirm}

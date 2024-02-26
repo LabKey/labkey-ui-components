@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 
 interface Props {
     folderType?: string;
@@ -14,13 +14,11 @@ export const ImportWithRenameConfirmModal: FC<Props> = memo(props => {
     const { folderType, newName, onConfirm, onCancel, originalName } = props;
 
     return (
-        <ConfirmModal
+        <Modal
             title="Rename duplicate file?"
             onConfirm={onConfirm}
             onCancel={onCancel}
-            confirmVariant="success"
-            confirmButtonText="Import and Rename"
-            cancelButtonText="Cancel"
+            confirmText="Import and Rename"
         >
             <p>
                 A file named <span className="import-rename-filename">{originalName}</span> already exists in this{' '}
@@ -30,6 +28,6 @@ export const ImportWithRenameConfirmModal: FC<Props> = memo(props => {
             <p>
                 <span className="import-rename-filename">{newName}</span>
             </p>
-        </ConfirmModal>
+        </Modal>
     );
 });

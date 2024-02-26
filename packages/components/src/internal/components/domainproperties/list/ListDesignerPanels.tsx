@@ -319,13 +319,14 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
                     title="Importing data from selected file..."
                     toggle={submitting && file !== undefined}
                 />
-                <ConfirmImportTypes
-                    designerType="list"
-                    show={importError !== undefined}
-                    error={importError}
-                    onConfirm={this.onImportErrorContinue}
-                    onCancel={this.onImportErrorStayAndFix}
-                />
+                {importError !== undefined && (
+                    <ConfirmImportTypes
+                        designerType="list"
+                        error={importError}
+                        onConfirm={this.onImportErrorContinue}
+                        onCancel={this.onImportErrorStayAndFix}
+                    />
+                )}
             </BaseDomainDesigner>
         );
     }

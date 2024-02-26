@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { FormControl, Modal } from 'react-bootstrap';
 
 import { TEST_USER_READER } from '../../userFixtures';
 
@@ -15,13 +14,12 @@ describe('ChangePasswordModal', () => {
     test('without state', () => {
         const wrapper = mount(<ChangePasswordModal user={TEST_USER_READER} onSuccess={jest.fn()} onHide={jest.fn()} />);
 
-        const modal = wrapper.find(Modal);
-        expect(modal.text()).toBe('Change PasswordOld Password New Password Retype New Password CancelSubmit');
+        const modal = wrapper.find('.modal-dialog');
         expect(modal.find(Alert)).toHaveLength(0);
-        expect(modal.find(FormControl)).toHaveLength(3);
+        expect(modal.find('input')).toHaveLength(3);
         expect(modal.find(LabelHelpTip)).toHaveLength(0);
-        expect(modal.find('button')).toHaveLength(2);
-        expect(modal.find('button').findWhere(btn => btn.prop('disabled'))).toHaveLength(0);
+        expect(modal.find('.btn')).toHaveLength(2);
+        expect(modal.find('.btn').findWhere(btn => btn.prop('disabled'))).toHaveLength(0);
 
         wrapper.unmount();
     });
@@ -36,17 +34,15 @@ describe('ChangePasswordModal', () => {
             error: 'Test Error',
         });
 
-        const modal = wrapper.find(Modal);
-        expect(modal.text()).toBe(
-            'Change PasswordOld Password New Password Retype New Password Test ErrorCancelSubmit'
-        );
+        const modal = wrapper.find('.modal-dialog');
         expect(modal.find(Alert)).toHaveLength(1);
-        expect(modal.find(FormControl)).toHaveLength(3);
+        expect(modal.find('input')).toHaveLength(3);
         expect(modal.find(LabelHelpTip)).toHaveLength(1);
-        expect(modal.find('button')).toHaveLength(2);
+        expect(modal.find('.btn')).toHaveLength(2);
+        expect(wrapper.find('.alert').text()).toEqual('Test Error');
         expect(
             modal
-                .find('button')
+                .find('.btn')
                 .findWhere(btn => btn.prop('disabled'))
                 .hostNodes()
         ).toHaveLength(1);

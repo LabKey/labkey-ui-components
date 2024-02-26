@@ -245,6 +245,9 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         initiallyDisabled: false,
         inputClass: 'col-sm-9 col-xs-12',
         labelClass: 'control-label col-sm-3 text-left col-xs-12',
+        // Default to fixed because 'absolute' causes issues in several scenarios (Modals, EditableGrid) but it's too
+        // difficult to manually set it to fixed in all of these situations (e.g. we don't always know we're in a modal)
+        menuPosition: 'fixed',
         openMenuOnFocus: false,
         saveOnBlur: false,
         showDropdownIndicator: true,

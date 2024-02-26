@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Modal, ProgressBar } from 'react-bootstrap';
+import { ProgressBar } from 'react-bootstrap';
+
+import { Modal } from '../../Modal';
 
 interface Props {
     delay?: number;
@@ -97,28 +99,21 @@ export class Progress extends React.Component<Props, State> {
         const { children, modal, title } = this.props;
         const { percent, show } = this.state;
 
+        if (!show) return null;
+
         const indicator = show && (
             <ProgressBar active now={percent} bsStyle={percent === 100 ? 'success' : undefined} />
         );
 
         if (modal) {
             return (
-                <Modal bsSize="large" show={show} onHide={() => {}}>
-                    {title && (
-                        <Modal.Header>
-                            <Modal.Title>{title}</Modal.Title>
-                        </Modal.Header>
-                    )}
-                    <Modal.Body>
-                        {children}
-                        {indicator}
-                    </Modal.Body>
+                <Modal bsSize="lg" onCancel={undefined} onConfirm={undefined} canConfirm={false} title={title}>
+                    {children}
+                    {indicator}
                 </Modal>
             );
-        } else if (show) {
-            return indicator;
         }
 
-        return null;
+        return indicator;
     }
 }

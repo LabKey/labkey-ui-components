@@ -54,10 +54,10 @@ describe('FindFieldOption', () => {
 describe('FindByIdsModal', () => {
     test('default view', () => {
         const wrapper = mount(
-            <FindByIdsModal show={true} onCancel={jest.fn()} onFind={jest.fn()} nounPlural="tests" />
+            <FindByIdsModal onCancel={jest.fn()} onFind={jest.fn()} nounPlural="tests" />
         );
-        expect(wrapper.find('ModalTitle').text()).toBe('Find Tests');
-        expect(wrapper.find('ModalBody').text()).toContain('Find tests using');
+        expect(wrapper.find('.modal-title').text()).toBe('Find Tests');
+        expect(wrapper.find('.modal-body').text()).toContain('Find tests using');
         const uniqueIdsInput = wrapper.find({ name: UNIQUE_ID_FIND_FIELD.name, type: 'radio' });
         expect(uniqueIdsInput.prop('checked')).toBe(true);
         const textArea = wrapper.find('textarea');

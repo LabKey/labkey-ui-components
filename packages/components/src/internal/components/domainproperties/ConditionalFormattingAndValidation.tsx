@@ -235,7 +235,6 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
                                 title={'Conditional Formatting ' + (field.name ? 'for ' + field.name : '')}
                                 addName="Formatting"
                                 index={index}
-                                show={showCondFormat}
                                 type={DOMAIN_COND_FORMAT}
                                 mvEnabled={field.mvEnabled}
                                 validators={field.conditionalFormats}
@@ -249,7 +248,6 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
                                 title={'Regular Expression Validator(s) ' + (field.name ? 'for ' + field.name : '')}
                                 addName="Validator"
                                 index={index}
-                                show={showRegex}
                                 type={DOMAIN_REGEX_VALIDATOR}
                                 mvEnabled={field.mvEnabled}
                                 validators={field.regexValidators}
@@ -263,7 +261,6 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
                                 title={'Range Validator(s) ' + (field.name ? 'for ' + field.name : '')}
                                 addName="Validator"
                                 index={index}
-                                show={showRange}
                                 type={DOMAIN_RANGE_VALIDATOR}
                                 mvEnabled={field.mvEnabled}
                                 validators={field.rangeValidators}

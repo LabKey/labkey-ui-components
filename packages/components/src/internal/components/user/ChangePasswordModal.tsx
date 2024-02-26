@@ -1,6 +1,6 @@
-import React from 'react';
-import { Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
+import React, { FC, useCallback } from 'react';
 
+import { Modal } from '../../Modal';
 import { User } from '../base/models/User';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LabelHelpTip } from '../base/LabelHelpTip';
@@ -9,8 +9,44 @@ import { Alert } from '../base/Alert';
 import { changePassword, getPasswordRuleInfo } from './actions';
 import { ChangePasswordModel } from './models';
 
+interface PasswordInputProps {
+    helpTip?: string;
+    label: string;
+    name: string;
+    onChange: (name: string, value: string) => void;
+    value: string;
+}
+
+const PasswordInput: FC<PasswordInputProps> = ({ helpTip, label, name, onChange, value }) => {
+    const onChange_ = useCallback(event => onChange(event.target.name, event.target.value), [onChange]);
+    return (
+        <div className="form-group row">
+            <div className="col-xs-4">
+                <label className="control-label" htmlFor={name}>
+                    {label}
+                    {helpTip && (
+                        <LabelHelpTip title={label}>
+                            <p>{helpTip}</p>
+                        </LabelHelpTip>
+                    )}
+                </label>
+            </div>
+            <div className="col-xs-8">
+                <input
+                    className="form-control"
+                    type="password"
+                    id={name}
+                    name={name}
+                    value={value}
+                    onChange={onChange_}
+                />
+            </div>
+        </div>
+    );
+};
+
 interface Props {
-    onHide: () => void;
+    onHide: () => void; // TODO: rename
     onSuccess: () => void;
     user: User;
 }
@@ -46,13 +82,8 @@ export class ChangePasswordModal extends React.Component<Props, State> {
             });
     }
 
-    onChange = (evt): void => {
-        const name = evt.target.id;
-        const value = evt.target.value;
-
-        this.setState(state => ({
-            model: state.model.set(name, value) as ChangePasswordModel,
-        }));
+    onChange = (name, value): void => {
+        this.setState(state => ({ model: state.model.set(name, value) as ChangePasswordModel }));
     };
 
     submitChangePassword = (): void => {
@@ -69,58 +100,39 @@ export class ChangePasswordModal extends React.Component<Props, State> {
             });
     };
 
-    renderPasswordInput(name: string, value: string, label: string, description?: string) {
-        return (
-            <Row className="form-group">
-                <Col xs={4}>
-                    <div>
-                        {label}{' '}
-                        {description && (
-                            <LabelHelpTip title={label}>
-                                <p>{description}</p>
-                            </LabelHelpTip>
-                        )}
-                    </div>
-                </Col>
-                <Col xs={8}>
-                    <FormControl type="password" id={name} name={name} value={value} onChange={this.onChange} />
-                </Col>
-            </Row>
-        );
-    }
-
     render() {
         const { onHide } = this.props;
         const { model, submitting, error, passwordRule } = this.state;
 
         return (
-            <Modal show={true} onHide={onHide}>
-                <Modal.Header>
-                    <Modal.Title>Change Password</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        {this.renderPasswordInput('oldPassword', model.oldPassword, 'Old Password')}
-                        {this.renderPasswordInput('password', model.password, 'New Password', passwordRule)}
-                        {this.renderPasswordInput('password2', model.password2, 'Retype New Password')}
-                    </Form>
-                    {error && <Alert>{error}</Alert>}
-                    <Row>
-                        <Col xs={12}>
-                            <button className="pull-left btn btn-default" onClick={onHide} type="button">
-                                Cancel
-                            </button>
-                            <button
-                                className="pull-right btn btn-success"
-                                disabled={submitting}
-                                onClick={this.submitChangePassword}
-                                type="button"
-                            >
-                                Submit
-                            </button>
-                        </Col>
-                    </Row>
-                </Modal.Body>
+            <Modal
+                isConfirming={submitting}
+                onCancel={onHide}
+                onConfirm={this.submitChangePassword}
+                title="Change Password"
+            >
+                <form>
+                    <PasswordInput
+                        label="Old Password"
+                        name="oldPassword"
+                        onChange={this.onChange}
+                        value={model.oldPassword}
+                    />
+                    <PasswordInput
+                        label="New Password"
+                        name="password"
+                        onChange={this.onChange}
+                        value={model.password}
+                        helpTip={passwordRule}
+                    />
+                    <PasswordInput
+                        label="Retype New Password"
+                        name="password2"
+                        onChange={this.onChange}
+                        value={model.password2}
+                    />
+                </form>
+                {error && <Alert>{error}</Alert>}
             </Modal>
         );
     }

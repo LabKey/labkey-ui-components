@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 
 import { resolveErrorMessage } from '../../util/messaging';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 import { Alert } from '../base/Alert';
 
 import { resetPassword, ResetPasswordResponse } from './actions';
@@ -33,14 +33,12 @@ export const UserResetPasswordConfirmModal: FC<UserResetPasswordConfirmModalProp
     }, [email, onComplete, resetPasswordApi]);
 
     return (
-        <ConfirmModal
+        <Modal
             title="Reset Password?"
             onConfirm={onConfirm}
             onCancel={onCancel}
-            confirmVariant="success"
-            confirmButtonText="Yes, Reset Password"
-            cancelButtonText="Cancel"
-            submitting={submitting}
+            confirmText="Yes, Reset Password"
+            isConfirming={submitting}
         >
             {hasLogin ? (
                 <p>
@@ -55,7 +53,7 @@ export const UserResetPasswordConfirmModal: FC<UserResetPasswordConfirmModalProp
             )}
             <p>Do you want to proceed?</p>
             {error && <Alert>{error}</Alert>}
-        </ConfirmModal>
+        </Modal>
     );
 });
 

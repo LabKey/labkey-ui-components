@@ -5,7 +5,7 @@ import { Checkbox, FormControl } from 'react-bootstrap';
 import { mountWithServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 
 import { BIOLOGICS_APP_PROPERTIES, SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
@@ -145,9 +145,9 @@ describe('NameIdSettings', () => {
             .simulate('change', { target: { value: 'abc' } });
 
         wrapper.find('button').at(0).simulate('click');
-        expect(wrapper.find(ConfirmModal).exists()).toEqual(true);
+        expect(wrapper.find(Modal).exists()).toEqual(true);
         wrapper.find('.close').simulate('click');
-        expect(wrapper.find(ConfirmModal).exists()).toEqual(false);
+        expect(wrapper.find(Modal).exists()).toEqual(false);
     });
 
     test('apply prefix confirm modal -- save', async () => {
@@ -160,7 +160,7 @@ describe('NameIdSettings', () => {
             .simulate('change', { target: { value: 'abc' } });
 
         wrapper.find('button').at(0).simulate('click');
-        expect(wrapper.find(ConfirmModal).exists()).toEqual(true);
+        expect(wrapper.find(Modal).exists()).toEqual(true);
 
         // Click on 'Yes, Save and Apply Prefix' button
         wrapper.find('button').at(3).simulate('click');

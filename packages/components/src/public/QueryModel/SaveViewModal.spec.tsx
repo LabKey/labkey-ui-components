@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { ModalBody } from 'react-bootstrap';
-
 import { mount } from 'enzyme';
 
 import { ViewInfo } from '../../internal/ViewInfo';
@@ -56,8 +54,8 @@ describe('SaveViewModal', () => {
             moduleContext,
         });
 
-        expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
-        expect(wrapper.find(ModalBody).text()).toContain(
+        expect(wrapper.find('.modal-title').text()).toBe('Save Grid View');
+        expect(wrapper.find('.modal-body').text()).toContain(
             'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(wrapper.find('input[name="gridViewName"]')).toHaveLength(0);
@@ -79,8 +77,8 @@ describe('SaveViewModal', () => {
             moduleContext,
         });
 
-        expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
-        expect(wrapper.find(ModalBody).text()).toContain(
+        expect(wrapper.find('.modal-title').text()).toBe('Save Grid View');
+        expect(wrapper.find('.modal-body').text()).toContain(
             'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('View1');
@@ -102,8 +100,8 @@ describe('SaveViewModal', () => {
             moduleContext,
         });
 
-        expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
-        expect(wrapper.find(ModalBody).text()).toContain(
+        expect(wrapper.find('.modal-title').text()).toBe('Save Grid View');
+        expect(wrapper.find('.modal-body').text()).toContain(
             'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('View1');
@@ -125,8 +123,8 @@ describe('SaveViewModal', () => {
             moduleContext,
         });
 
-        expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
-        expect(wrapper.find(ModalBody).text()).toContain(
+        expect(wrapper.find('.modal-title').text()).toBe('Save Grid View');
+        expect(wrapper.find('.modal-body').text()).toContain(
             'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('View2');
@@ -147,8 +145,8 @@ describe('SaveViewModal', () => {
             moduleContext,
         });
 
-        expect(wrapper.find('ModalTitle').text()).toBe('Save Grid View');
-        expect(wrapper.find(ModalBody).text()).toContain(
+        expect(wrapper.find('.modal-title').text()).toBe('Save Grid View');
+        expect(wrapper.find('.modal-body').text()).toContain(
             'Columns, sort order, and filters will be saved. Once saved, this view will be available for all Blood Samples grids throughout the application.'
         );
         expect(wrapper.find('input[name="gridViewName"]').prop('value')).toBe('View2');

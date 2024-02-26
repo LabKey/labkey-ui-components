@@ -487,23 +487,24 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                         tabIndex={index}
                     >
                         <Row key={createFormInputId('domainrow', domainIndex, index)} className="domain-row-container">
-                            <AdvancedSettings
-                                domainIndex={domainIndex}
-                                domainId={domainId}
-                                helpNoun={helpNoun}
-                                index={index}
-                                maxPhiLevel={maxPhiLevel}
-                                field={field}
-                                onApply={this.onMultiFieldChange}
-                                show={showAdv}
-                                onHide={this.onHideAdvanced}
-                                label={field.name}
-                                showDefaultValueSettings={showDefaultValueSettings}
-                                allowUniqueConstraintProperties={allowUniqueConstraintProperties}
-                                defaultDefaultValueType={defaultDefaultValueType}
-                                defaultValueOptions={defaultValueOptions}
-                                domainFormDisplayOptions={domainFormDisplayOptions}
-                            />
+                            {showAdv && (
+                                <AdvancedSettings
+                                    domainIndex={domainIndex}
+                                    domainId={domainId}
+                                    helpNoun={helpNoun}
+                                    index={index}
+                                    maxPhiLevel={maxPhiLevel}
+                                    field={field}
+                                    onApply={this.onMultiFieldChange}
+                                    onHide={this.onHideAdvanced}
+                                    label={field.name}
+                                    showDefaultValueSettings={showDefaultValueSettings}
+                                    allowUniqueConstraintProperties={allowUniqueConstraintProperties}
+                                    defaultDefaultValueType={defaultDefaultValueType}
+                                    defaultValueOptions={defaultValueOptions}
+                                    domainFormDisplayOptions={domainFormDisplayOptions}
+                                />
+                            )}
                             <div
                                 className={classNames('domain-row-handle', { disabled: isDragDisabled })}
                                 {...provided.dragHandleProps}

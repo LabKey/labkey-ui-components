@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, ReactNode, useCallback, useState } from 'react';
 import Formsy from 'formsy-react';
 import { fromJS } from 'immutable';
 import { AuditBehaviorTypes, Query } from '@labkey/api';
@@ -15,6 +15,8 @@ import { Alert } from '../../internal/components/base/Alert';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWrapper';
 
+import { useDataChangeCommentsRequired } from '../../internal/components/forms/input/useDataChangeCommentsRequired';
+import { CommentTextArea } from '../../internal/components/forms/input/CommentTextArea';
 import { QueryModel } from './QueryModel';
 
 import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
@@ -41,65 +43,75 @@ export interface EditableDetailPanelProps {
     title?: string;
 }
 
-interface State {
-    canSubmit: boolean;
-    editing: boolean;
-    error: string;
-    warning: string;
-}
+export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
+    const {
+        api,
+        containerPath,
+        model,
+        onBeforeUpdate,
+        onEditToggle,
+        onUpdate,
+        appEditable,
+        containerFilter,
+        disabled,
+        detailEditRenderer,
+        detailHeader,
+        detailRenderer,
+        asSubPanel,
+        canUpdate,
+        editColumns,
+        queryColumns,
+        submitText,
+        title,
+        onAdditionalFormDataChange,
+    } =  props;
 
-export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps, State> {
-    static defaultProps = {
-        api: getDefaultAPIWrapper(),
-        submitText: 'Save',
-    };
+    const [canSubmit, setCanSubmit] = useState<boolean>(false);
+    const [editing, setEditing] = useState<boolean>(false);
+    const [error, setError] = useState<string>(undefined);
+    const [warning, setWarning] = useState<string>(undefined);
+    const [comment, setComment] = useState<string>();
+    const { requiresUserComment } = useDataChangeCommentsRequired();
+    const onCommentChange = useCallback(_comment => {
+        setComment(_comment);
+    }, []);
 
-    state: Readonly<State> = {
-        canSubmit: false,
-        editing: false,
-        error: undefined,
-        warning: undefined,
-    };
+    const hasValidUserComment = comment?.trim()?.length > 0;
 
-    toggleEditing = (): void => {
-        this.setState(
-            state => ({ editing: !state.editing, warning: undefined, error: undefined }),
-            () => {
-                this.props.onEditToggle?.(this.state.editing);
-            }
-        );
-    };
+    const toggleEditing = useCallback((): void => {
+        const updated = !editing;
+        setEditing(updated);
+        setWarning(undefined);
+        setError(undefined);
+        onEditToggle?.(updated);
+    }, [editing]);
 
-    disableSubmitButton = (): void => {
-        this.setState({ canSubmit: false });
-    };
+    const disableSubmitButton = useCallback((): void => {
+        setCanSubmit(false);
+    }, []);
 
-    enableSubmitButton = (): void => {
-        this.setState({ canSubmit: true });
-    };
+    const enableSubmitButton = useCallback((): void => {
+        setCanSubmit(true);
+    }, []);
 
-    handleFormChange = (): void => {
-        this.setState({ warning: undefined });
-    };
+   const handleFormChange = useCallback((): void => {
+        setWarning(undefined);
+    }, []);
 
-    fileInputRenderer = (col: QueryColumn, data: any): ReactNode => {
+    const fileInputRenderer = useCallback((col: QueryColumn, data: any): ReactNode => {
         return <FileInput formsy initialValue={data} name={col.fieldKey} queryColumn={col} showLabel={false} />;
-    };
+    }, []);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    handleSubmit = async (values: Record<string, any>): Promise<void> => {
-        const { api, containerPath, model, onBeforeUpdate, onEditToggle, onUpdate } = this.props;
+    const handleSubmit = useCallback(async (values: Record<string, any>): Promise<void> => {
         const { queryInfo } = model;
         const row = model.getRow();
         const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
 
         if (Object.keys(updatedValues).length === 0) {
-            this.setState({
-                canSubmit: false,
-                error: undefined,
-                warning: 'No changes detected. Please update the form and click save.',
-            });
-
+            setCanSubmit(false);
+            setError(undefined);
+            setWarning('No changes detected. Please update the form and click save.');
             return;
         }
 
@@ -122,117 +134,108 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
                 containerPath,
                 rows: [updatedValues],
                 schemaQuery: queryInfo.schemaQuery,
+                auditUserComment: comment,
             });
 
-            this.setState({ editing: false }, () => {
-                onUpdate?.(); // eslint-disable-line no-unused-expressions
-                onEditToggle?.(false); // eslint-disable-line no-unused-expressions
-            });
-        } catch (error) {
-            this.setState({
-                error: resolveErrorMessage(error, 'data', undefined, 'update'),
-                warning: undefined,
-            });
+           setEditing(false);
+           onUpdate?.(); // eslint-disable-line no-unused-expressions
+           onEditToggle?.(false); // eslint-disable-line no-unused-expressions
+        } catch (e) {
+            setError(resolveErrorMessage(e, 'data', undefined, 'update'));
+            setWarning(undefined);
         }
-    };
+    }, [model, onBeforeUpdate, comment]);
 
-    render(): ReactNode {
-        const {
-            appEditable,
-            containerFilter,
-            containerPath,
-            disabled,
-            detailEditRenderer,
-            detailHeader,
-            detailRenderer,
-            asSubPanel,
-            canUpdate,
-            editColumns,
-            model,
-            queryColumns,
-            submitText,
-            title,
-            onAdditionalFormDataChange,
-        } = this.props;
-        const { canSubmit, editing, error, warning } = this.state;
-        const isEditable = !model.isLoading && model.hasRows && (model.queryInfo?.isAppEditable() || appEditable);
 
-        const panel = (
-            <div className={`panel ${editing ? 'panel-info' : 'panel-default'}`}>
-                <DetailPanelHeader
-                    isEditable={isEditable && canUpdate}
-                    editing={editing}
-                    title={title}
-                    onClick={this.toggleEditing}
-                    warning={warning}
-                />
+    const isEditable = !model.isLoading && model.hasRows && (model.queryInfo?.isAppEditable() || appEditable);
 
-                <div className="panel-body">
-                    <div className="detail__editing">
-                        {error && <Alert>{error}</Alert>}
+    const panel = (
+        <div className={`panel ${editing ? 'panel-info' : 'panel-default'}`}>
+            <DetailPanelHeader
+                isEditable={isEditable && canUpdate}
+                editing={editing}
+                title={title}
+                onClick={toggleEditing}
+                warning={warning}
+            />
 
-                        {!editing && (detailHeader ?? null)}
+            <div className="panel-body">
+                <div className="detail__editing">
+                    {error && <Alert>{error}</Alert>}
 
-                        {!editing && (
-                            <DetailPanel
-                                containerFilter={containerFilter}
-                                containerPath={containerPath}
-                                detailRenderer={detailRenderer}
-                                editingMode={false}
-                                model={model}
-                                queryColumns={queryColumns}
-                            />
-                        )}
+                    {!editing && (detailHeader ?? null)}
 
-                        {/* When editing load a model that includes the update columns and editing mode rendering */}
-                        {editing && (
-                            <DetailPanelWithModel
-                                containerFilter={containerFilter}
-                                containerPath={containerPath}
-                                detailEditRenderer={detailEditRenderer}
-                                detailRenderer={detailRenderer}
-                                editColumns={editColumns}
-                                editingMode
-                                fileInputRenderer={this.fileInputRenderer}
-                                onAdditionalFormDataChange={onAdditionalFormDataChange}
-                                queryConfig={{
-                                    ...model.queryConfig,
-                                    // Issue 46478: Include update columns in request columns to ensure values are available
-                                    requiredColumns: model.requiredColumns.concat(
-                                        model.updateColumns.map(col => col.fieldKey)
-                                    ),
-                                }}
-                            />
-                        )}
-                    </div>
+                    {!editing && (
+                        <DetailPanel
+                            containerFilter={containerFilter}
+                            containerPath={containerPath}
+                            detailRenderer={detailRenderer}
+                            editingMode={false}
+                            model={model}
+                            queryColumns={queryColumns}
+                        />
+                    )}
+
+                    {/* When editing load a model that includes the update columns and editing mode rendering */}
+                    {editing && (
+                        <DetailPanelWithModel
+                            containerFilter={containerFilter}
+                            containerPath={containerPath}
+                            detailEditRenderer={detailEditRenderer}
+                            detailRenderer={detailRenderer}
+                            editColumns={editColumns}
+                            editingMode
+                            fileInputRenderer={fileInputRenderer}
+                            onAdditionalFormDataChange={onAdditionalFormDataChange}
+                            queryConfig={{
+                                ...model.queryConfig,
+                                // Issue 46478: Include update columns in request columns to ensure values are available
+                                requiredColumns: model.requiredColumns.concat(
+                                    model.updateColumns.map(col => col.fieldKey)
+                                ),
+                            }}
+                        />
+                    )}
                 </div>
             </div>
+        </div>
+    );
+
+    if (editing) {
+        return (
+            <Formsy
+                onChange={handleFormChange}
+                onValidSubmit={handleSubmit}
+                onValid={enableSubmitButton}
+                onInvalid={disableSubmitButton}
+            >
+                {panel}
+
+                <FormButtons>
+                    <button className="btn btn-default" type="button" onClick={toggleEditing}>
+                        Cancel
+                    </button>
+                    <CommentTextArea
+                        actionName="Update"
+                        containerClassName="inline-comment"
+                        onChange={onCommentChange}
+                        requiresUserComment={requiresUserComment}
+                        inline
+                    />
+                    <button className="btn btn-success" type="submit" disabled={!canSubmit || (requiresUserComment && !hasValidUserComment) || disabled}>
+                        {submitText}
+                    </button>
+                </FormButtons>
+
+                {asSubPanel && <div className="panel-divider-spacing" />}
+            </Formsy>
         );
-
-        if (editing) {
-            return (
-                <Formsy
-                    onChange={this.handleFormChange}
-                    onValidSubmit={this.handleSubmit}
-                    onValid={this.enableSubmitButton}
-                    onInvalid={this.disableSubmitButton}
-                >
-                    {panel}
-
-                    <FormButtons>
-                        <button className="btn btn-default" type="button" onClick={this.toggleEditing}>
-                            Cancel
-                        </button>
-                        <button className="btn btn-success" type="submit" disabled={!canSubmit || disabled}>
-                            {submitText}
-                        </button>
-                    </FormButtons>
-
-                    {asSubPanel && <div className="panel-divider-spacing" />}
-                </Formsy>
-            );
-        }
-
-        return panel;
     }
+
+    return panel;
+}
+
+EditableDetailPanel.defaultProps = {
+    api: getDefaultAPIWrapper(),
+    submitText: 'Save',
 }

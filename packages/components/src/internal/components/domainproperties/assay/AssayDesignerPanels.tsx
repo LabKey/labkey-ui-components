@@ -246,7 +246,8 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             : 'COMPLETE'
                     }
                     validate={validatePanel === PROPERTIES_PANEL_INDEX}
-                    appPropertiesOnly={hideAdvancedProperties}
+                    appPropertiesOnly={appPropertiesOnly}
+                    hideAdvancedProperties={hideAdvancedProperties}
                     hideStudyProperties={!!domainFormDisplayOptions && domainFormDisplayOptions.hideStudyPropertyTypes}
                     onToggle={(collapsed, callback) => {
                         onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback);

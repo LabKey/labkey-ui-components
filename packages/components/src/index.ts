@@ -288,7 +288,6 @@ import {
     resolveDetailFieldValue,
 } from './internal/components/forms/utils';
 import { QueryFormInputs } from './internal/components/forms/QueryFormInputs';
-import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput, SelectInputImpl } from './internal/components/forms/input/SelectInput';
 import { selectOptionByText } from './internal/components/forms/input/SelectInputTestUtils';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
@@ -1169,7 +1168,6 @@ export {
     // form related items
     BulkUpdateForm,
     QueryFormInputs,
-    LookupSelectInput,
     SelectInput,
     SelectInputImpl,
     DatePickerInput,

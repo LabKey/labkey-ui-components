@@ -81,7 +81,9 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     );
                     if (item.key.indexOf('admin') === 0) {
                         adminMenuItems.push(menuItem);
-                    } else userMenuItems.push(menuItem);
+                    } else {
+                        userMenuItems.push(menuItem);
+                    }
                 }
             });
         return {
@@ -120,7 +122,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
                     <div className="navbar-connector" />
                     {userMenuItems}
                     {extraUserItems}
-                    <MenuDivider />
+                    {(userMenuItems?.length > 0 || extraUserItems) && <MenuDivider />}
                     {user.isSignedIn ? (
                         <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
                     ) : (

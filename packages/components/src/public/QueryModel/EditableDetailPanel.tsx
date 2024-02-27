@@ -76,7 +76,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     const { requiresUserComment } = useDataChangeCommentsRequired();
     const _onCommentChange = useCallback(_comment => {
         setComment(_comment);
-        onCommentChange(_comment);
+        onCommentChange?.(_comment);
     }, []);
 
     const hasValidUserComment = comment?.trim()?.length > 0;

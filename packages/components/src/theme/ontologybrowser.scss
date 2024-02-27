@@ -134,7 +134,7 @@
     padding-right: 5px;
     min-height: 315px;
     height: 67vh;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .none-selected {
         font-size: 20px;
@@ -212,7 +212,7 @@
 .concept-pathinfo-container {
     min-height: 315px;
     height: 65vh;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .title {
         font-size: 20px;

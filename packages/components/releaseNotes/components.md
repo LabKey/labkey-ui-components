@@ -8,6 +8,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 49428: Add dirty page warning for createProject page
 - Issue 49679: change AppURL.create to not throw an exception in production mode when there are empty parts
 
+### version 3.24.0
+*Released*: 26 February 2024
+- Add Modal
+- Delete LoadingModal
+- Delete ConfirmModal
+
 ### version 3.23.0
 *Released*: 23 February 2024
 - Google Analytics Improvements

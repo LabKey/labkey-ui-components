@@ -100,7 +100,6 @@ has its own jest tests will currently need to mock the `LABKEY` object if that m
 1. Testing of utility functions
     1. [util/Date.test.ts](../src/internal/util/Date.test.ts)
 1. Enzyme examples of using `.find()`
-    1. [base/ConfirmModal.spec.tsx](../src/internal/components/base/ConfirmModal.spec.tsx)
     1. [assay/RunPropertiesPanel.spec.tsx](../src/internal/components/assay/RunPropertiesPanel.spec.tsx)
 1. Enzyme examples for using component `.props()` and/or `.state()`
     1. [domainproperties/AdvancedSettings.spec.tsx](../src/internal/components/domainproperties/AdvancedSettings.spec.tsx)

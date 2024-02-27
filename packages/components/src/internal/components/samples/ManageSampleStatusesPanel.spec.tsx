@@ -7,7 +7,7 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { Alert } from '../base/Alert';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 import { SelectInput } from '../forms/input/SelectInput';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 import { ChoicesListItem } from '../base/ChoicesListItem';
 
 import { getTestAPIWrapper } from '../../APIWrapper';
@@ -341,10 +341,10 @@ describe('SampleStatusDetail', () => {
         });
         await waitForLifecycle(wrapper);
         validate(wrapper);
-        expect(wrapper.find(ConfirmModal)).toHaveLength(0);
+        expect(wrapper.find(Modal)).toHaveLength(0);
         wrapper.find('button').at(0).simulate('click'); // click delete button
         await waitForLifecycle(wrapper);
-        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
+        expect(wrapper.find(Modal)).toHaveLength(1);
         wrapper.unmount();
     });
 });

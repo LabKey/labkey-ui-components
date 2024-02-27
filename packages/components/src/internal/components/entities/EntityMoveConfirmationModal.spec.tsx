@@ -3,7 +3,7 @@ import React from 'react';
 import { PermissionTypes } from '@labkey/api';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 import { TEST_FOLDER_CONTAINER, TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 import { getTestAPIWrapper } from '../../APIWrapper';
 import { Container } from '../base/models/Container';
@@ -32,8 +32,8 @@ describe('EntityMoveConfirmationModal', () => {
             undefined,
             DEFAULT_APP_CONTEXT
         );
-        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
-        expect(wrapper.find(ConfirmModal).text()).toContain('Loading target projects...');
+        expect(wrapper.find(Modal)).toHaveLength(1);
+        expect(wrapper.find(Modal).text()).toContain('Loading target projects...');
         wrapper.unmount();
     });
 
@@ -50,8 +50,8 @@ describe('EntityMoveConfirmationModal', () => {
             DEFAULT_APP_CONTEXT
         );
         await waitForLifecycle(wrapper);
-        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
-        expect(wrapper.find(ConfirmModal).text()).toContain('This is an error message.');
+        expect(wrapper.find(Modal)).toHaveLength(1);
+        expect(wrapper.find(Modal).text()).toContain('This is an error message.');
         wrapper.unmount();
     });
 
@@ -78,8 +78,8 @@ describe('EntityMoveConfirmationModal', () => {
             DEFAULT_APP_CONTEXT
         );
         await waitForLifecycle(wrapper);
-        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
-        expect(wrapper.find(ConfirmModal).text()).toContain(
+        expect(wrapper.find(Modal)).toHaveLength(1);
+        expect(wrapper.find(Modal).text()).toContain(
             'You do not have permission to move samples to any of the available projects.'
         );
         wrapper.unmount();
@@ -108,7 +108,7 @@ describe('EntityMoveConfirmationModal', () => {
             DEFAULT_APP_CONTEXT
         );
         await waitForLifecycle(wrapper);
-        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
+        expect(wrapper.find(Modal)).toHaveLength(1);
         expect(wrapper.find(SelectInput)).toHaveLength(1);
         expect(wrapper.find(SelectInput).prop('options').length).toBe(1);
         expect(wrapper.find(SelectInput).prop('options')[0].value).toBe(TEST_PROJECT_CONTAINER.path);
@@ -142,7 +142,7 @@ describe('EntityMoveConfirmationModal', () => {
             DEFAULT_APP_CONTEXT
         );
         await waitForLifecycle(wrapper);
-        expect(wrapper.find(ConfirmModal)).toHaveLength(1);
+        expect(wrapper.find(Modal)).toHaveLength(1);
         expect(wrapper.find(SelectInput)).toHaveLength(1);
         expect(wrapper.find(SelectInput).prop('options').length).toBe(1);
         expect(wrapper.find(SelectInput).prop('options')[0].value).toBe('/home');

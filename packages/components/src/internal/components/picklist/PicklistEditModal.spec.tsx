@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { ReactWrapper } from 'enzyme';
-import { Modal, ModalFooter, ModalTitle } from 'react-bootstrap';
 
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 
@@ -18,10 +17,10 @@ describe('PicklistEditModal', () => {
     const queryModel = makeTestQueryModel(new SchemaQuery('test', 'query'));
 
     function validateText(wrapper: ReactWrapper, expectedTitle: string, expectedFinishText: string): void {
-        const modal = wrapper.find(Modal);
-        const title = modal.find(ModalTitle);
+        const modal = wrapper.find('Modal');
+        const title = modal.find('.modal-title');
         expect(title.text()).toBe(expectedTitle);
-        const footer = modal.find(ModalFooter);
+        const footer = modal.find('.modal-footer');
         const buttons = footer.find('.btn');
         expect(buttons).toHaveLength(2);
         expect(buttons.at(1).text()).toBe(expectedFinishText);

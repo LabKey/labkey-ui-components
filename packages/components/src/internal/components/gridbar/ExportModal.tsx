@@ -1,5 +1,7 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Checkbox, Modal } from 'react-bootstrap';
+import { Checkbox } from 'react-bootstrap';
+
+import { Modal } from '../../Modal';
 
 import { QueryModelMap } from '../../../public/QueryModel/withQueryModels';
 
@@ -50,64 +52,44 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
     if (queryModels == null) return null;
 
     return (
-        <Modal onHide={closeHandler} show={true}>
-            <Modal.Header closeButton>
-                <Modal.Title>{title}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <table className="export-modal-body">
-                    <tbody>
-                        <tr>
-                            <th></th>
-                            <th className="pull-right">Count</th>
-                            <th className="view-name">View</th>
-                        </tr>
-                        {tabOrder.map(modelId => {
-                            const model = queryModels[modelId];
-                            let rowCountDisplay = model.rowCount;
-                            if (rowCountDisplay === undefined && !model.isActivelyLoadingTotalCount)
-                                rowCountDisplay = tabRowCounts?.[modelId];
+        <Modal
+            canConfirm={canExport && selected.size > 0}
+            confirmText="Export"
+            onCancel={closeHandler}
+            onConfirm={exportHandler}
+            title={title}
+        >
+            <table className="export-modal-body">
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th className="pull-right">Count</th>
+                        <th className="view-name">View</th>
+                    </tr>
+                    {tabOrder.map(modelId => {
+                        const model = queryModels[modelId];
+                        let rowCountDisplay = model.rowCount;
+                        if (rowCountDisplay === undefined && !model.isActivelyLoadingTotalCount) {
+                            rowCountDisplay = tabRowCounts?.[modelId];
+                        }
 
-                            return (
-                                <tr>
-                                    <td>
-                                        <Checkbox
-                                            checked={selected.has(modelId)}
-                                            key={modelId}
-                                            value={modelId}
-                                            onChange={onChecked}
-                                        >
-                                            {model.title}
-                                        </Checkbox>
-                                    </td>
-                                    <td className="pull-right">{rowCountDisplay}</td>
-                                    <td className="view-name">
-                                        { !model.viewName || model.viewName.startsWith("~~") ? 'Default' : model.viewName}{' '}
-                                        {model.currentView?.session && <span className="text-muted">(edited)</span>}
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-            </Modal.Body>
-            <Modal.Footer>
-                <div className="pull-left">
-                    <button type="button" className="btn btn-default" onClick={closeHandler}>
-                        Cancel
-                    </button>
-                </div>
-                <div className="pull-right">
-                    <button
-                        type="button"
-                        className="btn btn-success"
-                        onClick={exportHandler}
-                        disabled={selected.size === 0 || !canExport}
-                    >
-                        Export
-                    </button>
-                </div>
-            </Modal.Footer>
+                        return (
+                            <tr key={modelId}>
+                                <td>
+                                    <Checkbox checked={selected.has(modelId)} value={modelId} onChange={onChecked}>
+                                        {model.title}
+                                    </Checkbox>
+                                </td>
+                                <td className="pull-right">{rowCountDisplay}</td>
+                                <td className="view-name">
+                                    {!model.viewName || model.viewName.startsWith('~~') ? 'Default' : model.viewName}{' '}
+                                    {model.currentView?.session && <span className="text-muted">(edited)</span>}
+                                </td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
         </Modal>
     );
 });

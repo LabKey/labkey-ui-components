@@ -1,6 +1,6 @@
 import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
-import { Modal } from 'react-bootstrap';
 
+import { Modal } from '../../Modal';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { FindField } from '../samples/models';
 import { capitalizeFirstChar } from '../../util/utils';
@@ -43,12 +43,10 @@ interface Props {
     onCancel: () => void;
     onFind: (sessionKey: string) => void;
     sessionKey?: string; // when defined, ids entered will be added to the existing ones in session
-    show: boolean;
 }
 
 export const FindByIdsModal: FC<Props> = memo(props => {
-    const { show, onCancel, onFind, nounPlural, sessionKey, initialField, api } = props;
-
+    const { onCancel, onFind, nounPlural, sessionKey, initialField, api } = props;
     const [fieldType, setFieldType] = useState<FindField>(initialField || UNIQUE_ID_FIND_FIELD);
     const [idString, setIdString] = useState<string>(undefined);
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -94,50 +92,35 @@ export const FindByIdsModal: FC<Props> = memo(props => {
     }, [idString, onFind, fieldType]);
 
     return (
-        <Modal show={show} onHide={closeModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Find {capitalNounPlural}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Alert>{error}</Alert>
-                <p>Find {nounPlural} using:</p>
-                <FindFieldOption
-                    field={UNIQUE_ID_FIND_FIELD}
-                    checked={fieldType.name === UNIQUE_ID_FIND_FIELD.name}
-                    onFieldChange={onFieldTypeChange}
-                />
-                <FindFieldOption
-                    field={SAMPLE_ID_FIND_FIELD}
-                    checked={fieldType.name === SAMPLE_ID_FIND_FIELD.name}
-                    onFieldChange={onFieldTypeChange}
-                />
-                <textarea
-                    rows={8}
-                    cols={50}
-                    className="form-control textarea-fullwidth"
-                    placeholder={`List ${fieldType.nounPlural} here`}
-                    onChange={onIdTextChange}
-                    value={idString}
-                />
-            </Modal.Body>
-            <Modal.Footer>
-                <div className="pull-left">
-                    <button type="button" className="btn btn-default" onClick={closeModal}>
-                        Cancel
-                    </button>
-                </div>
-
-                <div className="pull-right">
-                    <button
-                        type="button"
-                        className="btn btn-success"
-                        onClick={_onFind}
-                        disabled={!idString || idString.trim().length === 0 || submitting}
-                    >
-                        {submitting ? `Finding ${capitalNounPlural}...` : `Find ${capitalNounPlural}`}
-                    </button>
-                </div>
-            </Modal.Footer>
+        <Modal
+            confirmText={`Find ${capitalNounPlural}`}
+            confirmingText={`Finding ${capitalNounPlural}...`}
+            canConfirm={idString && idString.trim().length > 0}
+            isConfirming={submitting}
+            onCancel={closeModal}
+            onConfirm={_onFind}
+            title={`Find ${capitalNounPlural}`}
+        >
+            <Alert>{error}</Alert>
+            <p>Find {nounPlural} using:</p>
+            <FindFieldOption
+                field={UNIQUE_ID_FIND_FIELD}
+                checked={fieldType.name === UNIQUE_ID_FIND_FIELD.name}
+                onFieldChange={onFieldTypeChange}
+            />
+            <FindFieldOption
+                field={SAMPLE_ID_FIND_FIELD}
+                checked={fieldType.name === SAMPLE_ID_FIND_FIELD.name}
+                onFieldChange={onFieldTypeChange}
+            />
+            <textarea
+                rows={8}
+                cols={50}
+                className="form-control textarea-fullwidth"
+                placeholder={`List ${fieldType.nounPlural} here`}
+                onChange={onIdTextChange}
+                value={idString}
+            />
         </Modal>
     );
 });

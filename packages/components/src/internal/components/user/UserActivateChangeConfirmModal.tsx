@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { Utils } from '@labkey/api';
 
 import { resolveErrorMessage } from '../../util/messaging';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 import { Alert } from '../base/Alert';
 
 import { updateUsersActiveState } from './actions';
@@ -51,14 +51,13 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
         const action = reactivate ? 'Reactivate' : 'Deactivate';
 
         return (
-            <ConfirmModal
+            <Modal
                 title={action + ' ' + Utils.pluralBasic(userCount, 'User') + '?'}
                 onConfirm={this.onConfirm}
                 onCancel={onCancel}
-                confirmVariant={reactivate ? 'success' : 'danger'}
-                confirmButtonText={'Yes, ' + action}
-                cancelButtonText="Cancel"
-                submitting={submitting}
+                confirmClass={reactivate ? 'btn-success' : 'btn-danger'}
+                confirmText={'Yes, ' + action}
+                isConfirming={submitting}
             >
                 {!reactivate && (
                     <p>
@@ -75,7 +74,7 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
                 )}
                 <p>{Utils.pluralBasic(userCount, 'user')} will be updated. Do you want to proceed?</p>
                 {error && <Alert>{error}</Alert>}
-            </ConfirmModal>
+            </Modal>
         );
     }
 }

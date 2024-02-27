@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback } from 'react';
-import { Modal } from 'react-bootstrap';
 
 import { Alert } from '../components/base/Alert';
+import { Modal } from '../Modal';
 
 import { Attachment, getAttachmentURL } from './model';
 
@@ -52,7 +52,12 @@ export const ThreadAttachments: FC<ThreadAttachmentsProps> = memo(({ attachments
         <div className="thread-editor-attachments__body">
             <div className="thread-editor-attachments__list">
                 {attachments.map(attachment => (
-                    <ThreadAttachment key={attachment.name} attachment={attachment} onRemove={onRemove} containerPath={containerPath} />
+                    <ThreadAttachment
+                        key={attachment.name}
+                        attachment={attachment}
+                        onRemove={onRemove}
+                        containerPath={containerPath}
+                    />
                 ))}
             </div>
         </div>
@@ -67,33 +72,16 @@ interface RemoveAttachmentModalProps {
     remove: () => void;
 }
 
-export const RemoveAttachmentModal: FC<RemoveAttachmentModalProps> = memo(
-    ({ cancel, error, isRemoving, name, remove }) => {
-        return (
-            <Modal show onHide={cancel} className="archive-notebook-modal">
-                <Modal.Header>
-                    <Modal.Title>Delete Attachment?</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <Alert>{error}</Alert>
-                    Are you sure you want to delete the attachment "{name}"?
-                </Modal.Body>
-
-                <Modal.Footer>
-                    <div className="pull-left">
-                        <button className="btn btn-default" disabled={isRemoving === true} onClick={cancel}>
-                            Cancel
-                        </button>
-                    </div>
-
-                    <div className="pull-right">
-                        <button className="btn btn-danger" disabled={isRemoving} onClick={remove}>
-                            Yes, delete attachment
-                        </button>
-                    </div>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
-);
+export const RemoveAttachmentModal: FC<RemoveAttachmentModalProps> = memo(props => (
+    <Modal
+        canConfirm={!props.isRemoving}
+        confirmClass="btn-danger"
+        confirmText="Yes, Delete Attachment"
+        onCancel={props.cancel}
+        onConfirm={props.remove}
+        title="Delete Attachment?"
+    >
+        <Alert>{props.error}</Alert>
+        Are you sure you want to delete the attachment "{props.name}"?
+    </Modal>
+));

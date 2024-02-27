@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.24.X
+*Released*: X February 2024
+- Issue 49763: App to suppress "Plate Metadata" setting on assay designs when not applicable
+
 ### version 3.24.0
 *Released*: 26 February 2024
 - Add Modal

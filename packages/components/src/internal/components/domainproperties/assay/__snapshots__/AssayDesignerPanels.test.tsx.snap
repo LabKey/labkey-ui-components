@@ -821,40 +821,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     </textarea>
                   </div>
                 </div>
-                <div
-                  class="row margin-top"
-                >
-                  <div
-                    class="col col-xs-3 col-lg-4"
-                  >
-                    Plate 
-                    <span
-                      class="domain-no-wrap"
-                    >
-                      Metadata
-                      <div
-                        class="overlay-trigger"
-                      >
-                        <span
-                          class="label-help-target"
-                        >
-                          <span
-                            class="label-help-icon fa fa-question-circle"
-                          />
-                        </span>
-                      </div>
-                      
-                    </span>
-                  </div>
-                  <div
-                    class="col col-xs-9 col-lg-8"
-                  >
-                    <input
-                      id="assay-design-plateMetadata"
-                      type="checkbox"
-                    />
-                  </div>
-                </div>
               </div>
               <div
                 class="domain-field-padding-bottom"

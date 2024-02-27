@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
+import { getServerContext } from '@labkey/api';
 import { List, OrderedMap } from 'immutable';
 import Formsy from 'formsy-react';
 import { Filter, Utils } from '@labkey/api';
 
 import { Operation } from '../../../public/QueryColumn';
+
+import { Container } from '../base/models/Container';
 
 import { Modal } from '../../Modal';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
@@ -33,8 +36,12 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { QueryInfoQuantity } from './QueryInfoQuantity';
 import { QueryFormInputs, QueryFormInputsProps } from './QueryFormInputs';
 import { getFieldEnabledFieldName } from './utils';
+import { CommentTextArea } from './input/CommentTextArea';
+import { getAppHomeFolderPath } from '../../app/utils';
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFieldsEnabledChange'> {
+    api?: ComponentsAPIWrapper,
     asModal?: boolean;
     canSubmitNotDirty?: boolean;
     cancelText?: string;
@@ -47,6 +54,7 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     header?: ReactNode;
     hideButtons?: boolean;
     includeCountField?: boolean;
+    includeCommentField?: boolean;
     isLoading?: boolean;
     isSubmittedText?: string;
     isSubmittingText?: string;
@@ -55,8 +63,8 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     // allow passing of full form data, compare with onFormChange
     onFormChangeWithData?: (formData?: any) => void;
     onHide?: () => void;
-    onSubmit?: (data: OrderedMap<string, any>) => Promise<any>;
-    onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>;
+    onSubmit?: (data: OrderedMap<string, any>, comment?: string) => Promise<any>;
+    onSubmitForEdit?: (data: OrderedMap<string, any>, comment?: string) => Promise<any>;
     onSuccess?: (data: any, submitForEdit: boolean) => void;
     operation?: Operation;
     pluralNoun?: string;
@@ -73,6 +81,8 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
 
 interface State {
     canSubmit: boolean;
+    comment: string;
+    requiresUserComment: boolean;
     count: number;
     errorMsg: string;
     fieldEnabledCount: number;
@@ -86,6 +96,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
     formRef: React.RefObject<Formsy>;
 
     static defaultProps: Partial<QueryInfoFormProps> = {
+        api: getDefaultAPIWrapper(),
         canSubmitNotDirty: true,
         includeCountField: true,
         countText: 'Quantity',
@@ -113,7 +124,22 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             errorMsg: undefined,
             count: undefined,
             submitForEdit: false,
+            comment: undefined,
+            requiresUserComment: true,
         };
+    }
+
+    componentDidMount() {
+        const { api } = this.props;
+        (async () => {
+            try {
+                const { container } = getServerContext();
+                const response = await api.folder.getAuditSettings(getAppHomeFolderPath(new Container(container)));
+                this.setState({ requiresUserComment: !!response?.requireUserComments });
+            } catch {
+                this.setState({ requiresUserComment: false });
+            }
+        })();
     }
 
     enableSubmitButton = (): void => {
@@ -185,7 +211,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
 
     handleValidSubmit = (row: any): void => {
         const { errorCallback, onSubmit, onSubmitForEdit, onSuccess } = this.props;
-        const { submitForEdit } = this.state;
+        const { submitForEdit, comment } = this.state;
 
         this.setState({
             errorMsg: undefined,
@@ -194,7 +220,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         const updatedRow = this.getUpdatedFields(row, ['numItems', 'creationType']);
         const submitFn = submitForEdit ? onSubmitForEdit : onSubmit;
 
-        submitFn(updatedRow).then(
+        submitFn(updatedRow, comment).then(
             data => {
                 this.setState({
                     errorMsg: undefined,
@@ -261,6 +287,10 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         this.setState({ count });
     };
 
+    onCommentChange = (comment: string): void => {
+        this.setState({ comment });
+    }
+
     onFieldsEnabledChange = (fieldEnabledCount: number): void => {
         this.setState({ fieldEnabledCount });
     };
@@ -271,6 +301,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             cancelText,
             canSubmitNotDirty,
             disabled,
+            includeCommentField,
             submitForEditText,
             submitText,
             isSubmittedText,
@@ -283,9 +314,11 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             hideButtons,
         } = this.props;
 
-        const { count, canSubmit, fieldEnabledCount, isSubmitting, isSubmitted, submitForEdit, isDirty } = this.state;
+        const { count, comment, canSubmit, fieldEnabledCount, isSubmitting, isSubmitted, submitForEdit, isDirty, requiresUserComment } = this.state;
 
         if (hideButtons) return null;
+
+        const hasValidUserComment = comment?.trim()?.length > 0;
 
         const inProgressText = isSubmitted ? isSubmittedText : isSubmitting ? isSubmittingText : undefined;
         const suffix = count > 1 ? pluralNoun : singularNoun;
@@ -297,6 +330,16 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                     <button className="test-loc-cancel-button btn btn-default" onClick={this.onHide} type="button">
                         {cancelText}
                     </button>
+                )}
+
+                {includeCommentField && (
+                    <CommentTextArea
+                        actionName="Update"
+                        containerClassName="inline-comment"
+                        onChange={this.onCommentChange}
+                        requiresUserComment={requiresUserComment}
+                        inline
+                    />
                 )}
 
                 {onSubmitForEdit && submitForEditText && (
@@ -319,7 +362,8 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                             fieldEnabledCount === 0 ||
                             !canSubmit ||
                             count === 0 ||
-                            !(canSubmitNotDirty || isDirty)
+                            !(canSubmitNotDirty || isDirty) ||
+                            (includeCommentField && requiresUserComment && !hasValidUserComment)
                         }
                         onClick={this.setSubmittingForSave}
                         type="submit"

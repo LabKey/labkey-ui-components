@@ -22,12 +22,13 @@ interface Props {
     itemLabel?: string;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     onCancel: () => void;
-    onComplete: (data: any, submitForEdit: boolean) => void;
+    onComplete: (data: any, submitForEdit: boolean, auditUserComment?: string) => void;
     onError?: (message: string) => void;
     onSubmitForEdit: (
         updateData: OrderedMap<string, any>,
         dataForSelection: Map<string, any>,
-        dataIdsForSelection: List<any>
+        dataIdsForSelection: List<any>,
+        comment?: string
     ) => any;
     pluralNoun?: string;
     queryFilters?: Record<string, List<Filter.IFilter>>;
@@ -39,7 +40,7 @@ interface Props {
     // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
     sortString?: string;
     uniqueFieldKey?: string;
-    updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
+    updateRows: (schemaQuery: SchemaQuery, rows: any[], comment?: string) => Promise<any>;
     // queryInfo.schemaQuery.viewName is likely undefined (i.e., not the current viewName)
     viewName: string;
 }
@@ -178,7 +179,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         return col.isUpdateColumn && (!lcUniqueFieldKey || col.name.toLowerCase() !== lcUniqueFieldKey);
     };
 
-    onSubmit = (data: any): Promise<any> => {
+    onSubmit = (data: any, comment?: string): Promise<any> => {
         const { queryInfo, updateRows } = this.props;
         const { displayFieldUpdates } = this.state;
         const updateData = displayFieldUpdates.merge(data);
@@ -186,12 +187,12 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             ? getUpdatedData(this.state.originalDataForSelection, updateData, queryInfo.pkCols, queryInfo.altUpdateKeys)
             : [];
 
-        return updateRows(queryInfo.schemaQuery, rows);
+        return updateRows(queryInfo.schemaQuery, rows, comment);
     };
 
-    onSubmitForEdit = (updateData: OrderedMap<string, any>) => {
+    onSubmitForEdit = (updateData: OrderedMap<string, any>, comment?: string) => {
         const { dataForSelection, dataIdsForSelection } = this.state;
-        return this.props.onSubmitForEdit(updateData, dataForSelection, dataIdsForSelection);
+        return this.props.onSubmitForEdit(updateData, dataForSelection, dataIdsForSelection, comment);
     };
 
     renderBulkUpdateHeader() {
@@ -239,6 +240,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 disabled={disabled}
                 fieldValues={fieldValues}
                 header={this.renderBulkUpdateHeader()}
+                includeCommentField={true}
                 includeCountField={false}
                 initiallyDisableFields
                 isLoading={isLoadingDataForSelection}

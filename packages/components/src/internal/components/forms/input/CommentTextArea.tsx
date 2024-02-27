@@ -5,7 +5,7 @@ export interface Props {
     actionName: string;
     disabled?: boolean;
     inline?: boolean;
-    onChange: (event) => void;
+    onChange: (comment: string) => void;
     rows?: number;
     resizable?: boolean;
     containerClassName?: string;

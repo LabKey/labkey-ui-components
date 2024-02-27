@@ -635,7 +635,8 @@ export function handleEntityFileImport(
     importParameters?: Record<string, any>,
     importFileController?: string,
     saveToPipeline?: boolean,
-    containerPath?: string
+    containerPath?: string,
+    auditUserComment?: string,
 ): Promise<any> {
     return new Promise((resolve, reject) => {
         return importData({

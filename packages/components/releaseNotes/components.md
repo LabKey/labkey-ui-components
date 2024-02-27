@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add support for comments during edit actions
   - Remove title from timeline comment tooltip
   - Update `CommentTextArea` with additional props and callback interface
+  - Update `EditableDetailPanel` and `DiscardConsumedSamplesPanel` to move commenting into the sticky button footer
 
 ### version 3.23.0
 *Released*: 23 February 2024

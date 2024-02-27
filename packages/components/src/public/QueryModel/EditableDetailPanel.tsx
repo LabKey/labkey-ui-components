@@ -38,6 +38,7 @@ export interface EditableDetailPanelProps {
     onBeforeUpdate?: (row: Record<string, any>) => void;
     onEditToggle?: (editing: boolean) => void;
     onUpdate: () => void;
+    onCommentChange?: (comment: string) => void;
     queryColumns?: QueryColumn[];
     submitText?: string;
     title?: string;
@@ -49,6 +50,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         containerPath,
         model,
         onBeforeUpdate,
+        onCommentChange,
         onEditToggle,
         onUpdate,
         appEditable,
@@ -72,8 +74,9 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     const [warning, setWarning] = useState<string>(undefined);
     const [comment, setComment] = useState<string>();
     const { requiresUserComment } = useDataChangeCommentsRequired();
-    const onCommentChange = useCallback(_comment => {
+    const _onCommentChange = useCallback(_comment => {
         setComment(_comment);
+        onCommentChange(_comment);
     }, []);
 
     const hasValidUserComment = comment?.trim()?.length > 0;
@@ -218,7 +221,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                     <CommentTextArea
                         actionName="Update"
                         containerClassName="inline-comment"
-                        onChange={onCommentChange}
+                        onChange={_onCommentChange}
                         requiresUserComment={requiresUserComment}
                         inline
                     />

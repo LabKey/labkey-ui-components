@@ -1,10 +1,10 @@
-import React, { ChangeEventHandler, FC, memo } from 'react';
+import React, { FC, memo } from 'react';
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 interface Props {
     discardTitle?: string;
-    onCommentChange: ChangeEventHandler<HTMLTextAreaElement>;
+    onCommentChange?: (comment: string) => void;
     shouldDiscard: boolean;
     toggleShouldDiscard: () => void;
 }
@@ -30,13 +30,15 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
                     <span className="discard-consumed-title left-spacing">{discardTitle}</span>
                 </div>
             </div>
-            <CommentTextArea
-                onChange={onCommentChange}
-                disabled={!shouldDiscard}
-                actionName="Discarding"
-                containerClassName="top-spacing bottom-spacing"
-                requiresUserComment={requiresUserComment}
-            />
+            {onCommentChange && (
+                <CommentTextArea
+                    onChange={onCommentChange}
+                    disabled={!shouldDiscard}
+                    actionName="Discarding"
+                    containerClassName="top-spacing bottom-spacing"
+                    requiresUserComment={requiresUserComment}
+                />
+            )}
         </>
     );
 });

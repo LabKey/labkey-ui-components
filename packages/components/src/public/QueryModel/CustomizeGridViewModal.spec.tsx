@@ -2,8 +2,6 @@ import React from 'react';
 
 import { mount } from 'enzyme';
 
-import { Modal } from 'react-bootstrap';
-
 import { ExtendedMap } from '../ExtendedMap';
 
 import { SchemaQuery } from '../SchemaQuery';
@@ -73,7 +71,7 @@ describe('CustomizeGridViewModal', () => {
         let model = makeTestQueryModel(new SchemaQuery('test', QUERY_NAME), queryInfo);
         model = model.mutate({ title: 'Title' });
         const wrapper = mount(<CustomizeGridViewModal model={model} onCancel={jest.fn()} onUpdate={jest.fn()} />);
-        expect(wrapper.find(Modal.Title).text()).toBe('Customize Title Grid');
+        expect(wrapper.find('.modal-title').text()).toBe('Customize Title Grid');
         wrapper.unmount();
     });
 
@@ -86,7 +84,7 @@ describe('CustomizeGridViewModal', () => {
         });
         const model = makeTestQueryModel(new SchemaQuery('test', QUERY_NAME, viewName), queryInfo);
         const wrapper = mount(<CustomizeGridViewModal model={model} onCancel={jest.fn()} onUpdate={jest.fn()} />);
-        expect(wrapper.find(Modal.Title).text()).toBe('Customize ' + QUERY_NAME + ' Grid - ' + viewName);
+        expect(wrapper.find('.modal-title').text()).toBe('Customize ' + QUERY_NAME + ' Grid - ' + viewName);
         wrapper.unmount();
     });
 

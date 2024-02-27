@@ -4,12 +4,13 @@
  */
 import React, { FC } from 'react';
 import moment from 'moment';
-import { Col, Modal, Panel, Row } from 'react-bootstrap';
+import { Col, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
 import classNames from 'classnames';
 
+import { Modal } from '../../Modal';
 import { caseInsensitive } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { getMomentDateTimeFormat } from '../../util/Date';
@@ -310,22 +311,22 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         );
 
         if (toggleDetailsModal) {
+            const footer = (
+                <a
+                    className="pull-right btn btn-default"
+                    href={manageUrl instanceof AppURL ? manageUrl.toHref() : manageUrl}
+                >
+                    Manage
+                </a>
+            );
             return (
-                <Modal onHide={toggleDetailsModal} show className="user-detail-modal">
-                    <Modal.Header closeButton>
-                        <Modal.Title>{this.renderHeader()}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>{this.renderBody()}</Modal.Body>
-                    {user.isAdmin && (
-                        <Modal.Footer>
-                            <a
-                                className="pull-right btn btn-default"
-                                href={manageUrl instanceof AppURL ? manageUrl.toHref() : manageUrl}
-                            >
-                                Manage
-                            </a>
-                        </Modal.Footer>
-                    )}
+                <Modal
+                    onCancel={toggleDetailsModal}
+                    className="user-detail-modal"
+                    footer={user.isAdmin ? footer : undefined}
+                    title={this.renderHeader()}
+                >
+                    {this.renderBody()}
                 </Modal>
             );
         }

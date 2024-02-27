@@ -1,8 +1,9 @@
 import React from 'react';
 import { List } from 'immutable';
-import { Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
+import { Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
+import { Modal } from '../../Modal';
 import { getSubmitButtonClass } from '../../app/utils';
 
 import {
@@ -53,7 +54,6 @@ interface AdvancedSettingsProps {
     maxPhiLevel: string;
     onApply: (any) => any;
     onHide: () => any;
-    show: boolean;
     showDefaultValueSettings: boolean;
     allowUniqueConstraintProperties: boolean;
 }
@@ -120,6 +120,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             phiLevels,
         };
     };
+
+    componentDidMount() {
+        this.initializeState();
+    }
 
     handleClose = () => {
         const { onHide } = this.props;
@@ -502,41 +506,39 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     render() {
-        const { show, label } = this.props;
+        const { label } = this.props;
+        const title = 'Advanced Settings and Properties' + (label ? ' for ' + label : '');
+        const footer = (
+            <>
+                <button
+                    className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
+                    onClick={this.handleClose}
+                    type="button"
+                >
+                    Cancel
+                </button>
+                {helpLinkNode(
+                    ADVANCED_FIELD_EDITOR_TOPIC,
+                    'Get help with field designer settings',
+                    'domain-adv-footer domain-adv-link'
+                )}
+                <button
+                    className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
+                    onClick={this.handleApply}
+                    type="button"
+                >
+                    Apply
+                </button>
+            </>
+        );
 
         return (
-            <Modal show={show} onHide={this.handleClose} onEnter={this.initializeState}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{'Advanced Settings and Properties' + (label ? ' for ' + label : '')}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className="domain-modal">
-                        {this.renderDisplayOptions()}
-                        {this.showDefaultValues() && this.renderDefaultValues()}
-                        {this.renderMiscOptions()}
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <button
-                        className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
-                        onClick={this.handleClose}
-                        type="button"
-                    >
-                        Cancel
-                    </button>
-                    {helpLinkNode(
-                        ADVANCED_FIELD_EDITOR_TOPIC,
-                        'Get help with field designer settings',
-                        'domain-adv-footer domain-adv-link'
-                    )}
-                    <button
-                        className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
-                        onClick={this.handleApply}
-                        type="button"
-                    >
-                        Apply
-                    </button>
-                </Modal.Footer>
+            <Modal footer={footer} onCancel={this.handleClose} title={title}>
+                <div className="domain-modal">
+                    {this.renderDisplayOptions()}
+                    {this.showDefaultValues() && this.renderDefaultValues()}
+                    {this.renderMiscOptions()}
+                </div>
             </Modal>
         );
     }

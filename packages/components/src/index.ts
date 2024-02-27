@@ -100,7 +100,6 @@ import { ExpandableFilterToggle } from './internal/components/base/ExpandableFil
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
 import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem';
-import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
 import { InsufficientPermissionsAlert } from './internal/components/permissions/InsufficientPermissionsAlert';
 import { GroupDetailsPanel } from './internal/components/permissions/GroupDetailsPanel';
@@ -135,7 +134,6 @@ import {
     useNotificationsContext,
     withNotificationsContext,
 } from './internal/components/notifications/NotificationsContext';
-import { ConfirmModal } from './internal/components/base/ConfirmModal';
 import { DisableableAnchor } from './internal/components/base/DisableableAnchor';
 import {
     filterDate,
@@ -876,6 +874,7 @@ import { LineageGridModel, LineageResult } from './internal/components/lineage/m
 import { ActiveUserLimit, ActiveUserLimitMessage } from './internal/components/settings/ActiveUserLimit';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { AuditSettings } from './internal/components/settings/AuditSettings';
+import { BaseModal, Modal, ModalHeader } from './internal/Modal';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1613,12 +1612,10 @@ export {
     ContentGroup,
     ContentGroupLabel,
     Section,
-    ConfirmModal,
     Cards,
     DisableableAnchor,
     DragDropHandle,
     FieldExpansionToggle,
-    LoadingModal,
     LoadingSpinner,
     CreatedModified,
     DeleteIcon,
@@ -1758,6 +1755,9 @@ export {
     BarTenderSettingsForm,
     // Metrics
     LOOK_AND_FEEL_METRIC,
+    BaseModal,
+    Modal,
+    ModalHeader,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
@@ -1884,7 +1884,6 @@ export type { SearchHit, SearchMetadata, SearchResult, SearchOptions } from './i
 export type { TabbedGridPanelProps } from './public/QueryModel/TabbedGridPanel';
 export type { GroupedSampleDisplayColumns } from './internal/components/samples/actions';
 export type { PicklistDeletionData } from './internal/components/picklist/actions';
-export type { ConfirmModalProps } from './internal/components/base/ConfirmModal';
 export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetailPanel';
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
@@ -1905,3 +1904,4 @@ export type { MenuSectionItem } from './internal/DropdownSection';
 export type { BSStyle } from './internal/dropdowns';
 export type { FetchedGroup, SecurityAPIWrapper } from './internal/components/security/APIWrapper';
 export type { UserLimitSettings } from './internal/components/permissions/actions';
+export type { ModalProps } from './internal/Modal';

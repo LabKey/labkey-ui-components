@@ -1,9 +1,7 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Checkbox, Modal } from 'react-bootstrap';
+import { Checkbox } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
-
-import { ModalButtons } from '../../ModalButtons';
 
 import { Alert } from '../base/Alert';
 import { resolveErrorMessage } from '../../util/messaging';
@@ -14,6 +12,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
 import { setSnapshotSelections } from '../../actions';
+import { Modal } from '../../Modal';
 
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
@@ -83,7 +82,10 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         () => sampleIds?.length || queryModel?.selections.size,
         [sampleIds, queryModel?.selections]
     );
-    const selectionKey = useMemo(() => sampleFieldKey ? undefined : queryModel?.selectionKey, [sampleFieldKey, queryModel?.selectionKey]);
+    const selectionKey = useMemo(
+        () => (sampleFieldKey ? undefined : queryModel?.selectionKey),
+        [sampleFieldKey, queryModel?.selectionKey]
+    );
 
     const [description, setDescription] = useState<string>(picklist?.Description ?? '');
     const onDescriptionChange = useCallback(
@@ -144,7 +146,14 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
                     })
                 );
             } else {
-                updatedList = await createPicklist(trimmedName, description, shared, selectionKey, useSnapshotSelection, sampleIds);
+                updatedList = await createPicklist(
+                    trimmedName,
+                    description,
+                    shared,
+                    selectionKey,
+                    useSnapshotSelection,
+                    sampleIds
+                );
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'createPicklist');
             }
 
@@ -170,6 +179,8 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         }
     }, [
         api.query,
+        createNotification,
+        currentProductId,
         description,
         isUpdate,
         metricFeatureArea,
@@ -177,11 +188,13 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         onFinish,
         picklist?.Container,
         picklist?.listId,
+        picklistProductId,
         sampleIds,
         selectionKey,
         shared,
         showNotification,
         useSnapshotSelection,
+        validCount,
     ]);
 
     let title;
@@ -191,9 +204,8 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
         if (!validCount) {
             title = 'Create an Empty Picklist';
         } else if (selectionKey && validCount) {
-            title = (
-                <>Create a New Picklist with the {Utils.pluralize(validCount, 'Selected Sample', 'Selected Samples')}</>
-            );
+            const pluralizedNoun = Utils.pluralize(validCount, 'Selected Sample', 'Selected Samples');
+            title = `Create a New Picklist with the ${pluralizedNoun}`;
         } else if (validCount === 1) {
             title = 'Create a New Picklist with This Sample';
         } else {
@@ -202,52 +214,43 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
     }
 
     return (
-        <Modal show={true} onHide={onCancel}>
-            <Modal.Header closeButton>
-                <Modal.Title>{title}</Modal.Title>
-            </Modal.Header>
+        <Modal
+            canConfirm={!!name}
+            confirmText={finishVerb + ' Picklist'}
+            confirmingText={finishingVerb + ' Picklist...'}
+            isConfirming={isSubmitting}
+            onCancel={onHide}
+            onConfirm={onSavePicklist}
+            title={title}
+        >
+            <Alert>{picklistError}</Alert>
+            <form>
+                <div className="form-group">
+                    <label className="control-label">Name *</label>
 
-            <Modal.Body>
-                <Alert>{picklistError}</Alert>
-                <form>
-                    <div className="form-group">
-                        <label className="control-label">Name *</label>
+                    <input
+                        placeholder="Give this list a name"
+                        className="form-control"
+                        value={name}
+                        onChange={onNameChange}
+                        type="text"
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="control-label">Description</label>
 
-                        <input
-                            placeholder="Give this list a name"
-                            className="form-control"
-                            value={name}
-                            onChange={onNameChange}
-                            type="text"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label className="control-label">Description</label>
+                    <textarea
+                        placeholder="Add a description"
+                        className="form-control"
+                        value={description}
+                        onChange={onDescriptionChange}
+                    />
 
-                        <textarea
-                            placeholder="Add a description"
-                            className="form-control"
-                            value={description}
-                            onChange={onDescriptionChange}
-                        />
-
-                        <Checkbox checked={shared} onChange={onSharedChanged}>
-                            <span>Share this picklist</span>
-                        </Checkbox>
-                    </div>
-                </form>
-            </Modal.Body>
-
-            <Modal.Footer>
-                <ModalButtons
-                    canConfirm={!!name}
-                    confirmText={finishVerb + ' Picklist'}
-                    confirmingText={finishingVerb + ' Picklist...'}
-                    isConfirming={isSubmitting}
-                    onCancel={onHide}
-                    onConfirm={onSavePicklist}
-                />
-            </Modal.Footer>
+                    <Checkbox checked={shared} onChange={onSharedChanged}>
+                        <span>Share this picklist</span>
+                    </Checkbox>
+                </div>
+            </form>
         </Modal>
     );
 });

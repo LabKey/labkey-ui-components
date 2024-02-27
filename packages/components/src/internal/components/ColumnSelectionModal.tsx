@@ -8,7 +8,7 @@ import { QueryInfo } from '../../public/QueryInfo';
 
 import { Alert } from './base/Alert';
 import { DragDropHandle } from './base/DragDropHandle';
-import { ConfirmModal, ConfirmModalProps } from './base/ConfirmModal';
+import { Modal, ModalProps } from '../Modal';
 import { LoadingSpinner } from './base/LoadingSpinner';
 
 type ExpandedColumnFilter = (column: QueryColumn, showAllColumns: boolean) => boolean;
@@ -297,7 +297,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     );
 });
 
-export interface ColumnSelectionModalProps extends Omit<ConfirmModalProps, 'canConfirm' | 'onConfirm'> {
+export interface ColumnSelectionModalProps extends Omit<ModalProps, 'canConfirm' | 'onConfirm' | 'cancelText'> {
     allowEditLabel?: boolean;
     allowShowAll?: boolean;
     error?: ReactNode;
@@ -458,7 +458,7 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
     }, [expandedColumnFilter, isLoaded, queryInfo, showAllColumns]);
 
     return (
-        <ConfirmModal {...confirmModalProps} canConfirm={isDirty && selectedColumns.length > 0} onConfirm={onConfirm}>
+        <Modal {...confirmModalProps} bsSize="lg" canConfirm={isDirty && selectedColumns.length > 0} onConfirm={onConfirm}>
             <Alert>{error}</Alert>
             <Alert>{queryError}</Alert>
             {!isLoaded && <LoadingSpinner />}
@@ -530,22 +530,16 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
                     </Col>
                 </div>
             )}
-        </ConfirmModal>
+        </Modal>
     );
 });
 
 ColumnSelectionModal.defaultProps = {
     allowEditLabel: false,
     allowShowAll: false,
-    backdrop: 'static',
-    cancelButtonText: 'Cancel',
-    confirmButtonText: 'Update Fields',
-    confirmVariant: 'success',
     isLoaded: true,
     leftColumnTitle: 'Available Fields',
     rightColumnTitle: 'Selected Fields',
-    show: true,
-    size: 'lg',
 };
 
 ColumnSelectionModal.displayName = 'ColumnSelectionModal';

@@ -27,7 +27,7 @@ import {
 } from '../../../public/QueryModel/withQueryModels';
 import { SCHEMAS } from '../../schemas';
 import { GridPanel } from '../../../public/QueryModel/GridPanel';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 import { HelpLink } from '../../util/helpLinks';
 
 interface ButtonsComponentProps extends RequiresModelAndActions {
@@ -64,16 +64,15 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
                 <span className="fa fa-trash" /> Delete
             </button>
             {showConfirmDelete && (
-                <ConfirmModal
-                    confirmVariant="danger"
+                <Modal
+                    confirmClass="btn-danger"
                     onCancel={closeDeleteModal}
                     onConfirm={onConfirmDelete}
-                    confirmButtonText="Yes, Delete"
-                    cancelButtonText="Cancel"
+                    confirmText="Yes, Delete"
                     title={`Delete ${model?.selections?.size} API ${noun}`}
                 >
                     <strong>Deletion cannot be undone.</strong> Do you want to proceed?
-                </ConfirmModal>
+                </Modal>
             )}
         </div>
     );

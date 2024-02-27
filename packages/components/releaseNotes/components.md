@@ -8,6 +8,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update `CommentTextArea` with additional props and callback interface
   - Update `EditableDetailPanel` and `DiscardConsumedSamplesPanel` to move commenting into the sticky button footer
 
+### version 3.24.0
+*Released*: 26 February 2024
+- Add Modal
+- Delete LoadingModal
+- Delete ConfirmModal
+
 ### version 3.23.0
 *Released*: 23 February 2024
 - Google Analytics Improvements

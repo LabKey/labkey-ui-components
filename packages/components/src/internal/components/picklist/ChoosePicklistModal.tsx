@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Modal, Tab, Tabs } from 'react-bootstrap';
+import { Tab, Tabs } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
@@ -7,6 +7,7 @@ import { User } from '../base/models/User';
 import { formatDate, parseDate } from '../../util/Date';
 import { Alert } from '../base/Alert';
 import { ChoicesListItem } from '../base/ChoicesListItem';
+import { Modal } from '../../Modal';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
@@ -252,7 +253,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             return [mine, team];
         }, [filteredItems, user]);
 
-        const onAddClicked = async (): Promise<void> => {
+        const onAddClicked = useCallback(async (): Promise<void> => {
             setSubmitting(true);
             setError(undefined);
             let numAdded = 0;
@@ -282,7 +283,18 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
             });
 
             afterAddToPicklist();
-        };
+        }, [
+            createNotification,
+            activeItem,
+            validCount,
+            currentProductId,
+            picklistProductId,
+            afterAddToPicklist,
+            selectionKey,
+            sampleIds,
+            api.query,
+            metricFeatureArea,
+        ]);
 
         const closeModal = useCallback(() => {
             setError(undefined);
@@ -299,14 +311,13 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                 Do you want to <a onClick={goToCreateNewList}>create a new one</a>?
             </>
         );
-        const isSearching = !!search;
-        let myEmptyMessage: ReactNode = <LoadingSpinner />;
-        let teamEmptyMessage: ReactNode = <LoadingSpinner />;
+
+        let body = <LoadingSpinner />;
 
         if (!loading) {
-            myEmptyMessage = 'You do not have any picklists ';
-            teamEmptyMessage = 'There are no shared picklists  ';
-
+            const isSearching = !!search;
+            let myEmptyMessage: ReactNode = 'You do not have any picklists ';
+            let teamEmptyMessage: ReactNode = 'There are no shared picklists  ';
             let suffix = '';
             if (isSearching) {
                 suffix = ' matching your search';
@@ -326,31 +337,6 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                     </>
                 );
             }
-        }
-
-        let body;
-        let title;
-        let buttons;
-        if (loading) {
-            title = 'Choose a Picklist';
-            body = <LoadingSpinner />;
-            buttons = (
-                <>
-                    <div className="pull-left">
-                        <button type="button" className="btn btn-default" onClick={closeModal}>
-                            Cancel
-                        </button>
-                    </div>
-
-                    <div className="pull-right">
-                        <button type="button" className="btn btn-success" disabled>
-                            Add to Picklist
-                        </button>
-                    </div>
-                </>
-            );
-        } else {
-            title = 'Choose a Picklist';
             body = (
                 <>
                     <div className="row">
@@ -400,45 +386,26 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                                 <div className="choices-list__empty-message">Choose a picklist</div>
                             )}
 
-                            {activeItem !== undefined && <PicklistDetails picklist={activeItem}/>}
+                            {activeItem !== undefined && <PicklistDetails picklist={activeItem} />}
                         </div>
-                    </div>
-                </>
-            );
-            buttons = (
-                <>
-                    <div className="pull-left">
-                        <button type="button" className="btn btn-default" onClick={closeModal}>
-                            Cancel
-                        </button>
-                    </div>
-
-                    <div className="pull-right">
-                        <button
-                            type="button"
-                            className="btn btn-success"
-                            onClick={onAddClicked}
-                            disabled={activeItem === undefined || submitting}
-                        >
-                            {submitting ? 'Adding to Picklist...' : 'Add to Picklist'}
-                        </button>
                     </div>
                 </>
             );
         }
 
         return (
-            <Modal show bsSize="large" onHide={closeModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{title}</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <Alert>{picklistLoadError ?? error}</Alert>
-                    {body}
-                </Modal.Body>
-
-                <Modal.Footer>{buttons}</Modal.Footer>
+            <Modal
+                bsSize="lg"
+                canConfirm={activeItem !== undefined && !loading}
+                confirmText="Add to Picklist"
+                confirmingText="Adding to Picklist..."
+                isConfirming={submitting}
+                onCancel={closeModal}
+                onConfirm={onAddClicked}
+                title="Choose a Picklist"
+            >
+                <Alert>{picklistLoadError ?? error}</Alert>
+                {body}
             </Modal>
         );
     }
@@ -502,7 +469,13 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
                 setSelectionsLoading(LoadingState.LOADED);
             }
         })();
-    }, [selectionsLoading, queryModel?.selectionKey, selections, queryModel?.isLoadingSelections, useSnapshotSelection]);
+    }, [
+        selectionsLoading,
+        queryModel?.selectionKey,
+        selections,
+        queryModel?.isLoadingSelections,
+        useSnapshotSelection,
+    ]);
 
     useEffect(() => {
         setIdsLoading(LoadingState.LOADING);

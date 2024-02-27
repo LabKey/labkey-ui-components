@@ -16,7 +16,7 @@ describe('TextChoiceAddValuesModal', () => {
         expect(wrapper.find('button')).toHaveLength(3); // close, cancel, apply
         expect(wrapper.find('.btn-success')).toHaveLength(1); // apply
 
-        const title = 'Add Text Choice Values ' + (fieldName ? 'for ' + fieldName : '');
+        const title = 'Add Text Choice Values' + (fieldName ? ' for ' + fieldName : '');
         expect(wrapper.find('.modal-title').text()).toBe(title);
     }
 

@@ -336,13 +336,14 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                         </Col>
                     )}
                 </Row>
-                <CreateUsersModal
-                    show={user.hasAddUsersPermission() && showDialog === 'create'}
-                    userLimitSettings={userLimitSettings}
-                    roleOptions={newUserRoleOptions}
-                    onComplete={this.onCreateComplete}
-                    onCancel={this.closeDialog}
-                />
+                {user.hasAddUsersPermission() && showDialog === 'create' && (
+                    <CreateUsersModal
+                        userLimitSettings={userLimitSettings}
+                        roleOptions={newUserRoleOptions}
+                        onComplete={this.onCreateComplete}
+                        onCancel={this.closeDialog}
+                    />
+                )}
                 {user.hasManageUsersPermission() && (showDialog === 'reactivate' || showDialog === 'deactivate') && (
                     <UserActivateChangeConfirmModal
                         userIds={model.getSelectedIdsAsInts()}

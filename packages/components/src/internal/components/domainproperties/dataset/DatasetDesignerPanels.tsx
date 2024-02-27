@@ -562,13 +562,14 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     title="Importing data from selected file..."
                     toggle={submitting && file !== undefined}
                 />
-                <ConfirmImportTypes
-                    designerType="dataset"
-                    show={importError !== undefined}
-                    error={importError}
-                    onConfirm={this.onImportErrorContinue}
-                    onCancel={this.onImportErrorStayAndFix}
-                />
+                {importError !== undefined && (
+                    <ConfirmImportTypes
+                        designerType="dataset"
+                        error={importError}
+                        onConfirm={this.onImportErrorContinue}
+                        onCancel={this.onImportErrorStayAndFix}
+                    />
+                )}
             </BaseDomainDesigner>
         );
     }

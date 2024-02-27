@@ -2,7 +2,7 @@ import React from 'react';
 
 import { mount } from 'enzyme';
 
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 
@@ -17,9 +17,9 @@ describe('<ImportWithRenameConfirmModal/>', () => {
             />
         );
         const wrapper = mount(component);
-        const confirmModal = wrapper.find(ConfirmModal);
-        expect(confirmModal.text().indexOf('already exists in this  folder')).toBeGreaterThan(-1);
-        expect(confirmModal.text().indexOf('it will be renamed')).toBeGreaterThan(-1);
+        const modal = wrapper.find(Modal);
+        expect(modal.text().indexOf('already exists in this  folder')).toBeGreaterThan(-1);
+        expect(modal.text().indexOf('it will be renamed')).toBeGreaterThan(-1);
     });
 
     test('with folder type', () => {
@@ -33,8 +33,8 @@ describe('<ImportWithRenameConfirmModal/>', () => {
             />
         );
         const wrapper = mount(component);
-        const confirmModal = wrapper.find(ConfirmModal);
-        expect(confirmModal.text().indexOf('already exists in this Test folder')).toBeGreaterThan(-1);
-        expect(confirmModal.text().indexOf('it will be renamed')).toBeGreaterThan(-1);
+        const modal = wrapper.find(Modal);
+        expect(modal.text().indexOf('already exists in this Test folder')).toBeGreaterThan(-1);
+        expect(modal.text().indexOf('it will be renamed')).toBeGreaterThan(-1);
     });
 });

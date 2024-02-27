@@ -10,7 +10,7 @@ import { invalidateFullQueryDetailsCache } from '../../query/api';
 import { RequiresPermission } from '../base/Permissions';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { LabelHelpTip } from '../base/LabelHelpTip';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 import { Alert } from '../base/Alert';
 
 import { useServerContext } from '../base/ServerContext';
@@ -344,12 +344,12 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                 </div>
 
                                 {confirmModalOpen && (
-                                    <ConfirmModal
+                                    <Modal
+                                        confirmClass="btn-danger"
                                         title="Apply Prefix?"
                                         onCancel={closeConfirmModal}
                                         onConfirm={savePrefix}
-                                        confirmButtonText="Yes, Save and Apply Prefix"
-                                        cancelButtonText="Cancel"
+                                        confirmText="Yes, Save and Apply Prefix"
                                     >
                                         <div>
                                             <p>
@@ -362,7 +362,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                                 the prefix applied. Are you sure you want to apply the prefix?
                                             </p>
                                         </div>
-                                    </ConfirmModal>
+                                    </Modal>
                                 )}
                             </>
                         )}
@@ -466,15 +466,15 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                     </Col>
                                 </Row>
                                 {confirmCounterModalOpen && (
-                                    <ConfirmModal
+                                    <Modal
+                                        confirmClass="btn-danger"
                                         title={
                                             (isReset ? 'Reset ' : 'Update ') +
                                             (isRoot ? 'rootSampleCount' : 'sampleCount')
                                         }
                                         onCancel={closeCounterConfirmModal}
                                         onConfirm={saveSampleCounter}
-                                        confirmButtonText={'Yes, ' + (isReset ? 'Reset' : 'Update')}
-                                        cancelButtonText="Cancel"
+                                        confirmText={'Yes, ' + (isReset ? 'Reset' : 'Update')}
                                     >
                                         <div>
                                             <p>
@@ -485,7 +485,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                                 action cannot be undone.
                                             </p>
                                         </div>
-                                    </ConfirmModal>
+                                    </Modal>
                                 )}
                             </div>
                         )}

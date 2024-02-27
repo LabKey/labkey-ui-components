@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Security } from '@labkey/api';
 
-import { ConfirmModal, ConfirmModalProps } from '../base/ConfirmModal';
+import { Modal, ModalProps } from '../../Modal';
 import { Alert } from '../base/Alert';
 import { useServerContext } from '../base/ServerContext';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -17,7 +17,7 @@ import { ProjectConfigurableDataType } from './models';
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
-export interface EntityMoveConfirmationModalProps extends Omit<ConfirmModalProps, 'onConfirm'> {
+export interface EntityMoveConfirmationModalProps extends Omit<ModalProps, 'onConfirm'> {
     currentContainer?: Container;
     dataType?: ProjectConfigurableDataType;
     dataTypeRowId?: number;
@@ -98,43 +98,41 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
 
     if (isLoading(loading)) {
         return (
-            <ConfirmModal
+            <Modal
                 title={confirmModalProps.title}
                 onCancel={confirmModalProps.onCancel}
-                cancelButtonText="Cancel"
             >
                 <LoadingSpinner msg="Loading target projects..." />
-            </ConfirmModal>
+            </Modal>
         );
     }
 
     if (error) {
         return (
-            <ConfirmModal
+            <Modal
                 title={confirmModalProps.title}
                 onCancel={confirmModalProps.onCancel}
-                cancelButtonText="Dismiss"
+                cancelText="Dismiss"
             >
                 <Alert>{error}</Alert>
-            </ConfirmModal>
+            </Modal>
         );
     }
 
     if (containerOptions?.length === 0) {
         return (
-            <ConfirmModal
+            <Modal
                 title={confirmModalProps.title}
                 onCancel={confirmModalProps.onCancel}
-                cancelButtonText="Dismiss"
+                cancelText="Dismiss"
             >
                 You do not have permission to move {nounPlural} to any of the available projects.
-            </ConfirmModal>
+            </Modal>
         );
     }
 
     return (
-        <ConfirmModal
-            confirmVariant="success"
+        <Modal
             {...confirmModalProps}
             onConfirm={onConfirmCallback}
             canConfirm={!!selectedContainerOption && (!requiresUserComment || hasValidUserComment)}
@@ -150,6 +148,6 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                 />
             </div>
             <CommentTextArea actionName="Moving" onChange={onCommentChange} requiresUserComment={requiresUserComment} />
-        </ConfirmModal>
+        </Modal>
     );
 });

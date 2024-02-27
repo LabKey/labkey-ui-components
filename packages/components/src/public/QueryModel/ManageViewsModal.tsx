@@ -1,5 +1,5 @@
 import React, { FC, Fragment, memo, useCallback, useEffect, useState } from 'react';
-import { Col, Modal, OverlayTrigger, Popover, Row } from 'react-bootstrap';
+import { Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 
 import { PermissionTypes } from '@labkey/api';
 
@@ -13,8 +13,10 @@ import { resolveErrorMessage } from '../../internal/util/messaging';
 
 import { RequiresPermission } from '../../internal/components/base/Permissions';
 
-import { ViewNameInput } from './SaveViewModal';
 import { userCanEditSharedViews } from '../../internal/app/utils';
+import { Modal } from '../../internal/Modal';
+
+import { ViewNameInput } from './SaveViewModal';
 
 // exported for jest tests
 export const ViewLabel: FC<{ view: ViewInfo }> = memo(props => {
@@ -182,128 +184,118 @@ export const ManageViewsModal: FC<Props> = memo(props => {
     );
 
     return (
-        <Modal onHide={onClose} show>
-            <Modal.Header closeButton>
-                <Modal.Title>Manage Saved Views</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Alert>{errorMessage}</Alert>
-                {!views && !errorMessage && <LoadingSpinner />}
-                {views &&
-                    views.map((view, ind) => {
-                        const { isDefault, isSystemView, shared } = view;
+        <Modal cancelText="Done" onCancel={onClose} title="Manage Saved Views">
+            <Alert>{errorMessage}</Alert>
+            {!views && !errorMessage && <LoadingSpinner />}
+            {views &&
+                views.map((view, ind) => {
+                    const { isDefault, isSystemView, shared } = view;
 
-                        // other than the default view, don't show system views
-                        if (!isDefault && isSystemView) {
-                            return null;
-                        }
+                    // other than the default view, don't show system views
+                    if (!isDefault && isSystemView) {
+                        return null;
+                    }
 
-                        const unsavedView = view.session;
-                        const isRenaming = !!selectedView;
-                        let canEdit = !isDefault && !isRenaming && !unsavedView && !deleting;
-                        if (shared) {
-                            canEdit = canEdit && userCanEditShared;
-                        }
+                    const unsavedView = view.session;
+                    const isRenaming = !!selectedView;
+                    let canEdit = !isDefault && !isRenaming && !unsavedView && !deleting;
+                    if (shared) {
+                        canEdit = canEdit && userCanEditShared;
+                    }
 
-                        return (
-                            <Fragment key={view.name}>
-                                <Row className="small-margin-bottom">
-                                    <Col xs={8}>
-                                        {selectedView && selectedView?.name === view.name ? (
-                                            <ViewNameInput
-                                                autoFocus
-                                                view={selectedView}
-                                                onBlur={renameView}
-                                                placeholder={selectedView?.name}
-                                                defaultValue={selectedView?.name}
-                                            />
-                                        ) : (
-                                            <ViewLabel view={view} />
+                    return (
+                        <Fragment key={view.name}>
+                            <Row className="small-margin-bottom">
+                                <Col xs={8}>
+                                    {selectedView && selectedView?.name === view.name ? (
+                                        <ViewNameInput
+                                            autoFocus
+                                            view={selectedView}
+                                            onBlur={renameView}
+                                            placeholder={selectedView?.name}
+                                            defaultValue={selectedView?.name}
+                                        />
+                                    ) : (
+                                        <ViewLabel view={view} />
+                                    )}
+                                </Col>
+                                <Col xs={4}>
+                                    <RequiresPermission perms={PermissionTypes.Admin}>
+                                        {isDefault && !isRenaming && (
+                                            <OverlayTrigger
+                                                placement="top"
+                                                overlay={
+                                                    <Popover id="disabled-button-popover">
+                                                        Revert back to the system default view.
+                                                    </Popover>
+                                                }
+                                            >
+                                                {view.isSaved ? (
+                                                    <span onClick={revertDefaultView} className="clickable-text">
+                                                        Revert
+                                                    </span>
+                                                ) : (
+                                                    <span className="gray-text">Revert</span>
+                                                )}
+                                            </OverlayTrigger>
                                         )}
-                                    </Col>
-                                    <Col xs={4}>
-                                        <RequiresPermission perms={PermissionTypes.Admin}>
-                                            {isDefault && !isRenaming && (
-                                                <OverlayTrigger
-                                                    placement="top"
-                                                    overlay={
-                                                        <Popover id="disabled-button-popover">
-                                                            Revert back to the system default view.
-                                                        </Popover>
-                                                    }
-                                                >
-                                                    {view.isSaved ? (
-                                                        <span onClick={revertDefaultView} className="clickable-text">
-                                                            Revert
-                                                        </span>
-                                                    ) : (
-                                                        <span className="gray-text">Revert</span>
-                                                    )}
-                                                </OverlayTrigger>
-                                            )}
-                                            {!isDefault && !isRenaming && (
-                                                <span
-                                                    onClick={setDefaultView}
-                                                    id={'setDefault-' + ind}
-                                                    className="clickable-text"
-                                                >
-                                                    Make default
-                                                </span>
-                                            )}
-                                        </RequiresPermission>
-                                        {canEdit && (
-                                            <span className="pull-right">
-                                                <span
-                                                    className="edit-inline-field__toggle small-right-spacing"
-                                                    onClick={onSelectView}
-                                                >
-                                                    <i id={'select-' + ind} className="fa fa-pencil" />
-                                                </span>
-                                                <span className="edit-inline-field__toggle" onClick={onDeleteView}>
-                                                    <i id={'delete-' + ind} className="fa fa-trash-o" />
-                                                </span>
+                                        {!isDefault && !isRenaming && (
+                                            <span
+                                                onClick={setDefaultView}
+                                                id={'setDefault-' + ind}
+                                                className="clickable-text"
+                                            >
+                                                Make default
                                             </span>
                                         )}
+                                    </RequiresPermission>
+                                    {canEdit && (
+                                        <span className="pull-right">
+                                            <span
+                                                className="edit-inline-field__toggle small-right-spacing"
+                                                onClick={onSelectView}
+                                            >
+                                                <i id={'select-' + ind} className="fa fa-pencil" />
+                                            </span>
+                                            <span className="edit-inline-field__toggle" onClick={onDeleteView}>
+                                                <i id={'delete-' + ind} className="fa fa-trash-o" />
+                                            </span>
+                                        </span>
+                                    )}
+                                </Col>
+                            </Row>
+                            {deleting === view && (
+                                <Row className="bottom-spacing">
+                                    <Col xs={12}>
+                                        <div className="inline-confirmation">
+                                            <div>
+                                                <span className="inline-confirmation__label">
+                                                    Permanently remove this view?
+                                                </span>
+                                                <button
+                                                    className="button-left-spacing alert-button btn btn-danger"
+                                                    id={'confirm-delete-' + ind}
+                                                    onClick={deleteSavedView}
+                                                    type="button"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    className="button-left-spacing alert-button btn btn-default"
+                                                    id={'cancel-delete-' + ind}
+                                                    onClick={cancelDeleteView}
+                                                    type="button"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
                                     </Col>
                                 </Row>
-                                {deleting === view && (
-                                    <Row className="bottom-spacing">
-                                        <Col xs={12}>
-                                            <div className="inline-confirmation">
-                                                <div>
-                                                    <span className="inline-confirmation__label">
-                                                        Permanently remove this view?
-                                                    </span>
-                                                    <button
-                                                        className="button-left-spacing alert-button btn btn-danger"
-                                                        id={'confirm-delete-' + ind}
-                                                        onClick={deleteSavedView}
-                                                        type="button"
-                                                    >
-                                                        Yes
-                                                    </button>
-                                                    <button
-                                                        className="button-left-spacing alert-button btn btn-default"
-                                                        id={'cancel-delete-' + ind}
-                                                        onClick={cancelDeleteView}
-                                                        type="button"
-                                                    >
-                                                        No
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                )}
-                            </Fragment>
-                        );
-                    })}
-            </Modal.Body>
-            <Modal.Footer>
-                <button disabled={isSubmitting} onClick={onClose} className="btn btn-default pull-right" type="button">
-                    Done
-                </button>
-            </Modal.Footer>
+                            )}
+                        </Fragment>
+                    );
+                })}
         </Modal>
     );
 });

@@ -45,16 +45,15 @@ describe('QueryInfoForm', () => {
 
     test('as modal', () => {
         const formWrapper = shallow(<QueryInfoForm asModal={true} queryInfo={QUERY_INFO} onSubmit={jest.fn()} />);
-        expect(formWrapper.find(Modal)).toHaveLength(1);
-        expect(formWrapper.find(ModalTitle)).toHaveLength(0);
+        expect(formWrapper.find('Modal')).toHaveLength(1);
     });
 
     test('as modal with title', () => {
-        const formWrapper = shallow(
+        const formWrapper = mount(
             <QueryInfoForm asModal={true} title="Test modal title" queryInfo={QUERY_INFO} onSubmit={jest.fn()} />
         );
-        expect(formWrapper.find(Modal)).toHaveLength(1);
-        const modalTitle = formWrapper.find(ModalTitle);
+        expect(formWrapper.find('Modal')).toHaveLength(1);
+        const modalTitle = formWrapper.find('.modal-title');
         expect(modalTitle).toHaveLength(1);
         expect(modalTitle.childAt(0).text()).toBe('Test modal title');
     });

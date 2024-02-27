@@ -91,7 +91,6 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
             </DropdownButton>
             {!!onFindByIds && showFindModal && (
                 <FindByIdsModal
-                    show
                     onCancel={onHideFindModal}
                     onFind={onFind}
                     nounPlural={findNounPlural}

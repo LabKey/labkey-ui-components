@@ -26,6 +26,8 @@ export const CommentTextArea: FC<Props> = props => {
         requiresUserComment,
         rows,
     } = props;
+    const label = `Reason for ${actionName}${requiresUserComment ? ' *' : ''}`;
+
     const [showError, setShowError] = useState<boolean>(false);
     const inputRef = useRef<HTMLTextAreaElement>();
     useEffect(() => {
@@ -52,30 +54,26 @@ export const CommentTextArea: FC<Props> = props => {
     );
 
     return (
-        <>
-            <div className={containerClassName}>
-                <span className={inline ? 'inline-comment-label' : ''}>
-                    Reason for {actionName}{requiresUserComment ? ' *' : ''}
-                </span>
-                <div className={classNames('form-group', { 'has-error': showError })}>
-                    <textarea
-                        className="form-control"
-                        id={COMMENT_FIELD_ID}
-                        placeholder={'Enter reason ' + (requiresUserComment ? '(required)' : '(optional)')}
-                        rows={rows ?? (inline ? 1 : 5)}
-                        disabled={disabled}
-                        onChange={onCommentChange}
-                        maxLength={maxLength + 1} // allow an extra character, so we can trigger the error message
-                        ref={inputRef}
-                    />
-                    {showError && (
-                        <span className="help-block">
-                            Please limit your reason to {maxLength.toLocaleString()} characters.
-                        </span>
-                    )}
-                </div>
+        <div className={containerClassName}>
+            <label className={inline ? 'inline-comment-label' : ''} htmlFor={COMMENT_FIELD_ID}>{label}</label>
+            <div className={classNames('form-group', { 'has-error': showError })}>
+                <textarea
+                    className="form-control"
+                    id={COMMENT_FIELD_ID}
+                    placeholder={'Enter reason ' + (requiresUserComment ? '(required)' : '(optional)')}
+                    rows={rows ?? (inline ? 1 : 5)}
+                    disabled={disabled}
+                    onChange={onCommentChange}
+                    maxLength={maxLength + 1} // allow an extra character, so we can trigger the error message
+                    ref={inputRef}
+                />
+                {showError && (
+                    <span className="help-block">
+                        Please limit your reason to {maxLength.toLocaleString()} characters.
+                    </span>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 

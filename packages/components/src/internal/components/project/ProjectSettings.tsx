@@ -48,7 +48,6 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const [getIsDirty, setIsDirty] = useRouteLeave();
 
     const onNameChange_ = useCallback((name: string) => {
-        setNameDirty(true);
         setHasValidName(name?.trim().length > 0);
         onChange(true);
     }, [onChange]);
@@ -75,16 +74,16 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
 
     const onBarSuccess_ = useCallback(() => {
         setBarDirty(false);
-        onSuccess(nameDirty || dataTypeDirty || dashboardDirty || storageDirty || nameIdDirty, false);
-    }, [onSuccess, nameDirty, dataTypeDirty, dashboardDirty, storageDirty, nameIdDirty]);
+        onSuccess(getIsDirty() || dataTypeDirty || dashboardDirty || storageDirty || nameIdDirty, false);
+    }, [onSuccess, getIsDirty, dataTypeDirty, dashboardDirty, storageDirty, nameIdDirty]);
 
     const onNameIdChange_ = useCallback(
         dirty => {
             setNameIdDirty(dirty);
             if (dirty) onChange(true);
-            else onSuccess(nameDirty || dataTypeDirty || dashboardDirty || storageDirty || barDirty, false);
+            else onSuccess(getIsDirty() || dataTypeDirty || dashboardDirty || storageDirty || barDirty, false);
         },
-        [onChange, onSuccess, nameDirty, dataTypeDirty, dashboardDirty, storageDirty, barDirty]
+        [onChange, onSuccess, getIsDirty, dataTypeDirty, dashboardDirty, storageDirty, barDirty]
     );
 
     const onSubmitName = useCallback(
@@ -163,25 +162,25 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const onDataTypeSuccess = useCallback(
         (reload?: boolean) => {
             setDataTypeDirty(false);
-            onSuccess(nameDirty || dashboardDirty || storageDirty || barDirty || nameIdDirty, reload);
+            onSuccess(getIsDirty() || dashboardDirty || storageDirty || barDirty || nameIdDirty, reload);
         },
-        [onSuccess, nameDirty, dashboardDirty, storageDirty, barDirty, nameIdDirty]
+        [onSuccess, getIsDirty, dashboardDirty, storageDirty, barDirty, nameIdDirty]
     );
 
     const onDashboardSuccess = useCallback(
         (reload?: boolean) => {
             setDashboardDirty(false);
-            onSuccess(nameDirty || dataTypeDirty || storageDirty || barDirty || nameIdDirty, reload);
+            onSuccess(getIsDirty() || dataTypeDirty || storageDirty || barDirty || nameIdDirty, reload);
         },
-        [onSuccess, nameDirty, dataTypeDirty, storageDirty, barDirty, nameIdDirty]
+        [onSuccess, getIsDirty, dataTypeDirty, storageDirty, barDirty, nameIdDirty]
     );
 
     const onStorageSuccess = useCallback(
         (reload?: boolean) => {
             setStorageDirty(false);
-            onSuccess(nameDirty || dataTypeDirty || dashboardDirty || barDirty || nameIdDirty, reload);
+            onSuccess(getIsDirty() || dataTypeDirty || dashboardDirty || barDirty || nameIdDirty, reload);
         },
-        [onSuccess, nameDirty, dataTypeDirty, dashboardDirty, barDirty, nameIdDirty]
+        [onSuccess, getIsDirty, dataTypeDirty, dashboardDirty, barDirty, nameIdDirty]
     );
 
     if (!project || !user.isAdmin) {
@@ -221,7 +220,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                         <ProjectNameSetting
                             defaultName={project.name}
                             defaultTitle={project.title}
-                            onChange={onNameChange_}
+                            onNameChange={onNameChange_}
                             setIsDirty={setIsDirty}
                             getIsDirty={getIsDirty}
                         />

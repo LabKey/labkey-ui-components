@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
+exports[`AssayPropertiesPanel asPanel, helpTopic, and hideAdvancedProperties 1`] = `
 <ComponentWithDomainPropertiesPanelCollapse
-  appPropertiesOnly={true}
   asPanel={false}
   collapsed={false}
   controlledCollapse={false}
   helpTopic="defineAssaySchema"
+  hideAdvancedProperties={true}
   initCollapsed={false}
   model={
     Immutable.Record {
@@ -137,12 +137,12 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
   validate={false}
 >
   <Component
-    appPropertiesOnly={true}
+    appPropertiesOnly={false}
     asPanel={false}
     collapsed={false}
     controlledCollapse={false}
     helpTopic="defineAssaySchema"
-    hideAdvancedProperties={false}
+    hideAdvancedProperties={true}
     hideStudyProperties={false}
     model={
       Immutable.Record {
@@ -274,8 +274,8 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
     validate={false}
   >
     <AssayPropertiesForm
-      appPropertiesOnly={true}
-      hideAdvancedProperties={false}
+      appPropertiesOnly={false}
+      hideAdvancedProperties={true}
       hideStudyProperties={false}
       model={
         Immutable.Record {
@@ -415,11 +415,11 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            lg={6}
+            lg={12}
             xs={12}
           >
             <div
-              className="col-lg-6 col-xs-12"
+              className="col-lg-12 col-xs-12"
             >
               <div
                 className="domain-field-padding-bottom"
@@ -434,7 +434,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                   </div>
                 </SectionHeading>
                 <NameInput
-                  hideAdvancedProperties={false}
+                  hideAdvancedProperties={true}
                   model={
                     Immutable.Record {
                       "allowBackgroundUpload": false,
@@ -563,7 +563,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                 >
                   <Component
                     colSize={9}
-                    hideAdvancedProperties={false}
+                    hideAdvancedProperties={true}
                     label="Name"
                     required={true}
                   >
@@ -571,7 +571,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                       className="row margin-top"
                     >
                       <div
-                        className="col col-xs-3 col-lg-4"
+                        className="col col-xs-3 col-lg-2"
                       >
                         <DomainFieldLabel
                           label="Name"
@@ -586,7 +586,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         </DomainFieldLabel>
                       </div>
                       <div
-                        className="col col-xs-9 col-lg-8"
+                        className="col col-xs-9 col-lg-10"
                       >
                         <FormControl
                           bsClass="form-control"
@@ -613,7 +613,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                   </Component>
                 </NameInput>
                 <DescriptionInput
-                  hideAdvancedProperties={false}
+                  hideAdvancedProperties={true}
                   model={
                     Immutable.Record {
                       "allowBackgroundUpload": false,
@@ -747,14 +747,14 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         A short description for this assay design.
                       </p>
                     }
-                    hideAdvancedProperties={false}
+                    hideAdvancedProperties={true}
                     label="Description"
                   >
                     <div
                       className="row margin-top"
                     >
                       <div
-                        className="col col-xs-3 col-lg-4"
+                        className="col col-xs-3 col-lg-2"
                       >
                         <DomainFieldLabel
                           helpTipBody={
@@ -804,7 +804,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         </DomainFieldLabel>
                       </div>
                       <div
-                        className="col col-xs-9 col-lg-8"
+                        className="col col-xs-9 col-lg-10"
                       >
                         <textarea
                           className="form-control"
@@ -830,7 +830,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                   </div>
                 </SectionHeading>
                 <EditableRunsInput
-                  hideAdvancedProperties={false}
+                  hideAdvancedProperties={true}
                   model={
                     Immutable.Record {
                       "allowBackgroundUpload": false,
@@ -964,14 +964,14 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
                       </p>
                     }
-                    hideAdvancedProperties={false}
+                    hideAdvancedProperties={true}
                     label="Editable Runs"
                   >
                     <div
                       className="row margin-top"
                     >
                       <div
-                        className="col col-xs-3 col-lg-4"
+                        className="col col-xs-3 col-lg-2"
                       >
                         <DomainFieldLabel
                           helpTipBody={
@@ -1022,7 +1022,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         </DomainFieldLabel>
                       </div>
                       <div
-                        className="col col-xs-9 col-lg-8"
+                        className="col col-xs-9 col-lg-10"
                       >
                         <input
                           checked={false}
@@ -1034,30 +1034,6 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                     </div>
                   </Component>
                 </EditableRunsInput>
-              </div>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            lg={6}
-            xs={12}
-          >
-            <div
-              className="col-lg-6 col-xs-12"
-            >
-              <div
-                className="domain-field-padding-bottom"
-              >
-                <SectionHeading
-                  title="Import Settings"
-                >
-                  <div
-                    className="domain-field-section-heading"
-                  >
-                    Import Settings
-                  </div>
-                </SectionHeading>
               </div>
             </div>
           </Col>
@@ -4354,10 +4330,10 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
 
 exports[`AssayPropertiesPanel without helpTopic 1`] = `
 <ComponentWithDomainPropertiesPanelCollapse
-  appPropertiesOnly={true}
   collapsed={false}
   controlledCollapse={false}
   helpTopic={null}
+  hideAdvancedProperties={true}
   initCollapsed={false}
   model={
     Immutable.Record {
@@ -4488,12 +4464,12 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
   validate={false}
 >
   <Component
-    appPropertiesOnly={true}
+    appPropertiesOnly={false}
     asPanel={true}
     collapsed={false}
     controlledCollapse={false}
     helpTopic={null}
-    hideAdvancedProperties={false}
+    hideAdvancedProperties={true}
     hideStudyProperties={false}
     model={
       Immutable.Record {
@@ -4625,13 +4601,13 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
     validate={false}
   >
     <BasePropertiesPanel
-      appPropertiesOnly={true}
+      appPropertiesOnly={false}
       asPanel={true}
       collapsed={false}
       controlledCollapse={false}
       headerId="assay-properties-hdr"
       helpTopic={null}
-      hideAdvancedProperties={false}
+      hideAdvancedProperties={true}
       hideStudyProperties={false}
       isValid={true}
       model={
@@ -4816,8 +4792,8 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                   className="panel-body"
                 >
                   <AssayPropertiesForm
-                    appPropertiesOnly={true}
-                    hideAdvancedProperties={false}
+                    appPropertiesOnly={false}
+                    hideAdvancedProperties={true}
                     hideStudyProperties={false}
                     model={
                       Immutable.Record {
@@ -4957,11 +4933,11 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                         <Col
                           bsClass="col"
                           componentClass="div"
-                          lg={6}
+                          lg={12}
                           xs={12}
                         >
                           <div
-                            className="col-lg-6 col-xs-12"
+                            className="col-lg-12 col-xs-12"
                           >
                             <div
                               className="domain-field-padding-bottom"
@@ -4976,7 +4952,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                 </div>
                               </SectionHeading>
                               <NameInput
-                                hideAdvancedProperties={false}
+                                hideAdvancedProperties={true}
                                 model={
                                   Immutable.Record {
                                     "allowBackgroundUpload": false,
@@ -5105,7 +5081,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                               >
                                 <Component
                                   colSize={9}
-                                  hideAdvancedProperties={false}
+                                  hideAdvancedProperties={true}
                                   label="Name"
                                   required={true}
                                 >
@@ -5113,7 +5089,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                     className="row margin-top"
                                   >
                                     <div
-                                      className="col col-xs-3 col-lg-4"
+                                      className="col col-xs-3 col-lg-2"
                                     >
                                       <DomainFieldLabel
                                         label="Name"
@@ -5128,7 +5104,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       </DomainFieldLabel>
                                     </div>
                                     <div
-                                      className="col col-xs-9 col-lg-8"
+                                      className="col col-xs-9 col-lg-10"
                                     >
                                       <FormControl
                                         bsClass="form-control"
@@ -5155,7 +5131,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                 </Component>
                               </NameInput>
                               <DescriptionInput
-                                hideAdvancedProperties={false}
+                                hideAdvancedProperties={true}
                                 model={
                                   Immutable.Record {
                                     "allowBackgroundUpload": false,
@@ -5289,14 +5265,14 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       A short description for this assay design.
                                     </p>
                                   }
-                                  hideAdvancedProperties={false}
+                                  hideAdvancedProperties={true}
                                   label="Description"
                                 >
                                   <div
                                     className="row margin-top"
                                   >
                                     <div
-                                      className="col col-xs-3 col-lg-4"
+                                      className="col col-xs-3 col-lg-2"
                                     >
                                       <DomainFieldLabel
                                         helpTipBody={
@@ -5346,7 +5322,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       </DomainFieldLabel>
                                     </div>
                                     <div
-                                      className="col col-xs-9 col-lg-8"
+                                      className="col col-xs-9 col-lg-10"
                                     >
                                       <textarea
                                         className="form-control"
@@ -5372,7 +5348,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                 </div>
                               </SectionHeading>
                               <EditableRunsInput
-                                hideAdvancedProperties={false}
+                                hideAdvancedProperties={true}
                                 model={
                                   Immutable.Record {
                                     "allowBackgroundUpload": false,
@@ -5506,14 +5482,14 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
                                     </p>
                                   }
-                                  hideAdvancedProperties={false}
+                                  hideAdvancedProperties={true}
                                   label="Editable Runs"
                                 >
                                   <div
                                     className="row margin-top"
                                   >
                                     <div
-                                      className="col col-xs-3 col-lg-4"
+                                      className="col col-xs-3 col-lg-2"
                                     >
                                       <DomainFieldLabel
                                         helpTipBody={
@@ -5564,7 +5540,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       </DomainFieldLabel>
                                     </div>
                                     <div
-                                      className="col col-xs-9 col-lg-8"
+                                      className="col col-xs-9 col-lg-10"
                                     >
                                       <input
                                         checked={false}
@@ -5576,30 +5552,6 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                   </div>
                                 </Component>
                               </EditableRunsInput>
-                            </div>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          lg={6}
-                          xs={12}
-                        >
-                          <div
-                            className="col-lg-6 col-xs-12"
-                          >
-                            <div
-                              className="domain-field-padding-bottom"
-                            >
-                              <SectionHeading
-                                title="Import Settings"
-                              >
-                                <div
-                                  className="domain-field-section-heading"
-                                >
-                                  Import Settings
-                                </div>
-                              </SectionHeading>
                             </div>
                           </div>
                         </Col>

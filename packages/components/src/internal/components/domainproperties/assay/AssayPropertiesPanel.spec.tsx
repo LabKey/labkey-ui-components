@@ -63,13 +63,13 @@ describe('AssayPropertiesPanel', () => {
         form.unmount();
     });
 
-    test('asPanel, helpTopic, and appPropertiesOnly', () => {
+    test('asPanel, helpTopic, and hideAdvancedProperties', () => {
         const form = mountWithServerContext(
             <AssayPropertiesPanel
                 {...BASE_PROPS}
                 model={EMPTY_MODEL}
                 asPanel={false}
-                appPropertiesOnly
+                hideAdvancedProperties
                 helpTopic="defineAssaySchema"
                 onChange={jest.fn}
             />
@@ -85,7 +85,7 @@ describe('AssayPropertiesPanel', () => {
                 {...BASE_PROPS}
                 model={EMPTY_MODEL}
                 helpTopic={null}
-                appPropertiesOnly
+                hideAdvancedProperties
                 onChange={jest.fn}
             />
         );

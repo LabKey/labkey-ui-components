@@ -11,7 +11,7 @@ import {
 import { SectionHeading } from '../SectionHeading';
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 
-import {hasModule, isAssayQCEnabled, isPlatesEnabled, isPremiumProductEnabled} from '../../../app/utils';
+import { hasModule, isAssayQCEnabled, isPlatesEnabled, isPremiumProductEnabled } from '../../../app/utils';
 
 import { useServerContext } from '../../base/ServerContext';
 
@@ -46,7 +46,8 @@ interface AssayPropertiesFormProps {
 }
 
 const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
-    const { appPropertiesOnly, hideAdvancedProperties, children, hideStudyProperties, model, onChange, canRename } = props;
+    const { appPropertiesOnly, hideAdvancedProperties, children, hideStudyProperties, model, onChange, canRename } =
+        props;
     const { moduleContext } = useServerContext();
 
     const onValueChange = useCallback(
@@ -105,8 +106,17 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
             <Col xs={12} lg={hideAdvancedProperties ? 12 : 6}>
                 <div className="domain-field-padding-bottom">
                     <SectionHeading title="Basic Properties" />
-                    <NameInput model={model} onChange={onInputChange} hideAdvancedProperties={hideAdvancedProperties} canRename={canRename} />
-                    <DescriptionInput model={model} onChange={onInputChange} hideAdvancedProperties={hideAdvancedProperties} />
+                    <NameInput
+                        model={model}
+                        onChange={onInputChange}
+                        hideAdvancedProperties={hideAdvancedProperties}
+                        canRename={canRename}
+                    />
+                    <DescriptionInput
+                        model={model}
+                        onChange={onInputChange}
+                        hideAdvancedProperties={hideAdvancedProperties}
+                    />
                     {model.allowPlateTemplateSelection() && (
                         <PlateTemplatesInput
                             model={model}
@@ -144,7 +154,11 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
                 </div>
                 <div className="domain-field-padding-bottom">
                     <SectionHeading title="Editing Settings" />
-                    <EditableRunsInput model={model} onChange={onInputChange} hideAdvancedProperties={hideAdvancedProperties} />
+                    <EditableRunsInput
+                        model={model}
+                        onChange={onInputChange}
+                        hideAdvancedProperties={hideAdvancedProperties}
+                    />
                     {model.allowEditableResults && (
                         <EditableResultsInput
                             model={model}
@@ -196,7 +210,17 @@ interface OwnProps extends AssayPropertiesFormProps {
 type Props = OwnProps & BasePropertiesPanelProps;
 
 const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapseProps> = memo(props => {
-    const { appPropertiesOnly, hideAdvancedProperties, canRename, asPanel, children, helpTopic, hideStudyProperties, model, onChange } = props;
+    const {
+        appPropertiesOnly,
+        hideAdvancedProperties,
+        canRename,
+        asPanel,
+        children,
+        helpTopic,
+        hideStudyProperties,
+        model,
+        onChange,
+    } = props;
     const [isValid, setIsValid] = useState<boolean>(true);
 
     const updateValidStatus = useCallback(

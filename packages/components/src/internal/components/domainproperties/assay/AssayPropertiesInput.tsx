@@ -59,7 +59,10 @@ export const AssayPropertiesInput: FC<AssayPropertiesInputProps> = memo(props =>
                 <DomainFieldLabel {...domainFieldProps} />
             </div>
             <div
-                className={classNames('col', colXs, { 'col-lg-10': hideAdvancedProperties, 'col-lg-8': !hideAdvancedProperties })}
+                className={classNames('col', colXs, {
+                    'col-lg-10': hideAdvancedProperties,
+                    'col-lg-8': !hideAdvancedProperties,
+                })}
             >
                 {children}
             </div>

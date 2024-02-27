@@ -426,14 +426,17 @@ export const FREEZER_ITEM_SAMPLE_MAPPER = new ActionMapper('query', 'executeQuer
             params.schemaName &&
             params.schemaName.toLowerCase() === 'inventory' &&
             params.queryName &&
-            params.queryName.toLowerCase() === 'item' &&
-            params[materialIdKey] !== undefined
+            params.queryName.toLowerCase() === 'item'
         ) {
-            return createProductUrl(
-                FREEZER_MANAGER_APP_PROPERTIES.productId,
-                undefined,
-                AppURL.create('rd', 'sampleItem', params[materialIdKey])
-            );
+            if (params[materialIdKey]) {
+                return createProductUrl(
+                    FREEZER_MANAGER_APP_PROPERTIES.productId,
+                    undefined,
+                    AppURL.create('rd', 'sampleItem', params[materialIdKey])
+                );
+            } else {
+                return ''; // don't try to show a link if there's no materialId Issue 49679
+            }
         }
     }
     return false;

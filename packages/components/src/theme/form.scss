@@ -324,6 +324,7 @@ textarea.form-control {
 .form-buttons {
     display: flex;
     width: 100%;
+    align-items: end;
 }
 .form-buttons--sticky {
     background-color: $white;
@@ -396,9 +397,9 @@ textarea.form-control {
 .inline-comment {
     display: inline-flex;
     margin-right: 15px;
-    >.form-group {
+    .form-group {
         margin-bottom: 0;
-        >textarea {
+        textarea {
             min-height: 20px;
             min-width: 450px;
             resize: none;
@@ -412,5 +413,12 @@ textarea.form-control {
     white-space: nowrap;
     font-weight: bold;
     margin-right: 5px;
-    margin-bottom: 8px;
+}
+
+.modal-footer .inline-comment textarea {
+    min-width: 250px;
+}
+
+.modal-footer .inline-comment .inline-comment-label {
+    margin-bottom: 0;
 }

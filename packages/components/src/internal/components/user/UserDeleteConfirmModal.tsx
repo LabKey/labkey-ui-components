@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { Utils } from '@labkey/api';
 
 import { resolveErrorMessage } from '../../util/messaging';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 import { Alert } from '../base/Alert';
 
 import { deleteUsers } from './actions';
@@ -49,14 +49,13 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
         const userCount = userIds.length;
 
         return (
-            <ConfirmModal
+            <Modal
                 title={'Delete ' + Utils.pluralBasic(userCount, 'User') + '?'}
                 onConfirm={this.onConfirm}
                 onCancel={onCancel}
-                confirmVariant="danger"
-                confirmButtonText="Yes, Permanently Delete"
-                cancelButtonText="Cancel"
-                submitting={submitting}
+                confirmClass="btn-danger"
+                confirmText="Yes, Permanently Delete"
+                isConfirming={submitting}
             >
                 <p>
                     Generally, <b>deactivation of a user is recommended</b>. Deactivated users may not login, but their
@@ -72,7 +71,7 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
                 </p>
                 <p>{Utils.pluralBasic(userCount, 'user')} will be deleted. Do you want to proceed?</p>
                 {error && <Alert>{error}</Alert>}
-            </ConfirmModal>
+            </Modal>
         );
     }
 }

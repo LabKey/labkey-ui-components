@@ -90,7 +90,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
         <ColumnSelectionModal
             allowEditLabel
             allowShowAll
-            confirmButtonText="Update Grid"
+            confirmText="Update Grid"
             expandedColumnFilter={includedColumnsForCustomizationFilter}
             initialSelectedColumn={selectedColumn}
             initialSelectedColumns={initialSelectedColumns}

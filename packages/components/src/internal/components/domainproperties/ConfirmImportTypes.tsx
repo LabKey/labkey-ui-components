@@ -1,28 +1,26 @@
 import React, { PureComponent } from 'react';
 
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 
 interface Props {
     designerType: string;
     error: any;
     onCancel: () => void;
     onConfirm: () => void;
-    show: boolean;
 }
 
 export default class ConfirmImportTypes extends PureComponent<Props> {
     render() {
-        const { error, onConfirm, onCancel, show, designerType } = this.props;
+        const { error, onConfirm, onCancel, designerType } = this.props;
 
         return (
-            <ConfirmModal
-                show={show}
+            <Modal
                 title={`Create ${designerType} without importing data?`}
-                confirmVariant="primary"
+                confirmClass="btn-primary"
                 onConfirm={onConfirm}
                 onCancel={onCancel}
-                confirmButtonText="Yes, Create Without Data"
-                cancelButtonText="No, Go Back to Field Editor"
+                confirmText="Yes, Create Without Data"
+                cancelText="No, Go Back to Field Editor"
             >
                 <div>
                     <p>
@@ -38,7 +36,7 @@ export default class ConfirmImportTypes extends PureComponent<Props> {
                         </strong>
                     </p>
                 </div>
-            </ConfirmModal>
+            </Modal>
         );
     }
 }

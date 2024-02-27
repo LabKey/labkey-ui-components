@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
-import { FormControl, Modal } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import { Security } from '@labkey/api';
 
-import { ModalButtons } from '../../ModalButtons';
+import { Modal } from '../../Modal';
 
 import { UserLimitSettings } from '../permissions/actions';
 import { SelectInput } from '../forms/input/SelectInput';
@@ -11,7 +11,6 @@ import { Alert } from '../base/Alert';
 interface Props {
     onCancel: () => void;
     onComplete: (response: any, roles: string[]) => void;
-    show: boolean;
     userLimitSettings?: Partial<UserLimitSettings>;
 
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
@@ -143,29 +142,22 @@ export class CreateUsersModal extends React.Component<Props, State> {
     }
 
     render(): ReactNode {
-        const { show, onCancel } = this.props;
+        const { onCancel } = this.props;
         const { error, emailText } = this.state;
         const valid = emailText?.length > 0 && this.getSelectedRoles()?.length > 0; // Issue 46841
 
         return (
-            <Modal show={show} onHide={onCancel}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Create New Users</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    {this.renderForm()}
-                    {error && <Alert style={{ marginTop: '10px' }}>{error}</Alert>}
-                </Modal.Body>
-                <Modal.Footer>
-                    <ModalButtons
-                        canConfirm={valid}
-                        confirmText="Create Users"
-                        confirmingText="Creating Users..."
-                        isConfirming={this.state.isSubmitting}
-                        onCancel={this.props.onCancel}
-                        onConfirm={this.createUsers}
-                    />
-                </Modal.Footer>
+            <Modal
+                canConfirm={valid}
+                confirmText="Create Users"
+                confirmingText="Creating Users..."
+                isConfirming={this.state.isSubmitting}
+                onCancel={onCancel}
+                onConfirm={this.createUsers}
+                title="Create New Users"
+            >
+                {this.renderForm()}
+                {error && <Alert style={{ marginTop: '10px' }}>{error}</Alert>}
             </Modal>
         );
     }

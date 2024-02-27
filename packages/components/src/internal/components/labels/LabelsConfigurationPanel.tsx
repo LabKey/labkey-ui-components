@@ -13,7 +13,7 @@ import { Alert } from '../base/Alert';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 import { resolveErrorMessage } from '../../util/messaging';
 import { DisableableButton } from '../buttons/DisableableButton';
@@ -344,18 +344,18 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                 </form>
             )}
             {showDeleteConfirm && (
-                <ConfirmModal
-                    cancelButtonText="Cancel"
-                    confirmButtonText="Yes, Delete"
+                <Modal
+                    confirmText="Yes, Delete"
                     title="Delete Label Template"
                     onCancel={onToggleDeleteConfirm}
                     onConfirm={onConfirmDelete}
+                    confirmClass="btn-danger"
                 >
                     <div>
                         The <b>{updatedTemplate.name}</b> label template will be deleted.
                         <strong>This cannot be undone.</strong> Do you wish to proceed?
                     </div>
-                </ConfirmModal>
+                </Modal>
             )}
         </>
     );

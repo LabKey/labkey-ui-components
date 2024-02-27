@@ -207,7 +207,7 @@ describe('ManageViewsModal', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        expect(wrapper.find('ModalTitle').text()).toBe('Manage Saved Views');
+        expect(wrapper.find('.modal-title').text()).toBe('Manage Saved Views');
 
         const rows = wrapper.find('.row');
         expect(rows.length).toBe(4);
@@ -286,7 +286,7 @@ describe('ManageViewsModal', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(LoadingSpinner).exists()).toEqual(false);
 
-        expect(wrapper.find('ModalTitle').text()).toBe('Manage Saved Views');
+        expect(wrapper.find('.modal-title').text()).toBe('Manage Saved Views');
 
         const rows = wrapper.find('.row');
         expect(rows.length).toBe(4);

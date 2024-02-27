@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { makeTestActions, makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -50,43 +50,43 @@ describe('PrintLabelsModal', () => {
     });
 
     test('no selections', () => {
-        const wrapper = shallow(<PrintLabelsModalImpl {...DEFAULT_PROPS()} />);
+        const wrapper = mount(<PrintLabelsModalImpl {...DEFAULT_PROPS()} />);
 
         expect(wrapper.find('.modal-title').text()).toBe('Print Labels with BarTender');
         expect(wrapper.find(QuerySelect)).toHaveLength(2);
-        expect(wrapper.find('div.modal-body').text()).toContain('Select samples to print labels for.');
-        expect(wrapper.find('button').prop('disabled')).toBe(true);
+        expect(wrapper.find('.modal-body').text()).toContain('Select samples to print labels for.');
+        expect(wrapper.find('.btn-success').prop('disabled')).toBe(true);
     });
 
     test('single sample with selection', async () => {
-        const wrapper = shallow(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1']} />);
+        const wrapper = mount(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1']} />);
         wrapper.setState({ labelTemplate: 0 });
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find('.modal-title').text()).toBe('Print Labels for 1 Sample with BarTender');
         expect(wrapper.find(QuerySelect)).toHaveLength(2);
-        expect(wrapper.find('div.modal-body').text()).toContain(
+        expect(wrapper.find('.modal-body').text()).toContain(
             "Confirm you've selected the samples you want and the proper label template."
         );
-        expect(wrapper.find('button').prop('disabled')).toBe(false);
+        expect(wrapper.find('.btn-success').prop('disabled')).toBe(false);
     });
 
     test('single sample without selection', async () => {
-        const wrapper = shallow(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1']} showSelection={false} />);
+        const wrapper = mount(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1']} showSelection={false} />);
 
         wrapper.setState({ labelTemplate: 0 });
         await waitForLifecycle(wrapper);
 
         expect(wrapper.find('.modal-title').text()).toBe('Print Labels for 1 Sample with BarTender');
         expect(wrapper.find(QuerySelect)).toHaveLength(1);
-        expect(wrapper.find('div.modal-body').text()).toContain(
+        expect(wrapper.find('.modal-body').text()).toContain(
             'Choose the number of copies of the label for this sample'
         );
-        expect(wrapper.find('button').prop('disabled')).toBe(false);
+        expect(wrapper.find('.btn-success').prop('disabled')).toBe(false);
     });
 
     test('multiple labels', async () => {
-        const wrapper = shallow(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
+        const wrapper = mount(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
 
         wrapper.setState({ labelTemplate: 0 });
         await waitForLifecycle(wrapper);
@@ -96,28 +96,28 @@ describe('PrintLabelsModal', () => {
         expect(wrapper.find('div.modal-body').text()).toContain(
             "Confirm you've selected the samples you want and the proper label template."
         );
-        expect(wrapper.find('button').prop('disabled')).toBe(false);
+        expect(wrapper.find('.btn-success').prop('disabled')).toBe(false);
     });
 
     test('no label template', () => {
-        const wrapper = shallow(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
-        expect(wrapper.find('button').prop('disabled')).toBe(true);
+        const wrapper = mount(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
+        expect(wrapper.find('.btn-success').prop('disabled')).toBe(true);
     });
 
     test('no copy count', () => {
-        const wrapper = shallow(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
+        const wrapper = mount(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
         wrapper.setState({ numCopies: undefined });
-        expect(wrapper.find('button').prop('disabled')).toBe(true);
+        expect(wrapper.find('.btn-success').prop('disabled')).toBe(true);
     });
 
     test('submitting', () => {
-        const wrapper = shallow(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
+        const wrapper = mount(<PrintLabelsModalImpl {...DEFAULT_PROPS()} sampleIds={['1', '2', '3']} />);
         wrapper.setState({ submitting: true });
-        expect(wrapper.find('button').prop('disabled')).toBe(true);
+        expect(wrapper.find('.btn-success').prop('disabled')).toBe(true);
     });
 
     test('error', async () => {
-        const wrapper = shallow(<PrintLabelsModalImpl {...DEFAULT_PROPS()} />);
+        const wrapper = mount(<PrintLabelsModalImpl {...DEFAULT_PROPS()} />);
         // TODO this should use override the print method and test the error handlers...
         wrapper.setState({ error: "We've got a problem" });
         await waitForLifecycle(wrapper);

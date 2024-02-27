@@ -11,27 +11,33 @@ export const FormButtons: FC<Props> = memo(({ children, sticky = true }) => {
     let secondary;
     let tertiary;
     let submit;
-    const childCount = Children.count(children);
 
-    // Note: we split children in to separate variables because if we just split the children into two arrays consumers
+    // Note: we have to filter children via forEach because doing something like {canSubmit && <button>Submit</button>}
+    // counts as a child, even when canSubmit is false, which results in a null child.
+    const actualChildren = [];
+    Children.forEach(children, child => {
+        if (child !== null) actualChildren.push(child);
+    });
+    const childCount = actualChildren.length;
+    // Note: we split children into separate variables because if we just split the children into two arrays consumers
     // would need to remember to supply a key prop for each button, which is easy to forget, and would result in
     // warnings from React.
     if (childCount === 0) {
         return null;
     } else if (childCount === 1) {
-        submit = children;
+        submit = actualChildren;
     } else if (childCount === 2) {
-        cancel = children[0];
-        submit = children[1];
+        cancel = actualChildren[0];
+        submit = actualChildren[1];
     } else if (childCount === 3) {
-        cancel = children[0];
-        secondary = children[1];
-        submit = children[2];
+        cancel = actualChildren[0];
+        secondary = actualChildren[1];
+        submit = actualChildren[2];
     } else if (childCount === 4) {
-        cancel = children[0];
-        secondary = children[1];
-        tertiary = children[2];
-        submit = children[3];
+        cancel = actualChildren[0];
+        secondary = actualChildren[1];
+        tertiary = actualChildren[2];
+        submit = actualChildren[3];
     } else {
         console.error(`Invalid number of children (${childCount}) passed to FormButtons, not rendering`);
         return null;

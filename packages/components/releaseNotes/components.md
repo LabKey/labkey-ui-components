@@ -5,6 +5,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X February 2024
 - Update EditableGrid to use alternative row background style
 
+### version 3.24.0
+*Released*: 26 February 2024
+- Add Modal
+- Delete LoadingModal
+- Delete ConfirmModal
+
+### version 3.23.0
+*Released*: 23 February 2024
+- Google Analytics Improvements
+    - Move files from ui-components to ui-premium
+    - Use <Page/> component that passes new analytics titles
+
 ### version 3.22.2
 *Released*: 19 February 2024
 - Issue 49352: Breadcrumb fix to remove CSS content and replace with new `<li>` separator

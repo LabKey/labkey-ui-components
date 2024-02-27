@@ -1,6 +1,8 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useState } from 'react';
 import classNames from 'classnames';
-import { FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
+import { FormControl, FormGroup, Radio } from 'react-bootstrap';
+
+import { Modal } from '../../../Modal';
 
 import { getSubmitButtonClass } from '../../../app/utils';
 
@@ -500,6 +502,29 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             eachItemBodySetting,
             eachItemBodyTemplate,
         };
+        const footer = (
+            <>
+                <button
+                    className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
+                    onClick={this.closeModal}
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+                <HelpLink className="domain-adv-footer domain-adv-link" topic="createListOptions#advanced">
+                    Get help with list settings
+                </HelpLink>
+
+                <button
+                    className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
+                    onClick={this.applyChanges}
+                    type="button"
+                >
+                    Apply
+                </button>
+            </>
+        );
 
         return (
             <>
@@ -507,12 +532,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     {title}
                 </button>
 
-                <Modal show={modalOpen} onHide={this.closeModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title> Advanced List Settings </Modal.Title>
-                    </Modal.Header>
-
-                    <Modal.Body>
+                {modalOpen && (
+                    <Modal footer={footer} onCancel={this.closeModal} title="Advanced List Settings">
                         <SettingsContainer title="Default Display Field" tipBody={DISPLAY_TITLE_TIP}>
                             <DisplayTitle
                                 model={model}
@@ -540,30 +561,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 fileAttachmentIndex={fileAttachmentIndex}
                             />
                         </SettingsContainer>
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <button
-                            className="domain-adv-footer domain-adv-cancel-btn btn btn-default"
-                            onClick={this.closeModal}
-                            type="button"
-                        >
-                            Cancel
-                        </button>
-
-                        <HelpLink className="domain-adv-footer domain-adv-link" topic="createListOptions#advanced">
-                            Get help with list settings
-                        </HelpLink>
-
-                        <button
-                            className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
-                            onClick={this.applyChanges}
-                            type="button"
-                        >
-                            Apply
-                        </button>
-                    </Modal.Footer>
-                </Modal>
+                    </Modal>
+                )}
             </>
         );
     }

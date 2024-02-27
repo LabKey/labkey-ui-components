@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Modal } from 'react-bootstrap';
 import { List } from 'immutable';
 
+import { Modal } from '../../Modal';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { HelpLink } from '../../util/helpLinks';
@@ -12,6 +12,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
+import { FormButtons } from '../../FormButtons';
+
 import { BarTenderResponse } from './models';
 import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR, LABEL_TEMPLATE_SQ } from './constants';
 
@@ -20,10 +22,9 @@ export interface PrintModalProps {
     api?: ComponentsAPIWrapper;
     defaultLabel: number;
     model: QueryModel;
-    onCancel?: (any) => void;
+    onCancel?: () => void;
     printServiceUrl: string;
     sampleIds: string[];
-    show: boolean;
     showSelection: boolean;
 }
 
@@ -177,129 +178,117 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         );
     }
 
-    renderForm() {
-        const { showSelection } = this.props;
-        const { numCopies, labelTemplate } = this.state;
-        const sampleCount = this.getSampleCount();
+    render() {
+        const { onCancel, showSelection } = this.props;
+        const { error, labelTemplate, numCopies, submitting } = this.state;
         const model = this.getModel();
+        const isLoading = model === undefined || model.isLoading;
+        let body;
 
-        let displayColumn = 'Name';
-        let valueColumn = 'RowId';
-        if (model?.queryInfo.pkCols?.[0] === 'rowId') {
-            displayColumn = 'name';
-            valueColumn = 'rowId';
-        }
-
-        let message;
-        if (sampleCount === 0) {
-            message = 'Select samples to print labels for.';
-        } else if (showSelection) {
-            message = "Confirm you've selected the samples you want and the proper label template.";
+        if (isLoading) {
+            body = <LoadingSpinner />;
+        } else if (submitting) {
+            body = <LoadingSpinner msg="Printing ..." />;
         } else {
-            message =
-                'Choose the number of copies of the label for this sample to print and confirm the label template.';
-        }
-
-        return (
-            <>
-                <div className="bottom-spacing">{message}</div>
-                <div>
-                    <b>Number of copies</b>
-                    <input
-                        className="form-control label-printing--copies"
-                        min={1}
-                        name="numCopies"
-                        onChange={this.onCopyCountChange}
-                        type="number"
-                        value={numCopies ? numCopies.toString() : undefined}
-                    />
-                    {showSelection && (
+            const sampleCount = this.getSampleCount();
+            let displayColumn = 'Name';
+            let valueColumn = 'RowId';
+            if (model?.queryInfo.pkCols?.[0] === 'rowId') {
+                displayColumn = 'name';
+                valueColumn = 'rowId';
+            }
+            let message;
+            if (sampleCount === 0) {
+                message = 'Select samples to print labels for.';
+            } else if (showSelection) {
+                message = "Confirm you've selected the samples you want and the proper label template.";
+            } else {
+                message =
+                    'Choose the number of copies of the label for this sample to print and confirm the label template.';
+            }
+            body = (
+                <>
+                    <div className="bottom-spacing">{message}</div>
+                    <div>
+                        <strong>Number of copies</strong>
+                        <input
+                            className="form-control label-printing--copies"
+                            min={1}
+                            name="numCopies"
+                            onChange={this.onCopyCountChange}
+                            type="number"
+                            value={numCopies ? numCopies.toString() : undefined}
+                        />
+                        {showSelection && (
+                            <div className="top-spacing">
+                                <strong>Selected samples to print</strong>
+                                <QuerySelect
+                                    formsy={false}
+                                    fireQSChangeOnInit={true}
+                                    showLabel={false}
+                                    loadOnFocus
+                                    maxRows={10}
+                                    multiple={true}
+                                    name="label-samples"
+                                    onQSChange={this.changeSampleSelection}
+                                    placeholder="Select or type to search..."
+                                    required={false}
+                                    schemaQuery={model.schemaQuery}
+                                    queryFilters={List(model.filters)}
+                                    displayColumn={displayColumn}
+                                    valueColumn={valueColumn}
+                                    value={this.props.sampleIds.join(',')}
+                                />
+                            </div>
+                        )}
                         <div className="top-spacing">
-                            <b>Selected samples to print</b>
+                            <strong>Label template</strong>
                             <QuerySelect
                                 formsy={false}
-                                fireQSChangeOnInit={true}
+                                fireQSChangeOnInit
                                 showLabel={false}
                                 loadOnFocus
                                 maxRows={10}
-                                multiple={true}
-                                name="label-samples"
-                                onQSChange={this.changeSampleSelection}
+                                name="label-template"
+                                onQSChange={this.changeTemplateSelection}
                                 placeholder="Select or type to search..."
-                                required={false}
-                                schemaQuery={model.schemaQuery}
-                                queryFilters={List(model.filters)}
-                                displayColumn={displayColumn}
-                                valueColumn={valueColumn}
-                                value={this.props.sampleIds.join(',')}
+                                required
+                                schemaQuery={LABEL_TEMPLATE_SQ}
+                                displayColumn="name"
+                                valueColumn="rowId"
+                                value={labelTemplate}
                             />
                         </div>
-                    )}
-                    <div className="top-spacing">
-                        <b>Label template</b>
-                        <QuerySelect
-                            formsy={false}
-                            fireQSChangeOnInit={true}
-                            showLabel={false}
-                            loadOnFocus
-                            maxRows={10}
-                            name="label-template"
-                            onQSChange={this.changeTemplateSelection}
-                            placeholder="Select or type to search..."
-                            required={true}
-                            schemaQuery={LABEL_TEMPLATE_SQ}
-                            displayColumn="name"
-                            valueColumn="rowId"
-                            value={labelTemplate}
-                        />
                     </div>
-                </div>
-            </>
-        );
-    }
+                </>
+            );
+        }
 
-    render() {
-        const { show, onCancel } = this.props;
-        const { error, submitting } = this.state;
-        const sampleModel = this.getModel();
+        const footer = (
+            <FormButtons sticky={false}>
+                <button className="btn btn-default" onClick={onCancel} type="button">
+                    Cancel
+                </button>
+
+                <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">
+                    BarTender help
+                </HelpLink>
+
+                <button
+                    className="btn btn-success"
+                    disabled={submitting || !this.isReadyForPrint()}
+                    onClick={this.onConfirmPrint}
+                    type="button"
+                >
+                    Yes, Print
+                </button>
+            </FormButtons>
+        );
 
         return (
-            <Modal show={show} onHide={onCancel}>
-                <Modal.Header closeButton={onCancel !== undefined}>
-                    <h4 className="modal-title">{this.getTitle()}</h4>
-                </Modal.Header>
-
-                <div className="modal-body">
-                    <Alert>{error}</Alert>
-                    {submitting ? (
-                        <LoadingSpinner msg="Printing ..." />
-                    ) : sampleModel && !sampleModel.isLoading ? (
-                        this.renderForm()
-                    ) : (
-                        <LoadingSpinner />
-                    )}
-                </div>
-
-                <Modal.Footer>
-                    {onCancel && (
-                        <button className="btn btn-default pull-left" onClick={onCancel} type="button">
-                            Cancel
-                        </button>
-                    )}
-                    <div className="pull-right">
-                        <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">
-                            BarTender help
-                        </HelpLink>
-                        <button
-                            className="btn btn-success"
-                            disabled={submitting || !this.isReadyForPrint()}
-                            onClick={this.onConfirmPrint}
-                            type="button"
-                        >
-                            Yes, Print
-                        </button>
-                    </div>
-                </Modal.Footer>
+            <Modal onCancel={onCancel} title={this.getTitle()} footer={footer}>
+                <Alert>{error}</Alert>
+                {body}
             </Modal>
         );
     }

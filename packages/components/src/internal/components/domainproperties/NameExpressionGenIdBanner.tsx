@@ -6,7 +6,7 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { Modal } from '../../Modal';
 
 export interface NameExpressionGenIdProps {
     api?: ComponentsAPIWrapper;
@@ -140,9 +140,9 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                 )}
             </Alert>
             {showResetDialog && (
-                <ConfirmModal
-                    cancelButtonText="Cancel"
-                    confirmButtonText="Reset"
+                <Modal
+                    confirmText="Reset"
+                    confirmClass="btn-danger"
                     onCancel={onResetCancel}
                     onConfirm={onResetConfirm}
                     title={`Are you sure you want to reset genId for ${dataTypeName}?`}
@@ -152,12 +152,12 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                         The current genId is at {currentGenId}. Resetting will reset genId back to 1 and cannot be
                         undone.
                     </div>
-                </ConfirmModal>
+                </Modal>
             )}
             {showEditDialog && (
-                <ConfirmModal
-                    cancelButtonText="Cancel"
-                    confirmButtonText="Update"
+                <Modal
+                    confirmText="Update"
+                    confirmClass="btn-danger"
                     onCancel={onEditCancel}
                     onConfirm={onEditConfirm}
                     title={`Are you sure you want to update genId for ${dataTypeName}?`}
@@ -183,7 +183,7 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                         </Col>
                         <Col xs={7} />
                     </Row>
-                </ConfirmModal>
+                </Modal>
             )}
         </>
     );

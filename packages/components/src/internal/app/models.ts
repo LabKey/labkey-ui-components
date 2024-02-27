@@ -9,6 +9,7 @@ import { ComponentType } from 'react';
 
 import { Container } from '../components/base/models/Container';
 import { User } from '../components/base/models/User';
+import { InjectedRouteLeaveProps } from '../util/RouteLeave';
 
 const user = new User({
     ...getServerContext().user,
@@ -67,7 +68,7 @@ export type NotebookNotificationSettings = ComponentType;
 export type NotebookProjectSettings = ComponentType<ContainerPathProp>;
 export type WorkflowNotificationSettings = ComponentType;
 
-interface ProjectFreezerSelectionProps {
+interface ProjectFreezerSelectionProps extends InjectedRouteLeaveProps {
     disabledTypesMap?: { [key: string]: number[] };
     onSuccess?: () => void;
     project?: Container;

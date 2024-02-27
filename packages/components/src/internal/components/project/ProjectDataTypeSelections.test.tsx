@@ -22,7 +22,13 @@ describe('ProjectDataTypeSelections', () => {
 
     test('without selected project - new project', async () => {
         await act(async () => {
-            renderWithAppContext(<ProjectDataTypeSelections api={API} entityDataTypes={[SampleTypeDataType]} />);
+            renderWithAppContext(<ProjectDataTypeSelections
+                api={API}
+                entityDataTypes={[SampleTypeDataType]}
+                getIsDirty={jest.fn()}
+                setIsDirty={jest.fn()}
+                updateDataTypeExclusions={jest.fn()}
+            />);
         });
         expect(document.querySelectorAll('button')).toHaveLength(0);
     });
@@ -34,6 +40,9 @@ describe('ProjectDataTypeSelections', () => {
                     api={API}
                     entityDataTypes={[SampleTypeDataType]}
                     project={TEST_FOLDER_CONTAINER}
+                    getIsDirty={jest.fn()}
+                    setIsDirty={jest.fn()}
+                    updateDataTypeExclusions={jest.fn()}
                 />
             );
         });
@@ -49,6 +58,9 @@ describe('ProjectDataTypeSelections', () => {
                     api={API}
                     entityDataTypes={[SampleTypeDataType, AssayRunDataType]}
                     project={TEST_FOLDER_CONTAINER}
+                    getIsDirty={jest.fn()}
+                    setIsDirty={jest.fn()}
+                    updateDataTypeExclusions={jest.fn()}
                 />
             );
         });

@@ -122,6 +122,7 @@ import {
     createWebDavDirectory,
     deleteWebDavResource,
     getWebDavFiles,
+    getWebDavUrl,
     uploadWebDavFile,
     WebDavFile,
 } from './public/files/WebDav';
@@ -1528,6 +1529,7 @@ export {
     TemplateDownloadButton,
     WebDavFile,
     getWebDavFiles,
+    getWebDavUrl,
     uploadWebDavFile,
     createWebDavDirectory,
     deleteWebDavResource,

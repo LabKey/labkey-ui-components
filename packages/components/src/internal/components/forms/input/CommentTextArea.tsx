@@ -56,7 +56,7 @@ export const CommentTextArea: FC<Props> = props => {
     return (
         <div className={containerClassName}>
             <label className={inline ? 'inline-comment-label' : ''} htmlFor={COMMENT_FIELD_ID}>{label}</label>
-            <div className={classNames('form-group', { 'has-error': showError })}>
+            <div className={classNames('form-group', {'has-error': showError})}>
                 <textarea
                     className="form-control"
                     id={COMMENT_FIELD_ID}

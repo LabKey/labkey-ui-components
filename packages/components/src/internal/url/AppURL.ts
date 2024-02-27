@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActionURL, Filter } from '@labkey/api';
+import { ActionURL, Filter, LabKey } from '@labkey/api';
 
 export function createProductUrlFromParts(
     urlProductId: string,
@@ -118,6 +118,8 @@ export function buildURL(controller: string, action: string, params?: any, optio
 
     return ActionURL.buildURL(controller, action, options?.container, parameters);
 }
+
+declare var LABKEY: LabKey;
 
 type URLParam = boolean | number | string;
 

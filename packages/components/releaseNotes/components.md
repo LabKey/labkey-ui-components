@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.24.1
+*Released*: 27 February 2024
 - Issue 49639: Update more info link in admin page
 - Remove extraneous horizontal line in User menu when not logged in
 - Issue 49428: Add dirty page warning for createProject page

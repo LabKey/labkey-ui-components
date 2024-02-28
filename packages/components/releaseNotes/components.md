@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 45315: Allow inferDomainFromFile to take file path string in addition to File prop
 
+### version 3.24.2
+*Released*: 28 February 2024
+- Update EditableGrid to use alternative row background style
+- Fix start-link
+
 ### version 3.24.1
 *Released*: 27 February 2024
 - Issue 49639: Update more info link in admin page

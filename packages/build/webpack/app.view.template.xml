@@ -1,7 +1,10 @@
 <% const { files, options } = htmlWebpackPlugin; %>
-<view xmlns="http://labkey.org/data/xml/view" isAppView="true"
+<view xmlns="http://labkey.org/data/xml/view"
     <% if (options.viewTemplate !== undefined) { %>
       template="<%= options.viewTemplate %>"
+    <% } %>
+    <% if (options.viewTemplate === "app") { %>
+        isAppView="true"
     <% } %>
       frame="none"
       title="<%= htmlWebpackPlugin.options.title %>"

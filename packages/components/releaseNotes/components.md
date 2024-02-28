@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.24.X
 *Released*: X February 2024
 - Issue 49763: App to suppress "Plate Metadata" setting on assay designs when not applicable
+- Issue 49274: App to use chevron arrows instead of plus/minus for expand/collapse
 
 ### version 3.24.1
 *Released*: 27 February 2024

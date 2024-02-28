@@ -78,8 +78,8 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props> {
         const isApp_ = isApp();
         const iconHelpMsg = panelStatus && panelStatus !== 'NONE' ? this.getHeaderIconHelpMsg() : undefined;
         const collapsedIconClass = classNames('fa', 'fa-lg', {
-            'fa-plus-square': collapsed,
-            'fa-minus-square': !collapsed,
+            'fa-chevron-right': collapsed,
+            'fa-chevron-down': !collapsed,
             'domain-form-expand-btn': collapsed,
             'domain-form-collapse-btn': !collapsed,
         });

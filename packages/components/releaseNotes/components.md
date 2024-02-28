@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.X
-*Released*: X February 2024
+### version 3.24.2
+*Released*: 28 February 2024
 - Update EditableGrid to use alternative row background style
 
 ### version 3.24.1

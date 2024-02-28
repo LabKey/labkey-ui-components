@@ -75,7 +75,8 @@ interface State {
 
 export class Cell extends React.PureComponent<CellProps, State> {
     private changeTO: number;
-    private clickTO: number;
+    private recordedKeys: string;
+    private recordingTO: number;
     private displayEl: React.RefObject<any>;
 
     static defaultProps = {
@@ -99,6 +100,16 @@ export class Cell extends React.PureComponent<CellProps, State> {
         };
 
         this.displayEl = React.createRef();
+    }
+
+    get isDateTimeField(): boolean {
+        const { col } = this.props;
+        return col.jsonType === 'date' || col.jsonType === 'time';
+    }
+
+    get isLookup(): boolean {
+        const { col } = this.props;
+        return col.isPublicLookup() || this.isDateTimeField || !!col.validValues;
     }
 
     componentDidUpdate(prevProps: Readonly<CellProps>): void {
@@ -170,7 +181,6 @@ export class Cell extends React.PureComponent<CellProps, State> {
     handleDblClick = (): void => {
         if (this.isReadOnly()) return;
 
-        clearTimeout(this.clickTO);
         const { colIdx, cellActions, rowIdx } = this.props;
         cellActions.focusCell(colIdx, rowIdx);
     };
@@ -218,8 +228,14 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx + 1);
                 } else if (selected) {
-                    cancelEvent(event);
-                    focusCell(colIdx, rowIdx);
+                    // Record "Enter" key iff recording is in progress. Does not initiate recording.
+                    if (this.recordingTO !== undefined) {
+                        // Do not cancel event here, otherwise, key capture will be lost
+                        this.recordKeys(event);
+                    } else {
+                        cancelEvent(event);
+                        focusCell(colIdx, rowIdx);
+                    }
                 }
                 break;
             case KEYS.Escape:
@@ -244,10 +260,47 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 // any other key
                 if (!focused && !isCtrlOrMetaKey(event)) {
                     // Do not cancel event here, otherwise, key capture will be lost
-                    focusCell(colIdx, rowIdx, !this.isReadOnly());
+                    if (this.isLookup) {
+                        this.recordKeys(event);
+                    } else {
+                        focusCell(colIdx, rowIdx, !this.isReadOnly());
+                    }
                 }
                 break;
         }
+    };
+
+    // Issue 49779: Support barcode scanners "streaming" input keys
+    recordKeys = (event: React.KeyboardEvent<HTMLElement>): void => {
+        clearTimeout(this.recordingTO);
+
+        // record the key
+        const { key } = event;
+        if (key) {
+            if (key === Key.ENTER) {
+                this.recordedKeys += '\n';
+            } else if (this.recordedKeys) {
+                this.recordedKeys += key;
+            } else {
+                this.recordedKeys = key;
+            }
+        }
+
+        // wait for more keystrokes and then fill or focus
+        this.recordingTO = window.setTimeout(() => {
+            this.recordingTO = undefined;
+            const { cellActions, colIdx, rowIdx } = this.props;
+
+            if (this.recordedKeys.indexOf('\n') > -1) {
+                cellActions.fillText(colIdx, rowIdx, this.recordedKeys);
+            } else {
+                cellActions.focusCell(colIdx, rowIdx, false);
+            }
+
+            this.recordedKeys = undefined;
+            // Wait for a very brief amount of time as automated input is
+            // expected to quickly input subsequent characters
+        }, 25);
     };
 
     /** This handles a subset of cell navigation key bindings from within a focused dropdown cell. */
@@ -327,8 +380,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
-        const isDateTimeField = col.jsonType === 'date' || col.jsonType === 'time';
-        const showLookup = col.isPublicLookup() || isDateTimeField || col.validValues;
+        const isDateTimeField = this.isDateTimeField;
+        const showLookup = this.isLookup;
 
         if (!focused) {
             let valueDisplay = values
@@ -427,6 +480,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     col={col}
                     colIdx={colIdx}
                     containerFilter={containerFilter}
+                    defaultInputValue={this.recordedKeys}
                     disabled={this.isReadOnly()}
                     lookupValueFilters={lookupValueFilters}
                     filteredLookupKeys={filteredLookupKeys}

@@ -156,6 +156,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
 interface State {
     defaultOptions: boolean | SelectInputOption[];
     error: string;
+    initialLoad: boolean;
     isLoading: boolean;
     loadOnFocusLock: boolean;
     model: QuerySelectModel;
@@ -181,6 +182,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             // See note in onFocus() regarding support for "loadOnFocus"
             defaultOptions: props.preLoad !== false ? true : props.loadOnFocus ? [] : true,
             error: undefined,
+            initialLoad: true,
             isLoading: undefined,
             loadOnFocusLock: false,
             model: undefined,
@@ -209,6 +211,17 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
     };
 
     loadOptions = (input: string): Promise<SelectInputOption[]> => {
+        let input_: string;
+
+        if (this.state.initialLoad) {
+            // If a "defaultInputValue" is supplied and the initial load is an empty search,
+            // then search with the "defaultInputValue"
+            input_ = input ? input : this.props.defaultInputValue ?? '';
+            this.setState({ initialLoad: false });
+        } else {
+            input_ = input;
+        }
+
         const request = (this.lastRequest = {});
         clearTimeout(this.querySelectTimer);
 
@@ -224,13 +237,13 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                 try {
                     const { model } = this.state;
 
-                    const data = await model.search(input);
+                    const data = await model.search(input_);
 
                     // Issue 46816: Skip processing stale requests
                     if (request !== this.lastRequest) return;
                     delete this.lastRequest;
 
-                    resolve(model.formatSavedResults(data, input));
+                    resolve(model.formatSavedResults(data, input_));
 
                     this.setState(() => ({
                         model: model.saveSearchResults(data),
@@ -290,6 +303,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             containerClass,
             customTheme,
             customStyles,
+            defaultInputValue,
             description,
             filterOption,
             formsy,
@@ -347,6 +361,7 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
                     defaultOptions,
                     filterOption,
                     helpTipRenderer,
+                    defaultInputValue,
                     isLoading,
                     loadOptions: this.loadOptions,
                     onChange: this.onChange,

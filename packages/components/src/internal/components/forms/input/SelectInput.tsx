@@ -173,6 +173,7 @@ export interface SelectInputProps extends WithFormsyProps {
     containerClass?: string;
     customStyles?: Record<string, any>;
     customTheme?: (theme) => Record<string, any>;
+    defaultInputValue?: string;
     defaultOptions?: boolean | readonly any[];
     delimiter?: string;
     description?: string;
@@ -195,6 +196,7 @@ export interface SelectInputProps extends WithFormsyProps {
     labelClass?: string;
     labelKey?: string;
     loadOptions?: (input: string) => Promise<SelectInputOption[]>;
+    menuPlacement?: string;
     menuPosition?: string;
     multiple?: boolean;
     name?: string;
@@ -251,6 +253,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         initiallyDisabled: false,
         inputClass: INPUT_WRAPPER_CLASS_NAME,
         labelClass: INPUT_LABEL_CLASS_NAME,
+        menuPlacement: 'auto',
         // Default to 'fixed' because 'absolute' causes issues in several scenarios (Modals, EditableGrid) but it's too
         // difficult to manually set it to fixed in all of these situations (e.g. we don't always know we're in a modal)
         menuPosition: 'fixed',
@@ -520,6 +523,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             closeMenuOnSelect,
             customTheme,
             customStyles,
+            defaultInputValue,
             defaultOptions,
             delimiter,
             disabled,
@@ -529,6 +533,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             isLoading,
             isValidNewOption,
             labelKey,
+            menuPlacement,
             menuPosition,
             multiple,
             name,
@@ -580,6 +585,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             classNamePrefix: 'select-input',
             closeMenuOnSelect,
             components,
+            defaultInputValue,
             delimiter,
             filterOption,
             formatCreateLabel,
@@ -592,7 +598,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             isLoading,
             isMulti: multiple,
             isValidNewOption,
-            menuPlacement: 'auto',
+            menuPlacement,
             menuPosition,
             name,
             noOptionsMessage: this.noOptionsMessage,

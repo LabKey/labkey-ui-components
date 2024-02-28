@@ -39,6 +39,7 @@ export interface LookupCellProps {
     col: QueryColumn;
     colIdx: number;
     containerFilter?: Query.ContainerFilter;
+    defaultInputValue?: string;
     disabled?: boolean;
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
@@ -65,6 +66,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
         const {
             col,
             containerFilter,
+            defaultInputValue,
             disabled,
             filteredLookupKeys,
             filteredLookupValues,
@@ -132,6 +134,7 @@ export class LookupCell extends PureComponent<LookupCellProps> {
                 containerFilter={lookup.containerFilter ?? containerFilter ?? getContainerFilterForLookups()}
                 containerPath={lookup.containerPath}
                 disabled={disabled}
+                defaultInputValue={defaultInputValue}
                 maxRows={LOOKUP_DEFAULT_SIZE}
                 multiple={isMultiple}
                 onKeyDown={onKeyDown}

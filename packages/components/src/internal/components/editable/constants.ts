@@ -21,6 +21,7 @@ export enum MODIFICATION_TYPES {
 export interface CellActions {
     clearSelection: () => void;
     fillDown: () => void;
+    fillText: (colIdx: number, rowIdx: number, text: string) => void;
     focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void;
     inDrag: () => boolean; // Not really an action, but useful to be part of this interface
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;

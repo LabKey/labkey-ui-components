@@ -66,6 +66,7 @@ export interface ModalProps extends BaseModalProps, ModalButtonsProps {
 
 export const Modal: FC<ModalProps> = memo(props => {
     const {
+        actionName,
         bsSize,
         cancelText,
         canConfirm,
@@ -77,7 +78,9 @@ export const Modal: FC<ModalProps> = memo(props => {
         footer,
         isConfirming,
         onCancel,
+        onCommentChange,
         onConfirm,
+        requiresUserComment,
         title,
     } = props;
     const showHeader = onCancel || title;
@@ -89,6 +92,7 @@ export const Modal: FC<ModalProps> = memo(props => {
 
             {!footer && (
                 <ModalButtons
+                    actionName={actionName}
                     cancelText={cancelText}
                     canConfirm={canConfirm}
                     confirmClass={confirmClass}
@@ -96,7 +100,9 @@ export const Modal: FC<ModalProps> = memo(props => {
                     confirmingText={confirmingText}
                     isConfirming={isConfirming}
                     onConfirm={onConfirm}
+                    onCommentChange={onCommentChange}
                     onCancel={onCancel}
+                    requiresUserComment={requiresUserComment}
                 />
             )}
 

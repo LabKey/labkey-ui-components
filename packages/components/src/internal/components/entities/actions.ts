@@ -640,6 +640,7 @@ export function handleEntityFileImport(
 ): Promise<any> {
     return new Promise((resolve, reject) => {
         return importData({
+            auditUserComment,
             schemaName: queryInfo?.schemaQuery.schemaName,
             queryName: queryInfo?.schemaQuery.queryName,
             file,

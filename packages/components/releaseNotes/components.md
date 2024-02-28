@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update `CommentTextArea` with additional props and callback interface
   - Update `EditableDetailPanel` and `DiscardConsumedSamplesPanel` to move commenting into the sticky button footer
 
+### version 3.24.2
+*Released*: 28 February 2024
+- Update EditableGrid to use alternative row background style
+- Fix start-link
+
 ### version 3.24.1
 *Released*: 27 February 2024
 - Issue 49639: Update more info link in admin page

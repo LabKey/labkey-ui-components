@@ -11,6 +11,7 @@ export interface Props {
     containerClassName?: string;
     requiresUserComment?: boolean;
     maxLength?: number;
+    value?: string;
 }
 
 export const COMMENT_FIELD_ID = 'actionComments';
@@ -25,6 +26,7 @@ export const CommentTextArea: FC<Props> = props => {
         maxLength = 1000,
         requiresUserComment,
         rows,
+        value,
     } = props;
     const label = `Reason for ${actionName}${requiresUserComment ? ' *' : ''}`;
 
@@ -66,6 +68,7 @@ export const CommentTextArea: FC<Props> = props => {
                     onChange={onCommentChange}
                     maxLength={maxLength + 1} // allow an extra character, so we can trigger the error message
                     ref={inputRef}
+                    value={value}
                 />
                 {showError && (
                     <span className="help-block">

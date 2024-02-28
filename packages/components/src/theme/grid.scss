@@ -9,7 +9,7 @@
 .table-striped > tbody > tr.grid-row td {
     background-color: $white;
 }
-.table-striped > tbody > tr.grid-row-alternate td {
+.table-striped, .table-cellular > tbody > tr.grid-row-alternate td {
     background-color: $table-bg-accent;
 }
 .table-striped > tbody > tr.grid-row-highlight td {

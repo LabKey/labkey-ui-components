@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X February 2024
 - Issue 49763: App to suppress "Plate Metadata" setting on assay designs when not applicable
 
+### version 3.24.1
+*Released*: 27 February 2024
+- Issue 49639: Update more info link in admin page
+- Remove extraneous horizontal line in User menu when not logged in
+- Issue 49428: Add dirty page warning for createProject page
+- Issue 49679: change AppURL.create to not throw an exception in production mode when there are empty parts
+
 ### version 3.24.0
 *Released*: 26 February 2024
 - Add Modal

@@ -134,11 +134,17 @@ export class AppURL {
         let baseUrl = '';
         for (let i = 0; i < parts.length; i++) {
             if (parts[i] === undefined || parts[i] === null || parts[i] === '') {
-                throw (
-                    'AppURL: Unable to create URL with empty parts. Parts are [' +
-                    parts.map(p => p + '').join(', ') +
-                    '].'
-                );
+                if (LABKEY.devMode) {
+                    throw (
+                        'AppURL: Unable to create URL with empty parts. Parts are [' +
+                        parts.map(p => p + '').join(', ') +
+                        '].'
+                    );
+                } else {
+                    console.error(
+                        'Unable to create URL with empty parts. Parts are [' + parts.map(p => p + '').join(', ') + '].'
+                    );
+                }
             }
 
             const stringPart = parts[i].toString();

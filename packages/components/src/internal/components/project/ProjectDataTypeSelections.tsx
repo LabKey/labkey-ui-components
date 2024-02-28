@@ -11,8 +11,9 @@ import { Container } from '../base/models/Container';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { useFolderDataTypeExclusions } from './useFolderDataTypeExclusions';
+import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
-interface Props {
+interface Props extends InjectedRouteLeaveProps {
     api?: FolderAPIWrapper;
     dataTypePrefix?: string;
     entityDataTypes?: EntityDataType[];
@@ -35,9 +36,10 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
         onSuccess,
         showUncheckedWarning,
         dataTypePrefix,
+        setIsDirty,
+        getIsDirty,
     } = props;
 
-    const [dirty, setDirty] = useState<boolean>(false);
     const [saveError, setSaveError] = useState<string>();
     const [isSaving, setIsSaving] = useState<boolean>(false);
     const [dataTypeExclusion, setDataTypeExclusion] = useState<{ [key: string]: number[] }>({});
@@ -58,10 +60,10 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                     uncheckedUpdates[dataType] = exclusions;
                     return uncheckedUpdates;
                 });
-                setDirty(true);
             }
+            setIsDirty(true);
         },
-        [updateDataTypeExclusions, project]
+        [setIsDirty, updateDataTypeExclusions, project]
     );
 
     const onSave = useCallback(async () => {
@@ -78,14 +80,14 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
 
             await api.updateProjectDataExclusions(options, project?.path);
 
-            setDirty(false);
+            setIsDirty(false);
             onSuccess(true);
         } catch (e) {
             setSaveError(resolveErrorMessage(e) ?? 'Failed to update project settings');
         } finally {
             setIsSaving(false);
         }
-    }, [isSaving, dataTypeExclusion, api, project?.path, onSuccess]);
+    }, [setIsDirty, isSaving, dataTypeExclusion, api, project?.path, onSuccess]);
 
     return (
         <div className="panel panel-default">
@@ -133,7 +135,7 @@ export const ProjectDataTypeSelections: FC<Props> = memo(props => {
                         <div className="pull-right">
                             <button
                                 className="pull-right alert-button btn btn-success"
-                                disabled={isSaving || !dirty}
+                                disabled={isSaving || !getIsDirty()}
                                 onClick={onSave}
                                 type="button"
                             >

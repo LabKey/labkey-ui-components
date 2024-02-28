@@ -1,5 +1,5 @@
 <% const { files, options } = htmlWebpackPlugin; %>
-<view xmlns="http://labkey.org/data/xml/view"
+<view xmlns="http://labkey.org/data/xml/view" isAppView="true"
     <% if (options.viewTemplate !== undefined) { %>
       template="<%= options.viewTemplate %>"
     <% } %>

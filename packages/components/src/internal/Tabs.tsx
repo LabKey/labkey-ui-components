@@ -33,15 +33,16 @@ const Context = createContext<TabContext>(undefined);
 
 interface TabProps {
     children: ReactNode;
+    className?: string;
     eventKey: string;
     title: ReactNode;
 }
 
-export const Tab: FC<TabProps> = ({ children, eventKey }) => {
+export const Tab: FC<TabProps> = ({ children, className, eventKey }) => {
     const { id, activeKey } = useContext(Context);
-    const className = classNames('tab-pane', { active: activeKey === eventKey });
+    const className_ = classNames('tab-pane', className, { active: activeKey === eventKey });
     return (
-        <div aria-labelledby={tabId(id, activeKey)} className={className} id={paneId(id, activeKey)} role="tabpanel">
+        <div aria-labelledby={tabId(id, activeKey)} className={className_} id={paneId(id, activeKey)} role="tabpanel">
             {children}
         </div>
     );

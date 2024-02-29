@@ -40,26 +40,29 @@ import { FORM_IDS, SCRIPTS_DIR } from './constants';
 import { getScriptEngineForExtension, getValidPublishTargets } from './actions';
 
 interface AssayPropertiesInputProps extends DomainFieldLabelProps {
-    appPropertiesOnly?: boolean;
+    hideAdvancedProperties?: boolean;
     colSize?: number;
 }
 
 export const AssayPropertiesInput: FC<AssayPropertiesInputProps> = memo(props => {
-    const { appPropertiesOnly, children, colSize, ...domainFieldProps } = props;
+    const { hideAdvancedProperties, children, colSize, ...domainFieldProps } = props;
     const colXs = colSize ? 'col-xs-' + colSize : undefined;
 
     return (
         <div className="row margin-top">
             <div
                 className={classNames('col col-xs-3', {
-                    'col-lg-2': appPropertiesOnly,
-                    'col-lg-4': !appPropertiesOnly,
+                    'col-lg-2': hideAdvancedProperties,
+                    'col-lg-4': !hideAdvancedProperties,
                 })}
             >
                 <DomainFieldLabel {...domainFieldProps} />
             </div>
             <div
-                className={classNames('col', colXs, { 'col-lg-10': appPropertiesOnly, 'col-lg-8': !appPropertiesOnly })}
+                className={classNames('col', colXs, {
+                    'col-lg-10': hideAdvancedProperties,
+                    'col-lg-8': !hideAdvancedProperties,
+                })}
             >
                 {children}
             </div>
@@ -74,7 +77,7 @@ AssayPropertiesInput.defaultProps = {
 };
 
 interface InputProps {
-    appPropertiesOnly?: boolean;
+    hideAdvancedProperties?: boolean;
     model: AssayProtocolModel;
     onChange: (evt) => void;
     canRename?: boolean;
@@ -82,7 +85,7 @@ interface InputProps {
 
 export function NameInput(props: InputProps) {
     return (
-        <AssayPropertiesInput label="Name" required={true} appPropertiesOnly={props.appPropertiesOnly}>
+        <AssayPropertiesInput label="Name" required={true} hideAdvancedProperties={props.hideAdvancedProperties}>
             <FormControl
                 id={FORM_IDS.ASSAY_NAME}
                 type="text"
@@ -99,7 +102,7 @@ export function DescriptionInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label="Description"
-            appPropertiesOnly={props.appPropertiesOnly}
+            hideAdvancedProperties={props.hideAdvancedProperties}
             helpTipBody={<p>A short description for this assay design.</p>}
         >
             <textarea
@@ -134,7 +137,7 @@ export function PlateTemplatesInput(props: InputProps) {
             label="Plate Template"
             required={true}
             colSize={6}
-            appPropertiesOnly={props.appPropertiesOnly}
+            hideAdvancedProperties={props.hideAdvancedProperties}
             helpTipBody={
                 <p>
                     Specify the plate template definition used to map spots or wells on the plate to data fields in this
@@ -168,7 +171,7 @@ export function DetectionMethodsInput(props: InputProps) {
             label="Detection Method"
             required={true}
             colSize={6}
-            appPropertiesOnly={props.appPropertiesOnly}
+            hideAdvancedProperties={props.hideAdvancedProperties}
         >
             <FormControl
                 componentClass="select"
@@ -193,7 +196,7 @@ export function MetadataInputFormatsInput(props: InputProps) {
             label="Metadata Input Format"
             required={true}
             colSize={6}
-            appPropertiesOnly={props.appPropertiesOnly}
+            hideAdvancedProperties={props.hideAdvancedProperties}
             helpTipBody={
                 <>
                     <p>
@@ -230,7 +233,7 @@ export const AssayStatusInput = props => {
     return (
         <AssayPropertiesInput
             label="Active"
-            appPropertiesOnly={props.appPropertiesOnly}
+            hideAdvancedProperties={props.hideAdvancedProperties}
             helpTipBody={
                 <p>If disabled, this assay design will be considered archived, and will be hidden in certain views.</p>
             }
@@ -244,7 +247,7 @@ export function EditableRunsInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label="Editable Runs"
-            appPropertiesOnly={props.appPropertiesOnly}
+            hideAdvancedProperties={props.hideAdvancedProperties}
             helpTipBody={
                 <p>
                     If enabled, users with sufficient permissions can edit values at the run level after the initial
@@ -266,7 +269,7 @@ export function EditableResultsInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label="Editable Results"
-            appPropertiesOnly={props.appPropertiesOnly}
+            hideAdvancedProperties={props.hideAdvancedProperties}
             helpTipBody={
                 <p>
                     If enabled, users with sufficient permissions can edit and delete at the individual results row

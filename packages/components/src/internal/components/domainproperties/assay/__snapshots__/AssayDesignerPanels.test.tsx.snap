@@ -21,7 +21,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-minus-square domain-form-collapse-btn"
+            class="fa fa-lg fa-chevron-down domain-form-collapse-btn"
           />
         </span>
       </div>
@@ -212,7 +212,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -373,7 +373,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -534,7 +534,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -720,7 +720,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-minus-square domain-form-collapse-btn"
+            class="fa fa-lg fa-chevron-down domain-form-collapse-btn"
           />
         </span>
       </div>
@@ -819,40 +819,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     >
                       My assay protocol for you all to use.
                     </textarea>
-                  </div>
-                </div>
-                <div
-                  class="row margin-top"
-                >
-                  <div
-                    class="col col-xs-3 col-lg-4"
-                  >
-                    Plate 
-                    <span
-                      class="domain-no-wrap"
-                    >
-                      Metadata
-                      <div
-                        class="overlay-trigger"
-                      >
-                        <span
-                          class="label-help-target"
-                        >
-                          <span
-                            class="label-help-icon fa fa-question-circle"
-                          />
-                        </span>
-                      </div>
-                      
-                    </span>
-                  </div>
-                  <div
-                    class="col col-xs-9 col-lg-8"
-                  >
-                    <input
-                      id="assay-design-plateMetadata"
-                      type="checkbox"
-                    />
                   </div>
                 </div>
               </div>
@@ -1011,7 +977,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -1164,7 +1130,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -1937,7 +1903,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -3780,7 +3746,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-minus-square domain-form-collapse-btn"
+            class="fa fa-lg fa-chevron-down domain-form-collapse-btn"
           />
         </span>
       </div>
@@ -3971,7 +3937,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -4132,7 +4098,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -4293,7 +4259,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -4472,7 +4438,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-minus-square domain-form-collapse-btn"
+            class="fa fa-lg fa-chevron-down domain-form-collapse-btn"
           />
         </span>
       </div>
@@ -4663,7 +4629,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -4824,7 +4790,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -5010,7 +4976,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-minus-square domain-form-collapse-btn"
+            class="fa fa-lg fa-chevron-down domain-form-collapse-btn"
           />
         </span>
       </div>
@@ -5301,7 +5267,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -6079,7 +6045,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -7929,7 +7895,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-minus-square domain-form-collapse-btn"
+            class="fa fa-lg fa-chevron-down domain-form-collapse-btn"
           />
         </span>
       </div>
@@ -8220,7 +8186,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -8373,7 +8339,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div
@@ -9151,7 +9117,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           class="pull-right"
         >
           <span
-            class="fa fa-lg fa-plus-square domain-form-expand-btn"
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
           />
         </span>
         <div

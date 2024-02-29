@@ -280,6 +280,7 @@
 }
 
 .domain-form-collapse-btn {
+  vertical-align: top;
   color: white;
 
   &:hover {
@@ -827,9 +828,11 @@
 
 .domain-system-fields-header__icon {
     color: $gray-no-highlight;
-    margin-bottom: 2px;
-    margin-right: 10px;
+    margin-left: 10px;
     cursor: pointer;
+    &:hover {
+        color: $gray-dark;
+    }
 }
 
 .domain-system-fields-header__text {

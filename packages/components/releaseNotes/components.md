@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.24.3
+*Released*: 29 February 2024
+- Issue 49763: App to suppress "Plate Metadata" setting on assay designs when not applicable
+- Issue 49274: App to use chevron arrows instead of plus/minus for expand/collapse
+
 ### version 3.24.2
 *Released*: 28 February 2024
 - Update EditableGrid to use alternative row background style

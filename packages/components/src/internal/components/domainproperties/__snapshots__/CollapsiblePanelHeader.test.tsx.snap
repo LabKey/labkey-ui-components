@@ -22,7 +22,7 @@ exports[`<CollapsiblePanelHeader/> custom properties 1`] = `
       class="pull-right"
     >
       <span
-        class="fa fa-lg fa-plus-square domain-form-expand-btn"
+        class="fa fa-lg fa-chevron-right domain-form-expand-btn"
       />
     </span>
     <span
@@ -49,7 +49,7 @@ exports[`<CollapsiblePanelHeader/> default properties 1`] = `
       class="pull-right"
     >
       <span
-        class="fa fa-lg fa-plus-square domain-form-expand-btn"
+        class="fa fa-lg fa-chevron-right domain-form-expand-btn"
       />
     </span>
   </div>
@@ -78,7 +78,7 @@ exports[`<CollapsiblePanelHeader/> invalid, iconHelpMsg, and expanded 1`] = `
       class="pull-right"
     >
       <span
-        class="fa fa-lg fa-minus-square domain-form-collapse-btn"
+        class="fa fa-lg fa-chevron-down domain-form-collapse-btn"
       />
     </span>
   </div>
@@ -152,7 +152,7 @@ exports[`<CollapsiblePanelHeader/> panelStatus TODO and help tip 1`] = `
       class="pull-right"
     >
       <span
-        class="fa fa-lg fa-plus-square domain-form-expand-btn"
+        class="fa fa-lg fa-chevron-right domain-form-expand-btn"
       />
     </span>
     <div

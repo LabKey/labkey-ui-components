@@ -39,6 +39,7 @@ export enum EditableGridEvent {
     BULK_UPDATE = 'BULK_UPDATE',
     CLEAR_SELECTION = 'CLEAR_SELECTION',
     DRAG_FILL = 'DRAG_FILL',
+    FILL_TEXT = 'FILL_TEXT',
     FOCUS_CELL = 'FOCUS_CELL',
     MODIFY_CELL = 'MODIFY_CELL',
     PASTE = 'PASTE',

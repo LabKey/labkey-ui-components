@@ -26,7 +26,7 @@ import { resolveDetailFieldLabel } from './utils';
 import { initSelect, QuerySelectModel } from './model';
 import { DELIMITER } from './constants';
 
-function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
+function getValue(model: QuerySelectModel, multiple: boolean): any {
     const { rawSelectedValue } = model;
 
     if (rawSelectedValue !== undefined && !Utils.isString(rawSelectedValue)) {
@@ -46,14 +46,14 @@ function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
 
     // Issue 37352
     // For reasons not entirely clear we cannot pass in an array of values to QuerySelect when we initialize it
-    // while multiple is also set to true. Instead we can only pass in one pre-populated value. We then need to
+    // while multiple is also set to true. Instead, we can only pass in one pre-populated value. We then need to
     // convert that value to an array here, or Formsy will only return a single value if the input is never touched
     // by the user. Converting it to an array right here gets us the best of both worlds: a pre-populated value that
     // is returned as an array when the user hits submit.
     if (
         rawSelectedValue !== undefined &&
         rawSelectedValue !== '' &&
-        props.multiple &&
+        multiple &&
         !Array.isArray(rawSelectedValue)
     ) {
         return [rawSelectedValue];
@@ -117,7 +117,7 @@ export type QuerySelectChange = (
 
 /**
  * This is a subset of SelectInputProps that are passed through to the SelectInput. Mainly, this set should
- * represent all props of SelectInput that are not overridden by QuerySelect for it's own
+ * represent all props of SelectInput that are not overridden by QuerySelect for its own
  * purposes (e.g. "options" are populated from the QuerySelect's model and thus are not allowed to
  * be specified by the user).
  */
@@ -132,6 +132,7 @@ type InheritedSelectInputProps = Omit<
     | 'loadOptions'
     | 'onChange' // overridden by QuerySelect. See onQSChange().
     | 'options'
+    | 'selectedOptions'
     | 'valueKey'
 >;
 
@@ -299,13 +300,28 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
 
     render() {
         const {
+            containerFilter,
+            containerPath,
+            displayColumn,
+            fireQSChangeOnInit,
+            loadOnFocus,
+            maxRows,
+            onInitValue,
+            onQSChange,
+            preLoad,
+            queryFilters,
+            requiredColumns,
+            schemaQuery,
+            showLoading,
+            valueColumn,
+            ...selectInputProps
+        } = this.props;
+        const {
             allowDisable,
             containerClass,
             customTheme,
             customStyles,
-            defaultInputValue,
             description,
-            filterOption,
             formsy,
             helpTipRenderer,
             initiallyDisabled,
@@ -314,93 +330,81 @@ export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
             labelClass,
             menuPosition,
             multiple,
+            name,
             onToggleDisable,
             openMenuOnFocus,
-            optionRenderer,
             required,
-            showLoading,
-        } = this.props;
+        } = selectInputProps;
         const { defaultOptions, error, isLoading, model } = this.state;
 
         if (error) {
-            const inputProps = {
-                allowDisable,
-                containerClass,
-                customStyles,
-                customTheme,
-                description,
-                disabled: true,
-                formsy,
-                helpTipRenderer,
-                initiallyDisabled,
-                isLoading: false,
-                inputClass,
-                label,
-                labelClass,
-                menuPosition,
-                multiple,
-                name: this.props.name,
-                onToggleDisable,
-                openMenuOnFocus,
-                placeholder: `Error: ${error}`,
-                required,
-                type: 'text',
-            };
-
-            return <SelectInput {...inputProps} />;
-        } else if (model?.isInit) {
-            const inputProps = Object.assign(
-                {
-                    label: label !== undefined ? label : model.queryInfo.title,
-                },
-                this.props,
-                {
-                    allowCreate: false,
-                    autoValue: false, // QuerySelect directly controls value of ReactSelect via selectedOptions
-                    cacheOptions: true,
-                    defaultOptions,
-                    filterOption,
-                    helpTipRenderer,
-                    defaultInputValue,
-                    isLoading,
-                    loadOptions: this.loadOptions,
-                    onChange: this.onChange,
-                    onFocus: this.onFocus,
-                    openMenuOnFocus,
-                    options: undefined, // prevent override
-                    optionRenderer: optionRenderer ? optionRenderer : this.optionRenderer,
-                    selectedOptions: model.getSelectedOptions(),
-                    value: getValue(model, this.props), // needed to initialize the Formsy "value" properly
-                }
+            return (
+                <SelectInput
+                    allowDisable={allowDisable}
+                    containerClass={containerClass}
+                    customStyles={customStyles}
+                    customTheme={customTheme}
+                    description={description}
+                    disabled
+                    formsy={formsy}
+                    helpTipRenderer={helpTipRenderer}
+                    initiallyDisabled={initiallyDisabled}
+                    isLoading={false}
+                    inputClass={inputClass}
+                    label={label}
+                    labelClass={labelClass}
+                    menuPosition={menuPosition}
+                    multiple={multiple}
+                    name={name}
+                    onToggleDisable={onToggleDisable}
+                    openMenuOnFocus={openMenuOnFocus}
+                    placeholder={`Error: ${error}`}
+                    required={required}
+                />
             );
-
-            return <SelectInput {...inputProps} />;
+        } else if (model?.isInit) {
+            return (
+                <SelectInput
+                    label={label !== undefined ? label : model.queryInfo.title}
+                    optionRenderer={this.optionRenderer}
+                    {...selectInputProps}
+                    allowCreate={false}
+                    autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
+                    cacheOptions
+                    defaultOptions={defaultOptions}
+                    isLoading={isLoading}
+                    loadOptions={this.loadOptions}
+                    onChange={this.onChange}
+                    onFocus={this.onFocus}
+                    options={undefined} // prevent override
+                    selectedOptions={model.getSelectedOptions()}
+                    value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
+                />
+            );
         } else if (showLoading) {
-            const inputProps = {
-                allowDisable,
-                containerClass,
-                customStyles,
-                customTheme,
-                description,
-                disabled: true,
-                formsy,
-                helpTipRenderer,
-                inputClass,
-                initiallyDisabled,
-                label,
-                labelClass,
-                menuPosition,
-                multiple,
-                name: this.props.name,
-                openMenuOnFocus,
-                onToggleDisable,
-                placeholder: 'Loading...',
-                required,
-                type: 'text',
-                value: undefined,
-            };
-
-            return <SelectInput {...inputProps} />;
+            return (
+                <SelectInput
+                    allowDisable={allowDisable}
+                    containerClass={containerClass}
+                    customStyles={customStyles}
+                    customTheme={customTheme}
+                    description={description}
+                    disabled
+                    formsy={formsy}
+                    helpTipRenderer={helpTipRenderer}
+                    initiallyDisabled={initiallyDisabled}
+                    label={label}
+                    labelClass={labelClass}
+                    menuPosition={menuPosition}
+                    multiple={multiple}
+                    name={name}
+                    onToggleDisable={onToggleDisable}
+                    openMenuOnFocus={openMenuOnFocus}
+                    placeholder="Loading..."
+                    required={required}
+                    value={undefined}
+                />
+            );
         }
 
         return null;

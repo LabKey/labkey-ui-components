@@ -188,6 +188,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
     handleKeys: React.KeyboardEventHandler<HTMLElement> = (event): void => {
         const { cellActions, colIdx, focused, rowIdx, selected } = this.props;
         const { focusCell, modifyCell, selectCell, fillDown } = cellActions;
+        const isRecording = this.recordingTO !== undefined;
 
         switch (event.keyCode) {
             case KEYS.Alt:
@@ -211,13 +212,13 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 break;
             case KEYS.Backspace:
             case KEYS.Delete:
-                if (!focused && selected && !this.isReadOnly()) {
+                if (!focused && selected && !this.isReadOnly() && !isRecording) {
                     cancelEvent(event);
                     modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
                 }
                 break;
             case KEYS.Tab:
-                if (selected) {
+                if (selected && !isRecording) {
                     cancelEvent(event);
                     selectCell(event.shiftKey ? colIdx - 1 : colIdx + 1, rowIdx);
                 }
@@ -229,7 +230,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     selectCell(colIdx, rowIdx + 1);
                 } else if (selected) {
                     // Record "Enter" key iff recording is in progress. Does not initiate recording.
-                    if (this.recordingTO !== undefined) {
+                    if (isRecording) {
                         // Do not cancel event here, otherwise, key capture will be lost
                         this.recordKeys(event);
                     } else {
@@ -239,7 +240,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 }
                 break;
             case KEYS.Escape:
-                if (focused) {
+                if (focused && !isRecording) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx, undefined, true);
                 }
@@ -260,7 +261,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 // any other key
                 if (!focused && !isCtrlOrMetaKey(event)) {
                     // Do not cancel event here, otherwise, key capture will be lost
-                    if (this.isLookup) {
+                    if (this.isLookup && !this.isReadOnly()) {
                         this.recordKeys(event);
                     } else {
                         focusCell(colIdx, rowIdx, !this.isReadOnly());
@@ -290,11 +291,13 @@ export class Cell extends React.PureComponent<CellProps, State> {
         this.recordingTO = window.setTimeout(() => {
             this.recordingTO = undefined;
             const { cellActions, colIdx, rowIdx } = this.props;
+            const { fillText, focusCell, selectCell } = cellActions;
 
             if (this.recordedKeys.indexOf('\n') > -1) {
-                cellActions.fillText(colIdx, rowIdx, this.recordedKeys);
+                fillText(colIdx, rowIdx, this.recordedKeys);
+                selectCell(colIdx, rowIdx + 1);
             } else {
-                cellActions.focusCell(colIdx, rowIdx, false);
+                focusCell(colIdx, rowIdx, !this.isReadOnly());
             }
 
             this.recordedKeys = undefined;

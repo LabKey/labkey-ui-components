@@ -1177,7 +1177,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         );
         this.hideMask();
 
-        onChange(EditableGridEvent.PASTE, changes.editorModel, changes.dataKeys, changes.data);
+        onChange(EditableGridEvent.FILL_TEXT, changes.editorModel, changes.dataKeys, changes.data);
     };
 
     onPaste = async (event: ClipboardEvent): Promise<void> => {

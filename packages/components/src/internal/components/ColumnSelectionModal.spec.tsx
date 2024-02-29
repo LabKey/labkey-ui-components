@@ -63,8 +63,8 @@ describe('ColumnSelectionModal', () => {
             expect(wrapper.find('.fa-check')).toHaveLength(1);
             expect(wrapper.find('.fa-plus')).toHaveLength(0);
             expect(wrapper.find('.field-expand-icon')).toHaveLength(1);
-            expect(wrapper.find('.fa-plus-square')).toHaveLength(0);
-            expect(wrapper.find('.fa-plus-minus')).toHaveLength(0);
+            expect(wrapper.find('.fa-chevron-right')).toHaveLength(0);
+            expect(wrapper.find('.fa-chevron-down')).toHaveLength(0);
             wrapper.unmount();
         });
 
@@ -74,8 +74,8 @@ describe('ColumnSelectionModal', () => {
             expect(wrapper.find('.fa-check')).toHaveLength(0);
             expect(wrapper.find('.fa-plus')).toHaveLength(1);
             expect(wrapper.find('.field-expand-icon')).toHaveLength(1);
-            expect(wrapper.find('.fa-plus-square')).toHaveLength(0);
-            expect(wrapper.find('.fa-plus-minus')).toHaveLength(0);
+            expect(wrapper.find('.fa-chevron-right')).toHaveLength(0);
+            expect(wrapper.find('.fa-chevron-down')).toHaveLength(0);
             wrapper.unmount();
         });
 
@@ -85,8 +85,8 @@ describe('ColumnSelectionModal', () => {
             expect(wrapper.find('.fa-check')).toHaveLength(0);
             expect(wrapper.find('.fa-plus')).toHaveLength(1);
             expect(wrapper.find('.field-expand-icon')).toHaveLength(3);
-            expect(wrapper.find('.fa-plus-square')).toHaveLength(1);
-            expect(wrapper.find('.fa-plus-minus')).toHaveLength(0);
+            expect(wrapper.find('.fa-chevron-right')).toHaveLength(1);
+            expect(wrapper.find('.fa-chevron-down')).toHaveLength(0);
             wrapper.unmount();
         });
 
@@ -98,8 +98,8 @@ describe('ColumnSelectionModal', () => {
             expect(wrapper.find('.fa-check')).toHaveLength(0);
             expect(wrapper.find('.fa-plus')).toHaveLength(1);
             expect(wrapper.find('.field-expand-icon')).toHaveLength(3);
-            expect(wrapper.find('.fa-plus-square')).toHaveLength(0);
-            expect(wrapper.find('.fa-minus-square')).toHaveLength(1);
+            expect(wrapper.find('.fa-chevron-right')).toHaveLength(0);
+            expect(wrapper.find('.fa-chevron-down')).toHaveLength(1);
             wrapper.unmount();
         });
     });

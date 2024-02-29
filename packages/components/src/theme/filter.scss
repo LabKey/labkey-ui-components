@@ -28,13 +28,16 @@
     }
 
     .list-group-item .field-expand-icon {
-        color: $gray-lighten;
+        color: $light-gray;
         height: 16px;
         width: 16px;
         margin-right: 5px;
 
         .fa {
             cursor: pointer;
+            &:hover {
+                color: $gray-dark;
+            }
         }
     }
 

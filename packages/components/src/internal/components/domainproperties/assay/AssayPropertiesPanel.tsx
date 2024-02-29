@@ -11,7 +11,7 @@ import {
 import { SectionHeading } from '../SectionHeading';
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 
-import { hasModule, isAssayQCEnabled, isPremiumProductEnabled } from '../../../app/utils';
+import { hasModule, isAssayQCEnabled, isPlatesEnabled, isPremiumProductEnabled } from '../../../app/utils';
 
 import { useServerContext } from '../../base/ServerContext';
 
@@ -38,6 +38,7 @@ import { BOOLEAN_FIELDS, FORM_ID_PREFIX, PROPERTIES_HEADER_ID } from './constant
 
 interface AssayPropertiesFormProps {
     appPropertiesOnly?: boolean;
+    hideAdvancedProperties?: boolean;
     hideStudyProperties?: boolean;
     model: AssayProtocolModel;
     onChange: (model: AssayProtocolModel) => void;
@@ -45,7 +46,8 @@ interface AssayPropertiesFormProps {
 }
 
 const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
-    const { appPropertiesOnly, children, hideStudyProperties, model, onChange, canRename } = props;
+    const { appPropertiesOnly, hideAdvancedProperties, children, hideStudyProperties, model, onChange, canRename } =
+        props;
     const { moduleContext } = useServerContext();
 
     const onValueChange = useCallback(
@@ -101,60 +103,73 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
                 </Row>
             )}
 
-            <Col xs={12} lg={appPropertiesOnly ? 12 : 6}>
+            <Col xs={12} lg={hideAdvancedProperties ? 12 : 6}>
                 <div className="domain-field-padding-bottom">
                     <SectionHeading title="Basic Properties" />
-                    <NameInput model={model} onChange={onInputChange} appPropertiesOnly={appPropertiesOnly} canRename={canRename} />
-                    <DescriptionInput model={model} onChange={onInputChange} appPropertiesOnly={appPropertiesOnly} />
+                    <NameInput
+                        model={model}
+                        onChange={onInputChange}
+                        hideAdvancedProperties={hideAdvancedProperties}
+                        canRename={canRename}
+                    />
+                    <DescriptionInput
+                        model={model}
+                        onChange={onInputChange}
+                        hideAdvancedProperties={hideAdvancedProperties}
+                    />
                     {model.allowPlateTemplateSelection() && (
                         <PlateTemplatesInput
                             model={model}
                             onChange={onInputChange}
-                            appPropertiesOnly={appPropertiesOnly}
+                            hideAdvancedProperties={hideAdvancedProperties}
                         />
                     )}
                     {model.allowDetectionMethodSelection() && (
                         <DetectionMethodsInput
                             model={model}
                             onChange={onInputChange}
-                            appPropertiesOnly={appPropertiesOnly}
+                            hideAdvancedProperties={hideAdvancedProperties}
                         />
                     )}
                     {model.allowMetadataInputFormatSelection() && (
                         <MetadataInputFormatsInput
                             model={model}
                             onChange={onInputChange}
-                            appPropertiesOnly={appPropertiesOnly}
+                            hideAdvancedProperties={hideAdvancedProperties}
                         />
                     )}
-                    {!appPropertiesOnly && model.allowQCStates && isAssayQCEnabled(moduleContext) && (
+                    {!hideAdvancedProperties && model.allowQCStates && isAssayQCEnabled(moduleContext) && (
                         <QCStatesInput model={model} onChange={onInputChange} />
                     )}
-                    {!appPropertiesOnly && model.allowPlateMetadata && (
+                    {(!appPropertiesOnly || isPlatesEnabled(moduleContext)) && model.allowPlateMetadata && (
                         <PlateMetadataInput model={model} onChange={onInputChange} />
                     )}
                     {isPremiumProductEnabled(moduleContext) && (
                         <AssayStatusInput
                             model={model}
                             onChange={onStatusChange}
-                            appPropertiesOnly={appPropertiesOnly}
+                            hideAdvancedProperties={hideAdvancedProperties}
                         />
                     )}
                 </div>
                 <div className="domain-field-padding-bottom">
                     <SectionHeading title="Editing Settings" />
-                    <EditableRunsInput model={model} onChange={onInputChange} appPropertiesOnly={appPropertiesOnly} />
+                    <EditableRunsInput
+                        model={model}
+                        onChange={onInputChange}
+                        hideAdvancedProperties={hideAdvancedProperties}
+                    />
                     {model.allowEditableResults && (
                         <EditableResultsInput
                             model={model}
                             onChange={onInputChange}
-                            appPropertiesOnly={appPropertiesOnly}
+                            hideAdvancedProperties={hideAdvancedProperties}
                         />
                     )}
                 </div>
             </Col>
 
-            {!appPropertiesOnly && (
+            {!hideAdvancedProperties && (
                 <Col xs={12} lg={6}>
                     <div className="domain-field-padding-bottom">
                         <SectionHeading title="Import Settings" />
@@ -172,7 +187,7 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
                 </Col>
             )}
 
-            {!appPropertiesOnly && !hideStudyProperties && hasModule('study', moduleContext) && (
+            {!hideAdvancedProperties && !hideStudyProperties && hasModule('study', moduleContext) && (
                 <Col xs={12} lg={6}>
                     <div className="domain-field-padding-bottom">
                         <SectionHeading title="Link to Study Settings" />
@@ -195,7 +210,17 @@ interface OwnProps extends AssayPropertiesFormProps {
 type Props = OwnProps & BasePropertiesPanelProps;
 
 const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapseProps> = memo(props => {
-    const { appPropertiesOnly, canRename, asPanel, children, helpTopic, hideStudyProperties, model, onChange } = props;
+    const {
+        appPropertiesOnly,
+        hideAdvancedProperties,
+        canRename,
+        asPanel,
+        children,
+        helpTopic,
+        hideStudyProperties,
+        model,
+        onChange,
+    } = props;
     const [isValid, setIsValid] = useState<boolean>(true);
 
     const updateValidStatus = useCallback(
@@ -214,6 +239,7 @@ const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapse
     const form = (
         <AssayPropertiesForm
             appPropertiesOnly={appPropertiesOnly}
+            hideAdvancedProperties={hideAdvancedProperties}
             hideStudyProperties={hideStudyProperties}
             model={model}
             onChange={updateValidStatus}
@@ -243,6 +269,7 @@ const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapse
 
 AssayPropertiesPanelImpl.defaultProps = {
     appPropertiesOnly: false,
+    hideAdvancedProperties: false,
     hideStudyProperties: false,
     asPanel: true,
     helpTopic: DEFINE_ASSAY_SCHEMA_TOPIC,

@@ -19,6 +19,8 @@ import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
+import { INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
+
 import { FormsyInput, FormsyInputProps } from './FormsyReactComponents';
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -39,8 +41,8 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
     static defaultProps = {
         ...DisableableInput.defaultProps,
         ...{
-            elementWrapperClassName: 'col-md-9 col-xs-12',
-            labelClassName: 'control-label text-left col-xs-12',
+            elementWrapperClassName: INPUT_WRAPPER_CLASS_NAME,
+            labelClassName: INPUT_LABEL_CLASS_NAME,
             showLabel: true,
             startFocused: false,
         },

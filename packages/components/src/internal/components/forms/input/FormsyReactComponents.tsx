@@ -18,7 +18,7 @@ import React, {
 import { withFormsy } from 'formsy-react';
 import classNames from 'classnames';
 
-import { WithFormsyProps } from '../constants';
+import { INPUT_WRAPPER_CLASS_NAME, WithFormsyProps } from '../constants';
 
 type LayoutType = 'elementOnly' | 'horizontal' | 'vertical';
 
@@ -202,7 +202,7 @@ const Control: FC<BaseControlProps & LabelProps> = memo(props => {
 });
 
 Control.defaultProps = {
-    elementWrapperClassName: 'col-sm-9',
+    elementWrapperClassName: INPUT_WRAPPER_CLASS_NAME,
     label: null,
     showErrors: true,
 };

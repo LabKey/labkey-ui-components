@@ -268,6 +268,8 @@ function detailNonEditableRenderer(col: QueryColumn, data: any): ReactNode {
     return <div className="field__un-editable">{_defaultRenderer(col)(data)}</div>;
 }
 
+const DETAIL_INPUT_WRAPPER_CLASS_NAME = 'col-sm-12';
+
 // TODO: Merge this functionality with <QueryFormInputs />
 export function resolveDetailEditRenderer(
     col: QueryColumn,
@@ -294,11 +296,11 @@ export function resolveDetailEditRenderer(
                     containerPath={options?.containerPath}
                     data={row}
                     formsy
-                    inputClass="col-sm-12"
+                    inputClass={DETAIL_INPUT_WRAPPER_CLASS_NAME}
                     key={col.name}
                     onAdditionalFormDataChange={onAdditionalFormDataChange}
                     onSelectChange={options?.onSelectChange}
-                    selectInputProps={{ inputClass: 'col-sm-12', showLabel }}
+                    selectInputProps={{ inputClass: DETAIL_INPUT_WRAPPER_CLASS_NAME, showLabel }}
                     showLabel={showLabel}
                     value={value}
                 />
@@ -324,7 +326,7 @@ export function resolveDetailEditRenderer(
                         description={col.description}
                         displayColumn={col.lookup.displayColumn}
                         formsy
-                        inputClass="col-sm-12"
+                        inputClass={DETAIL_INPUT_WRAPPER_CLASS_NAME}
                         joinValues={joinValues}
                         key={col.fieldKey}
                         label={col.caption}
@@ -349,7 +351,7 @@ export function resolveDetailEditRenderer(
             return (
                 <TextChoiceInput
                     formsy
-                    inputClass="col-sm-12"
+                    inputClass={DETAIL_INPUT_WRAPPER_CLASS_NAME}
                     queryColumn={col}
                     value={value}
                     autoFocus={options?.autoFocus}
@@ -365,7 +367,7 @@ export function resolveDetailEditRenderer(
             return (
                 <TextAreaInput
                     cols={4}
-                    elementWrapperClassName="col-sm-12"
+                    elementWrapperClassName={DETAIL_INPUT_WRAPPER_CLASS_NAME}
                     queryColumn={col}
                     rows={4}
                     showLabel={showLabel}
@@ -386,7 +388,7 @@ export function resolveDetailEditRenderer(
                         queryColumn={col}
                         showLabel={showLabel}
                         value={value && value.toString().toLowerCase() === 'true'}
-                        wrapperClassName="col-sm-12"
+                        wrapperClassName={DETAIL_INPUT_WRAPPER_CLASS_NAME}
                     />
                 );
             case 'date':
@@ -397,8 +399,8 @@ export function resolveDetailEditRenderer(
                             queryColumn={col}
                             showLabel={showLabel}
                             value={value}
-                            wrapperClassName="col-sm-12"
-                            initValueFormatted={true}
+                            wrapperClassName={DETAIL_INPUT_WRAPPER_CLASS_NAME}
+                            initValueFormatted
                         />
                     );
                 }
@@ -415,7 +417,7 @@ export function resolveDetailEditRenderer(
 
                 return (
                     <TextInput
-                        elementWrapperClassName="col-sm-12"
+                        elementWrapperClassName={DETAIL_INPUT_WRAPPER_CLASS_NAME}
                         queryColumn={col}
                         // Issue 43561: Support name expression fields
                         // NK: If a name expression is applied, then the server does not mark the field as required as

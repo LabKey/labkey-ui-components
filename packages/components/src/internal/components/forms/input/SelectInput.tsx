@@ -23,7 +23,13 @@ import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { DELIMITER, WithFormsyProps } from '../constants';
+import {
+    DELIMITER,
+    INPUT_CONTAINER_CLASS_NAME,
+    INPUT_LABEL_CLASS_NAME,
+    INPUT_WRAPPER_CLASS_NAME,
+    WithFormsyProps,
+} from '../constants';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
 
@@ -239,13 +245,13 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         clearable: true,
         clearCacheOnChange: true,
         closeMenuOnSelect: true,
-        containerClass: 'form-group row',
+        containerClass: INPUT_CONTAINER_CLASS_NAME,
         defaultOptions: true,
         delimiter: DELIMITER,
         initiallyDisabled: false,
-        inputClass: 'col-sm-9 col-xs-12',
-        labelClass: 'control-label col-sm-3 text-left col-xs-12',
-        // Default to fixed because 'absolute' causes issues in several scenarios (Modals, EditableGrid) but it's too
+        inputClass: INPUT_WRAPPER_CLASS_NAME,
+        labelClass: INPUT_LABEL_CLASS_NAME,
+        // Default to 'fixed' because 'absolute' causes issues in several scenarios (Modals, EditableGrid) but it's too
         // difficult to manually set it to fixed in all of these situations (e.g. we don't always know we're in a modal)
         menuPosition: 'fixed',
         openMenuOnFocus: false,

@@ -20,14 +20,21 @@ import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
-import { WithFormsyProps } from '../constants';
+import {
+    INPUT_CONTAINER_CLASS_NAME,
+    INPUT_LABEL_CLASS_NAME,
+    INPUT_WRAPPER_CLASS_NAME,
+    WithFormsyProps,
+} from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 interface CheckboxInputProps extends DisableableInputProps, WithFormsyProps {
     addLabelAsterisk?: boolean;
+    containerClassName?: string;
     formsy?: boolean;
     label?: any;
+    labelClassName?: string;
     name?: string;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
@@ -44,8 +51,10 @@ interface CheckboxInputState extends DisableableInputState {
 class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInputState> {
     static defaultProps = {
         ...DisableableInput.defaultProps,
+        containerClassName: INPUT_CONTAINER_CLASS_NAME,
+        labelClassName: INPUT_LABEL_CLASS_NAME,
         showLabel: true,
-        wrapperClassName: 'col-sm-9 col-md-9 col-xs-12',
+        wrapperClassName: INPUT_WRAPPER_CLASS_NAME,
     };
 
     constructor(props: CheckboxInputProps) {
@@ -83,9 +92,11 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         const {
             addLabelAsterisk,
             allowDisable,
+            containerClassName,
             formsy,
             getValue,
             label,
+            labelClassName,
             name,
             queryColumn,
             showLabel,
@@ -101,9 +112,9 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         // This should not be responsible for rendering the "required-symbol" and should allow for component prop
         // to define label wrapper classes.
         return (
-            <div className="form-group row checkbox-input-form-row">
+            <div className={`${containerClassName} checkbox-input-form-row`}>
                 {renderFieldLabel ? (
-                    <label className="control-label col-sm-3 text-left col-xs-12">
+                    <label className={labelClassName}>
                         {renderFieldLabel(queryColumn)}
                         {queryColumn?.required && <span className="required-symbol"> *</span>}
                     </label>

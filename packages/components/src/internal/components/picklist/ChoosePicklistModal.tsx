@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Tab, Tabs } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
@@ -11,6 +10,7 @@ import { Modal } from '../../Modal';
 import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ColorIcon } from '../base/ColorIcon';
+import { Tab, Tabs } from '../../Tabs';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
@@ -359,8 +359,8 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
 
                     <div className="row choices-container">
                         <div className="col-md-6">
-                            <Tabs id="choose-items-tabs" className="choose-items-tabs" animation={false}>
-                                <Tab eventKey={1} title="Your Picklists">
+                            <Tabs className="choose-items-tabs">
+                                <Tab eventKey="yours" title="Your Picklists">
                                     <PicklistList
                                         activeItem={activeItem}
                                         emptyMessage={myEmptyMessage}
@@ -370,7 +370,7 @@ export const ChoosePicklistModalDisplay: FC<ChoosePicklistModalProps & ChoosePic
                                     />
                                 </Tab>
 
-                                <Tab eventKey={2} title="Shared Picklists">
+                                <Tab eventKey="shared" title="Shared Picklists">
                                     <PicklistList
                                         activeItem={activeItem}
                                         emptyMessage={teamEmptyMessage}

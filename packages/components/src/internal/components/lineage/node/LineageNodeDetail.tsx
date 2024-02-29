@@ -88,10 +88,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
             <div className="lineage-node-detail">
                 <NodeDetailHeader node={node} seed={seed} />
                 {node.isRun ? (
-                    <Tabs
-                        activeKey={tabKey}
-                        onSelect={this.changeTab}
-                    >
+                    <Tabs activeKey={tabKey} onSelect={this.changeTab}>
                         <Tab eventKey="details" title="Details">
                             {nodeDetails}
                         </Tab>

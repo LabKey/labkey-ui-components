@@ -3,6 +3,7 @@ import { CommentTextArea } from '../forms/input/CommentTextArea';
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 interface Props {
+    comment?: string;
     discardTitle?: string;
     onCommentChange?: (comment: string) => void;
     shouldDiscard: boolean;
@@ -12,7 +13,7 @@ interface Props {
 export const DISCARD_CONSUMED_CHECKBOX_FIELD = 'discardcheckbox';
 
 export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
-    const { discardTitle, shouldDiscard, toggleShouldDiscard, onCommentChange } = props;
+    const { discardTitle, shouldDiscard, toggleShouldDiscard, onCommentChange, comment } = props;
     const { requiresUserComment } = useDataChangeCommentsRequired();
 
     return (
@@ -37,6 +38,7 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
                     actionName="Discarding"
                     containerClassName="top-spacing bottom-spacing"
                     requiresUserComment={requiresUserComment}
+                    value={comment}
                 />
             )}
         </>

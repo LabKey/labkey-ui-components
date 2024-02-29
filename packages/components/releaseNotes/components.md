@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.??.?
+*Released*: ?? March 2024
+- Add Tabs and Tab components
+- Replace usages of react-bootstrap Tabs/Tab
+
 ### version 3.25.2
 *Released*: 5 March 2024
 - Merge release24.3-SNAPSHOT to develop:

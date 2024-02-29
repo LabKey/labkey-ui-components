@@ -3,9 +3,9 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, PureComponent, ReactNode, useCallback, useMemo, useState } from 'react';
-import { Tab, Tabs } from 'react-bootstrap';
 import { List } from 'immutable';
 
+import { Tab, Tabs } from '../../../Tabs';
 import { LineageSummary } from '../LineageSummary';
 import {
     createLineageNodeCollections,
@@ -34,12 +34,12 @@ interface LineageNodeDetailProps {
 
 interface LineageNodeDetailState {
     stepIdx: number;
-    tabKey: number;
+    tabKey: string;
 }
 
 const initialState: LineageNodeDetailState = {
     stepIdx: undefined,
-    tabKey: 1,
+    tabKey: 'details',
 };
 
 export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, LineageNodeDetailState> {
@@ -54,7 +54,7 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
         }
     }
 
-    changeTab = (tabKey: number): void => {
+    changeTab = (tabKey: string): void => {
         this.setState({ tabKey });
     };
 
@@ -90,14 +90,12 @@ export class LineageNodeDetail extends PureComponent<LineageNodeDetailProps, Lin
                 {node.isRun ? (
                     <Tabs
                         activeKey={tabKey}
-                        defaultActiveKey={1}
-                        id="lineage-run-tabs"
-                        onSelect={this.changeTab as any}
+                        onSelect={this.changeTab}
                     >
-                        <Tab eventKey={1} title="Details">
+                        <Tab eventKey="details" title="Details">
                             {nodeDetails}
                         </Tab>
-                        <Tab eventKey={2} title="Run Properties">
+                        <Tab eventKey="runProperties" title="Run Properties">
                             <DetailsListSteps node={node} onSelect={this.selectStep} />
                             <DetailsListLineageIO item={node} />
                         </Tab>
@@ -173,12 +171,12 @@ interface RunStepNodeDetailProps {
 
 const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
     const { node, onBack, stepIdx } = props;
-    const [tabKey, setTabKey] = useState<number>(1);
+    const [tabKey, setTabKey] = useState<string>('details');
     const step = node.steps.get(stepIdx);
     const stepName = step.protocol?.name || step.name;
     const hasProvenanceModule = useMemo(() => hasModule('provenance'), []);
 
-    const changeTab = useCallback((newTabKey: number) => {
+    const changeTab = useCallback((newTabKey: string) => {
         setTabKey(newTabKey);
     }, []);
 
@@ -191,13 +189,13 @@ const RunStepNodeDetail: FC<RunStepNodeDetailProps> = memo(props => {
                 <span className="spacer-left">&gt;</span>
                 <span className="spacer-left">{stepName}</span>
             </DetailHeader>
-            <Tabs activeKey={tabKey} defaultActiveKey={1} id="lineage-run-step-tabs" onSelect={changeTab as any}>
-                <Tab eventKey={1} title="Step Details">
+            <Tabs activeKey={tabKey} onSelect={changeTab}>
+                <Tab eventKey="details" title="Step Details">
                     <LineageDetail item={step} />
                     <DetailsListLineageIO item={step} />
                 </Tab>
                 {hasProvenanceModule && (
-                    <Tab eventKey={2} title="Provenance Map" className="lineage-run-step-provenance-map">
+                    <Tab eventKey="provenanceMap" title="Provenance Map" className="lineage-run-step-provenance-map">
                         <RunStepProvenanceMap item={step} />
                     </Tab>
                 )}

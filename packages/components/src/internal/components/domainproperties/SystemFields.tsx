@@ -107,7 +107,7 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
                         Default System Fields
                     </div>
                     <div className="domain-system-fields-header__icon" onClick={onToggle}>
-                        <i className={classNames('fa fa-lg', collapsed ? 'fa-chevron-right' : 'fa-chevron-down')}/>
+                        <i className={classNames('fa fa-lg', collapsed ? 'fa-chevron-right' : 'fa-chevron-down')} />
                     </div>
                 </div>
             </div>

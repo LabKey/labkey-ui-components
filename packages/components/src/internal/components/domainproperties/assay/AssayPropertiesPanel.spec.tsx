@@ -263,7 +263,13 @@ describe('AssayPropertiesPanel', () => {
         });
 
         const wrapper = mountWithServerContext(
-            <AssayPropertiesPanel {...BASE_PROPS} model={model} onChange={jest.fn} hideAdvancedProperties appPropertiesOnly />,
+            <AssayPropertiesPanel
+                {...BASE_PROPS}
+                model={model}
+                onChange={jest.fn}
+                hideAdvancedProperties
+                appPropertiesOnly
+            />,
             SERVER_CONTEXT
         );
         expect(wrapper.find(NameInput)).toHaveLength(1);

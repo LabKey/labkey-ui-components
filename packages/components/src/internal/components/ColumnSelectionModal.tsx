@@ -6,9 +6,10 @@ import classNames from 'classnames';
 import { QueryColumn } from '../../public/QueryColumn';
 import { QueryInfo } from '../../public/QueryInfo';
 
+import { Modal, ModalProps } from '../Modal';
+
 import { Alert } from './base/Alert';
 import { DragDropHandle } from './base/DragDropHandle';
-import { Modal, ModalProps } from '../Modal';
 import { LoadingSpinner } from './base/LoadingSpinner';
 
 type ExpandedColumnFilter = (column: QueryColumn, showAllColumns: boolean) => boolean;
@@ -458,7 +459,12 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
     }, [expandedColumnFilter, isLoaded, queryInfo, showAllColumns]);
 
     return (
-        <Modal {...confirmModalProps} bsSize="lg" canConfirm={isDirty && selectedColumns.length > 0} onConfirm={onConfirm}>
+        <Modal
+            {...confirmModalProps}
+            bsSize="lg"
+            canConfirm={isDirty && selectedColumns.length > 0}
+            onConfirm={onConfirm}
+        >
             <Alert>{error}</Alert>
             <Alert>{queryError}</Alert>
             {!isLoaded && <LoadingSpinner />}

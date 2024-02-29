@@ -32,8 +32,9 @@ interface TabContext {
 const Context = createContext<TabContext>(undefined);
 
 interface TabProps {
-    children: ReactNode;
+    children?: ReactNode;
     className?: string;
+    disabled?: boolean;
     eventKey: string;
     title: ReactNode;
 }
@@ -77,6 +78,9 @@ export const Tabs: FC<TabsProps> = props => {
         },
         [onSelect]
     );
+    const onDisabledTabClick = useCallback(event => {
+        cancelEvent(event);
+    }, []);
 
     // Need this useEffect to allow for controlled usages of the selected tab state
     useEffect(() => {
@@ -89,15 +93,17 @@ export const Tabs: FC<TabsProps> = props => {
             if (child === null) return null;
             const eventKey = child?.props?.eventKey;
             const title = child?.props?.title;
+            const disabled = child?.props?.disabled;
+            const tabClassName = classNames({ active: eventKey === activeKey, disabled });
             return (
-                <li className={eventKey === activeKey ? 'active' : ''} key={eventKey}>
+                <li className={tabClassName} key={eventKey}>
                     <a
                         id={tabId(id, eventKey)}
                         role="tab"
                         aria-controls={paneId(id, eventKey)}
                         href="#"
                         data-event-key={eventKey}
-                        onClick={onTabClick}
+                        onClick={disabled ? onDisabledTabClick : onTabClick}
                     >
                         {title}
                     </a>

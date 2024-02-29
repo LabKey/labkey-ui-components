@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Issue 45315: Allow inferDomainFromFile to take file path string in addition to File prop
+- Issue 49795: App grid column header title to show for all columns instead of just lookups
 
 ### version 3.24.3
 *Released*: 29 February 2024

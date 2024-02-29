@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import { act } from 'react-dom/test-utils';
-import { mount, MountRendererProps, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
+import { mount, MountRendererProps, ReactWrapper, ShallowWrapper } from 'enzyme';
 
-import { AppContext } from '../AppContext';
+import { AppContext, ExtendableAppContext } from '../AppContext';
 
 import { NotificationsContextState } from '../components/notifications/NotificationsContext';
 import { ServerContext, ServerContextProvider } from '../components/base/ServerContext';
@@ -21,13 +21,13 @@ import { AppContextTestProvider, sleep } from './testHelpers';
  * @param options Pass through for mount's rendering options.
  * @param printLabelsContext The server context to be provided by the wrapping <PrintLabelsContext/>.
  */
-export const mountWithAppServerContextOptions = (
-    appContext?: Partial<AppContext>,
+export function mountWithAppServerContextOptions<A = AppContext>(
+    appContext?: Partial<ExtendableAppContext<A>>,
     serverContext?: Partial<ServerContext>,
     notificationContext?: Partial<NotificationsContextState>,
     options?: MountRendererProps,
     printLabelsContext?: Partial<LabelPrintingContext>
-): MountRendererProps => {
+): MountRendererProps {
     return {
         wrappingComponent: AppContextTestProvider,
         wrappingComponentProps: {
@@ -38,7 +38,7 @@ export const mountWithAppServerContextOptions = (
         },
         ...options,
     };
-};
+}
 
 /**
  * Use this if you're testing a component that requires a wrapping <AppContextProvider/> to provide context.
@@ -52,19 +52,19 @@ export const mountWithAppServerContextOptions = (
  * @param options Pass through for mount's rendering options
  * @param printLabelsContext an optional label printing context object to mount
  */
-export const mountWithAppServerContext = (
+export function mountWithAppServerContext<A = AppContext>(
     node: ReactElement,
-    appContext?: Partial<AppContext>,
+    appContext?: Partial<ExtendableAppContext<A>>,
     serverContext?: Partial<ServerContext>,
     notificationContext?: Partial<NotificationsContextState>,
     options?: MountRendererProps,
     printLabelsContext?: Partial<LabelPrintingContext>
-): ReactWrapper => {
+): ReactWrapper {
     return mount(
         node,
         mountWithAppServerContextOptions(appContext, serverContext, notificationContext, options, printLabelsContext)
     );
-};
+}
 
 /**
  * Use this if you're testing a component that requires a wrapping <ServerContextProvider/> to provide context.
@@ -119,17 +119,6 @@ export const mountWithServerContext = (
 };
 
 /**
- * Shallow version of mountWithServerContext.
- */
-export const shallowWithServerContext = (
-    node: ReactElement,
-    initialContext?: any,
-    options?: MountRendererProps
-): ShallowWrapper<any, React.Component['state'], React.Component> => {
-    return shallow(node, mountWithServerContextOptions(initialContext, options));
-};
-
-/**
  * If you're testing a react component that uses hooks to load data use this method to flush promises and transition
  * your component to the next part of the lifecycle. Example:
  *      const wrapper = mount(<MyComponentThatLoadsStuff />);
@@ -138,8 +127,8 @@ export const shallowWithServerContext = (
  *      await waitForLifecycle(wrapper);
  *      // Items have been loaded and rendered
  *      expect(wrapper.find('.item').length).toEqual(4);
- * @param wrapper: enzyme ReactWrapper or ShallowWrapper
- * @param ms: the amount of time (in ms) to sleep
+ * @param wrapper enzyme ReactWrapper or ShallowWrapper
+ * @param ms the amount of time (in ms) to sleep
  */
 export const waitForLifecycle = (wrapper: ReactWrapper | ShallowWrapper, ms?: number): Promise<undefined> => {
     // Wrap in react-dom/utils act so we don't get errors in our test logs

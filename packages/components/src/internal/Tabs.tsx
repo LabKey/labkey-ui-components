@@ -78,9 +78,6 @@ export const Tabs: FC<TabsProps> = props => {
         },
         [onSelect]
     );
-    const onDisabledTabClick = useCallback(event => {
-        cancelEvent(event);
-    }, []);
 
     // Need this useEffect to allow for controlled usages of the selected tab state
     useEffect(() => {
@@ -103,7 +100,7 @@ export const Tabs: FC<TabsProps> = props => {
                         aria-controls={paneId(id, eventKey)}
                         href="#"
                         data-event-key={eventKey}
-                        onClick={disabled ? onDisabledTabClick : onTabClick}
+                        onClick={disabled ? cancelEvent : onTabClick}
                     >
                         {title}
                     </a>

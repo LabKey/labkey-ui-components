@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.24.X
-*Released*: X February 2024
+### version 3.24.5
+*Released*: 29 February 2024
 - Issue 49804: Fix grid style
 
 ### version 3.24.4

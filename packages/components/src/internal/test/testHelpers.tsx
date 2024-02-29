@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Query } from '@labkey/api';
 
-import { AppContext, AppContextProvider } from '../AppContext';
+import { AppContext, AppContextProvider, ExtendableAppContext } from '../AppContext';
 import { getTestAPIWrapper } from '../APIWrapper';
 
 import {
@@ -21,8 +21,8 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { applyQueryMetadata, handleSelectRowsResponse, ISelectRowsResult } from '../query/api';
 import { bindColumnRenderers, RowsResponse } from '../../public/QueryModel/QueryModelLoader';
 
-export interface AppContextTestProviderProps {
-    appContext?: Partial<AppContext>;
+export interface AppContextTestProviderProps<A = AppContext> {
+    appContext?: Partial<ExtendableAppContext<A>>;
     notificationContext?: Partial<NotificationsContextState>;
     printLabelsContext?: Partial<LabelPrintingContextProps>;
     serverContext?: Partial<ServerContext>;

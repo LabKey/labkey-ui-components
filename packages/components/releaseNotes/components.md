@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.24.4
+*Released*: 29 February 2024
+- Fix form input layout
+- Remove `col-md-` and align on `col-sm-9 col-xs-12`
+- Consolidate default input classNames into constants
+
 ### version 3.24.3
 *Released*: 29 February 2024
 - Issue 49763: App to suppress "Plate Metadata" setting on assay designs when not applicable

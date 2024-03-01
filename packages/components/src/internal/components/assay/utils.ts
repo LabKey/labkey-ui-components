@@ -28,9 +28,10 @@ export function inferDomainFromFile(
             }),
             failure: Utils.getCallbackWrapper(error => {
                 console.error(error);
-                reject(
-                    'There was a problem determining the fields in the uploaded file.  Please check the format of the file.'
-                );
+                // reject(
+                //     'There was a problem determining the fields in the uploaded file.  Please check the format of the file.'
+                // );
+                reject(error.exception);
             }),
         });
     });

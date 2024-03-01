@@ -46,7 +46,9 @@ export const CommentTextArea: FC<Props> = props => {
     const onCommentChange = useCallback(
         event => {
             const _comment = event.target.value;
-            const tooLong = _comment.trim().length > maxLength;
+            // Not trimming here when checking length because it won't properly show an error if the user
+            // has entered a new line as the last character, but the input will still impose the character limit.
+            const tooLong = _comment.length > maxLength;
             setShowError(tooLong);
             if (!tooLong) {
                 onChange(_comment);

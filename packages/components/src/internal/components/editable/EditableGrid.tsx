@@ -776,6 +776,20 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return result;
         }, {});
 
+    getGridHeaderColumnMetadata = (columns?: List<GridColumn>): Record<number, EditableColumnMetadata> => {
+        const { queryInfo } = this.props;
+        const lowerColumnMeta = this.getLoweredColumnMetadata();
+        const result = {};
+        columns.forEach((col, ind) => {
+            const column = queryInfo.getColumn(col.index);
+            const key = column == null ? col.index : column.fieldKey;
+            if (lowerColumnMeta?.[key.toLowerCase()]) {
+                result[ind] = lowerColumnMeta?.[key.toLowerCase()]
+            }
+        });
+        return result;
+    }
+
     generateColumns = (): List<GridColumn> => {
         const {
             allowBulkRemove,
@@ -1611,6 +1625,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         } = this.props;
         const { showBulkAdd, showBulkUpdate, showMask, activeEditTab, selected } = this.state;
 
+        const columns = this.generateColumns();
         const gridContent = (
             <>
                 {!hideTopControls && this.renderTopControls()}
@@ -1624,7 +1639,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         bordered={bordered}
                         calcWidths
                         cellular
-                        columns={this.generateColumns()}
+                        columns={columns}
                         condensed={condensed}
                         data={this.getGridData()}
                         emptyText={emptyGridMsg}
@@ -1632,6 +1647,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         responsive={false}
                         rowKey={GRID_EDIT_INDEX}
                         striped={striped}
+                        columnMetaData={this.getGridHeaderColumnMetadata(columns)}
                     />
                 </div>
                 {allowAdd && this.getControlsPlacement() !== 'top' && this.renderAddRowsControl('bottom')}

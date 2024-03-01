@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.X
+*Released*: X 2024
+- Support column sizing for editable grid
+
 ### version 3.24.6
 *Released*: 29 February 2024
 - Mark project settings as dirty after title change

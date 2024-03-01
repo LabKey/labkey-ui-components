@@ -7,12 +7,13 @@ interface Props extends InjectedRouteLeaveProps {
     defaultName?: string;
     defaultTitle?: string;
     onNameChange?: (name?: string) => void;
+    onTitleChange?: () => void;
 }
 
 const MAX_FOLDER_NAME_LENGTH = 255;
 
 export const ProjectNameSetting: FC<Props> = memo(props => {
-    const { autoFocus, defaultTitle, defaultName, onNameChange, setIsDirty } = props;
+    const { autoFocus, defaultTitle, defaultName, onNameChange, onTitleChange, setIsDirty } = props;
     const [name, setName] = useState<string>(defaultName);
     const [nameIsTitle, setNameIsTitle] = useState<boolean>(defaultName ? defaultName === defaultTitle : true);
     const toggleLabel = 'Use Project Name for Project Label';
@@ -27,9 +28,10 @@ export const ProjectNameSetting: FC<Props> = memo(props => {
         [onNameChange, setIsDirty]
     );
 
-    const onTitleChange = useCallback(() => {
+    const _onTitleChange = useCallback(() => {
         setIsDirty(true);
-    }, [setIsDirty]);
+        onTitleChange?.();
+    }, [onTitleChange, setIsDirty]);
 
     const toggleNameIsTitle = useCallback(() => {
         setNameIsTitle(_nameIsTitle => !_nameIsTitle);
@@ -91,7 +93,7 @@ export const ProjectNameSetting: FC<Props> = memo(props => {
                             defaultValue={nameIsTitle ? name : defaultTitle}
                             key="uncontrolled"
                             name="title"
-                            onChange={onTitleChange}
+                            onChange={_onTitleChange}
                             type="text"
                         />
                     )}

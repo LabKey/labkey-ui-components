@@ -8,6 +8,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update `CommentTextArea` with additional props and callback interface
   - Update `EditableDetailPanel` and `DiscardConsumedSamplesPanel` to move commenting into the sticky button footer
 
+### version 3.24.6
+*Released*: 29 February 2024
+- Mark project settings as dirty after title change
+
+### version 3.24.5
+*Released*: 29 February 2024
+- Issue 49804: Fix grid style
+
 ### version 3.24.4
 *Released*: 29 February 2024
 - Fix form input layout

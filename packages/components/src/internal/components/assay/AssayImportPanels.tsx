@@ -583,7 +583,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         dismissNotifications();
 
         try {
-            const processedData = await uploadAssayRunFiles(data, comment);
+            const processedData = await uploadAssayRunFiles(data);
 
             const backgroundUpload = assayProtocol?.backgroundUpload;
             let forceAsync = false;
@@ -604,6 +604,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 forceAsync,
                 jobDescription: this.getBackgroundJobDescription(data),
                 jobNotificationProvider,
+                auditUserComment: comment,
             });
 
             this.props.setIsDirty?.(false);

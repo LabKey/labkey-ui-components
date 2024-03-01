@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.24.6
+*Released*: 29 February 2024
 - Mark project settings as dirty after title change
 
 ### version 3.24.5

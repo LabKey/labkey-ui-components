@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "3.24.6",
+  "version": "3.24.6-fb-assayInferFromFile45315.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

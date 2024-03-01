@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 
 import { TIMELINE_DATA } from '../../../test/data/constants';
 
-import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
+import { TEST_USER_APP_ADMIN } from '../../userFixtures';
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 import { UserLink } from '../user/UserLink';
 
@@ -24,7 +24,6 @@ describe('<TimelineView />', () => {
                 onEventSelection={jest.fn()}
                 selectedEvent={null}
                 selectedEntityConnectionInfo={null}
-                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -40,7 +39,6 @@ describe('<TimelineView />', () => {
                 onEventSelection={jest.fn()}
                 selectedEvent={null}
                 selectedEntityConnectionInfo={null}
-                user={TEST_USER_READER}
             />
         );
 
@@ -56,7 +54,6 @@ describe('<TimelineView />', () => {
                 onEventSelection={jest.fn()}
                 selectedEvent={events[1]}
                 selectedEntityConnectionInfo={[{ firstEvent: events[1], lastEvent: events[5], isCompleted: true }]}
-                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -72,7 +69,6 @@ describe('<TimelineView />', () => {
                 onEventSelection={jest.fn()}
                 selectedEvent={events[7]}
                 selectedEntityConnectionInfo={[{ firstEvent: events[2], lastEvent: events[7], isCompleted: false }]}
-                user={TEST_USER_APP_ADMIN}
             />
         );
 
@@ -96,7 +92,6 @@ describe('<TimelineView />', () => {
                 selectedEvent={events[7]}
                 selectedEntityConnectionInfo={null}
                 getInfoBubbleContent={getInfoBubbleContent}
-                user={TEST_USER_APP_ADMIN}
             />,
             {},
             { user: TEST_USER_APP_ADMIN }

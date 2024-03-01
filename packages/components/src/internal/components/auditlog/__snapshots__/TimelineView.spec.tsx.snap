@@ -551,7 +551,6 @@ exports[`<TimelineView /> Disable selection 1`] = `
               />
             }
             placement="bottom"
-            title="Comment"
           >
             <div
               className="ws-pre-wrap"
@@ -1117,7 +1116,6 @@ exports[`<TimelineView /> Hide user link 1`] = `
               />
             }
             placement="bottom"
-            title="Comment"
           >
             <div
               className="ws-pre-wrap"
@@ -1695,7 +1693,6 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
               />
             }
             placement="bottom"
-            title="Comment"
           >
             <div
               className="ws-pre-wrap"
@@ -2273,7 +2270,6 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
               />
             }
             placement="bottom"
-            title="Comment"
           >
             <div
               className="ws-pre-wrap"

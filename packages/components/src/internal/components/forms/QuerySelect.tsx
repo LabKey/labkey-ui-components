@@ -50,12 +50,7 @@ function getValue(model: QuerySelectModel, multiple: boolean): any {
     // convert that value to an array here, or Formsy will only return a single value if the input is never touched
     // by the user. Converting it to an array right here gets us the best of both worlds: a pre-populated value that
     // is returned as an array when the user hits submit.
-    if (
-        rawSelectedValue !== undefined &&
-        rawSelectedValue !== '' &&
-        multiple &&
-        !Array.isArray(rawSelectedValue)
-    ) {
+    if (rawSelectedValue !== undefined && rawSelectedValue !== '' && multiple && !Array.isArray(rawSelectedValue)) {
         return [rawSelectedValue];
     }
 

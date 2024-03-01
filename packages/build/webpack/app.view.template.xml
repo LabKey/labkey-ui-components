@@ -3,6 +3,9 @@
     <% if (options.viewTemplate !== undefined) { %>
       template="<%= options.viewTemplate %>"
     <% } %>
+    <% if (options.viewTemplate === "app") { %>
+        isAppView="true"
+    <% } %>
       frame="none"
       title="<%= htmlWebpackPlugin.options.title %>"
 >

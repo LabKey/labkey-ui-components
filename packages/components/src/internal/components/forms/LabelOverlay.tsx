@@ -18,10 +18,12 @@ import React, { ReactNode } from 'react';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { generateId } from '../../util/utils';
 
-import { HelpTipRenderer } from './HelpTipRenderer';
 import { Popover } from '../../Popover';
 import { OverlayTrigger } from '../../OverlayTrigger';
 import { Placement } from '../../useOverlayPositioning';
+
+import { HelpTipRenderer } from './HelpTipRenderer';
+import { INPUT_LABEL_CLASS_NAME } from './constants';
 
 export interface LabelOverlayProps {
     addLabelAsterisk?: boolean;
@@ -42,7 +44,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
     static defaultProps = {
         isFormsy: true,
         addLabelAsterisk: false,
-        labelClass: 'control-label col-sm-3 col-xs-12 text-left',
+        labelClass: INPUT_LABEL_CLASS_NAME,
         placement: 'right',
     };
 

@@ -47,10 +47,19 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const dispatch = useServerContextDispatch();
     const [getIsDirty, setIsDirty] = useRouteLeave();
 
-    const onNameChange_ = useCallback((name: string) => {
-        setHasValidName(name?.trim().length > 0);
+    const onNameChange = useCallback(
+        (name: string) => {
+            setHasValidName(name?.trim().length > 0);
+            setNameDirty(true);
+            onChange(true);
+        },
+        [onChange]
+    );
+
+    const onTitleChange = useCallback(() => {
         onChange(true);
-    }, [onChange]);
+        setNameDirty(true);
+    }, [nameDirty, project.name]);
 
     const onDataTypeChange_ = useCallback(() => {
         setDataTypeDirty(true);
@@ -220,7 +229,8 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
                         <ProjectNameSetting
                             defaultName={project.name}
                             defaultTitle={project.title}
-                            onNameChange={onNameChange_}
+                            onNameChange={onNameChange}
+                            onTitleChange={onTitleChange}
                             setIsDirty={setIsDirty}
                             getIsDirty={getIsDirty}
                         />

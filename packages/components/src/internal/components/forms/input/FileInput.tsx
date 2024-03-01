@@ -18,7 +18,7 @@ import classNames from 'classnames';
 import { Map } from 'immutable';
 import { withFormsy } from 'formsy-react';
 
-import { WithFormsyProps } from '../constants';
+import { INPUT_WRAPPER_CLASS_NAME, WithFormsyProps } from '../constants';
 import { FieldLabel } from '../FieldLabel';
 import { cancelEvent } from '../../../events';
 
@@ -55,7 +55,7 @@ class FileInputImpl extends DisableableInput<Props, State> {
         ...DisableableInput.defaultProps,
         ...{
             changeDebounceInterval: 0,
-            elementWrapperClassName: 'col-sm-9 col-md-9 col-xs-12',
+            elementWrapperClassName: INPUT_WRAPPER_CLASS_NAME,
             showLabel: true,
         },
     };

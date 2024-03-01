@@ -6,6 +6,20 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 45315: Allow inferDomainFromFile to take file path string in addition to File prop
 - Issue 49795: App grid column header title to show for all columns instead of just lookups
 
+### version 3.24.6
+*Released*: 29 February 2024
+- Mark project settings as dirty after title change
+
+### version 3.24.5
+*Released*: 29 February 2024
+- Issue 49804: Fix grid style
+
+### version 3.24.4
+*Released*: 29 February 2024
+- Fix form input layout
+- Remove `col-md-` and align on `col-sm-9 col-xs-12`
+- Consolidate default input classNames into constants
+
 ### version 3.24.3
 *Released*: 29 February 2024
 - Issue 49763: App to suppress "Plate Metadata" setting on assay designs when not applicable

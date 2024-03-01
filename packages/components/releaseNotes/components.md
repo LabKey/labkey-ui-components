@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Remove title from timeline comment tooltip
   - Update `CommentTextArea` with additional props and callback interface
   - Update `EditableDetailPanel` and `DiscardConsumedSamplesPanel` to move commenting into the sticky button footer
+  - Update `Modal` and `ModalButtons` components to support including the `CommentTextArea`
 
 ### version 3.24.6
 *Released*: 29 February 2024

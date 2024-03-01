@@ -130,16 +130,19 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
     }
 
     componentDidMount() {
-        const { api } = this.props;
-        (async () => {
-            try {
-                const { container } = getServerContext();
-                const response = await api.folder.getAuditSettings(getAppHomeFolderPath(new Container(container)));
-                this.setState({ requiresUserComment: !!response?.requireUserComments });
-            } catch {
-                this.setState({ requiresUserComment: false });
-            }
-        })();
+        const { api, includeCommentField } = this.props;
+        if (includeCommentField) {
+            (async () => {
+                try {
+                    const {container} = getServerContext();
+                    const response = await api.folder.getAuditSettings(getAppHomeFolderPath(new Container(container)));
+                    this.setState({requiresUserComment: !!response?.requireUserComments});
+                }
+                catch {
+                    this.setState({requiresUserComment: false});
+                }
+            })();
+        }
     }
 
     enableSubmitButton = (): void => {

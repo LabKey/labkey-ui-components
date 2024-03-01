@@ -16,8 +16,8 @@ export class FieldExpansionToggle extends React.Component<Props, any> {
         const { expanded, expandedTitle, collapsedTitle, cls, highlighted, id, onClick } = this.props;
         const className = classNames('fa fa-lg', {
             'field-highlighted': highlighted && !expanded,
-            'fa-minus-square': expanded,
-            'fa-plus-square': !expanded,
+            'fa-chevron-down': expanded,
+            'fa-chevron-right': !expanded,
         });
 
         return (

@@ -573,9 +573,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
             searchParams,
             dismissNotifications,
         } = this.props;
-        const { model } = this.state;
+        const { model, comment } = this.state;
         let data = model.prepareFormData(currentStep, this.state.editorModel, this.state.dataModel);
-
         if (beforeFinish) {
             data = beforeFinish(data);
         }
@@ -584,7 +583,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         dismissNotifications();
 
         try {
-            const processedData = await uploadAssayRunFiles(data);
+            const processedData = await uploadAssayRunFiles(data, comment);
 
             const backgroundUpload = assayProtocol?.backgroundUpload;
             let forceAsync = false;

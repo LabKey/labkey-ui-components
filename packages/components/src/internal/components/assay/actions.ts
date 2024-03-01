@@ -114,7 +114,7 @@ export function importAssayRun(config: ImportAssayRunOptions): Promise<AssayUplo
     });
 }
 
-export function uploadAssayRunFiles(data: AssayUploadOptions): Promise<AssayUploadOptions> {
+export function uploadAssayRunFiles(data: AssayUploadOptions, auditUserComment?: string): Promise<AssayUploadOptions> {
     return new Promise((resolve, reject) => {
         const batchFiles = collectFiles(data.batchProperties);
         const runFiles = collectFiles(data.properties);
@@ -168,6 +168,10 @@ export function uploadAssayRunFiles(data: AssayUploadOptions): Promise<AssayUplo
             formData.append(name, file);
             fileCounter++;
         });
+
+        if (auditUserComment) {
+            formData.append('auditUserComment', auditUserComment);
+        }
 
         // N.B. assayFileUpload's success response is not handled well by Utils.getCallbackWrapper.
         Ajax.request({

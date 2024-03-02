@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Map } from 'immutable';
 import { Query } from '@labkey/api';
 
@@ -17,11 +17,17 @@ import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { EditorModel, EditableGridLoader } from './models';
 
 import { EditableGridPanel } from './EditableGridPanel';
-import { initEditableGridModels } from './actions';
+import { initEditableGridModel, initEditableGridModels } from './actions';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid } from './utils';
 import { EditableGridChange } from './EditableGrid';
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
+import { resolveErrorMessage } from '../../util/messaging';
+
+type Models = {
+    dataModel: QueryModel;
+    editorModel: EditorModel;
+};
 
 interface Props {
     containerFilter?: Query.ContainerFilter;
@@ -40,79 +46,91 @@ interface Props {
 
 export const EditableGridPanelForUpdate: FC<Props> = props => {
     const { containerFilter, onCancel, singularNoun, pluralNoun, ...editableGridProps } = props;
-    const { idField, loader, queryModel, selectionData, getIsDirty, setIsDirty, updateRows, onComplete, } = editableGridProps;
+    const { idField, loader, queryModel, selectionData, getIsDirty, setIsDirty, updateRows, onComplete } =
+        editableGridProps;
     const id = loader.id;
 
-    const [dataModels, setDataModels] = useState<QueryModel[]>([new QueryModel({ id, schemaQuery: props.queryModel.schemaQuery })]);
-    const [editorModels, setEditorModels] = useState<EditorModel[]>([new EditorModel({ id })]);
-    const [error, setError] = useState<string>(undefined);
+    const [models, setModels] = useState<Models>(() => ({
+        dataModel: new QueryModel({ id, schemaQuery: queryModel.schemaQuery }),
+        editorModel: new EditorModel({ id }),
+    }));
+    const [error, setError] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    // const [loaders, setLoaders] = useState<EditableGridLoader[]>([loader]);
-    const [comment, setComment] = useState<string>(undefined);
+    const [comment, setComment] = useState<string>();
     const { requiresUserComment } = useDataChangeCommentsRequired();
 
     const hasValidUserComment = comment?.trim()?.length > 0;
 
     useEffect(() => {
         (async (): Promise<void> => {
-            const models = await initEditableGridModels(dataModels, editorModels, [loader], queryModel);
-            setDataModels(models.dataModels);
-            setEditorModels(models.editorModels);
+            try {
+                const models_ = await initEditableGridModel(models.dataModel, models.editorModel, loader, queryModel);
+                setModels(models_);
+            } catch (e) {
+                console.error(e);
+                setError(resolveErrorMessage(e) ?? 'Failed to initialize editable grid.');
+            }
         })();
     }, []);
 
     const onGridChange: EditableGridChange = useCallback(
         (event, editorModelChanges, dataKeys, data, index = 0): void => {
-            const modelUpdates = applyEditableGridChangesToModels(
-                dataModels,
-                editorModels,
-                editorModelChanges,
-                undefined,
-                dataKeys,
-                data,
-                index
-            );
-            setDataModels(modelUpdates.dataModels);
-            setEditorModels(modelUpdates.editorModels);
-            setIsDirty?.(true);
+            setModels(_models => {
+                const { dataModels, editorModels } = applyEditableGridChangesToModels(
+                    [_models.dataModel],
+                    [_models.editorModel],
+                    editorModelChanges,
+                    undefined,
+                    dataKeys,
+                    data,
+                    index
+                );
+                const [dataModel] = dataModels;
+                const [editorModel] = editorModels;
+                return { dataModel, editorModel };
+            });
+            if (EditorModel.isDataChangeEvent(event)) {
+                setIsDirty?.(true);
+            }
         },
-        [dataModels, editorModels, setIsDirty]
+        [setIsDirty]
     );
 
-    const onSubmit = useCallback((): void => {
-        const gridDataAllTabs = [];
-        dataModels.forEach((model, ind) => {
-            const gridData = getUpdatedDataFromEditableGrid(dataModels, editorModels, idField, selectionData, ind);
-            if (gridData) {
-                gridDataAllTabs.push(gridData);
-            }
-        });
+    const onSubmit = useCallback(async (): Promise<void> => {
+        const gridData = getUpdatedDataFromEditableGrid(
+            [models.dataModel],
+            [models.editorModel],
+            idField,
+            selectionData
+        );
 
-        if (gridDataAllTabs.length > 0) {
-            setIsSubmitting(true);
-            Promise.all(gridDataAllTabs.map(data => updateRows(data.schemaQuery, data.updatedRows, comment)))
-                .then(() => {
-                    setIsSubmitting(false);
-                    onComplete();
-                })
-                .catch(e => {
-                    setError(e?.exception ?? 'There was a problem updating the ' + singularNoun + ' data.');
-                    setIsSubmitting(false);
-                });
-        } else {
+        if (!gridData) {
+            onComplete();
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        try {
+            await updateRows(gridData.schemaQuery, gridData.updatedRows, comment);
             setIsSubmitting(false);
             onComplete();
+        } catch (e) {
+            setError(e?.exception ?? 'There was a problem updating the ' + singularNoun + ' data.');
+            setIsSubmitting(false);
         }
-    }, [comment, dataModels, editorModels, idField, onComplete, selectionData, singularNoun, updateRows]);
+    }, [comment, models, idField, onComplete, selectionData, singularNoun, updateRows]);
 
     const onCommentChange = useCallback((_comment: string): void => {
         setComment(_comment);
     }, []);
 
-    const firstModel = dataModels[0];
-    const columnMetadata = getUniqueIdColumnMetadata(firstModel.queryInfo);
+    const columnMetadata = useMemo(
+        () => getUniqueIdColumnMetadata(models.dataModel.queryInfo),
+        [models.dataModel.queryInfo]
+    );
 
-    if (firstModel.isLoading) {
+    if (models.dataModel.isLoading) {
         return <LoadingSpinner />;
     }
 
@@ -126,9 +144,9 @@ export const EditableGridPanelForUpdate: FC<Props> = props => {
                 bsStyle="info"
                 columnMetadata={columnMetadata}
                 containerFilter={containerFilter}
-                editorModel={editorModels}
+                editorModel={models.editorModel}
                 forUpdate
-                model={dataModels}
+                model={models.dataModel}
                 onChange={onGridChange}
                 striped
                 title={`Edit selected ${pluralNoun}`}
@@ -144,9 +162,9 @@ export const EditableGridPanelForUpdate: FC<Props> = props => {
                 isFinishedText="Finished Updating"
                 finishText={
                     'Finish Updating ' +
-                    firstModel.orderedRows.length +
+                    models.dataModel.orderedRows.length +
                     ' ' +
-                    (firstModel.orderedRows.length === 1
+                    (models.dataModel.orderedRows.length === 1
                         ? capitalizeFirstChar(singularNoun)
                         : capitalizeFirstChar(pluralNoun))
                 }

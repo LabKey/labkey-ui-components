@@ -20,9 +20,9 @@ import { CommentTextArea } from '../../internal/components/forms/input/CommentTe
 import { QueryModel } from './QueryModel';
 
 import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
+import { useAppContext } from '../../internal/AppContext';
 
 export interface EditableDetailPanelProps {
-    api?: ComponentsAPIWrapper;
     appEditable?: boolean;
     asSubPanel?: boolean;
     canUpdate: boolean;
@@ -46,7 +46,6 @@ export interface EditableDetailPanelProps {
 
 export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     const {
-        api,
         containerPath,
         model,
         onBeforeUpdate,
@@ -68,6 +67,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         onAdditionalFormDataChange,
     } =  props;
 
+    const { api } = useAppContext();
     const [canSubmit, setCanSubmit] = useState<boolean>(false);
     const [editing, setEditing] = useState<boolean>(false);
     const [error, setError] = useState<string>(undefined);
@@ -77,7 +77,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     const _onCommentChange = useCallback(_comment => {
         setComment(_comment);
         onCommentChange?.(_comment);
-    }, []);
+    }, [onCommentChange]);
 
     const hasValidUserComment = comment?.trim()?.length > 0;
 
@@ -87,7 +87,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         setWarning(undefined);
         setError(undefined);
         onEditToggle?.(updated);
-    }, [editing]);
+    }, [editing, onEditToggle]);
 
     const disableSubmitButton = useCallback((): void => {
         setCanSubmit(false);
@@ -147,7 +147,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
             setError(resolveErrorMessage(e, 'data', undefined, 'update'));
             setWarning(undefined);
         }
-    }, [model, onBeforeUpdate, comment]);
+    }, [model, onBeforeUpdate, api.query, containerPath, comment, onUpdate, onEditToggle]);
 
 
     const isEditable = !model.isLoading && model.hasRows && (model.queryInfo?.isAppEditable() || appEditable);
@@ -239,6 +239,5 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
 }
 
 EditableDetailPanel.defaultProps = {
-    api: getDefaultAPIWrapper(),
     submitText: 'Save',
 }

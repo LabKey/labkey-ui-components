@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
-import { getServerContext } from '@labkey/api';
+import { Filter, getServerContext, Utils } from '@labkey/api';
 import { List, OrderedMap } from 'immutable';
 import Formsy from 'formsy-react';
-import { Filter, Utils } from '@labkey/api';
 
 import { Operation } from '../../../public/QueryColumn';
 
@@ -382,6 +381,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
     render() {
         // Include all props to support extraction of queryFormInputProps
         const {
+            api,
             asModal,
             canSubmitNotDirty,
             cancelText,
@@ -391,6 +391,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             footer,
             header,
             includeCountField,
+            includeCommentField,
             isLoading,
             isSubmittedText,
             isSubmittingText,

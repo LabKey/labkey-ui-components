@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.24.7
+*Released*: 1 March 2024
+- Lineage Settings: fix input change handling
+
 ### version 3.24.6
 *Released*: 29 February 2024
 - Mark project settings as dirty after title change

@@ -525,7 +525,7 @@ export class EditorModel
         return colIdx > -1 && rowIdx > -1 && this.selectedColIdx === colIdx && this.selectedRowIdx === rowIdx;
     }
 
-    isDataChangeEvent(event: EditableGridEvent): boolean {
+    static isDataChangeEvent(event: EditableGridEvent): boolean {
         return DATA_CHANGE_EVENTS.find(e => e === event) !== undefined;
     }
 

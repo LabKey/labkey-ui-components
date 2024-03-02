@@ -112,6 +112,10 @@ export class Cell extends React.PureComponent<CellProps, State> {
         return col.isPublicLookup() || this.isDateTimeField || !!col.validValues;
     }
 
+    get isReadOnly(): boolean {
+        return this.props.readOnly || this.props.col.readOnly || this.props.locked;
+    }
+
     componentDidUpdate(prevProps: Readonly<CellProps>): void {
         if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
@@ -170,16 +174,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
         }, 250);
     };
 
-    isReadOnly = (): boolean => {
-        return this.props.readOnly || this.props.col.readOnly || this.props.locked;
-    };
-
-    isLocked = (): boolean => {
-        return this.props.locked;
-    };
-
     handleDblClick = (): void => {
-        if (this.isReadOnly()) return;
+        if (this.isReadOnly) return;
 
         const { colIdx, cellActions, rowIdx } = this.props;
         cellActions.focusCell(colIdx, rowIdx);
@@ -195,36 +191,34 @@ export class Cell extends React.PureComponent<CellProps, State> {
             case KEYS.SelectKey:
             case KEYS.Shift:
             case KEYS.Ctrl:
-
             case KEYS.LeftArrow:
             case KEYS.UpArrow:
             case KEYS.RightArrow:
             case KEYS.DownArrow:
-
             case KEYS.PageUp:
             case KEYS.PageDown:
             case KEYS.Home:
             case KEYS.End:
-
             case KEYS.LeftMetaKey:
             case KEYS.FFLeftMetaKey:
             case KEYS.CapsLock:
                 break;
             case KEYS.Backspace:
             case KEYS.Delete:
-                if (!focused && selected && !this.isReadOnly() && !isRecording) {
+                // "Backspace" and "Delete" are ignored on recorded input
+                if (!focused && selected && !isRecording && !this.isReadOnly) {
                     cancelEvent(event);
                     modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
                 }
                 break;
             case KEYS.Tab:
+                // "Tab" is ignored on recorded input
                 if (selected && !isRecording) {
                     cancelEvent(event);
                     selectCell(event.shiftKey ? colIdx - 1 : colIdx + 1, rowIdx);
                 }
                 break;
             case KEYS.Enter:
-                // focus takes precedence
                 if (focused) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx + 1);
@@ -240,31 +234,34 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 }
                 break;
             case KEYS.Escape:
+                // "Escape" is ignored on recorded input
                 if (focused && !isRecording) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx, undefined, true);
                 }
                 break;
             case KEYS.D:
-                if (isFillDown(event)) {
+                if (!focused && isFillDown(event)) {
                     cancelEvent(event);
                     fillDown();
                     break;
                 }
+            // eslint-disable-next-line no-fallthrough
             case KEYS.A:
-                if (isSelectAll(event)) {
+                if (!focused && isSelectAll(event)) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
                     break;
                 }
+            // eslint-disable-next-line no-fallthrough -- intentionally fallthrough for "D" and "A" characters
             default:
                 // any other key
                 if (!focused && !isCtrlOrMetaKey(event)) {
                     // Do not cancel event here, otherwise, key capture will be lost
-                    if (this.isLookup && !this.isReadOnly()) {
+                    if (this.isLookup && !this.isDateTimeField && !this.isReadOnly) {
                         this.recordKeys(event);
                     } else {
-                        focusCell(colIdx, rowIdx, !this.isReadOnly());
+                        focusCell(colIdx, rowIdx, !this.isReadOnly);
                     }
                 }
                 break;
@@ -297,7 +294,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 fillText(colIdx, rowIdx, this.recordedKeys);
                 selectCell(colIdx, rowIdx + 1);
             } else {
-                focusCell(colIdx, rowIdx, !this.isReadOnly());
+                focusCell(colIdx, rowIdx, !this.isReadOnly);
             }
 
             this.recordedKeys = undefined;
@@ -368,18 +365,19 @@ export class Cell extends React.PureComponent<CellProps, State> {
             col,
             colIdx,
             containerFilter,
+            filteredLookupValues,
             focused,
             forUpdate,
-            renderDragHandle,
+            locked,
+            lookupValueFilters,
             message,
             placeholder,
+            renderDragHandle,
             row,
             rowIdx,
             selected,
             selection,
             values,
-            filteredLookupValues,
-            lookupValueFilters,
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
@@ -401,8 +399,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     'cell-selected': selected,
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,
-                    'cell-read-only': this.isReadOnly(),
-                    'cell-locked': this.isLocked(),
+                    'cell-read-only': this.isReadOnly,
+                    'cell-locked': locked,
                     'cell-menu': showLookup || col.inputRenderer,
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
                 }),
@@ -422,7 +420,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 cell = (
                     <div {...displayProps}>
                         <div className="cell-menu-value">{valueDisplay}</div>
-                        {!this.isReadOnly() && (
+                        {!this.isReadOnly && (
                             <span onClick={this.handleDblClick} className="cell-menu-selector">
                                 <i className="fa fa-chevron-down" />
                             </span>
@@ -451,7 +449,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
             return (
                 <>
                     {cell}
-                    {renderDragHandle && !this.isReadOnly() && (
+                    {renderDragHandle && !this.isReadOnly && (
                         <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />
                     )}
                 </>
@@ -484,7 +482,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     colIdx={colIdx}
                     containerFilter={containerFilter}
                     defaultInputValue={this.recordedKeys}
-                    disabled={this.isReadOnly()}
+                    disabled={this.isReadOnly}
                     lookupValueFilters={lookupValueFilters}
                     filteredLookupKeys={filteredLookupKeys}
                     filteredLookupValues={filteredLookupValues}
@@ -505,7 +503,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     col={col}
                     colIdx={colIdx}
                     defaultValue={rawDateValue}
-                    disabled={this.isReadOnly()}
+                    disabled={this.isReadOnly}
                     modifyCell={cellActions.modifyCell}
                     onKeyDown={this.handleKeys}
                     select={cellActions.selectCell}
@@ -521,7 +519,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 defaultValue={
                     values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : ''
                 }
-                disabled={this.isReadOnly()}
+                disabled={this.isReadOnly}
                 onBlur={this.handleBlur}
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeys}

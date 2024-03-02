@@ -32,16 +32,27 @@ export const CommentTextArea: FC<Props> = props => {
 
     const [showError, setShowError] = useState<boolean>(false);
     const inputRef = useRef<HTMLTextAreaElement>();
+
+    // borrowed from https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/
+    const onTextAreaInput = useCallback(() => {
+        const textArea = inputRef.current;
+        textArea.addEventListener('input', () => {
+            textArea.style.height = 'auto';
+            textArea.style.height = Math.min(92, textArea.scrollHeight) + 'px';
+        });
+    }, []);
+
     useEffect(() => {
+        const textArea = inputRef.current;
         if (inline) {
-            // borrowed from https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/
-            const textArea = inputRef.current;
-            textArea.addEventListener('input', () => {
-                textArea.style.height = 'auto';
-                textArea.style.height = Math.min(92, textArea.scrollHeight) + 'px';
-            });
+            textArea.addEventListener('input', onTextAreaInput);
         }
-    }, [inline]);
+
+        return() => {
+            // always remove the event listener in case "inline" prop has changed
+            textArea.removeEventListener('input', onTextAreaInput);
+        };
+    }, [inline, onTextAreaInput]);
 
     const onCommentChange = useCallback(
         event => {

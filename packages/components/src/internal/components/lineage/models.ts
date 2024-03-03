@@ -14,22 +14,22 @@ import { LoadingState } from '../../../public/LoadingState';
 import { GridColumn } from '../base/models/GridColumn';
 
 import {
-    GROUPING_COMBINED_SIZE_MIN,
     DEFAULT_GROUPING_OPTIONS,
     DEFAULT_LINEAGE_DIRECTION,
     DEFAULT_LINEAGE_DISTANCE,
     DEFAULT_LINEAGE_OPTIONS,
+    GROUPING_COMBINED_SIZE_MIN,
     LINEAGE_GRID_COLUMNS,
 } from './constants';
 import { getURLResolver } from './LineageURLResolvers';
 import {
     LINEAGE_DIRECTIONS,
+    LINEAGE_GROUPING_GENERATIONS,
+    LineageFilter,
+    LineageGroupingOptions,
+    LineageIconMetadata,
     LineageLinkMetadata,
     LineageOptions,
-    LineageIconMetadata,
-    LineageFilter,
-    LINEAGE_GROUPING_GENERATIONS,
-    LineageGroupingOptions,
 } from './types';
 
 export function getLineageNodeTitle(node: LineageItemWithMetadata, asHTML = false): string {
@@ -727,6 +727,7 @@ function makeEdgeId(fromId: IdType, toId: IdType): string {
 
 type EdgesRecord = Record<string, Edge>;
 type LineageNodesRecord = Record<string, LineageNode>;
+type NodesInCombinedNode = Record<string, string[]>;
 type VisNodesRecord = Record<string, VisGraphNode | VisGraphCombinedNode>;
 
 /**
@@ -749,7 +750,7 @@ function addEdges(
     targetId: string | undefined,
     visEdges: EdgesRecord,
     edges: List<LineageLink>,
-    nodesInCombinedNode: { [key: string]: string[] },
+    nodesInCombinedNode: NodesInCombinedNode,
     dir: LINEAGE_DIRECTIONS
 ): void {
     // if current node is in a combined node, use the combined node's id as the edge source
@@ -778,7 +779,7 @@ function addEdges(
     }
 }
 
-function createVisNode(node: LineageNode, id: string, isSeed: boolean): VisGraphNode {
+function createVisNode(node: LineageNode, id: string, isSeed: boolean, dir: LINEAGE_DIRECTIONS, depth: number): VisGraphNode {
     // show the alternate icon image color if this node is the seed or has been selected
     const { image, imageBackup, imageSelected, imageShape } = node.iconProps;
 
@@ -787,6 +788,7 @@ function createVisNode(node: LineageNode, id: string, isSeed: boolean): VisGraph
         id,
         lineageNode: node,
         label: node.name,
+        level: level(depth, dir, false),
         title: getLineageNodeTitle(node, true),
         image: {
             unselected: image,
@@ -876,7 +878,9 @@ function createCombinedLineageNode(combinedVisNode: VisGraphCombinedNode): Linea
 function createCombinedVisNode(
     containedNodes: LineageNode[],
     options: LineageOptions,
-    parentNodeName: string
+    parentNodeName: string,
+    dir: LINEAGE_DIRECTIONS,
+    depth: number,
 ): VisGraphCombinedNode {
     const { combineSize } = options.grouping;
     let typeLabel: string;
@@ -917,14 +921,15 @@ function createCombinedVisNode(
     }
 
     const clusterOptions: VisGraphCombinedNode = {
-        kind: 'combined',
-        id: 'combined:' + randId(),
-        shape: 'dot',
         containedNodes,
         containedNodesByType,
-        title,
+        id: 'combined:' + randId(),
+        kind: 'combined',
         label: containedNodes.length + ' ' + typeLabel,
+        level: level(depth, dir, true),
         parentNodeName,
+        shape: 'dot',
+        title,
     };
 
     if (commonNode) {
@@ -973,7 +978,7 @@ function processCombinedNodeEdges(
     combinedNode: VisGraphCombinedNode,
     visEdges: EdgesRecord,
     visNodes: VisNodesRecord,
-    nodesInCombinedNode: { [key: string]: string[] }
+    nodesInCombinedNode: NodesInCombinedNode
 ): void {
     if (!combinedNode) return;
 
@@ -1057,12 +1062,13 @@ function combineNodes(
     dir: LINEAGE_DIRECTIONS,
     visEdges: EdgesRecord,
     visNodes: VisNodesRecord,
-    nodesInCombinedNode: { [key: string]: string[] }
+    nodesInCombinedNode: NodesInCombinedNode,
+    depth: number
 ): LineageNode {
     const node = nodes[lsid];
     const edgeNodes = edges.map(e => nodes[e.lsid]);
 
-    const combinedNode = createCombinedVisNode(edgeNodes, options, node.name);
+    const combinedNode = createCombinedVisNode(edgeNodes, options, node.name, dir, depth);
     visNodes[combinedNode.id] = combinedNode;
     const combinedLineageNode = createCombinedLineageNode(combinedNode);
 
@@ -1086,7 +1092,8 @@ function applyCombineSize(
     dir: LINEAGE_DIRECTIONS,
     visEdges: EdgesRecord,
     visNodes: VisNodesRecord,
-    nodesInCombinedNode: { [key: string]: string[] }
+    nodesInCombinedNode: NodesInCombinedNode,
+    depth: number
 ): LineageNode[] {
     const combinedLineageNodes: LineageNode[] = [];
 
@@ -1104,13 +1111,13 @@ function applyCombineSize(
 
     if (aliquotEdges.length > 1) {
         combinedLineageNodes.push(
-            combineNodes(lsid, aliquotEdges, nodes, options, dir, visEdges, visNodes, nodesInCombinedNode)
+            combineNodes(lsid, aliquotEdges, nodes, options, dir, visEdges, visNodes, nodesInCombinedNode, depth)
         );
     }
 
     if (nonAliquotEdges.length >= options.grouping.combineSize) {
         combinedLineageNodes.push(
-            combineNodes(lsid, nonAliquotEdges, nodes, options, dir, visEdges, visNodes, nodesInCombinedNode)
+            combineNodes(lsid, nonAliquotEdges, nodes, options, dir, visEdges, visNodes, nodesInCombinedNode, depth)
         );
     } else if (nonAliquotEdges.length > 0) {
         // create a VisGraph Edge from the current node to the edge's target for each edge
@@ -1157,6 +1164,19 @@ function groupingBoundary(
 }
 
 /**
+ * Determines the "level" for a node given the depth and direction.
+ * Special case for our combined nodes which are given an offset level to render on their own.
+ * See https://visjs.github.io/vis-network/docs/network/nodes.html
+ */
+function level(depth: number, dir: LINEAGE_DIRECTIONS, combined: boolean): number {
+    const combinedOffset = combined ? 1 : 0;
+    if (dir === LINEAGE_DIRECTIONS.Parent) {
+        return (-1 * depth) - combinedOffset;
+    }
+    return depth + combinedOffset;
+}
+
+/**
  * Recursively walks the node list in the direction indicated creating clusters as it goes.
  * The LabKey lineage in `nodes` is processed by this algorithm to populate the
  * `visEdges` collection with {@link Edge} object and the `visNodes` collections with
@@ -1195,7 +1215,7 @@ function processNodes(
     dir: LINEAGE_DIRECTIONS,
     visEdges: EdgesRecord,
     visNodes: VisNodesRecord,
-    nodesInCombinedNode: { [key: string]: string[] },
+    nodesInCombinedNode: NodesInCombinedNode,
     depth = 0,
     processed: { [key: string]: boolean } = {},
     depthSets: Array<{ [key: string]: string }> = []
@@ -1213,7 +1233,7 @@ function processNodes(
 
     // if node hasn't already been added to a cluster and hasn't been created as a normal node yet, add it now
     if (nodesInCombinedNode[lsid] === undefined && visNodes[lsid] === undefined) {
-        visNodes[lsid] = createVisNode(node, lsid, lsid === seed);
+        visNodes[lsid] = createVisNode(node, lsid, lsid === seed, dir, depth);
     }
 
     const { grouping } = options;
@@ -1254,7 +1274,8 @@ function processNodes(
             dir,
             visEdges,
             visNodes,
-            nodesInCombinedNode
+            nodesInCombinedNode,
+            depth
         );
 
         combinedLineageNodes.forEach(cln => {
@@ -1361,7 +1382,7 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
 
     // Intermediate state used by processNodes
     // lsid -> Array of combined id nodes
-    const nodesInCombinedNode: { [key: string]: string[] } = {};
+    const nodesInCombinedNode: NodesInCombinedNode = {};
 
     result.mergedIn.forEach(startLsid => {
         // parents
@@ -1393,7 +1414,7 @@ export function generate(result: LineageResult, options?: LineageOptions): VisGr
         nodes: new DataSet<VisGraphNode | VisGraphCombinedNode>(Object.values(visNodes)),
         edges: new DataSet<Edge>(Object.values(visEdges)),
 
-        // visjs options described in detail here: http://visjs.org/docs/network/
+        // visjs options described in detail here: https://visjs.github.io/vis-network/docs/network/
         options: {
             // hierarchical is needed to render linage as consistent straight up and down single branch
             // oriented in the direction implied by the direction of the edges.

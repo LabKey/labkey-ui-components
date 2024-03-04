@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Col, Nav, NavItem, Row, Tab } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 
@@ -10,6 +10,8 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { handleRequestFailure } from '../../util/utils';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
+
+import { Tab, Tabs } from '../../Tabs';
 
 import { AssayContainerLocation } from './AssayContainerLocation';
 import { SpecialtyAssayPanel } from './SpecialtyAssayPanel';
@@ -187,49 +189,29 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
     }, [containers, container, onContainerChange, showContainerSelect]);
 
     return (
-        <Tab.Container
-            activeKey={tab}
-            defaultActiveKey={AssayPickerTabs.STANDARD_ASSAY_TAB}
-            id="assay-picker-tabs"
-            onSelect={onSelectTab as any}
-        >
-            <Row className="clearfix">
-                <Col sm={12}>
-                    <Nav bsStyle="tabs">
-                        <NavItem eventKey={AssayPickerTabs.STANDARD_ASSAY_TAB}>Standard Assay</NavItem>
-                        <NavItem eventKey={AssayPickerTabs.SPECIALTY_ASSAY_TAB}>Specialty Assays</NavItem>
-                        {showImport && <NavItem eventKey={AssayPickerTabs.XAR_IMPORT_TAB}>Import Assay Design</NavItem>}
-                    </Nav>
-                </Col>
-                <Col sm={12}>
-                    <Tab.Content animation>
-                        <Tab.Pane className="margin-bottom margin-top" eventKey={AssayPickerTabs.STANDARD_ASSAY_TAB}>
-                            <StandardAssayPanel provider={standardProvider}>
-                                {showContainerSelect && <div className="margin-top">{containerSelect}</div>}
-                            </StandardAssayPanel>
-                        </Tab.Pane>
-                        <Tab.Pane className="margin-bottom margin-top" eventKey={AssayPickerTabs.SPECIALTY_ASSAY_TAB}>
-                            <SpecialtyAssayPanel
-                                hasPremium={hasPremium}
-                                onChange={selectProvider}
-                                selected={provider}
-                                values={providers}
-                            >
-                                {showContainerSelect && providers.length > 1 && (
-                                    <div className="margin-top">{containerSelect}</div>
-                                )}
-                            </SpecialtyAssayPanel>
-                        </Tab.Pane>
-                        {showImport && (
-                            <Tab.Pane className="margin-bottom margin-top" eventKey={AssayPickerTabs.XAR_IMPORT_TAB}>
-                                <AssayDesignUploadPanel onFileChange={onFileSelect} onFileRemove={onFileRemove}>
-                                    {showContainerSelect && <div className="margin-bottom">{containerSelect}</div>}
-                                </AssayDesignUploadPanel>
-                            </Tab.Pane>
-                        )}
-                    </Tab.Content>
-                </Col>
-            </Row>
-        </Tab.Container>
+        <Tabs activeKey={tab} onSelect={onSelectTab}>
+            <Tab eventKey={AssayPickerTabs.STANDARD_ASSAY_TAB} title="Standard Assay" className="margin-top">
+                <StandardAssayPanel provider={standardProvider}>
+                    {showContainerSelect && <div className="margin-top">{containerSelect}</div>}
+                </StandardAssayPanel>
+            </Tab>
+            <Tab eventKey={AssayPickerTabs.SPECIALTY_ASSAY_TAB} title="Specialty Assays" className="margin-top">
+                <SpecialtyAssayPanel
+                    hasPremium={hasPremium}
+                    onChange={selectProvider}
+                    selected={provider}
+                    values={providers}
+                >
+                    {showContainerSelect && providers.length > 1 && <div className="margin-top">{containerSelect}</div>}
+                </SpecialtyAssayPanel>
+            </Tab>
+            {showImport && (
+                <Tab eventKey={AssayPickerTabs.XAR_IMPORT_TAB} title="Import Assay Design" className="margin-top">
+                    <AssayDesignUploadPanel onFileChange={onFileSelect} onFileRemove={onFileRemove}>
+                        {showContainerSelect && <div className="margin-bottom">{containerSelect}</div>}
+                    </AssayDesignUploadPanel>
+                </Tab>
+            )}
+        </Tabs>
     );
 });

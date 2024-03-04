@@ -192,7 +192,7 @@ describe('ColumnSelectionModal', () => {
             const wrapper = mount(<FieldLabelDisplay column={QUERY_COL} includeFieldKey />);
             expect(wrapper.find('.field-name')).toHaveLength(1);
             expect(wrapper.find('.field-name').text()).toBe(QUERY_COL.caption);
-            expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+            expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
             expect(wrapper.find('input')).toHaveLength(0);
             wrapper.unmount();
         });

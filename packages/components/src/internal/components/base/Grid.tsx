@@ -78,13 +78,13 @@ function resolveColumns(data: List<Map<string, any>>): List<GridColumn> {
 
 // export for jest testing
 export function getColumnHoverText(info: any): string {
-    let description = info?.description || '';
+    let description = info?.description?.trim() || '';
     let sepLeft = description.length > 0 ? '(' : '';
     let sepRight = description.length > 0 ? ')' : '';
 
     // show field key for lookups to help determine path to field when the name is generic (i.e. "Name" is
-    // from "Ancestors/Sources/Lab/Name"),  46256: use encoded fieldKeyPath
-    description += info?.fieldKeyPath?.indexOf('/') > -1 ? ' ' + sepLeft + info.index + sepRight : '';
+    // from "Ancestors/Sources/Lab/Name"),  46256: use encoded fieldKeyPath, 49795: show tooltip for all columns
+    description += info?.index ? ' ' + sepLeft + info.index + sepRight : '';
     sepLeft = description.length > 0 ? '(' : '';
     sepRight = description.length > 0 ? ')' : '';
 
@@ -198,10 +198,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                     {headerCell ? headerCell(column, i, columns.size) : title}
                                     {/* headerCell will render the helpTip, so only render here if not using headerCell() */}
                                     {!headerCell && column.helpTipRenderer && (
-                                        <LabelHelpTip
-                                            title={title}
-                                            popoverClassName="label-help-arrow-top"
-                                        >
+                                        <LabelHelpTip title={title} popoverClassName="label-help-arrow-top">
                                             <HelpTipRenderer type={column.helpTipRenderer} />
                                         </LabelHelpTip>
                                     )}

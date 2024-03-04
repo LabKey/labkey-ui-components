@@ -97,7 +97,7 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props> {
             <div id={id} onClick={togglePanel} className={panelHeaderClass}>
                 {/* Header help icon*/}
                 {iconHelpMsg && (
-                    <LabelHelpTip iconComponent={this.getHeaderIconComponent()} placement="top" title={title}>
+                    <LabelHelpTip iconComponent={this.getHeaderIconComponent()} title={title}>
                         {iconHelpMsg}
                     </LabelHelpTip>
                 )}
@@ -114,11 +114,7 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props> {
                 )}
 
                 {/* Help tip*/}
-                {children && (
-                    <LabelHelpTip placement="top" title={title}>
-                        {children}
-                    </LabelHelpTip>
-                )}
+                {children && <LabelHelpTip title={title}>{children}</LabelHelpTip>}
 
                 {/* Header details, shown on the right side*/}
                 {controlledCollapse && headerDetails && (

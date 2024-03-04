@@ -56,8 +56,8 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
             />
         );
     }
-    // only show hover tooltip for lookup child fields. Issue 46256: use encoded fieldKeyPath
-    if (!includeFieldKey || column.fieldKeyPath.indexOf('/') === -1) {
+    // Issue 46256: use encoded fieldKeyPath, Issue 49795: show tooltip more often to account for renamed fields, etc.
+    if (!includeFieldKey) {
         return <div className="field-name">{initialTitle}</div>;
     }
 

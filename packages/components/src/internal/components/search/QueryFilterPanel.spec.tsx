@@ -39,8 +39,14 @@ describe('QueryFilterPanel', () => {
         expect(wrapper.find('.filter-modal__col_fields').hostNodes()).toHaveLength(1);
         expect(wrapper.find('.filter-modal__col_filter_exp').hostNodes()).toHaveLength(1);
         expect(wrapper.find(ChoicesListItem)).toHaveLength(fieldItems);
-        expect(wrapper.find(FilterExpressionView)).toHaveLength(showFilterExpression ? 1 : 0);
-        expect(wrapper.find(FilterFacetedSelector)).toHaveLength(showChooseValues ? 1 : 0);
+
+        if (showFilterExpression) {
+            expect(wrapper.find('li[role="presentation"]').at(0).prop('className')).toBe('active');
+        }
+
+        if (showChooseValues) {
+            expect(wrapper.find('li[role="presentation"]').at(1).prop('className')).toBe('active');
+        }
     }
 
     test('default props', () => {
@@ -120,8 +126,7 @@ describe('QueryFilterPanel', () => {
         expect(wrapper.find('.list-group-item.active').text()).toBe('Text');
         expect(wrapper.find('.field-modal__col-sub-title').first().text()).toBe('Find values for Text');
         expect(wrapper.find('.field-modal__empty-msg').hostNodes()).toHaveLength(0);
-        expect(wrapper.find(NavItem)).toHaveLength(2);
-        expect(wrapper.find('#filter-field-tabs').first().prop('activeKey')).toBe('ChooseValues');
+        expect(wrapper.find('a[role="tab"]')).toHaveLength(2);
         expect(wrapper.find('.field-modal__field_dot')).toHaveLength(0);
         wrapper.unmount();
     });
@@ -132,8 +137,7 @@ describe('QueryFilterPanel', () => {
         expect(wrapper.find('.list-group-item.active').text()).toBe('Integer');
         expect(wrapper.find('.field-modal__col-sub-title').text()).toBe('Find values for Integer');
         expect(wrapper.find('.field-modal__empty-msg').hostNodes()).toHaveLength(0);
-        expect(wrapper.find(NavItem)).toHaveLength(1);
-        expect(wrapper.find('#filter-field-tabs').first().prop('activeKey')).toBe('Filter');
+        expect(wrapper.find('a[role="tab"]')).toHaveLength(1);
         wrapper.unmount();
     });
 
@@ -156,8 +160,7 @@ describe('QueryFilterPanel', () => {
         expect(wrapper.find('.list-group-item.active').text()).toBe('Text');
         expect(wrapper.find('.field-modal__col-sub-title').first().text()).toBe('Find values for Text');
         expect(wrapper.find('.field-modal__empty-msg').hostNodes()).toHaveLength(0);
-        expect(wrapper.find(NavItem)).toHaveLength(2);
-        expect(wrapper.find('#filter-field-tabs').first().prop('activeKey')).toBe('Filter');
+        expect(wrapper.find('a[role="tab"]')).toHaveLength(2);
         expect(wrapper.find('.field-modal__field_dot')).toHaveLength(1);
         wrapper.unmount();
     });

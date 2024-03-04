@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Row, Col, Nav, NavItem, Tab } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { fromJS, List } from 'immutable';
 import classNames from 'classnames';
 
@@ -22,6 +22,7 @@ import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
+import { Tab, Tabs } from '../../Tabs';
 
 enum FieldFilterTabs {
     ChooseValues = 'ChooseValues',
@@ -29,7 +30,6 @@ enum FieldFilterTabs {
 }
 
 const DEFAULT_VIEW_NAME = ''; // always use default view for selection, if none provided
-const CHOOSE_VALUES_TAB_KEY = 'Choose values';
 
 interface Props {
     allowRelativeDateFilter?: boolean;
@@ -219,7 +219,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         (tabKey: any) => {
             setActiveTab(tabKey);
 
-            if (tabKey === CHOOSE_VALUES_TAB_KEY) {
+            if (tabKey === FieldFilterTabs.ChooseValues) {
                 api.query.incrementClientSideMetricCount(metricFeatureArea, 'goToChooseValuesTab');
             }
         },
@@ -283,74 +283,53 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                             'field-modal__col-content-disabled': hasNotInQueryFilter,
                         })}
                     >
-                        <Tab.Container
-                            activeKey={activeTab}
-                            className="field-modal__tabs content-tabs"
-                            id="filter-field-tabs"
-                            onSelect={key => onTabChange(key)}
-                        >
-                            <div>
-                                <Nav bsStyle="tabs" disabled={hasNotInQueryFilter}>
-                                    <NavItem eventKey={FieldFilterTabs.Filter}>Filter</NavItem>
-                                    {allowFaceting(activeField) && (
-                                        <NavItem eventKey={FieldFilterTabs.ChooseValues}>
-                                            {CHOOSE_VALUES_TAB_KEY}
-                                        </NavItem>
-                                    )}
-                                </Nav>
-                                <Tab.Content
-                                    animation
-                                    className="filter-modal__values-col-content"
-                                    disabled={hasNotInQueryFilter}
-                                >
-                                    <Tab.Pane eventKey={FieldFilterTabs.Filter}>
-                                        <div className="field-modal__col-sub-title">
-                                            Find values for {activeField.caption}
-                                        </div>
-                                        {activeTab === FieldFilterTabs.Filter && (
-                                            <FilterExpressionView
-                                                allowRelativeDateFilter={allowRelativeDateFilter}
-                                                key={activeFieldKey}
-                                                field={activeField}
-                                                fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
-                                                onFieldFilterUpdate={(newFilters, index) =>
-                                                    onFilterUpdate(activeField, newFilters, index)
-                                                }
-                                                disabled={hasNotInQueryFilter}
-                                                includeAllAncestorFilter={
-                                                    isAncestor && activeField?.fieldKey.toLowerCase() === 'name'
-                                                }
-                                            />
-                                        )}
-                                    </Tab.Pane>
-                                    {activeTab === FieldFilterTabs.ChooseValues && allowFaceting(activeField) && (
-                                        <Tab.Pane eventKey={FieldFilterTabs.ChooseValues}>
-                                            <div className="field-modal__col-sub-title">
-                                                Find values for {activeField.caption}
-                                            </div>
-                                            <FilterFacetedSelector
-                                                selectDistinctOptions={{
-                                                    ...selectDistinctOptions,
-                                                    column: activeFieldKey,
-                                                    schemaName: queryInfo.schemaName,
-                                                    queryName,
-                                                    viewName,
-                                                    filterArray: fieldDistinctValueFilters,
-                                                }}
-                                                fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
-                                                fieldKey={activeFieldKey}
-                                                canBeBlank={!activeField?.required && !activeField.nameExpression}
-                                                key={activeFieldKey}
-                                                onFieldFilterUpdate={(newFilters, index) =>
-                                                    onFilterUpdate(activeField, newFilters, index)
-                                                }
-                                                disabled={hasNotInQueryFilter}
-                                            />
-                                        </Tab.Pane>
-                                    )}
-                                </Tab.Content>
-                            </div>
-                        </Tab.Container>
+                        <Tabs activeKey={activeTab} className="field-modal__tabs content-tabs" onSelect={onTabChange}>
+                            <Tab eventKey={FieldFilterTabs.Filter} title="Filter">
+                                <div className="field-modal__col-sub-title">
+                                    Find values for {activeField.caption}
+                                </div>
+                                {activeTab === FieldFilterTabs.Filter && (
+                                    <FilterExpressionView
+                                        allowRelativeDateFilter={allowRelativeDateFilter}
+                                        key={activeFieldKey}
+                                        field={activeField}
+                                        fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
+                                        onFieldFilterUpdate={(newFilters, index) =>
+                                            onFilterUpdate(activeField, newFilters, index)
+                                        }
+                                        disabled={hasNotInQueryFilter}
+                                        includeAllAncestorFilter={
+                                            isAncestor && activeField?.fieldKey.toLowerCase() === 'name'
+                                        }
+                                    />
+                                )}
+                            </Tab>
+                            {allowFaceting(activeField) && (
+                                <Tab eventKey={FieldFilterTabs.ChooseValues} title="Choose values">
+                                    <div className="field-modal__col-sub-title">
+                                        Find values for {activeField.caption}
+                                    </div>
+                                    <FilterFacetedSelector
+                                        selectDistinctOptions={{
+                                            ...selectDistinctOptions,
+                                            column: activeFieldKey,
+                                            schemaName: queryInfo.schemaName,
+                                            queryName,
+                                            viewName,
+                                            filterArray: fieldDistinctValueFilters,
+                                        }}
+                                        fieldFilters={currentFieldFilters?.map(filter => filter.filter)}
+                                        fieldKey={activeFieldKey}
+                                        canBeBlank={!activeField?.required && !activeField.nameExpression}
+                                        key={activeFieldKey}
+                                        onFieldFilterUpdate={(newFilters, index) =>
+                                            onFilterUpdate(activeField, newFilters, index)
+                                        }
+                                        disabled={hasNotInQueryFilter}
+                                    />
+                                </Tab>
+                            )}
+                        </Tabs>
                     </div>
                 )}
             </Col>

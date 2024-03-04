@@ -433,7 +433,7 @@ describe('getColumnHoverText', () => {
                 index: 'name',
                 phiProtected: false,
             })
-        ).toBe(undefined);
+        ).toBe('name');
     });
 
     test('with hover text', () => {
@@ -444,7 +444,7 @@ describe('getColumnHoverText', () => {
                 fieldKeyPath: 'name',
                 phiProtected: false,
             })
-        ).toBe('desc');
+        ).toBe('desc (name)');
         expect(
             getColumnHoverText({
                 description: ' desc ',
@@ -452,7 +452,7 @@ describe('getColumnHoverText', () => {
                 fieldKeyPath: 'name',
                 phiProtected: true,
             })
-        ).toBe('desc  (PHI protected data removed)');
+        ).toBe('desc (name) (PHI protected data removed)');
         expect(
             getColumnHoverText({
                 description: ' desc ',
@@ -460,7 +460,7 @@ describe('getColumnHoverText', () => {
                 fieldKeyPath: 'parent/name',
                 phiProtected: true,
             })
-        ).toBe('desc  (parent/name) (PHI protected data removed)');
+        ).toBe('desc (parent/name) (PHI protected data removed)');
         expect(
             getColumnHoverText({
                 description: ' desc ',
@@ -468,7 +468,7 @@ describe('getColumnHoverText', () => {
                 fieldKeyPath: 'parent/name',
                 phiProtected: false,
             })
-        ).toBe('desc  (parent/name)');
+        ).toBe('desc (parent/name)');
         expect(
             getColumnHoverText({
                 description: undefined,

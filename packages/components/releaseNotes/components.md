@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X 2024
 - Support column sizing for editable grid
 
+### version 3.25.0
+*Released*: 4 March 2024
+- Issue 45315: Allow inferDomainFromFile to take file path string in addition to File prop
+- Issue 49795: App grid column header title to show for all columns instead of just lookups
+
 ### version 3.24.6
 *Released*: 29 February 2024
 - Mark project settings as dirty after title change

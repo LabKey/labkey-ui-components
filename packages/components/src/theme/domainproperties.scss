@@ -812,8 +812,12 @@
     text-transform: capitalize;
     font-weight: bold;
 }
-.drag-drop-handle .fa-ellipsis-v {
-    margin-right: 2px;
+.drag-drop-handle {
+    white-space: nowrap;
+
+    .fa-ellipsis-v {
+        margin-right: 2px;
+    }
 }
 
 .domain-system-fields {

@@ -114,11 +114,7 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props> {
                 )}
 
                 {/* Help tip*/}
-                {children && (
-                    <LabelHelpTip title={title}>
-                        {children}
-                    </LabelHelpTip>
-                )}
+                {children && <LabelHelpTip title={title}>{children}</LabelHelpTip>}
 
                 {/* Header details, shown on the right side*/}
                 {controlledCollapse && headerDetails && (

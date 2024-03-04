@@ -16,8 +16,8 @@
 import { Query, Utils } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
-import React, { ChangeEvent, PureComponent, ReactNode, SyntheticEvent } from 'react';
-import { Nav, NavItem, OverlayTrigger, Popover, Tab, TabContainer } from 'react-bootstrap';
+import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -46,6 +46,8 @@ import { GridColumn, GridColumnCellRenderer } from '../base/models/GridColumn';
 
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
+
+import { Tab, Tabs } from '../../Tabs';
 
 import {
     addRows,
@@ -1492,10 +1494,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         });
     };
 
-    onTabChange = (event: SyntheticEvent<TabContainer, Event>): void => {
+    onTabChange = (newTabKey: string): void => {
         const { bulkUpdateProps } = this.props;
         const { activeEditTab } = this.state;
-        const newTabKey: EditableGridTabs = event as any; // Crummy cast to make TS happy
 
         if (newTabKey === EditableGridTabs.Grid && activeEditTab === EditableGridTabs.BulkUpdate) {
             this.applyPendingBulkFormData();
@@ -1645,34 +1646,26 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return (
                 <>
                     {tabBtnProps?.placement === 'top' && this.renderButtons()}
-                    <Tab.Container
-                        activeKey={activeEditTab}
-                        id="editable-grid-tabs"
-                        className={tabContainerCls}
-                        onSelect={this.onTabChange}
-                    >
-                        <div>
-                            <Nav bsStyle="tabs">
-                                {/* {allowBulkAdd && <NavItem eventKey={EditableGridTabs.BulkAdd}>Add Bulk</NavItem>} TODO tabbed bulk add not yet supported */}
-                                {allowBulkUpdate && (
-                                    <NavItem disabled={bulkDisabled} eventKey={EditableGridTabs.BulkUpdate}>
-                                        Edit in Bulk
-                                    </NavItem>
-                                )}
-                                {showGrid && <NavItem eventKey={EditableGridTabs.Grid}>Edit Individually</NavItem>}
-                            </Nav>
-                            <Alert>{error}</Alert>
-                            <Tab.Content className="top-spacing">
-                                <Tab.Pane eventKey={EditableGridTabs.BulkAdd}>
-                                    {activeEditTab === EditableGridTabs.BulkAdd && this.renderBulkAdd()}
-                                </Tab.Pane>
-                                <Tab.Pane eventKey={EditableGridTabs.BulkUpdate}>
-                                    {activeEditTab === EditableGridTabs.BulkUpdate && this.renderBulkUpdate()}
-                                </Tab.Pane>
-                                <Tab.Pane eventKey={EditableGridTabs.Grid}>{gridContent}</Tab.Pane>
-                            </Tab.Content>
-                        </div>
-                    </Tab.Container>
+                    <Tabs activeKey={activeEditTab} className={tabContainerCls} onSelect={this.onTabChange}>
+                        {/* TODO: tabbed bulk add note yet supported */}
+                        {allowBulkUpdate && (
+                            <Tab
+                                className="top-spacing"
+                                disabled={bulkDisabled}
+                                eventKey={EditableGridTabs.BulkUpdate}
+                                title="Edit in Bulk"
+                            >
+                                <Alert>{error}</Alert>
+                                {this.renderBulkUpdate()}
+                            </Tab>
+                        )}
+                        {showGrid && (
+                            <Tab className="top-spacing" eventKey={EditableGridTabs.Grid} title="Edit Individually">
+                                <Alert>{error}</Alert>
+                                {gridContent}
+                            </Tab>
+                        )}
+                    </Tabs>
                     {tabBtnProps?.placement === 'bottom' && this.renderButtons()}
                 </>
             );

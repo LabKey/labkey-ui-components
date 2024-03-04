@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 49274: App to use chevron arrows instead of plus/minus for expand/collapse (part 2)
 
+### version 3.24.7
+*Released*: 1 March 2024
+- Lineage Settings: fix input change handling
+
 ### version 3.24.6
 *Released*: 29 February 2024
 - Mark project settings as dirty after title change

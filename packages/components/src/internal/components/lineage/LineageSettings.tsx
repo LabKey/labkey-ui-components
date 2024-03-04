@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, useCallback, useMemo, useRef, useState } from 'react';
+import React, { ChangeEventHandler, FC, memo, useCallback, useMemo, useRef, useState } from 'react';
 
 import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 
@@ -52,8 +52,20 @@ export const LineageSettings: FC<Props> = memo(props => {
         [onSettingsChange, options]
     );
 
-    const onFilterChange = useCallback(
-        (evt: ChangeEvent<HTMLInputElement>) => {
+    const onDepthChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+        evt => {
+            const { name, value } = evt.target;
+            const nValue = parseInt(value, 10);
+            applyOptions(options_ => ({
+                ...options_,
+                grouping: { ...options_.grouping, [name]: nValue },
+            }));
+        },
+        [applyOptions]
+    );
+
+    const onFilterChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+        evt => {
             const { checked, name } = evt.target;
             applyOptions(options_ => {
                 const { originalFilters } = options_;
@@ -83,8 +95,8 @@ export const LineageSettings: FC<Props> = memo(props => {
         [applyOptions]
     );
 
-    const onGroupingChange = useCallback(
-        (evt: ChangeEvent<HTMLInputElement>) => {
+    const onGroupingChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+        evt => {
             const { name, value } = evt.target;
             const nValue = parseInt(value, 10);
             if (GROUPING_COMBINED_SIZE_MIN < nValue) {
@@ -150,7 +162,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                     max={DEFAULT_GROUPING_OPTIONS.childDepth * 2}
                     min={0}
                     name="childDepth"
-                    onChange={onGroupingChange}
+                    onChange={onDepthChange}
                     type="number"
                 />
 
@@ -172,7 +184,7 @@ export const LineageSettings: FC<Props> = memo(props => {
                     max={DEFAULT_GROUPING_OPTIONS.parentDepth * 2}
                     min={0}
                     name="parentDepth"
-                    onChange={onGroupingChange}
+                    onChange={onDepthChange}
                     type="number"
                 />
 

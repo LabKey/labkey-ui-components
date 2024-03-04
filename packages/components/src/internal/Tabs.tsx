@@ -43,7 +43,7 @@ export const Tab: FC<TabProps> = ({ children, className, eventKey }) => {
     const { id, activeKey } = useContext(Context);
     const className_ = classNames('tab-pane', className, { active: activeKey === eventKey });
     return (
-        <div aria-labelledby={tabId(id, activeKey)} className={className_} id={paneId(id, activeKey)} role="tabpanel">
+        <div aria-labelledby={tabId(id, eventKey)} className={className_} id={paneId(id, eventKey)} role="tabpanel">
             {children}
         </div>
     );
@@ -93,7 +93,7 @@ export const Tabs: FC<TabsProps> = props => {
             const disabled = child?.props?.disabled;
             const tabClassName = classNames({ active: eventKey === activeKey, disabled });
             return (
-                <li className={tabClassName} key={eventKey}>
+                <li className={tabClassName} key={eventKey} role="presentation">
                     <a
                         id={tabId(id, eventKey)}
                         role="tab"

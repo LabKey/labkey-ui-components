@@ -290,12 +290,11 @@ class GridBody extends PureComponent<GridBodyProps> {
                 {columns.map((column: GridColumn, c: number) => {
                     const columnMeta = columnMetaData?.[c];
                     const hasWidthOverride = !!columnMeta?.width || !!columnMeta?.minWidth;
+                    const className = hasWidthOverride && !column.tableCell ? 'grid-col-with-width' : undefined;
                     return column.tableCell ? (
                         <Fragment key={column.index}>{column.cell(row.get(column.index), row, column, r, c)}</Fragment>
                     ) : (
-                        <td key={column.index} className={classNames({
-                            'grid-col-with-width': hasWidthOverride
-                        })} style={{ textAlign: column.align || 'left' } as any}>
+                        <td key={column.index} className={className} style={{ textAlign: column.align || 'left' } as any}>
                             {column.cell(row.get(column.index), row, column, r, c)}
                         </td>
                     )

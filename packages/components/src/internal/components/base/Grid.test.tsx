@@ -175,6 +175,78 @@ describe('Grid', () => {
         expect(document.querySelector('.phi-protected')).not.toBeNull();
     });
 
+    test('rendering with columnMetaData', () => {
+        const columnMetaData = {
+            0: {
+                width: 321,
+                minWidth: 567,
+            },
+            1: {
+                minWidth: 123,
+            },
+            2: {
+                minWidth: 567,
+            },
+        };
+        const columns = List([
+            {
+                index: 'name',
+                showHeader: true
+            },
+            {
+                index: 'number',
+                showHeader: true
+            },
+            {
+                index: 'position',
+                showHeader: true
+            },
+        ]);
+        render(<Grid data={gridData} columns={columns} columnMetaData={columnMetaData}/>);
+        const headerCells = document.querySelectorAll('.grid-header-cell');
+        expect(headerCells).toHaveLength(3);
+        expect(headerCells[0].getAttribute('style')).toBe('width: 321px;');
+        expect(headerCells[1].getAttribute('style')).toBe('min-width: 123px;');
+        expect(headerCells[2].getAttribute('style')).toBe('min-width: 567px;');
+
+    });
+
+    test('rendering with columnMetaData and grid width', () => {
+        const columnMetaData = {
+            0: {
+                width: 321,
+                minWidth: 567,
+            },
+            1: {
+                minWidth: 123,
+            },
+        };
+        const columns = List([
+            {
+                index: 'name',
+                showHeader: true,
+                width: 555,
+            },
+            {
+                index: 'number',
+                showHeader: true,
+                width: 555,
+            },
+            {
+                index: 'position',
+                showHeader: true,
+                width: 555,
+            },
+        ]);
+        render(<Grid data={gridData} columns={columns} columnMetaData={columnMetaData}/>);
+        const headerCells = document.querySelectorAll('.grid-header-cell');
+        expect(headerCells).toHaveLength(3);
+        expect(headerCells[0].getAttribute('style')).toBe('width: 321px;');
+        expect(headerCells[1].getAttribute('style')).toBe('min-width: 123px;');
+        expect(headerCells[2].getAttribute('style')).toBe('min-width: 555px;');
+
+    });
+
     test('render with messages', () => {
         render(<Grid data={gridData} messages={gridMessages} />);
         validateHasData();

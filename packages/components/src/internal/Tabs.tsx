@@ -41,9 +41,16 @@ interface TabProps {
 
 export const Tab: FC<TabProps> = ({ children, className, eventKey }) => {
     const { id, activeKey } = useContext(Context);
-    const className_ = classNames('tab-pane', className, { active: activeKey === eventKey });
+    const active = activeKey === eventKey;
+    const className_ = classNames('tab-pane', className, { active });
     return (
-        <div aria-labelledby={tabId(id, eventKey)} className={className_} id={paneId(id, eventKey)} role="tabpanel">
+        <div
+            aria-labelledby={tabId(id, eventKey)}
+            aria-hidden={!active}
+            className={className_}
+            id={paneId(id, eventKey)}
+            role="tabpanel"
+        >
             {children}
         </div>
     );

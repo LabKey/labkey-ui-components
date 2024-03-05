@@ -6,7 +6,7 @@ import { processRequest } from '../../query/api';
 
 // TODO: Move this out of assay/utils
 export function inferDomainFromFile(
-    file: File,
+    file: File | string, // file or webdav url path
     numLinesToInclude: number,
     domainKindName?: string
 ): Promise<InferDomainResponse> {

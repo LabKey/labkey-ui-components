@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Col, Panel, FormControl, Row } from 'react-bootstrap';
+import { Col, Panel, FormControl } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
 
@@ -56,7 +56,7 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
     );
 
     return (
-        <Row className="form-group">
+        <div className="row form-group">
             <Col xs={12}>
                 {children}
                 <div>
@@ -76,7 +76,7 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
                     placeholder="BarTender Web Service URL"
                 />
             </Col>
-        </Row>
+        </div>
     );
 });
 
@@ -175,7 +175,7 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
     }, [api, btServiceURL, onConnectionFailure]);
 
     return (
-        <Row>
+        <div className="row">
             <Col xs={12}>
                 <Panel title={title}>
                     <Panel.Heading>{title}</Panel.Heading>
@@ -240,7 +240,7 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
                     </Panel.Body>
                 </Panel>
             </Col>
-        </Row>
+        </div>
     );
 });
 

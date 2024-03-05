@@ -52,7 +52,7 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
         } = this.props;
 
         return (
-            <Row className="margin-top">
+            <div className="row margin-top">
                 <Col xs={5}>
                     <DomainFieldLabel label={label} helpTipBody={helpTip} />
                 </Col>
@@ -72,7 +72,7 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
                         clearable={clearable}
                     />
                 </Col>
-            </Row>
+            </div>
         );
     }
 }
@@ -95,7 +95,7 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
             this.props;
 
         return (
-            <Row className="margin-top">
+            <div className="row margin-top">
                 <Col xs={4}>
                     <DomainFieldLabel label={label} required={required} helpTipBody={helpTip} />
                 </Col>
@@ -114,7 +114,7 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
                 </Col>
 
                 {!showInAdvancedSettings && <Col xs={1} />}
-            </Row>
+            </div>
         );
     }
 }
@@ -276,7 +276,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <Modal footer={footer} onCancel={this.closeModal} title="Advanced Dataset Settings">
                         <SectionHeading title="Miscellaneous Options" />
 
-                        <Row className="margin-top">
+                        <div className="row margin-top">
                             <Col xs={5}>
                                 {showInOverviewLabel}
                                 <LabelHelpTip title={showInOverviewLabel}>{SHOW_IN_OVERVIEW}</LabelHelpTip>
@@ -289,7 +289,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                     className="domain-field-checkbox"
                                 />
                             </Col>
-                        </Row>
+                        </div>
 
                         <DatasetSettingsInput
                             name="datasetId"

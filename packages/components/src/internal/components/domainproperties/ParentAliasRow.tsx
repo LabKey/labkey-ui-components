@@ -94,7 +94,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
         const parentValueBlank = !parentValue || !parentValue.value;
 
         return (
-            <Row key={id}>
+            <div className="row" key={id}>
                 <Col xs={2}>
                     <DomainFieldLabel label={aliasCaption} required={true} helpTipBody={helpMsg} />
                 </Col>
@@ -124,7 +124,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                 <Col>
                     <RemoveEntityButton labelClass="entity-insert--remove-parent" onClick={this.removeParentAlias} />
                 </Col>
-            </Row>
+            </div>
         );
     }
 }

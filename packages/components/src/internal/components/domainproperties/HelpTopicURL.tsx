@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 
 import { helpLinkNode } from '../../util/helpLinks';
 
@@ -14,8 +14,8 @@ export function HelpTopicURL(props: Props) {
         : 'Learn more about this tool';
 
     return (
-        <Row>
+        <div className="row">
             <Col xs={12}>{helpLinkNode(props.helpTopic, text, 'domain-field-float-right')}</Col>
-        </Row>
+        </div>
     );
 }

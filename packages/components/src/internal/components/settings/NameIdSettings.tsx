@@ -383,7 +383,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         {loadingCounters && <LoadingSpinner />}
                         {!loadingCounters && (
                             <div>
-                                <Row className="margin-top">
+                                <div className="row margin-top">
                                     <Col sm={2}>
                                         <div className="sample-counter__prefix-label">sampleCount</div>
                                     </Col>
@@ -423,8 +423,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                             </button>
                                         )}
                                     </Col>
-                                </Row>
-                                <Row className="margin-top">
+                                </div>
+                                <div className="row margin-top">
                                     <Col sm={2}>
                                         <div className="sample-counter__prefix-label">rootSampleCount</div>
                                     </Col>
@@ -464,7 +464,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                             </button>
                                         )}
                                     </Col>
-                                </Row>
+                                </div>
                                 {confirmCounterModalOpen && (
                                     <Modal
                                         confirmClass="btn-danger"

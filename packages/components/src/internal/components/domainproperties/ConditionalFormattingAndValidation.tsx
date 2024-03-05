@@ -1,5 +1,5 @@
 import React, { FC, PureComponent, ReactNode } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';
@@ -220,12 +220,12 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
 
         return (
             <div>
-                <Row>
+                <div className="row">
                     <Col xs={12}>
                         <SectionHeading title={title} cls="domain-field-section-hdr" />
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={12}>
                         {showCondFormatSection && this.renderConditionalFormats()}
                         {showRegexSection && this.renderValidator(false)}
@@ -270,7 +270,7 @@ export class ConditionalFormattingAndValidation extends PureComponent<Props, Sta
                             />
                         )}
                     </Col>
-                </Row>
+                </div>
             </div>
         );
     }

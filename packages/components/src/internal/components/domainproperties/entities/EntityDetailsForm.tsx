@@ -63,7 +63,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
 
         return (
             <Form>
-                <Row className="margin-bottom margin-top">
+                <div className="row margin-bottom margin-top">
                     <Col xs={2}>
                         <DomainFieldLabel label="Name" required={true} />
                     </Col>
@@ -77,8 +77,8 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                             disabled={nameReadOnly}
                         />
                     </Col>
-                </Row>
-                <Row className="margin-bottom">
+                </div>
+                <div className="row margin-bottom">
                     <Col xs={2}>
                         <DomainFieldLabel
                             label="Description"
@@ -93,16 +93,16 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                             value={getEntityDescriptionValue(formValues, data)}
                         />
                     </Col>
-                </Row>
+                </div>
                 {nameExpressionGenIdProps && (
-                    <Row className="margin-top">
+                    <div className="row margin-top">
                         <Col xs={2} />
                         <Col xs={10}>
                             <NameExpressionGenIdBanner {...nameExpressionGenIdProps} />
                         </Col>
-                    </Row>
+                    </div>
                 )}
-                <Row className="margin-bottom">
+                <div className="row margin-bottom">
                     <Col xs={2}>
                         <div className="name-expression-label-div" onMouseEnter={() => onNameFieldHover?.()}>
                             <DomainFieldLabel
@@ -135,7 +135,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                             value={getEntityNameExpressionValue(formValues, data)}
                         />
                     </Col>
-                </Row>
+                </div>
             </Form>
         );
     }

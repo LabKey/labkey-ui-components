@@ -311,7 +311,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
 
         return (
             <>
-                <Row>
+                <div className="row">
                     <Col xs={12} md={showDetailsPanel ? 8 : 12}>
                         {!model && <LoadingSpinner />}
                         {model && (
@@ -335,7 +335,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                             />
                         </Col>
                     )}
-                </Row>
+                </div>
                 {user.hasAddUsersPermission() && showDialog === 'create' && (
                     <CreateUsersModal
                         userLimitSettings={userLimitSettings}

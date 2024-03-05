@@ -16,7 +16,7 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Checkbox, Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
+import { Checkbox, Col, Form, FormControl, Panel } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';
@@ -811,7 +811,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             }
 
             return (
-                <Row className="domain-add-field-row">
+                <div className="row domain-add-field-row">
                     <Col xs={12}>
                         <AddEntityButton
                             entity="Field"
@@ -820,7 +820,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             onClick={this.onAddField}
                         />
                     </Col>
-                </Row>
+                </div>
             );
         }
 
@@ -1096,7 +1096,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                 <div className="domain-field-row domain-row-border-default domain-floating-hdr">
                     <Alert bsStyle="info">{reservedFieldsMsg}</Alert>
-                    <Row>
+                    <div className="row">
                         <div className="domain-field-header">
                             {visibleSelection.size} {fieldPlural} selected
                             <button
@@ -1108,8 +1108,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 {clearText}
                             </button>
                         </div>
-                    </Row>
-                    <Row className="domain-row-container">
+                    </div>
+                    <div className="row domain-row-container">
                         <div className="domain-row-handle" />
                         <div className="domain-row-action-section">
                             <Checkbox
@@ -1134,7 +1134,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 <b>Details</b>
                             </Col>
                         </div>
-                    </Row>
+                    </div>
                 </div>
                 <Droppable droppableId="domain-form-droppable">
                     {provided => (
@@ -1280,7 +1280,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 )}
 
                                 {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) && (
-                                    <Row className="domain-field-toolbar">
+                                    <div className="row domain-field-toolbar">
                                         <Col xs={4}>
                                             {!domainFormDisplayOptions?.hideAddFieldsButton && (
                                                 <AddEntityButton
@@ -1341,10 +1341,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 )}
                                             </div>
                                         </Col>
-                                    </Row>
+                                    </div>
                                 )}
 
-                                <Row className={helpTopic ? 'domain-form-hdr-margins' : ''}>
+                                <div className={helpTopic ? 'row domain-form-hdr-margins' : 'row'}>
                                     <Col xs={helpTopic ? 9 : 12} />
                                     {helpTopic && (
                                         <Col xs={3}>
@@ -1353,7 +1353,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                             </HelpLink>
                                         </Col>
                                     )}
-                                </Row>
+                                </div>
 
                                 {!summaryViewMode &&
                                     appDomainHeaderRenderer &&

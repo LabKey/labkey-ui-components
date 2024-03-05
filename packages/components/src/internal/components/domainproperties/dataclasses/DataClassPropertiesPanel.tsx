@@ -176,7 +176,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                 isValid={isValid}
                 warning={warning}
             >
-                <Row className="margin-bottom">
+                <div className="row margin-bottom">
                     {headerText && (
                         <Col xs={9}>
                             <div className="entity-form--headerhelp">{headerText}</div>
@@ -185,7 +185,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     <Col xs={headerText ? 3 : 12}>
                         <HelpTopicURL helpTopic={helpTopic} nounPlural={nounPlural} />
                     </Col>
-                </Row>
+                </div>
                 <EntityDetailsForm
                     noun={nounSingular}
                     onFormChange={this.onFormChange}
@@ -213,7 +213,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     />
                 )}
                 {!appPropertiesOnly && (
-                    <Row>
+                    <div className="row">
                         <Col xs={2}>
                             <DomainFieldLabel label="Category" />
                         </Col>
@@ -229,10 +229,10 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                                 showLabel={false}
                             />
                         </Col>
-                    </Row>
+                    </div>
                 )}
                 {!appPropertiesOnly && (
-                    <Row>
+                    <div className="row">
                         <Col xs={2}>
                             <DomainFieldLabel
                                 label="Sample Type"
@@ -249,7 +249,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                                 showLabel={false}
                             />
                         </Col>
-                    </Row>
+                    </div>
                 )}
             </BasePropertiesPanel>
         );

@@ -17,7 +17,7 @@ export const MembersList: FC<Props> = memo(props => {
     ) : (
         <>
             <hr className="principal-hr" />
-            <Row>
+            <div className="row">
                 <Col xs={4} className="principal-detail-label">
                     Members
                 </Col>
@@ -34,7 +34,7 @@ export const MembersList: FC<Props> = memo(props => {
                         ))}
                     </ul>
                 </Col>
-            </Row>
+            </div>
         </>
     );
 });

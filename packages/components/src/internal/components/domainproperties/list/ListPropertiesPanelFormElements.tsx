@@ -12,7 +12,7 @@ interface BasicPropertiesInputsProps {
 }
 
 export const NameInput: FC<BasicPropertiesInputsProps> = memo(({ model, onInputChange }) => (
-    <Row className="margin-top">
+    <div className="row margin-top">
         <Col xs={3} lg={2}>
             <DomainFieldLabel
                 label="Name"
@@ -32,11 +32,11 @@ export const NameInput: FC<BasicPropertiesInputsProps> = memo(({ model, onInputC
         </Col>
 
         <Col lg={2} />
-    </Row>
+    </div>
 ));
 
 export const DescriptionInput: FC<BasicPropertiesInputsProps> = memo(({ model, onInputChange }) => (
-    <Row className="margin-top">
+    <div className="row margin-top">
         <Col xs={3} lg={2}>
             <DomainFieldLabel label="Description" />
         </Col>
@@ -51,7 +51,7 @@ export const DescriptionInput: FC<BasicPropertiesInputsProps> = memo(({ model, o
         </Col>
 
         <Col lg={2} />
-    </Row>
+    </div>
 ));
 
 export const BasicPropertiesFields: FC<BasicPropertiesInputsProps> = memo(({ model, onInputChange }) => (

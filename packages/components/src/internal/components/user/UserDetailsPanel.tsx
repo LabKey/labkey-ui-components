@@ -38,14 +38,14 @@ interface UserDetailRowProps {
 
 const UserDetailRow: FC<UserDetailRowProps> = ({ label, value }) => {
     return (
-        <Row>
+        <div className="row">
             <Col xs={4} className="principal-detail-label">
                 {label}
             </Col>
             <Col xs={8} className="principal-detail-value">
                 {value}
             </Col>
-        </Row>
+        </div>
     );
 };
 

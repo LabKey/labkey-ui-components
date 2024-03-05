@@ -98,9 +98,9 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
     return (
         <Form>
             {children && (
-                <Row>
+                <div className="row">
                     <Col xs={12}>{children}</Col>
-                </Row>
+                </div>
             )}
 
             <Col xs={12} lg={hideAdvancedProperties ? 12 : 6}>

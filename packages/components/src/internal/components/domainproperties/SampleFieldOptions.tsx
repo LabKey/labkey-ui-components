@@ -67,12 +67,12 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
 
         return (
             <div>
-                <Row>
+                <div className="row">
                     <Col xs={12}>
                         <SectionHeading title={label} />
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={5}>
                         <div className="domain-field-label">
                             Sample lookup to
@@ -93,8 +93,8 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                             </LabelHelpTip>
                         </div>
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={5}>
                         <FormControl
                             componentClass="select"
@@ -135,7 +135,7 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                                     .toArray()}
                         </FormControl>
                     </Col>
-                </Row>
+                </div>
             </div>
         );
     }

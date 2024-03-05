@@ -42,7 +42,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
         const { validatorIndex, domainIndex } = this.props;
 
         return (
-            <Row className="domain-validator-filter-row">
+            <div className="row domain-validator-filter-row">
                 <Col xs={this.labelWidth}>
                     <div>{label}</div>
                 </Col>
@@ -59,7 +59,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                         />
                     </div>
                 </Col>
-            </Row>
+            </div>
         );
     };
 
@@ -128,7 +128,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                         {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validator.description)}
                         {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validator.errorMessage)}
 
-                        <Row>
+                        <div className="row">
                             <Col xs={this.labelWidth}>
                                 <div>Name *</div>
                             </Col>
@@ -141,9 +141,9 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                                     onChange={this.onChange}
                                 />
                             </Col>
-                        </Row>
+                        </div>
 
-                        <Row>
+                        <div className="row">
                             <Col xs={12}>
                                 <button
                                     className="domain-validation-delete btn btn-default"
@@ -155,7 +155,7 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                                     Remove Validator
                                 </button>
                             </Col>
-                        </Row>
+                        </div>
                     </div>
                 )}
                 {!expanded && (

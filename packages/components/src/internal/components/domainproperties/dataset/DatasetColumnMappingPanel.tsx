@@ -139,7 +139,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                     Columns already existing in the base dataset can be mapped with columns from your file. Choose a
                     column to map your {participantIdTxt} and {timepointTxt}.
                 </div>
-                <Row className="margin-top">
+                <div className="row margin-top">
                     <Col lg={2} xs={2}>
                         <DomainFieldLabel label={participantIdTxt} />
                     </Col>
@@ -157,8 +157,8 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                         />
                     </Col>
                     <Col lg={6} xs={5} />
-                </Row>
-                <Row className="margin-top">
+                </div>
+                <div className="row margin-top">
                     <Col lg={2} xs={2}>
                         <DomainFieldLabel label={timepointTxt} />
                     </Col>
@@ -176,7 +176,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                         />
                     </Col>
                     <Col lg={6} xs={5} />
-                </Row>
+                </div>
             </>
         );
     }

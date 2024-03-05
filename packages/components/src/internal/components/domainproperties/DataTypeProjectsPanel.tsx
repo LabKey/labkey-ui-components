@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 
 import { hasProductProjects } from '../../app/utils';
 
@@ -161,7 +161,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
             {isLoading(loading) ? (
                 <LoadingSpinner />
             ) : (
-                <Row>
+                <div className="row">
                     {!relatedProjectConfigurableDataType && (
                         <Col xs={12} className="bottom-spacing">
                             <DataTypeSelector
@@ -201,7 +201,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                             </Col>
                         </>
                     )}
-                </Row>
+                </div>
             )}
         </BasePropertiesPanel>
     );

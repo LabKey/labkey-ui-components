@@ -47,7 +47,7 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
         const value = model.description === null ? '' : model.description;
 
         return (
-            <Row className="margin-top">
+            <div className="row margin-top">
                 <Col xs={4}>
                     <DomainFieldLabel label="Description" />
                 </Col>
@@ -57,7 +57,7 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
                 </Col>
 
                 <Col xs={1} />
-            </Row>
+            </div>
         );
     }
 }
@@ -120,7 +120,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
 
                 <DescriptionInput model={model} onInputChange={onInputChange} />
 
-                <Row className="margin-top">
+                <div className="row margin-top">
                     <Col xs={4}>
                         <DomainFieldLabel
                             label="Category"
@@ -144,7 +144,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     </Col>
 
                     <Col xs={1} />
-                </Row>
+                </div>
             </>
         );
     }

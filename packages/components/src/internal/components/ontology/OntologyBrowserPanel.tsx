@@ -197,7 +197,7 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
     const root = ontology.getPathModel();
 
     const body = (
-        <Row className={hideConceptInfo ? 'filter-panel-row' : ''}>
+        <div className={hideConceptInfo ? 'row filter-panel-row' : 'row'}>
             <Col xs={hideConceptInfo ? 12 : 6} className={hideConceptInfo ? '' : 'left-panel'}>
                 <OntologyTreeSearchContainer ontology={ontology} searchPathClickHandler={setSelectedPath} />
                 <OntologyTreePanel
@@ -218,7 +218,7 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
                     />
                 </Col>
             )}
-        </Row>
+        </div>
     );
 
     if (!asPanel) {

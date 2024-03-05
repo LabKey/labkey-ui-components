@@ -205,7 +205,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
 
                     return (
                         <Fragment key={view.name}>
-                            <Row className="small-margin-bottom">
+                            <div className="row small-margin-bottom">
                                 <Col xs={8}>
                                     {selectedView && selectedView?.name === view.name ? (
                                         <ViewNameInput
@@ -263,9 +263,9 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                         </span>
                                     )}
                                 </Col>
-                            </Row>
+                            </div>
                             {deleting === view && (
-                                <Row className="bottom-spacing">
+                                <div className="row bottom-spacing">
                                     <Col xs={12}>
                                         <div className="inline-confirmation">
                                             <div>
@@ -291,7 +291,7 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                             </div>
                                         </div>
                                     </Col>
-                                </Row>
+                                </div>
                             )}
                         </Fragment>
                     );

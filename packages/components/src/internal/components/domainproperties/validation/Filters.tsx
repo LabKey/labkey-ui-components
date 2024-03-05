@@ -311,7 +311,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
 
         return (
             <>
-                <Row className="domain-validator-filter-type-row">
+                <div className="row domain-validator-filter-type-row">
                     <Col xs={this.labelWidth}>
                         <div id="domain-filter-type-label-1">
                             {firstFilterTypeLabel}
@@ -342,8 +342,8 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                             </FormControl>
                         </div>
                     </Col>
-                </Row>
-                <Row className="domain-validator-filter-row">
+                </div>
+                <div className="row domain-validator-filter-row">
                     <Col xs={this.labelWidth}>
                         <div id="domain-filter-value-label-1">
                             {firstFilterValueLabel !== undefined ? firstFilterValueLabel : 'Filter Value'}
@@ -362,8 +362,8 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                             />
                         </div>
                     </Col>
-                </Row>
-                <Row className="domain-validator-filter-type-row">
+                </div>
+                <div className="row domain-validator-filter-type-row">
                     <Col xs={this.labelWidth}>
                         <div id="domain-filter-type-label-2">
                             {secondFilterTypeLabel}
@@ -387,8 +387,8 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                             </FormControl>
                         </div>
                     </Col>
-                </Row>
-                <Row className="domain-validator-filter-bottom">
+                </div>
+                <div className="row domain-validator-filter-bottom">
                     <Col xs={this.labelWidth}>
                         <div id="domain-filter-value-label-2">
                             {secondFilterValueLabel !== undefined ? secondFilterValueLabel : 'Filter Value'}
@@ -406,7 +406,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                             />
                         </div>
                     </Col>
-                </Row>
+                </div>
             </>
         );
     }

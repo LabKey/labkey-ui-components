@@ -71,14 +71,14 @@ export const GroupsList: FC<Props> = memo(props => {
     return (
         <>
             <hr className="principal-hr" />
-            <Row>
+            <div className="row">
                 <Col xs={4} className="principal-detail-label">
                     Groups
                 </Col>
                 <Col xs={8} className="principal-detail-value">
                     {body}
                 </Col>
-            </Row>
+            </div>
         </>
     );
 });

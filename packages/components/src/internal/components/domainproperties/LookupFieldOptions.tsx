@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Col, Row } from 'react-bootstrap';
+import { Checkbox, Col } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
@@ -82,12 +82,12 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
 
         return (
             <div>
-                <Row>
+                <div className="row">
                     <Col xs={12}>
                         <div className="domain-field-section-heading">{label}</div>
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     {!isUserLookup && (
                         <>
                             <Col xs={2}>
@@ -146,7 +146,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             </LabelHelpTip>
                         </Checkbox>
                     </Col>
-                </Row>
+                </div>
             </div>
         );
     }

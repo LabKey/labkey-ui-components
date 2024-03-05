@@ -150,12 +150,12 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
 
         return (
             <div>
-                <Row>
+                <div className="row">
                     <Col xs={12}>
                         <SectionHeading title={label} />
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={5}>
                         <div className="domain-field-label">
                             Choose an Ontology
@@ -192,8 +192,8 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                             </LabelHelpTip>
                         </div>
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={5}>
                         <FormControl
                             componentClass="select"
@@ -257,7 +257,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                             onFieldChange={this.onFieldChange}
                         />
                     </Col>
-                </Row>
+                </div>
             </div>
         );
     }

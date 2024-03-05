@@ -1,6 +1,6 @@
 import React from 'react';
 import { List } from 'immutable';
-import { Checkbox, Col, FormControl, Row } from 'react-bootstrap';
+import { Checkbox, Col, FormControl } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
 import { Modal } from '../../Modal';
@@ -297,7 +297,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return (
             <>
                 <div className="domain-adv-misc-options">Default Value Options</div>
-                <Row className="domain-adv-thick-row">
+                <div className="row domain-adv-thick-row">
                     <Col xs={3}>
                         <DomainFieldLabel label="Default Type" helpTipBody={this.getDefaultTypeHelpText()} />
                     </Col>
@@ -317,8 +317,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </FormControl>
                     </Col>
                     <Col xs={3} />
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={3}>
                         <span>Default Value</span>
                     </Col>
@@ -336,7 +336,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             Set Default Values
                         </a>
                     </Col>
-                </Row>
+                </div>
             </>
         );
     };
@@ -362,7 +362,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return (
             <>
                 <div className="domain-adv-misc-options">Miscellaneous Options</div>
-                <Row>
+                <div className="row">
                     <Col xs={3}>
                         <DomainFieldLabel label="PHI Level" helpTipBody={this.getPhiHelpText()} />
                     </Col>
@@ -388,7 +388,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </FormControl>
                     </Col>
                     <Col xs={3} />
-                </Row>
+                </div>
                 {field.dataType === DATETIME_TYPE && (
                     <Checkbox
                         checked={excludeFromShifting}

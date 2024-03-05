@@ -90,19 +90,19 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
 
         return (
             <div>
-                <Row>
+                <div className="row">
                     <Col xs={12}>
                         <SectionHeading title={label} />
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={12}>
                         <div className="domain-field-label">
                             <DomainFieldLabel label="Maximum Text Length" helpTipBody={this.getMaxCountHelpText()} />
                         </div>
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={12} className="domain-text-options-col">
                         <FormControl
                             type="radio"
@@ -115,8 +115,8 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                         />
                         <div>Unlimited</div>
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={12}>
                         <FormControl
                             type="radio"
@@ -130,7 +130,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                             No longer than {textOptionsFormControl} characters
                         </span>
                     </Col>
-                </Row>
+                </div>
                 <ScannableOption {...this.props} />
             </div>
         );

@@ -27,7 +27,7 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
 
     return (
         <>
-            <Row>
+            <div className="row">
                 <Col xs={3}>
                     <div className="domain-field-label">
                         <DomainFieldLabel
@@ -41,8 +41,8 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
                         />
                     </div>
                 </Col>
-            </Row>
-            <Row>
+            </div>
+            <div className="row">
                 <Col xs={12} className="domain-text-options-col">
                     <FormControl
                         type="checkbox"
@@ -55,7 +55,7 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
                     />
                     <span>Search this field when scanning samples</span>
                 </Col>
-            </Row>
+            </div>
         </>
     );
 });

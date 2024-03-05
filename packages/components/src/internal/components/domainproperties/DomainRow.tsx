@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { ReactNode, RefObject } from 'react';
-import { Checkbox, Col, Collapse, FormControl, Row } from 'react-bootstrap';
+import { Checkbox, Col, Collapse, FormControl } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
@@ -486,7 +486,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                         ref={provided.innerRef}
                         tabIndex={index}
                     >
-                        <Row key={createFormInputId('domainrow', domainIndex, index)} className="domain-row-container">
+                        <div key={createFormInputId('domainrow', domainIndex, index)} className="row domain-row-container">
                             {showAdv && (
                                 <AdvancedSettings
                                     domainIndex={domainIndex}
@@ -546,7 +546,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     {this.renderButtons()}
                                 </Col>
                             </div>
-                        </Row>
+                        </div>
                         <Collapse
                             in={expanded}
                             timeout={expandTransition}

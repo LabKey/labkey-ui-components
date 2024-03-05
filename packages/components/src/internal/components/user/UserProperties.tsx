@@ -10,13 +10,13 @@ export const UserProperties: FC<Props> = memo(props => {
     const { prop, title } = props;
 
     return (
-        <Row>
+        <div className="row">
             <Col xs={4} className="principal-detail-label">
                 {title}
             </Col>
             <Col xs={8} className="principal-detail-value">
                 {prop}
             </Col>
-        </Row>
+        </div>
     );
 });

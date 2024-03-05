@@ -170,16 +170,16 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     </div>
                 )}
                 {!allShown && (
-                    <Row>
+                    <div className="row">
                         <Col xs={12} className="bottom-spacing">
                             <div>
                                 There are more than {MAX_DISTINCT_FILTER_OPTIONS} distinct values. Use the filter box
                                 above to find additional values.
                             </div>
                         </Col>
-                    </Row>
+                    </div>
                 )}
-                <Row>
+                <div className="row">
                     <Col xs={taggedValues?.length > 0 ? 6 : 12}>
                         {loading && <LoadingSpinner />}
                         {!loading && (
@@ -239,7 +239,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                             </ul>
                         </Col>
                     )}
-                </Row>
+                </div>
             </div>
         </>
     );

@@ -322,7 +322,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                 isValid={isValid}
                 warning={warning}
             >
-                <Row className="margin-bottom">
+                <div className="row margin-bottom">
                     {headerText && (
                         <Col xs={9}>
                             <div className="entity-form--headerhelp">{headerText}</div>
@@ -331,7 +331,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                     <Col xs={headerText ? 3 : 12}>
                         <HelpTopicURL helpTopic={helpTopic} nounPlural={nounPlural} />
                     </Col>
-                </Row>
+                </div>
                 {appPropertiesOnly && <SectionHeading title="General Properties" />}
                 <EntityDetailsForm
                     noun={nounSingular}
@@ -348,7 +348,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                     nameExpressionGenIdProps={nameExpressionGenIdProps}
                 />
                 {showAliquotNameExpression && (
-                    <Row className="margin-bottom">
+                    <div className="row margin-bottom">
                         <Col xs={2}>
                             <div onMouseEnter={this.onNameFieldHover}>
                                 <DomainFieldLabel
@@ -398,7 +398,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                 value={model.aliquotNameExpression}
                             />
                         </Col>
-                    </Row>
+                    </div>
                 )}
                 <DomainParentAliases
                     {...this.props}
@@ -424,7 +424,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                 )}
                 {allowTimepointProperties && showLinkToStudy && (
                     <>
-                        <Row className="margin-top">
+                        <div className="row margin-top">
                             <Col xs={2}>
                                 <DomainFieldLabel
                                     label="Auto-Link Data to Study"
@@ -439,8 +439,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                     value={model.autoLinkTargetContainerId}
                                 />
                             </Col>
-                        </Row>
-                        <Row className="margin-top">
+                        </div>
+                        <div className="row margin-top">
                             <Col xs={2}>
                                 <DomainFieldLabel
                                     label="Linked Dataset Category"
@@ -456,7 +456,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                     value={model.autoLinkCategory || ''}
                                 />
                             </Col>
-                        </Row>
+                        </div>
                     </>
                 )}
 
@@ -465,7 +465,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                 )}
                 {appPropertiesOnly && (
                     <>
-                        <Row className="margin-top">
+                        <div className="row margin-top">
                             <Col xs={2}>
                                 <DomainFieldLabel
                                     label="Label Color"
@@ -480,9 +480,9 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                     allowRemove
                                 />
                             </Col>
-                        </Row>
+                        </div>
                         {includeMetricUnitProperty && (
-                            <Row className="margin-top">
+                            <div className="row margin-top">
                                 <Col xs={2}>
                                     <DomainFieldLabel
                                         label={metricUnitLabel}
@@ -521,19 +521,19 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                         />
                                     )}
                                 </Col>
-                            </Row>
+                            </div>
                         )}
                     </>
                 )}
                 {!isCommunityDistribution() && (
-                    <Row className="margin-top">
+                    <div className="row margin-top">
                         <Col xs={2}>
                             <DomainFieldLabel label="Barcodes" helpTipBody={<UniqueIdHelpTip />} />
                         </Col>
                         <Col xs={10}>
                             <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField} />
                         </Col>
-                    </Row>
+                    </div>
                 )}
             </BasePropertiesPanel>
         );

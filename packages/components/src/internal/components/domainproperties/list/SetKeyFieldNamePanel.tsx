@@ -104,7 +104,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                     Select a key value for this list which uniquely identifies the item. You can use "
                     {AUTO_INC_KEY_OPTION_TEXT}" to define your own below.
                 </div>
-                <Row className="list__set-key-panel">
+                <div className="row list__set-key-panel">
                     <Col xs={3}>
                         <DomainFieldLabel
                             label="Key Field Name"
@@ -142,7 +142,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                                 })}
                         </FormControl>
                     </Col>
-                </Row>
+                </div>
             </Alert>
         );
     }

@@ -213,12 +213,12 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                 isValid={isValid}
                 updateValidStatus={this.updateValidStatus}
             >
-                <Row className="margin-bottom">
+                <div className="row margin-bottom">
                     <Col xs={12}>
                         <HelpTopicURL helpTopic={DEFINE_DATASET_TOPIC} nounPlural="datasets" />
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={12} md={5}>
                         <BasicPropertiesFields
                             model={model}
@@ -245,7 +245,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                             visitDatePropertyIndex={visitDatePropertyIndex}
                         />
                     </Col>
-                </Row>
+                </div>
             </BasePropertiesPanel>
         );
     }

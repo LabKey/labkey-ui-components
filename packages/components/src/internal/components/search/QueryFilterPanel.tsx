@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import { fromJS, List } from 'immutable';
 import classNames from 'classnames';
 
@@ -337,7 +337,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     );
 
     if (asRow) {
-        return <Row className="field-modal__container">{body}</Row>;
+        return <div className="row field-modal__container">{body}</div>;
     } else {
         return body;
     }

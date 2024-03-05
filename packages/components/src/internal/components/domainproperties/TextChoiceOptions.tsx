@@ -188,27 +188,27 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
 
     return (
         <div>
-            <Row>
+            <div className="row">
                 <Col xs={12}>
                     <SectionHeading title={label} />
                 </Col>
-            </Row>
-            <Row>
+            </div>
+            <div className="row">
                 <Col xs={12}>
                     <div className="domain-field-label">
                         <DomainFieldLabel label="Drop-down Values" helpTipBody={HELP_TIP_BODY} />
                     </div>
                 </Col>
-            </Row>
+            </div>
             {loading && (
-                <Row>
+                <div className="row">
                     <Col xs={12}>
                         <LoadingSpinner />
                     </Col>
-                </Row>
+                </div>
             )}
             {!loading && (
-                <Row>
+                <div className="row">
                     <Col
                         xs={6}
                         lg={4}
@@ -313,7 +313,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                             </>
                         )}
                     </Col>
-                </Row>
+                </div>
             )}
             {showAddValuesModal && (
                 <TextChoiceAddValuesModal

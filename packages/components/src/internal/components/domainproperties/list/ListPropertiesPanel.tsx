@@ -106,11 +106,11 @@ export class ListPropertiesPanelImpl extends React.PureComponent<
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
             >
-                <Row className="margin-bottom">
+                <div className="row margin-bottom">
                     <Col xs={12}>
                         <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural="lists" />
                     </Col>
-                </Row>
+                </div>
                 <Form>
                     <BasicPropertiesFields model={model} onInputChange={this.onInputChange} />
                     <AllowableActions model={model} onChange={this.onChange} />

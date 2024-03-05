@@ -147,7 +147,7 @@ export class SingularItemNameInput extends PureComponent<IssuesListDefBasicPrope
         const { model, onInputChange } = this.props;
         const value = model.singularItemName === null ? '' : model.singularItemName;
         return (
-            <Row className="margin-top">
+            <div className="row margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel
                         label="Singular Item Name"
@@ -159,7 +159,7 @@ export class SingularItemNameInput extends PureComponent<IssuesListDefBasicPrope
                 <Col xs={9} lg={8}>
                     <FormControl id="singularItemName" type="text" value={value} onChange={onInputChange} />
                 </Col>
-            </Row>
+            </div>
         );
     }
 }
@@ -169,7 +169,7 @@ export class PluralItemNameInput extends PureComponent<IssuesListDefBasicPropert
         const { model, onInputChange } = this.props;
         const value = model.pluralItemName === null ? '' : model.pluralItemName;
         return (
-            <Row className="margin-top">
+            <div className="row margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel
                         label="Plural Items Name"
@@ -181,7 +181,7 @@ export class PluralItemNameInput extends PureComponent<IssuesListDefBasicPropert
                 <Col xs={9} lg={8}>
                     <FormControl id="pluralItemName" type="text" value={value} onChange={onInputChange} />
                 </Col>
-            </Row>
+            </div>
         );
     }
 }
@@ -202,7 +202,7 @@ export class CommentSortDirectionDropDown extends PureComponent<IssuesListDefBas
         ];
 
         return (
-            <Row className="margin-top">
+            <div className="row margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel
                         label="Comment Sort Direction"
@@ -222,7 +222,7 @@ export class CommentSortDirectionDropDown extends PureComponent<IssuesListDefBas
                         clearable={false}
                     />
                 </Col>
-            </Row>
+            </div>
         );
     }
 }
@@ -238,7 +238,7 @@ export class AssignedToGroupInput extends PureComponent<AssignmentOptionsInputPr
         const { model, coreGroups } = this.props;
 
         return (
-            <Row className="margin-top">
+            <div className="row margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel
                         label="Populate ‘Assigned To’ Field from"
@@ -262,7 +262,7 @@ export class AssignedToGroupInput extends PureComponent<AssignmentOptionsInputPr
                         />
                     )}
                 </Col>
-            </Row>
+            </div>
         );
     }
 }
@@ -276,7 +276,7 @@ export class DefaultUserAssignmentInput extends PureComponent<AssignmentOptionsI
         const { model, coreUsers } = this.props;
 
         return (
-            <Row className="margin-top">
+            <div className="row margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel
                         label="Default User Assignment"
@@ -300,7 +300,7 @@ export class DefaultUserAssignmentInput extends PureComponent<AssignmentOptionsI
                         />
                     )}
                 </Col>
-            </Row>
+            </div>
         );
     }
 }
@@ -314,7 +314,7 @@ export class DefaultRelatedFolderInput extends PureComponent<AssignmentOptionsIn
         const { model, relatedFolders } = this.props;
 
         return (
-            <Row className="margin-top">
+            <div className="row margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel
                         label="Default Related Issue Folder"
@@ -338,7 +338,7 @@ export class DefaultRelatedFolderInput extends PureComponent<AssignmentOptionsIn
                         />
                     )}
                 </Col>
-            </Row>
+            </div>
         );
     }
 }
@@ -348,7 +348,7 @@ export class RestrictedIssueInput extends PureComponent<RestrictedOptionsProps> 
         const { model, onCheckChange } = this.props;
 
         return (
-            <Row className="margin-top">
+            <div className="row margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel label="Restrict Issue List" helpTipBody={ISSUES_LIST_RESTRICTED_TRACKER_TIP} />
                 </Col>
@@ -360,7 +360,7 @@ export class RestrictedIssueInput extends PureComponent<RestrictedOptionsProps> 
                         onChange={onCheckChange}
                     />
                 </Col>
-            </Row>
+            </div>
         );
     }
 }
@@ -387,7 +387,7 @@ export class RestrictedIssueGroupInput extends PureComponent<RestrictedOptionsPr
         const { coreGroups } = this.state;
 
         return (
-            <Row className="margin-top">
+            <div className="row margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel
                         label="Additional Group with Access"
@@ -411,7 +411,7 @@ export class RestrictedIssueGroupInput extends PureComponent<RestrictedOptionsPr
                         />
                     )}
                 </Col>
-            </Row>
+            </div>
         );
     }
 }

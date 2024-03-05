@@ -100,7 +100,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
         const { validatorIndex, domainIndex } = this.props;
 
         return (
-            <Row>
+            <div className="row">
                 <Col xs={12} className="domain-validation-display-checkbox-row">
                     <Checkbox
                         id={createFormInputId(name, domainIndex, validatorIndex)}
@@ -111,7 +111,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                         {label}
                     </Checkbox>
                 </Col>
-            </Row>
+            </div>
         );
     };
 
@@ -153,7 +153,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
         const fillColor = validator.backgroundColor ? '#' + validator.backgroundColor : 'white';
 
         return (
-            <Row className="domain-validator-color-row">
+            <div className="row domain-validator-color-row">
                 <Col xs={4}>
                     {this.getColorPickerButton(
                         DOMAIN_CONDITION_FORMAT_TEXT_COLOR,
@@ -187,7 +187,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                         }}
                     />
                 </Col>
-            </Row>
+            </div>
         );
     };
 
@@ -257,7 +257,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
 
                         {this.renderColorPickers()}
 
-                        <Row className="domain-validator-color-row">
+                        <div className="row domain-validator-color-row">
                             <Col xs={12}>
                                 <button
                                     className="domain-validation-delete btn btn-default"
@@ -269,7 +269,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                                     Remove Formatting
                                 </button>
                             </Col>
-                        </Row>
+                        </div>
                     </div>
                 )}
                 {!expanded && (

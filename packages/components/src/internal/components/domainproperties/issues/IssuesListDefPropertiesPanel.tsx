@@ -128,11 +128,11 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
             >
-                <Row className="margin-bottom">
+                <div className="row margin-bottom">
                     <Col xs={12}>
                         <HelpTopicURL helpTopic={DEFINE_ISSUES_LIST_TOPIC} nounPlural="issues lists" />
                     </Col>
-                </Row>
+                </div>
                 <Form>
                     <Col xs={12} md={6}>
                         <div className="domain-field-padding-bottom">

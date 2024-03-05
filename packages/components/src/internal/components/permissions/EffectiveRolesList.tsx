@@ -47,7 +47,7 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
         return (
             <>
                 <hr className="principal-hr" />
-                <Row>
+                <div className="row">
                     <Col xs={4} className="principal-detail-label">
                         Effective Roles
                     </Col>
@@ -76,7 +76,7 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
                             })}
                         </ul>
                     </Col>
-                </Row>
+                </div>
             </>
         );
     }

@@ -49,7 +49,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         const { validatorIndex, domainIndex } = this.props;
 
         return (
-            <Row className="domain-validator-filter-row">
+            <div className="row domain-validator-filter-row">
                 <Col xs={this.labelWidth}>
                     <div>
                         {label}
@@ -73,7 +73,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                         />
                     </div>
                 </Col>
-            </Row>
+            </div>
         );
     };
 
@@ -131,7 +131,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                             'Error Message',
                             'The message that will be displayed to the user in the event that validation fails for this field.'
                         )}
-                        <Row>
+                        <div className="row">
                             <Col xs={this.labelWidth} />
                             <Col xs={this.fieldWidth} className="domain-validation-failOnMatch-row">
                                 <Checkbox
@@ -148,8 +148,8 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                                     </LabelHelpTip>
                                 </Checkbox>
                             </Col>
-                        </Row>
-                        <Row>
+                        </div>
+                        <div className="row">
                             <Col xs={this.labelWidth}>
                                 <div>Name *</div>
                             </Col>
@@ -162,8 +162,8 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                                     onChange={this.onChange}
                                 />
                             </Col>
-                        </Row>
-                        <Row>
+                        </div>
+                        <div className="row">
                             <Col xs={12}>
                                 <button
                                     className="domain-validation-delete btn btn-default"
@@ -175,7 +175,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                                     Remove Validator
                                 </button>
                             </Col>
-                        </Row>
+                        </div>
                     </div>
                 )}
                 {!expanded && (

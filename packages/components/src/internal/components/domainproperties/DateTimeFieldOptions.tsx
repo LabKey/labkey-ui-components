@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { Col, FormControl } from 'react-bootstrap';
 
 import { DATE_FORMATS_TOPIC, HelpLink, JavaDocsLink } from '../../util/helpLinks';
 
@@ -54,20 +54,20 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
         const noun = type === 'time' ? 'Times' : 'Dates';
         return (
             <div>
-                <Row>
+                <div className="row">
                     <Col xs={12}>
                         <SectionHeading title={label} />
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={3}>
                         <div className="domain-field-label">
                             <DomainFieldLabel label={'Format for ' + noun} helpTipBody={this.getFormatHelpText()} />
                         </div>
                     </Col>
                     <Col xs={9} />
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={3}>
                         <FormControl
                             type="text"
@@ -79,7 +79,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                         />
                     </Col>
                     <Col xs={9} />
-                </Row>
+                </div>
             </div>
         );
     }

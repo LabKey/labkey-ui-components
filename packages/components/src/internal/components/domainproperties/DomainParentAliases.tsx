@@ -2,7 +2,7 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 're
 
 import { OrderedMap } from 'immutable';
 
-import { Col, Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 
 import { IParentAlias, IParentOption } from '../entities/models';
 import { SCHEMAS } from '../../schemas';
@@ -150,7 +150,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
                 />
             ))}
             {showAddBtn && (
-                <Row>
+                <div className="row">
                     <Col xs={2} />
                     <Col xs={10}>
                         <span>
@@ -161,7 +161,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
                             />
                         </span>
                     </Col>
-                </Row>
+                </div>
             )}
         </>
     );

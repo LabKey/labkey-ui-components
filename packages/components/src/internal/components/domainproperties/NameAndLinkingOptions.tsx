@@ -1,5 +1,5 @@
 import React, { ReactNode, PureComponent } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { Col, FormControl } from 'react-bootstrap';
 
 import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
@@ -69,12 +69,12 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
 
         return (
             <div>
-                <Row>
+                <div className="row">
                     <Col xs={12}>
                         <SectionHeading title="Name and Linking Options" cls="domain-field-section-hdr" />
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={5}>
                         <div className="domain-field-label">Description</div>
                         <FormControl
@@ -136,7 +136,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             />
                         )}
                     </Col>
-                </Row>
+                </div>
             </div>
         );
     }

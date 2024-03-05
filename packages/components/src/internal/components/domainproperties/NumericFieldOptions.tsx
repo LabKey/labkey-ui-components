@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { Col, FormControl } from 'react-bootstrap';
 
 import { HelpLink, JavaDocsLink, NUMBER_FORMATS_TOPIC } from '../../util/helpLinks';
 
@@ -45,12 +45,12 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
 
         return (
             <div>
-                <Row>
+                <div className="row">
                     <Col xs={12}>
                         <SectionHeading title={label} />
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={3}>
                         <div className="domain-field-label">
                             <DomainFieldLabel label="Format for Numbers" helpTipBody={this.getFormatHelpText()} />
@@ -59,8 +59,8 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
                     <Col xs={2}>
                         <div className="domain-field-label">Default Scale Type</div>
                     </Col>
-                </Row>
-                <Row>
+                </div>
+                <div className="row">
                     <Col xs={3}>
                         <FormControl
                             type="text"
@@ -102,7 +102,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
                             </option>
                         </FormControl>
                     </Col>
-                </Row>
+                </div>
                 <ScannableOption {...this.props} />
             </div>
         );

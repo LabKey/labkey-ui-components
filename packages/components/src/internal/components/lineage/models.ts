@@ -779,7 +779,13 @@ function addEdges(
     }
 }
 
-function createVisNode(node: LineageNode, id: string, isSeed: boolean, dir: LINEAGE_DIRECTIONS, depth: number): VisGraphNode {
+function createVisNode(
+    node: LineageNode,
+    id: string,
+    isSeed: boolean,
+    dir: LINEAGE_DIRECTIONS,
+    depth: number
+): VisGraphNode {
     // show the alternate icon image color if this node is the seed or has been selected
     const { image, imageBackup, imageSelected, imageShape } = node.iconProps;
 
@@ -880,7 +886,7 @@ function createCombinedVisNode(
     options: LineageOptions,
     parentNodeName: string,
     dir: LINEAGE_DIRECTIONS,
-    depth: number,
+    depth: number
 ): VisGraphCombinedNode {
     const { combineSize } = options.grouping;
     let typeLabel: string;

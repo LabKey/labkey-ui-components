@@ -5,10 +5,23 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X 2024
 - Support column sizing for editable grid
 
+### version 3.25.2
+*Released*: 5 March 2024
+- Merge release24.3-SNAPSHOT to develop:
+    - includes changes from 3.24.7
+
+### version 3.25.1
+*Released*: 5 March 2024
+- Issue 49801: Lineage: Display hierarchy of nodes by "level"
+
 ### version 3.25.0
 *Released*: 4 March 2024
 - Issue 45315: Allow inferDomainFromFile to take file path string in addition to File prop
 - Issue 49795: App grid column header title to show for all columns instead of just lookups
+
+### version 3.24.7
+*Released*: 1 March 2024
+- Lineage Settings: fix input change handling
 
 ### version 3.24.6
 *Released*: 29 February 2024

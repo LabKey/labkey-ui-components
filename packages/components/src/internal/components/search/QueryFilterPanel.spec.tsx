@@ -17,8 +17,6 @@ import { AssayResultDataType } from '../entities/constants';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { FilterExpressionView } from './FilterExpressionView';
-import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { QueryFilterPanel } from './QueryFilterPanel';
 import { FieldFilter } from './models';
 

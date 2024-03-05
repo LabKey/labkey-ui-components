@@ -13,7 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, Fragment, memo, PureComponent, ReactNode, RefObject, useEffect, useRef } from 'react';
+import React, {
+    CSSProperties,
+    FC,
+    Fragment,
+    memo,
+    PureComponent,
+    ReactNode,
+    RefObject,
+    useEffect,
+    useRef,
+} from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 
@@ -23,7 +33,6 @@ import { GRID_SELECTION_INDEX, GRID_HEADER_CELL_BODY } from '../../constants';
 
 import { LabelHelpTip } from './LabelHelpTip';
 import { GridColumn } from './models/GridColumn';
-import { EditableColumnMetadata } from '../editable/models';
 
 function processColumns(columns: List<any>): List<GridColumn> {
     return columns
@@ -42,13 +51,14 @@ function processColumns(columns: List<any>): List<GridColumn> {
                 align: c.align,
                 cell: c.cell,
                 format: c.jsonType === 'float' || c.jsonType === 'int' ? c.format : undefined,
+                helpTipRenderer: c.helpTipRenderer,
+                hideTooltip: c.helpTipRenderer !== undefined,
                 index: c.index,
+                fixedWidth: c.fixedWidth,
                 raw: c,
                 tableCell: c.tableCell,
                 title: c.title || c.caption,
                 width: c.width,
-                helpTipRenderer: c.helpTipRenderer,
-                hideTooltip: c.helpTipRenderer !== undefined,
             });
         })
         .toList();
@@ -102,7 +112,6 @@ interface GridHeaderProps {
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
     showHeader?: boolean;
     transpose?: boolean;
-    columnMetaData?: Record<number, EditableColumnMetadata>;
 }
 
 interface State {
@@ -148,7 +157,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
     };
 
     render() {
-        const { calcWidths, columns, headerCell, showHeader, transpose, onColumnDrop, columnMetaData } = this.props;
+        const { calcWidths, columns, headerCell, showHeader, transpose, onColumnDrop } = this.props;
         const { dragTarget } = this.state;
 
         if (transpose || !showHeader) {
@@ -159,22 +168,22 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
         return (
             <thead>
                 <tr>
-                    {columns.map((column: GridColumn, i: number) => {
-                        const { headerCls, index, raw, title, width, hideTooltip } = column;
-                        const columnMeta = columnMetaData?.[i];
+                    {columns.map((column, i) => {
+                        const { headerCls, index, fixedWidth, raw, title, width, hideTooltip } = column;
                         const draggable = onColumnDrop !== undefined;
 
-                        let colWidth = columnMeta?.width;
-                        if (colWidth !== undefined) {
-                            colWidth += 'px';
+                        const style: CSSProperties = {};
+                        if (!!fixedWidth) {
+                            style.width = `${fixedWidth}px`;
                         }
-                        let minWidth = columnMeta?.minWidth ?? width;
-                        if (minWidth === undefined) {
+
+                        let colMinWidth = width;
+                        if (colMinWidth === undefined) {
                             // the additional 45px is to account for the grid column header icons for sort/filter and the dropdown toggle
-                            minWidth = calcWidths && title ? Math.max(45 + title.length * 8, 150) : undefined;
+                            colMinWidth = calcWidths && title ? Math.max(45 + title.length * 8, 150) : undefined;
                         }
-                        if (minWidth !== undefined) {
-                            minWidth += 'px';
+                        if (!fixedWidth && colMinWidth !== undefined) {
+                            style.minWidth = `${colMinWidth}px`;
                         }
 
                         if (column.showHeader) {
@@ -191,11 +200,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                     id={index}
                                     key={index}
                                     className={className}
-                                    style={colWidth ? {
-                                        width: colWidth
-                                    } : {
-                                        minWidth
-                                    }}
+                                    style={style}
                                     title={hideTooltip ? undefined : description}
                                     draggable={draggable}
                                     onDragStart={this.handleDragStart}
@@ -215,7 +220,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                 </th>
                             );
                         }
-                        return <th key={index} style={{ minWidth: colWidth }} />;
+                        return <th key={index} style={{ minWidth: style.minWidth }} />;
                     }, this)}
                 </tr>
             </thead>
@@ -248,7 +253,6 @@ interface GridBodyProps {
     loadingText: ReactNode;
     rowKey: any;
     transpose: boolean;
-    columnMetaData?: Record<number, EditableColumnMetadata>;
 }
 
 class GridBody extends PureComponent<GridBodyProps> {
@@ -270,7 +274,7 @@ class GridBody extends PureComponent<GridBodyProps> {
     }
 
     renderRow(row: any, r: number, highlight?: boolean): any {
-        const { columns, rowKey, columnMetaData } = this.props;
+        const { columns, rowKey } = this.props;
         const key = rowKey ? row.get(rowKey) : r;
 
         // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
@@ -284,18 +288,15 @@ class GridBody extends PureComponent<GridBodyProps> {
                     'grid-row': r % 2 === 1,
                 })}
             >
-                {columns.map((column: GridColumn, c: number) => {
-                    const columnMeta = columnMetaData?.[c];
-                    const hasWidthOverride = !!columnMeta?.width || !!columnMeta?.minWidth;
-                    const className = hasWidthOverride && !column.tableCell ? 'grid-col-with-width' : undefined;
-                    return column.tableCell ? (
+                {columns.map((column: GridColumn, c: number) =>
+                    column.tableCell ? (
                         <Fragment key={column.index}>{column.cell(row.get(column.index), row, column, r, c)}</Fragment>
                     ) : (
-                        <td key={column.index} className={className} style={{ textAlign: column.align || 'left' } as any}>
+                        <td key={column.index} style={{ textAlign: column.align || 'left' } as any}>
                             {column.cell(row.get(column.index), row, column, r, c)}
                         </td>
                     )
-                })}
+                )}
             </tr>
         );
     }
@@ -361,7 +362,6 @@ export interface GridProps {
     striped?: boolean;
     tableRef?: RefObject<HTMLTableElement>;
     transpose?: boolean;
-    columnMetaData?: Record<number, EditableColumnMetadata>
 }
 
 export const Grid: FC<GridProps> = memo(props => {
@@ -387,7 +387,6 @@ export const Grid: FC<GridProps> = memo(props => {
         rowKey,
         highlightRowIndexes,
         gridId,
-        columnMetaData
     } = props;
     const gridData = processData(data);
     const gridColumns = columns !== undefined ? processColumns(columns) : resolveColumns(gridData);
@@ -407,7 +406,6 @@ export const Grid: FC<GridProps> = memo(props => {
         onColumnDrop,
         showHeader,
         transpose,
-        columnMetaData
     };
 
     const bodyProps: GridBodyProps = {
@@ -419,7 +417,6 @@ export const Grid: FC<GridProps> = memo(props => {
         rowKey,
         transpose,
         highlightRowIndexes,
-        columnMetaData,
     };
 
     const tableClasses = classNames({

@@ -156,7 +156,8 @@ function inputCellFactory(
     cellActions: CellActions,
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean,
-    initialSelection: string[]
+    initialSelection: string[],
+    queryColumn?: QueryColumn,
 ): GridColumnCellRenderer {
     return (value, row, c, rn, cn) => {
         let colOffset = 0;
@@ -217,7 +218,9 @@ function inputCellFactory(
 
         const focused = editorModel.isFocused(colIdx, rn);
 
-        return (
+        const hasWidthOverride = !!columnMetadata?.width || !!columnMetadata?.minWidth;
+
+        const cell= (
             <Cell
                 borderMaskTop={borderMask[0]}
                 borderMaskRight={borderMask[1]}
@@ -247,6 +250,16 @@ function inputCellFactory(
                 linkedValues={linkedValues}
             />
         );
+
+        if (hasWidthOverride) {
+            return (
+                <td key={queryColumn?.index} className="grid-col-with-width" style={{textAlign: queryColumn?.align || 'left'} as any}>
+                    {cell}
+                </td>
+            )
+        }
+
+        return cell;
     };
 }
 
@@ -776,20 +789,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             return result;
         }, {});
 
-    getGridHeaderColumnMetadata = (columns?: List<GridColumn>): Record<number, EditableColumnMetadata> => {
-        const { queryInfo } = this.props;
-        const lowerColumnMeta = this.getLoweredColumnMetadata();
-        const result = {};
-        columns.forEach((col, ind) => {
-            const column = queryInfo.getColumn(col.index);
-            const key = column == null ? col.index : column.fieldKey;
-            if (lowerColumnMeta?.[key.toLowerCase()]) {
-                result[ind] = lowerColumnMeta?.[key.toLowerCase()]
-            }
-        });
-        return result;
-    }
-
     generateColumns = (): List<GridColumn> => {
         const {
             allowBulkRemove,
@@ -828,6 +827,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         this.getColumns().forEach(qCol => {
             const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
+            let width = 100, fixedWidth = undefined;
+            if (metadata?.minWidth || metadata?.width) {
+                fixedWidth = metadata.width;
+                if (!fixedWidth)
+                    width = metadata.minWidth;
+            }
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
@@ -842,13 +847,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         this.cellActions,
                         metadata?.containerFilter ?? containerFilter,
                         forUpdate,
-                        this.state.initialSelection
+                        this.state.initialSelection,
+                        qCol
                     ),
                     index: qCol.fieldKey,
+                    fixedWidth,
                     raw: qCol,
                     title: metadata?.caption ?? qCol.caption,
-                    width: 100,
+                    width,
                     hideTooltip: metadata?.hideTitleTooltip,
+                    tableCell: !!metadata?.width || !!metadata?.minWidth
                 })
             );
         });
@@ -1625,7 +1633,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         } = this.props;
         const { showBulkAdd, showBulkUpdate, showMask, activeEditTab, selected } = this.state;
 
-        const columns = this.generateColumns();
         const gridContent = (
             <>
                 {!hideTopControls && this.renderTopControls()}
@@ -1639,7 +1646,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         bordered={bordered}
                         calcWidths
                         cellular
-                        columns={columns}
+                        columns={this.generateColumns()}
                         condensed={condensed}
                         data={this.getGridData()}
                         emptyText={emptyGridMsg}
@@ -1647,7 +1654,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         responsive={false}
                         rowKey={GRID_EDIT_INDEX}
                         striped={striped}
-                        columnMetaData={this.getGridHeaderColumnMetadata(columns)}
                     />
                 </div>
                 {allowAdd && this.getControlsPlacement() !== 'top' && this.renderAddRowsControl('bottom')}

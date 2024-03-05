@@ -91,16 +91,18 @@ export const Tabs: FC<TabsProps> = props => {
             const eventKey = child?.props?.eventKey;
             const title = child?.props?.title;
             const disabled = child?.props?.disabled;
-            const tabClassName = classNames({ active: eventKey === activeKey, disabled });
+            const active = eventKey === activeKey;
+            const tabClassName = classNames({ active, disabled });
             return (
                 <li className={tabClassName} key={eventKey} role="presentation">
                     <a
-                        id={tabId(id, eventKey)}
-                        role="tab"
                         aria-controls={paneId(id, eventKey)}
-                        href="#"
+                        aria-selected={active}
                         data-event-key={eventKey}
+                        href="#"
+                        id={tabId(id, eventKey)}
                         onClick={disabled ? cancelEvent : onTabClick}
+                        role="tab"
                     >
                         {title}
                     </a>

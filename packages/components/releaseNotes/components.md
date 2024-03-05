@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.25.1
+*Released*: 5 March 2024
+- Issue 49801: Lineage: Display hierarchy of nodes by "level"
+
 ### version 3.25.0
 *Released*: 4 March 2024
 - Issue 45315: Allow inferDomainFromFile to take file path string in addition to File prop

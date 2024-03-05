@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.25.2
+*Released*: 5 March 2024
+- Merge release24.3-SNAPSHOT to develop:
+    - includes changes from 3.24.7
+
 ### version 3.25.1
 *Released*: 5 March 2024
 - Issue 49801: Lineage: Display hierarchy of nodes by "level"

@@ -172,9 +172,11 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                         const { headerCls, index, fixedWidth, raw, title, width, hideTooltip } = column;
                         const draggable = onColumnDrop !== undefined;
 
-                        const style: CSSProperties = {};
+                        let style: CSSProperties = undefined;
                         if (!!fixedWidth) {
-                            style.width = `${fixedWidth}px`;
+                            style = {
+                                width: `${fixedWidth}px`
+                            };
                         }
 
                         let colMinWidth = width;
@@ -183,6 +185,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                             colMinWidth = calcWidths && title ? Math.max(45 + title.length * 8, 150) : undefined;
                         }
                         if (!fixedWidth && colMinWidth !== undefined) {
+                            if (!style) style = {};
                             style.minWidth = `${colMinWidth}px`;
                         }
 
@@ -220,7 +223,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                 </th>
                             );
                         }
-                        return <th key={index} style={{ minWidth: style.minWidth }} />;
+                        return <th key={index} style={{ minWidth: style?.minWidth }} />;
                     }, this)}
                 </tr>
             </thead>

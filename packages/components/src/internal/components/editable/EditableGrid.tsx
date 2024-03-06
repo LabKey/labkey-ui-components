@@ -93,6 +93,10 @@ function moveUp(colIdx: number, rowIdx: number): CellCoordinates {
     return { colIdx, rowIdx: rowIdx - 1 };
 }
 
+function hasCellWidthOverride(metadata: EditableColumnMetadata): boolean {
+    return !!metadata?.minWidth || !!metadata?.width;
+}
+
 function computeSelectionCellKeys(
     minColIdx: number,
     minRowIdx: number,
@@ -159,7 +163,6 @@ function inputCellFactory(
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean,
     initialSelection: string[],
-    queryColumn?: QueryColumn,
 ): GridColumnCellRenderer {
     return (value, row, c, rn, cn) => {
         let colOffset = 0;
@@ -219,49 +222,39 @@ function inputCellFactory(
         }
 
         const focused = editorModel.isFocused(colIdx, rn);
+        const className = classNames({ 'grid-col-with-width': hasCellWidthOverride(columnMetadata) });
 
-        const hasWidthOverride = !!columnMetadata?.width || !!columnMetadata?.minWidth;
-
-        const cell= (
-            <Cell
-                borderMaskTop={borderMask[0]}
-                borderMaskRight={borderMask[1]}
-                borderMaskBottom={borderMask[2]}
-                borderMaskLeft={borderMask[3]}
-                cellActions={cellActions}
-                col={c.raw}
-                colIdx={colIdx}
-                row={focused ? row : undefined}
-                containerFilter={containerFilter}
-                key={inputCellKey(c.raw, row)}
-                placeholder={columnMetadata?.placeholder}
-                readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
-                locked={isLockedRow}
-                rowIdx={rn}
-                focused={focused}
-                forUpdate={forUpdate}
-                message={editorModel.getMessage(colIdx, rn)}
-                selected={editorModel.isSelected(colIdx, rn)}
-                selection={inSelection}
-                renderDragHandle={renderDragHandle}
-                values={editorModel.getValue(colIdx, rn)}
-                lookupValueFilters={columnMetadata?.lookupValueFilters}
-                filteredLookupValues={columnMetadata?.filteredLookupValues}
-                filteredLookupKeys={columnMetadata?.filteredLookupKeys}
-                getFilteredLookupKeys={columnMetadata?.getFilteredLookupKeys}
-                linkedValues={linkedValues}
-            />
+        return (
+            <td className={className} key={inputCellKey(c.raw, row)} style={{ textAlign: c.align || 'left' } as any}>
+                <Cell
+                    borderMaskTop={borderMask[0]}
+                    borderMaskRight={borderMask[1]}
+                    borderMaskBottom={borderMask[2]}
+                    borderMaskLeft={borderMask[3]}
+                    cellActions={cellActions}
+                    col={c.raw}
+                    colIdx={colIdx}
+                    row={focused ? row : undefined}
+                    containerFilter={containerFilter}
+                    placeholder={columnMetadata?.placeholder}
+                    readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
+                    locked={isLockedRow}
+                    rowIdx={rn}
+                    focused={focused}
+                    forUpdate={forUpdate}
+                    message={editorModel.getMessage(colIdx, rn)}
+                    selected={editorModel.isSelected(colIdx, rn)}
+                    selection={inSelection}
+                    renderDragHandle={renderDragHandle}
+                    values={editorModel.getValue(colIdx, rn)}
+                    lookupValueFilters={columnMetadata?.lookupValueFilters}
+                    filteredLookupValues={columnMetadata?.filteredLookupValues}
+                    filteredLookupKeys={columnMetadata?.filteredLookupKeys}
+                    getFilteredLookupKeys={columnMetadata?.getFilteredLookupKeys}
+                    linkedValues={linkedValues}
+                />
+            </td>
         );
-
-        if (hasWidthOverride) {
-            return (
-                <td key={queryColumn?.index} className="grid-col-with-width" style={{textAlign: queryColumn?.align || 'left'} as any}>
-                    {cell}
-                </td>
-            )
-        }
-
-        return cell;
     };
 }
 
@@ -829,12 +822,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         this.getColumns().forEach(qCol => {
             const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
-            let width = 100, fixedWidth = undefined;
-            if (metadata?.minWidth || metadata?.width) {
+
+            let width = 100;
+            let fixedWidth = undefined;
+            if (hasCellWidthOverride(metadata)) {
                 fixedWidth = metadata.width;
-                if (!fixedWidth)
+                if (!fixedWidth) {
                     width = metadata.minWidth;
+                }
             }
+
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
@@ -850,7 +847,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         metadata?.containerFilter ?? containerFilter,
                         forUpdate,
                         this.state.initialSelection,
-                        qCol
                     ),
                     index: qCol.fieldKey,
                     fixedWidth,
@@ -858,7 +854,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     title: metadata?.caption ?? qCol.caption,
                     width,
                     hideTooltip: metadata?.hideTitleTooltip,
-                    tableCell: !!metadata?.width || !!metadata?.minWidth
+                    tableCell: true,
                 })
             );
         });

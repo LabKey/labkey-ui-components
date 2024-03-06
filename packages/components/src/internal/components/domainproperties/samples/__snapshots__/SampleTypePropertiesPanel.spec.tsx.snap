@@ -2,7 +2,7 @@
 
 exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
 <div
-  className="domain-form-panel lk-border-theme-light panel panel-default"
+  className="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
     className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -19,7 +19,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
     className="panel-body"
   >
     <div
-      className="margin-bottom row"
+      className="row margin-bottom"
     >
       <div
         className="col-xs-12"
@@ -47,11 +47,9 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
     >
       General Properties
     </div>
-    <form
-      className=""
-    >
+    <form>
       <div
-        className="margin-bottom margin-top row"
+        className="row margin-bottom margin-top"
       >
         <div
           className="col-xs-2"
@@ -77,7 +75,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"
@@ -115,7 +113,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"
@@ -209,7 +207,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
       Storage Settings
     </div>
     <div
-      className="margin-top row"
+      className="row margin-top"
     >
       <div
         className="col-xs-2"
@@ -264,7 +262,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
 
 exports[`SampleTypePropertiesPanel default props 1`] = `
 <div
-  className="domain-form-panel lk-border-theme-light panel panel-default"
+  className="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
     className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -281,7 +279,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
     className="panel-body"
   >
     <div
-      className="margin-bottom row"
+      className="row margin-bottom"
     >
       <div
         className="col-xs-12"
@@ -304,11 +302,9 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
         </div>
       </div>
     </div>
-    <form
-      className=""
-    >
+    <form>
       <div
-        className="margin-bottom margin-top row"
+        className="row margin-bottom margin-top"
       >
         <div
           className="col-xs-2"
@@ -334,7 +330,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"
@@ -372,7 +368,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"
@@ -466,7 +462,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
 
 exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] = `
 <div
-  className="domain-form-panel lk-border-theme-light panel panel-default"
+  className="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
     className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -483,7 +479,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
     className="panel-body"
   >
     <div
-      className="margin-bottom row"
+      className="row margin-bottom"
     >
       <div
         className="col-xs-12"
@@ -506,11 +502,9 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
         </div>
       </div>
     </div>
-    <form
-      className=""
-    >
+    <form>
       <div
-        className="margin-bottom margin-top row"
+        className="row margin-bottom margin-top"
       >
         <div
           className="col-xs-2"
@@ -536,7 +530,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"
@@ -574,7 +568,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"
@@ -710,7 +704,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
 
 exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
 <div
-  className="domain-form-panel lk-border-theme-light panel panel-default"
+  className="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
     className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -727,7 +721,7 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
     className="panel-body"
   >
     <div
-      className="margin-bottom row"
+      className="row margin-bottom"
     >
       <div
         className="col-xs-12"
@@ -755,11 +749,9 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
     >
       General Properties
     </div>
-    <form
-      className=""
-    >
+    <form>
       <div
-        className="margin-bottom margin-top row"
+        className="row margin-bottom margin-top"
       >
         <div
           className="col-xs-2"
@@ -785,7 +777,7 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"
@@ -823,7 +815,7 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"
@@ -917,7 +909,7 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
       Storage Settings
     </div>
     <div
-      className="margin-top row"
+      className="row margin-top"
     >
       <div
         className="col-xs-2"
@@ -967,7 +959,7 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
       </div>
     </div>
     <div
-      className="margin-top row"
+      className="row margin-top"
     >
       <div
         className="col-xs-2"
@@ -1013,7 +1005,7 @@ exports[`SampleTypePropertiesPanel includeMetricUnitProperty 1`] = `
 
 exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
 <div
-  className="domain-form-panel lk-border-theme-light panel panel-default"
+  className="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
     className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -1030,7 +1022,7 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
     className="panel-body"
   >
     <div
-      className="margin-bottom row"
+      className="row margin-bottom"
     >
       <div
         className="col-xs-12"
@@ -1058,11 +1050,9 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
     >
       General Properties
     </div>
-    <form
-      className=""
-    >
+    <form>
       <div
-        className="margin-bottom margin-top row"
+        className="row margin-bottom margin-top"
       >
         <div
           className="col-xs-2"
@@ -1088,7 +1078,7 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"
@@ -1126,7 +1116,7 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"
@@ -1220,7 +1210,7 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
       Storage Settings
     </div>
     <div
-      className="margin-top row"
+      className="row margin-top"
     >
       <div
         className="col-xs-2"
@@ -1270,7 +1260,7 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
       </div>
     </div>
     <div
-      className="margin-top row"
+      className="row margin-top"
     >
       <div
         className="col-xs-2"
@@ -1421,7 +1411,7 @@ exports[`SampleTypePropertiesPanel metricUnitOptions 1`] = `
 
 exports[`SampleTypePropertiesPanel nameExpressionInfoUrl 1`] = `
 <div
-  className="domain-form-panel lk-border-theme-light panel panel-default"
+  className="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
     className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -1438,7 +1428,7 @@ exports[`SampleTypePropertiesPanel nameExpressionInfoUrl 1`] = `
     className="panel-body"
   >
     <div
-      className="margin-bottom row"
+      className="row margin-bottom"
     >
       <div
         className="col-xs-12"
@@ -1461,11 +1451,9 @@ exports[`SampleTypePropertiesPanel nameExpressionInfoUrl 1`] = `
         </div>
       </div>
     </div>
-    <form
-      className=""
-    >
+    <form>
       <div
-        className="margin-bottom margin-top row"
+        className="row margin-bottom margin-top"
       >
         <div
           className="col-xs-2"
@@ -1491,7 +1479,7 @@ exports[`SampleTypePropertiesPanel nameExpressionInfoUrl 1`] = `
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"
@@ -1529,7 +1517,7 @@ exports[`SampleTypePropertiesPanel nameExpressionInfoUrl 1`] = `
         </div>
       </div>
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-2"

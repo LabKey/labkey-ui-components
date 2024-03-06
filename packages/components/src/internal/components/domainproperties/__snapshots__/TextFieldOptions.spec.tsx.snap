@@ -10,223 +10,178 @@ exports[`TextFieldOptions Text data type 1`] = `
   scale={200}
 >
   <div>
-    <Row
-      bsClass="row"
-      componentClass="div"
+    <div
+      className="row"
     >
       <div
-        className="row"
+        className="col-xs-12"
       >
-        <Col
-          bsClass="col"
-          componentClass="div"
-          xs={12}
+        <SectionHeading
+          title="Text Field Options"
         >
           <div
-            className="col-xs-12"
+            className="domain-field-section-heading"
           >
-            <SectionHeading
-              title="Text Field Options"
-            >
-              <div
-                className="domain-field-section-heading"
-              >
-                Text Field Options
-              </div>
-            </SectionHeading>
+            Text Field Options
           </div>
-        </Col>
+        </SectionHeading>
       </div>
-    </Row>
-    <Row
-      bsClass="row"
-      componentClass="div"
+    </div>
+    <div
+      className="row"
     >
       <div
-        className="row"
+        className="col-xs-12"
       >
-        <Col
-          bsClass="col"
-          componentClass="div"
-          xs={12}
+        <div
+          className="domain-field-label"
         >
-          <div
-            className="col-xs-12"
+          <DomainFieldLabel
+            helpTipBody={
+              <React.Fragment>
+                <p>
+                  Sets the maximum character count for a text field.
+                </p>
+                <p>
+                  Anything over 4,000 characters will use the 'Unlimited' designation.
+                </p>
+              </React.Fragment>
+            }
+            label="Maximum Text Length"
           >
-            <div
-              className="domain-field-label"
-            >
-              <DomainFieldLabel
-                helpTipBody={
-                  <React.Fragment>
-                    <p>
-                      Sets the maximum character count for a text field.
-                    </p>
-                    <p>
-                      Anything over 4,000 characters will use the 'Unlimited' designation.
-                    </p>
-                  </React.Fragment>
-                }
-                label="Maximum Text Length"
-              >
-                Maximum Text 
-                <span
-                  className="domain-no-wrap"
-                >
-                  Length
-                  <LabelHelpTip
-                    title="Maximum Text Length"
-                  >
-                    <OverlayTrigger
-                      id="label-help-tip2"
-                      overlay={
-                        <Popover
-                          id="label-help-tip-popover"
-                          title="Maximum Text Length"
-                        >
-                          <React.Fragment>
-                            <p>
-                              Sets the maximum character count for a text field.
-                            </p>
-                            <p>
-                              Anything over 4,000 characters will use the 'Unlimited' designation.
-                            </p>
-                          </React.Fragment>
-                        </Popover>
-                      }
-                    >
-                      <div
-                        className="overlay-trigger"
-                        onClick={[Function]}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                      >
-                        <span
-                          className="label-help-target"
-                        >
-                          <span
-                            className="label-help-icon fa fa-question-circle"
-                          />
-                        </span>
-                      </div>
-                    </OverlayTrigger>
-                  </LabelHelpTip>
-                </span>
-              </DomainFieldLabel>
-            </div>
-          </div>
-        </Col>
-      </div>
-    </Row>
-    <Row
-      bsClass="row"
-      componentClass="div"
-    >
-      <div
-        className="row"
-      >
-        <Col
-          bsClass="col"
-          className="domain-text-options-col"
-          componentClass="div"
-          xs={12}
-        >
-          <div
-            className="domain-text-options-col col-xs-12"
-          >
-            <FormControl
-              bsClass="form-control"
-              checked={false}
-              className="domain-text-options-radio1 domain-field-float-left"
-              componentClass="input"
-              disabled={false}
-              id="domainpropertiesrow-maxLength-1-1"
-              onChange={[Function]}
-              type="radio"
-              value="maxLength"
-            >
-              <input
-                checked={false}
-                className="domain-text-options-radio1 domain-field-float-left form-control"
-                disabled={false}
-                id="domainpropertiesrow-maxLength-1-1"
-                onChange={[Function]}
-                type="radio"
-                value="maxLength"
-              />
-            </FormControl>
-            <div>
-              Unlimited
-            </div>
-          </div>
-        </Col>
-      </div>
-    </Row>
-    <Row
-      bsClass="row"
-      componentClass="div"
-    >
-      <div
-        className="row"
-      >
-        <Col
-          bsClass="col"
-          componentClass="div"
-          xs={12}
-        >
-          <div
-            className="col-xs-12"
-          >
-            <FormControl
-              bsClass="form-control"
-              checked={true}
-              className="domain-text-options-radio2 domain-field-float-left"
-              componentClass="input"
-              id="domainpropertiesrow-customLength-1-1"
-              onChange={[Function]}
-              type="radio"
-              value="customLength"
-            >
-              <input
-                checked={true}
-                className="domain-text-options-radio2 domain-field-float-left form-control"
-                id="domainpropertiesrow-customLength-1-1"
-                onChange={[Function]}
-                type="radio"
-                value="customLength"
-              />
-            </FormControl>
+            Maximum Text 
             <span
-              className="domain-text-options-length domain-field-float-left"
+              className="domain-no-wrap"
             >
-              No longer than 
-              <FormControl
-                bsClass="form-control"
-                className="domain-text-length-field"
-                componentClass="input"
-                disabled={false}
-                id="domainpropertiesrow-scale-1-1"
-                name="domainpropertiesrow-scale"
-                onChange={[Function]}
-                type="number"
-                value={200}
+              Length
+              <LabelHelpTip
+                title="Maximum Text Length"
               >
-                <input
-                  className="domain-text-length-field form-control"
-                  disabled={false}
-                  id="domainpropertiesrow-scale-1-1"
-                  name="domainpropertiesrow-scale"
-                  onChange={[Function]}
-                  type="number"
-                  value={200}
-                />
-              </FormControl>
-               characters
+                <OverlayTrigger
+                  id="label-help-tip2"
+                  overlay={
+                    <Popover
+                      id="label-help-tip-popover"
+                      title="Maximum Text Length"
+                    >
+                      <React.Fragment>
+                        <p>
+                          Sets the maximum character count for a text field.
+                        </p>
+                        <p>
+                          Anything over 4,000 characters will use the 'Unlimited' designation.
+                        </p>
+                      </React.Fragment>
+                    </Popover>
+                  }
+                >
+                  <div
+                    className="overlay-trigger"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    <span
+                      className="label-help-target"
+                    >
+                      <span
+                        className="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </OverlayTrigger>
+              </LabelHelpTip>
             </span>
-          </div>
-        </Col>
+          </DomainFieldLabel>
+        </div>
       </div>
-    </Row>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-xs-12 domain-text-options-col"
+      >
+        <FormControl
+          bsClass="form-control"
+          checked={false}
+          className="domain-text-options-radio1 domain-field-float-left"
+          componentClass="input"
+          disabled={false}
+          id="domainpropertiesrow-maxLength-1-1"
+          onChange={[Function]}
+          type="radio"
+          value="maxLength"
+        >
+          <input
+            checked={false}
+            className="domain-text-options-radio1 domain-field-float-left form-control"
+            disabled={false}
+            id="domainpropertiesrow-maxLength-1-1"
+            onChange={[Function]}
+            type="radio"
+            value="maxLength"
+          />
+        </FormControl>
+        <div>
+          Unlimited
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <FormControl
+          bsClass="form-control"
+          checked={true}
+          className="domain-text-options-radio2 domain-field-float-left"
+          componentClass="input"
+          id="domainpropertiesrow-customLength-1-1"
+          onChange={[Function]}
+          type="radio"
+          value="customLength"
+        >
+          <input
+            checked={true}
+            className="domain-text-options-radio2 domain-field-float-left form-control"
+            id="domainpropertiesrow-customLength-1-1"
+            onChange={[Function]}
+            type="radio"
+            value="customLength"
+          />
+        </FormControl>
+        <span
+          className="domain-text-options-length domain-field-float-left"
+        >
+          No longer than 
+          <FormControl
+            bsClass="form-control"
+            className="domain-text-length-field"
+            componentClass="input"
+            disabled={false}
+            id="domainpropertiesrow-scale-1-1"
+            name="domainpropertiesrow-scale"
+            onChange={[Function]}
+            type="number"
+            value={200}
+          >
+            <input
+              className="domain-text-length-field form-control"
+              disabled={false}
+              id="domainpropertiesrow-scale-1-1"
+              name="domainpropertiesrow-scale"
+              onChange={[Function]}
+              type="number"
+              value={200}
+            />
+          </FormControl>
+           characters
+        </span>
+      </div>
+    </div>
     <Memo()
       domainIndex={1}
       index={1}

@@ -100,289 +100,255 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
   onChange={[Function]}
 >
   <div>
-    <Row
-      bsClass="row"
-      componentClass="div"
+    <div
+      className="row"
     >
       <div
-        className="row"
+        className="col-xs-12"
       >
-        <Col
-          bsClass="col"
-          componentClass="div"
-          xs={12}
+        <SectionHeading
+          cls="domain-field-section-hdr"
+          title="Name and Linking Options"
         >
           <div
-            className="col-xs-12"
+            className="domain-field-section-heading domain-field-section-hdr"
           >
-            <SectionHeading
-              cls="domain-field-section-hdr"
-              title="Name and Linking Options"
-            >
-              <div
-                className="domain-field-section-heading domain-field-section-hdr"
-              >
-                Name and Linking Options
-              </div>
-            </SectionHeading>
+            Name and Linking Options
           </div>
-        </Col>
+        </SectionHeading>
       </div>
-    </Row>
-    <Row
-      bsClass="row"
-      componentClass="div"
+    </div>
+    <div
+      className="row"
     >
       <div
-        className="row"
+        className="col-xs-5"
       >
-        <Col
-          bsClass="col"
-          componentClass="div"
-          xs={5}
+        <div
+          className="domain-field-label"
         >
-          <div
-            className="col-xs-5"
-          >
-            <div
-              className="domain-field-label"
-            >
-              Description
-            </div>
-            <FormControl
-              bsClass="form-control"
-              componentClass="textarea"
-              disabled={false}
-              id="domainpropertiesrow-description-1-1"
-              name="domainpropertiesrow-description"
-              onChange={[Function]}
-              rows={4}
-              value="This is a description"
-            >
-              <textarea
-                className="form-control"
-                disabled={false}
-                id="domainpropertiesrow-description-1-1"
-                name="domainpropertiesrow-description"
-                onChange={[Function]}
-                rows={4}
-                value="This is a description"
-              />
-            </FormControl>
-          </div>
-        </Col>
-        <Col
-          bsClass="col"
-          componentClass="div"
-          xs={3}
+          Description
+        </div>
+        <FormControl
+          bsClass="form-control"
+          componentClass="textarea"
+          disabled={false}
+          id="domainpropertiesrow-description-1-1"
+          name="domainpropertiesrow-description"
+          onChange={[Function]}
+          rows={4}
+          value="This is a description"
         >
-          <div
-            className="col-xs-3"
-          >
-            <div
-              className="domain-field-label"
-            >
-              Label
-            </div>
-            <FormControl
-              bsClass="form-control"
-              componentClass="input"
-              disabled={false}
-              id="domainpropertiesrow-label-1-1"
-              name="domainpropertiesrow-label"
-              onChange={[Function]}
-              type="text"
-              value="This is a label"
-            >
-              <input
-                className="form-control"
-                disabled={false}
-                id="domainpropertiesrow-label-1-1"
-                name="domainpropertiesrow-label"
-                onChange={[Function]}
-                type="text"
-                value="This is a label"
-              />
-            </FormControl>
-            <div
-              className="domain-field-label"
-            >
-              <DomainFieldLabel
-                helpTipBody={
-                  <React.Fragment>
-                    Define alternate field names to be used when importing from a file.
-                    <br />
-                    <br />
-                    Multiple aliases may be separated by spaces or commas. To define an alias that contains spaces, use double-quotes (") around it.
-                  </React.Fragment>
-                }
-                label="Import Aliases"
-              >
-                Import 
-                <span
-                  className="domain-no-wrap"
-                >
-                  Aliases
-                  <LabelHelpTip
-                    title="Import Aliases"
-                  >
-                    <OverlayTrigger
-                      id="label-help-tip0"
-                      overlay={
-                        <Popover
-                          id="label-help-tip-popover"
-                          title="Import Aliases"
-                        >
-                          <React.Fragment>
-                            Define alternate field names to be used when importing from a file.
-                            <br />
-                            <br />
-                            Multiple aliases may be separated by spaces or commas. To define an alias that contains spaces, use double-quotes (") around it.
-                          </React.Fragment>
-                        </Popover>
-                      }
-                    >
-                      <div
-                        className="overlay-trigger"
-                        onClick={[Function]}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                      >
-                        <span
-                          className="label-help-target"
-                        >
-                          <span
-                            className="label-help-icon fa fa-question-circle"
-                          />
-                        </span>
-                      </div>
-                    </OverlayTrigger>
-                  </LabelHelpTip>
-                </span>
-              </DomainFieldLabel>
-            </div>
-            <FormControl
-              bsClass="form-control"
-              componentClass="input"
-              disabled={false}
-              id="domainpropertiesrow-importAliases-1-1"
-              name="domainpropertiesrow-importAliases"
-              onChange={[Function]}
-              type="text"
-              value="This is an alias"
-            >
-              <input
-                className="form-control"
-                disabled={false}
-                id="domainpropertiesrow-importAliases-1-1"
-                name="domainpropertiesrow-importAliases"
-                onChange={[Function]}
-                type="text"
-                value="This is an alias"
-              />
-            </FormControl>
-          </div>
-        </Col>
-        <Col
-          bsClass="col"
-          componentClass="div"
-          xs={4}
-        >
-          <div
-            className="col-xs-4"
-          >
-            <div
-              className="domain-field-label"
-            >
-              <DomainFieldLabel
-                helpTipBody={
-                  <React.Fragment>
-                    Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
-                    <br />
-                    <br />
-                    Learn more about using 
-                    <HelpLink
-                      topic="urlEncoding"
-                    >
-                      URL Formatting Options
-                    </HelpLink>
-                    .
-                  </React.Fragment>
-                }
-                label="URL"
-              >
-                <span
-                  className="domain-no-wrap"
-                >
-                  URL
-                  <LabelHelpTip
-                    title="URL"
-                  >
-                    <OverlayTrigger
-                      id="label-help-tip1"
-                      overlay={
-                        <Popover
-                          id="label-help-tip-popover"
-                          title="URL"
-                        >
-                          <React.Fragment>
-                            Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
-                            <br />
-                            <br />
-                            Learn more about using 
-                            <HelpLink
-                              topic="urlEncoding"
-                            >
-                              URL Formatting Options
-                            </HelpLink>
-                            .
-                          </React.Fragment>
-                        </Popover>
-                      }
-                    >
-                      <div
-                        className="overlay-trigger"
-                        onClick={[Function]}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                      >
-                        <span
-                          className="label-help-target"
-                        >
-                          <span
-                            className="label-help-icon fa fa-question-circle"
-                          />
-                        </span>
-                      </div>
-                    </OverlayTrigger>
-                  </LabelHelpTip>
-                </span>
-              </DomainFieldLabel>
-            </div>
-            <FormControl
-              bsClass="form-control"
-              componentClass="input"
-              disabled={false}
-              id="domainpropertiesrow-URL-1-1"
-              name="domainpropertiesrow-URL"
-              onChange={[Function]}
-              type="text"
-              value="This is a URL"
-            >
-              <input
-                className="form-control"
-                disabled={false}
-                id="domainpropertiesrow-URL-1-1"
-                name="domainpropertiesrow-URL"
-                onChange={[Function]}
-                type="text"
-                value="This is a URL"
-              />
-            </FormControl>
-          </div>
-        </Col>
+          <textarea
+            className="form-control"
+            disabled={false}
+            id="domainpropertiesrow-description-1-1"
+            name="domainpropertiesrow-description"
+            onChange={[Function]}
+            rows={4}
+            value="This is a description"
+          />
+        </FormControl>
       </div>
-    </Row>
+      <div
+        className="col-xs-3"
+      >
+        <div
+          className="domain-field-label"
+        >
+          Label
+        </div>
+        <FormControl
+          bsClass="form-control"
+          componentClass="input"
+          disabled={false}
+          id="domainpropertiesrow-label-1-1"
+          name="domainpropertiesrow-label"
+          onChange={[Function]}
+          type="text"
+          value="This is a label"
+        >
+          <input
+            className="form-control"
+            disabled={false}
+            id="domainpropertiesrow-label-1-1"
+            name="domainpropertiesrow-label"
+            onChange={[Function]}
+            type="text"
+            value="This is a label"
+          />
+        </FormControl>
+        <div
+          className="domain-field-label"
+        >
+          <DomainFieldLabel
+            helpTipBody={
+              <React.Fragment>
+                Define alternate field names to be used when importing from a file.
+                <br />
+                <br />
+                Multiple aliases may be separated by spaces or commas. To define an alias that contains spaces, use double-quotes (") around it.
+              </React.Fragment>
+            }
+            label="Import Aliases"
+          >
+            Import 
+            <span
+              className="domain-no-wrap"
+            >
+              Aliases
+              <LabelHelpTip
+                title="Import Aliases"
+              >
+                <OverlayTrigger
+                  id="label-help-tip0"
+                  overlay={
+                    <Popover
+                      id="label-help-tip-popover"
+                      title="Import Aliases"
+                    >
+                      <React.Fragment>
+                        Define alternate field names to be used when importing from a file.
+                        <br />
+                        <br />
+                        Multiple aliases may be separated by spaces or commas. To define an alias that contains spaces, use double-quotes (") around it.
+                      </React.Fragment>
+                    </Popover>
+                  }
+                >
+                  <div
+                    className="overlay-trigger"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    <span
+                      className="label-help-target"
+                    >
+                      <span
+                        className="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </OverlayTrigger>
+              </LabelHelpTip>
+            </span>
+          </DomainFieldLabel>
+        </div>
+        <FormControl
+          bsClass="form-control"
+          componentClass="input"
+          disabled={false}
+          id="domainpropertiesrow-importAliases-1-1"
+          name="domainpropertiesrow-importAliases"
+          onChange={[Function]}
+          type="text"
+          value="This is an alias"
+        >
+          <input
+            className="form-control"
+            disabled={false}
+            id="domainpropertiesrow-importAliases-1-1"
+            name="domainpropertiesrow-importAliases"
+            onChange={[Function]}
+            type="text"
+            value="This is an alias"
+          />
+        </FormControl>
+      </div>
+      <div
+        className="col-xs-4"
+      >
+        <div
+          className="domain-field-label"
+        >
+          <DomainFieldLabel
+            helpTipBody={
+              <React.Fragment>
+                Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
+                <br />
+                <br />
+                Learn more about using 
+                <HelpLink
+                  topic="urlEncoding"
+                >
+                  URL Formatting Options
+                </HelpLink>
+                .
+              </React.Fragment>
+            }
+            label="URL"
+          >
+            <span
+              className="domain-no-wrap"
+            >
+              URL
+              <LabelHelpTip
+                title="URL"
+              >
+                <OverlayTrigger
+                  id="label-help-tip1"
+                  overlay={
+                    <Popover
+                      id="label-help-tip-popover"
+                      title="URL"
+                    >
+                      <React.Fragment>
+                        Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
+                        <br />
+                        <br />
+                        Learn more about using 
+                        <HelpLink
+                          topic="urlEncoding"
+                        >
+                          URL Formatting Options
+                        </HelpLink>
+                        .
+                      </React.Fragment>
+                    </Popover>
+                  }
+                >
+                  <div
+                    className="overlay-trigger"
+                    onClick={[Function]}
+                    onMouseEnter={[Function]}
+                    onMouseLeave={[Function]}
+                  >
+                    <span
+                      className="label-help-target"
+                    >
+                      <span
+                        className="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </OverlayTrigger>
+              </LabelHelpTip>
+            </span>
+          </DomainFieldLabel>
+        </div>
+        <FormControl
+          bsClass="form-control"
+          componentClass="input"
+          disabled={false}
+          id="domainpropertiesrow-URL-1-1"
+          name="domainpropertiesrow-URL"
+          onChange={[Function]}
+          type="text"
+          value="This is a URL"
+        >
+          <input
+            className="form-control"
+            disabled={false}
+            id="domainpropertiesrow-URL-1-1"
+            name="domainpropertiesrow-URL"
+            onChange={[Function]}
+            type="text"
+            value="This is a URL"
+          />
+        </FormControl>
+      </div>
+    </div>
   </div>
 </NameAndLinkingOptions>
 `;

@@ -267,7 +267,7 @@ describe('getJobCreationHref', () => {
         expect(getJobCreationHref(queryModel, '1')).toContain('templateId=1');
     });
     test('samplesIncluded', () => {
-        expect(getJobCreationHref(queryModel)).toBe('#/workflow/new?selectionKey=id&sampleTab=2');
+        expect(getJobCreationHref(queryModel)).toBe('#/workflow/new?selectionKey=id&sampleTab=search');
         expect(getJobCreationHref(queryModel, undefined, true)).toBe('#/workflow/new?selectionKey=id');
     });
     test('picklistName', () => {

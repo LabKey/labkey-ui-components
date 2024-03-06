@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X 2024
 - Support column sizing for editable grid
 
+### version 3.26.0
+*Released*: 6 March 2024
+- Add Tabs and Tab components
+- Replace usages of react-bootstrap Tabs/Tab
+
 ### version 3.25.2
 *Released*: 5 March 2024
 - Merge release24.3-SNAPSHOT to develop:

@@ -1002,9 +1002,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         return (
-            <Panel className="domain-form-no-field-panel">
+            <div className="domain-form-no-field-panel">
                 No fields created yet. Click the 'Add Field' button to get started.
-            </Panel>
+            </div>
         );
     }
 

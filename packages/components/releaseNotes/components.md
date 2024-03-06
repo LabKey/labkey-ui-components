@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.24.TBD
-*Released*: TBD
+### version 3.24.8
+*Released*: 5 March 2024
 - Issue 49274: App to use chevron arrows instead of plus/minus for expand/collapse (part 2)
 
 ### version 3.24.7

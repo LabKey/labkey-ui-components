@@ -1121,15 +1121,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             />
                         </div>
                         <div>
-                            <div className="col-xs-6 domain-row-base-fields">
-                                <div className="col-xs-6">
-                                    <b>Name *</b>
-                                </div>
-                                <div className="col-xs-4">
-                                    <b>Data Type *</b>
-                                </div>
-                                <div className="col-xs-2">{!domainFormDisplayOptions?.hideRequired && <b>Required</b>}</div>
+                            <div className="col-xs-3">
+                                <b>Name *</b>
                             </div>
+                            <div className="col-xs-2">
+                                <b>Data Type *</b>
+                            </div>
+                            <div className="col-xs-1">{!domainFormDisplayOptions?.hideRequired && <b>Required</b>}</div>
                             <div className="col-xs-6">
                                 <b>Details</b>
                             </div>

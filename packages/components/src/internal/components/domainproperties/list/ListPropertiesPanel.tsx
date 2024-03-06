@@ -1,5 +1,4 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 
 import { DomainDesign } from '../models';
@@ -111,7 +110,7 @@ export class ListPropertiesPanelImpl extends React.PureComponent<
                         <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural="lists" />
                     </div>
                 </div>
-                <Form>
+                <form>
                     <BasicPropertiesFields model={model} onInputChange={this.onInputChange} />
                     <AllowableActions model={model} onChange={this.onChange} />
                     <AdvancedSettings
@@ -119,7 +118,7 @@ export class ListPropertiesPanelImpl extends React.PureComponent<
                         model={model}
                         applyAdvancedProperties={this.applyAdvancedProperties}
                     />
-                </Form>
+                </form>
             </BasePropertiesPanel>
         );
     }

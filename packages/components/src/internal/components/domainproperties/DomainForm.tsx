@@ -16,7 +16,7 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Checkbox, Form, FormControl, Panel } from 'react-bootstrap';
+import { Checkbox, FormControl, Panel } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';
@@ -1137,7 +1137,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Droppable droppableId="domain-form-droppable">
                     {provided => (
                         <div ref={provided.innerRef} {...provided.droppableProps}>
-                            <Form className="domain-form">
+                            <form className="domain-form">
                                 {domain.fields.map((field, i) => {
                                     // Need to preserve index so don't filter, instead just use empty div
                                     if (!field.visible) return <div key={'domain-row-key-' + i} />;
@@ -1180,7 +1180,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                     );
                                 })}
                                 {provided.placeholder}
-                            </Form>
+                            </form>
                         </div>
                     )}
                 </Droppable>

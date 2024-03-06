@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, FormControl } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import classNames from 'classnames';
@@ -62,7 +62,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
         );
 
         return (
-            <Form>
+            <form>
                 <div className="row margin-bottom margin-top">
                     <div className="col-xs-2">
                         <DomainFieldLabel label="Name" required={true} />
@@ -136,7 +136,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                         />
                     </div>
                 </div>
-            </Form>
+            </form>
         );
     }
 }

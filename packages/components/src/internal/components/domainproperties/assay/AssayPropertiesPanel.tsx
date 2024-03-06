@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Form } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 
 import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
@@ -96,7 +95,7 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
     );
 
     return (
-        <Form>
+        <form>
             {children && (
                 <div className="row">
                     <div className="col-xs-12">{children}</div>
@@ -196,7 +195,7 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
                     </div>
                 </div>
             )}
-        </Form>
+        </form>
     );
 });
 

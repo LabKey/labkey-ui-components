@@ -55,6 +55,7 @@ import {
     dragFillEvent,
     pasteEvent,
     updateGridFromBulkForm,
+    validateAndInsertPastedData,
 } from './actions';
 import { BorderMask, Cell } from './Cell';
 
@@ -418,6 +419,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             clearSelection: this.clearSelection,
             focusCell: this.focusCell,
             fillDown: this.fillDown,
+            fillText: this.fillText,
             inDrag: this.inDrag,
             modifyCell: this.modifyCell,
             selectCell: this.selectCell,
@@ -1141,6 +1143,41 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const firstRowIdx = parseCellKey(selectionCells[0]).rowIdx;
         const firstRowCellKeys = selectionCells.filter(cellKey => parseCellKey(cellKey).rowIdx === firstRowIdx);
         this._dragFill(firstRowCellKeys);
+    };
+
+    fillText = async (colIdx: number, rowIdx: number, text: string): Promise<void> => {
+        const {
+            allowAdd,
+            columnMetadata,
+            data,
+            dataKeys,
+            disabled,
+            editorModel,
+            onChange,
+            queryInfo,
+            readonlyRows,
+            lockedRows,
+        } = this.props;
+
+        if (disabled) return;
+
+        this.showMask();
+        const changes = await validateAndInsertPastedData(
+            editorModel,
+            dataKeys,
+            data,
+            queryInfo,
+            this.getColumns(),
+            text,
+            columnMetadata,
+            readonlyRows,
+            lockedRows,
+            !allowAdd,
+            false
+        );
+        this.hideMask();
+
+        onChange(EditableGridEvent.FILL_TEXT, changes.editorModel, changes.dataKeys, changes.data);
     };
 
     onPaste = async (event: ClipboardEvent): Promise<void> => {

@@ -1363,7 +1363,8 @@ function insertPastedData(
     columnMetadata: Map<string, EditableColumnMetadata>,
     readonlyRows: string[],
     lockedRows: string[],
-    lockRowCount: boolean
+    lockRowCount: boolean,
+    selectCells: boolean
 ): EditorModelAndGridData {
     const pastedData = paste.payload.data;
     let cellMessages = editorModel.cellMessages;
@@ -1442,7 +1443,9 @@ function insertPastedData(
                 cellValues = cellValues.set(cellKey, cv);
             }
 
-            selectionCells.push(cellKey);
+            if (selectCells) {
+                selectionCells.push(cellKey);
+            }
         });
 
         rowIdx++;
@@ -1497,7 +1500,7 @@ function getPasteValuesByColumn(paste: PasteModel): List<List<string>> {
     return valuesByColumn.asImmutable();
 }
 
-async function validateAndInsertPastedData(
+export async function validateAndInsertPastedData(
     editorModel: EditorModel,
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
@@ -1507,7 +1510,8 @@ async function validateAndInsertPastedData(
     columnMetadata: Map<string, EditableColumnMetadata>,
     readonlyRows: string[],
     lockedRows: string[],
-    lockRowCount: boolean
+    lockRowCount: boolean,
+    selectCells: boolean
 ): Promise<EditorModelAndGridData> {
     const { selectedColIdx, selectedRowIdx } = editorModel;
     const readOnlyRowCount =
@@ -1562,7 +1566,8 @@ async function validateAndInsertPastedData(
             columnMetadata,
             readonlyRows,
             lockedRows,
-            lockRowCount
+            lockRowCount,
+            selectCells
         );
     } else {
         const cellKey = genCellKey(selectedColIdx, selectedRowIdx);
@@ -1600,7 +1605,8 @@ export async function pasteEvent(
             columnMetadata,
             readonlyRows,
             lockedRows,
-            lockRowCount
+            lockRowCount,
+            true
         );
     }
 

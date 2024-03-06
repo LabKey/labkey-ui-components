@@ -21,6 +21,7 @@ export enum MODIFICATION_TYPES {
 export interface CellActions {
     clearSelection: () => void;
     fillDown: () => void;
+    fillText: (colIdx: number, rowIdx: number, text: string) => void;
     focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void;
     inDrag: () => boolean; // Not really an action, but useful to be part of this interface
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
@@ -38,6 +39,7 @@ export enum EditableGridEvent {
     BULK_UPDATE = 'BULK_UPDATE',
     CLEAR_SELECTION = 'CLEAR_SELECTION',
     DRAG_FILL = 'DRAG_FILL',
+    FILL_TEXT = 'FILL_TEXT',
     FOCUS_CELL = 'FOCUS_CELL',
     MODIFY_CELL = 'MODIFY_CELL',
     PASTE = 'PASTE',

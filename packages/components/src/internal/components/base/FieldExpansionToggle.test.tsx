@@ -18,8 +18,8 @@ describe('FieldExpansionToggle', () => {
             />
         );
         expect(document.querySelectorAll('.field-icon')).toHaveLength(1);
-        expect(document.querySelectorAll('.fa-plus-square')).toHaveLength(1);
-        expect(document.querySelectorAll('.fa-minus-square')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-chevron-right')).toHaveLength(1);
+        expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(0);
         expect(document.querySelectorAll('.field-highlighted')).toHaveLength(1);
         expect(onClick).toHaveBeenCalledTimes(0);
         userEvent.click(screen.getByTitle('Click to expand'));
@@ -39,8 +39,8 @@ describe('FieldExpansionToggle', () => {
             />
         );
         expect(document.querySelectorAll('.field-icon')).toHaveLength(1);
-        expect(document.querySelectorAll('.fa-plus-square')).toHaveLength(0);
-        expect(document.querySelectorAll('.fa-minus-square')).toHaveLength(1);
+        expect(document.querySelectorAll('.fa-chevron-right')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(1);
         expect(document.querySelectorAll('.field-highlighted')).toHaveLength(0); // only highlighted when not expanded
         expect(onClick).toHaveBeenCalledTimes(0);
         userEvent.click(screen.getByTitle('Click to collapse'));
@@ -61,8 +61,8 @@ describe('FieldExpansionToggle', () => {
         );
         expect(document.querySelectorAll('.field-icon')).toHaveLength(1);
         expect(document.querySelectorAll('.expand-custom-cls')).toHaveLength(1);
-        expect(document.querySelectorAll('.fa-plus-square')).toHaveLength(1);
-        expect(document.querySelectorAll('.fa-minus-square')).toHaveLength(0);
+        expect(document.querySelectorAll('.fa-chevron-right')).toHaveLength(1);
+        expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(0);
         expect(document.querySelectorAll('.field-highlighted')).toHaveLength(0);
         expect(onClick).toHaveBeenCalledTimes(0);
         userEvent.click(screen.getByTitle('Custom click to expand'));

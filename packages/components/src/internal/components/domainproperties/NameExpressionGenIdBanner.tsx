@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Col, FormControl } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
@@ -169,7 +169,7 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                         This action cannot be undone.
                     </div>
                     <div className="row margin-top">
-                        <Col xs={5}>
+                        <div className="col-xs-5">
                             <FormControl
                                 className="update-genId-input "
                                 min={minNewGenId}
@@ -180,8 +180,8 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                                 value={newGenId ?? minNewGenId}
                                 placeholder="Enter new genId..."
                             />
-                        </Col>
-                        <Col xs={7} />
+                        </div>
+                        <div className="col-xs-7" />
                     </div>
                 </Modal>
             )}

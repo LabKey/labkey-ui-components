@@ -16,7 +16,7 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Checkbox, Col, Form, FormControl, Panel } from 'react-bootstrap';
+import { Checkbox, Form, FormControl, Panel } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';
@@ -812,14 +812,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
             return (
                 <div className="row domain-add-field-row">
-                    <Col xs={12}>
+                    <div className="col-xs-12">
                         <AddEntityButton
                             entity="Field"
                             buttonClass="domain-form-add-btn"
                             containerClass="pull-right"
                             onClick={this.onAddField}
                         />
-                    </Col>
+                    </div>
                 </div>
             );
         }
@@ -1121,18 +1121,18 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             />
                         </div>
                         <div>
-                            <Col xs={6} className="domain-row-base-fields">
-                                <Col xs={6}>
+                            <div className="col-xs-6 domain-row-base-fields">
+                                <div className="col-xs-6">
                                     <b>Name *</b>
-                                </Col>
-                                <Col xs={4}>
+                                </div>
+                                <div className="col-xs-4">
                                     <b>Data Type *</b>
-                                </Col>
-                                <Col xs={2}>{!domainFormDisplayOptions?.hideRequired && <b>Required</b>}</Col>
-                            </Col>
-                            <Col xs={6}>
+                                </div>
+                                <div className="col-xs-2">{!domainFormDisplayOptions?.hideRequired && <b>Required</b>}</div>
+                            </div>
+                            <div className="col-xs-6">
                                 <b>Details</b>
-                            </Col>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1281,7 +1281,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                                 {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) && (
                                     <div className="row domain-field-toolbar">
-                                        <Col xs={4}>
+                                        <div className="col-xs-4">
                                             {!domainFormDisplayOptions?.hideAddFieldsButton && (
                                                 <AddEntityButton
                                                     entity="Field"
@@ -1310,8 +1310,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                     Export
                                                 </ActionButton>
                                             )}
-                                        </Col>
-                                        <Col xs={8}>
+                                        </div>
+                                        <div className="col-xs-8">
                                             <div className="pull-right domain-field-toolbar-right-aligned">
                                                 {!valueIsEmpty(search) && (
                                                     <span className="domain-search-text">
@@ -1340,18 +1340,18 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                     </div>
                                                 )}
                                             </div>
-                                        </Col>
+                                        </div>
                                     </div>
                                 )}
 
                                 <div className={helpTopic ? 'row domain-form-hdr-margins' : 'row'}>
-                                    <Col xs={helpTopic ? 9 : 12} />
+                                    <div className={`col-xs-${helpTopic ? 9 : 12}`} />
                                     {helpTopic && (
-                                        <Col xs={3}>
+                                        <div className="col-xs-3">
                                             <HelpLink topic={helpTopic} className="domain-field-float-right">
                                                 Learn more about this tool
                                             </HelpLink>
-                                        </Col>
+                                        </div>
                                     )}
                                 </div>
 

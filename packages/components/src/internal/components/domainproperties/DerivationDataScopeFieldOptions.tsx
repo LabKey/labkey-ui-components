@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Col, Radio } from 'react-bootstrap';
+import { Radio } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
 
@@ -70,16 +70,16 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
     return (
         <div className="margin-bottom">
             <div className="row">
-                <Col xs={12}>
+                <div className="col-xs-12">
                     <SectionHeading
                         title={label ?? config.sectionTitle}
                         cls="domain-field-section-hdr"
                         helpTipBody={config.helpLinkNode}
                     />
-                </Col>
+                </div>
             </div>
             <div className="row">
-                <Col xs={12}>
+                <div className="col-xs-12">
                     <div className="derivation_scope_options_container">
                         <Radio
                             name={inputId}
@@ -111,7 +111,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
                             {config.labelAll}
                         </Radio>
                     </div>
-                </Col>
+                </div>
             </div>
             {hasScopeChange && config.scopeChangeWarning && (
                 <div className="row">

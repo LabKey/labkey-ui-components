@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { PureComponent, ReactNode } from 'react';
-import { Checkbox, Col, FormControl, Row } from 'react-bootstrap';
+import { Checkbox, FormControl } from 'react-bootstrap';
 import { CompactPicker } from 'react-color';
 
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
@@ -101,7 +101,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
 
         return (
             <div className="row">
-                <Col xs={12} className="domain-validation-display-checkbox-row">
+                <div className="col-xs-12 domain-validation-display-checkbox-row">
                     <Checkbox
                         id={createFormInputId(name, domainIndex, validatorIndex)}
                         name={createFormInputName(name)}
@@ -110,7 +110,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                     >
                         {label}
                     </Checkbox>
-                </Col>
+                </div>
             </div>
         );
     };
@@ -154,24 +154,24 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
 
         return (
             <div className="row domain-validator-color-row">
-                <Col xs={4}>
+                <div className="col-xs-4">
                     {this.getColorPickerButton(
                         DOMAIN_CONDITION_FORMAT_TEXT_COLOR,
                         'Text Color',
                         textColor,
                         showTextColor
                     )}
-                </Col>
-                <Col xs={4}>
+                </div>
+                <div className="col-xs-4">
                     {this.getColorPickerButton(
                         DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR,
                         'Fill Color',
                         fillColor,
                         showFillColor
                     )}
-                </Col>
-                <Col xs={1} />
-                <Col xs={3}>
+                </div>
+                <div className="col-xs-1" />
+                <div className="col-xs-3">
                     <FormControl
                         type="text"
                         id={'domain-validator-preview-' + validatorIndex}
@@ -186,7 +186,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                             textDecoration: validator.strikethrough ? 'line-through' : '',
                         }}
                     />
-                </Col>
+                </div>
             </div>
         );
     };
@@ -258,7 +258,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                         {this.renderColorPickers()}
 
                         <div className="row domain-validator-color-row">
-                            <Col xs={12}>
+                            <div className="col-xs-12">
                                 <button
                                     className="domain-validation-delete btn btn-default"
                                     id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
@@ -268,7 +268,7 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                                 >
                                     Remove Formatting
                                 </button>
-                            </Col>
+                            </div>
                         </div>
                     </div>
                 )}

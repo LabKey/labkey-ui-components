@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { DomainFieldLabel } from './DomainFieldLabel';
 import { createFormInputId, createFormInputName } from './utils';
@@ -28,7 +28,7 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
     return (
         <>
             <div className="row">
-                <Col xs={3}>
+                <div className="col-xs-3">
                     <div className="domain-field-label">
                         <DomainFieldLabel
                             label="Barcode Field"
@@ -40,10 +40,10 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
                             }
                         />
                     </div>
-                </Col>
+                </div>
             </div>
             <div className="row">
-                <Col xs={12} className="domain-text-options-col">
+                <div className="col-xs-12 domain-text-options-col">
                     <FormControl
                         type="checkbox"
                         id={createFormInputId(DOMAIN_FIELD_SCANNABLE_OPTION, domainIndex, index)}
@@ -54,7 +54,7 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
                         checked={scannable}
                     />
                     <span>Search this field when scanning samples</span>
-                </Col>
+                </div>
             </div>
         </>
     );

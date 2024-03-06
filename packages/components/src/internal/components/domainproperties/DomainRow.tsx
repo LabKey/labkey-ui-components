@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { ReactNode, RefObject } from 'react';
-import { Checkbox, Col, Collapse, FormControl } from 'react-bootstrap';
+import { Checkbox, Collapse, FormControl } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
@@ -356,7 +356,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this.ref}>
-                <Col xs={6}>
+                <div className="col-xs-6">
                     <FormControl
                         type="text"
                         value={field.name || ''}
@@ -365,8 +365,8 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                         onChange={this.onNameChange}
                         disabled={this.disableNameInput(field)}
                     />
-                </Col>
-                <Col xs={4}>
+                </div>
+                <div className="col-xs-4">
                     <FormControl
                         componentClass="select"
                         name={createFormInputName(DOMAIN_FIELD_TYPE)}
@@ -398,8 +398,8 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                 ))
                         )}
                     </FormControl>
-                </Col>
-                <Col xs={2}>
+                </div>
+                <div className="col-xs-2">
                     <div className="domain-field-checkbox-container">
                         {!domainFormDisplayOptions.hideRequired && (
                             <Checkbox
@@ -412,7 +412,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                             />
                         )}
                     </div>
-                </Col>
+                </div>
             </div>
         );
     };
@@ -538,13 +538,13 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                 />
                             </div>
                             <div className="domain-row-main">
-                                <Col xs={6} className="domain-row-base-fields domain-row-base-fields-position">
+                                <div className="col-xs-6 domain-row-base-fields domain-row-base-fields-position">
                                     {this.renderBaseFields()}
-                                </Col>
-                                <Col xs={6} className="domain-row-details-container">
+                                </div>
+                                <div className="col-xs-6 domain-row-details-container">
                                     {this.getDetails()}
                                     {this.renderButtons()}
-                                </Col>
+                                </div>
                             </div>
                         </div>
                         <Collapse

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { Filter, Utils } from '@labkey/api';
 
@@ -47,7 +47,6 @@ interface FilterSet {
 }
 
 export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
-    labelWidth = 4;
     fieldWidth = 8;
 
     static defaultProps = {
@@ -312,13 +311,13 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
         return (
             <>
                 <div className="row domain-validator-filter-type-row">
-                    <Col xs={this.labelWidth}>
+                    <div className="col-xs-4">
                         <div id="domain-filter-type-label-1">
                             {firstFilterTypeLabel}
                             {firstFilterTooltip ? firstFilterTooltip : ''}
                         </div>
-                    </Col>
-                    <Col xs={this.fieldWidth}>
+                    </div>
+                    <div className="col-xs-8">
                         <div>
                             <FormControl
                                 componentClass="select"
@@ -341,15 +340,15 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                                 ))}
                             </FormControl>
                         </div>
-                    </Col>
+                    </div>
                 </div>
                 <div className="row domain-validator-filter-row">
-                    <Col xs={this.labelWidth}>
+                    <div className="col-xs-4">
                         <div id="domain-filter-value-label-1">
                             {firstFilterValueLabel !== undefined ? firstFilterValueLabel : 'Filter Value'}
                         </div>
-                    </Col>
-                    <Col xs={this.fieldWidth}>
+                    </div>
+                    <div className="col-xs-8">
                         <div>
                             <FormControl
                                 type={this.getFormControlType()}
@@ -361,16 +360,16 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                                 onChange={this.onChange}
                             />
                         </div>
-                    </Col>
+                    </div>
                 </div>
                 <div className="row domain-validator-filter-type-row">
-                    <Col xs={this.labelWidth}>
+                    <div className="col-xs-4">
                         <div id="domain-filter-type-label-2">
                             {secondFilterTypeLabel}
                             {secondFilterTooltip ? secondFilterTooltip : ''}
                         </div>
-                    </Col>
-                    <Col xs={this.fieldWidth}>
+                    </div>
+                    <div className="col-xs-8">
                         <div>
                             <FormControl
                                 componentClass="select"
@@ -386,15 +385,15 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                                 ))}
                             </FormControl>
                         </div>
-                    </Col>
+                    </div>
                 </div>
                 <div className="row domain-validator-filter-bottom">
-                    <Col xs={this.labelWidth}>
+                    <div className="col-xs-4">
                         <div id="domain-filter-value-label-2">
                             {secondFilterValueLabel !== undefined ? secondFilterValueLabel : 'Filter Value'}
                         </div>
-                    </Col>
-                    <Col xs={this.fieldWidth}>
+                    </div>
+                    <div className="col-xs-8">
                         <div>
                             <FormControl
                                 type={this.getFormControlType()}
@@ -405,7 +404,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                                 onChange={this.onChange}
                             />
                         </div>
-                    </Col>
+                    </div>
                 </div>
             </>
         );

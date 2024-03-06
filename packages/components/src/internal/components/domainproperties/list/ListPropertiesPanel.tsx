@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 
 import { DomainDesign } from '../models';
@@ -107,9 +107,9 @@ export class ListPropertiesPanelImpl extends React.PureComponent<
                 isValid={isValid}
             >
                 <div className="row margin-bottom">
-                    <Col xs={12}>
+                    <div className="col-xs-12">
                         <HelpTopicURL helpTopic={DEFINE_LIST_TOPIC} nounPlural="lists" />
-                    </Col>
+                    </div>
                 </div>
                 <Form>
                     <BasicPropertiesFields model={model} onInputChange={this.onInputChange} />

@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 
 import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
@@ -99,11 +99,11 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
         <Form>
             {children && (
                 <div className="row">
-                    <Col xs={12}>{children}</Col>
+                    <div className="col-xs-12">{children}</div>
                 </div>
             )}
 
-            <Col xs={12} lg={hideAdvancedProperties ? 12 : 6}>
+            <div className={`col-xs-12 col-lg-${hideAdvancedProperties ? 12 : 6}`}>
                 <div className="domain-field-padding-bottom">
                     <SectionHeading title="Basic Properties" />
                     <NameInput
@@ -167,10 +167,10 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
                         />
                     )}
                 </div>
-            </Col>
+            </div>
 
             {!hideAdvancedProperties && (
-                <Col xs={12} lg={6}>
+                <div className="col-xs-12 col-lg-6">
                     <div className="domain-field-padding-bottom">
                         <SectionHeading title="Import Settings" />
                         {model.allowBackgroundUpload && (
@@ -184,17 +184,17 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
                         )}
                         {model.moduleTransformScripts?.size > 0 && <ModuleProvidedScriptsInput model={model} />}
                     </div>
-                </Col>
+                </div>
             )}
 
             {!hideAdvancedProperties && !hideStudyProperties && hasModule('study', moduleContext) && (
-                <Col xs={12} lg={6}>
+                <div className="col-xs-12 col-lg-6">
                     <div className="domain-field-padding-bottom">
                         <SectionHeading title="Link to Study Settings" />
                         <AutoLinkDataInput model={model} onChange={onInputChange} />
                         <AutoLinkCategoryInput model={model} onChange={onInputChange} />
                     </div>
-                </Col>
+                </div>
             )}
         </Form>
     );

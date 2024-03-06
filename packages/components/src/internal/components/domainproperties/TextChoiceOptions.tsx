@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+
 import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
@@ -189,30 +189,28 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
     return (
         <div>
             <div className="row">
-                <Col xs={12}>
+                <div className="col-xs-12">
                     <SectionHeading title={label} />
-                </Col>
+                </div>
             </div>
             <div className="row">
-                <Col xs={12}>
+                <div className="col-xs-12">
                     <div className="domain-field-label">
                         <DomainFieldLabel label="Drop-down Values" helpTipBody={HELP_TIP_BODY} />
                     </div>
-                </Col>
+                </div>
             </div>
             {loading && (
                 <div className="row">
-                    <Col xs={12}>
+                    <div className="col-xs-12">
                         <LoadingSpinner />
-                    </Col>
+                    </div>
                 </div>
             )}
             {!loading && (
                 <div className="row">
-                    <Col
-                        xs={6}
-                        lg={4}
-                        className={classNames({ 'domain-text-choices-left-panel': validValues.length > 0 })}
+                    <div
+                        className={classNames('col-xs-6', 'col-lg-4', { 'domain-text-choices-left-panel': validValues.length > 0 })}
                     >
                         <div className="list-group domain-text-choices-list">
                             {validValues.length > MIN_VALUES_FOR_SEARCH_COUNT && (
@@ -252,8 +250,8 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                             onClick={toggleAddValues}
                             title={`Add Values (max ${maxValueCount})`}
                         />
-                    </Col>
-                    <Col xs={6} lg={4}>
+                    </div>
+                    <div className="col-xs-6 col-lg-4">
                         {validValues.length > 0 && selectedIndex === undefined && (
                             <p className="choices-detail__empty-message">
                                 Select a value from the list on the left to view details.
@@ -312,7 +310,7 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
                                 {currentError && <Alert bsStyle="danger">{currentError}</Alert>}
                             </>
                         )}
-                    </Col>
+                    </div>
                 </div>
             )}
             {showAddValuesModal && (

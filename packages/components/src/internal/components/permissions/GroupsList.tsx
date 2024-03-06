@@ -1,5 +1,5 @@
 import React, { FC, memo, useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+
 
 import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
 import { fetchGroupMembership } from '../administration/actions';
@@ -72,12 +72,8 @@ export const GroupsList: FC<Props> = memo(props => {
         <>
             <hr className="principal-hr" />
             <div className="row">
-                <Col xs={4} className="principal-detail-label">
-                    Groups
-                </Col>
-                <Col xs={8} className="principal-detail-value">
-                    {body}
-                </Col>
+                <div className="col-xs-4 principal-detail-label">Groups</div>
+                <div className="col-xs-8 principal-detail-value">{body}</div>
             </div>
         </>
     );

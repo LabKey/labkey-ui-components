@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useReducer } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
-import { Checkbox, Col, FormControl, Row } from 'react-bootstrap';
+import { Checkbox, FormControl } from 'react-bootstrap';
 
 import { biologicsIsPrimaryApp, sampleManagerIsPrimaryApp } from '../../app/utils';
 
@@ -384,10 +384,10 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         {!loadingCounters && (
                             <div>
                                 <div className="row margin-top">
-                                    <Col sm={2}>
+                                    <div className="col-sm-2">
                                         <div className="sample-counter__prefix-label">sampleCount</div>
-                                    </Col>
-                                    <Col sm={2}>
+                                    </div>
+                                    <div className="col-sm-2">
                                         <FormControl
                                             className="update-samplecount-input "
                                             min={sampleCount}
@@ -398,8 +398,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                             value={newSampleCount}
                                             placeholder="Enter new sampleCount..."
                                         />
-                                    </Col>
-                                    <Col sm={8}>
+                                    </div>
+                                    <div className="col-sm-8">
                                         <button
                                             className="btn btn-success sample-counter-btn"
                                             onClick={() => {
@@ -422,13 +422,13 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                                 Reset sampleCount
                                             </button>
                                         )}
-                                    </Col>
+                                    </div>
                                 </div>
                                 <div className="row margin-top">
-                                    <Col sm={2}>
+                                    <div className="col-sm-2">
                                         <div className="sample-counter__prefix-label">rootSampleCount</div>
-                                    </Col>
-                                    <Col sm={2}>
+                                    </div>
+                                    <div className="col-sm-2">
                                         <FormControl
                                             className="update-samplecount-input "
                                             min={rootSampleCount}
@@ -439,8 +439,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                             value={newRootSampleCount}
                                             placeholder="Enter new rootSampleCount..."
                                         />
-                                    </Col>
-                                    <Col sm={8}>
+                                    </div>
+                                    <div className="col-sm-8">
                                         <button
                                             className="btn btn-success sample-counter-btn"
                                             onClick={() => {
@@ -463,7 +463,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                                 Reset rootSampleCount
                                             </button>
                                         )}
-                                    </Col>
+                                    </div>
                                 </div>
                                 {confirmCounterModalOpen && (
                                     <Modal

@@ -1,5 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+
+
+import classNames from 'classnames';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -195,10 +197,15 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
 
     const { conceptCount, description } = ontology;
     const root = ontology.getPathModel();
+    const leftColClassName = classNames({
+        'col-xs-12': hideConceptInfo,
+        'col-xs-6': !hideConceptInfo,
+        'left-panel': !hideConceptInfo,
+    });
 
     const body = (
         <div className={hideConceptInfo ? 'row filter-panel-row' : 'row'}>
-            <Col xs={hideConceptInfo ? 12 : 6} className={hideConceptInfo ? '' : 'left-panel'}>
+            <div className={leftColClassName}>
                 <OntologyTreeSearchContainer ontology={ontology} searchPathClickHandler={setSelectedPath} />
                 <OntologyTreePanel
                     root={root}
@@ -208,15 +215,15 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
                     filters={filters}
                     onFilterChange={onFilterChange}
                 />
-            </Col>
+            </div>
             {!hideConceptInfo && (
-                <Col xs={6} className="right-panel">
+                <div className="col-xs-6 right-panel">
                     <ConceptInformationTabs
                         concept={selectedConcept}
                         selectedPath={selectedPath}
                         alternatePathClickHandler={setSelectedPath}
                     />
-                </Col>
+                </div>
             )}
         </div>
     );

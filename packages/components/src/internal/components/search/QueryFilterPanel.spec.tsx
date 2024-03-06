@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, NavItem } from 'react-bootstrap';
+import { NavItem } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
 

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Checkbox, Col, FormControl, Row } from 'react-bootstrap';
+import { Checkbox, FormControl } from 'react-bootstrap';
 
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
@@ -31,7 +31,6 @@ interface RegexValidationOptionsProps {
 }
 
 export class RegexValidationOptions extends React.PureComponent<RegexValidationOptionsProps> {
-    labelWidth = 4;
     fieldWidth = 8;
 
     static isValid = (validator: PropertyValidator): boolean => {
@@ -50,7 +49,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
 
         return (
             <div className="row domain-validator-filter-row">
-                <Col xs={this.labelWidth}>
+                <div className="col-xs-4">
                     <div>
                         {label}
                         {tooltipTitle && tooltipBody && (
@@ -59,8 +58,8 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                             </LabelHelpTip>
                         )}
                     </div>
-                </Col>
-                <Col xs={this.fieldWidth}>
+                </div>
+                <div className="col-xs-8">
                     <div>
                         <FormControl
                             componentClass="textarea"
@@ -72,7 +71,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                             onChange={this.onChange}
                         />
                     </div>
-                </Col>
+                </div>
             </div>
         );
     };
@@ -132,8 +131,8 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                             'The message that will be displayed to the user in the event that validation fails for this field.'
                         )}
                         <div className="row">
-                            <Col xs={this.labelWidth} />
-                            <Col xs={this.fieldWidth} className="domain-validation-failOnMatch-row">
+                            <div className="col-xs-4" />
+                            <div className="col-xs-8 domain-validation-failOnMatch-row">
                                 <Checkbox
                                     id={createFormInputId(DOMAIN_VALIDATOR_FAILONMATCH, domainIndex, validatorIndex)}
                                     name={createFormInputName(DOMAIN_VALIDATOR_FAILONMATCH)}
@@ -147,13 +146,13 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                                         pattern matches the field value.
                                     </LabelHelpTip>
                                 </Checkbox>
-                            </Col>
+                            </div>
                         </div>
                         <div className="row">
-                            <Col xs={this.labelWidth}>
+                            <div className="col-xs-4">
                                 <div>Name *</div>
-                            </Col>
-                            <Col xs={this.fieldWidth}>
+                            </div>
+                            <div className="col-xs-8">
                                 <FormControl
                                     type="text"
                                     id={createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)}
@@ -161,10 +160,10 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                                     value={validator.name}
                                     onChange={this.onChange}
                                 />
-                            </Col>
+                            </div>
                         </div>
                         <div className="row">
-                            <Col xs={12}>
+                            <div className="col-xs-12">
                                 <button
                                     className="domain-validation-delete btn btn-default"
                                     id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
@@ -174,7 +173,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                                 >
                                     Remove Validator
                                 </button>
-                            </Col>
+                            </div>
                         </div>
                     </div>
                 )}

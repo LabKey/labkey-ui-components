@@ -5,7 +5,7 @@
 import React from 'react';
 import { Map, List } from 'immutable';
 
-import { Col, Row } from 'react-bootstrap';
+
 
 import { User } from '../base/models/User';
 import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
@@ -48,10 +48,10 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
             <>
                 <hr className="principal-hr" />
                 <div className="row">
-                    <Col xs={4} className="principal-detail-label">
+                    <div className="col-xs-4 principal-detail-label">
                         Effective Roles
-                    </Col>
-                    <Col xs={8} className="principal-detail-value">
+                    </div>
+                    <div className="col-xs-8 principal-detail-value">
                         <ul className="principal-detail-ul">
                             {assignments.map(assignment => {
                                 const role = rolesByUniqueName.get(assignment.role);
@@ -75,7 +75,7 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
                                 );
                             })}
                         </ul>
-                    </Col>
+                    </div>
                 </div>
             </>
         );

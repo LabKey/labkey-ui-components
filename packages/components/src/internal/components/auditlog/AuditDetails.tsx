@@ -4,7 +4,6 @@
  */
 import React, { Component, ReactNode } from 'react';
 import { List, Map } from 'immutable';
-import { Col } from 'react-bootstrap';
 
 import { User } from '../base/models/User';
 import { capitalizeFirstChar } from '../../util/utils';
@@ -164,7 +163,7 @@ export class AuditDetails extends Component<Props> {
                         <>
                             {summary && (
                                 <div className="row margin-bottom display-light">
-                                    <Col xs={12}>{summary}</Col>
+                                    <div className="col-xs-12">{summary}</div>
                                 </div>
                             )}
                             {gridData && <Grid data={gridData} columns={this.getGridColumns()} showHeader={false} />}

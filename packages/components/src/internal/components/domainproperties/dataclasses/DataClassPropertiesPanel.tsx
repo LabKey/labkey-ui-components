@@ -1,5 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { Col, Row } from 'react-bootstrap';
+
 
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 import {
@@ -178,13 +178,13 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
             >
                 <div className="row margin-bottom">
                     {headerText && (
-                        <Col xs={9}>
+                        <div className="col-xs-9">
                             <div className="entity-form--headerhelp">{headerText}</div>
-                        </Col>
+                        </div>
                     )}
-                    <Col xs={headerText ? 3 : 12}>
+                    <div className={`col-xs-${headerText ? 3 : 12}`}>
                         <HelpTopicURL helpTopic={helpTopic} nounPlural={nounPlural} />
-                    </Col>
+                    </div>
                 </div>
                 <EntityDetailsForm
                     noun={nounSingular}
@@ -214,10 +214,10 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                 )}
                 {!appPropertiesOnly && (
                     <div className="row">
-                        <Col xs={2}>
+                        <div className="col-xs-2">
                             <DomainFieldLabel label="Category" />
-                        </Col>
-                        <Col xs={10}>
+                        </div>
+                        <div className="col-xs-10">
                             <QuerySelect
                                 key={FORM_IDS.CATEGORY}
                                 name={FORM_IDS.CATEGORY}
@@ -228,18 +228,18 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                                 value={model.category}
                                 showLabel={false}
                             />
-                        </Col>
+                        </div>
                     </div>
                 )}
                 {!appPropertiesOnly && (
                     <div className="row">
-                        <Col xs={2}>
+                        <div className="col-xs-2">
                             <DomainFieldLabel
                                 label="Sample Type"
                                 helpTipBody={`The default Sample Type where new samples will be created for this ${nounSingular.toLowerCase()}.`}
                             />
-                        </Col>
-                        <Col xs={10}>
+                        </div>
+                        <div className="col-xs-10">
                             <QuerySelect
                                 key={FORM_IDS.SAMPLE_TYPE_ID}
                                 name={FORM_IDS.SAMPLE_TYPE_ID}
@@ -248,7 +248,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                                 value={model.sampleSet}
                                 showLabel={false}
                             />
-                        </Col>
+                        </div>
                     </div>
                 )}
             </BasePropertiesPanel>

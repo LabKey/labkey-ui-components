@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Col } from 'react-bootstrap';
 import { fromJS, List } from 'immutable';
 import classNames from 'classnames';
 
@@ -18,11 +17,12 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE } from '../../query/filter';
 
+import { Tab, Tabs } from '../../Tabs';
+
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 import { FilterExpressionView } from './FilterExpressionView';
 import { FieldFilter } from './models';
 import { isChooseValuesFilter } from './utils';
-import { Tab, Tabs } from '../../Tabs';
 
 enum FieldFilterTabs {
     ChooseValues = 'ChooseValues',
@@ -225,10 +225,14 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         },
         [api, metricFeatureArea]
     );
+    const fieldsClassName = `col-xs-${fullWidth ? 12 : 6} col-sm-${
+        fullWidth ? 4 : 3
+    } field-modal__col filter-modal__col_fields`;
+    const valuesClassName = `col-xs-12 col-sm-${fullWidth ? 8 : 6} field-modal__col filter-modal__col_filter_exp`;
 
     const body = (
         <>
-            <Col xs={fullWidth ? 12 : 6} sm={fullWidth ? 4 : 3} className="field-modal__col filter-modal__col_fields">
+            <div className={fieldsClassName}>
                 <div className="field-modal__col-title">Fields</div>
                 {!queryName && emptyMsg && <div className="field-modal__empty-msg">{emptyMsg}</div>}
                 {queryName && (
@@ -273,8 +277,8 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                         </div>
                     </div>
                 )}
-            </Col>
-            <Col xs={12} sm={fullWidth ? 8 : 6} className="field-modal__col filter-modal__col_filter_exp">
+            </div>
+            <div className={valuesClassName}>
                 <div className="field-modal__col-title">Values</div>
                 {queryName && !activeField && <div className="field-modal__empty-msg">Select a field.</div>}
                 {queryName && activeField && (
@@ -285,9 +289,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                     >
                         <Tabs activeKey={activeTab} className="field-modal__tabs content-tabs" onSelect={onTabChange}>
                             <Tab eventKey={FieldFilterTabs.Filter} title="Filter">
-                                <div className="field-modal__col-sub-title">
-                                    Find values for {activeField.caption}
-                                </div>
+                                <div className="field-modal__col-sub-title">Find values for {activeField.caption}</div>
                                 {activeTab === FieldFilterTabs.Filter && (
                                     <FilterExpressionView
                                         allowRelativeDateFilter={allowRelativeDateFilter}
@@ -332,7 +334,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
                         </Tabs>
                     </div>
                 )}
-            </Col>
+            </div>
         </>
     );
 

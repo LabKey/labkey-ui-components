@@ -1,6 +1,6 @@
 import React from 'react';
 import { List } from 'immutable';
-import { Checkbox, Col, FormControl } from 'react-bootstrap';
+import { Checkbox, FormControl } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
 import { Modal } from '../../Modal';
@@ -298,10 +298,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             <>
                 <div className="domain-adv-misc-options">Default Value Options</div>
                 <div className="row domain-adv-thick-row">
-                    <Col xs={3}>
+                    <div className="col-xs-3">
                         <DomainFieldLabel label="Default Type" helpTipBody={this.getDefaultTypeHelpText()} />
-                    </Col>
-                    <Col xs={6}>
+                    </div>
+                    <div className="col-xs-6">
                         <FormControl
                             componentClass="select"
                             name={createFormInputName(DOMAIN_FIELD_DEFAULT_VALUE_TYPE)}
@@ -315,14 +315,14 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </option>
                             ))}
                         </FormControl>
-                    </Col>
-                    <Col xs={3} />
+                    </div>
+                    <div className="col-xs-3" />
                 </div>
                 <div className="row">
-                    <Col xs={3}>
+                    <div className="col-xs-3">
                         <span>Default Value</span>
-                    </Col>
-                    <Col xs={9}>
+                    </div>
+                    <div className="col-xs-9">
                         <span>
                             {defaultDisplayValue !== undefined && defaultDisplayValue !== null
                                 ? defaultDisplayValue
@@ -335,7 +335,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         >
                             Set Default Values
                         </a>
-                    </Col>
+                    </div>
                 </div>
             </>
         );
@@ -363,10 +363,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             <>
                 <div className="domain-adv-misc-options">Miscellaneous Options</div>
                 <div className="row">
-                    <Col xs={3}>
+                    <div className="col-xs-3">
                         <DomainFieldLabel label="PHI Level" helpTipBody={this.getPhiHelpText()} />
-                    </Col>
-                    <Col xs={6}>
+                    </div>
+                    <div className="col-xs-6">
                         <FormControl
                             componentClass="select"
                             name={createFormInputName(DOMAIN_FIELD_PHI)}
@@ -386,8 +386,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </option>
                             ))}
                         </FormControl>
-                    </Col>
-                    <Col xs={3} />
+                    </div>
+                    <div className="col-xs-3" />
                 </div>
                 {field.dataType === DATETIME_TYPE && (
                     <Checkbox

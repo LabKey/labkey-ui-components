@@ -83,14 +83,14 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
         return (
             <div>
                 <div className="row">
-                    <Col xs={12}>
+                    <div className="col-xs-12">
                         <div className="domain-field-section-heading">{label}</div>
-                    </Col>
+                    </div>
                 </div>
                 <div className="row">
                     {!isUserLookup && (
                         <>
-                            <Col xs={2}>
+                            <div className="col-xs-2">
                                 <div className="domain-field-label">Target Folder</div>
                                 <FolderSelect
                                     id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, domainIndex, index)}
@@ -99,8 +99,8 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                                     onChange={this.onFieldChange}
                                     value={lookupContainer}
                                 />
-                            </Col>
-                            <Col xs={2}>
+                            </div>
+                            <div className="col-xs-2">
                                 <div className="domain-field-label">Target Schema</div>
                                 <SchemaSelect
                                     containerPath={lookupContainer}
@@ -110,8 +110,8 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                                     onChange={this.onFieldChange}
                                     value={lookupSchema}
                                 />
-                            </Col>
-                            <Col xs={2}>
+                            </div>
+                            <div className="col-xs-2">
                                 <div className="domain-field-label">Target Table</div>
                                 <TargetTableSelect
                                     containerPath={lookupContainer}
@@ -125,10 +125,10 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                                     lookupIsValid={lookupIsValid}
                                     shouldDisableNonExists={!wrappedColumnName && lookupIsValid} // Only disable non-wrapped fields with valid lookup value if the value is not in the query list
                                 />
-                            </Col>
+                            </div>
                         </>
                     )}
-                    <Col xs={6}>
+                    <div className="col-xs-6">
                         <div className="domain-field-label">Lookup Validator</div>
                         <Checkbox
                             className="domain-field-checkbox-margin"
@@ -145,7 +145,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                                 </div>
                             </LabelHelpTip>
                         </Checkbox>
-                    </Col>
+                    </div>
                 </div>
             </div>
         );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Form, FormControl, Row } from 'react-bootstrap';
+import { Form, FormControl } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import classNames from 'classnames';
@@ -64,10 +64,10 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
         return (
             <Form>
                 <div className="row margin-bottom margin-top">
-                    <Col xs={2}>
+                    <div className="col-xs-2">
                         <DomainFieldLabel label="Name" required={true} />
-                    </Col>
-                    <Col xs={10}>
+                    </div>
+                    <div className="col-xs-10">
                         <FormControl
                             id={ENTITY_FORM_IDS.NAME}
                             type="text"
@@ -76,34 +76,34 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                             value={getEntityNameValue(formValues, data)}
                             disabled={nameReadOnly}
                         />
-                    </Col>
+                    </div>
                 </div>
                 <div className="row margin-bottom">
-                    <Col xs={2}>
+                    <div className="col-xs-2">
                         <DomainFieldLabel
                             label="Description"
                             helpTipBody={`A short description for this ${noun.toLowerCase()}.`}
                         />
-                    </Col>
-                    <Col xs={10}>
+                    </div>
+                    <div className="col-xs-10">
                         <textarea
                             className="form-control"
                             id={ENTITY_FORM_IDS.DESCRIPTION}
                             onChange={onFormChange}
                             value={getEntityDescriptionValue(formValues, data)}
                         />
-                    </Col>
+                    </div>
                 </div>
                 {nameExpressionGenIdProps && (
                     <div className="row margin-top">
-                        <Col xs={2} />
-                        <Col xs={10}>
+                        <div className="col-xs-2" />
+                        <div className="col-xs-10">
                             <NameExpressionGenIdBanner {...nameExpressionGenIdProps} />
-                        </Col>
+                        </div>
                     </div>
                 )}
                 <div className="row margin-bottom">
-                    <Col xs={2}>
+                    <div className="col-xs-2">
                         <div className="name-expression-label-div" onMouseEnter={() => onNameFieldHover?.()}>
                             <DomainFieldLabel
                                 label="Naming Pattern"
@@ -121,8 +121,8 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                                 }
                             />
                         </div>
-                    </Col>
-                    <Col xs={10}>
+                    </div>
+                    <div className="col-xs-10">
                         <FormControl
                             className={classNames({
                                 'naming-pattern-border-warning':
@@ -134,7 +134,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                             onChange={onFormChange}
                             value={getEntityNameExpressionValue(formValues, data)}
                         />
-                    </Col>
+                    </div>
                 </div>
             </Form>
         );

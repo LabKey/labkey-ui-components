@@ -4,7 +4,7 @@
  */
 import React, { FC } from 'react';
 import moment from 'moment';
-import { Col, Panel, Row } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
@@ -39,12 +39,8 @@ interface UserDetailRowProps {
 const UserDetailRow: FC<UserDetailRowProps> = ({ label, value }) => {
     return (
         <div className="row">
-            <Col xs={4} className="principal-detail-label">
-                {label}
-            </Col>
-            <Col xs={8} className="principal-detail-value">
-                {value}
-            </Col>
+            <div className="col-xs-4 principal-detail-label">{label}</div>
+            <div className="col-xs-8 principal-detail-value">{value}</div>
         </div>
     );
 };

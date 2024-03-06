@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Col, Form, Row } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
@@ -129,12 +129,12 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
                 isValid={isValid}
             >
                 <div className="row margin-bottom">
-                    <Col xs={12}>
+                    <div className="col-xs-12">
                         <HelpTopicURL helpTopic={DEFINE_ISSUES_LIST_TOPIC} nounPlural="issues lists" />
-                    </Col>
+                    </div>
                 </div>
                 <Form>
-                    <Col xs={12} md={6}>
+                    <div className="col-xs-12 col-md-6">
                         <div className="domain-field-padding-bottom">
                             <BasicPropertiesFields
                                 model={model}
@@ -152,7 +152,7 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
                                 />
                             </div>
                         )}
-                    </Col>
+                    </div>
                     <AssignmentOptions api={api} model={model} onSelect={this.onSelectChange} />
                 </Form>
             </BasePropertiesPanel>

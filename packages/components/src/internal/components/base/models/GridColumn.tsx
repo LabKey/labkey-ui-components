@@ -16,11 +16,12 @@ interface ColumnProps {
     helpTipRenderer?: string;
     hideTooltip?: boolean;
     index: string;
+    fixedWidth?: number;
     raw?: any;
     showHeader?: boolean;
     tableCell?: boolean;
     title: string;
-    width?: any;
+    width?: number;
 }
 
 const defaultCell: GridColumnCellRenderer = d => {
@@ -51,24 +52,27 @@ export class GridColumn implements ColumnProps {
     align: string;
     cell: GridColumnCellRenderer;
     format: string;
+    headerCls: string;
+    helpTipRenderer?: string;
+    hideTooltip?: boolean;
     index: string;
+    fixedWidth: number;
     raw: any;
-    showHeader: boolean;
     tableCell: boolean;
     title: string;
-    width: any;
-    headerCls: string;
-    hideTooltip?: boolean;
-    helpTipRenderer?: string;
+    showHeader: boolean;
+    width: number;
 
     constructor(config: ColumnProps) {
         this.align = config.align;
-        this.index = config.index;
+        this.cell = config.cell ?? defaultCell;
         this.format = config.format;
+        this.index = config.index;
+        this.fixedWidth = config.fixedWidth;
         this.raw = config.raw;
-        this.width = config.width;
         this.headerCls = config.headerCls;
         this.helpTipRenderer = config.helpTipRenderer;
+        this.width = config.width;
 
         // react render displays '&nbsp', see: https://facebook.github.io/react/docs/jsx-gotchas.html
         if (config.title && config.title == '&nbsp;') {
@@ -80,11 +84,5 @@ export class GridColumn implements ColumnProps {
         this.showHeader = config.showHeader !== false; // defaults to true
         this.tableCell = config.tableCell === true; // defaults to false
         this.hideTooltip = config.hideTooltip === true; // defaults to false
-
-        if (config.cell) {
-            this.cell = config.cell;
-        } else {
-            this.cell = defaultCell;
-        }
     }
 }

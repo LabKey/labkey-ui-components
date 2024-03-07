@@ -13,7 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, Fragment, memo, PureComponent, ReactNode, RefObject, useEffect, useRef } from 'react';
+import React, {
+    CSSProperties,
+    FC,
+    Fragment,
+    memo,
+    PureComponent,
+    ReactNode,
+    RefObject,
+    useEffect,
+    useRef,
+} from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 
@@ -41,13 +51,14 @@ function processColumns(columns: List<any>): List<GridColumn> {
                 align: c.align,
                 cell: c.cell,
                 format: c.jsonType === 'float' || c.jsonType === 'int' ? c.format : undefined,
+                helpTipRenderer: c.helpTipRenderer,
+                hideTooltip: c.helpTipRenderer !== undefined,
                 index: c.index,
+                fixedWidth: c.fixedWidth,
                 raw: c,
                 tableCell: c.tableCell,
                 title: c.title || c.caption,
                 width: c.width,
-                helpTipRenderer: c.helpTipRenderer,
-                hideTooltip: c.helpTipRenderer !== undefined,
             });
         })
         .toList();
@@ -157,18 +168,25 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
         return (
             <thead>
                 <tr>
-                    {columns.map((column: GridColumn, i: number) => {
-                        const { headerCls, index, raw, title, width, hideTooltip } = column;
+                    {columns.map((column, i) => {
+                        const { headerCls, index, fixedWidth, raw, title, width, hideTooltip } = column;
                         const draggable = onColumnDrop !== undefined;
-                        let minWidth = width;
 
-                        if (minWidth === undefined) {
-                            // the additional 45px is to account for the grid column header icons for sort/filter and the dropdown toggle
-                            minWidth = calcWidths && title ? Math.max(45 + title.length * 8, 150) : undefined;
+                        let style: CSSProperties;
+                        if (fixedWidth) {
+                            style = {
+                                width: `${fixedWidth}px`,
+                            };
                         }
 
-                        if (minWidth !== undefined) {
-                            minWidth += 'px';
+                        let colMinWidth = width;
+                        if (colMinWidth === undefined) {
+                            // the additional 45px is to account for the grid column header icons for sort/filter and the dropdown toggle
+                            colMinWidth = calcWidths && title ? Math.max(45 + title.length * 8, 150) : undefined;
+                        }
+                        if (!fixedWidth && colMinWidth !== undefined) {
+                            if (!style) style = {};
+                            style.minWidth = `${colMinWidth}px`;
                         }
 
                         if (column.showHeader) {
@@ -185,7 +203,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                     id={index}
                                     key={index}
                                     className={className}
-                                    style={{ minWidth }}
+                                    style={style}
                                     title={hideTooltip ? undefined : description}
                                     draggable={draggable}
                                     onDragStart={this.handleDragStart}
@@ -205,7 +223,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                                 </th>
                             );
                         }
-                        return <th key={index} style={{ minWidth }} />;
+                        return <th key={index} style={{ minWidth: style?.minWidth }} />;
                     }, this)}
                 </tr>
             </thead>

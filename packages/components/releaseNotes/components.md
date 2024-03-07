@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.26.1
+*Released*: 7 March 2024
+- Support column sizing for editable grid
+
 ### version 3.26.0
 *Released*: 6 March 2024
 - Add Tabs and Tab components

@@ -843,12 +843,17 @@ class AssayImportPanelsBody extends Component<Props, State> {
                             className="btn btn-default"
                             type="submit"
                             onClick={this.onSaveAndImportAgain}
-                            disabled={disabledSave}
+                            disabled={!getIsDirty?.() || disabledSave}
                         >
                             {model.isSubmitting ? 'Saving...' : 'Save and Import Another Run'}
                         </button>
                     )}
-                    <button type="submit" className="btn btn-success" onClick={this.onImport} disabled={disabledSave}>
+                    <button
+                        type="submit"
+                        className="btn btn-success"
+                        onClick={this.onImport}
+                        disabled={!getIsDirty?.() || disabledSave}
+                    >
                         {model.isSubmitting ? 'Importing...' : isReimport ? 'Re-Import' : 'Import'}
                     </button>
                 </FormButtons>

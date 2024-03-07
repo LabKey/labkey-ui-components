@@ -576,7 +576,7 @@ export class QueryModel {
         return this.baseFilters.filter(filter => filter.getColumnName().toLowerCase() === 'replaced');
     }
 
-    get modelFilters(): Filter.IFilter[] {
+    getModelFilters(excludeViewFilters?: boolean): Filter.IFilter[] {
         const { baseFilters, queryInfo, keyValue } = this;
 
         if (!queryInfo) {
@@ -600,7 +600,11 @@ export class QueryModel {
             return [...pkFilter, ...this.detailFilters];
         }
 
-        return [...baseFilters, ...this.viewFilters];
+        return excludeViewFilters ? [...baseFilters] : [...baseFilters, ...this.viewFilters];
+    }
+
+    get modelFilters(): Filter.IFilter[] {
+        return this.getModelFilters(false);
     }
 
     get viewFilters(): Filter.IFilter[] {
@@ -622,6 +626,13 @@ export class QueryModel {
     get filters(): Filter.IFilter[] {
         const modelFilters = this.modelFilters;
 
+        if (this.keyValue !== undefined) return modelFilters;
+
+        return [...modelFilters, ...this.filterArray];
+    }
+
+    get loadRowsFilters(): Filter.IFilter[] {
+        const modelFilters = this.getModelFilters(true);
         if (this.keyValue !== undefined) return modelFilters;
 
         return [...modelFilters, ...this.filterArray];
@@ -1085,7 +1096,7 @@ export class QueryModel {
             viewName: this.viewName,
             containerPath: this.containerPath,
             containerFilter: this.containerFilter,
-            filterArray: this.filters,
+            filterArray: this.loadRowsFilters,
             sort: this.sortString,
             columns: this.columnString,
             parameters: this.queryParameters,

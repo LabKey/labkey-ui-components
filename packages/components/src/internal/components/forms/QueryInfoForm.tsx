@@ -64,7 +64,7 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     onHide?: () => void;
     onSubmit?: (data: OrderedMap<string, any>, comment?: string) => Promise<any>;
     onSubmitForEdit?: (data: OrderedMap<string, any>, comment?: string) => Promise<any>;
-    onSuccess?: (data: any, submitForEdit: boolean) => void;
+    onSuccess?: (data: any, submitForEdit: boolean, comment?: string) => void;
     operation?: Operation;
     pluralNoun?: string;
     queryFilters?: Record<string, List<Filter.IFilter>>;
@@ -231,7 +231,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                     isDirty: false,
                 });
                 if (Utils.isFunction(onSuccess)) {
-                    return onSuccess(data, submitForEdit);
+                    return onSuccess(data, submitForEdit, comment);
                 }
             },
             error => {

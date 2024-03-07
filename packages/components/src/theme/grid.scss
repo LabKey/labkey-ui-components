@@ -359,6 +359,16 @@ $table-cell-selection-bg-color: #EDF3FF;
         min-height: 30px;
     }
 
+    &.grid-col-with-width {
+        .cell-menu-value, .cellular-input {
+            min-width: 20px;
+        }
+
+        .select-input-cell .select-input__control {
+            min-width: 100px;
+        }
+    }
+
     .cell-menu-value {
         min-width: 200px;
         margin-right: 24px;

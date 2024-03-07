@@ -45,11 +45,6 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
             onDragOver={[Function]}
             onDragStart={[Function]}
             onDrop={[Function]}
-            style={
-              {
-                "minWidth": undefined,
-              }
-            }
             title="Contains a short name for this data object
 If not provided, a unique name will be generated from the expression:
 null (Name)"
@@ -66,11 +61,6 @@ null (Name)"
             onDragOver={[Function]}
             onDragStart={[Function]}
             onDrop={[Function]}
-            style={
-              {
-                "minWidth": undefined,
-              }
-            }
             title="Contains a reference to a user-editable comment about this row (Flag)"
           >
             Flag
@@ -85,11 +75,6 @@ null (Name)"
             onDragOver={[Function]}
             onDragStart={[Function]}
             onDrop={[Function]}
-            style={
-              {
-                "minWidth": undefined,
-              }
-            }
             title="mixtureTypeId"
           >
             Mixture Type
@@ -104,11 +89,6 @@ null (Name)"
             onDragOver={[Function]}
             onDragStart={[Function]}
             onDrop={[Function]}
-            style={
-              {
-                "minWidth": undefined,
-              }
-            }
             title="The expiration period in days. (expirationTime)"
           >
             Expiration Time
@@ -318,11 +298,6 @@ exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] =
             onDragOver={[Function]}
             onDragStart={[Function]}
             onDrop={[Function]}
-            style={
-              {
-                "minWidth": undefined,
-              }
-            }
             title="Contains a short name for this data object
 If not provided, a unique name will be generated from the expression:
 null (Name)"
@@ -339,11 +314,6 @@ null (Name)"
             onDragOver={[Function]}
             onDragStart={[Function]}
             onDrop={[Function]}
-            style={
-              {
-                "minWidth": undefined,
-              }
-            }
             title="Contains a reference to a user-editable comment about this row (Flag)"
           >
             Flag

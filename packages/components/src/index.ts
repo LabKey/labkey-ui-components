@@ -876,6 +876,7 @@ import { ActiveUserLimit, ActiveUserLimitMessage } from './internal/components/s
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { AuditSettings } from './internal/components/settings/AuditSettings';
 import { BaseModal, Modal, ModalHeader } from './internal/Modal';
+import { Tab, Tabs } from './internal/Tabs';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1760,6 +1761,8 @@ export {
     BaseModal,
     Modal,
     ModalHeader,
+    Tab,
+    Tabs,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require

@@ -9,6 +9,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update `EditableDetailPanel` and `DiscardConsumedSamplesPanel` to move commenting into the sticky button footer
   - Update `Modal` and `ModalButtons` components to support including the `CommentTextArea`
 
+### version 3.26.1
+*Released*: 7 March 2024
+- Support column sizing for editable grid
+
+### version 3.26.0
+*Released*: 6 March 2024
+- Add Tabs and Tab components
+- Replace usages of react-bootstrap Tabs/Tab
+
 ### version 3.25.2
 *Released*: 5 March 2024
 - Merge release24.3-SNAPSHOT to develop:

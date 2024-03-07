@@ -47,6 +47,8 @@ export interface EditableColumnMetadata {
     popoverClassName?: string;
     readOnly?: boolean;
     toolTip?: ReactNode;
+    width?: number;
+    minWidth?: number;
 }
 
 export interface ValueDescriptor {

@@ -194,13 +194,12 @@ describe('Grid', () => {
                 fixedWidth: 567,
             },
         ]);
-        render(<Grid data={gridData} columns={columns}/>);
+        render(<Grid data={gridData} columns={columns} />);
         const headerCells = document.querySelectorAll('.grid-header-cell');
         expect(headerCells).toHaveLength(3);
         expect(headerCells[0].getAttribute('style')).toBe('width: 321px;');
         expect(headerCells[1].getAttribute('style')).toBe('min-width: 123px;');
         expect(headerCells[2].getAttribute('style')).toBe('width: 567px;');
-
     });
 
     test('render with messages', () => {

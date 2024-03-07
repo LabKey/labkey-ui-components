@@ -172,10 +172,10 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                         const { headerCls, index, fixedWidth, raw, title, width, hideTooltip } = column;
                         const draggable = onColumnDrop !== undefined;
 
-                        let style: CSSProperties = undefined;
-                        if (!!fixedWidth) {
+                        let style: CSSProperties;
+                        if (fixedWidth) {
                             style = {
-                                width: `${fixedWidth}px`
+                                width: `${fixedWidth}px`,
                             };
                         }
 

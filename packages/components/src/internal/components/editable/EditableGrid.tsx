@@ -162,7 +162,7 @@ function inputCellFactory(
     cellActions: CellActions,
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean,
-    initialSelection: string[],
+    initialSelection: string[]
 ): GridColumnCellRenderer {
     return (value, row, c, rn, cn) => {
         let colOffset = 0;
@@ -824,7 +824,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
 
             let width = 100;
-            let fixedWidth = undefined;
+            let fixedWidth;
             if (hasCellWidthOverride(metadata)) {
                 fixedWidth = metadata.width;
                 if (!fixedWidth) {
@@ -846,7 +846,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         this.cellActions,
                         metadata?.containerFilter ?? containerFilter,
                         forUpdate,
-                        this.state.initialSelection,
+                        this.state.initialSelection
                     ),
                     index: qCol.fieldKey,
                     fixedWidth,

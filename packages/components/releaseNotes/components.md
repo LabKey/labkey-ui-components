@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.24.X
-*Released*: X March 2024
+### version 3.24.11
+*Released*: 8 March 2024
 - Issue 49858: LKSM: Saving grid filter on Storage Status takes 5+ minutes to load grid
   - Don't include view filters for getRows call
 

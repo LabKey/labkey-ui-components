@@ -600,7 +600,13 @@ export class QueryModel {
             return [...pkFilter, ...this.detailFilters];
         }
 
-        return excludeViewFilters ? [...baseFilters] : [...baseFilters, ...this.viewFilters];
+        if (excludeViewFilters) {
+            // Issue 49634: LKSM: Saving search filters in default grid view has odd behavior
+            const searchViewFilters = this.viewFilters.filter(f => f.getColumnName() === '*');
+            return [...baseFilters, ...searchViewFilters]
+        }
+        return [...baseFilters, ...this.viewFilters];
+
     }
 
     get modelFilters(): Filter.IFilter[] {
@@ -618,24 +624,20 @@ export class QueryModel {
         return [...queryInfo.getFilters(viewName)];
     }
 
+    loadRowsFilters(excludeViewFilters?: boolean): Filter.IFilter[] {
+        const modelFilters = this.getModelFilters(excludeViewFilters);
+        if (this.keyValue !== undefined) return modelFilters;
+
+        return [...modelFilters, ...this.filterArray];
+    }
+
     /**
      * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/Filter.IFilter.html) objects
      * for the QueryModel. If a keyValue is provided, this will be a filter on the primary key column concatenated with
      * the detailFilters. Otherwise, this will be a concatenation of the baseFilters, filterArray, and [[QueryInfo]] view filters.
      */
     get filters(): Filter.IFilter[] {
-        const modelFilters = this.modelFilters;
-
-        if (this.keyValue !== undefined) return modelFilters;
-
-        return [...modelFilters, ...this.filterArray];
-    }
-
-    get loadRowsFilters(): Filter.IFilter[] {
-        const modelFilters = this.getModelFilters(true);
-        if (this.keyValue !== undefined) return modelFilters;
-
-        return [...modelFilters, ...this.filterArray];
+        return this.loadRowsFilters(false);
     }
 
     /**
@@ -1096,7 +1098,7 @@ export class QueryModel {
             viewName: this.viewName,
             containerPath: this.containerPath,
             containerFilter: this.containerFilter,
-            filterArray: this.loadRowsFilters,
+            filterArray: this.loadRowsFilters(true),
             sort: this.sortString,
             columns: this.columnString,
             parameters: this.queryParameters,

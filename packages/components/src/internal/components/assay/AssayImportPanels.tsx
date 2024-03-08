@@ -452,12 +452,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }));
     };
 
-    handleBatchChange = (fieldValues: any, isChanged?: boolean): void => {
+    handleBatchChange = (fieldValues: any): void => {
         const values = { ...this.state.model.batchProperties.toObject(), ...fieldValues };
 
-        if (isChanged) {
-            this.props.setIsDirty?.(true);
-        }
+        this.props.setIsDirty?.(true);
 
         const cleanedValues = Object.keys(values).reduce((result, key) => {
             const value = values[key];
@@ -480,7 +478,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         });
     };
 
-    handleRunChange = (fieldValues: any, isChanged?: boolean): void => {
+    handleRunChange = (fieldValues: any): void => {
         const values = { ...this.state.model.runProperties.toObject(), ...fieldValues };
         let { comment, runName } = this.state.model;
 
@@ -496,9 +494,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             return result;
         }, {});
 
-        if (isChanged) {
-            this.props.setIsDirty?.(true);
-        }
+        this.props.setIsDirty?.(true);
 
         this.handleChange('runProperties', OrderedMap<string, any>(cleanedValues), () => {
             this.setState(state => ({
@@ -778,6 +774,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const disabledSave =
             model.isSubmitting ||
             !model.hasData(currentStep, editorModel) ||
+            (!!getIsDirty && !getIsDirty?.()) ||
             (isReimport && requiresUserComment && !comment?.trim()?.length);
         const runProps = runPropsModel.getRow();
 
@@ -843,7 +840,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                             className="btn btn-default"
                             type="submit"
                             onClick={this.onSaveAndImportAgain}
-                            disabled={!getIsDirty?.() || disabledSave}
+                            disabled={disabledSave}
                         >
                             {model.isSubmitting ? 'Saving...' : 'Save and Import Another Run'}
                         </button>
@@ -852,7 +849,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                         type="submit"
                         className="btn btn-success"
                         onClick={this.onImport}
-                        disabled={!getIsDirty?.() || disabledSave}
+                        disabled={disabledSave}
                     >
                         {model.isSubmitting ? 'Importing...' : isReimport ? 'Re-Import' : 'Import'}
                     </button>

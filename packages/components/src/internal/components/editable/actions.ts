@@ -4,16 +4,17 @@ import moment from 'moment';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { LoadingState } from '../../../public/LoadingState';
-import { QueryColumn } from '../../../public/QueryColumn';
+import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { GRID_EDIT_INDEX } from '../../constants';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
 import { GridData } from '../../models';
-import { selectRowsDeprecated } from '../../query/api';
 import { formatDate, formatDateTime, parseDate } from '../../util/Date';
 import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
+
+import { selectRows } from '../../query/selectRows';
 
 import {
     CellMessage,
@@ -30,7 +31,7 @@ import {
     ValueDescriptor,
 } from './models';
 
-import { decimalDifference, genCellKey, parseCellKey } from './utils';
+import { decimalDifference, genCellKey, getLookupFilters, parseCellKey } from './utils';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -191,52 +192,41 @@ type ColumnLoaderPromise = Promise<{ column: QueryColumn; descriptors: ValueDesc
 const findLookupValues = async (
     column: QueryColumn,
     lookupKeyValues?: any[],
-    lookupValues?: any[]
+    lookupValues?: any[],
+    lookupValueFilters?: Filter.IFilter[],
+    forUpdate?: boolean
 ): ColumnLoaderPromise => {
-    const lookup = column.lookup;
-    const { keyColumn } = column.lookup;
+    const { lookup } = column;
+    const { keyColumn } = lookup;
     const displayColumn = resolveDisplayColumn(column);
 
-    const selectRowsOptions: any = {
-        schemaName: lookup.schemaName,
-        queryName: lookup.queryName,
-        viewName: ViewInfo.DETAIL_NAME, // Use the detail view so values that may be filtered out of the default view show up.
-        columns: [displayColumn, keyColumn].join(','),
+    const results = await selectRows({
+        columns: [displayColumn, keyColumn],
         containerPath: lookup.containerPath,
+        filterArray: getLookupFilters(
+            column,
+            lookupKeyValues,
+            lookupValues,
+            lookupValueFilters,
+            forUpdate,
+            displayColumn
+        ),
+        includeTotalCount: false,
         maxRows: -1,
-        includeTotalCount: 'f',
-    };
+        schemaQuery: lookup.schemaQuery,
+        viewName: ViewInfo.DETAIL_NAME, // Use the detail view so values that may be filtered out of the default view show up.
+    });
 
-    if (lookupValues) {
-        selectRowsOptions.filterArray = [Filter.create(displayColumn, lookupValues, Filter.Types.IN)];
-    }
+    const descriptors = results.rows.reduce<ValueDescriptor[]>((desc, row) => {
+        const key = caseInsensitive(row, keyColumn)?.value;
+        if (key !== undefined && key !== null) {
+            const displayRow = caseInsensitive(row, displayColumn);
+            desc.push({ display: displayRow?.displayValue || displayRow?.value, raw: key });
+        }
+        return desc;
+    }, []);
 
-    if (lookupKeyValues) {
-        selectRowsOptions.filterArray = [Filter.create(keyColumn, lookupKeyValues, Filter.Types.IN)];
-    }
-
-    const result = await selectRowsDeprecated(selectRowsOptions);
-
-    const { key, models } = result;
-
-    const descriptors = [];
-    if (models[key]) {
-        Object.values(models[key]).forEach(row => {
-            const key = caseInsensitive(row[keyColumn], 'value');
-            if (key !== undefined && key !== null) {
-                descriptors.push({
-                    display:
-                        caseInsensitive(row[displayColumn], 'displayValue') ||
-                        caseInsensitive(row[displayColumn], 'value'),
-                    raw: key,
-                });
-            }
-        });
-    }
-    return {
-        column,
-        descriptors,
-    };
+    return { column, descriptors };
 };
 
 async function getLookupValueDescriptors(
@@ -977,15 +967,15 @@ export function generateFillCellKeys(initialSelection: string[], finalSelection:
  * then we will fill via a generated sequence that increments the date by one day each row.
  * If the initialSelection includes a range of cells and not all values are numeric, fill via a copy of all of the values
  * in initSelection.
- * @param editorModel: An EditorModel object
+ * @param editorModel An EditorModel object
  * @param column
  * @param columnMetadata
- * @param cellMessages: The CellMessages object to mutate, we cannot use the one from EditorModel because we may need to
+ * @param cellMessages The CellMessages object to mutate, we cannot use the one from EditorModel because we may need to
  * modify multiple columns of data in one event (see dragFillEvent).
- * @param cellValues: The CellValues object to mutate, we cannot use the one from EditorModel because we may need to
+ * @param cellValues The CellValues object to mutate, we cannot use the one from EditorModel because we may need to
  * modify multiple columns of data in one event (see dragFillEvent).
- * @param initialSelection: An array of sorted cell keys, all from the same column that were initially selected
- * @param selectionToFill: An array of sorted cell keys, all from the same column, to be filled with values based on the
+ * @param initialSelection An array of sorted cell keys, all from the same column that were initially selected
+ * @param selectionToFill An array of sorted cell keys, all from the same column, to be filled with values based on the
  * content of initialSelection
  */
 export async function fillColumnCells(
@@ -1063,14 +1053,14 @@ type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
 
 /**
  * @param editorModel
- * @param initialSelection: The initial selection before the selection was expanded
- * @param dataKeys: The orderedRows Object from a QueryModel
- * @param data: The rows object from a QueryModel
- * @param queryInfo: A QueryInfo
+ * @param initialSelection The initial selection before the selection was expanded
+ * @param dataKeys The orderedRows Object from a QueryModel
+ * @param data The rows object from a QueryModel
+ * @param queryInfo A QueryInfo
  * @param columns
- * @param columnMetadata: Array of column metadata, in the same order as the columns in the grid
- * @param readonlyRows: A list of readonly rows
- * @param lockedRows: A list of locked rows
+ * @param columnMetadata Array of column metadata, in the same order as the columns in the grid
+ * @param readonlyRows A list of readonly rows
+ * @param lockedRows A list of locked rows
  */
 export async function dragFillEvent(
     editorModel: EditorModel,
@@ -1275,16 +1265,6 @@ function parsePaste(value: string): ParsePastePayload {
         numCols,
         numRows: data.size,
     };
-}
-
-function getColumnFilteredLookup(
-    column: QueryColumn,
-    columnMetadata: Map<string, EditableColumnMetadata>
-): List<string> {
-    const metadata: EditableColumnMetadata = columnMetadata && columnMetadata.get(column.fieldKey.toLowerCase());
-    if (metadata) return metadata.filteredLookupValues;
-
-    return undefined;
 }
 
 interface ParseLookupPayload {
@@ -1511,6 +1491,7 @@ export async function validateAndInsertPastedData(
     readonlyRows: string[],
     lockedRows: string[],
     lockRowCount: boolean,
+    forUpdate: boolean,
     selectCells: boolean
 ): Promise<EditorModelAndGridData> {
     const { selectedColIdx, selectedRowIdx } = editorModel;
@@ -1522,28 +1503,27 @@ export async function validateAndInsertPastedData(
 
     if (paste.success) {
         const byColumnValues = getPasteValuesByColumn(paste);
+        const { colMax, colMin } = paste.coordinates;
+
         // prior to load, ensure lookup column stores are loaded
-        const columnLoaders: ColumnLoaderPromise[] = columns.reduce((arr, column, index) => {
+        const columnLoaders = columns.reduce<ColumnLoaderPromise[]>((arr, column, index) => {
             if (column.isPublicLookup() && !column.readOnly) {
-                const filteredLookup = getColumnFilteredLookup(column, columnMetadata);
+                const metadata = columnMetadata?.get(column.fieldKey.toLowerCase());
+                let lookupValues = metadata?.filteredLookupValues?.toArray();
+
                 if (
-                    index >= paste.coordinates.colMin &&
-                    index <= paste.coordinates.colMax &&
-                    byColumnValues.get(index - paste.coordinates.colMin).size > 0
+                    lookupValues === undefined &&
+                    index >= colMin &&
+                    index <= colMax &&
+                    byColumnValues.get(index - colMin).size > 0
                 ) {
+                    lookupValues = byColumnValues.get(index - colMin).toArray();
+                }
+
+                if (lookupValues !== undefined) {
                     arr.push(
-                        findLookupValues(
-                            column,
-                            undefined,
-                            filteredLookup
-                                ? filteredLookup.toArray()
-                                : byColumnValues.get(index - paste.coordinates.colMin).toArray()
-                        )
+                        findLookupValues(column, undefined, lookupValues, metadata?.lookupValueFilters, forUpdate)
                     );
-                } else if (filteredLookup) {
-                    // TODO: It seems wrong that we're pre-emptively loading data for columns that are not in our pasted
-                    //  area, should this else if be removed?
-                    arr.push(findLookupValues(column, undefined, filteredLookup.toArray()));
                 }
             }
             return arr;
@@ -1589,7 +1569,8 @@ export async function pasteEvent(
     columnMetadata: Map<string, EditableColumnMetadata>,
     readonlyRows: string[],
     lockedRows: string[],
-    lockRowCount: boolean
+    lockRowCount: boolean,
+    forUpdate: boolean
 ): Promise<EditorModelAndGridData> {
     // If a cell has focus do not accept incoming paste events -- allow for normal paste to input
     if (editorModel && editorModel.hasSelection && !editorModel.hasFocus) {
@@ -1606,6 +1587,7 @@ export async function pasteEvent(
             readonlyRows,
             lockedRows,
             lockRowCount,
+            forUpdate,
             true
         );
     }

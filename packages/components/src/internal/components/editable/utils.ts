@@ -1,8 +1,8 @@
 import { fromJS, Iterable, List, Map, OrderedMap } from 'immutable';
-import { Utils, UtilsDOM } from '@labkey/api';
+import { Filter, Utils, UtilsDOM } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { QueryColumn } from '../../../public/QueryColumn';
+import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
 import { getColDateFormat, getJsonDateFormatString, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
 
@@ -382,7 +382,7 @@ export function decimalDifference(first, second, subtract = true): number {
  *  0 1 1 0 0
  *  0 0 0 1 1
  *  0 1 1 0 0
- * @param selection: An array of cell keys representing the selected cells, ordered left to right, top to bottom.
+ * @param selection An array of cell keys representing the selected cells, ordered left to right, top to bottom.
  */
 function isSparseSelection(selection: string[]): boolean {
     if (selection.length === 0) return false;
@@ -414,6 +414,33 @@ function isSparseSelection(selection: string[]): boolean {
     }
 
     return false;
+}
+
+export function getLookupFilters(
+    column: QueryColumn,
+    lookupKeyValues?: any[],
+    lookupValues?: any[],
+    lookupValueFilters?: Filter.IFilter[],
+    forUpdate?: boolean,
+    displayColumn?: string
+): Filter.IFilter[] {
+    const { lookup } = column;
+    const filters = Array.from(lookupValueFilters ?? []);
+
+    if (lookupValues) {
+        filters.push(Filter.create(displayColumn ?? lookup.displayColumn, lookupValues, Filter.Types.IN));
+    }
+
+    if (lookupKeyValues) {
+        filters.push(Filter.create(lookup.keyColumn, lookupKeyValues, Filter.Types.IN));
+    }
+
+    const operation = forUpdate ? Operation.update : Operation.insert;
+    if (lookup.hasQueryFilters(operation)) {
+        filters.push(...lookup.getQueryFilters(operation));
+    }
+
+    return filters;
 }
 
 export const gridCellSelectInputProps: Partial<SelectInputProps> = {
@@ -465,10 +492,10 @@ export const gridCellSelectInputProps: Partial<SelectInputProps> = {
 
 /**
  * Computes the new range for a given grid dimension when expanding or contracting in a particular direction.
- * @param selectedIdx: The index of the currently selected cell
- * @param min: The minimum of the current range
- * @param max: The maximum of the current range
- * @param direction: number in the range of -1, 1.
+ * @param selectedIdx The index of the currently selected cell
+ * @param min The minimum of the current range
+ * @param max The maximum of the current range
+ * @param direction number in the range of -1, 1.
  *  - If -1, we are moving up or left
  *  - If 0 we are not moving
  *  - If 1 we are moving down or right

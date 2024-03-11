@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.27.0
+*Released*: 11 March 2024
 - Add support for comments during edit actions
   - Remove title from timeline comment tooltip
   - Update `CommentTextArea` with additional props and callback interface

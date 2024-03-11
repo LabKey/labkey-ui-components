@@ -309,6 +309,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelec
 }
 
 export interface QuerySelectModelProps {
+    addExactFilter: boolean;
     allResults: Map<string, Map<string, any>>;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
@@ -320,6 +321,7 @@ export interface QuerySelectModelProps {
     queryFilters: List<Filter.IFilter>;
     queryInfo: QueryInfo;
     rawSelectedValue: any;
+    requiredColumns: string[];
     schemaQuery: SchemaQuery;
     searchResults: Map<string, Map<string, any>>;
     selectedItems: Map<string, any>;

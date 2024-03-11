@@ -469,13 +469,11 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     handleWorkflowTaskChange = (name: string, value: any): void => {
-        this.handleChange('runProperties', OrderedMap<string, any>({ workflowTask: value }), () => {
-            this.setState(state => ({
-                model: state.model.merge({
-                    workflowTask: value,
-                }) as AssayWizardModel,
-            }));
-        });
+        this.setState(state => ({
+            model: state.model.merge({
+                workflowTask: value,
+            }) as AssayWizardModel,
+        }));
     };
 
     handleRunChange = (fieldValues: any): void => {

@@ -2071,7 +2071,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       title="Show additional field properties"
                     >
                       <span
-                        class="fa fa-lg fa-plus-square"
+                        class="fa fa-lg fa-chevron-right"
                       />
                     </div>
                   </div>
@@ -2568,7 +2568,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       title="Show additional field properties"
                     >
                       <span
-                        class="fa fa-lg fa-plus-square"
+                        class="fa fa-lg fa-chevron-right"
                       />
                     </div>
                   </div>
@@ -3067,7 +3067,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       title="Show additional field properties"
                     >
                       <span
-                        class="fa fa-lg fa-plus-square"
+                        class="fa fa-lg fa-chevron-right"
                       />
                     </div>
                   </div>

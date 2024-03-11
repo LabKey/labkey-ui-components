@@ -194,6 +194,7 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
                             onAddColumn={onAddColumn}
                             isExpanded={!!expandedColumns[fkCol.index]}
                             onExpandColumn={onExpandColumn}
+                            expandedColumnFilter={expandedColumnFilter}
                             onCollapseColumn={onCollapseColumn}
                             expandedColumns={expandedColumns}
                             columnsInView={columnsInView}

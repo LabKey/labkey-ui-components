@@ -70,7 +70,8 @@ export interface EntityAPIWrapper {
         importParameters?: Record<string, any>,
         importFileController?: string,
         saveToPipeline?: boolean,
-        containerPath?: string
+        containerPath?: string,
+        auditUserComment?: string
     ) => Promise<any>;
     initParentOptionsSelects: (
         includeSampleTypes: boolean,

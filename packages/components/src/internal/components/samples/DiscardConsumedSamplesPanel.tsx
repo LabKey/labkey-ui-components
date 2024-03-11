@@ -1,10 +1,11 @@
-import React, { ChangeEventHandler, FC, memo } from 'react';
+import React, { FC, memo } from 'react';
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 interface Props {
+    comment?: string;
     discardTitle?: string;
-    onCommentChange: ChangeEventHandler<HTMLTextAreaElement>;
+    onCommentChange?: (comment: string) => void;
     shouldDiscard: boolean;
     toggleShouldDiscard: () => void;
 }
@@ -12,7 +13,7 @@ interface Props {
 export const DISCARD_CONSUMED_CHECKBOX_FIELD = 'discardcheckbox';
 
 export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
-    const { discardTitle, shouldDiscard, toggleShouldDiscard, onCommentChange } = props;
+    const { discardTitle, shouldDiscard, toggleShouldDiscard, onCommentChange, comment } = props;
     const { requiresUserComment } = useDataChangeCommentsRequired();
 
     return (
@@ -30,13 +31,16 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
                     <span className="discard-consumed-title left-spacing">{discardTitle}</span>
                 </div>
             </div>
-            <CommentTextArea
-                onChange={onCommentChange}
-                disabled={!shouldDiscard}
-                actionName="Discarding"
-                containerClassName="top-spacing bottom-spacing"
-                requiresUserComment={requiresUserComment}
-            />
+            {onCommentChange && (
+                <CommentTextArea
+                    onChange={onCommentChange}
+                    disabled={!shouldDiscard}
+                    actionName="Discarding"
+                    containerClassName="top-spacing bottom-spacing"
+                    requiresUserComment={requiresUserComment}
+                    value={comment}
+                />
+            )}
         </>
     );
 });

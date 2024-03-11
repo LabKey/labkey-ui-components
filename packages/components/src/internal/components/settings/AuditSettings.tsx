@@ -12,6 +12,7 @@ import {
 } from '../../app/utils';
 import { useServerContext } from '../base/ServerContext';
 import { useAppContext } from '../../AppContext';
+import { HelpLink } from '../../util/helpLinks';
 
 export const AuditSettings: FC = () => {
     const { api } = useAppContext();
@@ -47,19 +48,9 @@ export const AuditSettings: FC = () => {
                 <div className="panel-body">
                     Would you like to require that users provide a reason before completing certain actions?
                     <LabelHelpTip>
-                        The following actions allow users to enter a reason for the action, which will be recorded in
-                        the audit log:
-                        <ul>
-                            <li>Deleting samples and sample types</li>
-                            <li>Deleting sources and source types</li>
-                            {isAssayEnabled(moduleContext) && <li>Deleting assay runs and assay designs</li>}
-                            {isWorkflowEnabled(moduleContext) && <li>Deleting jobs</li>}
-                            <li>Deleting storage</li>
-                            <li>Updating sample amounts or freeze/thaw counts</li>
-                            <li>Checking samples in or out of storage</li>
-                            <li>Discarding samples from storage</li>
-                            <li>Moving data between projects</li>
-                        </ul>
+                        Many update and delete actions allow users to enter a reason for the action, which will be
+                        recorded in the audit log. <HelpLink topic="audits#require">Click to see which actions support a user-entered reason</HelpLink>.
+                        By default, reasons are optional but if you would ike to require them, select "Yes".
                     </LabelHelpTip>
                     <div className="framed-input__container top-spacing">
                         <div className={'framed-input ' + (!isRequired ? 'active' : '')} onClick={onDisableRequirement}>

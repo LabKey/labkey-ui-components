@@ -324,6 +324,8 @@ textarea.form-control {
 .form-buttons {
     display: flex;
     width: 100%;
+    align-items: end;
+    flex-wrap: wrap-reverse;
 }
 .form-buttons--sticky {
     background-color: $white;
@@ -342,6 +344,7 @@ textarea.form-control {
 .form-buttons__right {
     display: flex;
     gap: 8px;
+    align-items: flex-end;
 }
 
 .modal-footer .form-buttons {
@@ -390,4 +393,34 @@ textarea.form-control {
     > .description {
         margin-left: 20px;
     }
+}
+
+.inline-comment {
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin-right: 15px;
+    .form-group {
+        margin-bottom: 0;
+        textarea {
+            min-height: 20px;
+            min-width: 450px;
+            resize: none;
+            overflow-y: hidden;
+        }
+    }
+    align-items: end;
+}
+
+.inline-comment-label {
+    white-space: nowrap;
+    font-weight: bold;
+    padding-right: 8px;
+}
+
+.modal-footer .inline-comment textarea {
+    min-width: 175px;
+}
+
+.modal-footer .inline-comment .inline-comment-label {
+    margin-bottom: 0;
 }

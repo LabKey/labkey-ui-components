@@ -17,8 +17,8 @@ import React, { FC, ReactNode, useMemo } from 'react';
 
 import { DropdownButton } from '../../dropdowns';
 
-export const ManageDropdownButton: FC = props => {
-    const { children } = props;
+export const ManageDropdownButton: FC<{ children: React.ReactNode; disabled?: boolean }> = props => {
+    const { children, disabled } = props;
     const buttonLabel: ReactNode = useMemo(
         () => (
             <span>
@@ -29,7 +29,7 @@ export const ManageDropdownButton: FC = props => {
     );
 
     return (
-        <DropdownButton title={buttonLabel} noCaret pullRight>
+        <DropdownButton title={buttonLabel} noCaret pullRight disabled={disabled}>
             {children}
         </DropdownButton>
     );

@@ -125,7 +125,7 @@ describe('QueryInfoForm', () => {
         const submitForEditButton = formWrapper.find('.test-loc-submit-for-edit-button');
         expect(submitForEditButton.props().disabled).toBe(false);
         const submitButton = formWrapper.find('.test-loc-submit-button');
-        expect(submitButton.props().disabled).toBe(false);
+        expect(submitButton.props().disabled).toBeFalsy();
     });
 
     test('with submitForEdit and submit disabled', () => {

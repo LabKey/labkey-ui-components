@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.27.0
+*Released*: 11 March 2024
+- Add support for comments during edit actions
+  - Remove title from timeline comment tooltip
+  - Update `CommentTextArea` with additional props and callback interface
+  - Update `EditableDetailPanel` and `DiscardConsumedSamplesPanel` to move commenting into the sticky button footer
+  - Update `Modal` and `ModalButtons` components to support including the `CommentTextArea`
+
 ### version 3.26.1
 *Released*: 7 March 2024
 - Support column sizing for editable grid

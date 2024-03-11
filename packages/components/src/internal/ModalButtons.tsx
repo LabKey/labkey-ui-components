@@ -3,6 +3,7 @@ import React, { FC, memo } from 'react';
 import classNames from 'classnames';
 
 import { FormButtons } from './FormButtons';
+import { CommentTextArea } from './components/forms/input/CommentTextArea';
 
 export interface ModalButtonsProps {
     cancelText?: string;
@@ -13,10 +14,14 @@ export interface ModalButtonsProps {
     isConfirming?: boolean;
     onCancel?: () => void;
     onConfirm?: () => void;
+    actionName?: string;
+    onCommentChange?: (comment: string) => void;
+    requiresUserComment?: boolean;
 }
 
 export const ModalButtons: FC<ModalButtonsProps> = memo(props => {
     const {
+        actionName = 'Update',
         cancelText = 'Cancel',
         canConfirm = true,
         confirmClass = 'btn-success',
@@ -24,7 +29,9 @@ export const ModalButtons: FC<ModalButtonsProps> = memo(props => {
         confirmingText = 'Saving...',
         isConfirming,
         onCancel,
+        onCommentChange,
         onConfirm,
+        requiresUserComment,
     } = props;
     const confirmButtonClass = classNames('btn', confirmClass);
 
@@ -37,6 +44,15 @@ export const ModalButtons: FC<ModalButtonsProps> = memo(props => {
                     <button className="btn btn-default" onClick={onCancel} type="button">
                         {cancelText}
                     </button>
+                )}
+                {onCommentChange && (
+                    <CommentTextArea
+                        containerClassName="inline-comment"
+                        onChange={onCommentChange}
+                        actionName={actionName}
+                        requiresUserComment={requiresUserComment}
+                        inline
+                    />
                 )}
                 {onConfirm && (
                     <button

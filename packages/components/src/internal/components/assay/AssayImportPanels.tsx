@@ -83,6 +83,8 @@ import { AssayUploadResultModel } from './models';
 import { PlatePropertiesPanel } from './PlatePropertiesPanel';
 import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
+import { CommentTextArea } from '../forms/input/CommentTextArea';
+import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';
@@ -108,6 +110,7 @@ interface OwnProps {
     onCancel: () => void;
     onComplete: (response: AssayUploadResultModel, isAsync?: boolean) => void;
     onSave?: (response: AssayUploadResultModel, isAsync?: boolean) => void;
+    requiresUserComment?: boolean;
     runId?: string;
     setIsDirty?: (isDirty: boolean) => void;
     showUploadTabs?: boolean;
@@ -122,6 +125,7 @@ interface AssayImportPanelsBodyProps extends NotificationsContextProps {
 type Props = AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps & InjectedQueryModels;
 
 interface State {
+    comment: string;
     dataModel: QueryModel;
     duplicateFileResponse?: DuplicateFilesResponse;
     editorModel: EditorModel;
@@ -148,6 +152,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         super(props);
         const schemaQuery = new SchemaQuery(props.assayDefinition.protocolSchemaName, 'Data');
         this.state = {
+            comment: undefined,
             dataModel: new QueryModel({ id: DATA_GRID_ID, schemaQuery }),
             editorModel: new EditorModel({ id: DATA_GRID_ID }),
             error: undefined,
@@ -447,12 +452,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }));
     };
 
-    handleBatchChange = (fieldValues: any, isChanged?: boolean): void => {
+    handleBatchChange = (fieldValues: any): void => {
         const values = { ...this.state.model.batchProperties.toObject(), ...fieldValues };
 
-        if (isChanged) {
-            this.props.setIsDirty?.(true);
-        }
+        this.props.setIsDirty?.(true);
 
         const cleanedValues = Object.keys(values).reduce((result, key) => {
             const value = values[key];
@@ -475,7 +478,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         });
     };
 
-    handleRunChange = (fieldValues: any, isChanged?: boolean): void => {
+    handleRunChange = (fieldValues: any): void => {
         const values = { ...this.state.model.runProperties.toObject(), ...fieldValues };
         let { comment, runName } = this.state.model;
 
@@ -491,9 +494,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             return result;
         }, {});
 
-        if (isChanged) {
-            this.props.setIsDirty?.(true);
-        }
+        this.props.setIsDirty?.(true);
 
         this.handleChange('runProperties', OrderedMap<string, any>(cleanedValues), () => {
             this.setState(state => ({
@@ -568,9 +569,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
             searchParams,
             dismissNotifications,
         } = this.props;
-        const { model } = this.state;
+        const { model, comment } = this.state;
         let data = model.prepareFormData(currentStep, this.state.editorModel, this.state.dataModel);
-
         if (beforeFinish) {
             data = beforeFinish(data);
         }
@@ -600,6 +600,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 forceAsync,
                 jobDescription: this.getBackgroundJobDescription(data),
                 jobNotificationProvider,
+                auditUserComment: comment,
             });
 
             this.props.setIsDirty?.(false);
@@ -695,6 +696,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
         );
     };
 
+    onCommentChange = (comment: string): void => {
+        this.setState({ comment });
+    };
+
     onGridChange: EditableGridChange = (event, editorModelChanges, dataKeys, data): void => {
         this.setState(state => {
             const { dataModel, editorModel } = state;
@@ -718,6 +723,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             container,
             currentStep,
             onCancel,
+            requiresUserComment,
             acceptedPreviewFileFormats,
             allowBulkRemove,
             allowBulkInsert,
@@ -730,7 +736,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             getIsDirty,
             setIsDirty,
         } = this.props;
-        const { dataModel, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } =
+        const { comment, dataModel, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } =
             this.state;
         const runPropsModel = this.getRunPropsQueryModel();
 
@@ -765,7 +771,11 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }
 
         const showSaveAgainBtn = !isReimport && onSave !== undefined;
-        const disabledSave = model.isSubmitting || !model.hasData(currentStep, editorModel);
+        const disabledSave =
+            model.isSubmitting ||
+            !model.hasData(currentStep, editorModel) ||
+            (!!getIsDirty && !getIsDirty?.()) ||
+            (isReimport && requiresUserComment && !comment?.trim()?.length);
         const runProps = runPropsModel.getRow();
 
         return (
@@ -816,6 +826,15 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     <button className="btn btn-default" onClick={onCancel} type="button">
                         Cancel
                     </button>
+                    {isReimport && (
+                        <CommentTextArea
+                            actionName="Update"
+                            containerClassName="inline-comment"
+                            onChange={this.onCommentChange}
+                            requiresUserComment={requiresUserComment}
+                            inline
+                        />
+                    )}
                     {showSaveAgainBtn && (
                         <button
                             className="btn btn-default"
@@ -826,7 +845,12 @@ class AssayImportPanelsBody extends Component<Props, State> {
                             {model.isSubmitting ? 'Saving...' : 'Save and Import Another Run'}
                         </button>
                     )}
-                    <button type="submit" className="btn btn-success" onClick={this.onImport} disabled={disabledSave}>
+                    <button
+                        type="submit"
+                        className="btn btn-success"
+                        onClick={this.onImport}
+                        disabled={disabledSave}
+                    >
                         {model.isSubmitting ? 'Importing...' : isReimport ? 'Re-Import' : 'Import'}
                     </button>
                 </FormButtons>
@@ -858,6 +882,7 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
     const [searchParams] = useSearchParams();
     const { createNotification, dismissNotifications } = useNotificationsContext();
     const { container, user } = useServerContext();
+    const { requiresUserComment } = useDataChangeCommentsRequired();
     const key = [runId, assayDefinition.protocolSchemaName].join('|');
     const schemaQuery = useMemo(
         () => new SchemaQuery(assayDefinition.protocolSchemaName, 'Runs'),
@@ -888,6 +913,7 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
             dismissNotifications={dismissNotifications}
             key={key}
             queryConfigs={queryConfigs}
+            requiresUserComment={requiresUserComment}
             searchParams={searchParams}
             user={user}
         />

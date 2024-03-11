@@ -139,7 +139,7 @@ export class TimelineEventModel extends Record({
 
     getComment(): string {
         if (!this.metadata) return undefined;
-        const commentField = this.metadata.find(metadataRow => metadataRow.get('field').toLowerCase() === 'comment');
+        const commentField = this.metadata.find(metadataRow => metadataRow.get('field').toLowerCase() === 'reason');
         if (commentField) return commentField.get('value');
         return undefined;
     }

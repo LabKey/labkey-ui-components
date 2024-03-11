@@ -92,8 +92,8 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
         []
     );
 
-    const onCommentChange = useCallback(evt => {
-        setAuditUserComment(evt.target.value);
+    const onCommentChange = useCallback(comment => {
+        setAuditUserComment(comment);
     }, []);
 
     if (isLoading(loading)) {

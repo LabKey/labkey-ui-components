@@ -19,7 +19,6 @@ import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 import { getSampleStatusContainerFilter } from '../../samples/utils';
 
 import { InputRendererProps } from './types';
-import { COMMENT_FIELD_ID } from './CommentTextArea';
 
 interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'containerFilter' | 'schemaQuery' | 'valueColumn'> {
     api?: ComponentsAPIWrapper;
@@ -71,13 +70,6 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         [consumedStatuses, onAdditionalFormDataChange, onQSChange, shouldDiscard, user, value]
     );
 
-    const onCommentChange = useCallback(
-        event => {
-            onAdditionalFormDataChange?.(COMMENT_FIELD_ID, event.target.value);
-        },
-        [onAdditionalFormDataChange]
-    );
-
     const toggleShouldDiscard = useCallback(() => {
         const updatedShouldDiscard = !shouldDiscard;
         setShouldDiscard(updatedShouldDiscard);
@@ -90,7 +82,6 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
         const panel = (
             <DiscardConsumedSamplesPanel
                 shouldDiscard={shouldDiscard}
-                onCommentChange={onCommentChange}
                 toggleShouldDiscard={toggleShouldDiscard}
                 discardTitle={`Discard sample${isBulkForm ? '(s)' : ''} from storage?`}
             />
@@ -107,7 +98,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
             );
         }
         return panel;
-    }, [shouldDiscard, onCommentChange, toggleShouldDiscard, allowDisable]);
+    }, [shouldDiscard, toggleShouldDiscard, allowDisable]);
 
     return (
         <>

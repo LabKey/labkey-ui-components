@@ -1046,6 +1046,7 @@ export enum InsertFormats {
 }
 
 export interface IImportData {
+    auditUserComment?: string;
     file?: File;
     // must contain file or text but not both
     format?: InsertFormats;

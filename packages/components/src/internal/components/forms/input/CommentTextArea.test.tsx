@@ -22,4 +22,17 @@ describe('CommentTextArea', () => {
         expect(document.querySelector('textarea').getAttribute('placeholder')).toBe('Enter reason (required)');
         expect(document.querySelector('label').textContent).toBe('Reason for Action *');
     });
+
+    test('inline', () => {
+        render(<CommentTextArea actionName="Update" onChange={jest.fn()} inline />);
+        expect(document.querySelector('label').getAttribute('class')).toContain('inline-comment-label');
+        expect(document.querySelector('textarea').getAttribute('rows')).toBe('1');
+    });
+
+    test('pass-through props', () => {
+        render(<CommentTextArea actionName="Update" onChange={jest.fn()} maxLength={41} value="initial" />);
+        const textarea = document.querySelector('textarea');
+        expect(textarea.getAttribute('maxLength')).toBe('42');
+        expect(textarea.value).toBe('initial');
+    });
 });

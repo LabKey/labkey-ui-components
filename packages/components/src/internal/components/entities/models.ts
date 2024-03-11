@@ -366,7 +366,8 @@ export class EntityIdCreationModel extends Record({
         dataModel: QueryModel,
         editorModel: EditorModel,
         containerPath?: string,
-        extraColumnsToInclude?: QueryColumn[]
+        extraColumnsToInclude?: QueryColumn[],
+        auditUserComment?: string
     ): Promise<QueryCommandResponse> {
         const rows = editorModel
             .getRawDataFromModel(dataModel, false, false)
@@ -382,6 +383,7 @@ export class EntityIdCreationModel extends Record({
 
         return api.query.insertRows({
             auditBehavior: AuditBehaviorTypes.DETAILED,
+            auditUserComment,
             fillEmptyFields: true,
             rows,
             schemaQuery: this.getSchemaQuery(),

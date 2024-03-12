@@ -117,7 +117,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
             const useSnapshotSelection = useSelected && movingAll && queryModel.filterArray.length > 0;
 
             try {
-                await api.entity.moveEntities({
+                const moveResponse = await api.entity.moveEntities({
                     containerPath: currentContainer?.path,
                     targetContainerPath,
                     entityDataType,
@@ -140,11 +140,13 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     projectUrl = projectUrl + targetAppURL.toHref();
                 }
 
+                const movedCount = moveResponse.updateCounts[entityDataType.nounPlural];
+                const movedNoun = getEntityNoun(entityDataType, movedCount)?.toLowerCase();
                 createNotification(
                     {
                         message: (
                             <>
-                                Successfully moved {count} {noun} to <a href={projectUrl}>{targetName}</a>.
+                                Successfully moved {movedCount} {movedNoun} to <a href={projectUrl}>{targetName}</a>.
                             </>
                         ),
                         alertClass: 'success',

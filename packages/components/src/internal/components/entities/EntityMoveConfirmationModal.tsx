@@ -52,9 +52,6 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                     // filter to folders that the user has InsertPermissions
                     folders = folders.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Insert) > -1);
 
-                    // filter out the current container
-                    folders = folders.filter(c => c.id !== container_.id);
-
                     // filter folder by exclusion
                     if (excludedFolders) {
                         folders = folders.filter(c => excludedFolders.indexOf(c.id) === -1);

@@ -75,7 +75,8 @@ interface State {
 
 export class Cell extends React.PureComponent<CellProps, State> {
     private changeTO: number;
-    private clickTO: number;
+    private recordedKeys: string;
+    private recordingTO: number;
     private displayEl: React.RefObject<any>;
 
     static defaultProps = {
@@ -99,6 +100,20 @@ export class Cell extends React.PureComponent<CellProps, State> {
         };
 
         this.displayEl = React.createRef();
+    }
+
+    get isDateTimeField(): boolean {
+        const { col } = this.props;
+        return col.jsonType === 'date' || col.jsonType === 'time';
+    }
+
+    get isLookup(): boolean {
+        const { col } = this.props;
+        return col.isPublicLookup() || this.isDateTimeField || !!col.validValues;
+    }
+
+    get isReadOnly(): boolean {
+        return this.props.readOnly || this.props.col.readOnly || this.props.locked;
     }
 
     componentDidUpdate(prevProps: Readonly<CellProps>): void {
@@ -159,18 +174,9 @@ export class Cell extends React.PureComponent<CellProps, State> {
         }, 250);
     };
 
-    isReadOnly = (): boolean => {
-        return this.props.readOnly || this.props.col.readOnly || this.props.locked;
-    };
-
-    isLocked = (): boolean => {
-        return this.props.locked;
-    };
-
     handleDblClick = (): void => {
-        if (this.isReadOnly()) return;
+        if (this.isReadOnly) return;
 
-        clearTimeout(this.clickTO);
         const { colIdx, cellActions, rowIdx } = this.props;
         cellActions.focusCell(colIdx, rowIdx);
     };
@@ -178,76 +184,123 @@ export class Cell extends React.PureComponent<CellProps, State> {
     handleKeys: React.KeyboardEventHandler<HTMLElement> = (event): void => {
         const { cellActions, colIdx, focused, rowIdx, selected } = this.props;
         const { focusCell, modifyCell, selectCell, fillDown } = cellActions;
+        const isRecording = this.recordingTO !== undefined;
 
         switch (event.keyCode) {
             case KEYS.Alt:
             case KEYS.SelectKey:
             case KEYS.Shift:
             case KEYS.Ctrl:
-
             case KEYS.LeftArrow:
             case KEYS.UpArrow:
             case KEYS.RightArrow:
             case KEYS.DownArrow:
-
             case KEYS.PageUp:
             case KEYS.PageDown:
             case KEYS.Home:
             case KEYS.End:
-
             case KEYS.LeftMetaKey:
             case KEYS.FFLeftMetaKey:
             case KEYS.CapsLock:
                 break;
             case KEYS.Backspace:
             case KEYS.Delete:
-                if (!focused && selected && !this.isReadOnly()) {
+                // "Backspace" and "Delete" are ignored on recorded input
+                if (!focused && selected && !isRecording && !this.isReadOnly) {
                     cancelEvent(event);
                     modifyCell(colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
                 }
                 break;
             case KEYS.Tab:
-                if (selected) {
+                // "Tab" is ignored on recorded input
+                if (selected && !isRecording) {
                     cancelEvent(event);
                     selectCell(event.shiftKey ? colIdx - 1 : colIdx + 1, rowIdx);
                 }
                 break;
             case KEYS.Enter:
-                // focus takes precedence
                 if (focused) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx + 1);
                 } else if (selected) {
-                    cancelEvent(event);
-                    focusCell(colIdx, rowIdx);
+                    // Record "Enter" key iff recording is in progress. Does not initiate recording.
+                    if (isRecording) {
+                        // Do not cancel event here, otherwise, key capture will be lost
+                        this.recordKeys(event);
+                    } else {
+                        cancelEvent(event);
+                        focusCell(colIdx, rowIdx);
+                    }
                 }
                 break;
             case KEYS.Escape:
-                if (focused) {
+                // "Escape" is ignored on recorded input
+                if (focused && !isRecording) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx, undefined, true);
                 }
                 break;
             case KEYS.D:
-                if (isFillDown(event)) {
+                if (!focused && isFillDown(event)) {
                     cancelEvent(event);
                     fillDown();
                     break;
                 }
+            // eslint-disable-next-line no-fallthrough
             case KEYS.A:
-                if (isSelectAll(event)) {
+                if (!focused && isSelectAll(event)) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
                     break;
                 }
+            // eslint-disable-next-line no-fallthrough -- intentionally fallthrough for "D" and "A" characters
             default:
                 // any other key
                 if (!focused && !isCtrlOrMetaKey(event)) {
                     // Do not cancel event here, otherwise, key capture will be lost
-                    focusCell(colIdx, rowIdx, !this.isReadOnly());
+                    if (this.isLookup && !this.isDateTimeField && !this.isReadOnly) {
+                        this.recordKeys(event);
+                    } else {
+                        focusCell(colIdx, rowIdx, !this.isReadOnly);
+                    }
                 }
                 break;
         }
+    };
+
+    // Issue 49779: Support barcode scanners "streaming" input keys
+    recordKeys = (event: React.KeyboardEvent<HTMLElement>): void => {
+        clearTimeout(this.recordingTO);
+
+        // record the key
+        const { key } = event;
+        if (key) {
+            if (key === Key.ENTER) {
+                this.recordedKeys += '\n';
+            } else if (this.recordedKeys) {
+                this.recordedKeys += key;
+            } else {
+                this.recordedKeys = key;
+            }
+        }
+
+        // wait for more keystrokes and then fill or focus
+        this.recordingTO = window.setTimeout(() => {
+            this.recordingTO = undefined;
+            const { cellActions, colIdx, rowIdx } = this.props;
+            const { fillText, focusCell, selectCell } = cellActions;
+
+            if (this.recordedKeys.indexOf('\n') > -1) {
+                fillText(colIdx, rowIdx, this.recordedKeys);
+                selectCell(colIdx, rowIdx + 1);
+            } else {
+                focusCell(colIdx, rowIdx, !this.isReadOnly);
+            }
+
+            this.recordedKeys = undefined;
+            // Wait for a very brief amount of time as automated input is
+            // expected to quickly input subsequent characters
+        }, 25);
     };
 
     /** This handles a subset of cell navigation key bindings from within a focused dropdown cell. */
@@ -312,23 +365,24 @@ export class Cell extends React.PureComponent<CellProps, State> {
             col,
             colIdx,
             containerFilter,
+            filteredLookupValues,
             focused,
             forUpdate,
-            renderDragHandle,
+            locked,
+            lookupValueFilters,
             message,
             placeholder,
+            renderDragHandle,
             row,
             rowIdx,
             selected,
             selection,
             values,
-            filteredLookupValues,
-            lookupValueFilters,
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
-        const isDateTimeField = col.jsonType === 'date' || col.jsonType === 'time';
-        const showLookup = col.isPublicLookup() || isDateTimeField || col.validValues;
+        const isDateTimeField = this.isDateTimeField;
+        const showLookup = this.isLookup;
 
         if (!focused) {
             let valueDisplay = values
@@ -345,8 +399,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     'cell-selected': selected,
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,
-                    'cell-read-only': this.isReadOnly(),
-                    'cell-locked': this.isLocked(),
+                    'cell-read-only': this.isReadOnly,
+                    'cell-locked': locked,
                     'cell-menu': showLookup || col.inputRenderer,
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
                 }),
@@ -366,7 +420,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 cell = (
                     <div {...displayProps}>
                         <div className="cell-menu-value">{valueDisplay}</div>
-                        {!this.isReadOnly() && (
+                        {!this.isReadOnly && (
                             <span onClick={this.handleDblClick} className="cell-menu-selector">
                                 <i className="fa fa-chevron-down" />
                             </span>
@@ -395,7 +449,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
             return (
                 <>
                     {cell}
-                    {renderDragHandle && !this.isReadOnly() && (
+                    {renderDragHandle && !this.isReadOnly && (
                         <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />
                     )}
                 </>
@@ -427,7 +481,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     col={col}
                     colIdx={colIdx}
                     containerFilter={containerFilter}
-                    disabled={this.isReadOnly()}
+                    defaultInputValue={this.recordedKeys}
+                    disabled={this.isReadOnly}
                     lookupValueFilters={lookupValueFilters}
                     filteredLookupKeys={filteredLookupKeys}
                     filteredLookupValues={filteredLookupValues}
@@ -448,7 +503,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     col={col}
                     colIdx={colIdx}
                     defaultValue={rawDateValue}
-                    disabled={this.isReadOnly()}
+                    disabled={this.isReadOnly}
                     modifyCell={cellActions.modifyCell}
                     onKeyDown={this.handleKeys}
                     select={cellActions.selectCell}
@@ -464,7 +519,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 defaultValue={
                     values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : ''
                 }
-                disabled={this.isReadOnly()}
+                disabled={this.isReadOnly}
                 onBlur={this.handleBlur}
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeys}

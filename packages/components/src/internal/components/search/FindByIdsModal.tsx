@@ -45,6 +45,8 @@ interface Props {
     sessionKey?: string; // when defined, ids entered will be added to the existing ones in session
 }
 
+const MAX_IDS = 1000;
+
 export const FindByIdsModal: FC<Props> = memo(props => {
     const { onCancel, onFind, nounPlural, sessionKey, initialField, api } = props;
     const [fieldType, setFieldType] = useState<FindField>(initialField || UNIQUE_ID_FIND_FIELD);
@@ -76,6 +78,18 @@ export const FindByIdsModal: FC<Props> = memo(props => {
             .split('\n')
             .map(id => id.trim())
             .filter(id => id.length > 0);
+        if (ids.length > MAX_IDS) {
+            setError(
+                'The number of ' +
+                    fieldType.label +
+                    ' provided (' +
+                    ids.length.toLocaleString() +
+                    ') exceeds the maximum of ' +
+                    MAX_IDS.toLocaleString() +
+                    '.'
+            );
+            return;
+        }
         if (ids.length > 0) {
             setSubmitting(true);
             try {
@@ -89,7 +103,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
                 setError(resolveErrorMessage(e));
             }
         }
-    }, [idString, onFind, fieldType]);
+    }, [idString, fieldType, sessionKey, api.query, capitalNounPlural, onFind]);
 
     return (
         <Modal
@@ -117,7 +131,7 @@ export const FindByIdsModal: FC<Props> = memo(props => {
                 rows={8}
                 cols={50}
                 className="form-control textarea-fullwidth"
-                placeholder={`List ${fieldType.nounPlural} here`}
+                placeholder={`List ${fieldType.nounPlural} here (max: ${MAX_IDS.toLocaleString()})`}
                 onChange={onIdTextChange}
                 value={idString}
             />

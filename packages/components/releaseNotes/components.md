@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.27.2
+*Released*: 12 March 2024
+- Issue 48535: Filter columns shown when expanding lookup columns for customization
+- Issue 49868: Impose limit of 1000 on number of ids to find with Find Samples feature
+
 ### version 3.27.1
 *Released*: 12 March 2024
 - Merge from release24.3-SNAPSHOT to develop

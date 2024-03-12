@@ -21,14 +21,14 @@ export enum Operation {
     update = 'update',
 }
 
-interface FilterGroupFilter {
+export interface QueryLookupFilterGroupFilter {
     column: string;
     operator: string;
     value: string;
 }
 
-interface FilterGroup {
-    filters: FilterGroupFilter[];
+export interface QueryLookupFilterGroup {
+    filters: QueryLookupFilterGroupFilter[];
     operation: Operation;
 }
 
@@ -36,7 +36,7 @@ export class QueryLookup {
     declare containerFilter: Query.ContainerFilter;
     declare containerPath: string;
     declare displayColumn: string;
-    declare filterGroups: FilterGroup[];
+    declare filterGroups: QueryLookupFilterGroup[];
     declare isPublic: boolean;
     declare junctionLookup: string; // name of the column on the junction table that is also a lookup
     declare keyColumn: string;
@@ -63,7 +63,7 @@ export class QueryLookup {
         );
     }
 
-    getFilterGroup(operation: Operation): FilterGroup {
+    getFilterGroup(operation: Operation): QueryLookupFilterGroup {
         return this.filterGroups?.find(filterGroup => filterGroup.operation === operation);
     }
 

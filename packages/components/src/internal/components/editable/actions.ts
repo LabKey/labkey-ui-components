@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { LoadingState } from '../../../public/LoadingState';
-import { Operation, QueryColumn } from '../../../public/QueryColumn';
+import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { GRID_EDIT_INDEX } from '../../constants';
@@ -43,11 +43,17 @@ let ID_COUNTER = 0;
  */
 export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
-    editorColumns?: QueryColumn[]
+    editorColumns?: QueryColumn[],
+    forUpdate?: boolean
 ): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
     const columns = editorColumns ?? queryInfo.getInsertColumns();
-    const lookupValueDescriptors = await getLookupValueDescriptors(columns, fromJS(rows), fromJS(orderedRows));
+    const lookupValueDescriptors = await getLookupValueDescriptors(
+        columns,
+        fromJS(rows),
+        fromJS(orderedRows),
+        forUpdate
+    );
     let cellValues = Map<string, List<ValueDescriptor>>();
 
     // data is initialized in column order
@@ -136,7 +142,7 @@ export const initEditableGridModel = async (
         columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, undefined, undefined, colFilter);
     }
 
-    const editorModelData = await loadEditorModelData(gridData, columns);
+    const editorModelData = await loadEditorModelData(gridData, columns, forUpdate);
 
     return {
         dataModel: dataModel.mutate({
@@ -232,7 +238,8 @@ const findLookupValues = async (
 async function getLookupValueDescriptors(
     columns: QueryColumn[],
     rows: Map<any, Map<string, any>>,
-    ids: List<any>
+    ids: List<any>,
+    forUpdate?: boolean
 ): Promise<{ [colKey: string]: ValueDescriptor[] }> {
     const descriptorMap = {};
     // for each lookup column, find the unique values in the rows and query for those values when they look like ids
@@ -253,7 +260,7 @@ async function getLookupValueDescriptors(
                 }
             });
             if (!values.isEmpty()) {
-                const { descriptors } = await findLookupValues(col, values.toArray());
+                const { descriptors } = await findLookupValues(col, values.toArray(), undefined, undefined, forUpdate);
                 descriptorMap[col.lookupKey] = descriptors;
             }
         }

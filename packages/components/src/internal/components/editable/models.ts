@@ -106,6 +106,7 @@ const DATA_CHANGE_EVENTS: EditableGridEvent[] = [
     EditableGridEvent.BULK_UPDATE,
     EditableGridEvent.BULK_UPDATE,
     EditableGridEvent.DRAG_FILL,
+    EditableGridEvent.FILL_TEXT,
     EditableGridEvent.MODIFY_CELL,
     EditableGridEvent.PASTE,
     EditableGridEvent.REMOVE_ROWS,

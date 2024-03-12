@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.27.1
+*Released*: 12 March 2024
+- Merge from release24.3-SNAPSHOT to develop
+    - includes changes from 3.24.7 #1435
+    - includes changes from 3.15.8 #1437
+    - includes changes from 3.15.9 #1439
+    - includes changes from 3.24.10 #1443
+    - includes changes from 3.24.11 #1444
+
 ### version 3.27.0
 *Released*: 11 March 2024
 - Add support for comments during edit actions
@@ -31,6 +40,27 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 4 March 2024
 - Issue 45315: Allow inferDomainFromFile to take file path string in addition to File prop
 - Issue 49795: App grid column header title to show for all columns instead of just lookups
+
+### version 3.24.7
+*Released*: 1 March 2024
+- Lineage Settings: fix input change handling
+
+### version 3.24.11
+*Released*: 8 March 2024
+- Issue 49858: LKSM: Saving grid filter on Storage Status takes 5+ minutes to load grid
+  - Don't include view filters for getRows call
+
+### version 3.24.10
+*Released*: 7 March 2024
+- Issue 49835: App Workflow task value not saving when starting from assay "Import Data" page
+
+### version 3.24.9
+*Released*: 5 March 2024
+- EditableGrid: Support barcode scanners "streaming" input keys
+
+### version 3.24.8
+*Released*: 5 March 2024
+- Issue 49274: App to use chevron arrows instead of plus/minus for expand/collapse (part 2)
 
 ### version 3.24.7
 *Released*: 1 March 2024

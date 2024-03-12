@@ -2,6 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 3.27.1
+*Released*: 12 March 2024
 - Merge from release24.3-SNAPSHOT to develop
     - includes changes from 3.24.7 #1435
     - includes changes from 3.15.8 #1437

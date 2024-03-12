@@ -1173,6 +1173,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             dataKeys,
             disabled,
             editorModel,
+            forUpdate,
             onChange,
             queryInfo,
             readonlyRows,
@@ -1193,6 +1194,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             readonlyRows,
             lockedRows,
             !allowAdd,
+            forUpdate,
             false
         );
         this.hideMask();

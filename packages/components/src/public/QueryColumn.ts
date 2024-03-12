@@ -49,7 +49,7 @@ export class QueryLookup {
     // declare table: string; -- NOT ALLOWING -- USE queryName
     declare viewName: string;
 
-    constructor(rawLookup: Record<string, any>) {
+    constructor(rawLookup: Partial<QueryLookup>) {
         Object.assign(this, rawLookup, {
             schemaQuery: new SchemaQuery(rawLookup.schemaName, rawLookup.queryName, rawLookup.viewName),
         });

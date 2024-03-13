@@ -19,6 +19,7 @@ import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeComme
 
 export interface EntityMoveConfirmationModalProps extends Omit<ModalProps, 'onConfirm'> {
     currentContainer?: Container;
+    excludeCurrentAsTarget?: boolean;
     dataType?: ProjectConfigurableDataType;
     dataTypeRowId?: number;
     nounPlural: string;
@@ -26,7 +27,7 @@ export interface EntityMoveConfirmationModalProps extends Omit<ModalProps, 'onCo
 }
 
 export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> = memo(props => {
-    const { children, onConfirm, nounPlural, currentContainer, dataType, dataTypeRowId, ...confirmModalProps } = props;
+    const { children, excludeCurrentAsTarget, onConfirm, nounPlural, currentContainer, dataType, dataTypeRowId, ...confirmModalProps } = props;
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [containerOptions, setContainerOptions] = useState<SelectInputOption[]>();
@@ -51,6 +52,11 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
 
                     // filter to folders that the user has InsertPermissions
                     folders = folders.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Insert) > -1);
+
+                    // filter out the current container, if reqested
+                    if (excludeCurrentAsTarget) {
+                        folders = folders.filter(c => c.id !== container_.id);
+                    }
 
                     // filter folder by exclusion
                     if (excludedFolders) {

@@ -1910,3 +1910,4 @@ export type { BSStyle } from './internal/dropdowns';
 export type { FetchedGroup, SecurityAPIWrapper } from './internal/components/security/APIWrapper';
 export type { UserLimitSettings } from './internal/components/permissions/actions';
 export type { ModalProps } from './internal/Modal';
+export type { QueryLookupFilterGroup, QueryLookupFilterGroupFilter } from './public/QueryColumn';

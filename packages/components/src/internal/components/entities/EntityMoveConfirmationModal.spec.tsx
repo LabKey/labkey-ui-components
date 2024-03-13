@@ -69,7 +69,7 @@ describe('EntityMoveConfirmationModal', () => {
                                 } as Container,
                                 {
                                     ...TEST_FOLDER_CONTAINER,
-                                    effectivePermissions: [PermissionTypes.Update, PermissionTypes.Insert],
+                                    effectivePermissions: [PermissionTypes.Read],
                                 } as Container,
                             ]),
                     }),
@@ -85,7 +85,7 @@ describe('EntityMoveConfirmationModal', () => {
         wrapper.unmount();
     });
 
-    test('has perm to move to anothe project', async () => {
+    test('has perm to move to another project', async () => {
         const wrapper = mountWithAppServerContext(
             <EntityMoveConfirmationModal {...getDefaultProps()} />,
             {
@@ -110,7 +110,7 @@ describe('EntityMoveConfirmationModal', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(Modal)).toHaveLength(1);
         expect(wrapper.find(SelectInput)).toHaveLength(1);
-        expect(wrapper.find(SelectInput).prop('options').length).toBe(1);
+        expect(wrapper.find(SelectInput).prop('options').length).toBe(2);
         expect(wrapper.find(SelectInput).prop('options')[0].value).toBe(TEST_PROJECT_CONTAINER.path);
         expect(wrapper.find(SelectInput).prop('options')[0].label).toBe(TEST_PROJECT_CONTAINER.title);
         expect(wrapper.find('textarea')).toHaveLength(1);
@@ -144,9 +144,11 @@ describe('EntityMoveConfirmationModal', () => {
         await waitForLifecycle(wrapper);
         expect(wrapper.find(Modal)).toHaveLength(1);
         expect(wrapper.find(SelectInput)).toHaveLength(1);
-        expect(wrapper.find(SelectInput).prop('options').length).toBe(1);
+        expect(wrapper.find(SelectInput).prop('options').length).toBe(2);
         expect(wrapper.find(SelectInput).prop('options')[0].value).toBe('/home');
         expect(wrapper.find(SelectInput).prop('options')[0].label).toBe('Home Project');
+        expect(wrapper.find(SelectInput).prop('options')[1].value).toBe(TEST_FOLDER_CONTAINER.path);
+        expect(wrapper.find(SelectInput).prop('options')[1].label).toBe(TEST_FOLDER_CONTAINER.title);
         expect(wrapper.find('textarea')).toHaveLength(1);
         wrapper.unmount();
     });

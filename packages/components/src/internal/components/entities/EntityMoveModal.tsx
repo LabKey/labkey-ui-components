@@ -140,26 +140,40 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     projectUrl = projectUrl + targetAppURL.toHref();
                 }
 
-                const movedCount = moveResponse.updateCounts[entityDataType.nounPlural];
+                const movedCount = moveResponse.updateCounts[entityDataType.nounPlural.toLowerCase()];
                 const movedNoun = getEntityNoun(entityDataType, movedCount)?.toLowerCase();
-                createNotification(
-                    {
-                        message: (
-                            <>
-                                Successfully moved {movedCount} {movedNoun} to <a href={projectUrl}>{targetName}</a>.
-                            </>
-                        ),
-                        alertClass: 'success',
-                    },
-                    true
-                );
+                if (movedCount) {
+                    createNotification(
+                        {
+                            message: (
+                                <>
+                                    Successfully moved {movedCount} {movedNoun} to <a href={projectUrl}>{targetName}</a>.
+                                </>
+                            ),
+                            alertClass: 'success',
+                        },
+                        true
+                    );
+                } else {
+                    createNotification(
+                        {
+                            message: <>All {(entityDataType.nounPlural ?? 'data').toLowerCase()} are already in the target project.</>,
+                            alertClass: 'warning',
+                        },
+                        true
+                    );
+                }
                 onAfterMove();
             } catch (message) {
                 setShowProgress(false);
-                createNotification(
-                    { alertClass: 'danger', message: 'There was a problem moving the ' + noun + '. ' + message },
-                    true
-                );
+                if (message.indexOf('already in the target')) {
+                    createNotification({ alertClass: 'warning', message }, true);
+                } else {
+                    createNotification(
+                        { alertClass: 'danger', message: 'There was a problem moving the ' + noun + '. ' + message },
+                        true
+                    );
+                }
                 if (useSelected) onAfterMove();
             } finally {
                 onCancel();
@@ -239,6 +253,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     title={title}
                     dataType={entityDataType.projectConfigurableDataType}
                     dataTypeRowId={dataTypeRowId}
+                    excludeCurrentAsTarget={maxSelected === 1}
                 >
                     {message}
                 </EntityMoveConfirmationModal>

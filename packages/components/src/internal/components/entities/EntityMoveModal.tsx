@@ -140,7 +140,8 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     projectUrl = projectUrl + targetAppURL.toHref();
                 }
 
-                const movedCount = moveResponse.updateCounts[entityDataType.nounPlural.toLowerCase()];
+                const movedCount =
+                    moveResponse.updateCounts[(entityDataType.moveNoun ?? entityDataType.nounPlural).toLowerCase()];
                 const movedNoun = getEntityNoun(entityDataType, movedCount)?.toLowerCase();
                 if (movedCount) {
                     createNotification(
@@ -166,14 +167,10 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                 onAfterMove();
             } catch (message) {
                 setShowProgress(false);
-                if (message.indexOf('already in the target')) {
-                    createNotification({ alertClass: 'warning', message }, true);
-                } else {
-                    createNotification(
-                        { alertClass: 'danger', message: 'There was a problem moving the ' + noun + '. ' + message },
-                        true
-                    );
-                }
+                createNotification(
+                    { alertClass: 'danger', message: 'There was a problem moving the ' + noun + '. ' + message },
+                    true
+                );
                 if (useSelected) onAfterMove();
             } finally {
                 onCancel();

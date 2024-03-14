@@ -26,7 +26,7 @@ import { RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';
 import { ActionValue } from './grid/actions/Action';
 
-// The wrapper's return type for mount<GridPanel>(<GridPanel ... />)
+// The wrapper's return type for mount(<GridPanel ... />)
 type GridPanelWrapper = ReactWrapper<Readonly<GridPanel['props']>, Readonly<GridPanel['state']>, GridPanel>;
 
 const SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
@@ -123,14 +123,14 @@ describe('GridPanel', () => {
 
         // Model is loading QueryInfo and Rows, should render loading, no ChartMenu/Pagination/ViewMenu.
         let model = makeTestQueryModel(SCHEMA_QUERY);
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mountWithServerContext(<GridPanel actions={actions} model={model} />);
         expectNoQueryInfo(wrapper);
 
         // Model is loading Rows, but not QueryInfo, should not render pagination, should render disabled ViewMenu.
         model = model.mutate({ queryInfoLoadingState: LoadingState.LOADED, queryInfo: QUERY_INFO });
         wrapper.setProps({ model });
         expectNoRows(wrapper);
-        expectChartMenuVisible(wrapper, false);
+        expectChartMenuVisible(wrapper, true);
         expectGridTitle(wrapper, true);
         wrapper.setProps({ title: 'Test title' });
         expectGridTitle(wrapper, true, 'Test title');
@@ -147,10 +147,10 @@ describe('GridPanel', () => {
             charts: [],
             chartsLoadingState: LoadingState.LOADED,
         });
-        wrapper.setProps({ hideEmptyChartMenu: false, model });
+        wrapper.setProps({ model });
 
         // Chart menu should be disabled if no charts are present
-        expectChartMenu(wrapper, true);
+        expectChartMenuVisible(wrapper, false);
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).first().text()).toEqual('1 - 20 of 661');
         expect(wrapper.find(PAGINATION_SELECTOR).first().exists()).toEqual(true);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(true);
@@ -273,7 +273,7 @@ describe('GridPanel', () => {
         // happens when bindURL is true and there is a URL change.
         const { rows, orderedRows, rowCount } = DATA;
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mountWithServerContext(<GridPanel actions={actions} model={model} />);
         const nameSort = new QuerySort({ fieldKey: 'Name' });
         const nameFilter = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
         const expirFilter = Filter.create('expirationTime', '1', Filter.Types.EQUAL);
@@ -305,7 +305,7 @@ describe('GridPanel', () => {
             views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
         });
         const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, {}, [], 0);
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mountWithServerContext(<GridPanel actions={actions} model={model} />);
 
         const expirSort = new QuerySort({ fieldKey: 'expirationTime', dir: '-' });
         const expirFilter2 = Filter.create('expirationTime', '2');
@@ -430,7 +430,7 @@ describe('GridPanel', () => {
             selectionsLoadingState: LoadingState.LOADED,
             totalCountLoadingState: LoadingState.LOADED,
         });
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mountWithServerContext(<GridPanel actions={actions} model={model} />);
 
         // Check that with no selections the header checkbox is not selected.
         expectHeaderSelectionStatus(wrapper, false);

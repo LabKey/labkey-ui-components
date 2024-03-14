@@ -328,6 +328,10 @@ export interface SharedEditableGridProps {
     tabBtnProps?: EditableGridBtnProps;
     tabContainerCls?: string;
     updateColumns?: QueryColumn[];
+    saveBtnClickedCount?: number;
+    hideCheckboxCol?: boolean;
+    gridTabHeaderComponent?: ReactNode;
+    bulkTabHeaderComponent?: ReactNode;
 }
 
 export interface EditableGridBtnProps {
@@ -435,7 +439,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         let selectionCells = Set<number>();
         let selectedState = GRID_CHECKBOX_OPTIONS.NONE;
-        if (props.activeEditTab === EditableGridTabs.BulkUpdate) {
+        if (props.activeEditTab === EditableGridTabs.BulkUpdate || props.hideCheckboxCol) {
             selectionCells = Set<number>(props.dataKeys.map((v, i) => i, Set<number>()));
             selectedState = GRID_CHECKBOX_OPTIONS.ALL;
         }
@@ -463,6 +467,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         document.removeEventListener('copy', this.onCopy);
         document.removeEventListener('cut', this.onCut);
         document.removeEventListener('paste', this.onPaste);
+    }
+
+    componentDidUpdate(prevProps: EditableGridProps): void {
+        if (prevProps.saveBtnClickedCount !== this.props.saveBtnClickedCount) {
+            this.onSaveClick();
+        }
     }
 
     select = (row: Map<string, any>, event: ChangeEvent<HTMLInputElement>): void => {
@@ -799,11 +809,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             rowNumColumn,
             readonlyRows,
             lockedRows,
+            hideCheckboxCol,
         } = this.props;
 
         let gridColumns = List<GridColumn>();
 
-        if (allowBulkRemove || allowBulkUpdate) {
+        if (!hideCheckboxCol && (allowBulkRemove || allowBulkUpdate)) {
             const selColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
                 title: '&nbsp;',
@@ -840,7 +851,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     cell: inputCellFactory(
                         queryInfo,
                         editorModel,
-                        allowBulkRemove || allowBulkUpdate,
+                        !hideCheckboxCol && (allowBulkRemove || allowBulkUpdate),
                         hideCountCol,
                         metadata,
                         readonlyRows,
@@ -1615,7 +1626,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderBulkUpdate = (): ReactNode => {
-        const { addControlProps, bulkUpdateProps, data, dataKeys, editorModel, forUpdate, queryInfo, showAsTab } =
+        const { bulkTabHeaderComponent, addControlProps, bulkUpdateProps, data, dataKeys, editorModel, forUpdate, queryInfo, showAsTab } =
             this.props;
         const { pendingBulkFormData } = this.state;
 
@@ -1631,6 +1642,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         {bulkUpdateProps.applyBulkUpdateBtnText}
                     </button>
                 )}
+                {bulkTabHeaderComponent}
                 <BulkAddUpdateForm
                     asModal={!showAsTab}
                     data={data}
@@ -1668,12 +1680,15 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             maxRows,
             hideTopControls,
             tabContainerCls,
+            gridTabHeaderComponent,
+            hideCheckboxCol,
         } = this.props;
         const { showBulkAdd, showBulkUpdate, showMask, activeEditTab, selected } = this.state;
 
         const gridContent = (
             <>
                 {!hideTopControls && this.renderTopControls()}
+                {gridTabHeaderComponent}
                 <div
                     className={classNames(EDITABLE_GRID_CONTAINER_CLS, { 'loading-mask': showMask })}
                     onKeyDown={this.onKeyDown}
@@ -1699,7 +1714,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         );
 
         if (showAsTab) {
-            const bulkDisabled = selected.size === 0;
+            const bulkDisabled = selected.size === 0 && !hideCheckboxCol;
             const showGrid = editorModel.rowCount <= maxRows;
 
             return (

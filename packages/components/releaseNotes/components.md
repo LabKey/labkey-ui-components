@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Chart builder in app: App initial create chart modal
+  - add experimental flag and update Chart menu for when to show Create Chart item
+
 ### version 3.28.0
 *Released*: 13 March 2024
 - Consolidate logic for generating filters for editable grid cell lookups into `getLookupFilters()` utility

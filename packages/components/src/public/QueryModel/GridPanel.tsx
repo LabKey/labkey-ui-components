@@ -88,7 +88,6 @@ export interface GridPanelProps<ButtonsComponentProps> {
     getEmptyText?: (model: QueryModel) => string;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
     hasHeader?: boolean;
-    hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
     highlightLastSelectedRow?: boolean;
     loadOnMount?: boolean;
@@ -155,7 +154,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             advancedExportOptions,
             ButtonsComponent,
             ButtonsComponentRight,
-            hideEmptyChartMenu,
             hideEmptyViewMenu,
             onCustomizeView,
             onExport,
@@ -226,9 +224,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                     onExport={onExport}
                                 />
                             )}
-                            {showChartMenu && (
-                                <ChartMenu hideEmptyChartMenu={hideEmptyChartMenu} actions={actions} model={model} />
-                            )}
+                            {showChartMenu && <ChartMenu actions={actions} model={model} />}
                             {canSelectView && (
                                 <ViewMenu
                                     allowViewCustomization={allowViewCustomization}
@@ -398,7 +394,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         allowFiltering: true,
         allowViewCustomization: true,
         asPanel: true,
-        hideEmptyChartMenu: true,
         hideEmptyViewMenu: true,
         highlightLastSelectedRow: false,
         loadOnMount: true,

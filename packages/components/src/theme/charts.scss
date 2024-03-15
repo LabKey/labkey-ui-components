@@ -180,3 +180,55 @@
 .r-report__files .attachment-card:hover {
     text-decoration: none;
 }
+
+.chart-builder-modal {
+    width: calc(100% - 100px) !important;
+    min-width: 850px;
+
+    .col-left {
+        width: 125px;
+        border-right: solid 1px $gray-border-light;
+    }
+    .col-right {
+        width: calc(100% - 125px)
+    }
+
+    .chart-builder-type {
+        border: solid 1px transparent;
+        border-radius: 5px;
+        padding: 10px;
+        width: 95px;
+
+        .title {
+            text-align: center;
+        }
+
+        &.selected {
+            background-color: $gray-lighter;
+            border-color: $gray-border;
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: $blue-icon-background;
+            border-color: $blue-border-solid;
+        }
+    }
+
+    .chart-type-inputs {
+        margin: 0;
+        border-bottom: solid 1px $gray-border-light;
+    }
+
+    .fields-col-left, .fields-col-right {
+        min-height: 160px;
+        border-left: solid 1px $gray-border-light;
+    }
+
+    .checkbox-input {
+        padding-top: 15px;
+        input {
+            margin-right: 5px;
+        }
+    }
+}

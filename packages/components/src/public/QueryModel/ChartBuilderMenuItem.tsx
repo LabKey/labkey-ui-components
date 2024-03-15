@@ -10,6 +10,8 @@ import { SelectInput, SelectInputOption } from '../../internal/components/forms/
 
 import { naturalSortByProperty } from '../sort';
 
+import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
+
 import { QueryModel } from './QueryModel';
 
 interface ChartFieldInfo {
@@ -32,7 +34,9 @@ interface ChartTypeInfo {
 const CHART_TYPES = LABKEY_VIS.GenericChartHelper.getRenderTypes();
 const HIDDEN_CHART_TYPES = ['time_chart'];
 const RIGHT_COL_FIELDS = ['color', 'shape', 'series'];
-const MAX_ROWS_PREVIEW = 100000; // TODO set value to ...? detect when max reached
+const MAX_ROWS_PREVIEW = 100000;
+const MAX_POINT_DISPLAY = 10000;
+const BLUE_HEX_COLOR = '3366FF';
 
 interface Props {
     model: QueryModel;
@@ -42,6 +46,8 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
     const divId = useMemo(() => generateId('chart-'), []);
     const ref = useRef<HTMLDivElement>(undefined);
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [loadingData, setLoadingData] = useState<boolean>(false);
+    const [previewMsg, setPreviewMsg] = useState<string>();
     const chartTypes: ChartTypeInfo[] = useMemo(
         () => CHART_TYPES.filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name)),
         []
@@ -66,21 +72,35 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
         );
     }, [selectedType]);
 
+    const resetState = useCallback(
+        (all: boolean) => {
+            setFieldValues({});
+            setPreviewMsg(undefined);
+            if (all) {
+                setSelectedChartType(chartTypes[0]);
+                setName('');
+                setShared(true);
+            }
+        },
+        [chartTypes]
+    );
+
     const onShowModal = useCallback(() => {
         setShowModal(true);
     }, []);
 
     const onHideModal = useCallback(() => {
         setShowModal(false);
-    }, []);
+        resetState(true);
+    }, [resetState]);
 
     const onChartTypeChange = useCallback(
         e => {
             const selectedName = e.target.getAttribute('data-name');
             setSelectedChartType(chartTypes.find(type => type.name === selectedName) || chartTypes[0]);
-            setFieldValues({}); // reset any selected field values
+            resetState(false);
         },
-        [chartTypes]
+        [chartTypes, resetState]
     );
 
     const onNameChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,14 +116,44 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
     }, []);
 
     useEffect(() => {
-        if (ref?.current) ref.current.innerHTML = ''; // '<span class="fa fa-spinner" /> Loading...'; // TODO where to put this?
+        if (ref?.current) ref.current.innerHTML = '';
 
         if (!hasRequiredValues) return;
 
         const width = ref?.current.getBoundingClientRect().width || 750;
         const chartConfig = getChartConfig(selectedType, fieldValues, width);
         const queryConfig = getQueryConfig(model, fieldValues, chartConfig);
-        LABKEY_VIS.GenericChartHelper.renderChartSVG(divId, queryConfig, chartConfig);
+
+        setLoadingData(true);
+        setPreviewMsg(undefined);
+        LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig, measureStore => {
+            let _previewMsg;
+            const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore).length;
+            if (rowCount === MAX_ROWS_PREVIEW) {
+                _previewMsg = 'Preview limited to ' + MAX_ROWS_PREVIEW.toLocaleString() + ' rows';
+            }
+            if (rowCount > MAX_POINT_DISPLAY) {
+                if (chartConfig.renderType === 'box_plot') {
+                    chartConfig.pointType = 'outliers';
+                    chartConfig.geomOptions.boxFillColor = BLUE_HEX_COLOR;
+                } else if (chartConfig.renderType === 'line_plot') {
+                    chartConfig.geomOptions.hideDataPoints = true;
+                    _previewMsg =
+                        'The number of individual points exceeds ' +
+                        MAX_POINT_DISPLAY.toLocaleString() +
+                        '. Data points will not be shown on this line plot.';
+                } else if (chartConfig.renderType === 'scatter_plot') {
+                    _previewMsg =
+                        'The number of individual points exceeds ' +
+                        MAX_POINT_DISPLAY.toLocaleString() +
+                        '. The data is now grouped by density.';
+                }
+            }
+
+            setPreviewMsg(_previewMsg);
+            setLoadingData(false);
+            LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig, measureStore);
+        });
     }, [divId, model, hasRequiredValues, selectedType, fieldValues]);
 
     return (
@@ -131,6 +181,7 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
                                     className={classNames('chart-builder-type', {
                                         selected: selectedType.name === type.name,
                                     })}
+                                    data-name={type.name}
                                     onClick={onChartTypeChange}
                                 >
                                     <img src={type.imgUrl} height={50} width={75} data-name={type.name} />
@@ -204,10 +255,16 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
                             <div className="row margin-top">
                                 <div className="col-xs-12">
                                     <label>Preview</label>
+                                    {previewMsg && <span className="gray-text pull-right">{previewMsg}</span>}
                                     {!hasRequiredValues && (
                                         <div className="gray-text">Select required fields to preview the chart.</div>
                                     )}
-                                    {hasRequiredValues && <div className="svg-chart__chart" id={divId} ref={ref} />}
+                                    {hasRequiredValues && (
+                                        <div>
+                                            {loadingData && <LoadingSpinner msg="Creating preview..." />}
+                                            <div className="svg-chart__chart" id={divId} ref={ref} />
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -240,7 +297,11 @@ const getSelectOptions = (model: QueryModel, chartType: ChartTypeInfo, field: Ch
     );
 };
 
-const getQueryConfig = (model: QueryModel, fieldValues: Record<string, SelectInputOption>, chartConfig: Record<string, any>) => {
+const getQueryConfig = (
+    model: QueryModel,
+    fieldValues: Record<string, SelectInputOption>,
+    chartConfig: Record<string, any>
+) => {
     const { schemaQuery, containerPath, containerFilter } = model;
     const { schemaName, queryName, viewName } = schemaQuery;
 
@@ -273,8 +334,8 @@ const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, Se
         geomOptions: {
             binShape: 'hex',
             binSingleColor: '000000',
-            binThreshold: 10000,
-            boxFillColor: chartType.name === 'box_plot' ? 'none' : '3366FF',
+            binThreshold: MAX_POINT_DISPLAY,
+            boxFillColor: chartType.name === 'box_plot' ? 'none' : BLUE_HEX_COLOR,
             chartLayout: 'single',
             chartSubjectSelection: 'subjects',
             colorPaletteScale: 'ColorDiscrete',
@@ -297,11 +358,10 @@ const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, Se
             pieInnerRadius: 0,
             pieOuterRadius: 80,
             piePercentagesColor: '333333',
-            pointFillColor: '3366FF',
+            pointFillColor: BLUE_HEX_COLOR,
             pointSize: chartType.name === 'box_plot' ? 3 : 5,
-            pointType: 'all',
             position: chartType.name === 'box_plot' ? 'jitter' : null,
-            showOutliers: false,
+            showOutliers: true,
             showPiePercentages: true,
         },
         pointType: 'all',

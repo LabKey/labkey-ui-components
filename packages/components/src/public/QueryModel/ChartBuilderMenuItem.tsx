@@ -31,7 +31,7 @@ interface ChartTypeInfo {
     fields: ChartFieldInfo[];
 }
 
-const CHART_TYPES = LABKEY_VIS.GenericChartHelper.getRenderTypes();
+const CHART_TYPES = LABKEY_VIS?.GenericChartHelper.getRenderTypes();
 const HIDDEN_CHART_TYPES = ['time_chart'];
 const RIGHT_COL_FIELDS = ['color', 'shape', 'series'];
 const MAX_ROWS_PREVIEW = 100000;

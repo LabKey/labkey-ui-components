@@ -127,26 +127,15 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
         setLoadingData(true);
         setPreviewMsg(undefined);
         LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig, measureStore => {
-            let _previewMsg;
             const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore).length;
-            if (rowCount === MAX_ROWS_PREVIEW) {
-                _previewMsg = 'Preview limited to ' + MAX_ROWS_PREVIEW.toLocaleString() + ' rows';
-            }
+            const _previewMsg = getChartPreviewMsg(chartConfig.renderType, rowCount);
+
             if (rowCount > MAX_POINT_DISPLAY) {
                 if (chartConfig.renderType === 'box_plot') {
                     chartConfig.pointType = 'outliers';
                     chartConfig.geomOptions.boxFillColor = BLUE_HEX_COLOR;
                 } else if (chartConfig.renderType === 'line_plot') {
                     chartConfig.geomOptions.hideDataPoints = true;
-                    _previewMsg =
-                        'The number of individual points exceeds ' +
-                        MAX_POINT_DISPLAY.toLocaleString() +
-                        '. Data points will not be shown on this line plot.';
-                } else if (chartConfig.renderType === 'scatter_plot') {
-                    _previewMsg =
-                        'The number of individual points exceeds ' +
-                        MAX_POINT_DISPLAY.toLocaleString() +
-                        '. The data is now grouped by density.';
                 }
             }
 
@@ -274,6 +263,30 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
         </>
     );
 });
+
+const getChartPreviewMsg = (renderType: string, rowCount: number): string => {
+    if (rowCount === MAX_ROWS_PREVIEW) {
+        return 'Preview limited to ' + MAX_ROWS_PREVIEW.toLocaleString() + ' rows';
+    }
+
+    if (rowCount > MAX_POINT_DISPLAY) {
+        if (renderType === 'line_plot') {
+            return (
+                'The number of individual points exceeds ' +
+                MAX_POINT_DISPLAY.toLocaleString() +
+                '. Data points will not be shown on this line plot.'
+            );
+        } else if (renderType === 'scatter_plot') {
+            return (
+                'The number of individual points exceeds ' +
+                MAX_POINT_DISPLAY.toLocaleString() +
+                '. The data is now grouped by density.'
+            );
+        }
+    }
+
+    return undefined;
+};
 
 const getSelectOptions = (model: QueryModel, chartType: ChartTypeInfo, field: ChartFieldInfo): SelectInputOption[] => {
     const allowableTypes = LABKEY_VIS.GenericChartHelper.getAllowableTypes(field);

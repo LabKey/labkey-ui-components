@@ -261,6 +261,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
                             showFiltersButton={false}
                             showPagination={true}
                             showExport={false}
+                            showChartMenu={false}
                             showViewMenu={false}
                             allowViewCustomization={false}
                             buttonsComponentProps={{

@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Chart builder in app: App initial create chart modal
   - add experimental flag and update Chart menu for when to show Create Chart item
+  - ChartBuilderMenuItem with modal for defining a new chart, selecting type, measures, and chart preview
 
 ### version 3.28.0
 *Released*: 13 March 2024

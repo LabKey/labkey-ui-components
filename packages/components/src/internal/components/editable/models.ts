@@ -49,6 +49,7 @@ export interface EditableColumnMetadata {
     toolTip?: ReactNode;
     width?: number;
     minWidth?: number;
+    align?: string;
 }
 
 export interface ValueDescriptor {

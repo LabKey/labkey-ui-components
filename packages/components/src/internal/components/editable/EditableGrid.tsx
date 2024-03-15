@@ -224,9 +224,10 @@ function inputCellFactory(
 
         const focused = editorModel.isFocused(colIdx, rn);
         const className = classNames({ 'grid-col-with-width': hasCellWidthOverride(columnMetadata) });
+        const align = columnMetadata?.align ?? c.align;
 
         return (
-            <td className={className} key={inputCellKey(c.raw, row)} style={{ textAlign: c.align || 'left' } as any}>
+            <td className={className} key={inputCellKey(c.raw, row)} style={{ textAlign: align || 'left' } as any}>
                 <Cell
                     borderMaskTop={borderMask[0]}
                     borderMaskRight={borderMask[1]}

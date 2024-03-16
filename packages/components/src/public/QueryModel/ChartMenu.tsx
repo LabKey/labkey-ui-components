@@ -81,7 +81,7 @@ export const ChartMenu: FC<RequiresModelAndActions> = props => {
             >
                 {chartsError !== undefined && <MenuItem>{chartsError}</MenuItem>}
 
-                {showCreateChart && <ChartBuilderMenuItem model={model} />}
+                {showCreateChart && <ChartBuilderMenuItem actions={actions} model={model} />}
 
                 {showCreateChartDivider && <MenuDivider />}
 

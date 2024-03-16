@@ -12,7 +12,10 @@ import { naturalSortByProperty } from '../sort';
 
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
 
+import { saveChart } from '../../internal/actions';
+
 import { QueryModel } from './QueryModel';
+import { RequiresModelAndActions } from './withQueryModels';
 
 interface ChartFieldInfo {
     name: string;
@@ -38,16 +41,14 @@ const MAX_ROWS_PREVIEW = 100000;
 const MAX_POINT_DISPLAY = 10000;
 const BLUE_HEX_COLOR = '3366FF';
 
-interface Props {
-    model: QueryModel;
-}
-
-export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
+export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions, model }) => {
     const divId = useMemo(() => generateId('chart-'), []);
     const ref = useRef<HTMLDivElement>(undefined);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [loadingData, setLoadingData] = useState<boolean>(false);
+    const [saving, setSaving] = useState<boolean>(false);
     const [previewMsg, setPreviewMsg] = useState<string>();
+    const [reportConfig, setReportConfig] = useState<Record<string, any>>();
     const chartTypes: ChartTypeInfo[] = useMemo(
         () => CHART_TYPES.filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name)),
         []
@@ -57,6 +58,7 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
     const [shared, setShared] = useState<boolean>(true);
     const [fieldValues, setFieldValues] = useState<Record<string, SelectInputOption>>({});
 
+    const hasName = useMemo(() => name?.trim().length > 0, [name]);
     const hasRequiredValues = useMemo(() => {
         return selectedType.fields.find(field => field.required && !fieldValues[field.name]) === undefined;
     }, [selectedType, fieldValues]);
@@ -80,6 +82,7 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
                 setSelectedChartType(chartTypes[0]);
                 setName('');
                 setShared(true);
+                setReportConfig(undefined);
             }
         },
         [chartTypes]
@@ -107,13 +110,32 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
         setName(event.target.value);
     }, []);
 
-    const onSharedChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setShared(e.target.checked);
+    const onToggleShared = useCallback(_ => {
+        setShared(prev => !prev);
     }, []);
 
     const onSelectFieldChange = useCallback((key: string, _, selectedOption: SelectInputOption) => {
         setFieldValues(prev => ({ ...prev, [key]: selectedOption }));
     }, []);
+
+    const onSaveChart = useCallback(async () => {
+        const _reportConfig = {
+            ...reportConfig,
+            name,
+            public: shared,
+        };
+        //     reportId    : this.savedReportInfo ? this.savedReportInfo.reportId : undefined,
+        // if (data.isSaveAs)
+        //     reportConfig.reportId = null;
+
+        setSaving(true);
+        // TODO try/catch with error message
+        const response = await saveChart(_reportConfig);
+        await actions.loadCharts(model.id);
+        actions.selectReport(model.id, response.reportId);
+        setSaving(false);
+        onHideModal();
+    }, [reportConfig, name, shared, actions, model.id, onHideModal]);
 
     useEffect(() => {
         if (ref?.current) ref.current.innerHTML = '';
@@ -139,9 +161,20 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
                 }
             }
 
+            LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig, measureStore);
+
             setPreviewMsg(_previewMsg);
             setLoadingData(false);
-            LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig, measureStore);
+            setReportConfig({
+                schemaName: queryConfig.schemaName,
+                queryName: queryConfig.queryName,
+                viewName: queryConfig.viewName,
+                renderType: chartConfig.renderType,
+                jsonData: {
+                    queryConfig,
+                    chartConfig,
+                },
+            });
         });
     }, [divId, model, hasRequiredValues, selectedType, fieldValues]);
 
@@ -153,14 +186,14 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
             </MenuItem>
             {showModal && (
                 <Modal
-                    cancelText="Cancel"
-                    canConfirm={false}
+                    canConfirm={hasName && hasRequiredValues && !loadingData}
                     className="chart-builder-modal"
                     confirmText="Create Chart"
+                    confirmingText="Creating Chart..."
+                    isConfirming={saving}
                     onCancel={onHideModal}
-                    onConfirm={onHideModal}
+                    onConfirm={onSaveChart}
                     title="Create Chart"
-                    bsSize="lg"
                 >
                     <div className="row">
                         <div className="col-xs-1 col-left">
@@ -191,12 +224,12 @@ export const ChartBuilderMenuItem: FC<Props> = memo(({ model }) => {
                                             onChange={onNameChange}
                                             value={name}
                                         />
-                                        <div className="checkbox-input">
+                                        <div className="checkbox-input" onClick={onToggleShared}>
                                             <input
                                                 name="shared"
                                                 type="checkbox"
                                                 checked={shared}
-                                                onChange={onSharedChange}
+                                                onChange={onToggleShared}
                                             />{' '}
                                             Make this chart available to all users
                                         </div>

@@ -866,3 +866,27 @@ export function renameGridView(
         });
     });
 }
+
+interface SaveChartResponse {
+    success: boolean;
+    reportId: string;
+}
+
+export function saveChart(reportConfig: Record<string, any>, containerPath?: string): Promise<SaveChartResponse> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('visualization', 'saveGenericReport.api', undefined, {
+                container: containerPath,
+            }),
+            method: 'POST',
+            jsonData: reportConfig,
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error(error);
+                reject(resolveErrorMessage(error) ?? 'Failed to save chart.');
+            }),
+        });
+    });
+}

@@ -20,10 +20,12 @@ interface ChartMenuItemProps {
 
 export const ChartMenuItem: FC<ChartMenuItemProps> = ({ chart, showChart }) => {
     const onClick = useCallback(() => showChart(chart), [showChart, chart]);
+    const useSVG = chart.icon?.indexOf('_icon.svg') > -1;
 
     return (
         <MenuItem onClick={onClick}>
-            <i className={`chart-menu-icon ${chart.iconCls ?? ''}`} />
+            {useSVG && <img src={chart.icon} width={16} alt={chart.icon} />}
+            {!useSVG && <i className={`chart-menu-icon ${chart.iconCls ?? ''}`} />}
             <span className="chart-menu-label">{chart.name}</span>
         </MenuItem>
     );

@@ -2,8 +2,11 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 3.X
-*Released*: XMarch 2024
-- TODO
+*Released*: X March 2024
+- EditableGrid updates for add/move to multiple targets updates
+  - support full editable grid bulk update without checkbox selection
+  - add saveBtnClickedCount prop to allow buttons defined outside the grid notify grid of appropriate actions
+  - add gridTabHeaderComponent and bulkTabHeaderComponent to allow additional header items, such as BoxFillOptions
 
 ### version 3.28.0
 *Released*: 13 March 2024

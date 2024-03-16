@@ -224,10 +224,10 @@ function inputCellFactory(
 
         const focused = editorModel.isFocused(colIdx, rn);
         const className = classNames({ 'grid-col-with-width': hasCellWidthOverride(columnMetadata) });
-        const align = columnMetadata?.align ?? c.align;
+        const style = { textAlign: columnMetadata?.align ?? c.align ?? 'left' } as any;
 
         return (
-            <td className={className} key={inputCellKey(c.raw, row)} style={{ textAlign: align || 'left' } as any}>
+            <td className={className} key={inputCellKey(c.raw, row)} style={style}>
                 <Cell
                     borderMaskTop={borderMask[0]}
                     borderMaskRight={borderMask[1]}
@@ -1627,8 +1627,17 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderBulkUpdate = (): ReactNode => {
-        const { bulkTabHeaderComponent, addControlProps, bulkUpdateProps, data, dataKeys, editorModel, forUpdate, queryInfo, showAsTab } =
-            this.props;
+        const {
+            bulkTabHeaderComponent,
+            addControlProps,
+            bulkUpdateProps,
+            data,
+            dataKeys,
+            editorModel,
+            forUpdate,
+            queryInfo,
+            showAsTab,
+        } = this.props;
         const { pendingBulkFormData } = this.state;
 
         return (

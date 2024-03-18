@@ -82,11 +82,14 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [queryConfig, setQueryConfig] = useState<ChartQueryConfig>(undefined);
     const [chartConfig, setChartConfig] = useState<ChartConfig>(undefined);
+    const [loadingData, setLoadingData] = useState<boolean>(false);
+    const [measureStore, setMeasureStore] = useState<any>(undefined);
     const [loadError, setLoadError] = useState<string>(undefined);
     const filterKey = useMemo(() => computeFilterKey(filters), [filters]);
     const ref = useRef<HTMLDivElement>(undefined);
     const loadChartConfig = useCallback(async () => {
         setLoadingState(LoadingState.LOADING);
+        setMeasureStore(undefined);
         try {
             const visualizationConfig = await api.fetchVisualizationConfig(reportId);
             const chartConfig_ = {
@@ -140,24 +143,28 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
         const render = (): void => {
             if (queryConfig !== undefined && chartConfig !== undefined) {
                 ref.current.innerHTML = '';
-                // Note: our usage of renderChartSVG to render the chart means that every time we call render we make
-                // a new API request to the server to fetch the data, even if all we've done is change screen size. This
-                // updated in the future to use the underlying VIS library to separate fetching of data from rendering
-                // the chart. We should only be fetching data when the reportId or filterArray change.
-                LABKEY_VIS.GenericChartHelper.renderChartSVG(divId, queryConfig, chartConfig);
+                if (!measureStore) {
+                    setLoadingData(true);
+                    LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig, _measureStore => {
+                        setMeasureStore(_measureStore);
+                        setLoadingData(false);
+                    });
+                } else {
+                    LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig, measureStore);
+                }
             }
         };
         // Debounce the call to render because we may trigger many resize events back to back, which will produce many
         // new chartConfig objects
         const renderId = window.setTimeout(render, 250);
         return () => window.clearTimeout(renderId);
-    }, [divId, chartConfig, queryConfig]);
+    }, [divId, chartConfig, queryConfig, measureStore]);
 
     return (
         <div className="svg-chart chart-body">
             {error !== undefined && <span className="text-danger">{error}</span>}
             {loadError !== undefined && <span className="text-danger">{loadError}</span>}
-            {isLoading(loadingState) && <ChartLoadingMask />}
+            {(isLoading(loadingState) || loadingData) && <ChartLoadingMask />}
             <div className="svg-chart__chart" id={divId} ref={ref} />
         </div>
     );
@@ -252,7 +259,7 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
                     <pre>{outputError}</pre>
                 </div>
             )}
-            {isLoading(loadingState) && <ChartLoadingMask />}
+            {isLoading(loadingState) && <ChartLoadingMask msg="Loading Report..." />}
             {isEmpty && (
                 <div className="r-report__errors text-danger">
                     No output detected, you may not have enough data, or there may be an issue with your R Report

@@ -15,6 +15,8 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 import { ParentIdData } from './actions';
+import { PermissionTypes } from '@labkey/api';
+import { DataOperation } from './constants';
 
 export function sampleDeleteDependencyText(): string {
     let deleteMsg = '';
@@ -143,4 +145,17 @@ export function getJobCreationHref(
 
     const actionUrl = createProductUrlFromParts(targetProductId, currentProductId, params, WORKFLOW_KEY, 'new');
     return actionUrl instanceof AppURL ? actionUrl.toHref() : actionUrl;
+}
+
+export function getPermissionForDataOperation(operation: DataOperation): PermissionTypes {
+    switch (operation) {
+        case DataOperation.EditLineage:
+            return PermissionTypes.Update;
+        case DataOperation.Delete:
+            return PermissionTypes.Delete;
+        case DataOperation.Move:
+            return PermissionTypes.MoveEntities;
+        default:
+            return undefined;
+    }
 }

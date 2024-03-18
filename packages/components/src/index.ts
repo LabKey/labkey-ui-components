@@ -483,6 +483,7 @@ import {
     getRolesByUniqueName,
 } from './internal/components/permissions/actions';
 import {
+    getContainersForPermission,
     getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
@@ -1341,6 +1342,7 @@ export {
     getCrossFolderSelectionResult,
     getExcludedDataTypeNames,
     getOperationConfirmationData,
+    getContainersForPermission,
     getDataOperationConfirmationData,
     getDataDeleteConfirmationData,
     getUniqueIdColumnMetadata,

@@ -1,12 +1,12 @@
-import { ActionURL, Ajax, Filter, getServerContext, Query, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, getServerContext, PermissionTypes, Query, Security, Utils } from '@labkey/api';
 import { List, Map } from 'immutable';
 
-import { getSelectedData, getSelected, setSnapshotSelections } from '../../actions';
+import { getSelected, getSelectedData, setSnapshotSelections } from '../../actions';
 
 import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
+import { getFilterForSampleOperation, getPermissionForOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions } from '../../query/api';
 import { caseInsensitive, generateId, handleRequestFailure } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
@@ -20,7 +20,7 @@ import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
 import { ViewInfo } from '../../ViewInfo';
 
-import { getProjectDataExclusion, hasModule } from '../../app/utils';
+import { getProjectDataExclusion, getProjectPath, hasModule, hasProductProjects } from '../../app/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -30,6 +30,7 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import {
     getInitialParentChoices,
+    getPermissionForDataOperation,
     isAssayDesignEntity,
     isAssayResultEntity,
     isDataClassEntity,
@@ -66,7 +67,8 @@ export async function getOperationConfirmationData(
     selectionKey?: string,
     useSnapshotSelection?: boolean,
     extraParams?: Record<string, any>,
-    containerPath?: string
+    containerPath?: string,
+    permissionType?: PermissionTypes,
 ): Promise<OperationConfirmationData> {
     if (!selectionKey && !rowIds?.length) {
         return new OperationConfirmationData();
@@ -96,9 +98,24 @@ export async function getOperationConfirmationData(
             ),
             method: 'POST',
             jsonData: params,
-            success: Utils.getCallbackWrapper(response => {
+            success: Utils.getCallbackWrapper(async response => {
                 if (response.success) {
-                    resolve(new OperationConfirmationData(response.data));
+                    let notPermitted;
+                    if (permissionType && hasProductProjects()) {
+                        notPermitted = await getNotPermittedData(
+                            permissionType,
+                            selectionKey,
+                            dataType,
+                            useSnapshotSelection,
+                            rowIds
+                        );
+                    }
+                    resolve(new OperationConfirmationData(
+                        {
+                            ...response.data,
+                            notPermitted,
+                        }
+                    ));
                 } else {
                     console.error('Response failure when getting operation confirmation data', response.exception);
                     reject(response.exception);
@@ -110,6 +127,58 @@ export async function getOperationConfirmationData(
             }),
         });
     });
+}
+
+export function getContainersForPermission(permission: PermissionTypes): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        Security.getContainers({
+            containerPath: getProjectPath(),
+            includeStandardProperties: false,
+            includeSubfolders: true,
+            success: (container: Security.ContainerHierarchy) => {
+                const results = [];
+                if (container.effectivePermissions.indexOf(permission) > -1) {
+                    results.push(container.id);
+                }
+
+                container.children.forEach(c => {
+                    if (c.effectivePermissions.indexOf(permission) > -1) {
+                        results.push(c.id);
+                    }
+                });
+                resolve(results);
+            },
+            failure: error => {
+                console.error('Failed to fetch containers.', error);
+                reject(error);
+            },
+        });
+    });
+}
+
+export async function getNotPermittedData(
+    permissionType: PermissionTypes,
+    dataRegionSelectionKey: string,
+    dataType: EntityDataType,
+    useSnapshotSelection?: boolean,
+    rowIds?: string[] | number[]
+): Promise<Record<string, any>[]> {
+    if (!permissionType) {
+        return Promise.resolve([]);
+    }
+
+    try {
+        const containerRows = await getContainersFromSelections(dataRegionSelectionKey, dataType.instanceSchemaName, useSnapshotSelection, rowIds);
+        const permissionedContainers = await getContainersForPermission(permissionType);
+        return Promise.resolve(
+            containerRows.filter(row => {
+                return permissionedContainers.indexOf(caseInsensitive(row, 'Container')) === -1;
+            })
+        );
+    } catch (reason) {
+        console.error('There was a problem retrieving data about permissions.', reason);
+        Promise.reject(resolveErrorMessage(reason));
+    }
 }
 
 export type GetDeleteConfirmationDataOptions = {
@@ -153,7 +222,8 @@ export function getDeleteConfirmationData(
         selectionKey,
         useSnapshotSelection,
         extraParams,
-        containerPath
+        containerPath,
+        PermissionTypes.Delete
     );
 }
 
@@ -185,7 +255,7 @@ export function getSampleOperationConfirmationData(
     rowIds?: string[] | number[],
     selectionKey?: string,
     useSnapshotSelection?: boolean,
-    containerPath?: string
+    containerPath?: string,
 ): Promise<OperationConfirmationData> {
     return getOperationConfirmationData(
         SampleTypeDataType,
@@ -193,7 +263,8 @@ export function getSampleOperationConfirmationData(
         selectionKey,
         useSnapshotSelection,
         { sampleOperation: SampleOperation[operation] },
-        containerPath
+        containerPath,
+        getPermissionForOperation(operation)
     );
 }
 
@@ -680,9 +751,17 @@ export function getDataOperationConfirmationData(
     selectionKey?: string,
     useSnapshotSelection?: boolean
 ): Promise<OperationConfirmationData> {
-    return getOperationConfirmationData(DataClassDataType, rowIds, selectionKey, useSnapshotSelection, {
-        dataOperation: DataOperation[operation],
-    });
+    return getOperationConfirmationData(
+        DataClassDataType,
+        rowIds,
+        selectionKey,
+        useSnapshotSelection,
+        {
+            dataOperation: DataOperation[operation],
+        },
+        undefined,
+        getPermissionForDataOperation(operation)
+    );
 }
 
 export function getCrossFolderSelectionResult(
@@ -725,6 +804,45 @@ export function getCrossFolderSelectionResult(
         });
     });
 }
+
+export function getContainersFromSelections(
+    dataRegionSelectionKey: string,
+    dataType: string, // 'samples' | 'exp.data' | 'assay',
+    useSnapshotSelection?: boolean,
+    rowIds?: string[] | number[],
+    picklistName?: string
+): Promise<Record<string, any>[]> {
+    if (!dataRegionSelectionKey && !rowIds?.length) {
+        return Promise.resolve(undefined);
+    }
+
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', 'getContainersFromSelections.api'),
+            method: 'POST',
+            jsonData: {
+                dataRegionSelectionKey,
+                rowIds,
+                dataType,
+                picklistName,
+                useSnapshotSelection,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    resolve(response.data);
+                } else {
+                    console.error('Error getting cross-project data selection result', response.exception);
+                    reject(response.exception);
+                }
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response ? response.exception : 'Unknown error getting cross-project data selection result.');
+            }),
+        });
+    });
+};
+
 
 export type ParentIdData = {
     parentId: string | number;
@@ -874,7 +992,9 @@ export function getMoveConfirmationData(
               }
             : isAssayDesignEntity(dataType)
             ? { dataOperation: AssayRunOperation.Move }
-            : undefined
+            : undefined,
+        undefined,
+        PermissionTypes.MoveEntities
     );
 }
 

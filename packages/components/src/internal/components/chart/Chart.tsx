@@ -26,6 +26,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from './api';
 import { ChartConfig, ChartQueryConfig } from './models';
+import { getChartRenderMsg } from './ChartBuilderMenuItem';
 
 interface ChartLoadingMaskProps {
     msg?: string;
@@ -84,11 +85,13 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
     const [chartConfig, setChartConfig] = useState<ChartConfig>(undefined);
     const [loadingData, setLoadingData] = useState<boolean>(false);
     const [measureStore, setMeasureStore] = useState<any>(undefined);
+    const [renderMsg, setRenderMsg] = useState<string>(undefined);
     const [loadError, setLoadError] = useState<string>(undefined);
     const filterKey = useMemo(() => computeFilterKey(filters), [filters]);
     const ref = useRef<HTMLDivElement>(undefined);
     const loadChartConfig = useCallback(async () => {
         setLoadingState(LoadingState.LOADING);
+        setRenderMsg(undefined);
         setMeasureStore(undefined);
         try {
             const visualizationConfig = await api.fetchVisualizationConfig(reportId);
@@ -146,6 +149,9 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
                 if (!measureStore) {
                     setLoadingData(true);
                     LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig, _measureStore => {
+                        const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(_measureStore).length;
+                        setRenderMsg(getChartRenderMsg(chartConfig, rowCount, false));
+
                         setMeasureStore(_measureStore);
                         setLoadingData(false);
                     });
@@ -165,6 +171,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
             {error !== undefined && <span className="text-danger">{error}</span>}
             {loadError !== undefined && <span className="text-danger">{loadError}</span>}
             {(isLoading(loadingState) || loadingData) && <ChartLoadingMask />}
+            {renderMsg && <span className="gray-text pull-right">{renderMsg}</span>}
             <div className="svg-chart__chart" id={divId} ref={ref} />
         </div>
     );

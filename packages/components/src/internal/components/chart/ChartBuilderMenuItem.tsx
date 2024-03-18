@@ -156,7 +156,7 @@ export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions
         setPreviewMsg(undefined);
         LABKEY_VIS.GenericChartHelper.queryChartData(divId, _queryConfig, measureStore => {
             const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore).length;
-            const _previewMsg = getChartPreviewMsg(chartConfig.renderType, rowCount);
+            const _previewMsg = getChartRenderMsg(chartConfig, rowCount, true);
 
             if (rowCount > MAX_POINT_DISPLAY) {
                 if (chartConfig.renderType === 'box_plot') {
@@ -167,8 +167,13 @@ export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions
                 }
             }
 
-            // add height and width to the chart config for rendering, but not to save with the chart
-            var _chartConfig = { ...chartConfig, height: 250, width };
+            // adjust height, width, and marginTop for the chart config for the preview, but not to save with the chart
+            var _chartConfig = {
+                ...chartConfig,
+                height: 250,
+                width,
+                geomOptions: { ...chartConfig.geomOptions, marginTop: 10 },
+            };
 
             LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, _chartConfig, measureStore);
 
@@ -314,28 +319,26 @@ export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions
     );
 });
 
-const getChartPreviewMsg = (renderType: string, rowCount: number): string => {
+export const getChartRenderMsg = (chartConfig: any, rowCount: number, isPreview: boolean): string => {
     let msg = '';
     let sep = '';
-    if (rowCount === MAX_ROWS_PREVIEW) {
+    if (isPreview && rowCount === MAX_ROWS_PREVIEW) {
         msg = 'The preview is being limited to ' + MAX_ROWS_PREVIEW.toLocaleString() + ' rows.';
         sep = ' ';
     }
 
-    if (rowCount > MAX_POINT_DISPLAY) {
-        if (renderType === 'line_plot') {
-            msg +=
-                sep +
-                ('The number of individual points exceeds ' +
-                    MAX_POINT_DISPLAY.toLocaleString() +
-                    '. Data points will not be shown on this line plot.');
-        } else if (renderType === 'scatter_plot') {
-            msg +=
-                sep +
-                ('The number of individual points exceeds ' +
-                    MAX_POINT_DISPLAY.toLocaleString() +
-                    '. The data is now grouped by density.');
-        }
+    if (chartConfig.renderType === 'line_plot' && rowCount > chartConfig.geomOptions.binThreshold) {
+        msg +=
+            sep +
+            ('The number of individual points exceeds ' +
+                MAX_POINT_DISPLAY.toLocaleString() +
+                '. Data points will not be shown on this line plot.');
+    } else if (chartConfig.renderType === 'scatter_plot' && rowCount > MAX_POINT_DISPLAY) {
+        msg +=
+            sep +
+            ('The number of individual points exceeds ' +
+                MAX_POINT_DISPLAY.toLocaleString() +
+                '. The data is now grouped by density.');
     }
 
     return msg === '' ? undefined : msg;
@@ -372,7 +375,7 @@ const getQueryConfig = (
     const { schemaName, queryName, viewName } = schemaQuery;
 
     return {
-        maxRows: -1, // this will be saved with the queryConfig for chart rendering, we will override it for the preview in the modal
+        maxRows: -1, // this will be saved with the queryConfig, but we will override it for the preview in the modal
         requiredVersion: 13.2,
         schemaName,
         queryName,
@@ -394,7 +397,10 @@ const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, Se
         renderType: chartType.name,
         measures: {},
         scales: {},
-        labels: {},
+        labels: {
+            main: '',
+            subtitle: '',
+        },
         pointType: 'all',
         geomOptions: {
             binShape: 'hex',
@@ -417,7 +423,7 @@ const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, Se
             marginBottom: null,
             marginLeft: null,
             marginRight: null,
-            marginTop: 10,
+            marginTop: 20, // this will be saved with the chartConfig, but we will override it for the preview in the modal
             opacity: chartType.name === 'bar_chart' || chartType.name === 'line_plot' ? 1.0 : 0.5,
             pieHideWhenLessThanPercentage: 5,
             pieInnerRadius: 0,
@@ -446,10 +452,7 @@ const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, Se
     });
 
     if (chartType.name === 'bar_chart') {
-        config.labels = {
-            ...config.labels,
-            y: fieldValues.y ? 'Sum of ' + fieldValues.y.label : 'Count',
-        };
+        config.labels['y'] = fieldValues.y ? 'Sum of ' + fieldValues.y.label : 'Count';
     }
 
     return config;

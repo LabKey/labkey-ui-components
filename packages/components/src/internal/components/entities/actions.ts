@@ -30,7 +30,6 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import {
     getInitialParentChoices,
-    getPermissionForDataOperation,
     isAssayDesignEntity,
     isAssayResultEntity,
     isDataClassEntity,
@@ -60,6 +59,19 @@ import {
     ProjectConfigurableDataType,
     RemappedKeyValues,
 } from './models';
+
+function getPermissionForDataOperation(operation: DataOperation): PermissionTypes {
+    switch (operation) {
+        case DataOperation.EditLineage:
+            return PermissionTypes.Update;
+        case DataOperation.Delete:
+            return PermissionTypes.Delete;
+        case DataOperation.Move:
+            return PermissionTypes.MoveEntities;
+        default:
+            return undefined;
+    }
+}
 
 export async function getOperationConfirmationData(
     dataType: EntityDataType,

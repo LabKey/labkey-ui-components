@@ -1,21 +1,21 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 
-import { generateId } from '../../internal/util/utils';
-import { LABKEY_VIS } from '../../internal/constants';
-import { MenuItem } from '../../internal/dropdowns';
-import { Modal } from '../../internal/Modal';
+import { generateId } from '../../util/utils';
+import { LABKEY_VIS } from '../../constants';
+import { MenuItem } from '../../dropdowns';
+import { Modal } from '../../Modal';
 
-import { SelectInput, SelectInputOption } from '../../internal/components/forms/input/SelectInput';
+import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 
-import { naturalSortByProperty } from '../sort';
+import { naturalSortByProperty } from '../../../public/sort';
 
-import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { saveChart } from '../../internal/actions';
+import { saveChart } from '../../actions';
 
-import { QueryModel } from './QueryModel';
-import { RequiresModelAndActions } from './withQueryModels';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
 
 interface ChartFieldInfo {
     name: string;

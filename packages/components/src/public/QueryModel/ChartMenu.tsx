@@ -11,7 +11,7 @@ import { useServerContext } from '../../internal/components/base/ServerContext';
 import { isChartBuilderEnabled } from '../../internal/app/utils';
 
 import { RequiresModelAndActions } from './withQueryModels';
-import { ChartBuilderMenuItem } from './ChartBuilderMenuItem';
+import { ChartBuilderMenuItem } from '../../internal/components/chart/ChartBuilderMenuItem';
 
 interface ChartMenuItemProps {
     chart: DataViewInfo;

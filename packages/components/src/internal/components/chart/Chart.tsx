@@ -27,10 +27,14 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from './api';
 import { ChartConfig, ChartQueryConfig } from './models';
 
-const ChartLoadingMask: FC = memo(() => (
+interface ChartLoadingMaskProps {
+    msg?: string;
+}
+
+const ChartLoadingMask: FC<ChartLoadingMaskProps> = memo(({ msg = 'Loading Chart...' }) => (
     <div className="chart-loading-mask">
         <div className="chart-loading-mask__background" />
-        <LoadingSpinner msg="Loading Chart..." wrapperClassName="loading-spinner" />
+        <LoadingSpinner msg={msg} wrapperClassName="loading-spinner" />
     </div>
 ));
 

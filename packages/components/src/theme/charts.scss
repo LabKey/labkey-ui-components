@@ -114,6 +114,7 @@
 }
 .chart-body {
     position: relative;
+    min-height: 500px;
 }
 .chart-panel__heading {
     display: flex;
@@ -231,6 +232,13 @@
 
         input {
             margin-right: 5px;
+        }
+    }
+
+    .chart-preview-body {
+        min-height: 225px;
+        .chart-loading-mask {
+            width: 97%;
         }
     }
 }

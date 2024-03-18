@@ -282,8 +282,16 @@ export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions
                                         <div className="gray-text">Select required fields to preview the chart.</div>
                                     )}
                                     {hasRequiredValues && (
-                                        <div>
-                                            {loadingData && <LoadingSpinner msg="Creating preview..." />}
+                                        <div className="chart-preview-body">
+                                            {loadingData && (
+                                                <div className="chart-loading-mask">
+                                                    <div className="chart-loading-mask__background" />
+                                                    <LoadingSpinner
+                                                        wrapperClassName="loading-spinner"
+                                                        msg="Loading Preview..."
+                                                    />
+                                                </div>
+                                            )}
                                             <div className="svg-chart__chart" id={divId} ref={ref} />
                                         </div>
                                     )}

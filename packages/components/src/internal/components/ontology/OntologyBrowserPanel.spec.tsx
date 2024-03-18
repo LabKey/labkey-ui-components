@@ -63,8 +63,8 @@ const TEST_CONCEPT = new ConceptModel({ code: 'a', label: 'b' });
 describe('OntologyBrowserPanelImpl', () => {
     function validate(wrapper: ReactWrapper, loading: boolean, asPanel = false): void {
         expect(wrapper.find('.ontology-browser-container')).toHaveLength(!loading ? 1 : 0);
-        expect(wrapper.find('.left-panel')).toHaveLength(!loading ? 2 : 0);
-        expect(wrapper.find('.right-panel')).toHaveLength(!loading ? 2 : 0);
+        expect(wrapper.find('.left-panel')).toHaveLength(!loading ? 1 : 0);
+        expect(wrapper.find('.right-panel')).toHaveLength(!loading ? 1 : 0);
         expect(wrapper.find(OntologyTreeSearchContainer)).toHaveLength(!loading ? 1 : 0);
         expect(wrapper.find(OntologyTreePanel)).toHaveLength(!loading ? 1 : 0);
         expect(wrapper.find(ConceptInformationTabs)).toHaveLength(!loading ? 1 : 0);

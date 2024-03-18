@@ -1214,7 +1214,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                       title="Hide additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-minus-square"
+                                                        className="fa fa-lg fa-chevron-down"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -4359,7 +4359,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -5969,7 +5969,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -7565,7 +7565,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -9175,7 +9175,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -12886,7 +12886,7 @@ exports[`DomainForm domain form initCollapsed 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -14496,7 +14496,7 @@ exports[`DomainForm domain form initCollapsed 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -17616,7 +17616,7 @@ exports[`DomainForm domain form initCollapsed and markComplete 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -19226,7 +19226,7 @@ exports[`DomainForm domain form initCollapsed and markComplete 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -21729,7 +21729,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -24457,7 +24457,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -30757,7 +30757,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -32367,7 +32367,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -33963,7 +33963,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -35549,7 +35549,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -36986,7 +36986,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -38570,7 +38570,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -40127,7 +40127,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -41719,7 +41719,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -43129,7 +43129,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -44529,7 +44529,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -45939,7 +45939,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -49356,7 +49356,7 @@ exports[`DomainForm domain form with hide required 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -53593,7 +53593,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -55205,7 +55205,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -56662,7 +56662,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -58070,7 +58070,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       title="Show additional field properties"
                                                     >
                                                       <span
-                                                        className="fa fa-lg fa-plus-square"
+                                                        className="fa fa-lg fa-chevron-right"
                                                       />
                                                     </div>
                                                   </FieldExpansionToggle>
@@ -59394,12 +59394,12 @@ exports[`DomainForm with empty domain form 1`] = `
       testMode={true}
     >
       <ForwardRef
-        className="domain-form-panel"
+        className="panel panel-default domain-form-panel"
         expanded={true}
         onToggle={[Function]}
       >
         <Uncontrolled(Panel)
-          className="domain-form-panel"
+          className="panel panel-default domain-form-panel"
           expanded={true}
           innerRef={null}
           onToggle={[Function]}
@@ -59407,12 +59407,12 @@ exports[`DomainForm with empty domain form 1`] = `
           <Panel
             bsClass="panel"
             bsStyle="default"
-            className="domain-form-panel"
+            className="panel panel-default domain-form-panel"
             expanded={true}
             onToggle={[Function]}
           >
             <div
-              className="domain-form-panel panel panel-default"
+              className="panel panel-default domain-form-panel panel panel-default"
             >
               <CollapsiblePanelHeader
                 collapsed={true}
@@ -59441,228 +59441,164 @@ exports[`DomainForm with empty domain form 1`] = `
                 <div
                   className="domain-field-top-noBuffer panel-body"
                 >
-                  <Row
-                    bsClass="row"
-                    className="domain-field-toolbar"
-                    componentClass="div"
+                  <div
+                    className="row domain-field-toolbar"
                   >
                     <div
-                      className="domain-field-toolbar row"
+                      className="col-xs-4"
                     >
-                      <Col
-                        bsClass="col"
-                        componentClass="div"
-                        xs={4}
+                      <AddEntityButton
+                        buttonClass="domain-toolbar-add-btn"
+                        containerClass="container--toolbar-button"
+                        entity="Field"
+                        onClick={[Function]}
                       >
-                        <div
-                          className="col-xs-4"
-                        >
-                          <AddEntityButton
-                            buttonClass="domain-toolbar-add-btn"
-                            containerClass="container--toolbar-button"
-                            entity="Field"
-                            onClick={[Function]}
-                          >
-                            <ActionButton
-                              buttonClass="domain-toolbar-add-btn"
-                              containerClass="container--toolbar-button"
-                              helperTitle="More Info"
-                              onClick={[Function]}
-                            >
-                              <div
-                                className="container--toolbar-button"
-                              >
-                                <div
-                                  className="domain-toolbar-add-btn"
-                                >
-                                  <span
-                                    className="container--action-button btn btn-default"
-                                    onClick={[Function]}
-                                  >
-                                    <i
-                                      className="fa fa-plus-circle container--addition-icon"
-                                    />
-                                     Add 
-                                    Field
-                                  </span>
-                                </div>
-                              </div>
-                            </ActionButton>
-                          </AddEntityButton>
-                          <ActionButton
-                            buttonClass="domain-toolbar-delete-btn"
-                            containerClass="container--toolbar-button"
-                            disabled={true}
-                            helperTitle="More Info"
-                            onClick={[Function]}
-                          >
-                            <div
-                              className="container--toolbar-button"
-                            >
-                              <div
-                                className="domain-toolbar-delete-btn"
-                              >
-                                <span
-                                  className="container--action-button btn btn-default disabled"
-                                >
-                                  <i
-                                    className="fa fa-trash domain-toolbar-export-btn-icon"
-                                  />
-                                   Delete
-                                </span>
-                              </div>
-                            </div>
-                          </ActionButton>
-                        </div>
-                      </Col>
-                      <Col
-                        bsClass="col"
-                        componentClass="div"
-                        xs={8}
-                      >
-                        <div
-                          className="col-xs-8"
+                        <ActionButton
+                          buttonClass="domain-toolbar-add-btn"
+                          containerClass="container--toolbar-button"
+                          helperTitle="More Info"
+                          onClick={[Function]}
                         >
                           <div
-                            className="pull-right domain-field-toolbar-right-aligned"
+                            className="container--toolbar-button"
                           >
-                            <FormControl
-                              bsClass="form-control"
-                              className="domain-search-input"
-                              componentClass="input"
-                              id="domain-search-name-0"
-                              onChange={[Function]}
-                              placeholder="Search Fields"
-                              type="text"
+                            <div
+                              className="domain-toolbar-add-btn"
                             >
-                              <input
-                                className="domain-search-input form-control"
-                                id="domain-search-name-0"
-                                onChange={[Function]}
-                                placeholder="Search Fields"
-                                type="text"
+                              <span
+                                className="container--action-button btn btn-default"
+                                onClick={[Function]}
+                              >
+                                <i
+                                  className="fa fa-plus-circle container--addition-icon"
+                                />
+                                 Add 
+                                Field
+                              </span>
+                            </div>
+                          </div>
+                        </ActionButton>
+                      </AddEntityButton>
+                      <ActionButton
+                        buttonClass="domain-toolbar-delete-btn"
+                        containerClass="container--toolbar-button"
+                        disabled={true}
+                        helperTitle="More Info"
+                        onClick={[Function]}
+                      >
+                        <div
+                          className="container--toolbar-button"
+                        >
+                          <div
+                            className="domain-toolbar-delete-btn"
+                          >
+                            <span
+                              className="container--action-button btn btn-default disabled"
+                            >
+                              <i
+                                className="fa fa-trash domain-toolbar-export-btn-icon"
                               />
-                            </FormControl>
+                               Delete
+                            </span>
                           </div>
                         </div>
-                      </Col>
+                      </ActionButton>
                     </div>
-                  </Row>
-                  <Row
-                    bsClass="row"
-                    className="domain-form-hdr-margins"
-                    componentClass="div"
+                    <div
+                      className="col-xs-8"
+                    >
+                      <div
+                        className="pull-right domain-field-toolbar-right-aligned"
+                      >
+                        <FormControl
+                          bsClass="form-control"
+                          className="domain-search-input"
+                          componentClass="input"
+                          id="domain-search-name-0"
+                          onChange={[Function]}
+                          placeholder="Search Fields"
+                          type="text"
+                        >
+                          <input
+                            className="domain-search-input form-control"
+                            id="domain-search-name-0"
+                            onChange={[Function]}
+                            placeholder="Search Fields"
+                            type="text"
+                          />
+                        </FormControl>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="row domain-form-hdr-margins"
                   >
                     <div
-                      className="domain-form-hdr-margins row"
+                      className="col-xs-9"
+                    />
+                    <div
+                      className="col-xs-3"
                     >
-                      <Col
-                        bsClass="col"
-                        componentClass="div"
-                        xs={9}
+                      <HelpLink
+                        className="domain-field-float-right"
+                        topic="fieldEditor"
                       >
-                        <div
-                          className="col-xs-9"
-                        />
-                      </Col>
-                      <Col
-                        bsClass="col"
-                        componentClass="div"
-                        xs={3}
-                      >
-                        <div
-                          className="col-xs-3"
+                        <a
+                          className="domain-field-float-right"
+                          href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=fieldEditor"
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
-                          <HelpLink
-                            className="domain-field-float-right"
-                            topic="fieldEditor"
-                          >
-                            <a
-                              className="domain-field-float-right"
-                              href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=fieldEditor"
-                              rel="noopener noreferrer"
-                              target="_blank"
-                            >
-                              Learn more about this tool
-                            </a>
-                          </HelpLink>
-                        </div>
-                      </Col>
+                          Learn more about this tool
+                        </a>
+                      </HelpLink>
                     </div>
-                  </Row>
-                  <ForwardRef
+                  </div>
+                  <div
                     className="domain-form-no-field-panel"
                   >
-                    <Uncontrolled(Panel)
-                      className="domain-form-no-field-panel"
-                      innerRef={null}
-                    >
-                      <Panel
-                        bsClass="panel"
-                        bsStyle="default"
-                        className="domain-form-no-field-panel"
-                        onToggle={[Function]}
-                      >
-                        <div
-                          className="domain-form-no-field-panel panel panel-default"
-                        >
-                          No fields created yet. Click the 'Add Field' button to get started.
-                        </div>
-                      </Panel>
-                    </Uncontrolled(Panel)>
-                  </ForwardRef>
-                  <Row
-                    bsClass="row"
-                    className="domain-add-field-row"
-                    componentClass="div"
+                    No fields created yet. Click the 'Add Field' button to get started.
+                  </div>
+                  <div
+                    className="row domain-add-field-row"
                   >
                     <div
-                      className="domain-add-field-row row"
+                      className="col-xs-12"
                     >
-                      <Col
-                        bsClass="col"
-                        componentClass="div"
-                        xs={12}
+                      <AddEntityButton
+                        buttonClass="domain-form-add-btn"
+                        containerClass="pull-right"
+                        entity="Field"
+                        onClick={[Function]}
                       >
-                        <div
-                          className="col-xs-12"
+                        <ActionButton
+                          buttonClass="domain-form-add-btn"
+                          containerClass="pull-right"
+                          helperTitle="More Info"
+                          onClick={[Function]}
                         >
-                          <AddEntityButton
-                            buttonClass="domain-form-add-btn"
-                            containerClass="pull-right"
-                            entity="Field"
-                            onClick={[Function]}
+                          <div
+                            className="pull-right"
                           >
-                            <ActionButton
-                              buttonClass="domain-form-add-btn"
-                              containerClass="pull-right"
-                              helperTitle="More Info"
-                              onClick={[Function]}
+                            <div
+                              className="domain-form-add-btn"
                             >
-                              <div
-                                className="pull-right"
+                              <span
+                                className="container--action-button btn btn-default"
+                                onClick={[Function]}
                               >
-                                <div
-                                  className="domain-form-add-btn"
-                                >
-                                  <span
-                                    className="container--action-button btn btn-default"
-                                    onClick={[Function]}
-                                  >
-                                    <i
-                                      className="fa fa-plus-circle container--addition-icon"
-                                    />
-                                     Add 
-                                    Field
-                                  </span>
-                                </div>
-                              </div>
-                            </ActionButton>
-                          </AddEntityButton>
-                        </div>
-                      </Col>
+                                <i
+                                  className="fa fa-plus-circle container--addition-icon"
+                                />
+                                 Add 
+                                Field
+                              </span>
+                            </div>
+                          </div>
+                        </ActionButton>
+                      </AddEntityButton>
                     </div>
-                  </Row>
+                  </div>
                 </div>
               </PanelBody>
             </div>

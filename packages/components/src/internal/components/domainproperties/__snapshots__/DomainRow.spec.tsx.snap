@@ -564,7 +564,7 @@ exports[`DomainRow Sample Field 1`] = `
                                   title="Show additional field properties"
                                 >
                                   <span
-                                    className="fa fa-lg fa-plus-square"
+                                    className="fa fa-lg fa-chevron-right"
                                   />
                                 </div>
                               </FieldExpansionToggle>
@@ -2225,7 +2225,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   title="Show additional field properties"
                                 >
                                   <span
-                                    className="fa fa-lg fa-plus-square"
+                                    className="fa fa-lg fa-chevron-right"
                                   />
                                 </div>
                               </FieldExpansionToggle>
@@ -3977,7 +3977,7 @@ exports[`DomainRow date time field 1`] = `
                                   title="Show additional field properties"
                                 >
                                   <span
-                                    className="fa fa-lg fa-plus-square"
+                                    className="fa fa-lg fa-chevron-right"
                                   />
                                 </div>
                               </FieldExpansionToggle>
@@ -5701,7 +5701,7 @@ exports[`DomainRow decimal field 1`] = `
                                   title="Show additional field properties"
                                 >
                                   <span
-                                    className="fa fa-lg fa-plus-square"
+                                    className="fa fa-lg fa-chevron-right"
                                   />
                                 </div>
                               </FieldExpansionToggle>
@@ -7452,7 +7452,7 @@ exports[`DomainRow participant id field 1`] = `
                                   title="Show additional field properties"
                                 >
                                   <span
-                                    className="fa fa-lg fa-plus-square"
+                                    className="fa fa-lg fa-chevron-right"
                                   />
                                 </div>
                               </FieldExpansionToggle>
@@ -9037,7 +9037,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   title="Show additional field properties"
                                 >
                                   <span
-                                    className="fa fa-lg fa-plus-square"
+                                    className="fa fa-lg fa-chevron-right"
                                   />
                                 </div>
                               </FieldExpansionToggle>
@@ -10751,7 +10751,7 @@ exports[`DomainRow string field test 1`] = `
                                   title="Show additional field properties"
                                 >
                                   <span
-                                    className="fa fa-lg fa-plus-square"
+                                    className="fa fa-lg fa-chevron-right"
                                   />
                                 </div>
                               </FieldExpansionToggle>
@@ -12518,7 +12518,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   title="Show additional field properties"
                                 >
                                   <span
-                                    className="fa fa-lg fa-plus-square"
+                                    className="fa fa-lg fa-chevron-right"
                                   />
                                 </div>
                               </FieldExpansionToggle>

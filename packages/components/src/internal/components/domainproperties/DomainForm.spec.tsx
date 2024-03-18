@@ -108,7 +108,7 @@ describe('DomainForm', () => {
         await waitForLifecycle(form);
 
         // Empty panel
-        const emptyHdrMsg = form.find({ className: 'domain-form-no-field-panel panel panel-default' });
+        const emptyHdrMsg = form.find({ className: 'domain-form-no-field-panel' });
         expect(emptyHdrMsg.length).toEqual(1);
 
         // Add button
@@ -1042,13 +1042,13 @@ describe('DomainForm', () => {
 
         expect(form.find('.domain-field-row').length).toEqual(4);
         expect(form.find('.table-responsive').length).toEqual(0);
-        expect(form.find('.domain-field-toolbar').length).toEqual(2);
+        expect(form.find('.domain-field-toolbar').length).toEqual(1);
 
         form.setState({ summaryViewMode: true });
 
         expect(form.find('.domain-field-row').length).toEqual(0);
         expect(form.find('.table-responsive').length).toEqual(1);
-        expect(form.find('.domain-field-toolbar').length).toEqual(2);
+        expect(form.find('.domain-field-toolbar').length).toEqual(1);
         expect(form.text()).not.toContain('Is Primary Key');
     });
 

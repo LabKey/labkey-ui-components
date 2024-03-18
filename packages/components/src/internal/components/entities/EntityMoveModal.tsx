@@ -293,11 +293,11 @@ export const getMoveConfirmationProperties = (
         text += totalNoun + ' will be moved.';
     } else if (numCanMove === 0) {
         if (totalNum === 1) {
-            text = 'The ' + totalNoun + " you've selected cannot be moved because it has a " + dependencyText + ' or you lack the proper permissions.';
+            text = 'The ' + totalNoun + " you've selected cannot be moved because it has a " + dependencyText + ' or you lack the proper permissions. ';
         } else {
             text = numCannotMove === 2 ? 'Neither of' : 'None of';
             text += ' the ' + totalNum + ' ' + totalNoun + " you've selected can be moved";
-            text += ' because they have a ' + dependencyText + ' or you lack the proper permission.';
+            text += ' because they have a ' + dependencyText + ' or you lack the proper permissions.';
         }
     } else {
         text = [];

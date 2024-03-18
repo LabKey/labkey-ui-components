@@ -131,24 +131,30 @@ export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions
         setSaving(true);
         // TODO try/catch with error message
         const response = await saveChart(_reportConfig);
-        await actions.loadCharts(model.id);
-        actions.selectReport(model.id, response.reportId);
+
         setSaving(false);
         onHideModal();
+
+        await actions.loadCharts(model.id);
+        actions.selectReport(model.id, response.reportId);
     }, [reportConfig, name, shared, actions, model.id, onHideModal]);
 
     useEffect(() => {
         if (ref?.current) ref.current.innerHTML = '';
 
-        if (!hasRequiredValues) return;
+        if (!showModal || !hasRequiredValues) return;
 
         const width = ref?.current.getBoundingClientRect().width || 750;
-        const chartConfig = getChartConfig(selectedType, fieldValues, width);
+
+        const chartConfig = getChartConfig(selectedType, fieldValues);
         const queryConfig = getQueryConfig(model, fieldValues, chartConfig);
+
+        // add maxRows to the queryConfig for the preview, but not to save with the chart
+        const _queryConfig = { ...queryConfig, maxRows: MAX_ROWS_PREVIEW };
 
         setLoadingData(true);
         setPreviewMsg(undefined);
-        LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig, measureStore => {
+        LABKEY_VIS.GenericChartHelper.queryChartData(divId, _queryConfig, measureStore => {
             const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore).length;
             const _previewMsg = getChartPreviewMsg(chartConfig.renderType, rowCount);
 
@@ -161,7 +167,10 @@ export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions
                 }
             }
 
-            LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig, measureStore);
+            // add height and width to the chart config for rendering, but not to save with the chart
+            var _chartConfig = { ...chartConfig, height: 250, width };
+
+            LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, _chartConfig, measureStore);
 
             setPreviewMsg(_previewMsg);
             setLoadingData(false);
@@ -176,7 +185,7 @@ export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions
                 },
             });
         });
-    }, [divId, model, hasRequiredValues, selectedType, fieldValues]);
+    }, [divId, model, showModal, hasRequiredValues, selectedType, fieldValues]);
 
     return (
         <>
@@ -306,27 +315,30 @@ export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions
 });
 
 const getChartPreviewMsg = (renderType: string, rowCount: number): string => {
+    let msg = '';
+    let sep = '';
     if (rowCount === MAX_ROWS_PREVIEW) {
-        return 'Preview limited to ' + MAX_ROWS_PREVIEW.toLocaleString() + ' rows';
+        msg = 'The preview is being limited to ' + MAX_ROWS_PREVIEW.toLocaleString() + ' rows.';
+        sep = ' ';
     }
 
     if (rowCount > MAX_POINT_DISPLAY) {
         if (renderType === 'line_plot') {
-            return (
-                'The number of individual points exceeds ' +
-                MAX_POINT_DISPLAY.toLocaleString() +
-                '. Data points will not be shown on this line plot.'
-            );
+            msg +=
+                sep +
+                ('The number of individual points exceeds ' +
+                    MAX_POINT_DISPLAY.toLocaleString() +
+                    '. Data points will not be shown on this line plot.');
         } else if (renderType === 'scatter_plot') {
-            return (
-                'The number of individual points exceeds ' +
-                MAX_POINT_DISPLAY.toLocaleString() +
-                '. The data is now grouped by density.'
-            );
+            msg +=
+                sep +
+                ('The number of individual points exceeds ' +
+                    MAX_POINT_DISPLAY.toLocaleString() +
+                    '. The data is now grouped by density.');
         }
     }
 
-    return undefined;
+    return msg === '' ? undefined : msg;
 };
 
 const getSelectOptions = (model: QueryModel, chartType: ChartTypeInfo, field: ChartFieldInfo): SelectInputOption[] => {
@@ -360,7 +372,7 @@ const getQueryConfig = (
     const { schemaName, queryName, viewName } = schemaQuery;
 
     return {
-        maxRows: MAX_ROWS_PREVIEW,
+        maxRows: -1, // this will be saved with the queryConfig for chart rendering, we will override it for the preview in the modal
         requiredVersion: 13.2,
         schemaName,
         queryName,
@@ -377,14 +389,13 @@ const getQueryConfig = (
     };
 };
 
-const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, SelectInputOption>, width: number) => {
-    const height = 250;
-
+const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, SelectInputOption>) => {
     const config = {
         renderType: chartType.name,
         measures: {},
         scales: {},
         labels: {},
+        pointType: 'all',
         geomOptions: {
             binShape: 'hex',
             binSingleColor: '000000',
@@ -418,16 +429,16 @@ const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, Se
             showOutliers: true,
             showPiePercentages: true,
         },
-        pointType: 'all',
-        width,
-        height,
     };
 
     chartType.fields.forEach(field => {
         if (fieldValues[field.name]?.value) {
             config.measures[field.name] = {
+                fieldKey: fieldValues[field.name].data.fieldKey,
                 name: fieldValues[field.name].value,
                 label: fieldValues[field.name].label,
+                queryName: fieldValues[field.name].data.queryName,
+                schemaName: fieldValues[field.name].data.schemaName,
                 type: fieldValues[field.name].data.displayFieldJsonType || fieldValues[field.name].data.jsonType,
             };
             config.labels[field.name] = fieldValues[field.name].label;

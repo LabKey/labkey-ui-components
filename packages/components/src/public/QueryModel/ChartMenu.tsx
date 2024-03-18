@@ -20,7 +20,7 @@ interface ChartMenuItemProps {
 
 export const ChartMenuItem: FC<ChartMenuItemProps> = ({ chart, showChart }) => {
     const onClick = useCallback(() => showChart(chart), [showChart, chart]);
-    const useSVG = chart.icon?.indexOf('_icon.svg') > -1;
+    const useSVG = chart.icon?.indexOf('.svg') > -1;
 
     return (
         <MenuItem onClick={onClick}>

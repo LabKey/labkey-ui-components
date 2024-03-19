@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useEffect, useMemo, useState } from 'react';
-import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import { resolveErrorMessage } from '../../util/messaging';
@@ -58,9 +57,9 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
     }, [members]);
 
     return (
-        <Panel className="group-details-panel">
-            <Panel.Heading>{principal?.displayName ?? 'Group Details'}</Panel.Heading>
-            <Panel.Body>
+        <div className="panel panel-default group-details-panel">
+            <div className="panel-heading">{principal?.displayName ?? 'Group Details'}</div>
+            <div className="panel-body">
                 {principal ? (
                     <>
                         {displayCounts && (
@@ -85,7 +84,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
                 ) : (
                     <div>No group selected.</div>
                 )}
-            </Panel.Body>
-        </Panel>
+            </div>
+        </div>
     );
 });

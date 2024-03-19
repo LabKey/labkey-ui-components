@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
@@ -113,7 +113,7 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
         const { coreUsers, coreGroups, relatedFolders } = this.state;
 
         return (
-            <Col xs={12} md={6}>
+            <div className="col-xs-12 col-md-6">
                 <SectionHeading title="Assignment Options" />
                 <AssignedToGroupInput
                     model={model}
@@ -123,7 +123,7 @@ export class AssignmentOptions extends PureComponent<AssignmentOptionsProps, Ass
                 />
                 <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onSelect={onSelect} />
                 <DefaultRelatedFolderInput model={model} relatedFolders={relatedFolders} onSelect={onSelect} />
-            </Col>
+            </div>
         );
     }
 }
@@ -147,19 +147,19 @@ export class SingularItemNameInput extends PureComponent<IssuesListDefBasicPrope
         const { model, onInputChange } = this.props;
         const value = model.singularItemName === null ? '' : model.singularItemName;
         return (
-            <Row className="margin-top">
-                <Col xs={3} lg={4}>
+            <div className="row margin-top">
+                <div className="col-xs-3 col-lg-4">
                     <DomainFieldLabel
                         label="Singular Item Name"
                         helpTipBody={ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP}
                         required={false}
                     />
-                </Col>
+                </div>
 
-                <Col xs={9} lg={8}>
+                <div className="col-xs-9 col-lg-8">
                     <FormControl id="singularItemName" type="text" value={value} onChange={onInputChange} />
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 }
@@ -169,19 +169,19 @@ export class PluralItemNameInput extends PureComponent<IssuesListDefBasicPropert
         const { model, onInputChange } = this.props;
         const value = model.pluralItemName === null ? '' : model.pluralItemName;
         return (
-            <Row className="margin-top">
-                <Col xs={3} lg={4}>
+            <div className="row margin-top">
+                <div className="col-xs-3 col-lg-4">
                     <DomainFieldLabel
                         label="Plural Items Name"
                         helpTipBody={ISSUES_LIST_DEF_SINGULAR_PLURAL_TIP}
                         required={false}
                     />
-                </Col>
+                </div>
 
-                <Col xs={9} lg={8}>
+                <div className="col-xs-9 col-lg-8">
                     <FormControl id="pluralItemName" type="text" value={value} onChange={onInputChange} />
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 }
@@ -202,16 +202,16 @@ export class CommentSortDirectionDropDown extends PureComponent<IssuesListDefBas
         ];
 
         return (
-            <Row className="margin-top">
-                <Col xs={3} lg={4}>
+            <div className="row margin-top">
+                <div className="col-xs-3 col-lg-4">
                     <DomainFieldLabel
                         label="Comment Sort Direction"
                         helpTipBody={ISSUES_LIST_DEF_SORT_DIRECTION_TIP}
                         required={false}
                     />
-                </Col>
+                </div>
 
-                <Col xs={9} lg={8}>
+                <div className="col-xs-9 col-lg-8">
                     <SelectInput
                         name="commentSortDirection"
                         options={sortDirectionOptions}
@@ -221,8 +221,8 @@ export class CommentSortDirectionDropDown extends PureComponent<IssuesListDefBas
                         value={model.commentSortDirection ?? 'ASC'}
                         clearable={false}
                     />
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 }
@@ -238,15 +238,15 @@ export class AssignedToGroupInput extends PureComponent<AssignmentOptionsInputPr
         const { model, coreGroups } = this.props;
 
         return (
-            <Row className="margin-top">
-                <Col xs={3} lg={4}>
+            <div className="row margin-top">
+                <div className="col-xs-3 col-lg-4">
                     <DomainFieldLabel
                         label="Populate ‘Assigned To’ Field from"
                         helpTipBody={ISSUES_LIST_GROUP_ASSIGN_TIP}
                         required={false}
                     />
-                </Col>
-                <Col xs={9} lg={8}>
+                </div>
+                <div className="col-xs-9 col-lg-8">
                     {!coreGroups ? (
                         <LoadingSpinner />
                     ) : (
@@ -261,8 +261,8 @@ export class AssignedToGroupInput extends PureComponent<AssignmentOptionsInputPr
                             value={model.assignedToGroup ? model.assignedToGroup : undefined}
                         />
                     )}
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 }
@@ -276,15 +276,15 @@ export class DefaultUserAssignmentInput extends PureComponent<AssignmentOptionsI
         const { model, coreUsers } = this.props;
 
         return (
-            <Row className="margin-top">
-                <Col xs={3} lg={4}>
+            <div className="row margin-top">
+                <div className="col-xs-3 col-lg-4">
                     <DomainFieldLabel
                         label="Default User Assignment"
                         helpTipBody={ISSUES_LIST_USER_ASSIGN_TIP}
                         required={false}
                     />
-                </Col>
-                <Col xs={9} lg={8}>
+                </div>
+                <div className="col-xs-9 col-lg-8">
                     {!coreUsers ? (
                         <LoadingSpinner />
                     ) : (
@@ -299,8 +299,8 @@ export class DefaultUserAssignmentInput extends PureComponent<AssignmentOptionsI
                             value={model.assignedToUser}
                         />
                     )}
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 }
@@ -314,15 +314,15 @@ export class DefaultRelatedFolderInput extends PureComponent<AssignmentOptionsIn
         const { model, relatedFolders } = this.props;
 
         return (
-            <Row className="margin-top">
-                <Col xs={3} lg={4}>
+            <div className="row margin-top">
+                <div className="col-xs-3 col-lg-4">
                     <DomainFieldLabel
                         label="Default Related Issue Folder"
                         helpTipBody={ISSUES_LIST_RELATED_FOLDER_TIP}
                         required={false}
                     />
-                </Col>
-                <Col xs={9} lg={8}>
+                </div>
+                <div className="col-xs-9 col-lg-8">
                     {!relatedFolders ? (
                         <LoadingSpinner />
                     ) : (
@@ -337,8 +337,8 @@ export class DefaultRelatedFolderInput extends PureComponent<AssignmentOptionsIn
                             value={model.relatedFolderName}
                         />
                     )}
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 }
@@ -348,19 +348,19 @@ export class RestrictedIssueInput extends PureComponent<RestrictedOptionsProps> 
         const { model, onCheckChange } = this.props;
 
         return (
-            <Row className="margin-top">
-                <Col xs={3} lg={4}>
+            <div className="row margin-top">
+                <div className="col-xs-3 col-lg-4">
                     <DomainFieldLabel label="Restrict Issue List" helpTipBody={ISSUES_LIST_RESTRICTED_TRACKER_TIP} />
-                </Col>
-                <Col xs={9} lg={8}>
+                </div>
+                <div className="col-xs-9 col-lg-8">
                     <input
                         type="checkbox"
                         name="restrictedIssueList"
                         checked={model.restrictedIssueList}
                         onChange={onCheckChange}
                     />
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 }
@@ -387,14 +387,14 @@ export class RestrictedIssueGroupInput extends PureComponent<RestrictedOptionsPr
         const { coreGroups } = this.state;
 
         return (
-            <Row className="margin-top">
-                <Col xs={3} lg={4}>
+            <div className="row margin-top">
+                <div className="col-xs-3 col-lg-4">
                     <DomainFieldLabel
                         label="Additional Group with Access"
                         helpTipBody={ISSUES_LIST_RESTRICTED_GROUP_TIP}
                     />
-                </Col>
-                <Col xs={9} lg={8}>
+                </div>
+                <div className="col-xs-9 col-lg-8">
                     {!coreGroups ? (
                         <LoadingSpinner />
                     ) : (
@@ -410,8 +410,8 @@ export class RestrictedIssueGroupInput extends PureComponent<RestrictedOptionsPr
                             disabled={!model.restrictedIssueList}
                         />
                     )}
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 }

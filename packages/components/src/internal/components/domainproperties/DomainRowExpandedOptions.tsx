@@ -17,7 +17,6 @@ import React, { ReactNode } from 'react';
 
 import { List } from 'immutable';
 
-import { Col } from 'react-bootstrap';
 
 import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
@@ -257,7 +256,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                 <div className="domain-row-container-expand-spacer" />
                 <div className="domain-row-container-expanded">
                     {domainFormDisplayOptions?.derivationDataScopeConfig?.show && (
-                        <Col xs={12}>
+                        <div className="col-xs-12">
                             <DerivationDataScopeFieldOptions
                                 index={index}
                                 domainIndex={domainIndex}
@@ -270,10 +269,10 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                                 isRequiredField={field.required}
                                 fieldDataType={field.dataType}
                             />
-                        </Col>
+                        </div>
                     )}
-                    <Col xs={12}>{this.typeDependentOptions()}</Col>
-                    <Col xs={12}>
+                    <div className="col-xs-12">{this.typeDependentOptions()}</div>
+                    <div className="col-xs-12">
                         <NameAndLinkingOptions
                             index={index}
                             domainIndex={domainIndex}
@@ -282,9 +281,9 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                             appPropertiesOnly={appPropertiesOnly}
                             domainFormDisplayOptions={domainFormDisplayOptions}
                         />
-                    </Col>
+                    </div>
                     {!isFieldFullyLocked(field.lockType) && (
-                        <Col xs={12}>
+                        <div className="col-xs-12">
                             <ConditionalFormattingAndValidation
                                 index={index}
                                 domainIndex={domainIndex}
@@ -293,7 +292,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                                 showingModal={showingModal}
                                 domainFormDisplayOptions={domainFormDisplayOptions}
                             />
-                        </Col>
+                        </div>
                     )}
                 </div>
             </div>

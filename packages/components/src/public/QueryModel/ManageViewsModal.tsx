@@ -1,5 +1,5 @@
 import React, { FC, Fragment, memo, useCallback, useEffect, useState } from 'react';
-import { Col, OverlayTrigger, Popover, Row } from 'react-bootstrap';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { PermissionTypes } from '@labkey/api';
 
@@ -205,8 +205,8 @@ export const ManageViewsModal: FC<Props> = memo(props => {
 
                     return (
                         <Fragment key={view.name}>
-                            <Row className="small-margin-bottom">
-                                <Col xs={8}>
+                            <div className="row small-margin-bottom">
+                                <div className="col-xs-8">
                                     {selectedView && selectedView?.name === view.name ? (
                                         <ViewNameInput
                                             autoFocus
@@ -218,8 +218,8 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                     ) : (
                                         <ViewLabel view={view} />
                                     )}
-                                </Col>
-                                <Col xs={4}>
+                                </div>
+                                <div className="col-xs-4">
                                     <RequiresPermission perms={PermissionTypes.Admin}>
                                         {isDefault && !isRenaming && (
                                             <OverlayTrigger
@@ -262,11 +262,11 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                             </span>
                                         </span>
                                     )}
-                                </Col>
-                            </Row>
+                                </div>
+                            </div>
                             {deleting === view && (
-                                <Row className="bottom-spacing">
-                                    <Col xs={12}>
+                                <div className="row bottom-spacing">
+                                    <div className="col-xs-12">
                                         <div className="inline-confirmation">
                                             <div>
                                                 <span className="inline-confirmation__label">
@@ -290,8 +290,8 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                                 </button>
                                             </div>
                                         </div>
-                                    </Col>
-                                </Row>
+                                    </div>
+                                </div>
                             )}
                         </Fragment>
                     );

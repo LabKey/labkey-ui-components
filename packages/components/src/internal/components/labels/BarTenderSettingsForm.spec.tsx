@@ -1,5 +1,4 @@
 import React from 'react';
-import { FormControl } from 'react-bootstrap';
 import { ReactWrapper } from 'enzyme';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
@@ -36,7 +35,7 @@ describe('BarTenderSettingsForm', () => {
     }
 
     function validateUrlInput(wrapper: ReactWrapper): void {
-        expect(wrapper.find(FormControl).first().prop('type')).toBe('url');
+        expect(wrapper.find('input').first().prop('type')).toBe('url');
         expect(wrapper.find('button').first().text()).toBe('Save');
         expect(wrapper.find('button').first().prop('disabled')).toBeTruthy();
         expect(wrapper.find('button').last().text()).toBe('Test Connection');
@@ -109,8 +108,8 @@ describe('BarTenderSettingsForm', () => {
         );
         await waitForLifecycle(wrapper);
         validate(wrapper);
-        expect(wrapper.find(FormControl).first().prop('type')).toBe('url');
-        expect(wrapper.find(FormControl).first().prop('value')).toBe('testServerURL');
+        expect(wrapper.find('input').first().prop('type')).toBe('url');
+        expect(wrapper.find('input').first().prop('value')).toBe('testServerURL');
         expect(wrapper.find('button').first().text()).toBe('Save');
         expect(wrapper.find('button').first().prop('disabled')).toBeTruthy();
         expect(wrapper.find('button').last().text()).toBe('Test Connection');

@@ -3,9 +3,8 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { Map, List } from 'immutable';
+import { List, Map } from 'immutable';
 
-import { Col, Row } from 'react-bootstrap';
 
 import { User } from '../base/models/User';
 import { AppURL, createProductUrlFromParts } from '../../url/AppURL';
@@ -47,11 +46,11 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
         return (
             <>
                 <hr className="principal-hr" />
-                <Row>
-                    <Col xs={4} className="principal-detail-label">
+                <div className="row">
+                    <div className="col-xs-4 principal-detail-label">
                         Effective Roles
-                    </Col>
-                    <Col xs={8} className="principal-detail-value">
+                    </div>
+                    <div className="col-xs-8 principal-detail-value">
                         <ul className="principal-detail-ul">
                             {assignments.map(assignment => {
                                 const role = rolesByUniqueName.get(assignment.role);
@@ -75,8 +74,8 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
                                 );
                             })}
                         </ul>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </>
         );
     }

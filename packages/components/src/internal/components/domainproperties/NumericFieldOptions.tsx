@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { HelpLink, JavaDocsLink, NUMBER_FORMATS_TOPIC } from '../../util/helpLinks';
 
@@ -45,23 +45,23 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
 
         return (
             <div>
-                <Row>
-                    <Col xs={12}>
+                <div className="row">
+                    <div className="col-xs-12">
                         <SectionHeading title={label} />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={3}>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-3">
                         <div className="domain-field-label">
                             <DomainFieldLabel label="Format for Numbers" helpTipBody={this.getFormatHelpText()} />
                         </div>
-                    </Col>
-                    <Col xs={2}>
+                    </div>
+                    <div className="col-xs-2">
                         <div className="domain-field-label">Default Scale Type</div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={3}>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-3">
                         <FormControl
                             type="text"
                             value={format || ''}
@@ -70,8 +70,8 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
                             name={createFormInputName(DOMAIN_FIELD_FORMAT)}
                             disabled={isFieldFullyLocked(lockType)}
                         />
-                    </Col>
-                    <Col xs={2}>
+                    </div>
+                    <div className="col-xs-2">
                         <FormControl
                             componentClass="select"
                             id={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, domainIndex, index)}
@@ -101,8 +101,8 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
                                 Log
                             </option>
                         </FormControl>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
                 <ScannableOption {...this.props} />
             </div>
         );

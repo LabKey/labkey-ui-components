@@ -1,5 +1,5 @@
-import React, { ReactNode, PureComponent } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import React, { PureComponent, ReactNode } from 'react';
+import { FormControl } from 'react-bootstrap';
 
 import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
@@ -69,13 +69,13 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
 
         return (
             <div>
-                <Row>
-                    <Col xs={12}>
+                <div className="row">
+                    <div className="col-xs-12">
                         <SectionHeading title="Name and Linking Options" cls="domain-field-section-hdr" />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={5}>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-5">
                         <div className="domain-field-label">Description</div>
                         <FormControl
                             componentClass="textarea"
@@ -86,8 +86,8 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                    </Col>
-                    <Col xs={3}>
+                    </div>
+                    <div className="col-xs-3">
                         <div className="domain-field-label">Label</div>
                         <FormControl
                             type="text"
@@ -115,8 +115,8 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                                 />
                             </>
                         )}
-                    </Col>
-                    <Col xs={4}>
+                    </div>
+                    <div className="col-xs-4">
                         <div className="domain-field-label">
                             <DomainFieldLabel label="URL" helpTipBody={this.getURLHelpText()} />
                         </div>
@@ -135,8 +135,8 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                                 onChange={this.onChange}
                             />
                         )}
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </div>
         );
     }

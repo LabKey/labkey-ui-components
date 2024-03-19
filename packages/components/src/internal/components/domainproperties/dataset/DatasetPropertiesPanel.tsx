@@ -15,7 +15,7 @@
  */
 
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+
 
 import { produce } from 'immer';
 
@@ -213,21 +213,21 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                 isValid={isValid}
                 updateValidStatus={this.updateValidStatus}
             >
-                <Row className="margin-bottom">
-                    <Col xs={12}>
+                <div className="row margin-bottom">
+                    <div className="col-xs-12">
                         <HelpTopicURL helpTopic={DEFINE_DATASET_TOPIC} nounPlural="datasets" />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12} md={5}>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-12 col-md-5">
                         <BasicPropertiesFields
                             model={model}
                             onInputChange={this.onInputChange}
                             onCategoryChange={this.onCategoryChange}
                         />
-                    </Col>
+                    </div>
 
-                    <Col xs={12} md={5}>
+                    <div className="col-xs-12 col-md-5">
                         <DataRowUniquenessContainer
                             model={model}
                             onRadioChange={this.onDataRowRadioChange}
@@ -235,17 +235,17 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                             onSelectChange={this.onAdditionalKeyFieldChange}
                             keyPropertyIndex={keyPropertyIndex}
                         />
-                    </Col>
+                    </div>
 
-                    <Col xs={12} md={2}>
+                    <div className="col-xs-12 col-md-2">
                         <AdvancedSettings
                             title="Advanced Settings"
                             model={model}
                             applyAdvancedProperties={this.applyAdvancedProperties}
                             visitDatePropertyIndex={visitDatePropertyIndex}
                         />
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </BasePropertiesPanel>
         );
     }

@@ -23,6 +23,7 @@ import { ConceptModel, OntologyModel } from '../ontology/models';
 
 import { createFormInputId } from './utils';
 import {
+    downloadJsonFile,
     getAvailableTypes,
     getAvailableTypesForOntology,
     getBannerMessages,
@@ -33,34 +34,33 @@ import {
     getDomainPanelHeaderId,
     getDomainPanelStatus,
     getOntologyUpdatedFieldName,
-    setDomainFields,
-    updateDomainException,
-    updateOntologyFieldProperties,
     processJsonImport,
-    downloadJsonFile,
-    updateErrorIndexes,
     removeFields,
+    setDomainFields,
     updateDataType,
+    updateDomainException,
     updateDomainField,
+    updateErrorIndexes,
+    updateOntologyFieldProperties,
 } from './actions';
 import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainDesign, DomainException, DomainField, IFieldChange } from './models';
 import {
     ATTACHMENT_TYPE,
+    BOOLEAN_TYPE,
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
     FLAG_TYPE,
     INTEGER_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
+    PARTICIPANT_TYPE,
+    SAMPLE_TYPE,
+    TEXT_CHOICE_TYPE,
     TEXT_TYPE,
+    UNIQUE_ID_TYPE,
+    USERS_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
-    UNIQUE_ID_TYPE,
-    BOOLEAN_TYPE,
-    USERS_TYPE,
-    TEXT_CHOICE_TYPE,
-    SAMPLE_TYPE,
-    PARTICIPANT_TYPE,
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -277,14 +277,14 @@ describe('domain properties actions', () => {
     });
 
     test('getDomainPanelClass', () => {
-        expect(getDomainPanelClass(true, true, false)).toBe('domain-form-panel');
-        expect(getDomainPanelClass(true, true, true)).toBe('domain-form-panel');
-        expect(getDomainPanelClass(true, false, false)).toBe('domain-form-panel');
-        expect(getDomainPanelClass(true, false, true)).toBe('domain-form-panel');
-        expect(getDomainPanelClass(false, true, false)).toBe('domain-form-panel lk-border-theme-light');
-        expect(getDomainPanelClass(false, true, true)).toBe('domain-form-panel domain-panel-no-theme');
-        expect(getDomainPanelClass(false, false, false)).toBe('domain-form-panel');
-        expect(getDomainPanelClass(false, false, true)).toBe('domain-form-panel');
+        expect(getDomainPanelClass(true, true, false)).toBe('panel panel-default domain-form-panel');
+        expect(getDomainPanelClass(true, true, true)).toBe('panel panel-default domain-form-panel');
+        expect(getDomainPanelClass(true, false, false)).toBe('panel panel-default domain-form-panel');
+        expect(getDomainPanelClass(true, false, true)).toBe('panel panel-default domain-form-panel');
+        expect(getDomainPanelClass(false, true, false)).toBe('panel panel-default domain-form-panel lk-border-theme-light');
+        expect(getDomainPanelClass(false, true, true)).toBe('panel panel-default domain-form-panel domain-panel-no-theme');
+        expect(getDomainPanelClass(false, false, false)).toBe('panel panel-default domain-form-panel');
+        expect(getDomainPanelClass(false, false, true)).toBe('panel panel-default domain-form-panel');
     });
 
     test('getDomainAlertClasses', () => {

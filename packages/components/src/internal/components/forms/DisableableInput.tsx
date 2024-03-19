@@ -1,5 +1,6 @@
-import React, { memo, FC } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { generateId } from '../../util/utils';
 
 interface Props {
     className?: string;
@@ -13,11 +14,12 @@ interface Props {
 
 export const DisableableInput: FC<Props> = memo(props => {
     const { disabledMsg, title, ...inputProps } = props;
+    const id = useMemo(() => generateId(), []);
 
     return (
         <>
             {disabledMsg ? (
-                <OverlayTrigger placement="bottom" overlay={<Popover title={title}>{disabledMsg}</Popover>}>
+                <OverlayTrigger placement="bottom" overlay={<Popover id={id} title={title}>{disabledMsg}</Popover>}>
                     <div className="disabled-button-with-tooltip full-width">
                         <input {...inputProps} type="text" disabled />
                     </div>

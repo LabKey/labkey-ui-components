@@ -1,6 +1,6 @@
 import React from 'react';
 import { List } from 'immutable';
-import { Checkbox, Col, FormControl, Row } from 'react-bootstrap';
+import { Checkbox, FormControl } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
 import { Modal } from '../../Modal';
@@ -9,9 +9,9 @@ import { getSubmitButtonClass } from '../../app/utils';
 import {
     ADVANCED_FIELD_EDITOR_TOPIC,
     CHART_MEASURES_AND_DIMENSIONS_TOPIC,
-    PROPERTY_FIELDS_PHI_TOPIC,
     helpLinkNode,
     MISSING_VALUES_TOPIC,
+    PROPERTY_FIELDS_PHI_TOPIC,
 } from '../../util/helpLinks';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
@@ -31,11 +31,11 @@ import {
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_MVENABLED,
     DOMAIN_FIELD_PHI,
-    DOMAIN_FIELD_UNIQUECONSTRAINT,
     DOMAIN_FIELD_RECOMMENDEDVARIABLE,
     DOMAIN_FIELD_SHOWNINDETAILSVIEW,
     DOMAIN_FIELD_SHOWNININSERTVIEW,
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
+    DOMAIN_FIELD_UNIQUECONSTRAINT,
     DOMAIN_PHI_LEVELS,
 } from './constants';
 
@@ -297,11 +297,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return (
             <>
                 <div className="domain-adv-misc-options">Default Value Options</div>
-                <Row className="domain-adv-thick-row">
-                    <Col xs={3}>
+                <div className="row domain-adv-thick-row">
+                    <div className="col-xs-3">
                         <DomainFieldLabel label="Default Type" helpTipBody={this.getDefaultTypeHelpText()} />
-                    </Col>
-                    <Col xs={6}>
+                    </div>
+                    <div className="col-xs-6">
                         <FormControl
                             componentClass="select"
                             name={createFormInputName(DOMAIN_FIELD_DEFAULT_VALUE_TYPE)}
@@ -315,14 +315,14 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </option>
                             ))}
                         </FormControl>
-                    </Col>
-                    <Col xs={3} />
-                </Row>
-                <Row>
-                    <Col xs={3}>
+                    </div>
+                    <div className="col-xs-3" />
+                </div>
+                <div className="row">
+                    <div className="col-xs-3">
                         <span>Default Value</span>
-                    </Col>
-                    <Col xs={9}>
+                    </div>
+                    <div className="col-xs-9">
                         <span>
                             {defaultDisplayValue !== undefined && defaultDisplayValue !== null
                                 ? defaultDisplayValue
@@ -335,8 +335,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         >
                             Set Default Values
                         </a>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </>
         );
     };
@@ -362,11 +362,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return (
             <>
                 <div className="domain-adv-misc-options">Miscellaneous Options</div>
-                <Row>
-                    <Col xs={3}>
+                <div className="row">
+                    <div className="col-xs-3">
                         <DomainFieldLabel label="PHI Level" helpTipBody={this.getPhiHelpText()} />
-                    </Col>
-                    <Col xs={6}>
+                    </div>
+                    <div className="col-xs-6">
                         <FormControl
                             componentClass="select"
                             name={createFormInputName(DOMAIN_FIELD_PHI)}
@@ -386,9 +386,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </option>
                             ))}
                         </FormControl>
-                    </Col>
-                    <Col xs={3} />
-                </Row>
+                    </div>
+                    <div className="col-xs-3" />
+                </div>
                 {field.dataType === DATETIME_TYPE && (
                     <Checkbox
                         checked={excludeFromShifting}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 
 import { DomainField, IAppDomainHeader, IDomainField } from '../models';
@@ -104,15 +104,15 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                     Select a key value for this list which uniquely identifies the item. You can use "
                     {AUTO_INC_KEY_OPTION_TEXT}" to define your own below.
                 </div>
-                <Row className="list__set-key-panel">
-                    <Col xs={3}>
+                <div className="row list__set-key-panel">
+                    <div className="col-xs-3">
                         <DomainFieldLabel
                             label="Key Field Name"
                             required={true}
                             helpTipBody="Only integer or text fields can be made the primary key."
                         />
-                    </Col>
-                    <Col xs={5}>
+                    </div>
+                    <div className="col-xs-5">
                         <FormControl
                             componentClass="select"
                             name="keyField"
@@ -141,8 +141,8 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                                     ) : undefined;
                                 })}
                         </FormControl>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </Alert>
         );
     }

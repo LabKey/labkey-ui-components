@@ -60,7 +60,6 @@ import {
 } from './constants';
 import {
     ATTACHMENT_TYPE,
-    DATE_TYPE,
     FILE_TYPE,
     FLAG_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
@@ -70,7 +69,6 @@ import {
     SAMPLE_TYPE,
     SMILES_TYPE,
     TEXT_CHOICE_TYPE,
-    TIME_TYPE,
     UNIQUE_ID_TYPE,
     USERS_TYPE,
     VISIT_DATE_TYPE,
@@ -986,7 +984,7 @@ export function getDomainBottomErrorMessage(
 //  an app/LKS e.g. domain-designer--app, domain-designer--lks, then we can get rid of these methods and use the same
 //  classNames everywhere
 export function getDomainPanelClass(collapsed: boolean, controlledCollapse: boolean, isApp: boolean): string {
-    return classNames('domain-form-panel', {
+    return classNames('panel', 'panel-default', 'domain-form-panel', {
         'lk-border-theme-light': !collapsed && controlledCollapse && !isApp,
         'domain-panel-no-theme': !collapsed && controlledCollapse && isApp,
     });

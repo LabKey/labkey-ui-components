@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { PureComponent } from 'react';
-import { Image, Media, Panel } from 'react-bootstrap';
+import { Image, Media } from 'react-bootstrap';
 
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
@@ -264,9 +264,9 @@ export class ReportList extends PureComponent<ReportListProps> {
         }
 
         return (
-            <Panel>
-                <div className="report-list">{body}</div>
-            </Panel>
+            <div className="panel panel-default">
+                <div className="panel-body report-list">{body}</div>
+            </div>
         );
     }
 }

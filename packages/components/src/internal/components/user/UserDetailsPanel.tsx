@@ -4,7 +4,6 @@
  */
 import React, { FC } from 'react';
 import moment from 'moment';
-import { Col, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
@@ -38,14 +37,10 @@ interface UserDetailRowProps {
 
 const UserDetailRow: FC<UserDetailRowProps> = ({ label, value }) => {
     return (
-        <Row>
-            <Col xs={4} className="principal-detail-label">
-                {label}
-            </Col>
-            <Col xs={8} className="principal-detail-value">
-                {value}
-            </Col>
-        </Row>
+        <div className="row">
+            <div className="col-xs-4 principal-detail-label">{label}</div>
+            <div className="col-xs-8 principal-detail-value">{value}</div>
+        </div>
     );
 };
 
@@ -332,9 +327,9 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         }
 
         return (
-            <Panel className="user-details-panel">
-                <Panel.Heading>{this.renderHeader()}</Panel.Heading>
-                <Panel.Body>
+            <div className="panel panel-default user-details-panel">
+                <div className="panel-heading">{this.renderHeader()}</div>
+                <div className="panel-body">
                     {this.renderBody()}
                     {!isSelf && onUsersStateChangeComplete && this.renderButtons()}
                     {allowResetPassword && showDialog === 'reset' && (
@@ -360,8 +355,8 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
                             onCancel={() => this.toggleDialog(undefined)}
                         />
                     )}
-                </Panel.Body>
-            </Panel>
+                </div>
+            </div>
         );
     }
 }

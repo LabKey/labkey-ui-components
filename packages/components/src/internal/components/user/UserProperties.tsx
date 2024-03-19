@@ -1,5 +1,4 @@
 import React, { FC, memo } from 'react';
-import { Col, Row } from 'react-bootstrap';
 
 interface Props {
     prop: string;
@@ -10,13 +9,9 @@ export const UserProperties: FC<Props> = memo(props => {
     const { prop, title } = props;
 
     return (
-        <Row>
-            <Col xs={4} className="principal-detail-label">
-                {title}
-            </Col>
-            <Col xs={8} className="principal-detail-value">
-                {prop}
-            </Col>
-        </Row>
+        <div className="row">
+            <div className="col-xs-4 principal-detail-label">{title}</div>
+            <div className="col-xs-8 principal-detail-value">{prop}</div>
+        </div>
     );
 });

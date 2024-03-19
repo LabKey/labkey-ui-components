@@ -23,7 +23,13 @@ import { hasPermissions } from '../base/models/User';
 
 import {ChartConfig, ChartQueryConfig, GenericChartModel} from './models';
 
+interface AggregateFieldInfo {
+    name: string;
+    value: string;
+}
+
 interface ChartFieldInfo {
+    aggregate?: AggregateFieldInfo;
     name: string;
     label: string;
     required: boolean;
@@ -143,6 +149,9 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             const response = await saveChart(_reportConfig);
             setSaving(false);
             onHide();
+
+            // clear the selected report, if we are saving/updating it, so that it will refresh in ChartPanel.tsx
+            await actions.selectReport(model.id, undefined);
             await actions.loadCharts(model.id);
             actions.selectReport(model.id, response.reportId);
         } catch (e) {
@@ -280,21 +289,27 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                             </div>
                             <div className="col-xs-4 fields-col-right">
                                 {rightColFields.map(field => (
-                                    <div key={field.name}>
-                                        <label>
-                                            {field.label}
-                                            {field.required && ' *'}
-                                        </label>
-                                        <SelectInput
-                                            showLabel={false}
-                                            inputClass="col-xs-12"
-                                            placeholder="Select a field"
-                                            name={field.name}
-                                            options={getSelectOptions(model, selectedType, field)}
-                                            onChange={onSelectFieldChange}
-                                            value={fieldValues[field.name]?.value}
-                                        />
-                                    </div>
+                                    <>
+                                        <div key={field.name}>
+                                            <label>
+                                                {field.label}
+                                                {field.required && ' *'}
+                                            </label>
+                                            <SelectInput
+                                                showLabel={false}
+                                                inputClass="col-xs-12"
+                                                placeholder="Select a field"
+                                                name={field.name}
+                                                options={getSelectOptions(model, selectedType, field)}
+                                                onChange={onSelectFieldChange}
+                                                value={fieldValues[field.name]?.value}
+                                            />
+                                        </div>
+                                        {/*TODO change this to a select input with predefined options*/}
+                                        {selectedType.name === 'bar_chart' && fieldValues[field.name]?.value && (
+                                            <div className="gray-text">Aggregate method: {savedChartModel?.visualizationConfig.chartConfig.measures['y']?.aggregate.name ?? 'Sum'}</div>
+                                        )}
+                                    </>
                                 ))}
                             </div>
                         </div>
@@ -310,7 +325,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                                 <div className="chart-preview-body">
                                     {loadingData && (
                                         <div className="chart-loading-mask">
-                                            <div className="chart-loading-mask__background" />
+                                        <div className="chart-loading-mask__background" />
                                             <LoadingSpinner
                                                 wrapperClassName="loading-spinner"
                                                 msg="Loading Preview..."
@@ -460,8 +475,13 @@ const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, Se
                 type: fieldValues[field.name].data.displayFieldJsonType || fieldValues[field.name].data.jsonType || fieldValues[field.name].data.type,
             };
 
-            // update axis label if it is a new report or if the saved report used the default field label for the axis label
-            if (!savedConfig || savedConfig.labels[field.name] === savedConfig.measures[field.name].label) {
+            // for now, retain axis aggregate config if it was set via LKS
+            if (savedConfig && savedConfig.measures[field.name]?.aggregate) {
+                config.measures[field.name].aggregate = { ...savedConfig.measures[field.name].aggregate };
+            }
+
+            // update axis label if it is a new report or if the saved report that didn't have this measure or was using the default field label for the axis label
+            if (!savedConfig || !savedConfig.measures[field.name] || savedConfig.labels[field.name] === savedConfig.measures[field.name].label) {
                 config.labels[field.name] = fieldValues[field.name].label;
             }
         }

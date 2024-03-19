@@ -50,7 +50,7 @@ describe('EntityMoveModal', () => {
 
     test('cannot move, no valid selections', async () => {
         await act(async () => {
-           renderWithAppContext(
+            renderWithAppContext(
                 <EntityMoveModal
                     {...getDefaultProps()}
                     api={getTestAPIWrapper(jest.fn, {

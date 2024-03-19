@@ -1,5 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
@@ -31,7 +31,6 @@ interface RangeValidationOptionsProps {
 }
 
 export class RangeValidationOptions extends PureComponent<RangeValidationOptionsProps> {
-    labelWidth = 4;
     fieldWidth = 8;
 
     static isValid = (validator: PropertyValidator): boolean => {
@@ -42,11 +41,11 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
         const { validatorIndex, domainIndex } = this.props;
 
         return (
-            <Row className="domain-validator-filter-row">
-                <Col xs={this.labelWidth}>
+            <div className="row domain-validator-filter-row">
+                <div className="col-xs-4">
                     <div>{label}</div>
-                </Col>
-                <Col xs={this.fieldWidth}>
+                </div>
+                <div className="col-xs-8">
                     <div>
                         <FormControl
                             componentClass="textarea"
@@ -58,8 +57,8 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                             onChange={this.onChange}
                         />
                     </div>
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     };
 
@@ -128,11 +127,11 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                         {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validator.description)}
                         {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validator.errorMessage)}
 
-                        <Row>
-                            <Col xs={this.labelWidth}>
+                        <div className="row">
+                            <div className="col-xs-4">
                                 <div>Name *</div>
-                            </Col>
-                            <Col xs={this.fieldWidth}>
+                            </div>
+                            <div className="col-xs-8">
                                 <FormControl
                                     type="text"
                                     id={createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)}
@@ -140,11 +139,11 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                                     value={validator.name}
                                     onChange={this.onChange}
                                 />
-                            </Col>
-                        </Row>
+                            </div>
+                        </div>
 
-                        <Row>
-                            <Col xs={12}>
+                        <div className="row">
+                            <div className="col-xs-12">
                                 <button
                                     className="domain-validation-delete btn btn-default"
                                     id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
@@ -154,8 +153,8 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                                 >
                                     Remove Validator
                                 </button>
-                            </Col>
-                        </Row>
+                            </div>
+                        </div>
                     </div>
                 )}
                 {!expanded && (

@@ -170,58 +170,119 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
     onMultiChange={[MockFunction]}
   >
     <div>
-      <Row
-        bsClass="row"
-        componentClass="div"
+      <div
+        className="row"
       >
         <div
-          className="row"
+          className="col-xs-12"
         >
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={12}
+          <div
+            className="domain-field-section-heading"
           >
-            <div
-              className="col-xs-12"
-            >
-              <div
-                className="domain-field-section-heading"
-              >
-                Lookup Field Options
-              </div>
-            </div>
-          </Col>
+            Lookup Field Options
+          </div>
         </div>
-      </Row>
-      <Row
-        bsClass="row"
-        componentClass="div"
+      </div>
+      <div
+        className="row"
       >
         <div
-          className="row"
+          className="col-xs-2"
         >
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Folder
+          </div>
+          <FolderSelect
+            disabled={false}
+            id="domainpropertiesrow-lookupContainer-1-1"
+            key="domainpropertiesrow-lookupContainer-1-1"
+            onChange={[Function]}
+            value="/StudyVerifyProject/My Study"
+          >
+            <FolderSelectImpl
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupContainer-1-1"
+              name="domainpropertiesrow-lookupContainer"
+              onChange={[Function]}
+              value="/StudyVerifyProject/My Study"
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Folder
-              </div>
-              <FolderSelect
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
+                context={
+                  {
+                    "activeContainer": Container {
+                      "activeModules": [],
+                      "effectivePermissions": [],
+                      "folderType": "",
+                      "formats": {
+                        "dateFormat": "",
+                        "dateTimeFormat": "",
+                        "numberFormat": "",
+                        "timeFormat": "",
+                      },
+                      "hasRestrictedActiveModule": false,
+                      "iconHref": "",
+                      "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                      "isContainerTab": false,
+                      "isWorkbook": false,
+                      "name": "My Study",
+                      "parentId": "",
+                      "parentPath": "",
+                      "path": "/StudyVerifyProject/My Study",
+                      "sortOrder": 0,
+                      "startUrl": "",
+                      "title": "",
+                      "type": "",
+                    },
+                    "fetchContainers": [Function],
+                    "fetchQueries": [Function],
+                    "fetchSchemas": [Function],
+                    "getExcludedSchemaQueryNames": [Function],
+                  }
+                }
                 disabled={false}
                 id="domainpropertiesrow-lookupContainer-1-1"
-                key="domainpropertiesrow-lookupContainer-1-1"
+                name="domainpropertiesrow-lookupContainer"
                 onChange={[Function]}
                 value="/StudyVerifyProject/My Study"
               >
-                <FolderSelectImpl
+                <select
+                  className="form-control"
                   context={
                     {
                       "activeContainer": Container {
@@ -260,374 +321,273 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   onChange={[Function]}
                   value="/StudyVerifyProject/My Study"
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
-                    context={
-                      {
-                        "activeContainer": Container {
-                          "activeModules": [],
-                          "effectivePermissions": [],
-                          "folderType": "",
-                          "formats": {
-                            "dateFormat": "",
-                            "dateTimeFormat": "",
-                            "numberFormat": "",
-                            "timeFormat": "",
-                          },
-                          "hasRestrictedActiveModule": false,
-                          "iconHref": "",
-                          "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                          "isContainerTab": false,
-                          "isWorkbook": false,
-                          "name": "My Study",
-                          "parentId": "",
-                          "parentPath": "",
-                          "path": "/StudyVerifyProject/My Study",
-                          "sortOrder": 0,
-                          "startUrl": "",
-                          "title": "",
-                          "type": "",
-                        },
-                        "fetchContainers": [Function],
-                        "fetchQueries": [Function],
-                        "fetchSchemas": [Function],
-                        "getExcludedSchemaQueryNames": [Function],
-                      }
-                    }
-                    disabled={false}
-                    id="domainpropertiesrow-lookupContainer-1-1"
-                    name="domainpropertiesrow-lookupContainer"
-                    onChange={[Function]}
-                    value="/StudyVerifyProject/My Study"
+                  <option
+                    key="_current"
+                    value=""
                   >
-                    <select
-                      className="form-control"
-                      context={
-                        {
-                          "activeContainer": Container {
-                            "activeModules": [],
-                            "effectivePermissions": [],
-                            "folderType": "",
-                            "formats": {
-                              "dateFormat": "",
-                              "dateTimeFormat": "",
-                              "numberFormat": "",
-                              "timeFormat": "",
-                            },
-                            "hasRestrictedActiveModule": false,
-                            "iconHref": "",
-                            "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                            "isContainerTab": false,
-                            "isWorkbook": false,
-                            "name": "My Study",
-                            "parentId": "",
-                            "parentPath": "",
-                            "path": "/StudyVerifyProject/My Study",
-                            "sortOrder": 0,
-                            "startUrl": "",
-                            "title": "",
-                            "type": "",
-                          },
-                          "fetchContainers": [Function],
-                          "fetchQueries": [Function],
-                          "fetchSchemas": [Function],
-                          "getExcludedSchemaQueryNames": [Function],
-                        }
-                      }
-                      disabled={false}
-                      id="domainpropertiesrow-lookupContainer-1-1"
-                      name="domainpropertiesrow-lookupContainer"
-                      onChange={[Function]}
-                      value="/StudyVerifyProject/My Study"
-                    >
-                      <option
-                        key="_current"
-                        value=""
-                      >
-                        Current 
-                        Folder
-                      </option>
-                    </select>
-                  </FormControl>
-                </FolderSelectImpl>
-              </FolderSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+                    Current 
+                    Folder
+                  </option>
+                </select>
+              </FormControl>
+            </FolderSelectImpl>
+          </FolderSelect>
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Schema
+          </div>
+          <SchemaSelect
+            containerPath="/StudyVerifyProject/My Study"
+            disabled={false}
+            id="domainpropertiesrow-lookupSchema-1-1"
+            key="domainpropertiesrow-lookupSchema-1-1"
+            onChange={[Function]}
+            value="exp"
+          >
+            <SchemaSelectImpl
+              containerPath="/StudyVerifyProject/My Study"
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupSchema-1-1"
+              name="domainpropertiesrow-lookupSchema"
+              onChange={[Function]}
+              value="exp"
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Schema
-              </div>
-              <SchemaSelect
-                containerPath="/StudyVerifyProject/My Study"
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
                 disabled={false}
                 id="domainpropertiesrow-lookupSchema-1-1"
-                key="domainpropertiesrow-lookupSchema-1-1"
+                name="domainpropertiesrow-lookupSchema"
                 onChange={[Function]}
+                placeholder="Select Schema"
                 value="exp"
               >
-                <SchemaSelectImpl
-                  containerPath="/StudyVerifyProject/My Study"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
+                <select
+                  className="form-control"
                   disabled={false}
                   id="domainpropertiesrow-lookupSchema-1-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
+                  placeholder="Select Schema"
                   value="exp"
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
-                    disabled={false}
-                    id="domainpropertiesrow-lookupSchema-1-1"
-                    name="domainpropertiesrow-lookupSchema"
-                    onChange={[Function]}
-                    placeholder="Select Schema"
+                  <option
+                    disabled={true}
+                    key="_loading"
                     value="exp"
                   >
-                    <select
-                      className="form-control"
-                      disabled={false}
-                      id="domainpropertiesrow-lookupSchema-1-1"
-                      name="domainpropertiesrow-lookupSchema"
-                      onChange={[Function]}
-                      placeholder="Select Schema"
-                      value="exp"
-                    >
-                      <option
-                        disabled={true}
-                        key="_loading"
-                        value="exp"
-                      >
-                        Loading...
-                      </option>
-                    </select>
-                  </FormControl>
-                </SchemaSelectImpl>
-              </SchemaSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+                    Loading...
+                  </option>
+                </select>
+              </FormControl>
+            </SchemaSelectImpl>
+          </SchemaSelect>
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Table
+          </div>
+          <TargetTableSelect
+            containerPath="/StudyVerifyProject/My Study"
+            disabled={false}
+            id="domainpropertiesrow-lookupQueryValue-1-1"
+            key="domainpropertiesrow-lookupQueryValue-1-1"
+            lookupIsValid={true}
+            lookupURI="http://www.w3.org/2001/XMLSchema#int"
+            onChange={[Function]}
+            schemaName="exp"
+            shouldDisableNonExists={true}
+            value="Data"
+          >
+            <TargetTableSelectImpl
+              containerPath="/StudyVerifyProject/My Study"
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupQueryValue-1-1"
+              lookupIsValid={true}
+              lookupURI="http://www.w3.org/2001/XMLSchema#int"
+              name="domainpropertiesrow-lookupQueryValue"
+              onChange={[Function]}
+              schemaName="exp"
+              shouldDisableNonExists={true}
+              value="Data"
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Table
-              </div>
-              <TargetTableSelect
-                containerPath="/StudyVerifyProject/My Study"
-                disabled={false}
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
+                disabled={true}
                 id="domainpropertiesrow-lookupQueryValue-1-1"
-                key="domainpropertiesrow-lookupQueryValue-1-1"
-                lookupIsValid={true}
-                lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                name="domainpropertiesrow-lookupQueryValue"
                 onChange={[Function]}
-                schemaName="exp"
-                shouldDisableNonExists={true}
                 value="Data"
               >
-                <TargetTableSelectImpl
-                  containerPath="/StudyVerifyProject/My Study"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
-                  disabled={false}
+                <select
+                  className="form-control"
+                  disabled={true}
                   id="domainpropertiesrow-lookupQueryValue-1-1"
-                  lookupIsValid={true}
-                  lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
-                  schemaName="exp"
-                  shouldDisableNonExists={true}
                   value="Data"
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
+                  <option
                     disabled={true}
-                    id="domainpropertiesrow-lookupQueryValue-1-1"
-                    name="domainpropertiesrow-lookupQueryValue"
-                    onChange={[Function]}
+                    key="_loading"
                     value="Data"
                   >
-                    <select
-                      className="form-control"
-                      disabled={true}
-                      id="domainpropertiesrow-lookupQueryValue-1-1"
-                      name="domainpropertiesrow-lookupQueryValue"
-                      onChange={[Function]}
-                      value="Data"
-                    >
-                      <option
-                        disabled={true}
-                        key="_loading"
-                        value="Data"
-                      >
-                        Loading...
-                      </option>
-                    </select>
-                  </FormControl>
-                </TargetTableSelectImpl>
-              </TargetTableSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={6}
+                    Loading...
+                  </option>
+                </select>
+              </FormControl>
+            </TargetTableSelectImpl>
+          </TargetTableSelect>
+        </div>
+        <div
+          className="col-xs-6"
+        >
+          <div
+            className="domain-field-label"
+          >
+            Lookup Validator
+          </div>
+          <Checkbox
+            bsClass="checkbox"
+            checked={false}
+            className="domain-field-checkbox-margin"
+            disabled={false}
+            id="domainpropertiesrow-lookupValidator-1-1"
+            inline={false}
+            name="domainpropertiesrow-lookupValidator"
+            onChange={[Function]}
+            title=""
           >
             <div
-              className="col-xs-6"
+              className="domain-field-checkbox-margin checkbox"
             >
-              <div
-                className="domain-field-label"
-              >
-                Lookup Validator
-              </div>
-              <Checkbox
-                bsClass="checkbox"
-                checked={false}
-                className="domain-field-checkbox-margin"
-                disabled={false}
-                id="domainpropertiesrow-lookupValidator-1-1"
-                inline={false}
-                name="domainpropertiesrow-lookupValidator"
-                onChange={[Function]}
+              <label
                 title=""
               >
-                <div
-                  className="domain-field-checkbox-margin checkbox"
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-lookupValidator-1-1"
+                  name="domainpropertiesrow-lookupValidator"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  className="domain-lookup-validator-text"
                 >
-                  <label
-                    title=""
-                  >
-                    <input
-                      checked={false}
-                      disabled={false}
-                      id="domainpropertiesrow-lookupValidator-1-1"
-                      name="domainpropertiesrow-lookupValidator"
-                      onChange={[Function]}
-                      type="checkbox"
-                    />
-                    <span
-                      className="domain-lookup-validator-text"
-                    >
-                      Ensure Value Exists in Lookup Target
-                    </span>
-                    <LabelHelpTip
-                      title="Lookup Validator"
-                    >
-                      <OverlayTrigger
-                        id="label-help-tip0"
-                        overlay={
-                          <Popover
-                            id="label-help-tip-popover"
-                            title="Lookup Validator"
-                          >
-                            <div>
-                              Lookup validators allow you to require that any value is present in the lookup's target table or query
-                            </div>
-                          </Popover>
-                        }
+                  Ensure Value Exists in Lookup Target
+                </span>
+                <LabelHelpTip
+                  title="Lookup Validator"
+                >
+                  <OverlayTrigger
+                    id="label-help-tip0"
+                    overlay={
+                      <Popover
+                        id="label-help-tip-popover"
+                        title="Lookup Validator"
                       >
-                        <div
-                          className="overlay-trigger"
-                          onClick={[Function]}
-                          onMouseEnter={[Function]}
-                          onMouseLeave={[Function]}
-                        >
-                          <span
-                            className="label-help-target"
-                          >
-                            <span
-                              className="label-help-icon fa fa-question-circle"
-                            />
-                          </span>
+                        <div>
+                          Lookup validators allow you to require that any value is present in the lookup's target table or query
                         </div>
-                      </OverlayTrigger>
-                    </LabelHelpTip>
-                  </label>
-                </div>
-              </Checkbox>
+                      </Popover>
+                    }
+                  >
+                    <div
+                      className="overlay-trigger"
+                      onClick={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      <span
+                        className="label-help-target"
+                      >
+                        <span
+                          className="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </OverlayTrigger>
+                </LabelHelpTip>
+              </label>
             </div>
-          </Col>
+          </Checkbox>
         </div>
-      </Row>
+      </div>
     </div>
   </LookupFieldOptions>
 </MockLookupProvider>
@@ -803,58 +763,119 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
     onMultiChange={[MockFunction]}
   >
     <div>
-      <Row
-        bsClass="row"
-        componentClass="div"
+      <div
+        className="row"
       >
         <div
-          className="row"
+          className="col-xs-12"
         >
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={12}
+          <div
+            className="domain-field-section-heading"
           >
-            <div
-              className="col-xs-12"
-            >
-              <div
-                className="domain-field-section-heading"
-              >
-                Lookup Field Options
-              </div>
-            </div>
-          </Col>
+            Lookup Field Options
+          </div>
         </div>
-      </Row>
-      <Row
-        bsClass="row"
-        componentClass="div"
+      </div>
+      <div
+        className="row"
       >
         <div
-          className="row"
+          className="col-xs-2"
         >
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Folder
+          </div>
+          <FolderSelect
+            disabled={false}
+            id="domainpropertiesrow-lookupContainer-1-1"
+            key="domainpropertiesrow-lookupContainer-1-1"
+            onChange={[Function]}
+            value="/StudyVerifyProject"
+          >
+            <FolderSelectImpl
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupContainer-1-1"
+              name="domainpropertiesrow-lookupContainer"
+              onChange={[Function]}
+              value="/StudyVerifyProject"
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Folder
-              </div>
-              <FolderSelect
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
+                context={
+                  {
+                    "activeContainer": Container {
+                      "activeModules": [],
+                      "effectivePermissions": [],
+                      "folderType": "",
+                      "formats": {
+                        "dateFormat": "",
+                        "dateTimeFormat": "",
+                        "numberFormat": "",
+                        "timeFormat": "",
+                      },
+                      "hasRestrictedActiveModule": false,
+                      "iconHref": "",
+                      "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                      "isContainerTab": false,
+                      "isWorkbook": false,
+                      "name": "My Study",
+                      "parentId": "",
+                      "parentPath": "",
+                      "path": "/StudyVerifyProject/My Study",
+                      "sortOrder": 0,
+                      "startUrl": "",
+                      "title": "",
+                      "type": "",
+                    },
+                    "fetchContainers": [Function],
+                    "fetchQueries": [Function],
+                    "fetchSchemas": [Function],
+                    "getExcludedSchemaQueryNames": [Function],
+                  }
+                }
                 disabled={false}
                 id="domainpropertiesrow-lookupContainer-1-1"
-                key="domainpropertiesrow-lookupContainer-1-1"
+                name="domainpropertiesrow-lookupContainer"
                 onChange={[Function]}
                 value="/StudyVerifyProject"
               >
-                <FolderSelectImpl
+                <select
+                  className="form-control"
                   context={
                     {
                       "activeContainer": Container {
@@ -893,438 +914,337 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   onChange={[Function]}
                   value="/StudyVerifyProject"
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
-                    context={
-                      {
-                        "activeContainer": Container {
-                          "activeModules": [],
-                          "effectivePermissions": [],
-                          "folderType": "",
-                          "formats": {
-                            "dateFormat": "",
-                            "dateTimeFormat": "",
-                            "numberFormat": "",
-                            "timeFormat": "",
-                          },
-                          "hasRestrictedActiveModule": false,
-                          "iconHref": "",
-                          "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                          "isContainerTab": false,
-                          "isWorkbook": false,
-                          "name": "My Study",
-                          "parentId": "",
-                          "parentPath": "",
-                          "path": "/StudyVerifyProject/My Study",
-                          "sortOrder": 0,
-                          "startUrl": "",
-                          "title": "",
-                          "type": "",
-                        },
-                        "fetchContainers": [Function],
-                        "fetchQueries": [Function],
-                        "fetchSchemas": [Function],
-                        "getExcludedSchemaQueryNames": [Function],
-                      }
-                    }
-                    disabled={false}
-                    id="domainpropertiesrow-lookupContainer-1-1"
-                    name="domainpropertiesrow-lookupContainer"
-                    onChange={[Function]}
+                  <option
+                    key="_current"
+                    value=""
+                  >
+                    Current 
+                    Folder
+                  </option>
+                  <option
+                    key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
                     value="/StudyVerifyProject"
                   >
-                    <select
-                      className="form-control"
-                      context={
-                        {
-                          "activeContainer": Container {
-                            "activeModules": [],
-                            "effectivePermissions": [],
-                            "folderType": "",
-                            "formats": {
-                              "dateFormat": "",
-                              "dateTimeFormat": "",
-                              "numberFormat": "",
-                              "timeFormat": "",
-                            },
-                            "hasRestrictedActiveModule": false,
-                            "iconHref": "",
-                            "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                            "isContainerTab": false,
-                            "isWorkbook": false,
-                            "name": "My Study",
-                            "parentId": "",
-                            "parentPath": "",
-                            "path": "/StudyVerifyProject/My Study",
-                            "sortOrder": 0,
-                            "startUrl": "",
-                            "title": "",
-                            "type": "",
-                          },
-                          "fetchContainers": [Function],
-                          "fetchQueries": [Function],
-                          "fetchSchemas": [Function],
-                          "getExcludedSchemaQueryNames": [Function],
-                        }
-                      }
-                      disabled={false}
-                      id="domainpropertiesrow-lookupContainer-1-1"
-                      name="domainpropertiesrow-lookupContainer"
-                      onChange={[Function]}
-                      value="/StudyVerifyProject"
-                    >
-                      <option
-                        key="_current"
-                        value=""
-                      >
-                        Current 
-                        Folder
-                      </option>
-                      <option
-                        key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
-                        value="/StudyVerifyProject"
-                      >
-                        /StudyVerifyProject
-                      </option>
-                      <option
-                        key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
-                        value="/StudyVerifyProject/My Study"
-                      >
-                        /StudyVerifyProject/My Study
-                      </option>
-                    </select>
-                  </FormControl>
-                </FolderSelectImpl>
-              </FolderSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+                    /StudyVerifyProject
+                  </option>
+                  <option
+                    key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
+                    value="/StudyVerifyProject/My Study"
+                  >
+                    /StudyVerifyProject/My Study
+                  </option>
+                </select>
+              </FormControl>
+            </FolderSelectImpl>
+          </FolderSelect>
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Schema
+          </div>
+          <SchemaSelect
+            containerPath="/StudyVerifyProject"
+            disabled={false}
+            id="domainpropertiesrow-lookupSchema-1-1"
+            key="domainpropertiesrow-lookupSchema-1-1"
+            onChange={[Function]}
+            value=""
+          >
+            <SchemaSelectImpl
+              containerPath="/StudyVerifyProject"
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupSchema-1-1"
+              name="domainpropertiesrow-lookupSchema"
+              onChange={[Function]}
+              value=""
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Schema
-              </div>
-              <SchemaSelect
-                containerPath="/StudyVerifyProject"
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
                 disabled={false}
                 id="domainpropertiesrow-lookupSchema-1-1"
-                key="domainpropertiesrow-lookupSchema-1-1"
+                name="domainpropertiesrow-lookupSchema"
                 onChange={[Function]}
+                placeholder="Select Schema"
                 value=""
               >
-                <SchemaSelectImpl
-                  containerPath="/StudyVerifyProject"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
+                <select
+                  className="form-control"
                   disabled={false}
                   id="domainpropertiesrow-lookupSchema-1-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
+                  placeholder="Select Schema"
                   value=""
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
-                    disabled={false}
-                    id="domainpropertiesrow-lookupSchema-1-1"
-                    name="domainpropertiesrow-lookupSchema"
-                    onChange={[Function]}
-                    placeholder="Select Schema"
-                    value=""
+                  <option
+                    key="_default"
+                  />
+                  <option
+                    key="exp"
+                    value="exp"
                   >
-                    <select
-                      className="form-control"
-                      disabled={false}
-                      id="domainpropertiesrow-lookupSchema-1-1"
-                      name="domainpropertiesrow-lookupSchema"
-                      onChange={[Function]}
-                      placeholder="Select Schema"
-                      value=""
-                    >
-                      <option
-                        key="_default"
-                      />
-                      <option
-                        key="exp"
-                        value="exp"
-                      >
-                        exp
-                      </option>
-                      <option
-                        key="exp.data"
-                        value="exp.data"
-                      >
-                        exp.data
-                      </option>
-                      <option
-                        key="exp.materials"
-                        value="exp.materials"
-                      >
-                        exp.materials
-                      </option>
-                      <option
-                        key="lists"
-                        value="lists"
-                      >
-                        lists
-                      </option>
-                      <option
-                        key="study"
-                        value="study"
-                      >
-                        study
-                      </option>
-                    </select>
-                  </FormControl>
-                </SchemaSelectImpl>
-              </SchemaSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+                    exp
+                  </option>
+                  <option
+                    key="exp.data"
+                    value="exp.data"
+                  >
+                    exp.data
+                  </option>
+                  <option
+                    key="exp.materials"
+                    value="exp.materials"
+                  >
+                    exp.materials
+                  </option>
+                  <option
+                    key="lists"
+                    value="lists"
+                  >
+                    lists
+                  </option>
+                  <option
+                    key="study"
+                    value="study"
+                  >
+                    study
+                  </option>
+                </select>
+              </FormControl>
+            </SchemaSelectImpl>
+          </SchemaSelect>
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Table
+          </div>
+          <TargetTableSelect
+            containerPath="/StudyVerifyProject"
+            disabled={false}
+            id="domainpropertiesrow-lookupQueryValue-1-1"
+            key="domainpropertiesrow-lookupQueryValue-1-1"
+            lookupIsValid={true}
+            lookupURI="http://www.w3.org/2001/XMLSchema#int"
+            onChange={[Function]}
+            schemaName=""
+            shouldDisableNonExists={true}
+            value=""
+          >
+            <TargetTableSelectImpl
+              containerPath="/StudyVerifyProject"
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupQueryValue-1-1"
+              lookupIsValid={true}
+              lookupURI="http://www.w3.org/2001/XMLSchema#int"
+              name="domainpropertiesrow-lookupQueryValue"
+              onChange={[Function]}
+              schemaName=""
+              shouldDisableNonExists={true}
+              value=""
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Table
-              </div>
-              <TargetTableSelect
-                containerPath="/StudyVerifyProject"
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
                 disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1-1"
-                key="domainpropertiesrow-lookupQueryValue-1-1"
-                lookupIsValid={true}
-                lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                name="domainpropertiesrow-lookupQueryValue"
                 onChange={[Function]}
-                schemaName=""
-                shouldDisableNonExists={true}
                 value=""
               >
-                <TargetTableSelectImpl
-                  containerPath="/StudyVerifyProject"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
+                <select
+                  className="form-control"
                   disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1-1"
-                  lookupIsValid={true}
-                  lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
-                  schemaName=""
-                  shouldDisableNonExists={true}
                   value=""
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
+                  <option
+                    key="_default"
+                  />
+                  <option
                     disabled={false}
-                    id="domainpropertiesrow-lookupQueryValue-1-1"
-                    name="domainpropertiesrow-lookupQueryValue"
-                    onChange={[Function]}
-                    value=""
+                    key="http://www.w3.org/2001/XMLSchema#int|Data"
+                    value="http://www.w3.org/2001/XMLSchema#int|Data"
                   >
-                    <select
-                      className="form-control"
-                      disabled={false}
-                      id="domainpropertiesrow-lookupQueryValue-1-1"
-                      name="domainpropertiesrow-lookupQueryValue"
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        key="_default"
-                      />
-                      <option
-                        disabled={false}
-                        key="http://www.w3.org/2001/XMLSchema#int|Data"
-                        value="http://www.w3.org/2001/XMLSchema#int|Data"
-                      >
-                        Data
-                         (
-                        Integer
-                        )
-                      </option>
-                      <option
-                        disabled={false}
-                        key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                        value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                      >
-                        DataInputs
-                         (
-                        Integer
-                        )
-                      </option>
-                      <option
-                        disabled={false}
-                        key="http://www.w3.org/2001/XMLSchema#int|Runs"
-                        value="http://www.w3.org/2001/XMLSchema#int|Runs"
-                      >
-                        Runs
-                         (
-                        Integer
-                        )
-                      </option>
-                    </select>
-                  </FormControl>
-                </TargetTableSelectImpl>
-              </TargetTableSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={6}
+                    Data
+                     (
+                    Integer
+                    )
+                  </option>
+                  <option
+                    disabled={false}
+                    key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                    value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                  >
+                    DataInputs
+                     (
+                    Integer
+                    )
+                  </option>
+                  <option
+                    disabled={false}
+                    key="http://www.w3.org/2001/XMLSchema#int|Runs"
+                    value="http://www.w3.org/2001/XMLSchema#int|Runs"
+                  >
+                    Runs
+                     (
+                    Integer
+                    )
+                  </option>
+                </select>
+              </FormControl>
+            </TargetTableSelectImpl>
+          </TargetTableSelect>
+        </div>
+        <div
+          className="col-xs-6"
+        >
+          <div
+            className="domain-field-label"
+          >
+            Lookup Validator
+          </div>
+          <Checkbox
+            bsClass="checkbox"
+            checked={false}
+            className="domain-field-checkbox-margin"
+            disabled={false}
+            id="domainpropertiesrow-lookupValidator-1-1"
+            inline={false}
+            name="domainpropertiesrow-lookupValidator"
+            onChange={[Function]}
+            title=""
           >
             <div
-              className="col-xs-6"
+              className="domain-field-checkbox-margin checkbox"
             >
-              <div
-                className="domain-field-label"
-              >
-                Lookup Validator
-              </div>
-              <Checkbox
-                bsClass="checkbox"
-                checked={false}
-                className="domain-field-checkbox-margin"
-                disabled={false}
-                id="domainpropertiesrow-lookupValidator-1-1"
-                inline={false}
-                name="domainpropertiesrow-lookupValidator"
-                onChange={[Function]}
+              <label
                 title=""
               >
-                <div
-                  className="domain-field-checkbox-margin checkbox"
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-lookupValidator-1-1"
+                  name="domainpropertiesrow-lookupValidator"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  className="domain-lookup-validator-text"
                 >
-                  <label
-                    title=""
-                  >
-                    <input
-                      checked={false}
-                      disabled={false}
-                      id="domainpropertiesrow-lookupValidator-1-1"
-                      name="domainpropertiesrow-lookupValidator"
-                      onChange={[Function]}
-                      type="checkbox"
-                    />
-                    <span
-                      className="domain-lookup-validator-text"
-                    >
-                      Ensure Value Exists in Lookup Target
-                    </span>
-                    <LabelHelpTip
-                      title="Lookup Validator"
-                    >
-                      <OverlayTrigger
-                        id="label-help-tip3"
-                        overlay={
-                          <Popover
-                            id="label-help-tip-popover"
-                            title="Lookup Validator"
-                          >
-                            <div>
-                              Lookup validators allow you to require that any value is present in the lookup's target table or query
-                            </div>
-                          </Popover>
-                        }
+                  Ensure Value Exists in Lookup Target
+                </span>
+                <LabelHelpTip
+                  title="Lookup Validator"
+                >
+                  <OverlayTrigger
+                    id="label-help-tip3"
+                    overlay={
+                      <Popover
+                        id="label-help-tip-popover"
+                        title="Lookup Validator"
                       >
-                        <div
-                          className="overlay-trigger"
-                          onClick={[Function]}
-                          onMouseEnter={[Function]}
-                          onMouseLeave={[Function]}
-                        >
-                          <span
-                            className="label-help-target"
-                          >
-                            <span
-                              className="label-help-icon fa fa-question-circle"
-                            />
-                          </span>
+                        <div>
+                          Lookup validators allow you to require that any value is present in the lookup's target table or query
                         </div>
-                      </OverlayTrigger>
-                    </LabelHelpTip>
-                  </label>
-                </div>
-              </Checkbox>
+                      </Popover>
+                    }
+                  >
+                    <div
+                      className="overlay-trigger"
+                      onClick={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      <span
+                        className="label-help-target"
+                      >
+                        <span
+                          className="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </OverlayTrigger>
+                </LabelHelpTip>
+              </label>
             </div>
-          </Col>
+          </Checkbox>
         </div>
-      </Row>
+      </div>
     </div>
   </LookupFieldOptions>
 </MockLookupProvider>
@@ -1500,58 +1420,119 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
     onMultiChange={[MockFunction]}
   >
     <div>
-      <Row
-        bsClass="row"
-        componentClass="div"
+      <div
+        className="row"
       >
         <div
-          className="row"
+          className="col-xs-12"
         >
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={12}
+          <div
+            className="domain-field-section-heading"
           >
-            <div
-              className="col-xs-12"
-            >
-              <div
-                className="domain-field-section-heading"
-              >
-                Lookup Field Options
-              </div>
-            </div>
-          </Col>
+            Lookup Field Options
+          </div>
         </div>
-      </Row>
-      <Row
-        bsClass="row"
-        componentClass="div"
+      </div>
+      <div
+        className="row"
       >
         <div
-          className="row"
+          className="col-xs-2"
         >
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Folder
+          </div>
+          <FolderSelect
+            disabled={false}
+            id="domainpropertiesrow-lookupContainer-1-1"
+            key="domainpropertiesrow-lookupContainer-1-1"
+            onChange={[Function]}
+            value="/StudyVerifyProject"
+          >
+            <FolderSelectImpl
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupContainer-1-1"
+              name="domainpropertiesrow-lookupContainer"
+              onChange={[Function]}
+              value="/StudyVerifyProject"
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Folder
-              </div>
-              <FolderSelect
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
+                context={
+                  {
+                    "activeContainer": Container {
+                      "activeModules": [],
+                      "effectivePermissions": [],
+                      "folderType": "",
+                      "formats": {
+                        "dateFormat": "",
+                        "dateTimeFormat": "",
+                        "numberFormat": "",
+                        "timeFormat": "",
+                      },
+                      "hasRestrictedActiveModule": false,
+                      "iconHref": "",
+                      "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                      "isContainerTab": false,
+                      "isWorkbook": false,
+                      "name": "My Study",
+                      "parentId": "",
+                      "parentPath": "",
+                      "path": "/StudyVerifyProject/My Study",
+                      "sortOrder": 0,
+                      "startUrl": "",
+                      "title": "",
+                      "type": "",
+                    },
+                    "fetchContainers": [Function],
+                    "fetchQueries": [Function],
+                    "fetchSchemas": [Function],
+                    "getExcludedSchemaQueryNames": [Function],
+                  }
+                }
                 disabled={false}
                 id="domainpropertiesrow-lookupContainer-1-1"
-                key="domainpropertiesrow-lookupContainer-1-1"
+                name="domainpropertiesrow-lookupContainer"
                 onChange={[Function]}
                 value="/StudyVerifyProject"
               >
-                <FolderSelectImpl
+                <select
+                  className="form-control"
                   context={
                     {
                       "activeContainer": Container {
@@ -1590,442 +1571,341 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   onChange={[Function]}
                   value="/StudyVerifyProject"
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
-                    context={
-                      {
-                        "activeContainer": Container {
-                          "activeModules": [],
-                          "effectivePermissions": [],
-                          "folderType": "",
-                          "formats": {
-                            "dateFormat": "",
-                            "dateTimeFormat": "",
-                            "numberFormat": "",
-                            "timeFormat": "",
-                          },
-                          "hasRestrictedActiveModule": false,
-                          "iconHref": "",
-                          "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                          "isContainerTab": false,
-                          "isWorkbook": false,
-                          "name": "My Study",
-                          "parentId": "",
-                          "parentPath": "",
-                          "path": "/StudyVerifyProject/My Study",
-                          "sortOrder": 0,
-                          "startUrl": "",
-                          "title": "",
-                          "type": "",
-                        },
-                        "fetchContainers": [Function],
-                        "fetchQueries": [Function],
-                        "fetchSchemas": [Function],
-                        "getExcludedSchemaQueryNames": [Function],
-                      }
-                    }
-                    disabled={false}
-                    id="domainpropertiesrow-lookupContainer-1-1"
-                    name="domainpropertiesrow-lookupContainer"
-                    onChange={[Function]}
+                  <option
+                    key="_current"
+                    value=""
+                  >
+                    Current 
+                    Folder
+                  </option>
+                  <option
+                    key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
                     value="/StudyVerifyProject"
                   >
-                    <select
-                      className="form-control"
-                      context={
-                        {
-                          "activeContainer": Container {
-                            "activeModules": [],
-                            "effectivePermissions": [],
-                            "folderType": "",
-                            "formats": {
-                              "dateFormat": "",
-                              "dateTimeFormat": "",
-                              "numberFormat": "",
-                              "timeFormat": "",
-                            },
-                            "hasRestrictedActiveModule": false,
-                            "iconHref": "",
-                            "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                            "isContainerTab": false,
-                            "isWorkbook": false,
-                            "name": "My Study",
-                            "parentId": "",
-                            "parentPath": "",
-                            "path": "/StudyVerifyProject/My Study",
-                            "sortOrder": 0,
-                            "startUrl": "",
-                            "title": "",
-                            "type": "",
-                          },
-                          "fetchContainers": [Function],
-                          "fetchQueries": [Function],
-                          "fetchSchemas": [Function],
-                          "getExcludedSchemaQueryNames": [Function],
-                        }
-                      }
-                      disabled={false}
-                      id="domainpropertiesrow-lookupContainer-1-1"
-                      name="domainpropertiesrow-lookupContainer"
-                      onChange={[Function]}
-                      value="/StudyVerifyProject"
-                    >
-                      <option
-                        key="_current"
-                        value=""
-                      >
-                        Current 
-                        Folder
-                      </option>
-                      <option
-                        key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
-                        value="/StudyVerifyProject"
-                      >
-                        /StudyVerifyProject
-                      </option>
-                      <option
-                        key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
-                        value="/StudyVerifyProject/My Study"
-                      >
-                        /StudyVerifyProject/My Study
-                      </option>
-                    </select>
-                  </FormControl>
-                </FolderSelectImpl>
-              </FolderSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+                    /StudyVerifyProject
+                  </option>
+                  <option
+                    key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
+                    value="/StudyVerifyProject/My Study"
+                  >
+                    /StudyVerifyProject/My Study
+                  </option>
+                </select>
+              </FormControl>
+            </FolderSelectImpl>
+          </FolderSelect>
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Schema
+          </div>
+          <SchemaSelect
+            containerPath="/StudyVerifyProject"
+            disabled={false}
+            id="domainpropertiesrow-lookupSchema-1-1"
+            key="domainpropertiesrow-lookupSchema-1-1"
+            onChange={[Function]}
+            value=""
+          >
+            <SchemaSelectImpl
+              containerPath="/StudyVerifyProject"
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupSchema-1-1"
+              name="domainpropertiesrow-lookupSchema"
+              onChange={[Function]}
+              value=""
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Schema
-              </div>
-              <SchemaSelect
-                containerPath="/StudyVerifyProject"
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
                 disabled={false}
                 id="domainpropertiesrow-lookupSchema-1-1"
-                key="domainpropertiesrow-lookupSchema-1-1"
+                name="domainpropertiesrow-lookupSchema"
                 onChange={[Function]}
+                placeholder="Select Schema"
                 value=""
               >
-                <SchemaSelectImpl
-                  containerPath="/StudyVerifyProject"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
+                <select
+                  className="form-control"
                   disabled={false}
                   id="domainpropertiesrow-lookupSchema-1-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
+                  placeholder="Select Schema"
                   value=""
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
-                    disabled={false}
-                    id="domainpropertiesrow-lookupSchema-1-1"
-                    name="domainpropertiesrow-lookupSchema"
-                    onChange={[Function]}
-                    placeholder="Select Schema"
-                    value=""
+                  <option
+                    key="_default"
+                  />
+                  <option
+                    key="exp"
+                    value="exp"
                   >
-                    <select
-                      className="form-control"
-                      disabled={false}
-                      id="domainpropertiesrow-lookupSchema-1-1"
-                      name="domainpropertiesrow-lookupSchema"
-                      onChange={[Function]}
-                      placeholder="Select Schema"
-                      value=""
-                    >
-                      <option
-                        key="_default"
-                      />
-                      <option
-                        key="exp"
-                        value="exp"
-                      >
-                        exp
-                      </option>
-                      <option
-                        key="exp.data"
-                        value="exp.data"
-                      >
-                        exp.data
-                      </option>
-                      <option
-                        key="exp.materials"
-                        value="exp.materials"
-                      >
-                        exp.materials
-                      </option>
-                      <option
-                        key="lists"
-                        value="lists"
-                      >
-                        lists
-                      </option>
-                      <option
-                        key="study"
-                        value="study"
-                      >
-                        study
-                      </option>
-                    </select>
-                  </FormControl>
-                </SchemaSelectImpl>
-              </SchemaSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+                    exp
+                  </option>
+                  <option
+                    key="exp.data"
+                    value="exp.data"
+                  >
+                    exp.data
+                  </option>
+                  <option
+                    key="exp.materials"
+                    value="exp.materials"
+                  >
+                    exp.materials
+                  </option>
+                  <option
+                    key="lists"
+                    value="lists"
+                  >
+                    lists
+                  </option>
+                  <option
+                    key="study"
+                    value="study"
+                  >
+                    study
+                  </option>
+                </select>
+              </FormControl>
+            </SchemaSelectImpl>
+          </SchemaSelect>
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Table
+          </div>
+          <TargetTableSelect
+            containerPath="/StudyVerifyProject"
+            disabled={false}
+            id="domainpropertiesrow-lookupQueryValue-1-1"
+            key="domainpropertiesrow-lookupQueryValue-1-1"
+            lookupURI="http://www.w3.org/2001/XMLSchema#int"
+            onChange={[Function]}
+            schemaName=""
+            value=""
+          >
+            <TargetTableSelectImpl
+              containerPath="/StudyVerifyProject"
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupQueryValue-1-1"
+              lookupURI="http://www.w3.org/2001/XMLSchema#int"
+              name="domainpropertiesrow-lookupQueryValue"
+              onChange={[Function]}
+              schemaName=""
+              shouldDisableNonExists={true}
+              value=""
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Table
-              </div>
-              <TargetTableSelect
-                containerPath="/StudyVerifyProject"
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
                 disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1-1"
-                key="domainpropertiesrow-lookupQueryValue-1-1"
-                lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                name="domainpropertiesrow-lookupQueryValue"
                 onChange={[Function]}
-                schemaName=""
                 value=""
               >
-                <TargetTableSelectImpl
-                  containerPath="/StudyVerifyProject"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
+                <select
+                  className="form-control"
                   disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1-1"
-                  lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
-                  schemaName=""
-                  shouldDisableNonExists={true}
                   value=""
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
+                  <option
+                    key="_default"
+                  />
+                  <option
                     disabled={false}
-                    id="domainpropertiesrow-lookupQueryValue-1-1"
-                    name="domainpropertiesrow-lookupQueryValue"
-                    onChange={[Function]}
-                    value=""
                   >
-                    <select
-                      className="form-control"
-                      disabled={false}
-                      id="domainpropertiesrow-lookupQueryValue-1-1"
-                      name="domainpropertiesrow-lookupQueryValue"
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        key="_default"
-                      />
-                      <option
-                        disabled={false}
-                      >
-                         (
-                        Unknown
-                        )
-                      </option>
-                      <option
-                        disabled={false}
-                        key="http://www.w3.org/2001/XMLSchema#int|Data"
-                        value="http://www.w3.org/2001/XMLSchema#int|Data"
-                      >
-                        Data
-                         (
-                        Integer
-                        )
-                      </option>
-                      <option
-                        disabled={false}
-                        key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                        value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                      >
-                        DataInputs
-                         (
-                        Integer
-                        )
-                      </option>
-                      <option
-                        disabled={false}
-                        key="http://www.w3.org/2001/XMLSchema#int|Runs"
-                        value="http://www.w3.org/2001/XMLSchema#int|Runs"
-                      >
-                        Runs
-                         (
-                        Integer
-                        )
-                      </option>
-                    </select>
-                  </FormControl>
-                </TargetTableSelectImpl>
-              </TargetTableSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={6}
+                     (
+                    Unknown
+                    )
+                  </option>
+                  <option
+                    disabled={false}
+                    key="http://www.w3.org/2001/XMLSchema#int|Data"
+                    value="http://www.w3.org/2001/XMLSchema#int|Data"
+                  >
+                    Data
+                     (
+                    Integer
+                    )
+                  </option>
+                  <option
+                    disabled={false}
+                    key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                    value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                  >
+                    DataInputs
+                     (
+                    Integer
+                    )
+                  </option>
+                  <option
+                    disabled={false}
+                    key="http://www.w3.org/2001/XMLSchema#int|Runs"
+                    value="http://www.w3.org/2001/XMLSchema#int|Runs"
+                  >
+                    Runs
+                     (
+                    Integer
+                    )
+                  </option>
+                </select>
+              </FormControl>
+            </TargetTableSelectImpl>
+          </TargetTableSelect>
+        </div>
+        <div
+          className="col-xs-6"
+        >
+          <div
+            className="domain-field-label"
+          >
+            Lookup Validator
+          </div>
+          <Checkbox
+            bsClass="checkbox"
+            checked={false}
+            className="domain-field-checkbox-margin"
+            disabled={false}
+            id="domainpropertiesrow-lookupValidator-1-1"
+            inline={false}
+            name="domainpropertiesrow-lookupValidator"
+            onChange={[Function]}
+            title=""
           >
             <div
-              className="col-xs-6"
+              className="domain-field-checkbox-margin checkbox"
             >
-              <div
-                className="domain-field-label"
-              >
-                Lookup Validator
-              </div>
-              <Checkbox
-                bsClass="checkbox"
-                checked={false}
-                className="domain-field-checkbox-margin"
-                disabled={false}
-                id="domainpropertiesrow-lookupValidator-1-1"
-                inline={false}
-                name="domainpropertiesrow-lookupValidator"
-                onChange={[Function]}
+              <label
                 title=""
               >
-                <div
-                  className="domain-field-checkbox-margin checkbox"
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-lookupValidator-1-1"
+                  name="domainpropertiesrow-lookupValidator"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  className="domain-lookup-validator-text"
                 >
-                  <label
-                    title=""
-                  >
-                    <input
-                      checked={false}
-                      disabled={false}
-                      id="domainpropertiesrow-lookupValidator-1-1"
-                      name="domainpropertiesrow-lookupValidator"
-                      onChange={[Function]}
-                      type="checkbox"
-                    />
-                    <span
-                      className="domain-lookup-validator-text"
-                    >
-                      Ensure Value Exists in Lookup Target
-                    </span>
-                    <LabelHelpTip
-                      title="Lookup Validator"
-                    >
-                      <OverlayTrigger
-                        id="label-help-tip1"
-                        overlay={
-                          <Popover
-                            id="label-help-tip-popover"
-                            title="Lookup Validator"
-                          >
-                            <div>
-                              Lookup validators allow you to require that any value is present in the lookup's target table or query
-                            </div>
-                          </Popover>
-                        }
+                  Ensure Value Exists in Lookup Target
+                </span>
+                <LabelHelpTip
+                  title="Lookup Validator"
+                >
+                  <OverlayTrigger
+                    id="label-help-tip1"
+                    overlay={
+                      <Popover
+                        id="label-help-tip-popover"
+                        title="Lookup Validator"
                       >
-                        <div
-                          className="overlay-trigger"
-                          onClick={[Function]}
-                          onMouseEnter={[Function]}
-                          onMouseLeave={[Function]}
-                        >
-                          <span
-                            className="label-help-target"
-                          >
-                            <span
-                              className="label-help-icon fa fa-question-circle"
-                            />
-                          </span>
+                        <div>
+                          Lookup validators allow you to require that any value is present in the lookup's target table or query
                         </div>
-                      </OverlayTrigger>
-                    </LabelHelpTip>
-                  </label>
-                </div>
-              </Checkbox>
+                      </Popover>
+                    }
+                  >
+                    <div
+                      className="overlay-trigger"
+                      onClick={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      <span
+                        className="label-help-target"
+                      >
+                        <span
+                          className="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </OverlayTrigger>
+                </LabelHelpTip>
+              </label>
             </div>
-          </Col>
+          </Checkbox>
         </div>
-      </Row>
+      </div>
     </div>
   </LookupFieldOptions>
 </MockLookupProvider>
@@ -2201,58 +2081,119 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
     onMultiChange={[MockFunction]}
   >
     <div>
-      <Row
-        bsClass="row"
-        componentClass="div"
+      <div
+        className="row"
       >
         <div
-          className="row"
+          className="col-xs-12"
         >
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={12}
+          <div
+            className="domain-field-section-heading"
           >
-            <div
-              className="col-xs-12"
-            >
-              <div
-                className="domain-field-section-heading"
-              >
-                Lookup Field Options
-              </div>
-            </div>
-          </Col>
+            Lookup Field Options
+          </div>
         </div>
-      </Row>
-      <Row
-        bsClass="row"
-        componentClass="div"
+      </div>
+      <div
+        className="row"
       >
         <div
-          className="row"
+          className="col-xs-2"
         >
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Folder
+          </div>
+          <FolderSelect
+            disabled={false}
+            id="domainpropertiesrow-lookupContainer-1-1"
+            key="domainpropertiesrow-lookupContainer-1-1"
+            onChange={[Function]}
+            value="/StudyVerifyProject/My Study"
+          >
+            <FolderSelectImpl
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupContainer-1-1"
+              name="domainpropertiesrow-lookupContainer"
+              onChange={[Function]}
+              value="/StudyVerifyProject/My Study"
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Folder
-              </div>
-              <FolderSelect
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
+                context={
+                  {
+                    "activeContainer": Container {
+                      "activeModules": [],
+                      "effectivePermissions": [],
+                      "folderType": "",
+                      "formats": {
+                        "dateFormat": "",
+                        "dateTimeFormat": "",
+                        "numberFormat": "",
+                        "timeFormat": "",
+                      },
+                      "hasRestrictedActiveModule": false,
+                      "iconHref": "",
+                      "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                      "isContainerTab": false,
+                      "isWorkbook": false,
+                      "name": "My Study",
+                      "parentId": "",
+                      "parentPath": "",
+                      "path": "/StudyVerifyProject/My Study",
+                      "sortOrder": 0,
+                      "startUrl": "",
+                      "title": "",
+                      "type": "",
+                    },
+                    "fetchContainers": [Function],
+                    "fetchQueries": [Function],
+                    "fetchSchemas": [Function],
+                    "getExcludedSchemaQueryNames": [Function],
+                  }
+                }
                 disabled={false}
                 id="domainpropertiesrow-lookupContainer-1-1"
-                key="domainpropertiesrow-lookupContainer-1-1"
+                name="domainpropertiesrow-lookupContainer"
                 onChange={[Function]}
                 value="/StudyVerifyProject/My Study"
               >
-                <FolderSelectImpl
+                <select
+                  className="form-control"
                   context={
                     {
                       "activeContainer": Container {
@@ -2291,442 +2232,341 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   onChange={[Function]}
                   value="/StudyVerifyProject/My Study"
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
-                    context={
-                      {
-                        "activeContainer": Container {
-                          "activeModules": [],
-                          "effectivePermissions": [],
-                          "folderType": "",
-                          "formats": {
-                            "dateFormat": "",
-                            "dateTimeFormat": "",
-                            "numberFormat": "",
-                            "timeFormat": "",
-                          },
-                          "hasRestrictedActiveModule": false,
-                          "iconHref": "",
-                          "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                          "isContainerTab": false,
-                          "isWorkbook": false,
-                          "name": "My Study",
-                          "parentId": "",
-                          "parentPath": "",
-                          "path": "/StudyVerifyProject/My Study",
-                          "sortOrder": 0,
-                          "startUrl": "",
-                          "title": "",
-                          "type": "",
-                        },
-                        "fetchContainers": [Function],
-                        "fetchQueries": [Function],
-                        "fetchSchemas": [Function],
-                        "getExcludedSchemaQueryNames": [Function],
-                      }
-                    }
-                    disabled={false}
-                    id="domainpropertiesrow-lookupContainer-1-1"
-                    name="domainpropertiesrow-lookupContainer"
-                    onChange={[Function]}
+                  <option
+                    key="_current"
+                    value=""
+                  >
+                    Current 
+                    Folder
+                  </option>
+                  <option
+                    key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
+                    value="/StudyVerifyProject"
+                  >
+                    /StudyVerifyProject
+                  </option>
+                  <option
+                    key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
                     value="/StudyVerifyProject/My Study"
                   >
-                    <select
-                      className="form-control"
-                      context={
-                        {
-                          "activeContainer": Container {
-                            "activeModules": [],
-                            "effectivePermissions": [],
-                            "folderType": "",
-                            "formats": {
-                              "dateFormat": "",
-                              "dateTimeFormat": "",
-                              "numberFormat": "",
-                              "timeFormat": "",
-                            },
-                            "hasRestrictedActiveModule": false,
-                            "iconHref": "",
-                            "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                            "isContainerTab": false,
-                            "isWorkbook": false,
-                            "name": "My Study",
-                            "parentId": "",
-                            "parentPath": "",
-                            "path": "/StudyVerifyProject/My Study",
-                            "sortOrder": 0,
-                            "startUrl": "",
-                            "title": "",
-                            "type": "",
-                          },
-                          "fetchContainers": [Function],
-                          "fetchQueries": [Function],
-                          "fetchSchemas": [Function],
-                          "getExcludedSchemaQueryNames": [Function],
-                        }
-                      }
-                      disabled={false}
-                      id="domainpropertiesrow-lookupContainer-1-1"
-                      name="domainpropertiesrow-lookupContainer"
-                      onChange={[Function]}
-                      value="/StudyVerifyProject/My Study"
-                    >
-                      <option
-                        key="_current"
-                        value=""
-                      >
-                        Current 
-                        Folder
-                      </option>
-                      <option
-                        key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
-                        value="/StudyVerifyProject"
-                      >
-                        /StudyVerifyProject
-                      </option>
-                      <option
-                        key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
-                        value="/StudyVerifyProject/My Study"
-                      >
-                        /StudyVerifyProject/My Study
-                      </option>
-                    </select>
-                  </FormControl>
-                </FolderSelectImpl>
-              </FolderSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+                    /StudyVerifyProject/My Study
+                  </option>
+                </select>
+              </FormControl>
+            </FolderSelectImpl>
+          </FolderSelect>
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Schema
+          </div>
+          <SchemaSelect
+            containerPath="/StudyVerifyProject/My Study"
+            disabled={false}
+            id="domainpropertiesrow-lookupSchema-1-1"
+            key="domainpropertiesrow-lookupSchema-1-1"
+            onChange={[Function]}
+            value="study"
+          >
+            <SchemaSelectImpl
+              containerPath="/StudyVerifyProject/My Study"
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupSchema-1-1"
+              name="domainpropertiesrow-lookupSchema"
+              onChange={[Function]}
+              value="study"
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Schema
-              </div>
-              <SchemaSelect
-                containerPath="/StudyVerifyProject/My Study"
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
                 disabled={false}
                 id="domainpropertiesrow-lookupSchema-1-1"
-                key="domainpropertiesrow-lookupSchema-1-1"
+                name="domainpropertiesrow-lookupSchema"
                 onChange={[Function]}
+                placeholder="Select Schema"
                 value="study"
               >
-                <SchemaSelectImpl
-                  containerPath="/StudyVerifyProject/My Study"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
+                <select
+                  className="form-control"
                   disabled={false}
                   id="domainpropertiesrow-lookupSchema-1-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
+                  placeholder="Select Schema"
                   value="study"
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
-                    disabled={false}
-                    id="domainpropertiesrow-lookupSchema-1-1"
-                    name="domainpropertiesrow-lookupSchema"
-                    onChange={[Function]}
-                    placeholder="Select Schema"
+                  <option
+                    key="exp"
+                    value="exp"
+                  >
+                    exp
+                  </option>
+                  <option
+                    key="exp.data"
+                    value="exp.data"
+                  >
+                    exp.data
+                  </option>
+                  <option
+                    key="exp.materials"
+                    value="exp.materials"
+                  >
+                    exp.materials
+                  </option>
+                  <option
+                    key="lists"
+                    value="lists"
+                  >
+                    lists
+                  </option>
+                  <option
+                    key="study"
                     value="study"
                   >
-                    <select
-                      className="form-control"
-                      disabled={false}
-                      id="domainpropertiesrow-lookupSchema-1-1"
-                      name="domainpropertiesrow-lookupSchema"
-                      onChange={[Function]}
-                      placeholder="Select Schema"
-                      value="study"
-                    >
-                      <option
-                        key="exp"
-                        value="exp"
-                      >
-                        exp
-                      </option>
-                      <option
-                        key="exp.data"
-                        value="exp.data"
-                      >
-                        exp.data
-                      </option>
-                      <option
-                        key="exp.materials"
-                        value="exp.materials"
-                      >
-                        exp.materials
-                      </option>
-                      <option
-                        key="lists"
-                        value="lists"
-                      >
-                        lists
-                      </option>
-                      <option
-                        key="study"
-                        value="study"
-                      >
-                        study
-                      </option>
-                    </select>
-                  </FormControl>
-                </SchemaSelectImpl>
-              </SchemaSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={2}
+                    study
+                  </option>
+                </select>
+              </FormControl>
+            </SchemaSelectImpl>
+          </SchemaSelect>
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <div
+            className="domain-field-label"
           >
-            <div
-              className="col-xs-2"
+            Target Table
+          </div>
+          <TargetTableSelect
+            containerPath="/StudyVerifyProject/My Study"
+            disabled={false}
+            id="domainpropertiesrow-lookupQueryValue-1-1"
+            key="domainpropertiesrow-lookupQueryValue-1-1"
+            lookupIsValid={true}
+            lookupURI="http://www.w3.org/2001/XMLSchema#int"
+            onChange={[Function]}
+            schemaName="study"
+            shouldDisableNonExists={true}
+            value=""
+          >
+            <TargetTableSelectImpl
+              containerPath="/StudyVerifyProject/My Study"
+              context={
+                {
+                  "activeContainer": Container {
+                    "activeModules": [],
+                    "effectivePermissions": [],
+                    "folderType": "",
+                    "formats": {
+                      "dateFormat": "",
+                      "dateTimeFormat": "",
+                      "numberFormat": "",
+                      "timeFormat": "",
+                    },
+                    "hasRestrictedActiveModule": false,
+                    "iconHref": "",
+                    "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
+                    "isContainerTab": false,
+                    "isWorkbook": false,
+                    "name": "My Study",
+                    "parentId": "",
+                    "parentPath": "",
+                    "path": "/StudyVerifyProject/My Study",
+                    "sortOrder": 0,
+                    "startUrl": "",
+                    "title": "",
+                    "type": "",
+                  },
+                  "fetchContainers": [Function],
+                  "fetchQueries": [Function],
+                  "fetchSchemas": [Function],
+                  "getExcludedSchemaQueryNames": [Function],
+                }
+              }
+              disabled={false}
+              id="domainpropertiesrow-lookupQueryValue-1-1"
+              lookupIsValid={true}
+              lookupURI="http://www.w3.org/2001/XMLSchema#int"
+              name="domainpropertiesrow-lookupQueryValue"
+              onChange={[Function]}
+              schemaName="study"
+              shouldDisableNonExists={true}
+              value=""
             >
-              <div
-                className="domain-field-label"
-              >
-                Target Table
-              </div>
-              <TargetTableSelect
-                containerPath="/StudyVerifyProject/My Study"
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
                 disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1-1"
-                key="domainpropertiesrow-lookupQueryValue-1-1"
-                lookupIsValid={true}
-                lookupURI="http://www.w3.org/2001/XMLSchema#int"
+                name="domainpropertiesrow-lookupQueryValue"
                 onChange={[Function]}
-                schemaName="study"
-                shouldDisableNonExists={true}
                 value=""
               >
-                <TargetTableSelectImpl
-                  containerPath="/StudyVerifyProject/My Study"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
+                <select
+                  className="form-control"
                   disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1-1"
-                  lookupIsValid={true}
-                  lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
-                  schemaName="study"
-                  shouldDisableNonExists={true}
                   value=""
                 >
-                  <FormControl
-                    bsClass="form-control"
-                    componentClass="select"
+                  <option
+                    key="_default"
+                  />
+                  <option
                     disabled={false}
-                    id="domainpropertiesrow-lookupQueryValue-1-1"
-                    name="domainpropertiesrow-lookupQueryValue"
-                    onChange={[Function]}
-                    value=""
                   >
-                    <select
-                      className="form-control"
-                      disabled={false}
-                      id="domainpropertiesrow-lookupQueryValue-1-1"
-                      name="domainpropertiesrow-lookupQueryValue"
-                      onChange={[Function]}
-                      value=""
-                    >
-                      <option
-                        key="_default"
-                      />
-                      <option
-                        disabled={false}
-                      >
-                         (
-                        Lookup
-                        )
-                      </option>
-                      <option
-                        disabled={false}
-                        key="http://www.w3.org/2001/XMLSchema#int|Data"
-                        value="http://www.w3.org/2001/XMLSchema#int|Data"
-                      >
-                        Data
-                         (
-                        Integer
-                        )
-                      </option>
-                      <option
-                        disabled={false}
-                        key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                        value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                      >
-                        DataInputs
-                         (
-                        Integer
-                        )
-                      </option>
-                      <option
-                        disabled={false}
-                        key="http://www.w3.org/2001/XMLSchema#int|Runs"
-                        value="http://www.w3.org/2001/XMLSchema#int|Runs"
-                      >
-                        Runs
-                         (
-                        Integer
-                        )
-                      </option>
-                    </select>
-                  </FormControl>
-                </TargetTableSelectImpl>
-              </TargetTableSelect>
-            </div>
-          </Col>
-          <Col
-            bsClass="col"
-            componentClass="div"
-            xs={6}
+                     (
+                    Lookup
+                    )
+                  </option>
+                  <option
+                    disabled={false}
+                    key="http://www.w3.org/2001/XMLSchema#int|Data"
+                    value="http://www.w3.org/2001/XMLSchema#int|Data"
+                  >
+                    Data
+                     (
+                    Integer
+                    )
+                  </option>
+                  <option
+                    disabled={false}
+                    key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                    value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                  >
+                    DataInputs
+                     (
+                    Integer
+                    )
+                  </option>
+                  <option
+                    disabled={false}
+                    key="http://www.w3.org/2001/XMLSchema#int|Runs"
+                    value="http://www.w3.org/2001/XMLSchema#int|Runs"
+                  >
+                    Runs
+                     (
+                    Integer
+                    )
+                  </option>
+                </select>
+              </FormControl>
+            </TargetTableSelectImpl>
+          </TargetTableSelect>
+        </div>
+        <div
+          className="col-xs-6"
+        >
+          <div
+            className="domain-field-label"
+          >
+            Lookup Validator
+          </div>
+          <Checkbox
+            bsClass="checkbox"
+            checked={false}
+            className="domain-field-checkbox-margin"
+            disabled={false}
+            id="domainpropertiesrow-lookupValidator-1-1"
+            inline={false}
+            name="domainpropertiesrow-lookupValidator"
+            onChange={[Function]}
+            title=""
           >
             <div
-              className="col-xs-6"
+              className="domain-field-checkbox-margin checkbox"
             >
-              <div
-                className="domain-field-label"
-              >
-                Lookup Validator
-              </div>
-              <Checkbox
-                bsClass="checkbox"
-                checked={false}
-                className="domain-field-checkbox-margin"
-                disabled={false}
-                id="domainpropertiesrow-lookupValidator-1-1"
-                inline={false}
-                name="domainpropertiesrow-lookupValidator"
-                onChange={[Function]}
+              <label
                 title=""
               >
-                <div
-                  className="domain-field-checkbox-margin checkbox"
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-lookupValidator-1-1"
+                  name="domainpropertiesrow-lookupValidator"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  className="domain-lookup-validator-text"
                 >
-                  <label
-                    title=""
-                  >
-                    <input
-                      checked={false}
-                      disabled={false}
-                      id="domainpropertiesrow-lookupValidator-1-1"
-                      name="domainpropertiesrow-lookupValidator"
-                      onChange={[Function]}
-                      type="checkbox"
-                    />
-                    <span
-                      className="domain-lookup-validator-text"
-                    >
-                      Ensure Value Exists in Lookup Target
-                    </span>
-                    <LabelHelpTip
-                      title="Lookup Validator"
-                    >
-                      <OverlayTrigger
-                        id="label-help-tip2"
-                        overlay={
-                          <Popover
-                            id="label-help-tip-popover"
-                            title="Lookup Validator"
-                          >
-                            <div>
-                              Lookup validators allow you to require that any value is present in the lookup's target table or query
-                            </div>
-                          </Popover>
-                        }
+                  Ensure Value Exists in Lookup Target
+                </span>
+                <LabelHelpTip
+                  title="Lookup Validator"
+                >
+                  <OverlayTrigger
+                    id="label-help-tip2"
+                    overlay={
+                      <Popover
+                        id="label-help-tip-popover"
+                        title="Lookup Validator"
                       >
-                        <div
-                          className="overlay-trigger"
-                          onClick={[Function]}
-                          onMouseEnter={[Function]}
-                          onMouseLeave={[Function]}
-                        >
-                          <span
-                            className="label-help-target"
-                          >
-                            <span
-                              className="label-help-icon fa fa-question-circle"
-                            />
-                          </span>
+                        <div>
+                          Lookup validators allow you to require that any value is present in the lookup's target table or query
                         </div>
-                      </OverlayTrigger>
-                    </LabelHelpTip>
-                  </label>
-                </div>
-              </Checkbox>
+                      </Popover>
+                    }
+                  >
+                    <div
+                      className="overlay-trigger"
+                      onClick={[Function]}
+                      onMouseEnter={[Function]}
+                      onMouseLeave={[Function]}
+                    >
+                      <span
+                        className="label-help-target"
+                      >
+                        <span
+                          className="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </OverlayTrigger>
+                </LabelHelpTip>
+              </label>
             </div>
-          </Col>
+          </Checkbox>
         </div>
-      </Row>
+      </div>
     </div>
   </LookupFieldOptions>
 </MockLookupProvider>

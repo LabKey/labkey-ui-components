@@ -176,9 +176,7 @@ exports[`<ParentAliasRow/> With parent value not an option in select 1`] = `
       </div>
     </div>
   </div>
-  <div
-    className=""
-  >
+  <div>
     <div
       className="entity-insert--remove-parent"
     >
@@ -372,9 +370,7 @@ exports[`<ParentAliasRow/> With values 1`] = `
       </div>
     </div>
   </div>
-  <div
-    className=""
-  >
+  <div>
     <div
       className="entity-insert--remove-parent"
     >

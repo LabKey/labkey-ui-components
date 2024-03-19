@@ -12,7 +12,7 @@ exports[`SetKeyFieldNamePanel existing list, given properties 1`] = `
       " to define your own below.
     </div>
     <div
-      class="list__set-key-panel row"
+      class="row list__set-key-panel"
     >
       <div
         class="col-xs-3"
@@ -102,7 +102,7 @@ exports[`SetKeyFieldNamePanel list with auto integer key 1`] = `
       " to define your own below.
     </div>
     <div
-      class="list__set-key-panel row"
+      class="row list__set-key-panel"
     >
       <div
         class="col-xs-3"
@@ -192,7 +192,7 @@ exports[`SetKeyFieldNamePanel new list, default properties 1`] = `
       " to define your own below.
     </div>
     <div
-      class="list__set-key-panel row"
+      class="row list__set-key-panel"
     >
       <div
         class="col-xs-3"

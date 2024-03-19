@@ -4,7 +4,7 @@
  */
 import React, { FC, memo, PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
-import { Col, Row } from 'react-bootstrap';
+
 import { Filter } from '@labkey/api';
 import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 
@@ -311,8 +311,8 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
 
         return (
             <>
-                <Row>
-                    <Col xs={12} md={showDetailsPanel ? 8 : 12}>
+                <div className="row">
+                    <div className={`col-xs-12 col-md-${showDetailsPanel ? 8 : 12}`}>
                         {!model && <LoadingSpinner />}
                         {model && (
                             <GridPanel
@@ -324,18 +324,18 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                                 highlightLastSelectedRow
                             />
                         )}
-                    </Col>
+                    </div>
                     {showDetailsPanel && (
-                        <Col xs={12} md={4}>
+                        <div className="col-xs-12 col-md-4">
                             <UserDetailsPanel
                                 {...this.props}
                                 currentUser={user}
                                 userId={selectedUserId}
                                 onUsersStateChangeComplete={this.onUsersStateChangeComplete}
                             />
-                        </Col>
+                        </div>
                     )}
-                </Row>
+                </div>
                 {user.hasAddUsersPermission() && showDialog === 'create' && (
                     <CreateUsersModal
                         userLimitSettings={userLimitSettings}

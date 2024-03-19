@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { Col, Checkbox, Radio, Row } from 'react-bootstrap';
+import { Checkbox, Radio } from 'react-bootstrap';
 
 import { SelectInput } from '../../forms/input/SelectInput';
 
@@ -47,17 +47,15 @@ export class DescriptionInput extends React.PureComponent<BasicPropertiesInputsP
         const value = model.description === null ? '' : model.description;
 
         return (
-            <Row className="margin-top">
-                <Col xs={4}>
+            <div className="row margin-top">
+                <div className="col-xs-4">
                     <DomainFieldLabel label="Description" />
-                </Col>
+                </div>
 
-                <Col xs={7}>
+                <div className="col-xs-7">
                     <textarea className="form-control" id="description" value={value} onChange={onInputChange} />
-                </Col>
-
-                <Col xs={1} />
-            </Row>
+                </div>
+            </div>
         );
     }
 }
@@ -120,16 +118,16 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
 
                 <DescriptionInput model={model} onInputChange={onInputChange} />
 
-                <Row className="margin-top">
-                    <Col xs={4}>
+                <div className="row margin-top">
+                    <div className="col-xs-4">
                         <DomainFieldLabel
                             label="Category"
                             required={false}
                             helpTipBody={this.getHelpTipElement('category')}
                         />
-                    </Col>
+                    </div>
 
-                    <Col xs={7}>
+                    <div className="col-xs-7">
                         <SelectInput
                             allowCreate
                             containerClass=""
@@ -141,10 +139,10 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                             placeholder="Select dataset category"
                             value={model.category}
                         />
-                    </Col>
+                    </div>
 
-                    <Col xs={1} />
-                </Row>
+                    <div className="col-xs-1" />
+                </div>
             </>
         );
     }

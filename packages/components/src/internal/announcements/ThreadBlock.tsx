@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
-import { Modal as BSModal } from 'react-bootstrap';
 import moment from 'moment';
 import { User, UserWithPermissions } from '@labkey/api';
 

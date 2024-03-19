@@ -16,7 +16,7 @@
 
 import React from 'react';
 
-import { Col, Row } from 'react-bootstrap';
+
 
 import { List } from 'immutable';
 
@@ -139,11 +139,11 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                     Columns already existing in the base dataset can be mapped with columns from your file. Choose a
                     column to map your {participantIdTxt} and {timepointTxt}.
                 </div>
-                <Row className="margin-top">
-                    <Col lg={2} xs={2}>
+                <div className="row margin-top">
+                    <div className="col-xs-2 col-lg-2">
                         <DomainFieldLabel label={participantIdTxt} />
-                    </Col>
-                    <Col lg={4} xs={5}>
+                    </div>
+                    <div className="col-xs-5 col-lg-4">
                         <SelectInput
                             onChange={this.onSelectChange}
                             value={closestParticipantIdField}
@@ -155,14 +155,13 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                             labelKey="name"
                             valueKey="name"
                         />
-                    </Col>
-                    <Col lg={6} xs={5} />
-                </Row>
-                <Row className="margin-top">
-                    <Col lg={2} xs={2}>
+                    </div>
+                </div>
+                <div className="row margin-top">
+                    <div className="col-xs-2 col-lg-2">
                         <DomainFieldLabel label={timepointTxt} />
-                    </Col>
-                    <Col lg={4} xs={5}>
+                    </div>
+                    <div className="col-xs-5 col-lg-4">
                         <SelectInput
                             onChange={this.onSelectChange}
                             value={closestTimepointField}
@@ -174,9 +173,8 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                             labelKey="name"
                             valueKey="name"
                         />
-                    </Col>
-                    <Col lg={6} xs={5} />
-                </Row>
+                    </div>
+                </div>
             </>
         );
     }

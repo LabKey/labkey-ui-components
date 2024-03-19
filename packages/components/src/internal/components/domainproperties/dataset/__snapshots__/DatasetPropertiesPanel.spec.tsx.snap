@@ -2,7 +2,7 @@
 
 exports[`Dataset Properties Panel Edit existing dataset 1`] = `
 <div
-  className="domain-form-panel lk-border-theme-light panel panel-default"
+  className="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
     className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -37,7 +37,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
       className="panel-body"
     >
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-12"
@@ -64,7 +64,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
         className="row"
       >
         <div
-          className="col-md-5 col-xs-12"
+          className="col-xs-12 col-md-5"
         >
           <div
             className="domain-field-section-heading"
@@ -72,7 +72,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
             Basic Properties
           </div>
           <div
-            className="margin-top row"
+            className="row margin-top"
           >
             <div
               className="col-xs-4"
@@ -116,7 +116,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
             />
           </div>
           <div
-            className="margin-top row"
+            className="row margin-top"
           >
             <div
               className="col-xs-4"
@@ -159,7 +159,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
             />
           </div>
           <div
-            className="margin-top row"
+            className="row margin-top"
           >
             <div
               className="col-xs-4"
@@ -181,12 +181,9 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 value="This is the first dataset"
               />
             </div>
-            <div
-              className="col-xs-1"
-            />
           </div>
           <div
-            className="margin-top row"
+            className="row margin-top"
           >
             <div
               className="col-xs-4"
@@ -352,7 +349,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
           </div>
         </div>
         <div
-          className="col-md-5 col-xs-12"
+          className="col-xs-12 col-md-5"
         >
           <div
             className="domain-field-section-heading"
@@ -438,7 +435,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
             className="dataset_data_row_element_show"
           >
             <div
-              className="margin-top row"
+              className="row margin-top"
             >
               <div
                 className="col-xs-5"
@@ -604,7 +601,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
           </div>
         </div>
         <div
-          className="col-md-2 col-xs-12"
+          className="col-xs-12 col-md-2"
         >
           <button
             className="domain-field-float-right btn btn-default"
@@ -622,7 +619,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
 
 exports[`Dataset Properties Panel New dataset 1`] = `
 <div
-  className="domain-form-panel lk-border-theme-light panel panel-default"
+  className="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
     className="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -657,7 +654,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
       className="panel-body"
     >
       <div
-        className="margin-bottom row"
+        className="row margin-bottom"
       >
         <div
           className="col-xs-12"
@@ -684,7 +681,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
         className="row"
       >
         <div
-          className="col-md-5 col-xs-12"
+          className="col-xs-12 col-md-5"
         >
           <div
             className="domain-field-section-heading"
@@ -692,7 +689,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             Basic Properties
           </div>
           <div
-            className="margin-top row"
+            className="row margin-top"
           >
             <div
               className="col-xs-4"
@@ -736,7 +733,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             />
           </div>
           <div
-            className="margin-top row"
+            className="row margin-top"
           >
             <div
               className="col-xs-4"
@@ -779,7 +776,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             />
           </div>
           <div
-            className="margin-top row"
+            className="row margin-top"
           >
             <div
               className="col-xs-4"
@@ -801,12 +798,9 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                 value=""
               />
             </div>
-            <div
-              className="col-xs-1"
-            />
           </div>
           <div
-            className="margin-top row"
+            className="row margin-top"
           >
             <div
               className="col-xs-4"
@@ -955,7 +949,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
           </div>
         </div>
         <div
-          className="col-md-5 col-xs-12"
+          className="col-xs-12 col-md-5"
         >
           <div
             className="domain-field-section-heading"
@@ -1041,7 +1035,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             className="dataset_data_row_element_hide"
           >
             <div
-              className="margin-top row"
+              className="row margin-top"
             >
               <div
                 className="col-xs-5"
@@ -1204,7 +1198,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
           </div>
         </div>
         <div
-          className="col-md-2 col-xs-12"
+          className="col-xs-12 col-md-2"
         >
           <button
             className="domain-field-float-right btn btn-default"

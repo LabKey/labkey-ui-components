@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+
 import { Filter, Query } from '@labkey/api';
 
 import { naturalSort } from '../../../public/sort';
@@ -170,17 +170,17 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     </div>
                 )}
                 {!allShown && (
-                    <Row>
-                        <Col xs={12} className="bottom-spacing">
+                    <div className="row">
+                        <div className="col-xs-12 bottom-spacing">
                             <div>
                                 There are more than {MAX_DISTINCT_FILTER_OPTIONS} distinct values. Use the filter box
                                 above to find additional values.
                             </div>
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
                 )}
-                <Row>
-                    <Col xs={taggedValues?.length > 0 ? 6 : 12}>
+                <div className="row">
+                    <div className={`col-xs-${taggedValues?.length > 0 ? 6 : 12}`}>
                         {loading && <LoadingSpinner />}
                         {!loading && (
                             <ul className="nav nav-stacked labkey-wizard-pills">
@@ -214,9 +214,9 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                 )}
                             </ul>
                         )}
-                    </Col>
+                    </div>
                     {taggedValues?.length > 0 && (
-                        <Col xs={6}>
+                        <div className="col-xs-6">
                             <div className="filter-faceted__tags-title">Selected</div>
                             <ul className="nav nav-stacked labkey-wizard-pills filter-faceted__tags-div">
                                 {taggedValues?.map((value, index) => {
@@ -237,9 +237,9 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                                     );
                                 })}
                             </ul>
-                        </Col>
+                        </div>
                     )}
-                </Row>
+                </div>
             </div>
         </>
     );

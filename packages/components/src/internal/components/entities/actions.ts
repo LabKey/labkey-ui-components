@@ -122,12 +122,12 @@ export async function getOperationConfirmationData(
                             rowIds
                         );
                     }
-                    resolve(new OperationConfirmationData(
-                        {
+                    resolve(
+                        new OperationConfirmationData({
                             ...response.data,
                             notPermitted,
-                        }
-                    ));
+                        })
+                    );
                 } else {
                     console.error('Response failure when getting operation confirmation data', response.exception);
                     reject(response.exception);
@@ -189,7 +189,7 @@ export async function getNotPermittedData(
         );
     } catch (reason) {
         console.error('There was a problem retrieving data about permissions.', reason);
-        Promise.reject(resolveErrorMessage(reason));
+        return Promise.reject(resolveErrorMessage(reason));
     }
 }
 
@@ -830,7 +830,7 @@ export function getContainersFromSelections(
 
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('experiment', 'getContainersFromSelections.api'),
+            url: buildURL('experiment', 'getSelectedContainers.api'),
             method: 'POST',
             jsonData: {
                 dataRegionSelectionKey,
@@ -853,8 +853,7 @@ export function getContainersFromSelections(
             }),
         });
     });
-};
-
+}
 
 export type ParentIdData = {
     parentId: string | number;

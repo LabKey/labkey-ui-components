@@ -513,6 +513,7 @@ export interface EntityDataType {
     isFromSharedContainer?: boolean;
     labelColorCol?: string;
     listingSchemaQuery: SchemaQuery;
+    moveNoun?: string;
     nounAsParentPlural: string;
     nounAsParentSingular: string;
     nounPlural: string;

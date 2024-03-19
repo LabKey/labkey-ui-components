@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - add saveBtnClickedCount prop to allow buttons defined outside the grid notify grid of appropriate actions
   - add gridTabHeaderComponent and bulkTabHeaderComponent to allow additional header items, such as BoxFillOptions
 
+### version 3.29.0
+*Released*: 19 March 2024
+- Updates to allow moving from multiple folders into one
+
 ### version 3.28.0
 *Released*: 13 March 2024
 - Consolidate logic for generating filters for editable grid cell lookups into `getLookupFilters()` utility

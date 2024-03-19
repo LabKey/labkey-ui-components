@@ -247,10 +247,10 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
 
     if (asPanel) {
         return (
-            <Panel>
-                <Panel.Heading>Details</Panel.Heading>
-                <Panel.Body>{body}</Panel.Body>
-            </Panel>
+            <div className="panel panel-default">
+                <div className="panel-heading">Details</div>
+                <div className="panel-body">{body}</div>
+            </div>
         );
     }
 

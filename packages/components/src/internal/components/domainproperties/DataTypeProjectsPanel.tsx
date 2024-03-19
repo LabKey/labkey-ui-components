@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+
 
 import { hasProductProjects } from '../../app/utils';
 
@@ -161,9 +161,9 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
             {isLoading(loading) ? (
                 <LoadingSpinner />
             ) : (
-                <Row>
+                <div className="row">
                     {!relatedProjectConfigurableDataType && (
-                        <Col xs={12} className="bottom-spacing">
+                        <div className="col-xs-12 bottom-spacing">
                             <DataTypeSelector
                                 entityDataType={entityDataType}
                                 allDataCounts={allDataCounts}
@@ -174,11 +174,11 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                                 noHeader
                                 columns={2}
                             />
-                        </Col>
+                        </div>
                     )}
                     {!!relatedProjectConfigurableDataType && (
                         <>
-                            <Col xs={6} className="bottom-spacing">
+                            <div className="col-xs-6 bottom-spacing">
                                 <DataTypeSelector
                                     entityDataType={entityDataType}
                                     allDataCounts={allDataCounts}
@@ -187,8 +187,8 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                                     uncheckedEntitiesDB={excludedProjectIdsDB}
                                     dataTypeLabel="Include in Projects"
                                 />
-                            </Col>
-                            <Col xs={6} className="bottom-spacing">
+                            </div>
+                            <div className="col-xs-6 bottom-spacing">
                                 <DataTypeSelector
                                     dataTypePrefix="Dashboard"
                                     entityDataType={entityDataType}
@@ -198,10 +198,10 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                                     hiddenEntities={excludedProjectIds}
                                     dataTypeLabel={relatedDataTypeLabel}
                                 />
-                            </Col>
+                            </div>
                         </>
                     )}
-                </Row>
+                </div>
             )}
         </BasePropertiesPanel>
     );

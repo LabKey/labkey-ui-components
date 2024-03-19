@@ -264,9 +264,9 @@ export class ReportList extends PureComponent<ReportListProps> {
         }
 
         return (
-            <Panel>
-                <div className="report-list">{body}</div>
-            </Panel>
+            <div className="panel panel-default">
+                <div className="panel-body report-list">{body}</div>
+            </div>
         );
     }
 }

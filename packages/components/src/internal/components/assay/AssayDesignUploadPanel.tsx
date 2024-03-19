@@ -1,5 +1,4 @@
 import React, { FC, memo } from 'react';
-import { Col, Row } from 'react-bootstrap';
 
 import { ActionURL } from '@labkey/api';
 import { Map } from 'immutable';
@@ -20,8 +19,8 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
 
     return (
         <div>
-            <Row>
-                <Col xs={6}>
+            <div className="row">
+                <div className="col-xs-6">
                     <div className="margin-bottom">
                         <b>Import .XAR or .XAR.XML file</b>
                     </div>
@@ -32,10 +31,10 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
                         </a>{' '}
                         file here. You will be able to customize the design after importing.
                     </p>
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={12}>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-xs-12">
                     <FileAttachmentForm
                         acceptedFormats=".XAR, .XAR.XML, .xar, .xar.xml"
                         showAcceptedFormats={false}
@@ -45,11 +44,11 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
                         onFileChange={onFileChange}
                         onFileRemoval={onFileRemove}
                     />
-                </Col>
-            </Row>
+                </div>
+            </div>
             {children}
-            <Row>
-                <Col xs={6}>
+            <div className="row">
+                <div className="col-xs-6">
                     <div className="margin-top margin-bottom">
                         <b>Import through data pipeline</b>
                     </div>
@@ -64,8 +63,8 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
                             <a href={ActionURL.buildURL('pipeline', 'browse')}>Use data pipeline</a>
                         </p>
                     </div>
-                </Col>
-            </Row>
+                </div>
+            </div>
         </div>
     );
 });

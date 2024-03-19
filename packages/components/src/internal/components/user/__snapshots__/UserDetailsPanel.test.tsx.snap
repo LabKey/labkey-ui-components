@@ -3,7 +3,7 @@
 exports[`<UserDetailsPanel/> no principal 1`] = `
 <div>
   <div
-    class="user-details-panel panel panel-default"
+    class="panel panel-default user-details-panel"
   >
     <div
       class="panel-heading"
@@ -24,7 +24,7 @@ exports[`<UserDetailsPanel/> no principal 1`] = `
 exports[`<UserDetailsPanel/> unknown user props 1`] = `
 <div>
   <div
-    class="user-details-panel panel panel-default"
+    class="panel panel-default user-details-panel"
   >
     <div
       class="panel-heading"
@@ -40,12 +40,12 @@ exports[`<UserDetailsPanel/> unknown user props 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Email
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           unknown
         </div>
@@ -57,12 +57,12 @@ exports[`<UserDetailsPanel/> unknown user props 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Last Login
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           unknown
         </div>
@@ -71,12 +71,12 @@ exports[`<UserDetailsPanel/> unknown user props 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Created
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           unknown
         </div>
@@ -88,12 +88,12 @@ exports[`<UserDetailsPanel/> unknown user props 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           User ID
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           1234
         </div>
@@ -123,7 +123,7 @@ exports[`<UserDetailsPanel/> unknown user props 1`] = `
 exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
 <div>
   <div
-    class="user-details-panel panel panel-default"
+    class="panel panel-default user-details-panel"
   >
     <div
       class="panel-heading"
@@ -139,12 +139,12 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Email
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           cnathe@labkey.com
         </div>
@@ -156,12 +156,12 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Last Login
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           2020-01-06 15:30
         </div>
@@ -170,12 +170,12 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Created
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           2017-05-08 08:43
         </div>
@@ -187,12 +187,12 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           User ID
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           1004
         </div>
@@ -222,7 +222,7 @@ exports[`<UserDetailsPanel/> with principal and buttons 1`] = `
 exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allowResetPassword 1`] = `
 <div>
   <div
-    class="user-details-panel panel panel-default"
+    class="panel panel-default user-details-panel"
   >
     <div
       class="panel-heading"
@@ -238,12 +238,12 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Email
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           cnathe@labkey.com
         </div>
@@ -255,12 +255,12 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Last Login
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           2020-01-06 15:30
         </div>
@@ -269,12 +269,12 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Created
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           2017-05-08 08:43
         </div>
@@ -286,12 +286,12 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           User ID
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           1004
         </div>
@@ -314,7 +314,7 @@ exports[`<UserDetailsPanel/> with principal and buttons not allowDelete or allow
 exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
 <div>
   <div
-    class="user-details-panel panel panel-default"
+    class="panel panel-default user-details-panel"
   >
     <div
       class="panel-heading"
@@ -335,12 +335,12 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Name
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           test1 test2
         </div>
@@ -349,12 +349,12 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Email
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           reader_email_address_might_be_long@localhost.test
         </div>
@@ -363,12 +363,12 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Description
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           This is my user description of what I do for the company. Isn't it really interesting?
         </div>
@@ -380,12 +380,12 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Last Login
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           2019-11-18 09:15
         </div>
@@ -394,12 +394,12 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Created
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           2017-10-27 11:34
         </div>
@@ -411,12 +411,12 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           User ID
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           4973
         </div>
@@ -425,12 +425,12 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Has Password
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           true
         </div>
@@ -442,12 +442,12 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Effective Roles
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           <ul
             class="principal-detail-ul"
@@ -516,12 +516,12 @@ exports[`<UserDetailsPanel/> with principal no buttons because of self 1`] = `
         class="row"
       >
         <div
-          class="principal-detail-label col-xs-4"
+          class="col-xs-4 principal-detail-label"
         >
           Groups
         </div>
         <div
-          class="principal-detail-value col-xs-8"
+          class="col-xs-8 principal-detail-value"
         >
           <ul
             class="principal-detail-ul"

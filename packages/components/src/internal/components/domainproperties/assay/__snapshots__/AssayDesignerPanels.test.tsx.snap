@@ -6,7 +6,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
     class="domain-designer"
   >
     <div
-      class="domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -47,11 +47,9 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
               </a>
             </div>
           </div>
-          <form
-            class=""
-          >
+          <form>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -165,7 +163,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
               </div>
             </div>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -182,7 +180,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -343,7 +341,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -504,7 +502,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -698,7 +696,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
     class="domain-designer"
   >
     <div
-      class="domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -746,11 +744,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               </a>
             </div>
           </div>
-          <form
-            class=""
-          >
+          <form>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -903,7 +899,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               </div>
             </div>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -955,7 +951,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -1108,7 +1104,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -1152,7 +1148,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
           class="domain-field-top-noBuffer panel-body"
         >
           <div
-            class="domain-field-toolbar row"
+            class="row domain-field-toolbar"
           >
             <div
               class="col-xs-4"
@@ -1253,7 +1249,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               </div>
             </div>
             <div
-              class="domain-row-container row"
+              class="row domain-row-container"
             >
               <div
                 class="domain-row-handle"
@@ -1277,29 +1273,25 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               </div>
               <div>
                 <div
-                  class="domain-row-base-fields col-xs-6"
+                  class="col-xs-3"
                 >
-                  <div
-                    class="col-xs-6"
-                  >
-                    <b>
-                      Name *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-4"
-                  >
-                    <b>
-                      Data Type *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-2"
-                  >
-                    <b>
-                      Required
-                    </b>
-                  </div>
+                  <b>
+                    Name *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-2"
+                >
+                  <b>
+                    Data Type *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-1"
+                >
+                  <b>
+                    Required
+                  </b>
                 </div>
                 <div
                   class="col-xs-6"
@@ -1325,7 +1317,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 tabindex="0"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-10-hidden-text-40"
@@ -1377,7 +1369,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-1-0"
@@ -1492,7 +1484,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -1579,7 +1571,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                             class="row"
                           >
                             <div
-                              class="domain-text-options-col col-xs-12"
+                              class="col-xs-12 domain-text-options-col"
                             >
                               <input
                                 checked=""
@@ -1853,7 +1845,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             </form>
           </div>
           <div
-            class="domain-add-field-row row"
+            class="row domain-add-field-row"
           >
             <div
               class="col-xs-12"
@@ -1881,7 +1873,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -1930,7 +1922,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
           class="domain-field-top-noBuffer panel-body"
         >
           <div
-            class="domain-field-toolbar row"
+            class="row domain-field-toolbar"
           >
             <div
               class="col-xs-4"
@@ -2031,7 +2023,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               </div>
             </div>
             <div
-              class="domain-row-container row"
+              class="row domain-row-container"
             >
               <div
                 class="domain-row-handle"
@@ -2055,29 +2047,25 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               </div>
               <div>
                 <div
-                  class="domain-row-base-fields col-xs-6"
+                  class="col-xs-3"
                 >
-                  <div
-                    class="col-xs-6"
-                  >
-                    <b>
-                      Name *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-4"
-                  >
-                    <b>
-                      Data Type *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-2"
-                  >
-                    <b>
-                      Required
-                    </b>
-                  </div>
+                  <b>
+                    Name *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-2"
+                >
+                  <b>
+                    Data Type *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-1"
+                >
+                  <b>
+                    Required
+                  </b>
                 </div>
                 <div
                   class="col-xs-6"
@@ -2103,7 +2091,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 tabindex="0"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-11-hidden-text-43"
@@ -2155,7 +2143,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-2-0"
@@ -2270,7 +2258,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -2357,7 +2345,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                             class="row"
                           >
                             <div
-                              class="domain-text-options-col col-xs-12"
+                              class="col-xs-12 domain-text-options-col"
                             >
                               <input
                                 checked=""
@@ -2635,7 +2623,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 tabindex="1"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-11-hidden-text-43"
@@ -2687,7 +2675,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-2-1"
@@ -2802,7 +2790,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -3166,7 +3154,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 tabindex="2"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-11-hidden-text-43"
@@ -3218,7 +3206,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-2-2"
@@ -3333,7 +3321,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -3670,7 +3658,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             </form>
           </div>
           <div
-            class="domain-add-field-row row"
+            class="row domain-add-field-row"
           >
             <div
               class="col-xs-12"
@@ -3731,7 +3719,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
     class="domain-designer"
   >
     <div
-      class="domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -3772,11 +3760,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
               </a>
             </div>
           </div>
-          <form
-            class=""
-          >
+          <form>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -3890,7 +3876,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               </div>
             </div>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -3907,7 +3893,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -4068,7 +4054,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -4229,7 +4215,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -4423,7 +4409,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
     class="domain-designer"
   >
     <div
-      class="domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -4464,11 +4450,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               </a>
             </div>
           </div>
-          <form
-            class=""
-          >
+          <form>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -4582,7 +4566,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               </div>
             </div>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -4599,7 +4583,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -4760,7 +4744,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -4954,7 +4938,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
     class="domain-designer"
   >
     <div
-      class="domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -5002,11 +4986,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               </a>
             </div>
           </div>
-          <form
-            class=""
-          >
+          <form>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -5193,7 +5175,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               </div>
             </div>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -5245,7 +5227,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -5294,7 +5276,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
           class="domain-field-top-noBuffer panel-body"
         >
           <div
-            class="domain-field-toolbar row"
+            class="row domain-field-toolbar"
           >
             <div
               class="col-xs-4"
@@ -5395,7 +5377,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               </div>
             </div>
             <div
-              class="domain-row-container row"
+              class="row domain-row-container"
             >
               <div
                 class="domain-row-handle"
@@ -5419,29 +5401,25 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               </div>
               <div>
                 <div
-                  class="domain-row-base-fields col-xs-6"
+                  class="col-xs-3"
                 >
-                  <div
-                    class="col-xs-6"
-                  >
-                    <b>
-                      Name *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-4"
-                  >
-                    <b>
-                      Data Type *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-2"
-                  >
-                    <b>
-                      Required
-                    </b>
-                  </div>
+                  <b>
+                    Name *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-2"
+                >
+                  <b>
+                    Data Type *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-1"
+                >
+                  <b>
+                    Required
+                  </b>
                 </div>
                 <div
                   class="col-xs-6"
@@ -5467,7 +5445,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 tabindex="0"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-6-hidden-text-24"
@@ -5519,7 +5497,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-1-0"
@@ -5634,7 +5612,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -5721,7 +5699,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                             class="row"
                           >
                             <div
-                              class="domain-text-options-col col-xs-12"
+                              class="col-xs-12 domain-text-options-col"
                             >
                               <input
                                 checked=""
@@ -5995,7 +5973,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             </form>
           </div>
           <div
-            class="domain-add-field-row row"
+            class="row domain-add-field-row"
           >
             <div
               class="col-xs-12"
@@ -6023,7 +6001,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -6072,7 +6050,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
           class="domain-field-top-noBuffer panel-body"
         >
           <div
-            class="domain-field-toolbar row"
+            class="row domain-field-toolbar"
           >
             <div
               class="col-xs-4"
@@ -6173,7 +6151,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               </div>
             </div>
             <div
-              class="domain-row-container row"
+              class="row domain-row-container"
             >
               <div
                 class="domain-row-handle"
@@ -6197,29 +6175,25 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               </div>
               <div>
                 <div
-                  class="domain-row-base-fields col-xs-6"
+                  class="col-xs-3"
                 >
-                  <div
-                    class="col-xs-6"
-                  >
-                    <b>
-                      Name *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-4"
-                  >
-                    <b>
-                      Data Type *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-2"
-                  >
-                    <b>
-                      Required
-                    </b>
-                  </div>
+                  <b>
+                    Name *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-2"
+                >
+                  <b>
+                    Data Type *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-1"
+                >
+                  <b>
+                    Required
+                  </b>
                 </div>
                 <div
                   class="col-xs-6"
@@ -6245,7 +6219,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 tabindex="0"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-7-hidden-text-27"
@@ -6297,7 +6271,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-2-0"
@@ -6412,7 +6386,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -6499,7 +6473,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                             class="row"
                           >
                             <div
-                              class="domain-text-options-col col-xs-12"
+                              class="col-xs-12 domain-text-options-col"
                             >
                               <input
                                 checked=""
@@ -6777,7 +6751,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 tabindex="1"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-7-hidden-text-27"
@@ -6829,7 +6803,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-2-1"
@@ -6944,7 +6918,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -7308,7 +7282,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 tabindex="2"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-7-hidden-text-27"
@@ -7360,7 +7334,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-2-2"
@@ -7475,7 +7449,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -7812,7 +7786,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             </form>
           </div>
           <div
-            class="domain-add-field-row row"
+            class="row domain-add-field-row"
           >
             <div
               class="col-xs-12"
@@ -7873,7 +7847,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
     class="domain-designer"
   >
     <div
-      class="domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -7921,11 +7895,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
               </a>
             </div>
           </div>
-          <form
-            class=""
-          >
+          <form>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -8112,7 +8084,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               </div>
             </div>
             <div
-              class="col-lg-6 col-xs-12"
+              class="col-xs-12 col-lg-6"
             >
               <div
                 class="domain-field-padding-bottom"
@@ -8164,7 +8136,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -8317,7 +8289,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -8366,7 +8338,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           class="domain-field-top-noBuffer panel-body"
         >
           <div
-            class="domain-field-toolbar row"
+            class="row domain-field-toolbar"
           >
             <div
               class="col-xs-4"
@@ -8467,7 +8439,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               </div>
             </div>
             <div
-              class="domain-row-container row"
+              class="row domain-row-container"
             >
               <div
                 class="domain-row-handle"
@@ -8491,29 +8463,25 @@ exports[`AssayDesignerPanels initModel 1`] = `
               </div>
               <div>
                 <div
-                  class="domain-row-base-fields col-xs-6"
+                  class="col-xs-3"
                 >
-                  <div
-                    class="col-xs-6"
-                  >
-                    <b>
-                      Name *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-4"
-                  >
-                    <b>
-                      Data Type *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-2"
-                  >
-                    <b>
-                      Required
-                    </b>
-                  </div>
+                  <b>
+                    Name *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-2"
+                >
+                  <b>
+                    Data Type *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-1"
+                >
+                  <b>
+                    Required
+                  </b>
                 </div>
                 <div
                   class="col-xs-6"
@@ -8539,7 +8507,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 tabindex="0"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-2-hidden-text-8"
@@ -8591,7 +8559,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-1-0"
@@ -8706,7 +8674,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -8793,7 +8761,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                             class="row"
                           >
                             <div
-                              class="domain-text-options-col col-xs-12"
+                              class="col-xs-12 domain-text-options-col"
                             >
                               <input
                                 checked=""
@@ -9067,7 +9035,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             </form>
           </div>
           <div
-            class="domain-add-field-row row"
+            class="row domain-add-field-row"
           >
             <div
               class="col-xs-12"
@@ -9095,7 +9063,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -9144,7 +9112,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           class="domain-field-top-noBuffer panel-body"
         >
           <div
-            class="domain-field-toolbar row"
+            class="row domain-field-toolbar"
           >
             <div
               class="col-xs-4"
@@ -9245,7 +9213,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               </div>
             </div>
             <div
-              class="domain-row-container row"
+              class="row domain-row-container"
             >
               <div
                 class="domain-row-handle"
@@ -9269,29 +9237,25 @@ exports[`AssayDesignerPanels initModel 1`] = `
               </div>
               <div>
                 <div
-                  class="domain-row-base-fields col-xs-6"
+                  class="col-xs-3"
                 >
-                  <div
-                    class="col-xs-6"
-                  >
-                    <b>
-                      Name *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-4"
-                  >
-                    <b>
-                      Data Type *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-2"
-                  >
-                    <b>
-                      Required
-                    </b>
-                  </div>
+                  <b>
+                    Name *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-2"
+                >
+                  <b>
+                    Data Type *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-1"
+                >
+                  <b>
+                    Required
+                  </b>
                 </div>
                 <div
                   class="col-xs-6"
@@ -9317,7 +9281,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 tabindex="0"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-3-hidden-text-11"
@@ -9369,7 +9333,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-2-0"
@@ -9484,7 +9448,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -9571,7 +9535,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                             class="row"
                           >
                             <div
-                              class="domain-text-options-col col-xs-12"
+                              class="col-xs-12 domain-text-options-col"
                             >
                               <input
                                 checked=""
@@ -9849,7 +9813,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 tabindex="1"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-3-hidden-text-11"
@@ -9901,7 +9865,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-2-1"
@@ -10016,7 +9980,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -10380,7 +10344,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 tabindex="2"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-3-hidden-text-11"
@@ -10432,7 +10396,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-2-2"
@@ -10547,7 +10511,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -10884,7 +10848,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             </form>
           </div>
           <div
-            class="domain-add-field-row row"
+            class="row domain-add-field-row"
           >
             <div
               class="col-xs-12"

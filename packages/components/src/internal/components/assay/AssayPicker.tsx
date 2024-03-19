@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
 
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 
@@ -180,11 +179,11 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
         }
 
         return (
-            <Row>
-                <Col xs={6}>
+            <div className="row">
+                <div className="col-xs-6">
                     <AssayContainerLocation locations={containers} selected={container} onChange={onContainerChange} />
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }, [containers, container, onContainerChange, showContainerSelect]);
 

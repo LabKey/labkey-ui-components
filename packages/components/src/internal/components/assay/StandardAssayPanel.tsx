@@ -1,5 +1,4 @@
 import React, { FC, memo } from 'react';
-import { Col, Row } from 'react-bootstrap';
 
 import { AssayProvider } from './AssayPicker';
 
@@ -12,8 +11,8 @@ export const StandardAssayPanel: FC<StandardAssayPanelProps> = memo(props => {
 
     return (
         <div>
-            <Row>
-                <Col xs={6}>
+            <div className="row">
+                <div className="col-xs-6">
                     <div className="margin-bottom">
                         <b>Standard Assay</b>
                         <span className="gray-text"> (Recommended)</span>
@@ -22,16 +21,16 @@ export const StandardAssayPanel: FC<StandardAssayPanelProps> = memo(props => {
                         Standard assays are the most flexible choice for working with experimental data. Use this assay
                         type to customize the format for mapping your experimental results.
                     </p>
-                </Col>
-            </Row>
-            <Row>
-                <Col xs={6}>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-xs-6">
                     <div className="margin-bottom margin-top">
                         <b>Supported File Types</b>
                     </div>
                     <p>{provider?.fileTypes.join(', ')}</p>
-                </Col>
-            </Row>
+                </div>
+            </div>
             {children}
         </div>
     );

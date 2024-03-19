@@ -4,10 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Update `OperationConfirmationData` model and `getOperationConfirmationData` to account for permission checks as well
--
 
-### version TBD
-*Released*: TBD
+### version 3.29.0
+*Released*: 19 March 2024
 - Updates to allow moving from multiple folders into one
 
 ### version 3.28.0

@@ -8,7 +8,7 @@ var propertiesReader = require('properties-reader');
 const netrc = require('./netrc');
 
 // Defaults are configured for a local development environment
-const DEFAULT_CONTEXT_PATH = '/labkey';
+const DEFAULT_CONTEXT_PATH = '/';
 const DEFAULT_SERVER = 'localhost';
 const DEFAULT_SERVER_PROTOCOL = 'http';
 const DEFAULT_PORT = 8080;

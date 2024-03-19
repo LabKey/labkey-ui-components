@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - ChartBuilderMenuItem with modal for defining a new chart, selecting type, measures, and chart preview
   - save chart from chart builder modal and reload model charts after save
 
+### version 3.29.0
+*Released*: 19 March 2024
+- Updates to allow moving from multiple folders into one
+
 ### version 3.28.0
 *Released*: 13 March 2024
 - Consolidate logic for generating filters for editable grid cell lookups into `getLookupFilters()` utility

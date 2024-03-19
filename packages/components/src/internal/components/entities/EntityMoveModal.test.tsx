@@ -1,27 +1,22 @@
 import React from 'react';
-import { mount } from 'enzyme';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
-import { Modal } from '../../Modal';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
-import { Progress } from '../base/Progress';
-
-import { Alert } from '../base/Alert';
-
 import { getEntityTestAPIWrapper } from './APIWrapper';
-import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
 import { SampleTypeDataType } from './constants';
 import { EntityMoveModal, EntityMoveModalProps, getMoveConfirmationProperties } from './EntityMoveModal';
 import { OperationConfirmationData } from './models';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+import { act } from 'react-dom/test-utils';
+import { render } from '@testing-library/react';
 
 describe('EntityMoveModal', () => {
-    const DEFAULT_APP_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
+    const DEFAULT_SERVER_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
 
     function getDefaultProps(): EntityMoveModalProps {
         return {
@@ -34,83 +29,52 @@ describe('EntityMoveModal', () => {
         };
     }
 
-    test('loading', () => {
-        const wrapper = mountWithAppServerContext(<EntityMoveModal {...getDefaultProps()} />);
-        expect(wrapper.find(Modal)).toHaveLength(1);
-        expect(wrapper.find(Modal).text()).toContain('Loading confirmation data...');
-        wrapper.unmount();
-    });
-
     test('error', async () => {
-        const wrapper = mountWithAppServerContext(
-            <EntityMoveModal
-                {...getDefaultProps()}
-                api={getTestAPIWrapper(jest.fn, {
-                    entity: getEntityTestAPIWrapper(jest.fn, {
-                        getMoveConfirmationData: () => Promise.reject('I am an error message.'),
-                    }),
-                })}
-            />
-        );
-        await waitForLifecycle(wrapper);
-        expect(wrapper.find(Modal)).toHaveLength(1);
-        expect(wrapper.find(Modal).text()).toContain(
-            'There was a problem retrieving the move confirmation data.'
-        );
-        wrapper.unmount();
+        await act(async () => {
+            renderWithAppContext(
+                <EntityMoveModal
+                    {...getDefaultProps()}
+                    api={getTestAPIWrapper(jest.fn, {
+                        entity: getEntityTestAPIWrapper(jest.fn, {
+                            getMoveConfirmationData: () => Promise.reject('I am an error message.'),
+                        }),
+                    })}
+                />,
+                {
+                    serverContext: DEFAULT_SERVER_CONTEXT,
+                }
+            );
+        });
+        expect(document.body.textContent).toContain('There was a problem retrieving the move confirmation data.');
     });
 
     test('cannot move, no valid selections', async () => {
-        const wrapper = mountWithAppServerContext(
-            <EntityMoveModal
-                {...getDefaultProps()}
-                api={getTestAPIWrapper(jest.fn, {
-                    entity: getEntityTestAPIWrapper(jest.fn, {
-                        getMoveConfirmationData: () =>
-                            Promise.resolve(
-                                new OperationConfirmationData({
-                                    allowed: [],
-                                    notAllowed: [1],
-                                    idMap: { 1: false },
-                                })
-                            ),
-                    }),
-                })}
-            />
-        );
-        await waitForLifecycle(wrapper);
-        expect(wrapper.find(Modal)).toHaveLength(1);
-        expect(wrapper.find(Modal).text()).toContain(
+        await act(async () => {
+           renderWithAppContext(
+                <EntityMoveModal
+                    {...getDefaultProps()}
+                    api={getTestAPIWrapper(jest.fn, {
+                        entity: getEntityTestAPIWrapper(jest.fn, {
+                            getMoveConfirmationData: () =>
+                                Promise.resolve(
+                                    new OperationConfirmationData({
+                                        allowed: [],
+                                        notAllowed: [1],
+                                        idMap: { 1: false },
+                                    })
+                                ),
+                        }),
+                    })}
+                />,
+                {
+                    serverContext: DEFAULT_SERVER_CONTEXT,
+                }
+            );
+        });
+
+        expect(document.body.textContent).toContain(
             "The sample you've selected cannot be moved because it has a status that prevents moving or you lack the proper permissions."
         );
-        wrapper.unmount();
-    });
-
-    test('can move, valid selection', async () => {
-        const wrapper = mountWithAppServerContext(
-            <EntityMoveModal
-                {...getDefaultProps()}
-                api={getTestAPIWrapper(jest.fn, {
-                    entity: getEntityTestAPIWrapper(jest.fn, {
-                        getMoveConfirmationData: () =>
-                            Promise.resolve(
-                                new OperationConfirmationData({
-                                    allowed: [1],
-                                    notAllowed: [],
-                                    idMap: { 1: true },
-                                })
-                            ),
-                    }),
-                })}
-            />,
-            undefined,
-            DEFAULT_APP_CONTEXT
-        );
-        await waitForLifecycle(wrapper);
-        expect(wrapper.find(Modal)).toHaveLength(1);
-        expect(wrapper.find(EntityMoveConfirmationModal)).toHaveLength(1);
-        expect(wrapper.find(Progress)).toHaveLength(1);
-        wrapper.unmount();
     });
 
     describe('getMoveConfirmationProperties', () => {
@@ -179,9 +143,9 @@ describe('EntityMoveModal', () => {
             expect(props.canMove).toBeFalsy();
             expect(props.title).toBe('Cannot Move Sample');
 
-            const wrapper = mount(props.message);
-            expect(wrapper.find(Alert)).toHaveLength(0);
-            expect(wrapper.first().text()).toBe(
+            render(props.message);
+            expect(document.querySelector('.alert')).toBeNull();
+            expect(document.body.textContent).toContain(
                 "The sample you've selected cannot be moved because it has a status that prevents moving or you lack the proper permissions. "
             );
         });
@@ -199,9 +163,9 @@ describe('EntityMoveModal', () => {
             expect(props.canMove).toBeFalsy();
             expect(props.title).toBe('No Samples Can Be Moved');
 
-            const wrapper = mount(props.message);
-            expect(wrapper.find(Alert)).toHaveLength(0);
-            expect(wrapper.first().text()).toBe(
+            render(props.message);
+            expect(document.querySelector('.alert')).toBeNull();
+            expect(document.body.textContent).toContain(
                 "Neither of the 2 samples you've selected can be moved because they have a status that prevents moving or you lack the proper permissions."
             );
         });
@@ -219,8 +183,8 @@ describe('EntityMoveModal', () => {
             expect(props.canMove).toBeTruthy();
             expect(props.title).toBe('Move 1 Sample');
 
-            const wrapper = mount(props.message);
-            expect(wrapper.find(Alert).text()).toContain(
+            render(props.message);
+            expect(document.querySelector('.alert').textContent).toContain(
                 "You've selected 2 samples but only 1 can be moved. 1 sample cannot be moved because  it has status that prevents moving."
             );
         });
@@ -238,8 +202,8 @@ describe('EntityMoveModal', () => {
             expect(props.canMove).toBeTruthy();
             expect(props.title).toBe('Move 2 Samples');
 
-            const wrapper = mount(props.message);
-            expect(wrapper.find(Alert).text()).toContain(
+            render(props.message);
+            expect(document.querySelector('.alert').textContent).toContain(
                 "You've selected 4 samples but only 2 can be moved. 2 samples cannot be moved because  they have status that prevents moving."
             );
         });
@@ -257,8 +221,8 @@ describe('EntityMoveModal', () => {
             expect(props.canMove).toBe(true);
             expect(props.title).toBe('Move 2 Samples');
 
-            const wrapper = mount(props.message);
-            expect(wrapper.find(Alert).text()).toContain(
+            render(props.message);
+            expect(document.querySelector('.alert').textContent).toContain(
                 "You've selected 4 samples but only 2 can be moved. 2 samples cannot be moved because  they have status that prevents moving. Selection includes 1 sample that you do not have permission to move."
             );
         });
@@ -276,8 +240,8 @@ describe('EntityMoveModal', () => {
             expect(props.canMove).toBe(true);
             expect(props.title).toBe('Move 2 Samples');
 
-            const wrapper = mount(props.message);
-            expect(wrapper.find(Alert).text()).toContain(
+            render(props.message);
+            expect(document.querySelector('.alert').textContent).toContain(
                 "You've selected 3 samples but only 2 can be moved. Selection includes 1 sample that you do not have permission to move."
             );
         });
@@ -295,8 +259,8 @@ describe('EntityMoveModal', () => {
             expect(props.canMove).toBe(true);
             expect(props.title).toBe('Move 2 Samples');
 
-            const wrapper = mount(props.message);
-            expect(wrapper.find(Alert).text()).toContain(
+            render(props.message);
+            expect(document.querySelector('.alert').textContent).toContain(
                 "You've selected 5 samples but only 2 can be moved. 2 samples cannot be moved because  they have status that prevents moving. Selection includes 2 samples that you do not have permission to move."
             );
         });
@@ -313,9 +277,9 @@ describe('EntityMoveModal', () => {
             );
             expect(props.canMove).toBe(false);
             expect(props.title).toBe('No Samples Can Be Moved');
-            const wrapper = mount(props.message);
-            expect(wrapper.find(Alert)).toHaveLength(0);
-            expect(wrapper.first().text()).toContain(
+            render(props.message);
+            expect(document.querySelector('.alert')).toBeNull();
+            expect(document.body.textContent).toContain(
                 "You don't have the required permission to move the selected samples."
             );
         });

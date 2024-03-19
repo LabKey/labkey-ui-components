@@ -117,7 +117,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
             const useSnapshotSelection = useSelected && movingAll && queryModel.filterArray.length > 0;
 
             try {
-                await api.entity.moveEntities({
+                const moveResponse = await api.entity.moveEntities({
                     containerPath: currentContainer?.path,
                     targetContainerPath,
                     entityDataType,
@@ -140,17 +140,30 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     projectUrl = projectUrl + targetAppURL.toHref();
                 }
 
-                createNotification(
-                    {
-                        message: (
-                            <>
-                                Successfully moved {count} {noun} to <a href={projectUrl}>{targetName}</a>.
-                            </>
-                        ),
-                        alertClass: 'success',
-                    },
-                    true
-                );
+                const movedCount =
+                    moveResponse.updateCounts[(entityDataType.moveNoun ?? entityDataType.nounPlural).toLowerCase()];
+                const movedNoun = getEntityNoun(entityDataType, movedCount)?.toLowerCase();
+                if (movedCount) {
+                    createNotification(
+                        {
+                            message: (
+                                <>
+                                    Successfully moved {movedCount} {movedNoun} to <a href={projectUrl}>{targetName}</a>.
+                                </>
+                            ),
+                            alertClass: 'success',
+                        },
+                        true
+                    );
+                } else {
+                    createNotification(
+                        {
+                            message: <>All {(entityDataType.nounPlural ?? 'data').toLowerCase()} are already in the target project.</>,
+                            alertClass: 'warning',
+                        },
+                        true
+                    );
+                }
                 onAfterMove();
             } catch (message) {
                 setShowProgress(false);
@@ -237,6 +250,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     title={title}
                     dataType={entityDataType.projectConfigurableDataType}
                     dataTypeRowId={dataTypeRowId}
+                    excludeCurrentAsTarget={maxSelected === 1}
                 >
                     {message}
                 </EntityMoveConfirmationModal>

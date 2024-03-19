@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.30.0
+*Released*: 19 March 2024
+- Don't use Row, Col, or Panel from react-bootstrap
+  - There are two minor exceptions for Panel usages in the domain editor, these will be resolved in a later PR
+
 ### version 3.29.0
 *Released*: 19 March 2024
 - Updates to allow moving from multiple folders into one

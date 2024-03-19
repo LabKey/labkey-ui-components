@@ -471,6 +471,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     }
 
     componentDidUpdate(prevProps: EditableGridProps): void {
+        // use saveBtnClickedCount to notify EditableGrid of buttons defined outside of the component
         if (prevProps.saveBtnClickedCount !== this.props.saveBtnClickedCount) {
             this.onSaveClick();
         }
@@ -815,7 +816,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         let gridColumns = List<GridColumn>();
 
-        if (!hideCheckboxCol && (allowBulkRemove || allowBulkUpdate)) {
+        const allowSelection = !hideCheckboxCol && (allowBulkRemove || allowBulkUpdate);
+        if (allowSelection) {
             const selColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
                 title: '&nbsp;',
@@ -852,7 +854,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     cell: inputCellFactory(
                         queryInfo,
                         editorModel,
-                        !hideCheckboxCol && (allowBulkRemove || allowBulkUpdate),
+                        allowSelection,
                         hideCountCol,
                         metadata,
                         readonlyRows,
@@ -1724,7 +1726,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         );
 
         if (showAsTab) {
-            const bulkDisabled = selected.size === 0 && !hideCheckboxCol;
+            const bulkDisabled = selected.size === 0;
             const showGrid = editorModel.rowCount <= maxRows;
 
             return (

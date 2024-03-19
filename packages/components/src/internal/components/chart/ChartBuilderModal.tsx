@@ -21,7 +21,7 @@ import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryMod
 import { useServerContext } from '../base/ServerContext';
 import { hasPermissions } from '../base/models/User';
 
-import { ChartConfig, ChartQueryConfig } from './models';
+import {ChartConfig, ChartQueryConfig, GenericChartModel} from './models';
 
 interface ChartFieldInfo {
     name: string;
@@ -49,13 +49,14 @@ const BLUE_HEX_COLOR = '3366FF';
 
 interface Props extends RequiresModelAndActions {
     onHide: () => void;
+    savedChartModel?: GenericChartModel;
 }
 
-export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide }) => {
+export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, savedChartModel }) => {
     const divId = useMemo(() => generateId('chart-'), []);
     const ref = useRef<HTMLDivElement>(undefined);
     const { user } = useServerContext();
-    const canShare = true;//useMemo(() => hasPermissions(user, [PermissionTypes.ShareReportPermission]), [user]);
+    const canShare = useMemo(() => savedChartModel?.canShare ?? hasPermissions(user, [PermissionTypes.ShareReportPermission]), [savedChartModel, user]);
     const chartTypes: ChartTypeInfo[] = useMemo(
         () => CHART_TYPES.filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name)),
         []
@@ -69,6 +70,24 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide }) =>
     const [name, setName] = useState<string>('');
     const [shared, setShared] = useState<boolean>(canShare);
     const [fieldValues, setFieldValues] = useState<Record<string, SelectInputOption>>({});
+
+    useEffect(() => {
+        if (savedChartModel) {
+            setSelectedChartType(chartTypes.find(c => savedChartModel?.visualizationConfig.chartConfig.renderType === c.name));
+            setName(savedChartModel.name);
+            setShared(savedChartModel.shared);
+
+            const measures = savedChartModel.visualizationConfig?.chartConfig?.measures || {};
+            const fieldValues_ = {};
+            Object.keys(measures).map(key => {
+                const measure = measures[key];
+                if (measure) {
+                    fieldValues_[key] = { label: measure.label, value: measure.name, data: measure };
+                }
+            });
+            setFieldValues(fieldValues_);
+        }
+    }, []);
 
     const hasName = useMemo(() => name?.trim().length > 0, [name]);
     const hasRequiredValues = useMemo(() => {
@@ -88,12 +107,15 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide }) =>
 
     const onChartTypeChange = useCallback(
         e => {
+            // don't allow changing chart type for a saved report
+            if (savedChartModel) return;
+
             const selectedName = e.target.getAttribute('data-name');
             setSelectedChartType(chartTypes.find(type => type.name === selectedName) || chartTypes[0]);
             setFieldValues({});
             setPreviewMsg(undefined);
         },
-        [chartTypes]
+        [chartTypes, savedChartModel]
     );
 
     const onNameChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,23 +133,23 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide }) =>
     const onSaveChart = useCallback(async () => {
         const _reportConfig = {
             ...reportConfig,
+            reportId: savedChartModel?.reportId,
             name,
             public: shared,
         };
-        //     reportId    : this.savedReportInfo ? this.savedReportInfo.reportId : undefined,
-        // if (data.isSaveAs)
-        //     reportConfig.reportId = null;
 
         setSaving(true);
-        // TODO try/catch with error message
-        const response = await saveChart(_reportConfig);
-
-        setSaving(false);
-        onHide();
-
-        await actions.loadCharts(model.id);
-        actions.selectReport(model.id, response.reportId);
-    }, [reportConfig, name, shared, actions, model.id, onHide]);
+        try {
+            const response = await saveChart(_reportConfig);
+            setSaving(false);
+            onHide();
+            await actions.loadCharts(model.id);
+            actions.selectReport(model.id, response.reportId);
+        } catch (e) {
+            // TODO handle error
+            setSaving(false);
+        }
+    }, [savedChartModel, reportConfig, name, shared, actions, model.id, onHide]);
 
     useEffect(() => {
         if (ref?.current) ref.current.innerHTML = '';
@@ -136,7 +158,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide }) =>
 
         const width = ref?.current.getBoundingClientRect().width || 750;
 
-        const chartConfig = getChartConfig(selectedType, fieldValues);
+        const chartConfig = getChartConfig(selectedType, fieldValues, savedChartModel?.visualizationConfig?.chartConfig);
         const queryConfig = getQueryConfig(model, fieldValues, chartConfig);
 
         // add maxRows to the queryConfig for the preview, but not to save with the chart
@@ -162,8 +184,10 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide }) =>
                 ...chartConfig,
                 height: 250,
                 width,
-                geomOptions: { ...chartConfig.geomOptions, marginTop: 10 },
             };
+            if (!savedChartModel || savedChartModel.visualizationConfig.chartConfig.geomOptions.marginTop === 20) {
+                _chartConfig.geomOptions.marginTop = 10;
+            }
 
             LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, _chartConfig, measureStore);
 
@@ -186,12 +210,12 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide }) =>
         <Modal
             canConfirm={hasName && hasRequiredValues && !loadingData}
             className="chart-builder-modal"
-            confirmText="Create Chart"
-            confirmingText="Creating Chart..."
+            confirmText={savedChartModel ? 'Save Chart' : 'Create Chart'}
+            confirmingText={savedChartModel ? 'Saving Chart...' : 'Creating Chart...'}
             isConfirming={saving}
             onCancel={onHide}
             onConfirm={onSaveChart}
-            title="Create Chart"
+            title={savedChartModel ? 'Edit Chart' : 'Create Chart'}
         >
             <div className="row">
                 <div className="col-xs-1 col-left">
@@ -200,6 +224,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide }) =>
                             key={type.name}
                             className={classNames('chart-builder-type', {
                                 selected: selectedType.name === type.name,
+                                selectable: !savedChartModel
                             })}
                             data-name={type.name}
                             onClick={onChartTypeChange}
@@ -375,16 +400,19 @@ const getQueryConfig = (
     } as ChartQueryConfig;
 };
 
-const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, SelectInputOption>): ChartConfig => {
+const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, SelectInputOption>, savedConfig: ChartConfig): ChartConfig => {
     const config = {
         renderType: chartType.name,
         measures: {},
-        scales: {},
+        scales: {
+            ...savedConfig?.scales,
+        },
         labels: {
             main: '',
             subtitle: '',
+            ...savedConfig?.labels,
         },
-        pointType: 'all',
+        pointType: savedConfig?.pointType ?? 'all',
         geomOptions: {
             binShape: 'hex',
             binSingleColor: '000000',
@@ -417,6 +445,7 @@ const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, Se
             position: chartType.name === 'box_plot' ? 'jitter' : null,
             showOutliers: true,
             showPiePercentages: true,
+            ...savedConfig?.geomOptions,
         },
     } as ChartConfig;
 
@@ -428,13 +457,17 @@ const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, Se
                 label: fieldValues[field.name].label,
                 queryName: fieldValues[field.name].data.queryName,
                 schemaName: fieldValues[field.name].data.schemaName,
-                type: fieldValues[field.name].data.displayFieldJsonType || fieldValues[field.name].data.jsonType,
+                type: fieldValues[field.name].data.displayFieldJsonType || fieldValues[field.name].data.jsonType || fieldValues[field.name].data.type,
             };
-            config.labels[field.name] = fieldValues[field.name].label;
+
+            // update axis label if it is a new report or if the saved report used the default field label for the axis label
+            if (!savedConfig || savedConfig.labels[field.name] === savedConfig.measures[field.name].label) {
+                config.labels[field.name] = fieldValues[field.name].label;
+            }
         }
     });
 
-    if (chartType.name === 'bar_chart') {
+    if (chartType.name === 'bar_chart' && !savedConfig) {
         config.labels['y'] = fieldValues.y ? 'Sum of ' + fieldValues.y.label : 'Count';
     }
 

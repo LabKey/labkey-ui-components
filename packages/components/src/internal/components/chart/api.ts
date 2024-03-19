@@ -15,7 +15,10 @@ function fetchGenericChart(reportId: string): Promise<GenericChartModel> {
             success: response => {
                 resolve(response);
             },
-            failure: reject,
+            failure: reason => {
+                console.error(reason);
+                reject(reason);
+            },
         });
     });
 }

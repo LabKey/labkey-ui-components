@@ -17,7 +17,7 @@ import { Filter } from '@labkey/api';
 import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
-import { DataViewInfoTypes, LABKEY_VIS } from '../../constants';
+import {DataViewInfoTypes, GENERIC_CHART_REPORTS, LABKEY_VIS} from '../../constants';
 
 import { DataViewInfo } from '../../DataViewInfo';
 import { getContainerFilter } from '../../query/api';
@@ -307,9 +307,10 @@ RReport.displayName = 'RReport';
 export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, container, filters }) => {
     if (chart.type === DataViewInfoTypes.RReport) {
         return <RReport api={api} chart={chart} container={container} filters={filters} />;
+    } else if (GENERIC_CHART_REPORTS.indexOf(chart.type) > -1) {
+        return <SVGChart api={api} chart={chart} container={container} filters={filters}/>;
     }
-
-    return <SVGChart api={api} chart={chart} container={container} filters={filters} />;
+    return null;
 });
 
 Chart.displayName = 'Chart';

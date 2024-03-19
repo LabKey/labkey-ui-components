@@ -26,7 +26,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from './api';
 import { ChartConfig, ChartQueryConfig } from './models';
-import { getChartRenderMsg } from './ChartBuilderMenuItem';
+import { getChartRenderMsg } from './ChartBuilderModal';
 
 interface ChartLoadingMaskProps {
     msg?: string;
@@ -107,7 +107,6 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
             if (filters) {
                 queryConfig_.filterArray = [...queryConfig_.filterArray, ...filters];
             }
-
             setQueryConfig(queryConfig_);
         } catch (e) {
             setLoadError(e.exception);

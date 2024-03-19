@@ -12,6 +12,8 @@ import { isChartBuilderEnabled } from '../../internal/app/utils';
 
 import { RequiresModelAndActions } from './withQueryModels';
 import { ChartBuilderMenuItem } from '../../internal/components/chart/ChartBuilderMenuItem';
+import {hasPermissions} from "../../internal/components/base/models/User";
+import {PermissionTypes} from "@labkey/api";
 
 interface ChartMenuItemProps {
     chart: DataViewInfo;
@@ -33,11 +35,12 @@ export const ChartMenuItem: FC<ChartMenuItemProps> = ({ chart, showChart }) => {
 
 export const ChartMenu: FC<RequiresModelAndActions> = props => {
     const { model, actions } = props;
-    const { moduleContext } = useServerContext();
+    const { moduleContext, user } = useServerContext();
     const { charts, chartsError, hasCharts, id, isLoading, isLoadingCharts, rowsError, queryInfoError } = model;
     const privateCharts = hasCharts ? charts.filter(chart => !chart.shared) : [];
     const publicCharts = hasCharts ? charts.filter(chart => chart.shared) : [];
-    const showCreateChart = isChartBuilderEnabled(moduleContext);
+    const showCreateChart =
+        isChartBuilderEnabled(moduleContext) && hasPermissions(user, [PermissionTypes.Read]) && !user.isGuest;
     const noCharts = hasCharts && charts.length === 0;
     const showCreateChartDivider = showCreateChart && !noCharts;
     const hasError = queryInfoError !== undefined || rowsError !== undefined;

@@ -270,7 +270,7 @@ export const getMoveConfirmationProperties = (
 
     const capNounSingular = capitalizeFirstChar(nounSingular);
     const capNounPlural = capitalizeFirstChar(nounPlural);
-    const dependencyText = 'status that prevents moving or you lack the proper permissions';
+    const dependencyText = 'status that prevents moving';
     const numCanMove = confirmationData.totalActionable;
     const numCannotMove = confirmationData.totalNotActionable;
     const numNotAllowed = confirmationData.notAllowed.length;
@@ -291,7 +291,7 @@ export const getMoveConfirmationProperties = (
     } else if (numCannotMove === 0) {
         text = totalNum === 1 ? 'The selected ' : totalNum === 2 ? 'Both ' : 'All ' + totalNum + ' ';
         text += totalNoun + ' will be moved.';
-    } else if (numCanMove === 0) {
+    } else if (numCanMove === 0 && numNotPermitted < numCannotMove) {
         if (totalNum === 1) {
             text = 'The ' + totalNoun + " you've selected cannot be moved because it has a " + dependencyText + ' or you lack the proper permissions. ';
         } else {
@@ -299,13 +299,13 @@ export const getMoveConfirmationProperties = (
             text += ' the ' + totalNum + ' ' + totalNoun + " you've selected can be moved";
             text += ' because they have a ' + dependencyText + ' or you lack the proper permissions.';
         }
-    } else {
+    } else if (numCanMove > 0) {
         text = [];
         let firstText = "You've selected " + totalNum + ' ' + totalNoun + ' but only ' + numCanMove + ' can be moved. ';
         if (numNotAllowed > 0) {
             const cannotMoveNoun = numNotAllowed === 1 ? nounSingular : nounPlural;
             firstText += numNotAllowed + ' ' + cannotMoveNoun + ' cannot be moved because ';
-            firstText += (numCannotMove === 1 ? ' it has ' : ' they have ') + dependencyText + '.';
+            firstText += (numNotAllowed === 1 ? ' it has ' : ' they have ') + dependencyText + '. ';
         }
         text.push(<React.Fragment key="commonText">{firstText}</React.Fragment>);
     }

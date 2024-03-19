@@ -94,15 +94,16 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
         setRenderMsg(undefined);
         setMeasureStore(undefined);
         try {
-            const visualizationConfig = await api.fetchVisualizationConfig(reportId);
+            const savedChartModel = await api.fetchGenericChart(reportId);
+
             const chartConfig_ = {
-                ...visualizationConfig.chartConfig,
+                ...savedChartModel.visualizationConfig.chartConfig,
                 ...computeDimensions(ref.current.offsetWidth),
             };
-            const queryConfig_ = visualizationConfig.queryConfig;
-            queryConfig_.containerFilter = containerFilter;
             setChartConfig(chartConfig_);
 
+            const queryConfig_ = savedChartModel.visualizationConfig.queryConfig;
+            queryConfig_.containerFilter = containerFilter;
             if (filters) {
                 queryConfig_.filterArray = [...queryConfig_.filterArray, ...filters];
             }

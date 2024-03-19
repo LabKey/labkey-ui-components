@@ -54,17 +54,29 @@ export interface ChartQueryConfig {
     // dataRegionName: string;
     filterArray: Filter.IFilter[];
     maxRows: number;
-    method: string;
+    method?: string;
     parameters: any;
     // queryLabel: string;
     queryName: string;
     requiredVersion: string;
     schemaName: string;
-    // sort: string;
+    sort: string;
     viewName: string;
 }
 
-export interface VisualizationConfigModel {
+interface VisualizationConfigModel {
     chartConfig: ChartConfig;
     queryConfig: ChartQueryConfig;
+}
+
+export interface GenericChartModel {
+    createdBy: number;
+    name: string;
+    queryName: string;
+    reportId: string;
+    schemaName: string;
+    shared: boolean;
+    // thumbnailURL: string;
+    type: string;
+    visualizationConfig: VisualizationConfigModel;
 }

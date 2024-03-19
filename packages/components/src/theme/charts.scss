@@ -116,6 +116,9 @@
     position: relative;
     min-height: 500px;
 }
+.report-list__chart-preview .chart-body {
+    min-height: 300px;
+}
 .chart-panel__heading {
     display: flex;
 }
@@ -209,7 +212,7 @@
             border-color: $gray-border;
         }
 
-        &:hover {
+        &.selectable:hover {
             cursor: pointer;
             background-color: $blue-icon-background;
             border-color: $blue-border-solid;

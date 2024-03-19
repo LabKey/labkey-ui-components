@@ -3,6 +3,7 @@ import { Filter, Query } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import {VisualizationGetResponse} from "@labkey/api/dist/labkey/query/Visualization";
 
 export interface BarChartData {
     count: number;
@@ -69,14 +70,6 @@ interface VisualizationConfigModel {
     queryConfig: ChartQueryConfig;
 }
 
-export interface GenericChartModel {
-    createdBy: number;
-    name: string;
-    queryName: string;
-    reportId: string;
-    schemaName: string;
-    shared: boolean;
-    // thumbnailURL: string;
-    type: string;
+export interface GenericChartModel extends VisualizationGetResponse {
     visualizationConfig: VisualizationConfigModel;
 }

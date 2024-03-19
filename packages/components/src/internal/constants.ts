@@ -204,14 +204,17 @@ export enum DataViewInfoTypes {
 }
 
 export const GRID_REPORTS = Set([DataViewInfoTypes.Query, DataViewInfoTypes.Dataset]);
-export const VISUALIZATION_REPORTS = Set([
+export const GENERIC_CHART_REPORTS = [
     DataViewInfoTypes.AutomaticPlot,
     DataViewInfoTypes.BarChart,
     DataViewInfoTypes.BoxAndWhiskerPlot,
     DataViewInfoTypes.PieChart,
-    DataViewInfoTypes.RReport,
     DataViewInfoTypes.XYScatterPlot,
     DataViewInfoTypes.XYSeriesLinePlot,
+];
+export const VISUALIZATION_REPORTS = Set([
+    ...GENERIC_CHART_REPORTS,
+    DataViewInfoTypes.RReport,
 ]);
 
 export enum IMPORT_DATA_FORM_TYPES {

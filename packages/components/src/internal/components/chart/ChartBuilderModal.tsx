@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, {FC, Fragment, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import classNames from 'classnames';
 
 import { PermissionTypes } from '@labkey/api';
@@ -203,14 +203,20 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         const width = ref?.current.getBoundingClientRect().width || 750;
 
         const chartConfig = getChartConfig(selectedType, fieldValues, savedChartModel?.visualizationConfig?.chartConfig);
-        const queryConfig = getQueryConfig(model, fieldValues, chartConfig);
+        const queryConfig = getQueryConfig(model, fieldValues, chartConfig, savedChartModel?.visualizationConfig?.queryConfig);
 
-        // add maxRows to the queryConfig for the preview, but not to save with the chart
-        const _queryConfig = { ...queryConfig, maxRows: MAX_ROWS_PREVIEW };
+        // add model filters, parameters, and containerFilter and maxRows to the queryConfig for the preview, but not to save with the chart
+        const queryConfig_ = {
+            ...queryConfig,
+            containerFilter: model.containerFilter,
+            filterArray: [...queryConfig.filterArray, ...model.filters],
+            parameters: model.queryParameters,
+            maxRows: MAX_ROWS_PREVIEW,
+        };
 
         setLoadingData(true);
         setPreviewMsg(undefined);
-        LABKEY_VIS.GenericChartHelper.queryChartData(divId, _queryConfig, measureStore => {
+        LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig_, measureStore => {
             const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore).length;
             const _previewMsg = getChartRenderMsg(chartConfig, rowCount, true);
 
@@ -224,16 +230,16 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             }
 
             // adjust height, width, and marginTop for the chart config for the preview, but not to save with the chart
-            var _chartConfig = {
+            var chartConfig_ = {
                 ...chartConfig,
                 height: 250,
                 width,
             };
             if (!savedChartModel || savedChartModel.visualizationConfig.chartConfig.geomOptions.marginTop === 20) {
-                _chartConfig.geomOptions.marginTop = 10;
+                chartConfig_.geomOptions.marginTop = 10;
             }
 
-            LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, _chartConfig, measureStore);
+            LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig_, measureStore);
 
             setPreviewMsg(_previewMsg);
             setLoadingData(false);
@@ -364,8 +370,8 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                             </div>
                             <div className="col-xs-4 fields-col-right">
                                 {rightColFields.map(field => (
-                                    <>
-                                        <div key={field.name}>
+                                    <Fragment key={field.name}>
+                                        <div>
                                             <label>
                                                 {field.label}
                                                 {field.required && ' *'}
@@ -384,7 +390,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                                         {selectedType.name === 'bar_chart' && fieldValues[field.name]?.value && (
                                             <div className="gray-text">Aggregate method: {savedChartModel?.visualizationConfig.chartConfig.measures['y']?.aggregate.name ?? 'Sum'}</div>
                                         )}
-                                    </>
+                                    </Fragment>
                                 ))}
                             </div>
                         </div>
@@ -468,25 +474,24 @@ const getSelectOptions = (model: QueryModel, chartType: ChartTypeInfo, field: Ch
 const getQueryConfig = (
     model: QueryModel,
     fieldValues: Record<string, SelectInputOption>,
-    chartConfig: ChartConfig
+    chartConfig: ChartConfig,
+    savedConfig: ChartQueryConfig
 ): ChartQueryConfig => {
-    const { schemaQuery, containerPath, containerFilter } = model;
+    const { schemaQuery, containerPath } = model;
     const { schemaName, queryName, viewName } = schemaQuery;
 
     return {
         maxRows: -1, // this will be saved with the queryConfig, but we will override it for the preview in the modal
         requiredVersion: '13.2',
-        schemaName,
-        queryName,
-        viewName,
+        schemaName: savedConfig?.schemaName || schemaName,
+        queryName: savedConfig?.queryName || queryName,
+        viewName: savedConfig?.viewName || viewName,
         columns: Object.values(fieldValues)
             .filter(field => field?.value)
             .map(field => field.value),
         sort: LABKEY_VIS.GenericChartHelper.getQueryConfigSortKey(chartConfig.measures),
-        filterArray: model.filters,
-        parameters: model.queryParameters,
-        containerFilter,
-        containerPath,
+        filterArray: savedConfig?.filterArray ? [...savedConfig?.filterArray] : [],
+        containerPath: savedConfig?.containerPath || containerPath,
     } as ChartQueryConfig;
 };
 

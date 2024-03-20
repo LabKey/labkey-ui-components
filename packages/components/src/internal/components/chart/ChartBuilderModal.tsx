@@ -22,6 +22,7 @@ import { useServerContext } from '../base/ServerContext';
 import { hasPermissions } from '../base/models/User';
 
 import {ChartConfig, ChartQueryConfig, GenericChartModel} from './models';
+import {Alert} from "../base/Alert";
 
 interface AggregateFieldInfo {
     name: string;
@@ -70,6 +71,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
 
     const [loadingData, setLoadingData] = useState<boolean>(false);
     const [saving, setSaving] = useState<boolean>(false);
+    const [error, setError] = useState<string>();
     const [previewMsg, setPreviewMsg] = useState<string>();
     const [reportConfig, setReportConfig] = useState<Record<string, any>>();
     const [selectedType, setSelectedChartType] = useState<ChartTypeInfo>(chartTypes[0]);
@@ -145,6 +147,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         };
 
         setSaving(true);
+        setError(undefined);
         try {
             const response = await saveChart(_reportConfig);
             setSaving(false);
@@ -155,7 +158,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             await actions.loadCharts(model.id);
             actions.selectReport(model.id, response.reportId);
         } catch (e) {
-            // TODO handle error
+            setError(e.exception ?? e);
             setSaving(false);
         }
     }, [savedChartModel, reportConfig, name, shared, actions, model.id, onHide]);
@@ -226,6 +229,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             onConfirm={onSaveChart}
             title={savedChartModel ? 'Edit Chart' : 'Create Chart'}
         >
+            {error && <Alert>{error}</Alert>}
             <div className="row">
                 <div className="col-xs-1 col-left">
                     {chartTypes.map(type => (

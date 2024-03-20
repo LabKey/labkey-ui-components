@@ -1,6 +1,6 @@
 import React, { FC, memo, PureComponent } from 'react';
 import { List } from 'immutable';
-import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
+import { FormControl, FormControlProps } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Filter, Query } from '@labkey/api';
 
@@ -322,16 +322,16 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                 isValid={isValid}
                 warning={warning}
             >
-                <Row className="margin-bottom">
+                <div className="row margin-bottom">
                     {headerText && (
-                        <Col xs={9}>
+                        <div className="col-xs-9">
                             <div className="entity-form--headerhelp">{headerText}</div>
-                        </Col>
+                        </div>
                     )}
-                    <Col xs={headerText ? 3 : 12}>
+                    <div className={`col-xs-${headerText ? 3 : 12}`}>
                         <HelpTopicURL helpTopic={helpTopic} nounPlural={nounPlural} />
-                    </Col>
-                </Row>
+                    </div>
+                </div>
                 {appPropertiesOnly && <SectionHeading title="General Properties" />}
                 <EntityDetailsForm
                     noun={nounSingular}
@@ -348,8 +348,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                     nameExpressionGenIdProps={nameExpressionGenIdProps}
                 />
                 {showAliquotNameExpression && (
-                    <Row className="margin-bottom">
-                        <Col xs={2}>
+                    <div className="row margin-bottom">
+                        <div className="col-xs-2">
                             <div onMouseEnter={this.onNameFieldHover}>
                                 <DomainFieldLabel
                                     label="Aliquot Naming Pattern"
@@ -383,8 +383,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                     }
                                 />
                             </div>
-                        </Col>
-                        <Col xs={10}>
+                        </div>
+                        <div className="col-xs-10">
                             <FormControl
                                 className={classNames({
                                     'naming-pattern-border-warning': warning?.startsWith('Aliquot'),
@@ -397,8 +397,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                 }}
                                 value={model.aliquotNameExpression}
                             />
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
                 )}
                 <DomainParentAliases
                     {...this.props}
@@ -424,39 +424,39 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                 )}
                 {allowTimepointProperties && showLinkToStudy && (
                     <>
-                        <Row className="margin-top">
-                            <Col xs={2}>
+                        <div className="row margin-top">
+                            <div className="col-xs-2">
                                 <DomainFieldLabel
                                     label="Auto-Link Data to Study"
                                     helpTipBody={<AutoLinkDataToStudyHelpTip />}
                                 />
-                            </Col>
-                            <Col xs={5}>
+                            </div>
+                            <div className="col-xs-5">
                                 <AutoLinkToStudyDropdown
                                     containers={containers}
                                     onChange={this.onFormChange}
                                     autoLinkTarget={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
                                     value={model.autoLinkTargetContainerId}
                                 />
-                            </Col>
-                        </Row>
-                        <Row className="margin-top">
-                            <Col xs={2}>
+                            </div>
+                        </div>
+                        <div className="row margin-top">
+                            <div className="col-xs-2">
                                 <DomainFieldLabel
                                     label="Linked Dataset Category"
                                     helpTipBody={<LinkedDatasetCategoryHelpTip />}
                                 />
-                            </Col>
+                            </div>
 
-                            <Col xs={5}>
+                            <div className="col-xs-5">
                                 <FormControl
                                     type="text"
                                     id={ENTITY_FORM_IDS.AUTO_LINK_CATEGORY}
                                     onChange={this.onFormChange}
                                     value={model.autoLinkCategory || ''}
                                 />
-                            </Col>
-                        </Row>
+                            </div>
+                        </div>
                     </>
                 )}
 
@@ -465,32 +465,32 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                 )}
                 {appPropertiesOnly && (
                     <>
-                        <Row className="margin-top">
-                            <Col xs={2}>
+                        <div className="row margin-top">
+                            <div className="col-xs-2">
                                 <DomainFieldLabel
                                     label="Label Color"
                                     helpTipBody="The label color will be used to distinguish this sample type in various views in the application."
                                 />
-                            </Col>
-                            <Col xs={10}>
+                            </div>
+                            <div className="col-xs-10">
                                 <ColorPickerInput
                                     name="labelColor"
                                     value={model.labelColor}
                                     onChange={this.onFieldChange}
                                     allowRemove
                                 />
-                            </Col>
-                        </Row>
+                            </div>
+                        </div>
                         {includeMetricUnitProperty && (
-                            <Row className="margin-top">
-                                <Col xs={2}>
+                            <div className="row margin-top">
+                                <div className="col-xs-2">
                                     <DomainFieldLabel
                                         label={metricUnitLabel}
                                         required={metricUnitRequired}
                                         helpTipBody={metricUnitHelpMsg}
                                     />
-                                </Col>
-                                <Col xs={3}>
+                                </div>
+                                <div className="col-xs-3">
                                     {metricUnitProps?.metricUnitOptions ? (
                                         <SelectInput
                                             containerClass="sampleset-metric-unit-select-container"
@@ -520,20 +520,20 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                             }}
                                         />
                                     )}
-                                </Col>
-                            </Row>
+                                </div>
+                            </div>
                         )}
                     </>
                 )}
                 {!isCommunityDistribution() && (
-                    <Row className="margin-top">
-                        <Col xs={2}>
+                    <div className="row margin-top">
+                        <div className="col-xs-2">
                             <DomainFieldLabel label="Barcodes" helpTipBody={<UniqueIdHelpTip />} />
-                        </Col>
-                        <Col xs={10}>
+                        </div>
+                        <div className="col-xs-10">
                             <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField} />
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
                 )}
             </BasePropertiesPanel>
         );

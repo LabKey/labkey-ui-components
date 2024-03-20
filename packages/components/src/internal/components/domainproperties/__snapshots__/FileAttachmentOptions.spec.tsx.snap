@@ -10,126 +10,103 @@ exports[`FileAttachmentOptions Attachment data type download 1`] = `
   onChange={[MockFunction]}
 >
   <div>
-    <Row
-      bsClass="row"
-      componentClass="div"
+    <div
+      className="row"
     >
       <div
-        className="row"
+        className="col-xs-12"
       >
-        <Col
-          bsClass="col"
-          componentClass="div"
-          xs={12}
+        <SectionHeading
+          helpTipBody={
+            <React.Fragment>
+              <p>
+                Set the default behavior of attachment links when clicked in grids and elsewhere in LabKey.
+              </p>
+            </React.Fragment>
+          }
+          title="Attachment Behavior"
         >
           <div
-            className="col-xs-12"
+            className="domain-field-section-heading"
           >
-            <SectionHeading
-              helpTipBody={
-                <React.Fragment>
-                  <p>
-                    Set the default behavior of attachment links when clicked in grids and elsewhere in LabKey.
-                  </p>
-                </React.Fragment>
-              }
+            Attachment Behavior
+            <LabelHelpTip
               title="Attachment Behavior"
             >
-              <div
-                className="domain-field-section-heading"
-              >
-                Attachment Behavior
-                <LabelHelpTip
-                  title="Attachment Behavior"
-                >
-                  <OverlayTrigger
-                    id="label-help-tip1"
-                    overlay={
-                      <Popover
-                        id="label-help-tip-popover"
-                        title="Attachment Behavior"
-                      >
-                        <React.Fragment>
-                          <p>
-                            Set the default behavior of attachment links when clicked in grids and elsewhere in LabKey.
-                          </p>
-                        </React.Fragment>
-                      </Popover>
-                    }
+              <OverlayTrigger
+                id="label-help-tip1"
+                overlay={
+                  <Popover
+                    id="label-help-tip-popover"
+                    title="Attachment Behavior"
                   >
-                    <div
-                      className="overlay-trigger"
-                      onClick={[Function]}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                    >
-                      <span
-                        className="label-help-target"
-                      >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
-                  </OverlayTrigger>
-                </LabelHelpTip>
-              </div>
-            </SectionHeading>
+                    <React.Fragment>
+                      <p>
+                        Set the default behavior of attachment links when clicked in grids and elsewhere in LabKey.
+                      </p>
+                    </React.Fragment>
+                  </Popover>
+                }
+              >
+                <div
+                  className="overlay-trigger"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                >
+                  <span
+                    className="label-help-target"
+                  >
+                    <span
+                      className="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
+              </OverlayTrigger>
+            </LabelHelpTip>
           </div>
-        </Col>
+        </SectionHeading>
       </div>
-    </Row>
-    <Row
-      bsClass="row"
-      className="domain-field-label"
-      componentClass="div"
+    </div>
+    <div
+      className="row domain-field-label"
     >
       <div
-        className="domain-field-label row"
+        className="col-xs-2"
       >
-        <Col
-          bsClass="col"
-          componentClass="div"
-          xs={2}
+        <FormControl
+          bsClass="form-control"
+          componentClass="select"
+          disabled={false}
+          id="domainpropertiesrow-format-1-1"
+          name="domainpropertiesrow-format"
+          onChange={[Function]}
+          value="attachment"
         >
-          <div
-            className="col-xs-2"
+          <select
+            className="form-control"
+            disabled={false}
+            id="domainpropertiesrow-format-1-1"
+            name="domainpropertiesrow-format"
+            onChange={[Function]}
+            value="attachment"
           >
-            <FormControl
-              bsClass="form-control"
-              componentClass="select"
-              disabled={false}
-              id="domainpropertiesrow-format-1-1"
-              name="domainpropertiesrow-format"
-              onChange={[Function]}
+            <option
+              key="domainpropertiesrow-formatoption-inline-1-1"
+              value="inline"
+            >
+              Show Attachment in Browser
+            </option>
+            <option
+              key="domainpropertiesrow-formatoption-attachment-1-1"
               value="attachment"
             >
-              <select
-                className="form-control"
-                disabled={false}
-                id="domainpropertiesrow-format-1-1"
-                name="domainpropertiesrow-format"
-                onChange={[Function]}
-                value="attachment"
-              >
-                <option
-                  key="domainpropertiesrow-formatoption-inline-1-1"
-                  value="inline"
-                >
-                  Show Attachment in Browser
-                </option>
-                <option
-                  key="domainpropertiesrow-formatoption-attachment-1-1"
-                  value="attachment"
-                >
-                  Download Attachment
-                </option>
-              </select>
-            </FormControl>
-          </div>
-        </Col>
+              Download Attachment
+            </option>
+          </select>
+        </FormControl>
       </div>
-    </Row>
+    </div>
   </div>
 </Memo()>
 `;
@@ -144,126 +121,103 @@ exports[`FileAttachmentOptions File data type inline 1`] = `
   onChange={[MockFunction]}
 >
   <div>
-    <Row
-      bsClass="row"
-      componentClass="div"
+    <div
+      className="row"
     >
       <div
-        className="row"
+        className="col-xs-12"
       >
-        <Col
-          bsClass="col"
-          componentClass="div"
-          xs={12}
+        <SectionHeading
+          helpTipBody={
+            <React.Fragment>
+              <p>
+                Set the default behavior of file links when clicked in grids and elsewhere in LabKey.
+              </p>
+            </React.Fragment>
+          }
+          title="File Behavior"
         >
           <div
-            className="col-xs-12"
+            className="domain-field-section-heading"
           >
-            <SectionHeading
-              helpTipBody={
-                <React.Fragment>
-                  <p>
-                    Set the default behavior of file links when clicked in grids and elsewhere in LabKey.
-                  </p>
-                </React.Fragment>
-              }
+            File Behavior
+            <LabelHelpTip
               title="File Behavior"
             >
-              <div
-                className="domain-field-section-heading"
-              >
-                File Behavior
-                <LabelHelpTip
-                  title="File Behavior"
-                >
-                  <OverlayTrigger
-                    id="label-help-tip0"
-                    overlay={
-                      <Popover
-                        id="label-help-tip-popover"
-                        title="File Behavior"
-                      >
-                        <React.Fragment>
-                          <p>
-                            Set the default behavior of file links when clicked in grids and elsewhere in LabKey.
-                          </p>
-                        </React.Fragment>
-                      </Popover>
-                    }
+              <OverlayTrigger
+                id="label-help-tip0"
+                overlay={
+                  <Popover
+                    id="label-help-tip-popover"
+                    title="File Behavior"
                   >
-                    <div
-                      className="overlay-trigger"
-                      onClick={[Function]}
-                      onMouseEnter={[Function]}
-                      onMouseLeave={[Function]}
-                    >
-                      <span
-                        className="label-help-target"
-                      >
-                        <span
-                          className="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
-                  </OverlayTrigger>
-                </LabelHelpTip>
-              </div>
-            </SectionHeading>
+                    <React.Fragment>
+                      <p>
+                        Set the default behavior of file links when clicked in grids and elsewhere in LabKey.
+                      </p>
+                    </React.Fragment>
+                  </Popover>
+                }
+              >
+                <div
+                  className="overlay-trigger"
+                  onClick={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                >
+                  <span
+                    className="label-help-target"
+                  >
+                    <span
+                      className="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
+              </OverlayTrigger>
+            </LabelHelpTip>
           </div>
-        </Col>
+        </SectionHeading>
       </div>
-    </Row>
-    <Row
-      bsClass="row"
-      className="domain-field-label"
-      componentClass="div"
+    </div>
+    <div
+      className="row domain-field-label"
     >
       <div
-        className="domain-field-label row"
+        className="col-xs-2"
       >
-        <Col
-          bsClass="col"
-          componentClass="div"
-          xs={2}
+        <FormControl
+          bsClass="form-control"
+          componentClass="select"
+          disabled={false}
+          id="domainpropertiesrow-format-1-1"
+          name="domainpropertiesrow-format"
+          onChange={[Function]}
+          value="attachment"
         >
-          <div
-            className="col-xs-2"
+          <select
+            className="form-control"
+            disabled={false}
+            id="domainpropertiesrow-format-1-1"
+            name="domainpropertiesrow-format"
+            onChange={[Function]}
+            value="attachment"
           >
-            <FormControl
-              bsClass="form-control"
-              componentClass="select"
-              disabled={false}
-              id="domainpropertiesrow-format-1-1"
-              name="domainpropertiesrow-format"
-              onChange={[Function]}
+            <option
+              key="domainpropertiesrow-formatoption-inline-1-1"
+              value="inline"
+            >
+              Show File in Browser
+            </option>
+            <option
+              key="domainpropertiesrow-formatoption-attachment-1-1"
               value="attachment"
             >
-              <select
-                className="form-control"
-                disabled={false}
-                id="domainpropertiesrow-format-1-1"
-                name="domainpropertiesrow-format"
-                onChange={[Function]}
-                value="attachment"
-              >
-                <option
-                  key="domainpropertiesrow-formatoption-inline-1-1"
-                  value="inline"
-                >
-                  Show File in Browser
-                </option>
-                <option
-                  key="domainpropertiesrow-formatoption-attachment-1-1"
-                  value="attachment"
-                >
-                  Download File
-                </option>
-              </select>
-            </FormControl>
-          </div>
-        </Col>
+              Download File
+            </option>
+          </select>
+        </FormControl>
       </div>
-    </Row>
+    </div>
   </div>
 </Memo()>
 `;

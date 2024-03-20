@@ -6,7 +6,7 @@ exports[`DataClassDesigner custom properties 1`] = `
     class="domain-designer"
   >
     <div
-      class="domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -32,7 +32,7 @@ exports[`DataClassDesigner custom properties 1`] = `
           class="panel-body"
         >
           <div
-            class="margin-bottom row"
+            class="row margin-bottom"
           >
             <div
               class="col-xs-9"
@@ -64,11 +64,9 @@ exports[`DataClassDesigner custom properties 1`] = `
               </div>
             </div>
           </div>
-          <form
-            class=""
-          >
+          <form>
             <div
-              class="margin-bottom margin-top row"
+              class="row margin-bottom margin-top"
             >
               <div
                 class="col-xs-2"
@@ -93,7 +91,7 @@ exports[`DataClassDesigner custom properties 1`] = `
               </div>
             </div>
             <div
-              class="margin-bottom row"
+              class="row margin-bottom"
             >
               <div
                 class="col-xs-2"
@@ -126,7 +124,7 @@ exports[`DataClassDesigner custom properties 1`] = `
               </div>
             </div>
             <div
-              class="margin-bottom row"
+              class="row margin-bottom"
             >
               <div
                 class="col-xs-2"
@@ -171,7 +169,7 @@ exports[`DataClassDesigner custom properties 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -528,7 +526,7 @@ exports[`DataClassDesigner default properties 1`] = `
     class="domain-designer"
   >
     <div
-      class="domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -554,7 +552,7 @@ exports[`DataClassDesigner default properties 1`] = `
           class="panel-body"
         >
           <div
-            class="margin-bottom row"
+            class="row margin-bottom"
           >
             <div
               class="col-xs-12"
@@ -577,11 +575,9 @@ exports[`DataClassDesigner default properties 1`] = `
               </div>
             </div>
           </div>
-          <form
-            class=""
-          >
+          <form>
             <div
-              class="margin-bottom margin-top row"
+              class="row margin-bottom margin-top"
             >
               <div
                 class="col-xs-2"
@@ -606,7 +602,7 @@ exports[`DataClassDesigner default properties 1`] = `
               </div>
             </div>
             <div
-              class="margin-bottom row"
+              class="row margin-bottom"
             >
               <div
                 class="col-xs-2"
@@ -639,7 +635,7 @@ exports[`DataClassDesigner default properties 1`] = `
               </div>
             </div>
             <div
-              class="margin-bottom row"
+              class="row margin-bottom"
             >
               <div
                 class="col-xs-2"
@@ -902,7 +898,7 @@ exports[`DataClassDesigner default properties 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -1259,7 +1255,7 @@ exports[`DataClassDesigner initModel 1`] = `
     class="domain-designer"
   >
     <div
-      class="domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -1292,7 +1288,7 @@ exports[`DataClassDesigner initModel 1`] = `
           class="panel-body"
         >
           <div
-            class="margin-bottom row"
+            class="row margin-bottom"
           >
             <div
               class="col-xs-12"
@@ -1315,11 +1311,9 @@ exports[`DataClassDesigner initModel 1`] = `
               </div>
             </div>
           </div>
-          <form
-            class=""
-          >
+          <form>
             <div
-              class="margin-bottom margin-top row"
+              class="row margin-bottom margin-top"
             >
               <div
                 class="col-xs-2"
@@ -1344,7 +1338,7 @@ exports[`DataClassDesigner initModel 1`] = `
               </div>
             </div>
             <div
-              class="margin-bottom row"
+              class="row margin-bottom"
             >
               <div
                 class="col-xs-2"
@@ -1379,7 +1373,7 @@ exports[`DataClassDesigner initModel 1`] = `
               </div>
             </div>
             <div
-              class="margin-bottom row"
+              class="row margin-bottom"
             >
               <div
                 class="col-xs-2"
@@ -1642,7 +1636,7 @@ exports[`DataClassDesigner initModel 1`] = `
       </div>
     </div>
     <div
-      class="domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel panel panel-default"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -1854,7 +1848,7 @@ exports[`DataClassDesigner initModel 1`] = `
              Custom Fields 
           </div>
           <div
-            class="domain-field-toolbar row"
+            class="row domain-field-toolbar"
           >
             <div
               class="col-xs-4"
@@ -1955,7 +1949,7 @@ exports[`DataClassDesigner initModel 1`] = `
               </div>
             </div>
             <div
-              class="domain-row-container row"
+              class="row domain-row-container"
             >
               <div
                 class="domain-row-handle"
@@ -1979,29 +1973,25 @@ exports[`DataClassDesigner initModel 1`] = `
               </div>
               <div>
                 <div
-                  class="domain-row-base-fields col-xs-6"
+                  class="col-xs-3"
                 >
-                  <div
-                    class="col-xs-6"
-                  >
-                    <b>
-                      Name *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-4"
-                  >
-                    <b>
-                      Data Type *
-                    </b>
-                  </div>
-                  <div
-                    class="col-xs-2"
-                  >
-                    <b>
-                      Required
-                    </b>
-                  </div>
+                  <b>
+                    Name *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-2"
+                >
+                  <b>
+                    Data Type *
+                  </b>
+                </div>
+                <div
+                  class="col-xs-1"
+                >
+                  <b>
+                    Required
+                  </b>
                 </div>
                 <div
                   class="col-xs-6"
@@ -2027,7 +2017,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 tabindex="0"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-0-hidden-text-0"
@@ -2079,7 +2069,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-0-0"
@@ -2160,7 +2150,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -2245,7 +2235,7 @@ exports[`DataClassDesigner initModel 1`] = `
                             class="row"
                           >
                             <div
-                              class="domain-text-options-col col-xs-12"
+                              class="col-xs-12 domain-text-options-col"
                             >
                               <input
                                 checked=""
@@ -2524,7 +2514,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 tabindex="1"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-0-hidden-text-0"
@@ -2576,7 +2566,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-0-1"
@@ -2661,7 +2651,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -3023,7 +3013,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 tabindex="2"
               >
                 <div
-                  class="domain-row-container row"
+                  class="row domain-row-container"
                 >
                   <div
                     aria-describedby="rbd-hidden-text-0-hidden-text-0"
@@ -3075,7 +3065,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     class="domain-row-main"
                   >
                     <div
-                      class="domain-row-base-fields domain-row-base-fields-position col-xs-6"
+                      class="col-xs-6 domain-row-base-fields domain-row-base-fields-position"
                     >
                       <div
                         id="domainpropertiesrow-row-0-2"
@@ -3150,7 +3140,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       </div>
                     </div>
                     <div
-                      class="domain-row-details-container col-xs-6"
+                      class="col-xs-6 domain-row-details-container"
                     >
                       <div
                         class="domain-field-details"
@@ -3485,7 +3475,7 @@ exports[`DataClassDesigner initModel 1`] = `
             </form>
           </div>
           <div
-            class="domain-add-field-row row"
+            class="row domain-add-field-row"
           >
             <div
               class="col-xs-12"

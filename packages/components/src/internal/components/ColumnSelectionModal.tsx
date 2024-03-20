@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Col, OverlayTrigger, Popover } from 'react-bootstrap';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 
@@ -471,7 +471,7 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
             {!isLoaded && <LoadingSpinner />}
             {isLoaded && (
                 <div className="field-modal__container row">
-                    <Col xs={12} sm={6} className="field-modal__col-2">
+                    <div className="col-xs-12 col-sm-6 field-modal__col-2">
                         <div key="title" className="field-modal__col-title">
                             {leftColumnTitle}
                         </div>
@@ -496,8 +496,8 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
                                 &nbsp;Show all system and user-defined fields
                             </div>
                         )}
-                    </Col>
-                    <Col xs={12} sm={6} className="field-modal__col-2">
+                    </div>
+                    <div className="col-xs-12 col-sm-6 field-modal__col-2">
                         <div className="field-modal__col-title">
                             {rightColumnTitle}
                             <span
@@ -534,7 +534,7 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
                                 )}
                             </Droppable>
                         </DragDropContext>
-                    </Col>
+                    </div>
                 </div>
             )}
         </Modal>

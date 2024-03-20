@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Checkbox, Col, FormControl, Row } from 'react-bootstrap';
+import { Checkbox, FormControl } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
 
@@ -52,12 +52,12 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
         } = this.props;
 
         return (
-            <Row className="margin-top">
-                <Col xs={5}>
+            <div className="row margin-top">
+                <div className="col-xs-5">
                     <DomainFieldLabel label={label} helpTipBody={helpTip} />
-                </Col>
+                </div>
 
-                <Col xs={7}>
+                <div className="col-xs-7">
                     <SelectInput
                         onChange={onSelectChange}
                         value={selectedValue}
@@ -71,8 +71,8 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
                         disabled={disabled}
                         clearable={clearable}
                     />
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 }
@@ -95,14 +95,14 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
             this.props;
 
         return (
-            <Row className="margin-top">
-                <Col xs={4}>
+            <div className="row margin-top">
+                <div className="col-xs-4">
                     <DomainFieldLabel label={label} required={required} helpTipBody={helpTip} />
-                </Col>
+                </div>
 
-                {showInAdvancedSettings && <Col xs={1} />}
+                {showInAdvancedSettings && <div className="col-xs-1" />}
 
-                <Col xs={7}>
+                <div className="col-xs-7">
                     <FormControl
                         id={name}
                         type="text"
@@ -111,10 +111,10 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
                         onChange={onValueChange}
                         disabled={disabled}
                     />
-                </Col>
+                </div>
 
-                {!showInAdvancedSettings && <Col xs={1} />}
-            </Row>
+                {!showInAdvancedSettings && <div className="col-xs-1" />}
+            </div>
         );
     }
 }
@@ -276,20 +276,20 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <Modal footer={footer} onCancel={this.closeModal} title="Advanced Dataset Settings">
                         <SectionHeading title="Miscellaneous Options" />
 
-                        <Row className="margin-top">
-                            <Col xs={5}>
+                        <div className="row margin-top">
+                            <div className="col-xs-5">
                                 {showInOverviewLabel}
                                 <LabelHelpTip title={showInOverviewLabel}>{SHOW_IN_OVERVIEW}</LabelHelpTip>
-                            </Col>
-                            <Col xs={7}>
+                            </div>
+                            <div className="col-xs-7">
                                 <Checkbox
                                     checked={showByDefault}
                                     onChange={this.onInputChange}
                                     id="showByDefault"
                                     className="domain-field-checkbox"
                                 />
-                            </Col>
-                        </Row>
+                            </div>
+                        </div>
 
                         <DatasetSettingsInput
                             name="datasetId"

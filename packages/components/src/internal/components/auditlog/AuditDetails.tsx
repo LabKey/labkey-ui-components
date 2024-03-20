@@ -4,7 +4,6 @@
  */
 import React, { Component, ReactNode } from 'react';
 import { List, Map } from 'immutable';
-import { Row, Col } from 'react-bootstrap';
 
 import { User } from '../base/models/User';
 import { capitalizeFirstChar } from '../../util/utils';
@@ -63,11 +62,11 @@ export class AuditDetails extends Component<Props> {
         const changed = oldValue !== newValue;
 
         return (
-            <Row className="margin-bottom" key={field}>
-                <Col className="left-spacing right-spacing">
+            <div className="row margin-bottom" key={field}>
+                <div className="left-spacing right-spacing">
                     <span className="audit-detail-row-label right-spacing">{capitalizeFirstChar(field)}</span>
-                </Col>
-                <Col className="left-spacing right-spacing">
+                </div>
+                <div className="left-spacing right-spacing">
                     {isInsert && <span className="new-audit-value">{newValue}</span>}
                     {isUpdate && changed && (
                         <>
@@ -80,8 +79,8 @@ export class AuditDetails extends Component<Props> {
                         <span className="display-light old-audit-value right-spacing">{oldValue}</span>
                     )}
                     {!isInsert && !isUpdate && <span className="display-light old-audit-value">{oldValue}</span>}
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 
@@ -163,9 +162,9 @@ export class AuditDetails extends Component<Props> {
                     {!!rowId && (
                         <>
                             {summary && (
-                                <Row className="margin-bottom display-light">
-                                    <Col xs={12}>{summary}</Col>
-                                </Row>
+                                <div className="row margin-bottom display-light">
+                                    <div className="col-xs-12">{summary}</div>
+                                </div>
                             )}
                             {gridData && <Grid data={gridData} columns={this.getGridColumns()} showHeader={false} />}
                             {changeDetails && this.renderChanges()}

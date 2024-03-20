@@ -1,9 +1,5 @@
 import React from 'react';
-
-import { Col, Form, Row } from 'react-bootstrap';
-
 import { Utils } from '@labkey/api';
-
 import { produce } from 'immer';
 
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
@@ -128,13 +124,13 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
                 updateValidStatus={this.updateValidStatus}
                 isValid={isValid}
             >
-                <Row className="margin-bottom">
-                    <Col xs={12}>
+                <div className="row margin-bottom">
+                    <div className="col-xs-12">
                         <HelpTopicURL helpTopic={DEFINE_ISSUES_LIST_TOPIC} nounPlural="issues lists" />
-                    </Col>
-                </Row>
-                <Form>
-                    <Col xs={12} md={6}>
+                    </div>
+                </div>
+                <form>
+                    <div className="col-xs-12 col-md-6">
                         <div className="domain-field-padding-bottom">
                             <BasicPropertiesFields
                                 model={model}
@@ -152,9 +148,9 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
                                 />
                             </div>
                         )}
-                    </Col>
+                    </div>
                     <AssignmentOptions api={api} model={model} onSelect={this.onSelectChange} />
-                </Form>
+                </form>
             </BasePropertiesPanel>
         );
     }

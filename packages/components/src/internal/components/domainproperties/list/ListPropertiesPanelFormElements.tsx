@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
@@ -12,16 +12,16 @@ interface BasicPropertiesInputsProps {
 }
 
 export const NameInput: FC<BasicPropertiesInputsProps> = memo(({ model, onInputChange }) => (
-    <Row className="margin-top">
-        <Col xs={3} lg={2}>
+    <div className="row margin-top">
+        <div className="col-xs-3 col-lg-2">
             <DomainFieldLabel
                 label="Name"
                 required={true}
                 helpTipBody="The name for this list. Note that this can be changed after list creation."
             />
-        </Col>
+        </div>
 
-        <Col xs={9} lg={8}>
+        <div className="col-xs-9 col-lg-8">
             <FormControl
                 id="name"
                 type="text"
@@ -29,39 +29,35 @@ export const NameInput: FC<BasicPropertiesInputsProps> = memo(({ model, onInputC
                 value={model.name === null ? '' : model.name}
                 onChange={onInputChange}
             />
-        </Col>
-
-        <Col lg={2} />
-    </Row>
+        </div>
+    </div>
 ));
 
 export const DescriptionInput: FC<BasicPropertiesInputsProps> = memo(({ model, onInputChange }) => (
-    <Row className="margin-top">
-        <Col xs={3} lg={2}>
+    <div className="row margin-top">
+        <div className="col-xs-3 col-lg-2">
             <DomainFieldLabel label="Description" />
-        </Col>
+        </div>
 
-        <Col xs={9} lg={8}>
+        <div className="col-xs-9 col-lg-8">
             <textarea
                 className="form-control"
                 id="description"
                 value={model.description === null ? '' : model.description}
                 onChange={onInputChange}
             />
-        </Col>
-
-        <Col lg={2} />
-    </Row>
+        </div>
+    </div>
 ));
 
 export const BasicPropertiesFields: FC<BasicPropertiesInputsProps> = memo(({ model, onInputChange }) => (
-    <Col xs={12} md={7}>
+    <div className="col-xs-12 col-md-7">
         <SectionHeading title="Basic Properties" />
 
         <NameInput model={model} onInputChange={onInputChange} />
 
         <DescriptionInput model={model} onInputChange={onInputChange} />
-    </Col>
+    </div>
 ));
 
 interface CheckBoxRowProps {
@@ -108,9 +104,9 @@ interface AllowableActionsProps {
     onChange: (name: string, checked: boolean) => void;
 }
 export const AllowableActions: FC<AllowableActionsProps> = memo(({ model, onChange }) => (
-    <Col xs={12} md={3}>
+    <div className="col-xs-12 col-md-3">
         <SectionHeading title="Allow these Actions" />
         <AllowableActionContainer model={model} onChange={onChange} />
-    </Col>
+    </div>
 ));
 AllowableActions.displayName = 'AllowableActions';

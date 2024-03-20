@@ -1,7 +1,7 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 
-import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
+import { FormControl, FormControlProps } from 'react-bootstrap';
 
 import classNames from 'classnames';
 
@@ -94,11 +94,11 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
         const parentValueBlank = !parentValue || !parentValue.value;
 
         return (
-            <Row key={id}>
-                <Col xs={2}>
+            <div className="row" key={id}>
+                <div className="col-xs-2">
                     <DomainFieldLabel label={aliasCaption} required={true} helpTipBody={helpMsg} />
-                </Col>
-                <Col xs={3} className={classNames({ 'has-error': !ignoreAliasError && (aliasBlank || isDupe) })}>
+                </div>
+                <div className={classNames('col-xs-3', { 'has-error': !ignoreAliasError && (aliasBlank || isDupe) })}>
                     <FormControl
                         ref={this.nameInput}
                         name="alias"
@@ -108,8 +108,8 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                         onChange={this.onChange}
                         onBlur={this.onAliasBlur}
                     />
-                </Col>
-                <Col xs={5} className={classNames({ 'has-error': !ignoreSelectError && parentValueBlank })}>
+                </div>
+                <div className={classNames('col-xs-5', { 'has-error': !ignoreSelectError && parentValueBlank })}>
                     <SelectInput
                         inputClass="import-alias--parent-select"
                         name="parentValue"
@@ -120,11 +120,11 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                         onFocus={this.onParentValueFocus}
                         onBlur={this.onParentValueBlur}
                     />
-                </Col>
-                <Col>
+                </div>
+                <div>
                     <RemoveEntityButton labelClass="entity-insert--remove-parent" onClick={this.removeParentAlias} />
-                </Col>
-            </Row>
+                </div>
+            </div>
         );
     }
 }

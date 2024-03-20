@@ -541,26 +541,26 @@ export class OperationConfirmationData {
     readonly totalActionable;
     readonly totalNotActionable;
 
-    constructor(values?: Partial<OperationConfirmationData>) {
+    constructor(values?: Partial<OperationConfirmationData>, idField = 'rowId') {
         Object.assign(this, values);
         const idMap = {};
         if (values?.allowed) {
             values.allowed.forEach(allowed => {
-                idMap[caseInsensitive(allowed, 'rowId')] = true;
+                idMap[caseInsensitive(allowed, idField)] = true;
             });
         } else {
             Object.assign(this, { allowed: [] });
         }
         if (values?.notAllowed) {
             values.notAllowed.forEach(notAllowed => {
-                idMap[caseInsensitive(notAllowed, 'rowId')] = false;
+                idMap[caseInsensitive(notAllowed, idField)] = false;
             });
         } else {
             Object.assign(this, { notAllowed: [] });
         }
         if (values?.notPermitted) {
             values.notPermitted.forEach(npRow => {
-                idMap[caseInsensitive(npRow, 'rowId')] = false;
+                idMap[caseInsensitive(npRow, idField)] = false;
             });
         } else {
             Object.assign(this, { notPermitted: [] });
@@ -577,17 +577,12 @@ export class OperationConfirmationData {
         return this.idMap[idNum];
     }
 
-    getActionableIds(): number[] {
+    getActionableIds(idField = 'rowId'): number[] {
         return this.allowed
             .map(a => {
-                const rowId = a.RowId ? a.RowId : a;
-                if (!this.isIdActionable(rowId)) {
-                    return undefined;
-                } else {
-                    return rowId;
-                }
+                return caseInsensitive(a, idField);
             })
-            .filter(d => d !== undefined);
+            .filter(id => this.isIdActionable(id));
     }
 
     get allActionable(): boolean {
@@ -595,7 +590,7 @@ export class OperationConfirmationData {
     }
 
     // Note that this returns false if there are no samples represented since we generally want
-    // noneAllowed to mean there are some samples but none are allowed.
+    // noneActionable to mean there are some samples but none can be acted upon.
     get noneActionable(): boolean {
         return this.allowed.length === 0 && (this.notAllowed.length > 0 || this.notPermitted.length > 0);
     }

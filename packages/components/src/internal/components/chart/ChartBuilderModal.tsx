@@ -13,7 +13,7 @@ import { naturalSortByProperty } from '../../../public/sort';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import { saveChart } from '../../actions';
+import {deleteChart, saveChart} from '../../actions';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
@@ -23,6 +23,7 @@ import { hasPermissions } from '../base/models/User';
 
 import {ChartConfig, ChartQueryConfig, GenericChartModel} from './models';
 import {Alert} from "../base/Alert";
+import {FormButtons} from "../../FormButtons";
 
 interface AggregateFieldInfo {
     name: string;
@@ -55,7 +56,7 @@ const MAX_POINT_DISPLAY = 10000;
 const BLUE_HEX_COLOR = '3366FF';
 
 interface Props extends RequiresModelAndActions {
-    onHide: () => void;
+    onHide: (successMsg?: string) => void;
     savedChartModel?: GenericChartModel;
 }
 
@@ -71,6 +72,8 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
 
     const [loadingData, setLoadingData] = useState<boolean>(false);
     const [saving, setSaving] = useState<boolean>(false);
+    const [deleting, setDeleting] = useState<boolean>(false);
+    const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false);
     const [error, setError] = useState<string>();
     const [previewMsg, setPreviewMsg] = useState<string>();
     const [reportConfig, setReportConfig] = useState<Record<string, any>>();
@@ -151,7 +154,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         try {
             const response = await saveChart(_reportConfig);
             setSaving(false);
-            onHide();
+            onHide((savedChartModel ? 'Successfully updated chart: ' : 'Successfully created chart: ') + _reportConfig.name + '.');
 
             // clear the selected report, if we are saving/updating it, so that it will refresh in ChartPanel.tsx
             await actions.selectReport(model.id, undefined);
@@ -162,6 +165,35 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             setSaving(false);
         }
     }, [savedChartModel, reportConfig, name, shared, actions, model.id, onHide]);
+
+    const onDeleteChart = useCallback(() => {
+        setShowConfirmDelete(true);
+    }, []);
+
+    const onCancelDelete = useCallback(() => {
+        setShowConfirmDelete(false);
+        setError(undefined);
+    }, []);
+
+    const onConfirmDelete = useCallback(async () => {
+        setDeleting(true);
+        setError(undefined);
+        try {
+            const response = await deleteChart(savedChartModel.id);
+            setDeleting(false);
+            onHide('Successfully deleted chart: ' + savedChartModel.name + '.');
+
+            await actions.selectReport(model.id, undefined);
+            await actions.loadCharts(model.id);
+        } catch (e) {
+            setError(e.exception ?? e);
+            setDeleting(false);
+        }
+    }, [savedChartModel, onHide, actions, model.id]);
+
+    const onHide_ = useCallback(() => {
+        onHide();
+    }, [onHide]);
 
     useEffect(() => {
         if (ref?.current) ref.current.innerHTML = '';
@@ -218,16 +250,55 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         });
     }, [divId, model, hasRequiredValues, selectedType, fieldValues]);
 
+    let footer;
+    if (showConfirmDelete) {
+        footer = (
+            <div className="form-buttons">
+                <div className="form-buttons__left" />
+                <div className="form-buttons__right">
+                    Are you sure you want to permanently delete this chart?
+                    <button className="btn btn-default" onClick={onCancelDelete} type="button" disabled={deleting}>
+                        Cancel
+                    </button>
+                    <button className="btn btn-danger" onClick={onConfirmDelete} type="button" disabled={deleting}>
+                        {deleting ? 'Deleting...' : 'Delete'}
+                    </button>
+                </div>
+            </div>
+        );
+    } else {
+        footer = (
+            <FormButtons sticky={false}>
+                <button className="btn btn-default" onClick={onHide_} type="button">
+                    Cancel
+                </button>
+                {savedChartModel?.canDelete && (
+                    <button
+                        className="btn btn-danger"
+                        onClick={onDeleteChart}
+                        type="button"
+                    >
+                        Delete Chart
+                    </button>
+                )}
+                <button
+                    className="btn btn-success"
+                    onClick={onSaveChart}
+                    type="button"
+                    disabled={saving || !(hasName && hasRequiredValues && !loadingData)}
+                >
+                    {saving ? (savedChartModel ? 'Saving Chart...' : 'Creating Chart...') : (savedChartModel ? 'Save Chart' : 'Create Chart')}
+                </button>
+            </FormButtons>
+        );
+    }
+
     return (
         <Modal
-            canConfirm={hasName && hasRequiredValues && !loadingData}
             className="chart-builder-modal"
-            confirmText={savedChartModel ? 'Save Chart' : 'Create Chart'}
-            confirmingText={savedChartModel ? 'Saving Chart...' : 'Creating Chart...'}
-            isConfirming={saving}
-            onCancel={onHide}
-            onConfirm={onSaveChart}
+            onCancel={onHide_}
             title={savedChartModel ? 'Edit Chart' : 'Create Chart'}
+            footer={footer}
         >
             {error && <Alert>{error}</Alert>}
             <div className="row">

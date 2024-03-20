@@ -890,3 +890,26 @@ export function saveChart(reportConfig: Record<string, any>, containerPath?: str
         });
     });
 }
+
+interface DeleteChartResponse {
+    success: boolean;
+}
+
+export function deleteChart(id: string, dataType = 'reports', containerPath?: string): Promise<DeleteChartResponse> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('reports', 'deleteViews.api', undefined, {
+                container: containerPath,
+            }),
+            method: 'POST',
+            jsonData: { views: [{ dataType, id }] },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                console.error(error);
+                reject(resolveErrorMessage(error) ?? 'Failed to delete chart.');
+            }),
+        });
+    });
+}

@@ -1,5 +1,4 @@
 import React, { FC, memo } from 'react';
-import { Panel } from 'react-bootstrap';
 
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 import { caseInsensitive } from '../../util/utils';
@@ -17,9 +16,9 @@ export const AssayReimportHeader: FC<Props> = memo(({ assay, hasBatchProperties,
     const assayRunUrl = AppURL.create('assays', assay.type, assay.name, 'runs', rowId);
 
     return (
-        <Panel>
-            <Panel.Heading>Re-Import Run</Panel.Heading>
-            <Panel.Body>
+        <div className="panel panel-default">
+            <div className="panel-heading">Re-Import Run</div>
+            <div className="panel-body">
                 <p>
                     <strong>
                         Replacing Run: <a href={assayRunUrl.toHref()}>{name}</a>
@@ -29,7 +28,7 @@ export const AssayReimportHeader: FC<Props> = memo(({ assay, hasBatchProperties,
                     Edit the {hasBatchProperties ? 'batch and ' : ''} run properties below or provide updated data for
                     this assay run. Changes will be reflected in the audit history for this run.
                 </p>
-            </Panel.Body>
-        </Panel>
+            </div>
+        </div>
     );
 });

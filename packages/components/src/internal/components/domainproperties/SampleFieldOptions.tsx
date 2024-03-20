@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
@@ -67,13 +67,13 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
 
         return (
             <div>
-                <Row>
-                    <Col xs={12}>
+                <div className="row">
+                    <div className="col-xs-12">
                         <SectionHeading title={label} />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={5}>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-5">
                         <div className="domain-field-label">
                             Sample lookup to
                             <LabelHelpTip title="Sample Reference">
@@ -92,10 +92,10 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                                 {/* TODO: contextualize help link based on app (SM, LKS, etc.)*/}
                             </LabelHelpTip>
                         </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={5}>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-5">
                         <FormControl
                             componentClass="select"
                             id={id}
@@ -134,8 +134,8 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                                     })
                                     .toArray()}
                         </FormControl>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </div>
         );
     }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Col, NavItem } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
 
@@ -79,13 +78,12 @@ describe('QueryFilterPanel', () => {
     test('fullWidth', async () => {
         const wrapper = mount(<QueryFilterPanel {...DEFAULT_PROPS} />);
         validate(wrapper, 10);
-        expect(wrapper.find(Col)).toHaveLength(2);
-        expect(wrapper.find(Col).first().prop('sm')).toBe(3);
-        expect(wrapper.find(Col).last().prop('sm')).toBe(6);
+        expect(wrapper.find('.col-sm-3').exists()).toBe(true);
+        expect(wrapper.find('.col-sm-6').exists()).toBe(true);
         wrapper.setProps({ fullWidth: true });
         await waitForLifecycle(wrapper);
-        expect(wrapper.find(Col).first().prop('sm')).toBe(4);
-        expect(wrapper.find(Col).last().prop('sm')).toBe(8);
+        expect(wrapper.find('.col-sm-4').exists()).toBe(true);
+        expect(wrapper.find('.col-sm-8').exists()).toBe(true);
         wrapper.unmount();
     });
 

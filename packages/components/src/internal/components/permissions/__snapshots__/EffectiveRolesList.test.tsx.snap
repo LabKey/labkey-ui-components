@@ -9,12 +9,12 @@ exports[`<EffectiveRolesList/> admin, showLinks false 1`] = `
     class="row"
   >
     <div
-      class="principal-detail-label col-xs-4"
+      class="col-xs-4 principal-detail-label"
     >
       Effective Roles
     </div>
     <div
-      class="principal-detail-value col-xs-8"
+      class="col-xs-8 principal-detail-value"
     >
       <ul
         class="principal-detail-ul"
@@ -39,12 +39,12 @@ exports[`<EffectiveRolesList/> multiple roles 1`] = `
     class="row"
   >
     <div
-      class="principal-detail-label col-xs-4"
+      class="col-xs-4 principal-detail-label"
     >
       Effective Roles
     </div>
     <div
-      class="principal-detail-value col-xs-8"
+      class="col-xs-8 principal-detail-value"
     >
       <ul
         class="principal-detail-ul"
@@ -120,12 +120,12 @@ exports[`<EffectiveRolesList/> non admin 1`] = `
     class="row"
   >
     <div
-      class="principal-detail-label col-xs-4"
+      class="col-xs-4 principal-detail-label"
     >
       Effective Roles
     </div>
     <div
-      class="principal-detail-value col-xs-8"
+      class="col-xs-8 principal-detail-value"
     >
       <ul
         class="principal-detail-ul"
@@ -150,12 +150,12 @@ exports[`<EffectiveRolesList/> single role 1`] = `
     class="row"
   >
     <div
-      class="principal-detail-label col-xs-4"
+      class="col-xs-4 principal-detail-label"
     >
       Effective Roles
     </div>
     <div
-      class="principal-detail-value col-xs-8"
+      class="col-xs-8 principal-detail-value"
     >
       <ul
         class="principal-detail-ul"
@@ -184,12 +184,12 @@ exports[`<EffectiveRolesList/> with root policy 1`] = `
     class="row"
   >
     <div
-      class="principal-detail-label col-xs-4"
+      class="col-xs-4 principal-detail-label"
     >
       Effective Roles
     </div>
     <div
-      class="principal-detail-value col-xs-8"
+      class="col-xs-8 principal-detail-value"
     >
       <ul
         class="principal-detail-ul"

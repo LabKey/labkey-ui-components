@@ -1,6 +1,10 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
+### version 1.4.0
+*Released* 19 March 2024
+* change default context for integration tests to `/` instead of `/labkey` in support of more use of embedded Tomcat
+
 ### version 1.3.0
 *Released*: 7 Sept 2023
 * Use standard password for `integrationUtils.createUser()`

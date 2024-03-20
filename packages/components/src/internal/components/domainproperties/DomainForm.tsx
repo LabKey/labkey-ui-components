@@ -16,7 +16,7 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Checkbox, Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
+import { Checkbox, FormControl, Panel } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';
@@ -811,16 +811,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             }
 
             return (
-                <Row className="domain-add-field-row">
-                    <Col xs={12}>
+                <div className="row domain-add-field-row">
+                    <div className="col-xs-12">
                         <AddEntityButton
                             entity="Field"
                             buttonClass="domain-form-add-btn"
                             containerClass="pull-right"
                             onClick={this.onAddField}
                         />
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             );
         }
 
@@ -1002,9 +1002,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         return (
-            <Panel className="domain-form-no-field-panel">
+            <div className="domain-form-no-field-panel">
                 No fields created yet. Click the 'Add Field' button to get started.
-            </Panel>
+            </div>
         );
     }
 
@@ -1096,7 +1096,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                 <div className="domain-field-row domain-row-border-default domain-floating-hdr">
                     <Alert bsStyle="info">{reservedFieldsMsg}</Alert>
-                    <Row>
+                    <div className="row">
                         <div className="domain-field-header">
                             {visibleSelection.size} {fieldPlural} selected
                             <button
@@ -1108,8 +1108,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 {clearText}
                             </button>
                         </div>
-                    </Row>
-                    <Row className="domain-row-container">
+                    </div>
+                    <div className="row domain-row-container">
                         <div className="domain-row-handle" />
                         <div className="domain-row-action-section">
                             <Checkbox
@@ -1121,25 +1121,23 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             />
                         </div>
                         <div>
-                            <Col xs={6} className="domain-row-base-fields">
-                                <Col xs={6}>
-                                    <b>Name *</b>
-                                </Col>
-                                <Col xs={4}>
-                                    <b>Data Type *</b>
-                                </Col>
-                                <Col xs={2}>{!domainFormDisplayOptions?.hideRequired && <b>Required</b>}</Col>
-                            </Col>
-                            <Col xs={6}>
+                            <div className="col-xs-3">
+                                <b>Name *</b>
+                            </div>
+                            <div className="col-xs-2">
+                                <b>Data Type *</b>
+                            </div>
+                            <div className="col-xs-1">{!domainFormDisplayOptions?.hideRequired && <b>Required</b>}</div>
+                            <div className="col-xs-6">
                                 <b>Details</b>
-                            </Col>
+                            </div>
                         </div>
-                    </Row>
+                    </div>
                 </div>
                 <Droppable droppableId="domain-form-droppable">
                     {provided => (
                         <div ref={provided.innerRef} {...provided.droppableProps}>
-                            <Form className="domain-form">
+                            <form className="domain-form">
                                 {domain.fields.map((field, i) => {
                                     // Need to preserve index so don't filter, instead just use empty div
                                     if (!field.visible) return <div key={'domain-row-key-' + i} />;
@@ -1182,7 +1180,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                     );
                                 })}
                                 {provided.placeholder}
-                            </Form>
+                            </form>
                         </div>
                     )}
                 </Droppable>
@@ -1280,8 +1278,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 )}
 
                                 {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) && (
-                                    <Row className="domain-field-toolbar">
-                                        <Col xs={4}>
+                                    <div className="row domain-field-toolbar">
+                                        <div className="col-xs-4">
                                             {!domainFormDisplayOptions?.hideAddFieldsButton && (
                                                 <AddEntityButton
                                                     entity="Field"
@@ -1310,8 +1308,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                     Export
                                                 </ActionButton>
                                             )}
-                                        </Col>
-                                        <Col xs={8}>
+                                        </div>
+                                        <div className="col-xs-8">
                                             <div className="pull-right domain-field-toolbar-right-aligned">
                                                 {!valueIsEmpty(search) && (
                                                     <span className="domain-search-text">
@@ -1340,20 +1338,20 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                     </div>
                                                 )}
                                             </div>
-                                        </Col>
-                                    </Row>
+                                        </div>
+                                    </div>
                                 )}
 
-                                <Row className={helpTopic ? 'domain-form-hdr-margins' : ''}>
-                                    <Col xs={helpTopic ? 9 : 12} />
+                                <div className={helpTopic ? 'row domain-form-hdr-margins' : 'row'}>
+                                    <div className={`col-xs-${helpTopic ? 9 : 12}`} />
                                     {helpTopic && (
-                                        <Col xs={3}>
+                                        <div className="col-xs-3">
                                             <HelpLink topic={helpTopic} className="domain-field-float-right">
                                                 Learn more about this tool
                                             </HelpLink>
-                                        </Col>
+                                        </div>
                                     )}
-                                </Row>
+                                </div>
 
                                 {!summaryViewMode &&
                                     appDomainHeaderRenderer &&

@@ -1,6 +1,6 @@
 import React, { FC, memo, ReactNode, useCallback, useMemo } from 'react';
 
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
@@ -38,13 +38,13 @@ export const FileAttachmentOptions: FC<Props> = memo(props => {
 
     return (
         <div>
-            <Row>
-                <Col xs={12}>
+            <div className="row">
+                <div className="col-xs-12">
                     <SectionHeading title={`${label} Behavior`} helpTipBody={helpText} />
-                </Col>
-            </Row>
-            <Row className="domain-field-label">
-                <Col xs={2}>
+                </div>
+            </div>
+            <div className="row domain-field-label">
+                <div className="col-xs-2">
                     <FormControl
                         componentClass="select"
                         id={createFormInputId(DOMAIN_FIELD_FILE_DISPLAY, domainIndex, index)}
@@ -74,8 +74,8 @@ export const FileAttachmentOptions: FC<Props> = memo(props => {
                             {`Download ${label}`}
                         </option>
                     </FormControl>
-                </Col>
-            </Row>
+                </div>
+            </div>
         </div>
     );
 });

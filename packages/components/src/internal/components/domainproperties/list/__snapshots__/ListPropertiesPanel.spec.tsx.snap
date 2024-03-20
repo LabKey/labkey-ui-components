@@ -2,7 +2,7 @@
 
 exports[`ListPropertiesPanel existing list 1`] = `
 <div
-  className="domain-form-panel lk-border-theme-light panel panel-default"
+  className="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
     className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -26,7 +26,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
     className="panel-body"
   >
     <div
-      className="margin-bottom row"
+      className="row margin-bottom"
     >
       <div
         className="col-xs-12"
@@ -49,11 +49,9 @@ exports[`ListPropertiesPanel existing list 1`] = `
         </div>
       </div>
     </div>
-    <form
-      className=""
-    >
+    <form>
       <div
-        className="col-md-7 col-xs-12"
+        className="col-xs-12 col-md-7"
       >
         <div
           className="domain-field-section-heading"
@@ -61,10 +59,10 @@ exports[`ListPropertiesPanel existing list 1`] = `
           Basic Properties
         </div>
         <div
-          className="margin-top row"
+          className="row margin-top"
         >
           <div
-            className="col-lg-2 col-xs-3"
+            className="col-xs-3 col-lg-2"
           >
             <span
               className="domain-no-wrap"
@@ -88,7 +86,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
             </span>
           </div>
           <div
-            className="col-lg-8 col-xs-9"
+            className="col-xs-9 col-lg-8"
           >
             <input
               className="form-control"
@@ -99,15 +97,12 @@ exports[`ListPropertiesPanel existing list 1`] = `
               value="NIMHDemographics"
             />
           </div>
-          <div
-            className="col-lg-2"
-          />
         </div>
         <div
-          className="margin-top row"
+          className="row margin-top"
         >
           <div
-            className="col-lg-2 col-xs-3"
+            className="col-xs-3 col-lg-2"
           >
             <span
               className="domain-no-wrap"
@@ -117,7 +112,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
             </span>
           </div>
           <div
-            className="col-lg-8 col-xs-9"
+            className="col-xs-9 col-lg-8"
           >
             <textarea
               className="form-control"
@@ -126,13 +121,10 @@ exports[`ListPropertiesPanel existing list 1`] = `
               value=""
             />
           </div>
-          <div
-            className="col-lg-2"
-          />
         </div>
       </div>
       <div
-        className="col-md-3 col-xs-12"
+        className="col-xs-12 col-md-3"
       >
         <div
           className="domain-field-section-heading"
@@ -206,7 +198,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
 
 exports[`ListPropertiesPanel list with error 1`] = `
 <div
-  className="domain-form-panel lk-border-theme-light panel panel-default"
+  className="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
     className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -241,7 +233,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
     className="panel-body"
   >
     <div
-      className="margin-bottom row"
+      className="row margin-bottom"
     >
       <div
         className="col-xs-12"
@@ -264,11 +256,9 @@ exports[`ListPropertiesPanel list with error 1`] = `
         </div>
       </div>
     </div>
-    <form
-      className=""
-    >
+    <form>
       <div
-        className="col-md-7 col-xs-12"
+        className="col-xs-12 col-md-7"
       >
         <div
           className="domain-field-section-heading"
@@ -276,10 +266,10 @@ exports[`ListPropertiesPanel list with error 1`] = `
           Basic Properties
         </div>
         <div
-          className="margin-top row"
+          className="row margin-top"
         >
           <div
-            className="col-lg-2 col-xs-3"
+            className="col-xs-3 col-lg-2"
           >
             <span
               className="domain-no-wrap"
@@ -303,7 +293,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
             </span>
           </div>
           <div
-            className="col-lg-8 col-xs-9"
+            className="col-xs-9 col-lg-8"
           >
             <input
               className="form-control"
@@ -314,15 +304,12 @@ exports[`ListPropertiesPanel list with error 1`] = `
               value="NIMHDemographics"
             />
           </div>
-          <div
-            className="col-lg-2"
-          />
         </div>
         <div
-          className="margin-top row"
+          className="row margin-top"
         >
           <div
-            className="col-lg-2 col-xs-3"
+            className="col-xs-3 col-lg-2"
           >
             <span
               className="domain-no-wrap"
@@ -332,7 +319,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
             </span>
           </div>
           <div
-            className="col-lg-8 col-xs-9"
+            className="col-xs-9 col-lg-8"
           >
             <textarea
               className="form-control"
@@ -341,13 +328,10 @@ exports[`ListPropertiesPanel list with error 1`] = `
               value=""
             />
           </div>
-          <div
-            className="col-lg-2"
-          />
         </div>
       </div>
       <div
-        className="col-md-3 col-xs-12"
+        className="col-xs-12 col-md-3"
       >
         <div
           className="domain-field-section-heading"
@@ -421,7 +405,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
 
 exports[`ListPropertiesPanel new list 1`] = `
 <div
-  className="domain-form-panel lk-border-theme-light panel panel-default"
+  className="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
 >
   <div
     className="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -438,7 +422,7 @@ exports[`ListPropertiesPanel new list 1`] = `
     className="panel-body"
   >
     <div
-      className="margin-bottom row"
+      className="row margin-bottom"
     >
       <div
         className="col-xs-12"
@@ -461,11 +445,9 @@ exports[`ListPropertiesPanel new list 1`] = `
         </div>
       </div>
     </div>
-    <form
-      className=""
-    >
+    <form>
       <div
-        className="col-md-7 col-xs-12"
+        className="col-xs-12 col-md-7"
       >
         <div
           className="domain-field-section-heading"
@@ -473,10 +455,10 @@ exports[`ListPropertiesPanel new list 1`] = `
           Basic Properties
         </div>
         <div
-          className="margin-top row"
+          className="row margin-top"
         >
           <div
-            className="col-lg-2 col-xs-3"
+            className="col-xs-3 col-lg-2"
           >
             <span
               className="domain-no-wrap"
@@ -500,7 +482,7 @@ exports[`ListPropertiesPanel new list 1`] = `
             </span>
           </div>
           <div
-            className="col-lg-8 col-xs-9"
+            className="col-xs-9 col-lg-8"
           >
             <input
               className="form-control"
@@ -511,15 +493,12 @@ exports[`ListPropertiesPanel new list 1`] = `
               value=""
             />
           </div>
-          <div
-            className="col-lg-2"
-          />
         </div>
         <div
-          className="margin-top row"
+          className="row margin-top"
         >
           <div
-            className="col-lg-2 col-xs-3"
+            className="col-xs-3 col-lg-2"
           >
             <span
               className="domain-no-wrap"
@@ -529,7 +508,7 @@ exports[`ListPropertiesPanel new list 1`] = `
             </span>
           </div>
           <div
-            className="col-lg-8 col-xs-9"
+            className="col-xs-9 col-lg-8"
           >
             <textarea
               className="form-control"
@@ -538,13 +517,10 @@ exports[`ListPropertiesPanel new list 1`] = `
               value=""
             />
           </div>
-          <div
-            className="col-lg-2"
-          />
         </div>
       </div>
       <div
-        className="col-md-3 col-xs-12"
+        className="col-xs-12 col-md-3"
       >
         <div
           className="domain-field-section-heading"

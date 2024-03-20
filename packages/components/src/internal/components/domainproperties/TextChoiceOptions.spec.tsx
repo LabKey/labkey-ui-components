@@ -45,7 +45,7 @@ describe('TextChoiceOptions', () => {
         expect(wrapper.find('.domain-text-choices-list')).toHaveLength(!isLoading ? 1 : 0);
 
         if (!isLoading) {
-            expect(wrapper.find('.domain-text-choices-left-panel')).toHaveLength(validValues > 0 ? 2 : 0);
+            expect(wrapper.find('.domain-text-choices-left-panel')).toHaveLength(validValues > 0 ? 1 : 0);
             expect(wrapper.find(ChoicesListItem)).toHaveLength(validValues);
             expect(wrapper.find('.choices-list__locked')).toHaveLength(inUse);
             expect(wrapper.find(AddEntityButton)).toHaveLength(1);

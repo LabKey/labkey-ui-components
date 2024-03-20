@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { Panel } from 'react-bootstrap';
+import React, { FC } from 'react';
 import { List } from 'immutable';
 
 import { GridColumn } from '../base/models/GridColumn';
@@ -54,21 +53,15 @@ type Props = {
     title?: string;
 };
 
-export class DomainFieldsDisplay extends React.Component<Props, any> {
-    render() {
-        const { domain, title } = this.props;
-        const { name, description, fields } = domain;
-
-        return (
-            <Panel>
-                <Panel.Heading>
-                    <div className="panel-title">{title || name}</div>
-                </Panel.Heading>
-                <Panel.Body>
-                    <p>{description}</p>
-                    <Grid columns={DOMAIN_FIELD_COLS} data={fields} />
-                </Panel.Body>
-            </Panel>
-        );
-    }
-}
+export const DomainFieldsDisplay: FC<Props> = ({ domain, title }) => (
+    <div className="panel panel-default">
+        <div className="panel-heading">
+            <div className="panel-title">{title || domain.name}</div>
+        </div>
+        <div className="panel-body">
+            <p>{domain.description}</p>
+            <Grid columns={DOMAIN_FIELD_COLS} data={domain.fields} />
+        </div>
+    </div>
+);
+DomainFieldsDisplay.displayName = 'DomainFieldsDisplay';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { createFormInputId, createFormInputName, getNameFromId } from './utils';
 import { isFieldFullyLocked } from './propertiesUtil';
@@ -90,20 +90,20 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
 
         return (
             <div>
-                <Row>
-                    <Col xs={12}>
+                <div className="row">
+                    <div className="col-xs-12">
                         <SectionHeading title={label} />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-12">
                         <div className="domain-field-label">
                             <DomainFieldLabel label="Maximum Text Length" helpTipBody={this.getMaxCountHelpText()} />
                         </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12} className="domain-text-options-col">
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-12 domain-text-options-col">
                         <FormControl
                             type="radio"
                             className="domain-text-options-radio1 domain-field-float-left"
@@ -114,10 +114,10 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                             disabled={isFieldFullyLocked(lockType)}
                         />
                         <div>Unlimited</div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-12">
                         <FormControl
                             type="radio"
                             className="domain-text-options-radio2 domain-field-float-left"
@@ -129,8 +129,8 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                         <span className="domain-text-options-length domain-field-float-left">
                             No longer than {textOptionsFormControl} characters
                         </span>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
                 <ScannableOption {...this.props} />
             </div>
         );

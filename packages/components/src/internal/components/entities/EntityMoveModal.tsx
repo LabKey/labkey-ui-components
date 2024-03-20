@@ -88,7 +88,6 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     );
                     setConfirmationData(confirmationData_);
                 } catch (e) {
-                    console.error('There was a problem retrieving the move confirmation data.', e);
                     setError('There was a problem retrieving the move confirmation data.');
                 } finally {
                     setLoading(LoadingState.LOADED);

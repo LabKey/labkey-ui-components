@@ -4,16 +4,21 @@ import { MenuItem } from '../../dropdowns';
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
 
 import { ChartBuilderModal } from './ChartBuilderModal';
+import {useNotificationsContext} from "../notifications/NotificationsContext";
 
 export const ChartBuilderMenuItem: FC<RequiresModelAndActions> = memo(({ actions, model }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
+    const { createNotification } = useNotificationsContext();
 
     const onShowModal = useCallback(() => {
         setShowModal(true);
     }, []);
 
-    const onHideModal = useCallback(() => {
+    const onHideModal = useCallback((successMsg?: string) => {
         setShowModal(false);
+        if (successMsg) {
+            createNotification({ message: successMsg, alertClass: 'success' });
+        }
     }, []);
 
     return (

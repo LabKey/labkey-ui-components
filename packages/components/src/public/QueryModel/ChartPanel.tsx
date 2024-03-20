@@ -7,6 +7,7 @@ import {GENERIC_CHART_REPORTS} from "../../internal/constants";
 import {ChartAPIWrapper, DEFAULT_API_WRAPPER} from "../../internal/components/chart/api";
 import {GenericChartModel} from "../../internal/components/chart/models";
 import {ChartBuilderModal} from "../../internal/components/chart/ChartBuilderModal";
+import {useNotificationsContext} from "../../internal/components/notifications/NotificationsContext";
 
 interface Props extends RequiresModelAndActions {
     api?: ChartAPIWrapper;
@@ -16,6 +17,7 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
     const { charts, containerPath, id, queryInfo, selectedReportId } = model;
     const [savedChartModel, setSavedChartModel] = useState<GenericChartModel>(undefined);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
+    const { createNotification } = useNotificationsContext();
 
     const selectedChart = useMemo(
         () => charts?.find(chart => chart.reportId === selectedReportId),
@@ -39,8 +41,15 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
 
     const clearChart = useCallback(() => actions.selectReport(id, undefined), [actions, id]);
 
-    const onToggleEditChart = useCallback(() => {
-        setShowEditModal(prev => !prev);
+    const onShowEditChart = useCallback(() => {
+        setShowEditModal(true);
+    }, []);
+
+    const onHideEditChart = useCallback((successMsg?: string) => {
+        setShowEditModal(false);
+        if (successMsg) {
+            createNotification({ message: successMsg, alertClass: 'success' });
+        }
     }, []);
 
     // If we don't have a queryInfo we can't get filters off the model, so we can't render the chart
@@ -55,7 +64,7 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
                     {selectedChart.name}
                     {savedChartModel?.canEdit && (
                         <span className="margin-left">
-                            <button type="button" title="Edit chart" className="btn btn-default" onClick={onToggleEditChart}>
+                            <button type="button" title="Edit chart" className="btn btn-default" onClick={onShowEditChart}>
                                 <span className="fa fa-pencil"/>
                             </button>
                         </span>
@@ -72,7 +81,7 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
             <Chart api={api} chart={selectedChart} container={containerPath} filters={model.filters} />
 
             {showEditModal && (
-                <ChartBuilderModal actions={actions} model={model} onHide={onToggleEditChart} savedChartModel={savedChartModel} />
+                <ChartBuilderModal actions={actions} model={model} onHide={onHideEditChart} savedChartModel={savedChartModel} />
             )}
         </div>
     );

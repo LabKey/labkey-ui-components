@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "3.30.1-crossFolderPermMessage.2",
+  "version": "3.30.1-crossFolderPermMessage.3",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

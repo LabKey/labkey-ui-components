@@ -8,7 +8,7 @@ import { Alert } from '../base/Alert';
 
 import { changePassword, getPasswordRuleInfo, PasswordRuleInfo } from './actions';
 import { ChangePasswordModel } from './models';
-import {LABKEY_LOGIN} from "../../constants";
+import { LABKEY_PASSWORD_GAUGE } from "../../constants";
 
 interface PasswordInputProps {
     helpTip?: string;
@@ -78,7 +78,7 @@ export class ChangePasswordModal extends React.Component<Props, State> {
             .then(response => {
                 this.setState(() => ({ passwordRule: response }), () => {
                     if (response?.shouldShowPasswordGuidance) {
-                        LABKEY_LOGIN.PasswordGauge.createComponent('strengthGuidance', 'password', 'email', this.props.user.email);
+                        LABKEY_PASSWORD_GAUGE.createComponent('strengthGuidance', 'password', 'email', this.props.user.email);
                         document.getElementById('strengthGuidance').style.width = '100%';
                     }
                 });

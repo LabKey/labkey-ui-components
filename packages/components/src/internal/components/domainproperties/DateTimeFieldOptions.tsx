@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { DATE_FORMATS_TOPIC, HelpLink, JavaDocsLink } from '../../util/helpLinks';
 
@@ -54,21 +54,21 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
         const noun = type === 'time' ? 'Times' : 'Dates';
         return (
             <div>
-                <Row>
-                    <Col xs={12}>
+                <div className="row">
+                    <div className="col-xs-12">
                         <SectionHeading title={label} />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={3}>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-3">
                         <div className="domain-field-label">
                             <DomainFieldLabel label={'Format for ' + noun} helpTipBody={this.getFormatHelpText()} />
                         </div>
-                    </Col>
-                    <Col xs={9} />
-                </Row>
-                <Row>
-                    <Col xs={3}>
+                    </div>
+                    <div className="col-xs-9" />
+                </div>
+                <div className="row">
+                    <div className="col-xs-3">
                         <FormControl
                             type="text"
                             value={format || ''}
@@ -77,9 +77,9 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                             id={createFormInputId(DOMAIN_FIELD_FORMAT, domainIndex, index)}
                             name={createFormInputName(DOMAIN_FIELD_FORMAT)}
                         />
-                    </Col>
-                    <Col xs={9} />
-                </Row>
+                    </div>
+                    <div className="col-xs-9" />
+                </div>
             </div>
         );
     }

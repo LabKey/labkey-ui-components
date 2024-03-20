@@ -5,6 +5,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 13 March 2024
 - Issue 49870: Add password strength gauge to Change Password modal
 
+### version 3.30.0
+*Released*: 19 March 2024
+- Don't use Row, Col, or Panel from react-bootstrap
+  - There are two minor exceptions for Panel usages in the domain editor, these will be resolved in a later PR
+
+### version 3.29.0
+*Released*: 19 March 2024
+- Updates to allow moving from multiple folders into one
+
+### version 3.28.0
+*Released*: 13 March 2024
+- Consolidate logic for generating filters for editable grid cell lookups into `getLookupFilters()` utility
+- Refactor `LookupCell` to a functional component
+- Export `QueryLookupFilterGroup` and `QueryLookupFilterGroupFilter` types
+
 ### version 3.27.2
 *Released*: 12 March 2024
 - Issue 48535: Filter columns shown when expanding lookup columns for customization

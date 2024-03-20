@@ -1,5 +1,8 @@
 import React, { FC, memo, useMemo } from 'react';
 import Formsy from 'formsy-react';
+import { List } from 'immutable';
+
+import { Filter } from '@labkey/api';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
@@ -8,6 +11,7 @@ import { QueryFormInputs } from '../forms/QueryFormInputs';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
+import { PLATE_SET_COLUMN } from './constants';
 import { AssayPropertiesPanelProps } from './models';
 
 export const PlatePropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model, onChange, operation }) => {
@@ -15,6 +19,13 @@ export const PlatePropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model
     const queryColumns = useMemo(
         () => new ExtendedMap<string, QueryColumn>(model.plateColumns.toJS()),
         [model.plateColumns]
+    );
+
+    const queryFilters = useMemo(
+        () => ({
+            [PLATE_SET_COLUMN]: List.of(Filter.create('Archived', false), Filter.create('Type', 'assay')),
+        }),
+        []
     );
 
     if (queryColumns.size === 0) {
@@ -31,6 +42,7 @@ export const PlatePropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model
                         fieldValues={model.plateProperties.toObject()}
                         operation={operation}
                         queryColumns={queryColumns}
+                        queryFilters={queryFilters}
                         renderFileInputs
                     />
                 </Formsy>

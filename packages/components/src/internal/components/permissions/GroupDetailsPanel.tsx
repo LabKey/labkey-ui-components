@@ -58,9 +58,9 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
     }, [members]);
 
     return (
-        <Panel className="group-details-panel">
-            <Panel.Heading>{principal?.displayName ?? 'Group Details'}</Panel.Heading>
-            <Panel.Body>
+        <div className="panel panel-default group-details-panel">
+            <div className="panel-heading">{principal?.displayName ?? 'Group Details'}</div>
+            <div className="panel-body">
                 {principal ? (
                     <>
                         {displayCounts && (
@@ -85,7 +85,7 @@ export const GroupDetailsPanel: FC<Props> = memo(props => {
                 ) : (
                     <div>No group selected.</div>
                 )}
-            </Panel.Body>
-        </Panel>
+            </div>
+        </div>
     );
 });

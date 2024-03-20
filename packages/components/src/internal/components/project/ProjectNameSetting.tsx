@@ -1,5 +1,6 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Col, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
+
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
 interface Props extends InjectedRouteLeaveProps {
@@ -41,11 +42,11 @@ export const ProjectNameSetting: FC<Props> = memo(props => {
     return (
         <div className="project-name-properties">
             <FormGroup controlId="project-name-prop-name">
-                <Col componentClass={ControlLabel} xs={12} sm={2} className="text-left" required>
+                <ControlLabel className="col-xs-12 col-sm-2 text-left" required>
                     Project Name <span className="required-symbol">*</span>
-                </Col>
+                </ControlLabel>
 
-                <Col sm={10} md={5}>
+                <div className="col-sm-10 col-md-5">
                     <FormControl
                         autoComplete="off"
                         autoFocus={autoFocus}
@@ -69,15 +70,13 @@ export const ProjectNameSetting: FC<Props> = memo(props => {
                             <span className="checkbox-inline-label">{toggleLabel}</span>
                         </label>
                     </span>
-                </Col>
+                </div>
             </FormGroup>
 
             <FormGroup controlId="project-name-prop-title">
-                <Col componentClass={ControlLabel} xs={12} sm={2} className="text-left">
-                    Project Label
-                </Col>
+                <ControlLabel className="col-xs-12 col-sm-2 text-left">Project Label</ControlLabel>
 
-                <Col sm={10} md={5}>
+                <div className="col-sm-10 col-md-5">
                     {nameIsTitle ? (
                         <FormControl
                             autoComplete="off"
@@ -97,7 +96,7 @@ export const ProjectNameSetting: FC<Props> = memo(props => {
                             type="text"
                         />
                     )}
-                </Col>
+                </div>
             </FormGroup>
         </div>
     );

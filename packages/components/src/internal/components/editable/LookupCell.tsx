@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { KeyboardEvent, PureComponent, ReactNode } from 'react';
+import React, { FC, memo, useCallback, useMemo, KeyboardEvent } from 'react';
 import { Filter, Query } from '@labkey/api';
 import { List } from 'immutable';
 
-import { Operation, QueryColumn } from '../../../public/QueryColumn';
+import { QueryColumn } from '../../../public/QueryColumn';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { LOOKUP_DEFAULT_SIZE } from '../../constants';
@@ -33,7 +33,7 @@ import { getQueryColumnRenderers } from '../../global';
 import { MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { ValueDescriptor } from './models';
 
-import { gridCellSelectInputProps, onCellSelectChange } from './utils';
+import { getLookupFilters, gridCellSelectInputProps, onCellSelectChange } from './utils';
 
 export interface LookupCellProps {
     col: QueryColumn;
@@ -52,101 +52,111 @@ export interface LookupCellProps {
     values: List<ValueDescriptor>;
 }
 
-export class LookupCell extends PureComponent<LookupCellProps> {
-    isMultiValue = (): boolean => {
-        return this.props.col.isJunctionLookup();
-    };
+interface QueryLookupCellProps extends LookupCellProps {
+    onSelectChange: SelectInputChange;
+    rawValues: any[];
+}
 
-    onSelectChange: SelectInputChange = (fieldName, formValue, selectedOptions, props_): void => {
-        const { colIdx, modifyCell, rowIdx, select } = this.props;
-        onCellSelectChange({ modifyCell, selectCell: select }, colIdx, rowIdx, selectedOptions, props_.multiple);
-    };
+const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
+    const {
+        col,
+        containerFilter,
+        disabled,
+        defaultInputValue,
+        filteredLookupKeys,
+        filteredLookupValues,
+        forUpdate,
+        lookupValueFilters,
+        onKeyDown,
+        onSelectChange,
+        rawValues,
+        values,
+    } = props;
+    const { columnRenderer, lookup } = col;
+    const isMultiple = col.isJunctionLookup();
 
-    render(): ReactNode {
-        const {
-            col,
-            containerFilter,
-            defaultInputValue,
-            disabled,
-            filteredLookupKeys,
-            filteredLookupValues,
-            forUpdate,
-            lookupValueFilters,
-            onKeyDown,
-            values,
-        } = this.props;
+    const queryFilters = useMemo(() => {
+        return List(
+            getLookupFilters(
+                col,
+                filteredLookupKeys?.toArray(),
+                filteredLookupValues?.toArray(),
+                lookupValueFilters,
+                forUpdate
+            )
+        );
+    }, [col, filteredLookupKeys, filteredLookupValues, forUpdate, lookupValueFilters]);
 
-        const rawValues = values
-            .filter(vd => vd.raw !== undefined)
-            .map(vd => vd.raw)
-            .toArray();
+    const schemaQuery = useMemo(
+        () => new SchemaQuery(lookup.schemaQuery.schemaName, lookup.schemaQuery.queryName, ViewInfo.DETAIL_NAME),
+        [lookup]
+    );
 
-        if (col.validValues) {
-            return (
-                <TextChoiceInput
-                    {...gridCellSelectInputProps}
-                    autoFocus
-                    disabled={disabled}
-                    onChange={this.onSelectChange}
-                    onKeyDown={onKeyDown}
-                    queryColumn={col}
-                    value={rawValues[0]}
-                />
-            );
+    let selectValue = isMultiple ? rawValues : rawValues[0];
+
+    // Issue 49502: Some column types have special handling of raw data, i.e. StoredAmount and Units
+    if (columnRenderer) {
+        const renderer = getQueryColumnRenderers()[columnRenderer.toLowerCase()];
+        if (renderer?.getEditableRawValue) {
+            selectValue = renderer.getEditableRawValue(values);
         }
+    }
 
-        const lookup = col.lookup;
-        const isMultiple = this.isMultiValue();
-        let queryFilters: List<Filter.IFilter> = List();
+    return (
+        <QuerySelect
+            {...gridCellSelectInputProps}
+            containerFilter={lookup.containerFilter ?? containerFilter ?? getContainerFilterForLookups()}
+            containerPath={lookup.containerPath}
+            defaultInputValue={defaultInputValue}
+            disabled={disabled}
+            maxRows={LOOKUP_DEFAULT_SIZE}
+            multiple={isMultiple}
+            onKeyDown={onKeyDown}
+            onQSChange={onSelectChange}
+            preLoad
+            queryFilters={queryFilters}
+            schemaQuery={schemaQuery}
+            value={selectValue}
+        />
+    );
+});
 
-        if (lookupValueFilters?.length > 0) queryFilters = queryFilters.push(...lookupValueFilters);
+QueryLookupCell.displayName = 'QueryLookupCell';
 
-        if (filteredLookupValues) {
-            queryFilters = queryFilters.push(
-                Filter.create(lookup.displayColumn, filteredLookupValues.toArray(), Filter.Types.IN)
-            );
-        }
+export const LookupCell: FC<LookupCellProps> = memo(props => {
+    const { col, colIdx, disabled, modifyCell, onKeyDown, rowIdx, select, values } = props;
 
-        if (filteredLookupKeys) {
-            queryFilters = queryFilters.push(
-                Filter.create(lookup.keyColumn, filteredLookupKeys.toArray(), Filter.Types.IN)
-            );
-        }
+    const onSelectChange = useCallback<SelectInputChange>(
+        (fieldName, formValue, options, props_) => {
+            onCellSelectChange({ modifyCell, selectCell: select }, colIdx, rowIdx, options, props_.multiple);
+        },
+        [colIdx, modifyCell, rowIdx, select]
+    );
 
-        const operation = forUpdate ? Operation.update : Operation.insert;
-        if (lookup.hasQueryFilters(operation)) {
-            queryFilters = queryFilters.push(...lookup.getQueryFilters(operation));
-        }
+    const rawValues = useMemo(
+        () =>
+            values
+                .filter(vd => vd.raw !== undefined)
+                .map(vd => vd.raw)
+                .toArray(),
+        [values]
+    );
 
-        let selectValue = isMultiple ? rawValues : rawValues[0];
-
-        // Some column types have special handling of raw data, i.e. StoredAmount and Units (issue 49502)
-        if (col.columnRenderer) {
-            const renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
-            if (renderer?.getEditableRawValue) {
-                selectValue = renderer.getEditableRawValue(values);
-            }
-        }
-
+    if (col.validValues) {
         return (
-            <QuerySelect
+            <TextChoiceInput
                 {...gridCellSelectInputProps}
-                containerFilter={lookup.containerFilter ?? containerFilter ?? getContainerFilterForLookups()}
-                containerPath={lookup.containerPath}
+                autoFocus
                 disabled={disabled}
-                defaultInputValue={defaultInputValue}
-                maxRows={LOOKUP_DEFAULT_SIZE}
-                multiple={isMultiple}
+                onChange={onSelectChange}
                 onKeyDown={onKeyDown}
-                onQSChange={this.onSelectChange}
-                preLoad
-                queryFilters={queryFilters}
-                // use detail view to assure we get values that may have been filtered out in the default view
-                schemaQuery={
-                    new SchemaQuery(lookup.schemaQuery.schemaName, lookup.schemaQuery.queryName, ViewInfo.DETAIL_NAME)
-                }
-                value={selectValue}
+                queryColumn={col}
+                value={rawValues[0]}
             />
         );
     }
-}
+
+    return <QueryLookupCell {...props} onSelectChange={onSelectChange} rawValues={rawValues} />;
+});
+
+LookupCell.displayName = 'LookupCell';

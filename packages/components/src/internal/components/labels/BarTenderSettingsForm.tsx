@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Col, Panel, FormControl, Row } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
 
@@ -56,8 +55,8 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
     );
 
     return (
-        <Row className="form-group">
-            <Col xs={12}>
+        <div className="form-group">
+            <div>
                 {children}
                 <div>
                     {label}{' '}
@@ -65,9 +64,10 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
                         <p>{description}</p>
                     </LabelHelpTip>
                 </div>
-            </Col>
-            <Col xs={12}>
-                <FormControl
+            </div>
+            <div>
+                <input
+                    className="form-control"
                     type={type}
                     id={name}
                     name={name}
@@ -75,8 +75,8 @@ const SettingsInput: FC<SettingsInputProps> = memo(({ children, description, lab
                     onChange={onChange_}
                     placeholder="BarTender Web Service URL"
                 />
-            </Col>
-        </Row>
+            </div>
+        </div>
     );
 });
 
@@ -175,72 +175,68 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
     }, [api, btServiceURL, onConnectionFailure]);
 
     return (
-        <Row>
-            <Col xs={12}>
-                <Panel title={title}>
-                    <Panel.Heading>{title}</Panel.Heading>
-                    <Panel.Body>
-                        {error && <Alert>{error}</Alert>}
-                        {loading && <LoadingSpinner />}
-                        {!loading && (
-                            <>
-                                {connectionValidated && (
-                                    <div>
-                                        <Alert bsStyle="success">{SUCCESSFUL_NOTIFICATION_MESSAGE}</Alert>
-                                    </div>
-                                )}
-                                {connectionValidated === false && <Alert>{failureMessage}</Alert>}
-
-                                <SettingsInput
-                                    description="URL of the BarTender service to use when printing labels."
-                                    label="BarTender Web Service URL"
-                                    name="btServiceURL"
-                                    onChange={onChangeHandler}
-                                    type="url"
-                                    value={btServiceURL}
-                                >
-                                    <div className="pull-right">
-                                        <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">
-                                            Learn more about BarTender
-                                        </HelpLink>
-                                    </div>
-                                </SettingsInput>
-
-                                <div className="bt-service-buttons">
-                                    <button
-                                        className="pull-right alert-button btn btn-success"
-                                        disabled={submitting || !dirty || testing}
-                                        onClick={onSave}
-                                        type="button"
-                                    >
-                                        Save
-                                    </button>
-
-                                    <button
-                                        className="button-right-spacing pull-right btn btn-default"
-                                        disabled={!btServiceURL || btServiceURL.trim() === ''}
-                                        onClick={onVerifyBarTenderConfiguration}
-                                        type="button"
-                                    >
-                                        Test Connection
-                                    </button>
-                                </div>
-                                {isAppHomeFolder(container, moduleContext) && (
-                                    <div className="label-templates-panel">
-                                        <LabelsConfigurationPanel
-                                            {...props}
-                                            api={api}
-                                            defaultLabel={defaultLabel}
-                                            container={container}
-                                        />
-                                    </div>
-                                )}
-                            </>
+        <div className="panel panel-default" title={title}>
+            <div className="panel-heading">{title}</div>
+            <div className="panel-body">
+                {error && <Alert>{error}</Alert>}
+                {loading && <LoadingSpinner />}
+                {!loading && (
+                    <>
+                        {connectionValidated && (
+                            <div>
+                                <Alert bsStyle="success">{SUCCESSFUL_NOTIFICATION_MESSAGE}</Alert>
+                            </div>
                         )}
-                    </Panel.Body>
-                </Panel>
-            </Col>
-        </Row>
+                        {connectionValidated === false && <Alert>{failureMessage}</Alert>}
+
+                        <SettingsInput
+                            description="URL of the BarTender service to use when printing labels."
+                            label="BarTender Web Service URL"
+                            name="btServiceURL"
+                            onChange={onChangeHandler}
+                            type="url"
+                            value={btServiceURL}
+                        >
+                            <div className="pull-right">
+                                <HelpLink topic={BAR_TENDER_TOPIC} className="label-printing--help-link">
+                                    Learn more about BarTender
+                                </HelpLink>
+                            </div>
+                        </SettingsInput>
+
+                        <div className="bt-service-buttons">
+                            <button
+                                className="pull-right alert-button btn btn-success"
+                                disabled={submitting || !dirty || testing}
+                                onClick={onSave}
+                                type="button"
+                            >
+                                Save
+                            </button>
+
+                            <button
+                                className="button-right-spacing pull-right btn btn-default"
+                                disabled={!btServiceURL || btServiceURL.trim() === ''}
+                                onClick={onVerifyBarTenderConfiguration}
+                                type="button"
+                            >
+                                Test Connection
+                            </button>
+                        </div>
+                        {isAppHomeFolder(container, moduleContext) && (
+                            <div className="label-templates-panel">
+                                <LabelsConfigurationPanel
+                                    {...props}
+                                    api={api}
+                                    defaultLabel={defaultLabel}
+                                    container={container}
+                                />
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
+        </div>
     );
 });
 

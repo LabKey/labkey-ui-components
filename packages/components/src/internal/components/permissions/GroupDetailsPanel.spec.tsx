@@ -16,6 +16,8 @@ import { UserProperties } from '../user/UserProperties';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
 import { Principal, SecurityPolicy } from './models';
 import { getRolesByUniqueName, processGetRolesResponse } from './actions';
+import { getTestAPIWrapper } from '../../APIWrapper';
+import { getSecurityTestAPIWrapper } from '../security/APIWrapper';
 
 const GROUP = Principal.createFromSelectRow(
     fromJS({
@@ -29,11 +31,19 @@ const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
+const getDefaultAppContext = () => ({
+    api: getTestAPIWrapper(jest.fn, {
+        security: getSecurityTestAPIWrapper(jest.fn, {
+            getAuditLogDate: jest.fn().mockResolvedValue(''),
+        }),
+    }),
+});
+
 describe('GroupDetailsPanel', () => {
     test('no principal', () => {
         const component = mountWithAppServerContext(
             <GroupDetailsPanel policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} members={[]} isSiteGroup={false} />,
-            {},
+            getDefaultAppContext(),
             { user: TEST_USER_APP_ADMIN }
         );
 
@@ -57,7 +67,7 @@ describe('GroupDetailsPanel', () => {
                 ]}
                 isSiteGroup={false}
             />,
-            {},
+            getDefaultAppContext(),
             { user: TEST_USER_APP_ADMIN }
         );
 
@@ -88,7 +98,7 @@ describe('GroupDetailsPanel', () => {
                 ]}
                 isSiteGroup
             />,
-            {},
+            getDefaultAppContext(),
             { user: TEST_USER_APP_ADMIN }
         );
 
@@ -120,7 +130,7 @@ describe('GroupDetailsPanel', () => {
                 isSiteGroup
                 displayCounts={false}
             />,
-            {},
+            getDefaultAppContext(),
             { user: TEST_USER_APP_ADMIN }
         );
 

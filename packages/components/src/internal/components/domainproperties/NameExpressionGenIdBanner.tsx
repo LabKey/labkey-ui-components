@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
@@ -168,8 +168,8 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                         {kindName === 'SampleSet' ? 'samples' : 'data'} to use a new start value (min {minNewGenId}).
                         This action cannot be undone.
                     </div>
-                    <Row className="margin-top">
-                        <Col xs={5}>
+                    <div className="row margin-top">
+                        <div className="col-xs-5">
                             <FormControl
                                 className="update-genId-input "
                                 min={minNewGenId}
@@ -180,9 +180,9 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                                 value={newGenId ?? minNewGenId}
                                 placeholder="Enter new genId..."
                             />
-                        </Col>
-                        <Col xs={7} />
-                    </Row>
+                        </div>
+                        <div className="col-xs-7" />
+                    </div>
                 </Modal>
             )}
         </>

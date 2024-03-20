@@ -2,11 +2,9 @@
 
 exports[`<EntityDetailsForm/> default properties 1`] = `
 <div>
-  <form
-    class=""
-  >
+  <form>
     <div
-      class="margin-bottom margin-top row"
+      class="row margin-bottom margin-top"
     >
       <div
         class="col-xs-2"
@@ -31,7 +29,7 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
       </div>
     </div>
     <div
-      class="margin-bottom row"
+      class="row margin-bottom"
     >
       <div
         class="col-xs-2"
@@ -64,7 +62,7 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
       </div>
     </div>
     <div
-      class="margin-bottom row"
+      class="row margin-bottom"
     >
       <div
         class="col-xs-2"
@@ -109,11 +107,9 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
 
 exports[`<EntityDetailsForm/> initial data 1`] = `
 <div>
-  <form
-    class=""
-  >
+  <form>
     <div
-      class="margin-bottom margin-top row"
+      class="row margin-bottom margin-top"
     >
       <div
         class="col-xs-2"
@@ -138,7 +134,7 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
       </div>
     </div>
     <div
-      class="margin-bottom row"
+      class="row margin-bottom"
     >
       <div
         class="col-xs-2"
@@ -173,7 +169,7 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
       </div>
     </div>
     <div
-      class="margin-bottom row"
+      class="row margin-bottom"
     >
       <div
         class="col-xs-2"
@@ -218,11 +214,9 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
 
 exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
 <div>
-  <form
-    class=""
-  >
+  <form>
     <div
-      class="margin-bottom margin-top row"
+      class="row margin-bottom margin-top"
     >
       <div
         class="col-xs-2"
@@ -247,7 +241,7 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
       </div>
     </div>
     <div
-      class="margin-bottom row"
+      class="row margin-bottom"
     >
       <div
         class="col-xs-2"
@@ -280,7 +274,7 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
       </div>
     </div>
     <div
-      class="margin-bottom row"
+      class="row margin-bottom"
     >
       <div
         class="col-xs-2"
@@ -326,11 +320,9 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
 
 exports[`<EntityDetailsForm/> with formValues 1`] = `
 <div>
-  <form
-    class=""
-  >
+  <form>
     <div
-      class="margin-bottom margin-top row"
+      class="row margin-bottom margin-top"
     >
       <div
         class="col-xs-2"
@@ -355,7 +347,7 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
       </div>
     </div>
     <div
-      class="margin-bottom row"
+      class="row margin-bottom"
     >
       <div
         class="col-xs-2"
@@ -390,7 +382,7 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
       </div>
     </div>
     <div
-      class="margin-bottom row"
+      class="row margin-bottom"
     >
       <div
         class="col-xs-2"
@@ -435,11 +427,9 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
 
 exports[`<EntityDetailsForm/> with previewName 1`] = `
 <div>
-  <form
-    class=""
-  >
+  <form>
     <div
-      class="margin-bottom margin-top row"
+      class="row margin-bottom margin-top"
     >
       <div
         class="col-xs-2"
@@ -464,7 +454,7 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
       </div>
     </div>
     <div
-      class="margin-bottom row"
+      class="row margin-bottom"
     >
       <div
         class="col-xs-2"
@@ -499,7 +489,7 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
       </div>
     </div>
     <div
-      class="margin-bottom row"
+      class="row margin-bottom"
     >
       <div
         class="col-xs-2"

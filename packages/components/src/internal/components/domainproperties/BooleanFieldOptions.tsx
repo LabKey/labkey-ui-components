@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Col, FormControl, Row } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 import { createFormInputId, createFormInputName } from './utils';
 import { isFieldFullyLocked } from './propertiesUtil';
@@ -35,23 +35,23 @@ export class BooleanFieldOptions extends PureComponent<BooleanFieldProps> {
 
         return (
             <div>
-                <Row>
-                    <Col xs={12}>
+                <div className="row">
+                    <div className="col-xs-12">
                         <SectionHeading title={label} />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={12}>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-12">
                         <div className="domain-field-label">
                             <DomainFieldLabel
                                 label="Format for Boolean Values"
                                 helpTipBody={this.getFormatHelpText()}
                             />
                         </div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={3}>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-3">
                         <FormControl
                             type="text"
                             value={format || ''}
@@ -60,8 +60,8 @@ export class BooleanFieldOptions extends PureComponent<BooleanFieldProps> {
                             disabled={isFieldFullyLocked(lockType)}
                             name={createFormInputName(DOMAIN_FIELD_SCALE)}
                         />
-                    </Col>
-                </Row>
+                    </div>
+                </div>
             </div>
         );
     }

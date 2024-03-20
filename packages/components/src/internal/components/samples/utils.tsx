@@ -1,4 +1,4 @@
-import { Filter, PermissionTypes, Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { User } from '../base/models/User';
 
@@ -59,32 +59,6 @@ export function isSampleOperationPermitted(
     if (!sampleStatusType) return true;
 
     return permittedOps[sampleStatusType].has(operation);
-}
-
-export function getPermissionForOperation(operation: SampleOperation): PermissionTypes {
-    switch (operation) {
-        case SampleOperation.EditMetadata:
-        case SampleOperation.EditLineage:
-            return PermissionTypes.Update;
-        case SampleOperation.AddToStorage:
-        case SampleOperation.UpdateStorageMetadata:
-        case SampleOperation.RemoveFromStorage:
-            return PermissionTypes.EditStorageData;
-        case SampleOperation.AddAssayData:
-        case SampleOperation.LinkToStudy:
-            return PermissionTypes.Insert;
-        case SampleOperation.AddToPicklist:
-            return PermissionTypes.ManagePicklists;
-        case SampleOperation.AddToWorkflow:
-        case SampleOperation.RemoveFromWorkflow:
-            return PermissionTypes.ManageSampleWorkflows;
-        case SampleOperation.Delete:
-        case SampleOperation.RecallFromStudy:
-            return PermissionTypes.Delete;
-        case SampleOperation.Move:
-            return PermissionTypes.MoveEntities
-    }
-    return undefined;
 }
 
 export function getSampleStatusType(row: any): SampleStateType {

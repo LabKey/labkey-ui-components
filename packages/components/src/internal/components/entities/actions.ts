@@ -6,7 +6,7 @@ import { getSelected, getSelectedData, setSnapshotSelections } from '../../actio
 import { buildURL } from '../../url/AppURL';
 import { SampleOperation } from '../samples/constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import { getFilterForSampleOperation, getPermissionForOperation, isSamplesSchema } from '../samples/utils';
+import { getFilterForSampleOperation, isSamplesSchema } from '../samples/utils';
 import { importData, InsertOptions } from '../../query/api';
 import { caseInsensitive, generateId, handleRequestFailure } from '../../util/utils';
 import { SampleCreationType } from '../samples/models';
@@ -20,7 +20,7 @@ import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
 import { ViewInfo } from '../../ViewInfo';
 
-import { getProjectDataExclusion, getProjectPath, hasModule, hasProductProjects } from '../../app/utils';
+import { getProjectDataExclusion, getProjectPath, hasModule } from '../../app/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -60,19 +60,6 @@ import {
     RemappedKeyValues,
 } from './models';
 
-function getPermissionForDataOperation(operation: DataOperation): PermissionTypes {
-    switch (operation) {
-        case DataOperation.EditLineage:
-            return PermissionTypes.Update;
-        case DataOperation.Delete:
-            return PermissionTypes.Delete;
-        case DataOperation.Move:
-            return PermissionTypes.MoveEntities;
-        default:
-            return undefined;
-    }
-}
-
 export async function getOperationConfirmationData(
     dataType: EntityDataType,
     rowIds: string[] | number[],
@@ -80,7 +67,6 @@ export async function getOperationConfirmationData(
     useSnapshotSelection?: boolean,
     extraParams?: Record<string, any>,
     containerPath?: string,
-    permissionType?: PermissionTypes,
 ): Promise<OperationConfirmationData> {
     if (!selectionKey && !rowIds?.length) {
         return new OperationConfirmationData();
@@ -112,22 +98,7 @@ export async function getOperationConfirmationData(
             jsonData: params,
             success: Utils.getCallbackWrapper(async response => {
                 if (response.success) {
-                    let notPermitted;
-                    if (permissionType && hasProductProjects()) {
-                        notPermitted = await getNotPermittedData(
-                            permissionType,
-                            selectionKey,
-                            dataType,
-                            useSnapshotSelection,
-                            rowIds
-                        );
-                    }
-                    resolve(
-                        new OperationConfirmationData({
-                            ...response.data,
-                            notPermitted,
-                        })
-                    );
+                    resolve(new OperationConfirmationData(response.data));
                 } else {
                     console.error('Response failure when getting operation confirmation data', response.exception);
                     reject(response.exception);
@@ -168,31 +139,6 @@ export function getContainersForPermission(permission: PermissionTypes): Promise
     });
 }
 
-export async function getNotPermittedData(
-    permissionType: PermissionTypes,
-    dataRegionSelectionKey: string,
-    dataType: EntityDataType,
-    useSnapshotSelection?: boolean,
-    rowIds?: string[] | number[]
-): Promise<Record<string, any>[]> {
-    if (!permissionType) {
-        return Promise.resolve([]);
-    }
-
-    try {
-        const containerRows = await getContainersFromSelections(dataRegionSelectionKey, dataType.instanceSchemaName, useSnapshotSelection, rowIds);
-        const permissionedContainers = await getContainersForPermission(permissionType);
-        return Promise.resolve(
-            containerRows.filter(row => {
-                return permissionedContainers.indexOf(caseInsensitive(row, 'Container')) === -1;
-            })
-        );
-    } catch (reason) {
-        console.error('There was a problem retrieving data about permissions.', reason);
-        return Promise.reject(resolveErrorMessage(reason));
-    }
-}
-
 export type GetDeleteConfirmationDataOptions = {
     containerPath?: string;
     dataType: EntityDataType;
@@ -228,15 +174,7 @@ export function getDeleteConfirmationData(
         extraParams = { dataOperation: AssayRunOperation.Delete };
     }
 
-    return getOperationConfirmationData(
-        dataType,
-        rowIds,
-        selectionKey,
-        useSnapshotSelection,
-        extraParams,
-        containerPath,
-        PermissionTypes.Delete
-    );
+    return getOperationConfirmationData(dataType, rowIds, selectionKey, useSnapshotSelection, extraParams, containerPath);
 }
 
 async function getAssayResultOperationConfirmationData(
@@ -269,15 +207,7 @@ export function getSampleOperationConfirmationData(
     useSnapshotSelection?: boolean,
     containerPath?: string,
 ): Promise<OperationConfirmationData> {
-    return getOperationConfirmationData(
-        SampleTypeDataType,
-        rowIds,
-        selectionKey,
-        useSnapshotSelection,
-        { sampleOperation: SampleOperation[operation] },
-        containerPath,
-        getPermissionForOperation(operation)
-    );
+    return getOperationConfirmationData(SampleTypeDataType, rowIds, selectionKey, useSnapshotSelection, {sampleOperation: SampleOperation[operation]}, containerPath);
 }
 
 async function getSelectedParents(
@@ -763,17 +693,9 @@ export function getDataOperationConfirmationData(
     selectionKey?: string,
     useSnapshotSelection?: boolean
 ): Promise<OperationConfirmationData> {
-    return getOperationConfirmationData(
-        DataClassDataType,
-        rowIds,
-        selectionKey,
-        useSnapshotSelection,
-        {
-            dataOperation: DataOperation[operation],
-        },
-        undefined,
-        getPermissionForDataOperation(operation)
-    );
+    return getOperationConfirmationData(DataClassDataType, rowIds, selectionKey, useSnapshotSelection, {
+        dataOperation: DataOperation[operation],
+    }, undefined);
 }
 
 export function getCrossFolderSelectionResult(
@@ -992,21 +914,13 @@ export function getMoveConfirmationData(
         return getSampleOperationConfirmationData(SampleOperation.Move, rowIds, selectionKey, useSnapshotSelection);
     }
 
-    return getOperationConfirmationData(
-        dataType,
-        rowIds,
-        selectionKey,
-        useSnapshotSelection,
-        isDataClassEntity(dataType)
-            ? {
-                  dataOperation: DataOperation.Move,
-              }
-            : isAssayDesignEntity(dataType)
-            ? { dataOperation: AssayRunOperation.Move }
-            : undefined,
-        undefined,
-        PermissionTypes.MoveEntities
-    );
+    return getOperationConfirmationData(dataType, rowIds, selectionKey, useSnapshotSelection, isDataClassEntity(dataType)
+        ? {
+            dataOperation: DataOperation.Move,
+        }
+        : isAssayDesignEntity(dataType)
+            ? {dataOperation: AssayRunOperation.Move}
+            : undefined, undefined);
 }
 
 export interface MoveEntitiesOptions extends Omit<Query.MoveRowsOptions, 'rows' | 'success' | 'failure' | 'scope'> {

@@ -29,7 +29,7 @@ describe('ChangePasswordModal', () => {
 
         wrapper.setState({
             model: new ChangePasswordModel({ oldPassword: 'old', password: 'new', password2: 'new2' }),
-            passwordRule: {full: 'Testing password rule description'},
+            passwordRule: { full: 'Testing password rule description' },
             submitting: true,
             error: 'Test Error',
         });
@@ -56,7 +56,7 @@ describe('ChangePasswordModal', () => {
 
         wrapper.setState({
             model: new ChangePasswordModel({ oldPassword: 'old', password: 'new', password2: 'new2' }),
-            passwordRule: {summary: 'Testing password rule description', shouldShowPasswordGuidance: true},
+            passwordRule: { summary: 'Testing password rule description', shouldShowPasswordGuidance: true },
             submitting: true,
             error: 'Test Error',
         });

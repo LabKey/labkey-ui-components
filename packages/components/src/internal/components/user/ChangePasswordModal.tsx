@@ -6,9 +6,10 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 
+import { LABKEY_PASSWORD_GAUGE } from '../../constants';
+
 import { changePassword, getPasswordRuleInfo, PasswordRuleInfo } from './actions';
 import { ChangePasswordModel } from './models';
-import { LABKEY_PASSWORD_GAUGE } from "../../constants";
 
 interface PasswordInputProps {
     helpTip?: string;
@@ -76,12 +77,20 @@ export class ChangePasswordModal extends React.Component<Props, State> {
     componentDidMount(): void {
         getPasswordRuleInfo()
             .then(response => {
-                this.setState(() => ({ passwordRule: response }), () => {
-                    if (response?.shouldShowPasswordGuidance) {
-                        LABKEY_PASSWORD_GAUGE.createComponent('strengthGuidance', 'password', 'email', this.props.user.email);
-                        document.getElementById('strengthGuidance').style.width = '100%';
+                this.setState(
+                    () => ({ passwordRule: response }),
+                    () => {
+                        if (response?.shouldShowPasswordGuidance) {
+                            LABKEY_PASSWORD_GAUGE.createComponent(
+                                'strengthGuidance',
+                                'password',
+                                'email',
+                                this.props.user.email
+                            );
+                            document.getElementById('strengthGuidance').style.width = '100%';
+                        }
                     }
-                });
+                );
             })
             .catch(response => {
                 this.setState({ error: resolveErrorMessage(response) });

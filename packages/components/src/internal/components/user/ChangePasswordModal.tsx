@@ -6,7 +6,9 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 
-import { changePassword, getPasswordRuleInfo } from './actions';
+import { LABKEY_PASSWORD_GAUGE } from '../../constants';
+
+import { changePassword, getPasswordRuleInfo, PasswordRuleInfo } from './actions';
 import { ChangePasswordModel } from './models';
 
 interface PasswordInputProps {
@@ -26,7 +28,7 @@ const PasswordInput: FC<PasswordInputProps> = ({ helpTip, label, name, onChange,
                     {label}
                     {helpTip && (
                         <LabelHelpTip title={label}>
-                            <p>{helpTip}</p>
+                            <div dangerouslySetInnerHTML={{ __html: helpTip }} />
                         </LabelHelpTip>
                     )}
                 </label>
@@ -54,7 +56,7 @@ interface Props {
 interface State {
     error: string;
     model: ChangePasswordModel;
-    passwordRule: string;
+    passwordRule: PasswordRuleInfo;
     submitting: boolean;
 }
 
@@ -75,7 +77,20 @@ export class ChangePasswordModal extends React.Component<Props, State> {
     componentDidMount(): void {
         getPasswordRuleInfo()
             .then(response => {
-                this.setState(() => ({ passwordRule: response.summary }));
+                this.setState(
+                    () => ({ passwordRule: response }),
+                    () => {
+                        if (response?.shouldShowPasswordGuidance) {
+                            LABKEY_PASSWORD_GAUGE.createComponent(
+                                'strengthGuidance',
+                                'password',
+                                'email',
+                                this.props.user.email
+                            );
+                            document.getElementById('strengthGuidance').style.width = '100%';
+                        }
+                    }
+                );
             })
             .catch(response => {
                 this.setState({ error: resolveErrorMessage(response) });
@@ -103,6 +118,9 @@ export class ChangePasswordModal extends React.Component<Props, State> {
     render() {
         const { onHide } = this.props;
         const { model, submitting, error, passwordRule } = this.state;
+        const helpTip = passwordRule?.shouldShowPasswordGuidance
+            ? passwordRule?.summary.replace('display:none;', '').replace('<a ', '<a style="display:none;" ')
+            : passwordRule?.full;
 
         return (
             <Modal
@@ -123,8 +141,18 @@ export class ChangePasswordModal extends React.Component<Props, State> {
                         name="password"
                         onChange={this.onChange}
                         value={model.password}
-                        helpTip={passwordRule}
+                        helpTip={helpTip}
                     />
+                    {passwordRule?.shouldShowPasswordGuidance && (
+                        <div className="row">
+                            <div className="col-xs-4" />
+                            <div className="col-xs-8">
+                                <canvas id="strengthGuidance" width="350" height="30">
+                                    Your browser does not support the HTML5 canvas element.
+                                </canvas>
+                            </div>
+                        </div>
+                    )}
                     <PasswordInput
                         label="Retype New Password"
                         name="password2"

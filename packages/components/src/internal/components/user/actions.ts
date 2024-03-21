@@ -132,8 +132,14 @@ export function changePassword(model: ChangePasswordModel): Promise<any> {
     });
 }
 
-export function getPasswordRuleInfo(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
+export interface PasswordRuleInfo {
+    full: string;
+    summary: string;
+    shouldShowPasswordGuidance: boolean;
+}
+
+export function getPasswordRuleInfo(): Promise<PasswordRuleInfo> {
+    return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('login', 'getPasswordRulesInfo.api'),
             method: 'GET',

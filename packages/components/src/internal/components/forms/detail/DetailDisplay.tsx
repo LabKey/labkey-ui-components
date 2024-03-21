@@ -1,6 +1,5 @@
 import React, { FC, memo, ReactNode, useMemo } from 'react';
 import { List, OrderedMap } from 'immutable';
-import { Panel } from 'react-bootstrap';
 import { Query } from '@labkey/api';
 
 import classNames from 'classnames';

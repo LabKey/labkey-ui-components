@@ -536,53 +536,75 @@ export class OperationConfirmationData {
 
     readonly allowed: any[];
     readonly notAllowed: any[];
+    readonly notPermitted: any[]; // could intersect both allowed and notAllowed
     readonly idMap: Record<number, boolean>;
+    readonly totalActionable;
+    readonly totalNotActionable;
 
-    constructor(values?: Partial<OperationConfirmationData>) {
+    constructor(values?: Partial<OperationConfirmationData>, idField = 'rowId') {
         Object.assign(this, values);
         const idMap = {};
         if (values?.allowed) {
             values.allowed.forEach(allowed => {
-                idMap[caseInsensitive(allowed, 'rowId')] = true;
+                idMap[caseInsensitive(allowed, idField)] = true;
             });
         } else {
             Object.assign(this, { allowed: [] });
         }
         if (values?.notAllowed) {
             values.notAllowed.forEach(notAllowed => {
-                idMap[caseInsensitive(notAllowed, 'rowId')] = false;
+                idMap[caseInsensitive(notAllowed, idField)] = false;
             });
         } else {
             Object.assign(this, { notAllowed: [] });
         }
-        Object.assign(this, { idMap });
+        if (values?.notPermitted) {
+            values.notPermitted.forEach(npRow => {
+                idMap[caseInsensitive(npRow, idField)] = false;
+            });
+        } else {
+            Object.assign(this, { notPermitted: [] });
+        }
+        Object.assign(this, {
+            idMap,
+            totalActionable: Object.values(idMap).filter(v => v === true).length,
+            totalNotActionable: Object.values(idMap).filter(v => v === false).length,
+        });
     }
 
-    isIdAllowed(id: number | string): boolean {
-        const idNum = typeof id === 'string' ? parseInt(id) : id;
+    isIdActionable(id: number | string): boolean {
+        const idNum = typeof id === 'string' ? parseInt(id, 10) : id;
         return this.idMap[idNum];
     }
 
-    get allAllowed(): boolean {
-        return this.notAllowed.length === 0;
+    getActionableIds(idField = 'rowId'): number[] {
+        return this.allowed
+            .map(a => {
+                return caseInsensitive(a, idField);
+            })
+            .filter(id => this.isIdActionable(id));
+    }
+
+    get allActionable(): boolean {
+        return this.totalNotActionable === 0;
     }
 
     // Note that this returns false if there are no samples represented since we generally want
-    // noneAllowed to mean there are some samples but none are allowed.
-    get noneAllowed(): boolean {
-        return this.allowed.length === 0 && this.notAllowed.length > 0;
+    // noneActionable to mean there are some samples but none can be acted upon.
+    get noneActionable(): boolean {
+        return this.allowed.length === 0 && (this.notAllowed.length > 0 || this.notPermitted.length > 0);
     }
 
-    get anyAllowed(): boolean {
-        return this.allowed.length > 0;
+    get anyActionable(): boolean {
+        return this.totalActionable > 0;
     }
 
     get totalCount(): number {
         return this.allowed.length + this.notAllowed.length;
     }
 
-    get anyNotAllowed(): boolean {
-        return this.notAllowed.length > 0;
+    get anyNotActionable(): boolean {
+        return this.totalNotActionable > 0;
     }
 }
 

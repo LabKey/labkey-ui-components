@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
 
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
-import {IParentAlias, IParentOption} from '../entities/models';
+import { IParentAlias, IParentOption } from '../entities/models';
 import { SelectInput } from '../forms/input/SelectInput';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 

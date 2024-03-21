@@ -17,7 +17,6 @@
 import React from 'react';
 
 
-
 import { List } from 'immutable';
 
 import { SectionHeading } from '../SectionHeading';

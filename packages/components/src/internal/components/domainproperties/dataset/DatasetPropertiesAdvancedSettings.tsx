@@ -19,7 +19,7 @@ import { initQueryGridState } from '../../../global';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
-import { fetchCohorts, getVisitDateColumns, getHelpTip } from './actions';
+import { fetchCohorts, getHelpTip, getVisitDateColumns } from './actions';
 import { getStudySubjectProp } from './utils';
 import { SHOW_IN_OVERVIEW } from './constants';
 

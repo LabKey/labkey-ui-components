@@ -60,7 +60,6 @@ import {
 } from './constants';
 import {
     ATTACHMENT_TYPE,
-    DATE_TYPE,
     FILE_TYPE,
     FLAG_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
@@ -70,7 +69,6 @@ import {
     SAMPLE_TYPE,
     SMILES_TYPE,
     TEXT_CHOICE_TYPE,
-    TIME_TYPE,
     UNIQUE_ID_TYPE,
     USERS_TYPE,
     VISIT_DATE_TYPE,

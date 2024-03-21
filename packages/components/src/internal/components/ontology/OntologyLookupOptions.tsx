@@ -1,11 +1,11 @@
-import React, { PureComponent, ReactNode, FC, memo } from 'react';
+import React, { FC, memo, PureComponent, ReactNode } from 'react';
 import { FormControl } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { ADVANCED_FIELD_EDITOR_TOPIC, HelpLink, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
-import { getIndexFromId, createFormInputId } from '../domainproperties/utils';
+import { createFormInputId, getIndexFromId } from '../domainproperties/utils';
 import {
     DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
     DOMAIN_FIELD_ONTOLOGY_LABEL_COL,

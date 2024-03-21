@@ -23,6 +23,7 @@
     <% } %>
     <dependencies>
         <dependency path="clientapi"/>
+        <dependency path="passwordGauge.js"/>
         <dependency path="vis/vis"/>
         <dependency path="vis/genericChart/genericChartHelper.js"/>
     <% if (options.mode !== 'dev') { %>

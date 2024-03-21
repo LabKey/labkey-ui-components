@@ -365,7 +365,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 );
 
                 // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
-                const validSamples = samples.filter((_, key) => statusConfirmationData.isIdAllowed(key)).toOrderedMap();
+                const validSamples = samples.filter((_, key) => statusConfirmationData.isIdActionable(key)).toOrderedMap();
 
                 if (validSamples.size === 1) {
                     const sampleValue = validSamples.first().getIn([column.fieldKey, 0]).value;

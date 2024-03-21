@@ -3,8 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
-import { Map, List } from 'immutable';
-
+import { List, Map } from 'immutable';
 
 
 import { User } from '../base/models/User';

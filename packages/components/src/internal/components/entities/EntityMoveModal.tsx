@@ -26,6 +26,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun } from './utils';
 import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
+import { getPermissionRestrictionMessage } from '../../util/messaging';
 
 export interface EntityMoveModalProps {
     api?: ComponentsAPIWrapper;
@@ -87,7 +88,6 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     );
                     setConfirmationData(confirmationData_);
                 } catch (e) {
-                    console.error('There was a problem retrieving the move confirmation data.', e);
                     setError('There was a problem retrieving the move confirmation data.');
                 } finally {
                     setLoading(LoadingState.LOADED);
@@ -101,19 +101,13 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 
     const onConfirm = useCallback(
         async (targetContainerPath: string, targetName: string, auditUserComment: string) => {
-            const movingAll = confirmationData.notAllowed.length === 0;
-            const count = confirmationData.allowed.length;
+            const movingAll = confirmationData.totalNotActionable === 0;
+            const count = confirmationData.totalActionable;
             const noun = getEntityNoun(entityDataType, count)?.toLowerCase();
             setNumConfirmed(count);
             setShowProgress(true);
 
-            const rowIds_ =
-                !useSelected || !movingAll
-                    ? confirmationData.allowed.map(a => {
-                          if (a.RowId) return a.RowId;
-                          return a;
-                      })
-                    : undefined;
+            const rowIds_ = !useSelected || !movingAll ? confirmationData.getActionableIds() : undefined;
             const useSnapshotSelection = useSelected && movingAll && queryModel.filterArray.length > 0;
 
             try {
@@ -276,11 +270,13 @@ export const getMoveConfirmationProperties = (
     const capNounSingular = capitalizeFirstChar(nounSingular);
     const capNounPlural = capitalizeFirstChar(nounPlural);
     const dependencyText = 'status that prevents moving';
-    const numCanMove = confirmationData.allowed.length;
-    const numCannotMove = confirmationData.notAllowed.length;
+    const numCanMove = confirmationData.totalActionable;
+    const numCannotMove = confirmationData.totalNotActionable;
+    const numNotAllowed = confirmationData.notAllowed.length;
+    const numNotPermitted = confirmationData.notPermitted.length;
     const canMoveNoun = numCanMove === 1 ? capNounSingular : capNounPlural;
-    const cannotMoveNoun = numCannotMove === 1 ? nounSingular : nounPlural;
-    const totalNum = numCanMove + numCannotMove;
+
+    const totalNum = confirmationData.totalCount;
     const totalNoun = totalNum === 1 ? nounSingular : nounPlural;
 
     let text;
@@ -294,19 +290,22 @@ export const getMoveConfirmationProperties = (
     } else if (numCannotMove === 0) {
         text = totalNum === 1 ? 'The selected ' : totalNum === 2 ? 'Both ' : 'All ' + totalNum + ' ';
         text += totalNoun + ' will be moved.';
-    } else if (numCanMove === 0) {
+    } else if (numCanMove === 0 && numNotPermitted < numCannotMove) {
         if (totalNum === 1) {
-            text = 'The ' + totalNoun + " you've selected cannot be moved because it has a " + dependencyText + '.  ';
+            text = 'The ' + totalNoun + " you've selected cannot be moved because it has a " + dependencyText + ' or you lack the proper permissions. ';
         } else {
             text = numCannotMove === 2 ? 'Neither of' : 'None of';
             text += ' the ' + totalNum + ' ' + totalNoun + " you've selected can be moved";
-            text += ' because they have a ' + dependencyText + '.';
+            text += ' because they have a ' + dependencyText + ' or you lack the proper permissions.';
         }
-    } else {
+    } else if (numCanMove > 0) {
         text = [];
         let firstText = "You've selected " + totalNum + ' ' + totalNoun + ' but only ' + numCanMove + ' can be moved. ';
-        firstText += numCannotMove + ' ' + cannotMoveNoun + ' cannot be moved because ';
-        firstText += (numCannotMove === 1 ? ' it has ' : ' they have ') + dependencyText + '.';
+        if (numNotAllowed > 0) {
+            const cannotMoveNoun = numNotAllowed === 1 ? nounSingular : nounPlural;
+            firstText += numNotAllowed + ' ' + cannotMoveNoun + ' cannot be moved because ';
+            firstText += (numNotAllowed === 1 ? ' it has ' : ' they have ') + dependencyText + '. ';
+        }
         text.push(<React.Fragment key="commonText">{firstText}</React.Fragment>);
     }
 
@@ -315,6 +314,7 @@ export const getMoveConfirmationProperties = (
         message = (
             <>
                 {text}
+                {getPermissionRestrictionMessage(totalNum, numNotPermitted, nounSingular, nounPlural, 'move')}
                 <>
                     &nbsp;(<HelpLink topic={MOVE_SAMPLES_TOPIC}>more info</HelpLink>)
                 </>

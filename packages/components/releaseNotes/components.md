@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.32.0
+*Released*: 21 March 2024
+- Update `OperationConfirmationData` model and `getOperationConfirmationData` to account for permission checks as well
+
+### version 3.31.0
+*Released*: 21 March 2024
+- Issue 49870: Add password strength gauge to Change Password modal
+
 ### version 3.30.0
 *Released*: 19 March 2024
 - Don't use Row, Col, or Panel from react-bootstrap

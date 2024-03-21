@@ -1,7 +1,6 @@
 import React, { FC, memo } from 'react';
 
 
-
 import { Member } from '../administration/models';
 import { UserLink } from '../user/UserLink';
 

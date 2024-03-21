@@ -22,7 +22,7 @@ import { encodePart } from '../../public/SchemaQuery';
 
 const emptyList = List<string>();
 
-// Case insensitive Object reference. Returns undefined if either object or prop does not resolve.
+// Case-insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
 export function caseInsensitive(obj: Record<string, any>, prop: string): any {
     if (obj === undefined || obj === null) {

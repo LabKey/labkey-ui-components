@@ -23,7 +23,7 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 import { SectionHeading } from '../SectionHeading';
 
 import { DatasetModel } from './models';
-import { getAdditionalKeyFields, fetchCategories, getHelpTip } from './actions';
+import { fetchCategories, getAdditionalKeyFields, getHelpTip } from './actions';
 import { getStudySubjectProp, getStudyTimepointLabel } from './utils';
 import { DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { PureComponent } from 'react';
-import { Image, Media, Panel } from 'react-bootstrap';
+import { Image, Media } from 'react-bootstrap';
 
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';

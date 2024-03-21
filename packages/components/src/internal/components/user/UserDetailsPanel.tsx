@@ -4,7 +4,6 @@
  */
 import React, { FC } from 'react';
 import moment from 'moment';
-import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 

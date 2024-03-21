@@ -1,4 +1,4 @@
-import React, { ReactNode, PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { FormControl } from 'react-bootstrap';
 
 import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';

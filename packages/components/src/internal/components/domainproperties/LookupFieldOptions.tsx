@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Col } from 'react-bootstrap';
+import { Checkbox } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';

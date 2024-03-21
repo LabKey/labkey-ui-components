@@ -47,7 +47,7 @@ const ChartLoadingMask: FC<ChartLoadingMaskProps> = memo(({ msg = 'Loading Chart
 function computeFilterKey(filters: Filter.IFilter[]): string {
     if (!filters) return '';
     return filters
-        .map(f => f.getURLParameterName() + '=' + f.getURLParameterValue)
+        .map(f => f.getURLParameterName() + '=' + f.getURLParameterValue())
         .sort()
         .join('_');
 }

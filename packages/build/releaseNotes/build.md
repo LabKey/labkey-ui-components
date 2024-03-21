@@ -1,5 +1,13 @@
 # @labkey/build
 
+### version TBD
+*Released*: 13 March 2024
+- Issue 49870: add passwordGuage.js dependency to app.template.xml
+
+### version 7.1.0
+*Released*: 29 February 2024
+- add isAppview attribute to app.template.xml
+
 ### version 7.0.2
 *Released*: 27 December  2023
 - Update TypeScript compiler `lib` option to `["es2019", "dom", "dom.iterable"]`

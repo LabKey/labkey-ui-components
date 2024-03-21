@@ -29,7 +29,7 @@ describe('ChangePasswordModal', () => {
 
         wrapper.setState({
             model: new ChangePasswordModel({ oldPassword: 'old', password: 'new', password2: 'new2' }),
-            passwordRule: 'Testing password rule description',
+            passwordRule: { full: 'Testing password rule description' },
             submitting: true,
             error: 'Test Error',
         });
@@ -37,6 +37,7 @@ describe('ChangePasswordModal', () => {
         const modal = wrapper.find('.modal-dialog');
         expect(modal.find(Alert)).toHaveLength(1);
         expect(modal.find('input')).toHaveLength(3);
+        expect(modal.find('#strengthGuidance')).toHaveLength(0);
         expect(modal.find(LabelHelpTip)).toHaveLength(1);
         expect(modal.find('.btn')).toHaveLength(2);
         expect(wrapper.find('.alert').text()).toEqual('Test Error');
@@ -46,6 +47,26 @@ describe('ChangePasswordModal', () => {
                 .findWhere(btn => btn.prop('disabled'))
                 .hostNodes()
         ).toHaveLength(1);
+
+        wrapper.unmount();
+    });
+
+    test('shouldShowPasswordGuidance', () => {
+        const wrapper = mount(<ChangePasswordModal user={TEST_USER_READER} onSuccess={jest.fn()} onHide={jest.fn()} />);
+
+        wrapper.setState({
+            model: new ChangePasswordModel({ oldPassword: 'old', password: 'new', password2: 'new2' }),
+            passwordRule: { summary: 'Testing password rule description', shouldShowPasswordGuidance: true },
+            submitting: true,
+            error: 'Test Error',
+        });
+
+        const modal = wrapper.find('.modal-dialog');
+        expect(modal.find(Alert)).toHaveLength(1);
+        expect(modal.find('input')).toHaveLength(3);
+        expect(modal.find('#strengthGuidance')).toHaveLength(1);
+        expect(modal.find(LabelHelpTip)).toHaveLength(1);
+        expect(modal.find('.btn')).toHaveLength(2);
 
         wrapper.unmount();
     });

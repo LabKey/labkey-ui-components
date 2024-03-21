@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - ChartBuilderMenuItem with modal for defining a new chart, selecting type, measures, and chart preview
   - save chart from chart builder modal and reload model charts after save
 
+### version 3.31.0
+*Released*: 21 March 2024
+- Issue 49870: Add password strength gauge to Change Password modal
+
 ### version 3.30.0
 *Released*: 19 March 2024
 - Don't use Row, Col, or Panel from react-bootstrap

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: 13 March 2024
+### version 3.31.0
+*Released*: 21 March 2024
 - Issue 49870: Add password strength gauge to Change Password modal
 
 ### version 3.30.0

@@ -194,7 +194,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         setDeleting(true);
         setError(undefined);
         try {
-            const response = await deleteChart(savedChartModel.id);
+            await deleteChart(savedChartModel.id);
             setDeleting(false);
             onHide('Successfully deleted chart: ' + savedChartModel.name + '.');
 
@@ -233,7 +233,6 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         const queryConfig_ = {
             ...queryConfig,
             containerFilter: model.containerFilter,
-            filterArray: [...queryConfig.filterArray, ...model.filters],
             parameters: model.queryParameters,
             maxRows: MAX_ROWS_PREVIEW,
         };
@@ -242,7 +241,13 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         setPreviewMsg(undefined);
         LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig_, measureStore => {
             const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore).length;
-            const _previewMsg = getChartRenderMsg(chartConfig, rowCount, true);
+            let _previewMsg = getChartRenderMsg(chartConfig, rowCount, true);
+
+            if (model.loadRowsFilters(true)?.length > 0) {
+                _previewMsg =
+                    (_previewMsg ? _previewMsg + ' ' : '') +
+                    'Grid filters will not be saved with the chart so are not included in the preview chart.';
+            }
 
             if (rowCount > MAX_POINT_DISPLAY) {
                 if (chartConfig.renderType === 'box_plot') {
@@ -278,7 +283,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                 },
             });
         });
-    }, [divId, model, hasRequiredValues, selectedType, fieldValues]);
+    }, [divId, model, hasRequiredValues, selectedType, fieldValues, savedChartModel]);
 
     let footer;
     if (showConfirmDelete) {
@@ -520,7 +525,7 @@ const getQueryConfig = (
             .filter(field => field?.value)
             .map(field => field.value),
         sort: LABKEY_VIS.GenericChartHelper.getQueryConfigSortKey(chartConfig.measures),
-        filterArray: savedConfig?.filterArray ? [...savedConfig?.filterArray] : [],
+        filterArray: savedConfig?.filterArray ?? [],
         containerPath: savedConfig?.containerPath || containerPath,
     } as ChartQueryConfig;
 };

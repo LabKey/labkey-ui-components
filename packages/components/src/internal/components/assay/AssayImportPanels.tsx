@@ -64,6 +64,10 @@ import { EditableGridChange } from '../editable/EditableGrid';
 
 import { applyEditableGridChangesToModels } from '../editable/utils';
 
+import { CommentTextArea } from '../forms/input/CommentTextArea';
+
+import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
+
 import {
     allowReimportAssayRun,
     checkForDuplicateAssayFiles,
@@ -83,8 +87,6 @@ import { AssayUploadResultModel } from './models';
 import { PlatePropertiesPanel } from './PlatePropertiesPanel';
 import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
-import { CommentTextArea } from '../forms/input/CommentTextArea';
-import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
 const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';
@@ -100,7 +102,6 @@ interface OwnProps {
     assayProtocol?: AssayProtocolModel;
     // assay design setting
     backgroundUpload?: boolean;
-    beforeFinish?: (data: AssayUploadOptions) => AssayUploadOptions;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getIsDirty?: () => boolean;
     jobNotificationProvider?: string;
@@ -108,7 +109,7 @@ interface OwnProps {
     // Not currently used, but related logic retained in component
     maxRows?: number;
     onCancel: () => void;
-    onComplete: (response: AssayUploadResultModel, isAsync?: boolean) => void;
+    onComplete: (response: AssayUploadResultModel, isAsync?: boolean, plateSetId?: number) => void;
     onSave?: (response: AssayUploadResultModel, isAsync?: boolean) => void;
     requiresUserComment?: boolean;
     runId?: string;
@@ -365,7 +366,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 );
 
                 // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
-                const validSamples = samples.filter((_, key) => statusConfirmationData.isIdActionable(key)).toOrderedMap();
+                const validSamples = samples
+                    .filter((_, key) => statusConfirmationData.isIdActionable(key))
+                    .toOrderedMap();
 
                 if (validSamples.size === 1) {
                     const sampleValue = validSamples.first().getIn([column.fieldKey, 0]).value;
@@ -558,21 +561,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     onFinish = async (importAgain: boolean): Promise<void> => {
-        const {
-            currentStep,
-            onSave,
-            beforeFinish,
-            jobNotificationProvider,
-            assayProtocol,
-            searchParams,
-            dismissNotifications,
-        } = this.props;
+        const { currentStep, onSave, jobNotificationProvider, assayProtocol, searchParams, dismissNotifications } =
+            this.props;
         const { model, comment } = this.state;
-        let data = model.prepareFormData(currentStep, this.state.editorModel, this.state.dataModel);
-        if (beforeFinish) {
-            data = beforeFinish(data);
-        }
-
+        const data = model.prepareFormData(currentStep, this.state.editorModel, this.state.dataModel);
         this.setModelState(true, undefined);
         dismissNotifications();
 
@@ -605,7 +597,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             if (importAgain && onSave) {
                 this.onSuccessContinue(response, backgroundUpload || forceAsync);
             } else {
-                this.onSuccessComplete(response, backgroundUpload || forceAsync);
+                this.onSuccessComplete(response, data, backgroundUpload || forceAsync);
             }
         } catch (e) {
             let error: ReactNode;
@@ -645,9 +637,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
         });
     };
 
-    onSuccessComplete = (response: AssayUploadResultModel, isAsync?: boolean): void => {
+    onSuccessComplete = (response: AssayUploadResultModel, data: AssayUploadOptions, isAsync?: boolean): void => {
         this.setModelState(false, undefined);
-        this.props.onComplete(response, isAsync);
+        this.props.onComplete(response, isAsync, data.properties[PLATE_SET_COLUMN]);
     };
 
     setModelState = (isSubmitting: boolean, errorMsg: ReactNode): void => {
@@ -843,12 +835,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                             {model.isSubmitting ? 'Saving...' : 'Save and Import Another Run'}
                         </button>
                     )}
-                    <button
-                        type="submit"
-                        className="btn btn-success"
-                        onClick={this.onImport}
-                        disabled={disabledSave}
-                    >
+                    <button type="submit" className="btn btn-success" onClick={this.onImport} disabled={disabledSave}>
                         {model.isSubmitting ? 'Importing...' : isReimport ? 'Re-Import' : 'Import'}
                     </button>
                 </FormButtons>

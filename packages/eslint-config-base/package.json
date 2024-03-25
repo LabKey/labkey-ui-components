@@ -1,6 +1,6 @@
 {
   "name": "@labkey/eslint-config-base",
-  "version": "0.0.14-fb-package-updates-0324.0",
+  "version": "0.0.14-fb-package-updates-0324.1",
   "description": "shareable eslint config for typescript",
   "main": "index.js",
   "files": [

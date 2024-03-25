@@ -247,7 +247,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             let _previewMsg = getChartRenderMsg(chartConfig, rowCount, true);
 
             // if the grid model has any user defined filters, show a message that they will not be saved with the chart
-            if (model.filterArray?.length > 0) {
+            if (model.loadRowsFilters(true).length > 0) {
                 _previewMsg =
                     (_previewMsg ? _previewMsg + ' ' : '') +
                     'Grid filters will not be saved with the chart so are not included in the preview chart.';
@@ -536,7 +536,7 @@ const getQueryConfig = (
             .filter(field => field?.value)
             .map(field => field.value),
         sort: LABKEY_VIS.GenericChartHelper.getQueryConfigSortKey(chartConfig.measures),
-        filterArray: savedConfig?.filterArray ?? model.getModelFilters(true),
+        filterArray: savedConfig?.filterArray ?? [],
         containerPath: savedConfig?.containerPath || containerPath,
     } as ChartQueryConfig;
 };

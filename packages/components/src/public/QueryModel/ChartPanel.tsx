@@ -8,6 +8,9 @@ import { GenericChartModel } from '../../internal/components/chart/models';
 import { ChartBuilderModal } from '../../internal/components/chart/ChartBuilderModal';
 import { useNotificationsContext } from '../../internal/components/notifications/NotificationsContext';
 
+import { isChartBuilderEnabled } from '../../internal/app/utils';
+import { useServerContext } from '../../internal/components/base/ServerContext';
+
 import { RequiresModelAndActions } from './withQueryModels';
 
 interface Props extends RequiresModelAndActions {
@@ -19,6 +22,7 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
     const [savedChartModel, setSavedChartModel] = useState<GenericChartModel>(undefined);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const { createNotification } = useNotificationsContext();
+    const { moduleContext } = useServerContext();
 
     const selectedChart = useMemo(
         () => charts?.find(chart => chart.reportId === selectedReportId),
@@ -67,7 +71,7 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
                 <div className="chart-panel__heading-title">
                     {selectedChart.name}
 
-                    {savedChartModel?.canEdit && (
+                    {savedChartModel?.canEdit && isChartBuilderEnabled(moduleContext) && (
                         <span className="margin-left">
                             <button
                                 type="button"

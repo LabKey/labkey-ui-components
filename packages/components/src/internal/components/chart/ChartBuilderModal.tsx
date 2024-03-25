@@ -24,6 +24,8 @@ import { hasPermissions } from '../base/models/User';
 import { Alert } from '../base/Alert';
 import { FormButtons } from '../../FormButtons';
 
+import { getContainerFilter } from '../../query/api';
+
 import { ChartConfig, ChartQueryConfig, GenericChartModel } from './models';
 
 interface AggregateFieldInfo {
@@ -73,6 +75,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         () => CHART_TYPES.filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name)),
         []
     );
+    const containerFilter = useMemo(() => getContainerFilter(model.containerPath), [model.containerPath]);
 
     const [loadingData, setLoadingData] = useState<boolean>(false);
     const [saving, setSaving] = useState<boolean>(false);
@@ -232,7 +235,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         // add model parameters and containerFilter plus maxRows to the queryConfig for the preview, but not to save with the chart
         const queryConfig_ = {
             ...queryConfig,
-            containerFilter: model.containerFilter,
+            containerFilter,
             parameters: model.queryParameters,
             maxRows: MAX_ROWS_PREVIEW,
         };
@@ -291,7 +294,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                 },
             });
         });
-    }, [divId, model, hasRequiredValues, selectedType, fieldValues, savedChartModel]);
+    }, [divId, model, hasRequiredValues, selectedType, fieldValues, savedChartModel, containerFilter]);
 
     let footer;
     if (showConfirmDelete) {

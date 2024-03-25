@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC, memo, useEffect, useMemo, useState } from 'react';
-import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import { resolveErrorMessage } from '../../util/messaging';

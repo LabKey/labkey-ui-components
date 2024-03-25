@@ -18,7 +18,6 @@ import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 
 
-
 import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
 import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';

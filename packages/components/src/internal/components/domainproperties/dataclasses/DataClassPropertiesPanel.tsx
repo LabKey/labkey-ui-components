@@ -3,11 +3,11 @@ import React, { PureComponent, ReactNode } from 'react';
 
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 import {
-    DEFINE_DATA_CLASS_TOPIC,
     DATA_CLASS_NAME_EXPRESSION_TOPIC,
+    DATACLASS_ALIAS_TOPIC,
+    DEFINE_DATA_CLASS_TOPIC,
     getHelpLink,
     HelpLink,
-    DATACLASS_ALIAS_TOPIC,
 } from '../../../util/helpLinks';
 import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
 import { getFormNameFromId } from '../entities/actions';

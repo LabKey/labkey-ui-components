@@ -11,11 +11,7 @@ import { NameExpressionPreview } from '../NameExpressionPreview';
 import { NameExpressionGenIdBanner, NameExpressionGenIdProps } from '../NameExpressionGenIdBanner';
 
 import { IEntityDetails } from './models';
-import {
-    getEntityDescriptionValue,
-    getEntityNameExpressionValue,
-    getEntityNameValue,
-} from './actions';
+import { getEntityDescriptionValue, getEntityNameExpressionValue, getEntityNameValue, } from './actions';
 import { ENTITY_FORM_IDS } from './constants';
 
 export interface EntityDetailsProps {

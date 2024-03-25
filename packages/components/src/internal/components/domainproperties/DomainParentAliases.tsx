@@ -3,7 +3,6 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 're
 import { OrderedMap } from 'immutable';
 
 
-
 import { IParentAlias, IParentOption } from '../entities/models';
 import { SCHEMAS } from '../../schemas';
 import { AddEntityButton } from '../buttons/AddEntityButton';

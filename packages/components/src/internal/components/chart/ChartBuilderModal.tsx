@@ -229,7 +229,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             savedChartModel?.visualizationConfig?.queryConfig
         );
 
-        // add model filters, parameters, and containerFilter and maxRows to the queryConfig for the preview, but not to save with the chart
+        // add model parameters and containerFilter plus maxRows to the queryConfig for the preview, but not to save with the chart
         const queryConfig_ = {
             ...queryConfig,
             containerFilter: model.containerFilter,
@@ -243,7 +243,8 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore).length;
             let _previewMsg = getChartRenderMsg(chartConfig, rowCount, true);
 
-            if (model.loadRowsFilters(true)?.length > 0) {
+            // if the grid model has any user defined filters, show a message that they will not be saved with the chart
+            if (model.filterArray?.length > 0) {
                 _previewMsg =
                     (_previewMsg ? _previewMsg + ' ' : '') +
                     'Grid filters will not be saved with the chart so are not included in the preview chart.';
@@ -278,8 +279,15 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                 viewName: queryConfig.viewName,
                 renderType: chartConfig.renderType,
                 jsonData: {
-                    queryConfig,
                     chartConfig,
+                    queryConfig: {
+                        ...queryConfig,
+                        filterArray: queryConfig.filterArray.map(f => ({
+                            name: f['name'] ?? f.getColumnName(),
+                            value: f['value'] ?? f.getValue(),
+                            type: f['type'] ?? f.getFilterType().getURLSuffix(),
+                        })),
+                    },
                 },
             });
         });
@@ -525,7 +533,7 @@ const getQueryConfig = (
             .filter(field => field?.value)
             .map(field => field.value),
         sort: LABKEY_VIS.GenericChartHelper.getQueryConfigSortKey(chartConfig.measures),
-        filterArray: savedConfig?.filterArray ?? [],
+        filterArray: savedConfig?.filterArray ?? model.getModelFilters(true),
         containerPath: savedConfig?.containerPath || containerPath,
     } as ChartQueryConfig;
 };

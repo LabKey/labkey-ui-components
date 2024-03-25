@@ -78,7 +78,7 @@
   },
   "devDependencies": {
     "@labkey/build": "7.2.1-fb-package-updates-0324.0",
-    "@labkey/eslint-config-react": "0.0.13",
+    "@labkey/eslint-config-react": "0.0.14-fb-package-updates-0324.1",
     "@types/enzyme": "3.10.18",
     "@types/history": "4.7.11",
     "@types/jest": "29.5.12",

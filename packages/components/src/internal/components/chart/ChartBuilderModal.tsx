@@ -1,4 +1,4 @@
-import React, {FC, Fragment, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, { FC, Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import { PermissionTypes } from '@labkey/api';
@@ -13,7 +13,7 @@ import { naturalSortByProperty } from '../../../public/sort';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-import {deleteChart, saveChart} from '../../actions';
+import { deleteChart, saveChart } from '../../actions';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryModels';
@@ -21,9 +21,10 @@ import { RequiresModelAndActions } from '../../../public/QueryModel/withQueryMod
 import { useServerContext } from '../base/ServerContext';
 import { hasPermissions } from '../base/models/User';
 
-import {ChartConfig, ChartQueryConfig, GenericChartModel} from './models';
-import {Alert} from "../base/Alert";
-import {FormButtons} from "../../FormButtons";
+import { Alert } from '../base/Alert';
+import { FormButtons } from '../../FormButtons';
+
+import { ChartConfig, ChartQueryConfig, GenericChartModel } from './models';
 
 interface AggregateFieldInfo {
     name: string;
@@ -64,7 +65,10 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
     const divId = useMemo(() => generateId('chart-'), []);
     const ref = useRef<HTMLDivElement>(undefined);
     const { user } = useServerContext();
-    const canShare = useMemo(() => savedChartModel?.canShare ?? hasPermissions(user, [PermissionTypes.ShareReportPermission]), [savedChartModel, user]);
+    const canShare = useMemo(
+        () => savedChartModel?.canShare ?? hasPermissions(user, [PermissionTypes.ShareReportPermission]),
+        [savedChartModel, user]
+    );
     const chartTypes: ChartTypeInfo[] = useMemo(
         () => CHART_TYPES.filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name)),
         []
@@ -82,23 +86,30 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
     const [shared, setShared] = useState<boolean>(canShare);
     const [fieldValues, setFieldValues] = useState<Record<string, SelectInputOption>>({});
 
-    useEffect(() => {
-        if (savedChartModel) {
-            setSelectedChartType(chartTypes.find(c => savedChartModel?.visualizationConfig.chartConfig.renderType === c.name));
-            setName(savedChartModel.name);
-            setShared(savedChartModel.shared);
+    useEffect(
+        () => {
+            if (savedChartModel) {
+                setSelectedChartType(
+                    chartTypes.find(c => savedChartModel?.visualizationConfig.chartConfig.renderType === c.name)
+                );
+                setName(savedChartModel.name);
+                setShared(savedChartModel.shared);
 
-            const measures = savedChartModel.visualizationConfig?.chartConfig?.measures || {};
-            const fieldValues_ = {};
-            Object.keys(measures).map(key => {
-                const measure = measures[key];
-                if (measure) {
-                    fieldValues_[key] = { label: measure.label, value: measure.name, data: measure };
-                }
-            });
-            setFieldValues(fieldValues_);
-        }
-    }, []);
+                const measures = savedChartModel.visualizationConfig?.chartConfig?.measures || {};
+                const fieldValues_ = {};
+                Object.keys(measures).map(key => {
+                    const measure = measures[key];
+                    if (measure) {
+                        fieldValues_[key] = { label: measure.label, value: measure.name, data: measure };
+                    }
+                });
+                setFieldValues(fieldValues_);
+            }
+        },
+        [
+            /* on mount only */
+        ]
+    );
 
     const hasName = useMemo(() => name?.trim().length > 0, [name]);
     const hasRequiredValues = useMemo(() => {
@@ -145,7 +156,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         const _reportConfig = {
             ...reportConfig,
             reportId: savedChartModel?.reportId,
-            name,
+            name: name?.trim(),
             public: shared,
         };
 
@@ -154,7 +165,11 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         try {
             const response = await saveChart(_reportConfig);
             setSaving(false);
-            onHide((savedChartModel ? 'Successfully updated chart: ' : 'Successfully created chart: ') + _reportConfig.name + '.');
+            onHide(
+                (savedChartModel ? 'Successfully updated chart: ' : 'Successfully created chart: ') +
+                    _reportConfig.name +
+                    '.'
+            );
 
             // clear the selected report, if we are saving/updating it, so that it will refresh in ChartPanel.tsx
             await actions.selectReport(model.id, undefined);
@@ -202,8 +217,17 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
 
         const width = ref?.current.getBoundingClientRect().width || 750;
 
-        const chartConfig = getChartConfig(selectedType, fieldValues, savedChartModel?.visualizationConfig?.chartConfig);
-        const queryConfig = getQueryConfig(model, fieldValues, chartConfig, savedChartModel?.visualizationConfig?.queryConfig);
+        const chartConfig = getChartConfig(
+            selectedType,
+            fieldValues,
+            savedChartModel?.visualizationConfig?.chartConfig
+        );
+        const queryConfig = getQueryConfig(
+            model,
+            fieldValues,
+            chartConfig,
+            savedChartModel?.visualizationConfig?.queryConfig
+        );
 
         // add model filters, parameters, and containerFilter and maxRows to the queryConfig for the preview, but not to save with the chart
         const queryConfig_ = {
@@ -279,11 +303,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                     Cancel
                 </button>
                 {savedChartModel?.canDelete && (
-                    <button
-                        className="btn btn-danger"
-                        onClick={onDeleteChart}
-                        type="button"
-                    >
+                    <button className="btn btn-danger" onClick={onDeleteChart} type="button">
                         Delete Chart
                     </button>
                 )}
@@ -293,7 +313,13 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                     type="button"
                     disabled={saving || !(hasName && hasRequiredValues && !loadingData)}
                 >
-                    {saving ? (savedChartModel ? 'Saving Chart...' : 'Creating Chart...') : (savedChartModel ? 'Save Chart' : 'Create Chart')}
+                    {saving
+                        ? savedChartModel
+                            ? 'Saving Chart...'
+                            : 'Creating Chart...'
+                        : savedChartModel
+                        ? 'Save Chart'
+                        : 'Create Chart'}
                 </button>
             </FormButtons>
         );
@@ -314,7 +340,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                             key={type.name}
                             className={classNames('chart-builder-type', {
                                 selected: selectedType.name === type.name,
-                                selectable: !savedChartModel
+                                selectable: !savedChartModel,
                             })}
                             data-name={type.name}
                             onClick={onChartTypeChange}
@@ -386,9 +412,13 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                                                 value={fieldValues[field.name]?.value}
                                             />
                                         </div>
-                                        {/*TODO change this to a select input with predefined options*/}
+                                        {/* TODO change this to a select input with predefined options*/}
                                         {selectedType.name === 'bar_chart' && fieldValues[field.name]?.value && (
-                                            <div className="gray-text">Aggregate method: {savedChartModel?.visualizationConfig.chartConfig.measures['y']?.aggregate.name ?? 'Sum'}</div>
+                                            <div className="gray-text">
+                                                Aggregate method:{' '}
+                                                {savedChartModel?.visualizationConfig.chartConfig.measures['y']
+                                                    ?.aggregate?.name ?? 'Sum'}
+                                            </div>
                                         )}
                                     </Fragment>
                                 ))}
@@ -406,7 +436,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                                 <div className="chart-preview-body">
                                     {loadingData && (
                                         <div className="chart-loading-mask">
-                                        <div className="chart-loading-mask__background" />
+                                            <div className="chart-loading-mask__background" />
                                             <LoadingSpinner
                                                 wrapperClassName="loading-spinner"
                                                 msg="Loading Preview..."
@@ -495,7 +525,11 @@ const getQueryConfig = (
     } as ChartQueryConfig;
 };
 
-const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, SelectInputOption>, savedConfig: ChartConfig): ChartConfig => {
+const getChartConfig = (
+    chartType: ChartTypeInfo,
+    fieldValues: Record<string, SelectInputOption>,
+    savedConfig: ChartConfig
+): ChartConfig => {
     const config = {
         renderType: chartType.name,
         measures: {},
@@ -552,7 +586,10 @@ const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, Se
                 label: fieldValues[field.name].label,
                 queryName: fieldValues[field.name].data.queryName,
                 schemaName: fieldValues[field.name].data.schemaName,
-                type: fieldValues[field.name].data.displayFieldJsonType || fieldValues[field.name].data.jsonType || fieldValues[field.name].data.type,
+                type:
+                    fieldValues[field.name].data.displayFieldJsonType ||
+                    fieldValues[field.name].data.jsonType ||
+                    fieldValues[field.name].data.type,
             };
 
             // for now, retain axis aggregate config if it was set via LKS
@@ -561,7 +598,11 @@ const getChartConfig = (chartType: ChartTypeInfo, fieldValues: Record<string, Se
             }
 
             // update axis label if it is a new report or if the saved report that didn't have this measure or was using the default field label for the axis label
-            if (!savedConfig || !savedConfig.measures[field.name] || savedConfig.labels[field.name] === savedConfig.measures[field.name].label) {
+            if (
+                !savedConfig ||
+                !savedConfig.measures[field.name] ||
+                savedConfig.labels[field.name] === savedConfig.measures[field.name].label
+            ) {
                 config.labels[field.name] = fieldValues[field.name].label;
             }
         }

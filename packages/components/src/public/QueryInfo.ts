@@ -221,28 +221,12 @@ export class QueryInfo {
 
             // add addToSystemView columns to unsaved system view (i.e. the default-default view, details view, or update view)
             if ((viewInfo.isDefault || viewInfo.isSystemView) && !viewInfo.isSaved && !viewInfo.session) {
-                const columnFieldKeys = viewInfo.columns.reduce((result, col) => {
+                const columnFieldKeysLc = viewInfo.columns.reduce((result, col) => {
                     result.add(col.fieldKey.toLowerCase());
                     return result;
-                }, new Set());
+                }, new Set<string>());
 
-                const disabledSysFields = [];
-                this.disabledSystemFields?.forEach(field => {
-                    disabledSysFields.push(field.toLowerCase());
-                });
-
-                this.columns.forEach(col => {
-                    const fieldKey = col.fieldKey.toLowerCase();
-                    if (
-                        fieldKey &&
-                        col.addToSystemView &&
-                        !columnFieldKeys.has(fieldKey) &&
-                        disabledSysFields.indexOf(fieldKey) === -1
-                    ) {
-                        if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
-                            displayColumns.push(col);
-                    }
-                });
+                displayColumns.push(...this.getExtraDisplayColumns(columnFieldKeysLc, lowerOmit));
             }
 
             return displayColumns;
@@ -250,6 +234,29 @@ export class QueryInfo {
 
         console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');
         return [];
+    }
+
+    getExtraDisplayColumns(columnFieldKeysLc: Set<string>, lowerOmit?: string[]) : QueryColumn[] {
+        const extraDisplayColumn = [];
+        const disabledSysFields = [];
+        this.disabledSystemFields?.forEach(field => {
+            disabledSysFields.push(field.toLowerCase());
+        });
+
+        this.columns.forEach(col => {
+            const fieldKey = col.fieldKey.toLowerCase();
+            if (
+                fieldKey &&
+                col.addToSystemView &&
+                !columnFieldKeysLc.has(fieldKey) &&
+                disabledSysFields.indexOf(fieldKey) === -1
+            ) {
+                if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
+                    extraDisplayColumn.push(col);
+            }
+        });
+
+        return extraDisplayColumn;
     }
 
     getLookupViewColumns(omittedColumns?: string[]): QueryColumn[] {

@@ -543,19 +543,19 @@ export const IN_EXP_DESCENDANTS_OF_FILTER_TYPE = registerFilterType(
     null,
     'inexpdescendantsof',
     true,
-    ';'
+    undefined
 );
 export const NOT_IN_EXP_DESCENDANTS_OF_FILTER_TYPE = registerFilterType(
     'NOT IN DESCENDANTS OF',
     null,
     'notinexpdescendantsof',
     true,
-    ';'
+    undefined
 );
 export const IN_EXP_ANCESTORS_OF_FILTER_TYPE = registerFilterType(
     'IN ANCESTORS OF',
     null,
     'inexpancestorsof',
     true,
-    ';'
+    undefined
 );

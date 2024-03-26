@@ -40,7 +40,7 @@ interface Props {
     // used for Sample Finder use case
     entityDataType?: EntityDataType;
     fieldKey?: string;
-    fields?: List<QueryColumn>;
+    fields?: QueryColumn[];
     filters: { [key: string]: FieldFilter[] };
     fullWidth?: boolean;
     hasNotInQueryFilter?: boolean;

@@ -6,11 +6,11 @@
 
 ### version 7.2.0
 *Released*: 13 March 2024
-- Issue 49870: add passwordGuage.js dependency to app.template.xml
+- Issue 49870: add passwordGauge.js dependency to app.template.xml
 
 ### version 7.1.0
 *Released*: 29 February 2024
-- add isAppview attribute to app.template.xml
+- add `isAppview` attribute to app.template.xml
 
 ### version 7.0.2
 *Released*: 27 December  2023

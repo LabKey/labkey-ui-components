@@ -232,10 +232,11 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             savedChartModel?.visualizationConfig?.queryConfig
         );
 
-        // add model parameters and containerFilter plus maxRows to the queryConfig for the preview, but not to save with the chart
+        // add model filters, parameters, and containerFilter plus maxRows to the queryConfig for the preview, but not to save with the chart
         const queryConfig_ = {
             ...queryConfig,
             containerFilter,
+            filterArray: [...model.loadRowsFilters(true)],
             parameters: model.queryParameters,
             maxRows: MAX_ROWS_PREVIEW,
         };
@@ -245,13 +246,6 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig_, measureStore => {
             const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore).length;
             let _previewMsg = getChartRenderMsg(chartConfig, rowCount, true);
-
-            // if the grid model has any user defined filters, show a message that they will not be saved with the chart
-            if (model.loadRowsFilters(true).length > 0) {
-                _previewMsg =
-                    (_previewMsg ? _previewMsg + ' ' : '') +
-                    'Grid filters will not be saved with the chart so are not included in the preview chart.';
-            }
 
             if (rowCount > MAX_POINT_DISPLAY) {
                 if (chartConfig.renderType === 'box_plot') {

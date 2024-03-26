@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.33.0
+*Released*: 26 March 2024
+- Add EditorModel.getColumns() function
+
 ### version 3.32.1
 *Released*: 22 March 2024
 - EditableGrid updates for add/move to multiple targets updates

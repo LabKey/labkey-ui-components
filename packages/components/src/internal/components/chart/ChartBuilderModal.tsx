@@ -371,7 +371,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                             >
                                 <SVGIcon
                                     height={null}
-                                    iconSrc={selectable ? ICONS[type.name] + '_gray' : ICONS[type.name]}
+                                    iconSrc={!selected ? ICONS[type.name] + '_gray' : ICONS[type.name]}
                                 />
                                 <div className="title">{type.title}</div>
                             </div>

@@ -1,6 +1,10 @@
 # @labkey/build
 
-### version TBD
+### version 7.3.0
+*Released*: 26 March 2024
+- Package updates
+
+### version 7.2.0
 *Released*: 13 March 2024
 - Issue 49870: add passwordGuage.js dependency to app.template.xml
 

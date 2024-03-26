@@ -1,7 +1,7 @@
 import React, { FC, Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
 
-import { PermissionTypes } from '@labkey/api';
+import { PermissionTypes, Utils } from '@labkey/api';
 
 import { generateId } from '../../util/utils';
 import { LABKEY_VIS } from '../../constants';
@@ -101,8 +101,11 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                 const measures = savedChartModel.visualizationConfig?.chartConfig?.measures || {};
                 const fieldValues_ = {};
                 Object.keys(measures).map(key => {
-                    const measure = measures[key];
+                    let measure = measures[key];
                     if (measure) {
+                        // Currently only supporting a single measure per axis (i.e. not supporting y-axis left/right)
+                        if (Utils.isArray(measure)) measure = measure[0];
+
                         fieldValues_[key] = { label: measure.label, value: measure.name, data: measure };
                     }
                 });

@@ -169,7 +169,7 @@ export function getDefaultVisibleColumns(options: GetQueryDetailsOptions): Promi
     const schemaQuery = options.schemaQuery ?? new SchemaQuery(options.schemaName, options.queryName);
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('query', 'getDefaultVisibleColumns.api', undefined, {container: containerPath}),
+            url: buildURL('query', 'getDefaultVisibleColumns.api', undefined, { container: containerPath }),
             method: 'POST',
             params: {
                 queryName: schemaQuery.queryName,
@@ -181,7 +181,7 @@ export function getDefaultVisibleColumns(options: GetQueryDetailsOptions): Promi
                 Object.keys(rawColumnMap).forEach(fieldKey => {
                     const rawColumn = rawColumnMap[fieldKey];
                     columns.push(applyColumnMetadata(schemaQuery, rawColumn));
-                })
+                });
                 resolve(columns);
             }),
             failure: handleRequestFailure(reject, 'Failed to load default visible columns.'),

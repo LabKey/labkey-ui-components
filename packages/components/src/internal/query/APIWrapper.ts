@@ -28,6 +28,8 @@ import { SchemaQuery } from '../../public/SchemaQuery';
 
 import { ViewInfo } from '../ViewInfo';
 
+import { QueryColumn } from '../../public/QueryColumn';
+
 import {
     deleteRows,
     deleteRowsByContainer,
@@ -43,7 +45,6 @@ import {
     getDefaultVisibleColumns,
 } from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
-import { QueryColumn } from '../../public/QueryColumn';
 
 export interface QueryAPIWrapper {
     deleteRows: (options: DeleteRowsOptions) => Promise<QueryCommandResponse>;

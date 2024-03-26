@@ -236,7 +236,7 @@ export class QueryInfo {
         return [];
     }
 
-    getExtraDisplayColumns(columnFieldKeysLc: Set<string>, lowerOmit?: string[]) : QueryColumn[] {
+    getExtraDisplayColumns(columnFieldKeysLc: Set<string>, lowerOmit?: string[]): QueryColumn[] {
         const extraDisplayColumn = [];
         const disabledSysFields = [];
         this.disabledSystemFields?.forEach(field => {
@@ -251,8 +251,7 @@ export class QueryInfo {
                 !columnFieldKeysLc.has(fieldKey) &&
                 disabledSysFields.indexOf(fieldKey) === -1
             ) {
-                if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
-                    extraDisplayColumn.push(col);
+                if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase())) extraDisplayColumn.push(col);
             }
         });
 
@@ -269,13 +268,16 @@ export class QueryInfo {
         // initialReduction is getDisplayColumns() because they include custom metadata from the view, like alternate
         // column display names (e.g. the Experiment grid overrides Title to "Experiment Title"). See Issue 38186 for
         // additional context.
-        return this.columns.reduce((result, rawColumn) => {
-            if (!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
-                result.push(rawColumn);
-            }
+        return this.columns.reduce(
+            (result, rawColumn) => {
+                if (!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
+                    result.push(rawColumn);
+                }
 
-            return result;
-        }, this.getDisplayColumns(viewName, omittedColumns));
+                return result;
+            },
+            this.getDisplayColumns(viewName, omittedColumns)
+        );
     }
 
     // @param isIncludedColumn can be used to filter out columns that should not be designate as insertColumns
@@ -297,7 +299,9 @@ export class QueryInfo {
         if (!fieldKey) return -1;
 
         const lcFieldKey = fieldKey.toLowerCase();
-        return this.getInsertColumns(undefined, readOnlyColumns).findIndex(column => column.fieldKey.toLowerCase() === lcFieldKey);
+        return this.getInsertColumns(undefined, readOnlyColumns).findIndex(
+            column => column.fieldKey.toLowerCase() === lcFieldKey
+        );
     }
 
     getUpdateColumns(readOnlyColumns?: string[]): QueryColumn[] {

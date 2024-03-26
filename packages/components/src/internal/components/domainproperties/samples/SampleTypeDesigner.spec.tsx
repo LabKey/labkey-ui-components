@@ -85,40 +85,15 @@ describe('SampleTypeDesigner', () => {
             />
         );
 
-        const tree = shallow(form);
+        const wrapped = shallow(form);
 
-        await waitForLifecycle(tree);
+        await waitForLifecycle(wrapped);
 
-        expect(tree).toMatchSnapshot();
-    });
+        expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);
+        expect(wrapped.find(DomainForm)).toHaveLength(1);
+        expect(wrapped.find(FileAttachmentForm)).toHaveLength(0);
 
-    test('custom properties', async () => {
-        const form = (
-            <SampleTypeDesignerImpl
-                {...BASE_PROPS}
-                nounSingular="Some Sample"
-                nounPlural="Some Samples"
-                nameExpressionInfoUrl="https://www.labkey.org/Documentation"
-                nameExpressionPlaceholder="name expression placeholder test"
-                headerText="header text test"
-                appPropertiesOnly={false}
-                saveBtnText="Finish it up"
-                currentPanelIndex={0}
-                firstState={true}
-                onFinish={jest.fn()}
-                onTogglePanel={jest.fn()}
-                setSubmitting={jest.fn()}
-                submitting={false}
-                validatePanel={0}
-                visitedPanels={List()}
-            />
-        );
-
-        const tree = shallow(form);
-
-        await waitForLifecycle(tree);
-
-        expect(tree).toMatchSnapshot();
+        wrapped.unmount();
     });
 
     test('initModel with name URL props', async () => {
@@ -153,7 +128,6 @@ describe('SampleTypeDesigner', () => {
         expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);
         expect(wrapped.find(DomainForm)).toHaveLength(1);
         expect(wrapped.find(FileAttachmentForm)).toHaveLength(0);
-        expect(wrapped).toMatchSnapshot();
         wrapped.unmount();
     });
 

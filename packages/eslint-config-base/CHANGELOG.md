@@ -1,3 +1,7 @@
+## 0.0.14 - 2024-03-26
+- Package updates
+- Re-enable usage of `jest` and `typescript-sort-keys` plugins
+
 ## 0.0.13 - 2023-09-21
 - Package updates
 - Disable usage of `jest` and `typescript-sort-keys` plugins

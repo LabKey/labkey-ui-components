@@ -931,6 +931,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         } else {
             actions.setView(model.id, undefined, allowSelections);
         }
+
+        // since the grid ChartMenu filters to charts for a given view, when the view changes clear the selectedReportId
+        if (model.selectedReportId) {
+            actions.selectReport(model.id, undefined);
+        }
     };
 
     getGridColumns = (): List<GridColumn | QueryColumn> => {

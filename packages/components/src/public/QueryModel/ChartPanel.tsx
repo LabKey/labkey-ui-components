@@ -92,8 +92,6 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
                 </div>
             </div>
 
-            {selectedChart.viewName && <div className="gray-text">View: {selectedChart.viewName}</div>}
-
             <Chart api={api} chart={selectedChart} container={containerPath} filters={model.filters} />
 
             {showEditModal && (

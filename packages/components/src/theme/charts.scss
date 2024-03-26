@@ -202,24 +202,23 @@
     .chart-builder-type {
         border: solid 1px transparent;
         border-radius: 3px;
-        margin: 10px 0;
-        padding: 4px;
-        width: 85px;
-        height: 92px;
+        margin-bottom: 10px;
+        padding: 5px;
+        cursor: pointer;
 
         .title {
             text-align: center;
+            color: $text-color;
         }
 
         &.selected {
-            background-color: $gray-lighter;
-            border-color: $gray-border;
+            background-color: $blue-icon-background;
+            border-color: $blue-border-solid;
         }
 
         &.selectable:hover {
-            cursor: pointer;
-            background-color: $blue-icon-background;
-            border-color: $blue-border-solid;
+            background-color: $gray-lighter;
+            border-color: $gray-border;
         }
     }
 

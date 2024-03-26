@@ -26,6 +26,8 @@ import { FormButtons } from '../../FormButtons';
 
 import { getContainerFilter } from '../../query/api';
 
+import { SVGIcon } from '../base/SVGIcon';
+
 import { ChartConfig, ChartQueryConfig, GenericChartModel } from './models';
 
 interface AggregateFieldInfo {
@@ -51,12 +53,19 @@ interface ChartTypeInfo {
     fields: ChartFieldInfo[];
 }
 
-const CHART_TYPES = LABKEY_VIS?.GenericChartHelper.getRenderTypes();
 const HIDDEN_CHART_TYPES = ['time_chart'];
 const RIGHT_COL_FIELDS = ['color', 'shape', 'series'];
 const MAX_ROWS_PREVIEW = 100000;
 const MAX_POINT_DISPLAY = 10000;
 const BLUE_HEX_COLOR = '3366FF';
+
+const ICONS = {
+    bar_chart: 'bar_chart',
+    box_plot: 'box_plot',
+    pie_chart: 'pie_chart',
+    scatter_plot: 'xy_scatter',
+    line_plot: 'xy_line',
+};
 
 interface Props extends RequiresModelAndActions {
     onHide: (successMsg?: string) => void;
@@ -64,6 +73,7 @@ interface Props extends RequiresModelAndActions {
 }
 
 export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, savedChartModel }) => {
+    const CHART_TYPES = LABKEY_VIS?.GenericChartHelper.getRenderTypes();
     const divId = useMemo(() => generateId('chart-'), []);
     const ref = useRef<HTMLDivElement>(undefined);
     const { user } = useServerContext();
@@ -73,7 +83,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
     );
     const chartTypes: ChartTypeInfo[] = useMemo(
         () => CHART_TYPES.filter(type => !type.hidden && !HIDDEN_CHART_TYPES.includes(type.name)),
-        []
+        [CHART_TYPES]
     );
     const containerFilter = useMemo(() => getContainerFilter(model.containerPath), [model.containerPath]);
 
@@ -248,7 +258,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
         setPreviewMsg(undefined);
         LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig_, measureStore => {
             const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore).length;
-            let _previewMsg = getChartRenderMsg(chartConfig, rowCount, true);
+            const _previewMsg = getChartRenderMsg(chartConfig, rowCount, true);
 
             if (rowCount > MAX_POINT_DISPLAY) {
                 if (chartConfig.renderType === 'box_plot') {
@@ -348,20 +358,25 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             {error && <Alert>{error}</Alert>}
             <div className="row">
                 <div className="col-xs-1 col-left">
-                    {chartTypes.map(type => (
-                        <div
-                            key={type.name}
-                            className={classNames('chart-builder-type', {
-                                selected: selectedType.name === type.name,
-                                selectable: !savedChartModel,
-                            })}
-                            data-name={type.name}
-                            onClick={onChartTypeChange}
-                        >
-                            <img src={type.imgUrl} height={50} width={75} />
-                            <div className="title">{type.title}</div>
-                        </div>
-                    ))}
+                    {chartTypes.map(type => {
+                        const selected = selectedType.name === type.name;
+                        const selectable = !savedChartModel && selectedType.name !== type.name;
+
+                        return (
+                            <div
+                                key={type.name}
+                                className={classNames('chart-builder-type', { selected, selectable })}
+                                data-name={type.name}
+                                onClick={onChartTypeChange}
+                            >
+                                <SVGIcon
+                                    height={null}
+                                    iconSrc={selectable ? ICONS[type.name] + '_gray' : ICONS[type.name]}
+                                />
+                                <div className="title">{type.title}</div>
+                            </div>
+                        );
+                    })}
                 </div>
                 <div className="col-xs-11 col-right">
                     <div className="chart-type-inputs">

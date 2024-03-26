@@ -13,7 +13,7 @@
   "author": "LabKey",
   "license": "Apache-2.0",
   "dependencies": {
-    "@labkey/eslint-config-base": "0.0.14-fb-package-updates-0324.1",
+    "@labkey/eslint-config-base": "0.0.14",
     "eslint-plugin-react": "7.34.1",
     "eslint-plugin-react-hooks": "4.6.0"
   }

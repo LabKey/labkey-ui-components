@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.33.1
+*Released*: 26 March 2024
+- AssayImportPanels: Pass Plate Set ID to onComplete
+
 ### version 3.33.0
 *Released*: 26 March 2024
 - Add EditorModel.getColumns() function

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "3.32.1-fb-chartBuilderCreateModal.4",
+  "version": "3.32.1-fb-chartBuilderCreateModal.5",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

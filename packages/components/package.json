@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "3.32.2-fb-package-updates-0324.1",
+  "version": "3.34.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

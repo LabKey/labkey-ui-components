@@ -269,7 +269,7 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
             {isLoading(loadingState) && <ChartLoadingMask msg="Loading Report..." />}
             {isEmpty && (
                 <div className="r-report__errors text-danger">
-                    No output detected, you may not have enough data, or there may be an issue with your R Report
+                    No output detected. You may not have enough data, or there may be an issue with your R Report.
                 </div>
             )}
             {fileAnchors !== undefined && (

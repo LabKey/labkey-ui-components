@@ -135,7 +135,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             // don't allow changing chart type for a saved report
             if (savedChartModel) return;
 
-            const selectedName = e.target.getAttribute('data-name');
+            const selectedName = e.target.getAttribute('data-name') ?? e.target.parentElement.getAttribute('data-name');
             setSelectedChartType(chartTypes.find(type => type.name === selectedName) || chartTypes[0]);
             setFieldValues({});
             setPreviewMsg(undefined);
@@ -259,7 +259,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
             // adjust height, width, and marginTop for the chart config for the preview, but not to save with the chart
             var chartConfig_ = {
                 ...chartConfig,
-                height: 250,
+                height: 350,
                 width,
             };
             if (!savedChartModel || savedChartModel.visualizationConfig.chartConfig.geomOptions.marginTop === 20) {
@@ -355,7 +355,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                             data-name={type.name}
                             onClick={onChartTypeChange}
                         >
-                            <img src={type.imgUrl} height={50} width={75} data-name={type.name} />
+                            <img src={type.imgUrl} height={50} width={75} />
                             <div className="title">{type.title}</div>
                         </div>
                     ))}

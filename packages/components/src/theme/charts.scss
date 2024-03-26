@@ -157,7 +157,6 @@
     background-color: rgba(100, 100, 100, .05);
 }
 .chart-loading-mask > .loading-spinner {
-    background-color: #ffffff;
     padding: 8px;
     font-size: 18px;
     position: absolute;
@@ -190,18 +189,23 @@
     min-width: 850px;
 
     .col-left {
-        width: 125px;
+        width: 116px;
         border-right: solid 1px $gray-border-light;
     }
     .col-right {
-        width: calc(100% - 125px)
+        width: calc(100% - 116px)
+    }
+    .col-left, .col-right {
+        height: 560px;
     }
 
     .chart-builder-type {
         border: solid 1px transparent;
-        border-radius: 5px;
-        padding: 10px;
-        width: 95px;
+        border-radius: 3px;
+        margin: 10px 0;
+        padding: 4px;
+        width: 85px;
+        height: 92px;
 
         .title {
             text-align: center;
@@ -239,7 +243,7 @@
     }
 
     .chart-preview-body {
-        min-height: 225px;
+        min-height: 355px;
         .chart-loading-mask {
             width: 97%;
         }

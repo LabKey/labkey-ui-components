@@ -214,6 +214,21 @@ export class EditorModel
         return columns.filter(col => !col.isFileInput);
     }
 
+    getColumnValues(columnName: string): List<List<ValueDescriptor>> {
+        const colIdx = this.columns.findIndex(colName => colName === columnName);
+        if (colIdx === -1) {
+            console.warn(`Unable to resolve column "${columnName}". Cannot retrieve column values.`);
+            return List();
+        }
+
+        const values = List<List<ValueDescriptor>>().asMutable();
+        for (let i = 0; i < this.rowCount; i++) {
+            values.push(this.getValue(colIdx, i));
+        }
+
+        return values.asImmutable();
+    }
+
     getRawDataFromModel(
         queryModel: QueryModel,
         displayValues?: boolean,

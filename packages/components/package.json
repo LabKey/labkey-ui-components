@@ -50,7 +50,7 @@
   },
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
-    "@labkey/api": "1.32.1-fb-package-updates-0324.0",
+    "@labkey/api": "1.33.0",
     "@testing-library/jest-dom": "~5.17.0",
     "@testing-library/react": "~12.1.5",
     "@testing-library/user-event": "~12.8.3",
@@ -77,8 +77,8 @@
     "vis-network": "~6.5.2"
   },
   "devDependencies": {
-    "@labkey/build": "7.2.1-fb-package-updates-0324.0",
-    "@labkey/eslint-config-react": "0.0.14-fb-package-updates-0324.1",
+    "@labkey/build": "7.3.0",
+    "@labkey/eslint-config-react": "0.0.14",
     "@types/enzyme": "3.10.18",
     "@types/history": "4.7.11",
     "@types/jest": "29.5.12",
@@ -112,7 +112,7 @@
     "react-dom": "^16.0"
   },
   "resolutions": {
-    "**/@types/react-dom": "16.9.19",
-    "**/@types/react": "16.14.54"
+    "**/@types/react-dom": "16.9.24",
+    "**/@types/react": "16.14.59"
   }
 }

@@ -29,7 +29,7 @@ import {
     isProjectContainer,
 } from '../app/utils';
 
-import { caseInsensitive, quoteValueWithDelimiters } from '../util/utils';
+import { caseInsensitive, handleRequestFailure, quoteValueWithDelimiters } from '../util/utils';
 import { QueryInfo, QueryInfoStatus } from '../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
 import { ViewInfo, ViewInfoJson } from '../ViewInfo';
@@ -184,9 +184,7 @@ export function getDefaultVisibleColumns(options: GetQueryDetailsOptions): Promi
                 })
                 resolve(columns);
             }),
-            failure: Utils.getCallbackWrapper(response => {
-                reject(response);
-            }),
+            failure: handleRequestFailure(reject, 'Failed to load default visible columns.'),
         });
     });
 }

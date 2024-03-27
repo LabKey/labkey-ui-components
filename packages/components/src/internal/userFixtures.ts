@@ -92,6 +92,7 @@ export const TEST_USER_EDITOR = new User({
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
         PermissionTypes.EditSharedView,
+        PermissionTypes.ShareReportPermission,
     ],
 });
 
@@ -121,6 +122,8 @@ export const TEST_USER_EDITOR_WITHOUT_DELETE = new User({
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
+        PermissionTypes.EditSharedView,
+        PermissionTypes.ShareReportPermission,
     ],
 });
 
@@ -176,6 +179,8 @@ export const TEST_USER_FOLDER_ADMIN = new User({
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
+        PermissionTypes.EditSharedView,
+        PermissionTypes.ShareReportPermission,
         PermissionTypes.CanSeeGroupDetails,
         PermissionTypes.CanSeeUserDetails,
     ],
@@ -215,6 +220,8 @@ export const TEST_USER_PROJECT_ADMIN = new User({
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
+        PermissionTypes.EditSharedView,
+        PermissionTypes.ShareReportPermission,
         PermissionTypes.CanSeeGroupDetails,
         PermissionTypes.CanSeeUserDetails,
     ],
@@ -256,6 +263,8 @@ export const TEST_USER_SITE_ADMIN = new User({
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
+        PermissionTypes.EditSharedView,
+        PermissionTypes.ShareReportPermission,
         PermissionTypes.CanSeeGroupDetails,
         PermissionTypes.CanSeeUserDetails,
     ],
@@ -297,6 +306,8 @@ export const TEST_USER_APP_ADMIN = new User({
         PermissionTypes.ReadDataClass,
         PermissionTypes.ReadAssay,
         PermissionTypes.ReadMedia,
+        PermissionTypes.EditSharedView,
+        PermissionTypes.ShareReportPermission,
         PermissionTypes.CanSeeGroupDetails,
         PermissionTypes.CanSeeUserDetails,
     ],

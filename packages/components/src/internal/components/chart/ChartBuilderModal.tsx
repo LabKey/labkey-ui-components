@@ -35,28 +35,28 @@ interface AggregateFieldInfo {
     value: string;
 }
 
-interface ChartFieldInfo {
+export interface ChartFieldInfo {
     aggregate?: AggregateFieldInfo;
-    name: string;
+    // allowMultiple?: boolean;
     label: string;
-    required: boolean;
+    name: string;
     nonNumericOnly?: boolean;
     numericOnly?: boolean;
-    // allowMultiple?: boolean;
+    required: boolean;
 }
 
-interface ChartTypeInfo {
+export interface ChartTypeInfo {
+    fields: ChartFieldInfo[];
+    hidden?: boolean;
+    imgUrl: string;
     name: string;
     title: string;
-    imgUrl: string;
-    hidden?: boolean;
-    fields: ChartFieldInfo[];
 }
 
 const HIDDEN_CHART_TYPES = ['time_chart'];
 const RIGHT_COL_FIELDS = ['color', 'shape', 'series'];
-const MAX_ROWS_PREVIEW = 100000;
-const MAX_POINT_DISPLAY = 10000;
+export const MAX_ROWS_PREVIEW = 100000;
+export const MAX_POINT_DISPLAY = 10000;
 const BLUE_HEX_COLOR = '3366FF';
 
 const ICONS = {
@@ -233,12 +233,12 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
 
         const width = ref?.current.getBoundingClientRect().width || 750;
 
-        const chartConfig = getChartConfig(
+        const chartConfig = getChartBuilderChartConfig(
             selectedType,
             fieldValues,
             savedChartModel?.visualizationConfig?.chartConfig
         );
-        const queryConfig = getQueryConfig(
+        const queryConfig = getChartBuilderQueryConfig(
             model,
             fieldValues,
             chartConfig,
@@ -341,8 +341,8 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                             ? 'Saving Chart...'
                             : 'Creating Chart...'
                         : savedChartModel
-                        ? 'Save Chart'
-                        : 'Create Chart'}
+                          ? 'Save Chart'
+                          : 'Create Chart'}
                 </button>
             </FormButtons>
         );
@@ -456,7 +456,7 @@ export const ChartBuilderModal: FC<Props> = memo(({ actions, model, onHide, save
                     <div className="row margin-top">
                         <div className="col-xs-12">
                             <label>Preview</label>
-                            {previewMsg && <span className="gray-text pull-right">{previewMsg}</span>}
+                            {previewMsg && <span className="chart-preview-msg gray-text pull-right">{previewMsg}</span>}
                             {!hasRequiredValues && (
                                 <div className="gray-text">Select required fields to preview the chart.</div>
                             )}
@@ -507,7 +507,11 @@ export const getChartRenderMsg = (chartConfig: ChartConfig, rowCount: number, is
     return msg === '' ? undefined : msg;
 };
 
-const getSelectOptions = (model: QueryModel, chartType: ChartTypeInfo, field: ChartFieldInfo): SelectInputOption[] => {
+export const getSelectOptions = (
+    model: QueryModel,
+    chartType: ChartTypeInfo,
+    field: ChartFieldInfo
+): SelectInputOption[] => {
     const allowableTypes = LABKEY_VIS.GenericChartHelper.getAllowableTypes(field);
 
     return (
@@ -529,7 +533,7 @@ const getSelectOptions = (model: QueryModel, chartType: ChartTypeInfo, field: Ch
     );
 };
 
-const getQueryConfig = (
+export const getChartBuilderQueryConfig = (
     model: QueryModel,
     fieldValues: Record<string, SelectInputOption>,
     chartConfig: ChartConfig,
@@ -553,7 +557,7 @@ const getQueryConfig = (
     } as ChartQueryConfig;
 };
 
-const getChartConfig = (
+export const getChartBuilderChartConfig = (
     chartType: ChartTypeInfo,
     fieldValues: Record<string, SelectInputOption>,
     savedConfig: ChartConfig

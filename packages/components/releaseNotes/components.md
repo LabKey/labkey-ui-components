@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.X
-*Released*: X March 2024
+### version 3.34.1
+*Released*: 27 March 2024
 - Sample Finder: Show all fields in Properties modals
   - add QueryAPIWrapper.getDefaultVisibleColumns util
   - fix multi value indicator for inexpdescendantsof operators

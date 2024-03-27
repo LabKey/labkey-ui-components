@@ -1,20 +1,22 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import { DataViewInfo } from '../../internal/DataViewInfo';
+
+import { SchemaQuery } from '../SchemaQuery';
+import { QueryInfo } from '../QueryInfo';
+import { ViewInfo } from '../../internal/ViewInfo';
+import { LoadingState } from '../LoadingState';
+import { renderWithAppContext } from '../../internal/test/reactTestLibraryHelpers';
+import { TEST_USER_GUEST, TEST_USER_READER } from '../../internal/userFixtures';
+import { BIOLOGICS_APP_PROPERTIES, EXPERIMENTAL_CHART_BUILDER } from '../../internal/app/constants';
+
+import { makeTestActions, makeTestQueryModel } from './testUtils';
 import { ChartMenu, ChartMenuItem } from './ChartMenu';
-import {DataViewInfo} from "../../internal/DataViewInfo";
-import {makeTestActions, makeTestQueryModel} from "./testUtils";
-import {SchemaQuery} from "../SchemaQuery";
-import {QueryInfo} from "../QueryInfo";
-import {ViewInfo} from "../../internal/ViewInfo";
-import {LoadingState} from "../LoadingState";
-import {renderWithAppContext} from "../../internal/test/reactTestLibraryHelpers";
-import {TEST_USER_GUEST, TEST_USER_READER} from "../../internal/userFixtures";
-import {BIOLOGICS_APP_PROPERTIES, EXPERIMENTAL_CHART_BUILDER} from "../../internal/app/constants";
 
 describe('ChartMenuItem', () => {
     test('use chart icon', () => {
-        const chart = {name: 'TestChart', icon: 'icon.png', iconCls: 'fa-icon'} as DataViewInfo;
+        const chart = { name: 'TestChart', icon: 'icon.png', iconCls: 'fa-icon' } as DataViewInfo;
         render(<ChartMenuItem chart={chart} showChart={jest.fn()} />);
 
         expect(document.querySelector('.chart-menu-label').textContent).toBe('TestChart');
@@ -24,7 +26,7 @@ describe('ChartMenuItem', () => {
     });
 
     test('use svg img', () => {
-        const chart = {name: 'TestChart', icon: 'icon.svg', iconCls: 'fa-icon'} as DataViewInfo;
+        const chart = { name: 'TestChart', icon: 'icon.svg', iconCls: 'fa-icon' } as DataViewInfo;
         render(<ChartMenuItem chart={chart} showChart={jest.fn()} />);
 
         expect(document.querySelector('.chart-menu-label').textContent).toBe('TestChart');
@@ -53,12 +55,7 @@ describe('ChartMenu', () => {
         rowsLoadingState: LoadingState.LOADED,
         chartsLoadingState: LoadingState.LOADED,
     };
-    const NO_CHART_MODEL = makeTestQueryModel(
-        new SchemaQuery('schema', 'query'),
-        queryInfo,
-        [],
-        0
-    ).mutate({
+    const NO_CHART_MODEL = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo, [], 0).mutate({
         ...loadedStates,
         charts: [],
     });
@@ -67,7 +64,7 @@ describe('ChartMenu', () => {
         renderWithAppContext(<ChartMenu actions={actions} model={NO_CHART_MODEL} />, {
             serverContext: {
                 user: TEST_USER_READER,
-            }
+            },
         });
 
         expect(document.querySelectorAll('.chart-menu')).toHaveLength(0);
@@ -81,9 +78,9 @@ describe('ChartMenu', () => {
                     biologics: {
                         productId: BIOLOGICS_APP_PROPERTIES.productId,
                         [EXPERIMENTAL_CHART_BUILDER]: true,
-                    }
+                    },
                 },
-            }
+            },
         });
 
         expect(document.querySelectorAll('.chart-menu')).toHaveLength(1);
@@ -101,21 +98,16 @@ describe('ChartMenu', () => {
                     biologics: {
                         productId: BIOLOGICS_APP_PROPERTIES.productId,
                         [EXPERIMENTAL_CHART_BUILDER]: true,
-                    }
+                    },
                 },
-            }
+            },
         });
 
         expect(document.querySelectorAll('.chart-menu')).toHaveLength(0);
     });
 
     test('filter charts by default view', () => {
-        const model = makeTestQueryModel(
-            new SchemaQuery('schema', 'query'),
-            queryInfo,
-            [],
-            0
-        ).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query'), queryInfo, [], 0).mutate({
             ...loadedStates,
             charts: [
                 { reportId: '1', name: 'DefaultPrivateChart1', viewName: undefined, shared: false } as DataViewInfo,
@@ -130,7 +122,7 @@ describe('ChartMenu', () => {
         renderWithAppContext(<ChartMenu actions={actions} model={model} />, {
             serverContext: {
                 user: TEST_USER_READER,
-            }
+            },
         });
 
         expect(document.querySelectorAll('.chart-menu')).toHaveLength(1);
@@ -149,12 +141,7 @@ describe('ChartMenu', () => {
     });
 
     test('filter charts by custom view', () => {
-        const model = makeTestQueryModel(
-            new SchemaQuery('schema', 'query', 'view'),
-            queryInfo,
-            [],
-            0
-        ).mutate({
+        const model = makeTestQueryModel(new SchemaQuery('schema', 'query', 'view'), queryInfo, [], 0).mutate({
             ...loadedStates,
             charts: [
                 { reportId: '1', name: 'DefaultPrivateChart1', viewName: undefined, shared: false } as DataViewInfo,
@@ -169,7 +156,7 @@ describe('ChartMenu', () => {
         renderWithAppContext(<ChartMenu actions={actions} model={model} />, {
             serverContext: {
                 user: TEST_USER_READER,
-            }
+            },
         });
 
         expect(document.querySelectorAll('.chart-menu')).toHaveLength(1);

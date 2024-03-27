@@ -8,6 +8,18 @@ Components, models, actions, and utility functions for LabKey applications and p
   - ChartBuilderMenuItem with modal for defining a new chart, selecting type, measures, and chart preview
   - save chart from chart builder modal and reload model charts after save
 
+### version 3.34.0
+*Released*: 26 March 2024
+- Package updates
+
+### version 3.33.1
+*Released*: 26 March 2024
+- AssayImportPanels: Pass Plate Set ID to onComplete
+
+### version 3.33.0
+*Released*: 26 March 2024
+- Add EditorModel.getColumns() function
+
 ### version 3.32.1
 *Released*: 22 March 2024
 - EditableGrid updates for add/move to multiple targets updates

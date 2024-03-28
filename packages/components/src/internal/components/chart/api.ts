@@ -3,7 +3,7 @@ import { Ajax, Filter, Query, Utils } from '@labkey/api';
 import { getContainerFilter } from '../../query/api';
 import { buildURL } from '../../url/AppURL';
 
-import {GenericChartModel} from './models';
+import { GenericChartModel } from './models';
 
 function fetchGenericChart(reportId: string): Promise<GenericChartModel> {
     return new Promise((resolve, reject) => {
@@ -49,13 +49,13 @@ function fetchRReport(
 }
 
 export interface ChartAPIWrapper {
+    fetchGenericChart: (reportId: string) => Promise<GenericChartModel>;
     fetchRReport: (
         reportId: string,
         urlPrefix?: string,
         container?: string,
         filters?: Filter.IFilter[]
     ) => Promise<string>;
-    fetchGenericChart: (reportId: string) => Promise<GenericChartModel>;
 }
 
 export const DEFAULT_API_WRAPPER = {

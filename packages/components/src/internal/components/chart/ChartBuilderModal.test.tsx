@@ -110,13 +110,13 @@ describe('ChartBuilderModal', () => {
         expect(chartTypeItems[1].textContent).toBe('Scatter');
 
         expect(document.querySelector('input[name="name"]')).not.toBeNull();
+        expect(document.querySelectorAll('input[name="shared"]')).toHaveLength(canShare ? 1 : 0);
 
-        expect(document.querySelectorAll('.chart-preview-msg')).toHaveLength(0);
-        expect(document.querySelectorAll('.chart-preview-body')).toHaveLength(isNew ? 0 : 1);
+        expect(document.querySelectorAll('.chart-builder-preview-msg')).toHaveLength(0);
+        expect(document.querySelectorAll('.chart-builder-preview-body')).toHaveLength(isNew ? 0 : 1);
 
         const saveBtn = document.querySelector('.btn-success');
         expect(saveBtn.textContent).toBe(isNew ? 'Create Chart' : 'Save Chart');
-        expect(saveBtn.getAttribute('disabled')).toBe('');
     }
 
     test('default props without savedChartModel', () => {
@@ -154,7 +154,6 @@ describe('ChartBuilderModal', () => {
 
         validate(true, false);
         expect(document.querySelectorAll('input')).toHaveLength(5);
-        expect(document.querySelectorAll('input[name="shared"]')).toHaveLength(0);
     });
 
     test('field inputs displayed for selected chart type', () => {

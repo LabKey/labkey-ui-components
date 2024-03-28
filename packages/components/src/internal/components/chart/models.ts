@@ -1,9 +1,8 @@
 import { ReactNode } from 'react';
-import { Filter, Query } from '@labkey/api';
+import { Filter, Query, Visualization } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
-import {VisualizationGetResponse} from "@labkey/api/dist/labkey/query/Visualization";
 
 export interface BarChartData {
     count: number;
@@ -65,11 +64,11 @@ export interface ChartQueryConfig {
     viewName: string;
 }
 
-interface VisualizationConfigModel {
+export interface VisualizationConfigModel {
     chartConfig: ChartConfig;
     queryConfig: ChartQueryConfig;
 }
 
-export interface GenericChartModel extends VisualizationGetResponse {
+export interface GenericChartModel extends Visualization.VisualizationGetResponse {
     visualizationConfig: VisualizationConfigModel;
 }

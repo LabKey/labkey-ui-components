@@ -3,9 +3,9 @@ import { Ajax, Filter, Query, Utils } from '@labkey/api';
 import { getContainerFilter } from '../../query/api';
 import { buildURL } from '../../url/AppURL';
 
-import { VisualizationConfigModel } from './models';
+import {GenericChartModel} from './models';
 
-function fetchVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
+function fetchGenericChart(reportId: string): Promise<GenericChartModel> {
     return new Promise((resolve, reject) => {
         Query.Visualization.get({
             reportId,
@@ -13,9 +13,12 @@ function fetchVisualizationConfig(reportId: string): Promise<VisualizationConfig
             schemaName: undefined,
             queryName: undefined,
             success: response => {
-                resolve(response.visualizationConfig);
+                resolve(response);
             },
-            failure: reject,
+            failure: reason => {
+                console.error(reason);
+                reject(reason);
+            },
         });
     });
 }
@@ -52,10 +55,10 @@ export interface ChartAPIWrapper {
         container?: string,
         filters?: Filter.IFilter[]
     ) => Promise<string>;
-    fetchVisualizationConfig: (reportId: string) => Promise<VisualizationConfigModel>;
+    fetchGenericChart: (reportId: string) => Promise<GenericChartModel>;
 }
 
 export const DEFAULT_API_WRAPPER = {
     fetchRReport,
-    fetchVisualizationConfig,
+    fetchGenericChart,
 };

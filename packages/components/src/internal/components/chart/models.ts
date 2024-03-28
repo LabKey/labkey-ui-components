@@ -3,6 +3,7 @@ import { Filter, Query } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
+import {VisualizationGetResponse} from "@labkey/api/dist/labkey/query/Visualization";
 
 export interface BarChartData {
     count: number;
@@ -54,17 +55,21 @@ export interface ChartQueryConfig {
     // dataRegionName: string;
     filterArray: Filter.IFilter[];
     maxRows: number;
-    method: string;
+    method?: string;
     parameters: any;
     // queryLabel: string;
     queryName: string;
     requiredVersion: string;
     schemaName: string;
-    // sort: string;
+    sort: string;
     viewName: string;
 }
 
-export interface VisualizationConfigModel {
+interface VisualizationConfigModel {
     chartConfig: ChartConfig;
     queryConfig: ChartQueryConfig;
+}
+
+export interface GenericChartModel extends VisualizationGetResponse {
+    visualizationConfig: VisualizationConfigModel;
 }

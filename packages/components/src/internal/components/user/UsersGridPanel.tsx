@@ -261,7 +261,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                         Create
                     </DisableableButton>
                 )}
-                <ManageDropdownButton>
+                <ManageDropdownButton showIcon={false}>
                     {user.hasManageUsersPermission() && usersView === 'active' && (
                         <SelectionMenuItem
                             text="Deactivate Users"
@@ -322,6 +322,7 @@ export class UsersGridPanelImpl extends PureComponent<Props, State> {
                                 title={capitalizeFirstChar(usersView) + ' Users'}
                                 ButtonsComponent={() => this.renderButtons()}
                                 highlightLastSelectedRow
+                                showChartMenu={false}
                             />
                         )}
                     </div>

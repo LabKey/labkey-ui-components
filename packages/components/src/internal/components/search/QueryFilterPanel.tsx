@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { fromJS, List } from 'immutable';
 import classNames from 'classnames';
 
 import { Filter, Query } from '@labkey/api';
@@ -40,7 +39,7 @@ interface Props {
     // used for Sample Finder use case
     entityDataType?: EntityDataType;
     fieldKey?: string;
-    fields?: List<QueryColumn>;
+    fields?: QueryColumn[];
     filters: { [key: string]: FieldFilter[] };
     fullWidth?: boolean;
     hasNotInQueryFilter?: boolean;
@@ -79,7 +78,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         fields,
         isAncestor,
     } = props;
-    const [queryFields, setQueryFields] = useState<List<QueryColumn>>(undefined);
+    const [queryFields, setQueryFields] = useState<QueryColumn[]>(undefined);
     const [activeField, setActiveField] = useState<QueryColumn>(undefined);
     const [activeTab, setActiveTab] = useState<FieldFilterTabs>(undefined);
 
@@ -160,8 +159,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
             );
         }
 
-        const qF = fromJS(validFields);
-        setQueryFields(qF);
+        setQueryFields(validFields);
         if (fieldKey) {
             const field = validFields.find(f => f.getDisplayFieldKey() === fieldKey);
             setActiveField(field);

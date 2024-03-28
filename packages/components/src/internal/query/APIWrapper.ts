@@ -28,6 +28,8 @@ import { SchemaQuery } from '../../public/SchemaQuery';
 
 import { ViewInfo } from '../ViewInfo';
 
+import { QueryColumn } from '../../public/QueryColumn';
+
 import {
     deleteRows,
     deleteRowsByContainer,
@@ -40,6 +42,7 @@ import {
     selectDistinctRows,
     updateRows,
     UpdateRowsOptions,
+    getDefaultVisibleColumns,
 } from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 
@@ -106,6 +109,7 @@ export interface QueryAPIWrapper {
     selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
     setSnapshotSelections: (key: string, ids: string[] | string, containerPath?: string) => Promise<SelectResponse>;
     updateRows: (options: UpdateRowsOptions) => Promise<QueryCommandResponse>;
+    getDefaultVisibleColumns: (options: GetQueryDetailsOptions) => Promise<QueryColumn[]>;
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {
@@ -128,6 +132,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     selectDistinctRows = selectDistinctRows;
     setSnapshotSelections = setSnapshotSelections;
     updateRows = updateRows;
+    getDefaultVisibleColumns = getDefaultVisibleColumns;
 }
 
 /**
@@ -157,6 +162,7 @@ export function getQueryTestAPIWrapper(
         selectDistinctRows: mockFn(),
         setSnapshotSelections: mockFn(),
         updateRows: mockFn(),
+        getDefaultVisibleColumns: mockFn(),
         ...overrides,
     };
 }

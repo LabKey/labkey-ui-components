@@ -16,7 +16,7 @@
 import { fromJS, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { immerable } from 'immer';
 import { normalize, schema } from 'normalizr';
-import { Filter, Query, QueryDOM } from '@labkey/api';
+import { Ajax, Filter, Query, QueryDOM, Utils } from '@labkey/api';
 
 import { ExtendedMap } from '../../public/ExtendedMap';
 
@@ -29,12 +29,13 @@ import {
     isProjectContainer,
 } from '../app/utils';
 
-import { caseInsensitive, quoteValueWithDelimiters } from '../util/utils';
+import { caseInsensitive, handleRequestFailure, quoteValueWithDelimiters } from '../util/utils';
 import { QueryInfo, QueryInfoStatus } from '../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
 import { ViewInfo, ViewInfoJson } from '../ViewInfo';
 import { URLResolver } from '../url/URLResolver';
 import { ModuleContext } from '../components/base/ServerContext';
+import { buildURL } from '../url/AppURL';
 
 let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 
@@ -161,6 +162,31 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
     }
 
     return queryDetailsCache[key];
+}
+
+export function getDefaultVisibleColumns(options: GetQueryDetailsOptions): Promise<QueryColumn[]> {
+    const { containerPath, fields, fk } = options;
+    const schemaQuery = options.schemaQuery ?? new SchemaQuery(options.schemaName, options.queryName);
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('query', 'getDefaultVisibleColumns.api', undefined, { container: containerPath }),
+            method: 'POST',
+            params: {
+                queryName: schemaQuery.queryName,
+                schemaName: schemaQuery.schemaName,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                const columns = [];
+                const rawColumnMap = response.columns;
+                Object.keys(rawColumnMap).forEach(fieldKey => {
+                    const rawColumn = rawColumnMap[fieldKey];
+                    columns.push(applyColumnMetadata(schemaQuery, rawColumn));
+                });
+                resolve(columns);
+            }),
+            failure: handleRequestFailure(reject, 'Failed to load default visible columns.'),
+        });
+    });
 }
 
 export function applyQueryMetadata(rawQueryInfo: any, schemaName?: string, queryName?: string): QueryInfo {

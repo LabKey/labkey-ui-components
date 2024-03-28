@@ -221,28 +221,12 @@ export class QueryInfo {
 
             // add addToSystemView columns to unsaved system view (i.e. the default-default view, details view, or update view)
             if ((viewInfo.isDefault || viewInfo.isSystemView) && !viewInfo.isSaved && !viewInfo.session) {
-                const columnFieldKeys = viewInfo.columns.reduce((result, col) => {
+                const columnFieldKeysLc = viewInfo.columns.reduce((result, col) => {
                     result.add(col.fieldKey.toLowerCase());
                     return result;
-                }, new Set());
+                }, new Set<string>());
 
-                const disabledSysFields = [];
-                this.disabledSystemFields?.forEach(field => {
-                    disabledSysFields.push(field.toLowerCase());
-                });
-
-                this.columns.forEach(col => {
-                    const fieldKey = col.fieldKey.toLowerCase();
-                    if (
-                        fieldKey &&
-                        col.addToSystemView &&
-                        !columnFieldKeys.has(fieldKey) &&
-                        disabledSysFields.indexOf(fieldKey) === -1
-                    ) {
-                        if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
-                            displayColumns.push(col);
-                    }
-                });
+                displayColumns.push(...this.getExtraDisplayColumns(columnFieldKeysLc, lowerOmit));
             }
 
             return displayColumns;
@@ -250,6 +234,28 @@ export class QueryInfo {
 
         console.warn('Unable to find columns on view:', view, '(' + this.schemaName + '.' + this.name + ')');
         return [];
+    }
+
+    getExtraDisplayColumns(columnFieldKeysLc: Set<string>, lowerOmit?: string[]): QueryColumn[] {
+        const extraDisplayColumn = [];
+        const disabledSysFields = [];
+        this.disabledSystemFields?.forEach(field => {
+            disabledSysFields.push(field.toLowerCase());
+        });
+
+        this.columns.forEach(col => {
+            const fieldKey = col.fieldKey.toLowerCase();
+            if (
+                fieldKey &&
+                col.addToSystemView &&
+                !columnFieldKeysLc.has(fieldKey) &&
+                disabledSysFields.indexOf(fieldKey) === -1
+            ) {
+                if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase())) extraDisplayColumn.push(col);
+            }
+        });
+
+        return extraDisplayColumn;
     }
 
     getLookupViewColumns(omittedColumns?: string[]): QueryColumn[] {
@@ -262,13 +268,16 @@ export class QueryInfo {
         // initialReduction is getDisplayColumns() because they include custom metadata from the view, like alternate
         // column display names (e.g. the Experiment grid overrides Title to "Experiment Title"). See Issue 38186 for
         // additional context.
-        return this.columns.reduce((result, rawColumn) => {
-            if (!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
-                result.push(rawColumn);
-            }
+        return this.columns.reduce(
+            (result, rawColumn) => {
+                if (!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
+                    result.push(rawColumn);
+                }
 
-            return result;
-        }, this.getDisplayColumns(viewName, omittedColumns));
+                return result;
+            },
+            this.getDisplayColumns(viewName, omittedColumns)
+        );
     }
 
     // @param isIncludedColumn can be used to filter out columns that should not be designate as insertColumns
@@ -290,7 +299,9 @@ export class QueryInfo {
         if (!fieldKey) return -1;
 
         const lcFieldKey = fieldKey.toLowerCase();
-        return this.getInsertColumns(undefined, readOnlyColumns).findIndex(column => column.fieldKey.toLowerCase() === lcFieldKey);
+        return this.getInsertColumns(undefined, readOnlyColumns).findIndex(
+            column => column.fieldKey.toLowerCase() === lcFieldKey
+        );
     }
 
     getUpdateColumns(readOnlyColumns?: string[]): QueryColumn[] {

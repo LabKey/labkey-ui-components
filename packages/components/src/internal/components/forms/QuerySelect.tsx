@@ -23,7 +23,7 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { SelectInputOption, SelectInput, SelectInputProps, SelectInputChange } from './input/SelectInput';
 import { resolveDetailFieldLabel } from './utils';
-import { initSelect, QuerySelectModel } from './model';
+import { fetchSearchResults, formatSavedResults, initSelect, QuerySelectModel, saveSearchResults, setSelection } from './model';
 import { DELIMITER } from './constants';
 
 function getValue(model: QuerySelectModel, multiple: boolean): any {
@@ -211,7 +211,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     }, []);
 
     useEffect(() => {
-        if (!autoInit) return;
+        if (!autoInit) return clear;
 
         (async () => {
             try {
@@ -252,14 +252,14 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
                     clear();
 
                     try {
-                        const data = await model.search(input_);
+                        const data = await fetchSearchResults(model, input_);
 
                         // Issue 46816: Skip processing stale requests
                         if (request !== lastRequest.current) return;
                         lastRequest.current = undefined;
 
-                        resolve(model.formatSavedResults(data, input_));
-                        setModel(model.saveSearchResults(data));
+                        resolve(formatSavedResults(model, data, input_));
+                        setModel(saveSearchResults(model, data));
                     } catch (e) {
                         const errorMsg = resolveErrorMessage(e) ?? 'Failed to retrieve search results.';
                         console.error(errorMsg, e);
@@ -276,7 +276,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         (name_, value_, options_, props_) => {
             let selectedItems: Map<string, any>;
             setModel(model_ => {
-                const updatedModel = model_.setSelection(value_);
+                const updatedModel = setSelection(model_, value_);
                 selectedItems = updatedModel.selectedItems;
                 return updatedModel;
             });
@@ -351,7 +351,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
                 onChange={onChange}
                 onFocus={onFocus}
                 options={undefined} // prevent override
-                selectedOptions={model.getSelectedOptions()}
+                selectedOptions={model.selectedOptions}
                 value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
             />
         );

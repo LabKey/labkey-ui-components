@@ -64,7 +64,7 @@ function formatResults(model: QuerySelectModel, results: Map<string, any>, token
  * @param result select rows result
  * @param token an optional search token that will be used to sort the results
  */
-function formatSavedResults(model: QuerySelectModel, result: ISelectRowsResult, token?: string): SelectInputOption[] {
+export function formatSavedResults(model: QuerySelectModel, result: ISelectRowsResult, token?: string): SelectInputOption[] {
     const { queryInfo, selectedItems } = model;
 
     if (!queryInfo) {
@@ -80,7 +80,7 @@ function formatSavedResults(model: QuerySelectModel, result: ISelectRowsResult, 
     return formatResults(model, filteredResults, token);
 }
 
-function saveSearchResults(model: QuerySelectModel, result: ISelectRowsResult): QuerySelectModel {
+export function saveSearchResults(model: QuerySelectModel, result: ISelectRowsResult): QuerySelectModel {
     const { key } = result;
     const searchResults = fromJS(result.models[key]);
 
@@ -119,7 +119,7 @@ export function parseSelectedQuery(model: QuerySelectModelProps, data: Map<strin
     return data.map(result => result.getIn([model.displayColumn, 'value'])).join(model.delimiter);
 }
 
-function setSelection(model: QuerySelectModel, rawSelectedValue: any): QuerySelectModel {
+export function setSelection(model: QuerySelectModel, rawSelectedValue: any): QuerySelectModel {
     const selectedItems = getSelectedOptions(model, rawSelectedValue);
 
     return model.merge({
@@ -160,7 +160,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
             schemaName: schemaQuery.schemaName,
             queryName: schemaQuery.queryName,
             viewName: schemaQuery.viewName,
-            columns: model.getQueryColumnNames(),
+            columns: model.queryColumnNames,
             filterArray: allFilters,
             sort: displayColumn,
             maxRows,
@@ -180,7 +180,7 @@ function initValueColumn(queryInfo: QueryInfo, column?: string): string {
         valueColumn = column;
 
         if (!queryInfo.getColumn(valueColumn)) {
-            throw `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The "valueColumn" "${valueColumn}" does not exist.`;
+            throw new Error(`Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The "valueColumn" "${valueColumn}" does not exist.`);
         }
     } else {
         const pkCols = queryInfo.getPkCols();
@@ -188,12 +188,12 @@ function initValueColumn(queryInfo: QueryInfo, column?: string): string {
         if (pkCols.length === 1) {
             valueColumn = pkCols[0].fieldKey;
         } else if (pkCols.length > 0) {
-            throw (
+            throw new Error(
                 `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). Set "valueColumn" explicitly to any of ` +
                 pkCols.map(col => col.fieldKey).join(', ')
             );
         } else {
-            throw `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). Set "valueColumn" explicitly as this query does not have any primary keys.`;
+            throw new Error(`Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). Set "valueColumn" explicitly as this query does not have any primary keys.`);
         }
     }
 
@@ -266,7 +266,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelec
         filters.push(filter);
 
         const data = await selectRowsDeprecated({
-            columns: model.getQueryColumnNames(),
+            columns: model.queryColumnNames,
             containerFilter,
             containerPath,
             filterArray: filters,
@@ -371,11 +371,7 @@ export class QuerySelectModel
     declare selectedItems: Map<string, any>;
     declare valueColumn: string;
 
-    formatSavedResults(result: ISelectRowsResult, token?: string): SelectInputOption[] {
-        return formatSavedResults(this, result, token);
-    }
-
-    getSelectedOptions(): SelectInputOption | SelectInputOption[] {
+    get selectedOptions(): SelectInputOption | SelectInputOption[] {
         const options = formatResults(this, this.selectedItems);
 
         if (this.multiple) {
@@ -391,7 +387,7 @@ export class QuerySelectModel
         return undefined;
     }
 
-    getQueryColumnNames(): string[] {
+    get queryColumnNames(): string[] {
         const { displayColumn, queryInfo, requiredColumns, valueColumn } = this;
         const queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns));
         const lookupViewColumns = queryInfo.getLookupViewColumns();
@@ -401,18 +397,6 @@ export class QuerySelectModel
         }
 
         return queryColumns;
-    }
-
-    saveSearchResults(result: ISelectRowsResult): QuerySelectModel {
-        return saveSearchResults(this, result);
-    }
-
-    setSelection(value: any): QuerySelectModel {
-        return setSelection(this, value);
-    }
-
-    search(input: any): Promise<ISelectRowsResult> {
-        return fetchSearchResults(this, input);
     }
 }
 

@@ -39,6 +39,7 @@ export interface LookupCellProps {
     col: QueryColumn;
     colIdx: number;
     containerFilter?: Query.ContainerFilter;
+    containerPath?: string;
     defaultInputValue?: string;
     disabled?: boolean;
     filteredLookupKeys?: List<any>;
@@ -48,9 +49,8 @@ export interface LookupCellProps {
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
     rowIdx: number;
-    select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     values: List<ValueDescriptor>;
-    containerPath?: string;
+    select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
 }
 
 interface QueryLookupCellProps extends LookupCellProps {

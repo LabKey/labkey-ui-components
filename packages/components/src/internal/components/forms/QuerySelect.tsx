@@ -303,7 +303,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
             // ReactSelect respects "isLoading" with a value of {undefined} differently from a value of {false}.
             setIsLoading(undefined);
         } catch (e) {
-            /* ignore -- error already logged/configured in loadOptions() */
+            // ignore -- error already logged/configured in loadOptions()
         }
     }, [loadOptions, shouldLoadOnFocus]);
 

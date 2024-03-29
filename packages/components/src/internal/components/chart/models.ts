@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Filter, Query } from '@labkey/api';
+import { Filter, Query, Visualization } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { SchemaQuery } from '../../../public/SchemaQuery';
@@ -54,17 +54,21 @@ export interface ChartQueryConfig {
     // dataRegionName: string;
     filterArray: Filter.IFilter[];
     maxRows: number;
-    method: string;
+    method?: string;
     parameters: any;
     // queryLabel: string;
     queryName: string;
     requiredVersion: string;
     schemaName: string;
-    // sort: string;
+    sort: string;
     viewName: string;
 }
 
 export interface VisualizationConfigModel {
     chartConfig: ChartConfig;
     queryConfig: ChartQueryConfig;
+}
+
+export interface GenericChartModel extends Visualization.VisualizationGetResponse {
+    visualizationConfig: VisualizationConfigModel;
 }

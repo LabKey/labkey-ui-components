@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.35.0
+*Released*: 29 March 2024
+- Chart builder in app: App initial create chart modal
+  - add experimental flag and update Chart menu for when to show Create Chart item
+  - ChartBuilderMenuItem with modal for defining a new chart, selecting type, measures, and chart preview
+  - save chart from chart builder modal and reload model charts after save
+
 ### version 3.34.1
 *Released*: 27 March 2024
 - Sample Finder: Show all fields in Properties modals

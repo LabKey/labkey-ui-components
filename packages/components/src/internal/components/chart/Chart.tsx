@@ -17,7 +17,7 @@ import { Filter } from '@labkey/api';
 import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
-import { DataViewInfoTypes, LABKEY_VIS } from '../../constants';
+import { DataViewInfoTypes, GENERIC_CHART_REPORTS, LABKEY_VIS } from '../../constants';
 
 import { DataViewInfo } from '../../DataViewInfo';
 import { getContainerFilter } from '../../query/api';
@@ -26,11 +26,16 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from './api';
 import { ChartConfig, ChartQueryConfig } from './models';
+import { getChartRenderMsg } from './ChartBuilderModal';
 
-const ChartLoadingMask: FC = memo(() => (
+interface ChartLoadingMaskProps {
+    msg?: string;
+}
+
+const ChartLoadingMask: FC<ChartLoadingMaskProps> = memo(({ msg = 'Loading Chart...' }) => (
     <div className="chart-loading-mask">
         <div className="chart-loading-mask__background" />
-        <LoadingSpinner msg="Loading Chart..." wrapperClassName="loading-spinner" />
+        <LoadingSpinner msg={msg} wrapperClassName="loading-spinner" />
     </div>
 ));
 
@@ -42,7 +47,7 @@ const ChartLoadingMask: FC = memo(() => (
 function computeFilterKey(filters: Filter.IFilter[]): string {
     if (!filters) return '';
     return filters
-        .map(f => f.getURLParameterName() + '=' + f.getURLParameterValue)
+        .map(f => f.getURLParameterName() + '=' + f.getURLParameterValue())
         .sort()
         .join('_');
 }
@@ -78,25 +83,30 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
     const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [queryConfig, setQueryConfig] = useState<ChartQueryConfig>(undefined);
     const [chartConfig, setChartConfig] = useState<ChartConfig>(undefined);
+    const [loadingData, setLoadingData] = useState<boolean>(false);
+    const [measureStore, setMeasureStore] = useState<any>(undefined);
+    const [renderMsg, setRenderMsg] = useState<string>(undefined);
     const [loadError, setLoadError] = useState<string>(undefined);
     const filterKey = useMemo(() => computeFilterKey(filters), [filters]);
     const ref = useRef<HTMLDivElement>(undefined);
     const loadChartConfig = useCallback(async () => {
         setLoadingState(LoadingState.LOADING);
+        setRenderMsg(undefined);
+        setMeasureStore(undefined);
         try {
-            const visualizationConfig = await api.fetchVisualizationConfig(reportId);
+            const savedChartModel = await api.fetchGenericChart(reportId);
+
             const chartConfig_ = {
-                ...visualizationConfig.chartConfig,
+                ...savedChartModel.visualizationConfig.chartConfig,
                 ...computeDimensions(ref.current.offsetWidth),
             };
-            const queryConfig_ = visualizationConfig.queryConfig;
-            queryConfig_.containerFilter = containerFilter;
             setChartConfig(chartConfig_);
 
+            const queryConfig_ = savedChartModel.visualizationConfig.queryConfig;
+            queryConfig_.containerFilter = containerFilter;
             if (filters) {
                 queryConfig_.filterArray = [...queryConfig_.filterArray, ...filters];
             }
-
             setQueryConfig(queryConfig_);
         } catch (e) {
             setLoadError(e.exception);
@@ -136,24 +146,32 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
         const render = (): void => {
             if (queryConfig !== undefined && chartConfig !== undefined) {
                 ref.current.innerHTML = '';
-                // Note: our usage of renderChartSVG to render the chart means that every time we call render we make
-                // a new API request to the server to fetch the data, even if all we've done is change screen size. This
-                // updated in the future to use the underlying VIS library to separate fetching of data from rendering
-                // the chart. We should only be fetching data when the reportId or filterArray change.
-                LABKEY_VIS.GenericChartHelper.renderChartSVG(divId, queryConfig, chartConfig);
+                if (!measureStore) {
+                    setLoadingData(true);
+                    LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig, _measureStore => {
+                        const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(_measureStore).length;
+                        setRenderMsg(getChartRenderMsg(chartConfig, rowCount, false));
+
+                        setMeasureStore(_measureStore);
+                        setLoadingData(false);
+                    });
+                } else {
+                    LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig, measureStore);
+                }
             }
         };
         // Debounce the call to render because we may trigger many resize events back to back, which will produce many
         // new chartConfig objects
         const renderId = window.setTimeout(render, 250);
         return () => window.clearTimeout(renderId);
-    }, [divId, chartConfig, queryConfig]);
+    }, [divId, chartConfig, queryConfig, measureStore]);
 
     return (
         <div className="svg-chart chart-body">
             {error !== undefined && <span className="text-danger">{error}</span>}
             {loadError !== undefined && <span className="text-danger">{loadError}</span>}
-            {isLoading(loadingState) && <ChartLoadingMask />}
+            {(isLoading(loadingState) || loadingData) && <ChartLoadingMask />}
+            {renderMsg && <span className="gray-text pull-right">{renderMsg}</span>}
             <div className="svg-chart__chart" id={divId} ref={ref} />
         </div>
     );
@@ -248,10 +266,10 @@ const RReport: FC<Props> = memo(({ api, chart, container, filters }) => {
                     <pre>{outputError}</pre>
                 </div>
             )}
-            {isLoading(loadingState) && <ChartLoadingMask />}
+            {isLoading(loadingState) && <ChartLoadingMask msg="Loading Report..." />}
             {isEmpty && (
                 <div className="r-report__errors text-danger">
-                    No output detected, you may not have enough data, or there may be an issue with your R Report
+                    No output detected. You may not have enough data, or there may be an issue with your R Report.
                 </div>
             )}
             {fileAnchors !== undefined && (
@@ -289,9 +307,10 @@ RReport.displayName = 'RReport';
 export const Chart: FC<Props> = memo(({ api = DEFAULT_API_WRAPPER, chart, container, filters }) => {
     if (chart.type === DataViewInfoTypes.RReport) {
         return <RReport api={api} chart={chart} container={container} filters={filters} />;
+    } else if (GENERIC_CHART_REPORTS.indexOf(chart.type) > -1) {
+        return <SVGChart api={api} chart={chart} container={container} filters={filters} />;
     }
-
-    return <SVGChart api={api} chart={chart} container={container} filters={filters} />;
+    return null;
 });
 
 Chart.displayName = 'Chart';

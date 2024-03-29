@@ -114,6 +114,10 @@
 }
 .chart-body {
     position: relative;
+    min-height: 500px;
+}
+.report-list__chart-preview .chart-body {
+    min-height: 300px;
 }
 .chart-panel__heading {
     display: flex;
@@ -153,7 +157,6 @@
     background-color: rgba(100, 100, 100, .05);
 }
 .chart-loading-mask > .loading-spinner {
-    background-color: #ffffff;
     padding: 8px;
     font-size: 18px;
     position: absolute;
@@ -179,4 +182,67 @@
 }
 .r-report__files .attachment-card:hover {
     text-decoration: none;
+}
+
+.chart-builder-modal {
+    width: calc(100% - 100px);
+    min-width: 850px;
+}
+.chart-builder-modal .col-left {
+    height: 560px;
+    width: 116px;
+    border-right: solid 1px $gray-border-light;
+}
+.chart-builder-modal .col-right {
+    height: 560px;
+    width: calc(100% - 116px)
+}
+
+.chart-builder-type {
+    border: solid 1px transparent;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    padding: 5px;
+
+    .title {
+        text-align: center;
+        color: $text-color;
+    }
+
+    &.selected {
+        background-color: $blue-icon-background;
+        border-color: $blue-border-solid;
+    }
+
+    &.selectable:hover {
+        cursor: pointer;
+        background-color: $gray-lighter;
+        border-color: $gray-border;
+    }
+}
+
+.chart-builder-type-inputs {
+    margin: 0;
+    border-bottom: solid 1px $gray-border-light;
+}
+
+.chart-builder-modal .fields-col {
+    min-height: 160px;
+    border-left: solid 1px $gray-border-light;
+}
+
+.chart-builder-modal .checkbox-input {
+    padding-top: 15px;
+    cursor: pointer;
+
+    input {
+        margin-right: 5px;
+    }
+}
+
+.chart-builder-preview-body {
+    min-height: 355px;
+    .chart-loading-mask {
+        width: 97%;
+    }
 }

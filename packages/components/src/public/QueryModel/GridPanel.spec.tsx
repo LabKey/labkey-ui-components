@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Filter } from '@labkey/api';
 
 import { makeQueryInfo, makeTestData } from '../../internal/test/testHelpers';
-import { mountWithServerContext } from '../../internal/test/enzymeTestHelpers';
+import { mountWithAppServerContext } from '../../internal/test/enzymeTestHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 
@@ -26,7 +26,7 @@ import { RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';
 import { ActionValue } from './grid/actions/Action';
 
-// The wrapper's return type for mount<GridPanel>(<GridPanel ... />)
+// The wrapper's return type for mount(<GridPanel ... />)
 type GridPanelWrapper = ReactWrapper<Readonly<GridPanel['props']>, Readonly<GridPanel['state']>, GridPanel>;
 
 const SCHEMA_QUERY = new SchemaQuery('exp.data', 'mixtures');
@@ -66,7 +66,9 @@ describe('GridPanel', () => {
 
     const expectChartMenu = (wrapper: GridPanelWrapper, disabledState: boolean): void => {
         expectChartMenuVisible(wrapper, true);
-        expect(wrapper.find(CHART_MENU_SELECTOR).find('.dropdown-toggle').at(0).prop('disabled')).toEqual(disabledState);
+        expect(wrapper.find(CHART_MENU_SELECTOR).find('.dropdown-toggle').at(0).prop('disabled')).toEqual(
+            disabledState
+        );
     };
 
     const expectChartMenuVisible = (wrapper: GridPanelWrapper, visible: boolean): void => {
@@ -123,14 +125,14 @@ describe('GridPanel', () => {
 
         // Model is loading QueryInfo and Rows, should render loading, no ChartMenu/Pagination/ViewMenu.
         let model = makeTestQueryModel(SCHEMA_QUERY);
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mountWithAppServerContext(<GridPanel actions={actions} model={model} />);
         expectNoQueryInfo(wrapper);
 
         // Model is loading Rows, but not QueryInfo, should not render pagination, should render disabled ViewMenu.
         model = model.mutate({ queryInfoLoadingState: LoadingState.LOADED, queryInfo: QUERY_INFO });
         wrapper.setProps({ model });
         expectNoRows(wrapper);
-        expectChartMenuVisible(wrapper, false);
+        expectChartMenuVisible(wrapper, true);
         expectGridTitle(wrapper, true);
         wrapper.setProps({ title: 'Test title' });
         expectGridTitle(wrapper, true, 'Test title');
@@ -147,10 +149,10 @@ describe('GridPanel', () => {
             charts: [],
             chartsLoadingState: LoadingState.LOADED,
         });
-        wrapper.setProps({ hideEmptyChartMenu: false, model });
+        wrapper.setProps({ model });
 
         // Chart menu should be disabled if no charts are present
-        expectChartMenu(wrapper, true);
+        expectChartMenuVisible(wrapper, false);
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).first().text()).toEqual('1 - 20 of 661');
         expect(wrapper.find(PAGINATION_SELECTOR).first().exists()).toEqual(true);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(true);
@@ -265,7 +267,6 @@ describe('GridPanel', () => {
             expect(wrapper.state('actionValues').find(findByValue)).not.toEqual(undefined);
         });
         expect(wrapper.state('searchActionValues').length).toEqual(expectedSearchValues.length);
-
     };
 
     test('FilterStatus Model Binding', () => {
@@ -273,7 +274,7 @@ describe('GridPanel', () => {
         // happens when bindURL is true and there is a URL change.
         const { rows, orderedRows, rowCount } = DATA;
         const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mountWithAppServerContext(<GridPanel actions={actions} model={model} />);
         const nameSort = new QuerySort({ fieldKey: 'Name' });
         const nameFilter = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
         const expirFilter = Filter.create('expirationTime', '1', Filter.Types.EQUAL);
@@ -282,12 +283,12 @@ describe('GridPanel', () => {
         const search = Filter.create('*', 'foobar', Filter.Types.Q);
 
         expectBoundState(wrapper, {}, [], []);
-        expectBoundState(wrapper, {sorts: [nameSort]}, [nameSort], []);
-        expectBoundState(wrapper, {filterArray: [nameFilter]}, [nameSort, nameFilter], []);
-        expectBoundState(wrapper, {filterArray: [expirFilter]}, [nameSort, expirFilter], []);
-        expectBoundState(wrapper, {schemaQuery: noMixturesSQ}, [nameSort, expirFilter], []);
-        expectBoundState(wrapper, {filterArray: [expirFilter, search]}, [nameSort, expirFilter], [search]);
-        expectBoundState(wrapper, {sorts: [], filterArray: [], schemaQuery: SCHEMA_QUERY}, [], []);
+        expectBoundState(wrapper, { sorts: [nameSort] }, [nameSort], []);
+        expectBoundState(wrapper, { filterArray: [nameFilter] }, [nameSort, nameFilter], []);
+        expectBoundState(wrapper, { filterArray: [expirFilter] }, [nameSort, expirFilter], []);
+        expectBoundState(wrapper, { schemaQuery: noMixturesSQ }, [nameSort, expirFilter], []);
+        expectBoundState(wrapper, { filterArray: [expirFilter, search] }, [nameSort, expirFilter], [search]);
+        expectBoundState(wrapper, { sorts: [], filterArray: [], schemaQuery: SCHEMA_QUERY }, [], []);
     });
 
     test('FilterStatus from saved view', () => {
@@ -305,17 +306,16 @@ describe('GridPanel', () => {
             views: new ExtendedMap({ [ViewInfo.DEFAULT_NAME.toLowerCase()]: view }),
         });
         const model = makeTestQueryModel(SCHEMA_QUERY, queryInfo, {}, [], 0);
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mountWithAppServerContext(<GridPanel actions={actions} model={model} />);
 
         const expirSort = new QuerySort({ fieldKey: 'expirationTime', dir: '-' });
         const expirFilter2 = Filter.create('expirationTime', '2');
-        expectBoundState(wrapper, {sorts: [expirSort], filterArray: [expirFilter2]}, [
-            'Name ASC',
-            'expirationTime DESC',
-            '"Name" = DMXP',
-            '"Expiration Time" = 1',
-            '"Expiration Time" = 2',
-        ], []);
+        expectBoundState(
+            wrapper,
+            { sorts: [expirSort], filterArray: [expirFilter2] },
+            ['Name ASC', 'expirationTime DESC', '"Name" = DMXP', '"Expiration Time" = 1', '"Expiration Time" = 2'],
+            []
+        );
 
         // verify that the view based filters are locked and model filters are not
         const actionValues = wrapper.state('actionValues');
@@ -430,7 +430,7 @@ describe('GridPanel', () => {
             selectionsLoadingState: LoadingState.LOADED,
             totalCountLoadingState: LoadingState.LOADED,
         });
-        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mountWithAppServerContext(<GridPanel actions={actions} model={model} />);
 
         // Check that with no selections the header checkbox is not selected.
         expectHeaderSelectionStatus(wrapper, false);
@@ -504,7 +504,7 @@ describe('GridTitle', () => {
     }
 
     test('no title, no view', () => {
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <GridTitle model={model} actions={actions} allowSelections allowViewCustomization={false} />
         );
         expect(wrapper.exists('.view-header')).toBeFalsy();
@@ -512,7 +512,7 @@ describe('GridTitle', () => {
     });
 
     test('title, no view', () => {
-        const wrapper = mountWithServerContext(<GridTitle {...GRID_TITLE_PROPS} model={model} />, {
+        const wrapper = mountWithAppServerContext(<GridTitle {...GRID_TITLE_PROPS} model={model} />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper, testTitle, false, false);
@@ -522,7 +522,7 @@ describe('GridTitle', () => {
     test('view, no title', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const modelWithView = makeTestQueryModel(viewSchemaQuery, QUERY_INFO);
-        const wrapper = mountWithServerContext(<GridTitle {...GRID_TITLE_PROPS} model={modelWithView} />, {
+        const wrapper = mountWithAppServerContext(<GridTitle {...GRID_TITLE_PROPS} model={modelWithView} />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper, 'No Extra Column', false, false);
@@ -532,7 +532,7 @@ describe('GridTitle', () => {
     test('title and view', () => {
         const viewSchemaQuery = new SchemaQuery('exp.data', 'mixtures', 'noExtraColumn');
         const modelWithView = makeTestQueryModel(viewSchemaQuery, QUERY_INFO);
-        const wrapper = mountWithServerContext(<GridTitle {...GRID_TITLE_PROPS} model={modelWithView} />, {
+        const wrapper = mountWithAppServerContext(<GridTitle {...GRID_TITLE_PROPS} model={modelWithView} />, {
             user: TEST_USER_EDITOR,
         });
         validate(wrapper, testTitle + ' - No Extra Column', false, false);
@@ -549,7 +549,7 @@ describe('GridTitle', () => {
             }),
         });
         const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo);
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
             { user: TEST_USER_PROJECT_ADMIN }
         );
@@ -568,7 +568,7 @@ describe('GridTitle', () => {
         });
         const model = makeTestQueryModel(SCHEMA_QUERY, sessionQueryInfo);
 
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization={false} />,
             { user: TEST_USER_READER }
         );
@@ -587,7 +587,7 @@ describe('GridTitle', () => {
             }),
         });
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
             { user: TEST_USER_PROJECT_ADMIN }
         );
@@ -606,7 +606,7 @@ describe('GridTitle', () => {
             }),
         });
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
             { user: TEST_USER_READER }
         );
@@ -626,7 +626,7 @@ describe('GridTitle', () => {
             }),
         });
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <GridTitle {...GRID_TITLE_PROPS} model={model} allowViewCustomization />,
             { user: TEST_USER_READER }
         );
@@ -646,7 +646,7 @@ describe('GridTitle', () => {
             }),
         });
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <GridTitle actions={actions} allowSelections model={model} allowViewCustomization />,
             { user: TEST_USER_READER }
         );
@@ -662,7 +662,7 @@ describe('GridTitle', () => {
             }),
         });
         const model = makeTestQueryModel(viewSchemaQuery, sessionQueryInfo);
-        const wrapper = mountWithServerContext(
+        const wrapper = mountWithAppServerContext(
             <GridTitle model={model} actions={actions} allowSelections allowViewCustomization={false} />
         );
         expect(wrapper.exists('.view-header')).toBeFalsy();

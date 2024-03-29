@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React from 'react';
-import { mount } from 'enzyme';
 
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
 import policyJSON from '../../../test/data/security-getPolicy.json';
@@ -27,6 +26,8 @@ import { SCHEMAS } from '../../schemas';
 import { QueryInfo } from '../../../public/QueryInfo';
 
 import { DisableableButton } from '../buttons/DisableableButton';
+
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
 
 import { UsersGridPanelImpl } from './UsersGridPanel';
 
@@ -75,7 +76,7 @@ describe('<UsersGridPanel/>', () => {
     test('active users view', () => {
         const component = <UsersGridPanelImpl {...DEFAULT_PROPS} />;
 
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
         expect(wrapper.find('.view-header').first().text()).toBe('Active Users');
@@ -95,7 +96,7 @@ describe('<UsersGridPanel/>', () => {
     test('without delete or deactivate', () => {
         const component = <UsersGridPanelImpl {...DEFAULT_PROPS} user={TEST_USER_PROJECT_ADMIN} />;
 
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
         expect(wrapper.find('.view-header').first().text()).toBe('Active Users');
@@ -114,7 +115,7 @@ describe('<UsersGridPanel/>', () => {
     test('without create, delete, or deactivate', () => {
         const component = <UsersGridPanelImpl {...DEFAULT_PROPS} user={TEST_USER_FOLDER_ADMIN} />;
 
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         expect(wrapper.find('GridPanel')).toHaveLength(1);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(1);
         expect(wrapper.find('.view-header').first().text()).toBe('Active Users');
@@ -133,7 +134,7 @@ describe('<UsersGridPanel/>', () => {
     test('inactive users view', () => {
         const component = <UsersGridPanelImpl {...DEFAULT_PROPS} />;
 
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         wrapper.setState({ usersView: 'inactive' });
 
         expect(wrapper.find('GridPanel')).toHaveLength(1);
@@ -154,7 +155,7 @@ describe('<UsersGridPanel/>', () => {
     test('all users view', () => {
         const component = <UsersGridPanelImpl {...DEFAULT_PROPS} />;
 
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         wrapper.setState({ usersView: 'all' });
 
         expect(wrapper.find('GridPanel')).toHaveLength(1);
@@ -176,7 +177,7 @@ describe('<UsersGridPanel/>', () => {
         const component = (
             <UsersGridPanelImpl {...DEFAULT_PROPS} userLimitSettings={{ userLimit: true, remainingUsers: 0 }} />
         );
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         wrapper.setState({ usersView: 'inactive' });
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
         expect(wrapper.find(DisableableButton).prop('disabledMsg')).toBe('User limit has been reached');
@@ -191,7 +192,7 @@ describe('<UsersGridPanel/>', () => {
         const component = (
             <UsersGridPanelImpl {...DEFAULT_PROPS} userLimitSettings={{ userLimit: true, remainingUsers: 2 }} />
         );
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         wrapper.setState({ usersView: 'inactive' });
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
         expect(wrapper.find(DisableableButton).prop('disabledMsg')).toBe(undefined);
@@ -206,7 +207,7 @@ describe('<UsersGridPanel/>', () => {
         const component = (
             <UsersGridPanelImpl {...DEFAULT_PROPS} userLimitSettings={{ userLimit: false, remainingUsers: 0 }} />
         );
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         expect(wrapper.find(DisableableButton)).toHaveLength(1); // create button
         expect(wrapper.find(DisableableButton).prop('disabledMsg')).toBe(undefined);
         wrapper.unmount();
@@ -214,14 +215,14 @@ describe('<UsersGridPanel/>', () => {
 
     test('showDetailsPanel false', () => {
         const component = <UsersGridPanelImpl {...DEFAULT_PROPS} showDetailsPanel={false} />;
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         expect(wrapper.find('UserDetailsPanel')).toHaveLength(0);
         wrapper.unmount();
     });
 
     test('loading', () => {
         const component = <UsersGridPanelImpl {...DEFAULT_PROPS} queryModels={{}} />;
-        const wrapper = mount(component);
+        const wrapper = mountWithAppServerContext(component);
         expect(wrapper.find('LoadingSpinner')).toHaveLength(1);
         expect(wrapper.find('GridPanel')).toHaveLength(0);
         wrapper.unmount();

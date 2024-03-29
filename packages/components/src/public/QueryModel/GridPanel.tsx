@@ -88,7 +88,6 @@ export interface GridPanelProps<ButtonsComponentProps> {
     getEmptyText?: (model: QueryModel) => string;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
     hasHeader?: boolean;
-    hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
     highlightLastSelectedRow?: boolean;
     loadOnMount?: boolean;
@@ -111,13 +110,13 @@ type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
     actionValues: ActionValue[];
-    searchActionValues: ActionValue[];
     onCustomizeView: () => void;
     onFilter: () => void;
     onManageViews: () => void;
     onSaveView: () => void;
     onSearch: (token: string) => void;
     onViewSelect: (viewName: string) => void;
+    searchActionValues: ActionValue[];
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -155,7 +154,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             advancedExportOptions,
             ButtonsComponent,
             ButtonsComponentRight,
-            hideEmptyChartMenu,
             hideEmptyViewMenu,
             onCustomizeView,
             onExport,
@@ -226,9 +224,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                     onExport={onExport}
                                 />
                             )}
-                            {showChartMenu && (
-                                <ChartMenu hideEmptyChartMenu={hideEmptyChartMenu} actions={actions} model={model} />
-                            )}
+                            {showChartMenu && <ChartMenu actions={actions} model={model} />}
                             {canSelectView && (
                                 <ViewMenu
                                     allowViewCustomization={allowViewCustomization}
@@ -377,10 +373,10 @@ interface State {
     // TODO: replace actionValues with individual properties tracking searches, sorts, filters, and views separately.
     //  actionValues is a vestigal structure left behind from OmniBox which required us to store everything together.
     actionValues: ActionValue[];
-    searchActionValues: ActionValue[];
     disableColumnDrag: boolean;
     errorMsg: React.ReactNode;
     isViewSaved: boolean;
+    searchActionValues: ActionValue[];
     selectedColumn: QueryColumn;
     showCustomizeViewModal: boolean;
     showFilterModalFieldKey: string;
@@ -398,7 +394,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         allowFiltering: true,
         allowViewCustomization: true,
         asPanel: true,
-        hideEmptyChartMenu: true,
         hideEmptyViewMenu: true,
         highlightLastSelectedRow: false,
         loadOnMount: true,
@@ -459,7 +454,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         view: ViewAction;
     };
 
-    createGridActionValues = (): { actionValues: ActionValue[], searchActionValues: ActionValue[] } => {
+    createGridActionValues = (): { actionValues: ActionValue[]; searchActionValues: ActionValue[] } => {
         const { model } = this.props;
         const { filterArray, sorts } = model;
         const view = model.currentView;
@@ -523,7 +518,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const searchActionsValuesStr = actionValuesToString(searchActionValues);
         const currentSearchActionValuesStr = actionValuesToString(this.state.searchActionValues);
 
-        if (modelActionValuesStr !== currentActionValuesStr || searchActionsValuesStr !== currentSearchActionValuesStr) {
+        if (
+            modelActionValuesStr !== currentActionValuesStr ||
+            searchActionsValuesStr !== currentSearchActionValuesStr
+        ) {
             // The action values have changed due to external model changes (likely URL changes), so we need to
             // update the actionValues state with the newest values.
             this.setState({ actionValues, searchActionValues, errorMsg: undefined });
@@ -935,6 +933,11 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
             }
         } else {
             actions.setView(model.id, undefined, allowSelections);
+        }
+
+        // since the grid ChartMenu filters to charts for a given view, when the view changes clear the selectedReportId
+        if (model.selectedReportId) {
+            actions.selectReport(model.id, undefined);
         }
     };
 

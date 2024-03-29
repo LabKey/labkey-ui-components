@@ -17,15 +17,20 @@ import React, { FC, ReactNode, useMemo } from 'react';
 
 import { DropdownButton } from '../../dropdowns';
 
-export const ManageDropdownButton: FC<{ children: React.ReactNode; disabled?: boolean }> = props => {
-    const { children, disabled } = props;
+export const ManageDropdownButton: FC<{
+    children: React.ReactNode;
+    disabled?: boolean;
+    showIcon?: boolean;
+}> = props => {
+    const { children, disabled, showIcon = true } = props;
     const buttonLabel: ReactNode = useMemo(
         () => (
             <span>
-                <i className="fa fa-bars" /> Manage
+                {showIcon && <i className="fa fa-bars margin-right" />}
+                Manage
             </span>
         ),
-        []
+        [showIcon]
     );
 
     return (

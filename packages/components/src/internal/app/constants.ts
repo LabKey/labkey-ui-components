@@ -110,15 +110,16 @@ export const EXPERIMENTAL_APP_PLATE_SUPPORT = 'experimental-app-plate-support';
 export const EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS = 'queryProductAllFolderLookups';
 export const EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED = 'queryProductProjectDataListingScoped';
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
+export const EXPERIMENTAL_CHART_BUILDER = 'experimental-biologics-chart-builder';
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
 
 export const PROJECT_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
 
 // The enum values here should align with the ProductFeature.java enum values (some not currently used but included for completeness)
 export enum ProductFeature {
+    ApiKeys = 'ApiKeys',
     Assay = 'Assay',
     AssayQC = 'AssayQC',
-    ApiKeys = 'ApiKeys',
     DataChangeCommentRequirement = 'DataChangeCommentRequirement',
     ELN = 'ELN',
     FreezerManagement = 'FreezerManagement',

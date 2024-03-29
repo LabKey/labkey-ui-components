@@ -117,9 +117,9 @@ export const PROJECT_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
 
 // The enum values here should align with the ProductFeature.java enum values (some not currently used but included for completeness)
 export enum ProductFeature {
+    ApiKeys = 'ApiKeys',
     Assay = 'Assay',
     AssayQC = 'AssayQC',
-    ApiKeys = 'ApiKeys',
     DataChangeCommentRequirement = 'DataChangeCommentRequirement',
     ELN = 'ELN',
     FreezerManagement = 'FreezerManagement',

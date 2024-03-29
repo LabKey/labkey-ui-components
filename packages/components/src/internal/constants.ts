@@ -213,10 +213,7 @@ export const GENERIC_CHART_REPORTS = [
     DataViewInfoTypes.XYScatterPlot,
     DataViewInfoTypes.XYSeriesLinePlot,
 ];
-export const VISUALIZATION_REPORTS = Set([
-    ...GENERIC_CHART_REPORTS,
-    DataViewInfoTypes.RReport,
-]);
+export const VISUALIZATION_REPORTS = Set([...GENERIC_CHART_REPORTS, DataViewInfoTypes.RReport]);
 
 export enum IMPORT_DATA_FORM_TYPES {
     GRID = 1, // This designates the starting point for the enum. By default it starts at 0, but since that is falsy, it makes the check "if (inputFormType)" problematic.

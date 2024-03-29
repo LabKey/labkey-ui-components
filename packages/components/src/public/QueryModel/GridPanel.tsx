@@ -110,13 +110,13 @@ type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
     actionValues: ActionValue[];
-    searchActionValues: ActionValue[];
     onCustomizeView: () => void;
     onFilter: () => void;
     onManageViews: () => void;
     onSaveView: () => void;
     onSearch: (token: string) => void;
     onViewSelect: (viewName: string) => void;
+    searchActionValues: ActionValue[];
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -373,10 +373,10 @@ interface State {
     // TODO: replace actionValues with individual properties tracking searches, sorts, filters, and views separately.
     //  actionValues is a vestigal structure left behind from OmniBox which required us to store everything together.
     actionValues: ActionValue[];
-    searchActionValues: ActionValue[];
     disableColumnDrag: boolean;
     errorMsg: React.ReactNode;
     isViewSaved: boolean;
+    searchActionValues: ActionValue[];
     selectedColumn: QueryColumn;
     showCustomizeViewModal: boolean;
     showFilterModalFieldKey: string;
@@ -454,7 +454,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         view: ViewAction;
     };
 
-    createGridActionValues = (): { actionValues: ActionValue[], searchActionValues: ActionValue[] } => {
+    createGridActionValues = (): { actionValues: ActionValue[]; searchActionValues: ActionValue[] } => {
         const { model } = this.props;
         const { filterArray, sorts } = model;
         const view = model.currentView;
@@ -518,7 +518,10 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const searchActionsValuesStr = actionValuesToString(searchActionValues);
         const currentSearchActionValuesStr = actionValuesToString(this.state.searchActionValues);
 
-        if (modelActionValuesStr !== currentActionValuesStr || searchActionsValuesStr !== currentSearchActionValuesStr) {
+        if (
+            modelActionValuesStr !== currentActionValuesStr ||
+            searchActionsValuesStr !== currentSearchActionValuesStr
+        ) {
             // The action values have changed due to external model changes (likely URL changes), so we need to
             // update the actionValues state with the newest values.
             this.setState({ actionValues, searchActionValues, errorMsg: undefined });

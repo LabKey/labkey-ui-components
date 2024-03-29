@@ -27,8 +27,9 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { DisableableButton } from '../buttons/DisableableButton';
 
+import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
+
 import { UsersGridPanelImpl } from './UsersGridPanel';
-import {mountWithAppServerContext} from "../../test/enzymeTestHelpers";
 
 const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);

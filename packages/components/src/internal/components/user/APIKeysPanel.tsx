@@ -21,7 +21,7 @@ import {
     biologicsIsPrimaryApp,
     getCurrentAppProperties,
     getPrimaryAppProperties,
-    isFeatureEnabled
+    isFeatureEnabled,
 } from '../../app/utils';
 import { ProductFeature } from '../../app/constants';
 import {
@@ -84,10 +84,10 @@ const APIKeysButtonsComponent: FC<ButtonsComponentProps> = props => {
 };
 
 interface KeyGeneratorProps {
-    type: string;
     afterCreate: (key: string) => void;
     keyValue?: string;
     noun: string;
+    type: string;
 }
 
 // exported for jest testing

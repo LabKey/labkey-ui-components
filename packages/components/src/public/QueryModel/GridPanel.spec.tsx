@@ -66,7 +66,9 @@ describe('GridPanel', () => {
 
     const expectChartMenu = (wrapper: GridPanelWrapper, disabledState: boolean): void => {
         expectChartMenuVisible(wrapper, true);
-        expect(wrapper.find(CHART_MENU_SELECTOR).find('.dropdown-toggle').at(0).prop('disabled')).toEqual(disabledState);
+        expect(wrapper.find(CHART_MENU_SELECTOR).find('.dropdown-toggle').at(0).prop('disabled')).toEqual(
+            disabledState
+        );
     };
 
     const expectChartMenuVisible = (wrapper: GridPanelWrapper, visible: boolean): void => {
@@ -265,7 +267,6 @@ describe('GridPanel', () => {
             expect(wrapper.state('actionValues').find(findByValue)).not.toEqual(undefined);
         });
         expect(wrapper.state('searchActionValues').length).toEqual(expectedSearchValues.length);
-
     };
 
     test('FilterStatus Model Binding', () => {
@@ -282,12 +283,12 @@ describe('GridPanel', () => {
         const search = Filter.create('*', 'foobar', Filter.Types.Q);
 
         expectBoundState(wrapper, {}, [], []);
-        expectBoundState(wrapper, {sorts: [nameSort]}, [nameSort], []);
-        expectBoundState(wrapper, {filterArray: [nameFilter]}, [nameSort, nameFilter], []);
-        expectBoundState(wrapper, {filterArray: [expirFilter]}, [nameSort, expirFilter], []);
-        expectBoundState(wrapper, {schemaQuery: noMixturesSQ}, [nameSort, expirFilter], []);
-        expectBoundState(wrapper, {filterArray: [expirFilter, search]}, [nameSort, expirFilter], [search]);
-        expectBoundState(wrapper, {sorts: [], filterArray: [], schemaQuery: SCHEMA_QUERY}, [], []);
+        expectBoundState(wrapper, { sorts: [nameSort] }, [nameSort], []);
+        expectBoundState(wrapper, { filterArray: [nameFilter] }, [nameSort, nameFilter], []);
+        expectBoundState(wrapper, { filterArray: [expirFilter] }, [nameSort, expirFilter], []);
+        expectBoundState(wrapper, { schemaQuery: noMixturesSQ }, [nameSort, expirFilter], []);
+        expectBoundState(wrapper, { filterArray: [expirFilter, search] }, [nameSort, expirFilter], [search]);
+        expectBoundState(wrapper, { sorts: [], filterArray: [], schemaQuery: SCHEMA_QUERY }, [], []);
     });
 
     test('FilterStatus from saved view', () => {
@@ -309,13 +310,12 @@ describe('GridPanel', () => {
 
         const expirSort = new QuerySort({ fieldKey: 'expirationTime', dir: '-' });
         const expirFilter2 = Filter.create('expirationTime', '2');
-        expectBoundState(wrapper, {sorts: [expirSort], filterArray: [expirFilter2]}, [
-            'Name ASC',
-            'expirationTime DESC',
-            '"Name" = DMXP',
-            '"Expiration Time" = 1',
-            '"Expiration Time" = 2',
-        ], []);
+        expectBoundState(
+            wrapper,
+            { sorts: [expirSort], filterArray: [expirFilter2] },
+            ['Name ASC', 'expirationTime DESC', '"Name" = DMXP', '"Expiration Time" = 1', '"Expiration Time" = 2'],
+            []
+        );
 
         // verify that the view based filters are locked and model filters are not
         const actionValues = wrapper.state('actionValues');

@@ -67,6 +67,7 @@ export interface CellProps {
     selected?: boolean;
     selection?: boolean;
     values?: List<ValueDescriptor>;
+    containerPath?: string;
 }
 
 interface State {
@@ -378,6 +379,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
             selected,
             selection,
             values,
+            containerPath
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
@@ -492,6 +494,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     rowIdx={rowIdx}
                     select={cellActions.selectCell}
                     values={values}
+                    containerPath={containerPath}
                 />
             );
         }

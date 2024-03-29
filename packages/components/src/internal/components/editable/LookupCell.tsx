@@ -50,6 +50,7 @@ export interface LookupCellProps {
     rowIdx: number;
     select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     values: List<ValueDescriptor>;
+    containerPath?: string;
 }
 
 interface QueryLookupCellProps extends LookupCellProps {
@@ -71,6 +72,7 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
         onSelectChange,
         rawValues,
         values,
+        containerPath,
     } = props;
     const { columnRenderer, lookup } = col;
     const isMultiple = col.isJunctionLookup();
@@ -106,7 +108,7 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
         <QuerySelect
             {...gridCellSelectInputProps}
             containerFilter={lookup.containerFilter ?? containerFilter ?? getContainerFilterForLookups()}
-            containerPath={lookup.containerPath}
+            containerPath={lookup.containerPath ?? containerPath}
             defaultInputValue={defaultInputValue}
             disabled={disabled}
             maxRows={LOOKUP_DEFAULT_SIZE}

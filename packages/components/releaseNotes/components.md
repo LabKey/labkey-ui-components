@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.X
+*Released*: X 2024
+- Reload EntityInsertPanel LookupCell on targetContainer change
+
 ### version 3.35.0
 *Released*: 29 March 2024
 - Chart builder in app: App initial create chart modal

@@ -202,6 +202,9 @@ export const SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR = [
 
 export const SAMPLE_INSERT_EXTRA_COLUMNS = [...AMOUNT_AND_UNITS_COLUMNS, ...SAMPLE_STORAGE_COLUMNS, ALIQUOTED_FROM_COL];
 
+// those lookup values are at Home project level, no need to reload on target folder change
+export const SAMPLE_ALL_PROJECT_LOOKUP_FIELDS = ['SampleState', 'Units'];
+
 export const SAMPLE_EXPORT_CONFIG = {
     'exportAlias.name': DEFAULT_SAMPLE_FIELD_CONFIG.label,
     'exportAlias.aliquotedFromLSID': ALIQUOTED_FROM_COL,

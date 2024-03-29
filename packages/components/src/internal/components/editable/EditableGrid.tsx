@@ -163,7 +163,8 @@ function inputCellFactory(
     cellActions: CellActions,
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean,
-    initialSelection: string[]
+    initialSelection: string[],
+    containerPath?: string,
 ): GridColumnCellRenderer {
     return (value, row, c, rn, cn) => {
         let colOffset = 0;
@@ -254,6 +255,7 @@ function inputCellFactory(
                     filteredLookupKeys={columnMetadata?.filteredLookupKeys}
                     getFilteredLookupKeys={columnMetadata?.getFilteredLookupKeys}
                     linkedValues={linkedValues}
+                    containerPath={containerPath}
                 />
             </td>
         );
@@ -303,6 +305,7 @@ export interface SharedEditableGridProps {
     columnMetadata?: Map<string, EditableColumnMetadata>;
     condensed?: boolean;
     containerFilter?: Query.ContainerFilter;
+    containerPath?: string;
     disabled?: boolean;
     emptyGridMsg?: string;
     exportColFilter?: (col: QueryColumn) => boolean;
@@ -812,6 +815,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             readonlyRows,
             lockedRows,
             hideCheckboxCol,
+            containerPath,
         } = this.props;
 
         let gridColumns = List<GridColumn>();
@@ -862,7 +866,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         this.cellActions,
                         metadata?.containerFilter ?? containerFilter,
                         forUpdate,
-                        this.state.initialSelection
+                        this.state.initialSelection,
+                        containerPath
                     ),
                     index: qCol.fieldKey,
                     fixedWidth,

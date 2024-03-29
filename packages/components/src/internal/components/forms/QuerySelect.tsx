@@ -132,6 +132,7 @@ type InheritedSelectInputProps = Omit<
 >;
 
 export interface QuerySelectOwnProps extends InheritedSelectInputProps {
+    autoInit?: boolean;
     containerFilter?: Query.ContainerFilter;
     /** The path to the LK container that the queries should be scoped to. */
     containerPath?: string;
@@ -165,6 +166,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const querySelectTimer = useRef(undefined);
 
     const {
+        autoInit,
         containerFilter,
         containerPath,
         displayColumn,
@@ -209,6 +211,8 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     }, []);
 
     useEffect(() => {
+        if (!autoInit) return;
+
         (async () => {
             try {
                 const model_ = await initSelect(props);
@@ -220,7 +224,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
         return clear;
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [autoInit]);
 
     const loadOptions = useCallback(
         (input: string): Promise<SelectInputOption[]> => {
@@ -383,6 +387,8 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 });
 
 QuerySelect.defaultProps = {
+    // Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
+    autoInit: process.env.NODE_ENV !== 'test',
     delimiter: DELIMITER,
     filterOption: noopFilterOptions,
     fireQSChangeOnInit: false,

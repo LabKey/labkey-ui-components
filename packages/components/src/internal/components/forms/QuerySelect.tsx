@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, PureComponent, ReactNode } from 'react';
+import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { List, Map } from 'immutable';
 import { Filter, Query, Utils } from '@labkey/api';
 
@@ -21,7 +21,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
-import { SelectInputOption, SelectInput, SelectInputProps } from './input/SelectInput';
+import { SelectInputOption, SelectInput, SelectInputProps, SelectInputChange } from './input/SelectInput';
 import { resolveDetailFieldLabel } from './utils';
 import { initSelect, QuerySelectModel } from './model';
 import { DELIMITER } from './constants';
@@ -149,259 +149,246 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     valueColumn?: string;
 }
 
-interface State {
-    defaultOptions: boolean | SelectInputOption[];
-    error: string;
-    initialLoad: boolean;
-    isLoading: boolean;
-    loadOnFocusLock: boolean;
-    model: QuerySelectModel;
-}
+type DefaultOptions = boolean | SelectInputOption[];
 
-export class QuerySelect extends PureComponent<QuerySelectOwnProps, State> {
-    static defaultProps = {
-        delimiter: DELIMITER,
-        filterOption: noopFilterOptions,
-        fireQSChangeOnInit: false,
-        loadOnFocus: false,
-        preLoad: true,
-        showLoading: true,
-    };
+export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
+    const [defaultOptions, setDefaultOptions] = useState<DefaultOptions>(() =>
+        // See note in onFocus() regarding support for "loadOnFocus"
+        props.preLoad !== false ? true : props.loadOnFocus ? [] : true
+    );
+    const [error, setError] = useState<string>();
+    const [loadOnFocusLock, setLoadOnFocusLock] = useState<boolean>(false);
+    const [initialLoad, setInitialLoad] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(undefined);
+    const [model, setModel] = useState<QuerySelectModel>();
+    const lastRequest = useRef<Record<string, string>>(undefined);
+    const querySelectTimer = useRef(undefined);
 
-    private lastRequest: Record<string, string>;
-    private querySelectTimer: number;
+    const {
+        containerFilter,
+        containerPath,
+        displayColumn,
+        fireQSChangeOnInit,
+        loadOnFocus,
+        maxRows,
+        onInitValue,
+        onQSChange,
+        preLoad,
+        queryFilters,
+        requiredColumns,
+        schemaQuery,
+        showLoading,
+        valueColumn,
+        ...selectInputProps
+    } = props;
+    const {
+        allowDisable,
+        containerClass,
+        customTheme,
+        customStyles,
+        defaultInputValue,
+        description,
+        formsy,
+        helpTipRenderer,
+        initiallyDisabled,
+        inputClass,
+        label,
+        labelClass,
+        menuPosition,
+        multiple,
+        name,
+        onToggleDisable,
+        openMenuOnFocus,
+        required,
+    } = selectInputProps;
+    const shouldLoadOnFocus = loadOnFocus && !loadOnFocusLock;
 
-    constructor(props: QuerySelectOwnProps) {
-        super(props);
+    const clear = useCallback(() => {
+        clearTimeout(querySelectTimer.current);
+        querySelectTimer.current = undefined;
+    }, []);
 
-        this.state = {
-            // See note in onFocus() regarding support for "loadOnFocus"
-            defaultOptions: props.preLoad !== false ? true : props.loadOnFocus ? [] : true,
-            error: undefined,
-            initialLoad: true,
-            isLoading: undefined,
-            loadOnFocusLock: false,
-            model: undefined,
-        };
-    }
-
-    componentDidMount(): void {
-        this.initModel();
-    }
-
-    initModel = async (): Promise<void> => {
-        try {
-            const model = await initSelect(this.props);
-            this.setState({ model });
-        } catch (error) {
-            this.setState({ error: resolveErrorMessage(error) ?? 'Failed to initialize.' });
-        }
-    };
-
-    componentWillUnmount(): void {
-        clearTimeout(this.querySelectTimer);
-    }
-
-    shouldLoadOnFocus = (): boolean => {
-        return this.props.loadOnFocus && !this.state.loadOnFocusLock;
-    };
-
-    loadOptions = (input: string): Promise<SelectInputOption[]> => {
-        let input_: string;
-
-        if (this.state.initialLoad) {
-            // If a "defaultInputValue" is supplied and the initial load is an empty search,
-            // then search with the "defaultInputValue"
-            input_ = input ? input : this.props.defaultInputValue ?? '';
-            this.setState({ initialLoad: false });
-        } else {
-            input_ = input;
-        }
-
-        const request = (this.lastRequest = {});
-        clearTimeout(this.querySelectTimer);
-
-        // If loadOptions occurs prior to call to "onFocus" then there is no need to "loadOnFocus".
-        if (this.shouldLoadOnFocus()) {
-            this.setState({ loadOnFocusLock: true });
-        }
-
-        return new Promise((resolve, reject): void => {
-            this.querySelectTimer = window.setTimeout(async () => {
-                this.querySelectTimer = undefined;
-
-                try {
-                    const { model } = this.state;
-
-                    const data = await model.search(input_);
-
-                    // Issue 46816: Skip processing stale requests
-                    if (request !== this.lastRequest) return;
-                    delete this.lastRequest;
-
-                    resolve(model.formatSavedResults(data, input_));
-
-                    this.setState(() => ({
-                        model: model.saveSearchResults(data),
-                    }));
-                } catch (error) {
-                    const errorMsg = resolveErrorMessage(error) ?? 'Failed to retrieve search results.';
-                    console.error(errorMsg, error);
-                    reject(errorMsg);
-                    this.setState({ error: errorMsg });
-                }
-            }, 250);
-        });
-    };
-
-    onChange = (
-        name: string,
-        value: any,
-        selectedOptions: SelectInputOption | SelectInputOption[],
-        props: Partial<SelectInputProps>
-    ): void => {
-        this.setState(
-            state => ({ model: state.model.setSelection(value) }),
-            () => {
-                this.props.onQSChange?.(name, value, selectedOptions, props, this.state.model.selectedItems);
+    useEffect(() => {
+        (async () => {
+            try {
+                const model_ = await initSelect(props);
+                setModel(model_);
+            } catch (e) {
+                setError(resolveErrorMessage(e) ?? 'Failed to initialize.');
             }
-        );
-    };
+        })();
 
-    optionRenderer = (props): ReactNode => {
-        return <PreviewOption label={props.label} model={this.state.model} value={props.value} />;
-    };
+        return clear;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    onFocus = async (): Promise<void> => {
+    const loadOptions = useCallback(
+        (input: string): Promise<SelectInputOption[]> => {
+            let input_: string;
+
+            if (initialLoad) {
+                // If a "defaultInputValue" is supplied and the initial load is an empty search,
+                // then search with the "defaultInputValue"
+                input_ = input ? input : defaultInputValue ?? '';
+                setInitialLoad(false);
+            } else {
+                input_ = input;
+            }
+
+            const request = (lastRequest.current = {});
+            clear();
+
+            // If loadOptions occurs prior to call to "onFocus" then there is no need to "loadOnFocus".
+            if (shouldLoadOnFocus) {
+                setLoadOnFocusLock(true);
+            }
+
+            return new Promise((resolve, reject): void => {
+                querySelectTimer.current = setTimeout(async () => {
+                    clear();
+
+                    try {
+                        const data = await model.search(input_);
+
+                        // Issue 46816: Skip processing stale requests
+                        if (request !== lastRequest.current) return;
+                        lastRequest.current = undefined;
+
+                        resolve(model.formatSavedResults(data, input_));
+                        setModel(model.saveSearchResults(data));
+                    } catch (e) {
+                        const errorMsg = resolveErrorMessage(e) ?? 'Failed to retrieve search results.';
+                        console.error(errorMsg, e);
+                        reject(errorMsg);
+                        setError(errorMsg);
+                    }
+                }, 250);
+            });
+        },
+        [clear, defaultInputValue, initialLoad, model, shouldLoadOnFocus]
+    );
+
+    const onChange = useCallback<SelectInputChange>(
+        (name_, value_, options_, props_) => {
+            let selectedItems: Map<string, any>;
+            setModel(model_ => {
+                const updatedModel = model_.setSelection(value_);
+                selectedItems = updatedModel.selectedItems;
+                return updatedModel;
+            });
+            onQSChange?.(name_, value_, options_, props_, selectedItems);
+        },
+        [onQSChange]
+    );
+
+    const onFocus = useCallback(async () => {
         // NK: To support loading the select upon focus (a.k.a. "loadOnFocus") we have to explicitly utilize
         // the "defaultOptions" and "isLoading" properties of ReactSelect. These properties, in tandem with
         // "loadOptions", allow for an asynchronous ReactSelect to defer requesting the initial options until
         // desired. This follows the pattern outlined here:
         // https://github.com/JedWatson/react-select/issues/1525#issuecomment-744157380
-        if (this.shouldLoadOnFocus()) {
-            // Set and forget "loadOnFocusLock" state so "loadOnFocus" only occurs on the initial focus.
-            this.setState({ loadOnFocusLock: true, isLoading: true });
+        if (!shouldLoadOnFocus) return;
 
-            try {
-                const defaultOptions = await this.loadOptions('');
+        // Set and forget "loadOnFocusLock" state so "loadOnFocus" only occurs on the initial focus.
+        setIsLoading(true);
+        setLoadOnFocusLock(true);
 
-                // ReactSelect respects "isLoading" with a value of {undefined} differently from a value of {false}.
-                this.setState({ defaultOptions, isLoading: undefined });
-            } catch (e) {
-                /* ignore -- error already logged/configured in loadOptions() */
-            }
+        try {
+            const defaultOptions_ = await loadOptions('');
+            setDefaultOptions(defaultOptions_);
+            // ReactSelect respects "isLoading" with a value of {undefined} differently from a value of {false}.
+            setIsLoading(undefined);
+        } catch (e) {
+            /* ignore -- error already logged/configured in loadOptions() */
         }
-    };
+    }, [loadOptions, shouldLoadOnFocus]);
 
-    render() {
-        const {
-            containerFilter,
-            containerPath,
-            displayColumn,
-            fireQSChangeOnInit,
-            loadOnFocus,
-            maxRows,
-            onInitValue,
-            onQSChange,
-            preLoad,
-            queryFilters,
-            requiredColumns,
-            schemaQuery,
-            showLoading,
-            valueColumn,
-            ...selectInputProps
-        } = this.props;
-        const {
-            allowDisable,
-            containerClass,
-            customTheme,
-            customStyles,
-            description,
-            formsy,
-            helpTipRenderer,
-            initiallyDisabled,
-            inputClass,
-            label,
-            labelClass,
-            menuPosition,
-            multiple,
-            name,
-            onToggleDisable,
-            openMenuOnFocus,
-            required,
-        } = selectInputProps;
-        const { defaultOptions, error, isLoading, model } = this.state;
+    const optionRenderer = useCallback(p => <PreviewOption label={p.label} model={model} value={p.value} />, [model]);
 
-        if (error) {
-            return (
-                <SelectInput
-                    allowDisable={allowDisable}
-                    containerClass={containerClass}
-                    customStyles={customStyles}
-                    customTheme={customTheme}
-                    description={description}
-                    disabled
-                    formsy={formsy}
-                    helpTipRenderer={helpTipRenderer}
-                    initiallyDisabled={initiallyDisabled}
-                    isLoading={false}
-                    inputClass={inputClass}
-                    label={label}
-                    labelClass={labelClass}
-                    menuPosition={menuPosition}
-                    multiple={multiple}
-                    name={name}
-                    onToggleDisable={onToggleDisable}
-                    openMenuOnFocus={openMenuOnFocus}
-                    placeholder={`Error: ${error}`}
-                    required={required}
-                />
-            );
-        } else if (model?.isInit) {
-            return (
-                <SelectInput
-                    label={label !== undefined ? label : model.queryInfo.title}
-                    optionRenderer={this.optionRenderer}
-                    {...selectInputProps}
-                    allowCreate={false}
-                    autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
-                    cacheOptions
-                    defaultOptions={defaultOptions}
-                    isLoading={isLoading}
-                    loadOptions={this.loadOptions}
-                    onChange={this.onChange}
-                    onFocus={this.onFocus}
-                    options={undefined} // prevent override
-                    selectedOptions={model.getSelectedOptions()}
-                    value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
-                />
-            );
-        } else if (showLoading) {
-            return (
-                <SelectInput
-                    allowDisable={allowDisable}
-                    containerClass={containerClass}
-                    customStyles={customStyles}
-                    customTheme={customTheme}
-                    description={description}
-                    disabled
-                    formsy={formsy}
-                    helpTipRenderer={helpTipRenderer}
-                    initiallyDisabled={initiallyDisabled}
-                    label={label}
-                    labelClass={labelClass}
-                    menuPosition={menuPosition}
-                    multiple={multiple}
-                    name={name}
-                    onToggleDisable={onToggleDisable}
-                    openMenuOnFocus={openMenuOnFocus}
-                    placeholder="Loading..."
-                    required={required}
-                    value={undefined}
-                />
-            );
-        }
-
-        return null;
+    if (error) {
+        return (
+            <SelectInput
+                allowDisable={allowDisable}
+                containerClass={containerClass}
+                customStyles={customStyles}
+                customTheme={customTheme}
+                description={description}
+                disabled
+                formsy={formsy}
+                helpTipRenderer={helpTipRenderer}
+                initiallyDisabled={initiallyDisabled}
+                isLoading={false}
+                inputClass={inputClass}
+                label={label}
+                labelClass={labelClass}
+                menuPosition={menuPosition}
+                multiple={multiple}
+                name={name}
+                onToggleDisable={onToggleDisable}
+                openMenuOnFocus={openMenuOnFocus}
+                placeholder={`Error: ${error}`}
+                required={required}
+            />
+        );
     }
-}
+
+    if (model?.isInit) {
+        return (
+            <SelectInput
+                label={label !== undefined ? label : model.queryInfo.title}
+                optionRenderer={optionRenderer}
+                {...selectInputProps}
+                allowCreate={false}
+                autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
+                cacheOptions
+                defaultOptions={defaultOptions}
+                isLoading={isLoading}
+                loadOptions={loadOptions}
+                onChange={onChange}
+                onFocus={onFocus}
+                options={undefined} // prevent override
+                selectedOptions={model.getSelectedOptions()}
+                value={getValue(model, multiple)} // needed to initialize the Formsy "value" properly
+            />
+        );
+    }
+
+    if (showLoading) {
+        return (
+            <SelectInput
+                allowDisable={allowDisable}
+                containerClass={containerClass}
+                customStyles={customStyles}
+                customTheme={customTheme}
+                description={description}
+                disabled
+                formsy={formsy}
+                helpTipRenderer={helpTipRenderer}
+                initiallyDisabled={initiallyDisabled}
+                label={label}
+                labelClass={labelClass}
+                menuPosition={menuPosition}
+                multiple={multiple}
+                name={name}
+                onToggleDisable={onToggleDisable}
+                openMenuOnFocus={openMenuOnFocus}
+                placeholder="Loading..."
+                required={required}
+                value={undefined}
+            />
+        );
+    }
+
+    return null;
+});
+
+QuerySelect.defaultProps = {
+    delimiter: DELIMITER,
+    filterOption: noopFilterOptions,
+    fireQSChangeOnInit: false,
+    loadOnFocus: false,
+    preLoad: true,
+    showLoading: true,
+};
+
+QuerySelect.displayName = 'QuerySelect';

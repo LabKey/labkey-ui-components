@@ -323,7 +323,7 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
 
         if (lcFieldKey.indexOf('::') > -1) {
             const lcPivotFieldKey = lcFieldKey.split('::')[1];
-            let pivotColumnMeta = metadata.getIn([
+            const pivotColumnMeta = metadata.getIn([
                 'schema',
                 schemaQuery.schemaName.toLowerCase(),
                 'query',

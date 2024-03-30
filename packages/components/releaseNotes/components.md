@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.36.0
+*Released*: 30 March 2024
+- Introduce `pivotColumn` query metadata section for applying metadata to pivot-generated query columns
+- Add hit selection summary queries to schema constants
+
 ### version 3.35.0
 *Released*: 29 March 2024
 - Chart builder in app: App initial create chart modal

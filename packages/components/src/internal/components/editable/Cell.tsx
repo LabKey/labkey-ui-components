@@ -49,6 +49,7 @@ export interface CellProps {
     col: QueryColumn;
     colIdx: number;
     containerFilter?: Query.ContainerFilter;
+    containerPath?: string;
     filteredLookupKeys?: List<any>;
     filteredLookupValues?: List<string>;
     focused?: boolean;
@@ -58,7 +59,6 @@ export interface CellProps {
     locked?: boolean;
     lookupValueFilters?: Filter.IFilter[];
     message?: CellMessage;
-    name?: string;
     placeholder?: string;
     readOnly?: boolean;
     renderDragHandle?: boolean;
@@ -67,6 +67,7 @@ export interface CellProps {
     selected?: boolean;
     selection?: boolean;
     values?: List<ValueDescriptor>;
+    name?: string;
 }
 
 interface State {
@@ -378,6 +379,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
             selected,
             selection,
             values,
+            containerPath,
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
@@ -492,6 +494,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     rowIdx={rowIdx}
                     select={cellActions.selectCell}
                     values={values}
+                    containerPath={containerPath}
                 />
             );
         }

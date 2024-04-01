@@ -189,7 +189,7 @@ export function isPremiumProductEnabled(moduleContext?: ModuleContext): boolean 
     return isSampleManagerEnabled(moduleContext) || isBiologicsEnabled(moduleContext);
 }
 
-export function isAppHomeFolder(container?: Container, moduleContext?: ModuleContext): boolean {
+export function isAppHomeFolder(container?: Partial<Container>, moduleContext?: ModuleContext): boolean {
     // If it's a Home project, or if it's a subfolder and products are disabled.
     const currentContainer: Partial<Container> = container ?? getServerContext().container;
     const isTopFolder = currentContainer.isProject || isProjectContainer(currentContainer.path);
@@ -197,7 +197,7 @@ export function isAppHomeFolder(container?: Container, moduleContext?: ModuleCon
     return isTopFolder || (isSubFolder && !isProductProjectsEnabled(moduleContext));
 }
 
-export function getAppHomeFolderPath(container: Container, moduleContext?: ModuleContext): string {
+export function getAppHomeFolderPath(container: Partial<Container>, moduleContext?: ModuleContext): string {
     return isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath;
 }
 

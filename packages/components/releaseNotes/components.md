@@ -1,9 +1,18 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
-- Issue 49956: Update styling of `PreviewOption` to not turncate text
+### version 3.37.2
+*Released*: 1 April 2024
+- Issue 49956: Update styling of `PreviewOption` to not truncate text
+
+### version 3.37.1
+*Released*: 1 April 2024
+- Issue 49394: Fix storage permission check for folders further down the hierarchy
+- Issue 49908: use project folder for checking storage designer permissions
+
+### version 3.37.0
+*Released*: 1 April 2024
+- Reload EntityInsertPanel LookupCell on targetContainer change
 
 ### version 3.36.0
 *Released*: 30 March 2024

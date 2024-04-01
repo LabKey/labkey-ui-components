@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.37.0
+*Released*: 1 April 2024
+- Reload EntityInsertPanel LookupCell on targetContainer change
+
 ### version 3.36.0
 *Released*: 30 March 2024
 - Introduce `pivotColumn` query metadata section for applying metadata to pivot-generated query columns

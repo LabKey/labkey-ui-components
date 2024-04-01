@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.37.1
+*Released*: 1 April 2024
 - Issue 49394: Fix storage permission check for folders further down the hierarchy
 - Issue 49908: use project folder for checking storage designer permissions
 

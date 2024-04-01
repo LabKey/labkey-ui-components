@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.37.2
+*Released*: 1 April 2024
+- Issue 49956: Update styling of `PreviewOption` to not truncate text
+
 ### version 3.37.1
 *Released*: 1 April 2024
 - Issue 49394: Fix storage permission check for folders further down the hierarchy

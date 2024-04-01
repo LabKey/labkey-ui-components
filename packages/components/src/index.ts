@@ -648,6 +648,7 @@ import {
     SampleStateType,
     SELECTION_KEY_TYPE,
     UNIQUE_ID_FIND_FIELD,
+    SAMPLE_ALL_PROJECT_LOOKUP_FIELDS,
 } from './internal/components/samples/constants';
 import { createMockWithRouteLeave } from './internal/mockUtils';
 import { ConceptModel } from './internal/components/ontology/models';
@@ -1281,6 +1282,7 @@ export {
     SAMPLE_DATA_EXPORT_CONFIG,
     SAMPLE_EXPORT_CONFIG,
     SAMPLE_INSERT_EXTRA_COLUMNS,
+    SAMPLE_ALL_PROJECT_LOOKUP_FIELDS,
     IS_ALIQUOT_COL,
     SampleCreationType,
     ALIQUOT_CREATION,

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.X
-*Released*: X 2024
+### version 3.37.0
+*Released*: 1 April 2024
 - Reload EntityInsertPanel LookupCell on targetContainer change
 
 ### version 3.36.0

@@ -321,6 +321,21 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryCol
             }
         }
 
+        if (lcFieldKey.indexOf('::') > -1) {
+            const lcPivotFieldKey = lcFieldKey.split('::')[1];
+            const pivotColumnMeta = metadata.getIn([
+                'schema',
+                schemaQuery.schemaName.toLowerCase(),
+                'query',
+                schemaQuery.queryName.toLowerCase(),
+                'pivotColumn',
+                lcPivotFieldKey,
+            ]);
+            if (pivotColumnMeta) {
+                columnMeta = Object.assign({}, columnMeta ?? {}, pivotColumnMeta.toJS());
+            }
+        }
+
         columnMetadata = Object.assign({}, allMeta, schemaMeta, columnMeta);
 
         if (columnMetadata) {

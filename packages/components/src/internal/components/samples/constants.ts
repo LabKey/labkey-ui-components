@@ -198,6 +198,7 @@ export const SAMPLE_STORAGE_COLUMNS_WITH_SUBSELECT_EXPR = [
     'StorageRow',
     'StorageCol',
     'CheckedOut',
+    'StorageLocation',
 ];
 
 export const SAMPLE_INSERT_EXTRA_COLUMNS = [...AMOUNT_AND_UNITS_COLUMNS, ...SAMPLE_STORAGE_COLUMNS, ALIQUOTED_FROM_COL];

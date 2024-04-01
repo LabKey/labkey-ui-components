@@ -20,7 +20,7 @@ import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
 import { ViewInfo } from '../../ViewInfo';
 
-import { getProjectDataExclusion, getProjectPath, hasModule } from '../../app/utils';
+import { getAppHomeFolderPath, getProjectDataExclusion, getProjectPath, hasModule } from '../../app/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -115,7 +115,7 @@ export async function getOperationConfirmationData(
 export function getContainersForPermission(permission: PermissionTypes): Promise<string[]> {
     return new Promise((resolve, reject) => {
         Security.getContainers({
-            containerPath: getProjectPath(),
+            containerPath: getAppHomeFolderPath(getServerContext().container),
             includeStandardProperties: false,
             includeSubfolders: true,
             success: (container: Security.ContainerHierarchy) => {

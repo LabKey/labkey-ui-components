@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.36.1
+*Released*: 2 April 2024
+- Cache assay protocol requests on the client. Uncache when assay definitions are uncached.
+- Hack usage of `menuShouldScrollIntoView` in `SelectInput` to recalculate menu positioning after initial load.
+
 ### version 3.36.0
 *Released*: 30 March 2024
 - Introduce `pivotColumn` query metadata section for applying metadata to pivot-generated query columns

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.X
+*Released*: X April 2024
+- Improve-cross project actions - Derivations, Aliquots, and Pooling
+
 ### version 3.37.3
 *Released*: 2 April 2024
 - Introduce `autoInit` prop on `QuerySelect` that allows for users to skip initialization.

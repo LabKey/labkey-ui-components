@@ -14,6 +14,7 @@ export enum SampleCreationType {
     Derivatives = 'Derivatives',
     Independents = 'New samples',
     PooledSamples = 'Pooled Samples',
+    FromSources = 'New samples from sources'
 }
 
 export interface SampleCreationTypeModel {
@@ -29,7 +30,7 @@ export interface SampleCreationTypeModel {
 }
 
 export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
-    type: SampleCreationType.Independents,
+    type: SampleCreationType.FromSources,
     description: 'Create multiple output samples per source.',
     minParentsPerSample: 1,
     iconSrc: 'derivatives',

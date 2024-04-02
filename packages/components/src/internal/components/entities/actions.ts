@@ -300,8 +300,12 @@ async function initParents(
         const { schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
         const selectionResponse = await getSelected(selectionKey, isSnapshotSelection);
 
-        const filterArray = [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)];
+        const insertPermissionContainers = await getContainersForPermission(PermissionTypes.Insert);
 
+        const filterArray = [
+            Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),
+            Filter.create('Container', insertPermissionContainers, Filter.Types.IN)
+        ];
         const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
         if (opFilter) {
             filterArray.push(opFilter);

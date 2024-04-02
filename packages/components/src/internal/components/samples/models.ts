@@ -12,9 +12,9 @@ import { ALIQUOT_FILTER_MODE, SampleStateType } from './constants';
 export enum SampleCreationType {
     Aliquots = 'Aliquots',
     Derivatives = 'Derivatives',
+    FromSources = 'New samples from sources',
     Independents = 'New samples',
     PooledSamples = 'Pooled Samples',
-    FromSources = 'New samples from sources'
 }
 
 export interface SampleCreationTypeModel {
@@ -102,11 +102,11 @@ export interface StorageActionStatusCounts {
 
 // Note: this should stay in sync with the freezermanager/src/components/AddSamplesToStorageModal.tsx props
 interface AddSamplesToStorageModalComponentProps {
+    actionStatusCounts?: StorageActionStatusCounts;
     onCancel: () => any;
     onSuccess?: () => any;
     samplesSelectionKey?: string;
     user: User;
-    actionStatusCounts?: StorageActionStatusCounts;
 }
 
 export type AddSamplesToStorageModal = ComponentType<AddSamplesToStorageModalComponentProps>;

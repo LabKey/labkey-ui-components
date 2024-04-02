@@ -66,7 +66,7 @@ export async function getOperationConfirmationData(
     selectionKey?: string,
     useSnapshotSelection?: boolean,
     extraParams?: Record<string, any>,
-    containerPath?: string,
+    containerPath?: string
 ): Promise<OperationConfirmationData> {
     if (!selectionKey && !rowIds?.length) {
         return new OperationConfirmationData();
@@ -174,7 +174,14 @@ export function getDeleteConfirmationData(
         extraParams = { dataOperation: AssayRunOperation.Delete };
     }
 
-    return getOperationConfirmationData(dataType, rowIds, selectionKey, useSnapshotSelection, extraParams, containerPath);
+    return getOperationConfirmationData(
+        dataType,
+        rowIds,
+        selectionKey,
+        useSnapshotSelection,
+        extraParams,
+        containerPath
+    );
 }
 
 async function getAssayResultOperationConfirmationData(
@@ -205,9 +212,16 @@ export function getSampleOperationConfirmationData(
     rowIds?: string[] | number[],
     selectionKey?: string,
     useSnapshotSelection?: boolean,
-    containerPath?: string,
+    containerPath?: string
 ): Promise<OperationConfirmationData> {
-    return getOperationConfirmationData(SampleTypeDataType, rowIds, selectionKey, useSnapshotSelection, {sampleOperation: SampleOperation[operation]}, containerPath);
+    return getOperationConfirmationData(
+        SampleTypeDataType,
+        rowIds,
+        selectionKey,
+        useSnapshotSelection,
+        { sampleOperation: SampleOperation[operation] },
+        containerPath
+    );
 }
 
 async function getSelectedParents(
@@ -304,7 +318,7 @@ async function initParents(
 
         const filterArray = [
             Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),
-            Filter.create('Container', insertPermissionContainers, Filter.Types.IN)
+            Filter.create('Container', insertPermissionContainers, Filter.Types.IN),
         ];
         const opFilter = getFilterForSampleOperation(SampleOperation.EditLineage);
         if (opFilter) {
@@ -653,7 +667,7 @@ export function handleEntityFileImport(
     importFileController?: string,
     saveToPipeline?: boolean,
     containerPath?: string,
-    auditUserComment?: string,
+    auditUserComment?: string
 ): Promise<any> {
     return new Promise((resolve, reject) => {
         return importData({
@@ -697,9 +711,16 @@ export function getDataOperationConfirmationData(
     selectionKey?: string,
     useSnapshotSelection?: boolean
 ): Promise<OperationConfirmationData> {
-    return getOperationConfirmationData(DataClassDataType, rowIds, selectionKey, useSnapshotSelection, {
-        dataOperation: DataOperation[operation],
-    }, undefined);
+    return getOperationConfirmationData(
+        DataClassDataType,
+        rowIds,
+        selectionKey,
+        useSnapshotSelection,
+        {
+            dataOperation: DataOperation[operation],
+        },
+        undefined
+    );
 }
 
 export function getCrossFolderSelectionResult(
@@ -749,7 +770,7 @@ export function getContainersFromSelections(
     useSnapshotSelection?: boolean,
     rowIds?: string[] | number[],
     picklistName?: string
-): Promise<Record<string, any>[]> {
+): Promise<Array<Record<string, any>>> {
     if (!dataRegionSelectionKey && !rowIds?.length) {
         return Promise.resolve(undefined);
     }
@@ -918,13 +939,20 @@ export function getMoveConfirmationData(
         return getSampleOperationConfirmationData(SampleOperation.Move, rowIds, selectionKey, useSnapshotSelection);
     }
 
-    return getOperationConfirmationData(dataType, rowIds, selectionKey, useSnapshotSelection, isDataClassEntity(dataType)
-        ? {
-            dataOperation: DataOperation.Move,
-        }
-        : isAssayDesignEntity(dataType)
-            ? {dataOperation: AssayRunOperation.Move}
-            : undefined, undefined);
+    return getOperationConfirmationData(
+        dataType,
+        rowIds,
+        selectionKey,
+        useSnapshotSelection,
+        isDataClassEntity(dataType)
+            ? {
+                  dataOperation: DataOperation.Move,
+              }
+            : isAssayDesignEntity(dataType)
+              ? { dataOperation: AssayRunOperation.Move }
+              : undefined,
+        undefined
+    );
 }
 
 export interface MoveEntitiesOptions extends Omit<Query.MoveRowsOptions, 'rows' | 'success' | 'failure' | 'scope'> {

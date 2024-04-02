@@ -301,7 +301,7 @@ export function getSelectionLineageData(
 ): Promise<ISelectRowsResult> {
     const rowIds = getRowIdsFromSelection(selection);
     if (rowIds.length === 0) {
-        return Promise.reject('No data is selected');
+        return Promise.reject('No data is selected.');
     }
 
     return selectRowsDeprecated({

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD April 2024
+- Support cross-folder "Edit in Grid"
+  - rename getOperationNotPermittedMessage() to getOperationNotAllowedMessage()
+
 ### version 3.37.2
 *Released*: 1 April 2024
 - Issue 49956: Update styling of `PreviewOption` to not truncate text

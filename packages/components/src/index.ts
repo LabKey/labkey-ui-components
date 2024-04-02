@@ -383,6 +383,8 @@ import { BaseDomainDesigner } from './internal/components/domainproperties/BaseD
 import {
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
+    getOperationNotAllowedMessage,
+    getOperationNotAllowedMessageFromCounts,
     getOperationNotPermittedMessage,
     getOperationNotPermittedMessageFromCounts,
     getSampleDomainDefaultSystemFields,
@@ -1316,7 +1318,8 @@ export {
     SamplesEditButtonSections,
     StorageAmountInput,
     getOmittedSampleTypeColumns,
-    getOperationNotPermittedMessageFromCounts,
+    getOperationNotAllowedMessageFromCounts,
+    getOperationNotAllowedMessage,
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
     SampleStatusLegend,

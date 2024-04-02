@@ -16,7 +16,10 @@ import { caseInsensitive } from '../../util/utils';
 
 import { ModuleContext } from '../base/ServerContext';
 
-import { SampleState, SampleStatus } from './models';
+import { SchemaQuery } from '../../../public/SchemaQuery';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { PICKLIST_SAMPLES_FILTER } from '../picklist/models';
+import { SystemField } from '../domainproperties/models';
 
 import {
     operationRestrictionMessage,
@@ -29,10 +32,8 @@ import {
     SampleOperation,
     SampleStateType,
 } from './constants';
-import { SchemaQuery } from '../../../public/SchemaQuery';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { PICKLIST_SAMPLES_FILTER } from '../picklist/models';
-import { SystemField } from '../domainproperties/models';
+
+import { SampleState, SampleStatus } from './models';
 
 export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];
@@ -134,7 +135,7 @@ function getOperationMessageAndRecommendation(operation: SampleOperation, numSam
     }
 }
 
-export function getOperationNotPermittedMessageFromCounts(
+export function getOperationNotAllowedMessageFromCounts(
     operation: SampleOperation,
     totalCount: number,
     notAllowedCount: number
@@ -154,7 +155,7 @@ export function getOperationNotPermittedMessageFromCounts(
     return notAllowedMsg;
 }
 
-export function getOperationNotPermittedMessage(
+export function getOperationNotAllowedMessage(
     operation: SampleOperation,
     statusData: OperationConfirmationData,
     aliquotIds?: number[]
@@ -169,7 +170,7 @@ export function getOperationNotPermittedMessage(
             // some aliquots, some not, filter out the aliquots from the status message
             notAllowed = statusData.notAllowed.filter(data => aliquotIds.indexOf(caseInsensitive(data, 'rowId')) < 0);
         }
-        return getOperationNotPermittedMessageFromCounts(operation, statusData.totalCount, notAllowed.length);
+        return getOperationNotAllowedMessageFromCounts(operation, statusData.totalCount, notAllowed.length);
     }
     return null;
 }

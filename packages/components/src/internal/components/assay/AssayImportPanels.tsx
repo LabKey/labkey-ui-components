@@ -58,7 +58,7 @@ import {
 import { loadSelectedSamples } from '../samples/actions';
 
 import { SampleOperation, STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
-import { getOperationNotPermittedMessage } from '../samples/utils';
+import { getOperationNotAllowedMessage } from '../samples/utils';
 
 import { EditableGridChange } from '../editable/EditableGrid';
 
@@ -386,7 +386,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 modelUpdates.selectedSamples = validSamples;
 
                 if (samples.size > 0) {
-                    sampleStatusWarning = getOperationNotPermittedMessage(
+                    sampleStatusWarning = getOperationNotAllowedMessage(
                         SampleOperation.AddAssayData,
                         statusConfirmationData
                     );

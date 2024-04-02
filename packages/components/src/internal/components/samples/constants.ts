@@ -43,11 +43,13 @@ export const IS_ALIQUOT_COL = 'IsAliquot';
 export const SAMPLE_STATE_COLUMN_NAME = 'SampleState';
 export const SAMPLE_STATE_TYPE_COLUMN_NAME = 'SampleState/StatusType';
 export const SAMPLE_STATE_DESCRIPTION_COLUMN_NAME = 'SampleState/Description';
+export const SAMPLE_STATE_COLOR_COLUMN_NAME = 'SampleState/Color';
 
 export const SAMPLE_STATUS_REQUIRED_COLUMNS = [
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
+    SAMPLE_STATE_COLOR_COLUMN_NAME
 ];
 
 export enum SampleOperation {
@@ -315,3 +317,126 @@ export const STORED_AMOUNT_FIELDS = {
 };
 
 export const SAMPLE_TYPE_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
+
+export const SAMPLE_STATUS_COLORS = {
+    '#F9B3B3': { // Locked default
+        color: '#BF3939',
+        backgroundColor: '#FDE6E6',
+        borderColor: '#F9B3B3',
+    },
+    '#FAD0BB': {
+        color: '#B24712',
+        backgroundColor: '#FCEFE8',
+        borderColor: '#B24712',
+    },
+    '#FAEBCC': { // Consumed default
+        color: '#8A6D3B',
+        backgroundColor: '#FCF8E3',
+        borderColor: '#FAEBCC',
+    },
+    '#D6E9C6': { // Available default
+        color: '#3C763D',
+        backgroundColor: '#F0F8ED',
+        borderColor: '#D6E9C6',
+    },
+    '#B7EDDD': {
+        color: '#0A825E',
+        backgroundColor: '#EBFDF8',
+        borderColor: '#B7EDDD',
+    },
+    '#C9E6F2': {
+        color: '#0088CC',
+        backgroundColor: '#F1F9FC',
+        borderColor: '#C9E6F2',
+    },
+    '#C9C9F2': {
+        color: '#4242ED',
+        backgroundColor: '#EBEBFD',
+        borderColor: '#C9C9F2',
+    },
+    '#E6C0F9': {
+        color: '#A234D9',
+        backgroundColor: '#F7EBFD',
+        borderColor: '#E6C0F9',
+    },
+    '#F5BCE2': {
+        color: '#BF1F8A',
+        backgroundColor: '#FDEBF7',
+        borderColor: '#F5BCE2',
+    },
+    '#DED5CC': {
+        color: '#876444',
+        backgroundColor: '#F5EEE9',
+        borderColor: '#DED5CC',
+    },
+    '#E0E0E0': {
+        color: '#6B6B6B',
+        backgroundColor: '#F7F7F7',
+        borderColor: '#E0E0E0',
+    },
+    '#C2C2C2': {
+        color: '#333333',
+        backgroundColor: '#DEDEDE',
+        borderColor: '#C2C2C2',
+    },
+    '#FDE6E6': { // Locked default
+        color: '#BF3939',
+        backgroundColor: '#FDE6E6',
+        borderColor: '#F9B3B3',
+    },
+    '#FCEFE8': {
+        color: '#B24712',
+        backgroundColor: '#FCEFE8',
+        borderColor: '#B24712',
+    },
+    '#FCF8E3': { // Consumed default
+        color: '#8A6D3B',
+        backgroundColor: '#FCF8E3',
+        borderColor: '#FAEBCC',
+    },
+    '#F0F8ED': { // Available default
+        color: '#3C763D',
+        backgroundColor: '#F0F8ED',
+        borderColor: '#D6E9C6',
+    },
+    '#EBFDF8': {
+        color: '#0A825E',
+        backgroundColor: '#EBFDF8',
+        borderColor: '#B7EDDD',
+    },
+    '#F1F9FC': {
+        color: '#0088CC',
+        backgroundColor: '#F1F9FC',
+        borderColor: '#C9E6F2',
+    },
+    '#EBEBFD': {
+        color: '#4242ED',
+        backgroundColor: '#EBEBFD',
+        borderColor: '#C9C9F2',
+    },
+    '#F7EBFD': {
+        color: '#A234D9',
+        backgroundColor: '#F7EBFD',
+        borderColor: '#E6C0F9',
+    },
+    '#FDEBF7': {
+        color: '#BF1F8A',
+        backgroundColor: '#FDEBF7',
+        borderColor: '#F5BCE2',
+    },
+    '#F5EEE9': {
+        color: '#876444',
+        backgroundColor: '#F5EEE9',
+        borderColor: '#DED5CC',
+    },
+    '#F7F7F7': {
+        color: '#6B6B6B',
+        backgroundColor: '#F7F7F7',
+        borderColor: '#E0E0E0',
+    },
+    '#DEDEDE': {
+        color: '#333333',
+        backgroundColor: '#DEDEDE',
+        borderColor: '#C2C2C2',
+    },
+};

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.37.3
+*Released*: 2 April 2024
+- Introduce `autoInit` prop on `QuerySelect` that allows for users to skip initialization.
+- Default `autoInit` to `process.env.NODE_ENV !== 'test'`.
+
 ### version 3.37.2
 *Released*: 1 April 2024
 - Issue 49956: Update styling of `PreviewOption` to not truncate text

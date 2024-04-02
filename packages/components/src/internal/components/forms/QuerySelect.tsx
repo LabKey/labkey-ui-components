@@ -23,7 +23,14 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { SelectInputOption, SelectInput, SelectInputProps, SelectInputChange } from './input/SelectInput';
 import { resolveDetailFieldLabel } from './utils';
-import { fetchSearchResults, formatSavedResults, initSelect, QuerySelectModel, saveSearchResults, setSelection } from './model';
+import {
+    fetchSearchResults,
+    formatSavedResults,
+    initSelect,
+    QuerySelectModel,
+    saveSearchResults,
+    setSelection,
+} from './model';
 import { DELIMITER } from './constants';
 
 function getValue(model: QuerySelectModel, multiple: boolean): any {

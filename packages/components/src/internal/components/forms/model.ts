@@ -64,7 +64,11 @@ function formatResults(model: QuerySelectModel, results: Map<string, any>, token
  * @param result select rows result
  * @param token an optional search token that will be used to sort the results
  */
-export function formatSavedResults(model: QuerySelectModel, result: ISelectRowsResult, token?: string): SelectInputOption[] {
+export function formatSavedResults(
+    model: QuerySelectModel,
+    result: ISelectRowsResult,
+    token?: string
+): SelectInputOption[] {
     const { queryInfo, selectedItems } = model;
 
     if (!queryInfo) {
@@ -180,7 +184,9 @@ function initValueColumn(queryInfo: QueryInfo, column?: string): string {
         valueColumn = column;
 
         if (!queryInfo.getColumn(valueColumn)) {
-            throw new Error(`Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The "valueColumn" "${valueColumn}" does not exist.`);
+            throw new Error(
+                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The "valueColumn" "${valueColumn}" does not exist.`
+            );
         }
     } else {
         const pkCols = queryInfo.getPkCols();
@@ -190,10 +196,12 @@ function initValueColumn(queryInfo: QueryInfo, column?: string): string {
         } else if (pkCols.length > 0) {
             throw new Error(
                 `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). Set "valueColumn" explicitly to any of ` +
-                pkCols.map(col => col.fieldKey).join(', ')
+                    pkCols.map(col => col.fieldKey).join(', ')
             );
         } else {
-            throw new Error(`Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). Set "valueColumn" explicitly as this query does not have any primary keys.`);
+            throw new Error(
+                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). Set "valueColumn" explicitly as this query does not have any primary keys.`
+            );
         }
     }
 

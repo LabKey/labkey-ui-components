@@ -29,13 +29,27 @@ import { Container } from '../base/models/Container';
 
 import { SampleState } from './models';
 import { getSampleStatusLockedMessage } from './utils';
+import { ColorPickerInput } from '../forms/input/ColorPickerInput';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = new SchemaQuery('exp', 'SampleStateType');
 const DEFAULT_TYPE_OPTIONS = [{ value: 'Available' }, { value: 'Consumed' }, { value: 'Locked' }];
 const NEW_STATUS_INDEX = -1;
 const SAMPLE_STATUS_LOCKED_TITLE = 'Sample Status Locked';
-
+const SAMPLE_STATUS_COLORS = [
+    '#F9B3B3',
+    '#FAD0BB',
+    '#FAEBCC',
+    '#D6E9C6',
+    '#B7EDDD',
+    '#C9E6F2',
+    '#C9C9F2',
+    '#E6C0F9',
+    '#F5BCE2',
+    '#DED5CC',
+    '#E0E0E0',
+    '#C2C2C2',
+];
 interface SampleStatusDetailProps {
     addNew: boolean;
     container?: Container;
@@ -204,6 +218,20 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     </FormGroup>
                     <FormGroup>
                         <div className="col-sm-4">
+                            <DomainFieldLabel label="Color" required />
+                        </div>
+                        <div className="col-sm-8">
+                            <ColorPickerInput
+                                name="color"
+                                value={updatedState.color}
+                                onChange={onSelectChange}
+                                allowRemove
+                                colors={SAMPLE_STATUS_COLORS}
+                            />
+                        </div>
+                    </FormGroup>
+                    <FormGroup>
+                        <div className="col-sm-4">
                             <DomainFieldLabel label="Description" />
                         </div>
                         <div className="col-sm-8">
@@ -252,7 +280,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                         {updatedState.isLocal && (
                             <button
                                 className="pull-right btn btn-success"
-                                disabled={!dirty || saving}
+                                disabled={!dirty || saving || !updatedState.color || !updatedState.label}
                                 onClick={onSave}
                                 type="button"
                             >

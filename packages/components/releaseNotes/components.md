@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Add ability for users to choose colors associated with sample statuses
+  - Update `ColorPickerInput` to accept optional list of default colors
+  - Update `ManageSampleStatusesPanel` to include a `ColorPickerInput`
+  - Update `SampleState` model with color field
+
 ### version 3.37.3
 *Released*: 2 April 2024
 - Introduce `autoInit` prop on `QuerySelect` that allows for users to skip initialization.

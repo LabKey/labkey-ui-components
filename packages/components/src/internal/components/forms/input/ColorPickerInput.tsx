@@ -11,6 +11,7 @@ interface Props {
     onChange: (name: string, value: string) => void;
     text?: string;
     value: string;
+    colors?: string[];
 }
 
 interface State {
@@ -34,7 +35,7 @@ export class ColorPickerInput extends PureComponent<Props, State> {
     };
 
     render(): ReactNode {
-        const { text, value, allowRemove } = this.props;
+        const { colors, text, value, allowRemove } = this.props;
         const { showPicker } = this.state;
         const iconClassName = classNames('fa', { 'fa-caret-up': showPicker, 'fa-caret-down': !showPicker });
         const showChip = text !== undefined;
@@ -62,7 +63,7 @@ export class ColorPickerInput extends PureComponent<Props, State> {
                     {showPicker && (
                         <>
                             <div className="color-picker__mask" onClick={this.togglePicker} />
-                            <CompactPicker onChangeComplete={this.onChange} color={value} />
+                            <CompactPicker onChangeComplete={this.onChange} color={value} colors={colors} />
                         </>
                     )}
                 </div>

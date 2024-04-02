@@ -163,6 +163,7 @@ export class SampleState {
     readonly inUse: boolean;
     readonly isLocal: boolean;
     readonly containerPath: string;
+    readonly color: string;
 
     constructor(values?: Partial<SampleState>) {
         Object.assign(this, values);

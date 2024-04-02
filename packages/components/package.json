@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "3.36.1-fb-kerr-free.0",
+  "version": "3.36.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

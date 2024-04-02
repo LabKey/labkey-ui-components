@@ -386,7 +386,6 @@ import {
     getOperationNotAllowedMessage,
     getOperationNotAllowedMessageFromCounts,
     getOperationNotPermittedMessage,
-    getOperationNotPermittedMessageFromCounts,
     getSampleDomainDefaultSystemFields,
     getSampleStatus,
     getSampleStatusContainerFilter,

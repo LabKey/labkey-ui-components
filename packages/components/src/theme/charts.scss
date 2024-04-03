@@ -65,14 +65,11 @@
     }
 }
 
-.bar-insights--checkedout, .bar-insights--consumed {
+.bar-insights--checkedout {
     background: #faebcc;
 }
-.bar-insights--instorage, .bar-insights--available {
+.bar-insights--instorage {
     background: #dff0d8;
-}
-.bar-insights--locked {
-    background: #f2dede;
 }
 .bar-insights--aliquots {
     background: rgba(0, 103, 197, 0.145);

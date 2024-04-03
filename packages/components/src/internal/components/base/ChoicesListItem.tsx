@@ -6,7 +6,7 @@ interface Props {
     componentRight?: ReactNode;
     disabled?: boolean;
     index: number;
-    label: string;
+    label: ReactNode;
     onSelect: (index: number) => void;
     subLabel?: string;
 }

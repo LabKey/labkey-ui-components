@@ -669,15 +669,11 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
         await actions.loadCharts(model.id);
     }, [actions, model.id, onHide, savedChartModel]);
 
-    const onCancel = useCallback(() => {
-        onHide();
-    }, [onHide]);
-
     const footer = (
         <ChartBuilderFooter
             afterDelete={afterDelete}
             disabled={!hasName || !hasRequiredValues}
-            onCancel={onCancel}
+            onCancel={onHide}
             onSaveChart={onSaveChart}
             savedChartModel={savedChartModel}
             saving={saving}
@@ -688,7 +684,7 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
     return (
         <Modal
             className="chart-builder-modal"
-            onCancel={onCancel}
+            onCancel={onHide}
             title={savedChartModel ? 'Edit Chart' : 'Create Chart'}
             footer={footer}
         >

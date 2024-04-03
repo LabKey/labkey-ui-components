@@ -308,7 +308,7 @@ export function getSelectionLineageData(
         schemaName: schema,
         queryName: query,
         viewName,
-        columns: columns ?? List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
+        columns: columns ?? List.of('RowId', 'Name', 'LSID', 'Folder').concat(ParentEntityLineageColumns).toArray(),
         filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
     });
 }

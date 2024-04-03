@@ -4,8 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD April 2024
 - Support cross-folder "Edit in Grid"
-  - rename getOperationNotPermittedMessage() to getOperationNotAllowedMessage()
+  - Rename getOperationNotPermittedMessage() to getOperationNotAllowedMessage()
   - EditableGridLoaderFromSelection to account for idsNotPermitted when using selections for getSelectedData()
+  - Show Project column in EditableGrid for "Edit in Grid"
 
 ### version 3.37.2
 *Released*: 1 April 2024

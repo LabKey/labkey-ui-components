@@ -6,6 +6,8 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
 import { AppURL } from '../../url/AppURL';
 
+import { OperationConfirmationData } from '../entities/models';
+
 import { SamplesEditButtonSections } from './utils';
 import { ALIQUOT_FILTER_MODE, SampleStateType } from './constants';
 
@@ -101,11 +103,11 @@ export interface StorageActionStatusCounts {
 
 // Note: this should stay in sync with the freezermanager/src/components/AddSamplesToStorageModal.tsx props
 interface AddSamplesToStorageModalComponentProps {
+    actionStatusCounts?: StorageActionStatusCounts;
     onCancel: () => any;
     onSuccess?: () => any;
     samplesSelectionKey?: string;
     user: User;
-    actionStatusCounts?: StorageActionStatusCounts;
 }
 
 export type AddSamplesToStorageModal = ComponentType<AddSamplesToStorageModalComponentProps>;
@@ -195,6 +197,6 @@ export interface SampleGridButtonProps {
     navigate?: (url: string | AppURL) => void;
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
     sampleFinderBaseProps?: Record<string, any>;
-    showBulkUpdate?: () => void;
-    toggleEditWithGridUpdate?: () => void;
+    showBulkUpdate?: (statusData?: OperationConfirmationData) => void;
+    toggleEditWithGridUpdate?: (statusData?: OperationConfirmationData) => void;
 }

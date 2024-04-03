@@ -21,8 +21,15 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
     const { charts, containerPath, id, queryInfo, selectedReportId } = model;
     const [savedChartModel, setSavedChartModel] = useState<GenericChartModel>(undefined);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
-    const { createNotification } = useNotificationsContext();
     const { moduleContext } = useServerContext();
+
+    // useNotificationsContext will not always be available depending on if the app wraps the NotificationsContext.Provider
+    let _createNotification;
+    try {
+        _createNotification = useNotificationsContext().createNotification;
+    } catch (e) {
+        // this is expected for LKS usages, so don't throw or console.error
+    }
 
     const selectedChart = useMemo(
         () => charts?.find(chart => chart.reportId === selectedReportId),
@@ -54,10 +61,10 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
         (successMsg?: string) => {
             setShowEditModal(false);
             if (successMsg) {
-                createNotification({ message: successMsg, alertClass: 'success' });
+                _createNotification({ message: successMsg, alertClass: 'success' });
             }
         },
-        [createNotification]
+        [_createNotification]
     );
 
     // If we don't have a queryInfo we can't get filters off the model, so we can't render the chart

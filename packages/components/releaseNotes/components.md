@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.37.4
+*Released*: 3 April 2024
+- Merge from release24.4-SNAPSHOT to develop
+    - includes changes from 3.36.1 #1463
+
 ### version 3.37.3
 *Released*: 2 April 2024
 - Introduce `autoInit` prop on `QuerySelect` that allows for users to skip initialization.

@@ -23,6 +23,7 @@ import {
     permittedOps,
     SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS,
     SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS,
+    SAMPLE_STATE_COLOR_COLUMN_NAME,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
@@ -86,6 +87,10 @@ export function getSampleStatus(row: any): SampleStatus {
     return {
         label,
         statusType: getSampleStatusType(row),
+        color:
+            caseInsensitive(row, SAMPLE_STATE_COLOR_COLUMN_NAME)?.value ||
+            caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_COLOR_COLUMN_NAME)?.value ||
+            caseInsensitive(row, 'Color')?.value,
         description:
             caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value ||
             caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value ||

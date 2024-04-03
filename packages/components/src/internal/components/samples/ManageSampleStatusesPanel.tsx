@@ -30,26 +30,15 @@ import { Container } from '../base/models/Container';
 import { SampleState } from './models';
 import { getSampleStatusLockedMessage } from './utils';
 import { ColorPickerInput } from '../forms/input/ColorPickerInput';
+import { SampleStatusTag } from './SampleStatusTag';
+import { SAMPLE_STATUS_COLORS } from './constants';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = new SchemaQuery('exp', 'SampleStateType');
 const DEFAULT_TYPE_OPTIONS = [{ value: 'Available' }, { value: 'Consumed' }, { value: 'Locked' }];
 const NEW_STATUS_INDEX = -1;
 const SAMPLE_STATUS_LOCKED_TITLE = 'Sample Status Locked';
-const SAMPLE_STATUS_COLORS = [
-    '#F9B3B3',
-    '#FAD0BB',
-    '#FAEBCC',
-    '#D6E9C6',
-    '#B7EDDD',
-    '#C9E6F2',
-    '#C9C9F2',
-    '#E6C0F9',
-    '#F5BCE2',
-    '#DED5CC',
-    '#E0E0E0',
-    '#C2C2C2',
-];
+
 interface SampleStatusDetailProps {
     addNew: boolean;
     container?: Container;
@@ -226,7 +215,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 value={updatedState.color}
                                 onChange={onSelectChange}
                                 allowRemove
-                                colors={SAMPLE_STATUS_COLORS}
+                                colors={Object.keys(SAMPLE_STATUS_COLORS)}
                             />
                         </div>
                     </FormGroup>
@@ -329,7 +318,7 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                     index={index}
                     subLabel={state.stateType !== state.label && state.stateType}
                     key={state.rowId}
-                    label={state.label}
+                    label={<SampleStatusTag status={state.toSampleStatus()} />}
                     onSelect={onSelect}
                     componentRight={
                         (state.inUse || !state.isLocal) && (

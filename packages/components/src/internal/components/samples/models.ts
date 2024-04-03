@@ -84,6 +84,7 @@ export interface FindField {
 export interface SampleStatus {
     description?: string;
     label: string;
+    color: string;
     statusType: SampleStateType;
 }
 
@@ -180,6 +181,15 @@ export class SampleState {
         return produce<SampleState>(this, draft => {
             Object.assign(draft, props);
         });
+    }
+
+    toSampleStatus(): SampleStatus {
+        return {
+            description: this.description,
+            label: this.label,
+            color: this.color,
+            statusType: SampleStateType[this.stateType],
+        };
     }
 }
 

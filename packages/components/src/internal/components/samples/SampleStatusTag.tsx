@@ -1,4 +1,4 @@
-import React, { FC, memo, useEffect, useMemo, useState } from 'react';
+import React, { CSSProperties, FC, memo, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { Filter } from '@labkey/api';
 
@@ -13,13 +13,38 @@ import { useServerContext } from '../base/ServerContext';
 import { useAppContext } from '../../AppContext';
 
 import { SampleStatus } from './models';
-import { SampleStateType } from './constants';
+import { SAMPLE_STATUS_COLORS, SampleStateType } from './constants';
 
 interface Props {
     className?: string;
     hideDescription?: boolean;
     iconOnly?: boolean;
     status: SampleStatus;
+}
+
+function hexToRGB(hex: string): number[] {
+    const bigInt = parseInt(hex.replace('#', ''), 16);
+    const r = (bigInt >> 16) & 255;
+    const g = (bigInt >> 8) & 255;
+    const b = bigInt & 255;
+    return [r, g, b];
+}
+
+function getStatusTagStyle(status: SampleStatus): CSSProperties {
+    const style = SAMPLE_STATUS_COLORS[status.color?.toUpperCase()];
+    if (style) {
+        return {
+            ...style,
+            borderColor: 'lightgray',
+        };
+    }
+    const rgb = hexToRGB(status.color);
+    const luminance = 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+    return {
+        borderColor: 'lightgray',
+        backgroundColor: status.color,
+        color: luminance <= 0.5 ? 'white' : '#555555',
+    };
 }
 
 export const SampleStatusTag: FC<Props> = memo(props => {
@@ -54,13 +79,7 @@ export const SampleStatusTag: FC<Props> = memo(props => {
     if (!label || !isSampleStatusEnabled(moduleContext)) return null;
 
     const icon = iconOnly ? (
-        <i
-            className={classNames('status-icon fa fa-info', {
-                danger: statusType_ === SampleStateType.Locked,
-                warning: statusType_ === SampleStateType.Consumed,
-                success: statusType_ === SampleStateType.Available,
-            })}
-        />
+        <i className="status-icon fa fa-info" style={getStatusTagStyle(status)} />
     ) : (
         <span>{label}</span>
     );
@@ -71,13 +90,11 @@ export const SampleStatusTag: FC<Props> = memo(props => {
             <span
                 className={classNames(className, {
                     'status-pill sample-status-pill': !iconOnly,
-                    danger: !iconOnly && statusType_ === SampleStateType.Locked,
-                    warning: !iconOnly && statusType_ === SampleStateType.Consumed,
-                    success: !iconOnly && statusType_ === SampleStateType.Available,
                 })}
+                style={getStatusTagStyle(status)}
             >
                 {!hideDescription && (description || !isAvailable || iconOnly) ? (
-                    <LabelHelpTip iconComponent={icon} placement="bottom" title="Sample Status">
+                    <LabelHelpTip iconComponent={icon} placement="right" title="Sample Status">
                         <div className="ws-pre-wrap popover-message">
                             <b>{label}</b> {description && '- '}
                             {description}

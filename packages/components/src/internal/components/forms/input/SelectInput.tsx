@@ -234,6 +234,7 @@ interface State {
     asyncKey: number;
     initialLoad: boolean;
     isDisabled: boolean;
+    menuShouldScrollIntoView: boolean;
     originalOptions: SelectInputOption | SelectInputOption[];
     selectedOptions: SelectInputOption | SelectInputOption[];
 }
@@ -280,6 +281,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             asyncKey: 0,
             initialLoad: true,
             isDisabled: !!props.initiallyDisabled,
+            menuShouldScrollIntoView: false,
             originalOptions: selectedOptions,
             selectedOptions,
         };
@@ -383,13 +385,31 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
 
         // If "autoValue" is enabled, then this will ensure the "selectedOptions" are mapped
         // from the specified "value" once the initial "loadOptions" call has been made.
-        if (this.state.initialLoad && this.props.autoValue) {
-            const selectedOptions = initOptions({ ...this.props, options });
-            this.setState({
-                initialLoad: false,
-                originalOptions: selectedOptions,
-                selectedOptions,
-            });
+        if (this.state.initialLoad) {
+            if (this.props.autoValue) {
+                const selectedOptions = initOptions({ ...this.props, options });
+                this.setState({
+                    initialLoad: false,
+                    originalOptions: selectedOptions,
+                    selectedOptions,
+                });
+            }
+
+            // Issue 48259: ReactSelect menu positioning is currently broken when set to menuPosition="auto"
+            // and the menu is asynchronously loaded. As a result the menu can end up rendering off the bottom of the
+            // page upon initial load instead of "flipping" up to render above the select. This is due to the
+            // underlying implementation not respecting the "isLoaded" bit when adjusting the layout via
+            // useLayoutEffect() in <MenuPlacer/>.
+            // This timeout operation works by flipping the "menuShouldScrollIntoView" bit, which is respected by
+            // the underlying useLayoutEffect(), after a render cycle has been completed for the load out. We don't
+            // currently support overriding the "menuShouldScrollIntoView" prop AND we always use "fixed" position
+            // which results in ReactSelect never attempting to scroll regardless of if this prop is true or false.
+            // ReactSelect Issue: https://github.com/JedWatson/react-select/issues/5733
+            setTimeout(() => {
+                if (this._isMounted) {
+                    this.setState({ menuShouldScrollIntoView: true });
+                }
+            }, 1);
         }
 
         return options;
@@ -600,6 +620,8 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             isValidNewOption,
             menuPlacement,
             menuPosition,
+            // See comment in loadOptions() about how this is set and why it is utilized
+            menuShouldScrollIntoView: this.state.menuShouldScrollIntoView,
             name,
             noOptionsMessage: this.noOptionsMessage,
             onBlur: this.handleBlur,

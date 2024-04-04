@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update `ManageSampleStatusesPanel` to include a `ColorPickerInput`
   - Update `SampleState` model with color field
 
+### version 3.37.4
+*Released*: 3 April 2024
+- Merge from release24.4-SNAPSHOT to develop
+    - includes changes from 3.36.1 #1463
+
 ### version 3.37.3
 *Released*: 2 April 2024
 - Introduce `autoInit` prop on `QuerySelect` that allows for users to skip initialization.
@@ -25,6 +30,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.37.0
 *Released*: 1 April 2024
 - Reload EntityInsertPanel LookupCell on targetContainer change
+
+### version 3.36.1
+*Released*: 2 April 2024
+- Cache assay protocol requests on the client. Uncache when assay definitions are uncached.
+- Hack usage of `menuShouldScrollIntoView` in `SelectInput` to recalculate menu positioning after initial load.
 
 ### version 3.36.0
 *Released*: 30 March 2024

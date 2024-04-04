@@ -61,7 +61,7 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
         (successMsg?: string) => {
             setShowEditModal(false);
             if (successMsg) {
-                _createNotification({ message: successMsg, alertClass: 'success' });
+                _createNotification?.({ message: successMsg, alertClass: 'success' });
             }
         },
         [_createNotification]

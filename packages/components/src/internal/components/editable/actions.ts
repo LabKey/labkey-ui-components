@@ -419,30 +419,28 @@ export async function addRows(
  * @param queryColumns the ordered map of columns to be added
  * @param fieldKey the fieldKey of the existing column after which the new columns should be inserted.  If undefined
  * or the column is not found, columns will be added at the beginning.
- * @param readOnlyColumns set of columns that are in the grid along with the editable columns (e.g., 'Name')
  */
 export function addColumns(
     editorModel: EditorModel,
     queryInfo: QueryInfo,
     originalData: Map<any, Map<string, any>>,
     queryColumns: ExtendedMap<string, QueryColumn>,
-    fieldKey?: string,
-    readOnlyColumns?: string[]
+    fieldKey?: string
 ): EditorModelUpdates {
     if (queryColumns.size === 0) return {};
 
-    // add one to these because we insert after the given field (or at the
-    // beginning if there is no such field)
-    const editorColIndex = queryInfo.getInsertColumnIndex(fieldKey, readOnlyColumns) + 1;
-    const queryColIndex = queryInfo.getColumnIndex(fieldKey) + 1;
+    // if fieldKey is provided, find that index and we will insert after it
+    const leftColIndex = fieldKey ? editorModel.columns.findIndex(column => column?.toLowerCase() === fieldKey.toLowerCase()) : -1;
+    if (fieldKey && leftColIndex === -1) return {};
 
-    if (editorColIndex < 0 || editorColIndex > queryInfo.columns.size) return {};
+    const editorModelIndex = leftColIndex + 1;
+    const queryColIndex = queryInfo.getColumnIndex(fieldKey) + 1;
 
     const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-        if (oldColIdx >= editorColIndex) {
+        if (oldColIdx >= editorModelIndex) {
             return cellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
-        } else if (oldColIdx < editorColIndex) {
+        } else if (oldColIdx < editorModelIndex) {
             return cellMessages.set(cellKey, message);
         }
 
@@ -452,9 +450,9 @@ export function addColumns(
     let newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
-        if (oldColIdx >= editorColIndex) {
+        if (oldColIdx >= editorModelIndex) {
             return cellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
-        } else if (oldColIdx < editorColIndex) {
+        } else if (oldColIdx < editorModelIndex) {
             return cellValues.set(cellKey, value);
         }
 
@@ -463,7 +461,7 @@ export function addColumns(
 
     for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
         for (let c = 0; c < queryColumns.size; c++) {
-            newCellValues = newCellValues.set(genCellKey(editorColIndex + c, rowIdx), List<ValueDescriptor>());
+            newCellValues = newCellValues.set(genCellKey(editorModelIndex + c, rowIdx), List<ValueDescriptor>());
         }
     }
 
@@ -477,14 +475,10 @@ export function addColumns(
         .toMap();
 
     let { columns } = editorModel;
-    if (columns.size < editorColIndex) {
-        columns = columns.concat(queryColumns.mapValues(col => col.fieldKey)).toList();
-    } else {
-        queryColumns.valueArray.forEach((col, i) => {
-            columns = columns.insert(i + editorColIndex, col.fieldKey);
-        });
-        columns = columns.toList();
-    }
+    queryColumns.valueArray.forEach((col, i) => {
+        columns = columns.insert(i + editorModelIndex, col.fieldKey);
+    });
+    columns = columns.toList();
 
     return {
         editorModelChanges: {
@@ -509,7 +503,7 @@ export function changeColumn(
     existingFieldKey: string,
     newQueryColumn: QueryColumn
 ): EditorModelUpdates {
-    const colIndex = queryInfo.getInsertColumns().findIndex(column => column.fieldKey === existingFieldKey);
+    const colIndex = editorModel.columns.findIndex(column => column === existingFieldKey);
 
     // nothing to do if there is no such column
     if (colIndex === -1) return {};
@@ -581,7 +575,7 @@ export function removeColumn(
     originalData: Map<any, Map<string, any>>,
     fieldKey: string
 ): EditorModelUpdates {
-    const deleteIndex = queryInfo.getInsertColumnIndex(fieldKey);
+    const deleteIndex = editorModel.columns.findIndex(column => column === fieldKey);
     // nothing to do if there is no such column
     if (deleteIndex === -1) return {};
 

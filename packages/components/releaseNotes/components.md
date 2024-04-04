@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Rename getOperationNotPermittedMessage() to getOperationNotAllowedMessage()
   - EditableGridLoaderFromSelection to account for idsNotPermitted when using selections for getSelectedData()
   - Show Project column in EditableGrid for "Edit in Grid"
+  - Add saveRowsByContainer util to QueryAPIWrapper
 
 ### version 3.37.4
 *Released*: 3 April 2024

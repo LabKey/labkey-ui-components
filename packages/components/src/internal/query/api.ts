@@ -994,6 +994,39 @@ export function saveRows(options: Query.SaveRowsOptions): Promise<Query.SaveRows
     });
 }
 
+function splitRowsByContainer(rows: any[], containerField: string): Record<string, any[]> {
+    const containerRows = {};
+    rows.forEach(row => {
+        const container = caseInsensitive(row, containerField);
+        if (!containerRows[container]) containerRows[container] = [];
+        containerRows[container].push(row);
+    });
+
+    return containerRows;
+}
+
+export function saveRowsByContainer(options: Query.SaveRowsOptions, containerField: string = 'ContainerPath'): void {
+    const commands = [];
+
+    // for each original command, split it into multiple commands for each container in the rows
+    options.commands.forEach(command => {
+        const containerRows = splitRowsByContainer(command.rows, containerField);
+        Object.keys(containerRows).forEach(containerPath => {
+            const rows = containerRows[containerPath];
+            commands.push({
+                ...command,
+                rows,
+                containerPath: !containerPath || containerPath === 'undefined' ? undefined : containerPath,
+            });
+        });
+    });
+
+    Query.saveRows({
+        ...options,
+        commands,
+    });
+}
+
 export function deleteRowsByContainer(
     options: DeleteRowsOptions,
     containerField: string = 'ContainerPath'
@@ -1009,13 +1042,7 @@ export function deleteRowsByContainer(
     )
         return deleteRows(options);
 
-    const containerRows = {};
-    allRows.forEach(row => {
-        const container = caseInsensitive(row, containerField);
-        if (!containerRows[container]) containerRows[container] = [];
-        containerRows[container].push(row);
-    });
-
+    const containerRows = splitRowsByContainer(allRows, containerField);
     if (Object.keys(containerRows).length <= 1) {
         const containerPath = Object.keys(containerRows)?.[0];
         return deleteRows({

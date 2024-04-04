@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD April 2024
+### version 3.37.5
+*Released*: 4 April 2024
 - ChartBuilder fix for tests (createNotification not defined) and JS error (onHide to handle evt parameter
 
 ### version 3.37.4

@@ -14,6 +14,7 @@ import { useAppContext } from '../../AppContext';
 
 import { SampleStatus } from './models';
 import { SAMPLE_STATUS_COLORS, SampleStateType } from './constants';
+import { getSampleStatusColor } from './utils';
 
 interface Props {
     className?: string;
@@ -31,7 +32,8 @@ function hexToRGB(hex: string): number[] {
 }
 
 function getStatusTagStyle(status: SampleStatus): CSSProperties {
-    const style = SAMPLE_STATUS_COLORS[status.color?.toUpperCase()];
+    const color = getSampleStatusColor(status.color, status.statusType);
+    const style = SAMPLE_STATUS_COLORS[color];
     if (style) {
         return {
             ...style,

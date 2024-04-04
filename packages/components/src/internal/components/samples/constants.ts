@@ -318,6 +318,10 @@ export const STORED_AMOUNT_FIELDS = {
 
 export const SAMPLE_TYPE_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
 
+export const DEFAULT_AVAILABLE_STATUS_COLOR = '#F0F8ED';
+export const DEFAULT_CONSUMED_STATUS_COLOR = '#FCF8E3';
+export const DEFAULT_LOCKED_STATUS_COLOR = '#FDE6E6';
+
 export const SAMPLE_STATUS_COLORS = {
     '#FDE6E6': { // Locked default
         color: '#BF3939',

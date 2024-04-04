@@ -19,6 +19,9 @@ import { ModuleContext } from '../base/ServerContext';
 import { SampleState, SampleStatus } from './models';
 
 import {
+    DEFAULT_AVAILABLE_STATUS_COLOR,
+    DEFAULT_CONSUMED_STATUS_COLOR,
+    DEFAULT_LOCKED_STATUS_COLOR,
     operationRestrictionMessage,
     permittedOps,
     SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS,
@@ -68,6 +71,23 @@ export function getSampleStatusType(row: any): SampleStateType {
         caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_TYPE_COLUMN_NAME)?.value ||
         caseInsensitive(row, 'StatusType')?.value
     );
+}
+
+export function getSampleStatusColor(color: string, stateType: SampleStateType | string): string {
+    if (color) return color.toUpperCase();
+
+    const _stateType = SampleStateType[stateType];
+
+    switch (_stateType) {
+        case SampleStateType.Available:
+            return DEFAULT_AVAILABLE_STATUS_COLOR;
+        case SampleStateType.Consumed:
+            return DEFAULT_CONSUMED_STATUS_COLOR;
+        case SampleStateType.Locked:
+            return DEFAULT_LOCKED_STATUS_COLOR;
+        default:
+            return null;
+    }
 }
 
 export function getSampleStatus(row: any): SampleStatus {

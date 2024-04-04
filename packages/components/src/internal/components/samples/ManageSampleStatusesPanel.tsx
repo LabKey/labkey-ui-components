@@ -31,7 +31,8 @@ import { SampleState } from './models';
 import { getSampleStatusLockedMessage } from './utils';
 import { ColorPickerInput } from '../forms/input/ColorPickerInput';
 import { SampleStatusTag } from './SampleStatusTag';
-import { SAMPLE_STATUS_COLORS } from './constants';
+import { SAMPLE_STATUS_COLORS, SampleStateType } from './constants';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = new SchemaQuery('exp', 'SampleStateType');
@@ -301,39 +302,67 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
 SampleStatusDetail.displayName = 'SampleStatusDetail';
 
 interface SampleStatusesListProps {
-    onSelect: (index: number) => void;
+    onSelect: (index: number, group?: string) => void;
     selected: number;
-    states: SampleState[];
+    selectedGroup: string;
+    statesByType: Record<string, SampleState[]>;
 }
+
+const HELP_TEXT = {
+    [SampleStateType.Available]: 'Allows any action. Included in the calculation of available amount.',
+    [SampleStateType.Consumed]: 'Prevents updates to storage such as adding to storage or changing F/T count.',
+    [SampleStateType.Locked]: 'All updates to the sample are prevented. Locked samples may be added to picklists.',
+};
 
 // exported for jest testing
 export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
-    const { states, onSelect, selected } = props;
+    const { statesByType, onSelect, selected, selectedGroup } = props;
 
     return (
-        <div className="list-group">
-            {states.map((state, index) => (
-                <ChoicesListItem
-                    active={index === selected}
-                    index={index}
-                    subLabel={state.stateType !== state.label && state.stateType}
-                    key={state.rowId}
-                    label={<SampleStatusTag status={state.toSampleStatus()} />}
-                    onSelect={onSelect}
-                    componentRight={
-                        (state.inUse || !state.isLocal) && (
-                            <LockIcon
-                                iconCls="pull-right choices-list__locked"
-                                body={getSampleStatusLockedMessage(state, false)}
-                                id="sample-state-lock-icon"
-                                title={SAMPLE_STATUS_LOCKED_TITLE}
+        <>
+            {Object.entries(statesByType).map(([stateType, _states]) => (
+                <React.Fragment key={stateType}>
+                    <div className="choice-section-header">
+                        {stateType}
+                        <LabelHelpTip
+                            iconComponent={
+                                <span>
+                                    <i className="fa fa-info-circle" />
+                                </span>
+                            }
+                            placement="right"
+                        >
+                            {HELP_TEXT[SampleStateType[stateType]]}
+                        </LabelHelpTip>
+                    </div>
+                    <div className="list-group">
+                        {_states.map((state, index) => (
+                            <ChoicesListItem
+                                active={index === selected && stateType === selectedGroup}
+                                group={stateType}
+                                index={index}
+                                key={state.rowId}
+                                label={<SampleStatusTag status={state.toSampleStatus()} />}
+                                onSelect={onSelect}
+                                componentRight={
+                                    (state.inUse || !state.isLocal) && (
+                                        <LockIcon
+                                            iconCls="pull-right choices-list__locked"
+                                            body={getSampleStatusLockedMessage(state, false)}
+                                            id="sample-state-lock-icon"
+                                            title={SAMPLE_STATUS_LOCKED_TITLE}
+                                        />
+                                    )
+                                }
                             />
-                        )
-                    }
-                />
+                        ))}
+                        {Object.keys(statesByType).length === 0 && (
+                            <p className="choices-list__empty-message">No sample statuses defined.</p>
+                        )}
+                    </div>
+                </React.Fragment>
             ))}
-            {states.length === 0 && <p className="choices-list__empty-message">No sample statuses defined.</p>}
-        </div>
+        </>
     );
 });
 SampleStatusesList.displayName = 'SampleStatusesList';
@@ -345,9 +374,10 @@ interface ManageSampleStatusesPanelProps extends InjectedRouteLeaveProps {
 
 export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = memo(props => {
     const { api, setIsDirty, container } = props;
-    const [states, setStates] = useState<SampleState[]>();
+    const [states, setStates] = useState<Record<string, SampleState[]>>();
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
+    const [selectedGroup, setSelectedGroup] = useState<string>();
     const addNew = useMemo(() => selected === NEW_STATUS_INDEX, [selected]);
 
     const querySampleStatuses = useCallback(
@@ -357,11 +387,20 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
             api.samples
                 .getSampleStatuses(true, container?.path)
                 .then(statuses => {
-                    setStates(statuses);
-                    if (newStatusLabel) setSelected(statuses.findIndex(state => state.label === newStatusLabel));
+                    const statesByType: Record<string, SampleState[]> = {};
+                    statuses.forEach(state => {
+                        if (!statesByType[state.stateType]) {
+                            statesByType[state.stateType] = [];
+                        }
+                        statesByType[state.stateType].push(state);
+                    });
+                    setStates(statesByType);
+                    if (newStatusLabel) {
+                        setSelected(statuses.findIndex(state => state.label === newStatusLabel));
+                    }
                 })
                 .catch(() => {
-                    setStates([]);
+                    setStates({});
                     setError('Error: Unable to load sample statuses.');
                 });
         },
@@ -372,8 +411,9 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
         querySampleStatuses();
     }, [querySampleStatuses]);
 
-    const onSetSelected = useCallback((index: number) => {
+    const onSetSelected = useCallback((index: number, group: string) => {
         setSelected(index);
+        setSelectedGroup(group);
     }, []);
 
     const onAddState = useCallback(() => {
@@ -402,13 +442,18 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                 {states && !error && (
                     <div className="row choices-container">
                         <div className="col-lg-4 col-md-6 choices-container-left-panel">
-                            <SampleStatusesList states={states} selected={selected} onSelect={onSetSelected} />
+                            <SampleStatusesList
+                                statesByType={states}
+                                selected={selected}
+                                selectedGroup={selectedGroup}
+                                onSelect={onSetSelected}
+                            />
                             <AddEntityButton onClick={onAddState} entity="New Status" disabled={addNew} />
                         </div>
                         <div className="col-lg-8 col-md-6">
                             <SampleStatusDetail
                                 // use null to indicate that no statuses exist to be selected, so don't show the empty message
-                                state={states.length === 0 ? null : states[selected]}
+                                state={Object.keys(states).length === 0 ? null : states[selectedGroup]?.[selected]}
                                 addNew={addNew}
                                 onActionComplete={onActionComplete}
                                 onChange={onChange}

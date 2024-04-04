@@ -38,9 +38,11 @@ export function allowReimportAssayRun(user: User, runContainerId: string, target
 }
 
 let assayDefinitionCache: { [key: string]: Promise<AssayDefinitionModel[]> } = {};
+let protocolCache: Record<string, Promise<AssayProtocolModel>> = {};
 
 export function clearAssayDefinitionCache(): void {
     assayDefinitionCache = {};
+    protocolCache = {};
 }
 
 export type GetAssayDefinitionsOptions = Omit<Assay.GetAssaysOptions, 'failure' | 'parameters' | 'scope' | 'success'>;
@@ -81,20 +83,29 @@ export type GetProtocolOptions = {
 
 export function getProtocol(options: GetProtocolOptions): Promise<AssayProtocolModel> {
     const { copy = false, containerPath, protocolId, providerName } = options;
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL('assay', 'getProtocol.api', containerPath, {
-                copy,
-                // give precedence to the protocolId if both are provided
-                protocolId,
-                providerName: protocolId !== undefined ? undefined : providerName,
-            }),
-            success: Utils.getCallbackWrapper(data => {
-                resolve(AssayProtocolModel.create(data.data));
-            }),
-            failure: handleRequestFailure(reject, 'Failed to load assay protocol'),
+    const key = [copy, containerPath, protocolId, providerName].join('|').toLowerCase();
+
+    // Issue 49922: Cache assay protocol requests
+    if (!protocolCache[key]) {
+        protocolCache[key] = new Promise((resolve, reject) => {
+            const params: Record<string, any> = { copy, protocolId };
+
+            // give precedence to the protocolId if both are provided
+            if (protocolId === undefined) {
+                params.providerName = providerName;
+            }
+
+            Ajax.request({
+                url: ActionURL.buildURL('assay', 'getProtocol.api', containerPath, params),
+                success: Utils.getCallbackWrapper(data => {
+                    resolve(AssayProtocolModel.create(data.data));
+                }),
+                failure: handleRequestFailure(reject, 'Failed to load assay protocol'),
+            });
         });
-    });
+    }
+
+    return protocolCache[key];
 }
 
 export type ImportAssayRunOptions = Omit<AssayDOM.ImportRunOptions, 'success' | 'failure' | 'scope'>;

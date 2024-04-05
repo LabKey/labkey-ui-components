@@ -322,6 +322,8 @@ export const DEFAULT_AVAILABLE_STATUS_COLOR = '#F0F8ED';
 export const DEFAULT_CONSUMED_STATUS_COLOR = '#FCF8E3';
 export const DEFAULT_LOCKED_STATUS_COLOR = '#FDE6E6';
 
+// N.B. At the moment the borderColor values are not being used (see getStatusTagStyle)
+// but they are left here for the moment, so we don't lose track of the values
 export const SAMPLE_STATUS_COLORS = {
     '#FDE6E6': { // Locked default
         color: '#BF3939',

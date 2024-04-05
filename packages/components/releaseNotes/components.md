@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update `ManageSampleStatusesPanel` to include a `ColorPickerInput`
   - Update `SampleState` model with color field
 
+### version 3.37.5
+*Released*: 4 April 2024
+- ChartBuilder fix for tests (createNotification not defined) and JS error (onHide to handle evt parameter
+
 ### version 3.37.4
 *Released*: 3 April 2024
 - Merge from release24.4-SNAPSHOT to develop

@@ -29,6 +29,13 @@ export interface SampleCreationTypeModel {
     type: SampleCreationType;
 }
 
+export const INDEPENDENT_SAMPLE_CREATION: SampleCreationTypeModel = {
+    type: SampleCreationType.Independents,
+    description: 'Create samples.',
+    minParentsPerSample: 0,
+    quantityLabel: 'New Samples',
+};
+
 export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
     type: SampleCreationType.FromSources,
     description: 'Create multiple output samples per source.',

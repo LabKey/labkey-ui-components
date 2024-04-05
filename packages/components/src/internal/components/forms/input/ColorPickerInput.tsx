@@ -25,9 +25,6 @@ export class ColorPickerInput extends PureComponent<Props, State> {
 
     onChange = (color?: ColorResult): void => {
         this.props.onChange(this.props.name, color?.hex);
-        if (color) {
-            this.togglePicker();
-        }
     };
 
     togglePicker = (): void => {

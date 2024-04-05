@@ -444,5 +444,4 @@ export const SAMPLE_STATUS_COLORS = {
         borderColor: '#DEDEDE',
         backgroundColor: '#C2C2C2',
     },
-
 };

@@ -82,9 +82,9 @@ export interface FindField {
 }
 
 export interface SampleStatus {
+    color: string;
     description?: string;
     label: string;
-    color: string;
     statusType: SampleStateType;
 }
 

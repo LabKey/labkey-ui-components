@@ -320,48 +320,52 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
 
     return (
         <>
-            {Object.entries(statesByType).map(([stateType, _states]) => (
-                <React.Fragment key={stateType}>
-                    <div className="choice-section-header">
-                        {stateType}
-                        <LabelHelpTip
-                            iconComponent={
-                                <span>
-                                    <i className="fa fa-info-circle" />
-                                </span>
-                            }
-                            placement="right"
-                        >
-                            {HELP_TEXT[SampleStateType[stateType]]}
-                        </LabelHelpTip>
-                    </div>
-                    <div className="list-group">
-                        {_states.map((state, index) => (
-                            <ChoicesListItem
-                                active={index === selected && stateType === selectedGroup}
-                                group={stateType}
-                                index={index}
-                                key={state.rowId}
-                                label={<SampleStatusTag status={state.toSampleStatus()} />}
-                                onSelect={onSelect}
-                                componentRight={
-                                    (state.inUse || !state.isLocal) && (
-                                        <LockIcon
-                                            iconCls="pull-right choices-list__locked"
-                                            body={getSampleStatusLockedMessage(state, false)}
-                                            id="sample-state-lock-icon"
-                                            title={SAMPLE_STATUS_LOCKED_TITLE}
-                                        />
-                                    )
+            {Object.keys(statesByType)
+                .sort()
+                .map(stateType => (
+                    <React.Fragment key={stateType}>
+                        <div className="choice-section-header">
+                            {stateType}
+                            <LabelHelpTip
+                                iconComponent={
+                                    <span>
+                                        <i className="fa fa-info-circle" />
+                                    </span>
                                 }
-                            />
-                        ))}
-                        {Object.keys(statesByType).length === 0 && (
-                            <p className="choices-list__empty-message">No sample statuses defined.</p>
-                        )}
-                    </div>
-                </React.Fragment>
+                                placement="right"
+                            >
+                                {HELP_TEXT[SampleStateType[stateType]]}
+                            </LabelHelpTip>
+                        </div>
+                        <div className="list-group">
+                            {statesByType[stateType].map((state, index) => (
+                                <ChoicesListItem
+                                    active={index === selected && stateType === selectedGroup}
+                                    group={stateType}
+                                    index={index}
+                                    key={state.rowId}
+                                    label={<SampleStatusTag status={state.toSampleStatus()} />}
+                                    onSelect={onSelect}
+                                    componentRight={
+                                        (state.inUse || !state.isLocal) && (
+                                            <LockIcon
+                                                iconCls="pull-right choices-list__locked"
+                                                body={getSampleStatusLockedMessage(state, false)}
+                                                id="sample-state-lock-icon"
+                                                title={SAMPLE_STATUS_LOCKED_TITLE}
+                                            />
+                                        )
+                                    }
+                                />
+                            ))}
+                        </div>
+                    </React.Fragment>
             ))}
+            {Object.keys(statesByType).length === 0 && (
+                <div className="list-group">
+                    <p className="choices-list__empty-message">No sample statuses defined.</p>
+                </div>
+            )}
         </>
     );
 });

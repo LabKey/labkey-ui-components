@@ -7,11 +7,11 @@ import { RemoveEntityButton } from '../../buttons/RemoveEntityButton';
 
 interface Props {
     allowRemove?: boolean;
+    colors?: string[];
     name?: string;
     onChange: (name: string, value: string) => void;
     text?: string;
     value: string;
-    colors?: string[];
 }
 
 interface State {

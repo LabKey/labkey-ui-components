@@ -23,15 +23,17 @@ interface Props {
     status: SampleStatus;
 }
 
-function hexToRGB(hex: string): number[] {
-    const bigInt = parseInt(hex.replace('#', ''), 16);
+// exported for Jest test
+export function hexToRGB(hex: string): number[] {
+    const bigInt = parseInt(hex?.replace('#', ''), 16);
     const r = (bigInt >> 16) & 255;
     const g = (bigInt >> 8) & 255;
     const b = bigInt & 255;
     return [r, g, b];
 }
 
-function getStatusTagStyle(status: SampleStatus): CSSProperties {
+// exported for Jest test
+export function getStatusTagStyle(status: SampleStatus): CSSProperties {
     const color = getSampleStatusColor(status.color, status.statusType);
     const style = SAMPLE_STATUS_COLORS[color];
     if (style) {
@@ -41,7 +43,7 @@ function getStatusTagStyle(status: SampleStatus): CSSProperties {
         };
     }
     const rgb = hexToRGB(status.color);
-    const luminance = 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+    const luminance = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2])/255;
     return {
         borderColor: 'lightgray',
         backgroundColor: status.color,

@@ -28,7 +28,7 @@ import { useAppContext } from '../../AppContext';
 import { Container } from '../base/models/Container';
 
 import { SampleState } from './models';
-import { getSampleStatusLockedMessage } from './utils';
+import { getSampleStatusColor, getSampleStatusLockedMessage } from './utils';
 import { ColorPickerInput } from '../forms/input/ColorPickerInput';
 import { SampleStatusTag } from './SampleStatusTag';
 import { SAMPLE_STATUS_COLORS, SampleStateType } from './constants';
@@ -89,7 +89,13 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
         if (addNew) {
             setUpdatedState(new SampleState({ stateType: typeOptions?.[0]?.value, isLocal: true }));
         } else {
-            setUpdatedState(state);
+            if (state && !state.color) {
+                setUpdatedState(
+                    new SampleState({ ...state, color: getSampleStatusColor(state.color, state.stateType) })
+                );
+            } else {
+                setUpdatedState(state);
+            }
         }
         setDirty(addNew);
         if (addNew) onChange();

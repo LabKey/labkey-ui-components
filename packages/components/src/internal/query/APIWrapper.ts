@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import { QueryInfo } from '../../public/QueryInfo';
 import {
@@ -21,6 +21,7 @@ import {
     saveGridView,
     saveSessionView,
     SelectResponse,
+    setSelected,
     setSnapshotSelections,
 } from '../actions';
 
@@ -55,6 +56,7 @@ export interface QueryAPIWrapper {
         dataTypeRowId: number,
         dataTypeName: string
     ) => Promise<Record<string, number>>;
+    getDefaultVisibleColumns: (options: GetQueryDetailsOptions) => Promise<QueryColumn[]>;
     getEntityTypeOptions: (
         entityDataType: EntityDataType,
         containerPath?: string
@@ -107,9 +109,19 @@ export interface QueryAPIWrapper {
     ) => Promise<void>;
     selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<Query.SelectDistinctResponse>;
     selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
+    setSelected: (
+        key: string,
+        checked: boolean,
+        ids: string[] | string,
+        containerPath?: string,
+        validateIds?: boolean,
+        schemaName?: string,
+        queryName?: string,
+        filterList?: List<Filter.IFilter>,
+        queryParameters?: Record<string, any>
+    ) => Promise<SelectResponse>;
     setSnapshotSelections: (key: string, ids: string[] | string, containerPath?: string) => Promise<SelectResponse>;
     updateRows: (options: UpdateRowsOptions) => Promise<QueryCommandResponse>;
-    getDefaultVisibleColumns: (options: GetQueryDetailsOptions) => Promise<QueryColumn[]>;
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {
@@ -130,6 +142,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     saveSessionView = saveSessionView;
     selectRows = selectRows;
     selectDistinctRows = selectDistinctRows;
+    setSelected = setSelected;
     setSnapshotSelections = setSnapshotSelections;
     updateRows = updateRows;
     getDefaultVisibleColumns = getDefaultVisibleColumns;
@@ -160,6 +173,7 @@ export function getQueryTestAPIWrapper(
         saveSessionView: mockFn(),
         selectRows: mockFn(),
         selectDistinctRows: mockFn(),
+        setSelected: mockFn(),
         setSnapshotSelections: mockFn(),
         updateRows: mockFn(),
         getDefaultVisibleColumns: mockFn(),

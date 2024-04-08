@@ -162,7 +162,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     onActionComplete(stateToSave.label);
                 })
                 .catch(reason => {
-                    setError(resolveErrorMessage(reason, 'status', 'statuses', 'updating'));
+                    setError(resolveErrorMessage(reason, 'status', 'statuses', 'updating', resolveDuplicateStatusLabel));
                     setSaving(false);
                 });
         } else {
@@ -176,7 +176,15 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     onActionComplete(stateToSave.label);
                 })
                 .catch(response => {
-                    setError(resolveErrorMessage(response.error, 'status', 'status', 'inserting', resolveDuplicateStatusLabel));
+                    setError(
+                        resolveErrorMessage(
+                            response.error,
+                            'status',
+                            'status',
+                            'inserting',
+                            resolveDuplicateStatusLabel
+                        )
+                    );
                     setSaving(false);
                 });
         }
@@ -414,11 +422,12 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                             statesByType[state.stateType] = [];
                         }
                         statesByType[state.stateType].push(state);
+                        if (newStatusLabel && state.label === newStatusLabel) {
+                            setSelectedGroup(state.stateType);
+                            setSelected(statesByType[state.stateType].length - 1);
+                        }
                     });
                     setStates(statesByType);
-                    if (newStatusLabel) {
-                        setSelected(statuses.findIndex(state => state.label === newStatusLabel));
-                    }
                 })
                 .catch(() => {
                     setStates({});

@@ -48,6 +48,25 @@ interface SampleStatusDetailProps {
     state: SampleState;
 }
 
+export function resolveDuplicateStatusLabel(errorMsg: string, noun: string, nounPlural: string, verb: string): string {
+    const keyMatch = errorMsg.match(/Key \(([^)]+)\)=\(([^)]+)\) already exists./);
+    let name;
+    if (keyMatch) {
+        // the uniqueness key has only two parts: (label, container)
+        const index = keyMatch[2].lastIndexOf(', ');
+        name = keyMatch[2].substring(0, index);
+    }
+    let retMsg = `There was a problem ${verb || 'creating'} your ${nounPlural || noun || 'data'}.`;
+    if (name) {
+        retMsg += ` Duplicate name '${name}' found.`;
+    } else {
+        retMsg += ` Check the existing ${nounPlural || noun} for possible duplicates and make sure any referenced ${
+            nounPlural || noun
+        } are still valid.`;
+    }
+    return retMsg;
+}
+
 // exported for jest testing
 export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
     const { state, addNew, onActionComplete, onChange, container } = props;
@@ -157,7 +176,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     onActionComplete(stateToSave.label);
                 })
                 .catch(response => {
-                    setError(resolveErrorMessage(response.get('error'), 'status', 'statuses', 'inserting'));
+                    setError(resolveErrorMessage(response.error, 'status', 'status', 'inserting', resolveDuplicateStatusLabel));
                     setSaving(false);
                 });
         }
@@ -222,6 +241,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 value={updatedState.color}
                                 onChange={onSelectChange}
                                 allowRemove
+                                disabled={saving || !updatedState.isLocal}
                                 colors={Object.keys(SAMPLE_STATUS_COLORS)}
                             />
                         </div>
@@ -276,7 +296,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                         {updatedState.isLocal && (
                             <button
                                 className="pull-right btn btn-success"
-                                disabled={!dirty || saving || !updatedState.color || !updatedState.label}
+                                disabled={!dirty || saving || !updatedState.color || !updatedState.label?.trim()}
                                 onClick={onSave}
                                 type="button"
                             >
@@ -332,16 +352,7 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                     <React.Fragment key={stateType}>
                         <div className="choice-section-header">
                             {stateType}
-                            <LabelHelpTip
-                                iconComponent={
-                                    <span>
-                                        <i className="fa fa-info-circle" />
-                                    </span>
-                                }
-                                placement="right"
-                            >
-                                {HELP_TEXT[SampleStateType[stateType]]}
-                            </LabelHelpTip>
+                            <LabelHelpTip placement="right">{HELP_TEXT[SampleStateType[stateType]]}</LabelHelpTip>
                         </div>
                         <div className="list-group">
                             {statesByType[stateType].map((state, index) => (
@@ -350,7 +361,7 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                                     group={stateType}
                                     index={index}
                                     key={state.rowId}
-                                    label={<SampleStatusTag status={state.toSampleStatus()} />}
+                                    label={<SampleStatusTag status={state.toSampleStatus()} hideDescription={true} />}
                                     onSelect={onSelect}
                                     componentRight={
                                         (state.inUse || !state.isLocal) && (
@@ -366,7 +377,7 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                             ))}
                         </div>
                     </React.Fragment>
-            ))}
+                ))}
             {Object.keys(statesByType).length === 0 && (
                 <div className="list-group">
                     <p className="choices-list__empty-message">No sample statuses defined.</p>

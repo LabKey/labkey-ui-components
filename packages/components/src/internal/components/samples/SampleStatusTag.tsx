@@ -20,6 +20,7 @@ interface Props {
     className?: string;
     hideDescription?: boolean;
     iconOnly?: boolean;
+    placement?: 'top' | 'right' | 'bottom' | 'left';
     status: SampleStatus;
 }
 
@@ -43,7 +44,7 @@ export function getStatusTagStyle(status: SampleStatus): CSSProperties {
         };
     }
     const rgb = hexToRGB(status.color);
-    const luminance = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2])/255;
+    const luminance = (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255;
     return {
         borderColor: 'lightgray',
         backgroundColor: status.color,
@@ -54,7 +55,7 @@ export function getStatusTagStyle(status: SampleStatus): CSSProperties {
 export const SampleStatusTag: FC<Props> = memo(props => {
     const { api } = useAppContext();
     const { moduleContext } = useServerContext();
-    const { status, iconOnly, className, hideDescription } = props;
+    const { placement, status, iconOnly, className, hideDescription } = props;
     const { label, statusType, description } = status;
     const [queryStatusType, setQueryStatusType] = useState<SampleStateType>();
     const statusType_ = useMemo(() => statusType || queryStatusType, [statusType, queryStatusType]);
@@ -98,7 +99,7 @@ export const SampleStatusTag: FC<Props> = memo(props => {
                 style={getStatusTagStyle(status)}
             >
                 {!hideDescription && (description || !isAvailable || iconOnly) ? (
-                    <LabelHelpTip iconComponent={icon} placement="right" title="Sample Status">
+                    <LabelHelpTip iconComponent={icon} placement={placement} title="Sample Status">
                         <div className="ws-pre-wrap popover-message">
                             <b>{label}</b> {description && '- '}
                             {description}
@@ -116,3 +117,7 @@ export const SampleStatusTag: FC<Props> = memo(props => {
         </>
     );
 });
+
+SampleStatusTag.defaultProps = {
+    placement: 'bottom',
+};

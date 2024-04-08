@@ -58,7 +58,7 @@ export class ColorPickerInput extends PureComponent<Props, State> {
 
                 {showChip && <ColorIcon cls="color-picker__chip" asSquare={true} value={value} />}
 
-                {allowRemove && value && (
+                {allowRemove && value && !disabled && (
                     <RemoveEntityButton onClick={() => this.onChange()} labelClass="color-picker__remove" />
                 )}
 

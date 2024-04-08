@@ -1,10 +1,10 @@
 import { Dispatch, MutableRefObject, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 
 interface ProductMenuState {
-    show: boolean;
-    setShow: Dispatch<SetStateAction<boolean>>;
-    toggleRef: MutableRefObject<HTMLButtonElement>;
     menuRef: MutableRefObject<HTMLDivElement>;
+    setShow: Dispatch<SetStateAction<boolean>>;
+    show: boolean;
+    toggleRef: MutableRefObject<HTMLButtonElement>;
 }
 
 /**
@@ -30,6 +30,9 @@ export function useNavMenuState(): ProductMenuState {
         if (show) {
             document.addEventListener('click', onDocumentClick);
         }
+
+        // Prevent scrolling the body when a navigation menu is shown
+        document.body.classList.toggle('no-scroll', show);
 
         return () => {
             document.removeEventListener('click', onDocumentClick);

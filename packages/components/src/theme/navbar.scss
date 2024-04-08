@@ -161,33 +161,8 @@
     left: -62px;
     width: 925px;
     margin-top: 1px;
-    /* Works on Firefox */
-    * {
-        scrollbar-width: thin;
-        scrollbar-color: $light-gray $white;
-    }
-
-    /* Works on Chrome, Edge, and Safari */
-    *::-webkit-scrollbar {
-        width: 12px;
-    }
-
-    *::-webkit-scrollbar-track {
-        background-color: $white;
-    }
-
-    *::-webkit-scrollbar-thumb {
-        background-color: $light-gray;
-        border-radius: 20px;
-        border: 3px solid $white;
-    }
-
-  .sections-content {
-      display: inline;
-  }
 
   .col-folders {
-      width: 25%;
       background-color: $gray-shadow;
       border-radius: 4px 0 0 4px;
       padding-left: 8px;
@@ -240,43 +215,9 @@
       }
   }
 
-  &.with-col-folders {
-      .col-product-section {
-          width: 15%;
-      }
-      &.with-section-count-4 .col-product-section {
-          width: 18%;
-      }
-      &.with-section-count-3 .col-product-section {
-          width: 25%;
-      }
-  }
-  &:not(.with-col-folders) {
-      padding-left: 8px;
-
-      .col-product-section {
-          width: 20%;
-      }
-      &.with-section-count-4 .col-product-section {
-          width: 25%;
-      }
-      &.with-section-count-3 .col-product-section {
-          width: 33%;
-      }
-  }
-
-  .col-product-section:last-child {
-      padding-right: 8px;
-  }
-
   .menu-section {
-    vertical-align: top;
-    display: inline-block;
     word-break: break-word;
     padding-bottom: 16px;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
 
     .menu-section-header {
       font-family: FontAwesome, $font-family-sans-serif;
@@ -295,9 +236,6 @@
     }
 
     ul {
-      display: inline-block;
-      width: 100%;
-      vertical-align: top;
       list-style-type: none;
       margin: 0;
       padding: 0;
@@ -728,4 +666,45 @@
 .navbar-item.visible-xs.pull-right > .btn-group.open.dropdown-toggle:active {
     background-color: transparent !important;
     box-shadow: none;
+}
+
+.product-menu-content-body {
+    display: flex;
+    height: 100%;
+}
+
+.product-menu-content-body .col-folders {
+    flex: 25;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.product-menu-content-body .sections-content {
+    display: flex;
+    flex: 75;
+}
+
+.col-product-section {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    flex-grow: 2;
+    height: 100%;
+}
+
+.col-product-section:last-child {
+    padding-right: 8px;
+}
+
+.product-menu-section-header {
+    height: 62px;
+}
+
+.product-menu-section {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.no-scroll {
+    overflow: hidden;
 }

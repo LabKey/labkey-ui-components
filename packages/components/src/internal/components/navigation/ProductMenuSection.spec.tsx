@@ -6,9 +6,10 @@ import { AppURL } from '../../url/AppURL';
 import { mountWithServerContext } from '../../test/enzymeTestHelpers';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
+
 import { ProductMenuSection } from './ProductMenuSection';
 import { MenuSectionModel, MenuSectionConfig } from './model';
-import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
 describe('ProductMenuSection', () => {
     const sampleSetItems = List<MenuSectionModel>([

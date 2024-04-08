@@ -325,9 +325,9 @@ export const DEFAULT_LOCKED_STATUS_COLOR = '#FDE6E6';
 // N.B. At the moment the borderColor values are not being used (see getStatusTagStyle)
 // but they are left here for the moment, so we don't lose track of the values
 export const SAMPLE_STATUS_COLORS = {
-    '#FDE6E6': {
+    [DEFAULT_LOCKED_STATUS_COLOR]: {
         color: '#BF3939',
-        backgroundColor: '#FDE6E6',
+        backgroundColor: DEFAULT_LOCKED_STATUS_COLOR,
         borderColor: '#F9B3B3',
     },
     '#FCEFE8': {
@@ -335,14 +335,14 @@ export const SAMPLE_STATUS_COLORS = {
         backgroundColor: '#FCEFE8',
         borderColor: '#B24712',
     },
-    '#FCF8E3': {
+    [DEFAULT_CONSUMED_STATUS_COLOR]: {
         color: '#8A6D3B',
-        backgroundColor: '#FCF8E3',
+        backgroundColor: DEFAULT_CONSUMED_STATUS_COLOR,
         borderColor: '#FAEBCC',
     },
-    '#F0F8ED': {
+    [DEFAULT_AVAILABLE_STATUS_COLOR]: {
         color: '#3C763D',
-        backgroundColor: '#F0F8ED',
+        backgroundColor: DEFAULT_AVAILABLE_STATUS_COLOR,
         borderColor: '#D6E9C6',
     },
     '#EBFDF8': {

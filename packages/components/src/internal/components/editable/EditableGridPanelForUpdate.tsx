@@ -22,6 +22,10 @@ import { resolveErrorMessage } from '../../util/messaging';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { OperationConfirmationData } from '../entities/models';
+
+import { getOperationNotPermittedMessage } from '../samples/utils';
+
 import { EditorModel, EditableGridLoader } from './models';
 
 import { EditableGridPanel } from './EditableGridPanel';
@@ -36,6 +40,7 @@ type Models = {
 
 interface Props {
     containerFilter?: Query.ContainerFilter;
+    editStatusData?: OperationConfirmationData;
     getIsDirty?: () => boolean;
     idField: string;
     loader: EditableGridLoader;
@@ -57,7 +62,7 @@ interface Props {
 }
 
 export const EditableGridPanelForUpdate: FC<Props> = props => {
-    const { containerFilter, onCancel, singularNoun, pluralNoun, ...editableGridProps } = props;
+    const { containerFilter, onCancel, singularNoun, pluralNoun, editStatusData, ...editableGridProps } = props;
     const { idField, loader, queryModel, selectionData, getIsDirty, setIsDirty, updateRows, onComplete } =
         editableGridProps;
     const id = loader.id;
@@ -72,6 +77,7 @@ export const EditableGridPanelForUpdate: FC<Props> = props => {
     const { requiresUserComment } = useDataChangeCommentsRequired();
 
     const hasValidUserComment = comment?.trim()?.length > 0;
+    const notPermittedText = getOperationNotPermittedMessage(editStatusData, pluralNoun);
 
     useEffect(() => {
         (async (): Promise<void> => {
@@ -148,6 +154,7 @@ export const EditableGridPanelForUpdate: FC<Props> = props => {
 
     return (
         <>
+            {notPermittedText && <Alert bsStyle="warning">{notPermittedText}</Alert>}
             <EditableGridPanel
                 {...editableGridProps}
                 allowAdd={false}

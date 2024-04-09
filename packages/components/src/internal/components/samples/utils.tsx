@@ -175,11 +175,7 @@ export function getOperationNotAllowedMessage(
     return null;
 }
 
-export function getOperationNotPermittedMessage(
-    operation: SampleOperation,
-    statusData: OperationConfirmationData,
-    nounPlural = 'samples'
-): string {
+export function getOperationNotPermittedMessage(statusData: OperationConfirmationData, nounPlural = 'samples'): string {
     if (statusData && statusData.notPermitted?.length > 0) {
         const notPermittedCount = statusData.notPermitted.length;
         return `${notPermittedCount.toLocaleString()} of the selected ${nounPlural.toLowerCase()} ${notPermittedCount > 1 ? "aren't" : "isn't"} shown because you don't have permissions to edit in that project.`;

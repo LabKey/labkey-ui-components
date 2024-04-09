@@ -17,12 +17,13 @@ import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { EditorModel, EditableGridLoader } from './models';
 
 import { EditableGridPanel } from './EditableGridPanel';
-import { initEditableGridModel, initEditableGridModels } from './actions';
+import { initEditableGridModel } from './actions';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid } from './utils';
 import { EditableGridChange } from './EditableGrid';
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 import { resolveErrorMessage } from '../../util/messaging';
+import {QueryColumn} from "../../../public/QueryColumn";
 
 type Models = {
     dataModel: QueryModel;
@@ -38,9 +39,11 @@ interface Props {
     onComplete: () => void;
     pluralNoun?: string;
     queryModel: QueryModel;
+    readOnlyColumns?: string[];
     selectionData: Map<string, any>;
     setIsDirty?: (isDirty: boolean) => void;
     singularNoun?: string;
+    updateColumns?: QueryColumn[];
     updateRows: (schemaQuery: SchemaQuery, rows: any[], comment: string) => Promise<any>;
 }
 

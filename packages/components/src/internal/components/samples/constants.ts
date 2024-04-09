@@ -322,128 +322,102 @@ export const DEFAULT_AVAILABLE_STATUS_COLOR = '#F0F8ED';
 export const DEFAULT_CONSUMED_STATUS_COLOR = '#FCF8E3';
 export const DEFAULT_LOCKED_STATUS_COLOR = '#FDE6E6';
 
-// N.B. At the moment the borderColor values are not being used (see getStatusTagStyle)
-// but they are left here for the moment, so we don't lose track of the values
 export const SAMPLE_STATUS_COLORS = {
     [DEFAULT_LOCKED_STATUS_COLOR]: {
         color: '#BF3939',
         backgroundColor: DEFAULT_LOCKED_STATUS_COLOR,
-        borderColor: '#F9B3B3',
     },
     '#FCEFE8': {
         color: '#B24712',
         backgroundColor: '#FCEFE8',
-        borderColor: '#B24712',
     },
     [DEFAULT_CONSUMED_STATUS_COLOR]: {
         color: '#8A6D3B',
         backgroundColor: DEFAULT_CONSUMED_STATUS_COLOR,
-        borderColor: '#FAEBCC',
     },
     [DEFAULT_AVAILABLE_STATUS_COLOR]: {
         color: '#3C763D',
         backgroundColor: DEFAULT_AVAILABLE_STATUS_COLOR,
-        borderColor: '#D6E9C6',
     },
     '#EBFDF8': {
         color: '#0A825E',
         backgroundColor: '#EBFDF8',
-        borderColor: '#B7EDDD',
     },
     '#F1F9FC': {
         color: '#0088CC',
         backgroundColor: '#F1F9FC',
-        borderColor: '#C9E6F2',
     },
     '#EBEBFD': {
         color: '#4242ED',
         backgroundColor: '#EBEBFD',
-        borderColor: '#C9C9F2',
     },
     '#F7EBFD': {
         color: '#A234D9',
         backgroundColor: '#F7EBFD',
-        borderColor: '#E6C0F9',
     },
     '#FDEBF7': {
         color: '#BF1F8A',
         backgroundColor: '#FDEBF7',
-        borderColor: '#F5BCE2',
     },
     '#F5EEE9': {
         color: '#876444',
         backgroundColor: '#F5EEE9',
-        borderColor: '#DED5CC',
     },
     '#F7F7F7': {
         color: '#6B6B6B',
         backgroundColor: '#F7F7F7',
-        borderColor: '#E0E0E0',
     },
     '#DEDEDE': {
         color: '#333333',
         backgroundColor: '#DEDEDE',
-        borderColor: '#C2C2C2',
     },
     // second row
     '#F9B3B3': {
         color: '#BF3939',
-        borderColor: '#FDE6E6',
-        backgroundColor: '#F9B3B3',
+        backgroundColor: '#FAEBCD',
     },
     '#FAD0BB': {
         color: '#B24712',
-        borderColor: '#FCEFE8',
         backgroundColor: '#FAD0BB',
     },
     '#FAEBCC': {
         color: '#8A6D3B',
-        borderColor: '#FCF8E3',
         backgroundColor: '#FAEBCC',
     },
     '#D6E9C6': {
         color: '#3C763D',
-        borderColor: '#F0F8ED',
         backgroundColor: '#D6E9C6',
     },
     '#B7EDDD': {
         color: '#0A825E',
-        borderColor: '#EBFDF8',
         backgroundColor: '#B7EDDD',
     },
     '#C9E6F2': {
         color: '#0088CC',
-        borderColor: '#F1F9FC',
         backgroundColor: '#C9E6F2',
     },
     '#C9C9F2': {
         color: '#4242ED',
-        borderColor: '#EBEBFD',
         backgroundColor: '#C9C9F2',
     },
     '#E6C0F9': {
         color: '#A234D9',
-        borderColor: '#F7EBFD',
         backgroundColor: '#E6C0F9',
     },
     '#F5BCE2': {
         color: '#BF1F8A',
-        borderColor: '#FDEBF7',
         backgroundColor: '#F5BCE2',
     },
     '#DED5CC': {
         color: '#876444',
-        borderColor: '#F5EEE9',
         backgroundColor: '#DED5CC',
     },
     '#E0E0E0': {
         color: '#6B6B6B',
-        borderColor: '#F7F7F7',
         backgroundColor: '#E0E0E0',
     },
     '#C2C2C2': {
         color: '#333333',
-        borderColor: '#DEDEDE',
         backgroundColor: '#C2C2C2',
     },
 };

@@ -117,7 +117,7 @@ export interface QueryAPIWrapper {
         validateIds?: boolean,
         schemaName?: string,
         queryName?: string,
-        filterList?: List<Filter.IFilter>,
+        filters?: Filter.IFilter[],
         queryParameters?: Record<string, any>
     ) => Promise<SelectResponse>;
     setSnapshotSelections: (key: string, ids: string[] | string, containerPath?: string) => Promise<SelectResponse>;

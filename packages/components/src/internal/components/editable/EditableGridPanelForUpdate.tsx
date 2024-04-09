@@ -14,16 +14,20 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 
+import { CommentTextArea } from '../forms/input/CommentTextArea';
+
+import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
+
+import { resolveErrorMessage } from '../../util/messaging';
+
+import { QueryColumn } from '../../../public/QueryColumn';
+
 import { EditorModel, EditableGridLoader } from './models';
 
 import { EditableGridPanel } from './EditableGridPanel';
 import { initEditableGridModel } from './actions';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid } from './utils';
 import { EditableGridChange } from './EditableGrid';
-import { CommentTextArea } from '../forms/input/CommentTextArea';
-import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
-import { resolveErrorMessage } from '../../util/messaging';
-import {QueryColumn} from "../../../public/QueryColumn";
 
 type Models = {
     dataModel: QueryModel;
@@ -44,7 +48,12 @@ interface Props {
     setIsDirty?: (isDirty: boolean) => void;
     singularNoun?: string;
     updateColumns?: QueryColumn[];
-    updateRows: (schemaQuery: SchemaQuery, rows: any[], comment: string) => Promise<any>;
+    updateRows: (
+        schemaQuery: SchemaQuery,
+        rows: Array<Record<string, any>>,
+        comment: string,
+        originalRows?: Array<Record<string, any>>
+    ) => Promise<any>;
 }
 
 export const EditableGridPanelForUpdate: FC<Props> = props => {
@@ -115,7 +124,7 @@ export const EditableGridPanelForUpdate: FC<Props> = props => {
         setIsSubmitting(true);
 
         try {
-            await updateRows(gridData.schemaQuery, gridData.updatedRows, comment);
+            await updateRows(gridData.schemaQuery, gridData.updatedRows, comment, gridData.originalRows);
             setIsSubmitting(false);
             onComplete();
         } catch (e) {

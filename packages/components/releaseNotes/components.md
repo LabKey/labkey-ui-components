@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.37.7
+*Released*: 9 April 2024
 - Add setSelected() to QueryAPIWrapper
 
 ### version 3.37.6

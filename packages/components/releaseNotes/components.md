@@ -1,9 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.X
-*Released*: X April 2024
+### version 3.37.6
+*Released*: 9 April 2024
 - Improve-cross project actions - Derivations, Aliquots, and Pooling
+  - modify getAppHomeFolderPath to not require container, export getAppHomeFolderId
+  - modify getSelectedParents to respect container insert permission
+  - distinguish SampleCreationType.Independent from SampleCreationType.FromSources
 
 ### version 3.37.5
 *Released*: 4 April 2024

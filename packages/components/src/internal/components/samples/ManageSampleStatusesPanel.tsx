@@ -162,7 +162,9 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                     onActionComplete(stateToSave.label);
                 })
                 .catch(reason => {
-                    setError(resolveErrorMessage(reason, 'status', 'statuses', 'updating', resolveDuplicateStatusLabel));
+                    setError(
+                        resolveErrorMessage(reason, 'status', 'statuses', 'updating', resolveDuplicateStatusLabel)
+                    );
                     setSaving(false);
                 });
         } else {
@@ -417,16 +419,20 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
                 .getSampleStatuses(true, container?.path)
                 .then(statuses => {
                     const statesByType: Record<string, SampleState[]> = {};
-                    statuses.forEach(state => {
-                        if (!statesByType[state.stateType]) {
-                            statesByType[state.stateType] = [];
-                        }
-                        statesByType[state.stateType].push(state);
-                        if (newStatusLabel && state.label === newStatusLabel) {
-                            setSelectedGroup(state.stateType);
-                            setSelected(statesByType[state.stateType].length - 1);
-                        }
-                    });
+                    statuses
+                        .sort((a, b) => {
+                            return a.label.toLowerCase().localeCompare(b.label.toLowerCase());
+                        })
+                        .forEach(state => {
+                            if (!statesByType[state.stateType]) {
+                                statesByType[state.stateType] = [];
+                            }
+                            statesByType[state.stateType].push(state);
+                            if (newStatusLabel && state.label === newStatusLabel) {
+                                setSelectedGroup(state.stateType);
+                                setSelected(statesByType[state.stateType].length - 1);
+                            }
+                        });
                     setStates(statesByType);
                 })
                 .catch(() => {

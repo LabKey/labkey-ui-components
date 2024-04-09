@@ -52,7 +52,7 @@ interface Props {
         schemaQuery: SchemaQuery,
         rows: Array<Record<string, any>>,
         comment: string,
-        originalRows?: Array<Record<string, any>>
+        originalRows: Array<Record<string, any>>
     ) => Promise<any>;
 }
 

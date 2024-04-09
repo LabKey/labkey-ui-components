@@ -15,9 +15,10 @@ import { SAMPLE_PROPERTY_ALL_SAMPLE_TYPE } from '../search/constants';
 import { EntityDataType } from './models';
 import { sampleDeleteDependencyText } from './utils';
 
-export const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
-export const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
-export const ASSAY_RUN_OPERATION_CONFIRMATION_ACTION = 'getAssayRunOperationConfirmationData.api';
+const DATA_OPERATION_CONFIRMATION_ACTION = 'getDataOperationConfirmationData.api';
+const SAMPLE_OPERATION_CONFIRMATION_ACTION = 'getMaterialOperationConfirmationData.api';
+const ASSAY_RUN_OPERATION_CONFIRMATION_ACTION = 'getAssayRunOperationConfirmationData.api';
+const ASSAY_RESULTS_OPERATION_CONFIRMATION_ACTION = 'getAssayResultsOperationConfirmationData.api';
 
 export const AssayRunDataType: EntityDataType = {
     deleteHelpLinkTopic: DELETE_ASSAY_RUNS_TOPIC,
@@ -52,7 +53,7 @@ export const AssayResultDataType: EntityDataType = {
         return schemaQuery.schemaName.replace('assay.General.', '');
     },
     operationConfirmationControllerName: 'assay',
-    operationConfirmationActionName: undefined,
+    operationConfirmationActionName: ASSAY_RESULTS_OPERATION_CONFIRMATION_ACTION,
     nounSingular: 'result',
     nounPlural: 'results',
     typeNounSingular: 'Assay Design',
@@ -70,6 +71,7 @@ export const AssayResultDataType: EntityDataType = {
 
 export enum AssayRunOperation {
     Delete,
+    Edit,
     Move,
 }
 

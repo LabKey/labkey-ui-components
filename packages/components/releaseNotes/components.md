@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 50069: Editing amounts of sample results in weird value
 - Issue 50010 Time picker enters the wrong time if a time field has a format set or if there is an additional parsing.
 - Issue 50102: When bulk updating a time-only field and entering a value with PM results in the AM time being selected.
+- Issue 48328: Starting to make Biologics use the same Sample Manager help links.
 
 ### version 3.38.0
 *Released*: 10 April 2024

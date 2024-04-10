@@ -467,7 +467,7 @@ export function setSelected(
     validateIds?: boolean,
     schemaName?: string,
     queryName?: string,
-    filterList?: List<Filter.IFilter>,
+    filters?: Filter.IFilter[],
     queryParameters?: Record<string, any>
 ): Promise<SelectResponse> {
     return new Promise((resolve, reject) => {
@@ -483,7 +483,7 @@ export function setSelected(
                 validateIds,
                 schemaName,
                 queryName,
-                filterList,
+                filterList: filters,
                 queryParameters,
             },
             success: Utils.getCallbackWrapper(response => {

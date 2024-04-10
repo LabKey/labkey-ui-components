@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.38.0
+*Released*: 10 April 2024
+- Add ability for users to choose colors associated with sample statuses
+  - Update `ColorPickerInput` to accept optional list of default colors
+  - Update `ColorPickerInput` to not close automatically when a color is chosen
+  - Update `ManageSampleStatusesPanel` to include a `ColorPickerInput`
+  - Update `SampleState` model with color field
+
 ### version 3.37.7
 *Released*: 9 April 2024
 - Add setSelected() to QueryAPIWrapper

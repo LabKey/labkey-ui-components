@@ -1,11 +1,11 @@
 import React, { PureComponent, ReactNode } from 'react';
 
 interface Props {
-    cls?: string;
-    value: string;
     asSquare?: boolean;
+    cls?: string;
     label?: ReactNode;
     useSmall?: boolean;
+    value: string;
 }
 
 export class ColorIcon extends PureComponent<Props> {

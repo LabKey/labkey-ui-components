@@ -60,6 +60,31 @@ exports[`ColorPickerInput default props 1`] = `
 </div>
 `;
 
+exports[`ColorPickerInput disabled 1`] = `
+<div>
+  <div
+    class="color-picker"
+  >
+    <button
+      class="color-picker__button btn btn-default"
+      disabled=""
+      type="button"
+    >
+      <i
+        class="color-picker__chip-small"
+        style="background-color: rgb(0, 0, 0);"
+      />
+      <i
+        class="fa fa-caret-down"
+      />
+    </button>
+    <div
+      class="color-picker__picker"
+    />
+  </div>
+</div>
+`;
+
 exports[`ColorPickerInput showPicker 1`] = `
 <div>
   <div

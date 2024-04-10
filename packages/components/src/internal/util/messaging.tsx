@@ -74,7 +74,7 @@ export function resolveErrorMessage(
     noun = 'data',
     nounPlural?: string,
     verb?: string,
-    duplicatesMessageResolver?: (errorMsg: string, noun: string, nounPlural?: string) => string
+    duplicatesMessageResolver?: (errorMsg: string, noun: string, nounPlural?: string, verb?: string) => string
 ): string {
     let errorMsg;
     if (!error) {

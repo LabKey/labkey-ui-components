@@ -13,12 +13,20 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { SAMPLE_STATE_TYPE_COLUMN_NAME, SampleOperation, SampleStateType } from './constants';
+import {
+    DEFAULT_AVAILABLE_STATUS_COLOR,
+    DEFAULT_CONSUMED_STATUS_COLOR,
+    DEFAULT_LOCKED_STATUS_COLOR,
+    SAMPLE_STATE_TYPE_COLUMN_NAME,
+    SampleOperation,
+    SampleStateType,
+} from './constants';
 import {
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotPermittedMessage,
     getSampleStatus,
+    getSampleStatusColor,
     getSampleStatusLockedMessage,
     getSampleStatusType,
     getURLParamsForSampleSelectionKey,
@@ -471,5 +479,26 @@ describe('getSampleStatusLockedMessage', () => {
         ).toBe(
             'This sample status cannot change status type or be deleted because it is in use and can be changed only in the Test Project project.'
         );
+    });
+});
+
+describe('getSampleStatusColor', () => {
+    test('color provided', () => {
+        expect(getSampleStatusColor('#FEFEFE', 'Available')).toBe('#FEFEFE');
+        expect(getSampleStatusColor('#eeee10', 'Available')).toBe('#EEEE10');
+        expect(getSampleStatusColor('#Dc80F0', undefined)).toBe('#DC80F0');
+        expect(getSampleStatusColor('#000000', undefined)).toBe('#000000');
+    });
+
+    test('color not provided', () => {
+        expect(getSampleStatusColor(undefined, 'Available')).toBe(DEFAULT_AVAILABLE_STATUS_COLOR);
+        expect(getSampleStatusColor(null, 'Available')).toBe(DEFAULT_AVAILABLE_STATUS_COLOR);
+        expect(getSampleStatusColor('', 'Available')).toBe(DEFAULT_AVAILABLE_STATUS_COLOR);
+        expect(getSampleStatusColor('', SampleStateType.Available)).toBe(DEFAULT_AVAILABLE_STATUS_COLOR);
+        expect(getSampleStatusColor(undefined, 'Nonesuch')).toBeNull();
+        expect(getSampleStatusColor(undefined, 'Consumed')).toBe(DEFAULT_CONSUMED_STATUS_COLOR);
+        expect(getSampleStatusColor(undefined, SampleStateType.Consumed)).toBe(DEFAULT_CONSUMED_STATUS_COLOR);
+        expect(getSampleStatusColor(null, 'Locked')).toBe(DEFAULT_LOCKED_STATUS_COLOR);
+        expect(getSampleStatusColor('', SampleStateType.Locked)).toBe(DEFAULT_LOCKED_STATUS_COLOR);
     });
 });

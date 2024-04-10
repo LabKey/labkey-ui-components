@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 50031: Update permission check and container path for saving updates to storage labels
+
 ### version 3.38.0
 *Released*: 10 April 2024
 - Add ability for users to choose colors associated with sample statuses

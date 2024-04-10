@@ -496,6 +496,7 @@ import {
     getParentTypeDataForLineage,
     getSampleOperationConfirmationData,
     saveOrderedSnapshotSelection,
+    getOperationConfirmationDataForModel,
 } from './internal/components/entities/actions';
 import {
     AssayResultDataType,
@@ -1346,6 +1347,7 @@ export {
     getSampleFinderLocalStorageKey,
     getSampleOperationConfirmationData,
     getDeleteConfirmationData,
+    getOperationConfirmationDataForModel,
     getEntityTypeOptions,
     getCrossFolderSelectionResult,
     getExcludedDataTypeNames,

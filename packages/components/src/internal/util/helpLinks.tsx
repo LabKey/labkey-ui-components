@@ -1,5 +1,7 @@
 import React, { FC, ReactNode, memo } from 'react';
 import { getServerContext } from '@labkey/api';
+import { getPrimaryAppProperties } from '../app/utils';
+import { useServerContext } from '../components/base/ServerContext';
 
 export const CHART_MEASURES_AND_DIMENSIONS_TOPIC = 'chartTrouble';
 export const MISSING_VALUES_TOPIC = 'manageMissing';
@@ -40,6 +42,8 @@ export const URL_ENCODING_TOPIC = 'urlEncoding';
 export const SEARCH_SYNTAX_TOPIC = 'luceneSearch';
 export const DATA_IMPORT_TOPIC = 'dataImport';
 
+export const SAMPLE_IMPORT_TOPIC = 'importSamples';
+
 export const SAMPLE_ALIQUOT_FIELDS_TOPIC = 'createSampleType#ali';
 
 export const LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC = 'generateSamples#fields';
@@ -59,8 +63,8 @@ export enum HELP_LINK_REFERRER {
     PRODUCT_MENU = 'productMenu',
 }
 
-export function getHelpLink(topic: string, referrer = HELP_LINK_REFERRER.IN_PAGE, useDefaultUrl = false): string {
-    const prefix = getServerContext().helpLinkPrefix;
+export function getHelpLink(topic: string, referrer = HELP_LINK_REFERRER.IN_PAGE, useDefaultUrl = false, helpLinkPrefix?: string): string {
+    const prefix = helpLinkPrefix ?? getServerContext().helpLinkPrefix;
     if (useDefaultUrl) {
         return HELP_LINK_DEFAULT_URL + 'referrer=' + referrer + '&name=' + topic;
     } else if (prefix) {
@@ -75,15 +79,17 @@ interface HelpLinkProps {
     referrer?: HELP_LINK_REFERRER;
     topic: string;
     useDefaultUrl?: boolean;
+    useBaseAppUrl?: boolean;
 }
 
 export const HelpLink: FC<HelpLinkProps> = props => {
-    const { className, topic, referrer, children, useDefaultUrl } = props;
+    const { moduleContext } = useServerContext();
+    const { useBaseAppUrl, className, topic, referrer, children, useDefaultUrl } = props;
 
     return (
         <a
             target="_blank"
-            href={getHelpLink(topic, referrer, useDefaultUrl)}
+            href={getHelpLink(topic, referrer, useDefaultUrl, useBaseAppUrl ? getPrimaryAppProperties(moduleContext)?.baseProductHelpLinkPrefix : undefined)}
             className={className}
             rel="noopener noreferrer"
         >

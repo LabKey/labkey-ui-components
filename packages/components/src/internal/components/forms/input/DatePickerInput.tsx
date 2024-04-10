@@ -27,6 +27,7 @@ import {
     isDateTimeCol,
     isRelativeDateFilterValue,
     parseDate,
+    parseSimpleTime,
 } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
@@ -191,6 +192,24 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         if (isTime) {
             if (!value) {
                 this.onChange(null);
+            }
+            else {
+                // Issue 50010: Time picker enters the wrong time if a time field has a format set
+                const time = parseSimpleTime(value);
+                if (time instanceof Date)
+                {
+                    // Issue 50102: LKSM: When bulk updating a time-only field and entering a value with PM results in the AM time being selected
+                    this.setState({ selectedDate: time, invalid: false });
+
+                    const formatted = getFormattedStringFromDate(time, queryColumn, false);
+                    this.props.onChange?.(formatted, formatted);
+
+                    // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+                    if (this.props.formsy) {
+                        this.props.setValue?.(getJsonTimeFormatString(time));
+
+                    }
+                }
             }
         } else if (isRelativeDateFilterValue(value)) {
             this.setState({ relativeInputValue: value });

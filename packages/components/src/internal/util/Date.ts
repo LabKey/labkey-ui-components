@@ -234,6 +234,18 @@ export function getColFormattedTimeFilterValue(column: QueryColumn, value: any):
     return _getColFormattedTimeFilterValue(column, value);
 }
 
+export function parseSimpleTime(rawValue: string) : Date {
+    const parts = rawValue.toString().split(':').length;
+    let hourMinite = 'HH:mm', ampm = '';
+    const second = parts > 2 ? ':ss' : '';
+    if (rawValue.toLowerCase().indexOf('am') > -1 || rawValue.toLowerCase().indexOf('pm') > -1) {
+        ampm = ' a';
+        hourMinite = 'hh:mm';
+    }
+    const format = hourMinite + second + ampm;
+    return moment(rawValue, format).toDate();
+}
+
 export function getDateFormat(container?: Partial<Container>): string {
     return (container ?? getServerContext().container).formats.dateFormat;
 }

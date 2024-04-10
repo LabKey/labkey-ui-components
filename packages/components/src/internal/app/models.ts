@@ -47,6 +47,7 @@ export interface AppProperties {
     productId: string;
     searchPlaceholder?: string;
     releaseNoteLink?: string;
+    baseProductHelpLinkPrefix?: string;
 }
 
 // Note: this should stay in sync with the eln/src/ReferencingNotebooks.tsx props

@@ -14,6 +14,7 @@ import { ALIQUOT_FILTER_MODE, SampleStateType } from './constants';
 export enum SampleCreationType {
     Aliquots = 'Aliquots',
     Derivatives = 'Derivatives',
+    FromSources = 'New samples from sources',
     Independents = 'New samples',
     PooledSamples = 'Pooled Samples',
 }
@@ -30,8 +31,15 @@ export interface SampleCreationTypeModel {
     type: SampleCreationType;
 }
 
-export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
+export const INDEPENDENT_SAMPLE_CREATION: SampleCreationTypeModel = {
     type: SampleCreationType.Independents,
+    description: 'Create samples.',
+    minParentsPerSample: 0,
+    quantityLabel: 'New Samples',
+};
+
+export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
+    type: SampleCreationType.FromSources,
     description: 'Create multiple output samples per source.',
     minParentsPerSample: 1,
     iconSrc: 'derivatives',

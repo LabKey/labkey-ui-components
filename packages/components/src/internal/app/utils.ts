@@ -197,12 +197,14 @@ export function isAppHomeFolder(container?: Partial<Container>, moduleContext?: 
     return isTopFolder || (isSubFolder && !isProductProjectsEnabled(moduleContext));
 }
 
-export function getAppHomeFolderPath(container: Partial<Container>, moduleContext?: ModuleContext): string {
-    return isAppHomeFolder(container, moduleContext) ? container.path : container.parentPath;
+export function getAppHomeFolderPath(container?: Partial<Container>, moduleContext?: ModuleContext): string {
+    const currentContainer: Partial<Container> = container ?? getServerContext().container;
+    return isAppHomeFolder(currentContainer, moduleContext) ? currentContainer.path : currentContainer.parentPath;
 }
 
-function getAppHomeFolderId(container: Container, moduleContext?: ModuleContext): string {
-    return isAppHomeFolder(container, moduleContext) ? container.id : container.parentId;
+export function getAppHomeFolderId(container?: Container, moduleContext?: ModuleContext): string {
+    const currentContainer: Partial<Container> = container ?? getServerContext().container;
+    return isAppHomeFolder(currentContainer, moduleContext) ? currentContainer.id : currentContainer.parentId;
 }
 
 // either defined in a different container or it's defined in the home container and product projects are available.

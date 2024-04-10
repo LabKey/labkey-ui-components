@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.37.7
+*Released*: 9 April 2024
+- Add setSelected() to QueryAPIWrapper
+
 ### version 3.37.6
 *Released*: 9 April 2024
 - Improve-cross project actions - Derivations, Aliquots, and Pooling

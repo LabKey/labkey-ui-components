@@ -1295,7 +1295,7 @@ function parsePastedLookup(column: QueryColumn, descriptors: ValueDescriptor[], 
             const vt = v.trim();
             if (vt.length > 0) {
                 const vl = vt.toLowerCase();
-                const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
+                const vd = descriptors?.find(d => d.display && d.display.toString().toLowerCase() === vl);
                 if (!vd) {
                     unmatched.push(vt);
                     return { display: vt, raw: vt };

@@ -122,14 +122,24 @@ export function getUpdatedDataFromGrid(
 
                 // If col is a multi-value column, compare all values for changes
                 if ((List.isList(originalValue) || originalValue === undefined) && Array.isArray(value)) {
-                    if (
-                        (originalValue?.size ?? 0) !== value.length ||
-                        (originalValue &&
+                    if ((originalValue?.size ?? 0) !== value.length) {
+                        row[key] = value;
+                    } else if (originalValue) {
+                        if (Map.isMap(originalValue.get(0))) {
+                            // filter to those values that no longer exist in the new value array
+                            const filtered = originalValue.filter(
+                                o => value.indexOf(o.get('value')) === -1 && value.indexOf(o.get('displayValue')) === -1
+                            );
+                            if (filtered.size > 0) {
+                                row[key] = value;
+                            }
+                        } else if (
                             originalValue?.findIndex(
                                 o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
-                            ) !== -1)
-                    ) {
-                        row[key] = value;
+                            ) !== -1
+                        ) {
+                            row[key] = value;
+                        }
                     }
                 } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {
                     // - only update if the value has changed

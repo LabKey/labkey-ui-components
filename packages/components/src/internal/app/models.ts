@@ -37,6 +37,7 @@ export class AppModel extends Record({
 }
 
 export interface AppProperties {
+    baseProductHelpLinkPrefix?: string;
     controllerName: string;
     dataClassUrlPart?: string;
     logoBadgeColorImageUrl: string;
@@ -45,9 +46,8 @@ export interface AppProperties {
     moduleName: string;
     name: string;
     productId: string;
-    searchPlaceholder?: string;
     releaseNoteLink?: string;
-    baseProductHelpLinkPrefix?: string;
+    searchPlaceholder?: string;
 }
 
 // Note: this should stay in sync with the eln/src/ReferencingNotebooks.tsx props

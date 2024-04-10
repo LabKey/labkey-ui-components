@@ -49,6 +49,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     formsy?: boolean;
     hideTime?: boolean;
     initValueFormatted?: boolean;
+    inlineEdit?: boolean;
     inputClassName?: string;
     inputWrapperClassName?: string;
     isClearable?: boolean;
@@ -56,17 +57,16 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     label?: ReactNode;
     labelClassName?: string;
     name?: string;
+    onBlur?: () => void;
     onCalendarClose?: () => void;
-    onChange?: (rawDate?: Date | string, dateStr?: string) => void;
-    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
     value?: any;
     wrapperClassName?: string;
-    inlineEdit?: boolean;
-    onBlur?: () => void;
+    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
+    onChange?: (rawDate?: Date | string, dateStr?: string) => void;
 }
 
 interface DatePickerInputState extends DisableableInputState {
@@ -192,12 +192,10 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         if (isTime) {
             if (!value) {
                 this.onChange(null);
-            }
-            else {
+            } else {
                 // Issue 50010: Time picker enters the wrong time if a time field has a format set
                 const time = parseSimpleTime(value);
-                if (time instanceof Date)
-                {
+                if (time instanceof Date) {
                     // Issue 50102: LKSM: When bulk updating a time-only field and entering a value with PM results in the AM time being selected
                     this.setState({ selectedDate: time, invalid: false });
 
@@ -207,7 +205,6 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                     // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
                     if (this.props.formsy) {
                         this.props.setValue?.(getJsonTimeFormatString(time));
-
                     }
                 }
             }

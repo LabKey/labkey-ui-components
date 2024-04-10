@@ -49,7 +49,9 @@ export const SampleAmountEditModal: FC<Props> = memo(props => {
 
     const sampleContainer = caseInsensitive(row, 'Container/Path')?.value;
     const initStorageUnits = Units?.value as string;
-    const [amount, setStorageAmount] = useState<number>(initStorageAmount?.displayValue ?? initStorageAmount?.value ?? undefined);
+    const [amount, setStorageAmount] = useState<number>(
+        initStorageAmount?.displayValue ?? initStorageAmount?.value ?? undefined
+    );
     const [storageUnits, setStorageUnits] = useState<string>(initStorageUnits ?? '');
     const [comment, setComment] = useState<string>('');
     const [submitting, setSubmitting] = useState(false);

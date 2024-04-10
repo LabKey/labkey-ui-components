@@ -93,8 +93,8 @@ export function getPickerDateAndTimeFormat(
     const timeFormat = hideTime
         ? undefined
         : isTimeOnly
-        ? parseFNSTimeFormat(getColDateFormat(queryColumn, queryColumn?.format ?? 'Time'))
-        : parseDateFNSTimeFormat(dateFormat);
+          ? parseFNSTimeFormat(getColDateFormat(queryColumn, queryColumn?.format ?? 'Time'))
+          : parseDateFNSTimeFormat(dateFormat);
 
     return {
         dateFormat,
@@ -234,9 +234,10 @@ export function getColFormattedTimeFilterValue(column: QueryColumn, value: any):
     return _getColFormattedTimeFilterValue(column, value);
 }
 
-export function parseSimpleTime(rawValue: string) : Date {
+export function parseSimpleTime(rawValue: string): Date {
     const parts = rawValue.toString().split(':').length;
-    let hourMinite = 'HH:mm', ampm = '';
+    let hourMinite = 'HH:mm',
+        ampm = '';
     const second = parts > 2 ? ':ss' : '';
     if (rawValue.toLowerCase().indexOf('am') > -1 || rawValue.toLowerCase().indexOf('pm') > -1) {
         ampm = ' a';

@@ -1,5 +1,6 @@
 import React, { FC, ReactNode, memo } from 'react';
 import { getServerContext } from '@labkey/api';
+
 import { getPrimaryAppProperties } from '../app/utils';
 import { useServerContext } from '../components/base/ServerContext';
 
@@ -63,7 +64,12 @@ export enum HELP_LINK_REFERRER {
     PRODUCT_MENU = 'productMenu',
 }
 
-export function getHelpLink(topic: string, referrer = HELP_LINK_REFERRER.IN_PAGE, useDefaultUrl = false, helpLinkPrefix?: string): string {
+export function getHelpLink(
+    topic: string,
+    referrer = HELP_LINK_REFERRER.IN_PAGE,
+    useDefaultUrl = false,
+    helpLinkPrefix?: string
+): string {
     const prefix = helpLinkPrefix ?? getServerContext().helpLinkPrefix;
     if (useDefaultUrl) {
         return HELP_LINK_DEFAULT_URL + 'referrer=' + referrer + '&name=' + topic;
@@ -78,8 +84,8 @@ interface HelpLinkProps {
     className?: string;
     referrer?: HELP_LINK_REFERRER;
     topic: string;
-    useDefaultUrl?: boolean;
     useBaseAppUrl?: boolean;
+    useDefaultUrl?: boolean;
 }
 
 export const HelpLink: FC<HelpLinkProps> = props => {
@@ -89,7 +95,12 @@ export const HelpLink: FC<HelpLinkProps> = props => {
     return (
         <a
             target="_blank"
-            href={getHelpLink(topic, referrer, useDefaultUrl, useBaseAppUrl ? getPrimaryAppProperties(moduleContext)?.baseProductHelpLinkPrefix : undefined)}
+            href={getHelpLink(
+                topic,
+                referrer,
+                useDefaultUrl,
+                useBaseAppUrl ? getPrimaryAppProperties(moduleContext)?.baseProductHelpLinkPrefix : undefined
+            )}
             className={className}
             rel="noopener noreferrer"
         >

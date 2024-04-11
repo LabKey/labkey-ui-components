@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { getHelpLink, HELP_LINK_REFERRER, HelpLink, JavaDocsLink } from './helpLinks';
+import { renderWithAppContext } from '../test/reactTestLibraryHelpers';
 
 const HELP_LINK_BASE_URL = 'https://www.labkey.org/Documentation/wiki-page.view?';
 
@@ -11,14 +12,14 @@ beforeEach(() => {
 
 describe('HelpLink', () => {
     test('default props', () => {
-        render(<HelpLink topic="TEST_TOPIC">default props text</HelpLink>);
+        renderWithAppContext(<HelpLink topic="TEST_TOPIC">default props text</HelpLink>);
         expect(document.querySelector('a').getAttribute('href')).toBe(
             HELP_LINK_BASE_URL + 'referrer=inPage&name=TEST_TOPIC'
         );
     });
 
     test('custom props', () => {
-        render(
+        renderWithAppContext(
             <HelpLink topic="TEST_TOPIC" className="test-class-name" referrer={HELP_LINK_REFERRER.ERROR_PAGE}>
                 custom props
             </HelpLink>
@@ -33,7 +34,7 @@ describe('HelpLink', () => {
         const prefix = 'https://www.labkey.org/LKSM-page.view?';
         LABKEY.helpLinkPrefix = prefix + 'name=';
 
-        render(
+        renderWithAppContext(
             <HelpLink topic="TEST_TOPIC" useDefaultUrl={false}>
                 more info
             </HelpLink>
@@ -45,7 +46,7 @@ describe('HelpLink', () => {
         const prefix = 'https://www.labkey.org/LKSM-page.view?';
         LABKEY.helpLinkPrefix = prefix + 'name=';
 
-        render(
+        renderWithAppContext(
             <HelpLink topic="TEST_TOPIC" useDefaultUrl>
                 more info
             </HelpLink>

@@ -22,10 +22,14 @@ import { PICKLIST_SAMPLES_FILTER } from '../picklist/models';
 import { SystemField } from '../domainproperties/models';
 
 import {
+    DEFAULT_AVAILABLE_STATUS_COLOR,
+    DEFAULT_CONSUMED_STATUS_COLOR,
+    DEFAULT_LOCKED_STATUS_COLOR,
     operationRestrictionMessage,
     permittedOps,
     SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS,
     SAMPLE_DOMAIN_INVENTORY_SYSTEM_FIELDS,
+    SAMPLE_STATE_COLOR_COLUMN_NAME,
     SAMPLE_STATE_COLUMN_NAME,
     SAMPLE_STATE_DESCRIPTION_COLUMN_NAME,
     SAMPLE_STATE_TYPE_COLUMN_NAME,
@@ -70,6 +74,23 @@ export function getSampleStatusType(row: any): SampleStateType {
     );
 }
 
+export function getSampleStatusColor(color: string, stateType: SampleStateType | string): string {
+    if (color) return color.toUpperCase();
+
+    const _stateType = SampleStateType[stateType];
+
+    switch (_stateType) {
+        case SampleStateType.Available:
+            return DEFAULT_AVAILABLE_STATUS_COLOR;
+        case SampleStateType.Consumed:
+            return DEFAULT_CONSUMED_STATUS_COLOR;
+        case SampleStateType.Locked:
+            return DEFAULT_LOCKED_STATUS_COLOR;
+        default:
+            return null;
+    }
+}
+
 export function getSampleStatus(row: any): SampleStatus {
     let label;
     // Issue 45269. If the state columns are present, don't look at a column named 'Label'
@@ -87,6 +108,10 @@ export function getSampleStatus(row: any): SampleStatus {
     return {
         label,
         statusType: getSampleStatusType(row),
+        color:
+            caseInsensitive(row, SAMPLE_STATE_COLOR_COLUMN_NAME)?.value ||
+            caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_COLOR_COLUMN_NAME)?.value ||
+            caseInsensitive(row, 'Color')?.value,
         description:
             caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value ||
             caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value ||

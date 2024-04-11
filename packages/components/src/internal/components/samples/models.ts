@@ -92,6 +92,7 @@ export interface FindField {
 }
 
 export interface SampleStatus {
+    color: string;
     description?: string;
     label: string;
     statusType: SampleStateType;
@@ -173,6 +174,7 @@ export class SampleState {
     readonly inUse: boolean;
     readonly isLocal: boolean;
     readonly containerPath: string;
+    readonly color: string;
 
     constructor(values?: Partial<SampleState>) {
         Object.assign(this, values);
@@ -189,6 +191,15 @@ export class SampleState {
         return produce<SampleState>(this, draft => {
             Object.assign(draft, props);
         });
+    }
+
+    toSampleStatus(): SampleStatus {
+        return {
+            description: this.description,
+            label: this.label,
+            color: this.color,
+            statusType: SampleStateType[this.stateType],
+        };
     }
 }
 

@@ -35,4 +35,10 @@ describe('ColorPickerInput', () => {
         const { container } = render(component);
         expect(container).toMatchSnapshot();
     });
+
+    test('disabled', () => {
+        const component = <ColorPickerInput value="#000000" onChange={jest.fn} disabled={true} />;
+        const { container } = render(component);
+        expect(container).toMatchSnapshot();
+    });
 });

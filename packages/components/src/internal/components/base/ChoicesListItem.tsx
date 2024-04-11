@@ -5,17 +5,18 @@ interface Props {
     active: boolean;
     componentRight?: ReactNode;
     disabled?: boolean;
+    group?: string;
     index: number;
-    label: string;
-    onSelect: (index: number) => void;
+    label: ReactNode;
+    onSelect: (index: number, group?: string) => void;
     subLabel?: string;
 }
 
 export const ChoicesListItem: FC<Props> = memo(props => {
-    const { label, index, active, onSelect, subLabel, componentRight, disabled } = props;
+    const { label, group, index, active, onSelect, subLabel, componentRight, disabled } = props;
     const onClick = useCallback(() => {
-        onSelect(index);
-    }, [onSelect, index]);
+        onSelect(index, group);
+    }, [onSelect, index, group]);
 
     return (
         <button

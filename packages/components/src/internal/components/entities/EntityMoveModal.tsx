@@ -39,6 +39,7 @@ export interface EntityMoveModalProps {
     queryModel: QueryModel;
     targetAppURL?: AppURL;
     useSelected: boolean;
+    hideHelp?: boolean; // jest only
 }
 
 export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
@@ -53,6 +54,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
         maxSelected,
         targetAppURL,
         dataTypeRowId,
+        hideHelp,
     } = props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
@@ -217,7 +219,8 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
     const { canMove, message, title } = getMoveConfirmationProperties(
         confirmationData,
         entityDataType.nounSingular,
-        entityDataType.nounPlural
+        entityDataType.nounPlural,
+        hideHelp
     );
 
     if (!canMove) {
@@ -263,7 +266,8 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 export const getMoveConfirmationProperties = (
     confirmationData: OperationConfirmationData,
     nounSingular: string,
-    nounPlural: string
+    nounPlural: string,
+    hideHelp?: boolean,
 ): { canMove: boolean; message: any; title: string } => {
     if (!confirmationData) return undefined;
 
@@ -315,9 +319,11 @@ export const getMoveConfirmationProperties = (
             <>
                 {text}
                 {getPermissionRestrictionMessage(totalNum, numNotPermitted, nounSingular, nounPlural, 'move')}
-                <>
-                    &nbsp;(<HelpLink topic={MOVE_SAMPLES_TOPIC}>more info</HelpLink>)
-                </>
+                {!hideHelp && (
+                    <>
+                        &nbsp;(<HelpLink topic={MOVE_SAMPLES_TOPIC}>more info</HelpLink>)
+                    </>
+                )}
             </>
         );
     }

@@ -17,7 +17,6 @@ import { Query, Utils } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -73,6 +72,7 @@ import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 
 import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 import { computeRangeChange, genCellKey, parseCellKey } from './utils';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -924,24 +924,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {label}
                 {required && <span className="required-symbol"> *</span>}
                 {showOverlay && (
-                    <>
-                        &nbsp;
-                        <OverlayTrigger
-                            placement="bottom"
-                            overlay={
-                                <Popover
-                                    id={'popover-' + label}
-                                    bsClass="popover"
-                                    className={metadata?.popoverClassName}
-                                >
-                                    {metadata?.toolTip}
-                                    {format && <div>Display Format: {format}</div>}
-                                </Popover>
-                            }
-                        >
-                            <i className="fa fa-question-circle" />
-                        </OverlayTrigger>
-                    </>
+                    <LabelHelpTip title={label} popoverClassName={metadata?.popoverClassName}>
+                        <>
+                            {metadata?.toolTip}
+                            {format && <div>Display Format: {format}</div>}
+                        </>
+                    </LabelHelpTip>
                 )}
             </>
         );

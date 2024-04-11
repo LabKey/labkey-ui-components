@@ -77,7 +77,10 @@ export const EditableGridPanelForUpdate: FC<Props> = props => {
     const { requiresUserComment } = useDataChangeCommentsRequired();
 
     const hasValidUserComment = comment?.trim()?.length > 0;
-    const notPermittedText = getOperationNotPermittedMessage(editStatusData, pluralNoun);
+    const notPermittedText = useMemo(
+        () => getOperationNotPermittedMessage(editStatusData, pluralNoun),
+        [editStatusData, pluralNoun]
+    );
 
     useEffect(() => {
         (async (): Promise<void> => {

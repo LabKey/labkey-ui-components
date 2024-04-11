@@ -430,7 +430,9 @@ export function addColumns(
     if (queryColumns.size === 0) return {};
 
     // if fieldKey is provided, find that index and we will insert after it
-    const leftColIndex = fieldKey ? editorModel.columns.findIndex(column => column?.toLowerCase() === fieldKey.toLowerCase()) : -1;
+    const leftColIndex = fieldKey
+        ? editorModel.columns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey))
+        : -1;
     if (fieldKey && leftColIndex === -1) return {};
 
     const editorModelIndex = leftColIndex + 1;
@@ -503,8 +505,7 @@ export function changeColumn(
     existingFieldKey: string,
     newQueryColumn: QueryColumn
 ): EditorModelUpdates {
-    const colIndex = editorModel.columns.findIndex(column => column === existingFieldKey);
-
+    const colIndex = editorModel.columns.findIndex(column => Utils.caseInsensitiveEquals(column, existingFieldKey));
     // nothing to do if there is no such column
     if (colIndex === -1) return {};
 
@@ -548,9 +549,8 @@ export function changeColumn(
     });
 
     let editorModelColumns = editorModel.columns;
-    const replaceIdx = editorModelColumns.findIndex(fieldKey => fieldKey === existingFieldKey);
-    if (replaceIdx > -1) {
-        editorModelColumns = editorModelColumns.set(replaceIdx, newQueryColumn.fieldKey);
+    if (colIndex > -1) {
+        editorModelColumns = editorModelColumns.set(colIndex, newQueryColumn.fieldKey);
     }
 
     return {
@@ -575,7 +575,7 @@ export function removeColumn(
     originalData: Map<any, Map<string, any>>,
     fieldKey: string
 ): EditorModelUpdates {
-    const deleteIndex = editorModel.columns.findIndex(column => column === fieldKey);
+    const deleteIndex = editorModel.columns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey));
     // nothing to do if there is no such column
     if (deleteIndex === -1) return {};
 
@@ -606,9 +606,8 @@ export function removeColumn(
     const data = originalData.map(rowData => rowData.remove(fieldKey)).toMap();
 
     let columns = editorModel.columns;
-    const removeIdx = editorModel.columns.findIndex(colFieldKey => Utils.caseInsensitiveEquals(colFieldKey, fieldKey));
-    if (removeIdx > -1) {
-        columns = columns.remove(removeIdx);
+    if (deleteIndex > -1) {
+        columns = columns.remove(deleteIndex);
     }
 
     return {
@@ -1295,7 +1294,7 @@ function parsePastedLookup(column: QueryColumn, descriptors: ValueDescriptor[], 
             const vt = v.trim();
             if (vt.length > 0) {
                 const vl = vt.toLowerCase();
-                const vd = descriptors?.find(d => d.display && d.display.toString().toLowerCase() === vl);
+                const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
                 if (!vd) {
                     unmatched.push(vt);
                     return { display: vt, raw: vt };
@@ -1398,24 +1397,24 @@ function insertPastedData(
             const cellKey = genCellKey(colIdx, rowIdx);
             const col = columns[colIdx];
             const metadata = columnMetadata?.get(col?.fieldKey.toLowerCase());
-            let cv: List<ValueDescriptor>;
-            let msg: CellMessage;
-
-            if (col?.isPublicLookup()) {
-                const { message, values } = parsePastedLookup(col, lookupDescriptorMap[col.lookupKey], value);
-                cv = values;
-
-                if (message) {
-                    msg = message;
-                }
-            } else {
-                cv = List([{ display: value, raw: value }]);
-            }
-
             const readOnlyCol = col?.readOnly || metadata?.readOnly;
             const readOnlyCell = metadata?.isReadOnlyCell(pkValue);
 
             if (!readOnlyCol && !readOnlyCell) {
+                let cv: List<ValueDescriptor>;
+                let msg: CellMessage;
+
+                if (col?.isPublicLookup()) {
+                    const { message, values } = parsePastedLookup(col, lookupDescriptorMap[col.lookupKey], value);
+                    cv = values;
+
+                    if (message) {
+                        msg = message;
+                    }
+                } else {
+                    cv = List([{ display: value, raw: value }]);
+                }
+
                 if (msg) {
                     cellMessages = cellMessages.set(cellKey, msg);
                 } else {

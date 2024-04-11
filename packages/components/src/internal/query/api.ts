@@ -979,7 +979,9 @@ export function deleteRows(options: DeleteRowsOptions): Promise<QueryCommandResp
     });
 }
 
-export function saveRows(options: Query.SaveRowsOptions): Promise<Query.SaveRowsResponse> {
+export type SaveRowsOptions = Omit<Query.SaveRowsOptions, 'failure' | 'success'>;
+
+export function saveRows(options: SaveRowsOptions): Promise<Query.SaveRowsResponse> {
     return new Promise((resolve, reject) => {
         Query.saveRows({
             apiVersion: 13.2,
@@ -1005,8 +1007,11 @@ function splitRowsByContainer(rows: any[], containerField: string): Record<strin
     return containerRows;
 }
 
-export function saveRowsByContainer(options: Query.SaveRowsOptions, containerField: string = 'ContainerPath'): void {
-    const commands = [];
+export function saveRowsByContainer(
+    options: SaveRowsOptions,
+    containerField: string = 'Folder'
+): Promise<Query.SaveRowsResponse> {
+    const commands = []; // TODO type as Query.Command
 
     // for each original command, split it into multiple commands for each container in the rows
     options.commands.forEach(command => {
@@ -1016,14 +1021,16 @@ export function saveRowsByContainer(options: Query.SaveRowsOptions, containerFie
             commands.push({
                 ...command,
                 rows,
+                // splitRowsByContainer will use the Record key of "undefined" if the row doesn't have a containerPath
                 containerPath: !containerPath || containerPath === 'undefined' ? undefined : containerPath,
             });
         });
     });
 
-    Query.saveRows({
+    return saveRows({
         ...options,
         commands,
+        apiVersion: undefined /* use default instead of 13.2 as defined in saveRows() */,
     });
 }
 

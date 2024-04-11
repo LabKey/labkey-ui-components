@@ -45,6 +45,7 @@ import {
     UpdateRowsOptions,
     getDefaultVisibleColumns,
     saveRowsByContainer,
+    SaveRowsOptions,
 } from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 
@@ -99,7 +100,7 @@ export interface QueryAPIWrapper {
         inherit: boolean,
         shared: boolean
     ) => Promise<void>;
-    saveRowsByContainer: (options: Query.SaveRowsOptions, containerField: string) => void;
+    saveRowsByContainer: (options: SaveRowsOptions, containerField: string) => Promise<Query.SaveRowsResponse>;
     saveSessionView: (
         schemaQuery: SchemaQuery,
         containerPath: string,

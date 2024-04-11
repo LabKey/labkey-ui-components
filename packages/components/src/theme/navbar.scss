@@ -692,6 +692,10 @@
     height: 100%;
 }
 
+.col-product-section:first-child {
+    padding-left: 8px;
+}
+
 .col-product-section:last-child {
     padding-right: 8px;
 }

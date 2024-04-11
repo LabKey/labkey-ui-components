@@ -4,11 +4,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD April 2024
 - Support cross-folder "Edit in Grid"
-  - Rename getOperationNotPermittedMessage() to getOperationNotAllowedMessage()
+  - rename getOperationNotPermittedMessage() to getOperationNotAllowedMessage()
   - EditableGridLoaderFromSelection to account for idsNotPermitted when using selections for getSelectedData()
   - Show Project column in EditableGrid for "Edit in Grid"
   - Add saveRowsByContainer util to QueryAPIWrapper
   - EditableGrid column actions for add,remove,update should use editorModel.columns to determine column indices
+  - EditableGridPanelForUpdate props for readOnlyColumns and updateColumns, include originalRows as param to updateRows, show warning about notPermitted rows
+  - add getOperationConfirmationDataForModel helper
+  - fix in getUpdatedDataFromGrid for multi-value columns
+  - EditableGrid replace react-bootstrap OverlayTrigger/Popover with LabelHelpTip
 
 ### version 3.38.0
 *Released*: 10 April 2024

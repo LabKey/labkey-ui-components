@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Map } from 'immutable';
-import { Query } from '@labkey/api';
 
 import { capitalizeFirstChar } from '../../util/utils';
 
@@ -20,15 +19,13 @@ import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeComme
 
 import { resolveErrorMessage } from '../../util/messaging';
 
-import { QueryColumn } from '../../../public/QueryColumn';
-
 import { OperationConfirmationData } from '../entities/models';
 
 import { getOperationNotPermittedMessage } from '../samples/utils';
 
 import { EditorModel, EditableGridLoader } from './models';
 
-import { EditableGridPanel } from './EditableGridPanel';
+import { EditableGridPanel, EditableGridPanelProps } from './EditableGridPanel';
 import { initEditableGridModel } from './actions';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid } from './utils';
 import { EditableGridChange } from './EditableGrid';
@@ -38,21 +35,21 @@ type Models = {
     editorModel: EditorModel;
 };
 
-interface Props {
-    containerFilter?: Query.ContainerFilter;
+type InheritedEditableGridPanelProps = Omit<
+    EditableGridPanelProps,
+    'columnMetadata' | 'editorModel' | 'forUpdate' | 'model' | 'onChange'
+>;
+
+interface EditableGridPanelForUpdateProps extends InheritedEditableGridPanelProps {
     editStatusData?: OperationConfirmationData;
-    getIsDirty?: () => boolean;
     idField: string;
     loader: EditableGridLoader;
     onCancel: () => void;
     onComplete: () => void;
     pluralNoun?: string;
     queryModel: QueryModel;
-    readOnlyColumns?: string[];
     selectionData: Map<string, any>;
-    setIsDirty?: (isDirty: boolean) => void;
     singularNoun?: string;
-    updateColumns?: QueryColumn[];
     updateRows: (
         schemaQuery: SchemaQuery,
         rows: Array<Record<string, any>>,
@@ -61,10 +58,21 @@ interface Props {
     ) => Promise<any>;
 }
 
-export const EditableGridPanelForUpdate: FC<Props> = props => {
-    const { containerFilter, onCancel, singularNoun, pluralNoun, editStatusData, ...editableGridProps } = props;
-    const { idField, loader, queryModel, selectionData, getIsDirty, setIsDirty, updateRows, onComplete } =
-        editableGridProps;
+export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = props => {
+    const {
+        editStatusData,
+        idField,
+        loader,
+        onCancel,
+        onComplete,
+        pluralNoun,
+        queryModel,
+        selectionData,
+        singularNoun,
+        updateRows,
+        ...editableGridProps
+    } = props;
+    const { getIsDirty, setIsDirty } = editableGridProps;
     const id = loader.id;
 
     const [models, setModels] = useState<Models>(() => ({
@@ -159,19 +167,18 @@ export const EditableGridPanelForUpdate: FC<Props> = props => {
         <>
             {notPermittedText && <Alert bsStyle="warning">{notPermittedText}</Alert>}
             <EditableGridPanel
-                {...editableGridProps}
                 allowAdd={false}
                 allowRemove={false}
                 bordered
                 bsStyle="info"
+                striped
+                title={`Edit selected ${pluralNoun}`}
+                {...editableGridProps}
                 columnMetadata={columnMetadata}
-                containerFilter={containerFilter}
                 editorModel={models.editorModel}
                 forUpdate
                 model={models.dataModel}
                 onChange={onGridChange}
-                striped
-                title={`Edit selected ${pluralNoun}`}
             />
             <Alert>{error}</Alert>
             <WizardNavButtons

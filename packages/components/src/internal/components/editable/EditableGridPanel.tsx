@@ -18,7 +18,7 @@ import { EditableGrid, EditableGridChange, SharedEditableGridPanelProps } from '
 
 import { exportEditedData, getEditorExportData } from './utils';
 
-interface Props extends SharedEditableGridPanelProps {
+export interface EditableGridPanelProps extends SharedEditableGridPanelProps {
     allowExport?: boolean;
     editorModel: EditorModel | EditorModel[];
     getIsDirty?: () => boolean;
@@ -59,7 +59,7 @@ const exportHandler = (
  * (core/src/client/LabKeyUIComponentsPage/EditableGridPage.tsx) which uses the set state function which takes a function
  * as the first parameter instead of the new state object.
  */
-export const EditableGridPanel: FC<Props> = memo(props => {
+export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
     const {
         allowExport = true,
         editorModel,

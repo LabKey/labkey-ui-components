@@ -195,7 +195,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             } else {
                 // Issue 50010: Time picker enters the wrong time if a time field has a format set
                 const time = parseSimpleTime(value);
-                if (time instanceof Date) {
+                if (time instanceof Date && !isNaN(time.getTime())) {
                     // Issue 50102: LKSM: When bulk updating a time-only field and entering a value with PM results in the AM time being selected
                     this.setState({ selectedDate: time, invalid: false });
 

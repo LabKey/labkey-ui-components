@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Update CSS for notebook review status pills
+
 ### version 3.38.2
 *Released*: 12 April 2024
 - Issue 50069: Editing amounts of sample results in weird value

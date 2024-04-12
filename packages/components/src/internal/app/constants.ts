@@ -115,6 +115,8 @@ export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot
 
 export const PROJECT_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
 
+export const BASE_APP_HELP_LINK = 'https://www.labkey.org/SampleManagerHelp/wiki-page.view?name=';
+
 // The enum values here should align with the ProductFeature.java enum values (some not currently used but included for completeness)
 export enum ProductFeature {
     ApiKeys = 'ApiKeys',
@@ -140,6 +142,7 @@ export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     searchPlaceholder: SEARCH_PLACEHOLDER,
     dataClassUrlPart: REGISTRY_KEY,
     releaseNoteLink: 'bioReleaseNotes',
+    baseProductHelpLinkPrefix: BASE_APP_HELP_LINK,
 };
 
 export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {
@@ -163,4 +166,5 @@ export const FREEZER_MANAGER_APP_PROPERTIES: AppProperties = {
     logoBadgeColorImageUrl: imageURL('_images', 'mobile-logo-seattle.svg'),
     controllerName: FREEZER_MANAGER_CONTROLLER_NAME,
     moduleName: 'inventory',
+    baseProductHelpLinkPrefix: BASE_APP_HELP_LINK,
 };

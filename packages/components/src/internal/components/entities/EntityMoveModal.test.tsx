@@ -1,19 +1,24 @@
 import React from 'react';
 
+import { act } from 'react-dom/test-utils';
+
+import { render } from '@testing-library/react';
+
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { getTestAPIWrapper } from '../../APIWrapper';
 
+import { TEST_USER_EDITOR } from '../../userFixtures';
+
+import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
+
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+
 import { getEntityTestAPIWrapper } from './APIWrapper';
 import { SampleTypeDataType } from './constants';
 import { EntityMoveModal, EntityMoveModalProps, getMoveConfirmationProperties } from './EntityMoveModal';
 import { OperationConfirmationData } from './models';
-import { TEST_USER_EDITOR } from '../../userFixtures';
-import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
-import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
-import { act } from 'react-dom/test-utils';
-import { render } from '@testing-library/react';
 
 describe('EntityMoveModal', () => {
     const DEFAULT_SERVER_CONTEXT = { user: TEST_USER_EDITOR, container: TEST_PROJECT_CONTAINER };
@@ -93,7 +98,8 @@ describe('EntityMoveModal', () => {
                     totalNotActionable: 0,
                 } as OperationConfirmationData,
                 'sample',
-                'samples'
+                'samples',
+                true
             );
             expect(props.canMove).toBeFalsy();
             expect(props.title).toBe('No Samples Can Be Moved');
@@ -108,7 +114,8 @@ describe('EntityMoveModal', () => {
                     notPermitted: [],
                 }),
                 'sample',
-                'samples'
+                'samples',
+                true
             );
             expect(props.canMove).toBeTruthy();
             expect(props.title).toBe('Move 1 Sample');
@@ -123,7 +130,8 @@ describe('EntityMoveModal', () => {
                     notPermitted: [],
                 }),
                 'sample',
-                'samples'
+                'samples',
+                true
             );
             expect(props.canMove).toBeTruthy();
             expect(props.title).toBe('Move 2 Samples');
@@ -138,7 +146,8 @@ describe('EntityMoveModal', () => {
                     notPermitted: [],
                 }),
                 'sample',
-                'samples'
+                'samples',
+                true
             );
             expect(props.canMove).toBeFalsy();
             expect(props.title).toBe('Cannot Move Sample');
@@ -158,7 +167,8 @@ describe('EntityMoveModal', () => {
                     notPermitted: [],
                 }),
                 'sample',
-                'samples'
+                'samples',
+                true
             );
             expect(props.canMove).toBeFalsy();
             expect(props.title).toBe('No Samples Can Be Moved');
@@ -178,7 +188,8 @@ describe('EntityMoveModal', () => {
                     notPermitted: [],
                 }),
                 'sample',
-                'samples'
+                'samples',
+                true
             );
             expect(props.canMove).toBeTruthy();
             expect(props.title).toBe('Move 1 Sample');
@@ -197,7 +208,8 @@ describe('EntityMoveModal', () => {
                     notPermitted: [],
                 }),
                 'sample',
-                'samples'
+                'samples',
+                true
             );
             expect(props.canMove).toBeTruthy();
             expect(props.title).toBe('Move 2 Samples');
@@ -213,10 +225,11 @@ describe('EntityMoveModal', () => {
                 new OperationConfirmationData({
                     allowed: [{ rowId: 1 }, { rowId: 3 }],
                     notAllowed: [{ rowId: 2 }, { rowId: 4 }],
-                    notPermitted: [ { rowId: 2 } ],
+                    notPermitted: [{ rowId: 2 }],
                 }),
                 'sample',
-                'samples'
+                'samples',
+                true
             );
             expect(props.canMove).toBe(true);
             expect(props.title).toBe('Move 2 Samples');
@@ -235,7 +248,8 @@ describe('EntityMoveModal', () => {
                     notPermitted: [{ rowId: 2 }],
                 }),
                 'sample',
-                'samples'
+                'samples',
+                true
             );
             expect(props.canMove).toBe(true);
             expect(props.title).toBe('Move 2 Samples');
@@ -254,7 +268,8 @@ describe('EntityMoveModal', () => {
                     notPermitted: [{ rowId: 2 }, { rowId: 3 }],
                 }),
                 'sample',
-                'samples'
+                'samples',
+                true
             );
             expect(props.canMove).toBe(true);
             expect(props.title).toBe('Move 2 Samples');
@@ -273,7 +288,8 @@ describe('EntityMoveModal', () => {
                     notPermitted: [{ rowId: 1 }, { rowId: 2 }, { rowId: 3 }],
                 }),
                 'sample',
-                'samples'
+                'samples',
+                true
             );
             expect(props.canMove).toBe(false);
             expect(props.title).toBe('No Samples Can Be Moved');

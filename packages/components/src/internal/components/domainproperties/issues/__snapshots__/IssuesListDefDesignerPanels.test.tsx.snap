@@ -1,0 +1,1041 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="domain-designer"
+      >
+        <div
+          class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+        >
+          <div
+            class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
+            id="issues-properties-hdr"
+          >
+            <span
+              class="domain-panel-title"
+            >
+              Issues List For Jest - Issues List Properties
+            </span>
+            <span
+              class="pull-right"
+            >
+              <span
+                class="fa fa-lg fa-chevron-down domain-form-collapse-btn"
+              />
+            </span>
+          </div>
+          <div
+            class="panel-collapse collapse in"
+          >
+            <div
+              class="panel-body"
+            >
+              <div
+                class="row margin-bottom"
+              >
+                <div
+                  class="col-xs-12"
+                >
+                  <div
+                    class="row"
+                  >
+                    <div
+                      class="col-xs-12"
+                    >
+                      <a
+                        class="domain-field-float-right"
+                        href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=adminIssues"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Learn more about designing issues lists
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <form>
+                <div
+                  class="col-xs-12 col-md-6"
+                >
+                  <div
+                    class="domain-field-padding-bottom"
+                  >
+                    <div>
+                      <div
+                        class="domain-field-section-heading"
+                      >
+                        Basic Properties
+                      </div>
+                      <div
+                        class="row margin-top"
+                      >
+                        <div
+                          class="col-xs-3 col-lg-4"
+                        >
+                          Comment Sort 
+                          <span
+                            class="domain-no-wrap"
+                          >
+                            Direction
+                            <div
+                              class="overlay-trigger"
+                            >
+                              <span
+                                class="label-help-target"
+                              >
+                                <span
+                                  class="label-help-icon fa fa-question-circle"
+                                />
+                              </span>
+                            </div>
+                            
+                          </span>
+                        </div>
+                        <div
+                          class="col-xs-9 col-lg-8"
+                        >
+                          <div
+                            class="select-input-container form-group row"
+                          >
+                            <div
+                              class="col-xs-12"
+                            >
+                              <div
+                                class="select-input css-b62m3t-container"
+                                id="selectinput-1"
+                              >
+                                <span
+                                  class="css-1f43avz-a11yText-A11yText"
+                                  id="react-select-2-live-region"
+                                />
+                                <span
+                                  aria-atomic="false"
+                                  aria-live="polite"
+                                  aria-relevant="additions text"
+                                  class="css-1f43avz-a11yText-A11yText"
+                                  role="log"
+                                />
+                                <div
+                                  class="select-input__control css-13cymwt-control"
+                                >
+                                  <div
+                                    class="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
+                                  >
+                                    <div
+                                      class="select-input__single-value css-1dimb5e-singleValue"
+                                    >
+                                      Oldest first
+                                    </div>
+                                    <div
+                                      class="select-input__input-container css-qbdosj-Input"
+                                      data-value=""
+                                    >
+                                      <input
+                                        aria-activedescendant=""
+                                        aria-autocomplete="list"
+                                        aria-expanded="false"
+                                        aria-haspopup="true"
+                                        autocapitalize="none"
+                                        autocomplete="off"
+                                        autocorrect="off"
+                                        class="select-input__input"
+                                        id="react-select-2-input"
+                                        role="combobox"
+                                        spellcheck="false"
+                                        style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                        tabindex="0"
+                                        type="text"
+                                        value=""
+                                      />
+                                    </div>
+                                  </div>
+                                  <div
+                                    class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                                  >
+                                    <span
+                                      class="select-input__indicator-separator css-1u9des2-indicatorSeparator"
+                                    />
+                                    <div
+                                      aria-hidden="true"
+                                      class="select-input__indicator select-input__dropdown-indicator css-1xc3v61-indicatorContainer"
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        class="css-tj5bde-Svg"
+                                        focusable="false"
+                                        height="20"
+                                        viewBox="0 0 20 20"
+                                        width="20"
+                                      >
+                                        <path
+                                          d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </div>
+                                </div>
+                                <input
+                                  name="commentSortDirection"
+                                  type="hidden"
+                                  value="ASC"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="row margin-top"
+                      >
+                        <div
+                          class="col-xs-3 col-lg-4"
+                        >
+                          Singular Item 
+                          <span
+                            class="domain-no-wrap"
+                          >
+                            Name
+                            <div
+                              class="overlay-trigger"
+                            >
+                              <span
+                                class="label-help-target"
+                              >
+                                <span
+                                  class="label-help-icon fa fa-question-circle"
+                                />
+                              </span>
+                            </div>
+                            
+                          </span>
+                        </div>
+                        <div
+                          class="col-xs-9 col-lg-8"
+                        >
+                          <input
+                            class="form-control"
+                            id="singularItemName"
+                            type="text"
+                            value="Issue"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="row margin-top"
+                      >
+                        <div
+                          class="col-xs-3 col-lg-4"
+                        >
+                          Plural Items 
+                          <span
+                            class="domain-no-wrap"
+                          >
+                            Name
+                            <div
+                              class="overlay-trigger"
+                            >
+                              <span
+                                class="label-help-target"
+                              >
+                                <span
+                                  class="label-help-icon fa fa-question-circle"
+                                />
+                              </span>
+                            </div>
+                            
+                          </span>
+                        </div>
+                        <div
+                          class="col-xs-9 col-lg-8"
+                        >
+                          <input
+                            class="form-control"
+                            id="pluralItemName"
+                            type="text"
+                            value="Issues"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="col-xs-12 col-md-6"
+                >
+                  <div
+                    class="domain-field-section-heading"
+                  >
+                    Assignment Options
+                  </div>
+                  <div
+                    class="row margin-top"
+                  >
+                    <div
+                      class="col-xs-3 col-lg-4"
+                    >
+                      Populate ‘Assigned To’ Field 
+                      <span
+                        class="domain-no-wrap"
+                      >
+                        from
+                        <div
+                          class="overlay-trigger"
+                        >
+                          <span
+                            class="label-help-target"
+                          >
+                            <span
+                              class="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                        
+                      </span>
+                    </div>
+                    <div
+                      class="col-xs-9 col-lg-8"
+                    >
+                      <span
+                        class=""
+                      >
+                        <i
+                          aria-hidden="true"
+                          class="fa fa-spinner fa-pulse"
+                        />
+                         
+                        Loading...
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    class="row margin-top"
+                  >
+                    <div
+                      class="col-xs-3 col-lg-4"
+                    >
+                      Default User 
+                      <span
+                        class="domain-no-wrap"
+                      >
+                        Assignment
+                        <div
+                          class="overlay-trigger"
+                        >
+                          <span
+                            class="label-help-target"
+                          >
+                            <span
+                              class="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                        
+                      </span>
+                    </div>
+                    <div
+                      class="col-xs-9 col-lg-8"
+                    >
+                      <span
+                        class=""
+                      >
+                        <i
+                          aria-hidden="true"
+                          class="fa fa-spinner fa-pulse"
+                        />
+                         
+                        Loading...
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    class="row margin-top"
+                  >
+                    <div
+                      class="col-xs-3 col-lg-4"
+                    >
+                      Default Related Issue 
+                      <span
+                        class="domain-no-wrap"
+                      >
+                        Folder
+                        <div
+                          class="overlay-trigger"
+                        >
+                          <span
+                            class="label-help-target"
+                          >
+                            <span
+                              class="label-help-icon fa fa-question-circle"
+                            />
+                          </span>
+                        </div>
+                        
+                      </span>
+                    </div>
+                    <div
+                      class="col-xs-9 col-lg-8"
+                    >
+                      <span
+                        class=""
+                      >
+                        <i
+                          aria-hidden="true"
+                          class="fa fa-spinner fa-pulse"
+                        />
+                         
+                        Loading...
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div
+          class="panel panel-default domain-form-panel panel panel-default"
+        >
+          <div
+            class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
+            id="domain-header"
+          >
+            <div
+              class="overlay-trigger"
+            >
+              <span
+                class="label-help-target"
+              >
+                <span
+                  class="domain-panel-status-icon domain-panel-status-icon-blue"
+                >
+                  <span
+                    class="fa fa-exclamation-circle"
+                  />
+                </span>
+              </span>
+            </div>
+            <span
+              class="domain-panel-title"
+            >
+              Fields
+            </span>
+            <span
+              class="pull-right"
+            >
+              <span
+                class="fa fa-lg fa-chevron-right domain-form-expand-btn"
+              />
+            </span>
+          </div>
+          <div
+            class="panel-collapse collapse"
+          >
+            <div
+              class="domain-field-top-noBuffer panel-body"
+            >
+              <span
+                class=""
+              >
+                <i
+                  aria-hidden="true"
+                  class="fa fa-spinner fa-pulse"
+                />
+                 
+                Loading...
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="form-buttons"
+        >
+          <div
+            class="form-buttons__left"
+          >
+            <button
+              class="cancel-button btn btn-default"
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
+          <div
+            class="form-buttons__right"
+          >
+            <button
+              class="save-button btn btn-primary"
+              type="button"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip0"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip2"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip3"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip4"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip5"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip6"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip7"
+    >
+      <div />
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="domain-designer"
+    >
+      <div
+        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      >
+        <div
+          class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
+          id="issues-properties-hdr"
+        >
+          <span
+            class="domain-panel-title"
+          >
+            Issues List For Jest - Issues List Properties
+          </span>
+          <span
+            class="pull-right"
+          >
+            <span
+              class="fa fa-lg fa-chevron-down domain-form-collapse-btn"
+            />
+          </span>
+        </div>
+        <div
+          class="panel-collapse collapse in"
+        >
+          <div
+            class="panel-body"
+          >
+            <div
+              class="row margin-bottom"
+            >
+              <div
+                class="col-xs-12"
+              >
+                <div
+                  class="row"
+                >
+                  <div
+                    class="col-xs-12"
+                  >
+                    <a
+                      class="domain-field-float-right"
+                      href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=adminIssues"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more about designing issues lists
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form>
+              <div
+                class="col-xs-12 col-md-6"
+              >
+                <div
+                  class="domain-field-padding-bottom"
+                >
+                  <div>
+                    <div
+                      class="domain-field-section-heading"
+                    >
+                      Basic Properties
+                    </div>
+                    <div
+                      class="row margin-top"
+                    >
+                      <div
+                        class="col-xs-3 col-lg-4"
+                      >
+                        Comment Sort 
+                        <span
+                          class="domain-no-wrap"
+                        >
+                          Direction
+                          <div
+                            class="overlay-trigger"
+                          >
+                            <span
+                              class="label-help-target"
+                            >
+                              <span
+                                class="label-help-icon fa fa-question-circle"
+                              />
+                            </span>
+                          </div>
+                          
+                        </span>
+                      </div>
+                      <div
+                        class="col-xs-9 col-lg-8"
+                      >
+                        <div
+                          class="select-input-container form-group row"
+                        >
+                          <div
+                            class="col-xs-12"
+                          >
+                            <div
+                              class="select-input css-b62m3t-container"
+                              id="selectinput-1"
+                            >
+                              <span
+                                class="css-1f43avz-a11yText-A11yText"
+                                id="react-select-2-live-region"
+                              />
+                              <span
+                                aria-atomic="false"
+                                aria-live="polite"
+                                aria-relevant="additions text"
+                                class="css-1f43avz-a11yText-A11yText"
+                                role="log"
+                              />
+                              <div
+                                class="select-input__control css-13cymwt-control"
+                              >
+                                <div
+                                  class="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
+                                >
+                                  <div
+                                    class="select-input__single-value css-1dimb5e-singleValue"
+                                  >
+                                    Oldest first
+                                  </div>
+                                  <div
+                                    class="select-input__input-container css-qbdosj-Input"
+                                    data-value=""
+                                  >
+                                    <input
+                                      aria-activedescendant=""
+                                      aria-autocomplete="list"
+                                      aria-expanded="false"
+                                      aria-haspopup="true"
+                                      autocapitalize="none"
+                                      autocomplete="off"
+                                      autocorrect="off"
+                                      class="select-input__input"
+                                      id="react-select-2-input"
+                                      role="combobox"
+                                      spellcheck="false"
+                                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                      tabindex="0"
+                                      type="text"
+                                      value=""
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                                >
+                                  <span
+                                    class="select-input__indicator-separator css-1u9des2-indicatorSeparator"
+                                  />
+                                  <div
+                                    aria-hidden="true"
+                                    class="select-input__indicator select-input__dropdown-indicator css-1xc3v61-indicatorContainer"
+                                  >
+                                    <svg
+                                      aria-hidden="true"
+                                      class="css-tj5bde-Svg"
+                                      focusable="false"
+                                      height="20"
+                                      viewBox="0 0 20 20"
+                                      width="20"
+                                    >
+                                      <path
+                                        d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                              <input
+                                name="commentSortDirection"
+                                type="hidden"
+                                value="ASC"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="row margin-top"
+                    >
+                      <div
+                        class="col-xs-3 col-lg-4"
+                      >
+                        Singular Item 
+                        <span
+                          class="domain-no-wrap"
+                        >
+                          Name
+                          <div
+                            class="overlay-trigger"
+                          >
+                            <span
+                              class="label-help-target"
+                            >
+                              <span
+                                class="label-help-icon fa fa-question-circle"
+                              />
+                            </span>
+                          </div>
+                          
+                        </span>
+                      </div>
+                      <div
+                        class="col-xs-9 col-lg-8"
+                      >
+                        <input
+                          class="form-control"
+                          id="singularItemName"
+                          type="text"
+                          value="Issue"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="row margin-top"
+                    >
+                      <div
+                        class="col-xs-3 col-lg-4"
+                      >
+                        Plural Items 
+                        <span
+                          class="domain-no-wrap"
+                        >
+                          Name
+                          <div
+                            class="overlay-trigger"
+                          >
+                            <span
+                              class="label-help-target"
+                            >
+                              <span
+                                class="label-help-icon fa fa-question-circle"
+                              />
+                            </span>
+                          </div>
+                          
+                        </span>
+                      </div>
+                      <div
+                        class="col-xs-9 col-lg-8"
+                      >
+                        <input
+                          class="form-control"
+                          id="pluralItemName"
+                          type="text"
+                          value="Issues"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="col-xs-12 col-md-6"
+              >
+                <div
+                  class="domain-field-section-heading"
+                >
+                  Assignment Options
+                </div>
+                <div
+                  class="row margin-top"
+                >
+                  <div
+                    class="col-xs-3 col-lg-4"
+                  >
+                    Populate ‘Assigned To’ Field 
+                    <span
+                      class="domain-no-wrap"
+                    >
+                      from
+                      <div
+                        class="overlay-trigger"
+                      >
+                        <span
+                          class="label-help-target"
+                        >
+                          <span
+                            class="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                      
+                    </span>
+                  </div>
+                  <div
+                    class="col-xs-9 col-lg-8"
+                  >
+                    <span
+                      class=""
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="fa fa-spinner fa-pulse"
+                      />
+                       
+                      Loading...
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="row margin-top"
+                >
+                  <div
+                    class="col-xs-3 col-lg-4"
+                  >
+                    Default User 
+                    <span
+                      class="domain-no-wrap"
+                    >
+                      Assignment
+                      <div
+                        class="overlay-trigger"
+                      >
+                        <span
+                          class="label-help-target"
+                        >
+                          <span
+                            class="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                      
+                    </span>
+                  </div>
+                  <div
+                    class="col-xs-9 col-lg-8"
+                  >
+                    <span
+                      class=""
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="fa fa-spinner fa-pulse"
+                      />
+                       
+                      Loading...
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="row margin-top"
+                >
+                  <div
+                    class="col-xs-3 col-lg-4"
+                  >
+                    Default Related Issue 
+                    <span
+                      class="domain-no-wrap"
+                    >
+                      Folder
+                      <div
+                        class="overlay-trigger"
+                      >
+                        <span
+                          class="label-help-target"
+                        >
+                          <span
+                            class="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                      
+                    </span>
+                  </div>
+                  <div
+                    class="col-xs-9 col-lg-8"
+                  >
+                    <span
+                      class=""
+                    >
+                      <i
+                        aria-hidden="true"
+                        class="fa fa-spinner fa-pulse"
+                      />
+                       
+                      Loading...
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div
+        class="panel panel-default domain-form-panel panel panel-default"
+      >
+        <div
+          class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
+          id="domain-header"
+        >
+          <div
+            class="overlay-trigger"
+          >
+            <span
+              class="label-help-target"
+            >
+              <span
+                class="domain-panel-status-icon domain-panel-status-icon-blue"
+              >
+                <span
+                  class="fa fa-exclamation-circle"
+                />
+              </span>
+            </span>
+          </div>
+          <span
+            class="domain-panel-title"
+          >
+            Fields
+          </span>
+          <span
+            class="pull-right"
+          >
+            <span
+              class="fa fa-lg fa-chevron-right domain-form-expand-btn"
+            />
+          </span>
+        </div>
+        <div
+          class="panel-collapse collapse"
+        >
+          <div
+            class="domain-field-top-noBuffer panel-body"
+          >
+            <span
+              class=""
+            >
+              <i
+                aria-hidden="true"
+                class="fa fa-spinner fa-pulse"
+              />
+               
+              Loading...
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="form-buttons"
+      >
+        <div
+          class="form-buttons__left"
+        >
+          <button
+            class="cancel-button btn btn-default"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
+        <div
+          class="form-buttons__right"
+        >
+          <button
+            class="save-button btn btn-primary"
+            type="button"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

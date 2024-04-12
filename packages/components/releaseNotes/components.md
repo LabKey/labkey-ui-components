@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.X
-*Released*: X April 2024
+### version 3.38.2
+*Released*: 12 April 2024
 - Issue 50069: Editing amounts of sample results in weird value
 - Issue 50010 Time picker enters the wrong time if a time field has a format set or if there is an additional parsing.
 - Issue 50102: When bulk updating a time-only field and entering a value with PM results in the AM time being selected.

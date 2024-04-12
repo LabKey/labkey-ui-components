@@ -14,6 +14,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   - fix in getUpdatedDataFromGrid for multi-value columns
   - EditableGrid replace react-bootstrap OverlayTrigger/Popover with LabelHelpTip
 
+### version 3.38.1
+*Released*: 11 April 2024
+- Update product menu DOM structure to better support flex layout container/item paradigm.
+- Use flex layout both horizontally (row-wise) across the product and vertically (column-wise) within each section column.
+- Scroll within dynamic menu sections leaving the section headers position constant.
+- Apply a "no-scroll" CSS class to the document body when product navigation is open. This prevents page scrolling.
+
 ### version 3.38.0
 *Released*: 10 April 2024
 - Add ability for users to choose colors associated with sample statuses

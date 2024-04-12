@@ -235,6 +235,9 @@ export function getColFormattedTimeFilterValue(column: QueryColumn, value: any):
 }
 
 export function parseSimpleTime(rawValue: string): Date {
+    if (!rawValue)
+        return null;
+
     const parts = rawValue.toString().split(':').length;
     let hourMinite = 'HH:mm',
         ampm = '';

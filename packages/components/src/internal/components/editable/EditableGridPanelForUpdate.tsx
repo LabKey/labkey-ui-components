@@ -30,6 +30,8 @@ import { initEditableGridModel } from './actions';
 import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid } from './utils';
 import { EditableGridChange } from './EditableGrid';
 
+const ERROR_ALERT_ID = 'editable-grid-error';
+
 type Models = {
     dataModel: QueryModel;
     editorModel: EditorModel;
@@ -147,6 +149,7 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
         } catch (e) {
             setError(e?.exception ?? 'There was a problem updating the ' + singularNoun + ' data.');
             setIsSubmitting(false);
+            document.querySelector('#' + ERROR_ALERT_ID)?.scrollIntoView({ behavior: 'smooth' });
         }
     }, [comment, models, idField, onComplete, selectionData, singularNoun, updateRows]);
 
@@ -180,7 +183,7 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
                 model={models.dataModel}
                 onChange={onGridChange}
             />
-            <Alert>{error}</Alert>
+            <Alert id={ERROR_ALERT_ID}>{error}</Alert>
             <WizardNavButtons
                 cancel={onCancel}
                 canFinish={getIsDirty?.() && (!requiresUserComment || hasValidUserComment)}

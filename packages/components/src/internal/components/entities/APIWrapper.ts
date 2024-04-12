@@ -7,11 +7,14 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { InsertOptions } from '../../query/api';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
 import {
     getDataOperationConfirmationData,
     GetDeleteConfirmationDataOptions,
     getDeleteConfirmationData,
     getMoveConfirmationData,
+    getOperationConfirmationDataForModel,
     getEntityTypeData,
     getOriginalParentsFromLineage,
     handleEntityFileImport,
@@ -52,6 +55,11 @@ export interface EntityAPIWrapper {
         rowIds: string[] | number[],
         selectionKey?: string,
         useSnapshotSelection?: boolean
+    ) => Promise<OperationConfirmationData>;
+    getOperationConfirmationDataForModel: (
+        model: QueryModel,
+        dataType: EntityDataType,
+        extraParams?: Record<string, any>
     ) => Promise<OperationConfirmationData>;
     getOriginalParentsFromLineage: (
         lineage: Record<string, any>,
@@ -95,6 +103,7 @@ export class EntityServerAPIWrapper implements EntityAPIWrapper {
     getDeleteConfirmationData = getDeleteConfirmationData;
     getMoveConfirmationData = getMoveConfirmationData;
     getEntityTypeData = getEntityTypeData;
+    getOperationConfirmationDataForModel = getOperationConfirmationDataForModel;
     getOriginalParentsFromLineage = getOriginalParentsFromLineage;
     handleEntityFileImport = handleEntityFileImport;
     loadNameExpressionOptions = loadNameExpressionOptions;
@@ -114,6 +123,7 @@ export function getEntityTestAPIWrapper(
         getDeleteConfirmationData: mockFn(),
         getMoveConfirmationData: mockFn(),
         getEntityTypeData: mockFn(),
+        getOperationConfirmationDataForModel: mockFn(),
         getOriginalParentsFromLineage: mockFn(),
         handleEntityFileImport: mockFn(),
         loadNameExpressionOptions: mockFn(),

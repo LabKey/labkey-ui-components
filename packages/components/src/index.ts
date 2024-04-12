@@ -486,7 +486,6 @@ import {
 } from './internal/components/permissions/actions';
 import {
     getContainersForPermission,
-    getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
     getDeleteConfirmationData,
@@ -1349,7 +1348,6 @@ export {
     getSampleOperationConfirmationData,
     getDeleteConfirmationData,
     getEntityTypeOptions,
-    getCrossFolderSelectionResult,
     getExcludedDataTypeNames,
     getOperationConfirmationData,
     getContainersForPermission,

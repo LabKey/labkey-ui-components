@@ -21,9 +21,11 @@ import {
     moveEntities,
     initParentOptionsSelects,
     MoveEntitiesOptions,
+    getCrossFolderSelectionResult,
 } from './actions';
 import { DataOperation } from './constants';
 import {
+    CrossFolderSelectionResult,
     EntityChoice,
     EntityDataType,
     EntityIdCreationModel,
@@ -34,6 +36,13 @@ import {
 } from './models';
 
 export interface EntityAPIWrapper {
+    getCrossFolderSelectionResult: (
+        dataRegionSelectionKey: string,
+        dataType: string, // 'samples' | 'exp.data' | 'assay',
+        useSnapshotSelection?: boolean,
+        rowIds?: string[] | number[],
+        picklistName?: string
+    ) => Promise<CrossFolderSelectionResult>;
     getDataOperationConfirmationData: (
         operation: DataOperation,
         rowIds: string[] | number[],
@@ -99,6 +108,7 @@ export interface EntityAPIWrapper {
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {
+    getCrossFolderSelectionResult = getCrossFolderSelectionResult;
     getDataOperationConfirmationData = getDataOperationConfirmationData;
     getDeleteConfirmationData = getDeleteConfirmationData;
     getMoveConfirmationData = getMoveConfirmationData;
@@ -119,6 +129,7 @@ export function getEntityTestAPIWrapper(
     overrides: Partial<EntityAPIWrapper> = {}
 ): EntityAPIWrapper {
     return {
+        getCrossFolderSelectionResult: mockFn(),
         getDataOperationConfirmationData: mockFn(),
         getDeleteConfirmationData: mockFn(),
         getMoveConfirmationData: mockFn(),

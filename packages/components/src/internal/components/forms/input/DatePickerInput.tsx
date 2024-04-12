@@ -59,14 +59,14 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     name?: string;
     onBlur?: () => void;
     onCalendarClose?: () => void;
+    onChange?: (rawDate?: Date | string, dateStr?: string) => void;
+    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     placeholderText?: string;
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
     value?: any;
     wrapperClassName?: string;
-    onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
-    onChange?: (rawDate?: Date | string, dateStr?: string) => void;
 }
 
 interface DatePickerInputState extends DisableableInputState {

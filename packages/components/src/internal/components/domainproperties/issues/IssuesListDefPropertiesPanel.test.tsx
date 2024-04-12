@@ -1,6 +1,8 @@
 import React from 'react';
-import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
+
 import { act } from 'react-dom/test-utils';
+
+import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 import { DomainPanelStatus } from '../models';
 
@@ -47,7 +49,8 @@ describe('IssuesListDefPropertiesPanel', () => {
                     togglePanel={jest.fn()}
                     panelStatus="TODO"
                     onChange={jest.fn()}
-                />);
+                />
+            );
         });
 
         expect(document.getElementsByClassName('domain-panel-header').length).toBe(1);

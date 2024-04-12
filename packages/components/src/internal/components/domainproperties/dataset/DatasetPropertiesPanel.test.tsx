@@ -16,6 +16,7 @@
 
 import React from 'react';
 import { act } from 'react-dom/test-utils';
+
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
@@ -67,5 +68,4 @@ describe('Dataset Properties Panel', () => {
 
         expect(container).toMatchSnapshot();
     });
-
 });

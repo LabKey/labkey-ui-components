@@ -1,17 +1,19 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 
+import { act } from 'react-dom/test-utils';
+
 import { DEFAULT_LIST_SETTINGS } from '../../../../test/data/constants';
 
 import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.json';
 
 import { DomainPanelStatus } from '../models';
 
+import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
+
 import { ListModel } from './models';
 
 import { ListPropertiesPanel, ListPropertiesPanelImpl } from './ListPropertiesPanel';
-import { act } from 'react-dom/test-utils';
-import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);

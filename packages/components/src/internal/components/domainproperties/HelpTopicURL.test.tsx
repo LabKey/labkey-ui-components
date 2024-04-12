@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { HelpTopicURL } from './HelpTopicURL';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+
+import { HelpTopicURL } from './HelpTopicURL';
 
 describe('<HelpTopicURL/>', () => {
     test('default properties', () => {

@@ -1,15 +1,18 @@
 import React from 'react';
-import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
+
 import userEvent from '@testing-library/user-event';
 
 import { List } from 'immutable';
+
+import { act } from 'react-dom/test-utils';
+
+import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
 import { IssuesDesignerPanelsImpl, IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from './models';
 import { getIssuesTestAPIWrapper } from './actions';
-import { act } from 'react-dom/test-utils';
 
 describe('IssuesListDefDesignerPanel', () => {
     const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });
@@ -36,7 +39,8 @@ describe('IssuesListDefDesignerPanel', () => {
                     submitting={false}
                     validatePanel={0}
                     visitedPanels={List()}
-                />            );
+                />
+            );
         });
 
         expect(container).toMatchSnapshot();
@@ -44,21 +48,19 @@ describe('IssuesListDefDesignerPanel', () => {
 
     test('visible properties', async () => {
         await act(async () => {
-            renderWithAppContext(
-                <IssuesListDefDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />
-            );
+            renderWithAppContext(<IssuesListDefDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />);
         });
         const panels = document.getElementsByClassName('domain-form-panel');
         expect(panels).toHaveLength(2);
-        expect(panels[0].querySelector('.domain-panel-title').textContent).toBe('Issues List For Jest - Issues List Properties');
+        expect(panels[0].querySelector('.domain-panel-title').textContent).toBe(
+            'Issues List For Jest - Issues List Properties'
+        );
         expect(panels[1].querySelector('.domain-panel-title').textContent).toBe('Fields');
     });
 
     test('open fields panel', async () => {
         await act(async () => {
-            renderWithAppContext(
-                <IssuesListDefDesignerPanels {...BASE_PROPS} />
-            );
+            renderWithAppContext(<IssuesListDefDesignerPanels {...BASE_PROPS} />);
         });
 
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
@@ -74,9 +76,6 @@ describe('IssuesListDefDesignerPanel', () => {
         const alerts = document.getElementsByClassName('alert');
         expect(alerts).toHaveLength(2);
         expect(alerts[0].textContent).toEqual(PROPERTIES_PANEL_ERROR_MSG);
-        expect(alerts[1].textContent).toEqual(
-            'Please correct errors in the properties panel before saving.'
-        );
+        expect(alerts[1].textContent).toEqual('Please correct errors in the properties panel before saving.');
     });
-
 });

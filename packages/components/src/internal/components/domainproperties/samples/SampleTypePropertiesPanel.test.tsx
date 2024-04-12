@@ -15,8 +15,10 @@
  */
 import React from 'react';
 import { act } from 'react-dom/test-utils';
-import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
+
 import { fromJS, Map } from 'immutable';
+
+import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 import { ENTITY_FORM_IDS } from '../entities/constants';
 import { DomainDetails, DomainPanelStatus } from '../models';
@@ -49,9 +51,7 @@ describe('SampleTypePropertiesPanel', () => {
     test('default props', async () => {
         let container;
         await act(async () => {
-            container = renderWithAppContext(
-                <SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} />
-            );
+            container = renderWithAppContext(<SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} />);
         });
         expect(container).toMatchSnapshot();
     });
@@ -82,16 +82,16 @@ describe('SampleTypePropertiesPanel', () => {
         );
 
         await act(async () => {
-            renderWithAppContext(
-                <SampleTypePropertiesPanel {...BASE_PROPS} model={SampleTypeModel.create(data)} />
-            );
+            renderWithAppContext(<SampleTypePropertiesPanel {...BASE_PROPS} model={SampleTypeModel.create(data)} />);
         });
 
         // Name input should not be disabled
         expect(document.querySelector('input#' + ENTITY_FORM_IDS.NAME).getAttribute('disabled')).toBeNull();
 
         // Check initial input values
-        expect(document.querySelector('input#' + ENTITY_FORM_IDS.NAME_EXPRESSION).getAttribute('value')).toBe(nameExpVal);
+        expect(document.querySelector('input#' + ENTITY_FORM_IDS.NAME_EXPRESSION).getAttribute('value')).toBe(
+            nameExpVal
+        );
         expect(document.querySelector('textarea#' + ENTITY_FORM_IDS.DESCRIPTION).textContent).toBe(descVal);
 
         // Add parent alias button should be visible
@@ -117,9 +117,7 @@ describe('SampleTypePropertiesPanel', () => {
         );
 
         await act(async () => {
-            renderWithAppContext(
-                <SampleTypePropertiesPanel {...BASE_PROPS} model={SampleTypeModel.create(data)} />
-            );
+            renderWithAppContext(<SampleTypePropertiesPanel {...BASE_PROPS} model={SampleTypeModel.create(data)} />);
         });
 
         // Name input should be disabled
@@ -237,9 +235,7 @@ describe('SampleTypePropertiesPanel', () => {
             },
         };
         await act(async () => {
-            renderWithAppContext(
-                <SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} />
-            );
+            renderWithAppContext(<SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} />);
         });
 
         expect(document.getElementsByClassName('uniqueid-alert').length).toBe(0);
@@ -253,9 +249,7 @@ describe('SampleTypePropertiesPanel', () => {
             },
         };
         await act(async () => {
-            renderWithAppContext(
-                <SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} />
-            );
+            renderWithAppContext(<SampleTypePropertiesPanel {...BASE_PROPS} model={sampleTypeModel} />);
         });
 
         expect(document.getElementsByClassName('uniqueid-msg').length).toBe(1);

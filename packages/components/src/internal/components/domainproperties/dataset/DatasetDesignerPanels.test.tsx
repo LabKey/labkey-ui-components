@@ -20,16 +20,18 @@ import userEvent from '@testing-library/user-event';
 import { List } from 'immutable';
 
 import { act } from 'react-dom/test-utils';
+
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
 import { getDomainPropertiesTestAPIWrapper } from '../APIWrapper';
 
+import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
+
 import { DatasetDesignerPanelImpl, DatasetDesignerPanels } from './DatasetDesignerPanels';
 
 import { DatasetModel } from './models';
-import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
 describe('Dataset Designer', () => {
     const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
@@ -107,5 +109,4 @@ describe('Dataset Designer', () => {
 
         expect(container).toMatchSnapshot();
     });
-
 });

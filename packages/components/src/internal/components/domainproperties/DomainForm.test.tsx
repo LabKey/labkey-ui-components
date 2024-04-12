@@ -16,6 +16,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
+
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS } from '../samples/constants';
@@ -100,10 +101,10 @@ describe('DomainForm', () => {
         });
 
         // Empty panel
-        expect(document.getElementsByClassName('domain-form-no-field-panel')).toHaveLength(1)
+        expect(document.getElementsByClassName('domain-form-no-field-panel')).toHaveLength(1);
 
         // Add button
-        expect(document.getElementsByClassName('domain-form-add-btn')).toHaveLength(1)
+        expect(document.getElementsByClassName('domain-form-add-btn')).toHaveLength(1);
 
         // Search field
         expect(document.getElementById('domain-search-input')).toBeNull();
@@ -111,7 +112,9 @@ describe('DomainForm', () => {
         // Help link
         const help = document.querySelector('div.domain-form-hdr-margins a');
         expect(help.textContent).toBe('Learn more about this tool');
-        expect(help.getAttribute('href')).toBe('https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=fieldEditor');
+        expect(help.getAttribute('href')).toBe(
+            'https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=fieldEditor'
+        );
 
         // No system fields
         expect(document.getElementsByClassName('domain-system-fields')).toHaveLength(0);
@@ -342,7 +345,6 @@ describe('DomainForm', () => {
         expect(container).toMatchSnapshot();
     });
 
-
     test('domain form initCollapsed', async () => {
         const domain = DomainDesign.create({
             name: 'collapsed with two fields',
@@ -441,7 +443,6 @@ describe('DomainForm', () => {
         const panelTitles = document.getElementsByClassName('domain-panel-title');
         expect(panelTitles).toHaveLength(1);
         expect(panelTitles[0].textContent).toBe('headerPrefix');
-
     });
 
     test('with hideInferFromFile false', async () => {
@@ -461,7 +462,6 @@ describe('DomainForm', () => {
 
         expect(document.getElementsByClassName('domain-form-no-field-panel')).toHaveLength(0);
         expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(1);
-
     });
 
     test('with hideImportExport false', async () => {
@@ -481,7 +481,6 @@ describe('DomainForm', () => {
 
         expect(document.getElementsByClassName('domain-form-no-field-panel')).toHaveLength(0);
         expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(1);
-
     });
 
     test('with hideInferFromFile true and hideImportExport true', async () => {
@@ -508,12 +507,9 @@ describe('DomainForm', () => {
         expect(document.getElementsByClassName('domain-field-top-noBuffer').length).toEqual(1);
     });
 
-
     test('hideInferFromFile false click domain-form-manual-btn', async () => {
         await act(async () => {
-            renderWithAppContext(
-                <DomainFormContainer hideInferFromFile={false} testMode={true} />
-            );
+            renderWithAppContext(<DomainFormContainer hideInferFromFile={false} testMode={true} />);
         });
 
         expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(1);
@@ -566,7 +562,6 @@ describe('DomainForm', () => {
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(0);
         expect(document.getElementsByClassName('domain-panel-header')[0].textContent).toBe(name + '1 Field Defined');
-
     });
 
     test('Show app header', async () => {
@@ -602,7 +597,8 @@ describe('DomainForm', () => {
                     collapsible={true}
                     appDomainHeaderRenderer={mockAppHeader}
                     testMode={true}
-                />            );
+                />
+            );
         });
 
         expect(document.getElementsByClassName('domain-floating-hdr')).toHaveLength(1);
@@ -637,12 +633,12 @@ describe('DomainForm', () => {
                         hideRequired: true,
                     }}
                     testMode={true}
-                />        );
+                />
+            );
         });
 
         const rows = document.getElementsByClassName('domain-row-container');
         expect(rows[0].textContent).toBe('Name *Data Type *Details'); // no Required
-
     });
 
     test('domain form with hide add fields button', async () => {
@@ -671,9 +667,7 @@ describe('DomainForm', () => {
         const domain = DomainDesign.create({});
 
         await act(async () => {
-            renderWithAppContext(
-                <DomainForm api={API} domain={domain} onChange={jest.fn()} testMode={true} />
-            );
+            renderWithAppContext(<DomainForm api={API} domain={domain} onChange={jest.fn()} testMode={true} />);
         });
 
         expect(document.getElementsByClassName('domain-form-manual-section').length).toEqual(1);
@@ -719,7 +713,7 @@ describe('DomainForm', () => {
 
         const actionButtons = document.getElementsByClassName('container--action-button');
         expect(actionButtons.length).toBe(4);
-        expect(actionButtons[2].getAttribute('disabled')).toBeNull() // export button
+        expect(actionButtons[2].getAttribute('disabled')).toBeNull(); // export button
     });
 
     test('using hideImportExport, field view', async () => {
@@ -771,11 +765,8 @@ describe('DomainForm', () => {
         const domain = DomainDesign.create({ fields });
 
         await act(async () => {
-            renderWithAppContext(
-                <DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={false} />
-            );
+            renderWithAppContext(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={false} />);
         });
-
 
         expect(document.getElementsByClassName('domain-field-row').length).toEqual(4);
         expect(document.getElementsByClassName('table-responsive').length).toEqual(0);
@@ -801,9 +792,7 @@ describe('DomainForm', () => {
 
         const domain = DomainDesign.create({ fields, domainKindName: 'VarList' });
         await act(async () => {
-            renderWithAppContext(
-                <DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={false} />
-            );
+            renderWithAppContext(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={false} />);
         });
 
         await act(async () => {
@@ -812,7 +801,6 @@ describe('DomainForm', () => {
         });
 
         expect(document.querySelector('.table-responsive').textContent).toContain('Is Primary Key');
-
     });
 
     test('with summaryViewMode isPrimaryKey column, IntList', async () => {
@@ -823,9 +811,7 @@ describe('DomainForm', () => {
 
         const domain = DomainDesign.create({ fields, domainKindName: INT_LIST });
         await act(async () => {
-            renderWithAppContext(
-                <DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={false} />
-            );
+            renderWithAppContext(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={false} />);
         });
 
         await act(async () => {

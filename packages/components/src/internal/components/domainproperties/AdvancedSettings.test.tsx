@@ -1,6 +1,10 @@
 import React from 'react';
 import { List } from 'immutable';
 
+import { act } from 'react-dom/test-utils';
+
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+
 import { createFormInputId } from './utils';
 import {
     DOMAIN_EDITABLE_DEFAULT,
@@ -23,8 +27,6 @@ import {
 } from './constants';
 import { AdvancedSettings } from './AdvancedSettings';
 import { DomainField } from './models';
-import { act } from 'react-dom/test-utils';
-import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 describe('AdvancedSettings', () => {
     const _fieldName = 'Marty';
@@ -82,53 +84,53 @@ describe('AdvancedSettings', () => {
 
         // Verify hidden
         let id = createFormInputId(DOMAIN_FIELD_HIDDEN, _domainIndex, _index);
-        const hidden = document.querySelector("#" + id);
+        const hidden = document.querySelector('#' + id);
         expect(hidden.getAttribute('checked')).toEqual('');
 
-        //Verify show in update
+        // Verify show in update
         id = createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, _domainIndex, _index);
-        const showUpdate = document.querySelector("#" + id);
+        const showUpdate = document.querySelector('#' + id);
         expect(showUpdate.getAttribute('checked')).toEqual('');
 
         // Verify show in insert
         id = createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, _domainIndex, _index);
-        const showInsert = document.querySelector("#" + id);
+        const showInsert = document.querySelector('#' + id);
         expect(showInsert.getAttribute('checked')).toBeNull();
 
         // Verify show in details
         id = createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, _domainIndex, _index);
-        const showDetails = document.querySelector("#" + id);
-        expect(showDetails.getAttribute('checked')).toEqual('')
+        const showDetails = document.querySelector('#' + id);
+        expect(showDetails.getAttribute('checked')).toEqual('');
 
         // Verify measure
         id = createFormInputId(DOMAIN_FIELD_MEASURE, _domainIndex, _index);
-        const measure = document.querySelector("#" + id);
-        expect(measure.getAttribute('checked')).toEqual('')
+        const measure = document.querySelector('#' + id);
+        expect(measure.getAttribute('checked')).toEqual('');
 
         // Verify dimension
         id = createFormInputId(DOMAIN_FIELD_DIMENSION, _domainIndex, _index);
-        const dimension = document.querySelector("#" + id);
+        const dimension = document.querySelector('#' + id);
         expect(dimension.getAttribute('checked')).toBeNull();
 
         // Verify mvEnabled
         id = createFormInputId(DOMAIN_FIELD_MVENABLED, _domainIndex, _index);
-        const mvEnabled = document.querySelector("#" + id);
+        const mvEnabled = document.querySelector('#' + id);
         expect(mvEnabled.getAttribute('checked')).toBeNull();
 
         // Verify recommendedVariable
         id = createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, _domainIndex, _index);
-        const recommendedVariable = document.querySelector("#" + id);
-        expect(recommendedVariable.getAttribute('checked')).toEqual('')
+        const recommendedVariable = document.querySelector('#' + id);
+        expect(recommendedVariable.getAttribute('checked')).toEqual('');
 
         // Verify uniqueConstraint
         id = createFormInputId(DOMAIN_FIELD_UNIQUECONSTRAINT, _domainIndex, _index);
-        const uniqueConstraint = document.querySelector("#" + id);
-        expect(uniqueConstraint.getAttribute('checked')).toEqual('')
+        const uniqueConstraint = document.querySelector('#' + id);
+        expect(uniqueConstraint.getAttribute('checked')).toEqual('');
 
         // Verify default type
         id = createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, _domainIndex, _index);
-        let defaultType = document.querySelector("#" + id);
-        expect(defaultType.textContent).toEqual('Editable defaultLast enteredFixed value')
+        const defaultType = document.querySelector('#' + id);
+        expect(defaultType.textContent).toEqual('Editable defaultLast enteredFixed value');
 
         // Verify buttons
         const btns = document.getElementsByClassName('btn');
@@ -139,7 +141,7 @@ describe('AdvancedSettings', () => {
 
         // PHI
         id = createFormInputId(DOMAIN_FIELD_PHI, _domainIndex, _index);
-        const phi = document.querySelector("#" + id);
+        const phi = document.querySelector('#' + id);
         expect(phi.getAttribute('disabled')).toBeNull();
 
         const options = phi.querySelectorAll('option');
@@ -156,7 +158,7 @@ describe('AdvancedSettings', () => {
             );
         });
         const id = createFormInputId(DOMAIN_FIELD_PHI, _domainIndex, _index);
-        const phi = document.querySelector("#" + id);
+        const phi = document.querySelector('#' + id);
 
         expect(phi.getAttribute('disabled')).toBe('');
     });
@@ -168,7 +170,7 @@ describe('AdvancedSettings', () => {
             );
         });
         const id = createFormInputId(DOMAIN_FIELD_PHI, _domainIndex, _index);
-        const phi = document.querySelector("#" + id);
+        const phi = document.querySelector('#' + id);
 
         expect(phi.getAttribute('disabled')).toBeNull();
 
@@ -184,7 +186,7 @@ describe('AdvancedSettings', () => {
             );
         });
         const id = createFormInputId(DOMAIN_FIELD_PHI, _domainIndex, _index);
-        const phi = document.querySelector("#" + id);
+        const phi = document.querySelector('#' + id);
 
         expect(phi.getAttribute('disabled')).toBe('');
 

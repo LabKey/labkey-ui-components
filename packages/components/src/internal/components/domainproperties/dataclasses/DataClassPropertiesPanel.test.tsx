@@ -1,5 +1,6 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
+
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 import { DomainPanelStatus } from '../models';
@@ -35,7 +36,6 @@ describe('DataClassPropertiesPanel', () => {
         expect(document.querySelectorAll('textarea')).toHaveLength(1);
         expect(document.getElementsByClassName('select-input-container')).toHaveLength(2);
         expect(document.getElementsByClassName('alert')).toHaveLength(0);
-
     });
 
     test('custom properties', async () => {
@@ -68,7 +68,5 @@ describe('DataClassPropertiesPanel', () => {
         expect(document.querySelectorAll('textarea')).toHaveLength(1);
         expect(document.getElementsByClassName('select-input-container')).toHaveLength(0);
         expect(document.getElementsByClassName('alert')).toHaveLength(0);
-
     });
-
 });

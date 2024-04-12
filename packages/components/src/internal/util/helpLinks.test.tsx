@@ -1,8 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { getHelpLink, HELP_LINK_REFERRER, HelpLink, JavaDocsLink } from './helpLinks';
 import { renderWithAppContext } from '../test/reactTestLibraryHelpers';
+
+import { getHelpLink, HELP_LINK_REFERRER, HelpLink, JavaDocsLink } from './helpLinks';
 
 const HELP_LINK_BASE_URL = 'https://www.labkey.org/Documentation/wiki-page.view?';
 

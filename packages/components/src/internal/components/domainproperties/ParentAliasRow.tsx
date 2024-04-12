@@ -104,7 +104,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                         name="alias"
                         type="text"
                         placeholder={`Enter a ${aliasCaption.toLowerCase()} for import`}
-                        value={alias}
+                        defaultValue={alias} // Issue 50140: use defaultValue instead of value
                         onChange={this.onChange}
                         onBlur={this.onAliasBlur}
                     />

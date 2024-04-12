@@ -274,12 +274,6 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                         (domain.isNameSuffixMatch('Data') && protocolModel.editableResults)
                     );
 
-                    // hide PlateTemplate run field for app
-                    let hiddenFieldNames;
-                    if (appPropertiesOnly && domain.isNameSuffixMatch('Run')) {
-                        hiddenFieldNames = [PLATE_TEMPLATE_COLUMN];
-                    }
-
                     return (
                         <DomainForm
                             key={domain.domainId || i}
@@ -311,7 +305,6 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             appDomainHeaderRenderer={appDomainHeaderRenderer}
                             modelDomains={protocolModel.domains}
                             appPropertiesOnly={hideAdvancedProperties}
-                            hiddenFieldNames={hiddenFieldNames}
                             testMode={testMode}
                             domainFormDisplayOptions={{
                                 ...domainFormDisplayOptions,

@@ -296,6 +296,7 @@ export interface SharedEditableGridProps {
     allowBulkUpdate?: boolean;
     allowFieldDisable?: boolean;
     allowRemove?: boolean;
+    allowSelection?: boolean;
     bordered?: boolean;
     bulkAddProps?: Partial<QueryInfoFormProps>;
     bulkAddText?: string;
@@ -319,6 +320,7 @@ export interface SharedEditableGridProps {
     maxRows?: number;
     metricFeatureArea?: string;
     notDeletable?: List<any>; // list of key values that cannot be deleted.
+    onSelectionChange?: (selected: Set<number>) => void;
     primaryBtnProps?: EditableGridBtnProps;
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: string[];
@@ -524,7 +526,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             }
 
             return nextState;
-        });
+        }, this.onAfterSelection);
+    };
+
+    onAfterSelection = (): void => {
+        this.props.onSelectionChange?.(this.state.selected);
     };
 
     selectAll = (evt: ChangeEvent<HTMLInputElement>): void => {
@@ -538,7 +544,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 selectedState: selected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE,
                 selectionPivot: undefined,
             };
-        });
+        }, this.onAfterSelection);
     };
 
     getColumns = (): QueryColumn[] => {
@@ -806,6 +812,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             allowBulkRemove,
             allowBulkUpdate,
             allowRemove,
+            allowSelection,
             containerFilter,
             editorModel,
             forUpdate,
@@ -820,8 +827,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         let gridColumns = List<GridColumn>();
 
-        const allowSelection = !hideCheckboxCol && (allowBulkRemove || allowBulkUpdate);
-        if (allowSelection) {
+        const allowSelection_ =
+            allowSelection === undefined
+                ? !hideCheckboxCol && (allowBulkRemove || allowBulkUpdate)
+                : allowSelection && !hideCheckboxCol;
+
+        if (allowSelection_) {
             const selColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
                 title: '&nbsp;',

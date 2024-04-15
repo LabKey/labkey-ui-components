@@ -13,6 +13,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - add getOperationConfirmationDataForModel helper
   - fix in getUpdatedDataFromGrid for multi-value columns
   - EditableGrid replace react-bootstrap OverlayTrigger/Popover with LabelHelpTip
+  - Issue 50140: App data class designer cursor jumps in parent alias field
 
 ### version 3.38.2
 *Released*: 12 April 2024

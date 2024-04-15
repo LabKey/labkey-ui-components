@@ -34,12 +34,12 @@ exports[`<ParentAliasRow/> With parent value not an option in select 1`] = `
   >
     <input
       className="form-control"
+      defaultValue="testAlias"
       name="alias"
       onBlur={[Function]}
       onChange={[Function]}
       placeholder="Enter a parent alias for import"
       type="text"
-      value="testAlias"
     />
   </div>
   <div
@@ -230,12 +230,12 @@ exports[`<ParentAliasRow/> With values 1`] = `
   >
     <input
       className="form-control"
+      defaultValue="testAlias"
       name="alias"
       onBlur={[Function]}
       onChange={[Function]}
       placeholder="Enter a parent alias for import"
       type="text"
-      value="testAlias"
     />
   </div>
   <div

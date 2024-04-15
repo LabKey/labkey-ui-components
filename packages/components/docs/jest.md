@@ -102,7 +102,6 @@ has its own jest tests will currently need to mock the `LABKEY` object if that m
 1. Enzyme examples of using `.find()`
     1. [assay/RunPropertiesPanel.spec.tsx](../src/internal/components/assay/RunPropertiesPanel.spec.tsx)
 1. Enzyme examples for using component `.props()` and/or `.state()`
-    1. [domainproperties/AdvancedSettings.spec.tsx](../src/internal/components/domainproperties/AdvancedSettings.spec.tsx)
     1. [omnibox/OmniBox.spec.tsx](../src/internal/components/omnibox/OmniBox.spec.tsx)
 1. Enzyme examples that `.simulate()` events (i.e. `click` or `change`)
     1. [QueryModel/GridPanel.spec.tsx](../src/public/QueryModel/GridPanel.spec.tsx)

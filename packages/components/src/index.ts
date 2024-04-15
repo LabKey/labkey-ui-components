@@ -247,6 +247,7 @@ import { getQueryParams, pushParameters, removeParameters, replaceParameters } f
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import {
     DATA_IMPORT_TOPIC,
+    SAMPLE_IMPORT_TOPIC,
     getHelpLink,
     HELP_LINK_REFERRER,
     HelpLink,
@@ -1045,6 +1046,7 @@ const App = {
     PRIVATE_PICKLIST_CATEGORY,
     PUBLIC_PICKLIST_CATEGORY,
     DATA_IMPORT_TOPIC,
+    SAMPLE_IMPORT_TOPIC,
     PLATES_KEY,
     COMMENT_FIELD_ID,
 };

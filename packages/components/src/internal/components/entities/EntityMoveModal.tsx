@@ -23,22 +23,24 @@ import { getPrimaryAppProperties } from '../../app/utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
+import { getPermissionRestrictionMessage } from '../../util/messaging';
+
 import { EntityDataType, OperationConfirmationData } from './models';
 import { getEntityNoun } from './utils';
 import { EntityMoveConfirmationModal } from './EntityMoveConfirmationModal';
-import { getPermissionRestrictionMessage } from '../../util/messaging';
 
 export interface EntityMoveModalProps {
     api?: ComponentsAPIWrapper;
     currentContainer?: Container; // used in the single move case when the item is not in the current container
     dataTypeRowId?: number;
     entityDataType: EntityDataType;
+    hideHelp?: boolean;
     maxSelected: number;
     onAfterMove: () => void;
     onCancel: () => void;
     queryModel: QueryModel;
     targetAppURL?: AppURL;
-    useSelected: boolean;
+    useSelected: boolean; // jest only
 }
 
 export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
@@ -53,6 +55,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
         maxSelected,
         targetAppURL,
         dataTypeRowId,
+        hideHelp,
     } = props;
     const { nounPlural } = entityDataType;
     const { createNotification } = useNotificationsContext();
@@ -142,7 +145,8 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                         {
                             message: (
                                 <>
-                                    Successfully moved {movedCount} {movedNoun} to <a href={projectUrl}>{targetName}</a>.
+                                    Successfully moved {movedCount} {movedNoun} to <a href={projectUrl}>{targetName}</a>
+                                    .
                                 </>
                             ),
                             alertClass: 'success',
@@ -152,7 +156,12 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                 } else {
                     createNotification(
                         {
-                            message: <>All {(entityDataType.nounPlural ?? 'data').toLowerCase()} are already in the target project.</>,
+                            message: (
+                                <>
+                                    All {(entityDataType.nounPlural ?? 'data').toLowerCase()} are already in the target
+                                    project.
+                                </>
+                            ),
                             alertClass: 'warning',
                         },
                         true
@@ -187,11 +196,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 
     if (useSelected && maxSelected && numSelected > maxSelected) {
         return (
-            <Modal
-                title={'Cannot Move ' + capitalizeFirstChar(nounPlural)}
-                onCancel={onCancel}
-                cancelText="Dismiss"
-            >
+            <Modal title={'Cannot Move ' + capitalizeFirstChar(nounPlural)} onCancel={onCancel} cancelText="Dismiss">
                 You cannot move more than {maxSelected} individual {nounPlural.toLowerCase()} at a time. Please select
                 fewer {nounPlural.toLowerCase()} and try again.
             </Modal>
@@ -217,16 +222,13 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
     const { canMove, message, title } = getMoveConfirmationProperties(
         confirmationData,
         entityDataType.nounSingular,
-        entityDataType.nounPlural
+        entityDataType.nounPlural,
+        hideHelp
     );
 
     if (!canMove) {
         return (
-            <Modal
-                title={'Cannot Move ' + capitalizeFirstChar(nounPlural)}
-                onCancel={onCancel}
-                cancelText="Dismiss"
-            >
+            <Modal title={'Cannot Move ' + capitalizeFirstChar(nounPlural)} onCancel={onCancel} cancelText="Dismiss">
                 {message}
             </Modal>
         );
@@ -263,7 +265,8 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 export const getMoveConfirmationProperties = (
     confirmationData: OperationConfirmationData,
     nounSingular: string,
-    nounPlural: string
+    nounPlural: string,
+    hideHelp?: boolean
 ): { canMove: boolean; message: any; title: string } => {
     if (!confirmationData) return undefined;
 
@@ -292,7 +295,12 @@ export const getMoveConfirmationProperties = (
         text += totalNoun + ' will be moved.';
     } else if (numCanMove === 0 && numNotPermitted < numCannotMove) {
         if (totalNum === 1) {
-            text = 'The ' + totalNoun + " you've selected cannot be moved because it has a " + dependencyText + ' or you lack the proper permissions. ';
+            text =
+                'The ' +
+                totalNoun +
+                " you've selected cannot be moved because it has a " +
+                dependencyText +
+                ' or you lack the proper permissions. ';
         } else {
             text = numCannotMove === 2 ? 'Neither of' : 'None of';
             text += ' the ' + totalNum + ' ' + totalNoun + " you've selected can be moved";
@@ -315,9 +323,11 @@ export const getMoveConfirmationProperties = (
             <>
                 {text}
                 {getPermissionRestrictionMessage(totalNum, numNotPermitted, nounSingular, nounPlural, 'move')}
-                <>
-                    &nbsp;(<HelpLink topic={MOVE_SAMPLES_TOPIC}>more info</HelpLink>)
-                </>
+                {!hideHelp && (
+                    <>
+                        &nbsp;(<HelpLink topic={MOVE_SAMPLES_TOPIC}>more info</HelpLink>)
+                    </>
+                )}
             </>
         );
     }
@@ -331,8 +341,8 @@ export const getMoveConfirmationProperties = (
             numCanMove > 0
                 ? 'Move ' + numCanMove + ' ' + canMoveNoun
                 : totalNum === 1
-                ? 'Cannot Move ' + capNounSingular
-                : 'No ' + capNounPlural + ' Can Be Moved',
+                  ? 'Cannot Move ' + capNounSingular
+                  : 'No ' + capNounPlural + ' Can Be Moved',
         canMove: numCanMove > 0,
     };
 };

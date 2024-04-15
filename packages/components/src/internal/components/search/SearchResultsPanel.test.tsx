@@ -15,65 +15,64 @@
  */
 import React from 'react';
 import { fromJS, Map } from 'immutable';
-import { mount } from 'enzyme';
 
 import entitiesJSON from '../../../test/data/searchResults.json';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
-
-import { Alert } from '../base/Alert';
-
-import { SearchResultCard } from './SearchResultCard';
 import { SearchResultsPanel } from './SearchResultsPanel';
 import { SearchResultsModel } from './models';
 import { getProcessedSearchHits } from './actions';
+import { act } from '@testing-library/react';
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 describe('<SearchResultsPanel/>', () => {
-    test('loading', () => {
+    function verifyPanel(loadingCount: number, alertCount: number, cardCount: number) {
+        expect(document.getElementsByClassName('fa-spinner').length).toBe(loadingCount);
+        expect(document.getElementsByClassName('alert').length).toBe(alertCount);
+        expect(document.getElementsByClassName('search-result__card-container').length).toBe(cardCount);
+    }
+
+    test('loading', async () => {
+
         const model = SearchResultsModel.create({ isLoading: true });
         const component = <SearchResultsPanel model={model} />;
+        await act(async () => {
+            renderWithAppContext(component);
+        });
 
-        const wrapper = mount(component);
-        expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
-        expect(wrapper.find(Alert)).toHaveLength(0);
-        expect(wrapper.find(SearchResultCard)).toHaveLength(0);
-        wrapper.unmount();
+        verifyPanel(1, 0, 0);
     });
 
-    test('with error', () => {
+    test('with error', async () => {
         const model = SearchResultsModel.create({ error: 'Test error message' });
         const component = <SearchResultsPanel model={model} />;
+        await act(async () => {
+            renderWithAppContext(component);
+        });
 
-        const wrapper = mount(component);
-        expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
-        expect(wrapper.find(Alert)).toHaveLength(1);
-        expect(wrapper.find(SearchResultCard)).toHaveLength(0);
-        wrapper.unmount();
+        verifyPanel(0, 1, 0);
     });
 
-    test('with no search hits', () => {
+    test('with no search hits', async () => {
         const model = SearchResultsModel.create({ entities: fromJS({ hits: [] }) });
         const component = <SearchResultsPanel model={model} />;
+        await act(async () => {
+            renderWithAppContext(component);
+        });
 
-        const wrapper = mount(component);
-        expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
-        expect(wrapper.find(Alert)).toHaveLength(0);
-        expect(wrapper.find(SearchResultCard)).toHaveLength(0);
-        wrapper.unmount();
+        verifyPanel(0, 0, 0);
     });
 
-    test('with search hits', () => {
+    test('with search hits', async () => {
         const hits = getProcessedSearchHits(entitiesJSON['hits']);
         const model = SearchResultsModel.create({
             entities: Map(fromJS({ ...entitiesJSON, hits })),
         });
 
         const component = <SearchResultsPanel model={model} />;
+        await act(async () => {
+            renderWithAppContext(component);
+        });
 
-        const wrapper = mount(component);
-        expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
-        expect(wrapper.find(Alert)).toHaveLength(0);
-        expect(wrapper.find(SearchResultCard)).toHaveLength(49);
-        wrapper.unmount();
+        verifyPanel(0, 0, 49);
     });
 });

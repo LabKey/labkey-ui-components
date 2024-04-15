@@ -220,7 +220,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 }
                 break;
             case KEYS.Enter:
-                if (focused) {
+                if (focused || this.isReadOnly) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx + 1);
                 } else if (selected) {
@@ -242,14 +242,14 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 }
                 break;
             case KEYS.D:
-                if (!focused && isFillDown(event)) {
+                if (!focused && isFillDown(event) && !this.isReadOnly) {
                     cancelEvent(event);
                     fillDown();
                     break;
                 }
             // eslint-disable-next-line no-fallthrough
             case KEYS.A:
-                if (!focused && isSelectAll(event)) {
+                if (!focused && isSelectAll(event) && !this.isReadOnly) {
                     cancelEvent(event);
                     selectCell(colIdx, rowIdx, SELECTION_TYPES.ALL);
                     break;
@@ -257,12 +257,12 @@ export class Cell extends React.PureComponent<CellProps, State> {
             // eslint-disable-next-line no-fallthrough -- intentionally fallthrough for "D" and "A" characters
             default:
                 // any other key
-                if (!focused && !isCtrlOrMetaKey(event)) {
+                if (!focused && !isCtrlOrMetaKey(event) && !this.isReadOnly) {
                     // Do not cancel event here, otherwise, key capture will be lost
-                    if (this.isLookup && !this.isDateTimeField && !this.isReadOnly) {
+                    if (this.isLookup && !this.isDateTimeField) {
                         this.recordKeys(event);
                     } else {
-                        focusCell(colIdx, rowIdx, !this.isReadOnly);
+                        focusCell(colIdx, rowIdx, true);
                     }
                 }
                 break;

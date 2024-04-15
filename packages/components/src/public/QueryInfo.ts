@@ -328,9 +328,7 @@ export class QueryInfo {
             return viewInfo.filters;
         }
 
-        if (process.env.NODE_ENV !== 'test') {
-            console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
-        }
+        console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
 
         return [];
     }
@@ -361,9 +359,7 @@ export class QueryInfo {
                 return viewInfo.sorts;
             }
 
-            if (process.env.NODE_ENV !== 'test') {
-                console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
-            }
+            console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
         }
 
         return [];

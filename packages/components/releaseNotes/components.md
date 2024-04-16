@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 50031: Update permission check and container path for saving updates to storage labels
 
+### version 3.38.2
+*Released*: 12 April 2024
+- Issue 50069: Editing amounts of sample results in weird value
+- Issue 50010 Time picker enters the wrong time if a time field has a format set or if there is an additional parsing.
+- Issue 50102: When bulk updating a time-only field and entering a value with PM results in the AM time being selected.
+- Issue 48328: Starting to make Biologics use the same Sample Manager help links.
+
 ### version 3.38.1
 *Released*: 11 April 2024
 - Update product menu DOM structure to better support flex layout container/item paradigm.

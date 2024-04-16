@@ -27,6 +27,7 @@ import {
     isDateTimeCol,
     isRelativeDateFilterValue,
     parseDate,
+    parseSimpleTime,
 } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
@@ -48,6 +49,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     formsy?: boolean;
     hideTime?: boolean;
     initValueFormatted?: boolean;
+    inlineEdit?: boolean;
     inputClassName?: string;
     inputWrapperClassName?: string;
     isClearable?: boolean;
@@ -55,6 +57,7 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     label?: ReactNode;
     labelClassName?: string;
     name?: string;
+    onBlur?: () => void;
     onCalendarClose?: () => void;
     onChange?: (rawDate?: Date | string, dateStr?: string) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
@@ -64,8 +67,6 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     showLabel?: boolean;
     value?: any;
     wrapperClassName?: string;
-    inlineEdit?: boolean;
-    onBlur?: () => void;
 }
 
 interface DatePickerInputState extends DisableableInputState {
@@ -191,6 +192,21 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         if (isTime) {
             if (!value) {
                 this.onChange(null);
+            } else {
+                // Issue 50010: Time picker enters the wrong time if a time field has a format set
+                const time = parseSimpleTime(value);
+                if (time instanceof Date && !isNaN(time.getTime())) {
+                    // Issue 50102: LKSM: When bulk updating a time-only field and entering a value with PM results in the AM time being selected
+                    this.setState({ selectedDate: time, invalid: false });
+
+                    const formatted = getFormattedStringFromDate(time, queryColumn, false);
+                    this.props.onChange?.(formatted, formatted);
+
+                    // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+                    if (this.props.formsy) {
+                        this.props.setValue?.(getJsonTimeFormatString(time));
+                    }
+                }
             }
         } else if (isRelativeDateFilterValue(value)) {
             this.setState({ relativeInputValue: value });

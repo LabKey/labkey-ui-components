@@ -1,0 +1,1579 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      >
+        <div
+          class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+          id="sample-type-properties-hdr"
+        >
+          <span
+            class="domain-panel-title"
+          >
+            Sample Type Properties
+          </span>
+        </div>
+        <div
+          class="panel-body"
+        >
+          <div
+            class="row margin-bottom"
+          >
+            <div
+              class="col-xs-12"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col-xs-12"
+                >
+                  <a
+                    class="domain-field-float-right"
+                    href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=createSampleSet"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more about designing sample types
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="domain-field-section-heading"
+          >
+            General Properties
+          </div>
+          <form>
+            <div
+              class="row margin-bottom margin-top"
+            >
+              <div
+                class="col-xs-2"
+              >
+                <span
+                  class="domain-no-wrap"
+                >
+                  Name
+                   *
+                </span>
+              </div>
+              <div
+                class="col-xs-10"
+              >
+                <input
+                  class="form-control"
+                  id="entity-name"
+                  placeholder="Enter a name for this sample type"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="row margin-bottom"
+            >
+              <div
+                class="col-xs-2"
+              >
+                <span
+                  class="domain-no-wrap"
+                >
+                  Description
+                  <div
+                    class="overlay-trigger"
+                  >
+                    <span
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                  
+                </span>
+              </div>
+              <div
+                class="col-xs-10"
+              >
+                <textarea
+                  class="form-control"
+                  id="entity-description"
+                />
+              </div>
+            </div>
+            <div
+              class="row margin-bottom"
+            >
+              <div
+                class="col-xs-2"
+              >
+                <div
+                  class="name-expression-label-div"
+                >
+                  Naming 
+                  <span
+                    class="domain-no-wrap"
+                  >
+                    Pattern
+                    <div
+                      class="overlay-trigger"
+                    >
+                      <span
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                    
+                  </span>
+                </div>
+              </div>
+              <div
+                class="col-xs-10"
+              >
+                <input
+                  class="naming-pattern-border-warning form-control"
+                  id="entity-nameExpression"
+                  placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </form>
+          <div
+            class="row"
+          >
+            <div
+              class="col-xs-2"
+            />
+            <div
+              class="col-xs-10"
+            >
+              <span>
+                <div
+                  class="form-group"
+                >
+                  <div>
+                    <span
+                      class="container--action-button btn btn-default"
+                    >
+                      <i
+                        class="fa fa-plus-circle container--addition-icon"
+                      />
+                       Add 
+                    </span>
+                    <div
+                      class="overlay-trigger"
+                    >
+                      <span
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+          <div
+            class="domain-field-section-heading top-spacing"
+          >
+            Storage Settings
+          </div>
+          <div
+            class="row margin-top"
+          >
+            <div
+              class="col-xs-2"
+            >
+              Label 
+              <span
+                class="domain-no-wrap"
+              >
+                Color
+                <div
+                  class="overlay-trigger"
+                >
+                  <span
+                    class="label-help-target"
+                  >
+                    <span
+                      class="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
+                
+              </span>
+            </div>
+            <div
+              class="col-xs-10"
+            >
+              <div
+                class="color-picker"
+              >
+                <button
+                  class="color-picker__button btn btn-default"
+                  type="button"
+                >
+                  None
+                  <i
+                    class="fa fa-caret-down"
+                  />
+                </button>
+                <div
+                  class="color-picker__picker"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+      >
+        <div
+          class="alert alert-warning"
+          role="alert"
+        >
+          There was a problem retrieving the Sample Type category.
+        </div>
+      </div>
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip3"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip4"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip5"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip6"
+    >
+      <div />
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+    >
+      <div
+        class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+        id="sample-type-properties-hdr"
+      >
+        <span
+          class="domain-panel-title"
+        >
+          Sample Type Properties
+        </span>
+      </div>
+      <div
+        class="panel-body"
+      >
+        <div
+          class="row margin-bottom"
+        >
+          <div
+            class="col-xs-12"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-xs-12"
+              >
+                <a
+                  class="domain-field-float-right"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=createSampleSet"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Learn more about designing sample types
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="domain-field-section-heading"
+        >
+          General Properties
+        </div>
+        <form>
+          <div
+            class="row margin-bottom margin-top"
+          >
+            <div
+              class="col-xs-2"
+            >
+              <span
+                class="domain-no-wrap"
+              >
+                Name
+                 *
+              </span>
+            </div>
+            <div
+              class="col-xs-10"
+            >
+              <input
+                class="form-control"
+                id="entity-name"
+                placeholder="Enter a name for this sample type"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="row margin-bottom"
+          >
+            <div
+              class="col-xs-2"
+            >
+              <span
+                class="domain-no-wrap"
+              >
+                Description
+                <div
+                  class="overlay-trigger"
+                >
+                  <span
+                    class="label-help-target"
+                  >
+                    <span
+                      class="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
+                
+              </span>
+            </div>
+            <div
+              class="col-xs-10"
+            >
+              <textarea
+                class="form-control"
+                id="entity-description"
+              />
+            </div>
+          </div>
+          <div
+            class="row margin-bottom"
+          >
+            <div
+              class="col-xs-2"
+            >
+              <div
+                class="name-expression-label-div"
+              >
+                Naming 
+                <span
+                  class="domain-no-wrap"
+                >
+                  Pattern
+                  <div
+                    class="overlay-trigger"
+                  >
+                    <span
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                  
+                </span>
+              </div>
+            </div>
+            <div
+              class="col-xs-10"
+            >
+              <input
+                class="naming-pattern-border-warning form-control"
+                id="entity-nameExpression"
+                placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </form>
+        <div
+          class="row"
+        >
+          <div
+            class="col-xs-2"
+          />
+          <div
+            class="col-xs-10"
+          >
+            <span>
+              <div
+                class="form-group"
+              >
+                <div>
+                  <span
+                    class="container--action-button btn btn-default"
+                  >
+                    <i
+                      class="fa fa-plus-circle container--addition-icon"
+                    />
+                     Add 
+                  </span>
+                  <div
+                    class="overlay-trigger"
+                  >
+                    <span
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="domain-field-section-heading top-spacing"
+        >
+          Storage Settings
+        </div>
+        <div
+          class="row margin-top"
+        >
+          <div
+            class="col-xs-2"
+          >
+            Label 
+            <span
+              class="domain-no-wrap"
+            >
+              Color
+              <div
+                class="overlay-trigger"
+              >
+                <span
+                  class="label-help-target"
+                >
+                  <span
+                    class="label-help-icon fa fa-question-circle"
+                  />
+                </span>
+              </div>
+              
+            </span>
+          </div>
+          <div
+            class="col-xs-10"
+          >
+            <div
+              class="color-picker"
+            >
+              <button
+                class="color-picker__button btn btn-default"
+                type="button"
+              >
+                None
+                <i
+                  class="fa fa-caret-down"
+                />
+              </button>
+              <div
+                class="color-picker__picker"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+    >
+      <div
+        class="alert alert-warning"
+        role="alert"
+      >
+        There was a problem retrieving the Sample Type category.
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`SampleTypePropertiesPanel default props 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      >
+        <div
+          class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+          id="sample-type-properties-hdr"
+        >
+          <span
+            class="domain-panel-title"
+          >
+            Sample Type Properties
+          </span>
+        </div>
+        <div
+          class="panel-body"
+        >
+          <div
+            class="row margin-bottom"
+          >
+            <div
+              class="col-xs-12"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col-xs-12"
+                >
+                  <a
+                    class="domain-field-float-right"
+                    href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=createSampleSet"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more about designing sample types
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form>
+            <div
+              class="row margin-bottom margin-top"
+            >
+              <div
+                class="col-xs-2"
+              >
+                <span
+                  class="domain-no-wrap"
+                >
+                  Name
+                   *
+                </span>
+              </div>
+              <div
+                class="col-xs-10"
+              >
+                <input
+                  class="form-control"
+                  id="entity-name"
+                  placeholder="Enter a name for this sample type"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="row margin-bottom"
+            >
+              <div
+                class="col-xs-2"
+              >
+                <span
+                  class="domain-no-wrap"
+                >
+                  Description
+                  <div
+                    class="overlay-trigger"
+                  >
+                    <span
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                  
+                </span>
+              </div>
+              <div
+                class="col-xs-10"
+              >
+                <textarea
+                  class="form-control"
+                  id="entity-description"
+                />
+              </div>
+            </div>
+            <div
+              class="row margin-bottom"
+            >
+              <div
+                class="col-xs-2"
+              >
+                <div
+                  class="name-expression-label-div"
+                >
+                  Naming 
+                  <span
+                    class="domain-no-wrap"
+                  >
+                    Pattern
+                    <div
+                      class="overlay-trigger"
+                    >
+                      <span
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                    
+                  </span>
+                </div>
+              </div>
+              <div
+                class="col-xs-10"
+              >
+                <input
+                  class="naming-pattern-border-warning form-control"
+                  id="entity-nameExpression"
+                  placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </form>
+          <div
+            class="row"
+          >
+            <div
+              class="col-xs-2"
+            />
+            <div
+              class="col-xs-10"
+            >
+              <span>
+                <div
+                  class="form-group"
+                >
+                  <div>
+                    <span
+                      class="container--action-button btn btn-default"
+                    >
+                      <i
+                        class="fa fa-plus-circle container--addition-icon"
+                      />
+                       Add 
+                    </span>
+                    <div
+                      class="overlay-trigger"
+                    >
+                      <span
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+      >
+        <div
+          class="alert alert-warning"
+          role="alert"
+        >
+          There was a problem retrieving the Sample Type category.
+        </div>
+      </div>
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip0"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip1"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip2"
+    >
+      <div />
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+    >
+      <div
+        class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+        id="sample-type-properties-hdr"
+      >
+        <span
+          class="domain-panel-title"
+        >
+          Sample Type Properties
+        </span>
+      </div>
+      <div
+        class="panel-body"
+      >
+        <div
+          class="row margin-bottom"
+        >
+          <div
+            class="col-xs-12"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-xs-12"
+              >
+                <a
+                  class="domain-field-float-right"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=createSampleSet"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Learn more about designing sample types
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form>
+          <div
+            class="row margin-bottom margin-top"
+          >
+            <div
+              class="col-xs-2"
+            >
+              <span
+                class="domain-no-wrap"
+              >
+                Name
+                 *
+              </span>
+            </div>
+            <div
+              class="col-xs-10"
+            >
+              <input
+                class="form-control"
+                id="entity-name"
+                placeholder="Enter a name for this sample type"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="row margin-bottom"
+          >
+            <div
+              class="col-xs-2"
+            >
+              <span
+                class="domain-no-wrap"
+              >
+                Description
+                <div
+                  class="overlay-trigger"
+                >
+                  <span
+                    class="label-help-target"
+                  >
+                    <span
+                      class="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
+                
+              </span>
+            </div>
+            <div
+              class="col-xs-10"
+            >
+              <textarea
+                class="form-control"
+                id="entity-description"
+              />
+            </div>
+          </div>
+          <div
+            class="row margin-bottom"
+          >
+            <div
+              class="col-xs-2"
+            >
+              <div
+                class="name-expression-label-div"
+              >
+                Naming 
+                <span
+                  class="domain-no-wrap"
+                >
+                  Pattern
+                  <div
+                    class="overlay-trigger"
+                  >
+                    <span
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                  
+                </span>
+              </div>
+            </div>
+            <div
+              class="col-xs-10"
+            >
+              <input
+                class="naming-pattern-border-warning form-control"
+                id="entity-nameExpression"
+                placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </form>
+        <div
+          class="row"
+        >
+          <div
+            class="col-xs-2"
+          />
+          <div
+            class="col-xs-10"
+          >
+            <span>
+              <div
+                class="form-group"
+              >
+                <div>
+                  <span
+                    class="container--action-button btn btn-default"
+                  >
+                    <i
+                      class="fa fa-plus-circle container--addition-icon"
+                    />
+                     Add 
+                  </span>
+                  <div
+                    class="overlay-trigger"
+                  >
+                    <span
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+    >
+      <div
+        class="alert alert-warning"
+        role="alert"
+      >
+        There was a problem retrieving the Sample Type category.
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      >
+        <div
+          class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+          id="sample-type-properties-hdr"
+        >
+          <span
+            class="domain-panel-title"
+          >
+            Sample Type Properties
+          </span>
+        </div>
+        <div
+          class="panel-body"
+        >
+          <div
+            class="row margin-bottom"
+          >
+            <div
+              class="col-xs-12"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col-xs-12"
+                >
+                  <a
+                    class="domain-field-float-right"
+                    href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=createSampleSet"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more about designing sample types
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form>
+            <div
+              class="row margin-bottom margin-top"
+            >
+              <div
+                class="col-xs-2"
+              >
+                <span
+                  class="domain-no-wrap"
+                >
+                  Name
+                   *
+                </span>
+              </div>
+              <div
+                class="col-xs-10"
+              >
+                <input
+                  class="form-control"
+                  id="entity-name"
+                  placeholder="Enter a name for this sample type"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="row margin-bottom"
+            >
+              <div
+                class="col-xs-2"
+              >
+                <span
+                  class="domain-no-wrap"
+                >
+                  Description
+                  <div
+                    class="overlay-trigger"
+                  >
+                    <span
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                  
+                </span>
+              </div>
+              <div
+                class="col-xs-10"
+              >
+                <textarea
+                  class="form-control"
+                  id="entity-description"
+                />
+              </div>
+            </div>
+            <div
+              class="row margin-bottom"
+            >
+              <div
+                class="col-xs-2"
+              >
+                <div
+                  class="name-expression-label-div"
+                >
+                  Naming 
+                  <span
+                    class="domain-no-wrap"
+                  >
+                    Pattern
+                    <div
+                      class="overlay-trigger"
+                    >
+                      <span
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                    
+                  </span>
+                </div>
+              </div>
+              <div
+                class="col-xs-10"
+              >
+                <input
+                  class="naming-pattern-border-warning form-control"
+                  id="entity-nameExpression"
+                  placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </form>
+          <div
+            class="row"
+          >
+            <div
+              class="col-xs-2"
+            />
+            <div
+              class="col-xs-10"
+            >
+              <span>
+                <div
+                  class="form-group"
+                >
+                  <div>
+                    <span
+                      class="container--action-button btn btn-default"
+                    >
+                      <i
+                        class="fa fa-plus-circle container--addition-icon"
+                      />
+                       Add 
+                    </span>
+                    <div
+                      class="overlay-trigger"
+                    >
+                      <span
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="col-xs-2"
+            />
+            <div
+              class="col-xs-10"
+            >
+              <span>
+                <div
+                  class="form-group"
+                >
+                  <div>
+                    <span
+                      class="container--action-button btn btn-default"
+                    >
+                      <i
+                        class="fa fa-plus-circle container--addition-icon"
+                      />
+                       Add 
+                    </span>
+                    <div
+                      class="overlay-trigger"
+                    >
+                      <span
+                        class="label-help-target"
+                      >
+                        <span
+                          class="label-help-icon fa fa-question-circle"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+      >
+        <div
+          class="alert alert-warning"
+          role="alert"
+        >
+          There was a problem retrieving the Sample Type category.
+        </div>
+      </div>
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip13"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip14"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip15"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip16"
+    >
+      <div />
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+    >
+      <div
+        class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
+        id="sample-type-properties-hdr"
+      >
+        <span
+          class="domain-panel-title"
+        >
+          Sample Type Properties
+        </span>
+      </div>
+      <div
+        class="panel-body"
+      >
+        <div
+          class="row margin-bottom"
+        >
+          <div
+            class="col-xs-12"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-xs-12"
+              >
+                <a
+                  class="domain-field-float-right"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=createSampleSet"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Learn more about designing sample types
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form>
+          <div
+            class="row margin-bottom margin-top"
+          >
+            <div
+              class="col-xs-2"
+            >
+              <span
+                class="domain-no-wrap"
+              >
+                Name
+                 *
+              </span>
+            </div>
+            <div
+              class="col-xs-10"
+            >
+              <input
+                class="form-control"
+                id="entity-name"
+                placeholder="Enter a name for this sample type"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="row margin-bottom"
+          >
+            <div
+              class="col-xs-2"
+            >
+              <span
+                class="domain-no-wrap"
+              >
+                Description
+                <div
+                  class="overlay-trigger"
+                >
+                  <span
+                    class="label-help-target"
+                  >
+                    <span
+                      class="label-help-icon fa fa-question-circle"
+                    />
+                  </span>
+                </div>
+                
+              </span>
+            </div>
+            <div
+              class="col-xs-10"
+            >
+              <textarea
+                class="form-control"
+                id="entity-description"
+              />
+            </div>
+          </div>
+          <div
+            class="row margin-bottom"
+          >
+            <div
+              class="col-xs-2"
+            >
+              <div
+                class="name-expression-label-div"
+              >
+                Naming 
+                <span
+                  class="domain-no-wrap"
+                >
+                  Pattern
+                  <div
+                    class="overlay-trigger"
+                  >
+                    <span
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                  
+                </span>
+              </div>
+            </div>
+            <div
+              class="col-xs-10"
+            >
+              <input
+                class="naming-pattern-border-warning form-control"
+                id="entity-nameExpression"
+                placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </form>
+        <div
+          class="row"
+        >
+          <div
+            class="col-xs-2"
+          />
+          <div
+            class="col-xs-10"
+          >
+            <span>
+              <div
+                class="form-group"
+              >
+                <div>
+                  <span
+                    class="container--action-button btn btn-default"
+                  >
+                    <i
+                      class="fa fa-plus-circle container--addition-icon"
+                    />
+                     Add 
+                  </span>
+                  <div
+                    class="overlay-trigger"
+                  >
+                    <span
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-xs-2"
+          />
+          <div
+            class="col-xs-10"
+          >
+            <span>
+              <div
+                class="form-group"
+              >
+                <div>
+                  <span
+                    class="container--action-button btn btn-default"
+                  >
+                    <i
+                      class="fa fa-plus-circle container--addition-icon"
+                    />
+                     Add 
+                  </span>
+                  <div
+                    class="overlay-trigger"
+                  >
+                    <span
+                      class="label-help-target"
+                    >
+                      <span
+                        class="label-help-icon fa fa-question-circle"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="domain-bottom-alert panel-default lk-border-theme-light domain-bottom-alert-top"
+    >
+      <div
+        class="alert alert-warning"
+        role="alert"
+      >
+        There was a problem retrieving the Sample Type category.
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

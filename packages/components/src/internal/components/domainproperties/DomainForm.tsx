@@ -281,7 +281,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     toggleLocalPanel = (collapsed?: boolean): void => {
         const { domain, onChange } = this.props;
-        console.log('toggleLocalPanel');
 
         this.setState(
             state => ({

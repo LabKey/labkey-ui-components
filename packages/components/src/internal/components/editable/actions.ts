@@ -429,11 +429,10 @@ export function addColumns(
 ): EditorModelUpdates {
     if (queryColumns.size === 0) return {};
 
-    // if fieldKey is provided, find that index and we will insert after it
+    // if fieldKey is provided, find that index and we will insert after it (or at the beginning if there is no such field)
     const leftColIndex = fieldKey
         ? editorModel.columns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey))
         : -1;
-    if (fieldKey && leftColIndex === -1) return {};
 
     const editorModelIndex = leftColIndex + 1;
     const queryColIndex = queryInfo.getColumnIndex(fieldKey) + 1;

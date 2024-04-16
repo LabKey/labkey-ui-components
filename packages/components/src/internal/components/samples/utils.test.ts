@@ -25,6 +25,7 @@ import {
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
     getOperationNotAllowedMessage,
+    getOperationNotPermittedMessage,
     getSampleStatus,
     getSampleStatusColor,
     getSampleStatusLockedMessage,
@@ -265,6 +266,26 @@ describe('getOperationNotAllowedMessage', () => {
                 })
             )
         ).toBe('The current status of 1,235 selected samples prevents updating of their lineage.');
+    });
+});
+
+describe('getOperationNotPermittedMessage', () => {
+    test('no statusData', () => {
+        expect(getOperationNotPermittedMessage(undefined)).toBeNull();
+    });
+
+    test('no notPermitted', () => {
+        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: undefined }))).toBeNull();
+        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [] }))).toBeNull();
+    });
+
+    test('with notPermitted', () => {
+        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [1] }))).toBe(
+            "1 of the selected samples isn't shown because you don't have permissions to edit in that project."
+        );
+        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [1, 2] }))).toBe(
+            "2 of the selected samples aren't shown because you don't have permissions to edit in that project."
+        );
     });
 });
 

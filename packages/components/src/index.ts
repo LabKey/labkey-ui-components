@@ -1923,3 +1923,4 @@ export type { FetchedGroup, SecurityAPIWrapper } from './internal/components/sec
 export type { UserLimitSettings } from './internal/components/permissions/actions';
 export type { ModalProps } from './internal/Modal';
 export type { QueryLookupFilterGroup, QueryLookupFilterGroupFilter } from './public/QueryColumn';
+export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';

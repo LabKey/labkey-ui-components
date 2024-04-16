@@ -869,7 +869,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     cell: inputCellFactory(
                         queryInfo,
                         editorModel,
-                        allowSelection,
+                        allowSelection_,
                         hideCountCol,
                         metadata,
                         readonlyRows,
@@ -1709,7 +1709,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             hideTopControls,
             tabContainerCls,
             gridTabHeaderComponent,
-            hideCheckboxCol,
         } = this.props;
         const { showBulkAdd, showBulkUpdate, showMask, activeEditTab, selected } = this.state;
 

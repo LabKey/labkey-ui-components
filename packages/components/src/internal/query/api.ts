@@ -996,7 +996,8 @@ export function saveRows(options: SaveRowsOptions): Promise<Query.SaveRowsRespon
     });
 }
 
-function splitRowsByContainer(rows: any[], containerField: string): Record<string, any[]> {
+// exported for jest testing
+export function splitRowsByContainer(rows: any[], containerField: string): Record<string, any[]> {
     const containerRows = {};
     rows.forEach(row => {
         const container = caseInsensitive(row, containerField);

@@ -119,8 +119,8 @@ interface OwnProps {
 
 interface AssayImportPanelsBodyProps extends NotificationsContextProps {
     container: Partial<Container>;
-    user: User;
     searchParams: URLSearchParams;
+    user: User;
 }
 
 type Props = AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps & InjectedQueryModels;

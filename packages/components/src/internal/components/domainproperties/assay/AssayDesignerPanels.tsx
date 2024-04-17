@@ -29,8 +29,8 @@ const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
 
 export interface AssayDesignerPanelsProps {
-    appDomainHeaders?: Map<string, HeaderRenderer>;
     api?: DomainPropertiesAPIWrapper;
+    appDomainHeaders?: Map<string, HeaderRenderer>;
     appIsValidMsg?: (model: AssayProtocolModel) => string;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: AssayProtocolModel) => void;

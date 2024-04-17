@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import { SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
 
-import {IParentAlias, IParentOption} from '../entities/models';
+import { IParentAlias, IParentOption } from '../entities/models';
 
 import { ParentAliasRow } from './ParentAliasRow';
 

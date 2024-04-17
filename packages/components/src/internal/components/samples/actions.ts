@@ -159,10 +159,7 @@ export async function loadSelectedSamples(
         return fetchSamples(
             new SchemaQuery('sampleManagement', 'inputSamples'),
             sampleColumn,
-            [
-                Filter.create('ApplicationType', 'ExperimentRun'),
-                Filter.create('ApplicationRun', workflowJobId),
-            ],
+            [Filter.create('ApplicationType', 'ExperimentRun'), Filter.create('ApplicationRun', workflowJobId)],
             'Name',
             'SampleId'
         );

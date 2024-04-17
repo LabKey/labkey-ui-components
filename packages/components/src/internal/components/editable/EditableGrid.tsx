@@ -48,6 +48,8 @@ import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
 
 import { Tab, Tabs } from '../../Tabs';
 
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import {
     addRows,
     addRowsPerPivotValue,
@@ -72,7 +74,6 @@ import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 
 import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 import { computeRangeChange, genCellKey, parseCellKey } from './utils';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -310,16 +311,16 @@ export interface SharedEditableGridProps {
     disabled?: boolean;
     emptyGridMsg?: string;
     exportColFilter?: (col: QueryColumn) => boolean;
+    extraExportColumns?: Array<Partial<QueryColumn>>;
     forUpdate?: boolean;
+    gridTabHeaderComponent?: ReactNode;
+    hideCheckboxCol?: boolean;
     hideCountCol?: boolean;
     hideTopControls?: boolean;
     insertColumns?: QueryColumn[];
     isSubmitting?: boolean;
     lockedRows?: string[]; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     maxRows?: number;
-    metricFeatureArea?: string;
-    notDeletable?: List<any>; // list of key values that cannot be deleted.
-    primaryBtnProps?: EditableGridBtnProps;
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: string[];
     readonlyRows?: string[]; // list of key values for rows that are readonly.
@@ -333,9 +334,9 @@ export interface SharedEditableGridProps {
     tabContainerCls?: string;
     updateColumns?: QueryColumn[];
     saveBtnClickedCount?: number;
-    hideCheckboxCol?: boolean;
-    gridTabHeaderComponent?: ReactNode;
-    extraExportColumns?: Array<Partial<QueryColumn>>;
+    primaryBtnProps?: EditableGridBtnProps;
+    notDeletable?: List<any>; // list of key values that cannot be deleted.
+    metricFeatureArea?: string;
 }
 
 export interface EditableGridBtnProps {

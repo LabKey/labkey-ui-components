@@ -44,12 +44,14 @@ import {
     updateRows,
     UpdateRowsOptions,
     getDefaultVisibleColumns,
+    saveRowsByContainer,
+    SaveRowsOptions,
 } from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 
 export interface QueryAPIWrapper {
     deleteRows: (options: DeleteRowsOptions) => Promise<QueryCommandResponse>;
-    deleteRowsByContainer: (options: DeleteRowsOptions, containerField: string) => Promise<any>;
+    deleteRowsByContainer: (options: DeleteRowsOptions, containerField: string) => Promise<QueryCommandResponse>;
     deleteView: (schemaQuery: SchemaQuery, containerPath: string, viewName?: string, revert?: boolean) => Promise<void>;
     getDataTypeProjectDataCount: (
         entityDataType: EntityDataType,
@@ -98,6 +100,7 @@ export interface QueryAPIWrapper {
         inherit: boolean,
         shared: boolean
     ) => Promise<void>;
+    saveRowsByContainer: (options: SaveRowsOptions, containerField: string) => Promise<Query.SaveRowsResponse>;
     saveSessionView: (
         schemaQuery: SchemaQuery,
         containerPath: string,
@@ -139,6 +142,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     insertRows = insertRows;
     renameGridView = renameGridView;
     saveGridView = saveGridView;
+    saveRowsByContainer = saveRowsByContainer;
     saveSessionView = saveSessionView;
     selectRows = selectRows;
     selectDistinctRows = selectDistinctRows;
@@ -170,6 +174,7 @@ export function getQueryTestAPIWrapper(
         insertRows: mockFn(),
         renameGridView: mockFn(),
         saveGridView: mockFn(),
+        saveRowsByContainer: mockFn(),
         saveSessionView: mockFn(),
         selectRows: mockFn(),
         selectDistinctRows: mockFn(),

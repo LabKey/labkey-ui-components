@@ -158,6 +158,30 @@ describe('column mutation actions', () => {
             expect(updates.data.findEntry(rowValues => rowValues.has(queryColumn.fieldKey))).toBeTruthy();
         });
 
+        test('add at beginning, insert fieldKey does not exist', () => {
+            const updates = addColumns(
+                editorModel,
+                queryModel.queryInfo,
+                fromJS(queryModel.rows),
+                new ExtendedMap<string, QueryColumn>({ [queryColumn.fieldKey]: queryColumn }),
+                'Bogus'
+            );
+            expect(updates.editorModelChanges.cellMessages.size).toBe(1);
+            expect(updates.editorModelChanges.cellMessages.has('2-0')).toBe(true);
+            expect(updates.editorModelChanges.cellValues.get('0-0').size).toBe(0);
+            expect(updates.editorModelChanges.cellValues.get('1-0').get(0).display).toBe('S-1');
+            expect(updates.editorModelChanges.cellValues.get('2-0').get(0).display).toBe('Description 1');
+            expect(updates.editorModelChanges.cellValues.get('1-1').get(0).display).toBe('S-2');
+            expect(updates.editorModelChanges.cellValues.get('2-1').get(0).display).toBe('Description 2');
+            expect(updates.editorModelChanges.columns.get(0)).toEqual(queryColumn.fieldKey);
+            expect(updates.editorModelChanges.columns.size).toEqual(editorModel.columns.size + 1);
+            expect(updates.queryInfo.getColumnIndex('Description')).toBe(
+                queryModel.queryInfo.getColumnIndex('Description') + 1
+            );
+            expect(updates.queryInfo.getColumnIndex(queryColumn.fieldKey)).toBe(0);
+            expect(updates.data.findEntry(rowValues => rowValues.has(queryColumn.fieldKey))).toBeTruthy();
+        });
+
         test('add at end', () => {
             const insertCols = queryModel.queryInfo.getInsertColumns();
             const lastInsertColKey = insertCols[insertCols.length - 1].fieldKey;
@@ -235,7 +259,7 @@ describe('column mutation actions', () => {
                 editorModel,
                 queryModel.queryInfo,
                 fromJS(queryModel.rows),
-                'Description',
+                'DESCRIPTION', // case-insensitive
                 queryColumn
             );
 

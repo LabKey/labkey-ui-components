@@ -17,6 +17,7 @@ import {
     ISelectRowsResult,
     quoteValueColumnWithDelimiters,
     Renderers,
+    splitRowsByContainer,
 } from './api';
 
 describe('api', () => {
@@ -178,6 +179,24 @@ describe('api', () => {
                 queries: {},
                 rowCount: 5,
             });
+        });
+    });
+
+    test('splitRowsByContainer', () => {
+        const rows = [{ container: 'a' }, { container: 'b' }, { container: 'a' }, { container: 'b' }];
+        expect(splitRowsByContainer(rows, 'container')).toStrictEqual({
+            a: [{ container: 'a' }, { container: 'a' }],
+            b: [{ container: 'b' }, { container: 'b' }],
+        });
+        expect(splitRowsByContainer(rows, 'bogus')).toStrictEqual({
+            undefined: [{ container: 'a' }, { container: 'b' }, { container: 'a' }, { container: 'b' }],
+        });
+
+        const rows2 = [{ container: undefined }, { container: 'b' }, { container: 'a' }, { container: 'b' }];
+        expect(splitRowsByContainer(rows2, 'container')).toStrictEqual({
+            undefined: [{ container: undefined }],
+            a: [{ container: 'a' }],
+            b: [{ container: 'b' }, { container: 'b' }],
         });
     });
 });

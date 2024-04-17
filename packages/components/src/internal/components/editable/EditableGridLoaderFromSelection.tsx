@@ -26,6 +26,7 @@ import { EditorMode, EditorModel, EditableGridLoader, GridResponse } from './mod
 export class EditableGridLoaderFromSelection implements EditableGridLoader {
     columns: QueryColumn[];
     id: string;
+    idsNotPermitted: number[];
     idsNotToUpdate: number[];
     fieldsNotToUpdate: string[];
     mode: EditorMode;
@@ -42,8 +43,9 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
         requiredColumns?: string[],
         omittedColumns?: string[],
         columns?: QueryColumn[],
-        idsNotToUpdate?: any[],
-        fieldsNotToUpdate?: string[]
+        idsNotToUpdate?: number[],
+        fieldsNotToUpdate?: string[],
+        idsNotPermitted?: number[]
     ) {
         this.columns = columns;
         this.id = id;
@@ -54,16 +56,19 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
         this.omittedColumns = omittedColumns || [];
         this.idsNotToUpdate = idsNotToUpdate || [];
         this.fieldsNotToUpdate = fieldsNotToUpdate || [];
+        this.idsNotPermitted = idsNotPermitted || [];
     }
 
     fetch(gridModel: QueryModel): Promise<GridResponse> {
         return new Promise((resolve, reject) => {
             const { queryName, queryParameters, schemaName, selections, sortString, viewName } = gridModel;
 
+            const selections_ = [...selections].filter(s => this.idsNotPermitted.indexOf(parseInt(s, 10)) === -1);
+
             return getSelectedData(
                 schemaName,
                 queryName,
-                [...selections],
+                selections_,
                 gridModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true),
                 sortString,
                 queryParameters,

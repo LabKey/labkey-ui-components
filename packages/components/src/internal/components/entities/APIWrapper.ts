@@ -7,20 +7,25 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { InsertOptions } from '../../query/api';
 
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
 import {
     getDataOperationConfirmationData,
     GetDeleteConfirmationDataOptions,
     getDeleteConfirmationData,
     getMoveConfirmationData,
+    getOperationConfirmationDataForModel,
     getEntityTypeData,
     getOriginalParentsFromLineage,
     handleEntityFileImport,
     moveEntities,
     initParentOptionsSelects,
     MoveEntitiesOptions,
+    getCrossFolderSelectionResult,
 } from './actions';
 import { DataOperation } from './constants';
 import {
+    CrossFolderSelectionResult,
     EntityChoice,
     EntityDataType,
     EntityIdCreationModel,
@@ -31,6 +36,13 @@ import {
 } from './models';
 
 export interface EntityAPIWrapper {
+    getCrossFolderSelectionResult: (
+        dataRegionSelectionKey: string,
+        dataType: string, // 'samples' | 'exp.data' | 'assay',
+        useSnapshotSelection?: boolean,
+        rowIds?: string[] | number[],
+        picklistName?: string
+    ) => Promise<CrossFolderSelectionResult>;
     getDataOperationConfirmationData: (
         operation: DataOperation,
         rowIds: string[] | number[],
@@ -52,6 +64,11 @@ export interface EntityAPIWrapper {
         rowIds: string[] | number[],
         selectionKey?: string,
         useSnapshotSelection?: boolean
+    ) => Promise<OperationConfirmationData>;
+    getOperationConfirmationDataForModel: (
+        model: QueryModel,
+        dataType: EntityDataType,
+        extraParams?: Record<string, any>
     ) => Promise<OperationConfirmationData>;
     getOriginalParentsFromLineage: (
         lineage: Record<string, any>,
@@ -91,10 +108,12 @@ export interface EntityAPIWrapper {
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {
+    getCrossFolderSelectionResult = getCrossFolderSelectionResult;
     getDataOperationConfirmationData = getDataOperationConfirmationData;
     getDeleteConfirmationData = getDeleteConfirmationData;
     getMoveConfirmationData = getMoveConfirmationData;
     getEntityTypeData = getEntityTypeData;
+    getOperationConfirmationDataForModel = getOperationConfirmationDataForModel;
     getOriginalParentsFromLineage = getOriginalParentsFromLineage;
     handleEntityFileImport = handleEntityFileImport;
     loadNameExpressionOptions = loadNameExpressionOptions;
@@ -110,10 +129,12 @@ export function getEntityTestAPIWrapper(
     overrides: Partial<EntityAPIWrapper> = {}
 ): EntityAPIWrapper {
     return {
+        getCrossFolderSelectionResult: mockFn(),
         getDataOperationConfirmationData: mockFn(),
         getDeleteConfirmationData: mockFn(),
         getMoveConfirmationData: mockFn(),
         getEntityTypeData: mockFn(),
+        getOperationConfirmationDataForModel: mockFn(),
         getOriginalParentsFromLineage: mockFn(),
         handleEntityFileImport: mockFn(),
         loadNameExpressionOptions: mockFn(),

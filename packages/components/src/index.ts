@@ -384,8 +384,9 @@ import { BaseDomainDesigner } from './internal/components/domainproperties/BaseD
 import {
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
+    getOperationNotAllowedMessage,
+    getOperationNotAllowedMessageFromCounts,
     getOperationNotPermittedMessage,
-    getOperationNotPermittedMessageFromCounts,
     getSampleDomainDefaultSystemFields,
     getSampleStatus,
     getSampleStatusColor,
@@ -486,7 +487,6 @@ import {
 } from './internal/components/permissions/actions';
 import {
     getContainersForPermission,
-    getCrossFolderSelectionResult,
     getDataDeleteConfirmationData,
     getDataOperationConfirmationData,
     getDeleteConfirmationData,
@@ -1324,7 +1324,8 @@ export {
     SamplesEditButtonSections,
     StorageAmountInput,
     getOmittedSampleTypeColumns,
-    getOperationNotPermittedMessageFromCounts,
+    getOperationNotAllowedMessageFromCounts,
+    getOperationNotAllowedMessage,
     getOperationNotPermittedMessage,
     ManageSampleStatusesPanel,
     SampleStatusLegend,
@@ -1349,7 +1350,6 @@ export {
     getSampleOperationConfirmationData,
     getDeleteConfirmationData,
     getEntityTypeOptions,
-    getCrossFolderSelectionResult,
     getExcludedDataTypeNames,
     getOperationConfirmationData,
     getContainersForPermission,

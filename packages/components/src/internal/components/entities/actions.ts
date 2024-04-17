@@ -20,7 +20,7 @@ import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
 import { ViewInfo } from '../../ViewInfo';
 
-import { getAppHomeFolderPath, getProjectDataExclusion, getProjectPath, hasModule } from '../../app/utils';
+import { getAppHomeFolderPath, getProjectDataExclusion, hasModule } from '../../app/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -222,6 +222,16 @@ export function getSampleOperationConfirmationData(
         { sampleOperation: SampleOperation[operation] },
         containerPath
     );
+}
+
+export async function getOperationConfirmationDataForModel(
+    model: QueryModel,
+    dataType: EntityDataType,
+    extraParams?: Record<string, any>
+): Promise<OperationConfirmationData> {
+    const useSnapshotSelection = model.filterArray.length > 0;
+    if (useSnapshotSelection) await setSnapshotSelections(model.id, [...model.selections]);
+    return getOperationConfirmationData(dataType, undefined, model.id, useSnapshotSelection, extraParams);
 }
 
 async function getSelectedParents(

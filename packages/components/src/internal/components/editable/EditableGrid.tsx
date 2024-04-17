@@ -17,7 +17,6 @@ import { Query, Utils } from '@labkey/api';
 import classNames from 'classnames';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -48,6 +47,8 @@ import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
 
 import { Tab, Tabs } from '../../Tabs';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import {
     addRows,
@@ -310,16 +311,16 @@ export interface SharedEditableGridProps {
     disabled?: boolean;
     emptyGridMsg?: string;
     exportColFilter?: (col: QueryColumn) => boolean;
+    extraExportColumns?: Array<Partial<QueryColumn>>;
     forUpdate?: boolean;
+    gridTabHeaderComponent?: ReactNode;
+    hideCheckboxCol?: boolean;
     hideCountCol?: boolean;
     hideTopControls?: boolean;
     insertColumns?: QueryColumn[];
     isSubmitting?: boolean;
     lockedRows?: string[]; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     maxRows?: number;
-    metricFeatureArea?: string;
-    notDeletable?: List<any>; // list of key values that cannot be deleted.
-    primaryBtnProps?: EditableGridBtnProps;
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: string[];
     readonlyRows?: string[]; // list of key values for rows that are readonly.
@@ -333,9 +334,9 @@ export interface SharedEditableGridProps {
     tabContainerCls?: string;
     updateColumns?: QueryColumn[];
     saveBtnClickedCount?: number;
-    hideCheckboxCol?: boolean;
-    gridTabHeaderComponent?: ReactNode;
-    extraExportColumns?: Array<Partial<QueryColumn>>;
+    primaryBtnProps?: EditableGridBtnProps;
+    notDeletable?: List<any>; // list of key values that cannot be deleted.
+    metricFeatureArea?: string;
 }
 
 export interface EditableGridBtnProps {
@@ -924,24 +925,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {label}
                 {required && <span className="required-symbol"> *</span>}
                 {showOverlay && (
-                    <>
-                        &nbsp;
-                        <OverlayTrigger
-                            placement="bottom"
-                            overlay={
-                                <Popover
-                                    id={'popover-' + label}
-                                    bsClass="popover"
-                                    className={metadata?.popoverClassName}
-                                >
-                                    {metadata?.toolTip}
-                                    {format && <div>Display Format: {format}</div>}
-                                </Popover>
-                            }
-                        >
-                            <i className="fa fa-question-circle" />
-                        </OverlayTrigger>
-                    </>
+                    <LabelHelpTip title={label} popoverClassName={metadata?.popoverClassName}>
+                        <>
+                            {metadata?.toolTip}
+                            {format && <div>Display Format: {format}</div>}
+                        </>
+                    </LabelHelpTip>
                 )}
             </>
         );

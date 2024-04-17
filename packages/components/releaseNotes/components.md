@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Add support for exporting a storage map from terminal storage grids
+
 ### version 3.39.1
 *Released*: 18 April 2024
 - Update CSS for notebook review status pills

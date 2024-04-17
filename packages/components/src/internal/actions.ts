@@ -28,6 +28,7 @@ import {
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
     GENBANK_EXPORT_CONTROLLER,
+    STORAGE_MAP_EXPORT_CONTROLLER,
     VIEW_NOT_FOUND_EXCEPTION_CLASS,
 } from './constants';
 import { DataViewInfo } from './DataViewInfo';
@@ -272,6 +273,9 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     } else if (type === EXPORT_TYPES.LABEL) {
         controller = BARTENDER_EXPORT_CONTROLLER;
         action = 'printBarTenderLabels.post';
+    } else if (type === EXPORT_TYPES.STORAGE_MAP) {
+        controller = STORAGE_MAP_EXPORT_CONTROLLER;
+        action = 'exportStorageMap.api';
     } else {
         throw new Error('Unknown export type: ' + type);
     }

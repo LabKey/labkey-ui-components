@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD April 2024
 - Issue 49792: Details tooltip sometimes cut off
+- Issue 50054: Stacked bar chart hover on total count displays incorrect info
 
 ### version 3.38.3
 *Released*: 17 April 2024

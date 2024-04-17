@@ -259,11 +259,8 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
             hoverFn: function (row) {
                 return (
                     (grouped ? row.subLabel + '\n' : '') +
-                    row.label +
-                    '\n' +
-                    'Count: ' +
-                    row.value +
-                    '\n' +
+                    (row.label ? row.label + '\n' : '') +
+                    'Count: ' + row.value + '\n' +
                     'Click to view details'
                 );
             },

@@ -15,6 +15,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - EditableGrid replace react-bootstrap OverlayTrigger/Popover with LabelHelpTip
   - Issue 50140: App data class designer cursor jumps in parent alias field
 
+### version 3.38.3
+*Released*: 17 April 2024
+- Issue 50031: Update permission check and container path for saving updates to storage labels
+
 ### version 3.38.2
 *Released*: 12 April 2024
 - Issue 50069: Editing amounts of sample results in weird value

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD April 2024
+### version 3.39.0
+*Released*: 17 April 2024
 - Support cross-folder "Edit in Grid"
   - rename getOperationNotPermittedMessage() to getOperationNotAllowedMessage()
   - EditableGridLoaderFromSelection to account for idsNotPermitted when using selections for getSelectedData()

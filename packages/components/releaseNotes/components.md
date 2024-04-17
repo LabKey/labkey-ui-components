@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD April 2024
+- Issue 49792: Details tooltip sometimes cut off
+
 ### version 3.38.3
 *Released*: 17 April 2024
 - Issue 50031: Update permission check and container path for saving updates to storage labels

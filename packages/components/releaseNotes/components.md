@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Support cross-folder "Edit in Bulk"
   - Update getOperationNotPermittedMessage to work for both Edit in Grid and Edit in Bulk scenarios
+  - BulkUpdateForm getUpdatedData() to include Folder in updated rows, if it exists in originalData
 
 ### version 3.39.1
 *Released*: 18 April 2024

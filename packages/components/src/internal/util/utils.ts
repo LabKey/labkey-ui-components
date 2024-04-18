@@ -300,18 +300,23 @@ function isSameWithStringCompare(value1: any, value2: any): boolean {
  * @param originalData a map from an id field to a Map from fieldKeys to an object with a 'value' field
  * @param updatedValues an object mapping fieldKeys to values that are being updated
  * @param primaryKeys the list of primary fieldKey names
- * @param additionalPkCols additional array of primary fieldKey names
+ * @param additionalCols additional array of fieldKeys to include
  */
 export function getUpdatedData(
     originalData: Map<string, any>,
     updatedValues: any,
     primaryKeys: string[],
-    additionalPkCols?: Set<string>
+    additionalCols?: Set<string>
 ): any[] {
     const updateValuesMap = Map<any, any>(updatedValues);
     const pkColsLc = new Set<string>();
     primaryKeys.forEach(key => pkColsLc.add(key.toLowerCase()));
-    additionalPkCols?.forEach(col => pkColsLc.add(col.toLowerCase()));
+    additionalCols?.forEach(col => pkColsLc.add(col.toLowerCase()));
+
+    // if the originalData has the container/folder values, keep those as well (i.e. treat it as a primary key)
+    const folderKey = originalData.first().keySeq().find(key => key.toLowerCase() === 'folder');
+    if (folderKey) pkColsLc.add(folderKey.toLowerCase());
+
     const updatedData = originalData.map(originalRowMap => {
         return originalRowMap.reduce((m, fieldValueMap, key) => {
             // Issue 42672: The original data has keys that are names or captions for the columns.  We need to use

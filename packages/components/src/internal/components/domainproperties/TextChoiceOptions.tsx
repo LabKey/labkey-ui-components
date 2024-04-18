@@ -332,11 +332,6 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
     const [validValues, setValidValues] = useState<string[]>(field.textChoiceValidator?.properties.validValues ?? []);
     const fieldId = createFormInputId(DOMAIN_VALIDATOR_TEXTCHOICE, domainIndex, index);
 
-    useEffect(() => {
-        // Issue 49481: if the field index changes (reordering fields), we need to update the validValues state
-        setValidValues(field.textChoiceValidator?.properties.validValues ?? []);
-    }, [field.textChoiceValidator?.properties.validValues, fieldId]);
-
     const replaceValues = useCallback(
         (newValues: string[], newValueUpdates?: Record<string, string>) => {
             setValidValues(newValues);

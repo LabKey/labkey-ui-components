@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.39.1
+*Released*: 18 April 2024
+- Update CSS for notebook review status pills
+
 ### version 3.39.0
 *Released*: 17 April 2024
 - Support cross-folder "Edit in Grid"

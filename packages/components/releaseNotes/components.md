@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Support cross-folder "Edit in Bulk"
+  - Update getOperationNotPermittedMessage to work for both Edit in Grid and Edit in Bulk scenarios
+
 ### version 3.39.1
 *Released*: 18 April 2024
 - Update CSS for notebook review status pills

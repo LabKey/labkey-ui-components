@@ -159,10 +159,7 @@ export async function loadSelectedSamples(
         return fetchSamples(
             new SchemaQuery('sampleManagement', 'inputSamples'),
             sampleColumn,
-            [
-                Filter.create('ApplicationType', 'ExperimentRun'),
-                Filter.create('ApplicationRun', workflowJobId),
-            ],
+            [Filter.create('ApplicationType', 'ExperimentRun'), Filter.create('ApplicationRun', workflowJobId)],
             'Name',
             'SampleId'
         );
@@ -301,14 +298,14 @@ export function getSelectionLineageData(
 ): Promise<ISelectRowsResult> {
     const rowIds = getRowIdsFromSelection(selection);
     if (rowIds.length === 0) {
-        return Promise.reject('No data is selected');
+        return Promise.reject('No data is selected.');
     }
 
     return selectRowsDeprecated({
         schemaName: schema,
         queryName: query,
         viewName,
-        columns: columns ?? List.of('RowId', 'Name', 'LSID').concat(ParentEntityLineageColumns).toArray(),
+        columns: columns ?? List.of('RowId', 'Name', 'LSID', 'Folder').concat(ParentEntityLineageColumns).toArray(),
         filterArray: [Filter.create('RowId', rowIds, Filter.Types.IN)],
     });
 }

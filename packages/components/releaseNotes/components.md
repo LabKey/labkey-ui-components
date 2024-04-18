@@ -5,6 +5,28 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - TODO
 
+### version 3.39.1
+*Released*: 18 April 2024
+- Update CSS for notebook review status pills
+
+### version 3.39.0
+*Released*: 17 April 2024
+- Support cross-folder "Edit in Grid"
+  - rename getOperationNotPermittedMessage() to getOperationNotAllowedMessage()
+  - EditableGridLoaderFromSelection to account for idsNotPermitted when using selections for getSelectedData()
+  - Show Project column in EditableGrid for "Edit in Grid"
+  - Add saveRowsByContainer util to QueryAPIWrapper
+  - EditableGrid column actions for add,remove,update should use editorModel.columns to determine column indices
+  - EditableGridPanelForUpdate props for readOnlyColumns and updateColumns, include originalRows as param to updateRows, show warning about notPermitted rows
+  - add getOperationConfirmationDataForModel helper
+  - fix in getUpdatedDataFromGrid for multi-value columns
+  - EditableGrid replace react-bootstrap OverlayTrigger/Popover with LabelHelpTip
+  - Issue 50140: App data class designer cursor jumps in parent alias field
+
+### version 3.38.3
+*Released*: 17 April 2024
+- Issue 50031: Update permission check and container path for saving updates to storage labels
+
 ### version 3.38.2
 *Released*: 12 April 2024
 - Issue 50069: Editing amounts of sample results in weird value

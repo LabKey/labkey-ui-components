@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import { SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
 
-import {IParentAlias, IParentOption} from '../entities/models';
+import { IParentAlias, IParentOption } from '../entities/models';
 
 import { ParentAliasRow } from './ParentAliasRow';
 
@@ -30,7 +30,7 @@ describe('<ParentAliasRow/>', () => {
 
         const wrapper = mount(component);
 
-        expect(wrapper.find('input[name="alias"]').props().value).toBe(parentAlias.alias);
+        expect(wrapper.find('input[name="alias"]').props().defaultValue).toBe(parentAlias.alias);
         expect(wrapper.find('.has-error')).toHaveLength(0);
     });
 
@@ -57,7 +57,7 @@ describe('<ParentAliasRow/>', () => {
         const aliasInput = wrapper.find('input[name="alias"]');
 
         expect(wrapper.find('.has-error input[name="alias"]')).toHaveLength(1);
-        expect(aliasInput.props().value).toBe(parentAlias.alias);
+        expect(aliasInput.props().defaultValue).toBe(parentAlias.alias);
         expect(wrapper.find(`.has-error ${SELECT_INPUT_CONTROL_SELECTOR}`)).toHaveLength(1);
     });
 
@@ -91,7 +91,7 @@ describe('<ParentAliasRow/>', () => {
 
         const wrapper = mount(component);
 
-        expect(wrapper.find('input[name="alias"]').props().value).toBe(parentAlias.alias);
+        expect(wrapper.find('input[name="alias"]').props().defaultValue).toBe(parentAlias.alias);
         expect(wrapper.find('input[name="parentValue"]').props().value).toBe(parentAlias.parentValue.value);
     });
 
@@ -124,7 +124,7 @@ describe('<ParentAliasRow/>', () => {
         expect(tree).toMatchSnapshot();
 
         const wrapper = mount(component);
-        expect(wrapper.find('input[name="alias"]').props().value).toBe(parentAlias.alias);
+        expect(wrapper.find('input[name="alias"]').props().defaultValue).toBe(parentAlias.alias);
         expect(wrapper.find('input[name="parentValue"]').props().value).toBe(parentAlias.parentValue.value);
     });
 
@@ -206,7 +206,7 @@ describe('<ParentAliasRow/>', () => {
 
         const wrapper = mount(component);
         const aliasInput = wrapper.find('input[name="alias"]');
-        expect(aliasInput.props().value).toBe(parentAlias.alias);
+        expect(aliasInput.props().defaultValue).toBe(parentAlias.alias);
         expect(mockChange).toHaveBeenCalledTimes(0);
 
         aliasInput.simulate('change', { target: { name: 'alias', value: 'change' } });

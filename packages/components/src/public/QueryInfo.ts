@@ -295,15 +295,6 @@ export class QueryInfo {
         );
     }
 
-    getInsertColumnIndex(fieldKey: string, readOnlyColumns?: string[]): number {
-        if (!fieldKey) return -1;
-
-        const lcFieldKey = fieldKey.toLowerCase();
-        return this.getInsertColumns(undefined, readOnlyColumns).findIndex(
-            column => column.fieldKey.toLowerCase() === lcFieldKey
-        );
-    }
-
     getUpdateColumns(readOnlyColumns?: string[]): QueryColumn[] {
         const lowerReadOnlyColumnsSet = readOnlyColumns?.reduce((result, value) => {
             result.add(value.toLowerCase());

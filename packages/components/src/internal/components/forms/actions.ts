@@ -126,5 +126,6 @@ export function updateRowFieldValue(model: QueryModel, name: string, value: any)
                 [name]: value,
             },
         ],
+        containerPath: model.containerPath,
     });
 }

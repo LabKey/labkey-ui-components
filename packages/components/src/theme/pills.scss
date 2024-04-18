@@ -18,6 +18,7 @@
     }
 
     &.warning,
+    &.submitted,
     &.needs-review,
     &.awaiting-review {
         color: #8A6D3B;
@@ -27,15 +28,12 @@
     &.danger,
     &.rejected,
     &.inactive,
+    &.recalled,
+    &.reopened,
     &.overdue {
         color: #D9534F;
         background-color: #FDDEDE;
         border-color: #F9B5B3;
-    }
-    &.submitted {
-        color: #2E3E48;
-        background-color: #ECEBEA;
-        border-color: #CDCDCD;
     }
     &.success,
     &.active,

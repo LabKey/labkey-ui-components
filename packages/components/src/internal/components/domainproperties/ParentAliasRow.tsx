@@ -7,10 +7,11 @@ import classNames from 'classnames';
 
 import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
 
-import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 import { IParentAlias, IParentOption } from '../entities/models';
 import { SelectInput } from '../forms/input/SelectInput';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
+
+import { DomainFieldLabel } from './DomainFieldLabel';
 
 interface IParentAliasRow {
     aliasCaption: string;
@@ -104,7 +105,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                         name="alias"
                         type="text"
                         placeholder={`Enter a ${aliasCaption.toLowerCase()} for import`}
-                        value={alias}
+                        defaultValue={alias} // Issue 50140: use defaultValue instead of value
                         onChange={this.onChange}
                         onBlur={this.onAliasBlur}
                     />

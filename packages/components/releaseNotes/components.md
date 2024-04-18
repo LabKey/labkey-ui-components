@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 49792: Details tooltip sometimes cut off
 - Issue 50054: Stacked bar chart hover on total count displays incorrect info
 - DomainForm fix to use the propertyId in the DomainRow key for saved fields (helps with issues 49481 and 50076)
+- BaseModal to set document.body no-scroll on show
 
 ### version 3.39.0
 *Released*: 17 April 2024

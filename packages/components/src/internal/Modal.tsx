@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode } from 'react';
+import React, { FC, memo, ReactNode, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import classNames from 'classnames';
@@ -22,6 +22,14 @@ export const BaseModal: FC<BaseModalProps> = ({ bsSize, children, className }) =
         'modal-sm': bsSize === 'sm',
         'modal-lg': bsSize === 'lg',
     });
+
+    useEffect(() => {
+        // Prevent scrolling the body when a modal is shown
+        document.body.classList.toggle('no-scroll', true);
+        return () => {
+            document.body.classList.toggle('no-scroll', false);
+        };
+    }, []);
 
     const modal = (
         <div className="modal-wrapper">

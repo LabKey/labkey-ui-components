@@ -6,6 +6,8 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { User } from '../base/models/User';
 import { AppURL } from '../../url/AppURL';
 
+import { OperationConfirmationData } from '../entities/models';
+
 import { SamplesEditButtonSections } from './utils';
 import { ALIQUOT_FILTER_MODE, SampleStateType } from './constants';
 
@@ -214,6 +216,6 @@ export interface SampleGridButtonProps {
     navigate?: (url: string | AppURL) => void;
     onTabbedViewAliquotSelectorUpdate?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
     sampleFinderBaseProps?: Record<string, any>;
-    showBulkUpdate?: () => void;
-    toggleEditWithGridUpdate?: () => void;
+    showBulkUpdate?: (statusData?: OperationConfirmationData) => void;
+    toggleEditWithGridUpdate?: (statusData?: OperationConfirmationData) => void;
 }

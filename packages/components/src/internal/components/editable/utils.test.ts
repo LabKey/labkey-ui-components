@@ -549,6 +549,94 @@ describe('getUpdatedDataFromGrid', () => {
         expect(updatedData).toHaveLength(0);
     });
 
+    test('row field array value unchanged value', () => {
+        const updatedData = getUpdatedDataFromGrid(
+            fromJS({
+                448: {
+                    RowId: 448,
+                    Value: [{ value: 1 }, { value: 2 }, { value: 3 }],
+                },
+            }),
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    Value: [1, 2, 3],
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData).toHaveLength(0);
+    });
+
+    test('row field array value unchanged displayValue', () => {
+        const updatedData = getUpdatedDataFromGrid(
+            fromJS({
+                448: {
+                    RowId: 448,
+                    Value: [
+                        { value: 1, displayValue: 'test1' },
+                        { value: 2, displayValue: 'test2' },
+                        { value: 3, displayValue: 'test3' },
+                    ],
+                },
+            }),
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    Value: ['test1', 'test2', 'test3'],
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData).toHaveLength(0);
+    });
+
+    test('row field array value changed value', () => {
+        const updatedData = getUpdatedDataFromGrid(
+            fromJS({
+                448: {
+                    RowId: 448,
+                    Value: [{ value: 1 }, { value: 2 }, { value: 3 }],
+                },
+            }),
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    Value: [1, 2, 4],
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData).toHaveLength(1);
+    });
+
+    test('row field array value changed displayValue', () => {
+        const updatedData = getUpdatedDataFromGrid(
+            fromJS({
+                448: {
+                    RowId: 448,
+                    Value: [
+                        { value: 1, displayValue: 'test1' },
+                        { value: 2, displayValue: 'test2' },
+                        { value: 3, displayValue: 'test3' },
+                    ],
+                },
+            }),
+            [
+                Map<string, any>({
+                    RowId: '448',
+                    Value: ['test1', 'test4', 'test3'],
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData).toHaveLength(1);
+    });
+
     test('genCellKey', () => {
         expect(genCellKey(0, 0)).toBe('0-0');
         expect(genCellKey(1, 2)).toBe('1-2');

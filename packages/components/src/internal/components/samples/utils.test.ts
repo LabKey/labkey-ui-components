@@ -24,6 +24,7 @@ import {
 import {
     getFilterForSampleOperation,
     getOmittedSampleTypeColumns,
+    getOperationNotAllowedMessage,
     getOperationNotPermittedMessage,
     getSampleStatus,
     getSampleStatusColor,
@@ -118,21 +119,21 @@ describe('getFilterForSampleOperation', () => {
     });
 });
 
-describe('getOperationNotPermittedMessage', () => {
+describe('getOperationNotAllowedMessage', () => {
     test('no status data', () => {
-        expect(getOperationNotPermittedMessage(SampleOperation.EditMetadata, undefined)).toBeNull();
-        expect(getOperationNotPermittedMessage(SampleOperation.EditMetadata, undefined, [1, 2])).toBeNull();
+        expect(getOperationNotAllowedMessage(SampleOperation.EditMetadata, undefined)).toBeNull();
+        expect(getOperationNotAllowedMessage(SampleOperation.EditMetadata, undefined, [1, 2])).toBeNull();
     });
 
     test('status data, no rows', () => {
         expect(
-            getOperationNotPermittedMessage(SampleOperation.UpdateStorageMetadata, new OperationConfirmationData())
+            getOperationNotAllowedMessage(SampleOperation.UpdateStorageMetadata, new OperationConfirmationData())
         ).toBeNull();
     });
 
     test('none allowed', () => {
         expect(
-            getOperationNotPermittedMessage(
+            getOperationNotAllowedMessage(
                 SampleOperation.AddToStorage,
                 new OperationConfirmationData({
                     allowed: [],
@@ -149,7 +150,7 @@ describe('getOperationNotPermittedMessage', () => {
 
     test('some not allowed, without aliquots', () => {
         expect(
-            getOperationNotPermittedMessage(
+            getOperationNotAllowedMessage(
                 SampleOperation.EditLineage,
                 new OperationConfirmationData({
                     allowed: [
@@ -168,7 +169,7 @@ describe('getOperationNotPermittedMessage', () => {
             )
         ).toBe('The current status of 1 selected sample prevents updating of its lineage.');
         expect(
-            getOperationNotPermittedMessage(
+            getOperationNotAllowedMessage(
                 SampleOperation.EditLineage,
                 new OperationConfirmationData({
                     allowed: [
@@ -195,7 +196,7 @@ describe('getOperationNotPermittedMessage', () => {
 
     test('some allowed, with aliquots', () => {
         expect(
-            getOperationNotPermittedMessage(
+            getOperationNotAllowedMessage(
                 SampleOperation.EditLineage,
                 new OperationConfirmationData({
                     allowed: [
@@ -226,7 +227,7 @@ describe('getOperationNotPermittedMessage', () => {
 
     test('all allowed', () => {
         expect(
-            getOperationNotPermittedMessage(
+            getOperationNotAllowedMessage(
                 SampleOperation.EditLineage,
                 new OperationConfirmationData({
                     allowed: [
@@ -252,7 +253,7 @@ describe('getOperationNotPermittedMessage', () => {
             notAllowed.push({ Name: 'D-2.' + i, RowId: i });
         }
         expect(
-            getOperationNotPermittedMessage(
+            getOperationNotAllowedMessage(
                 SampleOperation.EditLineage,
                 new OperationConfirmationData({
                     allowed: [
@@ -265,6 +266,26 @@ describe('getOperationNotPermittedMessage', () => {
                 })
             )
         ).toBe('The current status of 1,235 selected samples prevents updating of their lineage.');
+    });
+});
+
+describe('getOperationNotPermittedMessage', () => {
+    test('no statusData', () => {
+        expect(getOperationNotPermittedMessage(undefined)).toBeNull();
+    });
+
+    test('no notPermitted', () => {
+        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: undefined }))).toBeNull();
+        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [] }))).toBeNull();
+    });
+
+    test('with notPermitted', () => {
+        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [1] }))).toBe(
+            "1 of the selected samples isn't shown because you don't have permissions to edit in that project."
+        );
+        expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [1, 2] }))).toBe(
+            "2 of the selected samples aren't shown because you don't have permissions to edit in that project."
+        );
     });
 });
 

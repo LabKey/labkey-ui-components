@@ -123,7 +123,6 @@ interface IDomainFormInput {
     headerTitle?: string;
     helpNoun?: string;
     helpTopic?: string;
-    hiddenFieldNames?: string[];
     // Used in AssayDesignerPanels for distinguishing FileAttachmentForms
     index?: number;
     initCollapsed?: boolean;
@@ -1018,14 +1017,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     getFilteredFields = (domain: DomainDesign, value?: string): DomainDesign => {
-        const { hiddenFieldNames } = this.props;
-
         const filteredFields = domain.fields.map(field => {
-            const fieldHidden = hiddenFieldNames?.indexOf(field.name) > -1;
             const fieldSearchMatch =
                 !value || (field.name && field.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
 
-            if (!fieldHidden && fieldSearchMatch) {
+            if (fieldSearchMatch) {
                 return field.set('visible', true);
             }
             return field.set('visible', false);
@@ -1210,7 +1206,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             systemFields,
             testMode,
             todoIconHelpMsg,
-            hiddenFieldNames,
         } = this.props;
         const {
             bulkDeleteConfirmInfo,
@@ -1225,7 +1220,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             visibleSelection,
         } = this.state;
         const { fields } = domain;
-        const fieldSize = fields.size - (hiddenFieldNames?.length ?? 0);
+        const fieldSize = fields.size;
         const headerDetails =
             fieldSize > 0 ? '' + fieldSize + ' Field' + (fieldSize > 1 ? 's' : '') + ' Defined' : undefined;
         const hasFields = fields.size > 0;

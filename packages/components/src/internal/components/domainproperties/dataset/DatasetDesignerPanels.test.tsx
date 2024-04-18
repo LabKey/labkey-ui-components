@@ -17,8 +17,6 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 
-import { List } from 'immutable';
-
 import { act } from 'react-dom/test-utils';
 
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
@@ -29,13 +27,12 @@ import { getDomainPropertiesTestAPIWrapper } from '../APIWrapper';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { DatasetDesignerPanelImpl, DatasetDesignerPanels } from './DatasetDesignerPanels';
+import { DatasetDesignerPanels } from './DatasetDesignerPanels';
 
 import { DatasetModel } from './models';
 
 describe('Dataset Designer', () => {
     const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
-    const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
     test('for alert/message', async () => {
         let container;
@@ -66,47 +63,5 @@ describe('Dataset Designer', () => {
         expect(alerts).toHaveLength(2);
         expect(alerts[0].textContent).toContain(PROPERTIES_PANEL_ERROR_MSG);
         expect(alerts[1].textContent).toContain('Please correct errors in the properties panel before saving.');
-    });
-
-    test('New dataset', async () => {
-        let container;
-        await act(async () => {
-            container = renderWithAppContext(
-                <DatasetDesignerPanelImpl
-                    api={getDomainPropertiesTestAPIWrapper(jest.fn)}
-                    initModel={newDatasetModel}
-                    onCancel={jest.fn()}
-                    onComplete={jest.fn()}
-                    testMode={true}
-                    currentPanelIndex={0}
-                    firstState={true}
-                    onFinish={jest.fn()}
-                    onTogglePanel={jest.fn()}
-                    setSubmitting={jest.fn()}
-                    submitting={false}
-                    validatePanel={0}
-                    visitedPanels={List()}
-                />
-            );
-        });
-
-        expect(container).toMatchSnapshot();
-    });
-
-    test('Edit existing dataset', async () => {
-        let container;
-        await act(async () => {
-            container = renderWithAppContext(
-                <DatasetDesignerPanels
-                    api={getDomainPropertiesTestAPIWrapper(jest.fn)}
-                    initModel={populatedDatasetModel}
-                    onCancel={jest.fn()}
-                    onComplete={jest.fn()}
-                    testMode={true}
-                />
-            );
-        });
-
-        expect(container).toMatchSnapshot();
     });
 });

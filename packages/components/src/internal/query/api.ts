@@ -979,7 +979,9 @@ export function deleteRows(options: DeleteRowsOptions): Promise<QueryCommandResp
     });
 }
 
-export function saveRows(options: Query.SaveRowsOptions): Promise<Query.SaveRowsResponse> {
+export type SaveRowsOptions = Omit<Query.SaveRowsOptions, 'failure' | 'success'>;
+
+export function saveRows(options: SaveRowsOptions): Promise<Query.SaveRowsResponse> {
     return new Promise((resolve, reject) => {
         Query.saveRows({
             apiVersion: 13.2,
@@ -991,6 +993,45 @@ export function saveRows(options: Query.SaveRowsOptions): Promise<Query.SaveRows
                 reject(error);
             },
         });
+    });
+}
+
+// exported for jest testing
+export function splitRowsByContainer(rows: any[], containerField: string): Record<string, any[]> {
+    const containerRows = {};
+    rows.forEach(row => {
+        const container = caseInsensitive(row, containerField);
+        if (!containerRows[container]) containerRows[container] = [];
+        containerRows[container].push(row);
+    });
+
+    return containerRows;
+}
+
+export function saveRowsByContainer(
+    options: SaveRowsOptions,
+    containerField: string = 'Folder'
+): Promise<Query.SaveRowsResponse> {
+    const commands = []; // TODO type as Query.Command
+
+    // for each original command, split it into multiple commands for each container in the rows
+    options.commands.forEach(command => {
+        const containerRows = splitRowsByContainer(command.rows, containerField);
+        Object.keys(containerRows).forEach(containerPath => {
+            const rows = containerRows[containerPath];
+            commands.push({
+                ...command,
+                rows,
+                // splitRowsByContainer will use the Record key of "undefined" if the row doesn't have a containerPath
+                containerPath: !containerPath || containerPath === 'undefined' ? undefined : containerPath,
+            });
+        });
+    });
+
+    return saveRows({
+        ...options,
+        commands,
+        apiVersion: undefined /* use default instead of 13.2 as defined in saveRows() */,
     });
 }
 
@@ -1009,13 +1050,7 @@ export function deleteRowsByContainer(
     )
         return deleteRows(options);
 
-    const containerRows = {};
-    allRows.forEach(row => {
-        const container = caseInsensitive(row, containerField);
-        if (!containerRows[container]) containerRows[container] = [];
-        containerRows[container].push(row);
-    });
-
+    const containerRows = splitRowsByContainer(allRows, containerField);
     if (Object.keys(containerRows).length <= 1) {
         const containerPath = Object.keys(containerRows)?.[0];
         return deleteRows({

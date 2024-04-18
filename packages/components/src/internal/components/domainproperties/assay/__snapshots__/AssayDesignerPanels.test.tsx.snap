@@ -1140,6 +1140,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             />
           </span>
         </div>
+        <span
+          class="domain-panel-header-fields-defined"
+        >
+          1 Field Defined
+        </span>
       </div>
       <div
         class="panel-collapse collapse"

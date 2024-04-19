@@ -385,6 +385,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
         const { filteredLookupKeys } = this.state;
         const isDateTimeField = this.isDateTimeField;
         const showLookup = this.isLookup;
+        const showMenu = showLookup || (col.inputRenderer && col.inputRenderer !== 'AppendUnitsInput');
 
         if (!focused) {
             let valueDisplay = values
@@ -403,7 +404,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly,
                     'cell-locked': locked,
-                    'cell-menu': showLookup || col.inputRenderer,
+                    'cell-menu': showMenu,
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
                 }),
                 onDoubleClick: this.handleDblClick,
@@ -418,7 +419,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
             if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
             let cell: ReactNode;
 
-            if (showLookup || col.inputRenderer) {
+            if (showMenu) {
                 cell = (
                     <div {...displayProps}>
                         <div className="cell-menu-value">{valueDisplay}</div>

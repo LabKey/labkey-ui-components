@@ -9,7 +9,8 @@ const isNumericWithError = (values: any, v: string | number): any =>
     validationRules.isNumeric(values, v) || 'Please enter a number.';
 
 export const AppendUnitsInput: FC<InputRendererProps> = memo(props => {
-    const { col, formsy, initiallyDisabled, inputClass, showLabel, value } = props;
+    const { col, formsy, inputClass, showLabel, value, ...otherProps } = props;
+    const { allowFieldDisable, initiallyDisabled, onToggleDisable } = otherProps;
 
     // Issue 23462: Global Formsy validation rule for numbers
     if (!validationRules.isNumericWithError) {
@@ -24,9 +25,11 @@ export const AppendUnitsInput: FC<InputRendererProps> = memo(props => {
 
     return (
         <TextInput
+            allowDisable={allowFieldDisable}
+            initiallyDisabled={initiallyDisabled}
+            onToggleDisable={onToggleDisable}
             addonAfter={<span>{col.units}</span>}
             elementWrapperClassName={inputClass}
-            initiallyDisabled={initiallyDisabled}
             queryColumn={col}
             showLabel={showLabel}
             validations="isNumericWithError"

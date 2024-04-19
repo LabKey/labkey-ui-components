@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD April 2024
+### version 3.39.3
+*Released*: 19 April 2024
 - Issue 49792: Details tooltip sometimes cut off
 - Issue 50054: Stacked bar chart hover on total count displays incorrect info
 - DomainForm fix to use the propertyId in the DomainRow key for saved fields (helps with issues 49481 and 50076)

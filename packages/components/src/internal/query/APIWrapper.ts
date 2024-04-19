@@ -100,7 +100,7 @@ export interface QueryAPIWrapper {
         inherit: boolean,
         shared: boolean
     ) => Promise<void>;
-    saveRowsByContainer: (options: SaveRowsOptions, containerField: string) => Promise<Query.SaveRowsResponse>;
+    saveRowsByContainer: (options: SaveRowsOptions, containerField?: string) => Promise<Query.SaveRowsResponse>;
     saveSessionView: (
         schemaQuery: SchemaQuery,
         containerPath: string,

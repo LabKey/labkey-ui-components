@@ -135,7 +135,7 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
                     </li>
                 </ul>
             </div>
-            <div className="product-menu-section">
+            <div className={classNames('product-menu-section', { 'menu-section-static': config.staticContent })}>
                 <ul>
                     {isEmpty && (
                         <>

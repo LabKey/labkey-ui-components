@@ -512,6 +512,7 @@ export function addAssaysSectionConfig(
 export function getPlatesSectionConfig(): MenuSectionConfig {
     return new MenuSectionConfig({
         iconURL: imageURL('_images', 'plates.svg'),
+        staticContent: true,
     });
 }
 
@@ -552,6 +553,7 @@ const USER_SECTION_CONFIG = new MenuSectionConfig({
 const REQUESTS_SECTION_CONFIG = new MenuSectionConfig({
     useOriginalURL: true,
     iconURL: imageURL('_images', 'default.svg'),
+    staticContent: true,
 });
 
 function getBioWorkflowNotebookMediaConfigs(): Map<string, MenuSectionConfig> {

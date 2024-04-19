@@ -255,7 +255,11 @@ async function getLookupValueDescriptors(
                     values = values.add(value);
                 } else if (List.isList(value)) {
                     value.forEach(val => {
-                        values = values.add(val);
+                        if (Map.isMap(val)) {
+                            values = values.add(val.get('value'));
+                        } else {
+                            values = values.add(val);
+                        }
                     });
                 }
             });

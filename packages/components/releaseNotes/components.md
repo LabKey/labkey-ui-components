@@ -1,9 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
-- TODO
+### version 3.39.2
+*Released*: 19 April 2024
+- Add clearSelected and replaceSelected to query API wrapper
+- Add allowSelection and onSelectionChange props to <EditableGrid/>
 
 ### version 3.39.1
 *Released*: 18 April 2024

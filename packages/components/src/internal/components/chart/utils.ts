@@ -260,7 +260,9 @@ export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<st
                 return (
                     (grouped ? row.subLabel + '\n' : '') +
                     (row.label ? row.label + '\n' : '') +
-                    'Count: ' + row.value + '\n' +
+                    'Count: ' +
+                    row.value +
+                    '\n' +
                     'Click to view details'
                 );
             },

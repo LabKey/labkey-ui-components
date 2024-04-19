@@ -210,7 +210,9 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
             {!loading && (
                 <div className="row">
                     <div
-                        className={classNames('col-xs-6', 'col-lg-4', { 'domain-text-choices-left-panel': validValues.length > 0 })}
+                        className={classNames('col-xs-6', 'col-lg-4', {
+                            'domain-text-choices-left-panel': validValues.length > 0,
+                        })}
                     >
                         <div className="list-group domain-text-choices-list">
                             {validValues.length > MIN_VALUES_FOR_SEARCH_COUNT && (

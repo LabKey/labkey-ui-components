@@ -48,8 +48,8 @@ export const BaseModal: FC<BaseModalProps> = ({ bsSize, children, className }) =
 BaseModal.displayName = 'BaseModal';
 
 interface ModalHeaderProps {
-    title: ReactNode;
     onCancel?: () => void;
+    title: ReactNode;
 }
 export const ModalHeader: FC<ModalHeaderProps> = ({ title, onCancel }) => {
     return (

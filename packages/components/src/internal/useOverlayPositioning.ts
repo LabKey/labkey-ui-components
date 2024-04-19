@@ -51,6 +51,10 @@ export function useOverlayPositioning<T extends Element = HTMLDivElement, O exte
             } else if (placement === 'left') {
                 updatedStyle.left = targetRect.left - overlayRect.width;
             }
+            // make sure the overlay is within the viewport (Issue 49792)
+            if (typeof updatedStyle.left === 'number' && updatedStyle.left < 0) {
+                updatedStyle.left = 0;
+            }
 
             // Y positioning
             if (placement === 'left' || placement === 'right') {

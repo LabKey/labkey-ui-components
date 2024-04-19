@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode } from 'react';
+import React, { FC, memo, ReactNode, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import classNames from 'classnames';
@@ -23,6 +23,14 @@ export const BaseModal: FC<BaseModalProps> = ({ bsSize, children, className }) =
         'modal-lg': bsSize === 'lg',
     });
 
+    useEffect(() => {
+        // Prevent scrolling the body when a modal is shown
+        document.body.classList.toggle('no-scroll', true);
+        return () => {
+            document.body.classList.toggle('no-scroll', false);
+        };
+    }, []);
+
     const modal = (
         <div className="modal-wrapper">
             <div className="fade in modal-backdrop" />
@@ -40,8 +48,8 @@ export const BaseModal: FC<BaseModalProps> = ({ bsSize, children, className }) =
 BaseModal.displayName = 'BaseModal';
 
 interface ModalHeaderProps {
-    title: ReactNode;
     onCancel?: () => void;
+    title: ReactNode;
 }
 export const ModalHeader: FC<ModalHeaderProps> = ({ title, onCancel }) => {
     return (

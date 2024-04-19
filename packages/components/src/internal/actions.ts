@@ -414,34 +414,34 @@ export interface SelectResponse {
     count: number;
 }
 
-export function clearSelected(
-    key: string,
-    schemaQuery?: SchemaQuery,
-    filterArray?: Filter.IFilter[],
-    containerPath?: string,
-    queryParameters?: Record<string, any>,
-    containerFilter?: Query.ContainerFilter
-): Promise<SelectResponse> {
+export type ClearSelectedOptions = {
+    containerFilter?: Query.ContainerFilter;
+    containerPath?: string;
+    filters?: Filter.IFilter[];
+    queryParameters?: Record<string, any>;
+    schemaQuery?: SchemaQuery;
+    selectionKey: string;
+};
+
+export function clearSelected(options: ClearSelectedOptions): Promise<SelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'clearSelected.api', undefined, {
-                container: containerPath,
-            }),
+            url: ActionURL.buildURL('query', 'clearSelected.api', options.containerPath),
             method: 'POST',
             jsonData: getFilteredQueryParams(
-                key,
-                schemaQuery,
-                filterArray,
-                queryParameters,
-                containerPath,
-                containerFilter
+                options.selectionKey,
+                options.schemaQuery,
+                options.filters,
+                options.queryParameters,
+                options.containerPath,
+                options.containerFilter
             ),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
             failure: handleRequestFailure(
                 reject,
-                `Problem clearing the selection ${key} ${schemaQuery?.schemaName} ${schemaQuery?.queryName}`
+                `Problem clearing the selection ${options.selectionKey} ${options.schemaQuery?.schemaName} ${options.schemaQuery?.queryName}`
             ),
         });
     });
@@ -454,10 +454,10 @@ export function clearSelected(
  * @param ids ids to change selection for
  * @param containerPath optional path to the container for this grid.  Default is the current container path
  * @param validateIds if true, check the ids are present in dataregion before setting selection in session
- * @param schemaName? name of the schema for the query grid
- * @param queryName? name of the query
- * @param filterList? list of filters to use
- * @param queryParameters? the parameters to the underlying query
+ * @param schemaName name of the schema for the query grid
+ * @param queryName name of the query
+ * @param filters array of filters to use
+ * @param queryParameters the parameters to the underlying query
  */
 export function setSelected(
     key: string,
@@ -494,23 +494,18 @@ export function setSelected(
     });
 }
 
-/**
- * Selects individual ids for a particular view
- * @param key the selection key for the grid
- * @param ids ids to change selection for
- * @param containerPath optional path to the container for this grid.  Default is the current container path
- */
-export function replaceSelected(key: string, ids: string[] | string, containerPath?: string): Promise<SelectResponse> {
+export type ReplaceSelectedOptions = {
+    containerPath?: string;
+    id: string[] | string;
+    selectionKey: string;
+};
+
+export function replaceSelected(options: ReplaceSelectedOptions): Promise<SelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'replaceSelected.api', undefined, {
-                container: containerPath,
-            }),
+            url: ActionURL.buildURL('query', 'replaceSelected.api', options.containerPath),
             method: 'POST',
-            jsonData: {
-                key,
-                id: ids,
-            },
+            jsonData: { key: options.selectionKey, id: options.id },
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),

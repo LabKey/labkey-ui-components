@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.39.4
+*Released*: 19 April 2024
+- Fix `ProductMenu` layout for static menu sections
+
 ### version 3.39.3
 *Released*: 19 April 2024
 - Issue 49792: Details tooltip sometimes cut off

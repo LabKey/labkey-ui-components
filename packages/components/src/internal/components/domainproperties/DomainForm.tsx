@@ -1135,8 +1135,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         <div ref={provided.innerRef} {...provided.droppableProps}>
                             <form className="domain-form">
                                 {domain.fields.map((field, i) => {
+                                    // use the propertyId in the row key for saved fields (helps with issues 49481 and 50076)
+                                    let key = 'domain-row-key-new' + i;
+                                    if (!field.isNew()) {
+                                        key = 'domain-row-key-prop' + field.propertyId;
+                                    }
+
                                     // Need to preserve index so don't filter, instead just use empty div
-                                    if (!field.visible) return <div key={'domain-row-key-' + i} />;
+                                    if (!field.visible) return <div key={key} />;
 
                                     return (
                                         <DomainRow
@@ -1145,7 +1151,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                             }}
                                             domainId={domain.domainId}
                                             helpNoun={helpNoun}
-                                            key={'domain-row-key-' + i}
+                                            key={key}
                                             field={field}
                                             fieldError={this.getFieldError(domain, i)}
                                             getDomainFields={this.getDomainFields}

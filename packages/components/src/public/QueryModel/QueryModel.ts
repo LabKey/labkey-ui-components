@@ -957,6 +957,16 @@ export class QueryModel {
     }
 
     /**
+     * Return the selection ids as an optionally filtered, array.
+     */
+    getSelectedIds(filterIds: number[] = []): string[] {
+        if (this.selections) {
+            return Array.from(this.selections).filter(s => filterIds.indexOf(parseInt(s, 10)) === -1);
+        }
+        return undefined;
+    }
+
+    /**
      * Get the row selection state (ALL, SOME, or NONE) for the QueryModel.
      */
     get selectedState(): GRID_CHECKBOX_OPTIONS {

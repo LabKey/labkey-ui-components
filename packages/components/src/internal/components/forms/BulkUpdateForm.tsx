@@ -35,7 +35,7 @@ interface Props {
     queryInfo: QueryInfo;
     readOnlyColumns?: string[];
     requiredColumns?: string[];
-    selectedIds: Set<string>;
+    selectedIds: string[];
     singularNoun?: string;
     // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
     sortString?: string;
@@ -100,7 +100,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             const { data, dataIds } = await getSelectedData(
                 schemaName,
                 name,
-                Array.from(selectedIds),
+                selectedIds,
                 columnString,
                 sortString,
                 undefined,
@@ -160,7 +160,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     }
 
     getSelectionCount(): number {
-        return this.props.selectedIds.size;
+        return this.props.selectedIds.length;
     }
 
     getSelectionNoun(): string {

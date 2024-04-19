@@ -12,12 +12,16 @@ import { getEntityTypeOptions, getProjectConfigurableEntityTypeOptions } from '.
 import { getProjectDataTypeDataCount, getDataTypeProjectDataCount } from '../components/project/actions';
 
 import {
+    clearSelected,
+    ClearSelectedOptions,
     deleteView,
     getGridViews,
     GetSelectedResponse,
     getSnapshotSelections,
     incrementClientSideMetricCount,
     renameGridView,
+    replaceSelected,
+    ReplaceSelectedOptions,
     saveGridView,
     saveSessionView,
     SelectResponse,
@@ -50,6 +54,7 @@ import {
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 
 export interface QueryAPIWrapper {
+    clearSelected: (options: ClearSelectedOptions) => Promise<SelectResponse>;
     deleteRows: (options: DeleteRowsOptions) => Promise<QueryCommandResponse>;
     deleteRowsByContainer: (options: DeleteRowsOptions, containerField: string) => Promise<QueryCommandResponse>;
     deleteView: (schemaQuery: SchemaQuery, containerPath: string, viewName?: string, revert?: boolean) => Promise<void>;
@@ -91,6 +96,7 @@ export interface QueryAPIWrapper {
         viewName: string,
         newName: string
     ) => Promise<void>;
+    replaceSelected: (options: ReplaceSelectedOptions) => Promise<SelectResponse>;
     saveGridView: (
         schemaQuery: SchemaQuery,
         containerPath: string,
@@ -128,6 +134,7 @@ export interface QueryAPIWrapper {
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {
+    clearSelected = clearSelected;
     deleteRows = deleteRows;
     deleteRowsByContainer = deleteRowsByContainer;
     deleteView = deleteView;
@@ -141,6 +148,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     incrementClientSideMetricCount = incrementClientSideMetricCount;
     insertRows = insertRows;
     renameGridView = renameGridView;
+    replaceSelected = replaceSelected;
     saveGridView = saveGridView;
     saveRowsByContainer = saveRowsByContainer;
     saveSessionView = saveSessionView;
@@ -160,6 +168,7 @@ export function getQueryTestAPIWrapper(
     overrides: Partial<QueryAPIWrapper> = {}
 ): QueryAPIWrapper {
     return {
+        clearSelected: mockFn(),
         deleteRows: mockFn(),
         deleteRowsByContainer: mockFn(),
         deleteView: mockFn(),
@@ -173,6 +182,7 @@ export function getQueryTestAPIWrapper(
         incrementClientSideMetricCount: mockFn(),
         insertRows: mockFn(),
         renameGridView: mockFn(),
+        replaceSelected: mockFn(),
         saveGridView: mockFn(),
         saveRowsByContainer: mockFn(),
         saveSessionView: mockFn(),

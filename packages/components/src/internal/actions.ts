@@ -273,9 +273,6 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     } else if (type === EXPORT_TYPES.LABEL) {
         controller = BARTENDER_EXPORT_CONTROLLER;
         action = 'printBarTenderLabels.post';
-    } else if (type === EXPORT_TYPES.STORAGE_MAP) {
-        controller = STORAGE_MAP_EXPORT_CONTROLLER;
-        action = 'exportStorageMap.api';
     } else {
         throw new Error('Unknown export type: ' + type);
     }

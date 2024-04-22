@@ -161,7 +161,7 @@ export const LookupCell: FC<LookupCellProps> = memo(props => {
     }
 
     // if the column is a lookup, we need to pass the containerPath to the QuerySelect
-    const containerPath_ = containerPath ?? getValueFromRow(row.toJS(), 'Folder')?.toString();
+    const containerPath_ = containerPath ?? getValueFromRow(row?.toJS(), 'Folder')?.toString();
 
     return (
         <QueryLookupCell

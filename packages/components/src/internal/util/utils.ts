@@ -715,6 +715,8 @@ export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseIn
 }
 
 export function getValueFromRow(row: Record<string, any>, col: string): string | number {
+    if (!row) return undefined;
+
     const val = caseInsensitive(row, col);
     if (Utils.isArray(val)) {
         return val[0]?.value;

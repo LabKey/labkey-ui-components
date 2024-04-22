@@ -1236,6 +1236,11 @@ describe('arrayEquals', () => {
 });
 
 describe('getValueFromRow', () => {
+    test('no row', () => {
+        expect(getValueFromRow(undefined, 'Name')).toEqual(undefined);
+        expect(getValueFromRow({}, 'Name')).toEqual(undefined);
+    });
+
     test('returns value', () => {
         const row = { Name: 'test' };
         expect(getValueFromRow(row, 'Name')).toEqual('test');

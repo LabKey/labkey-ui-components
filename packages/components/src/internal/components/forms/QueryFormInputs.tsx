@@ -25,6 +25,8 @@ import { QueryInfo } from '../../../public/QueryInfo';
 
 import { caseInsensitive } from '../../util/utils';
 
+import { getContainerFilterForLookups } from '../../query/api';
+
 import { FormsyInput } from './input/FormsyReactComponents';
 import { resolveInputRenderer } from './input/InputRenderFactory';
 import { QuerySelect } from './QuerySelect';
@@ -49,6 +51,7 @@ export interface QueryFormInputsProps {
     componentKey?: string; // unique key to add to QuerySelect to avoid duplication w/ transpose
     /** A container filter that will be applied to all query-based inputs in this form */
     containerFilter?: Query.ContainerFilter;
+    containerPath?: string;
     disabledFields?: List<string>;
     fieldValues?: any;
     fireQSChangeOnInit?: boolean;
@@ -59,6 +62,7 @@ export interface QueryFormInputsProps {
     onFieldsEnabledChange?: (numEnabled: number) => void;
     operation?: Operation;
     onSelectChange?: SelectInputChange;
+    preventLookupsEnable?: boolean;
     queryColumns?: ExtendedMap<string, QueryColumn>;
     queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo?: QueryInfo;
@@ -155,6 +159,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         const {
             columnFilter,
             containerFilter,
+            containerPath,
+            preventLookupsEnable,
             fieldValues,
             fireQSChangeOnInit,
             checkRequiredFields,
@@ -234,14 +240,24 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                             const queryFilter = col.lookup.hasQueryFilters(operation)
                                 ? List(col.lookup.getQueryFilters(operation))
                                 : queryFilters?.[col.fieldKey];
+
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}
                                     <QuerySelect
                                         addLabelAsterisk={showAsteriskSymbol}
                                         allowDisable={allowFieldDisable}
-                                        containerFilter={col.lookup.containerFilter ?? containerFilter}
-                                        containerPath={col.lookup.containerPath}
+                                        containerFilter={
+                                            col.lookup.containerFilter ??
+                                            containerFilter ??
+                                            getContainerFilterForLookups()
+                                        }
+                                        containerPath={col.lookup.containerPath ?? containerPath}
+                                        toggleDisabledTooltip={
+                                            preventLookupsEnable
+                                                ? "Lookup fields for the selected rows can't be updated because the rows belong to multiple projects."
+                                                : undefined
+                                        }
                                         description={col.description}
                                         displayColumn={col.lookup.displayColumn}
                                         fireQSChangeOnInit={fireQSChangeOnInit}

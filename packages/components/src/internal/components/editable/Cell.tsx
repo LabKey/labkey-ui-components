@@ -492,6 +492,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     forUpdate={forUpdate}
                     modifyCell={cellActions.modifyCell}
                     onKeyDown={this.handleFocusedDropdownKeys}
+                    row={row}
                     rowIdx={rowIdx}
                     select={cellActions.selectCell}
                     values={values}

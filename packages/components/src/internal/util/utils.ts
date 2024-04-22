@@ -713,3 +713,13 @@ export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseIn
 
     return caseInsensitive ? aStr.toLowerCase() === bStr.toLowerCase() : aStr === bStr;
 }
+
+export function getValueFromRow(row: Record<string, any>, col: string): string | number {
+    const val = caseInsensitive(row, col);
+    if (Utils.isArray(val)) {
+        return val[0]?.value;
+    } else if (Utils.isObject(val)) {
+        return val?.value;
+    }
+    return val;
+}

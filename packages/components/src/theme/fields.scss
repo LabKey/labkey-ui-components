@@ -138,6 +138,10 @@
         color: $gray-light;
     }
 }
+.toggle-group-icon.disabled i {
+    cursor: default;
+    color: $gray-lighter;
+}
 
 .control-toggle-btn-group {
     display: flex;

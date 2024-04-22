@@ -39,6 +39,7 @@ import { CheckboxInput } from '../input/CheckboxInput';
 import { NoLinkRenderer } from '../../../renderers/NoLinkRenderer';
 import { UserDetailsRenderer } from '../../../renderers/UserDetailsRenderer';
 import { ExpirationDateColumnRenderer } from '../../../renderers/ExpirationDateColumnRenderer';
+import { getContainerFilterForLookups } from '../../../query/api';
 
 export type Renderer = (data: any, row?: any) => ReactNode;
 
@@ -320,7 +321,9 @@ export function resolveDetailEditRenderer(
                 return (
                     <QuerySelect
                         autoFocus={options?.autoFocus}
-                        containerFilter={col.lookup.containerFilter ?? options?.containerFilter}
+                        containerFilter={
+                            col.lookup.containerFilter ?? options?.containerFilter ?? getContainerFilterForLookups()
+                        }
                         containerPath={col.lookup.containerPath ?? options?.containerPath}
                         description={col.description}
                         displayColumn={col.lookup.displayColumn}

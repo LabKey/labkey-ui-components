@@ -40,6 +40,7 @@ import {
     capitalizeFirstChar,
     uncapitalizeFirstChar,
     withTransformedKeys,
+    getValueFromRow,
 } from './utils';
 
 const emptyList = List<string>();
@@ -1231,5 +1232,33 @@ describe('arrayEquals', () => {
         expect(arrayEquals(['a', 'b'], ['b', 'a'], false)).toBeFalsy();
         expect(arrayEquals(['a', 'b'], ['A', 'b'], false)).toBeFalsy();
         expect(arrayEquals(['a', 'b'], ['B', 'A'], false)).toBeFalsy();
+    });
+});
+
+describe('getValueFromRow', () => {
+    test('returns value', () => {
+        const row = { Name: 'test' };
+        expect(getValueFromRow(row, 'Name')).toEqual('test');
+        expect(getValueFromRow(row, 'name')).toEqual('test');
+        expect(getValueFromRow(row, 'bogus')).toEqual(undefined);
+    });
+
+    test('returns value from object', () => {
+        const row = { Name: { value: 'test' } };
+        expect(getValueFromRow(row, 'Name')).toEqual('test');
+        expect(getValueFromRow(row, 'name')).toEqual('test');
+        expect(getValueFromRow(row, 'bogus')).toEqual(undefined);
+    });
+
+    test('returns value from array', () => {
+        let row = { Name: ['test1', 'test2'] };
+        expect(getValueFromRow(row, 'Name')).toEqual(undefined);
+        expect(getValueFromRow(row, 'name')).toEqual(undefined);
+        expect(getValueFromRow(row, 'bogus')).toEqual(undefined);
+
+        row = { Name: [{ value: 'test1' }, { value: 'test2' }] };
+        expect(getValueFromRow(row, 'Name')).toEqual('test1');
+        expect(getValueFromRow(row, 'name')).toEqual('test1');
+        expect(getValueFromRow(row, 'bogus')).toEqual(undefined);
     });
 });

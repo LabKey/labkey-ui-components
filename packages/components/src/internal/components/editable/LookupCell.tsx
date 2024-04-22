@@ -34,6 +34,7 @@ import { MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { ValueDescriptor } from './models';
 
 import { getLookupFilters, gridCellSelectInputProps, onCellSelectChange } from './utils';
+import { getValueFromRow } from "../../util/utils";
 
 export interface LookupCellProps {
     col: QueryColumn;
@@ -48,9 +49,10 @@ export interface LookupCellProps {
     lookupValueFilters?: Filter.IFilter[];
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
+    row: any;
     rowIdx: number;
-    values: List<ValueDescriptor>;
     select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
+    values: List<ValueDescriptor>;
 }
 
 interface QueryLookupCellProps extends LookupCellProps {
@@ -126,7 +128,7 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
 QueryLookupCell.displayName = 'QueryLookupCell';
 
 export const LookupCell: FC<LookupCellProps> = memo(props => {
-    const { col, colIdx, disabled, modifyCell, onKeyDown, rowIdx, select, values } = props;
+    const { col, colIdx, disabled, modifyCell, onKeyDown, row, rowIdx, select, values, containerPath } = props;
 
     const onSelectChange = useCallback<SelectInputChange>(
         (fieldName, formValue, options, props_) => {
@@ -158,7 +160,17 @@ export const LookupCell: FC<LookupCellProps> = memo(props => {
         );
     }
 
-    return <QueryLookupCell {...props} onSelectChange={onSelectChange} rawValues={rawValues} />;
+    // if the column is a lookup, we need to pass the containerPath to the QuerySelect
+    const containerPath_ = containerPath ?? getValueFromRow(row.toJS(), 'Folder')?.toString();
+
+    return (
+        <QueryLookupCell
+            {...props}
+            onSelectChange={onSelectChange}
+            rawValues={rawValues}
+            containerPath={containerPath_}
+        />
+    );
 });
 
 LookupCell.displayName = 'LookupCell';

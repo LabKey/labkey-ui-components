@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - BulkUpdateForm getUpdatedData() to include Folder in updated rows, if it exists in originalData
   - Add getSelectedIds(filterIds) to QueryModel
   - AppendUnitsInput fixes for grid cell rendering and enable/disable in bulk form
+  - Edit in Grid and Bulk lookup fields to use containerPath based on selected row(s)
 
 ### version 3.39.4
 *Released*: 19 April 2024

@@ -15,6 +15,7 @@ import { LabelOverlay, LabelOverlayProps } from './LabelOverlay';
 
 interface ToggleProps {
     onClick: () => void;
+    toolTip?: string;
 }
 
 export interface FieldLabelProps {
@@ -93,6 +94,8 @@ export class FieldLabel extends Component<FieldLabelProps> {
                                 inputFieldName={getFieldEnabledFieldName(column, fieldName)}
                                 active={!isDisabled ? 'on' : 'off'}
                                 onClick={toggleProps?.onClick}
+                                disabled={!toggleProps?.onClick}
+                                toolTip={toggleProps?.toolTip}
                             />
                         </div>
                     </span>

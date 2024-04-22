@@ -14,6 +14,7 @@ exports[`ProductMenuSection empty section no text 1`] = `
       "iconCls": undefined,
       "iconURL": "/testProduct/images/samples.svg",
       "showActiveJobIcon": true,
+      "staticContent": false,
       "useOriginalURL": false,
     }
   }
@@ -69,6 +70,7 @@ exports[`ProductMenuSection empty section with empty text and create link 1`] = 
       "iconCls": undefined,
       "iconURL": "/testProduct/images/samples.svg",
       "showActiveJobIcon": true,
+      "staticContent": false,
       "useOriginalURL": false,
     }
   }
@@ -130,6 +132,7 @@ exports[`ProductMenuSection not empty, but all items hidden 1`] = `
       "iconCls": undefined,
       "iconURL": "/testProduct/images/samples.svg",
       "showActiveJobIcon": true,
+      "staticContent": false,
       "useOriginalURL": false,
     }
   }
@@ -216,6 +219,7 @@ exports[`ProductMenuSection one column section 1`] = `
       "iconCls": undefined,
       "iconURL": "/testProduct4Columns/images/assays.svg",
       "showActiveJobIcon": true,
+      "staticContent": false,
       "useOriginalURL": false,
     }
   }
@@ -330,6 +334,7 @@ exports[`ProductMenuSection one column section 1`] = `
               "iconCls": undefined,
               "iconURL": "/testProduct4Columns/images/assays.svg",
               "showActiveJobIcon": true,
+              "staticContent": false,
               "useOriginalURL": false,
             }
           }
@@ -367,6 +372,7 @@ exports[`ProductMenuSection one column section 1`] = `
               "iconCls": undefined,
               "iconURL": "/testProduct4Columns/images/assays.svg",
               "showActiveJobIcon": true,
+              "staticContent": false,
               "useOriginalURL": false,
             }
           }
@@ -404,6 +410,7 @@ exports[`ProductMenuSection one column section 1`] = `
               "iconCls": undefined,
               "iconURL": "/testProduct4Columns/images/assays.svg",
               "showActiveJobIcon": true,
+              "staticContent": false,
               "useOriginalURL": false,
             }
           }
@@ -441,6 +448,7 @@ exports[`ProductMenuSection one column section 1`] = `
               "iconCls": undefined,
               "iconURL": "/testProduct4Columns/images/assays.svg",
               "showActiveJobIcon": true,
+              "staticContent": false,
               "useOriginalURL": false,
             }
           }
@@ -478,6 +486,7 @@ exports[`ProductMenuSection one column section 1`] = `
               "iconCls": undefined,
               "iconURL": "/testProduct4Columns/images/assays.svg",
               "showActiveJobIcon": true,
+              "staticContent": false,
               "useOriginalURL": false,
             }
           }
@@ -518,6 +527,7 @@ exports[`ProductMenuSection one-column section 1`] = `
       "iconCls": undefined,
       "iconURL": "/testProduct3Columns/images/samples.svg",
       "showActiveJobIcon": true,
+      "staticContent": false,
       "useOriginalURL": false,
     }
   }
@@ -620,6 +630,7 @@ exports[`ProductMenuSection one-column section 1`] = `
               "iconCls": undefined,
               "iconURL": "/testProduct3Columns/images/samples.svg",
               "showActiveJobIcon": true,
+              "staticContent": false,
               "useOriginalURL": false,
             }
           }
@@ -657,6 +668,7 @@ exports[`ProductMenuSection one-column section 1`] = `
               "iconCls": undefined,
               "iconURL": "/testProduct3Columns/images/samples.svg",
               "showActiveJobIcon": true,
+              "staticContent": false,
               "useOriginalURL": false,
             }
           }
@@ -701,6 +713,7 @@ exports[`ProductMenuSection one-column section 1`] = `
               "iconCls": undefined,
               "iconURL": "/testProduct3Columns/images/samples.svg",
               "showActiveJobIcon": true,
+              "staticContent": false,
               "useOriginalURL": false,
             }
           }
@@ -738,6 +751,7 @@ exports[`ProductMenuSection one-column section 1`] = `
               "iconCls": undefined,
               "iconURL": "/testProduct3Columns/images/samples.svg",
               "showActiveJobIcon": true,
+              "staticContent": false,
               "useOriginalURL": false,
             }
           }
@@ -783,6 +797,7 @@ exports[`ProductMenuSection section with custom headerURL and headerText 1`] = `
       "iconCls": undefined,
       "iconURL": "/testProduct/images/samples.svg",
       "showActiveJobIcon": true,
+      "staticContent": false,
       "useOriginalURL": false,
     }
   }

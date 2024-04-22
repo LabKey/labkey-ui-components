@@ -234,6 +234,7 @@ export class MenuSectionConfig extends Record({
     iconCls: undefined,
     iconURL: undefined,
     showActiveJobIcon: true,
+    staticContent: false,
     useOriginalURL: false,
 }) {
     declare activeJobIconCls?: string;
@@ -246,5 +247,8 @@ export class MenuSectionConfig extends Record({
     declare iconCls?: string;
     declare iconURL?: string;
     declare showActiveJobIcon?: boolean;
+    // Inform the display that this section's content is static (unchanging).
+    // This helps inform the layout when these sections are laid out alongside sections with dynamic content.
+    declare staticContent?: boolean;
     declare useOriginalURL?: boolean;
 }

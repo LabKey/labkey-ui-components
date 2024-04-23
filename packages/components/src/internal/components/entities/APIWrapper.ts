@@ -18,11 +18,13 @@ import {
     getOperationConfirmationDataForModel,
     getEntityTypeData,
     getOriginalParentsFromLineage,
+    getParentTypeDataForLineage,
     handleEntityFileImport,
     moveEntities,
     initParentOptionsSelects,
     MoveEntitiesOptions,
     getCrossFolderSelectionResult,
+    GetParentTypeDataForLineage,
 } from './actions';
 import { DataOperation } from './constants';
 import {
@@ -87,6 +89,7 @@ export interface EntityAPIWrapper {
         originalParents: Record<string, List<EntityChoice>>;
         parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     }>;
+    getParentTypeDataForLineage: GetParentTypeDataForLineage;
     handleEntityFileImport: (
         importAction: string,
         queryInfo: QueryInfo,
@@ -125,6 +128,7 @@ export class EntityServerAPIWrapper implements EntityAPIWrapper {
     getOperationConfirmationData = getOperationConfirmationData;
     getOperationConfirmationDataForModel = getOperationConfirmationDataForModel;
     getOriginalParentsFromLineage = getOriginalParentsFromLineage;
+    getParentTypeDataForLineage = getParentTypeDataForLineage;
     handleEntityFileImport = handleEntityFileImport;
     loadNameExpressionOptions = loadNameExpressionOptions;
     moveEntities = moveEntities;
@@ -147,6 +151,7 @@ export function getEntityTestAPIWrapper(
         getOperationConfirmationData: mockFn(),
         getOperationConfirmationDataForModel: mockFn(),
         getOriginalParentsFromLineage: mockFn(),
+        getParentTypeDataForLineage: mockFn(),
         handleEntityFileImport: mockFn(),
         loadNameExpressionOptions: mockFn(),
         moveEntities: mockFn(),

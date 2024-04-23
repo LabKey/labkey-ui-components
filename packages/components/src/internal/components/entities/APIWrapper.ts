@@ -14,6 +14,7 @@ import {
     GetDeleteConfirmationDataOptions,
     getDeleteConfirmationData,
     getMoveConfirmationData,
+    getOperationConfirmationData,
     getOperationConfirmationDataForModel,
     getEntityTypeData,
     getOriginalParentsFromLineage,
@@ -65,6 +66,14 @@ export interface EntityAPIWrapper {
         selectionKey?: string,
         useSnapshotSelection?: boolean
     ) => Promise<OperationConfirmationData>;
+    getOperationConfirmationData: (
+        dataType: EntityDataType,
+        rowIds: string[] | number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean,
+        extraParams?: Record<string, any>,
+        containerPath?: string
+    ) => Promise<OperationConfirmationData>;
     getOperationConfirmationDataForModel: (
         model: QueryModel,
         dataType: EntityDataType,
@@ -113,6 +122,7 @@ export class EntityServerAPIWrapper implements EntityAPIWrapper {
     getDeleteConfirmationData = getDeleteConfirmationData;
     getMoveConfirmationData = getMoveConfirmationData;
     getEntityTypeData = getEntityTypeData;
+    getOperationConfirmationData = getOperationConfirmationData;
     getOperationConfirmationDataForModel = getOperationConfirmationDataForModel;
     getOriginalParentsFromLineage = getOriginalParentsFromLineage;
     handleEntityFileImport = handleEntityFileImport;
@@ -134,6 +144,7 @@ export function getEntityTestAPIWrapper(
         getDeleteConfirmationData: mockFn(),
         getMoveConfirmationData: mockFn(),
         getEntityTypeData: mockFn(),
+        getOperationConfirmationData: mockFn(),
         getOperationConfirmationDataForModel: mockFn(),
         getOriginalParentsFromLineage: mockFn(),
         handleEntityFileImport: mockFn(),

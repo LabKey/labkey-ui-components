@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Add support for exporting a storage map from terminal storage grids
 
+### version 3.39.5
+*Released*: 23 April 2024
+- Include sample property fields for Sample Finder properties card
+
 ### version 3.39.4
 *Released*: 19 April 2024
 - Fix `ProductMenu` layout for static menu sections

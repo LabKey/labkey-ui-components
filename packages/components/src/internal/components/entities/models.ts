@@ -637,7 +637,6 @@ export interface DataTypeEntity {
 export interface FilterProps {
     altQueryName?: string;
     dataTypeDisplayName?: string;
-    dataTypeLsid?: string;
     disabled?: boolean;
     entityDataType: EntityDataType;
     // the filters to be used in conjunction with the schemaQuery

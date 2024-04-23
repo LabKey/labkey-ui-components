@@ -210,7 +210,9 @@ export const TextChoiceOptionsImpl: FC<ImplProps> = memo(props => {
             {!loading && (
                 <div className="row">
                     <div
-                        className={classNames('col-xs-6', 'col-lg-4', { 'domain-text-choices-left-panel': validValues.length > 0 })}
+                        className={classNames('col-xs-6', 'col-lg-4', {
+                            'domain-text-choices-left-panel': validValues.length > 0,
+                        })}
                     >
                         <div className="list-group domain-text-choices-list">
                             {validValues.length > MIN_VALUES_FOR_SEARCH_COUNT && (
@@ -331,11 +333,6 @@ export const TextChoiceOptions: FC<Props> = memo(props => {
     const [fieldValues, setFieldValues] = useState<Record<string, Record<string, any>>>({});
     const [validValues, setValidValues] = useState<string[]>(field.textChoiceValidator?.properties.validValues ?? []);
     const fieldId = createFormInputId(DOMAIN_VALIDATOR_TEXTCHOICE, domainIndex, index);
-
-    useEffect(() => {
-        // Issue 49481: if the field index changes (reordering fields), we need to update the validValues state
-        setValidValues(field.textChoiceValidator?.properties.validValues ?? []);
-    }, [field.textChoiceValidator?.properties.validValues, fieldId]);
 
     const replaceValues = useCallback(
         (newValues: string[], newValueUpdates?: Record<string, string>) => {

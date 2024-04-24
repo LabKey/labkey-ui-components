@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- TODO
+
 ### version 3.39.5
 *Released*: 23 April 2024
 - Include sample property fields for Sample Finder properties card

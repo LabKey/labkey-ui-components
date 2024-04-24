@@ -620,6 +620,7 @@ import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
 import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
+import { ExportMenuItem } from './public/QueryModel/ExportMenu';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
@@ -1688,6 +1689,7 @@ export {
     Pagination,
     makeTestActions,
     makeTestQueryModel,
+    ExportMenuItem,
     // AuditLog and Timeline
     QUERY_UPDATE_AUDIT_QUERY,
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
@@ -1924,3 +1926,4 @@ export type { UserLimitSettings } from './internal/components/permissions/action
 export type { ModalProps } from './internal/Modal';
 export type { QueryLookupFilterGroup, QueryLookupFilterGroupFilter } from './public/QueryColumn';
 export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';
+export type { ExtraExportMenuOptions } from './public/QueryModel/ExportMenu';

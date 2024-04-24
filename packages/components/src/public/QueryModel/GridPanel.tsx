@@ -104,6 +104,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showViewMenu?: boolean;
     supportedExportTypes?: Set<EXPORT_TYPES>;
     title?: string;
+    extraExportMenuOptions?: any;
 }
 
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
@@ -170,6 +171,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             showSearchInput,
             showViewMenu,
             supportedExportTypes,
+            extraExportMenuOptions,
         } = this.props;
 
         const { hasData, hasRows, queryInfo, queryInfoError, rowsError, selectionsError } = model;
@@ -222,6 +224,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                     advancedOptions={advancedExportOptions}
                                     supportedTypes={supportedExportTypes?.toJS()}
                                     onExport={onExport}
+                                    extraExportMenuOptions={extraExportMenuOptions}
                                 />
                             )}
                             {showChartMenu && <ChartMenu actions={actions} model={model} />}
@@ -1211,6 +1214,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
 interface GridPaneWithModelBodyProps<T = {}> extends GridPanelProps<T> {
     id: string;
+    extraExportMenuOptions?: any;
 }
 
 const GridPanelWithModelBodyImpl: FC<GridPaneWithModelBodyProps & InjectedQueryModels> = memo(
@@ -1223,6 +1227,7 @@ const GridPanelWithModelBody = withQueryModels<GridPaneWithModelBodyProps>(GridP
 
 interface GridPanelWithModelProps<T = {}> extends GridPanelProps<T> {
     queryConfig: QueryConfig;
+    extraExportMenuOptions?: any;
 }
 
 /**

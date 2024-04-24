@@ -60,7 +60,7 @@ import { Change, ChangeType } from './grid/model';
 
 import { createQueryModelId, QueryConfig, QueryModel } from './QueryModel';
 import { ViewMenu } from './ViewMenu';
-import { ExportMenu } from './ExportMenu';
+import { ExportMenu, ExtraExportMenuOptions } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 import { SearchBox } from './SearchBox';
@@ -85,6 +85,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     asPanel?: boolean;
     buttonsComponentProps?: ButtonsComponentProps;
     emptyText?: string;
+    extraExportMenuOptions?: ExtraExportMenuOptions[];
     getEmptyText?: (model: QueryModel) => string;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
     hasHeader?: boolean;
@@ -104,7 +105,6 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showViewMenu?: boolean;
     supportedExportTypes?: Set<EXPORT_TYPES>;
     title?: string;
-    extraExportMenuOptions?: any;
 }
 
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
@@ -1213,8 +1213,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 }
 
 interface GridPaneWithModelBodyProps<T = {}> extends GridPanelProps<T> {
+    extraExportMenuOptions?: ExtraExportMenuOptions[];
     id: string;
-    extraExportMenuOptions?: any;
 }
 
 const GridPanelWithModelBodyImpl: FC<GridPaneWithModelBodyProps & InjectedQueryModels> = memo(
@@ -1226,8 +1226,8 @@ const GridPanelWithModelBodyImpl: FC<GridPaneWithModelBodyProps & InjectedQueryM
 const GridPanelWithModelBody = withQueryModels<GridPaneWithModelBodyProps>(GridPanelWithModelBodyImpl);
 
 interface GridPanelWithModelProps<T = {}> extends GridPanelProps<T> {
+    extraExportMenuOptions?: ExtraExportMenuOptions[];
     queryConfig: QueryConfig;
-    extraExportMenuOptions?: any;
 }
 
 /**

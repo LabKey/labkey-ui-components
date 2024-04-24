@@ -16,7 +16,7 @@
 import { fromJS, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { immerable } from 'immer';
 import { normalize, schema } from 'normalizr';
-import { Ajax, Filter, Query, QueryDOM, Utils } from '@labkey/api';
+import {Ajax, AuditBehaviorTypes, Filter, Query, QueryDOM, Utils} from '@labkey/api';
 
 import { ExtendedMap } from '../../public/ExtendedMap';
 
@@ -946,6 +946,37 @@ export function updateRows(options: UpdateRowsOptions): Promise<QueryCommandResp
             },
         });
     });
+}
+
+export function updateRowsByContainer(
+    schemaQuery: SchemaQuery,
+    rows: any[],
+    containerPaths: string[],
+    auditUserComment: string,
+    containerField: string = 'Folder'
+): Promise<Query.SaveRowsResponse | QueryCommandResponse> {
+    // if all rows are in the same container, we can use updateRows (which supports file/attachments)
+    if (containerPaths.length < 2) {
+        return updateRows({
+            containerPath: containerPaths?.[0],
+            auditBehavior: AuditBehaviorTypes.DETAILED,
+            auditUserComment,
+            rows,
+            schemaQuery,
+        });
+    } else {
+        const commands = [];
+        commands.push({
+            command: 'update',
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            rows,
+            auditBehavior: AuditBehaviorTypes.DETAILED,
+            auditUserComment,
+            skipReselectRows: true,
+        });
+        return saveRowsByContainer({ commands }, containerField);
+    }
 }
 
 export interface DeleteRowsOptions extends Omit<Query.QueryRequestOptions, 'schemaName' | 'queryName'> {

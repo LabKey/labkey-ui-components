@@ -46,6 +46,7 @@ import {
     QueryCommandResponse,
     selectDistinctRows,
     updateRows,
+    updateRowsByContainer,
     UpdateRowsOptions,
     getDefaultVisibleColumns,
     saveRowsByContainer,
@@ -131,6 +132,13 @@ export interface QueryAPIWrapper {
     ) => Promise<SelectResponse>;
     setSnapshotSelections: (key: string, ids: string[] | string, containerPath?: string) => Promise<SelectResponse>;
     updateRows: (options: UpdateRowsOptions) => Promise<QueryCommandResponse>;
+    updateRowsByContainer: (
+        schemaQuery: SchemaQuery,
+        rows: any[],
+        containerPaths: string[],
+        auditUserComment: string,
+        containerField?: string
+    ) => Promise<Query.SaveRowsResponse | QueryCommandResponse>;
 }
 
 export class QueryServerAPIWrapper implements QueryAPIWrapper {
@@ -157,6 +165,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     setSelected = setSelected;
     setSnapshotSelections = setSnapshotSelections;
     updateRows = updateRows;
+    updateRowsByContainer = updateRowsByContainer;
     getDefaultVisibleColumns = getDefaultVisibleColumns;
 }
 
@@ -191,6 +200,7 @@ export function getQueryTestAPIWrapper(
         setSelected: mockFn(),
         setSnapshotSelections: mockFn(),
         updateRows: mockFn(),
+        updateRowsByContainer: mockFn(),
         getDefaultVisibleColumns: mockFn(),
         ...overrides,
     };

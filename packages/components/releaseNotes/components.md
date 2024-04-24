@@ -7,9 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Update getOperationNotPermittedMessage to work for both Edit in Grid and Edit in Bulk scenarios
   - BulkUpdateForm getUpdatedData() to include Folder in updated rows, if it exists in originalData
   - Add getSelectedIds(filterIds) to QueryModel
+  - saveRowsByContainer prop for containerField to be optional since it has a default
   - AppendUnitsInput fixes for grid cell rendering and enable/disable in bulk form
-  - Edit in Grid and Bulk lookup fields to use containerPath based on selected row(s)
-  - Add getOperationConfirmationData to ApiWrapper
+  - Edit in Grid and Bulk lookup fields to use containerPath based on selected row(s) (for BulkUpdateForm, disable lookup fields toggle when more than one containerPath in selection)
+  - Add getOperationConfirmationData and getParentTypeDataForLineage to ApiWrapper
 
 ### version 3.39.4
 *Released*: 19 April 2024

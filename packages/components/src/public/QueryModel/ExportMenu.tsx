@@ -53,7 +53,7 @@ interface ExportMenuItemProps {
     supportedTypes: Set<EXPORT_TYPES>;
 }
 
-export const ExportMenuItem: FC<ExportMenuItemProps> = ({ hasSelections, onExport, option, supportedTypes }) => {
+const ExportMenuItem: FC<ExportMenuItemProps> = ({ hasSelections, onExport, option, supportedTypes }) => {
     const onClick = useCallback(() => {
         onExport(option);
     }, [onExport, option]);

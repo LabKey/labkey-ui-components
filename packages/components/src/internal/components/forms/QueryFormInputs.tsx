@@ -62,7 +62,8 @@ export interface QueryFormInputsProps {
     onFieldsEnabledChange?: (numEnabled: number) => void;
     operation?: Operation;
     onSelectChange?: SelectInputChange;
-    preventLookupsEnable?: boolean;
+    pluralNoun?: string;
+    preventCrossFolderEnable?: boolean;
     queryColumns?: ExtendedMap<string, QueryColumn>;
     queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo?: QueryInfo;
@@ -160,7 +161,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             columnFilter,
             containerFilter,
             containerPath,
-            preventLookupsEnable,
+            preventCrossFolderEnable,
+            pluralNoun = 'rows',
             fieldValues,
             fireQSChangeOnInit,
             checkRequiredFields,
@@ -254,8 +256,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         }
                                         containerPath={col.lookup.containerPath ?? containerPath}
                                         toggleDisabledTooltip={
-                                            preventLookupsEnable
-                                                ? "Lookup fields for the selected rows can't be updated because the rows belong to multiple projects."
+                                            preventCrossFolderEnable
+                                                ? `Lookup fields for the selected ${pluralNoun} can't be updated because the ${pluralNoun} belong to multiple projects.`
                                                 : undefined
                                         }
                                         description={col.description}
@@ -330,6 +332,11 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
                                 renderFieldLabel={renderFieldLabel}
+                                toggleDisabledTooltip={
+                                    preventCrossFolderEnable
+                                        ? `File fields for the selected ${pluralNoun} can't be updated because the ${pluralNoun} belong to multiple projects.`
+                                        : undefined
+                                }
                                 showLabel
                             />
                         );

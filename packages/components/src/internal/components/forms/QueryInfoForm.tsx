@@ -107,6 +107,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         isSubmittingText: 'Submitting...',
         maxCount: MAX_EDITABLE_GRID_ROWS,
         creationTypeOptions: [],
+        pluralNoun: 'rows',
     };
 
     constructor(props: QueryInfoFormProps) {
@@ -439,7 +440,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                             onCountChange={this.onCountChange}
                         />
                         {(header || showQuantityHeader) && <hr />}
-                        <QueryFormInputs {...queryFormInputProps} onFieldsEnabledChange={this.onFieldsEnabledChange} />
+                        <QueryFormInputs {...queryFormInputProps} onFieldsEnabledChange={this.onFieldsEnabledChange} pluralNoun={pluralNoun} />
                         {footer}
                         {showErrorsAtBottom && this.renderError()}
                         {!asModal && this.renderButtons()}

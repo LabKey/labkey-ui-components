@@ -245,7 +245,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         // if all selectedIds are from the same containerPath, use that for the lookups via QueryFormInputs > QuerySelect,
         // otherwise, disable lookup fields
         const containerPath = containerPaths?.length === 1 ? containerPaths[0] : undefined;
-        const preventLookupsEnable = containerPaths?.length > 1;
+        const preventCrossFolderEnable = containerPaths?.length > 1;
 
         return (
             <QueryInfoForm
@@ -256,7 +256,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 containerFilter={containerFilter}
                 containerPath={containerPath}
                 disabled={disabled}
-                preventLookupsEnable={preventLookupsEnable}
+                preventCrossFolderEnable={preventCrossFolderEnable}
                 fieldValues={fieldValues}
                 header={this.renderBulkUpdateHeader()}
                 includeCommentField={true}
@@ -274,6 +274,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 showLabelAsterisk
                 submitForEditText="Edit with Grid"
                 submitText={`Update ${capitalizeFirstChar(pluralNoun)}`}
+                pluralNoun={pluralNoun}
                 title={this.getTitle()}
                 onAdditionalFormDataChange={onAdditionalFormDataChange}
             />

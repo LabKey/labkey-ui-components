@@ -39,6 +39,7 @@ interface Props extends DisableableInputProps, WithFormsyProps {
     queryColumn?: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
+    toggleDisabledTooltip?: string;
 }
 
 interface State extends DisableableInputState {
@@ -158,6 +159,7 @@ class FileInputImpl extends DisableableInput<Props, State> {
             queryColumn,
             renderFieldLabel,
             showLabel,
+            toggleDisabledTooltip,
         } = this.props;
         const { data, file, isDisabled, isHover } = this.state;
 
@@ -243,7 +245,8 @@ class FileInputImpl extends DisableableInput<Props, State> {
                         column={queryColumn}
                         isDisabled={isDisabled}
                         toggleProps={{
-                            onClick: this.toggleDisabled,
+                            onClick: toggleDisabledTooltip ? undefined : this.toggleDisabled,
+                            toolTip: toggleDisabledTooltip,
                         }}
                     />
                 )}

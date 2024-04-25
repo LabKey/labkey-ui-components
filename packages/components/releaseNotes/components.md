@@ -9,7 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Add getSelectedIds(filterIds) to QueryModel
   - saveRowsByContainer prop for containerField to be optional since it has a default
   - AppendUnitsInput fixes for grid cell rendering and enable/disable in bulk form
-  - Edit in Grid and Bulk lookup fields to use containerPath based on selected row(s) (for BulkUpdateForm, disable lookup fields toggle when more than one containerPath in selection)
+  - Edit in Grid and Bulk lookup fields to use containerPath based on selected row(s) (for BulkUpdateForm, disable lookup fields and file files toggle when more than one containerPath in selection)
   - Add getOperationConfirmationData and getParentTypeDataForLineage to ApiWrapper
 
 ### version 3.39.4

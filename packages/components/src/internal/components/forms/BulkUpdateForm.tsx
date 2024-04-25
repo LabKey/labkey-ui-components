@@ -243,7 +243,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             isLoadingDataForSelection || !dataForSelection ? undefined : getCommonDataValues(dataForSelection);
 
         // if all selectedIds are from the same containerPath, use that for the lookups via QueryFormInputs > QuerySelect,
-        // otherwise, disable lookup fields
+        // if selections are from multiple containerPaths, disable the lookup and file field inputs
         const containerPath = containerPaths?.length === 1 ? containerPaths[0] : undefined;
         const preventCrossFolderEnable = containerPaths?.length > 1;
 

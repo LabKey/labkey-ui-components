@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.39.6
+*Released*: 25 April 2024
 - Add support for exporting a storage map from terminal storage grids
 
 ### version 3.39.5

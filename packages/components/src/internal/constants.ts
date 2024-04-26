@@ -27,6 +27,7 @@ export const FASTA_EXPORT_CONTROLLER = 'biologics';
 export const GENBANK_EXPORT_CONTROLLER = 'biologics';
 export const BARTENDER_EXPORT_CONTROLLER = 'sampleManager';
 export const SAMPLE_SET_DISPLAY_TEXT = 'Sample Type';
+export const STORAGE_MAP_EXPORT_CONTROLLER = 'inventory';
 
 export const MAX_EDITABLE_GRID_ROWS = 1000;
 export const LOOKUP_DEFAULT_SIZE = 25;
@@ -43,6 +44,7 @@ export enum EXPORT_TYPES {
     FASTA,
     GENBANK,
     LABEL,
+    STORAGE_MAP,
 }
 
 export enum KEYS {

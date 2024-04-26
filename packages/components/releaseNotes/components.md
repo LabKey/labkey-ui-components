@@ -12,6 +12,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Edit in Grid and Bulk lookup fields to use containerPath based on selected row(s) (for BulkUpdateForm, disable lookup fields and file files toggle when more than one containerPath in selection)
   - Add getOperationConfirmationData and getParentTypeDataForLineage to ApiWrapper
 
+### version 3.39.6
+*Released*: 25 April 2024
+- Add support for exporting a storage map from terminal storage grids
+
 ### version 3.39.5
 *Released*: 23 April 2024
 - Include sample property fields for Sample Finder properties card

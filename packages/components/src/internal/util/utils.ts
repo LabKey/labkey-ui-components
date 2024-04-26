@@ -314,7 +314,7 @@ export function getUpdatedData(
     additionalCols?.forEach(col => pkColsLc.add(col.toLowerCase()));
 
     // if the originalData has the container/folder values, keep those as well (i.e. treat it as a primary key)
-    const folderKey = originalData.first().keySeq().find(key => key.toLowerCase() === 'folder');
+    const folderKey = originalData.first().keySeq().find(key => key.toLowerCase() === 'folder' || key.toLowerCase() === 'container');
     if (folderKey) pkColsLc.add(folderKey.toLowerCase());
 
     const updatedData = originalData.map(originalRowMap => {

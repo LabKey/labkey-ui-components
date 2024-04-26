@@ -711,7 +711,7 @@ describe('getUpdatedData', () => {
         });
     });
 
-    test('with additionalPkCols', () => {
+    test('with additionalCols', () => {
         const updatedData = getUpdatedData(
             originalData,
             {
@@ -739,6 +739,100 @@ describe('getUpdatedData', () => {
             Value: 'val',
             Other: 'other3',
             Data: 'data1',
+        });
+    });
+
+    test('with folder', () => {
+        const originalData_ = fromJS({
+            '448': {
+                RowId: {
+                    value: 448,
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                Value: {
+                    value: null,
+                },
+                Data: {
+                    value: 'data1',
+                },
+                'And/Again': {
+                    value: 'again',
+                },
+                Name: {
+                    value: 'S-20190516-9042',
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                Other: {
+                    value: 'other1',
+                },
+                Folder: {
+                    displayValue: 'ProjectA',
+                    value: 'ENTITYID-A',
+                },
+            },
+        });
+
+        const updatedData = getUpdatedData(
+            originalData_,
+            {
+                Value: 'val',
+                And$SAgain: 'again',
+                Other: 'other3',
+            },
+            List<string>(['RowId']),
+        );
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 448,
+            Value: 'val',
+            Other: 'other3',
+            Folder: 'ENTITYID-A',
+        });
+    });
+
+    test('with container', () => {
+        const originalData_ = fromJS({
+            '448': {
+                RowId: {
+                    value: 448,
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                Value: {
+                    value: null,
+                },
+                Data: {
+                    value: 'data1',
+                },
+                'And/Again': {
+                    value: 'again',
+                },
+                Name: {
+                    value: 'S-20190516-9042',
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                Other: {
+                    value: 'other1',
+                },
+                Container: {
+                    displayValue: 'ProjectA',
+                    value: 'ENTITYID-A',
+                },
+            },
+        });
+
+        const updatedData = getUpdatedData(
+            originalData_,
+            {
+                Value: 'val',
+                And$SAgain: 'again',
+                Other: 'other3',
+            },
+            List<string>(['RowId']),
+        );
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 448,
+            Value: 'val',
+            Other: 'other3',
+            Container: 'ENTITYID-A',
         });
     });
 });

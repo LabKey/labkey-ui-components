@@ -39,6 +39,7 @@ import { DatePickerInput } from './input/DatePickerInput';
 import { TextChoiceInput } from './input/TextChoiceInput';
 
 import { getQueryFormLabelFieldName, isQueryFormLabelField } from './utils';
+import {isAllProductFoldersFilteringEnabled} from "../../app/utils";
 
 export interface QueryFormInputsProps {
     allowFieldDisable?: boolean;
@@ -243,6 +244,12 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 ? List(col.lookup.getQueryFilters(operation))
                                 : queryFilters?.[col.fieldKey];
 
+                            // preventCrossFolderEnable will be true for bulk update of a selection from multiple containers,
+                            // however, lookup can be used if there is a defined col.lookup.containerPath or if isAllProductFoldersFilteringEnabled()
+                            const toggleDisabledTooltip = preventCrossFolderEnable && !col.lookup.containerPath && !isAllProductFoldersFilteringEnabled()
+                                ? `Lookup fields for the selected ${pluralNoun.toLowerCase()} can't be updated because the ${pluralNoun.toLowerCase()} belong to multiple projects.`
+                                : undefined;
+
                             return (
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}
@@ -255,11 +262,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                             getContainerFilterForLookups()
                                         }
                                         containerPath={col.lookup.containerPath ?? containerPath}
-                                        toggleDisabledTooltip={
-                                            preventCrossFolderEnable && !col.lookup.containerPath // lookup can be used if there is a defined containerPath
-                                                ? `Lookup fields for the selected ${pluralNoun.toLowerCase()} can't be updated because the ${pluralNoun.toLowerCase()} belong to multiple projects.`
-                                                : undefined
-                                        }
+                                        toggleDisabledTooltip={toggleDisabledTooltip}
                                         description={col.description}
                                         displayColumn={col.lookup.displayColumn}
                                         fireQSChangeOnInit={fireQSChangeOnInit}

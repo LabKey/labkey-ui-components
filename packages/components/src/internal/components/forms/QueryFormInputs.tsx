@@ -256,7 +256,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         }
                                         containerPath={col.lookup.containerPath ?? containerPath}
                                         toggleDisabledTooltip={
-                                            preventCrossFolderEnable
+                                            preventCrossFolderEnable && !col.lookup.containerPath // lookup can be used if there is a defined containerPath
                                                 ? `Lookup fields for the selected ${pluralNoun.toLowerCase()} can't be updated because the ${pluralNoun.toLowerCase()} belong to multiple projects.`
                                                 : undefined
                                         }

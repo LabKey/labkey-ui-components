@@ -134,7 +134,8 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         let conflictKeys = new Set<string>();
         data.forEach((rowData, id) => {
             if (rowData) {
-                const containerPath = caseInsensitive(rowData.toJS(), 'Folder');
+                const containerPath =
+                    caseInsensitive(rowData.toJS(), 'Folder') ?? caseInsensitive(rowData.toJS(), 'Container');
                 if (containerPath?.value) containerPaths.add(containerPath.value);
 
                 if (displayValueFields) {

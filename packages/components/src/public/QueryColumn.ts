@@ -423,7 +423,7 @@ export class QueryColumn implements IQueryColumn {
     resolveFieldKey(): string {
         let fieldKey: string;
 
-        if (this.isLookup()) {
+        if (this.isPublicLookup()) {
             fieldKey = [this.fieldKey, this.lookup.displayColumn.replace(/\//g, '$S')].join('/');
         } else {
             fieldKey = this.fieldKey;

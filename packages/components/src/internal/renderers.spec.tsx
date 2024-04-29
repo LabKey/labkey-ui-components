@@ -53,6 +53,12 @@ describe('isFilterColumnNameMatch', () => {
                 lkFilter,
                 new QueryColumn({ fieldKey: 'Column', lookup: { displayColumn: 'Lookup' } })
             )
+        ).toBeFalsy();
+        expect(
+            isFilterColumnNameMatch(
+                lkFilter,
+                new QueryColumn({ fieldKey: 'Column', lookup: { displayColumn: 'Lookup', isPublic: true } })
+            )
         ).toBeTruthy();
     });
 });

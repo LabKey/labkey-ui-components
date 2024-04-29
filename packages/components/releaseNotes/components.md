@@ -1,9 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.40.1
+### version 3.40.2
 *Released*: 29 April 2024
 - Issue 50236: Sample Manager: customize grid to add "Inputs/All" fields results in error page
+
+### version 3.40.1
+*Released*: 29 April 2024
+- No longer include `tif` files in the `isImage` check
+  - Most browsers cannot render `tif` files
+  - Fixes Issue 49852
 
 ### version 3.40.0
 *Released*: 29 April 2024

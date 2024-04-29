@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.40.0
+### version 3.40.1
 *Released*: 29 April 2024
 - No longer include `tif` files in the `isImage` check
   - Most browsers cannot render `tif` files

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.40.0
+*Released*: 29 April 2024
 - Support cross-folder "Edit in Bulk"
   - Update getOperationNotPermittedMessage to work for both Edit in Grid and Edit in Bulk scenarios
   - BulkUpdateForm getUpdatedData() to include Folder in updated rows, if it exists in originalData

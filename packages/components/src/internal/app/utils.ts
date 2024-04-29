@@ -158,10 +158,6 @@ export function isProductProjectsEnabled(moduleContext?: ModuleContext): boolean
     return resolveModuleContext(moduleContext)?.query?.isProductProjectsEnabled === true;
 }
 
-export function isCrossProjectImportEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.query?.isCrossProjectImportEnabled === true;
-}
-
 export function hasProductProjects(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.query?.hasProductProjects === true;
 }

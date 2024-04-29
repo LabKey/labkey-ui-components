@@ -32,28 +32,30 @@ import { formatDate, formatDateTime } from '../../util/Date';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
+import { getAppHomeFolderPath } from '../../app/utils';
+
+import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
 import { QueryInfoQuantity } from './QueryInfoQuantity';
 import { QueryFormInputs, QueryFormInputsProps } from './QueryFormInputs';
 import { getFieldEnabledFieldName } from './utils';
 import { CommentTextArea } from './input/CommentTextArea';
-import { getAppHomeFolderPath } from '../../app/utils';
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
 export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFieldsEnabledChange'> {
-    api?: ComponentsAPIWrapper,
+    api?: ComponentsAPIWrapper;
     asModal?: boolean;
     canSubmitNotDirty?: boolean;
     cancelText?: string;
     countText?: string;
-    disabled?: boolean;
     creationTypeOptions?: SampleCreationTypeModel[];
+    disabled?: boolean;
     errorCallback?: (error: any) => void;
     errorMessagePrefix?: string;
     footer?: ReactNode;
     header?: ReactNode;
     hideButtons?: boolean;
-    includeCountField?: boolean;
     includeCommentField?: boolean;
+    includeCountField?: boolean;
     isLoading?: boolean;
     isSubmittedText?: string;
     isSubmittingText?: string;
@@ -72,22 +74,22 @@ export interface QueryInfoFormProps extends Omit<QueryFormInputsProps, 'onFields
     queryInfo: QueryInfo; // for filtering lookup values in the form
     showErrorsAtBottom?: boolean;
     singularNoun?: string;
+    stickyButtons?: boolean;
     submitForEditText?: string;
     submitText?: string;
-    stickyButtons?: boolean;
     title?: string;
 }
 
 interface State {
     canSubmit: boolean;
     comment: string;
-    requiresUserComment: boolean;
     count: number;
     errorMsg: string;
     fieldEnabledCount: number;
     isDirty: boolean;
     isSubmitted: boolean;
     isSubmitting: boolean;
+    requiresUserComment: boolean;
     submitForEdit: boolean;
 }
 
@@ -134,12 +136,11 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
         if (includeCommentField) {
             (async () => {
                 try {
-                    const {container} = getServerContext();
+                    const { container } = getServerContext();
                     const response = await api.folder.getAuditSettings(getAppHomeFolderPath(new Container(container)));
-                    this.setState({requiresUserComment: !!response?.requireUserComments});
-                }
-                catch {
-                    this.setState({requiresUserComment: false});
+                    this.setState({ requiresUserComment: !!response?.requireUserComments });
+                } catch {
+                    this.setState({ requiresUserComment: false });
                 }
             })();
         }
@@ -292,7 +293,7 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
 
     onCommentChange = (comment: string): void => {
         this.setState({ comment });
-    }
+    };
 
     onFieldsEnabledChange = (fieldEnabledCount: number): void => {
         this.setState({ fieldEnabledCount });
@@ -317,7 +318,17 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
             hideButtons,
         } = this.props;
 
-        const { count, comment, canSubmit, fieldEnabledCount, isSubmitting, isSubmitted, submitForEdit, isDirty, requiresUserComment } = this.state;
+        const {
+            count,
+            comment,
+            canSubmit,
+            fieldEnabledCount,
+            isSubmitting,
+            isSubmitted,
+            submitForEdit,
+            isDirty,
+            requiresUserComment,
+        } = this.state;
 
         if (hideButtons) return null;
 
@@ -440,7 +451,11 @@ export class QueryInfoForm extends PureComponent<QueryInfoFormProps, State> {
                             onCountChange={this.onCountChange}
                         />
                         {(header || showQuantityHeader) && <hr />}
-                        <QueryFormInputs {...queryFormInputProps} onFieldsEnabledChange={this.onFieldsEnabledChange} pluralNoun={pluralNoun} />
+                        <QueryFormInputs
+                            {...queryFormInputProps}
+                            onFieldsEnabledChange={this.onFieldsEnabledChange}
+                            pluralNoun={pluralNoun}
+                        />
                         {footer}
                         {showErrorsAtBottom && this.renderError()}
                         {!asModal && this.renderButtons()}

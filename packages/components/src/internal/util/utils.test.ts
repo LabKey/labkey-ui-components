@@ -779,7 +779,7 @@ describe('getUpdatedData', () => {
                 And$SAgain: 'again',
                 Other: 'other3',
             },
-            List<string>(['RowId']),
+            List<string>(['RowId'])
         );
         expect(updatedData[0]).toStrictEqual({
             RowId: 448,
@@ -826,7 +826,7 @@ describe('getUpdatedData', () => {
                 And$SAgain: 'again',
                 Other: 'other3',
             },
-            List<string>(['RowId']),
+            List<string>(['RowId'])
         );
         expect(updatedData[0]).toStrictEqual({
             RowId: 448,

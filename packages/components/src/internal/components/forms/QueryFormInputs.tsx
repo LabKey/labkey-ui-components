@@ -27,6 +27,8 @@ import { caseInsensitive } from '../../util/utils';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
+import { isAllProductFoldersFilteringEnabled } from '../../app/utils';
+
 import { FormsyInput } from './input/FormsyReactComponents';
 import { resolveInputRenderer } from './input/InputRenderFactory';
 import { QuerySelect } from './QuerySelect';
@@ -39,7 +41,6 @@ import { DatePickerInput } from './input/DatePickerInput';
 import { TextChoiceInput } from './input/TextChoiceInput';
 
 import { getQueryFormLabelFieldName, isQueryFormLabelField } from './utils';
-import {isAllProductFoldersFilteringEnabled} from "../../app/utils";
 
 export interface QueryFormInputsProps {
     allowFieldDisable?: boolean;
@@ -49,7 +50,8 @@ export interface QueryFormInputsProps {
     columnFilter?: (col?: QueryColumn) => boolean;
     // this can be used when you want to keep certain columns always filtered out (e.g., aliquot- or sample-only columns)
     isIncludedColumn?: (col: QueryColumn) => boolean;
-    componentKey?: string; // unique key to add to QuerySelect to avoid duplication w/ transpose
+    componentKey?: string;
+    // unique key to add to QuerySelect to avoid duplication w/ transpose
     /** A container filter that will be applied to all query-based inputs in this form */
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
@@ -246,9 +248,12 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
 
                             // preventCrossFolderEnable will be true for bulk update of a selection from multiple containers,
                             // however, lookup can be used if there is a defined col.lookup.containerPath or if isAllProductFoldersFilteringEnabled()
-                            const toggleDisabledTooltip = preventCrossFolderEnable && !col.lookup.containerPath && !isAllProductFoldersFilteringEnabled()
-                                ? `Lookup fields for the selected ${pluralNoun.toLowerCase()} can't be updated because the ${pluralNoun.toLowerCase()} belong to multiple projects.`
-                                : undefined;
+                            const toggleDisabledTooltip =
+                                preventCrossFolderEnable &&
+                                !col.lookup.containerPath &&
+                                !isAllProductFoldersFilteringEnabled()
+                                    ? `Lookup fields for the selected ${pluralNoun.toLowerCase()} can't be updated because the ${pluralNoun.toLowerCase()} belong to multiple projects.`
+                                    : undefined;
 
                             return (
                                 <React.Fragment key={i}>

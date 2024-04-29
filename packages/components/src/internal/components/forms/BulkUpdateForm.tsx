@@ -9,7 +9,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { getSelectedData } from '../../actions';
 
-import {capitalizeFirstChar, caseInsensitive, getCommonDataValues, getUpdatedData} from '../../util/utils';
+import { capitalizeFirstChar, caseInsensitive, getCommonDataValues, getUpdatedData } from '../../util/utils';
 
 import { QueryInfoForm } from './QueryInfoForm';
 

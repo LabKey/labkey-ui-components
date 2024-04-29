@@ -16,7 +16,7 @@
 import { fromJS, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { immerable } from 'immer';
 import { normalize, schema } from 'normalizr';
-import {Ajax, AuditBehaviorTypes, Filter, Query, QueryDOM, Utils} from '@labkey/api';
+import { Ajax, AuditBehaviorTypes, Filter, Query, QueryDOM, Utils } from '@labkey/api';
 
 import { ExtendedMap } from '../../public/ExtendedMap';
 

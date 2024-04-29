@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback } from 'react';
 import classNames from 'classnames';
 
 import { FormsyInput } from '../forms/input/FormsyReactComponents';
-import { LabelHelpTip } from "../base/LabelHelpTip";
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface Props {
     active: string;

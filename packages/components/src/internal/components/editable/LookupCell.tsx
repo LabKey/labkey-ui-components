@@ -30,11 +30,12 @@ import { QuerySelect } from '../forms/QuerySelect';
 
 import { getQueryColumnRenderers } from '../../global';
 
+import { getValueFromRow } from '../../util/utils';
+
 import { MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { ValueDescriptor } from './models';
 
 import { getLookupFilters, gridCellSelectInputProps, onCellSelectChange } from './utils';
-import { getValueFromRow } from "../../util/utils";
 
 export interface LookupCellProps {
     col: QueryColumn;

@@ -353,8 +353,14 @@ describe('OperationConfirmationData', () => {
     });
 
     test('getContainerPaths', () => {
-        expect(new OperationConfirmationData({
-            containers: [{ id: 'a', permitted: true }, { id: 'b', permitted: false }, { id: 'c', permitted: true }]
-        }).getContainerPaths()).toEqual(['a', 'c']);
+        expect(
+            new OperationConfirmationData({
+                containers: [
+                    { id: 'a', permitted: true },
+                    { id: 'b', permitted: false },
+                    { id: 'c', permitted: true },
+                ],
+            }).getContainerPaths()
+        ).toEqual(['a', 'c']);
     });
 });

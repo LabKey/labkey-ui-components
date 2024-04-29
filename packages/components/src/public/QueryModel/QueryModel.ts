@@ -603,10 +603,9 @@ export class QueryModel {
         if (excludeViewFilters) {
             // Issue 49634: LKSM: Saving search filters in default grid view has odd behavior
             const searchViewFilters = this.viewFilters.filter(f => f.getColumnName() === '*');
-            return [...baseFilters, ...searchViewFilters]
+            return [...baseFilters, ...searchViewFilters];
         }
         return [...baseFilters, ...this.viewFilters];
-
     }
 
     get modelFilters(): Filter.IFilter[] {

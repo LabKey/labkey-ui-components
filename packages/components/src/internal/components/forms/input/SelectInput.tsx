@@ -222,6 +222,7 @@ export interface SelectInputProps extends WithFormsyProps {
     showIndicatorSeparator?: boolean;
     showLabel?: boolean;
     tabSelectsValue?: boolean;
+    toggleDisabledTooltip?: string;
     value?: any;
     valueKey?: string;
     valueRenderer?: any;
@@ -310,7 +311,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         this._isMounted = false;
     }
 
-    toggleDisabled = (): void => {
+    onToggleChange = (): void => {
         this.setState(
             state => ({
                 isDisabled: !state.isDisabled,
@@ -473,6 +474,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             addLabelAsterisk,
             renderFieldLabel,
             helpTipRenderer,
+            toggleDisabledTooltip,
         } = this.props;
         const { isDisabled } = this.state;
 
@@ -500,14 +502,15 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
                             addLabelAsterisk,
                             isFormsy: false,
                             required,
-                            labelClass: !allowDisable ? this.props.labelClass : undefined,
+                            labelClass: !allowDisable ? labelClass : undefined,
                             helpTipRenderer,
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}
                         isDisabled={isDisabled}
                         toggleProps={{
-                            onClick: this.toggleDisabled,
+                            onClick: toggleDisabledTooltip ? undefined : this.onToggleChange,
+                            toolTip: toggleDisabledTooltip,
                         }}
                     />
                 );

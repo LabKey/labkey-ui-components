@@ -235,6 +235,20 @@ describe('QueryModel', () => {
         expect(model.getSelectedIdsAsInts()[2]).toBe(2);
     });
 
+    test('getSelectedIds', () => {
+        let model = new QueryModel({ schemaQuery: SCHEMA_QUERY });
+        expect(model.getSelectedIds()).toBe(undefined);
+        model = model.mutate({ selections: new Set([]) });
+        expect(model.getSelectedIds().length).toBe(0);
+        model = model.mutate({ selections: new Set(['1', '3', '2']) });
+        expect(model.getSelectedIds().length).toBe(3);
+        expect(model.getSelectedIds()[0]).toBe('1');
+        expect(model.getSelectedIds()[1]).toBe('3');
+        expect(model.getSelectedIds()[2]).toBe('2');
+        expect(model.getSelectedIds([2, 3]).length).toBe(1);
+        expect(model.getSelectedIds()[0]).toBe('1');
+    });
+
     test('filters', () => {
         const viewName = 'TEST_VIEW';
         const view = ViewInfo.fromJson({

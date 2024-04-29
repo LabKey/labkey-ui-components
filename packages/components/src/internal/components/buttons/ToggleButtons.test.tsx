@@ -105,6 +105,7 @@ describe('ToggleIcon', () => {
 
         userEvent.click(document.getElementsByTagName('i')[0]);
         expect(onClickFn).toHaveBeenCalledTimes(1);
+        expect(onClickFn).toHaveBeenCalledWith('on');
     });
 
     test('active first item', () => {
@@ -124,5 +125,24 @@ describe('ToggleIcon', () => {
 
         expect(document.getElementsByClassName('toggle').length).toBe(1);
         expect(document.getElementsByClassName('test-class').length).toBe(1);
+    });
+
+    test('disabled', () => {
+        const onClickFn = jest.fn();
+        render(<ToggleIcon active="off" disabled onClick={onClickFn} />);
+
+        userEvent.click(document.getElementsByTagName('i')[0]);
+        expect(onClickFn).toHaveBeenCalledTimes(0);
+    });
+
+    test('tooltip', () => {
+        const onClickFn = jest.fn();
+        render(<ToggleIcon active="off" toolTip="test tooltip" onClick={onClickFn} />);
+
+        expect(document.getElementsByClassName('overlay-trigger').length).toBe(1);
+
+        userEvent.click(document.getElementsByTagName('i')[0]);
+        expect(onClickFn).toHaveBeenCalledTimes(1);
+        expect(onClickFn).toHaveBeenCalledWith('on');
     });
 });

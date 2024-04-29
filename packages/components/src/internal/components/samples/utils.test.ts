@@ -281,10 +281,10 @@ describe('getOperationNotPermittedMessage', () => {
 
     test('with notPermitted', () => {
         expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [1] }))).toBe(
-            "1 of the selected samples isn't shown because you don't have permissions to edit in that project."
+            'The selection includes 1 sample that you do not have permission to edit. Updates will only be made to the samples you have edit permission for.'
         );
         expect(getOperationNotPermittedMessage(new OperationConfirmationData({ notPermitted: [1, 2] }))).toBe(
-            "2 of the selected samples aren't shown because you don't have permissions to edit in that project."
+            'The selection includes 2 samples that you do not have permission to edit. Updates will only be made to the samples you have edit permission for.'
         );
     });
 });

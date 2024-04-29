@@ -200,10 +200,15 @@ export function getOperationNotAllowedMessage(
     return null;
 }
 
-export function getOperationNotPermittedMessage(statusData: OperationConfirmationData, nounPlural = 'samples'): string {
+export function getOperationNotPermittedMessage(
+    statusData: OperationConfirmationData,
+    nounSingular = 'sample',
+    nounPlural = 'samples'
+): string {
     if (statusData && statusData.notPermitted?.length > 0) {
         const notPermittedCount = statusData.notPermitted.length;
-        return `${notPermittedCount.toLocaleString()} of the selected ${nounPlural.toLowerCase()} ${notPermittedCount > 1 ? "aren't" : "isn't"} shown because you don't have permissions to edit in that project.`;
+        const noun = notPermittedCount === 1 ? nounSingular : nounPlural;
+        return `The selection includes ${notPermittedCount.toLocaleString()} ${noun.toLowerCase()} that you do not have permission to edit. Updates will only be made to the ${nounPlural.toLowerCase()} you have edit permission for.`;
     }
     return null;
 }

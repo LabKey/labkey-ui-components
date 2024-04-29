@@ -531,10 +531,17 @@ export interface EntityDataType {
     uniqueFieldKey: string;
 }
 
+interface OperationContainerInfo {
+    id: string;
+    path: string;
+    permitted: boolean;
+}
+
 export class OperationConfirmationData {
     [immerable]: true;
 
     readonly allowed: any[];
+    readonly containers: OperationContainerInfo[];
     readonly notAllowed: any[];
     readonly notPermitted: any[]; // could intersect both allowed and notAllowed
     readonly idMap: Record<number, boolean>;
@@ -605,6 +612,10 @@ export class OperationConfirmationData {
 
     get anyNotActionable(): boolean {
         return this.totalNotActionable > 0;
+    }
+
+    getContainerPaths(permittedOnly = true): string[] {
+        return this.containers?.filter(c => !permittedOnly || c.permitted).map(c => c.id) ?? [];
     }
 }
 

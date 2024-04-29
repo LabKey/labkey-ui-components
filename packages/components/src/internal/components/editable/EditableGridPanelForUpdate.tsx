@@ -88,8 +88,8 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
 
     const hasValidUserComment = comment?.trim()?.length > 0;
     const notPermittedText = useMemo(
-        () => getOperationNotPermittedMessage(editStatusData, pluralNoun),
-        [editStatusData, pluralNoun]
+        () => getOperationNotPermittedMessage(editStatusData, singularNoun, pluralNoun),
+        [editStatusData, singularNoun, pluralNoun]
     );
 
     useEffect(() => {

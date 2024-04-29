@@ -3,6 +3,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 3.40.0
 *Released*: 29 April 2024
+- No longer include `tif` files in the `isImage` check
+  - Most browsers cannot render `tif` files
+  - Fixes Issue 49852
+
+### version 3.40.0
+*Released*: 29 April 2024
 - Support cross-folder "Edit in Bulk"
   - Update getOperationNotPermittedMessage to work for both Edit in Grid and Edit in Bulk scenarios
   - BulkUpdateForm getUpdatedData() to include Folder in updated rows, if it exists in originalData

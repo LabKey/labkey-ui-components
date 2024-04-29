@@ -9,7 +9,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { getSelectedData } from '../../actions';
 
-import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
+import { capitalizeFirstChar, caseInsensitive, getCommonDataValues, getUpdatedData } from '../../util/utils';
 
 import { QueryInfoForm } from './QueryInfoForm';
 
@@ -35,7 +35,7 @@ interface Props {
     queryInfo: QueryInfo;
     readOnlyColumns?: string[];
     requiredColumns?: string[];
-    selectedIds: Set<string>;
+    selectedIds: string[];
     singularNoun?: string;
     // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
     sortString?: string;
@@ -46,10 +46,10 @@ interface Props {
 }
 
 interface State {
+    containerPaths: string[];
     dataForSelection: Map<string, any>;
     dataIdsForSelection: List<any>;
     displayFieldUpdates: any;
-    errorMsg: string;
     isLoadingDataForSelection: boolean;
     originalDataForSelection: Map<string, any>;
 }
@@ -65,11 +65,11 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         super(props);
 
         this.state = {
+            containerPaths: undefined,
             originalDataForSelection: undefined,
             dataForSelection: undefined,
             displayFieldUpdates: {},
             dataIdsForSelection: undefined,
-            errorMsg: undefined,
             isLoadingDataForSelection: true,
         };
     }
@@ -93,14 +93,13 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 : undefined;
         let columnString = columns?.map(c => c.fieldKey).join(',');
         if (requiredColumns) columnString = `${columnString ? columnString + ',' : ''}${requiredColumns.join(',')}`;
-
         const { schemaName, name } = queryInfo;
 
         try {
             const { data, dataIds } = await getSelectedData(
                 schemaName,
                 name,
-                Array.from(selectedIds),
+                selectedIds,
                 columnString,
                 sortString,
                 undefined,
@@ -108,6 +107,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             );
             const mappedData = this.mapDataForDisplayFields(data);
             this.setState({
+                containerPaths: mappedData.containerPaths,
                 originalDataForSelection: data,
                 dataForSelection: mappedData.data,
                 displayFieldUpdates: mappedData.bulkUpdates,
@@ -121,46 +121,59 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         }
     };
 
-    mapDataForDisplayFields(data: Map<string, any>): { bulkUpdates: OrderedMap<string, any>; data: Map<string, any> } {
+    mapDataForDisplayFields(data: Map<string, any>): {
+        bulkUpdates: OrderedMap<string, any>;
+        containerPaths?: string[];
+        data: Map<string, any>;
+    } {
         const { displayValueFields } = this.props;
         let updates = Map<string, any>();
         let bulkUpdates = OrderedMap<string, any>();
-
-        if (!displayValueFields) return { data, bulkUpdates };
+        const containerPaths = new Set<string>();
 
         let conflictKeys = new Set<string>();
         data.forEach((rowData, id) => {
             if (rowData) {
-                let updatedRow = Map<string, any>();
-                rowData.forEach((field, key) => {
-                    if (displayValueFields.includes(key)) {
-                        const valuesDiffer =
-                            field.has('displayValue') && field.get('value') !== field.get('displayValue');
-                        let comparisonValue = field.get('displayValue') ?? field.get('value');
-                        if (comparisonValue) comparisonValue += ''; // force to string
-                        if (!conflictKeys.has(key)) {
-                            if (!bulkUpdates.has(key)) {
-                                bulkUpdates = bulkUpdates.set(key, comparisonValue);
-                            } else if (bulkUpdates.get(key) !== comparisonValue) {
-                                bulkUpdates = bulkUpdates.remove(key);
-                                conflictKeys = conflictKeys.add(key);
+                const containerPath =
+                    caseInsensitive(rowData.toJS(), 'Folder') ?? caseInsensitive(rowData.toJS(), 'Container');
+                if (containerPath?.value) containerPaths.add(containerPath.value);
+
+                if (displayValueFields) {
+                    let updatedRow = Map<string, any>();
+                    rowData.forEach((field, key) => {
+                        if (displayValueFields.includes(key)) {
+                            const valuesDiffer =
+                                field.has('displayValue') && field.get('value') !== field.get('displayValue');
+                            let comparisonValue = field.get('displayValue') ?? field.get('value');
+                            if (comparisonValue) comparisonValue += ''; // force to string
+                            if (!conflictKeys.has(key)) {
+                                if (!bulkUpdates.has(key)) {
+                                    bulkUpdates = bulkUpdates.set(key, comparisonValue);
+                                } else if (bulkUpdates.get(key) !== comparisonValue) {
+                                    bulkUpdates = bulkUpdates.remove(key);
+                                    conflictKeys = conflictKeys.add(key);
+                                }
+                            }
+                            if (valuesDiffer) {
+                                field = field.set('value', comparisonValue);
                             }
                         }
-                        if (valuesDiffer) {
-                            field = field.set('value', comparisonValue);
-                        }
+                        updatedRow = updatedRow.set(key, field);
+                    });
+                    if (!updatedRow.isEmpty()) {
+                        updates = updates.set(id, updatedRow);
                     }
-                    updatedRow = updatedRow.set(key, field);
-                });
-                if (!updatedRow.isEmpty()) updates = updates.set(id, updatedRow);
+                }
             }
         });
-        if (!updates.isEmpty()) return { data: data.merge(updates), bulkUpdates };
-        return { data, bulkUpdates };
+        if (!updates.isEmpty()) {
+            return { data: data.merge(updates), bulkUpdates, containerPaths: Array.from(containerPaths) };
+        }
+        return { data, bulkUpdates, containerPaths: Array.from(containerPaths) };
     }
 
     getSelectionCount(): number {
-        return this.props.selectedIds.size;
+        return this.props.selectedIds.length;
     }
 
     getSelectionNoun(): string {
@@ -216,7 +229,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     }
 
     render() {
-        const { isLoadingDataForSelection, dataForSelection } = this.state;
+        const { isLoadingDataForSelection, dataForSelection, containerPaths } = this.state;
         const {
             containerFilter,
             onCancel,
@@ -230,6 +243,11 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         const fieldValues =
             isLoadingDataForSelection || !dataForSelection ? undefined : getCommonDataValues(dataForSelection);
 
+        // if all selectedIds are from the same containerPath, use that for the lookups via QueryFormInputs > QuerySelect,
+        // if selections are from multiple containerPaths, disable the lookup and file field inputs
+        const containerPath = containerPaths?.length === 1 ? containerPaths[0] : undefined;
+        const preventCrossFolderEnable = containerPaths?.length > 1;
+
         return (
             <QueryInfoForm
                 allowFieldDisable
@@ -237,7 +255,9 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 checkRequiredFields={false}
                 columnFilter={this.columnFilter}
                 containerFilter={containerFilter}
+                containerPath={containerPath}
                 disabled={disabled}
+                preventCrossFolderEnable={preventCrossFolderEnable}
                 fieldValues={fieldValues}
                 header={this.renderBulkUpdateHeader()}
                 includeCommentField={true}
@@ -255,6 +275,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 showLabelAsterisk
                 submitForEditText="Edit with Grid"
                 submitText={`Update ${capitalizeFirstChar(pluralNoun)}`}
+                pluralNoun={pluralNoun}
                 title={this.getTitle()}
                 onAdditionalFormDataChange={onAdditionalFormDataChange}
             />

@@ -2,6 +2,7 @@ import React, { FC, memo, useCallback } from 'react';
 import classNames from 'classnames';
 
 import { FormsyInput } from '../forms/input/FormsyReactComponents';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface Props {
     active: string;
@@ -16,6 +17,7 @@ interface Props {
     inputFieldName?: string;
     onClick: (selected: string) => void;
     second?: string;
+    toolTip?: string;
 }
 
 export const ToggleButtons: FC<Props> = memo(props => {
@@ -71,17 +73,34 @@ export const ToggleButtons: FC<Props> = memo(props => {
 });
 
 export const ToggleIcon: FC<Props> = memo(props => {
-    const { first = 'on', second = 'off', onClick, active = 'off', className, inputFieldName, id } = props;
+    const {
+        first = 'on',
+        second = 'off',
+        onClick,
+        active = 'off',
+        className,
+        inputFieldName,
+        id,
+        disabled = false,
+        toolTip,
+    } = props;
     const firstActive = active === first;
     const secondActive = active === second;
 
     const firstBtnClick = useCallback(() => {
-        if (secondActive) onClick(first);
-    }, [first, secondActive, onClick]);
+        if (secondActive && !disabled) onClick(first);
+    }, [first, secondActive, onClick, disabled]);
 
     const secondBtnClick = useCallback(() => {
-        if (firstActive) onClick(second);
-    }, [second, firstActive, onClick]);
+        if (firstActive && !disabled) onClick(second);
+    }, [second, firstActive, onClick, disabled]);
+
+    const body = (
+        <>
+            {firstActive && <i className="fa fa-toggle-on" onClick={secondBtnClick} />}
+            {secondActive && <i className="fa fa-toggle-off" onClick={firstBtnClick} />}
+        </>
+    );
 
     return (
         <>
@@ -92,12 +111,13 @@ export const ToggleIcon: FC<Props> = memo(props => {
                 className={classNames('toggle', 'toggle-group-icon', 'btn-group', {
                     'toggle-on': firstActive,
                     'toggle-off': secondActive,
+                    disabled,
                     [className]: !!className,
                 })}
                 id={id}
             >
-                {firstActive && <i className="fa fa-toggle-on" onClick={secondBtnClick} />}
-                {secondActive && <i className="fa fa-toggle-off" onClick={firstBtnClick} />}
+                {toolTip && <LabelHelpTip iconComponent={body}>{toolTip}</LabelHelpTip>}
+                {!toolTip && body}
             </div>
         </>
     );

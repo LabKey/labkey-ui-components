@@ -61,14 +61,13 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
 
     fetch(gridModel: QueryModel): Promise<GridResponse> {
         return new Promise((resolve, reject) => {
-            const { queryName, queryParameters, schemaName, selections, sortString, viewName } = gridModel;
-
-            const selections_ = [...selections].filter(s => this.idsNotPermitted.indexOf(parseInt(s, 10)) === -1);
+            const { queryName, queryParameters, schemaName, sortString, viewName } = gridModel;
+            const selectedIds = gridModel.getSelectedIds(this.idsNotPermitted);
 
             return getSelectedData(
                 schemaName,
                 queryName,
-                selections_,
+                selectedIds,
                 gridModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true),
                 sortString,
                 queryParameters,

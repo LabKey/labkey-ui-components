@@ -5,6 +5,23 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - TODO
 
+### version 3.40.1
+*Released*: 29 April 2024
+- No longer include `tif` files in the `isImage` check
+  - Most browsers cannot render `tif` files
+  - Fixes Issue 49852
+
+### version 3.40.0
+*Released*: 29 April 2024
+- Support cross-folder "Edit in Bulk"
+  - Update getOperationNotPermittedMessage to work for both Edit in Grid and Edit in Bulk scenarios
+  - BulkUpdateForm getUpdatedData() to include Folder in updated rows, if it exists in originalData
+  - Add getSelectedIds(filterIds) to QueryModel
+  - saveRowsByContainer prop for containerField to be optional since it has a default
+  - AppendUnitsInput fixes for grid cell rendering and enable/disable in bulk form
+  - Edit in Grid and Bulk lookup fields to use containerPath based on selected row(s) (for BulkUpdateForm, disable lookup fields and file files toggle when more than one containerPath in selection)
+  - Add getOperationConfirmationData and getParentTypeDataForLineage to ApiWrapper
+
 ### version 3.39.6
 *Released*: 25 April 2024
 - Add support for exporting a storage map from terminal storage grids

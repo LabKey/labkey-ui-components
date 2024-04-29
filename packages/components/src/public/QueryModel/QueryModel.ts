@@ -603,10 +603,9 @@ export class QueryModel {
         if (excludeViewFilters) {
             // Issue 49634: LKSM: Saving search filters in default grid view has odd behavior
             const searchViewFilters = this.viewFilters.filter(f => f.getColumnName() === '*');
-            return [...baseFilters, ...searchViewFilters]
+            return [...baseFilters, ...searchViewFilters];
         }
         return [...baseFilters, ...this.viewFilters];
-
     }
 
     get modelFilters(): Filter.IFilter[] {
@@ -952,6 +951,16 @@ export class QueryModel {
     getSelectedIdsAsInts(): number[] {
         if (this.selections) {
             return Array.from(this.selections).map(id => parseInt(id));
+        }
+        return undefined;
+    }
+
+    /**
+     * Return the selection ids as an optionally filtered, array.
+     */
+    getSelectedIds(filterIds: number[] = []): string[] {
+        if (this.selections) {
+            return Array.from(this.selections).filter(s => filterIds.indexOf(parseInt(s, 10)) === -1);
         }
         return undefined;
     }

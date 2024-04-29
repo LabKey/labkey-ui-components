@@ -300,18 +300,26 @@ function isSameWithStringCompare(value1: any, value2: any): boolean {
  * @param originalData a map from an id field to a Map from fieldKeys to an object with a 'value' field
  * @param updatedValues an object mapping fieldKeys to values that are being updated
  * @param primaryKeys the list of primary fieldKey names
- * @param additionalPkCols additional array of primary fieldKey names
+ * @param additionalCols additional array of fieldKeys to include
  */
 export function getUpdatedData(
     originalData: Map<string, any>,
     updatedValues: any,
     primaryKeys: string[],
-    additionalPkCols?: Set<string>
+    additionalCols?: Set<string>
 ): any[] {
     const updateValuesMap = Map<any, any>(updatedValues);
     const pkColsLc = new Set<string>();
     primaryKeys.forEach(key => pkColsLc.add(key.toLowerCase()));
-    additionalPkCols?.forEach(col => pkColsLc.add(col.toLowerCase()));
+    additionalCols?.forEach(col => pkColsLc.add(col.toLowerCase()));
+
+    // if the originalData has the container/folder values, keep those as well (i.e. treat it as a primary key)
+    const folderKey = originalData
+        .first()
+        .keySeq()
+        .find(key => key.toLowerCase() === 'folder' || key.toLowerCase() === 'container');
+    if (folderKey) pkColsLc.add(folderKey.toLowerCase());
+
     const updatedData = originalData.map(originalRowMap => {
         return originalRowMap.reduce((m, fieldValueMap, key) => {
             // Issue 42672: The original data has keys that are names or captions for the columns.  We need to use
@@ -464,7 +472,8 @@ function getFileExtensionType(value: string): string {
 }
 
 export function isImage(value): boolean {
-    const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'ico', 'png', 'svg', 'tif'];
+    // Note: don't add tif, or tiff here, most browsers will not render them (see Issue 49852)
+    const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'ico', 'png', 'svg'];
     const extensionType = getFileExtensionType(value);
     return validImageExtensions.indexOf(extensionType) > -1;
 }
@@ -707,4 +716,16 @@ export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseIn
     const bStr = ignoreOrder ? b.sort().join(';') : b.join(';');
 
     return caseInsensitive ? aStr.toLowerCase() === bStr.toLowerCase() : aStr === bStr;
+}
+
+export function getValueFromRow(row: Record<string, any>, col: string): string | number {
+    if (!row) return undefined;
+
+    const val = caseInsensitive(row, col);
+    if (Utils.isArray(val)) {
+        return val[0]?.value;
+    } else if (Utils.isObject(val)) {
+        return val?.value;
+    }
+    return val;
 }

@@ -18,7 +18,7 @@ import { List } from 'immutable';
 import { SCHEMAS } from '../../schemas';
 import { QueryColumn } from '../../../public/QueryColumn';
 
-import { EntityIdCreationModel, EntityParentType, EntityTypeOption } from './models';
+import { EntityIdCreationModel, EntityParentType, EntityTypeOption, OperationConfirmationData } from './models';
 import { SampleTypeDataType } from './constants';
 
 describe('EntityParentType', () => {
@@ -210,5 +210,157 @@ describe('EntityIdCreationModel', () => {
         });
         expect(sq.getSchemaQuery().schemaName).toBe('samples');
         expect(sq.getSchemaQuery().queryName).toBe('a');
+    });
+});
+
+describe('OperationConfirmationData', () => {
+    const data = new OperationConfirmationData({
+        allowed: [{ rowId: 1 }, { rowId: 2 }],
+        notAllowed: [{ rowId: 3 }, { rowId: 4 }, { rowId: 5 }],
+        notPermitted: [{ rowId: 6 }],
+    });
+
+    test('isIdActionable', () => {
+        expect(data.isIdActionable('1')).toBe(true);
+        expect(data.isIdActionable(1)).toBe(true);
+        expect(data.isIdActionable('3')).toBe(false);
+        expect(data.isIdActionable(3)).toBe(false);
+        expect(data.isIdActionable('6')).toBe(false);
+        expect(data.isIdActionable(6)).toBe(false);
+    });
+
+    test('getActionableIds', () => {
+        expect(data.getActionableIds()).toEqual([1, 2]);
+        expect(data.getActionableIds('bogus')).toEqual([]);
+    });
+
+    test('allActionable', () => {
+        expect(data.allActionable).toBe(false);
+        expect(
+            new OperationConfirmationData({
+                allowed: [{ rowId: 1 }, { rowId: 2 }],
+                notAllowed: [],
+                notPermitted: [],
+            }).allActionable
+        ).toBe(true);
+    });
+
+    test('noneActionable', () => {
+        expect(data.noneActionable).toBe(false);
+        expect(
+            new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [],
+                notPermitted: [],
+            }).noneActionable
+        ).toBe(false);
+        expect(
+            new OperationConfirmationData({
+                allowed: [{ rowId: 1 }, { rowId: 2 }],
+                notAllowed: [],
+                notPermitted: [],
+            }).noneActionable
+        ).toBe(false);
+        expect(
+            new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [{ rowId: 1 }, { rowId: 2 }],
+                notPermitted: [],
+            }).noneActionable
+        ).toBe(true);
+        expect(
+            new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [],
+                notPermitted: [{ rowId: 1 }, { rowId: 2 }],
+            }).noneActionable
+        ).toBe(true);
+    });
+
+    test('anyActionable', () => {
+        expect(data.anyActionable).toBe(true);
+        expect(
+            new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [],
+                notPermitted: [],
+            }).anyActionable
+        ).toBe(false);
+        expect(
+            new OperationConfirmationData({
+                allowed: [{ rowId: 1 }, { rowId: 2 }],
+                notAllowed: [],
+                notPermitted: [],
+            }).anyActionable
+        ).toBe(true);
+        expect(
+            new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [{ rowId: 1 }, { rowId: 2 }],
+                notPermitted: [],
+            }).anyActionable
+        ).toBe(false);
+        expect(
+            new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [],
+                notPermitted: [{ rowId: 1 }, { rowId: 2 }],
+            }).anyActionable
+        ).toBe(false);
+    });
+
+    test('anyNotActionable', () => {
+        expect(data.anyNotActionable).toBe(true);
+        expect(
+            new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [],
+                notPermitted: [],
+            }).anyNotActionable
+        ).toBe(false);
+        expect(
+            new OperationConfirmationData({
+                allowed: [{ rowId: 1 }, { rowId: 2 }],
+                notAllowed: [],
+                notPermitted: [],
+            }).anyNotActionable
+        ).toBe(false);
+        expect(
+            new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [{ rowId: 1 }, { rowId: 2 }],
+                notPermitted: [],
+            }).anyNotActionable
+        ).toBe(true);
+        expect(
+            new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [],
+                notPermitted: [{ rowId: 1 }, { rowId: 2 }],
+            }).anyNotActionable
+        ).toBe(true);
+    });
+
+    test('totalCount', () => {
+        expect(data.totalCount).toBe(5);
+        expect(
+            new OperationConfirmationData({
+                allowed: [],
+                notAllowed: [],
+                notPermitted: [],
+            }).totalCount
+        ).toBe(0);
+    });
+
+    test('getContainerPaths', () => {
+        expect(
+            new OperationConfirmationData({
+                containers: [
+                    { id: 'a', permitted: true },
+                    { id: 'b', permitted: false },
+                    { id: 'c', permitted: true },
+                ],
+            }).getContainerPaths()
+        ).toEqual(['a', 'c']);
     });
 });

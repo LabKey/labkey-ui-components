@@ -76,6 +76,7 @@ import {
     uncapitalizeFirstChar,
     valueIsEmpty,
     withTransformedKeys,
+    getValueFromRow,
 } from './internal/util/utils';
 import { AutoForm } from './internal/components/AutoForm';
 import { HelpIcon } from './internal/components/HelpIcon';
@@ -1577,6 +1578,7 @@ export {
     generateId,
     debounce,
     valueIsEmpty,
+    getValueFromRow,
     getActionErrorMessage,
     getConfirmDeleteMessage,
     resolveErrorMessage,

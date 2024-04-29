@@ -14,14 +14,17 @@ import {
     GetDeleteConfirmationDataOptions,
     getDeleteConfirmationData,
     getMoveConfirmationData,
+    getOperationConfirmationData,
     getOperationConfirmationDataForModel,
     getEntityTypeData,
     getOriginalParentsFromLineage,
+    getParentTypeDataForLineage,
     handleEntityFileImport,
     moveEntities,
     initParentOptionsSelects,
     MoveEntitiesOptions,
     getCrossFolderSelectionResult,
+    GetParentTypeDataForLineage,
 } from './actions';
 import { DataOperation } from './constants';
 import {
@@ -65,6 +68,14 @@ export interface EntityAPIWrapper {
         selectionKey?: string,
         useSnapshotSelection?: boolean
     ) => Promise<OperationConfirmationData>;
+    getOperationConfirmationData: (
+        dataType: EntityDataType,
+        rowIds: string[] | number[],
+        selectionKey?: string,
+        useSnapshotSelection?: boolean,
+        extraParams?: Record<string, any>,
+        containerPath?: string
+    ) => Promise<OperationConfirmationData>;
     getOperationConfirmationDataForModel: (
         model: QueryModel,
         dataType: EntityDataType,
@@ -78,6 +89,7 @@ export interface EntityAPIWrapper {
         originalParents: Record<string, List<EntityChoice>>;
         parentTypeOptions: Map<string, List<IEntityTypeOption>>;
     }>;
+    getParentTypeDataForLineage: GetParentTypeDataForLineage;
     handleEntityFileImport: (
         importAction: string,
         queryInfo: QueryInfo,
@@ -113,8 +125,10 @@ export class EntityServerAPIWrapper implements EntityAPIWrapper {
     getDeleteConfirmationData = getDeleteConfirmationData;
     getMoveConfirmationData = getMoveConfirmationData;
     getEntityTypeData = getEntityTypeData;
+    getOperationConfirmationData = getOperationConfirmationData;
     getOperationConfirmationDataForModel = getOperationConfirmationDataForModel;
     getOriginalParentsFromLineage = getOriginalParentsFromLineage;
+    getParentTypeDataForLineage = getParentTypeDataForLineage;
     handleEntityFileImport = handleEntityFileImport;
     loadNameExpressionOptions = loadNameExpressionOptions;
     moveEntities = moveEntities;
@@ -134,8 +148,10 @@ export function getEntityTestAPIWrapper(
         getDeleteConfirmationData: mockFn(),
         getMoveConfirmationData: mockFn(),
         getEntityTypeData: mockFn(),
+        getOperationConfirmationData: mockFn(),
         getOperationConfirmationDataForModel: mockFn(),
         getOriginalParentsFromLineage: mockFn(),
+        getParentTypeDataForLineage: mockFn(),
         handleEntityFileImport: mockFn(),
         loadNameExpressionOptions: mockFn(),
         moveEntities: mockFn(),

@@ -40,6 +40,7 @@ import {
     capitalizeFirstChar,
     uncapitalizeFirstChar,
     withTransformedKeys,
+    getValueFromRow,
 } from './utils';
 
 const emptyList = List<string>();
@@ -710,7 +711,7 @@ describe('getUpdatedData', () => {
         });
     });
 
-    test('with additionalPkCols', () => {
+    test('with additionalCols', () => {
         const updatedData = getUpdatedData(
             originalData,
             {
@@ -738,6 +739,100 @@ describe('getUpdatedData', () => {
             Value: 'val',
             Other: 'other3',
             Data: 'data1',
+        });
+    });
+
+    test('with folder', () => {
+        const originalData_ = fromJS({
+            '448': {
+                RowId: {
+                    value: 448,
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                Value: {
+                    value: null,
+                },
+                Data: {
+                    value: 'data1',
+                },
+                'And/Again': {
+                    value: 'again',
+                },
+                Name: {
+                    value: 'S-20190516-9042',
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                Other: {
+                    value: 'other1',
+                },
+                Folder: {
+                    displayValue: 'ProjectA',
+                    value: 'ENTITYID-A',
+                },
+            },
+        });
+
+        const updatedData = getUpdatedData(
+            originalData_,
+            {
+                Value: 'val',
+                And$SAgain: 'again',
+                Other: 'other3',
+            },
+            List<string>(['RowId'])
+        );
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 448,
+            Value: 'val',
+            Other: 'other3',
+            Folder: 'ENTITYID-A',
+        });
+    });
+
+    test('with container', () => {
+        const originalData_ = fromJS({
+            '448': {
+                RowId: {
+                    value: 448,
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                Value: {
+                    value: null,
+                },
+                Data: {
+                    value: 'data1',
+                },
+                'And/Again': {
+                    value: 'again',
+                },
+                Name: {
+                    value: 'S-20190516-9042',
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                Other: {
+                    value: 'other1',
+                },
+                Container: {
+                    displayValue: 'ProjectA',
+                    value: 'ENTITYID-A',
+                },
+            },
+        });
+
+        const updatedData = getUpdatedData(
+            originalData_,
+            {
+                Value: 'val',
+                And$SAgain: 'again',
+                Other: 'other3',
+            },
+            List<string>(['RowId'])
+        );
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 448,
+            Value: 'val',
+            Other: 'other3',
+            Container: 'ENTITYID-A',
         });
     });
 });
@@ -1231,5 +1326,38 @@ describe('arrayEquals', () => {
         expect(arrayEquals(['a', 'b'], ['b', 'a'], false)).toBeFalsy();
         expect(arrayEquals(['a', 'b'], ['A', 'b'], false)).toBeFalsy();
         expect(arrayEquals(['a', 'b'], ['B', 'A'], false)).toBeFalsy();
+    });
+});
+
+describe('getValueFromRow', () => {
+    test('no row', () => {
+        expect(getValueFromRow(undefined, 'Name')).toEqual(undefined);
+        expect(getValueFromRow({}, 'Name')).toEqual(undefined);
+    });
+
+    test('returns value', () => {
+        const row = { Name: 'test' };
+        expect(getValueFromRow(row, 'Name')).toEqual('test');
+        expect(getValueFromRow(row, 'name')).toEqual('test');
+        expect(getValueFromRow(row, 'bogus')).toEqual(undefined);
+    });
+
+    test('returns value from object', () => {
+        const row = { Name: { value: 'test' } };
+        expect(getValueFromRow(row, 'Name')).toEqual('test');
+        expect(getValueFromRow(row, 'name')).toEqual('test');
+        expect(getValueFromRow(row, 'bogus')).toEqual(undefined);
+    });
+
+    test('returns value from array', () => {
+        let row = { Name: ['test1', 'test2'] };
+        expect(getValueFromRow(row, 'Name')).toEqual(undefined);
+        expect(getValueFromRow(row, 'name')).toEqual(undefined);
+        expect(getValueFromRow(row, 'bogus')).toEqual(undefined);
+
+        row = { Name: [{ value: 'test1' }, { value: 'test2' }] };
+        expect(getValueFromRow(row, 'Name')).toEqual('test1');
+        expect(getValueFromRow(row, 'name')).toEqual('test1');
+        expect(getValueFromRow(row, 'bogus')).toEqual(undefined);
     });
 });

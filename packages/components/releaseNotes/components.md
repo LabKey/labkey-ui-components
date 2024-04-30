@@ -5,6 +5,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD April 2024
 - Remove "Cross project file import" experimental feature flag
 
+### version 3.40.2
+*Released*: 29 April 2024
+- Issue 50236: Sample Manager: customize grid to add "Inputs/All" fields results in error page
+
+### version 3.40.1
+*Released*: 29 April 2024
+- No longer include `tif` files in the `isImage` check
+  - Most browsers cannot render `tif` files
+  - Fixes Issue 49852
+
 ### version 3.40.0
 *Released*: 29 April 2024
 - Support cross-folder "Edit in Bulk"

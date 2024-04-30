@@ -472,7 +472,8 @@ function getFileExtensionType(value: string): string {
 }
 
 export function isImage(value): boolean {
-    const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'ico', 'png', 'svg', 'tif'];
+    // Note: don't add tif, or tiff here, most browsers will not render them (see Issue 49852)
+    const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'ico', 'png', 'svg'];
     const extensionType = getFileExtensionType(value);
     return validImageExtensions.indexOf(extensionType) > -1;
 }

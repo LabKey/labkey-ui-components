@@ -60,7 +60,7 @@ import { Change, ChangeType } from './grid/model';
 
 import { createQueryModelId, QueryConfig, QueryModel } from './QueryModel';
 import { ViewMenu } from './ViewMenu';
-import { ExportMenu } from './ExportMenu';
+import { ExportMenu, ExtraExportMenuOptions } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 import { SearchBox } from './SearchBox';
@@ -85,6 +85,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     asPanel?: boolean;
     buttonsComponentProps?: ButtonsComponentProps;
     emptyText?: string;
+    extraExportMenuOptions?: ExtraExportMenuOptions[];
     getEmptyText?: (model: QueryModel) => string;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
     hasHeader?: boolean;
@@ -170,6 +171,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             showSearchInput,
             showViewMenu,
             supportedExportTypes,
+            extraExportMenuOptions,
         } = this.props;
 
         const { hasData, hasRows, queryInfo, queryInfoError, rowsError, selectionsError } = model;
@@ -222,6 +224,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                     advancedOptions={advancedExportOptions}
                                     supportedTypes={supportedExportTypes?.toJS()}
                                     onExport={onExport}
+                                    extraExportMenuOptions={extraExportMenuOptions}
                                 />
                             )}
                             {showChartMenu && <ChartMenu actions={actions} model={model} />}
@@ -1210,6 +1213,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 }
 
 interface GridPaneWithModelBodyProps<T = {}> extends GridPanelProps<T> {
+    extraExportMenuOptions?: ExtraExportMenuOptions[];
     id: string;
 }
 
@@ -1222,6 +1226,7 @@ const GridPanelWithModelBodyImpl: FC<GridPaneWithModelBodyProps & InjectedQueryM
 const GridPanelWithModelBody = withQueryModels<GridPaneWithModelBodyProps>(GridPanelWithModelBodyImpl);
 
 interface GridPanelWithModelProps<T = {}> extends GridPanelProps<T> {
+    extraExportMenuOptions?: ExtraExportMenuOptions[];
     queryConfig: QueryConfig;
 }
 

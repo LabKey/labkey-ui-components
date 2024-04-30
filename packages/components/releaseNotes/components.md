@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD April 2024
+### version 3.40.3
+*Released*: 30 April 2024
 - Remove "Cross project file import" experimental feature flag
 
 ### version 3.40.2

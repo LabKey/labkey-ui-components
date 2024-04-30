@@ -1,9 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
-- TODO
+### version 3.41.0
+*Released*: 30 April 2024
+- Support prop `ExtraExportMenuOptions` on ExportMenu component
 
 ### version 3.40.3
 *Released*: 30 April 2024

@@ -47,10 +47,9 @@ interface NameIdSettingsProps extends InjectedRouteLeaveProps {
 interface State {
     allowUserSpecifiedNames: boolean;
     api?: ComponentsAPIWrapper;
-    confirm: string[];
     confirmCounterModalOpen?: boolean;
     confirmModalOpen: boolean;
-    error: string[];
+    error: string;
     hasPrefixChange?: boolean;
     hasRootSampleCountChange?: boolean;
     hasRootSamples?: boolean;
@@ -63,6 +62,7 @@ interface State {
     newRootSampleCount?: number;
     newSampleCount?: number;
     prefix: string;
+    prefixIneligibleSampleTypeNames: string[];
     rootSampleCount?: number;
     sampleCount?: number;
     savingAllowUserSpecifiedNames: boolean;
@@ -72,10 +72,10 @@ interface State {
 
 const initialState: State = {
     error: undefined,
-    confirm: [],
     loadingNamingOptions: true,
     loadingCounters: true,
     prefix: '',
+    prefixIneligibleSampleTypeNames: [],
     savingPrefix: false,
     confirmModalOpen: false,
     allowUserSpecifiedNames: false,
@@ -99,10 +99,10 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         savingAllowUserSpecifiedNames,
         allowUserSpecifiedNames,
         prefix,
+        prefixIneligibleSampleTypeNames,
         savingPrefix,
         confirmModalOpen,
         error,
-        confirm,
         confirmCounterModalOpen,
         isRoot,
         isReset,
@@ -196,7 +196,12 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         } catch (err) {
             displayError(err);
         }
-        setState({ savingPrefix: false, confirmModalOpen: false, hasPrefixChange: false, confirm: response });
+        setState({
+            savingPrefix: false,
+            confirmModalOpen: false,
+            hasPrefixChange: false,
+            prefixIneligibleSampleTypeNames: response,
+        });
         setIsDirty(false);
     }, [prefix, saveNameExpressionOptions, setIsDirty, container.path]);
 
@@ -247,7 +252,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     confirmCounterModalOpen: false,
                     newRootSampleCount: newCount,
                     error: undefined,
-                    confirm: [],
+                    prefixIneligibleSampleTypeNames: [],
                     hasRootSampleCountChange: false,
                 });
             else
@@ -256,7 +261,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     confirmCounterModalOpen: false,
                     newSampleCount: newCount,
                     error: undefined,
-                    confirm: [],
+                    prefixIneligibleSampleTypeNames: [],
                     hasSampleCountChange: false,
                 });
             setIsDirty(false);
@@ -282,10 +287,10 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
             <div className="panel-heading">{TITLE}</div>
             <div className="panel-body">
                 {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
-                {confirm?.length > 0 && (
+                {prefixIneligibleSampleTypeNames.length > 0 && (
                     <Alert bsStyle="success" className="name-id-setting__error">
                         Prefix updated. The following were ineligible and excluded:
-                        <ul>{confirm?.map(name => <li key={name}>{name}</li>)}</ul>
+                        <ul>{prefixIneligibleSampleTypeNames?.map(name => <li key={name}>{name}</li>)}</ul>
                     </Alert>
                 )}
                 <div className="name-id-setting__setting-section">

@@ -200,7 +200,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
             savingPrefix: false,
             confirmModalOpen: false,
             hasPrefixChange: false,
-            prefixIneligibleSampleTypeNames: response,
+            prefixIneligibleSampleTypeNames: response ?? [],
         });
         setIsDirty(false);
     }, [prefix, saveNameExpressionOptions, setIsDirty, container.path]);
@@ -290,7 +290,11 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                 {prefixIneligibleSampleTypeNames.length > 0 && (
                     <Alert bsStyle="success" className="name-id-setting__error">
                         Prefix updated. The following were ineligible and excluded:
-                        <ul>{prefixIneligibleSampleTypeNames?.map(name => <li key={name}>{name}</li>)}</ul>
+                        <ul>
+                            {prefixIneligibleSampleTypeNames.map(name => (
+                                <li key={name}>{name}</li>
+                            ))}
+                        </ul>
                     </Alert>
                 )}
                 <div className="name-id-setting__setting-section">

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 50319: Sample status tag display issues on lineage sample detail panel
+
 ### version 3.41.0
 *Released*: 30 April 2024
 - Support prop `ExtraExportMenuOptions` on ExportMenu component

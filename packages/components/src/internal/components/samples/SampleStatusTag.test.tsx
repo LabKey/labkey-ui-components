@@ -151,7 +151,7 @@ describe('getStatusTagStyle', () => {
             borderColor: 'lightgray',
         });
         expect(getStatusTagStyle({ color: undefined, label: 'Custom', statusType: undefined })).toStrictEqual({
-            color: 'white',
+            color: '#555555',
             backgroundColor: undefined,
             borderColor: 'lightgray',
         });

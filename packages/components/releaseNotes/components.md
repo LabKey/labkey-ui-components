@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.42.0
+*Released*: 3 May 2024
 - Issue 48675: Improve UI text for 'ID/Name Settings'
 
 ### version 3.41.0

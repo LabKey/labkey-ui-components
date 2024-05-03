@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.X
+*Released*: X 2024
+- ELN: Customize signing checkbox and export to PDF
+  - Add ServerContext.labels
+  - Add FolderAPIWrapper.updateProjectCustomLabels
+
 ### version 3.41.0
 *Released*: 30 April 2024
 - Support prop `ExtraExportMenuOptions` on ExportMenu component

@@ -50,6 +50,7 @@ export interface FolderAPIWrapper {
     setAuditCommentsRequired: (isRequired: boolean, containerPath?: string) => Promise<void>;
     updateProjectDataExclusions: (options: ProjectSettingsOptions, containerPath?: string) => Promise<void>;
     updateProjectLookAndFeelSettings: (options: UpdateProjectSettingsOptions, containerPath?: string) => Promise<void>;
+    updateProjectCustomLabels: (labelProvider: string, labels: Record<string, string>, containerPath?: string) => Promise<void>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
@@ -215,6 +216,26 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
     };
 
     getFolderDataTypeExclusions = getFolderDataTypeExclusions;
+
+    updateProjectCustomLabels = (
+        labelProvider: string, labels: Record<string, string>, containerPath?: string
+    ): Promise<void> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: ActionURL.buildURL('core', 'customLabels.api', containerPath),
+                method: 'POST',
+                jsonData: {
+                    provider: labelProvider,
+                    labelsJson: JSON.stringify(labels)
+                },
+                success: Utils.getCallbackWrapper(({ data }) => {
+                    resolve();
+                }),
+                failure: handleRequestFailure(reject, 'Failed to update project custom labels.'),
+            });
+        });
+    };
+
 }
 
 /**
@@ -233,6 +254,7 @@ export function getFolderTestAPIWrapper(
         getDataTypeExcludedProjects: mockFn(),
         getFolderDataTypeExclusions: mockFn(),
         updateProjectLookAndFeelSettings: mockFn(),
+        updateProjectCustomLabels: mockFn,
         getProjects: mockFn,
         ...overrides,
     };

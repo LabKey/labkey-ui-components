@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.42.1
+*Released*: 6 May 2024
+- Issue 50319: Sample status tag display issues on lineage sample detail panel
+
 ### version 3.42.0
 *Released*: 6 May 2024
 - Issue 50084: Add onError handler for FileAttachmentForm to allow appropriate behavior by wrapping components when errors are detected

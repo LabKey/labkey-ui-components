@@ -10,6 +10,7 @@ import { SchemaQuery } from '../../../../public/SchemaQuery';
 import { ViewInfo } from '../../../ViewInfo';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../../public/QueryModel/withQueryModels';
+import { SAMPLE_STATE_COLOR_COLUMN_NAME, SAMPLE_STATE_TYPE_COLUMN_NAME } from '../../samples/constants';
 
 const ADDITIONAL_DETAIL_FIELDS = ['properties'];
 
@@ -48,7 +49,7 @@ export const LineageDetail: FC<LineageDetailProps> = memo(({ item }) => {
                 // Issue 45028: Display details view columns in lineage
                 schemaQuery: new SchemaQuery(item.schemaName, item.queryName, ViewInfo.DETAIL_NAME),
                 // Must specify '*' columns be requested to resolve "properties" columns
-                requiredColumns: ['*'],
+                requiredColumns: ['*', SAMPLE_STATE_COLOR_COLUMN_NAME, SAMPLE_STATE_TYPE_COLUMN_NAME],
             },
         }),
         [item]

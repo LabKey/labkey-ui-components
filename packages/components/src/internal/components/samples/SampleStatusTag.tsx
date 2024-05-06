@@ -26,7 +26,7 @@ interface Props {
 
 // exported for Jest test
 export function hexToRGB(hex: string): number[] {
-    const bigInt = parseInt(hex?.replace('#', ''), 16);
+    const bigInt = hex ? parseInt(hex?.replace('#', ''), 16) : 0;
     const r = (bigInt >> 16) & 255;
     const g = (bigInt >> 8) & 255;
     const b = bigInt & 255;
@@ -48,7 +48,7 @@ export function getStatusTagStyle(status: SampleStatus): CSSProperties {
     return {
         borderColor: 'lightgray',
         backgroundColor: status.color,
-        color: luminance <= 0.5 ? 'white' : '#555555',
+        color: luminance <= 0.5 && luminance > 0 ? 'white' : '#555555',
     };
 }
 

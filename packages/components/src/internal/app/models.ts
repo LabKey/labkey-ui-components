@@ -63,8 +63,8 @@ interface ReferencingNotebooksComponentProps {
 export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentProps>;
 
 interface NotebookProjectSettingsProp {
-    folderAPI: FolderAPIWrapper;
     containerPath?: string;
+    folderAPI: FolderAPIWrapper;
     onChange?: () => void;
     onSuccess?: (reload?: boolean) => void;
 }

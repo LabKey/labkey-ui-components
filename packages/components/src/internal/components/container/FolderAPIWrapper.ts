@@ -14,9 +14,9 @@ import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 export interface ProjectSettingsOptions {
     allowUserSpecifiedNames?: boolean;
     disabledAssayDesigns?: number[];
+    disabledDashboardSampleTypes?: number[];
     disabledDataClasses?: number[];
     disabledSampleTypes?: number[];
-    disabledDashboardSampleTypes?: number[];
     disabledStorageLocations?: number[];
     name?: string;
     nameAsTitle?: boolean;
@@ -48,9 +48,13 @@ export interface FolderAPIWrapper {
     ) => Promise<Container[]>;
     renameProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
     setAuditCommentsRequired: (isRequired: boolean, containerPath?: string) => Promise<void>;
+    updateProjectCustomLabels: (
+        labelProvider: string,
+        labels: Record<string, string>,
+        containerPath?: string
+    ) => Promise<void>;
     updateProjectDataExclusions: (options: ProjectSettingsOptions, containerPath?: string) => Promise<void>;
     updateProjectLookAndFeelSettings: (options: UpdateProjectSettingsOptions, containerPath?: string) => Promise<void>;
-    updateProjectCustomLabels: (labelProvider: string, labels: Record<string, string>, containerPath?: string) => Promise<void>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
@@ -218,7 +222,9 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
     getFolderDataTypeExclusions = getFolderDataTypeExclusions;
 
     updateProjectCustomLabels = (
-        labelProvider: string, labels: Record<string, string>, containerPath?: string
+        labelProvider: string,
+        labels: Record<string, string>,
+        containerPath?: string
     ): Promise<void> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
@@ -226,7 +232,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 method: 'POST',
                 jsonData: {
                     provider: labelProvider,
-                    labelsJson: JSON.stringify(labels)
+                    labelsJson: JSON.stringify(labels),
                 },
                 success: Utils.getCallbackWrapper(({ data }) => {
                     resolve();
@@ -235,7 +241,6 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
             });
         });
     };
-
 }
 
 /**

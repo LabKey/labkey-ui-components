@@ -20,12 +20,10 @@ import { Container } from './models/Container';
 import { User } from './models/User';
 
 export type ModuleContext = Record<string, any>;
-export type CustomLabels = Record<string, Record<string, string>>;
 
 export interface ServerContext extends LabKey {
     container: Container;
     moduleContext?: ModuleContext;
-    labels: CustomLabels;
     user: User;
 }
 

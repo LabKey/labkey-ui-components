@@ -1,8 +1,12 @@
 import { updateProjectCustomLabels, getCustomLabels } from './actions';
 
 export interface LabelsAPIWrapper {
-    updateProjectCustomLabels: (labelProvider: string, labels: Record<string, string>, containerPath?: string) => Promise<void>;
-    getCustomLabels: (moduleName: string, containerPath?: string) => Promise<Record<string, string>>
+    getCustomLabels: (moduleName: string, containerPath?: string) => Promise<Record<string, string>>;
+    updateProjectCustomLabels: (
+        labelProvider: string,
+        labels: Record<string, string>,
+        containerPath?: string
+    ) => Promise<void>;
 }
 
 export class ServerLabelsAPIWrapper implements LabelsAPIWrapper {

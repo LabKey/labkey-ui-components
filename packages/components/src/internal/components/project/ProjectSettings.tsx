@@ -15,10 +15,11 @@ import { NameIdSettings } from '../settings/NameIdSettings';
 import { biologicsIsPrimaryApp, isAppHomeFolder, isProtectedDataEnabled } from '../../app/utils';
 import { ProtectedDataSettingsPanel } from '../administration/ProtectedDataSettingsPanel';
 
+import { useRouteLeave } from '../../util/RouteLeave';
+
 import { ProjectNameSetting } from './ProjectNameSetting';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 import { DeleteProjectModal } from './DeleteProjectModal';
-import { useRouteLeave } from '../../util/RouteLeave';
 
 export interface ProjectSettingsProps {
     onChange: (dirty?: boolean) => void;

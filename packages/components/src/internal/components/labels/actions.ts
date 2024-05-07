@@ -39,7 +39,7 @@ const getAllCustomLabels = (containerPath?: string): Promise<Record<string, Reco
 export const getCustomLabels = (moduleName: string, containerPath?: string): Promise<Record<string, string>> => {
     return new Promise((resolve, reject) => {
         getAllCustomLabels(containerPath)
-            .then((results) => {
+            .then(results => {
                 resolve(results?.[moduleName]);
             })
             .catch(reason => {

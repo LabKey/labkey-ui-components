@@ -7,6 +7,7 @@ import React, {
     useState,
     useCallback,
     MutableRefObject,
+    CSSProperties,
 } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -90,6 +91,7 @@ interface Props {
     delay?: number;
     id: string;
     overlay: ReactElement<OverlayComponent>; // See note in doc string below
+    style?: CSSProperties;
     triggerType?: TriggerType;
 }
 
@@ -116,6 +118,7 @@ export const OverlayTrigger: FC<Props> = ({
     id,
     overlay,
     triggerType = 'hover',
+    style,
 }) => {
     const { onMouseEnter, onMouseLeave, onClick, portalEl, show, targetRef } = useOverlayTriggerState(
         id,
@@ -128,7 +131,7 @@ export const OverlayTrigger: FC<Props> = ({
     const clonedContent = cloneElement(overlay, { targetRef });
 
     return (
-        <div className={className_} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick}>
+        <div className={className_} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} style={style}>
             {clonedChild}
 
             {show && createPortal(clonedContent, portalEl)}

@@ -9,7 +9,7 @@ import {
     LabelPrintingAPIWrapper,
     LabelPrintingServerAPIWrapper,
     getLabelPrintingTestAPIWrapper,
-} from './components/labelsPrinting/APIWrapper';
+} from './components/labelPrinting/APIWrapper';
 import {
     getSecurityTestAPIWrapper,
     SecurityAPIWrapper,

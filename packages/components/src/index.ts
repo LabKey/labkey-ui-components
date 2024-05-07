@@ -677,10 +677,10 @@ import {
     getSelectedPicklistSamples,
     updatePicklist,
 } from './internal/components/picklist/actions';
-import { PrintLabelsModal } from './internal/components/labelsPrinting/PrintLabelsModal';
-import { BarTenderConfiguration } from './internal/components/labelsPrinting/models';
-import { useLabelPrintingContext } from './internal/components/labelsPrinting/LabelPrintingContextProvider';
-import { BarTenderSettingsForm } from './internal/components/labelsPrinting/BarTenderSettingsForm';
+import { PrintLabelsModal } from './internal/components/labelPrinting/PrintLabelsModal';
+import { BarTenderConfiguration } from './internal/components/labelPrinting/models';
+import { useLabelPrintingContext } from './internal/components/labelPrinting/LabelPrintingContextProvider';
+import { BarTenderSettingsForm } from './internal/components/labelPrinting/BarTenderSettingsForm';
 import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal';
 
 import { AppReducers, ProductMenuReducers, ServerNotificationReducers } from './internal/app/reducers';
@@ -1894,7 +1894,7 @@ export type { InjectedLineage, WithLineageOptions } from './internal/components/
 export type {
     LabelPrintingContext,
     LabelPrintingContextProps,
-} from './internal/components/labelsPrinting/LabelPrintingContextProvider';
+} from './internal/components/labelPrinting/LabelPrintingContextProvider';
 export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
 export type {

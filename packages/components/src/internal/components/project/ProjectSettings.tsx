@@ -10,7 +10,7 @@ import { Container } from '../base/models/Container';
 
 import { useAdminAppContext } from '../administration/useAdminAppContext';
 
-import { BarTenderSettingsForm } from '../labelsPrinting/BarTenderSettingsForm';
+import { BarTenderSettingsForm } from '../labelPrinting/BarTenderSettingsForm';
 import { NameIdSettings } from '../settings/NameIdSettings';
 import { biologicsIsPrimaryApp, isAppHomeFolder, isProtectedDataEnabled } from '../../app/utils';
 import { ProtectedDataSettingsPanel } from '../administration/ProtectedDataSettingsPanel';

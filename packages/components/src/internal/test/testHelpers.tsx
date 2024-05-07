@@ -13,7 +13,7 @@ import { ServerContext, ServerContextProvider } from '../components/base/ServerC
 import {
     LabelPrintingContextProps,
     LabelPrintingContextProvider,
-} from '../components/labelsPrinting/LabelPrintingContextProvider';
+} from '../components/labelPrinting/LabelPrintingContextProvider';
 import { GlobalStateContextProvider } from '../GlobalStateContext';
 import { URL_MAPPERS, URLService } from '../url/URLResolver';
 

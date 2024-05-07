@@ -381,7 +381,7 @@ describe('getChartBuilderChartConfig', () => {
         expect(config.labels.y).toBe('Sum of Field 2');
     });
 
-    test('based on savedConfig', () => {
+    test('based on savedConfig, without y-label', () => {
         const savedConfig = {
             pointType: 'outliers',
             scales: { x: 'linear', y: 'log' },
@@ -400,7 +400,29 @@ describe('getChartBuilderChartConfig', () => {
         expect(config.measures.x.name).toBe('field1');
         expect(config.measures.y.name).toBe('field2');
         expect(config.labels.x).toBe('X Label');
-        expect(config.labels.y).toBe('Field 2');
+        expect(config.labels.y).toBe('Sum of Field 2');
+    });
+
+    test('based on savedConfig, with y-label', () => {
+        const savedConfig = {
+            pointType: 'outliers',
+            scales: { x: 'linear', y: 'log' },
+            labels: { main: 'Main', subtitle: 'Subtitle', color: 'Something', x: 'X Label', y: 'Y Label' },
+            measures: { x: { name: 'saved1' }, y: { name: 'saved2' } },
+            height: 1,
+            width: 2,
+        } as ChartConfig;
+
+        const config = getChartBuilderChartConfig(BAR_CHART_TYPE, fieldValues, savedConfig);
+        expect(config.scales).toStrictEqual(savedConfig.scales);
+        expect(Object.keys(config.labels)).toStrictEqual(['main', 'subtitle', 'color', 'x', 'y']);
+        expect(config.labels.main).toBe('Main');
+        expect(config.labels.subtitle).toBe('Subtitle');
+        expect(config.pointType).toBe('outliers');
+        expect(config.measures.x.name).toBe('field1');
+        expect(config.measures.y.name).toBe('field2');
+        expect(config.labels.x).toBe('X Label');
+        expect(config.labels.y).toBe('Y Label');
     });
 
     test('box plot specifics', () => {
@@ -437,11 +459,17 @@ describe('getChartBuilderChartConfig', () => {
             fields: [{ name: 'x' }, { name: 'y' }],
         } as ChartTypeInfo;
 
+        const fieldValues = {
+            x: { value: 'field1', label: 'Field 1', data: { fieldKey: 'field1' } },
+            y: { value: 'field2', label: 'Field 2', data: { fieldKey: 'field2', aggregate: { value: 'MEAN', name: 'Mean' } } },
+        };
+
         const config = getChartBuilderChartConfig(boxType, fieldValues, undefined);
         expect(config.geomOptions.boxFillColor).not.toBe('none');
         expect(config.geomOptions.lineWidth).toBe(1);
         expect(config.geomOptions.opacity).toBe(1.0);
         expect(config.geomOptions.pointSize).toBe(5);
         expect(config.geomOptions.position).toBe(null);
+        expect(config.labels.y).toBe('Mean of Field 2');
     });
 });

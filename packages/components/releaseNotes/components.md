@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD May 2024
 - Chart builder in app (part 2)
   - Allow exports of charts within the apps to PDF/PNG via export dropdown menu
+  - Allow bar-chart y-axis aggregation method (sum, min, max, mean, median) selection
 
 ### version 3.42.1
 *Released*: 6 May 2024

@@ -58,6 +58,14 @@ const RIGHT_COL_FIELDS = ['color', 'shape', 'series'];
 export const MAX_ROWS_PREVIEW = 100000;
 export const MAX_POINT_DISPLAY = 10000;
 const BLUE_HEX_COLOR = '3366FF';
+const BAR_CHART_AGGREGATE_METHODS = [
+    { label: 'Count (non-blank)', value: 'COUNT' },
+    { label: 'Sum', value: 'SUM' },
+    { label: 'Min', value: 'MIN' },
+    { label: 'Max', value: 'MAX' },
+    { label: 'Mean', value: 'MEAN' },
+    { label: 'Median', value: 'MEDIAN' },
+];
 
 const ICONS = {
     bar_chart: 'bar_chart',
@@ -197,9 +205,9 @@ export const getChartBuilderChartConfig = (
                     fieldValues[field.name].data.type,
             };
 
-            // for now, retain axis aggregate config if it was set via LKS
-            if (savedConfig && savedConfig.measures[field.name]?.aggregate) {
-                config.measures[field.name].aggregate = { ...savedConfig.measures[field.name].aggregate };
+            // check if the field has an aggregate method (bar chart y-axis only)
+            if (fieldValues[field.name]?.data?.aggregate) {
+                config.measures[field.name].aggregate = { ...fieldValues[field.name]?.data?.aggregate };
             }
 
             // update axis label if it is a new report or if the saved report that didn't have this measure or was using the default field label for the axis label
@@ -213,8 +221,9 @@ export const getChartBuilderChartConfig = (
         }
     });
 
-    if (chartType.name === 'bar_chart' && !savedConfig) {
-        config.labels['y'] = fieldValues.y ? 'Sum of ' + fieldValues.y.label : 'Count';
+    if (chartType.name === 'bar_chart' && (!savedConfig || !savedConfig.labels['y'])) {
+        const prefix = (config.measures.y?.aggregate?.name ?? 'Sum') + ' of ';
+        config.labels['y'] = config.measures.y ? prefix + config.measures.y.label : 'Count';
     }
 
     return config;
@@ -258,6 +267,7 @@ interface ChartTypeQueryFormProps {
     model: QueryModel;
     name: string;
     onNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onSelectAggregateMethod: (key: string, _: any, selectedOption: SelectInputOption) => void;
     onSelectFieldChange: (key: string, _: any, selectedOption: SelectInputOption) => void;
     onToggleShared: () => void;
     savedChartModel: GenericChartModel;
@@ -276,7 +286,7 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
         fieldValues,
         model,
         onSelectFieldChange,
-        savedChartModel,
+        onSelectAggregateMethod,
     } = props;
 
     const leftColFields = useMemo(() => {
@@ -347,12 +357,19 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                                     value={fieldValues[field.name]?.value}
                                 />
                             </div>
-                            {/* TODO change this to a select input with predefined options*/}
-                            {selectedType.name === 'bar_chart' && fieldValues[field.name]?.value && (
-                                <div className="gray-text">
-                                    Aggregate method:{' '}
-                                    {savedChartModel?.visualizationConfig.chartConfig.measures['y']?.aggregate?.name ??
-                                        'Sum'}
+                            {selectedType.name === 'bar_chart' && fieldValues.y?.value && (
+                                <div>
+                                    <label>Y Axis Aggregate Method *</label>
+                                    <SelectInput
+                                        showLabel={false}
+                                        clearable={false}
+                                        inputClass="col-xs-12"
+                                        placeholder="Select aggregate method"
+                                        name="aggregate-method"
+                                        options={BAR_CHART_AGGREGATE_METHODS}
+                                        onChange={onSelectAggregateMethod}
+                                        value={fieldValues.y?.data?.aggregate?.value ?? 'SUM'}
+                                    />
                                 </div>
                             )}
                         </Fragment>
@@ -638,6 +655,14 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
         setFieldValues(prev => ({ ...prev, [key]: selectedOption }));
     }, []);
 
+    const onSelectAggregateMethod = useCallback((key: string, _, selectedOption: SelectInputOption) => {
+        setFieldValues(prev => {
+            const y = prev.y;
+            y.data.aggregate = { name: selectedOption.label, value: selectedOption.value };
+            return { ...prev, y };
+        });
+    }, []);
+
     const onSaveChart = useCallback(async () => {
         const _reportConfig = {
             ...reportConfig,
@@ -710,6 +735,7 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                         name={name}
                         onNameChange={onNameChange}
                         onSelectFieldChange={onSelectFieldChange}
+                        onSelectAggregateMethod={onSelectAggregateMethod}
                         onToggleShared={onToggleShared}
                         savedChartModel={savedChartModel}
                         shared={shared}

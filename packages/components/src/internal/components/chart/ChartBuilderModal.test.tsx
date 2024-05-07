@@ -233,6 +233,74 @@ describe('ChartBuilderModal', () => {
         validate(false, true, true);
     });
 
+    test('init from bar chart with y axis value and default aggregate method', () => {
+        const savedChartModel = {
+            canShare: true,
+            canDelete: true,
+            name: 'SavedChart',
+            reportId: 'reportId',
+            shared: false,
+            visualizationConfig: {
+                chartConfig: {
+                    renderType: 'bar_chart',
+                    measures: { x: { name: 'field1' }, y: { name: 'field2' } },
+                    labels: { x: 'Field 1', y: 'Field 2' },
+                },
+                queryConfig: {
+                    schemaName: 'savedSchema',
+                    queryName: 'savedQuery',
+                    viewName: 'savedView',
+                },
+            },
+        } as GenericChartModel;
+
+        renderWithAppContext(
+            <ChartBuilderModal actions={actions} model={model} onHide={jest.fn()} savedChartModel={savedChartModel} />,
+            {
+                serverContext: SERVER_CONTEXT,
+            }
+        );
+
+        validate(false, true, true);
+        expect(document.querySelectorAll('input')).toHaveLength(8);
+        expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
+        expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('SUM');
+    });
+
+    test('init from bar chart with y axis value and aggregate method', () => {
+        const savedChartModel = {
+            canShare: true,
+            canDelete: true,
+            name: 'SavedChart',
+            reportId: 'reportId',
+            shared: false,
+            visualizationConfig: {
+                chartConfig: {
+                    renderType: 'bar_chart',
+                    measures: { x: { name: 'field1' }, y: { name: 'field2', aggregate: { value: 'MEAN' } } },
+                    labels: { x: 'Field 1', y: 'Field 2' },
+                },
+                queryConfig: {
+                    schemaName: 'savedSchema',
+                    queryName: 'savedQuery',
+                    viewName: 'savedView',
+                },
+            },
+        } as GenericChartModel;
+
+        renderWithAppContext(
+            <ChartBuilderModal actions={actions} model={model} onHide={jest.fn()} savedChartModel={savedChartModel} />,
+            {
+                serverContext: SERVER_CONTEXT,
+            }
+        );
+
+        validate(false, true, true);
+        expect(document.querySelectorAll('input')).toHaveLength(8);
+        expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
+        expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('MEAN');
+    });
+
     test('canDelete and canShare false', () => {
         const savedChartModel = {
             canShare: false,

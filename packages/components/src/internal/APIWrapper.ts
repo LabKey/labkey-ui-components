@@ -9,7 +9,7 @@ import {
     LabelPrintingAPIWrapper,
     LabelPrintingServerAPIWrapper,
     getLabelPrintingTestAPIWrapper,
-} from './components/labels/APIWrapper';
+} from './components/labelsPrinting/APIWrapper';
 import {
     getSecurityTestAPIWrapper,
     SecurityAPIWrapper,
@@ -26,6 +26,11 @@ import {
     getFolderTestAPIWrapper,
     ServerFolderAPIWrapper,
 } from './components/container/FolderAPIWrapper';
+import {
+    getLabelsTestAPIWrapper,
+    LabelsAPIWrapper,
+    ServerLabelsAPIWrapper,
+} from './components/labels/APIWrapper';
 import {
     getNavigationTestAPIWrapper,
     NavigationAPIWrapper,
@@ -45,6 +50,7 @@ export interface ComponentsAPIWrapper {
     samples: SamplesAPIWrapper;
     search: SearchAPIWrapper;
     security: SecurityAPIWrapper;
+    labels: LabelsAPIWrapper;
 }
 
 let DEFAULT_WRAPPER: ComponentsAPIWrapper;
@@ -63,6 +69,7 @@ export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
             samples: new SamplesServerAPIWrapper(),
             search: new SearchServerAPIWrapper(),
             security: new ServerSecurityAPIWrapper(),
+            labels: new ServerLabelsAPIWrapper(),
         };
     }
 
@@ -88,6 +95,7 @@ export function getTestAPIWrapper(
         samples: getSamplesTestAPIWrapper(mockFn, overrides.samples),
         search: getSearchTestAPIWrapper(mockFn, overrides.search),
         security: getSecurityTestAPIWrapper(mockFn, overrides.security),
+        labels: getLabelsTestAPIWrapper(mockFn, overrides.labels),
         ...overrides,
     };
 }

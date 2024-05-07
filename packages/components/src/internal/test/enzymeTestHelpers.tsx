@@ -6,7 +6,7 @@ import { AppContext } from '../AppContext';
 
 import { NotificationsContextState } from '../components/notifications/NotificationsContext';
 import { ServerContext, ServerContextProvider } from '../components/base/ServerContext';
-import { LabelPrintingContext } from '../components/labels/LabelPrintingContextProvider';
+import { LabelPrintingContext } from '../components/labelsPrinting/LabelPrintingContextProvider';
 
 import { AppContextTestProvider, sleep } from './testHelpers';
 

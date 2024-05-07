@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.X
 *Released*: X 2024
 - ELN: Customize signing checkbox and export to PDF
-  - Add FolderAPIWrapper.updateProjectCustomLabels
+  - Add LabelsAPIWrapper for getting and updating custom labels
 
 ### version 3.42.1
 *Released*: 6 May 2024

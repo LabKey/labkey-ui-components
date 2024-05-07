@@ -1,8 +1,8 @@
-import { updateProjectCustomLabels, getCustomLabels } from './actions';
+import { updateCustomLabels, getModuleCustomLabels } from './actions';
 
 export interface LabelsAPIWrapper {
-    getCustomLabels: (moduleName: string, containerPath?: string) => Promise<Record<string, string>>;
-    updateProjectCustomLabels: (
+    getModuleCustomLabels: (moduleName: string, containerPath?: string) => Promise<Record<string, string>>;
+    updateCustomLabels: (
         labelProvider: string,
         labels: Record<string, string>,
         containerPath?: string
@@ -10,8 +10,8 @@ export interface LabelsAPIWrapper {
 }
 
 export class ServerLabelsAPIWrapper implements LabelsAPIWrapper {
-    updateProjectCustomLabels = updateProjectCustomLabels;
-    getCustomLabels = getCustomLabels;
+    updateCustomLabels = updateCustomLabels;
+    getModuleCustomLabels = getModuleCustomLabels;
 }
 
 export function getLabelsTestAPIWrapper(
@@ -19,8 +19,8 @@ export function getLabelsTestAPIWrapper(
     overrides: Partial<LabelsAPIWrapper> = {}
 ): LabelsAPIWrapper {
     return {
-        updateProjectCustomLabels: mockFn(),
-        getCustomLabels: mockFn(),
+        updateCustomLabels: mockFn(),
+        getModuleCustomLabels: mockFn(),
         ...overrides,
     };
 }

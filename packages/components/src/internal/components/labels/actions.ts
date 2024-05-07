@@ -2,7 +2,7 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { handleRequestFailure } from '../../util/utils';
 
-export const updateProjectCustomLabels = (
+export const updateCustomLabels = (
     labelProvider: string,
     labels: Record<string, string>,
     containerPath?: string
@@ -23,7 +23,7 @@ export const updateProjectCustomLabels = (
     });
 };
 
-const getAllCustomLabels = (containerPath?: string): Promise<Record<string, Record<string, string>>> => {
+const getCustomLabels = (containerPath?: string): Promise<Record<string, Record<string, string>>> => {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('core', 'getCustomLabels.api', containerPath),
@@ -36,9 +36,9 @@ const getAllCustomLabels = (containerPath?: string): Promise<Record<string, Reco
     });
 };
 
-export const getCustomLabels = (moduleName: string, containerPath?: string): Promise<Record<string, string>> => {
+export const getModuleCustomLabels = (moduleName: string, containerPath?: string): Promise<Record<string, string>> => {
     return new Promise((resolve, reject) => {
-        getAllCustomLabels(containerPath)
+        getCustomLabels(containerPath)
             .then(results => {
                 resolve(results?.[moduleName]);
             })

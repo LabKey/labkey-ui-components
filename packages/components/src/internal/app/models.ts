@@ -10,7 +10,7 @@ import { ComponentType } from 'react';
 import { Container } from '../components/base/models/Container';
 import { User } from '../components/base/models/User';
 import { InjectedRouteLeaveProps } from '../util/RouteLeave';
-import { FolderAPIWrapper } from '../components/container/FolderAPIWrapper';
+import { LabelsAPIWrapper } from '../components/labels/APIWrapper';
 
 const user = new User({
     ...getServerContext().user,
@@ -64,7 +64,7 @@ export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentPr
 
 interface NotebookProjectSettingsProp {
     containerPath?: string;
-    folderAPI: FolderAPIWrapper;
+    labelsAPI: LabelsAPIWrapper;
     onChange?: () => void;
     onSuccess?: (reload?: boolean) => void;
 }

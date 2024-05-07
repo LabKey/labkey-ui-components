@@ -512,7 +512,7 @@ import {
     SamplePropertyDataType,
     SampleTypeDataType,
 } from './internal/components/entities/constants';
-import { getCustomLabels } from './internal/components/labels/actions';
+import { getModuleCustomLabels } from './internal/components/labels/actions';
 import {
     getEntityDescription,
     getEntityNoun,
@@ -1779,7 +1779,7 @@ export {
     Tab,
     Tabs,
     // Custom labels
-    getCustomLabels,
+    getModuleCustomLabels,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
@@ -1930,3 +1930,4 @@ export type { ModalProps } from './internal/Modal';
 export type { QueryLookupFilterGroup, QueryLookupFilterGroupFilter } from './public/QueryColumn';
 export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';
 export type { ExtraExportMenuOptions } from './public/QueryModel/ExportMenu';
+export type { LabelsAPIWrapper } from './internal/components/labels/APIWrapper';

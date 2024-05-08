@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Allow exports of charts within the apps to PDF/PNG via export dropdown menu
   - Allow bar-chart y-axis aggregation method (sum, min, max, mean, median) selection
 
+### version 3.42.3
+*Released*: 8 May 2024
+- Add back class for `DisableableMenuItem` and do some RTL test conversion
+
 ### version 3.42.2
 *Released*: 8 May 2024
 - Merge from release24.5-SNAPSHOT to develop

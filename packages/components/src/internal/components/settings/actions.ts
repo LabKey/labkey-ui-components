@@ -8,7 +8,7 @@ export const saveNameExpressionOptions = (
     key: string,
     value: string | boolean,
     containerPath?: string
-): Promise<null> => {
+): Promise<string[]> => {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'setNameExpressionOptions.api', undefined, {
@@ -16,7 +16,7 @@ export const saveNameExpressionOptions = (
             }),
             jsonData: { [key]: value },
             method: 'POST',
-            success: Utils.getCallbackWrapper(response => resolve(response)),
+            success: Utils.getCallbackWrapper(response => resolve(response.ineligibleSampleTypes)),
             failure: handleRequestFailure(reject, 'Failed to save name expression options.'),
         });
     });

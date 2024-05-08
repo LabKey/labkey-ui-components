@@ -35,7 +35,7 @@ interface NameIdSettingsFormProps extends InjectedRouteLeaveProps {
     loadNameExpressionOptions: (
         containerPath?: string
     ) => Promise<{ allowUserSpecifiedNames: boolean; prefix: string }>;
-    saveNameExpressionOptions: (key: string, value: string | boolean, containerPath?: string) => Promise<void>;
+    saveNameExpressionOptions: (key: string, value: string | boolean, containerPath?: string) => Promise<string[]>;
 }
 
 interface NameIdSettingsProps extends InjectedRouteLeaveProps {
@@ -57,11 +57,12 @@ interface State {
     hasSamples?: boolean;
     isReset?: boolean;
     isRoot?: boolean;
-    loadingNamingOptions: boolean;
     loadingCounters: boolean;
+    loadingNamingOptions: boolean;
     newRootSampleCount?: number;
     newSampleCount?: number;
     prefix: string;
+    prefixIneligibleSampleTypeNames: string[];
     rootSampleCount?: number;
     sampleCount?: number;
     savingAllowUserSpecifiedNames: boolean;
@@ -74,6 +75,7 @@ const initialState: State = {
     loadingNamingOptions: true,
     loadingCounters: true,
     prefix: '',
+    prefixIneligibleSampleTypeNames: [],
     savingPrefix: false,
     confirmModalOpen: false,
     allowUserSpecifiedNames: false,
@@ -97,6 +99,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
         savingAllowUserSpecifiedNames,
         allowUserSpecifiedNames,
         prefix,
+        prefixIneligibleSampleTypeNames,
         savingPrefix,
         confirmModalOpen,
         error,
@@ -186,13 +189,19 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
 
     const savePrefix = useCallback(async () => {
         setState({ savingPrefix: true });
+        let response: string[];
 
         try {
-            await saveNameExpressionOptions('prefix', prefix, container.path);
+            response = await saveNameExpressionOptions('prefix', prefix, container.path);
         } catch (err) {
             displayError(err);
         }
-        setState({ savingPrefix: false, confirmModalOpen: false, hasPrefixChange: false });
+        setState({
+            savingPrefix: false,
+            confirmModalOpen: false,
+            hasPrefixChange: false,
+            prefixIneligibleSampleTypeNames: response ?? [],
+        });
         setIsDirty(false);
     }, [prefix, saveNameExpressionOptions, setIsDirty, container.path]);
 
@@ -243,6 +252,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     confirmCounterModalOpen: false,
                     newRootSampleCount: newCount,
                     error: undefined,
+                    prefixIneligibleSampleTypeNames: [],
                     hasRootSampleCountChange: false,
                 });
             else
@@ -251,6 +261,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     confirmCounterModalOpen: false,
                     newSampleCount: newCount,
                     error: undefined,
+                    prefixIneligibleSampleTypeNames: [],
                     hasSampleCountChange: false,
                 });
             setIsDirty(false);
@@ -276,6 +287,16 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
             <div className="panel-heading">{TITLE}</div>
             <div className="panel-body">
                 {error !== undefined && <Alert className="name-id-setting__error">{error}</Alert>}
+                {prefixIneligibleSampleTypeNames.length > 0 && (
+                    <Alert bsStyle="success" className="name-id-setting__error">
+                        Prefix updated. The following were ineligible and excluded:
+                        <ul>
+                            {prefixIneligibleSampleTypeNames.map(name => (
+                                <li key={name}>{name}</li>
+                            ))}
+                        </ul>
+                    </Alert>
+                )}
                 <div className="name-id-setting__setting-section">
                     <div className="list__bold-text margin-bottom">User-defined IDs/Names</div>
 
@@ -309,9 +330,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     <div className="name-id-setting__setting-section">
                         <div className="list__bold-text margin-bottom margin-top">ID/Name Prefix</div>
                         <div>
-                            Enter a prefix to the Naming Pattern for all new Samples and{' '}
-                            {sampleManagerIsPrimaryApp(moduleContext) ? 'Sources' : 'Data Classes'} in this folder. No
-                            existing IDs/Names will be changed.
+                            Enter a prefix to use with every Naming Pattern when new IDs/Names are created in this
+                            project. No existing IDs/Names will be changed.
                         </div>
 
                         {loadingNamingOptions && <LoadingSpinner />}

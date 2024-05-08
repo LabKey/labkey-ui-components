@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.42.2
+*Released*: 8 May 2024
+- Merge from release24.5-SNAPSHOT to develop
+    - includes changes from 3.41.1 #1484 #1485
+
 ### version 3.42.1
 *Released*: 6 May 2024
 - Issue 50319: Sample status tag display issues on lineage sample detail panel

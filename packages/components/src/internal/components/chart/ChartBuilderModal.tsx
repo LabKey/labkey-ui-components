@@ -58,6 +58,7 @@ const RIGHT_COL_FIELDS = ['color', 'shape', 'series'];
 export const MAX_ROWS_PREVIEW = 100000;
 export const MAX_POINT_DISPLAY = 10000;
 const BLUE_HEX_COLOR = '3366FF';
+const BAR_CHART_AGGREGATE_NAME = 'aggregate-method';
 const BAR_CHART_AGGREGATE_METHODS = [
     { label: 'Count (non-blank)', value: 'COUNT' },
     { label: 'Sum', value: 'SUM' },
@@ -206,8 +207,8 @@ export const getChartBuilderChartConfig = (
             };
 
             // check if the field has an aggregate method (bar chart y-axis only)
-            if (fieldValues[field.name]?.data?.aggregate) {
-                config.measures[field.name].aggregate = { ...fieldValues[field.name]?.data?.aggregate };
+            if (fieldValues[BAR_CHART_AGGREGATE_NAME] && field.name === 'y') {
+                config.measures[field.name].aggregate = { ...fieldValues[BAR_CHART_AGGREGATE_NAME] };
             }
 
             // update axis label if it is a new report or if the saved report that didn't have this measure or was using the default field label for the axis label
@@ -221,12 +222,22 @@ export const getChartBuilderChartConfig = (
         }
     });
 
-    if (chartType.name === 'bar_chart' && (!savedConfig || !savedConfig.labels['y'])) {
-        const prefix = (config.measures.y?.aggregate?.name ?? 'Sum') + ' of ';
-        config.labels['y'] = config.measures.y ? prefix + config.measures.y.label : 'Count';
+    if (
+        chartType.name === 'bar_chart' &&
+        (!savedConfig ||
+            !savedConfig.labels?.['y'] ||
+            savedConfig.labels?.['y'] === getDefaultBarChartAxisLabel(savedConfig))
+    ) {
+        config.labels['y'] = getDefaultBarChartAxisLabel(config);
     }
 
     return config;
+};
+
+export const getDefaultBarChartAxisLabel = (config: ChartConfig): string => {
+    const aggregate = config.measures.y?.aggregate;
+    const prefix = (aggregate?.name ?? aggregate?.label ?? 'Sum') + ' of ';
+    return config.measures.y ? prefix + config.measures.y.label : 'Count';
 };
 
 interface ChartTypeSideBarProps {
@@ -267,7 +278,6 @@ interface ChartTypeQueryFormProps {
     model: QueryModel;
     name: string;
     onNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    onSelectAggregateMethod: (key: string, _: any, selectedOption: SelectInputOption) => void;
     onSelectFieldChange: (key: string, _: any, selectedOption: SelectInputOption) => void;
     onToggleShared: () => void;
     savedChartModel: GenericChartModel;
@@ -286,7 +296,6 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
         fieldValues,
         model,
         onSelectFieldChange,
-        onSelectAggregateMethod,
     } = props;
 
     const leftColFields = useMemo(() => {
@@ -365,10 +374,10 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                                         clearable={false}
                                         inputClass="col-xs-12"
                                         placeholder="Select aggregate method"
-                                        name="aggregate-method"
+                                        name={BAR_CHART_AGGREGATE_NAME}
                                         options={BAR_CHART_AGGREGATE_METHODS}
-                                        onChange={onSelectAggregateMethod}
-                                        value={fieldValues.y?.data?.aggregate?.value ?? 'SUM'}
+                                        onChange={onSelectFieldChange}
+                                        value={fieldValues[BAR_CHART_AGGREGATE_NAME]?.value ?? 'SUM'}
                                     />
                                 </div>
                             )}
@@ -450,6 +459,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                 chartConfig_.geomOptions.marginTop = 10;
             }
 
+            if (ref?.current) ref.current.innerHTML = ''; // clear again, right before render
             LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig_, measureStore);
 
             setPreviewMsg(_previewMsg);
@@ -618,6 +628,12 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                     }
                     return result;
                 }, {});
+
+                // special case for the bar chart aggregate method
+                if (measures.y?.aggregate) {
+                    fieldValues_[BAR_CHART_AGGREGATE_NAME] = { ...measures.y.aggregate };
+                }
+
                 setFieldValues(fieldValues_);
             }
         },
@@ -652,15 +668,8 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
     }, []);
 
     const onSelectFieldChange = useCallback((key: string, _, selectedOption: SelectInputOption) => {
+        setReportConfig(undefined); // clear report config state, it will be reset after the preview loads
         setFieldValues(prev => ({ ...prev, [key]: selectedOption }));
-    }, []);
-
-    const onSelectAggregateMethod = useCallback((key: string, _, selectedOption: SelectInputOption) => {
-        setFieldValues(prev => {
-            const y = prev.y;
-            y.data.aggregate = { name: selectedOption.label, value: selectedOption.value };
-            return { ...prev, y };
-        });
     }, []);
 
     const onSaveChart = useCallback(async () => {
@@ -701,7 +710,7 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
     const footer = (
         <ChartBuilderFooter
             afterDelete={afterDelete}
-            disabled={!hasName || !hasRequiredValues}
+            disabled={!hasName || !hasRequiredValues || !reportConfig}
             onCancel={onCancel}
             onSaveChart={onSaveChart}
             savedChartModel={savedChartModel}
@@ -735,7 +744,6 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                         name={name}
                         onNameChange={onNameChange}
                         onSelectFieldChange={onSelectFieldChange}
-                        onSelectAggregateMethod={onSelectAggregateMethod}
                         onToggleShared={onToggleShared}
                         savedChartModel={savedChartModel}
                         shared={shared}

@@ -18,6 +18,7 @@ import {
     getChartBuilderChartConfig,
     getChartBuilderQueryConfig,
     getChartRenderMsg,
+    getDefaultBarChartAxisLabel,
     getSelectOptions,
     MAX_POINT_DISPLAY,
     MAX_ROWS_PREVIEW,
@@ -529,7 +530,8 @@ describe('getChartBuilderChartConfig', () => {
 
         const fieldValues = {
             x: { value: 'field1', label: 'Field 1', data: { fieldKey: 'field1' } },
-            y: { value: 'field2', label: 'Field 2', data: { fieldKey: 'field2', aggregate: { value: 'MEAN', name: 'Mean' } } },
+            y: { value: 'field2', label: 'Field 2', data: { fieldKey: 'field2' } },
+            'aggregate-method': { value: 'MEAN', name: 'Mean' },
         };
 
         const config = getChartBuilderChartConfig(boxType, fieldValues, undefined);
@@ -539,5 +541,29 @@ describe('getChartBuilderChartConfig', () => {
         expect(config.geomOptions.pointSize).toBe(5);
         expect(config.geomOptions.position).toBe(null);
         expect(config.labels.y).toBe('Mean of Field 2');
+    });
+});
+
+describe('getDefaultBarChartAxisLabel', () => {
+    test('no aggregate', () => {
+        expect(getDefaultBarChartAxisLabel({ measures: {} } as ChartConfig)).toBe('Count');
+        expect(getDefaultBarChartAxisLabel({ measures: { x: { label: 'Test' } } } as ChartConfig)).toBe('Count');
+    });
+
+    test('with aggregate', () => {
+        expect(getDefaultBarChartAxisLabel({ measures: { y: { label: 'Test' } } } as ChartConfig)).toBe('Sum of Test');
+        expect(getDefaultBarChartAxisLabel({ measures: { y: { label: 'Test', aggregate: {} } } } as ChartConfig)).toBe(
+            'Sum of Test'
+        );
+        expect(
+            getDefaultBarChartAxisLabel({
+                measures: { y: { label: 'Test', aggregate: { name: 'Min' } } },
+            } as ChartConfig)
+        ).toBe('Min of Test');
+        expect(
+            getDefaultBarChartAxisLabel({
+                measures: { y: { label: 'Test', aggregate: { label: 'Max' } } },
+            } as ChartConfig)
+        ).toBe('Max of Test');
     });
 });

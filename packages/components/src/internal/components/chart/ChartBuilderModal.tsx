@@ -26,6 +26,8 @@ import { getContainerFilter } from '../../query/api';
 
 import { SVGIcon } from '../base/SVGIcon';
 
+import { LabelOverlay } from '../forms/LabelOverlay';
+
 import { deleteChart, saveChart, SaveReportConfig } from './actions';
 
 import { ChartConfig, ChartQueryConfig, GenericChartModel } from './models';
@@ -67,6 +69,8 @@ const BAR_CHART_AGGREGATE_METHODS = [
     { label: 'Mean', value: 'MEAN' },
     { label: 'Median', value: 'MEDIAN' },
 ];
+const BAR_CHART_AGGREGATE_METHOD_TIP =
+    'The aggregate method that will be used to determine the bar height for a given x-axis category / dimension. Field values that are blank are not included in calculated aggregate values.';
 
 const ICONS = {
     bar_chart: 'bar_chart',
@@ -368,7 +372,10 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                             </div>
                             {selectedType.name === 'bar_chart' && fieldValues.y?.value && (
                                 <div>
-                                    <label>Y Axis Aggregate Method *</label>
+                                    <label>
+                                        Y Axis Aggregate Method{' '}
+                                        <LabelOverlay content={BAR_CHART_AGGREGATE_METHOD_TIP} placement="bottom" />
+                                    </label>
                                     <SelectInput
                                         showLabel={false}
                                         clearable={false}

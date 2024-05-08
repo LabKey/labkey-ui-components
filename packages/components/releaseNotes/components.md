@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.42.3
+*Released*: 8 May 2024
+- Add back class for `DisableableMenuItem` and do some RTL test conversion
+
+### version 3.42.2
+*Released*: 8 May 2024
+- Merge from release24.5-SNAPSHOT to develop
+    - includes changes from 3.41.1 #1484 #1485
+
 ### version 3.42.1
 *Released*: 6 May 2024
 - Issue 50319: Sample status tag display issues on lineage sample detail panel
@@ -8,6 +17,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.42.0
 *Released*: 6 May 2024
 - Issue 50084: Add onError handler for FileAttachmentForm to allow appropriate behavior by wrapping components when errors are detected
+
+### version 3.41.1
+*Released*: 3 May 2024
+- Issue 48675: Improve UI text for 'ID/Name Settings'
 
 ### version 3.41.0
 *Released*: 30 April 2024

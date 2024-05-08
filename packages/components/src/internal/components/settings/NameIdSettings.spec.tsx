@@ -51,7 +51,9 @@ describe('NameIdSettings', () => {
             loadNameExpressionOptions: jest.fn(async () => {
                 return { prefix: 'ABC-', allowUserSpecifiedNames: false };
             }),
-            saveNameExpressionOptions: jest.fn(async () => {}),
+            saveNameExpressionOptions: jest.fn(async () => {
+                return [];
+            }),
             api: apiWithNoSamples,
             getIsDirty: jest.fn(),
             setIsDirty: jest.fn(),

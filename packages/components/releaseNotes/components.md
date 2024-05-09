@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD May 2024
+- Issue 50360: Cross folder bulk edit doesn't work for grid custom view
+
 ### version 3.43.0
 *Released*: 9 May 2024
 - ELN: Customize signing checkbox and export to PDF

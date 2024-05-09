@@ -57,7 +57,7 @@ export interface ChartTypeInfo {
 
 const HIDDEN_CHART_TYPES = ['time_chart'];
 const RIGHT_COL_FIELDS = ['color', 'shape', 'series'];
-export const MAX_ROWS_PREVIEW = 100000;
+export const MAX_ROWS_PREVIEW = 10000;
 export const MAX_POINT_DISPLAY = 10000;
 const BLUE_HEX_COLOR = '3366FF';
 const BAR_CHART_AGGREGATE_NAME = 'aggregate-method';
@@ -433,6 +433,24 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
             savedChartModel?.visualizationConfig?.queryConfig
         );
 
+        setReportConfig({
+            schemaName: queryConfig.schemaName,
+            queryName: queryConfig.queryName,
+            viewName: queryConfig.viewName,
+            renderType: chartConfig.renderType,
+            jsonData: {
+                chartConfig,
+                queryConfig: {
+                    ...queryConfig,
+                    filterArray: queryConfig.filterArray.map(f => ({
+                        name: f['name'] ?? f.getColumnName(),
+                        value: f['value'] ?? f.getValue(),
+                        type: f['type'] ?? f.getFilterType().getURLSuffix(),
+                    })),
+                },
+            },
+        });
+
         // add model filters, parameters, and containerFilter plus maxRows to the queryConfig for the preview, but not to save with the chart
         const queryConfig_ = {
             ...queryConfig,
@@ -443,6 +461,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
         };
 
         setLoadingData(true);
+
         LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig_, measureStore => {
             const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore).length;
             const _previewMsg = getChartRenderMsg(chartConfig, rowCount, true);
@@ -471,23 +490,6 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
 
             setPreviewMsg(_previewMsg);
             setLoadingData(false);
-            setReportConfig({
-                schemaName: queryConfig.schemaName,
-                queryName: queryConfig.queryName,
-                viewName: queryConfig.viewName,
-                renderType: chartConfig.renderType,
-                jsonData: {
-                    chartConfig,
-                    queryConfig: {
-                        ...queryConfig,
-                        filterArray: queryConfig.filterArray.map(f => ({
-                            name: f['name'] ?? f.getColumnName(),
-                            value: f['value'] ?? f.getValue(),
-                            type: f['type'] ?? f.getFilterType().getURLSuffix(),
-                        })),
-                    },
-                },
-            });
         });
     }, [divId, model, hasRequiredValues, selectedType, fieldValues, savedChartModel, containerFilter, setReportConfig]);
 

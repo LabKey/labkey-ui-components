@@ -5,7 +5,7 @@ import { AppContextProvider, ExtendableAppContext } from './AppContext';
 import { GlobalStateContextProvider } from './GlobalStateContext';
 import { ServerContextProvider, withAppUser } from './components/base/ServerContext';
 import { NotificationsContextProvider } from './components/notifications/NotificationsContext';
-import { LabelPrintingContextProvider } from './components/labels/LabelPrintingContextProvider';
+import { LabelPrintingContextProvider } from './components/labelPrinting/LabelPrintingContextProvider';
 
 interface Props<T = {}> {
     initialAppContext?: ExtendableAppContext<T>;

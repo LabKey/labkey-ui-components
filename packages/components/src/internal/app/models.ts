@@ -10,6 +10,7 @@ import { ComponentType } from 'react';
 import { Container } from '../components/base/models/Container';
 import { User } from '../components/base/models/User';
 import { InjectedRouteLeaveProps } from '../util/RouteLeave';
+import { LabelsAPIWrapper } from '../components/labels/APIWrapper';
 
 const user = new User({
     ...getServerContext().user,
@@ -61,12 +62,15 @@ interface ReferencingNotebooksComponentProps {
 
 export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentProps>;
 
-interface ContainerPathProp {
-    containerPath: string;
+interface NotebookProjectSettingsProp {
+    containerPath?: string;
+    labelsAPI: LabelsAPIWrapper;
+    onChange?: () => void;
+    onSuccess?: (reload?: boolean) => void;
 }
 
 export type NotebookNotificationSettings = ComponentType;
-export type NotebookProjectSettings = ComponentType<ContainerPathProp>;
+export type NotebookProjectSettings = ComponentType<NotebookProjectSettingsProp>;
 export type WorkflowNotificationSettings = ComponentType;
 
 interface ProjectFreezerSelectionProps extends InjectedRouteLeaveProps {

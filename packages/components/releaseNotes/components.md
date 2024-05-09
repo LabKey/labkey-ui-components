@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Allow bar-chart y-axis aggregation method (sum, min, max, mean, median) selection
   - Change chart builder modal preview limit from 100k rows to 10k rows
 
+### version 3.43.0
+*Released*: 9 May 2024
+- ELN: Customize signing checkbox and export to PDF
+  - Add LabelsAPIWrapper for getting and updating custom labels
+
 ### version 3.42.3
 *Released*: 8 May 2024
 - Add back class for `DisableableMenuItem` and do some RTL test conversion

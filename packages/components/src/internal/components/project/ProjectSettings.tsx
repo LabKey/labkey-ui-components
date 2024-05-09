@@ -10,15 +10,16 @@ import { Container } from '../base/models/Container';
 
 import { useAdminAppContext } from '../administration/useAdminAppContext';
 
-import { BarTenderSettingsForm } from '../labels/BarTenderSettingsForm';
+import { BarTenderSettingsForm } from '../labelPrinting/BarTenderSettingsForm';
 import { NameIdSettings } from '../settings/NameIdSettings';
 import { biologicsIsPrimaryApp, isAppHomeFolder, isProtectedDataEnabled } from '../../app/utils';
 import { ProtectedDataSettingsPanel } from '../administration/ProtectedDataSettingsPanel';
 
+import { useRouteLeave } from '../../util/RouteLeave';
+
 import { ProjectNameSetting } from './ProjectNameSetting';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 import { DeleteProjectModal } from './DeleteProjectModal';
-import { useRouteLeave } from '../../util/RouteLeave';
 
 export interface ProjectSettingsProps {
     onChange: (dirty?: boolean) => void;

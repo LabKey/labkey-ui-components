@@ -9,7 +9,7 @@ import {
     LabelPrintingAPIWrapper,
     LabelPrintingServerAPIWrapper,
     getLabelPrintingTestAPIWrapper,
-} from './components/labels/APIWrapper';
+} from './components/labelPrinting/APIWrapper';
 import {
     getSecurityTestAPIWrapper,
     SecurityAPIWrapper,
@@ -26,6 +26,7 @@ import {
     getFolderTestAPIWrapper,
     ServerFolderAPIWrapper,
 } from './components/container/FolderAPIWrapper';
+import { getLabelsTestAPIWrapper, LabelsAPIWrapper, ServerLabelsAPIWrapper } from './components/labels/APIWrapper';
 import {
     getNavigationTestAPIWrapper,
     NavigationAPIWrapper,
@@ -39,6 +40,7 @@ export interface ComponentsAPIWrapper {
     entity: EntityAPIWrapper;
     folder: FolderAPIWrapper;
     labelprinting: LabelPrintingAPIWrapper;
+    labels: LabelsAPIWrapper;
     navigation: NavigationAPIWrapper;
     picklist: PicklistAPIWrapper;
     query: QueryAPIWrapper;
@@ -58,6 +60,7 @@ export function getDefaultAPIWrapper(): ComponentsAPIWrapper {
             folder: new ServerFolderAPIWrapper(),
             query: new QueryServerAPIWrapper(),
             labelprinting: new LabelPrintingServerAPIWrapper(),
+            labels: new ServerLabelsAPIWrapper(),
             navigation: new ServerNavigationAPIWrapper(),
             picklist: new PicklistServerAPIWrapper(),
             samples: new SamplesServerAPIWrapper(),
@@ -83,6 +86,7 @@ export function getTestAPIWrapper(
         folder: getFolderTestAPIWrapper(mockFn, overrides.folder),
         query: getQueryTestAPIWrapper(mockFn, overrides.query),
         labelprinting: getLabelPrintingTestAPIWrapper(mockFn, overrides.labelprinting),
+        labels: getLabelsTestAPIWrapper(mockFn, overrides.labels),
         navigation: getNavigationTestAPIWrapper(mockFn, overrides.navigation),
         picklist: getPicklistTestAPIWrapper(mockFn, overrides.picklist),
         samples: getSamplesTestAPIWrapper(mockFn, overrides.samples),

@@ -512,6 +512,7 @@ import {
     SamplePropertyDataType,
     SampleTypeDataType,
 } from './internal/components/entities/constants';
+import { getModuleCustomLabels } from './internal/components/labels/actions';
 import {
     getEntityDescription,
     getEntityNoun,
@@ -676,10 +677,10 @@ import {
     getSelectedPicklistSamples,
     updatePicklist,
 } from './internal/components/picklist/actions';
-import { PrintLabelsModal } from './internal/components/labels/PrintLabelsModal';
-import { BarTenderConfiguration } from './internal/components/labels/models';
-import { useLabelPrintingContext } from './internal/components/labels/LabelPrintingContextProvider';
-import { BarTenderSettingsForm } from './internal/components/labels/BarTenderSettingsForm';
+import { PrintLabelsModal } from './internal/components/labelPrinting/PrintLabelsModal';
+import { BarTenderConfiguration } from './internal/components/labelPrinting/models';
+import { useLabelPrintingContext } from './internal/components/labelPrinting/LabelPrintingContextProvider';
+import { BarTenderSettingsForm } from './internal/components/labelPrinting/BarTenderSettingsForm';
 import { ColumnSelectionModal } from './internal/components/ColumnSelectionModal';
 
 import { AppReducers, ProductMenuReducers, ServerNotificationReducers } from './internal/app/reducers';
@@ -871,6 +872,7 @@ import { FormButtons } from './internal/FormButtons';
 import { ModalButtons } from './internal/ModalButtons';
 import { getSecurityTestAPIWrapper } from './internal/components/security/APIWrapper';
 import { getFolderTestAPIWrapper } from './internal/components/container/FolderAPIWrapper';
+import { getLabelsTestAPIWrapper } from './internal/components/labels/APIWrapper';
 import { OverlayTrigger, useOverlayTriggerState } from './internal/OverlayTrigger';
 import { Tooltip } from './internal/Tooltip';
 import { Popover } from './internal/Popover';
@@ -933,6 +935,7 @@ const App = {
     getProjectSampleTypeExclusion,
     getProjectPath,
     getFolderTestAPIWrapper,
+    getLabelsTestAPIWrapper,
     getSecurityTestAPIWrapper,
     hasPremiumModule,
     hasProductProjects,
@@ -1775,6 +1778,8 @@ export {
     ModalHeader,
     Tab,
     Tabs,
+    // Custom labels
+    getModuleCustomLabels,
 };
 
 //  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
@@ -1889,7 +1894,7 @@ export type { InjectedLineage, WithLineageOptions } from './internal/components/
 export type {
     LabelPrintingContext,
     LabelPrintingContextProps,
-} from './internal/components/labels/LabelPrintingContextProvider';
+} from './internal/components/labelPrinting/LabelPrintingContextProvider';
 export type { SamplesEditableGridProps } from './internal/sampleModels';
 export type { MeasurementUnit } from './internal/util/measurement';
 export type {
@@ -1925,3 +1930,4 @@ export type { ModalProps } from './internal/Modal';
 export type { QueryLookupFilterGroup, QueryLookupFilterGroupFilter } from './public/QueryColumn';
 export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';
 export type { ExtraExportMenuOptions } from './public/QueryModel/ExportMenu';
+export type { LabelsAPIWrapper } from './internal/components/labels/APIWrapper';

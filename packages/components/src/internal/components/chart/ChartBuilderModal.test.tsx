@@ -341,7 +341,7 @@ describe('getChartRenderMsg', () => {
         expect(getChartRenderMsg(chartConfig, MAX_ROWS_PREVIEW - 1, false)).toBe(undefined);
         expect(getChartRenderMsg(chartConfig, MAX_ROWS_PREVIEW - 1, true)).toBe(undefined);
         expect(getChartRenderMsg(chartConfig, MAX_ROWS_PREVIEW, true)).toBe(
-            'The preview is being limited to 100,000 rows.'
+            'The preview is being limited to 10,000 rows.'
         );
     });
 

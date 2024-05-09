@@ -111,7 +111,11 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
                         </span>
                     )}
                     <span className="margin-left">
-                        <DropdownButton title={<i className="fa fa-download" />} noCaret>
+                        <DropdownButton
+                            buttonClassName="chart-panel-export-btn"
+                            title={<i className="fa fa-download" />}
+                            noCaret
+                        >
                             <MenuHeader text="Export Chart" />
                             <MenuItem onClick={onExportChartPDF}>
                                 <i className="fa fa-file-pdf-o" />

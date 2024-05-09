@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.X
-*Released*: X 2024
+### version 3.43.0
+*Released*: 9 May 2024
 - ELN: Customize signing checkbox and export to PDF
   - Add LabelsAPIWrapper for getting and updating custom labels
 

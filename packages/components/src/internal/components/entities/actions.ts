@@ -230,8 +230,8 @@ export async function getOperationConfirmationDataForModel(
     extraParams?: Record<string, any>
 ): Promise<OperationConfirmationData> {
     const useSnapshotSelection = model.filterArray.length > 0;
-    if (useSnapshotSelection) await setSnapshotSelections(model.id, [...model.selections]);
-    return getOperationConfirmationData(dataType, undefined, model.id, useSnapshotSelection, extraParams);
+    if (useSnapshotSelection) await setSnapshotSelections(model.selectionKey, [...model.selections]);
+    return getOperationConfirmationData(dataType, undefined, model.selectionKey, useSnapshotSelection, extraParams);
 }
 
 async function getSelectedParents(
@@ -761,44 +761,6 @@ export function getCrossFolderSelectionResult(
                         currentFolderSelectionCount: response.data.currentFolderSelectionCount,
                         crossFolderSelectionCount: response.data.crossFolderSelectionCount,
                     });
-                } else {
-                    console.error('Error getting cross-project data selection result', response.exception);
-                    reject(response.exception);
-                }
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                console.error(response);
-                reject(response ? response.exception : 'Unknown error getting cross-project data selection result.');
-            }),
-        });
-    });
-}
-
-export function getContainersFromSelections(
-    dataRegionSelectionKey: string,
-    dataType: string, // 'samples' | 'exp.data' | 'assay',
-    useSnapshotSelection?: boolean,
-    rowIds?: string[] | number[],
-    picklistName?: string
-): Promise<Array<Record<string, any>>> {
-    if (!dataRegionSelectionKey && !rowIds?.length) {
-        return Promise.resolve(undefined);
-    }
-
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL('experiment', 'getSelectedContainers.api'),
-            method: 'POST',
-            jsonData: {
-                dataRegionSelectionKey,
-                rowIds,
-                dataType,
-                picklistName,
-                useSnapshotSelection,
-            },
-            success: Utils.getCallbackWrapper(response => {
-                if (response.success) {
-                    resolve(response.data);
                 } else {
                     console.error('Error getting cross-project data selection result', response.exception);
                     reject(response.exception);

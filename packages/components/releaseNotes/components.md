@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.44.1
+*Released*: 10 May 2024
+- Issue 50360: Cross folder bulk edit doesn't work for grid custom view
+
 ### version 3.44.0
 *Released*: 10 May 2024
 - Chart builder in app (part 2)

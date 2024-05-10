@@ -1,6 +1,8 @@
 import React, { CSSProperties, FC, memo, ReactNode } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 import classNames from 'classnames';
+
+import { Popover } from '../../Popover';
+import { OverlayTrigger } from '../../OverlayTrigger';
 
 const DEFAULT_EMPTY_TEXT = 'No data available.';
 
@@ -33,14 +35,13 @@ export const HorizontalBarSection: FC<Props> = memo(props => {
             .map((row, index) => {
                 const style: CSSProperties = { width: row.percent + '%', background: row.backgroundColor };
                 const overlay = (
-                    <Popover bsClass="popover" id="grid-cell-popover">
+                    <Popover id="grid-cell-popover" placement="top">
                         {row.title}
                     </Popover>
                 );
                 return (
-                    <OverlayTrigger key={index} overlay={overlay} placement="top">
+                    <OverlayTrigger key={index} id={index.toString()} overlay={overlay} style={style}>
                         <div
-                            style={style}
                             data-title={row.title}
                             className={classNames('horizontal-bar-part', row.className, {
                                 'horizontal-bar--linked': !!row.href,

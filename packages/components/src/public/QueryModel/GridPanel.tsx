@@ -1108,7 +1108,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     <div
                         className={classNames('grid-panel__body', { 'panel-body': asPanel, 'top-spacing': !hasHeader })}
                     >
-                        <ChartPanel actions={actions} model={model} />
+                        {!gridIsLoading && <ChartPanel actions={actions} model={model} />}
 
                         {showButtonBar && (
                             <ButtonBar

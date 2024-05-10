@@ -18,6 +18,7 @@ import {
     getChartBuilderChartConfig,
     getChartBuilderQueryConfig,
     getChartRenderMsg,
+    getDefaultBarChartAxisLabel,
     getSelectOptions,
     MAX_POINT_DISPLAY,
     MAX_ROWS_PREVIEW,
@@ -233,6 +234,74 @@ describe('ChartBuilderModal', () => {
         validate(false, true, true);
     });
 
+    test('init from bar chart with y axis value and default aggregate method', () => {
+        const savedChartModel = {
+            canShare: true,
+            canDelete: true,
+            name: 'SavedChart',
+            reportId: 'reportId',
+            shared: false,
+            visualizationConfig: {
+                chartConfig: {
+                    renderType: 'bar_chart',
+                    measures: { x: { name: 'field1' }, y: { name: 'field2' } },
+                    labels: { x: 'Field 1', y: 'Field 2' },
+                },
+                queryConfig: {
+                    schemaName: 'savedSchema',
+                    queryName: 'savedQuery',
+                    viewName: 'savedView',
+                },
+            },
+        } as GenericChartModel;
+
+        renderWithAppContext(
+            <ChartBuilderModal actions={actions} model={model} onHide={jest.fn()} savedChartModel={savedChartModel} />,
+            {
+                serverContext: SERVER_CONTEXT,
+            }
+        );
+
+        validate(false, true, true);
+        expect(document.querySelectorAll('input')).toHaveLength(8);
+        expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
+        expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('SUM');
+    });
+
+    test('init from bar chart with y axis value and aggregate method', () => {
+        const savedChartModel = {
+            canShare: true,
+            canDelete: true,
+            name: 'SavedChart',
+            reportId: 'reportId',
+            shared: false,
+            visualizationConfig: {
+                chartConfig: {
+                    renderType: 'bar_chart',
+                    measures: { x: { name: 'field1' }, y: { name: 'field2', aggregate: { value: 'MEAN' } } },
+                    labels: { x: 'Field 1', y: 'Field 2' },
+                },
+                queryConfig: {
+                    schemaName: 'savedSchema',
+                    queryName: 'savedQuery',
+                    viewName: 'savedView',
+                },
+            },
+        } as GenericChartModel;
+
+        renderWithAppContext(
+            <ChartBuilderModal actions={actions} model={model} onHide={jest.fn()} savedChartModel={savedChartModel} />,
+            {
+                serverContext: SERVER_CONTEXT,
+            }
+        );
+
+        validate(false, true, true);
+        expect(document.querySelectorAll('input')).toHaveLength(8);
+        expect(document.querySelector('input[name=y]').getAttribute('value')).toBe('field2');
+        expect(document.querySelector('input[name=aggregate-method]').getAttribute('value')).toBe('MEAN');
+    });
+
     test('canDelete and canShare false', () => {
         const savedChartModel = {
             canShare: false,
@@ -272,7 +341,7 @@ describe('getChartRenderMsg', () => {
         expect(getChartRenderMsg(chartConfig, MAX_ROWS_PREVIEW - 1, false)).toBe(undefined);
         expect(getChartRenderMsg(chartConfig, MAX_ROWS_PREVIEW - 1, true)).toBe(undefined);
         expect(getChartRenderMsg(chartConfig, MAX_ROWS_PREVIEW, true)).toBe(
-            'The preview is being limited to 100,000 rows.'
+            'The preview is being limited to 10,000 rows.'
         );
     });
 
@@ -381,7 +450,7 @@ describe('getChartBuilderChartConfig', () => {
         expect(config.labels.y).toBe('Sum of Field 2');
     });
 
-    test('based on savedConfig', () => {
+    test('based on savedConfig, without y-label', () => {
         const savedConfig = {
             pointType: 'outliers',
             scales: { x: 'linear', y: 'log' },
@@ -400,7 +469,29 @@ describe('getChartBuilderChartConfig', () => {
         expect(config.measures.x.name).toBe('field1');
         expect(config.measures.y.name).toBe('field2');
         expect(config.labels.x).toBe('X Label');
-        expect(config.labels.y).toBe('Field 2');
+        expect(config.labels.y).toBe('Sum of Field 2');
+    });
+
+    test('based on savedConfig, with y-label', () => {
+        const savedConfig = {
+            pointType: 'outliers',
+            scales: { x: 'linear', y: 'log' },
+            labels: { main: 'Main', subtitle: 'Subtitle', color: 'Something', x: 'X Label', y: 'Y Label' },
+            measures: { x: { name: 'saved1' }, y: { name: 'saved2' } },
+            height: 1,
+            width: 2,
+        } as ChartConfig;
+
+        const config = getChartBuilderChartConfig(BAR_CHART_TYPE, fieldValues, savedConfig);
+        expect(config.scales).toStrictEqual(savedConfig.scales);
+        expect(Object.keys(config.labels)).toStrictEqual(['main', 'subtitle', 'color', 'x', 'y']);
+        expect(config.labels.main).toBe('Main');
+        expect(config.labels.subtitle).toBe('Subtitle');
+        expect(config.pointType).toBe('outliers');
+        expect(config.measures.x.name).toBe('field1');
+        expect(config.measures.y.name).toBe('field2');
+        expect(config.labels.x).toBe('X Label');
+        expect(config.labels.y).toBe('Y Label');
     });
 
     test('box plot specifics', () => {
@@ -437,11 +528,42 @@ describe('getChartBuilderChartConfig', () => {
             fields: [{ name: 'x' }, { name: 'y' }],
         } as ChartTypeInfo;
 
+        const fieldValues = {
+            x: { value: 'field1', label: 'Field 1', data: { fieldKey: 'field1' } },
+            y: { value: 'field2', label: 'Field 2', data: { fieldKey: 'field2' } },
+            'aggregate-method': { value: 'MEAN', name: 'Mean' },
+        };
+
         const config = getChartBuilderChartConfig(boxType, fieldValues, undefined);
         expect(config.geomOptions.boxFillColor).not.toBe('none');
         expect(config.geomOptions.lineWidth).toBe(1);
         expect(config.geomOptions.opacity).toBe(1.0);
         expect(config.geomOptions.pointSize).toBe(5);
         expect(config.geomOptions.position).toBe(null);
+        expect(config.labels.y).toBe('Mean of Field 2');
+    });
+});
+
+describe('getDefaultBarChartAxisLabel', () => {
+    test('no aggregate', () => {
+        expect(getDefaultBarChartAxisLabel({ measures: {} } as ChartConfig)).toBe('Count');
+        expect(getDefaultBarChartAxisLabel({ measures: { x: { label: 'Test' } } } as ChartConfig)).toBe('Count');
+    });
+
+    test('with aggregate', () => {
+        expect(getDefaultBarChartAxisLabel({ measures: { y: { label: 'Test' } } } as ChartConfig)).toBe('Sum of Test');
+        expect(getDefaultBarChartAxisLabel({ measures: { y: { label: 'Test', aggregate: {} } } } as ChartConfig)).toBe(
+            'Sum of Test'
+        );
+        expect(
+            getDefaultBarChartAxisLabel({
+                measures: { y: { label: 'Test', aggregate: { name: 'Min' } } },
+            } as ChartConfig)
+        ).toBe('Min of Test');
+        expect(
+            getDefaultBarChartAxisLabel({
+                measures: { y: { label: 'Test', aggregate: { label: 'Max' } } },
+            } as ChartConfig)
+        ).toBe('Max of Test');
     });
 });

@@ -16,9 +16,9 @@ import classNames from 'classnames';
 import { usePortalRef } from './hooks';
 
 interface OverlayTriggerState<T extends Element = HTMLDivElement> {
+    onClick: () => void;
     onMouseEnter: () => void;
     onMouseLeave: () => void;
-    onClick: () => void;
     portalEl: HTMLElement;
     show: boolean;
     targetRef: MutableRefObject<T>;
@@ -131,7 +131,13 @@ export const OverlayTrigger: FC<Props> = ({
     const clonedContent = cloneElement(overlay, { targetRef });
 
     return (
-        <div className={className_} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} style={style}>
+        <div
+            className={className_}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onClick={onClick}
+            style={style}
+        >
             {clonedChild}
 
             {show && createPortal(clonedContent, portalEl)}

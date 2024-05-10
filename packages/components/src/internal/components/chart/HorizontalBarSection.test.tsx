@@ -40,9 +40,7 @@ describe('HorizontalBarSection', () => {
                 filled: false,
             },
         ];
-        render(
-            <HorizontalBarSection title="Test Allocation" subtitle="A description" data={allocationData} />
-        );
+        render(<HorizontalBarSection title="Test Allocation" subtitle="A description" data={allocationData} />);
 
         expect(document.querySelector('.horizontal-bar--title').textContent).toBe('Test Allocation');
         expect(document.querySelector('.horizontal-bar--subtitle').textContent).toBe('A description');

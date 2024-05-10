@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD May 2024
+### version 3.44.1
+*Released*: 10 May 2024
 - Issue 50360: Cross folder bulk edit doesn't work for grid custom view
 
 ### version 3.44.0

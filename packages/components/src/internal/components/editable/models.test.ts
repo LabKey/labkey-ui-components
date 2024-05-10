@@ -550,18 +550,18 @@ describe('EditorModel', () => {
             });
             const updates = Map<any, any>({
                 withValue: 'purple',
-                withDisplay$SValue: 'teal',
+                'withDisplay/Value': 'teal',
             });
             expect(EditorModel.convertQueryDataToEditorData(queryData, updates)).toStrictEqual(
                 Map<string, any>({
                     1: Map<string, any>({
                         withValue: 'purple',
-                        withDisplay$SValue: 'teal',
+                        'withDisplay/Value': 'teal',
                         doNotChangeMe: 'fred',
                     }),
                     2: Map<string, any>({
                         withValue: 'purple',
-                        withDisplay$SValue: 'teal',
+                        'withDisplay/Value': 'teal',
                         doNotChangeMe: 'maroon',
                     }),
                 })

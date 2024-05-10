@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 
 import { Chart } from '../../internal/components/chart/Chart';
 
-import { GENERIC_CHART_REPORTS } from '../../internal/constants';
+import { GENERIC_CHART_REPORTS, LABKEY_VIS } from '../../internal/constants';
 import { ChartAPIWrapper, DEFAULT_API_WRAPPER } from '../../internal/components/chart/api';
 import { GenericChartModel } from '../../internal/components/chart/models';
 import { ChartBuilderModal } from '../../internal/components/chart/ChartBuilderModal';
@@ -10,6 +10,8 @@ import { useNotificationsContext } from '../../internal/components/notifications
 
 import { isChartBuilderEnabled } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
+
+import { DropdownButton, MenuHeader, MenuItem } from '../../internal/dropdowns';
 
 import { RequiresModelAndActions } from './withQueryModels';
 
@@ -57,6 +59,24 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
         setShowEditModal(true);
     }, []);
 
+    const onExportChart = useCallback(
+        (type: string) => {
+            const svg = document.querySelector('.chart-panel svg');
+            if (svg) {
+                LABKEY_VIS.SVGConverter.convert(svg, type, selectedChart.name);
+            }
+        },
+        [selectedChart]
+    );
+
+    const onExportChartPDF = useCallback(() => {
+        onExportChart(LABKEY_VIS.SVGConverter.FORMAT_PDF);
+    }, [onExportChart]);
+
+    const onExportChartPNG = useCallback(() => {
+        onExportChart(LABKEY_VIS.SVGConverter.FORMAT_PNG);
+    }, [onExportChart]);
+
     const onHideEditChart = useCallback(
         (successMsg?: string) => {
             setShowEditModal(false);
@@ -90,6 +110,23 @@ export const ChartPanel: FC<Props> = memo(({ actions, model, api = DEFAULT_API_W
                             </button>
                         </span>
                     )}
+                    <span className="margin-left">
+                        <DropdownButton
+                            buttonClassName="chart-panel-export-btn"
+                            title={<i className="fa fa-download" />}
+                            noCaret
+                        >
+                            <MenuHeader text="Export Chart" />
+                            <MenuItem onClick={onExportChartPDF}>
+                                <i className="fa fa-file-pdf-o" />
+                                &nbsp; PDF
+                            </MenuItem>
+                            <MenuItem onClick={onExportChartPNG}>
+                                <i className="fa fa-file-image-o" />
+                                &nbsp; PNG
+                            </MenuItem>
+                        </DropdownButton>
+                    </span>
                 </div>
 
                 <div className="chart-panel__hide-icon">

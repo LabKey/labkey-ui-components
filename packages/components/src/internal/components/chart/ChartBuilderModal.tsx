@@ -26,6 +26,8 @@ import { getContainerFilter } from '../../query/api';
 
 import { SVGIcon } from '../base/SVGIcon';
 
+import { LabelOverlay } from '../forms/LabelOverlay';
+
 import { deleteChart, saveChart, SaveReportConfig } from './actions';
 
 import { ChartConfig, ChartQueryConfig, GenericChartModel } from './models';
@@ -55,9 +57,20 @@ export interface ChartTypeInfo {
 
 const HIDDEN_CHART_TYPES = ['time_chart'];
 const RIGHT_COL_FIELDS = ['color', 'shape', 'series'];
-export const MAX_ROWS_PREVIEW = 100000;
+export const MAX_ROWS_PREVIEW = 10000;
 export const MAX_POINT_DISPLAY = 10000;
 const BLUE_HEX_COLOR = '3366FF';
+const BAR_CHART_AGGREGATE_NAME = 'aggregate-method';
+const BAR_CHART_AGGREGATE_METHODS = [
+    { label: 'Count (non-blank)', value: 'COUNT' },
+    { label: 'Sum', value: 'SUM' },
+    { label: 'Min', value: 'MIN' },
+    { label: 'Max', value: 'MAX' },
+    { label: 'Mean', value: 'MEAN' },
+    { label: 'Median', value: 'MEDIAN' },
+];
+const BAR_CHART_AGGREGATE_METHOD_TIP =
+    'The aggregate method that will be used to determine the bar height for a given x-axis category / dimension. Field values that are blank are not included in calculated aggregate values.';
 
 const ICONS = {
     bar_chart: 'bar_chart',
@@ -197,9 +210,9 @@ export const getChartBuilderChartConfig = (
                     fieldValues[field.name].data.type,
             };
 
-            // for now, retain axis aggregate config if it was set via LKS
-            if (savedConfig && savedConfig.measures[field.name]?.aggregate) {
-                config.measures[field.name].aggregate = { ...savedConfig.measures[field.name].aggregate };
+            // check if the field has an aggregate method (bar chart y-axis only)
+            if (fieldValues[BAR_CHART_AGGREGATE_NAME] && field.name === 'y') {
+                config.measures[field.name].aggregate = { ...fieldValues[BAR_CHART_AGGREGATE_NAME] };
             }
 
             // update axis label if it is a new report or if the saved report that didn't have this measure or was using the default field label for the axis label
@@ -213,11 +226,22 @@ export const getChartBuilderChartConfig = (
         }
     });
 
-    if (chartType.name === 'bar_chart' && !savedConfig) {
-        config.labels['y'] = fieldValues.y ? 'Sum of ' + fieldValues.y.label : 'Count';
+    if (
+        chartType.name === 'bar_chart' &&
+        (!savedConfig ||
+            !savedConfig.labels?.['y'] ||
+            savedConfig.labels?.['y'] === getDefaultBarChartAxisLabel(savedConfig))
+    ) {
+        config.labels['y'] = getDefaultBarChartAxisLabel(config);
     }
 
     return config;
+};
+
+export const getDefaultBarChartAxisLabel = (config: ChartConfig): string => {
+    const aggregate = config.measures.y?.aggregate;
+    const prefix = (aggregate?.name ?? aggregate?.label ?? 'Sum') + ' of ';
+    return config.measures.y ? prefix + config.measures.y.label : 'Count';
 };
 
 interface ChartTypeSideBarProps {
@@ -276,7 +300,6 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
         fieldValues,
         model,
         onSelectFieldChange,
-        savedChartModel,
     } = props;
 
     const leftColFields = useMemo(() => {
@@ -347,12 +370,22 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                                     value={fieldValues[field.name]?.value}
                                 />
                             </div>
-                            {/* TODO change this to a select input with predefined options*/}
-                            {selectedType.name === 'bar_chart' && fieldValues[field.name]?.value && (
-                                <div className="gray-text">
-                                    Aggregate method:{' '}
-                                    {savedChartModel?.visualizationConfig.chartConfig.measures['y']?.aggregate?.name ??
-                                        'Sum'}
+                            {selectedType.name === 'bar_chart' && fieldValues.y?.value && (
+                                <div>
+                                    <label>
+                                        Y Axis Aggregate Method{' '}
+                                        <LabelOverlay content={BAR_CHART_AGGREGATE_METHOD_TIP} placement="bottom" />
+                                    </label>
+                                    <SelectInput
+                                        showLabel={false}
+                                        clearable={false}
+                                        inputClass="col-xs-12"
+                                        placeholder="Select aggregate method"
+                                        name={BAR_CHART_AGGREGATE_NAME}
+                                        options={BAR_CHART_AGGREGATE_METHODS}
+                                        onChange={onSelectFieldChange}
+                                        value={fieldValues[BAR_CHART_AGGREGATE_NAME]?.value ?? 'SUM'}
+                                    />
                                 </div>
                             )}
                         </Fragment>
@@ -400,6 +433,24 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
             savedChartModel?.visualizationConfig?.queryConfig
         );
 
+        setReportConfig({
+            schemaName: queryConfig.schemaName,
+            queryName: queryConfig.queryName,
+            viewName: queryConfig.viewName,
+            renderType: chartConfig.renderType,
+            jsonData: {
+                chartConfig,
+                queryConfig: {
+                    ...queryConfig,
+                    filterArray: queryConfig.filterArray.map(f => ({
+                        name: f['name'] ?? f.getColumnName(),
+                        value: f['value'] ?? f.getValue(),
+                        type: f['type'] ?? f.getFilterType().getURLSuffix(),
+                    })),
+                },
+            },
+        });
+
         // add model filters, parameters, and containerFilter plus maxRows to the queryConfig for the preview, but not to save with the chart
         const queryConfig_ = {
             ...queryConfig,
@@ -410,6 +461,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
         };
 
         setLoadingData(true);
+
         LABKEY_VIS.GenericChartHelper.queryChartData(divId, queryConfig_, measureStore => {
             const rowCount = LABKEY_VIS.GenericChartHelper.getMeasureStoreRecords(measureStore).length;
             const _previewMsg = getChartRenderMsg(chartConfig, rowCount, true);
@@ -433,27 +485,11 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                 chartConfig_.geomOptions.marginTop = 10;
             }
 
+            if (ref?.current) ref.current.innerHTML = ''; // clear again, right before render
             LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig_, measureStore);
 
             setPreviewMsg(_previewMsg);
             setLoadingData(false);
-            setReportConfig({
-                schemaName: queryConfig.schemaName,
-                queryName: queryConfig.queryName,
-                viewName: queryConfig.viewName,
-                renderType: chartConfig.renderType,
-                jsonData: {
-                    chartConfig,
-                    queryConfig: {
-                        ...queryConfig,
-                        filterArray: queryConfig.filterArray.map(f => ({
-                            name: f['name'] ?? f.getColumnName(),
-                            value: f['value'] ?? f.getValue(),
-                            type: f['type'] ?? f.getFilterType().getURLSuffix(),
-                        })),
-                    },
-                },
-            });
         });
     }, [divId, model, hasRequiredValues, selectedType, fieldValues, savedChartModel, containerFilter, setReportConfig]);
 
@@ -601,6 +637,12 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
                     }
                     return result;
                 }, {});
+
+                // special case for the bar chart aggregate method
+                if (measures.y?.aggregate) {
+                    fieldValues_[BAR_CHART_AGGREGATE_NAME] = { ...measures.y.aggregate };
+                }
+
                 setFieldValues(fieldValues_);
             }
         },
@@ -635,6 +677,7 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
     }, []);
 
     const onSelectFieldChange = useCallback((key: string, _, selectedOption: SelectInputOption) => {
+        setReportConfig(undefined); // clear report config state, it will be reset after the preview loads
         setFieldValues(prev => ({ ...prev, [key]: selectedOption }));
     }, []);
 
@@ -676,7 +719,7 @@ export const ChartBuilderModal: FC<ChartBuilderModalProps> = memo(({ actions, mo
     const footer = (
         <ChartBuilderFooter
             afterDelete={afterDelete}
-            disabled={!hasName || !hasRequiredValues}
+            disabled={!hasName || !hasRequiredValues || !reportConfig}
             onCancel={onCancel}
             onSaveChart={onSaveChart}
             savedChartModel={savedChartModel}

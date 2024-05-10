@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD May 2024
 - Issue 50360: Cross folder bulk edit doesn't work for grid custom view
 
+### version 3.44.0
+*Released*: 10 May 2024
+- Chart builder in app (part 2)
+  - Allow exports of charts within the apps to PDF/PNG via export dropdown menu
+  - Allow bar-chart y-axis aggregation method (sum, min, max, mean, median) selection
+  - Change chart builder modal preview limit from 100k rows to 10k rows
+
 ### version 3.43.0
 *Released*: 9 May 2024
 - ELN: Customize signing checkbox and export to PDF

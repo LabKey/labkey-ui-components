@@ -521,6 +521,7 @@ describe('fillColumnCells', () => {
             editorModel.cellValues,
             ['0-0'],
             ['0-1', '0-2', '0-3'],
+            true,
             dataKeys,
             data
         );
@@ -540,6 +541,7 @@ describe('fillColumnCells', () => {
             editorModel.cellValues,
             ['0-0', '0-1', '0-2'],
             ['0-3', '0-4'],
+            true,
             dataKeys,
             data
         );
@@ -558,6 +560,7 @@ describe('fillColumnCells', () => {
             editorModel.cellValues,
             ['1-0', '1-1', '1-2'],
             ['1-3', '1-4'],
+            true,
             dataKeys,
             data
         );
@@ -576,6 +579,7 @@ describe('fillColumnCells', () => {
             editorModel.cellValues,
             ['1-1', '1-2'],
             ['1-0'],
+            true,
             dataKeys,
             data
         );
@@ -592,6 +596,7 @@ describe('fillColumnCells', () => {
             editorModel.cellValues,
             ['2-0', '2-1', '2-2'],
             ['2-3', '2-4'],
+            true,
             dataKeys,
             data
         );
@@ -610,6 +615,7 @@ describe('fillColumnCells', () => {
             editorModel.cellValues,
             ['2-1', '2-2'],
             ['2-0'],
+            true,
             dataKeys,
             data
         );
@@ -626,6 +632,7 @@ describe('fillColumnCells', () => {
             editorModel.cellValues,
             ['6-0'],
             ['6-1', '6-2', '6-3'],
+            true,
             dataKeys,
             data
         );
@@ -645,6 +652,7 @@ describe('fillColumnCells', () => {
             editorModel.cellValues,
             ['6-2'],
             ['6-0', '6-1'],
+            true,
             dataKeys,
             data
         );
@@ -664,6 +672,7 @@ describe('fillColumnCells', () => {
             editorModel.cellValues,
             ['7-0'],
             ['7-1', '7-2', '7-3'],
+            true,
             dataKeys,
             data
         );
@@ -683,6 +692,7 @@ describe('fillColumnCells', () => {
             editorModel.cellValues,
             ['7-2'],
             ['7-0', '7-1'],
+            true,
             dataKeys,
             data
         );
@@ -702,6 +712,7 @@ describe('fillColumnCells', () => {
             editorModel.cellValues,
             ['5-0', '5-1', '5-2'],
             ['5-3', '5-4', '5-5'],
+            true,
             dataKeys,
             data
         );

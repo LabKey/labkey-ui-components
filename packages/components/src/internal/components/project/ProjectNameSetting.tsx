@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
@@ -41,22 +40,25 @@ export const ProjectNameSetting: FC<Props> = memo(props => {
 
     return (
         <div className="project-name-properties">
-            <FormGroup controlId="project-name-prop-name">
-                <ControlLabel className="col-xs-12 col-sm-2 text-left" required>
+            <div className="form-group">
+                <label className="control-label col-xs-12 col-sm-2 text-left" htmlFor="project-name">
                     Project Name <span className="required-symbol">*</span>
-                </ControlLabel>
+                </label>
 
                 <div className="col-sm-10 col-md-5">
-                    <FormControl
+                    <input
                         autoComplete="off"
                         autoFocus={autoFocus}
+                        className="form-control"
                         defaultValue={defaultName}
+                        id="project-name"
                         name="name"
                         onChange={_onNameChange}
                         required
                         type="text"
                         maxLength={MAX_FOLDER_NAME_LENGTH}
                     />
+
                     <span className="help-block">
                         <label className="checkbox-inline" title={toggleLabel}>
                             <input
@@ -71,33 +73,26 @@ export const ProjectNameSetting: FC<Props> = memo(props => {
                         </label>
                     </span>
                 </div>
-            </FormGroup>
+            </div>
 
-            <FormGroup controlId="project-name-prop-title">
-                <ControlLabel className="col-xs-12 col-sm-2 text-left">Project Label</ControlLabel>
+            <div className="form-group">
+                <label className="control-label col-xs-12 col-sm-2 text-left" htmlFor="project-label">
+                    Project Label
+                </label>
 
                 <div className="col-sm-10 col-md-5">
-                    {nameIsTitle ? (
-                        <FormControl
-                            autoComplete="off"
-                            disabled={nameIsTitle}
-                            key="controlled"
-                            name="title"
-                            type="text"
-                            value={nameIsTitle ? name : undefined}
-                        />
-                    ) : (
-                        <FormControl
-                            autoComplete="off"
-                            defaultValue={nameIsTitle ? name : defaultTitle}
-                            key="uncontrolled"
-                            name="title"
-                            onChange={_onTitleChange}
-                            type="text"
-                        />
-                    )}
+                    <input
+                        autoComplete="off"
+                        className="form-control"
+                        disabled={nameIsTitle}
+                        id="project-label"
+                        name="title"
+                        onChange={_onTitleChange}
+                        type="text"
+                        value={nameIsTitle ? name : undefined}
+                    />
                 </div>
-            </FormGroup>
+            </div>
         </div>
     );
 });

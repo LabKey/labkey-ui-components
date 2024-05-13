@@ -1004,6 +1004,7 @@ export async function fillColumnCells(
     initialSelection: string[],
     selectionToFill: string[],
     forUpdate: boolean,
+    targetContainerPath: string,
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>
 ): Promise<CellMessagesAndValues> {
@@ -1056,20 +1057,28 @@ export async function fillColumnCells(
     // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
     if (column.isPublicLookup()) {
         const filteredLookupValues = columnMetadata?.filteredLookupValues?.toArray();
+        const lookupColumnContainerCache = {};
         for (const cellKey of selectionToFill) {
             const display = cellValues
                 .get(cellKey)
                 .map(v => v.display)
                 .toArray();
-            const rowContainerPath = getFolderValueFromDataRow(cellKey, dataKeys, data);
-            const { descriptors } = await findLookupValues(
-                column,
-                undefined,
-                display,
-                undefined,
-                forUpdate,
-                rowContainerPath
-            );
+
+            const containerPath = forUpdate ? getFolderValueFromDataRow(cellKey, dataKeys, data) : targetContainerPath;
+            const cacheKey = `${column.fieldKey}||${containerPath}`;
+            let descriptors = lookupColumnContainerCache[cacheKey];
+            if (!descriptors) {
+                const response = await findLookupValues(
+                    column,
+                    undefined,
+                    display,
+                    undefined,
+                    forUpdate,
+                    containerPath
+                );
+                descriptors = response.descriptors;
+                lookupColumnContainerCache[cacheKey] = descriptors;
+            }
 
             const { message, values } = parsePastedLookup(descriptors, filteredLookupValues ?? display.join(','));
             cellValues = cellValues.set(cellKey, values);
@@ -1100,6 +1109,7 @@ type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
  * @param readonlyRows A list of readonly rows
  * @param lockedRows A list of locked rows
  * @param forUpdate True if this is operating on update query filters.
+ * @param targetContainerPath The container path to use when looking up lookup values in the forUpdate false case
  */
 export async function dragFillEvent(
     editorModel: EditorModel,
@@ -1111,7 +1121,8 @@ export async function dragFillEvent(
     columnMetadata: EditableColumnMetadata[],
     readonlyRows: string[],
     lockedRows: string[],
-    forUpdate: boolean
+    forUpdate: boolean,
+    targetContainerPath: string
 ): Promise<CellMessagesAndValues> {
     const finalSelection = editorModel.selectionCells;
     let cellValues = editorModel.cellValues;
@@ -1155,6 +1166,7 @@ export async function dragFillEvent(
             initialSelectionByCol,
             selectionToFillByCol,
             forUpdate,
+            targetContainerPath,
             dataKeys,
             data
         );
@@ -1386,6 +1398,7 @@ async function insertPastedData(
     lockedRows: string[],
     lockRowCount: boolean,
     forUpdate: boolean,
+    targetContainerPath: string,
     selectCells: boolean
 ): Promise<EditorModelAndGridData> {
     const pastedData = paste.payload.data;
@@ -1404,6 +1417,7 @@ async function insertPastedData(
     }
 
     const byColumnValues = getPasteValuesByColumn(paste);
+    const lookupColumnContainerCache = {};
     const { colMin, rowMin } = paste.coordinates;
     const pkCols = queryInfo.getPkCols();
     let rowIdx = rowMin;
@@ -1450,18 +1464,25 @@ async function insertPastedData(
                 let msg: CellMessage;
 
                 if (col?.isPublicLookup()) {
-                    // If the column is a lookup, then we need to query for the rowIds so we can set the correct raw values,
+                    // If the column is a lookup and forUpdate is true, then we need to query for the rowIds so we can set the correct raw values,
                     // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
-                    const rowContainerPath = getFolderValueFromDataRow(cellKey, dataKeys, data);
-                    // eslint-disable-next-line no-await-in-loop
-                    const { descriptors } = await findLookupValues(
-                        col,
-                        undefined,
-                        byColumnValues.get(cn)?.toArray(),
-                        undefined,
-                        forUpdate,
-                        rowContainerPath
-                    );
+                    const containerPath = forUpdate ? getFolderValueFromDataRow(cellKey, dataKeys, data) : targetContainerPath;
+
+                    const cacheKey = `${col.fieldKey}||${containerPath}`;
+                    let descriptors = lookupColumnContainerCache[cacheKey];
+                    if (!descriptors) {
+                        // eslint-disable-next-line no-await-in-loop
+                        const response = await findLookupValues(
+                            col,
+                            undefined,
+                            byColumnValues.get(cn)?.toArray(),
+                            undefined,
+                            forUpdate,
+                            containerPath
+                        );
+                        descriptors = response.descriptors;
+                        lookupColumnContainerCache[cacheKey] = descriptors;
+                    }
 
                     const { message, values } = parsePastedLookup(descriptors, value);
                     cv = values;
@@ -1550,6 +1571,7 @@ export async function validateAndInsertPastedData(
     lockedRows: string[],
     lockRowCount: boolean,
     forUpdate: boolean,
+    targetContainerPath: string,
     selectCells: boolean
 ): Promise<EditorModelAndGridData> {
     const { selectedColIdx, selectedRowIdx } = editorModel;
@@ -1572,6 +1594,7 @@ export async function validateAndInsertPastedData(
             lockedRows,
             lockRowCount,
             forUpdate,
+            targetContainerPath,
             selectCells
         );
     } else {
@@ -1595,7 +1618,8 @@ export async function pasteEvent(
     readonlyRows: string[],
     lockedRows: string[],
     lockRowCount: boolean,
-    forUpdate: boolean
+    forUpdate: boolean,
+    targetContainerPath: string
 ): Promise<EditorModelAndGridData> {
     // If a cell has focus do not accept incoming paste events -- allow for normal paste to input
     if (editorModel && editorModel.hasSelection && !editorModel.hasFocus) {
@@ -1613,6 +1637,7 @@ export async function pasteEvent(
             lockedRows,
             lockRowCount,
             forUpdate,
+            targetContainerPath,
             true
         );
     }

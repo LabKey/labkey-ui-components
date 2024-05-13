@@ -1139,7 +1139,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     _dragFill = async (initialSelection: string[]): Promise<void> => {
-        const { editorModel, forUpdate, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
+        const { editorModel, forUpdate, containerPath, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
 
         if (editorModel.isMultiSelect) {
             const loweredColumnMetadata = this.getLoweredColumnMetadata();
@@ -1155,7 +1155,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 columnMetadata,
                 readonlyRows,
                 lockedRows,
-                forUpdate
+                forUpdate,
+                containerPath
             );
             onChange(EditableGridEvent.DRAG_FILL, { cellMessages, cellValues });
             this.setState({ initialSelection: undefined });
@@ -1198,6 +1199,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             queryInfo,
             readonlyRows,
             lockedRows,
+            containerPath,
         } = this.props;
 
         if (disabled) return;
@@ -1215,6 +1217,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             lockedRows,
             !allowAdd,
             forUpdate,
+            containerPath,
             false
         );
         this.hideMask();
@@ -1235,6 +1238,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             queryInfo,
             readonlyRows,
             lockedRows,
+            containerPath,
         } = this.props;
 
         if (disabled) return;
@@ -1251,7 +1255,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             readonlyRows,
             lockedRows,
             !allowAdd,
-            forUpdate
+            forUpdate,
+            containerPath
         );
         this.hideMask();
 

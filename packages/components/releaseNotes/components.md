@@ -5,7 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD May 2024
 - Issue 50363: Cross Folder lookup editable grid copy/paste and fill down don't account for containerPath / containerFilter
   - findLookupValues() to use getContainerFilterForLookups() and accept containerPath optional param
-  - fillColumnCells() and insertPastedData() to use containerPath for the given row when validating cell lookup values
+  - fillColumnCells() and insertPastedData() to use containerPath for the given row when validating cell lookup values forUpdate true case
+  - fillColumnCells() and insertPastedData() to use targetContainerPath forUpdate false case
 
 ### version 3.44.1
 *Released*: 10 May 2024

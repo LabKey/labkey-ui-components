@@ -1,9 +1,5 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-
-import { FormGroup } from 'react-bootstrap';
-
 import { List } from 'immutable';
-
 import { getServerContext } from '@labkey/api';
 
 import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
@@ -250,7 +246,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
             {updatedTemplate && (
                 <form className="form-horizontal content-form choices-detail__form">
                     {error && <Alert>{error}</Alert>}
-                    <FormGroup>
+                    <div className="form-group">
                         <div className="col-sm-4">
                             <DomainFieldLabel label="Name" required />
                         </div>
@@ -265,8 +261,8 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                                 value={updatedTemplate.name ?? ''}
                             />
                         </div>
-                    </FormGroup>
-                    <FormGroup>
+                    </div>
+                    <div className="form-group">
                         <div className="col-sm-4">
                             <DomainFieldLabel label="Description" />
                         </div>
@@ -279,8 +275,8 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                                 value={updatedTemplate.description ?? ''}
                             />
                         </div>
-                    </FormGroup>
-                    <FormGroup>
+                    </div>
+                    <div className="form-group">
                         <div className="col-sm-4">
                             <DomainFieldLabel label="File Path" required />
                             <LabelHelpTip title="BarTender Label Template">
@@ -301,9 +297,9 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                                 value={updatedTemplate.path ?? ''}
                             />
                         </div>
-                    </FormGroup>
+                    </div>
                     {isDefaultable && (
-                        <FormGroup>
+                        <div className="form-group">
                             <div className="col-sm-4">
                                 <DomainFieldLabel label="Default Template" />
                             </div>
@@ -314,7 +310,7 @@ export const LabelTemplateDetails: FC<LabelTemplateDetailsProps> = memo(props =>
                                 type="checkbox"
                                 onChange={defaultToggleHandler}
                             />
-                        </FormGroup>
+                        </div>
                     )}
                     <div>
                         {!isNew && (

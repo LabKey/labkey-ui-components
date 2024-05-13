@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import { ProgressBar } from 'react-bootstrap';
+import classNames from 'classnames';
 
 import { Modal } from '../../Modal';
 
@@ -101,8 +101,23 @@ export class Progress extends React.Component<Props, State> {
 
         if (!show) return null;
 
-        const indicator = show && (
-            <ProgressBar active now={percent} bsStyle={percent === 100 ? 'success' : undefined} />
+        const progressClassName = classNames('progress-bar', 'progress-bar-striped', 'active', {
+            'progress-bar-success': percent === 100,
+        });
+        const progressWidth = percent + '%';
+        const indicator = (
+            <div className="progress">
+                <div
+                    role="progressbar"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={percent}
+                    className={progressClassName}
+                    style={{ width: progressWidth }}
+                >
+                    <span className="sr-only">{percent}%</span>
+                </div>
+            </div>
         );
 
         if (modal) {

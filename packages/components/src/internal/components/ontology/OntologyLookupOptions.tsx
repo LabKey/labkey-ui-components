@@ -1,5 +1,4 @@
 import React, { FC, memo, PureComponent, ReactNode } from 'react';
-import { FormControl } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { ADVANCED_FIELD_EDITOR_TOPIC, HelpLink, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
@@ -195,8 +194,8 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                 </div>
                 <div className="row">
                     <div className="col-xs-5">
-                        <FormControl
-                            componentClass="select"
+                        <select
+                            className="form-control"
                             id={sourceId}
                             key={sourceId}
                             disabled={isFieldFullyLocked(lockType)}
@@ -222,7 +221,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                         </option>
                                     );
                                 })}
-                        </FormControl>
+                        </select>
                         <div className="domain-field-label">
                             <OntologyConceptSelectButton
                                 id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_SUBTREE_COL, domainIndex, index)}
@@ -277,8 +276,8 @@ const OntologyTextDomainFieldSelect: FC<OntologyTextDomainFieldSelectProps> = me
     const { domainFields, lockType, field, id, value, filterValue, onFieldChange } = props;
 
     return (
-        <FormControl
-            componentClass="select"
+        <select
+            className="form-control"
             id={id}
             key={id}
             disabled={isFieldFullyLocked(lockType)}
@@ -299,6 +298,6 @@ const OntologyTextDomainFieldSelect: FC<OntologyTextDomainFieldSelectProps> = me
                     </option>
                 );
             })}
-        </FormControl>
+        </select>
     );
 });

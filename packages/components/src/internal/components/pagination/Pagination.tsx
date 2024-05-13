@@ -1,5 +1,4 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { ButtonGroup } from 'react-bootstrap';
 
 import { LoadingState } from '../../../public/LoadingState';
 
@@ -89,7 +88,7 @@ export class Pagination extends PureComponent<PaginationProps> {
                 />
 
                 {showPaginationButtons && (
-                    <ButtonGroup className="pagination-button-group">
+                    <div className="pagination-button-group btn-group">
                         <PaginationButton
                             className="pagination-button--previous"
                             disabled={disabled || isFirstPage}
@@ -118,7 +117,7 @@ export class Pagination extends PureComponent<PaginationProps> {
                             tooltip="Next Page"
                             onClick={this.onLoadNextPage}
                         />
-                    </ButtonGroup>
+                    </div>
                 )}
             </div>
         );

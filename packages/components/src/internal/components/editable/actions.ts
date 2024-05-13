@@ -11,10 +11,19 @@ import { GRID_EDIT_INDEX } from '../../constants';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
 import { GridData } from '../../models';
 import { formatDate, formatDateTime, parseDate } from '../../util/Date';
-import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from '../../util/utils';
+import {
+    caseInsensitive,
+    getValueFromRow,
+    isFloat,
+    isInteger,
+    parseCsvString,
+    parseScientificInt,
+} from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
 
 import { selectRows } from '../../query/selectRows';
+
+import { getContainerFilterForLookups } from '../../query/api';
 
 import {
     CellMessage,
@@ -200,7 +209,8 @@ const findLookupValues = async (
     lookupKeyValues?: any[],
     lookupValues?: any[],
     lookupValueFilters?: Filter.IFilter[],
-    forUpdate?: boolean
+    forUpdate?: boolean,
+    containerPath?: string
 ): ColumnLoaderPromise => {
     const { lookup } = column;
     const { keyColumn } = lookup;
@@ -208,7 +218,8 @@ const findLookupValues = async (
 
     const results = await selectRows({
         columns: [displayColumn, keyColumn],
-        containerPath: lookup.containerPath,
+        containerPath: lookup.containerPath ?? containerPath,
+        containerFilter: lookup.containerFilter ?? getContainerFilterForLookups(),
         filterArray: getLookupFilters(
             column,
             lookupKeyValues,
@@ -980,6 +991,8 @@ export function generateFillCellKeys(initialSelection: string[], finalSelection:
  * @param initialSelection An array of sorted cell keys, all from the same column that were initially selected
  * @param selectionToFill An array of sorted cell keys, all from the same column, to be filled with values based on the
  * content of initialSelection
+ * @param dataKeys The orderedRows Object from a QueryModel
+ * @param data The rows object from a QueryModel
  */
 export async function fillColumnCells(
     editorModel: EditorModel,
@@ -988,7 +1001,9 @@ export async function fillColumnCells(
     cellMessages: CellMessages,
     cellValues: CellValues,
     initialSelection: string[],
-    selectionToFill: string[]
+    selectionToFill: string[],
+    dataKeys: List<any>,
+    data: Map<any, Map<string, any>>
 ): Promise<CellMessagesAndValues> {
     const { direction, increment, incrementType, prefix, startingValue, initialSelectionValues } =
         inferSelectionIncrement(editorModel, initialSelection, selectionToFill);
@@ -1035,21 +1050,42 @@ export async function fillColumnCells(
         cellValues = cellValues.set(cellKey, fillValue);
     });
 
-    // If the column is a lookup, and we've generated new displayValues, then we need to query for the rowIds so we can
-    // set the correct raw values, otherwise insert will fail. This is most common for samples where we increment sample
-    // names during drag fill so S-1 becomes S-2, S-3, etc.
-    if (column.isPublicLookup() && displayValues.length) {
+    // If the column is a lookup, then we need to query for the rowIds so we can set the correct raw values,
+    // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
+    if (column.isPublicLookup()) {
         const filteredLookupValues = columnMetadata?.filteredLookupValues?.toArray();
-        const { descriptors } = await findLookupValues(column, undefined, displayValues);
-        selectionToFill.forEach(cellKey => {
-            const display = cellValues.get(cellKey).get(0).display;
-            const { message, values } = parsePastedLookup(column, descriptors, filteredLookupValues ?? display);
+        for (const cellKey of selectionToFill) {
+            const display = cellValues.get(cellKey).map(v => v.display).toArray();
+            const rowContainerPath = getFolderValueFromDataRow(cellKey, dataKeys, data);
+            const { descriptors } = await findLookupValues(
+                column,
+                undefined,
+                display,
+                undefined,
+                true,
+                rowContainerPath
+            );
+
+            const { message, values } = parsePastedLookup(
+                column,
+                descriptors,
+                filteredLookupValues ?? display.join(',')
+            );
             cellValues = cellValues.set(cellKey, values);
             cellMessages = cellMessages.set(cellKey, message);
-        });
+        }
     }
 
     return { cellValues, cellMessages };
+}
+
+function getFolderValueFromDataRow(cellKey: string, dataKeys: List<any>, data: Map<any, Map<string, any>>): string {
+    const { rowIdx } = parseCellKey(cellKey);
+    const dataRow = data.get(dataKeys.get(rowIdx));
+    return (
+        getValueFromRow(dataRow?.toJS(), 'Folder')?.toString() ??
+        getValueFromRow(dataRow?.toJS(), 'Container')?.toString()
+    );
 }
 
 type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
@@ -1116,7 +1152,9 @@ export async function dragFillEvent(
             cellMessages,
             cellValues,
             initialSelectionByCol,
-            selectionToFillByCol
+            selectionToFillByCol,
+            dataKeys,
+            data
         );
         cellValues = messagesAndValues.cellValues;
         cellMessages = messagesAndValues.cellMessages;
@@ -1275,7 +1313,7 @@ interface ParseLookupPayload {
     values: List<ValueDescriptor>;
 }
 
-function parsePastedLookup(column: QueryColumn, descriptors: ValueDescriptor[], value: string): ParseLookupPayload {
+function parsePastedLookup(column: QueryColumn, descriptors: ValueDescriptor[], value: string[] | string): ParseLookupPayload {
     if (value === undefined || value === null || typeof value !== 'string') {
         return {
             values: List([
@@ -1335,20 +1373,19 @@ function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRow
     return false;
 }
 
-function insertPastedData(
+async function insertPastedData(
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
     queryInfo: QueryInfo,
     columns: QueryColumn[],
     editorModel: EditorModel,
     paste: PasteModel,
-    lookupDescriptorMap: { [colKey: string]: ValueDescriptor[] },
     columnMetadata: Map<string, EditableColumnMetadata>,
     readonlyRows: string[],
     lockedRows: string[],
     lockRowCount: boolean,
     selectCells: boolean
-): EditorModelAndGridData {
+): Promise<EditorModelAndGridData> {
     const pastedData = paste.payload.data;
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
@@ -1364,6 +1401,7 @@ function insertPastedData(
         updatedDataKeys = dataChanges.dataKeys;
     }
 
+    const byColumnValues = getPasteValuesByColumn(paste);
     const { colMin, rowMin } = paste.coordinates;
     const pkCols = queryInfo.getPkCols();
     let rowIdx = rowMin;
@@ -1378,7 +1416,8 @@ function insertPastedData(
         allReadOnlyRows = lockedRows;
     }
 
-    pastedData.forEach(row => {
+    for (let r = 0; r < pastedData.size; r++) {
+        const row = pastedData.get(r);
         if (hasReachedRowLimit && lockRowCount) return;
 
         if (allReadOnlyRows) {
@@ -1395,7 +1434,8 @@ function insertPastedData(
 
         const pkValue = getPkValue(row, queryInfo);
 
-        row.forEach((value, cn) => {
+        for (let cn = 0; cn < row.size; cn++) {
+            const value = row.get(cn);
             const colIdx = colMin + cn;
             const cellKey = genCellKey(colIdx, rowIdx);
             const col = columns[colIdx];
@@ -1408,7 +1448,20 @@ function insertPastedData(
                 let msg: CellMessage;
 
                 if (col?.isPublicLookup()) {
-                    const { message, values } = parsePastedLookup(col, lookupDescriptorMap[col.lookupKey], value);
+                    // If the column is a lookup, then we need to query for the rowIds so we can set the correct raw values,
+                    // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
+                    const rowContainerPath = getFolderValueFromDataRow(cellKey, dataKeys, data);
+                    // eslint-disable-next-line no-await-in-loop
+                    const { descriptors } = await findLookupValues(
+                        col,
+                        undefined,
+                        byColumnValues.get(cn)?.toArray(),
+                        undefined,
+                        true,
+                        rowContainerPath
+                    );
+
+                    const { message, values } = parsePastedLookup(col, descriptors, value);
                     cv = values;
 
                     if (message) {
@@ -1429,10 +1482,10 @@ function insertPastedData(
             if (selectCells) {
                 selectionCells.push(cellKey);
             }
-        });
+        }
 
         rowIdx++;
-    });
+    }
 
     return {
         editorModel: { cellMessages, cellValues, rowCount, selectionCells },
@@ -1505,39 +1558,6 @@ export async function validateAndInsertPastedData(
     const paste = validatePaste(editorModel, selectedColIdx, selectedRowIdx, value, readOnlyRowCount);
 
     if (paste.success) {
-        const byColumnValues = getPasteValuesByColumn(paste);
-        const { colMax, colMin } = paste.coordinates;
-
-        // prior to load, ensure lookup column stores are loaded
-        const columnLoaders = columns.reduce<ColumnLoaderPromise[]>((arr, column, index) => {
-            if (column.isPublicLookup() && !column.readOnly) {
-                const metadata = columnMetadata?.get(column.fieldKey.toLowerCase());
-                let lookupValues = metadata?.filteredLookupValues?.toArray();
-
-                if (
-                    lookupValues === undefined &&
-                    index >= colMin &&
-                    index <= colMax &&
-                    byColumnValues.get(index - colMin).size > 0
-                ) {
-                    lookupValues = byColumnValues.get(index - colMin).toArray();
-                }
-
-                if (lookupValues !== undefined) {
-                    arr.push(
-                        findLookupValues(column, undefined, lookupValues, metadata?.lookupValueFilters, forUpdate)
-                    );
-                }
-            }
-            return arr;
-        }, []);
-
-        const results = await Promise.all(columnLoaders);
-        const descriptorMap = results.reduce((reduction, result) => {
-            const { column, descriptors } = result;
-            reduction[column.lookupKey] = descriptors;
-            return reduction;
-        }, {});
         return insertPastedData(
             dataKeys,
             data,
@@ -1545,7 +1565,6 @@ export async function validateAndInsertPastedData(
             columns,
             editorModel,
             paste,
-            descriptorMap,
             columnMetadata,
             readonlyRows,
             lockedRows,

@@ -991,6 +991,7 @@ export function generateFillCellKeys(initialSelection: string[], finalSelection:
  * @param initialSelection An array of sorted cell keys, all from the same column that were initially selected
  * @param selectionToFill An array of sorted cell keys, all from the same column, to be filled with values based on the
  * content of initialSelection
+ * @param forUpdate True if this is operating on update query filters.
  * @param dataKeys The orderedRows Object from a QueryModel
  * @param data The rows object from a QueryModel
  */
@@ -1002,6 +1003,7 @@ export async function fillColumnCells(
     cellValues: CellValues,
     initialSelection: string[],
     selectionToFill: string[],
+    forUpdate: boolean,
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>
 ): Promise<CellMessagesAndValues> {
@@ -1055,22 +1057,21 @@ export async function fillColumnCells(
     if (column.isPublicLookup()) {
         const filteredLookupValues = columnMetadata?.filteredLookupValues?.toArray();
         for (const cellKey of selectionToFill) {
-            const display = cellValues.get(cellKey).map(v => v.display).toArray();
+            const display = cellValues
+                .get(cellKey)
+                .map(v => v.display)
+                .toArray();
             const rowContainerPath = getFolderValueFromDataRow(cellKey, dataKeys, data);
             const { descriptors } = await findLookupValues(
                 column,
                 undefined,
                 display,
                 undefined,
-                true,
+                forUpdate,
                 rowContainerPath
             );
 
-            const { message, values } = parsePastedLookup(
-                column,
-                descriptors,
-                filteredLookupValues ?? display.join(',')
-            );
+            const { message, values } = parsePastedLookup(descriptors, filteredLookupValues ?? display.join(','));
             cellValues = cellValues.set(cellKey, values);
             cellMessages = cellMessages.set(cellKey, message);
         }
@@ -1081,11 +1082,9 @@ export async function fillColumnCells(
 
 export function getFolderValueFromDataRow(cellKey: string, dataKeys: List<any>, data: Map<any, Map<string, any>>): string {
     const { rowIdx } = parseCellKey(cellKey);
-    const dataRow = data.get(dataKeys.get(rowIdx));
-    return (
-        getValueFromRow(dataRow?.toJS(), 'Folder')?.toString() ??
-        getValueFromRow(dataRow?.toJS(), 'Container')?.toString()
-    );
+    const dataRow = data.get(dataKeys.get(rowIdx))?.toJS();
+    const value = getValueFromRow(dataRow, 'Folder') ?? getValueFromRow(dataRow, 'Container');
+    return value?.toString();
 }
 
 type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
@@ -1100,6 +1099,7 @@ type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
  * @param columnMetadata Array of column metadata, in the same order as the columns in the grid
  * @param readonlyRows A list of readonly rows
  * @param lockedRows A list of locked rows
+ * @param forUpdate True if this is operating on update query filters.
  */
 export async function dragFillEvent(
     editorModel: EditorModel,
@@ -1110,7 +1110,8 @@ export async function dragFillEvent(
     columns: QueryColumn[],
     columnMetadata: EditableColumnMetadata[],
     readonlyRows: string[],
-    lockedRows: string[]
+    lockedRows: string[],
+    forUpdate: boolean
 ): Promise<CellMessagesAndValues> {
     const finalSelection = editorModel.selectionCells;
     let cellValues = editorModel.cellValues;
@@ -1153,6 +1154,7 @@ export async function dragFillEvent(
             cellValues,
             initialSelectionByCol,
             selectionToFillByCol,
+            forUpdate,
             dataKeys,
             data
         );
@@ -1313,7 +1315,7 @@ interface ParseLookupPayload {
     values: List<ValueDescriptor>;
 }
 
-function parsePastedLookup(column: QueryColumn, descriptors: ValueDescriptor[], value: string[] | string): ParseLookupPayload {
+function parsePastedLookup(descriptors: ValueDescriptor[], value: string[] | string): ParseLookupPayload {
     if (value === undefined || value === null || typeof value !== 'string') {
         return {
             values: List([
@@ -1344,8 +1346,7 @@ function parsePastedLookup(column: QueryColumn, descriptors: ValueDescriptor[], 
                 }
             }
         })
-        .filter(v => v !== undefined)
-        .reduce((list, v) => list.push(v), List<ValueDescriptor>());
+        .filter(v => v !== undefined);
 
     if (unmatched.length) {
         message = {
@@ -1360,7 +1361,7 @@ function parsePastedLookup(column: QueryColumn, descriptors: ValueDescriptor[], 
 
     return {
         message,
-        values,
+        values: List(values),
     };
 }
 
@@ -1384,6 +1385,7 @@ async function insertPastedData(
     readonlyRows: string[],
     lockedRows: string[],
     lockRowCount: boolean,
+    forUpdate: boolean,
     selectCells: boolean
 ): Promise<EditorModelAndGridData> {
     const pastedData = paste.payload.data;
@@ -1406,7 +1408,7 @@ async function insertPastedData(
     const pkCols = queryInfo.getPkCols();
     let rowIdx = rowMin;
     let hasReachedRowLimit = false;
-    let allReadOnlyRows;
+    let allReadOnlyRows: string[];
 
     if (readonlyRows && lockedRows) {
         allReadOnlyRows = readonlyRows.concat(lockedRows);
@@ -1457,11 +1459,11 @@ async function insertPastedData(
                         undefined,
                         byColumnValues.get(cn)?.toArray(),
                         undefined,
-                        true,
+                        forUpdate,
                         rowContainerPath
                     );
 
-                    const { message, values } = parsePastedLookup(col, descriptors, value);
+                    const { message, values } = parsePastedLookup(descriptors, value);
                     cv = values;
 
                     if (message) {
@@ -1569,6 +1571,7 @@ export async function validateAndInsertPastedData(
             readonlyRows,
             lockedRows,
             lockRowCount,
+            forUpdate,
             selectCells
         );
     } else {

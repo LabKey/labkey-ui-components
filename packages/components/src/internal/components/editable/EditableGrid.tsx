@@ -1139,7 +1139,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     _dragFill = async (initialSelection: string[]): Promise<void> => {
-        const { editorModel, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
+        const { editorModel, forUpdate, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
 
         if (editorModel.isMultiSelect) {
             const loweredColumnMetadata = this.getLoweredColumnMetadata();
@@ -1154,7 +1154,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 columns,
                 columnMetadata,
                 readonlyRows,
-                lockedRows
+                lockedRows,
+                forUpdate
             );
             onChange(EditableGridEvent.DRAG_FILL, { cellMessages, cellValues });
             this.setState({ initialSelection: undefined });

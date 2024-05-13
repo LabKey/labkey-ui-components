@@ -1079,7 +1079,7 @@ export async function fillColumnCells(
     return { cellValues, cellMessages };
 }
 
-function getFolderValueFromDataRow(cellKey: string, dataKeys: List<any>, data: Map<any, Map<string, any>>): string {
+export function getFolderValueFromDataRow(cellKey: string, dataKeys: List<any>, data: Map<any, Map<string, any>>): string {
     const { rowIdx } = parseCellKey(cellKey);
     const dataRow = data.get(dataKeys.get(rowIdx));
     return (

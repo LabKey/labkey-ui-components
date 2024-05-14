@@ -284,7 +284,7 @@ async function getLookupValueDescriptors(
     return descriptorMap;
 }
 
-export async function getLookupDisplayValue(column: QueryColumn, value: any): Promise<MessageAndValue> {
+async function getLookupDisplayValue(column: QueryColumn, value: any, containerPath: string): Promise<MessageAndValue> {
     if (value === undefined || value === null || typeof value === 'string') {
         return {
             valueDescriptor: {
@@ -296,7 +296,7 @@ export async function getLookupDisplayValue(column: QueryColumn, value: any): Pr
 
     let message: CellMessage;
 
-    const { descriptors } = await findLookupValues(column, [value]);
+    const { descriptors } = await findLookupValues(column, [value], undefined, undefined, false, containerPath);
     if (!descriptors.length) {
         message = {
             message: 'Could not find data for ' + value,
@@ -312,7 +312,8 @@ export async function getLookupDisplayValue(column: QueryColumn, value: any): Pr
 async function prepareInsertRowDataFromBulkForm(
     insertColumns: List<QueryColumn>,
     rowData: List<any>,
-    colMin = 0
+    colMin = 0,
+    containerPath: string
 ): Promise<{ messages: List<CellMessage>; values: List<List<ValueDescriptor>> }> {
     let values = List<List<ValueDescriptor>>();
     let messages = List<CellMessage>();
@@ -329,7 +330,7 @@ async function prepareInsertRowDataFromBulkForm(
             // If it's the display value, which happens to be a number, much confusion will arise.
             const values = data.toString().split(',');
             for (const val of values) {
-                const { message, valueDescriptor } = await getLookupDisplayValue(col, parseIntIfNumber(val));
+                const { message, valueDescriptor } = await getLookupDisplayValue(col, parseIntIfNumber(val), containerPath);
                 cv = cv.push(valueDescriptor);
                 if (message) {
                     messages = messages.push(message);
@@ -355,10 +356,11 @@ export async function addRowsToEditorModel(
     insertColumns: List<QueryColumn>,
     rowData: List<any>,
     numToAdd: number,
-    rowMin = 0
+    rowMin = 0,
+    containerPath: string
 ): Promise<Partial<EditorModel>> {
     const selectionCells: string[] = [];
-    const preparedData = await prepareInsertRowDataFromBulkForm(insertColumns, rowData, 0);
+    const preparedData = await prepareInsertRowDataFromBulkForm(insertColumns, rowData, 0, containerPath);
     const { values, messages } = preparedData;
 
     for (let rowIdx = rowMin; rowIdx < rowMin + numToAdd; rowIdx++) {
@@ -401,7 +403,8 @@ export async function addRows(
     data: Map<any, Map<string, any>>,
     insertColumns: List<QueryColumn>,
     numToAdd: number,
-    rowData?: Map<string, any>
+    rowData: Map<string, any>,
+    containerPath: string
 ): Promise<EditorModelAndGridData> {
     let editorModelChanges: Partial<EditorModel>;
 
@@ -413,7 +416,8 @@ export async function addRows(
             insertColumns,
             rowData.toList(),
             numToAdd,
-            data.size
+            data.size,
+            containerPath
         );
     } else {
         editorModelChanges = { rowCount: editorModel.rowCount + numToAdd };
@@ -645,7 +649,8 @@ export function removeColumn(
 async function prepareUpdateRowDataFromBulkForm(
     queryInfo: QueryInfo,
     rowData: OrderedMap<string, any>,
-    isIncludedColumn?: (col: QueryColumn) => boolean
+    isIncludedColumn: (col: QueryColumn) => boolean,
+    containerPath: string
 ): Promise<{ messages: OrderedMap<number, CellMessage>; values: OrderedMap<number, List<ValueDescriptor>> }> {
     const columns = queryInfo.getInsertColumns(isIncludedColumn);
     let values = OrderedMap<number, List<ValueDescriptor>>();
@@ -663,7 +668,7 @@ async function prepareUpdateRowDataFromBulkForm(
             // If it's the display value, which happens to be a number, much confusion will arise.
             const rawValues = data.toString().split(',');
             for (const val of rawValues) {
-                const { message, valueDescriptor } = await getLookupDisplayValue(col, parseIntIfNumber(val));
+                const { message, valueDescriptor } = await getLookupDisplayValue(col, parseIntIfNumber(val), containerPath);
                 cv = cv.push(valueDescriptor);
                 if (message) {
                     messages = messages.set(colIdx, message);
@@ -684,13 +689,14 @@ export async function updateGridFromBulkForm(
     queryInfo: QueryInfo,
     rowData: OrderedMap<string, any>,
     dataRowIndexes: List<number>,
-    lockedOrReadonlyRows?: number[],
-    isIncludedColumn?: (col: QueryColumn) => boolean
+    lockedOrReadonlyRows: number[],
+    isIncludedColumn: (col: QueryColumn) => boolean,
+    containerPath: string
 ): Promise<Partial<EditorModel>> {
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
 
-    const preparedData = await prepareUpdateRowDataFromBulkForm(queryInfo, rowData, isIncludedColumn);
+    const preparedData = await prepareUpdateRowDataFromBulkForm(queryInfo, rowData, isIncludedColumn, containerPath);
     const { values, messages } = preparedData; // {3: 'x', 4: 'z}
 
     dataRowIndexes.forEach(rowIdx => {
@@ -714,7 +720,8 @@ export async function addRowsPerPivotValue(
     numPerParent: number,
     pivotKey: string,
     pivotValues: string[],
-    rowData: Map<string, any>
+    rowData: Map<string, any>,
+    containerPath: string
 ): Promise<EditorModelAndGridData> {
     let { cellMessages, cellValues, rowCount } = editorModel;
 
@@ -728,7 +735,8 @@ export async function addRowsPerPivotValue(
                 insertColumns,
                 rowData.toList(),
                 numPerParent,
-                dataKeys.size
+                dataKeys.size,
+                containerPath
             );
             cellMessages = changes.cellMessages;
             cellValues = changes.cellValues;

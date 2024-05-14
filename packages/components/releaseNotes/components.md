@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - findLookupValues() to use getContainerFilterForLookups() and accept containerPath optional param
   - fillColumnCells() and insertPastedData() to use containerPath for the given row when validating cell lookup values forUpdate true case
   - fillColumnCells() and insertPastedData() to use targetContainerPath forUpdate false case
+  - EditableGrid "Bulk Insert" and "Bulk Update" to use target containerPath prop for lookup field options and validation
 
 ### version 3.44.1
 *Released*: 10 May 2024

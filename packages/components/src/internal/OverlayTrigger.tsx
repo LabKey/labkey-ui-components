@@ -8,12 +8,14 @@ import React, {
     useCallback,
     MutableRefObject,
     CSSProperties,
+    useMemo,
 } from 'react';
 import { createPortal } from 'react-dom';
 
 import classNames from 'classnames';
 
 import { usePortalRef } from './hooks';
+import { generateId } from './util/utils';
 
 interface OverlayTriggerState<T extends Element = HTMLDivElement> {
     onClick: () => void;
@@ -89,7 +91,7 @@ export type TriggerType = 'click' | 'hover';
 interface Props {
     className?: string;
     delay?: number;
-    id: string;
+    id?: string;
     overlay: ReactElement<OverlayComponent>; // See note in doc string below
     style?: CSSProperties;
     triggerType?: TriggerType;
@@ -120,8 +122,9 @@ export const OverlayTrigger: FC<Props> = ({
     triggerType = 'hover',
     style,
 }) => {
+    const id_ = useMemo(() => id ?? generateId(), [id]);
     const { onMouseEnter, onMouseLeave, onClick, portalEl, show, targetRef } = useOverlayTriggerState(
-        id,
+        id_,
         triggerType === 'hover',
         triggerType === 'click',
         delay

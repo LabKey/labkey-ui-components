@@ -172,7 +172,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         [onTabSelect]
     );
 
-    // useNotificationsContext will not always be available depending on if the app wraps the NotificationsContext.Provider
+    // useNotificationsContext is only available if the app uses NotificationsContext, LKS does not
     let _createNotification;
     try {
         _createNotification = useNotificationsContext().createNotification;

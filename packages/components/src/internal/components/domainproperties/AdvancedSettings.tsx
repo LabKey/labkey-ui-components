@@ -1,6 +1,6 @@
 import React from 'react';
 import { List } from 'immutable';
-import { Checkbox, FormControl } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
 import { Modal } from '../../Modal';
@@ -40,6 +40,7 @@ import {
 } from './constants';
 
 import { DomainFieldLabel } from './DomainFieldLabel';
+import { CheckboxLK } from '../../Checkbox';
 
 interface AdvancedSettingsProps {
     defaultDefaultValueType: string;
@@ -254,38 +255,38 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             <>
                 <div className="domain-adv-display-options">Display Options</div>
                 <div>These options configure how and in which views this field will be visible.</div>
-                <Checkbox
+                <CheckboxLK
                     checked={hidden === false}
                     onChange={this.handleCheckbox}
                     name={createFormInputName(DOMAIN_FIELD_HIDDEN)}
                     id={createFormInputId(DOMAIN_FIELD_HIDDEN, domainIndex, index)}
                 >
                     Show field on default view of the grid
-                </Checkbox>
-                <Checkbox
+                </CheckboxLK>
+                <CheckboxLK
                     checked={shownInUpdateView === true}
                     onChange={this.handleCheckbox}
                     name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
                     id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, domainIndex, index)}
                 >
                     Show on update form when updating a single row of data
-                </Checkbox>
-                <Checkbox
+                </CheckboxLK>
+                <CheckboxLK
                     checked={shownInInsertView === true}
                     onChange={this.handleCheckbox}
                     name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
                     id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, domainIndex, index)}
                 >
                     Show on insert form when updating a single row of data
-                </Checkbox>
-                <Checkbox
+                </CheckboxLK>
+                <CheckboxLK
                     checked={shownInDetailsView === true}
                     onChange={this.handleCheckbox}
                     name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)}
                     id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, domainIndex, index)}
                 >
                     Show on details page for a single row
-                </Checkbox>
+                </CheckboxLK>
             </>
         );
     };
@@ -390,7 +391,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <div className="col-xs-3" />
                 </div>
                 {field.dataType === DATETIME_TYPE && (
-                    <Checkbox
+                    <CheckboxLK
                         checked={excludeFromShifting}
                         onChange={this.handleCheckbox}
                         name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
@@ -401,10 +402,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             Participant date fields with this property checked will not be shifted on export/publication
                             when the "Shift Participant Dates" option is selected.
                         </LabelHelpTip>
-                    </Checkbox>
+                    </CheckboxLK>
                 )}
                 {PropDescType.isMeasure(field.dataType.rangeURI) && (
-                    <Checkbox
+                    <CheckboxLK
                         checked={measure}
                         onChange={this.handleCheckbox}
                         name={createFormInputName(DOMAIN_FIELD_MEASURE)}
@@ -424,10 +425,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </p>
                             </div>
                         </LabelHelpTip>
-                    </Checkbox>
+                    </CheckboxLK>
                 )}
                 {PropDescType.isDimension(field.dataType.rangeURI) && (
-                    <Checkbox
+                    <CheckboxLK
                         checked={dimension}
                         onChange={this.handleCheckbox}
                         name={createFormInputName(DOMAIN_FIELD_DIMENSION)}
@@ -447,9 +448,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </p>
                             </div>
                         </LabelHelpTip>
-                    </Checkbox>
+                    </CheckboxLK>
                 )}
-                <Checkbox
+                <CheckboxLK
                     checked={recommendedVariable}
                     onChange={this.handleCheckbox}
                     name={createFormInputName(DOMAIN_FIELD_RECOMMENDEDVARIABLE)}
@@ -462,9 +463,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             recommended when creating new charts or reports.
                         </div>
                     </LabelHelpTip>
-                </Checkbox>
+                </CheckboxLK>
                 {PropDescType.isMvEnableable(field.dataType.rangeURI) && (
-                    <Checkbox
+                    <CheckboxLK
                         checked={mvEnabled}
                         onChange={this.handleCheckbox}
                         name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
@@ -485,10 +486,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </p>
                             </div>
                         </LabelHelpTip>
-                    </Checkbox>
+                    </CheckboxLK>
                 )}
                 {allowUniqueConstraintProperties && (
-                    <Checkbox
+                    <CheckboxLK
                         checked={uniqueConstraint || field.isPrimaryKey}
                         disabled={field.isPrimaryKey}
                         onChange={this.handleCheckbox}
@@ -499,7 +500,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         <LabelHelpTip title="Unique Constraint">
                             <div>Add a unique constraint via a database-level index for this field.</div>
                         </LabelHelpTip>
-                    </Checkbox>
+                    </CheckboxLK>
                 )}
             </>
         );

@@ -84,6 +84,7 @@ export const ProjectNameSetting: FC<Props> = memo(props => {
                     <input
                         autoComplete="off"
                         className="form-control"
+                        defaultValue={nameIsTitle ? name : defaultTitle}
                         disabled={nameIsTitle}
                         id="project-label"
                         name="title"

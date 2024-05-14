@@ -1,5 +1,4 @@
 import React from 'react';
-import { Checkbox } from 'react-bootstrap';
 import { mount, ReactWrapper, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 import { Treebeard, animations } from 'react-treebeard';
@@ -147,7 +146,7 @@ describe('Header', () => {
 
         const rendered = !isEmpty && !loading;
         expect(wrapper.find('.filetree-checkbox-container')).toHaveLength(rendered ? 1 : 0);
-        expect(wrapper.find(Checkbox)).toHaveLength(rendered && hasCheckbox ? 1 : 0);
+        expect(wrapper.find('.checkbox')).toHaveLength(rendered && hasCheckbox ? 1 : 0);
         expect(wrapper.find('.filetree-resource-row')).toHaveLength(rendered ? 1 : 0);
         expect(wrapper.find(FileNodeIcon)).toHaveLength(rendered && showNodeIcon ? 1 : 0);
         expect(wrapper.find('.filetree-file-name')).toHaveLength(rendered && !isDirectory ? 1 : 0);

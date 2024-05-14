@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Checkbox } from 'react-bootstrap';
-
 import { mountWithServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -66,7 +64,7 @@ describe('NameIdSettings', () => {
         const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} />);
         expect(wrapper.find(LoadingSpinner).length).toEqual(3);
         expect(wrapper.find('.name-id-setting__prefix-field').exists()).toEqual(false);
-        expect(wrapper.find(Checkbox).exists()).toEqual(false);
+        expect(wrapper.find('.checkbox').exists()).toEqual(false);
 
         await waitForLifecycle(wrapper);
 
@@ -75,7 +73,7 @@ describe('NameIdSettings', () => {
         expect(wrapper.find('.name-id-setting__prefix-field')).toHaveLength(1);
         expect(wrapper.find('.sample-counter__setting-section')).toHaveLength(1);
         expect(wrapper.find('.sample-counter__prefix-label')).toHaveLength(2);
-        expect(wrapper.find(Checkbox)).toHaveLength(1);
+        expect(wrapper.find('.checkbox')).toHaveLength(1);
         expect(wrapper.find('.form-control')).toHaveLength(3);
         expect(wrapper.find('button')).toHaveLength(3);
         expect(DEFAULT_PROPS.loadNameExpressionOptions).toHaveBeenCalled();
@@ -95,7 +93,7 @@ describe('NameIdSettings', () => {
         const wrapper = mountWithServerContext(<NameIdSettingsForm {...DEFAULT_PROPS} isAppHome={false} />);
         expect(wrapper.find(LoadingSpinner).length).toEqual(2);
         expect(wrapper.find('.name-id-setting__prefix-field').exists()).toEqual(false);
-        expect(wrapper.find(Checkbox).exists()).toEqual(false);
+        expect(wrapper.find('.checkbox').exists()).toEqual(false);
 
         await waitForLifecycle(wrapper);
 
@@ -104,7 +102,7 @@ describe('NameIdSettings', () => {
         expect(wrapper.find('.name-id-setting__prefix-field')).toHaveLength(1);
         expect(wrapper.find('.sample-counter__setting-section')).toHaveLength(0);
         expect(wrapper.find('.sample-counter__prefix-label')).toHaveLength(0);
-        expect(wrapper.find(Checkbox)).toHaveLength(1);
+        expect(wrapper.find('.checkbox')).toHaveLength(1);
         expect(wrapper.find('.form-control')).toHaveLength(1);
         expect(wrapper.find('button')).toHaveLength(1);
         expect(DEFAULT_PROPS.loadNameExpressionOptions).toHaveBeenCalled();
@@ -181,7 +179,7 @@ describe('NameIdSettings', () => {
 
         expect(wrapper.find('.name-id-setting__setting-section')).toHaveLength(1);
         expect(wrapper.find('.name-id-setting__prefix-field')).toHaveLength(0);
-        expect(wrapper.find(Checkbox)).toHaveLength(1);
+        expect(wrapper.find('.checkbox')).toHaveLength(1);
         expect(wrapper.find('.form-control')).toHaveLength(2);
     });
 

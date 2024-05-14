@@ -144,12 +144,11 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                 class="domain-row-action-section"
               >
                 <div
-                  class="domain-field-check-icon checkbox"
+                  class="checkbox domain-field-check-icon"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
+                      class=""
                       id="domain-select-all-checkbox"
                       name="domain-select-all-checkbox"
                       type="checkbox"
@@ -907,12 +906,11 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
               class="domain-row-action-section"
             >
               <div
-                class="domain-field-check-icon checkbox"
+                class="checkbox domain-field-check-icon"
               >
-                <label
-                  title=""
-                >
+                <label>
                   <input
+                    class=""
                     id="domain-select-all-checkbox"
                     name="domain-select-all-checkbox"
                     type="checkbox"
@@ -1686,12 +1684,11 @@ exports[`DomainForm domain form with all field types 1`] = `
                 class="domain-row-action-section"
               >
                 <div
-                  class="domain-field-check-icon checkbox"
+                  class="checkbox domain-field-check-icon"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
+                      class=""
                       id="domain-select-all-checkbox"
                       name="domain-select-all-checkbox"
                       type="checkbox"
@@ -7120,12 +7117,11 @@ exports[`DomainForm domain form with all field types 1`] = `
               class="domain-row-action-section"
             >
               <div
-                class="domain-field-check-icon checkbox"
+                class="checkbox domain-field-check-icon"
               >
-                <label
-                  title=""
-                >
+                <label>
                   <input
+                    class=""
                     id="domain-select-all-checkbox"
                     name="domain-select-all-checkbox"
                     type="checkbox"
@@ -12680,12 +12676,11 @@ exports[`DomainForm domain form with updated fields 1`] = `
                 class="domain-row-action-section"
               >
                 <div
-                  class="domain-field-check-icon checkbox"
+                  class="checkbox domain-field-check-icon"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
+                      class=""
                       id="domain-select-all-checkbox"
                       name="domain-select-all-checkbox"
                       type="checkbox"
@@ -14758,12 +14753,11 @@ exports[`DomainForm domain form with updated fields 1`] = `
               class="domain-row-action-section"
             >
               <div
-                class="domain-field-check-icon checkbox"
+                class="checkbox domain-field-check-icon"
               >
-                <label
-                  title=""
-                >
+                <label>
                   <input
+                    class=""
                     id="domain-select-all-checkbox"
                     name="domain-select-all-checkbox"
                     type="checkbox"

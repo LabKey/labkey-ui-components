@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { createContext, FC, useContext, useReducer } from 'react';
-import { LabKey } from '@labkey/api';
+import React, { ComponentType, createContext, FC, useContext, useMemo, useReducer } from 'react';
+import { getServerContext, LabKey } from '@labkey/api';
 
 import { Container } from './models/Container';
 import { User } from './models/User';
@@ -77,4 +77,17 @@ export const withAppUser = (ctx: LabKey): ServerContext => {
         container: new Container(ctx.container),
         user: new User(ctx.user),
     });
+};
+
+/**
+ * Use this component wrapper for pages in LKS that need access to useServerContext.
+ * @param Component the component you want to wrap
+ */
+export const withServerContext = (Component: ComponentType<any>) => {
+    const initialServerContext = useMemo(() => withAppUser(getServerContext()), []);
+    return (
+        <ServerContextProvider initialContext={initialServerContext}>
+            <Component />
+        </ServerContextProvider>
+    );
 };

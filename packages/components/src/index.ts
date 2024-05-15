@@ -48,6 +48,7 @@ import {
     useServerContext,
     useServerContextDispatch,
     withAppUser,
+    withServerContext,
 } from './internal/components/base/ServerContext';
 import { naturalSort, naturalSortByProperty } from './public/sort';
 import { AssayDefinitionModel, AssayDomainTypes, AssayLink } from './internal/AssayDefinitionModel';
@@ -1657,6 +1658,7 @@ export {
     useServerContext,
     useServerContextDispatch,
     withAppUser,
+    withServerContext,
     QueryColumn,
     QueryInfo,
     QueryLookup,

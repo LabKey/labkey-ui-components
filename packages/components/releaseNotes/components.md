@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - It will be renamed to `Checkbox` when we stop using the react-bootstrap version
 - Reduce usages of various react-bootstrap components (e.g. FormGroup, FormControl)
 - OverlayTrigger: Don't require an `id`
+- Add `withServerContext`
 
 ### version 3.45.1
 *Released*: 16 May 2024

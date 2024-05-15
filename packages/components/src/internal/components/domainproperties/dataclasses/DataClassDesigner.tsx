@@ -228,7 +228,8 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
 
                 if (response.errors?.length > 0 || response.warnings?.length > 0) {
                     setSubmitting(false, () => {
-                        this.saveModelForError({ exception: response.errors?.join('\n') });
+                        if (response.errors?.length > 0)
+                            this.saveModelForError({ exception: response.errors?.join('\n') });
                         this.setState({
                             nameExpressionWarnings: response.warnings,
                             namePreviews: response.previews,

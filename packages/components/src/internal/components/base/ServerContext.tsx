@@ -84,10 +84,12 @@ export const withAppUser = (ctx: LabKey): ServerContext => {
  * @param Component the component you want to wrap
  */
 export const withServerContext = (Component: ComponentType<any>) => {
-    const initialServerContext = useMemo(() => withAppUser(getServerContext()), []);
-    return (
-        <ServerContextProvider initialContext={initialServerContext}>
-            <Component />
-        </ServerContextProvider>
-    );
+    return () => {
+        const initialServerContext = useMemo(() => withAppUser(getServerContext()), []);
+        return (
+            <ServerContextProvider initialContext={initialServerContext}>
+                <Component />
+            </ServerContextProvider>
+        );
+    };
 };

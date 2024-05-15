@@ -810,10 +810,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     generateColumns = (): List<GridColumn> => {
         const {
-            allowBulkRemove,
-            allowBulkUpdate,
             allowRemove,
-            allowSelection,
             containerFilter,
             editorModel,
             forUpdate,
@@ -822,18 +819,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             rowNumColumn,
             readonlyRows,
             lockedRows,
-            hideCheckboxCol,
             containerPath,
         } = this.props;
 
         let gridColumns = List<GridColumn>();
+        const showCheckboxes = this.showSelectionCheckboxes();
 
-        const allowSelection_ =
-            allowSelection === undefined
-                ? !hideCheckboxCol && (allowBulkRemove || allowBulkUpdate)
-                : allowSelection && !hideCheckboxCol;
-
-        if (allowSelection_) {
+        if (showCheckboxes) {
             const selColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
                 title: '&nbsp;',
@@ -848,7 +840,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             });
             gridColumns = gridColumns.push(selColumn);
         }
-        if (!hideCountCol) gridColumns = gridColumns.push(rowNumColumn ? rowNumColumn : COUNT_COL);
+        if (!hideCountCol) {
+            gridColumns = gridColumns.push(rowNumColumn ? rowNumColumn : COUNT_COL);
+        }
 
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
 
@@ -870,7 +864,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     cell: inputCellFactory(
                         queryInfo,
                         editorModel,
-                        allowSelection_,
+                        showCheckboxes,
                         hideCountCol,
                         metadata,
                         readonlyRows,
@@ -948,18 +942,18 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     headerCell = (col: GridColumn): ReactNode => {
-        const { allowBulkRemove, allowBulkUpdate, queryInfo } = this.props;
+        const { queryInfo } = this.props;
 
-        if ((allowBulkRemove || allowBulkUpdate) && col.index.toLowerCase() === GRID_SELECTION_INDEX) {
+        if (col.index.toLowerCase() === GRID_SELECTION_INDEX && this.showSelectionCheckboxes()) {
             return headerSelectionCell(this.selectAll, this.state.selectedState, false);
         }
 
-        if (queryInfo.getColumn(col.index)) {
-            const qColumn = queryInfo.getColumn(col.index);
+        const qColumn = queryInfo.getColumn(col.index);
+        if (qColumn) {
             return this.renderColumnHeader(col, qColumn.fieldKey, qColumn.required, qColumn.format);
         }
 
-        if (col && col.showHeader) {
+        if (col.showHeader) {
             return this.renderColumnHeader(col, col.title, false);
         }
 
@@ -1268,6 +1262,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         clearTimeout(this.maskDelay);
         this.maskDelay = window.setTimeout(this.toggleMask.bind(this, true), 300);
     };
+
+    showSelectionCheckboxes(): boolean {
+        const { allowBulkRemove, allowBulkUpdate, allowSelection, hideCheckboxCol } = this.props;
+        if (allowSelection === undefined) {
+            return !hideCheckboxCol && (allowBulkRemove || allowBulkUpdate);
+        }
+        return allowSelection && !hideCheckboxCol;
+    }
 
     toggleMask = (showMask: boolean): void => {
         this.setState({ showMask });

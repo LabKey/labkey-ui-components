@@ -81,17 +81,28 @@ export const ProjectNameSetting: FC<Props> = memo(props => {
                 </label>
 
                 <div className="col-sm-10 col-md-5">
-                    <input
-                        autoComplete="off"
-                        className="form-control"
-                        defaultValue={nameIsTitle ? name : defaultTitle}
-                        disabled={nameIsTitle}
-                        id="project-label"
-                        name="title"
-                        onChange={_onTitleChange}
-                        type="text"
-                        value={nameIsTitle ? name : undefined}
-                    />
+                    {nameIsTitle && (
+                        <input
+                            autoComplete="off"
+                            className="form-control"
+                            disabled
+                            key="controlled"
+                            name="title"
+                            type="text"
+                            value={name ?? ''}
+                        />
+                    )}
+                    {!nameIsTitle && (
+                        <input
+                            autoComplete="off"
+                            className="form-control"
+                            defaultValue={defaultTitle}
+                            key="uncontrolled"
+                            name="title"
+                            onChange={_onTitleChange}
+                            type="text"
+                        />
+                    )}
                 </div>
             </div>
         </div>

@@ -80,7 +80,7 @@ const PreviewOption: FC<any> = props => {
                         }
 
                         return (
-                            <div key={i} className="text__truncate">
+                            <div key={i}>
                                 {columns.length > 1 && <strong>{column.caption}: </strong>}
                                 <span>{text}</span>
                             </div>
@@ -88,7 +88,7 @@ const PreviewOption: FC<any> = props => {
                     }
 
                     return (
-                        <div key={i} className="text__truncate">
+                        <div key={i}>
                             <span>{label}</span>
                         </div>
                     );

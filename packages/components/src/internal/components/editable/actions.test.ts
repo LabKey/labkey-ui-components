@@ -11,6 +11,7 @@ import {
     addColumns,
     changeColumn,
     fillColumnCells,
+    getFolderValueFromDataRow,
     parseIntIfNumber,
     removeColumn,
     splitPrefixedNumber,
@@ -345,6 +346,9 @@ describe('column mutation actions', () => {
 });
 
 describe('fillColumnCells', () => {
+    const data = fromJS({ 123: {}, 456: {}, 789: {} });
+    const dataKeys = fromJS([123, 456, 789]);
+
     const editorModel = new EditorModel({ id: 'generate|fill|sequence' }).merge({
         cellMessages: Map<string, CellMessage>({
             '1-0': 'description 1 message',
@@ -516,7 +520,11 @@ describe('fillColumnCells', () => {
             editorModel.cellMessages,
             editorModel.cellValues,
             ['0-0'],
-            ['0-1', '0-2', '0-3']
+            ['0-1', '0-2', '0-3'],
+            true,
+            undefined,
+            dataKeys,
+            data
         );
         // Filled values should be copies of the initial selection
         for (let i = 1; i <= 3; i++) {
@@ -533,7 +541,11 @@ describe('fillColumnCells', () => {
             editorModel.cellMessages,
             editorModel.cellValues,
             ['0-0', '0-1', '0-2'],
-            ['0-3', '0-4']
+            ['0-3', '0-4'],
+            true,
+            undefined,
+            dataKeys,
+            data
         );
         expect(cellValues.get('0-3').get(0).display).toEqual('S-4');
         expect(cellValues.get('0-3').get(0).raw).toEqual('S-4');
@@ -549,7 +561,11 @@ describe('fillColumnCells', () => {
             editorModel.cellMessages,
             editorModel.cellValues,
             ['1-0', '1-1', '1-2'],
-            ['1-3', '1-4']
+            ['1-3', '1-4'],
+            true,
+            undefined,
+            dataKeys,
+            data
         );
         expect(cellValues.get('1-3').get(0).display).toEqual('7');
         expect(cellValues.get('1-3').get(0).raw).toEqual(7);
@@ -565,7 +581,11 @@ describe('fillColumnCells', () => {
             editorModel.cellMessages,
             editorModel.cellValues,
             ['1-1', '1-2'],
-            ['1-0']
+            ['1-0'],
+            true,
+            undefined,
+            dataKeys,
+            data
         );
         expect(cellValues.get('1-0').get(0).display).toEqual('1');
         expect(cellValues.get('1-0').get(0).raw).toEqual(1);
@@ -579,7 +599,11 @@ describe('fillColumnCells', () => {
             editorModel.cellMessages,
             editorModel.cellValues,
             ['2-0', '2-1', '2-2'],
-            ['2-3', '2-4']
+            ['2-3', '2-4'],
+            true,
+            undefined,
+            dataKeys,
+            data
         );
         expect(cellValues.get('2-3').get(0).display).toEqual('-1.5');
         expect(cellValues.get('2-3').get(0).raw).toEqual(-1.5);
@@ -595,7 +619,11 @@ describe('fillColumnCells', () => {
             editorModel.cellMessages,
             editorModel.cellValues,
             ['2-1', '2-2'],
-            ['2-0']
+            ['2-0'],
+            true,
+            undefined,
+            dataKeys,
+            data
         );
         expect(cellValues.get('2-0').get(0).display).toEqual('3');
         expect(cellValues.get('2-0').get(0).raw).toEqual(3);
@@ -609,7 +637,11 @@ describe('fillColumnCells', () => {
             editorModel.cellMessages,
             editorModel.cellValues,
             ['6-0'],
-            ['6-1', '6-2', '6-3']
+            ['6-1', '6-2', '6-3'],
+            true,
+            undefined,
+            dataKeys,
+            data
         );
         // Filled values should be copies of the initial selection
         for (let i = 1; i <= 3; i++) {
@@ -626,7 +658,11 @@ describe('fillColumnCells', () => {
             editorModel.cellMessages,
             editorModel.cellValues,
             ['6-2'],
-            ['6-0', '6-1']
+            ['6-0', '6-1'],
+            true,
+            undefined,
+            dataKeys,
+            data
         );
         // Filled values should be copies of the initial selection
         for (let i = 0; i <= 2; i++) {
@@ -643,7 +679,11 @@ describe('fillColumnCells', () => {
             editorModel.cellMessages,
             editorModel.cellValues,
             ['7-0'],
-            ['7-1', '7-2', '7-3']
+            ['7-1', '7-2', '7-3'],
+            true,
+            undefined,
+            dataKeys,
+            data
         );
         // Filled values should be copies of the initial selection
         for (let i = 1; i <= 3; i++) {
@@ -660,7 +700,11 @@ describe('fillColumnCells', () => {
             editorModel.cellMessages,
             editorModel.cellValues,
             ['7-2'],
-            ['7-0', '7-1']
+            ['7-0', '7-1'],
+            true,
+            undefined,
+            dataKeys,
+            data
         );
         // Filled values should be copies of the initial selection
         for (let i = 0; i <= 2; i++) {
@@ -677,7 +721,11 @@ describe('fillColumnCells', () => {
             editorModel.cellMessages,
             editorModel.cellValues,
             ['5-0', '5-1', '5-2'],
-            ['5-3', '5-4', '5-5']
+            ['5-3', '5-4', '5-5'],
+            true,
+            undefined,
+            dataKeys,
+            data
         );
         expect(cellValues.get('5-3').get(0).display).toEqual('qwer');
         expect(cellValues.get('5-3').get(0).raw).toEqual('qwer');
@@ -685,6 +733,40 @@ describe('fillColumnCells', () => {
         expect(cellValues.get('5-4').get(0).raw).toEqual('asdf');
         expect(cellValues.get('5-5').get(0).display).toEqual('zxcv');
         expect(cellValues.get('5-5').get(0).raw).toEqual('zxcv');
+    });
+});
+
+describe('getFolderValueFromDataRow', () => {
+    const dataEmpty = fromJS({ '123': {}, '456': {}, '789': {} });
+    const dataWithout = fromJS({ '123': { test: 'a' }, '456': { test: 'b' }, '789': { test: 'c' } });
+    const dataFolder = fromJS({
+        '123': { test: 'a', folder: 'f1' },
+        '456': { test: 'b', Folder: 'f2' },
+        '789': { test: 'c', FOLDER: 'f3' },
+    });
+    const dataContainer = fromJS({
+        '123': { test: 'a', container: 'c1' },
+        '456': { test: 'b', Container: 'c2' },
+        '789': { test: 'c', CONTAINER: 'c3' },
+    });
+    const dataKeys = fromJS(['123', '456', '789']);
+
+    test('undefined', () => {
+        expect(getFolderValueFromDataRow('0-0', dataKeys, dataEmpty)).toBe(undefined);
+        expect(getFolderValueFromDataRow('1-1', dataKeys, dataEmpty)).toBe(undefined);
+        expect(getFolderValueFromDataRow('2-2', dataKeys, dataEmpty)).toBe(undefined);
+        expect(getFolderValueFromDataRow('0-0', dataKeys, dataWithout)).toBe(undefined);
+        expect(getFolderValueFromDataRow('1-1', dataKeys, dataWithout)).toBe(undefined);
+        expect(getFolderValueFromDataRow('2-2', dataKeys, dataWithout)).toBe(undefined);
+    });
+
+    test('defined', () => {
+        expect(getFolderValueFromDataRow('0-0', dataKeys, dataFolder)).toBe('f1');
+        expect(getFolderValueFromDataRow('1-1', dataKeys, dataFolder)).toBe('f2');
+        expect(getFolderValueFromDataRow('2-2', dataKeys, dataFolder)).toBe('f3');
+        expect(getFolderValueFromDataRow('0-0', dataKeys, dataContainer)).toBe('c1');
+        expect(getFolderValueFromDataRow('1-1', dataKeys, dataContainer)).toBe('c2');
+        expect(getFolderValueFromDataRow('2-2', dataKeys, dataContainer)).toBe('c3');
     });
 });
 

@@ -1139,7 +1139,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     _dragFill = async (initialSelection: string[]): Promise<void> => {
-        const { editorModel, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
+        const { editorModel, forUpdate, containerPath, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } =
+            this.props;
 
         if (editorModel.isMultiSelect) {
             const loweredColumnMetadata = this.getLoweredColumnMetadata();
@@ -1154,7 +1155,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 columns,
                 columnMetadata,
                 readonlyRows,
-                lockedRows
+                lockedRows,
+                forUpdate,
+                containerPath
             );
             onChange(EditableGridEvent.DRAG_FILL, { cellMessages, cellValues });
             this.setState({ initialSelection: undefined });
@@ -1197,6 +1200,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             queryInfo,
             readonlyRows,
             lockedRows,
+            containerPath,
         } = this.props;
 
         if (disabled) return;
@@ -1214,6 +1218,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             lockedRows,
             !allowAdd,
             forUpdate,
+            containerPath,
             false
         );
         this.hideMask();
@@ -1234,6 +1239,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             queryInfo,
             readonlyRows,
             lockedRows,
+            containerPath,
         } = this.props;
 
         if (disabled) return;
@@ -1250,7 +1256,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             readonlyRows,
             lockedRows,
             !allowAdd,
-            forUpdate
+            forUpdate,
+            containerPath
         );
         this.hideMask();
 
@@ -1324,6 +1331,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             onChange,
             processBulkData,
             queryInfo,
+            containerPath,
         } = this.props;
         const nounPlural = addControlProps?.nounPlural;
         // numItems is a string because we rely on Formsy to grab the value for us (See QueryInfoForm for details). We
@@ -1361,7 +1369,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 numItems,
                 pivotKey,
                 pivotValues,
-                bulkData
+                bulkData,
+                containerPath
             );
             onChange(EditableGridEvent.BULK_ADD, changes.editorModel, changes.dataKeys, changes.data);
         } else {
@@ -1371,7 +1380,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 data,
                 List(queryInfo.getInsertColumns()),
                 numItems,
-                bulkData
+                bulkData,
+                containerPath
             );
             onChange(EditableGridEvent.BULK_ADD, changes.editorModel, changes.dataKeys, changes.data);
         }
@@ -1385,7 +1395,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     bulkUpdate = async (updatedData: OrderedMap<string, any>): Promise<Partial<EditorModelProps>> => {
-        const { editorModel, queryInfo, onChange, bulkUpdateProps, metricFeatureArea } = this.props;
+        const { editorModel, queryInfo, onChange, bulkUpdateProps, metricFeatureArea, containerPath } = this.props;
         if (!updatedData) return Promise.resolve(undefined);
 
         const selectedIndices = this.getSelectedRowIndices();
@@ -1395,7 +1405,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             updatedData,
             selectedIndices,
             bulkUpdateProps?.excludeRowIdx,
-            bulkUpdateProps?.isIncludedColumn
+            bulkUpdateProps?.isIncludedColumn,
+            containerPath
         );
         onChange(EditableGridEvent.BULK_UPDATE, editorModelChanges);
 
@@ -1408,8 +1419,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     addRows = async (count: number): Promise<void> => {
-        const { data, dataKeys, editorModel, onChange, queryInfo } = this.props;
-        const changes = await addRows(editorModel, dataKeys, data, List(queryInfo.getInsertColumns()), count);
+        const { data, dataKeys, editorModel, onChange, queryInfo, containerPath } = this.props;
+        const changes = await addRows(
+            editorModel,
+            dataKeys,
+            data,
+            List(queryInfo.getInsertColumns()),
+            count,
+            undefined,
+            containerPath
+        );
         onChange(EditableGridEvent.ADD_ROWS, changes.editorModel, changes.dataKeys, changes.data);
     };
 
@@ -1510,7 +1529,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderBulkAdd = (): ReactNode => {
-        const { addControlProps, allowFieldDisable, bulkAddProps, data, forUpdate, maxRows, queryInfo } = this.props;
+        const { addControlProps, allowFieldDisable, bulkAddProps, data, forUpdate, maxRows, queryInfo, containerPath } =
+            this.props;
         const maxToAdd =
             maxRows && maxRows - data.size < MAX_EDITABLE_GRID_ROWS ? maxRows - data.size : MAX_EDITABLE_GRID_ROWS;
         return (
@@ -1534,6 +1554,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 title={bulkAddProps?.title}
                 countText={bulkAddProps?.countText}
                 creationTypeOptions={bulkAddProps?.creationTypeOptions}
+                containerPath={containerPath}
             />
         );
     };
@@ -1644,6 +1665,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             forUpdate,
             queryInfo,
             showAsTab,
+            containerPath,
         } = this.props;
         const { pendingBulkFormData } = this.state;
 
@@ -1662,6 +1684,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {bulkTabHeaderComponent}
                 <BulkAddUpdateForm
                     asModal={!showAsTab}
+                    containerPath={containerPath}
                     data={data}
                     dataKeys={dataKeys}
                     editorModel={editorModel}

@@ -180,6 +180,7 @@ export interface SelectInputProps extends WithFormsyProps {
     disabled?: boolean;
     filterOption?: FilterOption;
     formatCreateLabel?: (inputValue: string) => ReactNode;
+    formatGroupLabel?: (data: any) => ReactNode;
     formsy?: boolean;
     help?: ReactNode;
     helpTipRenderer?: string;
@@ -552,6 +553,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             disabled,
             filterOption,
             formatCreateLabel,
+            formatGroupLabel,
             inputId,
             isLoading,
             isValidNewOption,
@@ -612,6 +614,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             delimiter,
             filterOption,
             formatCreateLabel,
+            formatGroupLabel,
             getOptionLabel: labelKey && labelKey !== 'label' ? this.getOptionLabel : undefined,
             getOptionValue: valueKey && valueKey !== 'value' ? this.getOptionValue : undefined,
             id: this.getId(),

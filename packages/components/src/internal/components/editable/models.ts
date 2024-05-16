@@ -568,10 +568,10 @@ export class EditorModel
 
         if (valueMap?.has('value') && valueMap.get('value') !== null && valueMap.get('value') !== undefined) {
             if (valueMap.has('formattedValue')) {
-                return List([{ displayValue: valueMap.get('formattedValue'), value: valueMap.get('value') }]);
+                return List.of({ displayValue: valueMap.get('formattedValue'), value: valueMap.get('value') });
             }
             if (valueMap.has('displayValue')) {
-                return List([{ displayValue: valueMap.get('displayValue'), value: valueMap.get('value') }]);
+                return List.of({ displayValue: valueMap.get('displayValue'), value: valueMap.get('value') });
             }
             return valueMap.get('value');
         }
@@ -584,7 +584,7 @@ export class EditorModel
         updates?: Map<any, any>,
         idsNotToUpdate?: number[],
         fieldsNotToUpdate?: string[],
-        encode = false // TODO: Defaulting to "false" to see outcomes in TC
+        encode = true
     ): Map<any, Map<string, any>> {
         return data
             .map((valueMap, id) => {
@@ -619,7 +619,7 @@ export class EditorModel
             .toMap();
     }
 
-    static convertQueryModelDataToEditorData(model: QueryModel): GridResponse {
+    static convertQueryModelDataToGridResponse(model: QueryModel): GridResponse {
         const data = {};
         const dataIds = [];
 

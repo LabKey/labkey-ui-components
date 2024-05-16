@@ -550,18 +550,19 @@ describe('EditorModel', () => {
             });
             const updates = Map<any, any>({
                 withValue: 'purple',
-                'withDisplay/Value': 'teal',
+                withDisplay$SValue: 'teal',
             });
-            expect(EditorModel.convertQueryDataToEditorData(queryData, updates)).toStrictEqual(
+            const result = EditorModel.convertQueryDataToEditorData(queryData, updates);
+            expect(result).toStrictEqual(
                 Map<string, any>({
                     1: Map<string, any>({
                         withValue: 'purple',
-                        'withDisplay/Value': 'teal',
+                        withDisplay$SValue: 'teal',
                         doNotChangeMe: 'fred',
                     }),
                     2: Map<string, any>({
                         withValue: 'purple',
-                        'withDisplay/Value': 'teal',
+                        withDisplay$SValue: 'teal',
                         doNotChangeMe: 'maroon',
                     }),
                 })
@@ -611,26 +612,69 @@ describe('EditorModel', () => {
                 Map<string, any>({
                     1: Map<string, any>({
                         withValue: 'orange',
-                        withDisplayValue: List<any>([
-                            {
-                                value: 'b',
-                                displayValue: 'blue',
-                            },
-                        ]),
+                        withDisplayValue: List.of({
+                            value: 'b',
+                            displayValue: 'blue',
+                        }),
                         doNotChangeMe: 'fred',
                     }),
                     2: Map<string, any>({
                         withValue: 'orangish',
-                        withDisplayValue: List<any>([
-                            {
-                                displayValue: 'black',
-                                value: 'b',
-                            },
-                        ]),
+                        withDisplayValue: List.of({
+                            displayValue: 'black',
+                            value: 'b',
+                        }),
                         doNotChangeMe: 'maroon',
                     }),
                 })
             );
+        });
+
+        test('convertQueryModelDataToGridResponse', () => {
+            // Arrange
+            const rows = {
+                1: {
+                    'withLookup/Value': {
+                        displayValue: 'foo',
+                        value: 1,
+                    },
+                    withValue: {
+                        value: 'orange',
+                        ignoreMe: 'nothing to see',
+                    },
+                },
+                2: {
+                    'withLookup/Value': {
+                        displayValue: 'bar',
+                        value: 2,
+                    },
+                    withValue: {
+                        value: 'purple',
+                        ignoreMe: 'nothing to see',
+                    },
+                },
+            };
+            const orderedRowKeys = Object.keys(rows).sort();
+            const queryModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo, rows, orderedRowKeys);
+
+            // Act
+            const gridResponse = EditorModel.convertQueryModelDataToGridResponse(queryModel);
+
+            // Assert
+            expect(gridResponse.data).toStrictEqual(
+                Map<number, any>({
+                    1: Map<string, any>({
+                        'withLookup/Value': List.of({ displayValue: 'foo', value: 1 }),
+                        withValue: 'orange',
+                    }),
+                    2: Map<string, any>({
+                        'withLookup/Value': List.of({ displayValue: 'bar', value: 2 }),
+                        withValue: 'purple',
+                    }),
+                })
+            );
+
+            expect(gridResponse.dataIds).toStrictEqual(List.of(...orderedRowKeys));
         });
     });
 

@@ -322,12 +322,16 @@ export interface SharedEditableGridProps {
     isSubmitting?: boolean;
     lockedRows?: string[]; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     maxRows?: number;
+    metricFeatureArea?: string;
+    notDeletable?: List<any>; // list of key values that cannot be deleted.
     onSelectionChange?: (selected: Set<number>) => void;
+    primaryBtnProps?: EditableGridBtnProps;
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
     readOnlyColumns?: string[];
     readonlyRows?: string[]; // list of key values for rows that are readonly.
     removeColumnTitle?: string;
     rowNumColumn?: GridColumn;
+    saveBtnClickedCount?: number;
     showAsTab?: boolean; // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
     showBulkTabOnLoad?: boolean;
     striped?: boolean;
@@ -335,10 +339,6 @@ export interface SharedEditableGridProps {
     tabBtnProps?: EditableGridBtnProps;
     tabContainerCls?: string;
     updateColumns?: QueryColumn[];
-    saveBtnClickedCount?: number;
-    primaryBtnProps?: EditableGridBtnProps;
-    notDeletable?: List<any>; // list of key values that cannot be deleted.
-    metricFeatureArea?: string;
 }
 
 export interface EditableGridBtnProps {

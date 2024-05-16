@@ -171,17 +171,23 @@ export class AppURL {
         });
     }
 
-    addParam(key: string, value: URLParam): AppURL {
-        return this.addParams({
-            [key]: value,
-        });
+    addParam(key: string, value: URLParam, includeEmptyParams?: boolean): AppURL {
+        return this.addParams(
+            {
+                [key]: value,
+            },
+            includeEmptyParams
+        );
     }
 
-    addParams(params: Record<string, URLParam>): AppURL {
+    addParams(params: Record<string, URLParam>, includeEmptyParams = false): AppURL {
         if (params) {
             const encodedParams: Record<string, string> = {};
             Object.keys(params).forEach(key => {
-                encodedParams[encodeURIComponent(key)] = encodeURIComponent(params[key]);
+                const value = params[key];
+                if (includeEmptyParams || (value !== undefined && value !== null)) {
+                    encodedParams[encodeURIComponent(key)] = encodeURIComponent(value);
+                }
             });
             return new AppURL({
                 ...this,

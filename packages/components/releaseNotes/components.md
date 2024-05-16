@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 3.24.12
-*Released*: TBD
+*Released*: 16 May 2024
 - Issue 49956: Backport of styling update for PreviewOption for QuerySelect
 
 ### version 3.24.11

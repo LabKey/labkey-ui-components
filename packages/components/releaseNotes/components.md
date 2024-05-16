@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X May 2024
 - Issue 50347 LKSM: Data Field Name in Naming Pattern Causing Error
 
+### version 3.45.0
+*Released*: 16 May 2024
+- Issue 50363: Cross Folder lookup editable grid copy/paste and fill down don't account for containerPath / containerFilter
+  - findLookupValues() to use getContainerFilterForLookups() and accept containerPath optional param
+  - fillColumnCells() and insertPastedData() to use containerPath for the given row when validating cell lookup values forUpdate true case
+  - fillColumnCells() and insertPastedData() to use targetContainerPath forUpdate false case
+  - EditableGrid "Bulk Insert" and "Bulk Update" to use target containerPath prop for lookup field options and validation
+
 ### version 3.44.1
 *Released*: 10 May 2024
 - Issue 50360: Cross folder bulk edit doesn't work for grid custom view

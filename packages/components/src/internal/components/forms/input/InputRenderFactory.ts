@@ -10,25 +10,44 @@ import { AliasGridInput, AliasInput } from './AliasInput';
 import { SampleStatusInputRenderer } from './SampleStatusInput';
 import { AppendUnitsInput } from './AppendUnitsInput';
 
-export type InputRendererFactory = (col: QueryColumn, isGridInput?: boolean) => ComponentType<InputRendererProps>;
+export type InputRendererComponent = ComponentType<InputRendererProps>;
+export type InputRendererFactory = (col: QueryColumn, isGridInput?: boolean) => InputRendererComponent;
 
-export const resolveInputRenderer: InputRendererFactory = (col, isGridInput) => {
-    if (col?.inputRenderer) {
-        switch (col.inputRenderer.toLowerCase()) {
-            case 'appendunitsinput':
-                // AppendUnitsInput does not provide a custom implementation for grids
-                if (isGridInput) return undefined;
-                return AppendUnitsInput;
-            case 'experimentalias':
-                return isGridInput ? AliasGridInput : AliasInput;
-            case 'samplestatusinput':
-                return SampleStatusInputRenderer;
-            case 'workflowtask':
-                return AssayTaskInputRenderer;
-            default:
-        }
+const inputRenderers: Record<string, InputRendererComponent> = {};
+
+export enum InputRenderContext {
+    All = 'All',
+    Form = 'Form',
+    Grid = 'Grid',
+}
+
+function getKey(identifier: string, inputRenderContext: InputRenderContext): string {
+    return [identifier.toLowerCase(), inputRenderContext].join('|');
+}
+
+export function registerInputRenderer(
+    identifier: string,
+    renderer: InputRendererComponent,
+    inputRenderContext = InputRenderContext.All
+): void {
+    if (inputRenderContext === InputRenderContext.All) {
+        inputRenderers[getKey(identifier, InputRenderContext.Form)] = renderer;
+        inputRenderers[getKey(identifier, InputRenderContext.Grid)] = renderer;
+    } else {
+        inputRenderers[getKey(identifier, inputRenderContext)] = renderer;
     }
+}
 
-    // Fall through to default input render handling
+export const resolveInputRenderer: InputRendererFactory = (col, isGridInput = false) => {
+    if (col?.inputRenderer) {
+        const context = isGridInput ? InputRenderContext.Grid : InputRenderContext.Form;
+        return inputRenderers[getKey(col.inputRenderer, context)];
+    }
     return undefined;
 };
+
+registerInputRenderer('AppendUnitsInput', AppendUnitsInput, InputRenderContext.Form);
+registerInputRenderer('ExperimentAlias', AliasGridInput, InputRenderContext.Grid);
+registerInputRenderer('ExperimentAlias', AliasInput, InputRenderContext.Form);
+registerInputRenderer('SampleStatusInput', SampleStatusInputRenderer);
+registerInputRenderer('WorkflowTask', AssayTaskInputRenderer);

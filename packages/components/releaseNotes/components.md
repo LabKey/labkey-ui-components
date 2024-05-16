@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 3.XX.X
-*Released*: ?? May 2024
+### version 3.46.0
+*Released*: 16 May 2024
 - Add `CheckboxLK`
   - This is a replacement for react-boostrap's Checkbox
   - It will be renamed to `Checkbox` when we stop using the react-bootstrap version

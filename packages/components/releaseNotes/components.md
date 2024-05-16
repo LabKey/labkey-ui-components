@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.24.12
+*Released*: 16 May 2024
+- Issue 49956: Backport of styling update for PreviewOption for QuerySelect
+
 ### version 3.24.11
 *Released*: 8 March 2024
 - Issue 49858: LKSM: Saving grid filter on Storage Status takes 5+ minutes to load grid

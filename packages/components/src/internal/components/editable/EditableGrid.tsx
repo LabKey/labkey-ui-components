@@ -1139,7 +1139,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     _dragFill = async (initialSelection: string[]): Promise<void> => {
-        const { editorModel, forUpdate, containerPath, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } = this.props;
+        const { editorModel, forUpdate, containerPath, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } =
+            this.props;
 
         if (editorModel.isMultiSelect) {
             const loweredColumnMetadata = this.getLoweredColumnMetadata();
@@ -1419,7 +1420,15 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     addRows = async (count: number): Promise<void> => {
         const { data, dataKeys, editorModel, onChange, queryInfo, containerPath } = this.props;
-        const changes = await addRows(editorModel, dataKeys, data, List(queryInfo.getInsertColumns()), count, undefined, containerPath);
+        const changes = await addRows(
+            editorModel,
+            dataKeys,
+            data,
+            List(queryInfo.getInsertColumns()),
+            count,
+            undefined,
+            containerPath
+        );
         onChange(EditableGridEvent.ADD_ROWS, changes.editorModel, changes.dataKeys, changes.data);
     };
 
@@ -1520,7 +1529,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderBulkAdd = (): ReactNode => {
-        const { addControlProps, allowFieldDisable, bulkAddProps, data, forUpdate, maxRows, queryInfo, containerPath } = this.props;
+        const { addControlProps, allowFieldDisable, bulkAddProps, data, forUpdate, maxRows, queryInfo, containerPath } =
+            this.props;
         const maxToAdd =
             maxRows && maxRows - data.size < MAX_EDITABLE_GRID_ROWS ? maxRows - data.size : MAX_EDITABLE_GRID_ROWS;
         return (

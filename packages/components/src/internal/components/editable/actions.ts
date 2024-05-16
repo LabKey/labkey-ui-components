@@ -330,7 +330,11 @@ async function prepareInsertRowDataFromBulkForm(
             // If it's the display value, which happens to be a number, much confusion will arise.
             const values = data.toString().split(',');
             for (const val of values) {
-                const { message, valueDescriptor } = await getLookupDisplayValue(col, parseIntIfNumber(val), containerPath);
+                const { message, valueDescriptor } = await getLookupDisplayValue(
+                    col,
+                    parseIntIfNumber(val),
+                    containerPath
+                );
                 cv = cv.push(valueDescriptor);
                 if (message) {
                     messages = messages.push(message);
@@ -668,7 +672,11 @@ async function prepareUpdateRowDataFromBulkForm(
             // If it's the display value, which happens to be a number, much confusion will arise.
             const rawValues = data.toString().split(',');
             for (const val of rawValues) {
-                const { message, valueDescriptor } = await getLookupDisplayValue(col, parseIntIfNumber(val), containerPath);
+                const { message, valueDescriptor } = await getLookupDisplayValue(
+                    col,
+                    parseIntIfNumber(val),
+                    containerPath
+                );
                 cv = cv.push(valueDescriptor);
                 if (message) {
                     messages = messages.set(colIdx, message);
@@ -1097,7 +1105,11 @@ export async function fillColumnCells(
     return { cellValues, cellMessages };
 }
 
-export function getFolderValueFromDataRow(cellKey: string, dataKeys: List<any>, data: Map<any, Map<string, any>>): string {
+export function getFolderValueFromDataRow(
+    cellKey: string,
+    dataKeys: List<any>,
+    data: Map<any, Map<string, any>>
+): string {
     const { rowIdx } = parseCellKey(cellKey);
     const dataRow = data.get(dataKeys.get(rowIdx))?.toJS();
     const value = getValueFromRow(dataRow, 'Folder') ?? getValueFromRow(dataRow, 'Container');
@@ -1474,7 +1486,9 @@ async function insertPastedData(
                 if (col?.isPublicLookup()) {
                     // If the column is a lookup and forUpdate is true, then we need to query for the rowIds so we can set the correct raw values,
                     // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
-                    const containerPath = forUpdate ? getFolderValueFromDataRow(cellKey, dataKeys, data) : targetContainerPath;
+                    const containerPath = forUpdate
+                        ? getFolderValueFromDataRow(cellKey, dataKeys, data)
+                        : targetContainerPath;
 
                     const cacheKey = `${col.fieldKey}||${containerPath}`;
                     let descriptors = lookupColumnContainerCache[cacheKey];

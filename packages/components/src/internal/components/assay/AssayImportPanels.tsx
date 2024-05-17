@@ -431,7 +431,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         });
     };
 
-    handleFileChange = (attachments: Map<string, File>): void => {
+    handleDataFileChange = (attachments: Map<string, File>): void => {
         this.props.setIsDirty?.(attachments.size > 0);
 
         this.setState(state => ({
@@ -443,7 +443,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }));
     };
 
-    handleFileRemove = (): void => {
+    handleDataFileRemove = (): void => {
         this.props.setIsDirty?.(false);
 
         this.setState(state => ({
@@ -451,6 +451,23 @@ class AssayImportPanelsBody extends Component<Props, State> {
             model: state.model.merge({
                 attachedFiles: Map<string, File>(),
                 usePreviousRunFile: false,
+            }) as AssayWizardModel,
+        }));
+    };
+
+    handleResultsFileChange = (attachments: Map<string, File>): void => {
+        this.setResultsFiles(attachments);
+    };
+
+    handleResultsFileRemove = (_, updatedFiles: Map<string, File>): void => {
+        this.setResultsFiles(updatedFiles);
+    };
+
+    setResultsFiles = (attachments: Map<string, File>): void => {
+        this.props.setIsDirty?.(true);
+        this.setState(state => ({
+            model: state.model.merge({
+                resultsFiles: attachments,
             }) as AssayWizardModel,
         }));
     };
@@ -798,8 +815,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     fileSizeLimits={fileSizeLimits}
                     maxEditableGridRowMsg={`A max of ${maxRows?.toLocaleString()} rows are allowed. Please use the 'Import Data from File' tab if you need to import more than ${maxRows?.toLocaleString()} rows.`}
                     maxRows={maxRows}
-                    onFileChange={this.handleFileChange}
-                    onFileRemoval={this.handleFileRemove}
+                    onDataFileChange={this.handleDataFileChange}
+                    onDataFileRemoval={this.handleDataFileRemove}
+                    onResultsFileChange={this.handleResultsFileChange}
+                    onResultsFileRemoval={this.handleResultsFileRemove}
                     onGridChange={this.onGridChange}
                     operation={operation}
                     onTextChange={this.handleDataTextChange}

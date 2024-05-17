@@ -297,4 +297,9 @@ export class AssayDefinitionModel extends ImmutableRecord({
 
         return columns.asImmutable();
     }
+
+    domainHasFileColumn(type: AssayDomainTypes): boolean {
+        const columns = this.getDomainByType(type);
+        return columns.find(col => col.isFileInput) !== undefined;
+    }
 }

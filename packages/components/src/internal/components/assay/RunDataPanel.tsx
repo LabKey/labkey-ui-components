@@ -13,34 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { PureComponent, ReactNode } from 'react';
-import { Map } from 'immutable';
+import React, {PureComponent, ReactNode} from 'react';
+import {Map} from 'immutable';
 
-import { Filter } from '@labkey/api';
+import {Filter} from '@labkey/api';
 
-import { Operation } from '../../../public/QueryColumn';
+import {Operation} from '../../../public/QueryColumn';
 
-import { AssayUploadTabs } from '../../constants';
-import { InferDomainResponse } from '../../../public/InferDomainResponse';
-import { EditableColumnMetadata, EditorModel } from '../editable/models';
+import {AssayUploadTabs} from '../../constants';
+import {InferDomainResponse} from '../../../public/InferDomainResponse';
+import {EditableColumnMetadata, EditorModel} from '../editable/models';
 
-import { DATA_IMPORT_TOPIC, HelpLink } from '../../util/helpLinks';
-import { EditableGridChange } from '../editable/EditableGrid';
-import { EditableGridPanel } from '../editable/EditableGridPanel';
+import {DATA_IMPORT_TOPIC, HelpLink} from '../../util/helpLinks';
+import {EditableGridChange} from '../editable/EditableGrid';
+import {EditableGridPanel} from '../editable/EditableGridPanel';
 
-import { FileSizeLimitProps } from '../../../public/files/models';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { getActionErrorMessage } from '../../util/messaging';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { FormStep, FormTabs } from '../forms/FormStep';
-import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
-import { Alert } from '../base/Alert';
+import {FileSizeLimitProps} from '../../../public/files/models';
+import {QueryModel} from '../../../public/QueryModel/QueryModel';
+import {getActionErrorMessage} from '../../util/messaging';
+import {LoadingSpinner} from '../base/LoadingSpinner';
+import {FormStep, FormTabs} from '../forms/FormStep';
+import {FileAttachmentForm} from '../../../public/files/FileAttachmentForm';
+import {Alert} from '../base/Alert';
 
-import { getContainerFilterForLookups } from '../../query/api';
+import {getContainerFilterForLookups} from '../../query/api';
 
-import { getRunPropertiesFileName } from './actions';
-import { AssayWizardModel } from './AssayWizardModel';
-import { getServerFilePreview } from './utils';
+import {getRunPropertiesFileName} from './actions';
+import {AssayWizardModel} from './AssayWizardModel';
+import {getServerFilePreview} from './utils';
+import {AssayDomainTypes} from "../../AssayDefinitionModel";
 
 const TABS = ['Enter Data into Grid', 'Import Data from File'];
 const PREVIEW_ROW_COUNT = 3;
@@ -56,8 +57,10 @@ interface Props {
     getIsDirty?: () => boolean;
     maxEditableGridRowMsg?: string;
     maxRows?: number;
-    onFileChange: (attachments: Map<string, File>) => any;
-    onFileRemoval: (attachmentName: string) => any;
+    onDataFileChange: (attachments: Map<string, File>) => any;
+    onDataFileRemoval: (attachmentName: string) => any;
+    onResultsFileChange: (attachments: Map<string, File>) => any;
+    onResultsFileRemoval: (attachmentName: string, updatedFiles?: Map<string, File>) => any;
     onGridChange: EditableGridChange;
     onTextChange: (value: any) => any;
     operation: Operation;
@@ -179,17 +182,17 @@ export class RunDataPanel extends PureComponent<Props, State> {
         this.setState(() => ({ message: undefined }));
     };
 
-    onFileChange = (attachments: Map<string, File>): void => {
+    onDataFileChange = (attachments: Map<string, File>): void => {
         this.setState(
             () => ({ message: undefined }),
-            () => this.props.onFileChange(attachments)
+            () => this.props.onDataFileChange(attachments)
         );
     };
 
-    onFileRemove = (attachmentName: string): void => {
+    onDataFileRemove = (attachmentName: string): void => {
         this.setState(
             () => ({ message: undefined, previousRunData: undefined }),
-            () => this.props.onFileRemoval(attachmentName)
+            () => this.props.onDataFileRemoval(attachmentName)
         );
     };
 
@@ -231,11 +234,14 @@ export class RunDataPanel extends PureComponent<Props, State> {
             wizardModel,
             getIsDirty,
             setIsDirty,
+            onResultsFileChange,
+            onResultsFileRemoval,
         } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || queryModel.isLoading;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
         const columnMetadata = this.getEditableGridColumnMetadata();
+        const hasFileColumn = wizardModel.assayDef.domainHasFileColumn(AssayDomainTypes.RESULT);
 
         return (
             <div className="panel panel-default">
@@ -286,7 +292,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             <LoadingSpinner />
                                         ) : (
                                             <FileAttachmentForm
-                                                key={wizardModel.lastRunId} // required for rerender in the "save and import another" case
+                                                key={wizardModel.lastRunId + '-dataFile'} // required for rerender in the "save and import another" case
                                                 allowDirectories={false}
                                                 allowMultiple={false}
                                                 showLabel={false}
@@ -295,8 +301,8 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                         ? [previousRunData.fileName]
                                                         : []
                                                 }
-                                                onFileChange={this.onFileChange}
-                                                onFileRemoval={this.onFileRemove}
+                                                onFileChange={this.onDataFileChange}
+                                                onFileRemoval={this.onDataFileRemove}
                                                 templateUrl={wizardModel.assayDef.templateLink}
                                                 previewGridProps={
                                                     acceptedPreviewFileFormats && {
@@ -314,6 +320,26 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                         best practices on data import.
                                                     </>
                                                 }
+                                            />
+                                        )}
+                                        {hasFileColumn && (
+                                            // TODO update label, add file limit messaging, etc.
+                                            <FileAttachmentForm
+                                                key={wizardModel.lastRunId + '-resultsFiles'}
+                                                allowDirectories={false}
+                                                allowMultiple
+                                                label="Other Assay Result Files"
+                                                onFileChange={onResultsFileChange}
+                                                onFileRemoval={onResultsFileRemoval}
+                                                // sizeLimits={this.props.fileSizeLimits}
+                                                // sizeLimitsHelpText={
+                                                //     <>
+                                                //         We recommend dividing your data into smaller files that meet
+                                                //         this limit. See our{' '}
+                                                //         <HelpLink topic={DATA_IMPORT_TOPIC}>help document</HelpLink> for
+                                                //         best practices on data import.
+                                                //     </>
+                                                // }
                                             />
                                         )}
                                     </FormStep>

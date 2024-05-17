@@ -54,7 +54,7 @@ interface FileAttachmentFormProps {
     onCancel?: () => void;
     onError?: (error: string) => void;
     onFileChange?: (files: Map<string, File>) => void;
-    onFileRemoval?: (attachmentName: string) => void;
+    onFileRemoval?: (attachmentName: string, updatedFiles?: Map<string, File>) => void;
     // map between file extension and the callback function to use instead of the standard uploadDataFileForPreview
     fileSpecificCallback?: Map<string, (file: File) => Promise<SimpleResponse>>;
     onSubmit?: (files: Map<string, File>) => void;
@@ -200,7 +200,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                 errorMessage: undefined,
             }),
             () => {
-                onFileRemoval?.(attachmentName);
+                onFileRemoval?.(attachmentName, this.state.attachedFiles);
             }
         );
     };

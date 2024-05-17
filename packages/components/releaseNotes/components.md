@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Assay import support for results domain file fields
+  - FileAttachmentForm to send back updatedFiles map onFileRemoval
+
 ### version 3.45.0
 *Released*: 16 May 2024
 - Issue 50363: Cross Folder lookup editable grid copy/paste and fill down don't account for containerPath / containerFilter

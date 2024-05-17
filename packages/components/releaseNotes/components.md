@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Assay import support for results domain file fields
   - FileAttachmentForm to send back updatedFiles map onFileRemoval
   - RunDataPanel update to show FileAttachmentForm for results domain file fields
+  - AssayWizardModel.prepareFormData to include resultsFiles for import run API post
 
 ### version 3.45.0
 *Released*: 16 May 2024

@@ -16,6 +16,7 @@ export interface AssayUploadOptions extends AssayDOM.ImportRunOptions {
     dataRows?: any; // Array<any>
     maxFileSize?: number;
     maxRowCount?: number;
+    resultsFiles?: any[];
 }
 
 export class AssayWizardModel
@@ -31,6 +32,7 @@ export class AssayWizardModel
         isSubmitting: undefined,
 
         attachedFiles: Map<string, File>(),
+        resultsFiles: Map<string, File>(),
         batchColumns: OrderedMap<string, QueryColumn>(),
         batchProperties: Map<string, any>(),
         comment: undefined,
@@ -64,6 +66,7 @@ export class AssayWizardModel
     declare isSubmitting?: boolean;
 
     declare attachedFiles: Map<string, File>;
+    declare resultsFiles: Map<string, File>;
     declare batchColumns: OrderedMap<string, QueryColumn>;
     declare batchProperties: Map<string, any>;
     declare usePreviousRunFile: boolean;
@@ -94,6 +97,10 @@ export class AssayWizardModel
 
     getAttachedFiles(): List<File> {
         return this.attachedFiles.valueSeq().toList();
+    }
+
+    getResultsFiles(): List<File> {
+        return this.resultsFiles.valueSeq().toList();
     }
 
     getRunName(currentStep: AssayUploadTabs): string {
@@ -165,6 +172,7 @@ export class AssayWizardModel
 
         if (this.isFilesTab(currentStep)) {
             assayData.files = this.getAttachedFiles().toArray();
+            assayData.resultsFiles = this.getResultsFiles().toArray();
             if (runId !== undefined && usePreviousRunFile && assayData.files.length === 0) {
                 const url = runProperties.get('DataOutputs/DataFileUrl');
                 if (url) {

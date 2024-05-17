@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { PureComponent } from 'react';
-import { Image, Media } from 'react-bootstrap';
 
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
@@ -208,7 +207,7 @@ export class ReportListItem extends PureComponent<ReportListItemProps> {
         const iconSrc = ICONS[type];
         const iconClassName = 'report-list-item__icon';
         const hasCustomIcon = icon.indexOf('reports-thumbnail.view') > -1;
-        let iconEl = <Image className={iconClassName} src={icon} />;
+        let iconEl = <img alt={icon} className={iconClassName} src={icon} />;
 
         if (iconSrc !== undefined && !hasCustomIcon) {
             iconEl = <SVGIcon className={iconClassName} height={null} iconSrc={iconSrc} />;
@@ -223,14 +222,14 @@ export class ReportListItem extends PureComponent<ReportListItemProps> {
         }
 
         return (
-            <Media.ListItem className="report-list-item" onClick={this.onClick}>
-                <Media.Left>{iconEl}</Media.Left>
+            <li className="report-list-item media" onClick={this.onClick}>
+                <div className="media-left">{iconEl}</div>
 
-                <Media.Body>
-                    <Media.Heading className="report-list-item__name">{nameEl}</Media.Heading>
+                <div className="media-body">
+                    <h4 className="report-list-item__name media-heading">{nameEl}</h4>
                     {createdByEl}
-                </Media.Body>
-            </Media.ListItem>
+                </div>
+            </li>
         );
     }
 }
@@ -260,7 +259,7 @@ export class ReportList extends PureComponent<ReportListProps> {
                 return <ReportListItem key={report.runUrl} report={report} onClick={onReportClicked} />;
             });
 
-            body = <Media.List className="report-list__list">{reportEls}</Media.List>;
+            body = <div className="media-list report-list__list">{reportEls}</div>;
         }
 
         return (

@@ -1,7 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useReducer } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
-import { Checkbox, FormControl } from 'react-bootstrap';
 
 import { biologicsIsPrimaryApp, sampleManagerIsPrimaryApp } from '../../app/utils';
 
@@ -23,6 +22,8 @@ import { HelpLink } from '../../util/helpLinks';
 import { SAMPLE_TYPE_NAME_EXPRESSION_TOPIC } from '../samples/constants';
 
 import { Container } from '../base/models/Container';
+
+import { CheckboxLK } from '../../Checkbox';
 
 import { loadNameExpressionOptions, saveNameExpressionOptions } from './actions';
 
@@ -303,7 +304,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     {loadingNamingOptions && <LoadingSpinner />}
                     {!loadingNamingOptions && (
                         <form>
-                            <Checkbox
+                            <CheckboxLK
+                                name="allowUserSpecifiedNames"
                                 onChange={saveAllowUserSpecifiedNames}
                                 disabled={savingAllowUserSpecifiedNames}
                                 checked={allowUserSpecifiedNames}
@@ -321,7 +323,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         import will result in an error if a new ID/Name is encountered.
                                     </p>
                                 </LabelHelpTip>
-                            </Checkbox>
+                            </CheckboxLK>
                         </form>
                     )}
                 </div>
@@ -341,7 +343,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                     <div className="name-id-setting__prefix-label"> Prefix: </div>
 
                                     <div className="name-id-setting__prefix-field">
-                                        <FormControl
+                                        <input
+                                            className="form-control"
                                             name="prefix"
                                             type="text"
                                             placeholder="Enter Prefix"
@@ -408,8 +411,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         <div className="sample-counter__prefix-label">sampleCount</div>
                                     </div>
                                     <div className="col-sm-2">
-                                        <FormControl
-                                            className="update-samplecount-input "
+                                        <input
+                                            className="form-control update-samplecount-input"
                                             min={sampleCount}
                                             step={1}
                                             name="newSampleCount"
@@ -449,8 +452,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         <div className="sample-counter__prefix-label">rootSampleCount</div>
                                     </div>
                                     <div className="col-sm-2">
-                                        <FormControl
-                                            className="update-samplecount-input "
+                                        <input
+                                            className="form-control update-samplecount-input"
                                             min={rootSampleCount}
                                             step={1}
                                             name="newRootSampleCount"

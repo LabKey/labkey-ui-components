@@ -1263,12 +1263,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 class="domain-row-action-section"
               >
                 <div
-                  class="domain-field-check-icon checkbox"
+                  class="checkbox domain-field-check-icon"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
+                      class=""
                       id="domain-select-all-checkbox"
                       name="domain-select-all-checkbox"
                       type="checkbox"
@@ -2037,12 +2036,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 class="domain-row-action-section"
               >
                 <div
-                  class="domain-field-check-icon checkbox"
+                  class="checkbox domain-field-check-icon"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
+                      class=""
                       id="domain-select-all-checkbox"
                       name="domain-select-all-checkbox"
                       type="checkbox"
@@ -5391,12 +5389,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 class="domain-row-action-section"
               >
                 <div
-                  class="domain-field-check-icon checkbox"
+                  class="checkbox domain-field-check-icon"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
+                      class=""
                       id="domain-select-all-checkbox"
                       name="domain-select-all-checkbox"
                       type="checkbox"
@@ -6165,12 +6162,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 class="domain-row-action-section"
               >
                 <div
-                  class="domain-field-check-icon checkbox"
+                  class="checkbox domain-field-check-icon"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
+                      class=""
                       id="domain-select-all-checkbox"
                       name="domain-select-all-checkbox"
                       type="checkbox"
@@ -8453,12 +8449,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 class="domain-row-action-section"
               >
                 <div
-                  class="domain-field-check-icon checkbox"
+                  class="checkbox domain-field-check-icon"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
+                      class=""
                       id="domain-select-all-checkbox"
                       name="domain-select-all-checkbox"
                       type="checkbox"
@@ -9227,12 +9222,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 class="domain-row-action-section"
               >
                 <div
-                  class="domain-field-check-icon checkbox"
+                  class="checkbox domain-field-check-icon"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
+                      class=""
                       id="domain-select-all-checkbox"
                       name="domain-select-all-checkbox"
                       type="checkbox"

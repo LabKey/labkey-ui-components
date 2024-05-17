@@ -1,9 +1,9 @@
 import React, { FC, memo, useCallback, useState } from 'react';
-import { Checkbox } from 'react-bootstrap';
 
 import { Modal } from '../../Modal';
 
 import { QueryModelMap } from '../../../public/QueryModel/withQueryModels';
+import { CheckboxLK } from '../../Checkbox';
 
 interface ExportModalProperties {
     canExport: boolean;
@@ -37,7 +37,7 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
 
     const onChecked = useCallback(
         evt => {
-            const modelId = evt.target.value;
+            const modelId = evt.target.name;
             const draftSelected = new Set(selected);
             if (evt.target.checked) {
                 setSelected(draftSelected.add(modelId));
@@ -76,9 +76,9 @@ export const ExportModal: FC<ExportModalProperties> = memo(props => {
                         return (
                             <tr key={modelId}>
                                 <td>
-                                    <Checkbox checked={selected.has(modelId)} value={modelId} onChange={onChecked}>
+                                    <CheckboxLK checked={selected.has(modelId)} name={modelId} onChange={onChecked}>
                                         {model.title}
-                                    </Checkbox>
+                                    </CheckboxLK>
                                 </td>
                                 <td className="pull-right">{rowCountDisplay}</td>
                                 <td className="view-name">

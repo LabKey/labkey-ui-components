@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 
@@ -7,6 +6,10 @@ import { QueryColumn } from '../../public/QueryColumn';
 import { QueryInfo } from '../../public/QueryInfo';
 
 import { Modal, ModalProps } from '../Modal';
+
+import { Popover } from '../Popover';
+
+import { OverlayTrigger } from '../OverlayTrigger';
 
 import { Alert } from './base/Alert';
 import { DragDropHandle } from './base/DragDropHandle';
@@ -42,6 +45,15 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
     const onChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
         setTitle(evt.target.value);
     }, []);
+    const id = column.index + '-fieldlabel-popover';
+    const popover = useMemo(
+        () => (
+            <Popover id={id} placement="left">
+                {column.index}
+            </Popover>
+        ),
+        [column.index, id]
+    );
 
     if (editing) {
         return (
@@ -61,17 +73,8 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
         return <div className="field-name">{initialTitle}</div>;
     }
 
-    const id = column.index + '-fieldlabel-popover';
-
     return (
-        <OverlayTrigger
-            overlay={
-                <Popover id={id} key={id}>
-                    {column.index}
-                </Popover>
-            }
-            placement="left"
-        >
+        <OverlayTrigger overlay={popover}>
             <div className="field-name">{initialTitle}</div>
         </OverlayTrigger>
     );

@@ -17,8 +17,6 @@ import React from 'react';
 
 import { mount, shallow } from 'enzyme';
 
-import { Modal, ModalTitle } from 'react-bootstrap';
-
 import { makeQueryInfo } from '../../test/testHelpers';
 import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
 

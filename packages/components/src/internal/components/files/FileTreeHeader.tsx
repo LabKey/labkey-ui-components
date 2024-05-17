@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 
-import { Checkbox } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { CheckboxLK } from '../../Checkbox';
 
 interface FileNodeIconProps {
     isDirectory: boolean;
@@ -38,7 +38,7 @@ export interface TreeNodeProps {
     onSelect?: () => void; // Callback for selection
     customStyles?: any; // Custom styling object that is applied in addition to the base
     checked?: boolean; // Is check box checked
-    handleCheckbox?: (any) => void; // Callback for checkbox changes
+    handleCheckbox?: (event: ChangeEvent<HTMLInputElement>) => void; // Callback for checkbox changes
     checkboxId?: string; // Id to apply to the checkbox
     emptyDirectoryText?: string; // Text to show if node is a container, but has no contents
 
@@ -97,7 +97,7 @@ export const Header: FC<TreeNodeProps> = props => {
             }
         >
             {handleCheckbox && (
-                <Checkbox id={checkboxId} checked={checked} onChange={handleCheckbox} onClick={checkClick} />
+                <CheckboxLK id={checkboxId} checked={checked} name={node.id} onChange={handleCheckbox} onClick={checkClick} />
             )}
             <div style={style.base} onClick={onSelect}>
                 <div className={activeColor}>

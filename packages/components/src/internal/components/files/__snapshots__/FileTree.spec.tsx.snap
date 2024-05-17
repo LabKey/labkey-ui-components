@@ -46,13 +46,13 @@ exports[`FileTree with data 1`] = `
           <div
             className="checkbox"
           >
-            <label
-              title=""
-            >
+            <label>
               <input
                 checked={false}
+                className=""
                 disabled={false}
                 id="filetree-check-root"
+                name="root"
                 onChange={[Function]}
                 onClick={[Function]}
                 type="checkbox"
@@ -134,13 +134,13 @@ exports[`FileTree with data 1`] = `
                 <div
                   className="checkbox"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       checked={false}
+                      className=""
                       disabled={false}
                       id="filetree-check-root|parent1"
+                      name="root|parent1"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -220,13 +220,13 @@ exports[`FileTree with data 1`] = `
                 <div
                   className="checkbox"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       checked={false}
+                      className=""
                       disabled={false}
                       id="filetree-check-root|loading parent"
+                      name="root|loading parent"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -306,13 +306,13 @@ exports[`FileTree with data 1`] = `
                 <div
                   className="checkbox"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       checked={false}
+                      className=""
                       disabled={false}
                       id="filetree-check-root|parent2"
+                      name="root|parent2"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"
@@ -392,13 +392,13 @@ exports[`FileTree with data 1`] = `
                 <div
                   className="checkbox"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       checked={false}
+                      className=""
                       disabled={false}
                       id="filetree-check-root|empty directory"
+                      name="root|empty directory"
                       onChange={[Function]}
                       onClick={[Function]}
                       type="checkbox"

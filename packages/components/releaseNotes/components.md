@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.46.0
+*Released*: 16 May 2024
+- Add `CheckboxLK`
+  - This is a replacement for react-boostrap's Checkbox
+  - It will be renamed to `Checkbox` when we stop using the react-bootstrap version
+- Reduce usages of various react-bootstrap components (e.g. FormGroup, FormControl)
+- OverlayTrigger: Don't require an `id`
+- Add `withServerContext`
+
 ### version 3.45.1
 *Released*: 16 May 2024
 - Introduce `EditorModel.convertQueryModelDataToGridResponse()` to streamline initializing data from a `QueryModel` for an `EditorModel`.

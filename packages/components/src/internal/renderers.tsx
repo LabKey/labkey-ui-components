@@ -156,20 +156,14 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     const portalRef = usePortalRef('header-cell-dropdown-menu-portal');
     // Note: We need to make sure we cancel all events in our menu handlers or we also trigger the click handler in
     // HeaderCellDropdown, which will reset the open value to true, which will keep the menu open.
-    const openFilterPanel = useCallback(
-        () => {
-            setOpen(false);
-            handleFilter(queryColumn, false);
-        },
-        [setOpen, handleFilter, queryColumn]
-    );
-    const removeFilter = useCallback(
-        () => {
-            setOpen(false);
-            handleFilter(queryColumn, true);
-        },
-        [queryColumn, handleFilter, setOpen]
-    );
+    const openFilterPanel = useCallback(() => {
+        setOpen(false);
+        handleFilter(queryColumn, false);
+    }, [setOpen, handleFilter, queryColumn]);
+    const removeFilter = useCallback(() => {
+        setOpen(false);
+        handleFilter(queryColumn, true);
+    }, [queryColumn, handleFilter, setOpen]);
 
     const sort = useCallback(
         (dir?: string) => {
@@ -187,19 +181,13 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
         setOpen(false);
         handleHideColumn(queryColumn);
     }, [queryColumn, handleHideColumn, setOpen]);
-    const addColumn = useCallback(
-        (): void => {
-            setOpen(false);
-            handleAddColumn(queryColumn);
-        },
-        [queryColumn, handleAddColumn, setOpen]
-    );
-    const editColumnTitle = useCallback(
-        (): void => {
-            onEditTitleClicked();
-        },
-        [onEditTitleClicked]
-    );
+    const addColumn = useCallback((): void => {
+        setOpen(false);
+        handleAddColumn(queryColumn);
+    }, [queryColumn, handleAddColumn, setOpen]);
+    const editColumnTitle = useCallback((): void => {
+        onEditTitleClicked();
+    }, [onEditTitleClicked]);
 
     const [menuStyle, setMenuStyle] = useState<CSSProperties>({});
     const updateMenuStyle = useCallback(() => {
@@ -475,8 +463,8 @@ export function headerSelectionCell(
     handleSelection: (event: ChangeEvent<HTMLInputElement>) => void,
     selectedState: GRID_CHECKBOX_OPTIONS,
     disabled: boolean,
-    className?
-) {
+    className?: string
+): ReactNode {
     const isChecked = selectedState === GRID_CHECKBOX_OPTIONS.ALL;
     const isIndeterminate = selectedState === GRID_CHECKBOX_OPTIONS.SOME;
 

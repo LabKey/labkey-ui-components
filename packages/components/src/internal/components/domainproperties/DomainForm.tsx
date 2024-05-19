@@ -16,7 +16,7 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Checkbox, FormControl, Panel } from 'react-bootstrap';
+import { FormControl, Panel } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';
@@ -107,6 +107,7 @@ import {
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 import { SystemFields } from './SystemFields';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
+import { CheckboxLK } from '../../Checkbox';
 
 interface IDomainFormInput {
     api?: DomainPropertiesAPIWrapper;
@@ -1108,7 +1109,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <div className="row domain-row-container">
                         <div className="domain-row-handle" />
                         <div className="domain-row-action-section">
-                            <Checkbox
+                            <CheckboxLK
                                 className="domain-field-check-icon"
                                 name="domain-select-all-checkbox"
                                 id="domain-select-all-checkbox"

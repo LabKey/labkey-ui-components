@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { FormControl } from 'react-bootstrap';
 import { Security } from '@labkey/api';
 
 import { Modal } from '../../Modal';
@@ -11,11 +10,11 @@ import { Alert } from '../base/Alert';
 interface Props {
     onCancel: () => void;
     onComplete: (response: any, roles: string[]) => void;
-    userLimitSettings?: Partial<UserLimitSettings>;
-
     // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onComplete
     roleOptions?: any[];
+
+    userLimitSettings?: Partial<UserLimitSettings>;
 }
 
 interface State {
@@ -92,11 +91,10 @@ export class CreateUsersModal extends React.Component<Props, State> {
 
         return (
             <>
-                <div className="create-users-label-bottom">
+                <label className="create-users-label-bottom" htmlFor="create-users-email-input">
                     Enter one or more email addresses, each on its own line:
-                </div>
-                <FormControl
-                    componentClass="textarea"
+                </label>
+                <textarea
                     className="form-control"
                     id="create-users-email-input"
                     rows={5}
@@ -110,10 +108,11 @@ export class CreateUsersModal extends React.Component<Props, State> {
                 )}
                 {this.hasRoleOptions() && (
                     <>
-                        <div className="create-users-label-top create-users-label-bottom">Roles:</div>
+                        <label className="create-users-label-top create-users-label-bottom" htmlFor="create-users-role">Roles:</label>
                         <SelectInput
                             containerClass="form-group row"
                             inputClass="col-sm-12"
+                            inputId="create-users-role"
                             name="create-users-role"
                             key="create-users-role-selection"
                             placeholder="Select role..."
@@ -127,9 +126,10 @@ export class CreateUsersModal extends React.Component<Props, State> {
                         />
                     </>
                 )}
-                <div className="create-users-label-bottom">Optional message to send to new users:</div>
-                <FormControl
-                    componentClass="textarea"
+                <label className="create-users-label-bottom" htmlFor="create-users-optionalMessage-input">
+                    Optional message to send to new users:
+                </label>
+                <textarea
                     className="form-control"
                     id="create-users-optionalMessage-input"
                     rows={5}

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { FormGroup } from 'react-bootstrap';
-
 import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { mountWithAppServerContext, waitForLifecycle } from '../../test/enzymeTestHelpers';
@@ -151,7 +149,7 @@ describe('LabelTemplateDetails', () => {
 
         // Don't show anything, use Label List's default message
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
-        expect(wrapper.find(FormGroup)).toHaveLength(0);
+        expect(wrapper.find('.form-group')).toHaveLength(0);
         expect(wrapper.find('[name="isDefault"]')).toHaveLength(0);
         wrapper.unmount();
     });
@@ -161,7 +159,7 @@ describe('LabelTemplateDetails', () => {
 
         // Show no selection message
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(1);
-        expect(wrapper.find(FormGroup)).toHaveLength(0);
+        expect(wrapper.find('.form-group')).toHaveLength(0);
         const defaultInput = wrapper.find('[name="isDefault"]');
         expect(defaultInput).toHaveLength(0);
         wrapper.unmount();
@@ -186,7 +184,7 @@ describe('LabelTemplateDetails', () => {
 
         // Show form w/o default selector
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
-        expect(wrapper.find(FormGroup)).toHaveLength(3);
+        expect(wrapper.find('.form-group')).toHaveLength(3);
         const defaultInput = wrapper.find('[name="isDefault"]');
         expect(defaultInput).toHaveLength(0);
         wrapper.unmount();
@@ -214,7 +212,7 @@ describe('LabelTemplateDetails', () => {
 
         // Show form with default selector and default selected
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
-        expect(wrapper.find(FormGroup)).toHaveLength(4);
+        expect(wrapper.find('.form-group')).toHaveLength(4);
         const defaultInput = wrapper.find('[name="isDefault"]');
         expect(defaultInput).toHaveLength(1);
         expect(defaultInput.prop('checked')).toBe(true);
@@ -243,7 +241,7 @@ describe('LabelTemplateDetails', () => {
 
         // Show form with default selector and default selected
         expect(wrapper.find('.choices-detail__empty-message')).toHaveLength(0);
-        expect(wrapper.find(FormGroup)).toHaveLength(4);
+        expect(wrapper.find('.form-group')).toHaveLength(4);
         const defaultInput = wrapper.find('[name="isDefault"]');
         expect(defaultInput).toHaveLength(1);
         expect(defaultInput.prop('checked')).toBe(false);

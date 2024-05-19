@@ -2,8 +2,6 @@ import React from 'react';
 
 import { mount, ReactWrapper } from 'enzyme';
 
-import { OverlayTrigger } from 'react-bootstrap';
-
 import { Draggable } from 'react-beautiful-dnd';
 
 import { ExtendedMap } from '../../public/ExtendedMap';
@@ -26,6 +24,7 @@ import {
     FieldLabelDisplay,
 } from './ColumnSelectionModal';
 import { LoadingSpinner } from './base/LoadingSpinner';
+import { OverlayTrigger } from '../OverlayTrigger';
 
 describe('ColumnSelectionModal', () => {
     const QUERY_COL = new QueryColumn({

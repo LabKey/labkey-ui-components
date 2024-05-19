@@ -1,6 +1,4 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { FormControl } from 'react-bootstrap';
-
 import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../../public/QueryColumn';
@@ -290,7 +288,7 @@ export const FilterExpressionView: FC<Props> = memo(props => {
 
             if (!isMultiValueInput && (jsonType === 'int' || jsonType === 'float')) {
                 return (
-                    <FormControl
+                    <input
                         className="form-control filter-expression__input"
                         step={jsonType === 'int' ? 1 : undefined}
                         name={'field-value-text' + suffix}

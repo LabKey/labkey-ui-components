@@ -1966,12 +1966,11 @@ exports[`DataClassDesigner initModel 1`] = `
                 class="domain-row-action-section"
               >
                 <div
-                  class="domain-field-check-icon checkbox"
+                  class="checkbox domain-field-check-icon"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
+                      class=""
                       id="domain-select-all-checkbox"
                       name="domain-select-all-checkbox"
                       type="checkbox"

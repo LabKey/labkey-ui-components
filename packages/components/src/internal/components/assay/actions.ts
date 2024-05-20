@@ -129,7 +129,10 @@ export function uploadAssayRunFiles(data: AssayUploadOptions): Promise<AssayUplo
     return new Promise((resolve, reject) => {
         const batchFiles = collectFiles(data.batchProperties);
         const runFiles = collectFiles(data.properties);
-        let maxFileSize = 0; // return the largest file size, used to determine if async mode should be used
+
+        // track the largest file size for the results data, used to determine if async mode should be used
+        // note that we don't include the batchFiles or runFiles in this as they are processed / posted separately
+        let maxFileSize = 0;
 
         const maxRowCount = Array.isArray(data.dataRows) ? data.dataRows.length : undefined;
         if (data.files) {
@@ -155,9 +158,6 @@ export function uploadAssayRunFiles(data: AssayUploadOptions): Promise<AssayUplo
         Object.keys(batchFiles).forEach(columnName => {
             const name = fileCounter === 0 ? 'file' : `file${fileCounter}`;
             const file = batchFiles[columnName];
-            if (file.size > maxFileSize) {
-                maxFileSize = file.size;
-            }
             fileNameMap[name] = {
                 columnName,
                 origin: 'batch',
@@ -169,9 +169,6 @@ export function uploadAssayRunFiles(data: AssayUploadOptions): Promise<AssayUplo
         Object.keys(runFiles).forEach(columnName => {
             const name = fileCounter === 0 ? 'file' : `file${fileCounter}`;
             const file = runFiles[columnName];
-            if (file.size > maxFileSize) {
-                maxFileSize = file.size;
-            }
             fileNameMap[name] = {
                 columnName,
                 origin: 'run',

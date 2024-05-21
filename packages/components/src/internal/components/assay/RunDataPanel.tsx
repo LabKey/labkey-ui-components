@@ -295,7 +295,8 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 key={wizardModel.lastRunId + '-dataFile'} // required for rerender in the "save and import another" case
                                                 allowDirectories={false}
                                                 allowMultiple={false}
-                                                showLabel={false}
+                                                showLabel={hasFileColumn}
+                                                label={<div className="assay-data-file-label">Results Data</div>}
                                                 initialFileNames={
                                                     previousRunData && previousRunData.fileName
                                                         ? [previousRunData.fileName]
@@ -326,20 +327,13 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             // TODO update label, add file limit messaging, etc.
                                             <FileAttachmentForm
                                                 key={wizardModel.lastRunId + '-resultsFiles'}
-                                                allowDirectories={false}
+                                                allowDirectories
+                                                includeDirectoryFiles
                                                 allowMultiple
-                                                label="Other Assay Result Files"
+                                                label={<div className="assay-data-file-label">File Field Data</div>}
+                                                labelLong="Select file(s) or drag and drop here"
                                                 onFileChange={onResultsFileChange}
                                                 onFileRemoval={onResultsFileRemoval}
-                                                // sizeLimits={this.props.fileSizeLimits}
-                                                // sizeLimitsHelpText={
-                                                //     <>
-                                                //         We recommend dividing your data into smaller files that meet
-                                                //         this limit. See our{' '}
-                                                //         <HelpLink topic={DATA_IMPORT_TOPIC}>help document</HelpLink> for
-                                                //         best practices on data import.
-                                                //     </>
-                                                // }
                                             />
                                         )}
                                     </FormStep>

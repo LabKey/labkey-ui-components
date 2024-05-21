@@ -173,13 +173,13 @@ describe('CustomizeGridViewModal', () => {
         expect(colsInView.at(1).prop('selected')).toBe(true);
 
         // clicking a new column should change the selected index
-        colsInView.at(0).find('.field-name').simulate('click');
+        colsInView.at(0).find('.field-name span').simulate('click');
         colsInView = wrapper.find(ColumnInView);
         expect(colsInView.at(0).prop('selected')).toBe(true);
         expect(colsInView.at(1).prop('selected')).toBe(false);
 
         // clicking on the same column should unselect
-        colsInView.at(0).find('.field-name').simulate('click');
+        colsInView.at(0).find('.field-name span').simulate('click');
         colsInView = wrapper.find(ColumnInView);
         expect(colsInView.at(0).prop('selected')).toBe(false);
         expect(colsInView.at(1).prop('selected')).toBe(false);

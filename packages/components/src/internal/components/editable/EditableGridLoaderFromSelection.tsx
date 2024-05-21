@@ -59,38 +59,28 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
         this.idsNotPermitted = idsNotPermitted || [];
     }
 
-    fetch(gridModel: QueryModel): Promise<GridResponse> {
-        return new Promise((resolve, reject) => {
-            const { queryName, queryParameters, schemaName, sortString, viewName } = gridModel;
-            const selectedIds = gridModel.getSelectedIds(this.idsNotPermitted);
+    async fetch(queryModel: QueryModel): Promise<GridResponse> {
+        const { queryName, queryParameters, schemaName, sortString, viewName } = queryModel;
+        const selectedIds = queryModel.getSelectedIds(this.idsNotPermitted);
 
-            return getSelectedData(
-                schemaName,
-                queryName,
-                selectedIds,
-                gridModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true),
-                sortString,
-                queryParameters,
-                viewName
-            )
-                .then(response => {
-                    const { data, dataIds } = response;
-                    resolve({
-                        data: EditorModel.convertQueryDataToEditorData(
-                            data,
-                            Map<any, any>(this.updateData),
-                            this.idsNotToUpdate,
-                            this.fieldsNotToUpdate
-                        ),
-                        dataIds,
-                    });
-                })
-                .catch(error => {
-                    reject({
-                        gridModel,
-                        error,
-                    });
-                });
-        });
+        const { data, dataIds } = await getSelectedData(
+            schemaName,
+            queryName,
+            selectedIds,
+            queryModel.getRequestColumnsString(this.requiredColumns, this.omittedColumns, true),
+            sortString,
+            queryParameters,
+            viewName
+        );
+
+        return {
+            data: EditorModel.convertQueryDataToEditorData(
+                data,
+                Map<any, any>(this.updateData),
+                this.idsNotToUpdate,
+                this.fieldsNotToUpdate
+            ),
+            dataIds,
+        };
     }
 }

@@ -1,6 +1,4 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-
-import { FormGroup } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -225,7 +223,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
             {updatedState && (
                 <form className="form-horizontal content-form">
                     {error && <Alert>{error}</Alert>}
-                    <FormGroup>
+                    <div className="form-group">
                         <div className="col-sm-4">
                             <DomainFieldLabel label="Label" required />
                         </div>
@@ -240,8 +238,8 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 value={updatedState.label ?? ''}
                             />
                         </div>
-                    </FormGroup>
-                    <FormGroup>
+                    </div>
+                    <div className="form-group">
                         <div className="col-sm-4">
                             <DomainFieldLabel label="Color" required />
                         </div>
@@ -255,8 +253,8 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 colors={Object.keys(SAMPLE_STATUS_COLORS)}
                             />
                         </div>
-                    </FormGroup>
-                    <FormGroup>
+                    </div>
+                    <div className="form-group">
                         <div className="col-sm-4">
                             <DomainFieldLabel label="Description" />
                         </div>
@@ -269,8 +267,8 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 value={updatedState.description ?? ''}
                             />
                         </div>
-                    </FormGroup>
-                    <FormGroup>
+                    </div>
+                    <div className="form-group">
                         <div className="col-sm-4">
                             <DomainFieldLabel label="Status Type" required />
                         </div>
@@ -286,7 +284,7 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
                                 value={updatedState.stateType}
                             />
                         </div>
-                    </FormGroup>
+                    </div>
                     <div>
                         {!addNew && updatedState.isLocal && (
                             <DisableableButton

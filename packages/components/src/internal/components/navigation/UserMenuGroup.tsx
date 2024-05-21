@@ -15,7 +15,6 @@
  */
 
 import React, { FC, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { Image } from 'react-bootstrap';
 import { getServerContext } from '@labkey/api';
 
 import { User } from '../base/models/User';
@@ -106,7 +105,7 @@ export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
     }
 
     const userToggle = user.avatar ? (
-        <Image src={user.avatar} alt="User Avatar" rounded height={32} width={32} />
+        <img className="img-rounded" src={user.avatar} alt="User Avatar" height={32} width={32} />
     ) : (
         <span className="navbar-item">
             <span className="user-name">

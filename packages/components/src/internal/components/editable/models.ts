@@ -34,6 +34,7 @@ import { CellCoordinates, EditableGridEvent } from './constants';
 import { genCellKey, parseCellKey } from './utils';
 
 export interface EditableColumnMetadata {
+    align?: string;
     caption?: string;
     containerFilter?: Query.ContainerFilter;
     filteredLookupKeys?: List<any>;
@@ -43,13 +44,12 @@ export interface EditableColumnMetadata {
     isReadOnlyCell?: (rowKey: string) => boolean;
     linkedColInd?: number;
     lookupValueFilters?: Filter.IFilter[];
+    minWidth?: number;
     placeholder?: string;
     popoverClassName?: string;
     readOnly?: boolean;
     toolTip?: ReactNode;
     width?: number;
-    minWidth?: number;
-    align?: string;
 }
 
 export interface ValueDescriptor {
@@ -554,54 +554,84 @@ export class EditorModel
 
     static getEditorDataFromQueryValueMap(valueMap: any): List<any> | any {
         // Editor expects to get either a single value or an array of an object with fields displayValue and value
-        if (valueMap && List.isList(valueMap)) {
-            return valueMap.map(val => {
-                // If immutable convert to normal JS
-                if (Iterable.isIterable(val)) {
-                    return { displayValue: val.get('displayValue'), value: val.get('value') };
-                } else return val;
-            });
-        } else if (
-            valueMap &&
-            valueMap.has('value') &&
-            valueMap.get('value') !== null &&
-            valueMap.get('value') !== undefined
-        ) {
-            return valueMap.has('formattedValue')
-                ? List<any>([{ displayValue: valueMap.get('formattedValue'), value: valueMap.get('value') }])
-                : valueMap.has('displayValue')
-                ? List<any>([{ displayValue: valueMap.get('displayValue'), value: valueMap.get('value') }])
-                : valueMap.get('value');
-        } else return undefined;
+        if (List.isList(valueMap)) {
+            return (valueMap as List<any>)
+                .map(val => {
+                    // If immutable convert to normal JS
+                    if (Iterable.isIterable(val)) {
+                        return { displayValue: val.get('displayValue'), value: val.get('value') };
+                    }
+                    return val;
+                })
+                .toList();
+        }
+
+        if (valueMap?.has('value') && valueMap.get('value') !== null && valueMap.get('value') !== undefined) {
+            if (valueMap.has('formattedValue')) {
+                return List.of({ displayValue: valueMap.get('formattedValue'), value: valueMap.get('value') });
+            }
+            if (valueMap.has('displayValue')) {
+                return List.of({ displayValue: valueMap.get('displayValue'), value: valueMap.get('value') });
+            }
+            return valueMap.get('value');
+        }
+
+        return undefined;
     }
 
     static convertQueryDataToEditorData(
         data: Map<string, any>,
         updates?: Map<any, any>,
         idsNotToUpdate?: number[],
-        fieldsNotToUpdate?: string[]
+        fieldsNotToUpdate?: string[],
+        encode = true
     ): Map<any, Map<string, any>> {
-        return data.map((valueMap, id) => {
-            const returnMap = valueMap.reduce((m, valueMap, key) => {
-                const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap);
-                // data maps have keys that are display names/captions. We need to convert to the
-                // encoded keys used in our filters to match up with values from the forms.
-                if (editorData !== undefined) return m.set(encodePart(key), editorData);
-                else return m;
-            }, Map<any, any>());
-            if (!updates) {
-                return returnMap;
-            }
-            if (!idsNotToUpdate || idsNotToUpdate.indexOf(parseInt(id)) < 0 || !fieldsNotToUpdate)
-                return returnMap.merge(updates);
-            let trimmedUpdates = Map<any, any>();
-            updates.forEach((value, fieldKey) => {
-                if (fieldsNotToUpdate.indexOf(fieldKey.toLowerCase()) < 0) {
-                    trimmedUpdates = trimmedUpdates.set(fieldKey, value);
+        return data
+            .map((valueMap, id) => {
+                const returnMap = valueMap.reduce((m, valueMap_, key) => {
+                    const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap_);
+                    if (editorData === undefined) {
+                        return m;
+                    }
+
+                    // data maps have keys that are display names/captions. We need to convert to the
+                    // encoded keys used in our filters to match up with values from the forms.
+                    const key_ = encode ? encodePart(key) : key;
+                    return m.set(key_, editorData);
+                }, Map<any, any>());
+
+                if (!updates) {
+                    return returnMap;
                 }
-            });
-            return returnMap.merge(trimmedUpdates);
-        }) as Map<any, Map<string, any>>;
+
+                if (!idsNotToUpdate || idsNotToUpdate.indexOf(parseInt(id, 10)) < 0 || !fieldsNotToUpdate) {
+                    return returnMap.merge(updates);
+                }
+
+                let trimmedUpdates = Map<any, any>();
+                updates.forEach((value, fieldKey) => {
+                    if (fieldsNotToUpdate.indexOf(fieldKey.toLowerCase()) < 0) {
+                        trimmedUpdates = trimmedUpdates.set(fieldKey, value);
+                    }
+                });
+                return returnMap.merge(trimmedUpdates);
+            })
+            .toMap();
+    }
+
+    static convertQueryModelDataToGridResponse(model: QueryModel): GridResponse {
+        const data = {};
+        const dataIds = [];
+
+        model.orderedRows.forEach(pk => {
+            data[pk] = model.rows[pk];
+            dataIds.push(pk);
+        });
+
+        return {
+            data: EditorModel.convertQueryDataToEditorData(fromJS(data), undefined, undefined, undefined, false),
+            dataIds: fromJS(dataIds),
+        };
     }
 
     lastSelection(colIdx: number, rowIdx: number): boolean {

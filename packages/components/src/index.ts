@@ -48,6 +48,7 @@ import {
     useServerContext,
     useServerContextDispatch,
     withAppUser,
+    withServerContext,
 } from './internal/components/base/ServerContext';
 import { naturalSort, naturalSortByProperty } from './public/sort';
 import { AssayDefinitionModel, AssayDomainTypes, AssayLink } from './internal/AssayDefinitionModel';
@@ -885,6 +886,7 @@ import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { AuditSettings } from './internal/components/settings/AuditSettings';
 import { BaseModal, Modal, ModalHeader } from './internal/Modal';
 import { Tab, Tabs } from './internal/Tabs';
+import { CheckboxLK } from './internal/Checkbox';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1656,6 +1658,7 @@ export {
     useServerContext,
     useServerContextDispatch,
     withAppUser,
+    withServerContext,
     QueryColumn,
     QueryInfo,
     QueryLookup,
@@ -1778,6 +1781,7 @@ export {
     ModalHeader,
     Tab,
     Tabs,
+    CheckboxLK,
     // Custom labels
     getModuleCustomLabels,
 };

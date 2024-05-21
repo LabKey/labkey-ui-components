@@ -1,8 +1,9 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
-import { Checkbox } from 'react-bootstrap';
 import { Ajax, Utils } from '@labkey/api';
 
 import { resolveErrorMessage } from '../../util/messaging';
+
+import { CheckboxLK } from '../../Checkbox';
 
 import { LoadingSpinner } from './LoadingSpinner';
 import { Alert } from './Alert';
@@ -98,9 +99,9 @@ export const Setting: FC<SettingProps> = memo(props => {
 
             {!loading && (
                 <form>
-                    <Checkbox checked={enabled} onChange={save} disabled={saving}>
+                    <CheckboxLK checked={enabled} name={name} onChange={save} disabled={saving}>
                         {label}
-                    </Checkbox>
+                    </CheckboxLK>
                 </form>
             )}
         </div>

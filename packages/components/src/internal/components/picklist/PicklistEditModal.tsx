@@ -1,6 +1,4 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Checkbox } from 'react-bootstrap';
-
 import { Utils } from '@labkey/api';
 
 import { Alert } from '../base/Alert';
@@ -14,22 +12,24 @@ import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { setSnapshotSelections } from '../../actions';
 import { Modal } from '../../Modal';
 
+import { CheckboxLK } from '../../Checkbox';
+
 import { Picklist } from './models';
 import { createPicklist, getPicklistUrl, updatePicklist } from './actions';
 import { PRIVATE_PICKLIST_CATEGORY, PUBLIC_PICKLIST_CATEGORY } from './constants';
 
 export interface PicklistEditModalProps {
-    sampleIds?: string[];
-    picklist?: Picklist;
+    api?: ComponentsAPIWrapper;
+    currentProductId?: string;
+    metricFeatureArea?: string;
     onCancel: () => void;
     onFinish: (picklist: Picklist) => void;
-    showNotification?: boolean;
-    currentProductId?: string;
+    picklist?: Picklist;
     picklistProductId?: string;
-    metricFeatureArea?: string;
-    api?: ComponentsAPIWrapper;
-    sampleFieldKey?: string;
     queryModel?: QueryModel;
+    sampleFieldKey?: string;
+    sampleIds?: string[];
+    showNotification?: boolean;
 }
 
 export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
@@ -94,9 +94,10 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
     );
 
     const [shared, setShared] = useState<boolean>(picklist?.isPublic() ?? false);
-    // Using a type for evt here causes difficulties.  It wants a FormEvent<Checkbox> but
-    // then it doesn't recognize checked as a valid field on current target.
-    const onSharedChanged = useCallback(evt => setShared(evt.currentTarget.checked), []);
+    const onSharedChanged = useCallback(
+        (evt: ChangeEvent<HTMLInputElement>) => setShared(evt.currentTarget.checked),
+        []
+    );
 
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [picklistError, setPicklistError] = useState<string>(undefined);
@@ -246,9 +247,9 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
                         onChange={onDescriptionChange}
                     />
 
-                    <Checkbox checked={shared} onChange={onSharedChanged}>
-                        <span>Share this picklist</span>
-                    </Checkbox>
+                    <CheckboxLK checked={shared} name="shared" onChange={onSharedChanged}>
+                        Share this picklist
+                    </CheckboxLK>
                 </div>
             </form>
         </Modal>

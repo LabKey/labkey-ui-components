@@ -5,6 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X May 2024
 - Issue 50347 LKSM: Data Field Name in Naming Pattern Causing Error
 
+### version 3.46.1
+*Released*: 21 May 2024
+- Merge from release24.3-SNAPSHOT to develop
+    - includes changes from 3.24.12 #1496
+
 ### version 3.46.0
 *Released*: 16 May 2024
 - Add `CheckboxLK`
@@ -311,6 +316,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.24.7
 *Released*: 1 March 2024
 - Lineage Settings: fix input change handling
+
+### version 3.24.12
+*Released*: 16 May 2024
+- Issue 49956: Backport of styling update for PreviewOption for QuerySelect
 
 ### version 3.24.11
 *Released*: 8 March 2024

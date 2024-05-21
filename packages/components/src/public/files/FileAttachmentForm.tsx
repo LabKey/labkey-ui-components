@@ -41,15 +41,16 @@ interface FileAttachmentFormProps {
     // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
     // "all" limits will be overridden by limits for a specific extension.
     sizeLimits?: Map<string, FileSizeLimitProps>;
-    sizeLimitsHelpText?: React.ReactNode;
+    sizeLimitsHelpText?: ReactNode;
     showAcceptedFormats?: boolean;
     allowDirectories?: boolean;
+    includeDirectoryFiles?: boolean;
     allowMultiple?: boolean;
     cancelText?: string;
     initialFileNames?: string[];
     initialFiles?: Record<string, File>;
     index?: number;
-    label?: string;
+    label?: ReactNode;
     labelLong?: string;
     onCancel?: () => void;
     onError?: (error: string) => void;
@@ -81,6 +82,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         acceptedFormats: '',
         showAcceptedFormats: true,
         allowDirectories: true,
+        includeDirectoryFiles: false,
         allowMultiple: true,
         cancelText: 'Cancel',
         label: 'Attachments',
@@ -381,6 +383,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         const {
             acceptedFormats,
             allowDirectories,
+            includeDirectoryFiles,
             allowMultiple,
             initialFileNames,
             initialFiles,
@@ -405,6 +408,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                                 index={this.props.index}
                                 acceptedFormats={acceptedFormats}
                                 allowDirectories={allowDirectories}
+                                includeDirectoryFiles={includeDirectoryFiles}
                                 handleChange={this.handleFileChange}
                                 handleRemoval={this.handleFileRemoval}
                                 initialFileNames={initialFileNames}

@@ -74,8 +74,8 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
     }
 
     return (
-        <OverlayTrigger overlay={popover}>
-            <div className="field-name">{initialTitle}</div>
+        <OverlayTrigger className="field-name" overlay={popover}>
+            <span>{initialTitle}</span>
         </OverlayTrigger>
     );
 });

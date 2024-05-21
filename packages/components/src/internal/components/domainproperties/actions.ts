@@ -1296,5 +1296,5 @@ export function setGenId(
 }
 
 export function scrollDomainErrorIntoView(): void {
-    document.querySelector('#' + DOMAIN_ERROR_ID).scrollIntoView();
+    document.querySelector('#' + DOMAIN_ERROR_ID)?.scrollIntoView();
 }

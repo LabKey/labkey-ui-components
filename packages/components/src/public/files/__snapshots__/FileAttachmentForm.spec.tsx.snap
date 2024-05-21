@@ -20,6 +20,7 @@ exports[`<FileAttachmentForm/> no props 1`] = `
           compact={false}
           handleChange={[Function]}
           handleRemoval={[Function]}
+          includeDirectoryFiles={false}
           labelLong="Select file or drag and drop here."
         />
       </div>
@@ -48,6 +49,7 @@ exports[`<FileAttachmentForm/> with attributes 1`] = `
           compact={false}
           handleChange={[Function]}
           handleRemoval={[Function]}
+          includeDirectoryFiles={false}
           labelLong="Select file or drag and drop here."
         />
       </div>

@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 21 May 2024
 - Fix Issue 50455
 
+### version 3.X
+*Released*: X 2024
+- Issue 50354: LKSM: Include indicator of unavailable file in apps
+
 ### version 3.46.2
 *Released*: 21 May 2024
 - Issue 50347 LKSM: Data Field Name in Naming Pattern Causing Error

@@ -20,15 +20,73 @@ import { FILELINK_RANGE_URI } from '../components/domainproperties/constants';
 
 import { QueryColumn } from '../../public/QueryColumn';
 
-import { AttachmentCard, IAttachment } from './AttachmentCard';
+import { AttachmentCard, AttachmentCardProps, IAttachment } from './AttachmentCard';
 
-interface Props {
+interface OwnProps {
     col?: QueryColumn;
     data?: any;
     onRemove?: (attachment: IAttachment) => void;
 }
 
-export class FileColumnRenderer extends PureComponent<Props> {
+interface FileProp {
+    filename: string;
+    fileUnavailable?: boolean;
+}
+
+const getFileDisplayValue = (rawDisplayValue: string) : FileProp => {
+    if (!rawDisplayValue) {
+        return {
+            filename: undefined,
+            fileUnavailable: false, // not a file_link, could be attachment
+        }
+    }
+
+    if (rawDisplayValue.endsWith(" (unavailable)")) {
+        return {
+            filename: rawDisplayValue.substring(0, rawDisplayValue.length - (" (unavailable)").length),
+            fileUnavailable: true,
+        }
+    }
+    return {
+        filename: rawDisplayValue,
+        fileUnavailable: false
+    };
+}
+
+export const getAttachmentCardProp = (data?: any, colRangeUri?: string, onRemove?: (attachment: IAttachment) => void) : AttachmentCardProps => {
+    if (!data)
+        return null;
+
+    const url = data.get('url');
+    const value = data.get('value');
+    const {filename, fileUnavailable} = getFileDisplayValue(data.get('displayValue'));
+    const name = filename || value;
+
+    if (!name) {
+        return null;
+    }
+
+    // Attachment URLs will look like images, so we check if the URL is an image.
+    // FileLink URLs don't look like images, so you have to check value or displayValue.
+    const _isImage = (url && isImage(url)) || (filename && isImage(filename)) || (value && isImage(value));
+    const attachment = {
+        name,
+        title: getAttachmentTitleFromName(name),
+        iconFontCls: getIconFontCls(name, fileUnavailable),
+        unavailable: fileUnavailable
+    } as IAttachment;
+
+    return {
+        noun: colRangeUri === FILELINK_RANGE_URI ? 'file' : 'attachment',
+        attachment,
+        imageURL: _isImage ? url : undefined,
+        imageCls: "attachment-card__img",
+        allowRemove: onRemove !== undefined,
+        onRemove
+    }
+}
+
+export class FileColumnRenderer extends PureComponent<OwnProps> {
     onDownload = (attachment: IAttachment): void => {
         const { data } = this.props;
         const url = data?.get('url');
@@ -39,38 +97,13 @@ export class FileColumnRenderer extends PureComponent<Props> {
 
     render(): ReactNode {
         const { col, data, onRemove } = this.props;
-
-        if (!data) {
+        const cardProps = getAttachmentCardProp(data, col?.rangeURI, onRemove);
+        if (!cardProps)
             return null;
-        }
-
-        const url = data.get('url');
-        const value = data.get('value');
-        const displayValue = data.get('displayValue');
-        const name = displayValue || value;
-
-        if (!name) {
-            return null;
-        }
-
-        // Attachment URLs will look like images, so we check if the URL is an image.
-        // FileLink URLs don't look like images, so you have to check value or displayValue.
-        const _isImage = (url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value));
-        const attachment = {
-            name,
-            title: getAttachmentTitleFromName(name),
-            iconFontCls: getIconFontCls(name),
-        } as IAttachment;
-
         return (
             <AttachmentCard
-                noun={col?.rangeURI === FILELINK_RANGE_URI ? 'file' : 'attachment'}
-                attachment={attachment}
-                imageURL={_isImage ? url : undefined}
-                imageCls="attachment-card__img"
+                {...cardProps}
                 onDownload={this.onDownload}
-                allowRemove={onRemove !== undefined}
-                onRemove={onRemove}
             />
         );
     }

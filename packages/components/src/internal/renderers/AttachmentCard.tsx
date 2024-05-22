@@ -1,4 +1,5 @@
 import React, { FC, memo, useCallback, useState } from 'react';
+import classNames from 'classnames';
 
 import { Modal } from '../Modal';
 import { formatBytes, getIconFontCls, isImage } from '../util/utils';
@@ -17,9 +18,10 @@ export interface IAttachment {
     name: string;
     size?: number;
     title?: string;
+    unavailable?: boolean;
 }
 
-interface Props {
+export interface AttachmentCardProps {
     allowDownload?: boolean;
     allowRemove?: boolean;
     attachment: IAttachment;
@@ -33,7 +35,7 @@ interface Props {
     outerCls?: string;
 }
 
-export const AttachmentCard: FC<Props> = memo(props => {
+export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
     const {
         attachment,
         imageURL,
@@ -75,7 +77,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
         return null;
     }
 
-    const { iconFontCls, loadingState, name, title, size, description } = attachment;
+    const { iconFontCls, loadingState, name, title, size, description, unavailable } = attachment;
     const _iconFontCls = iconFontCls ?? getIconFontCls(name);
     const isLoaded = !isLoading(loadingState);
     const recentlyCreated = attachment.created ? attachment.created > now() - 30000 : false;
@@ -88,10 +90,10 @@ export const AttachmentCard: FC<Props> = memo(props => {
 
     return (
         <>
-            <div className={'attachment-card ' + outerCls} title={name}>
+            <div className={classNames('attachment-card ' + outerCls, {'attachment-unavailable': unavailable})} title={name + (unavailable ? ' (unavailable)' : '')}>
                 <div
                     className="attachment-card__body"
-                    onClick={isLoaded ? (_isImage ? _showModal : _onDownload) : undefined}
+                    onClick={(isLoaded && !unavailable) ? (_isImage ? _showModal : _onDownload) : undefined}
                 >
                     <div className="attachment-card__icon">
                         {_isImage && !isLoaded && <LoadingSpinner msg="" />}
@@ -114,7 +116,7 @@ export const AttachmentCard: FC<Props> = memo(props => {
                         {description && <div className="attachment-card__description">{description}</div>}
                     </div>
                 </div>
-                {isLoaded && (
+                {(isLoaded && !unavailable) && (
                     <DropdownAnchor
                         className="attachment-card__menu"
                         title={<i className="fa fa-ellipsis-v" />}

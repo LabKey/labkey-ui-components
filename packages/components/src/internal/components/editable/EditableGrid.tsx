@@ -167,11 +167,14 @@ function inputCellFactory(
     initialSelection: string[],
     containerPath?: string
 ): GridColumnCellRenderer {
-    return (value, row, c, rn, cn) => {
+    // Note: We ignore the incoming value (_) and rowNumber (__) because they come from the underlying QueryModel that
+    // backs the Grid component, but we need to reference the data that is in the EditorModel.
+    return (_, row, c, __, cn) => {
         let colOffset = 0;
         if (allowSelection) colOffset += 1;
         if (!hideCountCol) colOffset += 1;
 
+        const rn = row.get(GRID_EDIT_INDEX);
         const colIdx = cn - colOffset;
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
         const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
@@ -317,6 +320,7 @@ export interface SharedEditableGridProps {
     gridTabHeaderComponent?: ReactNode;
     hideCheckboxCol?: boolean;
     hideCountCol?: boolean;
+    hideReadonlyRows?: boolean;
     hideTopControls?: boolean;
     insertColumns?: QueryColumn[];
     isSubmitting?: boolean;
@@ -424,6 +428,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         maxRows: MAX_EDITABLE_GRID_ROWS,
         hideCountCol: false,
         hideTopControls: false,
+        hideReadonlyRows: false,
         rowNumColumn: COUNT_COL,
     };
 
@@ -1586,12 +1591,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     getGridData(): List<Map<string, any>> {
-        const { data, dataKeys } = this.props;
+        const { data, dataKeys, hideReadonlyRows, readonlyRows } = this.props;
         return dataKeys
             .map((key, index) => {
+                if (hideReadonlyRows && readonlyRows && readonlyRows.includes(key)) return undefined;
                 const rowIndexData = { [GRID_EDIT_INDEX]: index };
                 return data.get(key)?.merge(rowIndexData) ?? Map<string, any>(rowIndexData);
             })
+            .filter(r => r !== undefined)
             .toList();
     }
 

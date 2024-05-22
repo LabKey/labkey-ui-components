@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.??.0
+*Released*: ?? May 2024
+- Fix Issue 48377: LKSM/LKB: Editable grid allows pasting into cells that are marked as read-only
+- EditableGrid: add hideReadonlyRows prop
+
 ### version 3.47.0
 *Released*: 30 May 2024
 - Expose `registerInputRenderer` as a way for external package usages of `@labkey/components` to register custom form/grid input renderers.

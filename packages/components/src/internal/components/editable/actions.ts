@@ -922,8 +922,9 @@ export function checkCellReadStatus(
     if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
         const keyCols = queryInfo.getPkCols();
         if (keyCols.length === 1) {
-            const key = getPkValue(row, queryInfo);
-
+            // Coerce PK Value to string because it could be anything, but readonlyRows and lockedRows are string[], and
+            // isReadOnlyCell expects a string
+            const key = getPkValue(row, queryInfo)?.toString();
             return {
                 isReadonlyRow: readonlyRows && key ? readonlyRows.includes(key) : false,
                 isReadonlyCell: columnMetadata?.isReadOnlyCell ? columnMetadata.isReadOnlyCell(key) : false,
@@ -1399,7 +1400,8 @@ function parsePastedLookup(descriptors: ValueDescriptor[], value: string[] | str
 
 function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: string[]): boolean {
     if (pkCols.length === 1 && row) {
-        const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey);
+        // Coerce pkValue to string because it may actually be a number or other type, and readonlyRows is string[]
+        const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey)?.toString();
         return readonlyRows.includes(pkValue);
     }
 

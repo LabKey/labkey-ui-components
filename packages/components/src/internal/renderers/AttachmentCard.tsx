@@ -90,10 +90,13 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
 
     return (
         <>
-            <div className={classNames('attachment-card ' + outerCls, {'attachment-unavailable': unavailable})} title={name + (unavailable ? ' (unavailable)' : '')}>
+            <div
+                className={classNames('attachment-card ' + outerCls, { 'attachment-unavailable': unavailable })}
+                title={name + (unavailable ? ' (unavailable)' : '')}
+            >
                 <div
                     className="attachment-card__body"
-                    onClick={(isLoaded && !unavailable) ? (_isImage ? _showModal : _onDownload) : undefined}
+                    onClick={isLoaded && !unavailable ? (_isImage ? _showModal : _onDownload) : undefined}
                 >
                     <div className="attachment-card__icon">
                         {_isImage && !isLoaded && <LoadingSpinner msg="" />}
@@ -116,7 +119,7 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
                         {description && <div className="attachment-card__description">{description}</div>}
                     </div>
                 </div>
-                {(isLoaded && !unavailable) && (
+                {isLoaded && !unavailable && (
                     <DropdownAnchor
                         className="attachment-card__menu"
                         title={<i className="fa fa-ellipsis-v" />}

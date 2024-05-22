@@ -14,10 +14,9 @@ describe('getAttachmentCardProp', () => {
         noun = 'attachment',
         allowRemove = false,
         imageURL?: string,
-        attachment?: IAttachment,
+        attachment?: IAttachment
     ): void {
-        if (!hasCard)
-            expect(results).toBe(null);
+        if (!hasCard) expect(results).toBe(null);
         if (hasCard) {
             expect(results.noun).toBe(noun);
             expect(results.imageURL).toBe(imageURL);
@@ -41,7 +40,7 @@ describe('getAttachmentCardProp', () => {
     });
 
     test('no name', () => {
-        validate(getAttachmentCardProp(fromJS({ url: 'test' })), false, 'attachment', false, undefined, {name: ''});
+        validate(getAttachmentCardProp(fromJS({ url: 'test' })), false, 'attachment', false, undefined, { name: '' });
     });
 
     test('file rangeURI', () => {
@@ -49,26 +48,43 @@ describe('getAttachmentCardProp', () => {
             name: 'Test.txt',
             title: 'Test.txt',
             iconFontCls: 'fa fa-file-text-o',
-            unavailable: false
+            unavailable: false,
         });
     });
 
     test('file rangeURI, unavailable', () => {
-        validate(getAttachmentCardProp(fromJS({ name: 'test.txt', displayValue: 'test.txt (unavailable)' }), FILELINK_RANGE_URI), true, 'file', false, undefined, {
-            name: 'test.txt',
-            title: 'test.txt',
-            iconFontCls: 'fa fa-exclamation-triangle',
-            unavailable: true
-        });
+        validate(
+            getAttachmentCardProp(
+                fromJS({ name: 'test.txt', displayValue: 'test.txt (unavailable)' }),
+                FILELINK_RANGE_URI
+            ),
+            true,
+            'file',
+            false,
+            undefined,
+            {
+                name: 'test.txt',
+                title: 'test.txt',
+                iconFontCls: 'fa fa-exclamation-triangle',
+                unavailable: true,
+            }
+        );
     });
 
     test('isImage', () => {
-        validate(getAttachmentCardProp(fromJS({ url: 'testurl', value: 'test.png', displayValue: 'Test.png' })), true, 'attachment', false, 'testurl', {
-            name: 'Test.png',
-            title: 'Test.png',
-            iconFontCls: 'fa fa-file-image-o',
-            unavailable: false
-        });
+        validate(
+            getAttachmentCardProp(fromJS({ url: 'testurl', value: 'test.png', displayValue: 'Test.png' })),
+            true,
+            'attachment',
+            false,
+            'testurl',
+            {
+                name: 'Test.png',
+                title: 'Test.png',
+                iconFontCls: 'fa fa-file-image-o',
+                unavailable: false,
+            }
+        );
     });
 
     test('allowRemove', () => {

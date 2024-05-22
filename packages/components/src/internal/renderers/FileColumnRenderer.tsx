@@ -29,37 +29,40 @@ interface OwnProps {
 }
 
 interface FileProp {
-    filename: string;
     fileUnavailable?: boolean;
+    filename: string;
 }
 
-const getFileDisplayValue = (rawDisplayValue: string) : FileProp => {
+const getFileDisplayValue = (rawDisplayValue: string): FileProp => {
     if (!rawDisplayValue) {
         return {
             filename: undefined,
             fileUnavailable: false, // not a file_link, could be attachment
-        }
+        };
     }
 
-    if (rawDisplayValue.endsWith(" (unavailable)")) {
+    if (rawDisplayValue.endsWith(' (unavailable)')) {
         return {
-            filename: rawDisplayValue.substring(0, rawDisplayValue.length - (" (unavailable)").length),
+            filename: rawDisplayValue.substring(0, rawDisplayValue.length - ' (unavailable)'.length),
             fileUnavailable: true,
-        }
+        };
     }
     return {
         filename: rawDisplayValue,
-        fileUnavailable: false
+        fileUnavailable: false,
     };
-}
+};
 
-export const getAttachmentCardProp = (data?: any, colRangeUri?: string, onRemove?: (attachment: IAttachment) => void) : AttachmentCardProps => {
-    if (!data)
-        return null;
+export const getAttachmentCardProp = (
+    data?: any,
+    colRangeUri?: string,
+    onRemove?: (attachment: IAttachment) => void
+): AttachmentCardProps => {
+    if (!data) return null;
 
     const url = data.get('url');
     const value = data.get('value');
-    const {filename, fileUnavailable} = getFileDisplayValue(data.get('displayValue'));
+    const { filename, fileUnavailable } = getFileDisplayValue(data.get('displayValue'));
     const name = filename || value;
 
     if (!name) {
@@ -73,18 +76,18 @@ export const getAttachmentCardProp = (data?: any, colRangeUri?: string, onRemove
         name,
         title: getAttachmentTitleFromName(name),
         iconFontCls: getIconFontCls(name, fileUnavailable),
-        unavailable: fileUnavailable
+        unavailable: fileUnavailable,
     } as IAttachment;
 
     return {
         noun: colRangeUri === FILELINK_RANGE_URI ? 'file' : 'attachment',
         attachment,
         imageURL: _isImage ? url : undefined,
-        imageCls: "attachment-card__img",
+        imageCls: 'attachment-card__img',
         allowRemove: onRemove !== undefined,
-        onRemove
-    }
-}
+        onRemove,
+    };
+};
 
 export class FileColumnRenderer extends PureComponent<OwnProps> {
     onDownload = (attachment: IAttachment): void => {
@@ -98,14 +101,8 @@ export class FileColumnRenderer extends PureComponent<OwnProps> {
     render(): ReactNode {
         const { col, data, onRemove } = this.props;
         const cardProps = getAttachmentCardProp(data, col?.rangeURI, onRemove);
-        if (!cardProps)
-            return null;
-        return (
-            <AttachmentCard
-                {...cardProps}
-                onDownload={this.onDownload}
-            />
-        );
+        if (!cardProps) return null;
+        return <AttachmentCard {...cardProps} onDownload={this.onDownload} />;
     }
 }
 

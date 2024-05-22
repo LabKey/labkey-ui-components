@@ -545,8 +545,7 @@ export function getIconFontCls(value: string, unavailable?: boolean): string {
         return undefined;
     }
 
-    if (unavailable)
-        return 'fa fa-exclamation-triangle';
+    if (unavailable) return 'fa fa-exclamation-triangle';
 
     const extensionType = getFileExtensionType(value);
     if (EXTENSION_FONT_CLS_MAP[extensionType]) {

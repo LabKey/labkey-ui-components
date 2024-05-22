@@ -15,7 +15,13 @@ const UNAVAILABLE_ATTACHMENT = {
 };
 
 describe('AttachmentCard', () => {
-    function validate(rendered = true, iconFontCls = 'fa-test', loadingCount = 0, descriptionCount = 0, available = true): void {
+    function validate(
+        rendered = true,
+        iconFontCls = 'fa-test',
+        loadingCount = 0,
+        descriptionCount = 0,
+        available = true
+    ): void {
         const renderedCount = rendered ? 1 : 0;
         const isImage = iconFontCls === null;
         const isLoading = loadingCount > 0;
@@ -31,7 +37,9 @@ describe('AttachmentCard', () => {
         expect(document.querySelectorAll('.attachment-card__description').length).toBe(descriptionCount);
         expect(document.querySelectorAll('.attachment-card__size').length).toBe(renderedCount);
         expect(document.querySelectorAll('.attachment-unavailable').length).toBe(available ? 0 : 1);
-        expect(document.querySelectorAll('.attachment-card__menu').length).toBe(isLoading || !available ? 0 : renderedCount);
+        expect(document.querySelectorAll('.attachment-card__menu').length).toBe(
+            isLoading || !available ? 0 : renderedCount
+        );
         expect(document.querySelectorAll('.fa-spinner').length).toBe(loadingCount);
 
         if (!isImage) {

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.46.3
+*Released*: 21 May 2024
+- Fix Issue 50455
+
 ### version 3.46.2
 *Released*: 21 May 2024
 - Issue 50347 LKSM: Data Field Name in Naming Pattern Causing Error

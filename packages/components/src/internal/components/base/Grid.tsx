@@ -111,7 +111,6 @@ interface GridHeaderProps {
     headerCell?: any;
     onColumnDrop?: (sourceIndex: string, targetIndex: string) => void;
     showHeader?: boolean;
-    transpose?: boolean;
 }
 
 interface State {
@@ -157,10 +156,10 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
     };
 
     render() {
-        const { calcWidths, columns, headerCell, showHeader, transpose, onColumnDrop } = this.props;
+        const { calcWidths, columns, headerCell, showHeader, onColumnDrop } = this.props;
         const { dragTarget } = this.state;
 
-        if (transpose || !showHeader) {
+        if (!showHeader) {
             // returning null here causes <noscript/> to render which is not expected
             return <thead style={{ display: 'none' }} />;
         }
@@ -239,6 +238,7 @@ const GridMessages: FC<GridMessagesProps> = memo(({ messages }) => (
     <div className="grid-messages">
         {messages.map((message: Map<string, string>, i) => {
             return (
+                // eslint-disable-next-line react/no-array-index-key
                 <div className="grid-message" key={i}>
                     {message.get('content')}
                 </div>
@@ -255,18 +255,10 @@ interface GridBodyProps {
     isLoading: boolean;
     loadingText: ReactNode;
     rowKey: any;
-    transpose: boolean;
 }
 
 class GridBody extends PureComponent<GridBodyProps> {
-    constructor(props: GridBodyProps) {
-        super(props);
-
-        this.renderRow = this.renderRow.bind(this);
-        this.renderRowTranspose = this.renderRowTranspose.bind(this);
-    }
-
-    renderDefaultRow() {
+    renderDefaultRow(): ReactNode {
         const { columns, emptyText, isLoading, loadingText } = this.props;
 
         return (
@@ -276,7 +268,7 @@ class GridBody extends PureComponent<GridBodyProps> {
         );
     }
 
-    renderRow(row: any, r: number, highlight?: boolean): any {
+    renderRow = (row: any, r: number, highlight?: boolean): ReactNode => {
         const { columns, rowKey } = this.props;
         const key = rowKey ? row.get(rowKey) : r;
 
@@ -302,32 +294,15 @@ class GridBody extends PureComponent<GridBodyProps> {
                 )}
             </tr>
         );
-    }
+    };
 
-    renderRowTranspose(row: any, r: number): any {
-        const { columns, rowKey } = this.props;
-        let counter = 0;
-        const key = rowKey ? row.get(rowKey) : r;
-
-        return columns
-            .map((column: GridColumn, c: number) => (
-                <tr key={[key, counter++].join('_')} style={c === 0 ? { backgroundColor: '#eee' } : undefined}>
-                    <td>{column.title}</td>
-                    <td>{column.cell(row.get(column.index), row, column, r, c)}</td>
-                </tr>
-            ))
-            .toArray();
-    }
-
-    render() {
-        const { data, transpose, highlightRowIndexes } = this.props;
+    render(): ReactNode {
+        const { data, highlightRowIndexes } = this.props;
 
         return (
             <tbody>
                 {data.count() > 0
                     ? data.map((row, ind) => {
-                          if (transpose) return this.renderRowTranspose(row, ind);
-
                           const highlight = highlightRowIndexes && highlightRowIndexes.contains(ind);
                           return this.renderRow(row, ind, highlight);
                       })
@@ -364,7 +339,6 @@ export interface GridProps {
     showHeader?: boolean;
     striped?: boolean;
     tableRef?: RefObject<HTMLTableElement>;
-    transpose?: boolean;
 }
 
 export const Grid: FC<GridProps> = memo(props => {
@@ -382,7 +356,6 @@ export const Grid: FC<GridProps> = memo(props => {
         showHeader = true,
         striped = true,
         tableRef = undefined,
-        transpose = false,
         fixedHeight = false,
         columns,
         headerCell,
@@ -408,7 +381,6 @@ export const Grid: FC<GridProps> = memo(props => {
         headerCell,
         onColumnDrop,
         showHeader,
-        transpose,
     };
 
     const bodyProps: GridBodyProps = {
@@ -418,7 +390,6 @@ export const Grid: FC<GridProps> = memo(props => {
         isLoading,
         loadingText,
         rowKey,
-        transpose,
         highlightRowIndexes,
     };
 

@@ -326,7 +326,7 @@ export class FileAttachmentContainer extends React.Component<
     _handleFiles = (files: Record<string, File>): void => {
         const { handleChange, sizeLimits } = this.props;
 
-        const totalSizeLimit = sizeLimits.get(ALL_FILES_LIMIT_KEY)?.totalSize;
+        const totalSizeLimit = sizeLimits?.get(ALL_FILES_LIMIT_KEY)?.totalSize;
         if (totalSizeLimit) {
             const totalFileSize = Object.values(files).reduce((total, file) => {
                 return total + file.size;

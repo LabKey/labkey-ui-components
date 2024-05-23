@@ -66,18 +66,35 @@ describe('AppURL', () => {
         expect(AppURL.create('somePath').addParam(undefined, 'undef').toHref()).toBe('#/somePath?undefined=undef');
     });
 
-    test('addParams', () => {
+    test('addParams with includeEmptyParams', () => {
         const actual = AppURL.create('somePath')
             .addParams({
                 undef: undefined,
                 val: 23,
                 booze: 'gin',
                 mix: 'tonic',
-            })
+            }, true)
             .toHref();
 
         // Check each parameter as order of params is non-deterministic
         expect(actual).toContain('undef=undefined');
+        expect(actual).toContain('val=23');
+        expect(actual).toContain('booze=gin');
+        expect(actual).toContain('mix=tonic');
+    });
+
+    test('addParams without includeEmptyParams', () => {
+        const actual = AppURL.create('somePath')
+            .addParams({
+                undef: undefined,
+                val: 23,
+                booze: 'gin',
+                mix: 'tonic',
+            }, false)
+            .toHref();
+
+        // Check each parameter as order of params is non-deterministic
+        expect(actual).not.toContain('undef=undefined');
         expect(actual).toContain('val=23');
         expect(actual).toContain('booze=gin');
         expect(actual).toContain('mix=tonic');

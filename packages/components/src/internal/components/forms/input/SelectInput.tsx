@@ -110,6 +110,7 @@ const CustomOption = props => {
 export interface SelectInputOption extends Record<string, any> {
     data?: any;
     label?: string;
+    options?: SelectInputOption[];
     value?: any;
 }
 

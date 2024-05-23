@@ -59,13 +59,14 @@ export class FileAttachmentContainer extends React.Component<
     FileAttachmentContainerState
 > {
     fileInput: React.RefObject<HTMLInputElement>;
-    dirFileCount: number;
+
+    dirCbCount: number;
+    fileCbCount: number;
 
     constructor(props?: FileAttachmentContainerProps) {
         super(props);
 
         this.fileInput = React.createRef();
-        this.dirFileCount = 0;
 
         this.state = {
             files: props.initialFiles ? props.initialFiles : {},
@@ -96,34 +97,50 @@ export class FileAttachmentContainer extends React.Component<
         });
     };
 
-    scanDirectoryFiles = (item: FileSystemEntry, files: Record<string, File>) => {
-        this.dirFileCount++;
+    getFilesFromDirectory = (files, entry, scope, callback): void => {
+        const dirReader = entry.createReader();
+        const entriesReader = ((scope) => {
+            return (entries) => {
+                for (let i = 0; i < entries.length; i++) {
+                    const _entry = entries[i];
+                    if (_entry.isFile) {
+                        scope.fileCbCount++;
+                        _entry.file(file => {
+                            scope.fileCbCount--;
 
-        if (item.isDirectory) {
-            const dirItem = item as FileSystemDirectoryEntry;
-            const directoryReader = dirItem.createReader();
-            directoryReader.readEntries((entries) => {
-                entries.forEach((entry) => {
-                    this.scanDirectoryFiles(entry, files);
-                });
-            });
-            this.dirFileCount--; // done processing the directory
-        } else if (item.isFile) {
-            const fileItem = item as FileSystemFileEntry;
-            fileItem.file((file: any) => {
-                // ignore hidden files
-                if (file.name.substring(0, 1) !== '.') {
-                    if (files[file.name]) {
-                        this.setState({ warningMsg: 'Duplicate files were uploaded. Only the last file will be included in the file set.' });
+                            // ignore hidden files
+                            if (file.name.substring(0, 1) !== '.') {
+                                if (files[file.name]) {
+                                    scope.setState({ warningMsg: 'Duplicate files were uploaded. Only the last file provided for the duplicate name will be included in the file set.' });
+                                }
+                                file.fullPath = entry.fullPath + '/' + file.name;
+                                files[file.name] = file;
+                            }
+
+                            if (scope.dirCbCount === 0 && scope.fileCbCount === 0) {
+                                callback();
+                            }
+                        });
+                    } else if (_entry.isDirectory) {
+                        scope.getFilesFromDirectory(files, _entry, scope, callback);
                     }
-                    files[file.name] = file;
                 }
-                this.dirFileCount--; // done processing the file
-                if (this.dirFileCount === 0) {
-                    this._handleFiles(files);
+
+                // readEntries only reads 100 files in a batch for Chrome
+                if (entries.length >= 100) {
+                    scope.dirCbCount++;
+                    dirReader.readEntries(entriesReader, console.error);
                 }
-            });
-        }
+
+                scope.dirCbCount--;
+                if (scope.dirCbCount === 0 && scope.fileCbCount === 0) {
+                    callback();
+                }
+            };
+        })(scope);
+
+        scope.dirCbCount++;
+        dirReader.readEntries(entriesReader, console.error);
     };
 
     validateFiles = (fileList: FileList, transferItems?: DataTransferItemList): Set<string> => {
@@ -288,11 +305,15 @@ export class FileAttachmentContainer extends React.Component<
             const files = Object.assign({}, newFiles, this.state.files);
 
             if (hasDirectory && allowDirectories && includeDirectoryFiles) {
+                this.dirCbCount = 0;
+                this.fileCbCount = 0;
                 Array.from(fileList).forEach((file, index) => {
                     const entry = transferItems[index].webkitGetAsEntry();
                     if (entry.isDirectory) {
                         delete files[file.name];
-                        this.scanDirectoryFiles(entry, files);
+                        this.getFilesFromDirectory(files, entry, this, () => {
+                            this._handleFiles(files);
+                        });
                     }
                 });
             } else {

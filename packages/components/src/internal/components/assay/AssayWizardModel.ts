@@ -99,8 +99,22 @@ export class AssayWizardModel
         return this.attachedFiles.valueSeq().toList();
     }
 
+    getTotalAttachedFilesSize(): number {
+        if (!this.attachedFiles.isEmpty()) {
+            return this.getAttachedFiles().reduce((totalSize, file) => totalSize + file.size, 0);
+        }
+        return 0;
+    }
+
     getResultsFiles(): List<File> {
         return this.resultsFiles.valueSeq().toList();
+    }
+
+    getTotalResultsFilesSize(): number {
+        if (!this.resultsFiles.isEmpty()) {
+            return this.getResultsFiles().reduce((totalSize, file) => totalSize + file.size, 0);
+        }
+        return 0;
     }
 
     getRunName(currentStep: AssayUploadTabs): string {

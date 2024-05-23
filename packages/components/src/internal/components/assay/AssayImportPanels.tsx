@@ -681,8 +681,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
         const data = model.prepareFormData(this.props.currentStep, this.state.editorModel, this.state.dataModel);
 
-        if (data.files && data.files.length > 0) {
-            return data.files[0].size * 0.2;
+        if (data.files?.length > 0) {
+            return (model.getTotalAttachedFilesSize() / 5) + (model.getTotalResultsFilesSize() / 100_000);
         } else if (data.dataRows) {
             if (Utils.isArray(data.dataRows)) {
                 return data.dataRows.length * 10;
@@ -746,6 +746,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const { comment, dataModel, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } =
             this.state;
         const runPropsModel = this.getRunPropsQueryModel();
+        const resultsFilesCount = model.getResultsFiles().size;
 
         if (!model.isInit || runPropsModel.isLoading) {
             return <LoadingSpinner />;
@@ -863,7 +864,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     modal
                     title={isReimport ? 'Re-importing assay run' : 'Importing assay run'}
                     toggle={model.isSubmitting}
-                />
+                >
+                    {resultsFilesCount > 0 && <p>Upload includes {Utils.pluralBasic(resultsFilesCount, 'additional file')}. Please stay on this page until upload finishes.</p>}
+                </Progress>
                 {showRenameModal && (
                     <ImportWithRenameConfirmModal
                         onConfirm={this.onRenameConfirm}

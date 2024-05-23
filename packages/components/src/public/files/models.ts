@@ -11,6 +11,10 @@ export interface FileSizeLimitProps {
         displayValue: string;
         value: number;
     };
+    totalSize?: {
+        displayValue: string;
+        value: number;
+    };
 }
 
 export interface FileGridPreviewProps {

@@ -212,3 +212,14 @@
     clear: both;
   }
 }
+
+.file-upload--scroll-footer {
+    font-style: italic;
+    color: $text-color;
+}
+
+.file-upload--file-entry-listing {
+    max-height: 160px;
+    overflow-y: scroll;
+    margin-bottom: 0;
+}

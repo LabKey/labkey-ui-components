@@ -36,6 +36,7 @@ interface FileAttachmentContainerProps {
     allowMultiple: boolean;
     allowDirectories: boolean;
     includeDirectoryFiles?: boolean;
+    fileCountSuffix?: string;
     handleChange?: any;
     handleRemoval?: any;
     index?: number;
@@ -323,7 +324,22 @@ export class FileAttachmentContainer extends React.Component<
     }
 
     _handleFiles = (files: Record<string, File>): void => {
-        const { handleChange } = this.props;
+        const { handleChange, sizeLimits } = this.props;
+
+        const totalSizeLimit = sizeLimits.get(ALL_FILES_LIMIT_KEY)?.totalSize;
+        if (totalSizeLimit) {
+            const totalFileSize = Object.values(files).reduce((total, file) => {
+                return total + file.size;
+            }, 0);
+
+            if (totalFileSize > totalSizeLimit.value) {
+                this.setState({
+                    errorMsg: `The total file size of all files exceeds the maximum allowed size of ${totalSizeLimit.displayValue}.`,
+                    isHover: false,
+                });
+                return;
+            }
+        }
 
         this.setState({
             files,
@@ -393,7 +409,7 @@ export class FileAttachmentContainer extends React.Component<
     }
 
     render() {
-        const { acceptedFormats, allowMultiple, index, compact } = this.props;
+        const { acceptedFormats, allowMultiple, index, compact, fileCountSuffix } = this.props;
         const { fileNames, isHover, errorMsg, warningMsg } = this.state;
         const hideFileUpload = !allowMultiple && fileNames.length > 0;
         const fileUploadText = 'fileUpload' + (index !== undefined ? index : '');
@@ -445,9 +461,16 @@ export class FileAttachmentContainer extends React.Component<
                     <Alert className={this.props.compact ? 'file-upload--error-message--compact' : null}>{errorMsg}</Alert>
                 )}
 
-                {fileNames.map((fileName: string) => {
-                    return <FileAttachmentEntry key={fileName} name={fileName} onDelete={this.handleRemove} />;
-                })}
+                <div className={classNames('file-upload--file-entry-listing', {'well well-sm': allowMultiple && fileNames.length})}>
+                    {fileNames.map((fileName: string) => {
+                        return <FileAttachmentEntry key={fileName} name={fileName} onDelete={this.handleRemove} />;
+                    })}
+                </div>
+                {fileCountSuffix && fileNames.length > 0 && (
+                    <div className="file-upload--scroll-footer">
+                        {Utils.pluralBasic(fileNames.length, 'file')} {fileCountSuffix}.
+                    </div>
+                )}
             </>
         );
     }

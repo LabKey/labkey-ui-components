@@ -42,9 +42,20 @@ import {getRunPropertiesFileName} from './actions';
 import {AssayWizardModel} from './AssayWizardModel';
 import {getServerFilePreview} from './utils';
 import {AssayDomainTypes} from "../../AssayDefinitionModel";
+import {LabelOverlay} from "../forms/LabelOverlay";
 
 const TABS = ['Enter Data into Grid', 'Import Data from File'];
 const PREVIEW_ROW_COUNT = 3;
+const ASSAY_RESULTS_DATA_TOOLTIP = <p>Click to select your assay data file or drag and drop it directly onto the upload area.<br/>This is the data file that contains one row per assay result.</p>;
+const RESULTS_FILE_SIZE_LIMIT_DISPLAY = '200MB';
+const RESULTS_FILE_SIZE_LIMITS = Map<string, FileSizeLimitProps>({
+    all: {
+        totalSize: {
+            value: 209715200,
+            displayValue: RESULTS_FILE_SIZE_LIMIT_DISPLAY,
+        },
+    },
+});
 
 interface Props {
     acceptedPreviewFileFormats?: string;
@@ -241,7 +252,12 @@ export class RunDataPanel extends PureComponent<Props, State> {
         const isLoading = !wizardModel.isInit || queryModel.isLoading;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
         const columnMetadata = this.getEditableGridColumnMetadata();
-        const hasFileColumn = wizardModel.assayDef.domainHasFileColumn(AssayDomainTypes.RESULT);
+        const fileColumnNames = wizardModel.assayDef.domainFileColumnNames(AssayDomainTypes.RESULT);
+        const assayFileFieldTooltip = <>
+                <p>Click to select your assay results file field(s) data files or drag and drop them directly onto the upload area. The total file size limit is {RESULTS_FILE_SIZE_LIMIT_DISPLAY}.<br/>
+                    These are the files that contain additional data for each assay result. The results data above should include columns that references these files by file name.</p>
+                <p>The current assay design has the following result file fields: <b>{fileColumnNames?.join(', ')}</b>.</p>
+            </>;
 
         return (
             <div className="panel panel-default">
@@ -295,8 +311,8 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 key={wizardModel.lastRunId + '-dataFile'} // required for rerender in the "save and import another" case
                                                 allowDirectories={false}
                                                 allowMultiple={false}
-                                                showLabel={hasFileColumn}
-                                                label={<div className="assay-data-file-label">Results Data</div>}
+                                                showLabel={fileColumnNames?.length > 0}
+                                                label={<div className="assay-data-file-label"><LabelOverlay label="Results Data" content={ASSAY_RESULTS_DATA_TOOLTIP} /></div>}
                                                 initialFileNames={
                                                     previousRunData && previousRunData.fileName
                                                         ? [previousRunData.fileName]
@@ -307,6 +323,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 templateUrl={wizardModel.assayDef.templateLink}
                                                 previewGridProps={
                                                     acceptedPreviewFileFormats && {
+                                                        header: 'Data Preview:',
                                                         previewCount: PREVIEW_ROW_COUNT,
                                                         acceptedFormats: acceptedPreviewFileFormats,
                                                         initialData: previousRunData ? previousRunData.data : undefined,
@@ -323,18 +340,21 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 }
                                             />
                                         )}
-                                        {hasFileColumn && (
-                                            // TODO update label, add file limit messaging, etc.
-                                            <FileAttachmentForm
-                                                key={wizardModel.lastRunId + '-resultsFiles'}
-                                                allowDirectories
-                                                includeDirectoryFiles
-                                                allowMultiple
-                                                label={<div className="assay-data-file-label">File Field Data</div>}
-                                                labelLong="Select file(s) or drag and drop here"
-                                                onFileChange={onResultsFileChange}
-                                                onFileRemoval={onResultsFileRemoval}
-                                            />
+                                        {fileColumnNames?.length > 0 && (
+                                            <div className="top-spacing">
+                                                <FileAttachmentForm
+                                                    key={wizardModel.lastRunId + '-resultsFiles'}
+                                                    allowDirectories
+                                                    includeDirectoryFiles
+                                                    fileCountSuffix="will be uploaded"
+                                                    allowMultiple
+                                                    sizeLimits={RESULTS_FILE_SIZE_LIMITS}
+                                                    label={<div className="assay-data-file-label"><LabelOverlay label="File Fields Data" content={assayFileFieldTooltip} /></div>}
+                                                    labelLong="Select file(s) or drag and drop here"
+                                                    onFileChange={onResultsFileChange}
+                                                    onFileRemoval={onResultsFileRemoval}
+                                                />
+                                            </div>
                                         )}
                                     </FormStep>
                                 </div>

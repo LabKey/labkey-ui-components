@@ -136,6 +136,21 @@ describe('AttachmentCard', () => {
         expect(document.querySelector('.attachment-card__icon_img').getAttribute('alt')).toBe('test.png');
     });
 
+    test('image attachment, unavailable', () => {
+        render(
+            <AttachmentCard
+                {...DEFAULT_PROPS}
+                attachment={{ ...DEFAULT_PROPS.attachment, name: 'test.png', unavailable: true }}
+                imageURL="testurl"
+                imageCls="testcls"
+            />
+        );
+        validate(true, 'fa-test', 0, 0, false);
+        expect(document.querySelectorAll('.testcls').length).toBe(0);
+        expect(document.querySelectorAll('.attachment-card__icon_img').length).toBe(0);
+        expect(document.querySelectorAll('.attachment-card__icon_img').length).toBe(0);
+    });
+
     test('recently created', () => {
         render(
             <AttachmentCard

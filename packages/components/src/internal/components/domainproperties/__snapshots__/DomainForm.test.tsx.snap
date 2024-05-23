@@ -12288,6 +12288,9 @@ exports[`DomainForm domain form with no fields 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -12427,6 +12430,9 @@ exports[`DomainForm domain form with no fields 1`] = `
                       type="file"
                     />
                   </div>
+                  <div
+                    class="file-upload--file-entry-listing"
+                  />
                 </div>
               </div>
             </div>
@@ -16723,6 +16729,9 @@ exports[`DomainForm with showHeader, helpNoun, and helpTopic 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -16852,6 +16861,9 @@ exports[`DomainForm with showHeader, helpNoun, and helpTopic 1`] = `
                       type="file"
                     />
                   </div>
+                  <div
+                    class="file-upload--file-entry-listing"
+                  />
                 </div>
               </div>
             </div>

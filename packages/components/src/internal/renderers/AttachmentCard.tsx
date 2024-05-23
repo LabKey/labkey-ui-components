@@ -100,10 +100,10 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
                 >
                     <div className="attachment-card__icon">
                         {_isImage && !isLoaded && <LoadingSpinner msg="" />}
-                        {_isImage && isLoaded && (
+                        {_isImage && isLoaded && !unavailable && (
                             <img className={`attachment-card__icon_img ${imageCls}`} src={imageURL} alt={name} />
                         )}
-                        {!_isImage && <i className={`attachment-card__icon_tile ${_iconFontCls}`} />}
+                        {(!_isImage || unavailable) && <i className={`attachment-card__icon_tile ${_iconFontCls}`} />}
                     </div>
                     <div className="attachment-card__content">
                         <div className="attachment-card__name">{title ?? name}</div>

@@ -43,6 +43,9 @@ exports[`<FileAttachmentContainer/> error msg 1`] = `
       invalid file
     </div>
   </Alert>
+  <div
+    className="file-upload--file-entry-listing"
+  />
 </FileAttachmentContainer>
 `;
 
@@ -73,6 +76,9 @@ exports[`<FileAttachmentContainer/> no props 1`] = `
       type="file"
     />
   </div>
+  <div
+    className="file-upload--file-entry-listing"
+  />
 </Fragment>
 `;
 
@@ -104,5 +110,8 @@ exports[`<FileAttachmentContainer/> with attributes 1`] = `
       type="file"
     />
   </div>
+  <div
+    className="file-upload--file-entry-listing"
+  />
 </Fragment>
 `;

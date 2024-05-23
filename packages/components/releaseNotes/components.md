@@ -11,6 +11,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - AssayWizardModel.prepareFormData to include resultsFiles for import run API post and update progress bar estimate and message
   - uploadAssayRunFiles fix for maxFileSize to not include batchFiles or runFiles as they are unrelated
 
+### version 3.46.3
+*Released*: 21 May 2024
+- Fix Issue 50455
+
 ### version 3.46.2
 *Released*: 21 May 2024
 - Issue 50347 LKSM: Data Field Name in Naming Pattern Causing Error

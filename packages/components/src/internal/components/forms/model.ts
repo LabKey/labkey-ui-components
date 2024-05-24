@@ -44,6 +44,7 @@ function formatOption(model: QuerySelectModel, result: any): SelectInputOption {
         value: resolveDetailFieldValue(result.get(valueColumn)),
     };
 }
+
 function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): SelectInputOption[] {
     const { displayColumn, groupByColumn, queryInfo } = model;
 

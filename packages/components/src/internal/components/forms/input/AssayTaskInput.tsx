@@ -12,6 +12,7 @@ import { InputRendererProps } from './types';
 
 import { DisableableInputProps } from './DisableableInput';
 import { SelectInput, SelectInputChange, SelectInputOption, SelectInputProps } from './SelectInput';
+import { registerInputRenderer } from './InputRenderFactory';
 
 async function loadInputOptions(assayId: number): Promise<SelectInputOption[]> {
     const result = await selectRows({
@@ -139,3 +140,5 @@ export const AssayTaskInputRenderer: FC<InputRendererProps> = memo(props => {
         />
     );
 });
+
+registerInputRenderer('WorkflowTask', AssayTaskInputRenderer);

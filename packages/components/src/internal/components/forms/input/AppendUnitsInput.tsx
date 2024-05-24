@@ -4,6 +4,7 @@ import { addValidationRule, validationRules } from 'formsy-react';
 
 import { InputRendererProps } from './types';
 import { TextInput } from './TextInput';
+import { InputRenderContext, registerInputRenderer } from './InputRenderFactory';
 
 const isNumericWithError = (values: any, v: string | number): any =>
     validationRules.isNumeric(values, v) || 'Please enter a number.';
@@ -39,3 +40,5 @@ export const AppendUnitsInput: FC<InputRendererProps> = memo(props => {
 });
 
 AppendUnitsInput.displayName = 'AppendUnitsInput';
+
+registerInputRenderer('AppendUnitsInput', AppendUnitsInput, InputRenderContext.Form);

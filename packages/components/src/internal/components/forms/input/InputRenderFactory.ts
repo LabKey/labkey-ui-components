@@ -4,12 +4,6 @@ import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { InputRendererProps } from './types';
 
-import { AssayTaskInputRenderer } from './AssayTaskInput';
-
-import { AliasGridInput, AliasInput } from './AliasInput';
-import { SampleStatusInputRenderer } from './SampleStatusInput';
-import { AppendUnitsInput } from './AppendUnitsInput';
-
 export type InputRendererComponent = ComponentType<InputRendererProps>;
 export type InputRendererFactory = (col: QueryColumn, isGridInput?: boolean) => InputRendererComponent;
 
@@ -45,9 +39,3 @@ export const resolveInputRenderer: InputRendererFactory = (col, isGridInput = fa
     }
     return undefined;
 };
-
-registerInputRenderer('AppendUnitsInput', AppendUnitsInput, InputRenderContext.Form);
-registerInputRenderer('ExperimentAlias', AliasGridInput, InputRenderContext.Grid);
-registerInputRenderer('ExperimentAlias', AliasInput, InputRenderContext.Form);
-registerInputRenderer('SampleStatusInput', SampleStatusInputRenderer);
-registerInputRenderer('WorkflowTask', AssayTaskInputRenderer);

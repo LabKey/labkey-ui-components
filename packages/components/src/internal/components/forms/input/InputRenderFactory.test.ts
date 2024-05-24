@@ -1,39 +1,30 @@
+import { FC } from 'react';
 import { QueryColumn } from '../../../../public/QueryColumn';
 
-import { AssayTaskInputRenderer } from './AssayTaskInput';
+import { InputRenderContext, registerInputRenderer, resolveInputRenderer } from './InputRenderFactory';
 
-import { AliasGridInput, AliasInput } from './AliasInput';
-import { SampleStatusInputRenderer } from './SampleStatusInput';
-import { AppendUnitsInput } from './AppendUnitsInput';
+describe('InputRenderFactory', () => {
+    const AllInput: FC = () => { return null; };
+    const FormInput: FC = () => { return null; };
+    const GridInput: FC = () => { return null; };
 
-import { resolveInputRenderer } from './InputRenderFactory';
-
-describe('resolveInputRenderer', () => {
-    const column = new QueryColumn({
-        name: 'resolveInputRendererTestColumn',
+    beforeAll(() => {
+        registerInputRenderer('AllInput', AllInput);
+        registerInputRenderer('FormInput', FormInput, InputRenderContext.Form);
+        registerInputRenderer('GridInput', GridInput, InputRenderContext.Grid);
     });
 
-    test('appendunitsinput', () => {
-        column.inputRenderer = 'appendunitsinput';
-        expect(resolveInputRenderer(column)).toEqual(AppendUnitsInput);
-        expect(resolveInputRenderer(column, true)).toBeUndefined();
-    });
+    test('resolveInputRenderer', () => {
+        const allColumn = new QueryColumn({ inputRenderer: 'AllInput', name: 'allColumn' });
+        expect(resolveInputRenderer(allColumn, true)).toEqual(AllInput);
+        expect(resolveInputRenderer(allColumn, false)).toEqual(AllInput);
 
-    test('experimentalias', () => {
-        column.inputRenderer = 'experimentalias';
-        expect(resolveInputRenderer(column)).toEqual(AliasInput);
-        expect(resolveInputRenderer(column, true)).toEqual(AliasGridInput);
-    });
+        const formColumn = new QueryColumn({ inputRenderer: 'FormInput', name: 'formColumn' });
+        expect(resolveInputRenderer(formColumn, true)).toBeUndefined();
+        expect(resolveInputRenderer(formColumn, false)).toEqual(FormInput);
 
-    test('samplestatusinput', () => {
-        column.inputRenderer = 'samplestatusinput';
-        const AppendUnitsInputComponent = resolveInputRenderer(column);
-        expect(AppendUnitsInputComponent).toEqual(SampleStatusInputRenderer);
-    });
-
-    test('workflowtask', () => {
-        column.inputRenderer = 'workflowtask';
-        const AppendUnitsInputComponent = resolveInputRenderer(column);
-        expect(AppendUnitsInputComponent).toEqual(AssayTaskInputRenderer);
+        const gridColumn = new QueryColumn({ inputRenderer: 'GridInput', name: 'gridColumn' });
+        expect(resolveInputRenderer(gridColumn, true)).toEqual(GridInput)
+        expect(resolveInputRenderer(gridColumn, false)).toBeUndefined();
     });
 });

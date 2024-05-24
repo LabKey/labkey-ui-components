@@ -19,6 +19,7 @@ import { LOOKUP_DEFAULT_SIZE } from '../../../constants';
 import { getSampleStatusContainerFilter } from '../../samples/utils';
 
 import { InputRendererProps } from './types';
+import { registerInputRenderer } from './InputRenderFactory';
 
 interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'containerFilter' | 'schemaQuery' | 'valueColumn'> {
     api?: ComponentsAPIWrapper;
@@ -165,3 +166,5 @@ export const SampleStatusInputRenderer: FC<InputRendererProps> = memo(props => {
         />
     );
 });
+
+registerInputRenderer('SampleStatusInput', SampleStatusInputRenderer);

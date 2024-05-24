@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
 import { Modal } from '../Modal';
@@ -73,6 +73,10 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
         }
     }, [allowRemove, attachment, onRemove]);
 
+    const showMenu = useMemo(() => {
+        return ((onCopyLink || allowDownload) && !attachment?.unavailable) || allowRemove;
+    }, [onCopyLink, allowDownload, attachment, allowRemove]);
+
     if (!attachment) {
         return null;
     }
@@ -91,7 +95,12 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
     return (
         <>
             <div
-                className={classNames('attachment-card ' + outerCls, { 'attachment-unavailable': unavailable })}
+                className={classNames('attachment-card ' + outerCls,
+                    {
+                        'attachment-unavailable': unavailable,
+                        'attachment-unavailable-wide': unavailable && !showMenu
+                    }
+                    )}
                 title={name + (unavailable ? ' (unavailable)' : '')}
             >
                 <div
@@ -119,14 +128,14 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
                         {description && <div className="attachment-card__description">{description}</div>}
                     </div>
                 </div>
-                {isLoaded && !unavailable && (
+                {isLoaded && showMenu && (
                     <DropdownAnchor
                         className="attachment-card__menu"
                         title={<i className="fa fa-ellipsis-v" />}
                         pullRight
                     >
-                        {onCopyLink && <MenuItem onClick={_onCopyLink}>Copy {copyNoun}</MenuItem>}
-                        {allowDownload && <MenuItem onClick={_onDownload}>Download</MenuItem>}
+                        {onCopyLink && !unavailable && <MenuItem onClick={_onCopyLink}>Copy {copyNoun}</MenuItem>}
+                        {allowDownload && !unavailable && <MenuItem onClick={_onDownload}>Download</MenuItem>}
                         {allowRemove && <MenuItem onClick={_onRemove}>Remove {noun}</MenuItem>}
                     </DropdownAnchor>
                 )}

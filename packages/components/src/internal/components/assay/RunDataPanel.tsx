@@ -43,6 +43,7 @@ import {AssayWizardModel} from './AssayWizardModel';
 import {getServerFilePreview} from './utils';
 import {AssayDomainTypes} from "../../AssayDefinitionModel";
 import {LabelOverlay} from "../forms/LabelOverlay";
+import {isLIMSEnabled} from "../../app/utils";
 
 const TABS = ['Enter Data into Grid', 'Import Data from File'];
 const PREVIEW_ROW_COUNT = 3;
@@ -252,7 +253,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
         const isLoading = !wizardModel.isInit || queryModel.isLoading;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
         const columnMetadata = this.getEditableGridColumnMetadata();
-        const fileColumnNames = wizardModel.assayDef.domainFileColumnNames(AssayDomainTypes.RESULT);
+        const fileColumnNames = isLIMSEnabled() ? wizardModel.assayDef.domainFileColumnNames(AssayDomainTypes.RESULT) : undefined;
         const assayFileFieldTooltip = <>
                 <p>Click to select your assay results file field(s) data files or drag and drop them directly onto the upload area. The total file size limit is {RESULTS_FILE_SIZE_LIMIT_DISPLAY}.<br/>
                     These are the files that contain additional data for each assay result. The results data above should include columns that references these files by file name.</p>
@@ -344,6 +345,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             <div className="top-spacing">
                                                 <FileAttachmentForm
                                                     key={wizardModel.lastRunId + '-resultsFiles'}
+                                                    index={1} // this is so that the file input doesn't interfere with the data file FileAttachmentForm
                                                     allowDirectories
                                                     includeDirectoryFiles
                                                     fileCountSuffix="will be uploaded"

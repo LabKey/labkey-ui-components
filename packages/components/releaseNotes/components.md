@@ -10,6 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - RunDataPanel update to show FileAttachmentForm for results domain file fields
   - AssayWizardModel.prepareFormData to include resultsFiles for import run API post and update progress bar estimate and message
   - uploadAssayRunFiles fix for maxFileSize to not include batchFiles or runFiles as they are unrelated
+  - only shown in assay import UI for LKB at this time
 
 ### version 3.46.3
 *Released*: 21 May 2024

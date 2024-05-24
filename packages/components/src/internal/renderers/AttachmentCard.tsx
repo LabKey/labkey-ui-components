@@ -95,12 +95,10 @@ export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
     return (
         <>
             <div
-                className={classNames('attachment-card ' + outerCls,
-                    {
-                        'attachment-unavailable': unavailable,
-                        'attachment-unavailable-wide': unavailable && !showMenu
-                    }
-                    )}
+                className={classNames('attachment-card ' + outerCls, {
+                    'attachment-unavailable': unavailable,
+                    'attachment-unavailable-wide': unavailable && !showMenu,
+                })}
                 title={name + (unavailable ? ' (unavailable)' : '')}
             >
                 <div

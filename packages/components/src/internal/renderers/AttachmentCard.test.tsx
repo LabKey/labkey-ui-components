@@ -23,7 +23,7 @@ describe('AttachmentCard', () => {
         available = true,
         canDownload = true,
         canRemove = true,
-        canCopy = false,
+        canCopy = false
     ): void {
         const renderedCount = rendered ? 1 : 0;
         const isImage = iconFontCls === null;
@@ -52,7 +52,9 @@ describe('AttachmentCard', () => {
             expect(document.querySelectorAll('.' + iconFontCls).length).toBe(1);
         }
 
-        expect(document.querySelectorAll('.lk-menu-item').length).toBe((canDownload ? 1 : 0) + (canRemove ? 1 : 0) + (canCopy ? 1 :0));
+        expect(document.querySelectorAll('.lk-menu-item').length).toBe(
+            (canDownload ? 1 : 0) + (canRemove ? 1 : 0) + (canCopy ? 1 : 0)
+        );
     }
 
     test('default props', () => {
@@ -159,7 +161,6 @@ describe('AttachmentCard', () => {
         expect(document.querySelector('.attachment-card__icon_img').getAttribute('src')).toBe('testurl');
         expect(document.querySelector('.attachment-card__icon_img').getAttribute('alt')).toBe('test.png');
     });
-
 
     test('image attachment, unavailable', () => {
         render(

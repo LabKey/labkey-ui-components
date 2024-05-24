@@ -33,17 +33,11 @@ interface FileProp {
     filename: string;
 }
 
+const UNAVAILABLE_FILE_SUFFIX = ' (unavailable)';
 const getFileDisplayValue = (rawDisplayValue: string): FileProp => {
-    if (!rawDisplayValue) {
+    if (rawDisplayValue?.endsWith(UNAVAILABLE_FILE_SUFFIX)) {
         return {
-            filename: undefined,
-            fileUnavailable: false, // not a file_link, could be attachment
-        };
-    }
-
-    if (rawDisplayValue.endsWith(' (unavailable)')) {
-        return {
-            filename: rawDisplayValue.substring(0, rawDisplayValue.length - ' (unavailable)'.length),
+            filename: rawDisplayValue.substring(0, rawDisplayValue.length - UNAVAILABLE_FILE_SUFFIX.length),
             fileUnavailable: true,
         };
     }

@@ -13,41 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {PureComponent, ReactNode} from 'react';
-import {Map} from 'immutable';
+import React, { PureComponent, ReactNode } from 'react';
+import { Map } from 'immutable';
 
-import {Filter} from '@labkey/api';
+import { Filter } from '@labkey/api';
 
-import {Operation} from '../../../public/QueryColumn';
+import { Operation } from '../../../public/QueryColumn';
 
-import {AssayUploadTabs} from '../../constants';
-import {InferDomainResponse} from '../../../public/InferDomainResponse';
-import {EditableColumnMetadata, EditorModel} from '../editable/models';
+import { AssayUploadTabs } from '../../constants';
+import { InferDomainResponse } from '../../../public/InferDomainResponse';
+import { EditableColumnMetadata, EditorModel } from '../editable/models';
 
-import {DATA_IMPORT_TOPIC, HelpLink} from '../../util/helpLinks';
-import {EditableGridChange} from '../editable/EditableGrid';
-import {EditableGridPanel} from '../editable/EditableGridPanel';
+import { DATA_IMPORT_TOPIC, HelpLink } from '../../util/helpLinks';
+import { EditableGridChange } from '../editable/EditableGrid';
+import { EditableGridPanel } from '../editable/EditableGridPanel';
 
-import {FileSizeLimitProps} from '../../../public/files/models';
-import {QueryModel} from '../../../public/QueryModel/QueryModel';
-import {getActionErrorMessage} from '../../util/messaging';
-import {LoadingSpinner} from '../base/LoadingSpinner';
-import {FormStep, FormTabs} from '../forms/FormStep';
-import {FileAttachmentForm} from '../../../public/files/FileAttachmentForm';
-import {Alert} from '../base/Alert';
+import { FileSizeLimitProps } from '../../../public/files/models';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { getActionErrorMessage } from '../../util/messaging';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { FormStep, FormTabs } from '../forms/FormStep';
+import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
+import { Alert } from '../base/Alert';
 
-import {getContainerFilterForLookups} from '../../query/api';
+import { getContainerFilterForLookups } from '../../query/api';
 
-import {getRunPropertiesFileName} from './actions';
-import {AssayWizardModel} from './AssayWizardModel';
-import {getServerFilePreview} from './utils';
-import {AssayDomainTypes} from "../../AssayDefinitionModel";
-import {LabelOverlay} from "../forms/LabelOverlay";
-import {isLIMSEnabled} from "../../app/utils";
+import { AssayDomainTypes } from '../../AssayDefinitionModel';
+
+import { LabelOverlay } from '../forms/LabelOverlay';
+
+import { isLIMSEnabled } from '../../app/utils';
+
+import { getRunPropertiesFileName } from './actions';
+import { AssayWizardModel } from './AssayWizardModel';
+import { getServerFilePreview } from './utils';
 
 const TABS = ['Enter Data into Grid', 'Import Data from File'];
 const PREVIEW_ROW_COUNT = 3;
-const ASSAY_RESULTS_DATA_TOOLTIP = <p>Click to select your assay data file or drag and drop it directly onto the upload area.<br/>This is the data file that contains one row per assay result.</p>;
+const ASSAY_RESULTS_DATA_TOOLTIP = (
+    <p>
+        Click to select your assay data file or drag and drop it directly onto the upload area.
+        <br />
+        This is the data file that contains one row per assay result.
+    </p>
+);
 const RESULTS_FILE_SIZE_LIMIT_DISPLAY = '200MB';
 const RESULTS_FILE_SIZE_LIMITS = Map<string, FileSizeLimitProps>({
     all: {
@@ -71,9 +80,9 @@ interface Props {
     maxRows?: number;
     onDataFileChange: (attachments: Map<string, File>) => any;
     onDataFileRemoval: (attachmentName: string) => any;
+    onGridChange: EditableGridChange;
     onResultsFileChange: (attachments: Map<string, File>) => any;
     onResultsFileRemoval: (attachmentName: string, updatedFiles?: Map<string, File>) => any;
-    onGridChange: EditableGridChange;
     onTextChange: (value: any) => any;
     operation: Operation;
     plateSupportEnabled?: boolean;
@@ -253,12 +262,22 @@ export class RunDataPanel extends PureComponent<Props, State> {
         const isLoading = !wizardModel.isInit || queryModel.isLoading;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
         const columnMetadata = this.getEditableGridColumnMetadata();
-        const fileColumnNames = isLIMSEnabled() ? wizardModel.assayDef.domainFileColumnNames(AssayDomainTypes.RESULT) : undefined;
-        const assayFileFieldTooltip = <>
-                <p>Click to select your assay results file field(s) data files or drag and drop them directly onto the upload area. The total file size limit is {RESULTS_FILE_SIZE_LIMIT_DISPLAY}.<br/>
-                    These are the files that contain additional data for each assay result. The results data above should include columns that references these files by file name.</p>
-                <p>The current assay design has the following result file fields: <b>{fileColumnNames?.join(', ')}</b>.</p>
-            </>;
+        const fileColumnNames = isLIMSEnabled()
+            ? wizardModel.assayDef.domainFileColumnNames(AssayDomainTypes.RESULT)
+            : undefined;
+        const assayFileFieldTooltip = (
+            <>
+                <p>
+                    Click to select your assay results file field(s) data files or drag and drop them directly onto the
+                    upload area. The total file size limit is {RESULTS_FILE_SIZE_LIMIT_DISPLAY}.<br />
+                    These are the files that contain additional data for each assay result. The results data above
+                    should include columns that references these files by file name.
+                </p>
+                <p>
+                    The current assay design has the following result file fields: <b>{fileColumnNames?.join(', ')}</b>.
+                </p>
+            </>
+        );
 
         return (
             <div className="panel panel-default">
@@ -313,7 +332,14 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 allowDirectories={false}
                                                 allowMultiple={false}
                                                 showLabel={fileColumnNames?.length > 0}
-                                                label={<div className="assay-data-file-label"><LabelOverlay label="Results Data" content={ASSAY_RESULTS_DATA_TOOLTIP} /></div>}
+                                                label={
+                                                    <div className="assay-data-file-label">
+                                                        <LabelOverlay
+                                                            label="Results Data"
+                                                            content={ASSAY_RESULTS_DATA_TOOLTIP}
+                                                        />
+                                                    </div>
+                                                }
                                                 initialFileNames={
                                                     previousRunData && previousRunData.fileName
                                                         ? [previousRunData.fileName]
@@ -351,7 +377,14 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                     fileCountSuffix="will be uploaded"
                                                     allowMultiple
                                                     sizeLimits={RESULTS_FILE_SIZE_LIMITS}
-                                                    label={<div className="assay-data-file-label"><LabelOverlay label="File Fields Data" content={assayFileFieldTooltip} /></div>}
+                                                    label={
+                                                        <div className="assay-data-file-label">
+                                                            <LabelOverlay
+                                                                label="File Fields Data"
+                                                                content={assayFileFieldTooltip}
+                                                            />
+                                                        </div>
+                                                    }
                                                     labelLong="Select file(s) or drag and drop here"
                                                     onFileChange={onResultsFileChange}
                                                     onFileRemoval={onResultsFileRemoval}

@@ -148,7 +148,9 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     reportFileOversized = (attachedFiles: Map<string, File>, sizeStr: string): void => {
         this.setState(() => ({
             errorMessage:
-                'This file is too large to be previewed. The maximum size allowed for previewing files of this type is ' + sizeStr + '.',
+                'This file is too large to be previewed. The maximum size allowed for previewing files of this type is ' +
+                sizeStr +
+                '.',
         }));
     };
 

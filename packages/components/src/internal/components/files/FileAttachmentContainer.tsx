@@ -100,8 +100,8 @@ export class FileAttachmentContainer extends React.Component<
 
     getFilesFromDirectory = (files, entry, scope, callback): void => {
         const dirReader = entry.createReader();
-        const entriesReader = ((scope) => {
-            return (entries) => {
+        const entriesReader = (scope => {
+            return entries => {
                 for (let i = 0; i < entries.length; i++) {
                     const _entry = entries[i];
                     if (_entry.isFile) {
@@ -112,7 +112,10 @@ export class FileAttachmentContainer extends React.Component<
                             // ignore hidden files
                             if (file.name.substring(0, 1) !== '.') {
                                 if (files[file.name]) {
-                                    scope.setState({ warningMsg: 'Duplicate files were uploaded. Only the last file provided for the duplicate name will be included in the file set.' });
+                                    scope.setState({
+                                        warningMsg:
+                                            'Duplicate files were uploaded. Only the last file provided for the duplicate name will be included in the file set.',
+                                    });
                                 }
                                 file.fullPath = entry.fullPath + '/' + file.name;
                                 files[file.name] = file;
@@ -290,7 +293,10 @@ export class FileAttachmentContainer extends React.Component<
         Array.from(fileList).forEach((file, index) => {
             if (!invalidFiles.contains(file.name)) {
                 if (this.state.files?.[file.name]) {
-                    this.setState({ warningMsg: 'Duplicate files were uploaded. Only the last file will be included in the file set.' });
+                    this.setState({
+                        warningMsg:
+                            'Duplicate files were uploaded. Only the last file will be included in the file set.',
+                    });
                 }
 
                 newFiles[file.name] = file;
@@ -454,14 +460,25 @@ export class FileAttachmentContainer extends React.Component<
                     />
                 </div>
 
-                {(warningMsg !== '' && warningMsg !== undefined) && (
-                    <Alert bsStyle="warning" className={this.props.compact ? 'file-upload--error-message--compact' : null}>{warningMsg}</Alert>
+                {warningMsg !== '' && warningMsg !== undefined && (
+                    <Alert
+                        bsStyle="warning"
+                        className={this.props.compact ? 'file-upload--error-message--compact' : null}
+                    >
+                        {warningMsg}
+                    </Alert>
                 )}
-                {(errorMsg !== '' && errorMsg !== undefined) && (
-                    <Alert className={this.props.compact ? 'file-upload--error-message--compact' : null}>{errorMsg}</Alert>
+                {errorMsg !== '' && errorMsg !== undefined && (
+                    <Alert className={this.props.compact ? 'file-upload--error-message--compact' : null}>
+                        {errorMsg}
+                    </Alert>
                 )}
 
-                <div className={classNames('file-upload--file-entry-listing', {'well well-sm': allowMultiple && fileNames.length})}>
+                <div
+                    className={classNames('file-upload--file-entry-listing', {
+                        'well well-sm': allowMultiple && fileNames.length,
+                    })}
+                >
                     {fileNames.map((fileName: string) => {
                         return <FileAttachmentEntry key={fileName} name={fileName} onDelete={this.handleRemove} />;
                     })}

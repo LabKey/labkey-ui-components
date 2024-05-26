@@ -48,7 +48,7 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
             autoFocus
             disabled={disabled}
             formsy={false}
-            inputClassName="date-input-cell cellular-input"
+            inputClassName="date-input-cell"
             inputWrapperClassName=""
             isClearable={false}
             isFormInput={false}

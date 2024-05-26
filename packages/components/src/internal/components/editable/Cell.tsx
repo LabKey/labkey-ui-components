@@ -78,7 +78,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
     private changeTO: number;
     private recordedKeys: string;
     private recordingTO: number;
-    private displayEl: React.RefObject<any>;
+    private displayEl: React.RefObject<HTMLDivElement>;
 
     static defaultProps = {
         borderMaskBottom: false,
@@ -121,9 +121,17 @@ export class Cell extends React.PureComponent<CellProps, State> {
         if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
 
+            if (prevProps.focused) this._preFocusDOMRect = undefined;
             if (!prevProps.selected) this.loadFilteredLookupKeys();
         }
     }
+
+    private _preFocusDOMRect: DOMRect;
+
+    focusCell = (colIdx: number, rowIdx: number, clearValue?: boolean): void => {
+        this._preFocusDOMRect = this.displayEl.current.getBoundingClientRect();
+        this.props.cellActions.focusCell(colIdx, rowIdx, clearValue);
+    };
 
     loadFilteredLookupKeys = async (): Promise<void> => {
         const { getFilteredLookupKeys, linkedValues, readOnly } = this.props;
@@ -160,13 +168,13 @@ export class Cell extends React.PureComponent<CellProps, State> {
         );
     };
 
-    handleBlur: React.FocusEventHandler<HTMLInputElement> = (evt): void => {
+    handleBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> = (evt): void => {
         clearTimeout(this.changeTO);
         this.handleSelectionBlur();
         this.replaceCurrentCellValue(evt.target.value, evt.target.value);
     };
 
-    handleChange: React.ChangeEventHandler<HTMLInputElement> = (event): void => {
+    handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event): void => {
         event.persist();
 
         clearTimeout(this.changeTO);
@@ -178,13 +186,13 @@ export class Cell extends React.PureComponent<CellProps, State> {
     handleDblClick = (): void => {
         if (this.isReadOnly) return;
 
-        const { colIdx, cellActions, rowIdx } = this.props;
-        cellActions.focusCell(colIdx, rowIdx);
+        const { colIdx, rowIdx } = this.props;
+        this.focusCell(colIdx, rowIdx);
     };
 
     handleKeys: React.KeyboardEventHandler<HTMLElement> = (event): void => {
         const { cellActions, colIdx, focused, rowIdx, selected } = this.props;
-        const { focusCell, modifyCell, selectCell, fillDown } = cellActions;
+        const { modifyCell, selectCell, fillDown } = cellActions;
         const isRecording = this.recordingTO !== undefined;
 
         switch (event.keyCode) {
@@ -221,8 +229,10 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 break;
             case KEYS.Enter:
                 if (focused || this.isReadOnly) {
-                    cancelEvent(event);
-                    selectCell(colIdx, rowIdx + 1);
+                    if (!event.shiftKey) {
+                        cancelEvent(event);
+                        selectCell(colIdx, rowIdx + 1);
+                    }
                 } else if (selected) {
                     // Record "Enter" key iff recording is in progress. Does not initiate recording.
                     if (isRecording) {
@@ -230,7 +240,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                         this.recordKeys(event);
                     } else {
                         cancelEvent(event);
-                        focusCell(colIdx, rowIdx);
+                        this.focusCell(colIdx, rowIdx);
                     }
                 }
                 break;
@@ -262,7 +272,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     if (this.isLookup && !this.isDateTimeField) {
                         this.recordKeys(event);
                     } else {
-                        focusCell(colIdx, rowIdx, true);
+                        this.focusCell(colIdx, rowIdx, true);
                     }
                 }
                 break;
@@ -289,13 +299,13 @@ export class Cell extends React.PureComponent<CellProps, State> {
         this.recordingTO = window.setTimeout(() => {
             this.recordingTO = undefined;
             const { cellActions, colIdx, rowIdx } = this.props;
-            const { fillText, focusCell, selectCell } = cellActions;
+            const { fillText, selectCell } = cellActions;
 
             if (this.recordedKeys.indexOf('\n') > -1) {
                 fillText(colIdx, rowIdx, this.recordedKeys);
                 selectCell(colIdx, rowIdx + 1);
             } else {
-                focusCell(colIdx, rowIdx, !this.isReadOnly);
+                this.focusCell(colIdx, rowIdx, !this.isReadOnly);
             }
 
             this.recordedKeys = undefined;
@@ -402,13 +412,13 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     'cell-border-right': borderMaskRight,
                     'cell-border-bottom': borderMaskBottom,
                     'cell-border-left': borderMaskLeft,
-                    'cell-selected': selected,
-                    'cell-selection': selection,
-                    'cell-warning': message !== undefined,
-                    'cell-read-only': this.isReadOnly,
                     'cell-locked': locked,
                     'cell-menu': showMenu,
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
+                    'cell-read-only': this.isReadOnly,
+                    'cell-selected': selected,
+                    'cell-selection': selection,
+                    'cell-warning': message !== undefined,
                 }),
                 onDoubleClick: this.handleDblClick,
                 onKeyDown: this.handleKeys,
@@ -422,19 +432,23 @@ export class Cell extends React.PureComponent<CellProps, State> {
             if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
             let cell: ReactNode;
 
-            if (showMenu) {
+            if (showMenu && !this.isReadOnly) {
                 cell = (
                     <div {...displayProps}>
-                        <div className="cell-menu-value">{valueDisplay}</div>
-                        {!this.isReadOnly && (
-                            <span onClick={this.handleDblClick} className="cell-menu-selector">
+                        <span className="cell-content">
+                            <div className="cell-menu-value">{valueDisplay}</div>
+                            <span className="cell-menu-selector" onClick={this.handleDblClick}>
                                 <i className="fa fa-chevron-down" />
                             </span>
-                        )}
+                        </span>
                     </div>
                 );
             } else {
-                cell = <div {...displayProps}>{valueDisplay}</div>;
+                cell = (
+                    <div {...displayProps}>
+                        <span className="cell-content">{valueDisplay}</span>
+                    </div>
+                );
             }
 
             if (message) {
@@ -487,6 +501,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     col={col}
                     colIdx={colIdx}
                     containerFilter={containerFilter}
+                    containerPath={containerPath}
                     defaultInputValue={this.recordedKeys}
                     disabled={this.isReadOnly}
                     lookupValueFilters={lookupValueFilters}
@@ -499,7 +514,6 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     rowIdx={rowIdx}
                     select={cellActions.selectCell}
                     values={values}
-                    containerPath={containerPath}
                 />
             );
         }
@@ -514,16 +528,21 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     disabled={this.isReadOnly}
                     modifyCell={cellActions.modifyCell}
                     onKeyDown={this.handleKeys}
-                    select={cellActions.selectCell}
                     rowIdx={rowIdx}
+                    select={cellActions.selectCell}
                 />
             );
         }
 
+        // TODO: Need to trim text values upon save
+        // TODO: This should only apply to text-based fields. Not numeric fields.
+        // TODO: Need to fix the loading state of select inputs so it does not jump
+        // TODO: Need to see about supporting multi-line value copy within a cell to another cell. Normally, this resolves as a multi-cell copy.
+        // console.log(col.jsonType);
         return (
-            <input
+            <textarea
                 autoFocus
-                className="cellular-input"
+                className={classNames('cellular-input', { 'cellular-input-multiline': col.inputType === 'textarea' })}
                 defaultValue={
                     values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : ''
                 }
@@ -532,8 +551,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeys}
                 placeholder={placeholder}
+                style={{ height: `${this._preFocusDOMRect.height}px`, minHeight: `${this._preFocusDOMRect.height}px`, minWidth: `${this._preFocusDOMRect.width}px`, width: `${this._preFocusDOMRect.width}px` }}
                 tabIndex={-1}
-                type="text"
             />
         );
     }

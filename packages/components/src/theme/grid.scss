@@ -1,8 +1,6 @@
 // #Grids
 // Grid Styling
-
-
-.form-horizontal .control-label.text-left{
+.form-horizontal .control-label.text-left {
   text-align: left;
 }
 
@@ -243,6 +241,8 @@ $table-cell-border: $table-cell-border-width solid transparent;
 $table-cell-selected-border: $table-cell-border-width solid #2980b9;
 $table-cell-selected-box-shadow: 0 3px 3px darkgrey;
 $table-cell-selection-bg-color: #EDF3FF;
+$table-cell-max-height: 200px;
+$table-cell-max-width: 600px;
 
 .table-cellular {
   border-collapse: collapse;
@@ -252,13 +252,12 @@ $table-cell-selection-bg-color: #EDF3FF;
   }
 
   & > tbody > tr.grid-empty > td {
-      height: 30px;
       padding: 0 4px;
   }
 
   & > tbody > tr > td {
     border: 1px solid #dadada;
-    line-height: 1;
+    height: 1px;
 
     &.cellular-count {
       background-color: #f3f3f3;
@@ -269,7 +268,10 @@ $table-cell-selection-bg-color: #EDF3FF;
 
       .cellular-count-content {
         position: absolute;
-        top: 0; bottom: 0; right: 0; left: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 0;
         margin-top: 6px;
       }
 
@@ -281,11 +283,14 @@ $table-cell-selection-bg-color: #EDF3FF;
     .cellular-display {
       border: $table-cell-border;
       cursor: default;
+      display: flex;
+      height: 100%;
+      max-height: $table-cell-max-height;
+      max-width: $table-cell-max-width;
       outline: none;
       overflow: hidden;
       padding: 7px 1px 2px 2px;
-      height: 30px;
-      white-space: nowrap;
+      white-space: pre;
 
         &.cell-selection {
             border: $table-cell-border-width solid $table-cell-selection-bg-color;
@@ -313,6 +318,15 @@ $table-cell-selection-bg-color: #EDF3FF;
         &.cell-border-left {
             border-left: $table-cell-selected-border;
         }
+
+        .cell-content-wrapper {
+          display: flex;
+          height: 100%;
+        }
+
+        .cell-content {
+          align-self: flex-end;
+        }
     }
 
     .cell-selection-handle {
@@ -327,15 +341,23 @@ $table-cell-selection-bg-color: #EDF3FF;
 
     .cellular-input {
       border: $table-cell-selected-border;
+      display: block;
+      height: 100%;
+      max-height: $table-cell-max-height;
+      max-width: 400px;
       outline: none;
-      padding: 6px 2px;
+      padding: 7px 1px 2px 2px;
+      resize: none;
       width: 100%;
-      min-width: 200px;
 
       &:focus {
         border: $table-cell-selected-border;
         outline: none;
       }
+    }
+
+    .cellular-input-multiline {
+      resize: both;
     }
 
     .cell-warning {
@@ -380,11 +402,11 @@ $table-cell-selection-bg-color: #EDF3FF;
 
     .cell-menu-selector {
         position: absolute;
+        bottom: -8px;
         color: $light-gray;
         min-height: 30px;
         font-size: 12px;
         right: 7px;
-        top: 8px;
 
         .fa {
             font-size: 14px;
@@ -415,6 +437,29 @@ $table-cell-selection-bg-color: #EDF3FF;
        }
     }
 
+    .react-datepicker-wrapper {
+      background-color: $white;
+      border: $table-cell-selected-border;
+      display: block;
+      height: 100%;
+
+      .date-input-cell {
+        outline: none;
+        padding: 7px 1px 2px 2px;
+      }
+    }
+  }
+
+  @-moz-document url-prefix() {
+    & > tbody > tr > td {
+      height: 100%;
+
+      .cellular-display {
+        display: inline-table;
+        min-height: 30px;
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -427,15 +472,26 @@ $table-cell-selection-bg-color: #EDF3FF;
 }
 
 .select-input-cell .select-input__control, .date-input-cell {
+    align-content: flex-end;
     border-style: none;
-    min-height: 30px;
+    height: 100%;
     width: 100%;
     min-width: 200px;
 }
 
 .select-input-cell-container, .date-input-cell-container {
+    height: 100%;
     margin-bottom: 0;
     border-style: none;
+
+    .select-input-cell {
+      height: 100%;
+
+      .select-input {
+        display: flex;
+        height: 100%;
+      }
+    }
 }
 
 // https://codepen.io/quanon/pen/WjXmWe
@@ -487,11 +543,6 @@ $table-cell-selection-bg-color: #EDF3FF;
   .input-group-btn {
     width: unset
   }
-}
-
-// Grid selection banner
-.QueryGrid-right-spacing {
-  padding-right: 15px;
 }
 
 .gridbar-button-spacer {

@@ -449,6 +449,8 @@ export class QueryColumn implements IQueryColumn {
             case 'ALWAYS_OFF':
                 return false;
             case 'AUTOMATIC':
+                // can't do faceting on multi-valued lookups more than one level deep
+                if (this.fieldKeyPath.indexOf('/Ancestors/') > 0) return false;
                 // auto rules are if the column is a lookup or dimension
                 // OR if it is of type : (boolean, int, date, text), multiline excluded
                 if (this.lookup || this.dimension) return true;

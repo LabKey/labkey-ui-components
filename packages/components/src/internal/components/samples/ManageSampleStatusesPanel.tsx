@@ -196,19 +196,20 @@ export const SampleStatusDetail: FC<SampleStatusDetailProps> = memo(props => {
             api.query
                 .deleteRows({
                     schemaQuery: SCHEMAS.CORE_TABLES.DATA_STATES,
+                    containerPath: container?.path,
                     rows: [updatedState],
                 })
                 .then(() => {
                     onActionComplete(undefined, true);
                 })
                 .catch(reason => {
-                    setError(resolveErrorMessage(reason, 'status', 'statuses', 'deleting'));
+                    setError(resolveErrorMessage(reason?.error, 'status', 'statuses', 'deleting'));
                     setShowDeleteConfirm(false);
                 });
         } else {
             setShowDeleteConfirm(false);
         }
-    }, [api, updatedState, onActionComplete]);
+    }, [api, updatedState, onActionComplete, container?.path]);
 
     const disabledMsg = useMemo(() => {
         return getSampleStatusLockedMessage(updatedState, saving);

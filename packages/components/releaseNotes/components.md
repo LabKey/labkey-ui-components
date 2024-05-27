@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Issues 50507 and 50453: Fields named 'Color' should not interfere with status colors
+- Issue 50498: Use proper container for status deletion
 
 ### version 3.46.3
 *Released*: 21 May 2024

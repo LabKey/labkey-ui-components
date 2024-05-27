@@ -1,4 +1,4 @@
-import { Filter, Query } from '@labkey/api';
+import { Filter, Query, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 
@@ -75,7 +75,7 @@ export function getSampleStatusType(row: any): SampleStateType {
 }
 
 export function getSampleStatusColor(color: string, stateType: SampleStateType | string): string {
-    if (color) return color.toUpperCase();
+    if (color && Utils.isString(color)) return color.toUpperCase();
 
     const _stateType = SampleStateType[stateType];
 
@@ -105,17 +105,35 @@ export function getSampleStatus(row: any): SampleStatus {
             label = caseInsensitive(row, 'Label')?.value;
         }
     }
+    let color;
+    let col = caseInsensitive(row, SAMPLE_STATE_COLOR_COLUMN_NAME);
+    if (col) {
+        color = col.value;
+    } else {
+        col = caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_COLOR_COLUMN_NAME);
+        if (col) {
+            color = col.value;
+        } else {
+            color = caseInsensitive(row, 'Color')?.value;
+        }
+    }
+    let description;
+    col = caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME);
+    if (col) {
+        description = col.value;
+    } else {
+        col = caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_DESCRIPTION_COLUMN_NAME);
+        if (col) {
+            description = col.value;
+        } else {
+            description = caseInsensitive(row, 'Description')?.value;
+        }
+    }
     return {
         label,
         statusType: getSampleStatusType(row),
-        color:
-            caseInsensitive(row, SAMPLE_STATE_COLOR_COLUMN_NAME)?.value ||
-            caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_COLOR_COLUMN_NAME)?.value ||
-            caseInsensitive(row, 'Color')?.value,
-        description:
-            caseInsensitive(row, SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value ||
-            caseInsensitive(row, 'SampleID/' + SAMPLE_STATE_DESCRIPTION_COLUMN_NAME)?.value ||
-            caseInsensitive(row, 'Description')?.value,
+        color,
+        description
     };
 }
 

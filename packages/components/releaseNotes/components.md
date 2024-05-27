@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issues 50507 and 50453: Fields named 'Color' should not interfere with status colors
+
 ### version 3.46.3
 *Released*: 21 May 2024
 - Fix Issue 50455

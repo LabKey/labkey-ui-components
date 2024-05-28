@@ -540,10 +540,12 @@ const EXTENSION_FONT_CLS_MAP = {
     zip: 'fa fa-file-archive-o',
 };
 
-export function getIconFontCls(value: string): string {
+export function getIconFontCls(value: string, unavailable?: boolean): string {
     if (!value) {
         return undefined;
     }
+
+    if (unavailable) return 'fa fa-exclamation-triangle';
 
     const extensionType = getFileExtensionType(value);
     if (EXTENSION_FONT_CLS_MAP[extensionType]) {

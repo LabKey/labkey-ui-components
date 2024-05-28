@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issues 50507 and 50453: Fields named 'Color' should not interfere with status colors
 - Issue 50498: Use proper container for status deletion
 
+### version 3.46.4
+*Released*: 28 May 2024
+- Issue 50354: LKSM: Include indicator of unavailable file in apps
+
 ### version 3.46.3
 *Released*: 21 May 2024
 - Fix Issue 50455

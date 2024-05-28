@@ -7,6 +7,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Prevent faceting for Ancestor nodes not at top level
   - Update `getSelectRowCountColumnsStr` to use all columns when there are Ancestor columns in the mix
 
+### version 3.46.4
+*Released*: 28 May 2024
+- Issue 50354: LKSM: Include indicator of unavailable file in apps
+
 ### version 3.46.3
 *Released*: 21 May 2024
 - Fix Issue 50455

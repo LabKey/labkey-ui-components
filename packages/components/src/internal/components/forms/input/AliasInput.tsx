@@ -7,7 +7,6 @@ import { caseInsensitive, generateId } from '../../../util/utils';
 import { InputRendererProps } from './types';
 
 import { SelectInput, SelectInputProps } from './SelectInput';
-import { InputRenderContext, registerInputRenderer } from './InputRenderFactory';
 
 interface Props extends Omit<SelectInputProps, 'loadOptions' | 'options' | 'resolveFormValue' | 'value'> {
     col: QueryColumn;
@@ -112,6 +111,3 @@ export const AliasGridInput: FC<InputRendererProps> = memo(props => {
 });
 
 AliasGridInput.displayName = 'AliasGridInput';
-
-registerInputRenderer('ExperimentAlias', AliasGridInput, InputRenderContext.Grid);
-registerInputRenderer('ExperimentAlias', AliasInput, InputRenderContext.Form);

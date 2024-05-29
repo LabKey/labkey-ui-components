@@ -308,7 +308,7 @@ import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailDisplay';
 import { useDataChangeCommentsRequired } from './internal/components/forms/input/useDataChangeCommentsRequired';
-import { registerInputRenderer } from './internal/components/forms/input/InputRenderFactory';
+import { registerInputRenderer, registerInputRenderers } from './internal/components/forms/input/InputRenderFactory';
 
 import {
     getUsersWithPermissions,
@@ -950,6 +950,7 @@ const App = {
     menuInit,
     menuInvalidate,
     menuReload,
+    registerInputRenderers,
     serverNotificationInit,
     serverNotificationInvalidate,
     updateUser,

@@ -24,6 +24,7 @@ import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
 import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 
 import { DetailDisplay, resolveDetailEditRenderer, resolveDetailRenderer, defaultTitleRenderer } from './DetailDisplay';
+import { registerInputRenderers } from '../input/InputRenderFactory';
 
 describe('DetailDisplay', () => {
     const namePatternCol = new QueryColumn({
@@ -197,6 +198,10 @@ describe('resolveDetailEditRenderer', () => {
         userEditable: true,
         shownInUpdateView: true,
     };
+
+    beforeAll(() => {
+        registerInputRenderers();
+    });
 
     test('not editable', () => {
         const col = new QueryColumn({ caption: 'test', readOnly: false, userEditable: true, shownInUpdateView: false });

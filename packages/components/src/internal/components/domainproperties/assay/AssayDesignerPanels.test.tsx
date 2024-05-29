@@ -17,7 +17,11 @@ import { AssayProtocolModel } from './models';
 import { AssayDesignerPanels, AssayDesignerPanelsImpl, AssayDesignerPanelsProps } from './AssayDesignerPanels';
 
 const SERVER_CONTEXT = {
-    moduleContext: { api: { moduleNames: ['assay', 'study'] }, core: { productFeatures: [ProductFeature.AssayQC] } },
+    moduleContext: {
+        api: { moduleNames: ['assay', 'study'] },
+        core: { productFeatures: [ProductFeature.AssayQC] },
+        query: { hasProductProjects: true}
+    },
 };
 
 const EXISTING_MODEL = AssayProtocolModel.create({
@@ -202,6 +206,32 @@ describe('AssayDesignerPanels', () => {
                     submitting={false}
                     validatePanel={0}
                     visitedPanels={List()}
+                    allowProjectExclusion={true}
+                />,
+                {
+                    serverContext: SERVER_CONTEXT,
+                }
+            ).container;
+        });
+        expect(container).toMatchSnapshot();
+    });
+
+    test('appPropertiesOnly, allowProjectExclusion false', async () => {
+        let container;
+        await act(async () => {
+            container = renderWithAppContext(
+                <AssayDesignerPanelsImpl
+                    {...getDefaultProps()}
+                    appPropertiesOnly
+                    currentPanelIndex={0}
+                    firstState={true}
+                    onFinish={jest.fn()}
+                    onTogglePanel={jest.fn()}
+                    setSubmitting={jest.fn()}
+                    submitting={false}
+                    validatePanel={0}
+                    visitedPanels={List()}
+                    allowProjectExclusion={false}
                 />,
                 {
                     serverContext: SERVER_CONTEXT,
@@ -227,6 +257,7 @@ describe('AssayDesignerPanels', () => {
                     submitting={false}
                     validatePanel={0}
                     visitedPanels={List()}
+                    allowProjectExclusion={true}
                 />,
                 {
                     serverContext: SERVER_CONTEXT,

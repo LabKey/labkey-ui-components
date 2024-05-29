@@ -1270,7 +1270,7 @@ export function getOrderedSelectedMappedKeysFromQueryModel(
     );
 }
 
-export function getDataTypeDataExistSql(dataType: ProjectConfigurableDataType, lsid?: string, rowId?: number): string {
+function getDataTypeDataExistSql(dataType: ProjectConfigurableDataType, lsid?: string, rowId?: number): string {
     if (!dataType) return null;
 
     let from = 'exp.materials ';

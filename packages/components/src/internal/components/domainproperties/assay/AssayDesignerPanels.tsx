@@ -44,6 +44,7 @@ export interface AssayDesignerPanelsProps {
     onComplete: (model: AssayProtocolModel) => void;
     saveBtnText?: string;
     testMode?: boolean;
+    allowProjectExclusion?: boolean;
 }
 
 type Props = AssayDesignerPanelsProps & InjectedBaseDomainDesignerProps;
@@ -205,6 +206,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 
     render() {
         const {
+            allowProjectExclusion,
             initModel,
             api,
             appPropertiesOnly,
@@ -318,7 +320,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                         </DomainForm>
                     );
                 })}
-                {appPropertiesOnly && (
+                {appPropertiesOnly && allowProjectExclusion && (
                     <DataTypeProjectsPanel
                         controlledCollapse
                         dataTypeRowId={protocolModel?.protocolId}

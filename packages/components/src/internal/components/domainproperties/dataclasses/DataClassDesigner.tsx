@@ -62,6 +62,7 @@ interface Props {
     showGenIdBanner?: boolean;
     testMode?: boolean;
     validateNameExpressions?: boolean;
+    allowProjectExclusion?: boolean;
 }
 
 interface State {
@@ -444,6 +445,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
             domainFormDisplayOptions,
             showGenIdBanner,
             allowParentAlias,
+            allowProjectExclusion,
         } = this.props;
         const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading, parentOptions } = this.state;
 
@@ -524,7 +526,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                     domainFormDisplayOptions={domainFormDisplayOptions}
                     systemFields={model.options.systemFields}
                 />
-                {appPropertiesOnly && !model.isBuiltIn && (
+                {appPropertiesOnly && !model.isBuiltIn && allowProjectExclusion && (
                     <DataTypeProjectsPanel
                         controlledCollapse
                         dataTypeRowId={model?.rowId}

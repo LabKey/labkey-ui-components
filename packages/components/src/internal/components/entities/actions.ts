@@ -1269,3 +1269,44 @@ export function getOrderedSelectedMappedKeysFromQueryModel(
         viewName
     );
 }
+
+export function getDataTypeDataExistSql(dataType: ProjectConfigurableDataType, lsid?: string, rowId?: number): string {
+    if (!dataType) return null;
+
+    let from = 'exp.materials ';
+    // samples and assay runs reference their data type by lsid, but dataclass data reference by rowid
+    let where = 'WHERE SampleSet = \'' + lsid + '\'';
+
+    if (dataType === 'DataClass') {
+        from = 'exp.data ';
+        where = 'WHERE DataClass = ' + rowId;
+    } else if (dataType === 'AssayDesign') {
+        from = 'exp.AssayRuns ';
+        where = 'WHERE protocol = \'' + lsid + '\'';
+    }
+
+    return `SELECT count(*) as HasData FROM (SELECT 1 FROM ${from} ${where} limit 1)`;
+}
+
+export function isDataTypeEmpty(
+    dataType: ProjectConfigurableDataType,
+    lsid?: string,
+    rowId?: number,
+    containerPath?: string
+): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        Query.executeSql({
+            containerPath,
+            containerFilter: Query.ContainerFilter.allInProject,
+            schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+            sql: getDataTypeDataExistSql(dataType, lsid, rowId),
+            success: result => {
+                resolve(caseInsensitive(result.rows[0], 'HasData') === 0);
+            },
+            failure: error => {
+                console.error(error);
+                reject(error);
+            },
+        });
+    });
+}

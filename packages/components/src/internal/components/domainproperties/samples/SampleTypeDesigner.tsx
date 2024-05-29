@@ -115,6 +115,7 @@ interface Props {
     useSeparateDataClassesAliasMenu?: boolean;
     validateNameExpressions?: boolean;
     validateProperties?: (designerDetails?: any) => Promise<any>;
+    allowProjectExclusion?: boolean;
 }
 
 interface State {
@@ -597,6 +598,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
     render() {
         const {
+            allowProjectExclusion,
             api,
             appPropertiesOnly,
             currentPanelIndex,
@@ -776,7 +778,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     }}
                     systemFields={options?.get('systemFields')}
                 />
-                {appPropertiesOnly && (
+                {appPropertiesOnly && allowProjectExclusion && (
                     // appPropertiesOnly check will prevent this panel from showing in LKS and in LKB media types
                     <DataTypeProjectsPanel
                         controlledCollapse

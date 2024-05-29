@@ -18,5 +18,5 @@ export const DATA_CLASS_DESIGNER_ROLE = 'org.labkey.experiment.security.DataClas
 export const SAMPLE_TYPE_DESIGNER_ROLE = 'org.labkey.experiment.security.SampleTypeDesignerRole';
 
 export const APPLICATION_ROLES_LABELS = {
-    [DATA_CLASS_DESIGNER_ROLE]: 'Source Type Designer'
-}
+    [DATA_CLASS_DESIGNER_ROLE]: 'Source Type Designer',
+};

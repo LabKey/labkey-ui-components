@@ -37,6 +37,7 @@ import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 
 interface Props {
     allowParentAlias?: boolean;
+    allowProjectExclusion?: boolean;
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: DataClassModel) => void;
@@ -46,7 +47,6 @@ interface Props {
     headerText?: string;
     helpTopic?: string;
     initModel?: DataClassModel;
-    isValidParentOptionsFn?: (row: any, isDataClass: boolean) => boolean;
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
     loadNameExpressionOptions?: (
         containerPath?: string
@@ -62,7 +62,7 @@ interface Props {
     showGenIdBanner?: boolean;
     testMode?: boolean;
     validateNameExpressions?: boolean;
-    allowProjectExclusion?: boolean;
+    isValidParentOptionsFn?: (row: any, isDataClass: boolean) => boolean;
 }
 
 interface State {

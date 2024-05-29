@@ -363,7 +363,11 @@ import { useAdminAppContext } from './internal/components/administration/useAdmi
 import { ProtectedDataSettingsPanel } from './internal/components/administration/ProtectedDataSettingsPanel';
 import { fetchGroupMembership, getGroupMembership } from './internal/components/administration/actions';
 import { MemberType } from './internal/components/administration/models';
-import { ASSAY_DESIGNER_ROLE, DATA_CLASS_DESIGNER_ROLE, SAMPLE_TYPE_DESIGNER_ROLE} from './internal/components/administration/constants';
+import {
+    ASSAY_DESIGNER_ROLE,
+    DATA_CLASS_DESIGNER_ROLE,
+    SAMPLE_TYPE_DESIGNER_ROLE,
+} from './internal/components/administration/constants';
 import {
     deleteSampleSet,
     fetchSamples,

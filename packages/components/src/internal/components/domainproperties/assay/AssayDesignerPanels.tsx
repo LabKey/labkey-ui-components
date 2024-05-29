@@ -29,22 +29,22 @@ const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
 
 export interface AssayDesignerPanelsProps {
+    allowProjectExclusion?: boolean;
     api?: DomainPropertiesAPIWrapper;
     appDomainHeaders?: Map<string, HeaderRenderer>;
     appIsValidMsg?: (model: AssayProtocolModel) => string;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: AssayProtocolModel) => void;
-    containerTop?: number; // This sets the top of the sticky header, default is 0
+    containerTop?: number;// This sets the top of the sticky header, default is 0
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     hideAdvancedProperties?: boolean;
     hideEmptyBatchDomain?: boolean;
-    initModel: AssayProtocolModel;
     onCancel: () => void;
     onChange?: (model: AssayProtocolModel) => void;
     onComplete: (model: AssayProtocolModel) => void;
     saveBtnText?: string;
     testMode?: boolean;
-    allowProjectExclusion?: boolean;
+    initModel: AssayProtocolModel;
 }
 
 type Props = AssayDesignerPanelsProps & InjectedBaseDomainDesignerProps;

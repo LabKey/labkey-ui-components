@@ -6,10 +6,7 @@ import { buildURL } from '../../url/AppURL';
 import { hasAllPermissions, hasAnyPermissions, User } from '../base/models/User';
 import { caseInsensitive } from '../../util/utils';
 
-import {
-    APPLICATION_SECURITY_ROLES,
-    SITE_SECURITY_ROLES
-} from '../administration/constants';
+import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../administration/constants';
 
 import { ChangePasswordModel } from './models';
 
@@ -77,8 +74,14 @@ export function getUserRoleDisplay(user: User): string {
     }
 
     if (hasAllPermissions(user, [PermissionTypes.Read])) {
-        if (hasAnyPermissions(user, [PermissionTypes.DesignAssay, PermissionTypes.DesignDataClass, PermissionTypes.DesignSampleSet]))
-            return "Data Type Designer";
+        if (
+            hasAnyPermissions(user, [
+                PermissionTypes.DesignAssay,
+                PermissionTypes.DesignDataClass,
+                PermissionTypes.DesignSampleSet,
+            ])
+        )
+            return 'Data Type Designer';
 
         return APPLICATION_SECURITY_ROLES.get(PermissionRoles.Reader);
     }
@@ -140,8 +143,8 @@ export function changePassword(model: ChangePasswordModel): Promise<any> {
 
 export interface PasswordRuleInfo {
     full: string;
-    summary: string;
     shouldShowPasswordGuidance: boolean;
+    summary: string;
 }
 
 export function getPasswordRuleInfo(): Promise<PasswordRuleInfo> {

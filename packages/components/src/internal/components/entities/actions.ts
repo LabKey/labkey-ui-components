@@ -1275,14 +1275,14 @@ export function getDataTypeDataExistSql(dataType: ProjectConfigurableDataType, l
 
     let from = 'exp.materials ';
     // samples and assay runs reference their data type by lsid, but dataclass data reference by rowid
-    let where = 'WHERE SampleSet = \'' + lsid + '\'';
+    let where = "WHERE SampleSet = '" + lsid + "'";
 
     if (dataType === 'DataClass') {
         from = 'exp.data ';
         where = 'WHERE DataClass = ' + rowId;
     } else if (dataType === 'AssayDesign') {
         from = 'exp.AssayRuns ';
-        where = 'WHERE protocol = \'' + lsid + '\'';
+        where = "WHERE protocol = '" + lsid + "'";
     }
 
     return `SELECT count(*) as HasData FROM (SELECT 1 FROM ${from} ${where} limit 1)`;

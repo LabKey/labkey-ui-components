@@ -36,7 +36,8 @@ import {
     IEntityTypeOption,
     IParentAlias,
     IParentOption,
-    OperationConfirmationData, ProjectConfigurableDataType,
+    OperationConfirmationData,
+    ProjectConfigurableDataType,
 } from './models';
 
 export interface EntityAPIWrapper {
@@ -116,12 +117,14 @@ export interface EntityAPIWrapper {
         parentAliases: Map<string, IParentAlias>;
         parentOptions: IParentOption[];
     }>;
+    isDataTypeEmpty: (
+        dataType: ProjectConfigurableDataType,
+        lsid?: string,
+        rowId?: number,
+        containerPath?: string
+    ) => Promise<boolean>;
     loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
     moveEntities: (options: MoveEntitiesOptions) => Promise<Query.MoveRowsResponse>;
-    isDataTypeEmpty: (dataType: ProjectConfigurableDataType,
-                      lsid?: string,
-                      rowId?: number,
-                      containerPath?: string) => Promise<boolean>;
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {

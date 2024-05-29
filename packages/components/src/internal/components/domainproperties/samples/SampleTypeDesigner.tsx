@@ -83,6 +83,7 @@ const AliquotOptionsHelp: FC<{ helpTopic: string }> = memo(({ helpTopic }) => {
 
 interface Props {
     aliquotNamePatternProps?: AliquotNamePatternProps;
+    allowProjectExclusion?: boolean;
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: SampleTypeModel) => void;
@@ -92,7 +93,6 @@ interface Props {
     defaultSampleFieldConfig?: Partial<IDomainField>;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     headerText?: string;
-    helpTopic?: string;
     includeDataClasses?: boolean;
     initModel: DomainDetails;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
@@ -115,7 +115,7 @@ interface Props {
     useSeparateDataClassesAliasMenu?: boolean;
     validateNameExpressions?: boolean;
     validateProperties?: (designerDetails?: any) => Promise<any>;
-    allowProjectExclusion?: boolean;
+    helpTopic?: string;
 }
 
 interface State {

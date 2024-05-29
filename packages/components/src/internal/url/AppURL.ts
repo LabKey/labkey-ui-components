@@ -172,12 +172,7 @@ export class AppURL {
     }
 
     addParam(key: string, value: URLParam, includeEmptyParams?: boolean): AppURL {
-        return this.addParams(
-            {
-                [key]: value,
-            },
-            includeEmptyParams
-        );
+        return this.addParams({ [key]: value }, includeEmptyParams);
     }
 
     addParams(params: Record<string, URLParam>, includeEmptyParams = false): AppURL {

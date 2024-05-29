@@ -722,6 +722,25 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
+    /**
+     * Given a colIdx/rowIdx returns true if a cell is read only. Use this in event handlers to prevent modifying read
+     * only cells (e.g. during delete).
+     */
+    isReadOnly(colIdx: number, rowIdx: number): boolean {
+        const { dataKeys, lockedRows, readonlyRows } = this.props;
+        const cellValueDataKey = dataKeys.get(rowIdx);
+
+        if (readonlyRows?.includes(cellValueDataKey)) return true;
+
+        if (lockedRows?.includes(cellValueDataKey)) return true;
+
+        const queryCol = this.getColumns()[colIdx];
+        const loweredColumnMetadata = this.getLoweredColumnMetadata();
+        const metadata = loweredColumnMetadata[queryCol.fieldKey.toLowerCase()];
+
+        return metadata && (metadata.readOnly || metadata.isReadOnlyCell(cellValueDataKey));
+    }
+
     modifyCell = (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES): void => {
         const { editorModel, onChange } = this.props;
         const { cellMessages, cellValues } = editorModel;
@@ -755,13 +774,17 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             if (editorModel.selectionCells.length > 0) {
                 // Remove all values and messages for the selected cells
                 changes.cellValues = editorModel.cellValues.reduce((result, value, key) => {
-                    if (editorModel.selectionCells.find(_key => _key === key)) {
+                    // Take no action if a cell is read only. Users can select an area that includes read only rows and
+                    // cells
+                    const isReadOnly = this.isReadOnly(colIdx, rowIdx);
+                    if (!isReadOnly && editorModel.selectionCells.includes(key)) {
                         return result.set(key, List());
                     }
                     return result.set(key, value);
                 }, Map<string, List<ValueDescriptor>>());
                 changes.cellMessages = editorModel.cellMessages.reduce((result, value, key) => {
-                    if (editorModel.selectionCells.find(_key => _key === key)) {
+                    const isReadOnly = this.isReadOnly(colIdx, rowIdx);
+                    if (!isReadOnly && editorModel.selectionCells.includes(key)) {
                         return result.remove(key);
                     }
                     return result.set(key, value);

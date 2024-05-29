@@ -165,4 +165,3 @@ export const SampleStatusInputRenderer: FC<InputRendererProps> = memo(props => {
         />
     );
 });
-

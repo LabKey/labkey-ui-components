@@ -1,12 +1,19 @@
 import { FC } from 'react';
+
 import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { InputRenderContext, registerInputRenderer, resolveInputRenderer } from './InputRenderFactory';
 
 describe('InputRenderFactory', () => {
-    const AllInput: FC = () => { return null; };
-    const FormInput: FC = () => { return null; };
-    const GridInput: FC = () => { return null; };
+    const AllInput: FC = () => {
+        return null;
+    };
+    const FormInput: FC = () => {
+        return null;
+    };
+    const GridInput: FC = () => {
+        return null;
+    };
 
     beforeAll(() => {
         registerInputRenderer('AllInput', AllInput);
@@ -24,7 +31,7 @@ describe('InputRenderFactory', () => {
         expect(resolveInputRenderer(formColumn, false)).toEqual(FormInput);
 
         const gridColumn = new QueryColumn({ inputRenderer: 'GridInput', name: 'gridColumn' });
-        expect(resolveInputRenderer(gridColumn, true)).toEqual(GridInput)
+        expect(resolveInputRenderer(gridColumn, true)).toEqual(GridInput);
         expect(resolveInputRenderer(gridColumn, false)).toBeUndefined();
     });
 });

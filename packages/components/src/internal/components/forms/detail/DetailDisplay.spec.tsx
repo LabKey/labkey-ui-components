@@ -23,8 +23,9 @@ import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceR
 import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
 import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 
-import { DetailDisplay, resolveDetailEditRenderer, resolveDetailRenderer, defaultTitleRenderer } from './DetailDisplay';
 import { registerInputRenderers } from '../input/InputRenderFactory';
+
+import { DetailDisplay, resolveDetailEditRenderer, resolveDetailRenderer, defaultTitleRenderer } from './DetailDisplay';
 
 describe('DetailDisplay', () => {
     const namePatternCol = new QueryColumn({

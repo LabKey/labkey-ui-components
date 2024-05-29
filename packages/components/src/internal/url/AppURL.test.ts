@@ -44,7 +44,9 @@ describe('AppURL', () => {
     test('addFilters', () => {
         const url = AppURL.create('somePath').toHref();
         expect(
-            AppURL.create('somePath').addFilters(Filter.create('Status', 'closed', Filter.Types.NOT_EQUAL)).toHref()
+            AppURL.create('somePath')
+                .addFilters(Filter.create('Status', 'closed', Filter.Types.NOT_EQUAL))
+                .toHref()
         ).toBe(url + '?query.Status~neq=closed');
         expect(
             AppURL.create('somePath')
@@ -68,12 +70,15 @@ describe('AppURL', () => {
 
     test('addParams with includeEmptyParams', () => {
         const actual = AppURL.create('somePath')
-            .addParams({
-                undef: undefined,
-                val: 23,
-                booze: 'gin',
-                mix: 'tonic',
-            }, true)
+            .addParams(
+                {
+                    undef: undefined,
+                    val: 23,
+                    booze: 'gin',
+                    mix: 'tonic',
+                },
+                true
+            )
             .toHref();
 
         // Check each parameter as order of params is non-deterministic
@@ -85,12 +90,15 @@ describe('AppURL', () => {
 
     test('addParams without includeEmptyParams', () => {
         const actual = AppURL.create('somePath')
-            .addParams({
-                undef: undefined,
-                val: 23,
-                booze: 'gin',
-                mix: 'tonic',
-            }, false)
+            .addParams(
+                {
+                    undef: undefined,
+                    val: 23,
+                    booze: 'gin',
+                    mix: 'tonic',
+                },
+                false
+            )
             .toHref();
 
         // Check each parameter as order of params is non-deterministic

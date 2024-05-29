@@ -1,4 +1,5 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useMemo, useState } from 'react';
+import classNames from 'classnames';
 
 import { Modal } from '../Modal';
 import { formatBytes, getIconFontCls, isImage } from '../util/utils';
@@ -17,9 +18,10 @@ export interface IAttachment {
     name: string;
     size?: number;
     title?: string;
+    unavailable?: boolean;
 }
 
-interface Props {
+export interface AttachmentCardProps {
     allowDownload?: boolean;
     allowRemove?: boolean;
     attachment: IAttachment;
@@ -33,7 +35,7 @@ interface Props {
     outerCls?: string;
 }
 
-export const AttachmentCard: FC<Props> = memo(props => {
+export const AttachmentCard: FC<AttachmentCardProps> = memo(props => {
     const {
         attachment,
         imageURL,
@@ -71,11 +73,15 @@ export const AttachmentCard: FC<Props> = memo(props => {
         }
     }, [allowRemove, attachment, onRemove]);
 
+    const showMenu = useMemo(() => {
+        return ((onCopyLink || allowDownload) && !attachment?.unavailable) || allowRemove;
+    }, [onCopyLink, allowDownload, attachment, allowRemove]);
+
     if (!attachment) {
         return null;
     }
 
-    const { iconFontCls, loadingState, name, title, size, description } = attachment;
+    const { iconFontCls, loadingState, name, title, size, description, unavailable } = attachment;
     const _iconFontCls = iconFontCls ?? getIconFontCls(name);
     const isLoaded = !isLoading(loadingState);
     const recentlyCreated = attachment.created ? attachment.created > now() - 30000 : false;
@@ -88,17 +94,23 @@ export const AttachmentCard: FC<Props> = memo(props => {
 
     return (
         <>
-            <div className={'attachment-card ' + outerCls} title={name}>
+            <div
+                className={classNames('attachment-card ' + outerCls, {
+                    'attachment-unavailable': unavailable,
+                    'attachment-unavailable-wide': unavailable && !showMenu,
+                })}
+                title={name + (unavailable ? ' (unavailable)' : '')}
+            >
                 <div
                     className="attachment-card__body"
-                    onClick={isLoaded ? (_isImage ? _showModal : _onDownload) : undefined}
+                    onClick={isLoaded && !unavailable ? (_isImage ? _showModal : _onDownload) : undefined}
                 >
                     <div className="attachment-card__icon">
                         {_isImage && !isLoaded && <LoadingSpinner msg="" />}
-                        {_isImage && isLoaded && (
+                        {_isImage && isLoaded && !unavailable && (
                             <img className={`attachment-card__icon_img ${imageCls}`} src={imageURL} alt={name} />
                         )}
-                        {!_isImage && <i className={`attachment-card__icon_tile ${_iconFontCls}`} />}
+                        {(!_isImage || unavailable) && <i className={`attachment-card__icon_tile ${_iconFontCls}`} />}
                     </div>
                     <div className="attachment-card__content">
                         <div className="attachment-card__name">{title ?? name}</div>
@@ -114,14 +126,14 @@ export const AttachmentCard: FC<Props> = memo(props => {
                         {description && <div className="attachment-card__description">{description}</div>}
                     </div>
                 </div>
-                {isLoaded && (
+                {isLoaded && showMenu && (
                     <DropdownAnchor
                         className="attachment-card__menu"
                         title={<i className="fa fa-ellipsis-v" />}
                         pullRight
                     >
-                        {onCopyLink && <MenuItem onClick={_onCopyLink}>Copy {copyNoun}</MenuItem>}
-                        {allowDownload && <MenuItem onClick={_onDownload}>Download</MenuItem>}
+                        {onCopyLink && !unavailable && <MenuItem onClick={_onCopyLink}>Copy {copyNoun}</MenuItem>}
+                        {allowDownload && !unavailable && <MenuItem onClick={_onDownload}>Download</MenuItem>}
                         {allowRemove && <MenuItem onClick={_onRemove}>Remove {noun}</MenuItem>}
                     </DropdownAnchor>
                 )}

@@ -12,6 +12,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - uploadAssayRunFiles fix for maxFileSize to not include batchFiles or runFiles as they are unrelated
   - only shown in assay import UI for LKB at this time
 
+### version 3.46.4
+*Released*: 28 May 2024
+- Issue 50354: LKSM: Include indicator of unavailable file in apps
+
 ### version 3.46.3
 *Released*: 21 May 2024
 - Fix Issue 50455

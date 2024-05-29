@@ -12,6 +12,8 @@ import { wrapDraggable } from '../test/testHelpers';
 
 import { waitForLifecycle } from '../test/enzymeTestHelpers';
 
+import { OverlayTrigger } from '../OverlayTrigger';
+
 import {
     ColumnChoice,
     ColumnChoiceProps,
@@ -24,7 +26,6 @@ import {
     FieldLabelDisplay,
 } from './ColumnSelectionModal';
 import { LoadingSpinner } from './base/LoadingSpinner';
-import { OverlayTrigger } from '../OverlayTrigger';
 
 describe('ColumnSelectionModal', () => {
     const QUERY_COL = new QueryColumn({

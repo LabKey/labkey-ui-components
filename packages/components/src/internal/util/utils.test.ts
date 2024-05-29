@@ -1143,6 +1143,7 @@ describe('getIconFontCls', () => {
         expect(getIconFontCls('test')).toBe('fa fa-file-o');
         expect(getIconFontCls('test.txt')).toBe('fa fa-file-text-o');
         expect(getIconFontCls('test.jpg')).toBe('fa fa-file-image-o');
+        expect(getIconFontCls('test.jpg', true)).toBe('fa fa-exclamation-triangle');
     });
 });
 

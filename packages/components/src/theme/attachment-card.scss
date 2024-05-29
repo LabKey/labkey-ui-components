@@ -10,6 +10,27 @@
         box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.05);
     }
 }
+
+.attachment-card.attachment-unavailable {
+    .attachment-card__icon_tile {
+        background-color: $red-shadow;
+        color: $red-border;
+    }
+
+    &:hover {
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    .attachment-card__name {
+        color: $red-border;
+    }
+
+    &.attachment-unavailable-wide.attachment-card__content {
+        width: 180px;
+    }
+}
+
 .attachment-card__body {
     display: inline-flex;
 }

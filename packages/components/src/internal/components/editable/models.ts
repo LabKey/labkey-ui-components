@@ -105,7 +105,6 @@ const DATA_CHANGE_EVENTS: EditableGridEvent[] = [
     EditableGridEvent.ADD_ROWS,
     EditableGridEvent.BULK_ADD,
     EditableGridEvent.BULK_UPDATE,
-    EditableGridEvent.BULK_UPDATE,
     EditableGridEvent.DRAG_FILL,
     EditableGridEvent.FILL_TEXT,
     EditableGridEvent.MODIFY_CELL,
@@ -214,6 +213,7 @@ export class EditorModel
         return columns.filter(col => !col.isFileInput);
     }
 
+    // TODO: Look into using this for the PlateViewer
     getColumnValues(columnName: string): List<List<ValueDescriptor>> {
         const colIdx = this.columns.findIndex(colName => colName === columnName);
         if (colIdx === -1) {

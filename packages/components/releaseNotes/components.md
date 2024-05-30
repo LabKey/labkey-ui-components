@@ -5,7 +5,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Add support for Ancestor nodes on All Samples grids
   - Prevent faceting for Ancestor nodes not at top level
-  - Update `getSelectRowCountColumnsStr` to use all columns when there are Ancestor columns in the mix
 
 ### version 3.47.0
 *Released*: 30 May 2024

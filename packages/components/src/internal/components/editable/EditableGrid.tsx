@@ -736,6 +736,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (lockedRows?.includes(cellValueDataKey)) return true;
 
         const queryCol = this.getColumns()[colIdx];
+
+        if (queryCol.readOnly) return true;
+
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
         const metadata = loweredColumnMetadata[queryCol.fieldKey.toLowerCase()];
 
@@ -748,6 +751,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const cellKey = genCellKey(colIdx, rowIdx);
         const keyPath = ['cellValues', cellKey];
         const changes: Partial<EditorModel> = { cellMessages: cellMessages.delete(cellKey) };
+        // It's possible for a user to select a whole row or column of readonly cells, then hit cmd+x, which would not
+        // result in any actual changes, so we need to track if we actually modify anything
+        let changesMade = false;
 
         if (mod === MODIFICATION_TYPES.ADD) {
             const values: List<ValueDescriptor> = editorModel.getIn(keyPath);
@@ -757,8 +763,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             } else {
                 changes.cellValues = cellValues.set(cellKey, List(newValues));
             }
+            changesMade = true;
         } else if (mod === MODIFICATION_TYPES.REPLACE) {
             changes.cellValues = cellValues.set(cellKey, List(newValues));
+            changesMade = true;
         } else if (mod === MODIFICATION_TYPES.REMOVE) {
             let values: List<ValueDescriptor> = editorModel.getIn(keyPath);
 
@@ -771,6 +779,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             }
 
             changes.cellValues = cellValues.set(cellKey, values);
+            changesMade = true;
         } else if (mod === MODIFICATION_TYPES.REMOVE_ALL) {
             if (editorModel.selectionCells.length > 0) {
                 // Remove all values and messages for the selected cells
@@ -779,6 +788,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     // cells
                     const isReadOnly = this.isReadOnly(key);
                     if (!isReadOnly && editorModel.selectionCells.includes(key)) {
+                        changesMade = true;
                         return result.set(key, List());
                     }
                     return result.set(key, value);
@@ -786,16 +796,18 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 changes.cellMessages = editorModel.cellMessages.reduce((result, value, key) => {
                     const isReadOnly = this.isReadOnly(key);
                     if (!isReadOnly && editorModel.selectionCells.includes(key)) {
+                        changesMade = true;
                         return result.remove(key);
                     }
                     return result.set(key, value);
                 }, Map<string, CellMessage>());
-            } else {
+            } else if (!this.isReadOnly(cellKey)) {
                 changes.cellValues = cellValues.set(cellKey, List());
+                changesMade = true;
             }
         }
 
-        onChange(EditableGridEvent.MODIFY_CELL, changes);
+        if (changesMade) onChange(EditableGridEvent.MODIFY_CELL, changes);
     };
 
     removeRows = (dataIdIndexes: Set<number>): void => {

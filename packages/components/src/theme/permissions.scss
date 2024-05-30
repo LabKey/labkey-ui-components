@@ -8,6 +8,11 @@
     & .container-expandable-heading--clause {
         margin-left: 38px !important;
     }
+
+    .permissions-groups-additional-roles-header {
+        font-size: 18px;
+        margin: 30px 15px 15px 0;
+    }
 }
 
 .permissions-groups-expandable-container {
@@ -91,7 +96,3 @@
     padding-bottom: 5px;
 }
 
-.permissions-groups-additiona-roles-header {
-    font-size: 18px;
-    margin: 30px 15px 15px 0;
-}

@@ -145,6 +145,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     containerPath?: string;
     displayColumn?: string;
     fireQSChangeOnInit?: boolean;
+    groupByColumn?: string;
     loadOnFocus?: boolean;
     maxRows?: number;
     onInitValue?: (value: any, selectedValues: List<any>) => void;
@@ -178,6 +179,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         containerPath,
         displayColumn,
         fireQSChangeOnInit,
+        groupByColumn,
         loadOnFocus,
         maxRows,
         onInitValue,

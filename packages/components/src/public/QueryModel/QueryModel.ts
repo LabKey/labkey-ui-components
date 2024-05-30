@@ -191,6 +191,11 @@ export interface QueryConfig {
      */
     schemaQuery: SchemaQuery;
     /**
+     * The path to the container in which to make selection changes on the server.
+     * If not supplied, the "containerPath" will be used.
+     */
+    selectionContainerPath?: string;
+    /**
      * Array of [[QuerySort]] objects to use for the [[QueryModel]] data load.
      */
     sorts?: QuerySort[];
@@ -326,6 +331,7 @@ export class QueryModel {
      * Definition of the [[SchemaQuery]] (i.e. schema, query, and optionally view name) to use for the QueryModel data load.
      */
     readonly schemaQuery: SchemaQuery;
+    readonly selectionContainerPath?: string;
     /**
      * Array of [[QuerySort]] objects to use for the QueryModel data load.
      */
@@ -444,6 +450,7 @@ export class QueryModel {
         this.baseFilters = queryConfig.baseFilters ?? [];
         this.containerFilter = queryConfig.containerFilter;
         this.containerPath = queryConfig.containerPath;
+        this.selectionContainerPath = queryConfig.selectionContainerPath ?? this.containerPath;
 
         // Even though this is a situation that we shouldn't be in due to the type annotations it's still possible
         // due to conversion from any, and it's best to have a specific error than an error due to undefined later

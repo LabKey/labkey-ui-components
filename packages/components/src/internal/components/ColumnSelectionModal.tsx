@@ -304,6 +304,7 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
 
 export interface ColumnSelectionModalProps extends Omit<ModalProps, 'canConfirm' | 'onConfirm' | 'cancelText'> {
     allowEditLabel?: boolean;
+    allowEmptySelection?: boolean;
     allowShowAll?: boolean;
     error?: ReactNode;
     expandedColumnFilter?: ExpandedColumnFilter;
@@ -321,6 +322,7 @@ export interface ColumnSelectionModalProps extends Omit<ModalProps, 'canConfirm'
 export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props => {
     const {
         allowEditLabel,
+        allowEmptySelection,
         allowShowAll,
         error,
         expandedColumnFilter,
@@ -466,7 +468,7 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
         <Modal
             {...confirmModalProps}
             bsSize="lg"
-            canConfirm={isDirty && selectedColumns.length > 0}
+            canConfirm={isDirty && (allowEmptySelection || selectedColumns.length > 0)}
             onConfirm={onConfirm}
         >
             <Alert>{error}</Alert>
@@ -546,6 +548,7 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
 
 ColumnSelectionModal.defaultProps = {
     allowEditLabel: false,
+    allowEmptySelection: false,
     allowShowAll: false,
     isLoaded: true,
     leftColumnTitle: 'Available Fields',

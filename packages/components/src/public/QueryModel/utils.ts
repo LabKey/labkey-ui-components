@@ -135,39 +135,17 @@ export function getSelectRowCountColumnsStr(
 ): string | string[] {
     if (!rawColumns || rawColumns === '*') return rawColumns;
 
-    let toReturn = [];
     if (filterArray?.length > 0) {
         const qFilter = filterArray.some(filter => filter.getColumnName() === '*');
         if (qFilter) return rawColumns;
-
-        const ancestors = filterArray.map(f => f.getColumnName()).filter(name => name.indexOf('/Ancestors') > 0);
-        if (ancestors.length) {
-            return rawColumns;
-            // const parentSet = new Set<string>();
-            // const childSet = new Set<string>();
-            // ancestors.forEach(ancestor => {
-            //     const ancestorSplit = ancestor.split('/Ancestors/');
-            //     childSet.add(ancestorSplit[0]);
-            //     const ancestorParts = ancestorSplit[1].split('/');
-            //     let colName = ancestorSplit[0] + '/Ancestors';
-            //     for (let i = 0; i < ancestorParts.length; i++) {
-            //         colName += '/' + ancestorParts[i];
-            //         if (i > 0) { // first one is the name of the type and is not require explicitly
-            //             parentSet.add(colName);
-            //         }
-            //     }
-            // });
-            // childSet.forEach(c => toReturn.unshift(c));
-            // parentSet.forEach(p => toReturn.push(p));
-        }
     }
 
     if (pkCols?.length > 0) {
-        toReturn.unshift(pkCols[0].fieldKey);
-    } else {
-        const columns: string[] =
-            typeof rawColumns === 'string' ? rawColumns.split(',').map(col => col.trim()) : rawColumns;
-        toReturn.unshift(columns[0]);
+        return pkCols[0].fieldKey;
     }
-    return toReturn;
+
+    const columns: string[] =
+        typeof rawColumns === 'string' ? rawColumns.split(',').map(col => col.trim()) : rawColumns;
+
+    return columns[0];
 }

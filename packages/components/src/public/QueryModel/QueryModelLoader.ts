@@ -137,33 +137,40 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     // The selection related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,
     // instead of in withQueryModels, it allows us to easily mock them or provide alternate implementations.
     clearSelections(model) {
-        const { containerFilter, selectionKey, schemaQuery, filters, containerPath, queryParameters } = model;
-        return clearSelected({ selectionKey, schemaQuery, filters, containerPath, queryParameters, containerFilter });
+        const { containerFilter, selectionKey, schemaQuery, filters, queryParameters, selectionContainerPath } = model;
+        return clearSelected({
+            selectionKey,
+            schemaQuery,
+            filters,
+            containerPath: selectionContainerPath,
+            queryParameters,
+            containerFilter,
+        });
     },
     async loadSelections(model) {
-        const { containerFilter, selectionKey, schemaQuery, filters, containerPath, queryParameters } = model;
+        const { containerFilter, selectionKey, schemaQuery, filters, queryParameters, selectionContainerPath } = model;
         const result = await getSelected(
             selectionKey,
             false,
             schemaQuery,
             filters,
-            containerPath,
+            selectionContainerPath,
             queryParameters,
             containerFilter
         );
         return new Set(result?.selected ?? []);
     },
-    setSelections(model, checked: boolean, selections: string[]) {
-        const { selectionKey, containerPath } = model;
-        return setSelected(selectionKey, checked, selections, containerPath);
+    setSelections(model, checked, selections) {
+        const { selectionKey, selectionContainerPath } = model;
+        return setSelected(selectionKey, checked, selections, selectionContainerPath);
     },
-    replaceSelections(model, selections: string[]) {
-        const { selectionKey, containerPath } = model;
-        return replaceSelected({ selectionKey, id: selections, containerPath });
+    replaceSelections(model, selections) {
+        const { selectionKey, selectionContainerPath } = model;
+        return replaceSelected({ selectionKey, id: selections, containerPath: selectionContainerPath });
     },
     async selectAllRows(model) {
-        const { containerFilter, selectionKey, schemaQuery, filters, containerPath, queryParameters } = model;
-        await selectAll(selectionKey, schemaQuery, filters, containerPath, queryParameters, containerFilter);
+        const { containerFilter, filters, queryParameters, schemaQuery, selectionContainerPath, selectionKey } = model;
+        await selectAll(selectionKey, schemaQuery, filters, selectionContainerPath, queryParameters, containerFilter);
         return DefaultQueryModelLoader.loadSelections(model);
     },
     async loadCharts(model) {

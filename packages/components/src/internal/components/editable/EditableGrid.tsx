@@ -105,7 +105,7 @@ function computeSelectionCellKeys(
     maxColIdx: number,
     maxRowIdx: number
 ): string[] {
-    const selectionCells = [];
+    const selectionCells: string[] = [];
 
     for (let c = minColIdx; c <= maxColIdx; c++) {
         for (let r = minRowIdx; r <= maxRowIdx; r++) {
@@ -592,14 +592,15 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         let selectedRowIdx = rowIdx;
 
         switch (selection) {
-            case SELECTION_TYPES.ALL:
+            case SELECTION_TYPES.ALL: {
                 for (let c = 0; c < editorModel.columns.size; c++) {
                     for (let r = 0; r < rowCount; r++) {
                         selectionCells.push(genCellKey(c, r));
                     }
                 }
                 break;
-            case SELECTION_TYPES.AREA:
+            }
+            case SELECTION_TYPES.AREA: {
                 selectedColIdx = editorModel.selectedColIdx;
                 selectedRowIdx = editorModel.selectedRowIdx;
 
@@ -624,11 +625,18 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     selectionCells = computeSelectionCellKeys(minColIdx, minRowIdx, maxColIdx, maxRowIdx);
                 }
                 break;
+            }
             case SELECTION_TYPES.AREA_CHANGE: {
                 selectedColIdx = editorModel.selectedColIdx;
                 selectedRowIdx = editorModel.selectedRowIdx;
                 const colDir = colIdx - selectedColIdx;
-                const rowDir = rowIdx - selectedRowIdx;
+                let rowDir = rowIdx - selectedRowIdx;
+
+                // Issue 49953: Support shift-selecting down from the last row
+                if (rowIdx === rowCount - 1 && rowDir === 0 && colDir === 0) {
+                    rowDir = 1;
+                }
+
                 let start: CellCoordinates;
                 let end: CellCoordinates;
 
@@ -640,16 +648,23 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     end = start;
                 }
 
-                const [minColIdx, maxColIdx] = computeRangeChange(selectedColIdx, start.colIdx, end.colIdx, colDir);
-                const [minRowIdx, maxRowIdx] = computeRangeChange(selectedRowIdx, start.rowIdx, end.rowIdx, rowDir);
+                let [minColIdx, maxColIdx] = computeRangeChange(selectedColIdx, start.colIdx, end.colIdx, colDir);
+                let [minRowIdx, maxRowIdx] = computeRangeChange(selectedRowIdx, start.rowIdx, end.rowIdx, rowDir);
+
+                // Constrain the area selection within the editable cells dimensions
+                minColIdx = Math.max(minColIdx, 0);
+                maxColIdx = Math.min(maxColIdx, editorModel.columns.size - 1);
+                minRowIdx = Math.max(minRowIdx, 0);
+                maxRowIdx = Math.min(maxRowIdx, rowCount - 1);
 
                 selectionCells = computeSelectionCellKeys(minColIdx, minRowIdx, maxColIdx, maxRowIdx);
                 break;
             }
-            case SELECTION_TYPES.SINGLE:
+            case SELECTION_TYPES.SINGLE: {
                 selectionCells = [...editorModel.selectionCells];
                 selectionCells.push(genCellKey(colIdx, rowIdx));
                 break;
+            }
         }
 
         if (selectionCells.length > 0) {
@@ -667,7 +682,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { editorModel, onChange } = this.props;
         const { cellValues, focusValue, rowCount } = editorModel;
 
-        if (colIdx < 0 || rowIdx < 0 || colIdx >= editorModel.columns.size) {
+        // Issue 49953: AREA_CHANGE selection is oriented around the initial selected cell, so it
+        // accepts processing of negative indices.
+        if (
+            selection !== SELECTION_TYPES.AREA_CHANGE &&
+            (colIdx < 0 || rowIdx < 0 || colIdx >= editorModel.columns.size)
+        ) {
             // out of bounds, do nothing
             return;
         }

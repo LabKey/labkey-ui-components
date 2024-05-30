@@ -1023,6 +1023,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     beginDrag = (event: GridMouseEvent): void => {
+        // Only handle event if the left mouse button is clicked
+        if (event.buttons !== 1) return;
+
         const { disabled, editorModel } = this.props;
         if (this.handleDrag(event) && !disabled) {
             clearTimeout(this.dragDelay);

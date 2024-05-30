@@ -213,7 +213,6 @@ export class EditorModel
         return columns.filter(col => !col.isFileInput);
     }
 
-    // TODO: Look into using this for the PlateViewer
     getColumnValues(columnName: string): List<List<ValueDescriptor>> {
         const colIdx = this.columns.findIndex(colName => colName === columnName);
         if (colIdx === -1) {

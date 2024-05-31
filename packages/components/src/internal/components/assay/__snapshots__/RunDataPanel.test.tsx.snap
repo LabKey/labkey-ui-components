@@ -1,0 +1,382 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RunDataPanel assay model with results File field types 1`] = `
+<div>
+  <div
+    class="panel panel-default"
+  >
+    <div
+      class="panel-heading"
+    >
+      Results
+    </div>
+    <div
+      class="panel-body"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-sm-12"
+        >
+          <ul
+            class="list-group clearfix"
+            style="list-style: none;"
+          >
+            <li
+              class="list-group-item form-step-tab"
+            >
+              Enter Data into Grid
+            </li>
+            <li
+              class="list-group-item form-step-tab active"
+            >
+              Import Data from File
+            </li>
+          </ul>
+          <div
+            class="clearfix"
+          />
+        </div>
+      </div>
+      <div
+        class="row"
+      >
+        <div
+          class="col-sm-12"
+        >
+          <div
+            class="form-step"
+          >
+            <div>
+              <div
+                class="row editable-grid-buttons"
+              >
+                <div
+                  class="col-sm-3"
+                >
+                  <div
+                    class="editable-grid__controls text-nowrap"
+                  >
+                    <span
+                      class="input-group input-group-align"
+                    >
+                      <input
+                        class="form-control"
+                        max="1000"
+                        min="1"
+                        name="addCount"
+                        style="width: 65px;"
+                        type="number"
+                        value="1"
+                      />
+                      <span
+                        class="input-group-btn"
+                      >
+                        <button
+                          class="btn btn-primary"
+                          type="button"
+                        >
+                          Add row
+                        </button>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="editable-grid-buttons__action-buttons col-sm-9"
+                >
+                  <span
+                    class="pull-right"
+                  >
+                    <div
+                      class="export-menu"
+                    >
+                      <div
+                        class="overlay-trigger"
+                      >
+                        <div
+                          class="lk-dropdown btn-group dropdown"
+                        >
+                          <button
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class="btn btn-default dropdown-toggle"
+                            id="dropdown-button-5"
+                            role="button"
+                            type="button"
+                          >
+                            <span
+                              class="fa fa-download"
+                            />
+                          </button>
+                          <ul
+                            aria-labelledby="dropdown-button-5"
+                            class="dropdown-menu dropdown-menu-right"
+                            role="menu"
+                          >
+                            <li
+                              class="lk-dropdown-header dropdown-header"
+                              role="heading"
+                            >
+                              Export Data
+                            </li>
+                            <li
+                              class="lk-menu-item"
+                              role="presentation"
+                            >
+                              <a
+                                href="#"
+                                role="menuitem"
+                              >
+                                <div
+                                  class="export-menu__item"
+                                >
+                                  <span
+                                    class="fa fa-file-o export-menu-icon"
+                                  />
+                                  <span>
+                                    CSV
+                                  </span>
+                                </div>
+                              </a>
+                            </li>
+                            <li
+                              class="lk-menu-item"
+                              role="presentation"
+                            >
+                              <a
+                                href="#"
+                                role="menuitem"
+                              >
+                                <div
+                                  class="export-menu__item"
+                                >
+                                  <span
+                                    class="fa fa-file-excel-o export-menu-icon"
+                                  />
+                                  <span>
+                                    Excel
+                                  </span>
+                                </div>
+                              </a>
+                            </li>
+                            <li
+                              class="lk-menu-item"
+                              role="presentation"
+                            >
+                              <a
+                                href="#"
+                                role="menuitem"
+                              >
+                                <div
+                                  class="export-menu__item"
+                                >
+                                  <span
+                                    class="fa fa-file-text-o export-menu-icon"
+                                  />
+                                  <span>
+                                    TSV
+                                  </span>
+                                </div>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+              </div>
+              <div
+                class="editable-grid__container"
+              >
+                <div
+                  class=""
+                >
+                  <div
+                    class="grid-messages"
+                  />
+                  <table
+                    class="table-cellular table-striped table-bordered"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          class="grid-header-cell"
+                          draggable="false"
+                          id="__editing__"
+                          style="min-width: 45px;"
+                        >
+                          Row
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        class="grid-empty"
+                      >
+                        <td
+                          colspan="1"
+                        >
+                          Start by adding the quantity of assay data rows you want to create.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="form-step active"
+          >
+            <span
+              class="translator--toggle__wizard"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col-sm-12"
+                >
+                  <div
+                    class="assay-data-file-label"
+                  >
+                    <span>
+                      Results Data
+                       
+                      <div
+                        class="overlay-trigger"
+                      >
+                        <i
+                          class="fa fa-question-circle"
+                        />
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+              >
+                <div
+                  class="col-sm-12"
+                >
+                  <div
+                    class="wizard-row--container"
+                  >
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="file-upload--container block"
+                      >
+                        <label
+                          class="file-upload--label"
+                          for="fileUpload"
+                        >
+                          <i
+                            aria-hidden="true"
+                            class="fa fa-cloud-upload fa-2x cloud-logo"
+                          />
+                          Select file or drag and drop here.
+                        </label>
+                        <input
+                          accept=""
+                          class="file-upload--input"
+                          id="fileUpload"
+                          name="fileUpload"
+                          type="file"
+                        />
+                      </div>
+                      <div
+                        class="file-upload--file-entry-listing"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </span>
+            <div
+              class="top-spacing"
+            >
+              <span
+                class="translator--toggle__wizard"
+              >
+                <div
+                  class="row"
+                >
+                  <div
+                    class="col-sm-12"
+                  >
+                    <div
+                      class="assay-data-file-label"
+                    >
+                      <span>
+                        File Fields Data
+                         
+                        <div
+                          class="overlay-trigger"
+                        >
+                          <i
+                            class="fa fa-question-circle"
+                          />
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="row"
+                >
+                  <div
+                    class="col-sm-12"
+                  >
+                    <div
+                      class="wizard-row--container"
+                    >
+                      <div
+                        class=""
+                      >
+                        <div
+                          class="file-upload--container block"
+                        >
+                          <label
+                            class="file-upload--label"
+                            for="fileUpload1"
+                          >
+                            <i
+                              aria-hidden="true"
+                              class="fa fa-cloud-upload fa-2x cloud-logo"
+                            />
+                            Select file(s) or drag and drop here
+                          </label>
+                          <input
+                            accept=""
+                            class="file-upload--input"
+                            id="fileUpload1"
+                            multiple=""
+                            name="fileUpload1"
+                            type="file"
+                          />
+                        </div>
+                        <div
+                          class="file-upload--file-entry-listing"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="top-spacing"
+      />
+    </div>
+  </div>
+</div>
+`;

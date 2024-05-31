@@ -98,4 +98,31 @@ describe('AssayDefinitionModel', () => {
             'RowId IN (SELECT RowId FROM Data WHERE "sample result"."RowId" IN (1,2) UNION SELECT RowId FROM Data WHERE "b"."RowId" IN (1,2))'
         );
     });
+
+    test('getDomainFileColumns', () => {
+        const model = new AssayDefinitionModel();
+        expect(model.getDomainFileColumns(AssayDomainTypes.RESULT).length).toBe(0);
+
+        const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
+        expect(modelWithSampleId.getDomainFileColumns(AssayDomainTypes.RESULT).length).toBe(0);
+
+        const modelWithFiles = AssayDefinitionModel.create({
+            domains: {
+                'GPAT 1 Batch Fields': [],
+                'GPAT 1 Run Fields': [],
+                'GPAT 1 Data Fields': [
+                    { inputType: 'file', fieldKey: 'f1' },
+                    { inputType: 'text', fieldKey: 'other' },
+                    { inputType: 'file', fieldKey: 'f2' },
+                ],
+            },
+            domainTypes: {
+                Run: 'GPAT 1 Run Fields',
+                Batch: 'GPAT 1 Batch Fields',
+                Result: 'GPAT 1 Data Fields',
+            },
+        });
+        const columns = modelWithFiles.getDomainFileColumns(AssayDomainTypes.RESULT);
+        expect(columns.map(c => c.fieldKey)).toStrictEqual(['f1', 'f2']);
+    });
 });

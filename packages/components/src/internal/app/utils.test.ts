@@ -42,6 +42,7 @@ import {
     isCommunityDistribution,
     isELNEnabled,
     isFreezerManagementEnabled,
+    isLIMSEnabled,
     isMediaEnabled,
     isPremiumProductEnabled,
     isProductNavigationEnabled,
@@ -665,6 +666,13 @@ describe('utils', () => {
         expect(
             isProductNavigationEnabled(BIOLOGICS_APP_PROPERTIES.productId, { biologics: {}, samplemanagement: {} })
         ).toBeTruthy();
+    });
+
+    test('isLIMSEnabled', () => {
+        expect(isLIMSEnabled({})).toBeFalsy();
+        expect(isLIMSEnabled({ inventory: {} })).toBeFalsy();
+        expect(isLIMSEnabled({ inventory: {}, samplemanagement: {} })).toBeFalsy();
+        expect(isLIMSEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
     });
 
     test('setProductProjects', () => {

@@ -28,8 +28,11 @@ describe('FileAttachmentContainer', () => {
         const {container} = render(
             <FileAttachmentContainer
                 acceptedFormats=".tsv, .xls, .xlsx"
-                allowMultiple={false}
-                allowDirectories={false}
+                allowDirectories
+                allowMultiple
+                compact
+                index={1}
+                labelLong={'Upload your files here please...'}
             />
         );
         expect(container).toMatchSnapshot();

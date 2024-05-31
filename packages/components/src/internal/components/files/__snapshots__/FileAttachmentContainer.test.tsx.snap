@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileAttachmentContainer no props 1`] = `
+<div>
+  <div
+    class="file-upload--container block"
+  >
+    <label
+      class="file-upload--label"
+      for="fileUpload"
+    >
+      <i
+        aria-hidden="true"
+        class="fa fa-cloud-upload fa-2x cloud-logo"
+      />
+    </label>
+    <input
+      class="file-upload--input"
+      id="fileUpload"
+      name="fileUpload"
+      type="file"
+    />
+  </div>
+  <div
+    class="file-upload--file-entry-listing"
+  />
+</div>
+`;
+
+exports[`FileAttachmentContainer with attributes 1`] = `
+<div>
+  <div
+    class="file-upload--container block"
+  >
+    <label
+      class="file-upload--label"
+      for="fileUpload"
+    >
+      <i
+        aria-hidden="true"
+        class="fa fa-cloud-upload fa-2x cloud-logo"
+      />
+    </label>
+    <input
+      accept=".tsv, .xls, .xlsx"
+      class="file-upload--input"
+      id="fileUpload"
+      name="fileUpload"
+      type="file"
+    />
+  </div>
+  <div
+    class="file-upload--file-entry-listing"
+  />
+</div>
+`;

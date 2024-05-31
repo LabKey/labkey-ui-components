@@ -35,20 +35,28 @@ import { DELIMITER } from './constants';
 import { QuerySelectOwnProps } from './QuerySelect';
 import { resolveDetailFieldLabel, resolveDetailFieldValue } from './utils';
 
+function formatOption(model: QuerySelectModel, result: any): SelectInputOption {
+    const { displayColumn, valueColumn } = model;
+
+    return {
+        label: (resolveDetailFieldLabel(result.get(displayColumn)) ??
+            resolveDetailFieldLabel(result.get(valueColumn))) as string,
+        value: resolveDetailFieldValue(result.get(valueColumn)),
+    };
+}
+
 function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): SelectInputOption[] {
-    const { displayColumn, queryInfo, valueColumn } = model;
+    const { displayColumn, groupByColumn, queryInfo } = model;
 
     if (!queryInfo || !results) {
         return [];
     }
 
-    let options = results.map(result => {
-        return {
-            label: (resolveDetailFieldLabel(result.get(displayColumn)) ??
-                resolveDetailFieldLabel(result.get(valueColumn))) as string,
-            value: resolveDetailFieldValue(result.get(valueColumn)),
-        };
-    });
+    if (groupByColumn) {
+        return formatGroupedResults(model, results, token);
+    }
+
+    let options = results.map(result => formatOption(model, result));
 
     // Issue 46618: If a sort key is applied, then skip sorting on the client to retain sort done on server.
     if (!queryInfo.getColumn(displayColumn)?.hasSortKey) {
@@ -56,6 +64,35 @@ function formatResults(model: QuerySelectModel, results: Map<string, any>, token
     }
 
     return options.toArray();
+}
+
+const NOT_GROUPED_LABEL = 'Uncategorized';
+
+function formatGroupedResults(model: QuerySelectModel, results: Map<string, any>, token?: string): SelectInputOption[] {
+    const { groupByColumn } = model;
+
+    const groupedOptions: SelectInputOption[] = [];
+    const optionMap: Record<string, SelectInputOption[]> = {};
+
+    results.forEach(result => {
+        let label = resolveDetailFieldLabel(result.get(groupByColumn)) as string;
+        if (!label) {
+            label = NOT_GROUPED_LABEL;
+        }
+        if (!optionMap[label]) {
+            optionMap[label] = [];
+        }
+        optionMap[label].push(formatOption(model, result));
+    });
+
+    Object.keys(optionMap).forEach(label => {
+        const options = List(optionMap[label])
+            .sortBy(o => o.label, similaritySortFactory(token))
+            .toArray();
+        groupedOptions.push({ label, options });
+    });
+
+    return groupedOptions;
 }
 
 /**
@@ -234,6 +271,22 @@ function initDisplayColumn(queryInfo: QueryInfo, valueColumn: string, column?: s
     return displayColumn;
 }
 
+function initGroupByColumn(queryInfo: QueryInfo, column?: string): string {
+    let groupByColumn: string;
+
+    if (column) {
+        if (!queryInfo.getColumn(column)) {
+            console.warn(
+                `Unable to initialize QuerySelect for (${queryInfo.schemaName}.${queryInfo.name}). The group by column "${column}" does not exist.`
+            );
+        } else {
+            groupByColumn = column;
+        }
+    }
+
+    return groupByColumn;
+}
+
 export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel> {
     const { containerFilter, containerPath, schemaQuery, queryFilters } = props;
     const { queryName, schemaName, viewName } = schemaQuery;
@@ -242,10 +295,12 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelec
     const queryInfo = await getQueryDetails({ containerPath, schemaQuery });
     const valueColumn = initValueColumn(queryInfo, props.valueColumn);
     const displayColumn = initDisplayColumn(queryInfo, valueColumn, props.displayColumn);
+    const groupByColumn = initGroupByColumn(queryInfo, props.groupByColumn);
 
     let model = new QuerySelectModel({
         ...props,
         displayColumn,
+        groupByColumn,
         isInit: true,
         queryInfo,
         valueColumn,
@@ -323,6 +378,7 @@ export interface QuerySelectModelProps {
     containerPath?: string;
     delimiter: string;
     displayColumn: string;
+    groupByColumn: string;
     isInit: boolean;
     maxRows: number;
     multiple: boolean;
@@ -345,6 +401,7 @@ export class QuerySelectModel
         containerPath: undefined,
         displayColumn: undefined,
         delimiter: DELIMITER,
+        groupByColumn: undefined,
         isInit: false,
         maxRows: 20,
         multiple: false,
@@ -366,6 +423,7 @@ export class QuerySelectModel
     declare containerPath: string;
     declare displayColumn: string;
     declare delimiter: string;
+    declare groupByColumn: string;
     declare isInit: boolean;
     declare maxRows: number;
     declare multiple: boolean;
@@ -385,6 +443,9 @@ export class QuerySelectModel
         if (this.multiple) {
             return options;
         } else if (options.length === 1) {
+            if (this.groupByColumn) {
+                return options[0].options[0];
+            }
             return options[0];
         } else if (options.length > 1) {
             console.warn(
@@ -396,9 +457,13 @@ export class QuerySelectModel
     }
 
     get queryColumnNames(): string[] {
-        const { displayColumn, queryInfo, requiredColumns, valueColumn } = this;
+        const { displayColumn, groupByColumn, queryInfo, requiredColumns, valueColumn } = this;
         const queryColumns = queryInfo.pkCols.concat([displayColumn, valueColumn].concat(requiredColumns));
         const lookupViewColumns = queryInfo.getLookupViewColumns();
+
+        if (groupByColumn) {
+            queryColumns.push(groupByColumn);
+        }
 
         if (lookupViewColumns.length > 0) {
             return lookupViewColumns.map(c => c.fieldKey).concat(queryColumns);

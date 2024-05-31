@@ -12,6 +12,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   - uploadAssayRunFiles fix for maxFileSize to not include batchFiles or runFiles as they are unrelated
   - only shown in assay import UI for LKB at this time
 
+### version 3.47.0
+*Released*: 30 May 2024
+- Expose `registerInputRenderer` as a way for external package usages of `@labkey/components` to register custom form/grid input renderers.
+- Introduce `QuerySelect.groupByColumn` which allows for results within query select to be grouped by another column. This in turn is backed by `SelectInput.formatGroupLabel` when rendering options.
+- Add a new `includeEmptyParams` parameter to `AppURL.addParams()`. By default `addParams()` will now not include parameters where the parameter value is `undefined` or `null`.
+- Issue 49953: fix shift-select on edge cells
+
 ### version 3.46.5
 *Released*: 29 May 2024
 - Issues 50507 and 50453: Fields named 'Color' should not interfere with status colors

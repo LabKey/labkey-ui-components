@@ -23,6 +23,8 @@ import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceR
 import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
 import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 
+import { registerInputRenderers } from '../input/InputRenderFactory';
+
 import { DetailDisplay, resolveDetailEditRenderer, resolveDetailRenderer, defaultTitleRenderer } from './DetailDisplay';
 
 describe('DetailDisplay', () => {
@@ -197,6 +199,10 @@ describe('resolveDetailEditRenderer', () => {
         userEditable: true,
         shownInUpdateView: true,
     };
+
+    beforeAll(() => {
+        registerInputRenderers();
+    });
 
     test('not editable', () => {
         const col = new QueryColumn({ caption: 'test', readOnly: false, userEditable: true, shownInUpdateView: false });

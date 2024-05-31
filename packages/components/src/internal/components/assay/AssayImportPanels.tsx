@@ -682,6 +682,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const data = model.prepareFormData(this.props.currentStep, this.state.editorModel, this.state.dataModel);
 
         if (data.files?.length > 0) {
+            // the data file (i.e. attachedFiles) will be processed so the size of the file gets much greater weight
+            // than the results files that just need to be sent to the server and saved to the file system
             return model.getTotalAttachedFilesSize() / 5 + model.getTotalResultsFilesSize() / 100_000;
         } else if (data.dataRows) {
             if (Utils.isArray(data.dataRows)) {
@@ -746,7 +748,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const { comment, dataModel, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } =
             this.state;
         const runPropsModel = this.getRunPropsQueryModel();
-        const resultsFilesCount = model.getResultsFiles().size;
+        const resultsFilesCount = model.getResultsFiles().length;
 
         if (!model.isInit || runPropsModel.isLoading) {
             return <LoadingSpinner />;

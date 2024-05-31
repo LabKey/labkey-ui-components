@@ -27,32 +27,35 @@ import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
 import { ALL_FILES_LIMIT_KEY } from './models';
 
+const isDirectoryEntry = (entry: FileSystemEntry): entry is FileSystemDirectoryEntry => entry.isDirectory;
+const isFileEntry = (entry: FileSystemEntry): entry is FileSystemFileEntry => entry.isFile;
+
 interface FileAttachmentContainerProps {
     acceptedFormats?: string; // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
+    allowDirectories: boolean;
+    allowMultiple: boolean;
+    compact?: boolean;
+    fileCountSuffix?: string;
+    handleChange?: any;
+    handleRemoval?: any;
+    includeDirectoryFiles?: boolean;
+    index?: number;
+    initialFileNames?: string[];
+    initialFiles?: Record<string, File>;
+    labelLong?: string;
     // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
     // "all" limits will be overridden by limits for a specific extension.
     sizeLimits?: Map<string, FileSizeLimitProps>;
     sizeLimitsHelpText?: React.ReactNode;
-    allowMultiple: boolean;
-    allowDirectories: boolean;
-    includeDirectoryFiles?: boolean;
-    fileCountSuffix?: string;
-    handleChange?: any;
-    handleRemoval?: any;
-    index?: number;
-    labelLong?: string;
-    initialFileNames?: string[];
-    initialFiles?: Record<string, File>;
-    compact?: boolean;
 }
 
 interface FileAttachmentContainerState {
     errorMsg?: React.ReactNode;
-    warningMsg?: React.ReactNode;
+    fileNames?: string[]; // separate list of names for the case when an initial set of file names is provided for which we have no file object
     files?: Record<string, File>;
     isDirty?: boolean;
-    fileNames?: string[]; // separate list of names for the case when an initial set of file names is provided for which we have no file object
     isHover?: boolean;
+    warningMsg?: React.ReactNode;
 }
 
 export class FileAttachmentContainer extends React.Component<
@@ -98,13 +101,20 @@ export class FileAttachmentContainer extends React.Component<
         });
     };
 
-    getFilesFromDirectory = (files, entry, scope, callback): void => {
-        const dirReader = entry.createReader();
-        const entriesReader = (scope => {
+    // this is copied (and extended a bit) from the LABKEY.internal.ZipLoad.getFilesFromDirectory function in ZipLoad.js
+    getFilesFromDirectory = (
+        files: Record<string, File>,
+        entry: FileSystemDirectoryEntry,
+        scope: FileAttachmentContainer,
+        callback: () => void
+    ): void => {
+        const dirReader: FileSystemDirectoryReader = entry.createReader();
+
+        const entriesReader: FileSystemEntriesCallback = (scope => {
             return entries => {
                 for (let i = 0; i < entries.length; i++) {
                     const _entry = entries[i];
-                    if (_entry.isFile) {
+                    if (isFileEntry(_entry)) {
                         scope.fileCbCount++;
                         _entry.file(file => {
                             scope.fileCbCount--;
@@ -117,6 +127,7 @@ export class FileAttachmentContainer extends React.Component<
                                             'Duplicate files were uploaded. Only the last file provided for the duplicate name will be included in the file set.',
                                     });
                                 }
+                                // @ts-expect-error fullPath is not a property of File in lib.dom.ts
                                 file.fullPath = entry.fullPath + '/' + file.name;
                                 files[file.name] = file;
                             }
@@ -125,7 +136,7 @@ export class FileAttachmentContainer extends React.Component<
                                 callback();
                             }
                         });
-                    } else if (_entry.isDirectory) {
+                    } else if (isDirectoryEntry(_entry)) {
                         scope.getFilesFromDirectory(files, _entry, scope, callback);
                     }
                 }
@@ -250,14 +261,14 @@ export class FileAttachmentContainer extends React.Component<
         return Set<string>();
     };
 
-    handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange = (evt: React.ChangeEvent<HTMLInputElement>): void => {
         this.cancelEvent(evt);
         if (evt.currentTarget && evt.currentTarget.files) {
             this.handleFiles(evt.currentTarget.files);
         }
     };
 
-    handleDrag = (evt: React.DragEvent<HTMLLabelElement>) => {
+    handleDrag = (evt: React.DragEvent<HTMLLabelElement>): void => {
         const { isHover } = this.state;
 
         this.cancelEvent(evt);
@@ -266,14 +277,14 @@ export class FileAttachmentContainer extends React.Component<
         }
     };
 
-    handleDrop = (evt: React.DragEvent<HTMLLabelElement>) => {
+    handleDrop = (evt: React.DragEvent<HTMLLabelElement>): void => {
         this.cancelEvent(evt);
         if (evt.dataTransfer && evt.dataTransfer.files) {
             this.handleFiles(evt.dataTransfer.files, evt.dataTransfer.items);
         }
     };
 
-    handleFiles(fileList: FileList, transferItems?: DataTransferItemList) {
+    handleFiles(fileList: FileList, transferItems?: DataTransferItemList): void {
         const { allowMultiple, allowDirectories, includeDirectoryFiles } = this.props;
 
         if (!allowMultiple && fileList.length > 1) {
@@ -316,7 +327,7 @@ export class FileAttachmentContainer extends React.Component<
                 this.fileCbCount = 0;
                 Array.from(fileList).forEach((file, index) => {
                     const entry = transferItems[index].webkitGetAsEntry();
-                    if (entry.isDirectory) {
+                    if (isDirectoryEntry(entry)) {
                         delete files[file.name];
                         this.getFilesFromDirectory(files, entry, this, () => {
                             this._handleFiles(files);

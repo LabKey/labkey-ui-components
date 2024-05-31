@@ -38,37 +38,37 @@ import { FileSizeLimitProps, FileGridPreviewProps } from './models';
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
-    // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
-    // "all" limits will be overridden by limits for a specific extension.
-    sizeLimits?: Map<string, FileSizeLimitProps>;
-    sizeLimitsHelpText?: ReactNode;
-    showAcceptedFormats?: boolean;
     allowDirectories?: boolean;
-    includeDirectoryFiles?: boolean;
-    fileCountSuffix?: string;
     allowMultiple?: boolean;
     cancelText?: string;
+    compact?: boolean;
+    fileCountSuffix?: string;
+    // map between file extension and the callback function to use instead of the standard uploadDataFileForPreview
+    fileSpecificCallback?: Map<string, (file: File) => Promise<SimpleResponse>>;
+    includeDirectoryFiles?: boolean;
+    index?: number;
     initialFileNames?: string[];
     initialFiles?: Record<string, File>;
-    index?: number;
+    isSubmitting?: boolean;
     label?: ReactNode;
     labelLong?: string;
     onCancel?: () => void;
     onError?: (error: string) => void;
     onFileChange?: (files: Map<string, File>) => void;
     onFileRemoval?: (attachmentName: string, updatedFiles?: Map<string, File>) => void;
-    // map between file extension and the callback function to use instead of the standard uploadDataFileForPreview
-    fileSpecificCallback?: Map<string, (file: File) => Promise<SimpleResponse>>;
     onSubmit?: (files: Map<string, File>) => void;
-    isSubmitting?: boolean;
+    previewGridProps?: FileGridPreviewProps;
+    ref?: any;
+    showAcceptedFormats?: boolean;
     showButtons?: boolean;
     showLabel?: boolean;
     showProgressBar?: boolean;
+    // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
+    // "all" limits will be overridden by limits for a specific extension.
+    sizeLimits?: Map<string, FileSizeLimitProps>;
+    sizeLimitsHelpText?: ReactNode;
     submitText?: string;
-    previewGridProps?: FileGridPreviewProps;
     templateUrl?: string;
-    compact?: boolean;
-    ref?: any;
 }
 
 interface State {

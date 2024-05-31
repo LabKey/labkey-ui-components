@@ -61,7 +61,7 @@ const RESULTS_FILE_SIZE_LIMIT_DISPLAY = '200MB';
 const RESULTS_FILE_SIZE_LIMITS = Map<string, FileSizeLimitProps>({
     all: {
         totalSize: {
-            value: 209715200,
+            value: 209715200, // initial total file size limit set to 200MB (ex. 384 well plate of ab1 sequence files that are 300KB each = 115.2MB)
             displayValue: RESULTS_FILE_SIZE_LIMIT_DISPLAY,
         },
     },
@@ -78,12 +78,12 @@ interface Props {
     getIsDirty?: () => boolean;
     maxEditableGridRowMsg?: string;
     maxRows?: number;
-    onDataFileChange: (attachments: Map<string, File>) => any;
-    onDataFileRemoval: (attachmentName: string) => any;
+    onDataFileChange: (attachments: Map<string, File>) => void;
+    onDataFileRemoval: (attachmentName: string) => void;
     onGridChange: EditableGridChange;
-    onResultsFileChange: (attachments: Map<string, File>) => any;
-    onResultsFileRemoval: (attachmentName: string, updatedFiles?: Map<string, File>) => any;
-    onTextChange: (value: any) => any;
+    onResultsFileChange: (attachments: Map<string, File>) => void;
+    onResultsFileRemoval: (attachmentName: string, updatedFiles?: Map<string, File>) => void;
+    onTextChange: (value: any) => void;
     operation: Operation;
     plateSupportEnabled?: boolean;
     queryModel: QueryModel;
@@ -221,14 +221,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
         this.resetMessage();
     };
 
-    onTextChange = (fieldName: string, value: string): void => {
-        this.props.onTextChange(value);
-    };
-
-    clearText = (): void => {
-        this.props.onTextChange('');
-    };
-
     getEditableGridColumnMetadata = (): Map<string, EditableColumnMetadata> => {
         const { wizardModel, plateSupportEnabled } = this.props;
         const selectedPlateSet = wizardModel.runProperties?.get('PlateSet');
@@ -263,7 +255,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
         const columnMetadata = this.getEditableGridColumnMetadata();
         const fileColumnNames = isLIMSEnabled()
-            ? wizardModel.assayDef.domainFileColumnNames(AssayDomainTypes.RESULT)
+            ? wizardModel.assayDef.getDomainFileColumns(AssayDomainTypes.RESULT)?.map(col => col.name)
             : undefined;
         const assayFileFieldTooltip = (
             <>
@@ -334,10 +326,9 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 showLabel={fileColumnNames?.length > 0}
                                                 label={
                                                     <div className="assay-data-file-label">
-                                                        <LabelOverlay
-                                                            label="Results Data"
-                                                            content={ASSAY_RESULTS_DATA_TOOLTIP}
-                                                        />
+                                                        <LabelOverlay label="Results Data">
+                                                            {ASSAY_RESULTS_DATA_TOOLTIP}
+                                                        </LabelOverlay>
                                                     </div>
                                                 }
                                                 initialFileNames={
@@ -379,10 +370,9 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                     sizeLimits={RESULTS_FILE_SIZE_LIMITS}
                                                     label={
                                                         <div className="assay-data-file-label">
-                                                            <LabelOverlay
-                                                                label="File Fields Data"
-                                                                content={assayFileFieldTooltip}
-                                                            />
+                                                            <LabelOverlay label="File Fields Data">
+                                                                {assayFileFieldTooltip}
+                                                            </LabelOverlay>
                                                         </div>
                                                     }
                                                     labelLong="Select file(s) or drag and drop here"

@@ -17,6 +17,8 @@ export const includedColumnsForCustomizationFilter = (column: QueryColumn, showA
         (showAllColumns || !column.hidden) &&
         !column.removeFromViews &&
         (showPremiumFeatures() || !column.removeFromViewCustomization) &&
+        // don't allow multiple levels of ancestors since the ancestor value may not be a valid rowId to join through
+        (column.fieldKeyPath.indexOf('/Ancestors/') === column.fieldKeyPath.lastIndexOf('/Ancestors')) &&
         // Issue 46870: Don't allow selection/inclusion of multi-valued lookup fields from Ancestors
         (!column.fieldKeyPath?.startsWith('Ancestors/') || !column.isJunctionLookup())
     );

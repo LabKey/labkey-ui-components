@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Add support for Ancestor nodes on All Samples grids
-  - Prevent faceting for Ancestor nodes not at top level
+  - Update `CustomizeGridViewModal` to not allow multiple levels of ancestors to be added
 
 ### version 3.47.0
 *Released*: 30 May 2024

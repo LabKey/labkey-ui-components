@@ -356,6 +356,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 <DatePickerInput
                                     addLabelAsterisk={showAsteriskSymbol}
                                     allowDisable={allowFieldDisable}
+                                    formsy
                                     initiallyDisabled={shouldDisableField}
                                     key={i}
                                     onToggleDisable={this.onToggleDisable}
@@ -367,14 +368,15 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'boolean':
                             return (
                                 <CheckboxInput
-                                    key={i}
-                                    queryColumn={col}
-                                    value={value}
+                                    addLabelAsterisk={showAsteriskSymbol}
                                     allowDisable={allowFieldDisable}
+                                    formsy
                                     initiallyDisabled={shouldDisableField}
                                     onToggleDisable={this.onToggleDisable}
-                                    addLabelAsterisk={showAsteriskSymbol}
+                                    key={i}
+                                    queryColumn={col}
                                     renderFieldLabel={renderFieldLabel}
+                                    value={value}
                                 />
                             );
                         default:

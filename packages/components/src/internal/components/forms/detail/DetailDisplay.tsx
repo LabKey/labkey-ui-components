@@ -387,6 +387,7 @@ export function resolveDetailEditRenderer(
             case 'boolean':
                 return (
                     <CheckboxInput
+                        formsy
                         queryColumn={col}
                         showLabel={showLabel}
                         value={value && value.toString().toLowerCase() === 'true'}

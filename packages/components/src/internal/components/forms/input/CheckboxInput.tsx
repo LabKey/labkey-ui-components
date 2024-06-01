@@ -167,7 +167,7 @@ export const CheckboxInput: FC<CheckboxInputProps> = props => {
 };
 
 CheckboxInput.defaultProps = {
-    formsy: true,
+    formsy: false,
 };
 
 CheckboxInput.displayName = 'CheckboxInput';

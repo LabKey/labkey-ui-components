@@ -349,7 +349,7 @@ export const DatePickerInput: FC<DatePickerInputProps> = props => {
 };
 
 DatePickerInput.defaultProps = {
-    formsy: true,
+    formsy: false,
 };
 
 DatePickerInput.displayName = 'DatePickerInput';

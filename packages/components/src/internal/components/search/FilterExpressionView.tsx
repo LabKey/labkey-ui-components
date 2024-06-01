@@ -217,7 +217,6 @@ export const FilterExpressionView: FC<Props> = memo(props => {
                 return (
                     <DatePickerInput
                         allowRelativeInput={allowRelativeDateFilter}
-                        formsy={false}
                         inputClassName="form-control filter-expression__input"
                         wrapperClassName="form-group col-sm-12 filter-expression__input-wrapper"
                         queryColumn={field}

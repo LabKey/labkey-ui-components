@@ -354,14 +354,14 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'time':
                             return (
                                 <DatePickerInput
-                                    key={i}
-                                    queryColumn={col}
-                                    value={value}
+                                    addLabelAsterisk={showAsteriskSymbol}
                                     allowDisable={allowFieldDisable}
                                     initiallyDisabled={shouldDisableField}
+                                    key={i}
                                     onToggleDisable={this.onToggleDisable}
-                                    addLabelAsterisk={showAsteriskSymbol}
+                                    queryColumn={col}
                                     renderFieldLabel={renderFieldLabel}
+                                    value={value}
                                 />
                             );
                         case 'boolean':

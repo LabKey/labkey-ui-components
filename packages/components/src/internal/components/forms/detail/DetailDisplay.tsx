@@ -398,11 +398,12 @@ export function resolveDetailEditRenderer(
                 if (!value || typeof value === 'string') {
                     return (
                         <DatePickerInput
+                            formsy
+                            initValueFormatted
                             queryColumn={col}
                             showLabel={showLabel}
                             value={value}
                             wrapperClassName={DETAIL_INPUT_WRAPPER_CLASS_NAME}
-                            initValueFormatted
                         />
                     );
                 }

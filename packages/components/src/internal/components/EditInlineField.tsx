@@ -196,17 +196,16 @@ export const EditInlineField: FC<Props> = memo(props => {
             {state.editing && isDateOrTime && !!column && (
                 <DatePickerInput
                     autoFocus
+                    inlineEdit
+                    inputWrapperClassName="form-control"
                     name={name}
-                    formsy={false}
+                    onBlur={onBlur}
+                    onChange={onDateChange}
+                    onKeyDown={onKeyDown}
+                    placeholderText={placeholder}
                     queryColumn={column}
                     showLabel={false}
                     value={isDate ? dateValue : _value}
-                    inputWrapperClassName="form-control"
-                    onBlur={onBlur}
-                    onKeyDown={onKeyDown}
-                    onChange={onDateChange}
-                    placeholderText={placeholder}
-                    inlineEdit={true}
                 />
             )}
             {state.editing && isDateOrTime && !column && (

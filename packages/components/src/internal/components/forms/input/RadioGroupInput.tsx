@@ -112,7 +112,7 @@ export const RadioGroupInput: FC<Props> = props => {
 };
 
 RadioGroupInput.defaultProps = {
-    formsy: true,
+    formsy: false,
 };
 
 RadioGroupInput.displayName = 'RadioGroupInput';

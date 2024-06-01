@@ -76,10 +76,10 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
                 {options.length > 0 && (
                     <div className="creation-type-radioinput">
                         <RadioGroupInput
-                            name="creationType"
-                            options={options}
                             formsy
+                            name="creationType"
                             onValueChange={this.onOptionChange}
+                            options={options}
                             showDescriptions
                         />
                     </div>

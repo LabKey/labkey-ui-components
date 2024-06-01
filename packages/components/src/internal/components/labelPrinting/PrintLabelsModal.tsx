@@ -223,12 +223,11 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                             <div className="top-spacing">
                                 <strong>Selected samples to print</strong>
                                 <QuerySelect
-                                    formsy={false}
-                                    fireQSChangeOnInit={true}
+                                    fireQSChangeOnInit
                                     showLabel={false}
                                     loadOnFocus
                                     maxRows={10}
-                                    multiple={true}
+                                    multiple
                                     name="label-samples"
                                     onQSChange={this.changeSampleSelection}
                                     placeholder="Select or type to search..."
@@ -244,7 +243,6 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
                         <div className="top-spacing">
                             <strong>Label template</strong>
                             <QuerySelect
-                                formsy={false}
                                 fireQSChangeOnInit
                                 showLabel={false}
                                 loadOnFocus

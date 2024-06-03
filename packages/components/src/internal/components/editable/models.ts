@@ -186,7 +186,7 @@ export class EditorModel
         }
 
         // not found
-        return null;
+        return undefined;
     }
 
     getMessage(colIdx: number, rowIdx: number): CellMessage {

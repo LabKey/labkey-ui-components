@@ -308,6 +308,7 @@ import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailDisplay';
 import { useDataChangeCommentsRequired } from './internal/components/forms/input/useDataChangeCommentsRequired';
+import { registerInputRenderer, registerInputRenderers } from './internal/components/forms/input/InputRenderFactory';
 
 import {
     getUsersWithPermissions,
@@ -954,6 +955,7 @@ const App = {
     menuInit,
     menuInvalidate,
     menuReload,
+    registerInputRenderers,
     serverNotificationInit,
     serverNotificationInvalidate,
     updateUser,
@@ -1185,6 +1187,7 @@ export {
     SourceTypeImportAliasRenderer,
     UserDetailsRenderer,
     resolveDetailRenderer,
+    registerInputRenderer,
     // form related items
     BulkUpdateForm,
     QueryFormInputs,
@@ -1943,3 +1946,5 @@ export type { QueryLookupFilterGroup, QueryLookupFilterGroupFilter } from './pub
 export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';
 export type { ExtraExportMenuOptions } from './public/QueryModel/ExportMenu';
 export type { LabelsAPIWrapper } from './internal/components/labels/APIWrapper';
+export type { InputRendererProps } from './internal/components/forms/input/types';
+export type { InputRenderContext, InputRendererComponent } from './internal/components/forms/input/InputRenderFactory';

@@ -149,6 +149,7 @@ const PLATE_TABLES = {
     HIT_SELECTION_SUMMARY: new SchemaQuery(PLATE_SCHEMA, 'HitSelectionSummary'),
     PLATE: new SchemaQuery(PLATE_SCHEMA, 'Plate'),
     PLATE_SET: new SchemaQuery(PLATE_SCHEMA, 'PlateSet'),
+    PLATE_SOURCE: new SchemaQuery(PLATE_SCHEMA, 'PlateSource'),
     PLATE_TYPE: new SchemaQuery(PLATE_SCHEMA, 'PlateType'),
     PRIMARY_HIT_SELECTION_SUMMARY: new SchemaQuery(PLATE_SCHEMA, 'PrimaryHitSelectionSummary'),
     SAMPLES_IN_PLATE_SETS: new SchemaQuery(PLATE_SCHEMA, 'SamplesInPlateSets'),

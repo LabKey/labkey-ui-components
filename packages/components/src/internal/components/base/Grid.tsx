@@ -258,7 +258,7 @@ interface GridBodyProps {
 }
 
 class GridBody extends PureComponent<GridBodyProps> {
-    renderDefaultRow(): ReactNode {
+    renderDefaultRow = (): ReactNode => {
         const { columns, emptyText, isLoading, loadingText } = this.props;
 
         return (

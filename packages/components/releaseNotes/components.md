@@ -5,8 +5,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: ?? May 2024
 - Fix Issue 48377: LKSM/LKB: Editable grid allows pasting into cells that are marked as read-only
 - Fix Issue 48242: LKSM/LKB: Editable Grid - Right clicking a multi-cell selection doesn't work as expected
-- EditableGrid: Fix issue where cut (cmd + x) would delete read only cell values
-- EditableGrid: add hideReadonlyRows prop
+- EditableGrid: Fix issue where cut (cmd/ctrl + x) would delete read only cell values
+- EditableGrid: Add hideReadonlyRows prop
+- QueryFormInputs: Remove unused prop componentKey
 
 ### version 3.47.0
 *Released*: 30 May 2024

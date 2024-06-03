@@ -93,6 +93,7 @@ interface Props {
     defaultSampleFieldConfig?: Partial<IDomainField>;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     headerText?: string;
+    helpTopic?: string;
     includeDataClasses?: boolean;
     initModel: DomainDetails;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
@@ -102,7 +103,6 @@ interface Props {
     nounPlural?: string;
     nounSingular?: string;
     onCancel: () => void;
-    onChange?: (model: SampleTypeModel) => void;
     onComplete: (response: DomainDesign) => void;
     sampleAliasCaption?: string;
     sampleTypeCaption?: string;
@@ -115,7 +115,7 @@ interface Props {
     useSeparateDataClassesAliasMenu?: boolean;
     validateNameExpressions?: boolean;
     validateProperties?: (designerDetails?: any) => Promise<any>;
-    helpTopic?: string;
+    onChange?: (model: SampleTypeModel) => void;
 }
 
 interface State {

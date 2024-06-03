@@ -22,7 +22,7 @@ const BASE_PROPS = {
 
 const SERVER_CONTEXT = {
     moduleContext: {
-        query: { hasProductProjects: true}
+        query: { hasProductProjects: true },
     },
 };
 
@@ -46,10 +46,9 @@ describe('DataClassDesigner', () => {
             />
         );
         await act(async () => {
-            const { container } = renderWithAppContext(component,
-                {
-                    serverContext: SERVER_CONTEXT,
-                });
+            const { container } = renderWithAppContext(component, {
+                serverContext: SERVER_CONTEXT,
+            });
             expect(container).toMatchSnapshot();
         });
 
@@ -80,10 +79,9 @@ describe('DataClassDesigner', () => {
             />
         );
         await act(async () => {
-            const { container } = renderWithAppContext(component,
-                {
-                    serverContext: SERVER_CONTEXT,
-                });
+            const { container } = renderWithAppContext(component, {
+                serverContext: SERVER_CONTEXT,
+            });
             expect(container).toMatchSnapshot();
         });
 
@@ -109,10 +107,9 @@ describe('DataClassDesigner', () => {
             />
         );
         await act(async () => {
-            const { container } = renderWithAppContext(component,
-                {
-                    serverContext: SERVER_CONTEXT,
-                });
+            const { container } = renderWithAppContext(component, {
+                serverContext: SERVER_CONTEXT,
+            });
             expect(container).toMatchSnapshot();
         });
 
@@ -139,10 +136,9 @@ describe('DataClassDesigner', () => {
             />
         );
         await act(async () => {
-            const { container } = renderWithAppContext(component,
-                {
-                    serverContext: SERVER_CONTEXT,
-                });
+            const { container } = renderWithAppContext(component, {
+                serverContext: SERVER_CONTEXT,
+            });
         });
 
         expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
@@ -154,10 +150,9 @@ describe('DataClassDesigner', () => {
     test('open fields panel', async () => {
         const component = <DataClassDesigner {...BASE_PROPS} />;
         await act(async () => {
-            renderWithAppContext(component,
-                {
-                    serverContext: SERVER_CONTEXT,
-                });
+            renderWithAppContext(component, {
+                serverContext: SERVER_CONTEXT,
+            });
         });
 
         let panelHeader = document.querySelector('div#domain-header');

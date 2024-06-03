@@ -20,7 +20,7 @@ const SERVER_CONTEXT = {
     moduleContext: {
         api: { moduleNames: ['assay', 'study'] },
         core: { productFeatures: [ProductFeature.AssayQC] },
-        query: { hasProductProjects: true}
+        query: { hasProductProjects: true },
     },
 };
 

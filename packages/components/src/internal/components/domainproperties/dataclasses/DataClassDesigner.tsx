@@ -47,6 +47,7 @@ interface Props {
     headerText?: string;
     helpTopic?: string;
     initModel?: DataClassModel;
+    isValidParentOptionsFn?: (row: any, isDataClass: boolean) => boolean;
     // loadNameExpressionOptions is a prop for testing purposes only, see default implementation below
     loadNameExpressionOptions?: (
         containerPath?: string
@@ -59,10 +60,9 @@ interface Props {
     onChange?: (model: DataClassModel) => void;
     onComplete: (model: DataClassModel) => void;
     saveBtnText?: string;
-    showGenIdBanner?: boolean;
     testMode?: boolean;
     validateNameExpressions?: boolean;
-    isValidParentOptionsFn?: (row: any, isDataClass: boolean) => boolean;
+    showGenIdBanner?: boolean;
 }
 
 interface State {

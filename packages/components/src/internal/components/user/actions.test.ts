@@ -10,7 +10,9 @@ import {
     TEST_USER_FOLDER_ADMIN,
     TEST_USER_PROJECT_ADMIN,
     TEST_USER_GUEST,
-    TEST_USER_READER, TEST_USER_SOURCE_TYPE_DESIGNER, TEST_USER_SAMPLE_TYPE_DESIGNER,
+    TEST_USER_READER,
+    TEST_USER_SOURCE_TYPE_DESIGNER,
+    TEST_USER_SAMPLE_TYPE_DESIGNER,
 } from '../../userFixtures';
 
 import { getUserLastLogin, getUserPermissionsDisplay, getUserRoleDisplay } from './actions';

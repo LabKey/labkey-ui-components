@@ -1398,6 +1398,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
+                            <option
                               value="boolean"
                             >
                               Boolean
@@ -2171,6 +2176,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
+                            <option
                               value="boolean"
                             >
                               Boolean
@@ -2703,6 +2713,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
+                            <option
                               value="boolean"
                             >
                               Boolean
@@ -3233,6 +3248,11 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                             id="domainpropertiesrow-type-2-2"
                             name="domainpropertiesrow-type"
                           >
+                            <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
                             <option
                               value="boolean"
                             >
@@ -5524,6 +5544,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
+                            <option
                               value="boolean"
                             >
                               Boolean
@@ -6297,6 +6322,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
+                            <option
                               value="boolean"
                             >
                               Boolean
@@ -6829,6 +6859,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
+                            <option
                               value="boolean"
                             >
                               Boolean
@@ -7359,6 +7394,11 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                             id="domainpropertiesrow-type-2-2"
                             name="domainpropertiesrow-type"
                           >
+                            <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
                             <option
                               value="boolean"
                             >
@@ -8584,6 +8624,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
+                            <option
                               value="boolean"
                             >
                               Boolean
@@ -9357,6 +9402,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
+                            <option
                               value="boolean"
                             >
                               Boolean
@@ -9889,6 +9939,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
+                            <option
                               value="boolean"
                             >
                               Boolean
@@ -10419,6 +10474,11 @@ exports[`AssayDesignerPanels initModel 1`] = `
                             id="domainpropertiesrow-type-2-2"
                             name="domainpropertiesrow-type"
                           >
+                            <option
+                              value="int"
+                            >
+                              Auto Increment
+                            </option>
                             <option
                               value="boolean"
                             >

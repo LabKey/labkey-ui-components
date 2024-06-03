@@ -784,7 +784,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const disabledSave =
             model.isSubmitting ||
             !model.hasData(currentStep, editorModel) ||
-            (!!getIsDirty && !getIsDirty?.()) ||
+            (!isReimport && !!getIsDirty && !getIsDirty?.()) ||
             (isReimport && requiresUserComment && !comment?.trim()?.length);
         const runProps = runPropsModel.getRow();
 

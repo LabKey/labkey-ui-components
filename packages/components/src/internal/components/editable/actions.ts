@@ -893,6 +893,12 @@ function inferSelectionIncrement(
     };
 }
 
+/**
+ * Gets the string representation of the primary key for a given row. It needs to be a string because it will be
+ * compared against the values coming from QueryModel.orderedRows, which are string representations of PK values.
+ * @param row
+ * @param queryInfo
+ */
 function getPkValue(row: any, queryInfo: QueryInfo): string {
     const keyCols = queryInfo.getPkCols();
     let key;
@@ -903,7 +909,8 @@ function getPkValue(row: any, queryInfo: QueryInfo): string {
         if (typeof key === 'object') key = key.value;
     }
 
-    return key;
+    // The key may be anything (often it's a number because it's RowId), so we coerce it to a string
+    return key?.toString();
 }
 
 interface CellReadStatus {
@@ -922,9 +929,7 @@ export function checkCellReadStatus(
     if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
         const keyCols = queryInfo.getPkCols();
         if (keyCols.length === 1) {
-            // Coerce PK Value to string because it could be anything, but readonlyRows and lockedRows are string[], and
-            // isReadOnlyCell expects a string
-            const key = getPkValue(row, queryInfo)?.toString();
+            const key = getPkValue(row, queryInfo);
             return {
                 isReadonlyRow: readonlyRows && key ? readonlyRows.includes(key) : false,
                 isReadonlyCell: columnMetadata?.isReadOnlyCell ? columnMetadata.isReadOnlyCell(key) : false,

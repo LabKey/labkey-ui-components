@@ -333,6 +333,9 @@ export class Cell extends React.PureComponent<CellProps, State> {
     };
 
     handleSelect: React.MouseEventHandler<HTMLDivElement> = (event): void => {
+        // Only handle event if the left mouse button is clicked
+        if (event.buttons !== 1) return;
+
         const { cellActions, colIdx, rowIdx, selected } = this.props;
         const { selectCell } = cellActions;
 

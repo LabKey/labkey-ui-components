@@ -794,11 +794,11 @@ export function withQueryModels<Props>(
 
         /**
          * Helper for various actions that may want to trigger loadQueryInfo, loadRows, or loadSelections.
-         * @param id: The id of the QueryModel you want to load
-         * @param loadQueryInfo: boolean, if true will load the QueryInfo before loading the model's rows.
-         * @param loadRows: boolean, if true will load the model's rows.
-         * @param loadSelections: boolean, if true will load selections after loading QueryInfo.
-         * @param reloadTotalCount: boolean, if true will reload totalCount after loading QueryInfo.
+         * @param id The id of the QueryModel you want to load
+         * @param loadQueryInfo boolean, if true will load the QueryInfo before loading the model's rows.
+         * @param loadRows boolean, if true will load the model's rows.
+         * @param loadSelections boolean, if true will load selections after loading QueryInfo.
+         * @param reloadTotalCount boolean, if true will reload totalCount after loading QueryInfo.
          */
         maybeLoad = (
             id: string,
@@ -813,10 +813,7 @@ export function withQueryModels<Props>(
             } else {
                 if (loadRows) {
                     this.loadRows(id, loadSelections);
-
-                    if (this.state.queryModels[id].includeTotalCount) {
-                        this.loadTotalCount(id, reloadTotalCount);
-                    }
+                    this.loadTotalCount(id, reloadTotalCount);
                 } else if (loadSelections) {
                     this.loadSelections(id);
                 }

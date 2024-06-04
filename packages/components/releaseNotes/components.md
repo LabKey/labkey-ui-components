@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.48.0
+*Released*: 4 June 2024
+- Fix Issue 48377: LKSM/LKB: Editable grid allows pasting into cells that are marked as read-only
+- Fix Issue 48242: LKSM/LKB: Editable Grid - Right clicking a multi-cell selection doesn't work as expected
+- EditableGrid: Fix issue where cut (cmd/ctrl + x) would delete read only cell values
+- EditableGrid: Add hideReadonlyRows prop
+- QueryFormInputs: Remove unused prop componentKey
+
 ### version 3.47.0
 *Released*: 30 May 2024
 - Expose `registerInputRenderer` as a way for external package usages of `@labkey/components` to register custom form/grid input renderers.

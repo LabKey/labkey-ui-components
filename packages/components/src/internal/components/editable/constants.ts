@@ -33,7 +33,7 @@ export interface CellCoordinates {
     rowIdx: number;
 }
 
-export enum EditableGridEvent {
+export const enum EditableGridEvent {
     ADD_ROWS = 'ADD_ROWS',
     BULK_ADD = 'BULK_ADD',
     BULK_UPDATE = 'BULK_UPDATE',

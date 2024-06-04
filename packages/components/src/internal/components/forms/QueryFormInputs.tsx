@@ -50,8 +50,6 @@ export interface QueryFormInputsProps {
     columnFilter?: (col?: QueryColumn) => boolean;
     // this can be used when you want to keep certain columns always filtered out (e.g., aliquot- or sample-only columns)
     isIncludedColumn?: (col: QueryColumn) => boolean;
-    componentKey?: string;
-    // unique key to add to QuerySelect to avoid duplication w/ transpose
     /** A container filter that will be applied to all query-based inputs in this form */
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;

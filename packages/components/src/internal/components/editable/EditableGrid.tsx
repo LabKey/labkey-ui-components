@@ -167,11 +167,14 @@ function inputCellFactory(
     initialSelection: string[],
     containerPath?: string
 ): GridColumnCellRenderer {
-    return (value, row, c, rn, cn) => {
+    // Note: We ignore the incoming value (_) and rowNumber (__) because they come from the underlying QueryModel that
+    // backs the Grid component, but we need to reference the data that is in the EditorModel.
+    return (_, row, c, __, cn) => {
         let colOffset = 0;
         if (allowSelection) colOffset += 1;
         if (!hideCountCol) colOffset += 1;
 
+        const rn = row.get(GRID_EDIT_INDEX);
         const colIdx = cn - colOffset;
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
         const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
@@ -317,6 +320,7 @@ export interface SharedEditableGridProps {
     gridTabHeaderComponent?: ReactNode;
     hideCheckboxCol?: boolean;
     hideCountCol?: boolean;
+    hideReadonlyRows?: boolean;
     hideTopControls?: boolean;
     insertColumns?: QueryColumn[];
     isSubmitting?: boolean;
@@ -424,6 +428,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         maxRows: MAX_EDITABLE_GRID_ROWS,
         hideCountCol: false,
         hideTopControls: false,
+        hideReadonlyRows: false,
         rowNumColumn: COUNT_COL,
     };
 
@@ -717,12 +722,38 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
+    /**
+     * Given a colIdx/rowIdx returns true if a cell is read only. Use this in event handlers to prevent modifying read
+     * only cells (e.g. during delete).
+     */
+    isReadOnly(cellKey: string): boolean {
+        const { colIdx, rowIdx } = parseCellKey(cellKey);
+        const { dataKeys, lockedRows, readonlyRows } = this.props;
+        const cellValueDataKey = dataKeys.get(rowIdx);
+
+        if (readonlyRows?.includes(cellValueDataKey)) return true;
+
+        if (lockedRows?.includes(cellValueDataKey)) return true;
+
+        const queryCol = this.getColumns()[colIdx];
+
+        if (queryCol.readOnly) return true;
+
+        const loweredColumnMetadata = this.getLoweredColumnMetadata();
+        const metadata = loweredColumnMetadata[queryCol.fieldKey.toLowerCase()];
+
+        return metadata && (metadata.readOnly || metadata.isReadOnlyCell?.(cellValueDataKey));
+    }
+
     modifyCell = (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES): void => {
         const { editorModel, onChange } = this.props;
         const { cellMessages, cellValues } = editorModel;
         const cellKey = genCellKey(colIdx, rowIdx);
         const keyPath = ['cellValues', cellKey];
         const changes: Partial<EditorModel> = { cellMessages: cellMessages.delete(cellKey) };
+        // It's possible for a user to select a whole row or column of readonly cells, then hit cmd+x, which would not
+        // result in any actual changes, so we need to track if we actually modify anything
+        let changesMade = false;
 
         if (mod === MODIFICATION_TYPES.ADD) {
             const values: List<ValueDescriptor> = editorModel.getIn(keyPath);
@@ -732,8 +763,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             } else {
                 changes.cellValues = cellValues.set(cellKey, List(newValues));
             }
+            changesMade = true;
         } else if (mod === MODIFICATION_TYPES.REPLACE) {
             changes.cellValues = cellValues.set(cellKey, List(newValues));
+            changesMade = true;
         } else if (mod === MODIFICATION_TYPES.REMOVE) {
             let values: List<ValueDescriptor> = editorModel.getIn(keyPath);
 
@@ -746,27 +779,35 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             }
 
             changes.cellValues = cellValues.set(cellKey, values);
+            changesMade = true;
         } else if (mod === MODIFICATION_TYPES.REMOVE_ALL) {
             if (editorModel.selectionCells.length > 0) {
                 // Remove all values and messages for the selected cells
                 changes.cellValues = editorModel.cellValues.reduce((result, value, key) => {
-                    if (editorModel.selectionCells.find(_key => _key === key)) {
+                    // Take no action if a cell is read only. Users can select an area that includes read only rows and
+                    // cells
+                    const isReadOnly = this.isReadOnly(key);
+                    if (!isReadOnly && editorModel.selectionCells.includes(key)) {
+                        changesMade = true;
                         return result.set(key, List());
                     }
                     return result.set(key, value);
                 }, Map<string, List<ValueDescriptor>>());
                 changes.cellMessages = editorModel.cellMessages.reduce((result, value, key) => {
-                    if (editorModel.selectionCells.find(_key => _key === key)) {
+                    const isReadOnly = this.isReadOnly(key);
+                    if (!isReadOnly && editorModel.selectionCells.includes(key)) {
+                        changesMade = true;
                         return result.remove(key);
                     }
                     return result.set(key, value);
                 }, Map<string, CellMessage>());
-            } else {
+            } else if (!this.isReadOnly(cellKey)) {
                 changes.cellValues = cellValues.set(cellKey, List());
+                changesMade = true;
             }
         }
 
-        onChange(EditableGridEvent.MODIFY_CELL, changes);
+        if (changesMade) onChange(EditableGridEvent.MODIFY_CELL, changes);
     };
 
     removeRows = (dataIdIndexes: Set<number>): void => {
@@ -995,6 +1036,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     beginDrag = (event: GridMouseEvent): void => {
+        // Only handle event if the left mouse button is clicked
+        if (event.buttons !== 1) return;
+
         const { disabled, editorModel } = this.props;
         if (this.handleDrag(event) && !disabled) {
             clearTimeout(this.dragDelay);
@@ -1586,12 +1630,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     getGridData(): List<Map<string, any>> {
-        const { data, dataKeys } = this.props;
+        const { data, dataKeys, hideReadonlyRows, readonlyRows } = this.props;
         return dataKeys
             .map((key, index) => {
+                if (hideReadonlyRows && readonlyRows && readonlyRows.includes(key)) return undefined;
                 const rowIndexData = { [GRID_EDIT_INDEX]: index };
                 return data.get(key)?.merge(rowIndexData) ?? Map<string, any>(rowIndexData);
             })
+            .filter(r => r !== undefined)
             .toList();
     }
 

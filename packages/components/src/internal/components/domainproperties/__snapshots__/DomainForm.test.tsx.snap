@@ -279,11 +279,6 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
-                              value="int"
-                            >
-                              Auto Increment
-                            </option>
-                            <option
                               value="double"
                             >
                               Decimal (floating point)
@@ -1045,11 +1040,6 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                           id="domainpropertiesrow-type-0-0"
                           name="domainpropertiesrow-type"
                         >
-                          <option
-                            value="int"
-                          >
-                            Auto Increment
-                          </option>
                           <option
                             value="double"
                           >
@@ -1828,11 +1818,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                             id="domainpropertiesrow-type-0-0"
                             name="domainpropertiesrow-type"
                           >
-                            <option
-                              value="int"
-                            >
-                              Auto Increment
-                            </option>
                             <option
                               value="double"
                             >
@@ -7266,11 +7251,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                           id="domainpropertiesrow-type-0-0"
                           name="domainpropertiesrow-type"
                         >
-                          <option
-                            value="int"
-                          >
-                            Auto Increment
-                          </option>
                           <option
                             value="double"
                           >
@@ -12831,11 +12811,6 @@ exports[`DomainForm domain form with updated fields 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
-                              value="int"
-                            >
-                              Auto Increment
-                            </option>
-                            <option
                               value="double"
                             >
                               Decimal (floating point)
@@ -13762,11 +13737,6 @@ exports[`DomainForm domain form with updated fields 1`] = `
                             id="domainpropertiesrow-type-0-2"
                             name="domainpropertiesrow-type"
                           >
-                            <option
-                              value="int"
-                            >
-                              Auto Increment
-                            </option>
                             <option
                               value="double"
                             >
@@ -14918,11 +14888,6 @@ exports[`DomainForm domain form with updated fields 1`] = `
                           name="domainpropertiesrow-type"
                         >
                           <option
-                            value="int"
-                          >
-                            Auto Increment
-                          </option>
-                          <option
                             value="double"
                           >
                             Decimal (floating point)
@@ -15849,11 +15814,6 @@ exports[`DomainForm domain form with updated fields 1`] = `
                           id="domainpropertiesrow-type-0-2"
                           name="domainpropertiesrow-type"
                         >
-                          <option
-                            value="int"
-                          >
-                            Auto Increment
-                          </option>
                           <option
                             value="double"
                           >

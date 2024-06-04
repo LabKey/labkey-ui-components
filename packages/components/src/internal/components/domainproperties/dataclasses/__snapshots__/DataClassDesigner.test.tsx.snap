@@ -2598,11 +2598,6 @@ exports[`DataClassDesigner initModel 1`] = `
                             name="domainpropertiesrow-type"
                           >
                             <option
-                              value="int"
-                            >
-                              Auto Increment
-                            </option>
-                            <option
                               value="double"
                             >
                               Decimal (floating point)

@@ -298,16 +298,6 @@ exports[`DomainRow Sample Field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
-                    Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#autoInt",
-                      "display": "Auto Increment",
-                      "name": "int",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-                      "alternateRangeURI": "xsd:int",
-                      "shortDisplay": undefined,
-                      "lookupSchema": undefined,
-                      "lookupQuery": undefined,
-                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -632,12 +622,6 @@ exports[`DomainRow Sample Field 1`] = `
                                         onChange={[Function]}
                                         value="sample"
                                       >
-                                        <option
-                                          key="int"
-                                          value="int"
-                                        >
-                                          Auto Increment
-                                        </option>
                                         <option
                                           key="double"
                                           value="double"
@@ -1963,16 +1947,6 @@ exports[`DomainRow client side warning on field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
-                    Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#autoInt",
-                      "display": "Auto Increment",
-                      "name": "int",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-                      "alternateRangeURI": "xsd:int",
-                      "shortDisplay": undefined,
-                      "lookupSchema": undefined,
-                      "lookupQuery": undefined,
-                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -2314,12 +2288,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                           value="attachment"
                                         >
                                           Attachment
-                                        </option>
-                                        <option
-                                          key="int"
-                                          value="int"
-                                        >
-                                          Auto Increment
                                         </option>
                                         <option
                                           key="boolean"
@@ -3739,16 +3707,6 @@ exports[`DomainRow date time field 1`] = `
                       "name": "textChoice",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
-                      "shortDisplay": undefined,
-                      "lookupSchema": undefined,
-                      "lookupQuery": undefined,
-                    },
-                    Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#autoInt",
-                      "display": "Auto Increment",
-                      "name": "int",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-                      "alternateRangeURI": "xsd:int",
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
@@ -5473,16 +5431,6 @@ exports[`DomainRow decimal field 1`] = `
                       "name": "textChoice",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
-                      "shortDisplay": undefined,
-                      "lookupSchema": undefined,
-                      "lookupQuery": undefined,
-                    },
-                    Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#autoInt",
-                      "display": "Auto Increment",
-                      "name": "int",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-                      "alternateRangeURI": "xsd:int",
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
@@ -7238,16 +7186,6 @@ exports[`DomainRow participant id field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
-                    Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#autoInt",
-                      "display": "Auto Increment",
-                      "name": "int",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-                      "alternateRangeURI": "xsd:int",
-                      "shortDisplay": undefined,
-                      "lookupSchema": undefined,
-                      "lookupQuery": undefined,
-                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -8821,16 +8759,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
-                    Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#autoInt",
-                      "display": "Auto Increment",
-                      "name": "int",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-                      "alternateRangeURI": "xsd:int",
-                      "shortDisplay": undefined,
-                      "lookupSchema": undefined,
-                      "lookupQuery": undefined,
-                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -9172,12 +9100,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           value="attachment"
                                         >
                                           Attachment
-                                        </option>
-                                        <option
-                                          key="int"
-                                          value="int"
-                                        >
-                                          Auto Increment
                                         </option>
                                         <option
                                           key="boolean"
@@ -10559,16 +10481,6 @@ exports[`DomainRow string field test 1`] = `
                       "name": "textChoice",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
-                      "shortDisplay": undefined,
-                      "lookupSchema": undefined,
-                      "lookupQuery": undefined,
-                    },
-                    Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#autoInt",
-                      "display": "Auto Increment",
-                      "name": "int",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-                      "alternateRangeURI": "xsd:int",
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
@@ -12340,16 +12252,6 @@ exports[`DomainRow with empty domain form 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
-                    Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#autoInt",
-                      "display": "Auto Increment",
-                      "name": "int",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-                      "alternateRangeURI": "xsd:int",
-                      "shortDisplay": undefined,
-                      "lookupSchema": undefined,
-                      "lookupQuery": undefined,
-                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -12679,12 +12581,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                           value="attachment"
                                         >
                                           Attachment
-                                        </option>
-                                        <option
-                                          key="int"
-                                          value="int"
-                                        >
-                                          Auto Increment
                                         </option>
                                         <option
                                           key="boolean"

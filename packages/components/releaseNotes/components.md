@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add support for Ancestor nodes on All Samples grids
   - Update `CustomizeGridViewModal` to not allow multiple levels of ancestors to be added
 
+### version 3.48.1
+*Released*: 4 June 2024
+- Issue 41718: Domain Designer Field Imports should observe auto-increment fields
+    - Fix displayed Data Type of auto int field on existing List
+
 ### version 3.48.0
 *Released*: 4 June 2024
 - Fix Issue 48377: LKSM/LKB: Editable grid allows pasting into cells that are marked as read-only

@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.X
 *Released*: X 2024
 - Sample Type & Source Type Designer Roles
-  - TODO
+  - Add entityApi.isDataTypeEmpty to check if a design has data
+  - Allow hiding of Projects section in designer
 
 ### version 3.48.1
 *Released*: 4 June 2024

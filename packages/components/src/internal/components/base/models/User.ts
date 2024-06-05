@@ -92,6 +92,10 @@ export class User implements IUserProps {
         return hasAllPermissions(this, [PermissionTypes.DesignSampleSet]);
     }
 
+    hasDesignDataClassPermission(): boolean {
+        return hasAllPermissions(this, [PermissionTypes.DesignDataClass]);
+    }
+
     hasManageUsersPermission(): boolean {
         return hasAllPermissions(this, [PermissionTypes.UserManagement], false);
     }

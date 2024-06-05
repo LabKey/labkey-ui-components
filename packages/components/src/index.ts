@@ -174,6 +174,7 @@ import { ChoicesListItem } from './internal/components/base/ChoicesListItem';
 import { DataTypeSelector } from './internal/components/entities/DataTypeSelector';
 
 import { EditorMode, EditorModel } from './internal/components/editable/models';
+import { EditableGridEvent } from './internal/components/editable/constants';
 import {
     clearSelected,
     getGridIdsFromTransactionId,
@@ -1142,6 +1143,7 @@ export {
     EditableGridTabs,
     EditorModel,
     EditorMode,
+    EditableGridEvent,
     cancelEvent,
     // url and location related items
     AppURL,
@@ -1925,7 +1927,6 @@ export type { EditableDetailPanelProps } from './public/QueryModel/EditableDetai
 export type { ComponentsAPIWrapper } from './internal/APIWrapper';
 export type { GetParentTypeDataForLineage } from './internal/components/entities/actions';
 export type { URLMapper } from './internal/url/URLResolver';
-export type { EditableGridEvent } from './internal/components/editable/constants';
 export type { PlacementType } from './internal/components/editable/Controls';
 export type { EditableGridChange } from './internal/components/editable/EditableGrid';
 export type { GetAssayDefinitionsOptions, GetProtocolOptions } from './internal/components/assay/actions';

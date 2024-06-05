@@ -893,6 +893,12 @@ function inferSelectionIncrement(
     };
 }
 
+/**
+ * Gets the string representation of the primary key for a given row. It needs to be a string because it will be
+ * compared against the values coming from QueryModel.orderedRows, which are string representations of PK values.
+ * @param row
+ * @param queryInfo
+ */
 function getPkValue(row: any, queryInfo: QueryInfo): string {
     const keyCols = queryInfo.getPkCols();
     let key;
@@ -903,7 +909,8 @@ function getPkValue(row: any, queryInfo: QueryInfo): string {
         if (typeof key === 'object') key = key.value;
     }
 
-    return key;
+    // The key may be anything (often it's a number because it's RowId), so we coerce it to a string
+    return key?.toString();
 }
 
 interface CellReadStatus {
@@ -923,7 +930,6 @@ export function checkCellReadStatus(
         const keyCols = queryInfo.getPkCols();
         if (keyCols.length === 1) {
             const key = getPkValue(row, queryInfo);
-
             return {
                 isReadonlyRow: readonlyRows && key ? readonlyRows.includes(key) : false,
                 isReadonlyCell: columnMetadata?.isReadOnlyCell ? columnMetadata.isReadOnlyCell(key) : false,
@@ -1399,7 +1405,8 @@ function parsePastedLookup(descriptors: ValueDescriptor[], value: string[] | str
 
 function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: string[]): boolean {
     if (pkCols.length === 1 && row) {
-        const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey);
+        // Coerce pkValue to string because it may actually be a number or other type, and readonlyRows is string[]
+        const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey)?.toString();
         return readonlyRows.includes(pkValue);
     }
 

@@ -3,8 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ###  version 3.??.?
 *Released*: ? June 2024
-- getSelectionLineageData: make selection `string[]` instead of `List<any>`
-  - It's always sourced from QueryModel.selections, so it's safe to make it `string[]`
+- getSelectionLineageData: make selection `Set<string>` instead of `List<any>`
+  - It's always sourced from QueryModel.selections
 
 ### version 3.48.1
 *Released*: 4 June 2024

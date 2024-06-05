@@ -74,7 +74,7 @@ export interface SamplesAPIWrapper {
     ) => Promise<DomainDetails>;
 
     getSelectionLineageData: (
-        selection: string[],
+        selection: Set<string>,
         schema: string,
         query: string,
         viewName: string,

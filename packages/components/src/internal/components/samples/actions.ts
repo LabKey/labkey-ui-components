@@ -282,14 +282,14 @@ export async function getSampleStorageId(sampleRowId: number): Promise<number> {
 
 // Used for samples and dataclasses
 export function getSelectionLineageData(
-    selection: string[],
+    selections: Set<string>,
     schema: string,
     query: string,
     viewName: string,
     columns?: string[]
 ): Promise<ISelectRowsResult> {
-    if (selection?.length === 0) return Promise.reject('No data is selected.');
-    const rowIds = selection.map(s => parseInt(s, 10));
+    if (selections?.size === 0) return Promise.reject('No data is selected.');
+    const rowIds = Array.from(selections).map(s => parseInt(s, 10));
 
     return selectRowsDeprecated({
         schemaName: schema,

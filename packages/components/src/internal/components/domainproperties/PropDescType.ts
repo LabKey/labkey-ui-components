@@ -2,6 +2,7 @@ import { List, Record } from 'immutable';
 
 import {
     ATTACHMENT_RANGE_URI,
+    AUTO_INT_CONCEPT_URI,
     BINARY_RANGE_URI,
     BOOLEAN_RANGE_URI,
     CONCEPT_CODE_CONCEPT_URI,
@@ -33,11 +34,11 @@ export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string' | 'time';
 interface IPropDescType {
     conceptURI: string;
     display: string;
+    lookupQuery?: string;
+    lookupSchema?: string;
     name: string;
     rangeURI: string;
     shortDisplay?: string;
-    lookupSchema?: string;
-    lookupQuery?: string;
 }
 
 export class PropDescType
@@ -302,6 +303,7 @@ export const AUTOINT_TYPE = new PropDescType({
     name: 'int',
     display: 'Auto Increment',
     rangeURI: INT_RANGE_URI,
+    conceptURI: AUTO_INT_CONCEPT_URI,
     alternateRangeURI: 'xsd:int',
 });
 
@@ -363,7 +365,15 @@ export const PROP_DESC_TYPES = List([
     TEXT_CHOICE_TYPE,
 ]);
 
-export const READONLY_DESC_TYPES = List([BINARY_TYPE, DATE_TYPE, DECIMAL_TYPE, FLOAT_TYPE, LONG_TYPE, TIME_TYPE]);
+export const READONLY_DESC_TYPES = List([
+    BINARY_TYPE,
+    DATE_TYPE,
+    DECIMAL_TYPE,
+    FLOAT_TYPE,
+    LONG_TYPE,
+    TIME_TYPE,
+    AUTOINT_TYPE,
+]);
 export const CONCEPT_URIS_NOT_USED_IN_TYPES = List([CREATED_TIMESTAMP_CONCEPT_URI, MODIFIED_TIMESTAMP_CONCEPT_URI]);
 
 export const STUDY_PROPERTY_TYPES = [PARTICIPANT_TYPE, VISIT_DATE_TYPE, VISIT_ID_TYPE];

@@ -316,6 +316,7 @@ export interface SharedEditableGridProps {
     emptyGridMsg?: string;
     exportColFilter?: (col: QueryColumn) => boolean;
     extraExportColumns?: Array<Partial<QueryColumn>>;
+    fixedHeight?: boolean;
     forUpdate?: boolean;
     gridTabHeaderComponent?: ReactNode;
     hideCheckboxCol?: boolean;
@@ -421,6 +422,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         bulkUpdateText: 'Bulk Update',
         columnMetadata: Map<string, EditableColumnMetadata>(),
         notDeletable: List<any>(),
+        fixedHeight: true,
         condensed: false,
         disabled: false,
         isSubmitting: false,
@@ -892,7 +894,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 title: '&nbsp;',
                 cell: (selected: boolean, row) => (
                     <input
-                        style={{ margin: '0 8px' }}
+                        className="grid-panel__checkbox"
                         checked={this.state.selected.contains(row.get(GRID_EDIT_INDEX))}
                         type="checkbox"
                         onChange={this.select.bind(this, row)}
@@ -1006,7 +1008,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { queryInfo } = this.props;
 
         if (col.index.toLowerCase() === GRID_SELECTION_INDEX && this.showSelectionCheckboxes()) {
-            return headerSelectionCell(this.selectAll, this.state.selectedState, false);
+            return headerSelectionCell(this.selectAll, this.state.selectedState, false, 'grid-panel__checkbox');
         }
 
         const qColumn = queryInfo.getColumn(col.index);
@@ -1780,6 +1782,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             error,
             bordered,
             condensed,
+            fixedHeight,
             emptyGridMsg,
             striped,
             allowBulkUpdate,
@@ -1789,15 +1792,23 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             hideTopControls,
             tabContainerCls,
             gridTabHeaderComponent,
+            hideCountCol,
         } = this.props;
         const { showBulkAdd, showBulkUpdate, showMask, activeEditTab, selected } = this.state;
+        const showCheckboxes = this.showSelectionCheckboxes();
+        const showCountCol = !hideCountCol;
 
         const gridContent = (
             <>
                 {!hideTopControls && this.renderTopControls()}
                 {gridTabHeaderComponent}
                 <div
-                    className={classNames(EDITABLE_GRID_CONTAINER_CLS, { 'loading-mask': showMask })}
+                    className={classNames(EDITABLE_GRID_CONTAINER_CLS, 'grid-panel__lock-left', {
+                        'grid-panel__lock-left-with-checkboxes': showCheckboxes,
+                        'grid-panel__lock-left-with-countcol': showCountCol && !showCheckboxes,
+                        'grid-panel__lock-left-with-checkboxes-and-countcol': showCountCol && showCheckboxes,
+                        'loading-mask': showMask,
+                    })}
                     onKeyDown={this.onKeyDown}
                     onMouseDown={this.beginDrag}
                     onMouseUp={this.onMouseUp}
@@ -1810,8 +1821,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         condensed={condensed}
                         data={this.getGridData()}
                         emptyText={emptyGridMsg}
+                        fixedHeight={fixedHeight}
                         headerCell={this.headerCell}
-                        responsive={false}
                         rowKey={GRID_EDIT_INDEX}
                         striped={striped}
                     />

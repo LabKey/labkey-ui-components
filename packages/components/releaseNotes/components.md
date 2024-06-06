@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD June 2024
+- Issue 49882: App editable grid support for locking column header and left columns on scroll
+
 ### version 3.48.1
 *Released*: 4 June 2024
 - Issue 41718: Domain Designer Field Imports should observe auto-increment fields

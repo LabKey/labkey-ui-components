@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-###  version 3.??.?
-*Released*: ? June 2024
+###  version 3.49.0
+*Released*: 6 June 2024
 - getSelectionLineageData: make selection `Set<string>` instead of `List<any>`
   - It's always sourced from QueryModel.selections
 - SamplesEditableGridProps: remove displayQueryModel

@@ -280,26 +280,16 @@ export async function getSampleStorageId(sampleRowId: number): Promise<number> {
     return caseInsensitive(result.rows[0], 'RowId').value;
 }
 
-function getRowIdsFromSelection(selection: List<any>): number[] {
-    const rowIds = [];
-    if (selection && !selection.isEmpty()) {
-        selection.forEach(sel => rowIds.push(parseInt(sel, 10)));
-    }
-    return rowIds;
-}
-
 // Used for samples and dataclasses
 export function getSelectionLineageData(
-    selection: List<any>,
+    selections: Set<string>,
     schema: string,
     query: string,
     viewName: string,
     columns?: string[]
 ): Promise<ISelectRowsResult> {
-    const rowIds = getRowIdsFromSelection(selection);
-    if (rowIds.length === 0) {
-        return Promise.reject('No data is selected.');
-    }
+    if (selections?.size === 0) return Promise.reject('No data is selected.');
+    const rowIds = Array.from(selections).map(s => parseInt(s, 10));
 
     return selectRowsDeprecated({
         schemaName: schema,

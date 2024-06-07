@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD June 2024
 - Issue 49882: App editable grid support for locking column header and left columns on scroll
 
+###  version 3.49.0
+*Released*: 6 June 2024
+- getSelectionLineageData: make selection `Set<string>` instead of `List<any>`
+  - It's always sourced from QueryModel.selections
+- SamplesEditableGridProps: remove displayQueryModel
+
 ### version 3.48.1
 *Released*: 4 June 2024
 - Issue 41718: Domain Designer Field Imports should observe auto-increment fields

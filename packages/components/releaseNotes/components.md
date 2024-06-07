@@ -7,6 +7,12 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Add entityApi.isDataTypeEmpty to check if a design has data
   - Allow hiding of Projects section in designer
 
+###  version 3.49.0
+*Released*: 6 June 2024
+- getSelectionLineageData: make selection `Set<string>` instead of `List<any>`
+  - It's always sourced from QueryModel.selections
+- SamplesEditableGridProps: remove displayQueryModel
+
 ### version 3.48.1
 *Released*: 4 June 2024
 - Issue 41718: Domain Designer Field Imports should observe auto-increment fields

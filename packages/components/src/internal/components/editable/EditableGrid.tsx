@@ -325,6 +325,7 @@ export interface SharedEditableGridProps {
     hideTopControls?: boolean;
     insertColumns?: QueryColumn[];
     isSubmitting?: boolean;
+    lockLeftOnScroll?: boolean; // lock the left columns when scrolling horizontally
     lockedRows?: string[]; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     maxRows?: number;
     metricFeatureArea?: string;
@@ -423,6 +424,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         columnMetadata: Map<string, EditableColumnMetadata>(),
         notDeletable: List<any>(),
         fixedHeight: true,
+        lockLeftOnScroll: true,
         condensed: false,
         disabled: false,
         isSubmitting: false,
@@ -1793,6 +1795,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             tabContainerCls,
             gridTabHeaderComponent,
             hideCountCol,
+            lockLeftOnScroll,
         } = this.props;
         const { showBulkAdd, showBulkUpdate, showMask, activeEditTab, selected } = this.state;
         const showCheckboxes = this.showSelectionCheckboxes();
@@ -1803,10 +1806,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {!hideTopControls && this.renderTopControls()}
                 {gridTabHeaderComponent}
                 <div
-                    className={classNames(EDITABLE_GRID_CONTAINER_CLS, 'grid-panel__lock-left', {
-                        'grid-panel__lock-left-with-checkboxes': showCheckboxes,
-                        'grid-panel__lock-left-with-countcol': showCountCol && !showCheckboxes,
-                        'grid-panel__lock-left-with-checkboxes-and-countcol': showCountCol && showCheckboxes,
+                    className={classNames(EDITABLE_GRID_CONTAINER_CLS, {
+                        'grid-panel__lock-left': lockLeftOnScroll,
+                        'grid-panel__lock-left-with-checkboxes': lockLeftOnScroll && showCheckboxes,
+                        'grid-panel__lock-left-with-countcol': lockLeftOnScroll && showCountCol && !showCheckboxes,
+                        'grid-panel__lock-left-with-checkboxes-and-countcol': lockLeftOnScroll && showCountCol && showCheckboxes,
                         'loading-mask': showMask,
                     })}
                     onKeyDown={this.onKeyDown}

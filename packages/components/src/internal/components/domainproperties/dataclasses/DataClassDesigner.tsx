@@ -60,9 +60,9 @@ interface Props {
     onChange?: (model: DataClassModel) => void;
     onComplete: (model: DataClassModel) => void;
     saveBtnText?: string;
+    showGenIdBanner?: boolean;
     testMode?: boolean;
     validateNameExpressions?: boolean;
-    showGenIdBanner?: boolean;
 }
 
 interface State {

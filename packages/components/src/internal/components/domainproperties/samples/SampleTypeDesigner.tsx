@@ -103,6 +103,7 @@ interface Props {
     nounPlural?: string;
     nounSingular?: string;
     onCancel: () => void;
+    onChange?: (model: SampleTypeModel) => void;
     onComplete: (response: DomainDesign) => void;
     sampleAliasCaption?: string;
     sampleTypeCaption?: string;
@@ -112,10 +113,9 @@ interface Props {
     showLinkToStudy?: boolean;
     showParentLabelPrefix?: boolean;
     testMode?: boolean;
-    useSeparateDataClassesAliasMenu?: boolean;
     validateNameExpressions?: boolean;
     validateProperties?: (designerDetails?: any) => Promise<any>;
-    onChange?: (model: SampleTypeModel) => void;
+    useSeparateDataClassesAliasMenu?: boolean;
 }
 
 interface State {

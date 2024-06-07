@@ -247,6 +247,52 @@ const GridMessages: FC<GridMessagesProps> = memo(({ messages }) => (
     </div>
 ));
 
+interface GridRowProps {
+    columns: List<GridColumn>;
+    highlight: boolean;
+    row: Map<string, any>;
+    rowIdx: number;
+}
+
+const GridRow: FC<GridRowProps> = memo(({ columns, highlight, row, rowIdx }) => {
+    // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
+    // "textAlign" property correctly for <td> elements.
+    return (
+        <tr
+            className={classNames({
+                'grid-row-highlight': highlight,
+                'grid-row-alternate': rowIdx % 2 === 0,
+                'grid-row': rowIdx % 2 === 1,
+            })}
+        >
+            {columns.map((column: GridColumn, c: number) =>
+                column.tableCell ? (
+                    <Fragment key={column.index}>{column.cell(row.get(column.index), row, column, rowIdx, c)}</Fragment>
+                ) : (
+                    <td key={column.index} style={{ textAlign: column.align || 'left' } as any}>
+                        {column.cell(row.get(column.index), row, column, rowIdx, c)}
+                    </td>
+                )
+            )}
+        </tr>
+    );
+});
+GridRow.displayName = 'GridRow';
+
+interface EmptyGridRowProps {
+    colSpan: number;
+    emptyText: string;
+    isLoading: boolean;
+    loadingText: ReactNode;
+}
+
+const EmptyGridRow: FC<EmptyGridRowProps> = memo(({ colSpan, emptyText, isLoading, loadingText }) => (
+    <tr key="grid-default-row" className={isLoading ? 'grid-loading' : 'grid-empty'}>
+        <td colSpan={colSpan}>{isLoading ? loadingText : emptyText}</td>
+    </tr>
+));
+EmptyGridRow.displayName = 'EmptyGridRow';
+
 interface GridBodyProps {
     columns: List<GridColumn>;
     data: List<Map<string, any>>;
@@ -254,63 +300,31 @@ interface GridBodyProps {
     highlightRowIndexes?: List<number>;
     isLoading: boolean;
     loadingText: ReactNode;
-    rowKey: any;
+    rowKey: string;
 }
 
-class GridBody extends PureComponent<GridBodyProps> {
-    renderDefaultRow = (): ReactNode => {
-        const { columns, emptyText, isLoading, loadingText } = this.props;
+const GridBody: FC<GridBodyProps> = memo(props => {
+    const { columns, data, emptyText, highlightRowIndexes, isLoading, loadingText, rowKey } = props;
 
-        return (
-            <tr key="grid-default-row" className={isLoading ? 'grid-loading' : 'grid-empty'}>
-                <td colSpan={columns.count()}>{isLoading ? loadingText : emptyText}</td>
-            </tr>
-        );
-    }
+    return (
+        <tbody>
+            {data.map((row, ind) => {
+                const highlight = highlightRowIndexes && highlightRowIndexes.contains(ind);
+                const key = rowKey ? row.get(rowKey) : ind;
+                return <GridRow columns={columns} highlight={highlight} key={key} row={row} rowIdx={ind} />;
+            })}
 
-    renderRow = (row: any, r: number, highlight?: boolean): ReactNode => {
-        const { columns, rowKey } = this.props;
-        const key = rowKey ? row.get(rowKey) : r;
-
-        // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
-        // "textAlign" property correctly for <td> elements.
-        return (
-            <tr
-                key={key}
-                className={classNames({
-                    'grid-row-highlight': highlight,
-                    'grid-row-alternate': r % 2 === 0,
-                    'grid-row': r % 2 === 1,
-                })}
-            >
-                {columns.map((column: GridColumn, c: number) =>
-                    column.tableCell ? (
-                        <Fragment key={column.index}>{column.cell(row.get(column.index), row, column, r, c)}</Fragment>
-                    ) : (
-                        <td key={column.index} style={{ textAlign: column.align || 'left' } as any}>
-                            {column.cell(row.get(column.index), row, column, r, c)}
-                        </td>
-                    )
-                )}
-            </tr>
-        );
-    };
-
-    render(): ReactNode {
-        const { data, highlightRowIndexes } = this.props;
-
-        return (
-            <tbody>
-                {data.count() > 0
-                    ? data.map((row, ind) => {
-                          const highlight = highlightRowIndexes && highlightRowIndexes.contains(ind);
-                          return this.renderRow(row, ind, highlight);
-                      })
-                    : this.renderDefaultRow()}
-            </tbody>
-        );
-    }
-}
+            {data.isEmpty() && (
+                <EmptyGridRow
+                    colSpan={columns.count()}
+                    emptyText={emptyText}
+                    isLoading={isLoading}
+                    loadingText={loadingText}
+                />
+            )}
+        </tbody>
+    );
+});
 
 export type GridData = Array<Record<string, any>> | List<Map<string, any>>;
 
@@ -335,7 +349,7 @@ export interface GridProps {
      * If a rowKey is specified the <Grid> will use it as a lookup key into each row. The associated value
      * will be used as the Key for the row.
      */
-    rowKey?: any; // a valid React key
+    rowKey?: string;
     showHeader?: boolean;
     striped?: boolean;
     tableRef?: RefObject<HTMLTableElement>;

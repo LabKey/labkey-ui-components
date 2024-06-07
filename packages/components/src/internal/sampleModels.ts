@@ -67,7 +67,6 @@ export type SampleGridButton = ComponentType<SampleGridButtonProps & RequiresMod
 export interface SamplesEditableGridProps {
     api?: ComponentsAPIWrapper;
     combineParentTypes?: boolean;
-    displayQueryModel: QueryModel;
     editableGridUpdateData?: OrderedMap<string, any>;
     getIsDirty?: () => boolean;
     invalidateSampleQueries?: (schemaQuery: SchemaQuery) => void;

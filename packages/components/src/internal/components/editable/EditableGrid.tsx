@@ -1806,9 +1806,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {!hideTopControls && this.renderTopControls()}
                 {gridTabHeaderComponent}
                 <div
-                    className={classNames(EDITABLE_GRID_CONTAINER_CLS, {
-                        'grid-panel__lock-left': lockLeftOnScroll,
-                        'grid-panel__lock-left-with-checkboxes': lockLeftOnScroll && showCheckboxes,
+                    className={classNames(EDITABLE_GRID_CONTAINER_CLS, 'grid-panel__lock-left', {
+                        'grid-panel__lock-left-with-checkboxes': showCheckboxes,
                         'grid-panel__lock-left-with-countcol': lockLeftOnScroll && showCountCol && !showCheckboxes,
                         'grid-panel__lock-left-with-checkboxes-and-countcol': lockLeftOnScroll && showCountCol && showCheckboxes,
                         'loading-mask': showMask,

@@ -179,8 +179,24 @@
     }
 }
 
+.grid-panel__checkbox {
+    margin: 0 8px !important;
+}
+
+.grid-panel__grid .table-responsive thead th {
+    // Cancel the padding set by .table-condensed, see padding on .grid-header-cell__body below.
+    padding: 0;
+
+    &#__selection__,
+    .grid-header-cell__body {
+        // re-add the padding to the .grid-header-cell__body, this makes it so the entire th area is clickable
+        padding: $table-condensed-cell-padding;
+    }
+}
+
 /* Grid sticky/locked column headers on vertical scroll */
-.grid-panel__grid .table-responsive {
+.grid-panel__grid .table-responsive,
+.editable-grid__container .table-responsive {
     overflow-y: auto;
 
     thead {
@@ -190,26 +206,30 @@
 
         th {
             background-color: $white;
-            // Cancel the padding set by .table-condensed, see padding on .grid-header-cell__body below.
-            padding: 0;
 
             /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
             background-clip: padding-box;
-
-            &#__selection__,
-            .grid-header-cell__body {
-                // re-add the padding to the .grid-header-cell__body, this makes it so the entire th area is clickable
-                padding: $table-condensed-cell-padding;
-            }
         }
     }
 }
 
 /* Grid sticky/locked left most column on horizontal scroll */
-.grid-panel__grid.grid-panel__lock-left .table-responsive {
+.grid-panel__grid.grid-panel__lock-left .table-responsive,
+.editable-grid__container.grid-panel__lock-left .table-responsive {
     thead th:nth-child(1), tr td:nth-child(1) {
         position: sticky;
+        z-index: 1;
         left: -1px;
+
+        /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
+        background-clip: padding-box;
+    }
+}
+.grid-panel__grid.grid-panel__lock-left-with-checkboxes .table-responsive,
+.editable-grid__container.grid-panel__lock-left-with-checkboxes .table-responsive,
+.editable-grid__container.grid-panel__lock-left-with-countcol .table-responsive {
+    thead th:nth-child(2), tr td:nth-child(2) {
+        position: sticky;
         z-index: 1;
 
         /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
@@ -218,9 +238,30 @@
 }
 .grid-panel__grid.grid-panel__lock-left-with-checkboxes .table-responsive {
     thead th:nth-child(2), tr td:nth-child(2) {
-        position: sticky;
         left: 22px;
+    }
+}
+.editable-grid__container.grid-panel__lock-left-with-checkboxes .table-responsive {
+    thead th:nth-child(1), tr td:nth-child(1) {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    thead th:nth-child(2), tr td:nth-child(2) {
+        left: 28px;
+    }
+}
+.editable-grid__container.grid-panel__lock-left-with-countcol .table-responsive {
+    thead th:nth-child(2), tr td:nth-child(2) {
+        left: 43px;
+    }
+}
+
+.editable-grid__container.grid-panel__lock-left-with-checkboxes-and-countcol .table-responsive {
+    thead th:nth-child(3), tr td:nth-child(3) {
+        position: sticky;
         z-index: 1;
+        left: 71px;
 
         /* fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
         background-clip: padding-box;

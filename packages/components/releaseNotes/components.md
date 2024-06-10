@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+###  version 3.50.0
+*Released*: 10 June 2024
+- Issue 49882: App editable grid support for locking column header and left columns on scroll
+
 ###  version 3.49.0
 *Released*: 6 June 2024
 - getSelectionLineageData: make selection `Set<string>` instead of `List<any>`

@@ -20,6 +20,12 @@ const BASE_PROPS = {
     testMode: true,
 };
 
+const SERVER_CONTEXT = {
+    moduleContext: {
+        query: { hasProductProjects: true },
+    },
+};
+
 describe('DataClassDesigner', () => {
     beforeAll(() => {
         global.console.error = jest.fn();
@@ -40,7 +46,9 @@ describe('DataClassDesigner', () => {
             />
         );
         await act(async () => {
-            const { container } = renderWithAppContext(component);
+            const { container } = renderWithAppContext(component, {
+                serverContext: SERVER_CONTEXT,
+            });
             expect(container).toMatchSnapshot();
         });
 
@@ -71,13 +79,16 @@ describe('DataClassDesigner', () => {
             />
         );
         await act(async () => {
-            const { container } = renderWithAppContext(component);
+            const { container } = renderWithAppContext(component, {
+                serverContext: SERVER_CONTEXT,
+            });
             expect(container).toMatchSnapshot();
         });
 
         expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
         expect(document.querySelectorAll('.domain-form-panel').length).toBe(2);
         expect(screen.getByText('Import or infer fields from file')).toBeInTheDocument();
+        expect(document.querySelectorAll('#domain-projects-hdr').length).toBe(0);
     });
 
     test('initModel', async () => {
@@ -96,7 +107,9 @@ describe('DataClassDesigner', () => {
             />
         );
         await act(async () => {
-            const { container } = renderWithAppContext(component);
+            const { container } = renderWithAppContext(component, {
+                serverContext: SERVER_CONTEXT,
+            });
             expect(container).toMatchSnapshot();
         });
 
@@ -105,10 +118,41 @@ describe('DataClassDesigner', () => {
         expect(screen.queryByText('Import or infer fields from file')).not.toBeInTheDocument();
     });
 
+    test('appPropertiesOnly and allowProjectExclusion', async () => {
+        const component = (
+            <DataClassDesignerImpl
+                {...BASE_PROPS}
+                initModel={DataClassModel.create(getDomainDetailsJSON)}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+                appPropertiesOnly
+                allowProjectExclusion
+            />
+        );
+        await act(async () => {
+            const { container } = renderWithAppContext(component, {
+                serverContext: SERVER_CONTEXT,
+            });
+        });
+
+        expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
+        expect(document.querySelectorAll('.domain-form-panel').length).toBe(3);
+        expect(screen.queryByText('Import or infer fields from file')).not.toBeInTheDocument();
+        expect(document.querySelectorAll('#domain-projects-hdr').length).toBe(1);
+    });
+
     test('open fields panel', async () => {
         const component = <DataClassDesigner {...BASE_PROPS} />;
         await act(async () => {
-            renderWithAppContext(component);
+            renderWithAppContext(component, {
+                serverContext: SERVER_CONTEXT,
+            });
         });
 
         let panelHeader = document.querySelector('div#domain-header');

@@ -672,6 +672,81 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
       </div>
     </div>
     <div
+      class="panel panel-default domain-form-panel panel panel-default"
+    >
+      <div
+        class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
+        id="domain-projects-hdr"
+      >
+        <div
+          class="overlay-trigger"
+        >
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="domain-panel-status-icon domain-panel-status-icon-blue"
+            >
+              <span
+                class="fa fa-exclamation-circle"
+              />
+            </span>
+          </span>
+        </div>
+        <span
+          class="domain-panel-title"
+        >
+          Projects
+        </span>
+        <span
+          class="pull-right"
+        >
+          <span
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
+          />
+        </span>
+      </div>
+      <div
+        class="panel-collapse collapse"
+      >
+        <div
+          class="panel-body"
+        >
+          <div
+            class="bottom-spacing"
+          >
+            Select which projects will use this 
+            assay design
+            .
+          </div>
+          <div
+            class="alert alert-danger"
+            role="alert"
+          >
+            Error: Cannot read properties of undefined (reading 'map')
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="col-xs-12 bottom-spacing"
+            >
+              <span
+                class=""
+              >
+                <i
+                  aria-hidden="true"
+                  class="fa fa-spinner fa-pulse"
+                />
+                 
+                Loading...
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
       class="form-buttons"
     >
       <div
@@ -3694,6 +3769,772 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     Field
                   </span>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="panel panel-default domain-form-panel panel panel-default"
+    >
+      <div
+        class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
+        id="domain-projects-hdr"
+      >
+        <span
+          class="domain-panel-status-icon domain-panel-status-icon-green"
+        >
+          <span
+            class="fa fa-check-circle"
+          />
+        </span>
+        <span
+          class="domain-panel-title"
+        >
+          Projects
+        </span>
+        <span
+          class="pull-right"
+        >
+          <span
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
+          />
+        </span>
+      </div>
+      <div
+        class="panel-collapse collapse"
+      >
+        <div
+          class="panel-body"
+        >
+          <div
+            class="bottom-spacing"
+          >
+            Select which projects will use this 
+            assay design
+            .
+          </div>
+          <div
+            class="alert alert-danger"
+            role="alert"
+          >
+            Error: Cannot read properties of undefined (reading 'map')
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="col-xs-12 bottom-spacing"
+            >
+              <span
+                class=""
+              >
+                <i
+                  aria-hidden="true"
+                  class="fa fa-spinner fa-pulse"
+                />
+                 
+                Loading...
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="form-buttons"
+    >
+      <div
+        class="form-buttons__left"
+      >
+        <button
+          class="cancel-button btn btn-default"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+      <div
+        class="form-buttons__right"
+      >
+        <button
+          class="save-button btn btn-primary"
+          type="button"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AssayDesignerPanels appPropertiesOnly, allowProjectExclusion false 1`] = `
+<div>
+  <div
+    class="domain-designer"
+  >
+    <div
+      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+    >
+      <div
+        class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
+        id="assay-properties-hdr"
+      >
+        <span
+          class="domain-panel-title"
+        >
+          Assay Properties
+        </span>
+        <span
+          class="pull-right"
+        >
+          <span
+            class="fa fa-lg fa-chevron-down domain-form-collapse-btn"
+          />
+        </span>
+      </div>
+      <div
+        class="panel-collapse collapse in"
+      >
+        <div
+          class="panel-body"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col-xs-12"
+            >
+              <a
+                class="domain-field-float-right"
+                href="https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=defineAssaySchema"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more about designing assays
+              </a>
+            </div>
+          </div>
+          <form>
+            <div
+              class="col-xs-12 col-lg-6"
+            >
+              <div
+                class="domain-field-padding-bottom"
+              >
+                <div
+                  class="domain-field-section-heading"
+                >
+                  Basic Properties
+                </div>
+                <div
+                  class="row margin-top"
+                >
+                  <div
+                    class="col col-xs-3 col-lg-4"
+                  >
+                    <span
+                      class="domain-no-wrap"
+                    >
+                      Name
+                       *
+                    </span>
+                  </div>
+                  <div
+                    class="col col-xs-9 col-lg-8"
+                  >
+                    <input
+                      class="form-control"
+                      id="assay-design-name"
+                      placeholder="Enter a name for this assay"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="row margin-top"
+                >
+                  <div
+                    class="col col-xs-3 col-lg-4"
+                  >
+                    <span
+                      class="domain-no-wrap"
+                    >
+                      Description
+                      <div
+                        class="overlay-trigger"
+                      >
+                        <span
+                          class="label-help-target"
+                        >
+                          <span
+                            class="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                      
+                    </span>
+                  </div>
+                  <div
+                    class="col col-xs-9 col-lg-8"
+                  >
+                    <textarea
+                      class="form-control"
+                      id="assay-design-description"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="domain-field-padding-bottom"
+              >
+                <div
+                  class="domain-field-section-heading"
+                >
+                  Editing Settings
+                </div>
+                <div
+                  class="row margin-top"
+                >
+                  <div
+                    class="col col-xs-3 col-lg-4"
+                  >
+                    Editable 
+                    <span
+                      class="domain-no-wrap"
+                    >
+                      Runs
+                      <div
+                        class="overlay-trigger"
+                      >
+                        <span
+                          class="label-help-target"
+                        >
+                          <span
+                            class="label-help-icon fa fa-question-circle"
+                          />
+                        </span>
+                      </div>
+                      
+                    </span>
+                  </div>
+                  <div
+                    class="col col-xs-9 col-lg-8"
+                  >
+                    <input
+                      id="assay-design-editableRuns"
+                      type="checkbox"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-xs-12 col-lg-6"
+            >
+              <div
+                class="domain-field-padding-bottom"
+              >
+                <div
+                  class="domain-field-section-heading"
+                >
+                  Import Settings
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div
+      class="panel panel-default domain-form-panel panel panel-default"
+    >
+      <div
+        class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
+        id="domainpropertiesrow-Batch-Fields-hdr"
+      >
+        <div
+          class="overlay-trigger"
+        >
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="domain-panel-status-icon domain-panel-status-icon-blue"
+            >
+              <span
+                class="fa fa-exclamation-circle"
+              />
+            </span>
+          </span>
+        </div>
+        <span
+          class="domain-panel-title"
+        >
+          Batch Fields
+        </span>
+        <span
+          class="pull-right"
+        >
+          <span
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
+          />
+        </span>
+        <div
+          class="overlay-trigger"
+        >
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="label-help-icon fa fa-question-circle"
+            />
+          </span>
+        </div>
+      </div>
+      <div
+        class="panel-collapse collapse"
+      >
+        <div
+          class="panel-body"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col-xs-12"
+            />
+          </div>
+          <span
+            class="translator--toggle__wizard"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-sm-12"
+              >
+                <label
+                  class="control-label text-left"
+                >
+                  <strong>
+                    Import fields from file
+                  </strong>
+                </label>
+              </div>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="col-sm-12"
+              >
+                <div
+                  class="wizard-row--container"
+                >
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="file-upload--container block"
+                    >
+                      <label
+                        class="file-upload--label"
+                        for="fileUpload0"
+                      >
+                        <i
+                          aria-hidden="true"
+                          class="fa fa-cloud-upload fa-2x cloud-logo"
+                        />
+                        Select file or drag and drop here.
+                      </label>
+                      <input
+                        accept=".json"
+                        class="file-upload--input"
+                        id="fileUpload0"
+                        name="fileUpload0"
+                        type="file"
+                      />
+                    </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+          <div
+            class="row"
+          >
+            <div
+              class="col-md-9"
+            >
+              <div
+                class="file-form-formats"
+              >
+                <strong>
+                  Supported formats include: 
+                </strong>
+                .json
+              </div>
+            </div>
+            <div
+              class="col-md-3"
+            >
+              <div
+                class="pull-right"
+              />
+            </div>
+          </div>
+          <div
+            class="margin-top domain-form-manual-section"
+          >
+            <p>
+              Or
+            </p>
+            <div
+              class="form-group"
+            >
+              <div
+                class="domain-form-manual-btn"
+              >
+                <span
+                  class="container--action-button btn btn-default"
+                >
+                  Manually Define Fields
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="panel panel-default domain-form-panel panel panel-default"
+    >
+      <div
+        class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
+        id="domainpropertiesrow-Run-Fields-hdr"
+      >
+        <div
+          class="overlay-trigger"
+        >
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="domain-panel-status-icon domain-panel-status-icon-blue"
+            >
+              <span
+                class="fa fa-exclamation-circle"
+              />
+            </span>
+          </span>
+        </div>
+        <span
+          class="domain-panel-title"
+        >
+          Run Fields
+        </span>
+        <span
+          class="pull-right"
+        >
+          <span
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
+          />
+        </span>
+        <div
+          class="overlay-trigger"
+        >
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="label-help-icon fa fa-question-circle"
+            />
+          </span>
+        </div>
+      </div>
+      <div
+        class="panel-collapse collapse"
+      >
+        <div
+          class="panel-body"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col-xs-12"
+            />
+          </div>
+          <span
+            class="translator--toggle__wizard"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-sm-12"
+              >
+                <label
+                  class="control-label text-left"
+                >
+                  <strong>
+                    Import fields from file
+                  </strong>
+                </label>
+              </div>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="col-sm-12"
+              >
+                <div
+                  class="wizard-row--container"
+                >
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="file-upload--container block"
+                    >
+                      <label
+                        class="file-upload--label"
+                        for="fileUpload1"
+                      >
+                        <i
+                          aria-hidden="true"
+                          class="fa fa-cloud-upload fa-2x cloud-logo"
+                        />
+                        Select file or drag and drop here.
+                      </label>
+                      <input
+                        accept=".json"
+                        class="file-upload--input"
+                        id="fileUpload1"
+                        name="fileUpload1"
+                        type="file"
+                      />
+                    </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+          <div
+            class="row"
+          >
+            <div
+              class="col-md-9"
+            >
+              <div
+                class="file-form-formats"
+              >
+                <strong>
+                  Supported formats include: 
+                </strong>
+                .json
+              </div>
+            </div>
+            <div
+              class="col-md-3"
+            >
+              <div
+                class="pull-right"
+              />
+            </div>
+          </div>
+          <div
+            class="margin-top domain-form-manual-section"
+          >
+            <p>
+              Or
+            </p>
+            <div
+              class="form-group"
+            >
+              <div
+                class="domain-form-manual-btn"
+              >
+                <span
+                  class="container--action-button btn btn-default"
+                >
+                  Manually Define Fields
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="panel panel-default domain-form-panel panel panel-default"
+    >
+      <div
+        class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
+        id="domainpropertiesrow-Data-Fields-hdr"
+      >
+        <div
+          class="overlay-trigger"
+        >
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="domain-panel-status-icon domain-panel-status-icon-blue"
+            >
+              <span
+                class="fa fa-exclamation-circle"
+              />
+            </span>
+          </span>
+        </div>
+        <span
+          class="domain-panel-title"
+        >
+          Results Fields
+        </span>
+        <span
+          class="pull-right"
+        >
+          <span
+            class="fa fa-lg fa-chevron-right domain-form-expand-btn"
+          />
+        </span>
+        <div
+          class="overlay-trigger"
+        >
+          <span
+            class="label-help-target"
+          >
+            <span
+              class="label-help-icon fa fa-question-circle"
+            />
+          </span>
+        </div>
+      </div>
+      <div
+        class="panel-collapse collapse"
+      >
+        <div
+          class="panel-body"
+        >
+          <div
+            class="row"
+          >
+            <div
+              class="col-xs-12"
+            />
+          </div>
+          <span
+            class="translator--toggle__wizard"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col-sm-12"
+              >
+                <label
+                  class="control-label text-left"
+                >
+                  <strong>
+                    Import or infer fields from file
+                  </strong>
+                </label>
+              </div>
+            </div>
+            <div
+              class="row"
+            >
+              <div
+                class="col-sm-12"
+              >
+                <div
+                  class="wizard-row--container"
+                >
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="file-upload--container block"
+                    >
+                      <label
+                        class="file-upload--label"
+                        for="fileUpload2"
+                      >
+                        <i
+                          aria-hidden="true"
+                          class="fa fa-cloud-upload fa-2x cloud-logo"
+                        />
+                        Select file or drag and drop here.
+                      </label>
+                      <input
+                        accept=".csv, .tsv, .txt, .xls, .xlsx, .json"
+                        class="file-upload--input"
+                        id="fileUpload2"
+                        name="fileUpload2"
+                        type="file"
+                      />
+                    </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+          <div
+            class="row"
+          >
+            <div
+              class="col-md-9"
+            >
+              <div
+                class="file-form-formats"
+              >
+                <strong>
+                  Supported formats include: 
+                </strong>
+                .csv, .tsv, .txt, .xls, .xlsx, .json
+              </div>
+            </div>
+            <div
+              class="col-md-3"
+            >
+              <div
+                class="pull-right"
+              />
+            </div>
+          </div>
+          <div
+            class="margin-top domain-form-manual-section"
+          >
+            <p>
+              Or
+            </p>
+            <div
+              class="form-group"
+            >
+              <div
+                class="domain-form-manual-btn"
+              >
+                <span
+                  class="container--action-button btn btn-default"
+                >
+                  Manually Define Fields
+                </span>
               </div>
             </div>
           </div>

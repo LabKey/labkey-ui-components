@@ -29,6 +29,7 @@ const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
 
 export interface AssayDesignerPanelsProps {
+    allowProjectExclusion?: boolean;
     api?: DomainPropertiesAPIWrapper;
     appDomainHeaders?: Map<string, HeaderRenderer>;
     appIsValidMsg?: (model: AssayProtocolModel) => string;
@@ -205,6 +206,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 
     render() {
         const {
+            allowProjectExclusion,
             initModel,
             api,
             appPropertiesOnly,
@@ -318,7 +320,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                         </DomainForm>
                     );
                 })}
-                {appPropertiesOnly && (
+                {appPropertiesOnly && allowProjectExclusion && (
                     <DataTypeProjectsPanel
                         controlledCollapse
                         dataTypeRowId={protocolModel?.protocolId}

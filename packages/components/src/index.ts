@@ -366,6 +366,11 @@ import { ProtectedDataSettingsPanel } from './internal/components/administration
 import { fetchGroupMembership, getGroupMembership } from './internal/components/administration/actions';
 import { MemberType } from './internal/components/administration/models';
 import {
+    ASSAY_DESIGNER_ROLE,
+    DATA_CLASS_DESIGNER_ROLE,
+    SAMPLE_TYPE_DESIGNER_ROLE,
+} from './internal/components/administration/constants';
+import {
     deleteSampleSet,
     fetchSamples,
     getFieldLookupFromSelection,
@@ -1407,6 +1412,9 @@ export {
     fetchGroupMembership,
     getGroupMembership,
     MemberType,
+    ASSAY_DESIGNER_ROLE,
+    DATA_CLASS_DESIGNER_ROLE,
+    SAMPLE_TYPE_DESIGNER_ROLE,
     // assay
     AssayUploadResultModel,
     AssayStateModel,

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.52.0
+*Released*: 10 June 2024
+- Sample Type & Source Type Designer Roles
+  - Add entityApi.isDataTypeEmpty to check if a design has data
+  - Allow hiding of Projects section in designer
+
 ###  version 3.51.0
 *Released*: 10 June 2024
 - Assay import support for results domain file fields

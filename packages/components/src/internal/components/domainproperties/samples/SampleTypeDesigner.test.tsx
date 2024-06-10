@@ -19,6 +19,16 @@ import { getEntityTestAPIWrapper } from '../../entities/APIWrapper';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeDesigner, SampleTypeDesignerImpl } from './SampleTypeDesigner';
+import { act } from '@testing-library/react';
+import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
+import userEvent from '@testing-library/user-event';
+
+
+const SERVER_CONTEXT = {
+    moduleContext: {
+        query: { hasProductProjects: true}
+    },
+};
 
 const PARENT_OPTIONS = [
     {
@@ -70,6 +80,10 @@ const BASE_PROPS = {
 };
 
 describe('SampleTypeDesigner', () => {
+    afterEach(() => {
+        document.getElementsByTagName('html')[0].innerHTML = '';
+    });
+
     test('default properties', async () => {
         const form = (
             <SampleTypeDesignerImpl
@@ -85,15 +99,45 @@ describe('SampleTypeDesigner', () => {
             />
         );
 
-        const wrapped = shallow(form);
+        await act(async () => {
+            renderWithAppContext(form, {
+                serverContext: SERVER_CONTEXT,
+            })
+        });
 
-        await waitForLifecycle(wrapped);
+        expect(document.getElementsByClassName('domain-form-panel')).toHaveLength(2);
+        const panelTitles = document.querySelectorAll('.domain-panel-title');
+        expect(panelTitles[0].textContent).toBe('Sample Type Properties');
+        expect(panelTitles[1].textContent).toBe('Fields');
+    });
 
-        expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);
-        expect(wrapped.find(DomainForm)).toHaveLength(1);
-        expect(wrapped.find(FileAttachmentForm)).toHaveLength(0);
+    test('allowProjectExclusion', async () => {
+        const form = (
+            <SampleTypeDesignerImpl
+                {...BASE_PROPS}
+                currentPanelIndex={0}
+                firstState={true}
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+                allowProjectExclusion
+            />
+        );
 
-        wrapped.unmount();
+        await act(async () => {
+            renderWithAppContext(form, {
+                serverContext: SERVER_CONTEXT,
+            })
+        });
+
+        expect(document.getElementsByClassName('domain-form-panel')).toHaveLength(3);
+        const panelTitles = document.querySelectorAll('.domain-panel-title');
+        expect(panelTitles[0].textContent).toBe('Sample Type Properties');
+        expect(panelTitles[1].textContent).toBe('Fields');
+        expect(panelTitles[2].textContent).toBe('Projects');
     });
 
     test('initModel with name URL props', async () => {
@@ -122,45 +166,55 @@ describe('SampleTypeDesigner', () => {
                 visitedPanels={List()}
             />
         );
-        const wrapped = shallow(form);
-        await waitForLifecycle(wrapped);
+        await act(async () => {
+            renderWithAppContext(form, {
+                serverContext: SERVER_CONTEXT,
+            })
+        });
 
-        expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);
-        expect(wrapped.find(DomainForm)).toHaveLength(1);
-        expect(wrapped.find(FileAttachmentForm)).toHaveLength(0);
-        wrapped.unmount();
+        //expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);
+        const panels = document.querySelectorAll('.domain-form-panel');
+        expect(panels).toHaveLength(2);
+        const panelTitles = document.querySelectorAll('.domain-panel-title');
+        expect(panelTitles[0].textContent).toBe('Sample Type Properties');
+        expect(panelTitles[1].textContent).toBe('Fields');
+        expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(0);
     });
 
     test('open fields panel', async () => {
-        const wrapped = mountWithAppServerContext(<SampleTypeDesigner {...BASE_PROPS} />);
-        await waitForLifecycle(wrapped);
+        await act(async () => {
+            renderWithAppContext(<SampleTypeDesigner {...BASE_PROPS} />, {
+                serverContext: SERVER_CONTEXT,
+            })
+        });
 
-        const panelHeader = wrapped.find('div#domain-header');
-        expect(wrapped.find('#domain-header').at(1).hasClass('domain-panel-header-collapsed')).toBeTruthy();
-        panelHeader.simulate('click');
-        expect(wrapped.find('#domain-header').at(1).hasClass('domain-panel-header-expanded')).toBeTruthy();
-        expect(wrapped.find(FileAttachmentForm)).toHaveLength(1);
+        const panelHeader = document.querySelector('div#domain-header');
+        expect(panelHeader.getAttribute('class')).toContain('domain-panel-header-collapsed');
+        userEvent.click(panelHeader);
+        expect(document.querySelector('#domain-header').getAttribute('class')).toContain('domain-panel-header-expanded');
+        expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(1);
 
-        const alerts = wrapped.find(Alert);
+        const alerts = document.getElementsByClassName('alert');
         expect(alerts).toHaveLength(2);
-        expect(alerts.at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
-        expect(alerts.at(1).text()).toEqual('Please correct errors in the properties panel before saving.');
-        wrapped.unmount();
+        expect(alerts[0].textContent).toEqual(PROPERTIES_PANEL_ERROR_MSG);
+        expect(alerts[1].textContent).toEqual('Please correct errors in the properties panel before saving.');
     });
 
     test('open fields panel, with barcodes', async () => {
         LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement', 'api', 'core', 'premium'] } };
-        const wrapped = mountWithAppServerContext(<SampleTypeDesigner {...BASE_PROPS} />);
-        await waitForLifecycle(wrapped);
+        await act(async () => {
+            renderWithAppContext(<SampleTypeDesigner {...BASE_PROPS} />, {
+                serverContext: SERVER_CONTEXT,
+            })
+        });
 
-        const panelHeader = wrapped.find('div#domain-header');
-        panelHeader.simulate('click');
-        const alerts = wrapped.find(Alert);
+        const panelHeader = document.querySelector('div#domain-header');
+        userEvent.click(panelHeader);
+        const alerts = document.getElementsByClassName('alert');
         // still expect to have only two alerts.  We don't show the Barcode header in the file import panel.
         // Jest doesn't want to switch to that panel.
         expect(alerts).toHaveLength(2);
-        expect(alerts.at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
-        expect(alerts.at(1).text()).toEqual('Please correct errors in the properties panel before saving.');
-        wrapped.unmount();
+        expect(alerts[0].textContent).toEqual(PROPERTIES_PANEL_ERROR_MSG);
+        expect(alerts[1].textContent).toEqual('Please correct errors in the properties panel before saving.');
     });
 });

@@ -11,11 +11,15 @@ import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
 import { Container } from '../base/models/Container';
 import { FetchContainerOptions } from '../security/APIWrapper';
 
+import { APPLICATION_ROLES_LABELS } from '../administration/constants';
+
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 
 export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
-    rawRoles.forEach(role => {
+    rawRoles.forEach(roleRaw => {
+        const role = roleRaw;
+        if (APPLICATION_ROLES_LABELS[role?.uniqueName]) role.displayName = APPLICATION_ROLES_LABELS[role?.uniqueName];
         roles = roles.push(SecurityRole.create(role));
     });
     return roles;

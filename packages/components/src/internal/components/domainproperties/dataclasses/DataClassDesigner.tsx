@@ -37,6 +37,7 @@ import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 
 interface Props {
     allowParentAlias?: boolean;
+    allowProjectExclusion?: boolean;
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: DataClassModel) => void;
@@ -444,6 +445,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
             domainFormDisplayOptions,
             showGenIdBanner,
             allowParentAlias,
+            allowProjectExclusion,
         } = this.props;
         const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading, parentOptions } = this.state;
 
@@ -524,7 +526,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                     domainFormDisplayOptions={domainFormDisplayOptions}
                     systemFields={model.options.systemFields}
                 />
-                {appPropertiesOnly && !model.isBuiltIn && (
+                {appPropertiesOnly && !model.isBuiltIn && allowProjectExclusion && (
                     <DataTypeProjectsPanel
                         controlledCollapse
                         dataTypeRowId={model?.rowId}

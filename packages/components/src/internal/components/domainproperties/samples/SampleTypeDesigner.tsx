@@ -83,6 +83,7 @@ const AliquotOptionsHelp: FC<{ helpTopic: string }> = memo(({ helpTopic }) => {
 
 interface Props {
     aliquotNamePatternProps?: AliquotNamePatternProps;
+    allowProjectExclusion?: boolean;
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: SampleTypeModel) => void;
@@ -112,9 +113,9 @@ interface Props {
     showLinkToStudy?: boolean;
     showParentLabelPrefix?: boolean;
     testMode?: boolean;
-    useSeparateDataClassesAliasMenu?: boolean;
     validateNameExpressions?: boolean;
     validateProperties?: (designerDetails?: any) => Promise<any>;
+    useSeparateDataClassesAliasMenu?: boolean;
 }
 
 interface State {
@@ -597,6 +598,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
     render() {
         const {
+            allowProjectExclusion,
             api,
             appPropertiesOnly,
             currentPanelIndex,
@@ -776,7 +778,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     }}
                     systemFields={options?.get('systemFields')}
                 />
-                {appPropertiesOnly && (
+                {appPropertiesOnly && allowProjectExclusion && (
                     // appPropertiesOnly check will prevent this panel from showing in LKS and in LKB media types
                     <DataTypeProjectsPanel
                         controlledCollapse

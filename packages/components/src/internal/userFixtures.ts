@@ -146,6 +146,44 @@ export const TEST_USER_ASSAY_DESIGNER = new User({
     permissionsList: [PermissionTypes.Read, PermissionTypes.DesignAssay],
 });
 
+export const TEST_USER_SOURCE_TYPE_DESIGNER = new User({
+    id: 1400,
+    canDelete: false,
+    canDeleteOwn: false,
+    canInsert: false,
+    canUpdate: false,
+    canUpdateOwn: false,
+    displayName: 'SourceTypeDesignerDisplayName',
+    isAdmin: false,
+    isAnalyst: false,
+    isDeveloper: false,
+    isGuest: false,
+    isRootAdmin: false,
+    isSignedIn: true,
+    isSystemAdmin: false,
+    isTrusted: false,
+    permissionsList: [PermissionTypes.Read, PermissionTypes.DesignDataClass],
+});
+
+export const TEST_USER_SAMPLE_TYPE_DESIGNER = new User({
+    id: 1400,
+    canDelete: false,
+    canDeleteOwn: false,
+    canInsert: false,
+    canUpdate: false,
+    canUpdateOwn: false,
+    displayName: 'SampleTypeDesignerDisplayName',
+    isAdmin: false,
+    isAnalyst: false,
+    isDeveloper: false,
+    isGuest: false,
+    isRootAdmin: false,
+    isSignedIn: true,
+    isSystemAdmin: false,
+    isTrusted: false,
+    permissionsList: [PermissionTypes.Read, PermissionTypes.DesignSampleSet],
+});
+
 export const TEST_USER_FOLDER_ADMIN = new User({
     id: 1005,
     canDelete: true,

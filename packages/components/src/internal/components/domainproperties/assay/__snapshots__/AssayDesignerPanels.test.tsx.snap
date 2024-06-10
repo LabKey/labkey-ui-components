@@ -289,6 +289,9 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -450,6 +453,9 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -611,6 +617,9 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -1127,6 +1136,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -4837,6 +4849,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -4998,6 +5013,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -5159,6 +5177,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -5527,6 +5548,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -5688,6 +5712,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -9070,6 +9097,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>

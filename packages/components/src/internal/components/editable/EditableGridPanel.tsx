@@ -188,7 +188,7 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
     return (
         <div className={`panel ${bsStyle === 'info' ? 'panel-info' : 'panel-default'} ${className}`}>
             <div className="panel-heading">{title}</div>
-            <div className="panel-body table-responsive">
+            <div className="panel-body">
                 {hasTabs && (
                     <ul className="nav nav-tabs">
                         {models.map((tabModel, index) => {

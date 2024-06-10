@@ -1147,7 +1147,6 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         <div
                             className={classNames('grid-panel__grid ', 'grid-panel__lock-left', {
                                 'grid-panel__lock-left-with-checkboxes': allowSelections,
-                                'grid-panel__lock-left-without-checkboxes': !allowSelections,
                             })}
                         >
                             {hasError && <Alert>{errorMsg || queryInfoError || rowsError || selectionsError}</Alert>}

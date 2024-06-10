@@ -1,4 +1,4 @@
-import { List, Map, OrderedMap, Record } from 'immutable';
+import { Map, OrderedMap, Record } from 'immutable';
 import { AssayDOM } from '@labkey/api';
 
 import { AssayUploadTabs } from '../../constants';
@@ -16,6 +16,7 @@ export interface AssayUploadOptions extends AssayDOM.ImportRunOptions {
     dataRows?: any; // Array<any>
     maxFileSize?: number;
     maxRowCount?: number;
+    resultsFiles?: File[];
 }
 
 export class AssayWizardModel
@@ -31,6 +32,7 @@ export class AssayWizardModel
         isSubmitting: undefined,
 
         attachedFiles: Map<string, File>(),
+        resultsFiles: Map<string, File>(),
         batchColumns: OrderedMap<string, QueryColumn>(),
         batchProperties: Map<string, any>(),
         comment: undefined,
@@ -64,6 +66,7 @@ export class AssayWizardModel
     declare isSubmitting?: boolean;
 
     declare attachedFiles: Map<string, File>;
+    declare resultsFiles: Map<string, File>;
     declare batchColumns: OrderedMap<string, QueryColumn>;
     declare batchProperties: Map<string, any>;
     declare usePreviousRunFile: boolean;
@@ -92,8 +95,20 @@ export class AssayWizardModel
         return currentStep === AssayUploadTabs.Grid;
     }
 
-    getAttachedFiles(): List<File> {
-        return this.attachedFiles.valueSeq().toList();
+    getAttachedFiles(): File[] {
+        return this.attachedFiles.valueSeq().toArray();
+    }
+
+    getTotalAttachedFilesSize(): number {
+        return this.attachedFiles.reduce((totalSize, file) => totalSize + file.size, 0);
+    }
+
+    getResultsFiles(): File[] {
+        return this.resultsFiles.valueSeq().toArray();
+    }
+
+    getTotalResultsFilesSize(): number {
+        return this.resultsFiles.reduce((totalSize, file) => totalSize + file.size, 0);
     }
 
     getRunName(currentStep: AssayUploadTabs): string {
@@ -104,7 +119,7 @@ export class AssayWizardModel
         if (this.isFilesTab(currentStep)) {
             // Issue 39328: set assay run to 'undefined' so that the server will fill it in based on the file name
             // note that in the "file already exists so it will be renamed" case, that renamed file name will be used.
-            const file = this.getAttachedFiles().first();
+            const file = this.getAttachedFiles()[0];
             if (file || this.usePreviousRunFile) {
                 return undefined;
             }
@@ -164,7 +179,8 @@ export class AssayWizardModel
         });
 
         if (this.isFilesTab(currentStep)) {
-            assayData.files = this.getAttachedFiles().toArray();
+            assayData.files = this.getAttachedFiles();
+            assayData.resultsFiles = this.getResultsFiles();
             if (runId !== undefined && usePreviousRunFile && assayData.files.length === 0) {
                 const url = runProperties.get('DataOutputs/DataFileUrl');
                 if (url) {

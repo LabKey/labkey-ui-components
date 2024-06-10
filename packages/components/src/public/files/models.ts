@@ -11,17 +11,21 @@ export interface FileSizeLimitProps {
         displayValue: string;
         value: number;
     };
+    totalSize?: {
+        displayValue: string;
+        value: number;
+    };
 }
 
 export interface FileGridPreviewProps {
-    previewCount: number;
+    acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
+    domainKindName?: string;
+    errorStyle?: string;
     header?: string;
     infoMsg?: any;
-    onPreviewLoad?: (response: InferDomainResponse, fileData?: File) => any;
-    acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
     initialData?: InferDomainResponse;
+    onPreviewLoad?: (response: InferDomainResponse, fileData?: File) => any;
+    previewCount: number;
     skipPreviewGrid?: boolean;
-    errorStyle?: string;
-    domainKindName?: string;
     warningMsg?: ReactNode;
 }

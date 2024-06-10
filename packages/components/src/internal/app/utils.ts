@@ -353,12 +353,16 @@ export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
 
 export function isChartBuilderEnabled(moduleContext?: ModuleContext): boolean {
     return (
-        biologicsIsPrimaryApp(moduleContext) &&
+        isLIMSEnabled(moduleContext) &&
         resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_CHART_BUILDER] === true
     );
 }
 
 export function isRReportsEnabled(moduleContext?: ModuleContext): boolean {
+    return biologicsIsPrimaryApp(moduleContext);
+}
+
+export function isLIMSEnabled(moduleContext?: ModuleContext): boolean {
     return biologicsIsPrimaryApp(moduleContext);
 }
 

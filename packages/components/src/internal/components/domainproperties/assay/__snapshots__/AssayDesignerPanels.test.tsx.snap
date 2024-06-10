@@ -4159,6 +4159,9 @@ exports[`AssayDesignerPanels appPropertiesOnly, allowProjectExclusion false 1`] 
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -4320,6 +4323,9 @@ exports[`AssayDesignerPanels appPropertiesOnly, allowProjectExclusion false 1`] 
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>
@@ -4481,6 +4487,9 @@ exports[`AssayDesignerPanels appPropertiesOnly, allowProjectExclusion false 1`] 
                         type="file"
                       />
                     </div>
+                    <div
+                      class="file-upload--file-entry-listing"
+                    />
                   </div>
                 </div>
               </div>

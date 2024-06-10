@@ -1145,14 +1145,14 @@ describe('addAssaySectionConfig', () => {
 });
 
 describe('isSharedDefinition', () => {
-    const currentContainerHome = new Container( {
+    const currentContainerHome = new Container({
         path: '/home',
         parentPath: '/',
         parentId: 'root',
         type: 'project',
         id: 'homeId',
     });
-    const currentContainerFolder = new Container ({
+    const currentContainerFolder = new Container({
         path: '/home/folder',
         parentPath: '/home',
         parentId: 'homeId',

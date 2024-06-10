@@ -1,21 +1,25 @@
 import React from 'react';
-import {ASSAY_WIZARD_MODEL} from '../../../test/data/constants';
-import {AssayUploadTabs} from '../../constants';
-import {EditorModel} from '../editable/models';
-import {TEST_USER_EDITOR} from '../../userFixtures';
 
-import {withFormSteps, WithFormStepsProps} from '../forms/FormStep';
-import {QueryModel} from '../../../public/QueryModel/QueryModel';
-import {LoadingState} from '../../../public/LoadingState';
+import { act } from '@testing-library/react';
 
-import {RunDataPanel} from './RunDataPanel';
-import {renderWithAppContext} from "../../test/reactTestLibraryHelpers";
-import {Operation} from "../../../public/QueryColumn";
-import {AssayWizardModel} from "./AssayWizardModel";
-import {AssayDefinitionModel, AssayDomainTypes} from "../../AssayDefinitionModel";
-import {QueryInfo} from "../../../public/QueryInfo";
-import {act} from "@testing-library/react";
-import {TEST_LIMS_STARTER_MODULE_CONTEXT} from "../../productFixtures";
+import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
+import { AssayUploadTabs } from '../../constants';
+import { EditorModel } from '../editable/models';
+import { TEST_USER_EDITOR } from '../../userFixtures';
+
+import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
+import { QueryModel } from '../../../public/QueryModel/QueryModel';
+import { LoadingState } from '../../../public/LoadingState';
+
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+import { Operation } from '../../../public/QueryColumn';
+
+import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
+import { QueryInfo } from '../../../public/QueryInfo';
+import { TEST_LIMS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
+
+import { AssayWizardModel } from './AssayWizardModel';
+import { RunDataPanel } from './RunDataPanel';
 
 const MODEL_ID_NOT_LOADED = 'not loaded';
 const MODEL_ID_LOADED = 'loaded';
@@ -96,7 +100,9 @@ describe('RunDataPanel', () => {
     });
 
     test('default props', () => {
-        renderWithAppContext(<RunDataPanelWrapper wizardModel={ASSAY_WIZARD_MODEL} />, { serverContext: { user: TEST_USER_EDITOR } });
+        renderWithAppContext(<RunDataPanelWrapper wizardModel={ASSAY_WIZARD_MODEL} />, {
+            serverContext: { user: TEST_USER_EDITOR },
+        });
         expect(document.querySelector('.panel-heading').textContent).toBe('Results');
         expect(document.querySelectorAll('.fa-spinner')).toHaveLength(0);
 
@@ -115,7 +121,9 @@ describe('RunDataPanel', () => {
     });
 
     test('showsTabs false', () => {
-        renderWithAppContext(<RunDataPanelWrapper showTabs={false} wizardModel={ASSAY_WIZARD_MODEL} />, {serverContext: { user: TEST_USER_EDITOR }});
+        renderWithAppContext(<RunDataPanelWrapper showTabs={false} wizardModel={ASSAY_WIZARD_MODEL} />, {
+            serverContext: { user: TEST_USER_EDITOR },
+        });
         expect(document.querySelectorAll('.list-group')).toHaveLength(0);
         expect(document.querySelectorAll('.form-step-tab')).toHaveLength(0);
     });
@@ -158,9 +166,11 @@ describe('RunDataPanel', () => {
 
         let container;
         await act(async () => {
-            container = renderWithAppContext(<RunDataPanelWrapper wizardModel={wizardModel} />, {serverContext: {
-                user: TEST_USER_EDITOR,
-            }}).container;
+            container = renderWithAppContext(<RunDataPanelWrapper wizardModel={wizardModel} />, {
+                serverContext: {
+                    user: TEST_USER_EDITOR,
+                },
+            }).container;
         });
         expect(container).toMatchSnapshot();
 

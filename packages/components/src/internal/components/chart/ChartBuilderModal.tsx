@@ -374,9 +374,7 @@ const ChartTypeQueryForm: FC<ChartTypeQueryFormProps> = memo(props => {
                                 <div>
                                     <label>
                                         Y Axis Aggregate Method{' '}
-                                        <LabelOverlay placement="bottom">
-                                            {BAR_CHART_AGGREGATE_METHOD_TIP}
-                                        </LabelOverlay>
+                                        <LabelOverlay placement="bottom">{BAR_CHART_AGGREGATE_METHOD_TIP}</LabelOverlay>
                                     </label>
                                     <SelectInput
                                         showLabel={false}

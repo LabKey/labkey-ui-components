@@ -14,42 +14,54 @@
  * limitations under the License.
  */
 import React from 'react';
-import {render} from "@testing-library/react";
+import { render } from '@testing-library/react';
 
 import { FileAttachmentContainer } from './FileAttachmentContainer';
 
 describe('FileAttachmentContainer', () => {
     test('no props', () => {
-        const {container} = render(<FileAttachmentContainer allowMultiple={false} allowDirectories={false} />);
+        const { container } = render(<FileAttachmentContainer allowMultiple={false} allowDirectories={false} />);
         expect(container).toMatchSnapshot();
     });
 
     test('with attributes', () => {
-        const {container} = render(
+        const { container } = render(
             <FileAttachmentContainer
                 acceptedFormats=".tsv, .xls, .xlsx"
                 allowDirectories
                 allowMultiple
                 compact
                 index={1}
-                labelLong={'Upload your files here please...'}
+                labelLong="Upload your files here please..."
             />
         );
         expect(container).toMatchSnapshot();
     });
 
     test('with single file', () => {
-        render(<FileAttachmentContainer allowMultiple={false} allowDirectories={false} initialFiles={{'file1.txt': new File([], 'file1.txt')}} />);
+        render(
+            <FileAttachmentContainer
+                allowMultiple={false}
+                allowDirectories={false}
+                initialFiles={{ 'file1.txt': new File([], 'file1.txt') }}
+            />
+        );
 
         expect(document.querySelector('.file-upload--container').className).toContain('hidden');
         expect(document.querySelector('.attached-file--container').textContent).toBe('file1.txt');
     });
 
     test('with multiple files', () => {
-        render(<FileAttachmentContainer allowMultiple={true} allowDirectories={false} initialFiles={{
-            'file1.txt': new File([], 'file1.txt'),
-            'file2.txt': new File([], 'file2.txt'),
-        }} />);
+        render(
+            <FileAttachmentContainer
+                allowMultiple={true}
+                allowDirectories={false}
+                initialFiles={{
+                    'file1.txt': new File([], 'file1.txt'),
+                    'file2.txt': new File([], 'file2.txt'),
+                }}
+            />
+        );
 
         expect(document.querySelector('.file-upload--container').className).toContain('block');
         expect(document.querySelectorAll('.attached-file--container')).toHaveLength(2);
@@ -83,10 +95,17 @@ describe('FileAttachmentContainer', () => {
     });
 
     test('fileCountSuffix with multiple', () => {
-        render(<FileAttachmentContainer allowMultiple={true} allowDirectories={false} fileCountSuffix="will be uploaded" initialFiles={{
-            'file1.txt': new File([], 'file1.txt'),
-            'file2.txt': new File([], 'file2.txt'),
-        }} />);
+        render(
+            <FileAttachmentContainer
+                allowMultiple={true}
+                allowDirectories={false}
+                fileCountSuffix="will be uploaded"
+                initialFiles={{
+                    'file1.txt': new File([], 'file1.txt'),
+                    'file2.txt': new File([], 'file2.txt'),
+                }}
+            />
+        );
 
         expect(document.querySelector('.file-upload--container').className).toContain('block');
         expect(document.querySelectorAll('.attached-file--container')).toHaveLength(2);
@@ -95,9 +114,16 @@ describe('FileAttachmentContainer', () => {
     });
 
     test('fileCountSuffix with single', () => {
-        render(<FileAttachmentContainer allowMultiple={true} allowDirectories={false} fileCountSuffix="will be uploaded" initialFiles={{
-            'file1.txt': new File([], 'file1.txt'),
-        }} />);
+        render(
+            <FileAttachmentContainer
+                allowMultiple={true}
+                allowDirectories={false}
+                fileCountSuffix="will be uploaded"
+                initialFiles={{
+                    'file1.txt': new File([], 'file1.txt'),
+                }}
+            />
+        );
 
         expect(document.querySelector('.file-upload--container').className).toContain('block');
         expect(document.querySelectorAll('.attached-file--container')).toHaveLength(1);

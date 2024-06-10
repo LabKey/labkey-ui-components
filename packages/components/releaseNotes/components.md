@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD June 2024
+###  version 3.50.0
+*Released*: 10 June 2024
 - Issue 49882: App editable grid support for locking column header and left columns on scroll
 
 ###  version 3.49.0

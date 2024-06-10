@@ -27,29 +27,35 @@ import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
 import { ALL_FILES_LIMIT_KEY } from './models';
 
+const isDirectoryEntry = (entry: FileSystemEntry): entry is FileSystemDirectoryEntry => entry.isDirectory;
+const isFileEntry = (entry: FileSystemEntry): entry is FileSystemFileEntry => entry.isFile;
+
 interface FileAttachmentContainerProps {
     acceptedFormats?: string; // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
+    allowDirectories: boolean;
+    allowMultiple: boolean;
+    compact?: boolean;
+    fileCountSuffix?: string;
+    handleChange?: any;
+    handleRemoval?: any;
+    includeDirectoryFiles?: boolean;
+    index?: number;
+    initialFileNames?: string[];
+    initialFiles?: Record<string, File>;
+    labelLong?: string;
     // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
     // "all" limits will be overridden by limits for a specific extension.
     sizeLimits?: Map<string, FileSizeLimitProps>;
     sizeLimitsHelpText?: React.ReactNode;
-    allowMultiple: boolean;
-    allowDirectories: boolean;
-    handleChange?: any;
-    handleRemoval?: any;
-    index?: number;
-    labelLong?: string;
-    initialFileNames?: string[];
-    initialFiles?: Record<string, File>;
-    compact?: boolean;
 }
 
 interface FileAttachmentContainerState {
     errorMsg?: React.ReactNode;
+    fileNames?: string[]; // separate list of names for the case when an initial set of file names is provided for which we have no file object
     files?: Record<string, File>;
     isDirty?: boolean;
-    fileNames?: string[]; // separate list of names for the case when an initial set of file names is provided for which we have no file object
     isHover?: boolean;
+    warningMsg?: React.ReactNode;
 }
 
 export class FileAttachmentContainer extends React.Component<
@@ -57,6 +63,9 @@ export class FileAttachmentContainer extends React.Component<
     FileAttachmentContainerState
 > {
     fileInput: React.RefObject<HTMLInputElement>;
+
+    dirCbCount: number;
+    fileCbCount: number;
 
     constructor(props?: FileAttachmentContainerProps) {
         super(props);
@@ -92,10 +101,67 @@ export class FileAttachmentContainer extends React.Component<
         });
     };
 
+    // this is copied (and extended a bit) from the LABKEY.internal.ZipLoad.getFilesFromDirectory function in ZipLoad.js
+    getFilesFromDirectory = (
+        files: Record<string, File>,
+        entry: FileSystemDirectoryEntry,
+        scope: FileAttachmentContainer,
+        callback: () => void
+    ): void => {
+        const dirReader: FileSystemDirectoryReader = entry.createReader();
+
+        const entriesReader: FileSystemEntriesCallback = (scope => {
+            return entries => {
+                for (let i = 0; i < entries.length; i++) {
+                    const _entry = entries[i];
+                    if (isFileEntry(_entry)) {
+                        scope.fileCbCount++;
+                        _entry.file(file => {
+                            scope.fileCbCount--;
+
+                            // ignore hidden files
+                            if (file.name.substring(0, 1) !== '.') {
+                                if (files[file.name]) {
+                                    scope.setState({
+                                        warningMsg:
+                                            'Duplicate files were uploaded. Only the last file provided for the duplicate name will be included in the file set.',
+                                    });
+                                }
+                                // @ts-expect-error fullPath is not a property of File in lib.dom.ts
+                                file.fullPath = entry.fullPath + '/' + file.name;
+                                files[file.name] = file;
+                            }
+
+                            if (scope.dirCbCount === 0 && scope.fileCbCount === 0) {
+                                callback();
+                            }
+                        });
+                    } else if (isDirectoryEntry(_entry)) {
+                        scope.getFilesFromDirectory(files, _entry, scope, callback);
+                    }
+                }
+
+                // readEntries only reads 100 files in a batch for Chrome
+                if (entries.length >= 100) {
+                    scope.dirCbCount++;
+                    dirReader.readEntries(entriesReader, console.error);
+                }
+
+                scope.dirCbCount--;
+                if (scope.dirCbCount === 0 && scope.fileCbCount === 0) {
+                    callback();
+                }
+            };
+        })(scope);
+
+        scope.dirCbCount++;
+        dirReader.readEntries(entriesReader, console.error);
+    };
+
     validateFiles = (fileList: FileList, transferItems?: DataTransferItemList): Set<string> => {
         const { acceptedFormats, allowDirectories, sizeLimits } = this.props;
 
-        this.setState({ errorMsg: undefined, isHover: false });
+        this.setState({ errorMsg: undefined, warningMsg: undefined, isHover: false });
 
         if (!acceptedFormats && allowDirectories && !sizeLimits) {
             return Set<string>();
@@ -195,14 +261,14 @@ export class FileAttachmentContainer extends React.Component<
         return Set<string>();
     };
 
-    handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange = (evt: React.ChangeEvent<HTMLInputElement>): void => {
         this.cancelEvent(evt);
         if (evt.currentTarget && evt.currentTarget.files) {
             this.handleFiles(evt.currentTarget.files);
         }
     };
 
-    handleDrag = (evt: React.DragEvent<HTMLLabelElement>) => {
+    handleDrag = (evt: React.DragEvent<HTMLLabelElement>): void => {
         const { isHover } = this.state;
 
         this.cancelEvent(evt);
@@ -211,15 +277,15 @@ export class FileAttachmentContainer extends React.Component<
         }
     };
 
-    handleDrop = (evt: React.DragEvent<HTMLLabelElement>) => {
+    handleDrop = (evt: React.DragEvent<HTMLLabelElement>): void => {
         this.cancelEvent(evt);
         if (evt.dataTransfer && evt.dataTransfer.files) {
             this.handleFiles(evt.dataTransfer.files, evt.dataTransfer.items);
         }
     };
 
-    handleFiles(fileList: FileList, transferItems?: DataTransferItemList) {
-        const { allowMultiple, handleChange } = this.props;
+    handleFiles(fileList: FileList, transferItems?: DataTransferItemList): void {
+        const { allowMultiple, allowDirectories, includeDirectoryFiles } = this.props;
 
         if (!allowMultiple && fileList.length > 1) {
             this.setState({
@@ -231,31 +297,78 @@ export class FileAttachmentContainer extends React.Component<
 
         const invalidFiles = this.validateFiles(fileList, transferItems);
 
-        let haveValidFiles = false;
         // iterate through the file list and set the names as the object key
-        const newFiles: any = Object.keys(fileList).reduce((prev, next) => {
-            const file = fileList[next];
+        const newFiles = {};
+        let haveValidFiles = false;
+        let hasDirectory = false;
+        Array.from(fileList).forEach((file, index) => {
             if (!invalidFiles.contains(file.name)) {
-                prev[file.name] = file;
+                if (this.state.files?.[file.name]) {
+                    this.setState({
+                        warningMsg:
+                            'Duplicate files were uploaded. Only the last file will be included in the file set.',
+                    });
+                }
+
+                newFiles[file.name] = file;
                 haveValidFiles = true;
+
+                if (transferItems && transferItems[index].webkitGetAsEntry().isDirectory) {
+                    hasDirectory = true;
+                }
             }
-            return prev;
-        }, {});
+        });
 
         if (haveValidFiles) {
             const files = Object.assign({}, newFiles, this.state.files);
-            this.setState({
-                files,
-                fileNames: Object.keys(files),
-                isHover: false,
-                isDirty: true,
-            });
 
-            if (Utils.isFunction(handleChange)) {
-                handleChange(files);
+            if (hasDirectory && allowDirectories && includeDirectoryFiles) {
+                this.dirCbCount = 0;
+                this.fileCbCount = 0;
+                Array.from(fileList).forEach((file, index) => {
+                    const entry = transferItems[index].webkitGetAsEntry();
+                    if (isDirectoryEntry(entry)) {
+                        delete files[file.name];
+                        this.getFilesFromDirectory(files, entry, this, () => {
+                            this._handleFiles(files);
+                        });
+                    }
+                });
+            } else {
+                this._handleFiles(files);
             }
         }
     }
+
+    _handleFiles = (files: Record<string, File>): void => {
+        const { handleChange, sizeLimits } = this.props;
+
+        const totalSizeLimit = sizeLimits?.get(ALL_FILES_LIMIT_KEY)?.totalSize;
+        if (totalSizeLimit) {
+            const totalFileSize = Object.values(files).reduce((total, file) => {
+                return total + file.size;
+            }, 0);
+
+            if (totalFileSize > totalSizeLimit.value) {
+                this.setState({
+                    errorMsg: `The total file size of all files exceeds the maximum allowed size of ${totalSizeLimit.displayValue}.`,
+                    isHover: false,
+                });
+                return;
+            }
+        }
+
+        this.setState({
+            files,
+            fileNames: Object.keys(files),
+            isHover: false,
+            isDirty: true,
+        });
+
+        if (Utils.isFunction(handleChange)) {
+            handleChange(files);
+        }
+    };
 
     handleLeave = (evt: React.DragEvent<HTMLLabelElement>) => {
         const { isHover } = this.state;
@@ -283,22 +396,12 @@ export class FileAttachmentContainer extends React.Component<
             this.fileInput.current.value = '';
         }
 
-        this.setState({ isDirty: true, errorMsg: undefined, files, fileNames });
+        this.setState({ isDirty: true, errorMsg: undefined, warningMsg: undefined, files, fileNames });
 
         if (Utils.isFunction(handleRemoval)) {
             handleRemoval(name);
         }
     };
-
-    renderErrorDetails() {
-        const { errorMsg } = this.state;
-
-        if (errorMsg !== '' && errorMsg !== undefined) {
-            return (
-                <Alert className={this.props.compact ? 'file-upload--error-message--compact' : null}>{errorMsg}</Alert>
-            );
-        }
-    }
 
     cancelEvent(event: React.SyntheticEvent<any>): void {
         if (event) {
@@ -323,8 +426,8 @@ export class FileAttachmentContainer extends React.Component<
     }
 
     render() {
-        const { acceptedFormats, allowMultiple, index, compact } = this.props;
-        const { fileNames, isHover } = this.state;
+        const { acceptedFormats, allowMultiple, index, compact, fileCountSuffix } = this.props;
+        const { fileNames, isHover, errorMsg, warningMsg } = this.state;
         const hideFileUpload = !allowMultiple && fileNames.length > 0;
         const fileUploadText = 'fileUpload' + (index !== undefined ? index : '');
 
@@ -368,11 +471,34 @@ export class FileAttachmentContainer extends React.Component<
                     />
                 </div>
 
-                {this.renderErrorDetails()}
+                {warningMsg !== '' && warningMsg !== undefined && (
+                    <Alert
+                        bsStyle="warning"
+                        className={this.props.compact ? 'file-upload--error-message--compact' : null}
+                    >
+                        {warningMsg}
+                    </Alert>
+                )}
+                {errorMsg !== '' && errorMsg !== undefined && (
+                    <Alert className={this.props.compact ? 'file-upload--error-message--compact' : null}>
+                        {errorMsg}
+                    </Alert>
+                )}
 
-                {fileNames.map((fileName: string) => {
-                    return <FileAttachmentEntry key={fileName} name={fileName} onDelete={this.handleRemove} />;
-                })}
+                <div
+                    className={classNames('file-upload--file-entry-listing', {
+                        'well well-sm': allowMultiple && fileNames.length,
+                    })}
+                >
+                    {fileNames.map((fileName: string) => {
+                        return <FileAttachmentEntry key={fileName} name={fileName} onDelete={this.handleRemove} />;
+                    })}
+                </div>
+                {fileCountSuffix && fileNames.length > 0 && (
+                    <div className="file-upload--scroll-footer">
+                        {Utils.pluralBasic(fileNames.length, 'file')} {fileCountSuffix}.
+                    </div>
+                )}
             </>
         );
     }

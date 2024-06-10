@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS } from 'immutable';
+import { fromJS, Map } from 'immutable';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
@@ -77,5 +77,37 @@ describe('AssayWizardModel', () => {
         expect(data.name.indexOf(model.assayDef.name) === 0).toBeTruthy();
         expect(data.files === undefined).toBeTruthy();
         expect(Array.isArray(data.dataRows) && data.dataRows.length === 0).toBeTruthy();
+    });
+
+    test('getAttachedFiles', () => {
+        expect(ASSAY_WIZARD_MODEL.getAttachedFiles().length).toBe(0);
+        expect(ASSAY_WIZARD_MODEL.getTotalAttachedFilesSize()).toBe(0);
+
+        const f1 = new File(['testing'], 'file1.txt');
+        const f2 = new File(['something else'], 'file2.txt');
+
+        let model = ASSAY_WIZARD_MODEL.set('resultsFiles', Map.of(f1.name, f1, f2.name, f2)) as AssayWizardModel;
+        expect(model.getAttachedFiles().length).toBe(0);
+        expect(model.getTotalAttachedFilesSize()).toBe(0);
+
+        model = ASSAY_WIZARD_MODEL.set('attachedFiles', Map.of(f1.name, f1, f2.name, f2)) as AssayWizardModel;
+        expect(model.getAttachedFiles().length).toBe(2);
+        expect(model.getTotalAttachedFilesSize()).toBe(21);
+    });
+
+    test('getResultsFiles', () => {
+        expect(ASSAY_WIZARD_MODEL.getResultsFiles().length).toBe(0);
+        expect(ASSAY_WIZARD_MODEL.getTotalResultsFilesSize()).toBe(0);
+
+        const f1 = new File(['testing'], 'file1.txt');
+        const f2 = new File(['something else'], 'file2.txt');
+
+        let model = ASSAY_WIZARD_MODEL.set('attachedFiles', Map.of(f1.name, f1, f2.name, f2)) as AssayWizardModel;
+        expect(model.getResultsFiles().length).toBe(0);
+        expect(model.getTotalResultsFilesSize()).toBe(0);
+
+        model = ASSAY_WIZARD_MODEL.set('resultsFiles', Map.of(f1.name, f1, f2.name, f2)) as AssayWizardModel;
+        expect(model.getResultsFiles().length).toBe(2);
+        expect(model.getTotalResultsFilesSize()).toBe(21);
     });
 });

@@ -42,6 +42,7 @@ import {
     isCommunityDistribution,
     isELNEnabled,
     isFreezerManagementEnabled,
+    isLIMSEnabled,
     isMediaEnabled,
     isPremiumProductEnabled,
     isProductNavigationEnabled,
@@ -667,6 +668,13 @@ describe('utils', () => {
         ).toBeTruthy();
     });
 
+    test('isLIMSEnabled', () => {
+        expect(isLIMSEnabled({})).toBeFalsy();
+        expect(isLIMSEnabled({ inventory: {} })).toBeFalsy();
+        expect(isLIMSEnabled({ inventory: {}, samplemanagement: {} })).toBeFalsy();
+        expect(isLIMSEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
+    });
+
     test('setProductProjects', () => {
         expect(setProductProjects({}, true)).toEqual({ query: { hasProductProjects: true } });
         expect(setProductProjects({ query: { hasProductProjects: false } }, true)).toEqual({
@@ -1137,14 +1145,14 @@ describe('addAssaySectionConfig', () => {
 });
 
 describe('isSharedDefinition', () => {
-    const currentContainerHome = new Container( {
+    const currentContainerHome = new Container({
         path: '/home',
         parentPath: '/',
         parentId: 'root',
         type: 'project',
         id: 'homeId',
     });
-    const currentContainerFolder = new Container ({
+    const currentContainerFolder = new Container({
         path: '/home/folder',
         parentPath: '/home',
         parentId: 'homeId',

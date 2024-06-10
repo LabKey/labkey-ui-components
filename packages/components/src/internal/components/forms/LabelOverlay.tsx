@@ -28,7 +28,6 @@ import { INPUT_LABEL_CLASS_NAME } from './constants';
 export interface LabelOverlayProps {
     addLabelAsterisk?: boolean;
     column?: QueryColumn;
-    content?: ReactNode; // other content to render in the popover
     description?: string;
     helpTipRenderer?: string;
     inputId?: string;
@@ -57,7 +56,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
     }
 
     overlayBody = (): any => {
-        const { column, required, content, helpTipRenderer } = this.props;
+        const { column, required, children, helpTipRenderer } = this.props;
         const description = this.props.description ? this.props.description : column ? column.description : null;
         const type = this.props.type ? this.props.type : column ? column.type : null;
 
@@ -98,7 +97,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
                         </small>
                     </p>
                 )}
-                {content}
+                {children}
             </>
         );
     };

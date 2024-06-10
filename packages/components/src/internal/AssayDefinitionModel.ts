@@ -297,4 +297,10 @@ export class AssayDefinitionModel extends ImmutableRecord({
 
         return columns.asImmutable();
     }
+
+    getDomainFileColumns(type: AssayDomainTypes): QueryColumn[] {
+        return this.getDomainColumns(type)
+            .filter(col => col.isFileInput)
+            .toArray();
+    }
 }

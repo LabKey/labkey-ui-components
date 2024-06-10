@@ -306,6 +306,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             editorModel={editorModel}
                                             emptyGridMsg="Start by adding the quantity of assay data rows you want to create."
                                             isSubmitting={wizardModel.isSubmitting}
+                                            lockLeftOnScroll={false}
                                             maxRows={this.props.maxRows}
                                             metricFeatureArea="assayResultsEditableGrid"
                                             model={queryModel}

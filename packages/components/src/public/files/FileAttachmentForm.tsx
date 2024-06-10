@@ -38,35 +38,37 @@ import { FileSizeLimitProps, FileGridPreviewProps } from './models';
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
-    // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
-    // "all" limits will be overridden by limits for a specific extension.
-    sizeLimits?: Map<string, FileSizeLimitProps>;
-    sizeLimitsHelpText?: React.ReactNode;
-    showAcceptedFormats?: boolean;
     allowDirectories?: boolean;
     allowMultiple?: boolean;
     cancelText?: string;
+    compact?: boolean;
+    fileCountSuffix?: string;
+    // map between file extension and the callback function to use instead of the standard uploadDataFileForPreview
+    fileSpecificCallback?: Map<string, (file: File) => Promise<SimpleResponse>>;
+    includeDirectoryFiles?: boolean;
+    index?: number;
     initialFileNames?: string[];
     initialFiles?: Record<string, File>;
-    index?: number;
-    label?: string;
+    isSubmitting?: boolean;
+    label?: ReactNode;
     labelLong?: string;
     onCancel?: () => void;
     onError?: (error: string) => void;
     onFileChange?: (files: Map<string, File>) => void;
-    onFileRemoval?: (attachmentName: string) => void;
-    // map between file extension and the callback function to use instead of the standard uploadDataFileForPreview
-    fileSpecificCallback?: Map<string, (file: File) => Promise<SimpleResponse>>;
+    onFileRemoval?: (attachmentName: string, updatedFiles?: Map<string, File>) => void;
     onSubmit?: (files: Map<string, File>) => void;
-    isSubmitting?: boolean;
+    previewGridProps?: FileGridPreviewProps;
+    ref?: any;
+    showAcceptedFormats?: boolean;
     showButtons?: boolean;
     showLabel?: boolean;
     showProgressBar?: boolean;
+    // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
+    // "all" limits will be overridden by limits for a specific extension.
+    sizeLimits?: Map<string, FileSizeLimitProps>;
+    sizeLimitsHelpText?: ReactNode;
     submitText?: string;
-    previewGridProps?: FileGridPreviewProps;
     templateUrl?: string;
-    compact?: boolean;
-    ref?: any;
 }
 
 interface State {
@@ -81,6 +83,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         acceptedFormats: '',
         showAcceptedFormats: true,
         allowDirectories: true,
+        includeDirectoryFiles: false,
         allowMultiple: true,
         cancelText: 'Cancel',
         label: 'Attachments',
@@ -146,7 +149,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         this.setState(() => ({
             errorMessage:
                 'This file is too large to be previewed. The maximum size allowed for previewing files of this type is ' +
-                sizeStr,
+                sizeStr +
+                '.',
         }));
     };
 
@@ -200,7 +204,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                 errorMessage: undefined,
             }),
             () => {
-                onFileRemoval?.(attachmentName);
+                onFileRemoval?.(attachmentName, this.state.attachedFiles);
             }
         );
     };
@@ -381,6 +385,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         const {
             acceptedFormats,
             allowDirectories,
+            includeDirectoryFiles,
+            fileCountSuffix,
             allowMultiple,
             initialFileNames,
             initialFiles,
@@ -405,6 +411,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                                 index={this.props.index}
                                 acceptedFormats={acceptedFormats}
                                 allowDirectories={allowDirectories}
+                                includeDirectoryFiles={includeDirectoryFiles}
+                                fileCountSuffix={fileCountSuffix}
                                 handleChange={this.handleFileChange}
                                 handleRemoval={this.handleFileRemoval}
                                 initialFileNames={initialFileNames}

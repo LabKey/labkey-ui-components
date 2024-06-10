@@ -6,6 +6,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add support for Ancestor nodes on All Samples grids
   - Update `CustomizeGridViewModal` to not allow multiple levels of ancestors to be added
 
+###  version 3.51.0
+*Released*: 10 June 2024
+- Assay import support for results domain file fields
+  - FileAttachmentForm to send back updatedFiles map onFileRemoval
+  - FileAttachmentContainer to support includeDirectoryFiles to recursively include files in a dropped directory
+  - FileAttachmentContainer to support error check for total file size
+  - RunDataPanel update to show FileAttachmentForm for results domain file fields
+  - AssayWizardModel.prepareFormData to include resultsFiles for import run API post and update progress bar estimate and message
+  - uploadAssayRunFiles fix for maxFileSize to not include batchFiles or runFiles as they are unrelated
+  - only shown in assay import UI for LKB at this time
+
 ###  version 3.50.0
 *Released*: 10 June 2024
 - Issue 49882: App editable grid support for locking column header and left columns on scroll

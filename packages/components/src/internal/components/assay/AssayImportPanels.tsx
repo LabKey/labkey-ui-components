@@ -431,7 +431,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         });
     };
 
-    handleFileChange = (attachments: Map<string, File>): void => {
+    handleDataFileChange = (attachments: Map<string, File>): void => {
         this.props.setIsDirty?.(attachments.size > 0);
 
         this.setState(state => ({
@@ -443,7 +443,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }));
     };
 
-    handleFileRemove = (): void => {
+    handleDataFileRemove = (): void => {
         this.props.setIsDirty?.(false);
 
         this.setState(state => ({
@@ -451,6 +451,23 @@ class AssayImportPanelsBody extends Component<Props, State> {
             model: state.model.merge({
                 attachedFiles: Map<string, File>(),
                 usePreviousRunFile: false,
+            }) as AssayWizardModel,
+        }));
+    };
+
+    handleResultsFileChange = (attachments: Map<string, File>): void => {
+        this.setResultsFiles(attachments);
+    };
+
+    handleResultsFileRemove = (_, updatedFiles: Map<string, File>): void => {
+        this.setResultsFiles(updatedFiles);
+    };
+
+    setResultsFiles = (attachments: Map<string, File>): void => {
+        this.props.setIsDirty?.(true);
+        this.setState(state => ({
+            model: state.model.merge({
+                resultsFiles: attachments,
             }) as AssayWizardModel,
         }));
     };
@@ -664,8 +681,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
         const data = model.prepareFormData(this.props.currentStep, this.state.editorModel, this.state.dataModel);
 
-        if (data.files && data.files.length > 0) {
-            return data.files[0].size * 0.2;
+        if (data.files?.length > 0) {
+            // the data file (i.e. attachedFiles) will be processed so the size of the file gets much greater weight
+            // than the results files that just need to be sent to the server and saved to the file system
+            return model.getTotalAttachedFilesSize() / 5 + model.getTotalResultsFilesSize() / 100_000;
         } else if (data.dataRows) {
             if (Utils.isArray(data.dataRows)) {
                 return data.dataRows.length * 10;
@@ -729,6 +748,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const { comment, dataModel, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } =
             this.state;
         const runPropsModel = this.getRunPropsQueryModel();
+        const resultsFilesCount = model.getResultsFiles().length;
 
         if (!model.isInit || runPropsModel.isLoading) {
             return <LoadingSpinner />;
@@ -764,7 +784,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const disabledSave =
             model.isSubmitting ||
             !model.hasData(currentStep, editorModel) ||
-            (!!getIsDirty && !getIsDirty?.()) ||
+            (!isReimport && !!getIsDirty && !getIsDirty?.()) ||
             (isReimport && requiresUserComment && !comment?.trim()?.length);
         const runProps = runPropsModel.getRow();
 
@@ -798,8 +818,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     fileSizeLimits={fileSizeLimits}
                     maxEditableGridRowMsg={`A max of ${maxRows?.toLocaleString()} rows are allowed. Please use the 'Import Data from File' tab if you need to import more than ${maxRows?.toLocaleString()} rows.`}
                     maxRows={maxRows}
-                    onFileChange={this.handleFileChange}
-                    onFileRemoval={this.handleFileRemove}
+                    onDataFileChange={this.handleDataFileChange}
+                    onDataFileRemoval={this.handleDataFileRemove}
+                    onResultsFileChange={this.handleResultsFileChange}
+                    onResultsFileRemoval={this.handleResultsFileRemove}
                     onGridChange={this.onGridChange}
                     operation={operation}
                     onTextChange={this.handleDataTextChange}
@@ -844,7 +866,14 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     modal
                     title={isReimport ? 'Re-importing assay run' : 'Importing assay run'}
                     toggle={model.isSubmitting}
-                />
+                >
+                    {resultsFilesCount > 0 && (
+                        <p>
+                            Upload includes {Utils.pluralBasic(resultsFilesCount, 'additional file')}. Please stay on
+                            this page until upload finishes.
+                        </p>
+                    )}
+                </Progress>
                 {showRenameModal && (
                     <ImportWithRenameConfirmModal
                         onConfirm={this.onRenameConfirm}

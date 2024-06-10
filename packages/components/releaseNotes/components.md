@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+###  version 3.51.0
+*Released*: 10 June 2024
 - Assay import support for results domain file fields
   - FileAttachmentForm to send back updatedFiles map onFileRemoval
   - FileAttachmentContainer to support includeDirectoryFiles to recursively include files in a dropped directory

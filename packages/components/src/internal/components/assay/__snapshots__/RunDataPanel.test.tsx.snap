@@ -189,10 +189,10 @@ exports[`RunDataPanel assay model with results File field types 1`] = `
                 </div>
               </div>
               <div
-                class="editable-grid__container"
+                class="editable-grid__container grid-panel__lock-left"
               >
                 <div
-                  class=""
+                  class="table-responsive"
                 >
                   <div
                     class="grid-messages"

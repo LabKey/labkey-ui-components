@@ -189,12 +189,12 @@ describe('CustomizeGridViewModal', () => {
 describe('includedColumnsForCustomizationFilter', () => {
     test('hidden', () => {
         let col = new QueryColumn({ name: 'testColumn', hidden: false });
-        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy;
-        expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy;
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
+        expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy();
 
         col = new QueryColumn({ name: 'testColumn', hidden: true });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
-        expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy;
+        expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy();
     });
 
     test('removeFromViews', () => {

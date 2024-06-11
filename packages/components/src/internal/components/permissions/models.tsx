@@ -102,12 +102,18 @@ export class SecurityRole extends Record({
     }
 
     // use the explicit set of roles, fall back to the relevant roles for the policy
-    static filter(roles: List<SecurityRole>, policy: SecurityPolicy, rolesToShow?: List<string>): List<SecurityRole> {
+    static filter(
+        roles: List<SecurityRole>,
+        policy: SecurityPolicy,
+        rolesToShow?: List<string>,
+        rolesHidden?: string[]
+    ): List<SecurityRole> {
         return roles
             .filter(role => {
                 return (
                     policy.relevantRoles.contains(role.uniqueName) &&
-                    (!rolesToShow || rolesToShow.contains(role.uniqueName))
+                    (!rolesToShow || rolesToShow.contains(role.uniqueName)) &&
+                    (!rolesHidden || rolesHidden.indexOf(role.uniqueName) === -1)
                 );
             })
             .toList();

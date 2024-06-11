@@ -259,8 +259,8 @@ export function getFolderTestAPIWrapper(
         getDataTypeExcludedProjects: mockFn(),
         getFolderDataTypeExclusions: mockFn(),
         updateProjectLookAndFeelSettings: mockFn(),
-        updateProjectCustomLabels: mockFn,
-        getProjects: mockFn,
+        updateProjectCustomLabels: mockFn(),
+        getProjects: mockFn(),
         ...overrides,
     };
 }

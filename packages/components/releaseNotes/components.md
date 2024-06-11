@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add support for Ancestor nodes on All Samples grids
   - Update `CustomizeGridViewModal` to not allow multiple levels of ancestors to be added
 
+### version 3.52.0
+*Released*: 10 June 2024
+- Sample Type & Source Type Designer Roles
+  - Add entityApi.isDataTypeEmpty to check if a design has data
+  - Allow hiding of Projects section in designer
+
 ###  version 3.51.0
 *Released*: 10 June 2024
 - Assay import support for results domain file fields

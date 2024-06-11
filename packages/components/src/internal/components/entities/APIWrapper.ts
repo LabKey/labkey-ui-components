@@ -25,6 +25,7 @@ import {
     MoveEntitiesOptions,
     getCrossFolderSelectionResult,
     GetParentTypeDataForLineage,
+    isDataTypeEmpty,
 } from './actions';
 import { DataOperation } from './constants';
 import {
@@ -36,6 +37,7 @@ import {
     IParentAlias,
     IParentOption,
     OperationConfirmationData,
+    ProjectConfigurableDataType,
 } from './models';
 
 export interface EntityAPIWrapper {
@@ -115,6 +117,12 @@ export interface EntityAPIWrapper {
         parentAliases: Map<string, IParentAlias>;
         parentOptions: IParentOption[];
     }>;
+    isDataTypeEmpty: (
+        dataType: ProjectConfigurableDataType,
+        lsid?: string,
+        rowId?: number,
+        containerPath?: string
+    ) => Promise<boolean>;
     loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
     moveEntities: (options: MoveEntitiesOptions) => Promise<Query.MoveRowsResponse>;
 }
@@ -133,6 +141,7 @@ export class EntityServerAPIWrapper implements EntityAPIWrapper {
     loadNameExpressionOptions = loadNameExpressionOptions;
     moveEntities = moveEntities;
     initParentOptionsSelects = initParentOptionsSelects;
+    isDataTypeEmpty = isDataTypeEmpty;
 }
 
 /**
@@ -156,6 +165,7 @@ export function getEntityTestAPIWrapper(
         loadNameExpressionOptions: mockFn(),
         moveEntities: mockFn(),
         initParentOptionsSelects: mockFn(),
+        isDataTypeEmpty: mockFn(),
         ...overrides,
     };
 }

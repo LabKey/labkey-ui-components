@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 50589: Remove option to export editable grid data
+
 ### version 3.52.0
 *Released*: 10 June 2024
 - Sample Type & Source Type Designer Roles

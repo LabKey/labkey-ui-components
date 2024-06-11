@@ -20,8 +20,6 @@ import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
-
-import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
 import { SelectionPivot } from '../../../public/QueryModel/QueryModel';
 import { Key } from '../../../public/useEnterEscape';
 

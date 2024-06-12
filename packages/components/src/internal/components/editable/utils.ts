@@ -17,6 +17,7 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { EditorModel, EditorModelProps, EditableGridModels } from './models';
 import { CellActions, CellCoordinates, MODIFICATION_TYPES } from './constants';
+import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
 export const applyEditableGridChangesToModels = (
     dataModels: QueryModel[],
@@ -498,6 +499,11 @@ export const gridCellSelectInputProps: Partial<SelectInputProps> = {
     placeholder: '',
     showIndicatorSeparator: false,
     showLabel: false,
+};
+
+export const gridCellQuerySelectProps: Partial<QuerySelectOwnProps> = {
+    ...gridCellSelectInputProps,
+    showLoading: false,
 };
 
 /**

@@ -360,6 +360,10 @@ $table-cell-max-width: 600px;
       resize: both;
     }
 
+    .cell-align-right {
+      justify-content: flex-end;
+    }
+
     .cell-warning {
       position: relative;
 

@@ -115,6 +115,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 name={col.fieldKey}
                 openMenuOnFocus={!col.isJunctionLookup()}
                 required={col.required}
+                showLoading={false}
                 {...querySelectProps}
                 containerFilter={getSampleStatusContainerFilter()}
                 onQSChange={onChange}

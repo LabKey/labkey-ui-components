@@ -416,6 +416,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     'cell-menu': showMenu,
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
                     'cell-read-only': this.isReadOnly,
+                    'cell-align-right': col.align === 'right',
                     'cell-selected': selected,
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,
@@ -534,15 +535,12 @@ export class Cell extends React.PureComponent<CellProps, State> {
             );
         }
 
-        // TODO: Need to trim text values upon save
-        // TODO: This should only apply to text-based fields. Not numeric fields.
-        // TODO: Need to fix the loading state of select inputs so it does not jump
-        // TODO: Need to see about supporting multi-line value copy within a cell to another cell. Normally, this resolves as a multi-cell copy.
-        // console.log(col.jsonType);
         return (
             <textarea
                 autoFocus
-                className={classNames('cellular-input', { 'cellular-input-multiline': col.inputType === 'textarea' })}
+                className={classNames('cellular-input', {
+                    'cellular-input-multiline': col.inputType === 'textarea',
+                })}
                 defaultValue={
                     values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : ''
                 }
@@ -551,9 +549,20 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeys}
                 placeholder={placeholder}
-                style={{ height: `${this._preFocusDOMRect.height}px`, minHeight: `${this._preFocusDOMRect.height}px`, minWidth: `${this._preFocusDOMRect.width}px`, width: `${this._preFocusDOMRect.width}px` }}
+                style={{
+                    height: `${this._preFocusDOMRect.height}px`,
+                    minHeight: `${this._preFocusDOMRect.height}px`,
+                    minWidth: `${this._preFocusDOMRect.width}px`,
+                    width: `${this._preFocusDOMRect.width}px`,
+                    textAlign: col.align === 'right' ? 'right' : undefined,
+                }}
                 tabIndex={-1}
             />
         );
+
+        // TODO: Support cmd+enter in addition or instead of shift+enter?
+        // TODO: Need to trim text values upon save
+        // TODO: Need to see about supporting multi-line value copy within a cell to another cell. Normally, this resolves as a multi-cell copy.
+            // -- This is supported via quotations being wrapped around the content in the clipboard
     }
 }

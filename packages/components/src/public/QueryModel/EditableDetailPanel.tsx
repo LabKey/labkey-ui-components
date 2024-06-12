@@ -13,8 +13,6 @@ import { FileInput } from '../../internal/components/forms/input/FileInput';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 import { Alert } from '../../internal/components/base/Alert';
 
-import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../internal/APIWrapper';
-
 import { useDataChangeCommentsRequired } from '../../internal/components/forms/input/useDataChangeCommentsRequired';
 import { CommentTextArea } from '../../internal/components/forms/input/CommentTextArea';
 import { QueryModel } from './QueryModel';

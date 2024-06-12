@@ -20,8 +20,6 @@ import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
-
-import { EditableGridExportMenu, ExportOption } from '../../../public/QueryModel/ExportMenu';
 import { SelectionPivot } from '../../../public/QueryModel/QueryModel';
 import { Key } from '../../../public/useEnterEscape';
 
@@ -314,8 +312,6 @@ export interface SharedEditableGridProps {
     containerPath?: string;
     disabled?: boolean;
     emptyGridMsg?: string;
-    exportColFilter?: (col: QueryColumn) => boolean;
-    extraExportColumns?: Array<Partial<QueryColumn>>;
     fixedHeight?: boolean;
     forUpdate?: boolean;
     gridTabHeaderComponent?: ReactNode;
@@ -381,7 +377,6 @@ export interface EditableGridProps extends SharedEditableGridProps {
     dataKeys?: List<any>;
     editorModel: EditorModel;
     error: string;
-    exportHandler?: (option: ExportOption) => void;
     onChange: EditableGridChange;
     queryInfo: QueryInfo;
 }
@@ -1535,8 +1530,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             data,
             isSubmitting,
             maxRows,
-            editorModel,
-            exportHandler,
             showAsTab,
         } = this.props;
         const nounPlural = addControlProps?.nounPlural ?? 'rows';
@@ -1546,8 +1539,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const addTitle = canAddRows
             ? 'Add multiple ' + nounPlural + ' with the same values'
             : 'The grid contains the maximum number of ' + nounPlural + '.';
-
-        const allowExport = !!exportHandler;
         const actionButtonClassNames = classNames('editable-grid-buttons__action-buttons', {
             'col-sm-9': showAddOnTop,
             'col-sm-12': !showAddOnTop,
@@ -1587,11 +1578,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         >
                             {bulkRemoveText}
                         </button>
-                    )}
-                    {allowExport && (
-                        <span className="pull-right">
-                            <EditableGridExportMenu id={editorModel.id} hasData exportHandler={exportHandler} />
-                        </span>
                     )}
                 </div>
             </div>

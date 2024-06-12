@@ -72,9 +72,10 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
         selectionData,
         singularNoun,
         updateRows,
+        getIsDirty,
+        setIsDirty,
         ...editableGridProps
     } = props;
-    const { getIsDirty, setIsDirty } = editableGridProps;
     const id = loader.id;
 
     const [models, setModels] = useState<Models>(() => ({

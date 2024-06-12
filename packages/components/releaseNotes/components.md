@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add support for Ancestor nodes on All Samples grids
   - Update `CustomizeGridViewModal` to not allow multiple levels of ancestors to be added
 
+### version 3.53.0
+*Released*: 12 June 2024
+- Issue 50589: Remove option to export editable grid data
+
 ### version 3.52.0
 *Released*: 10 June 2024
 - Sample Type & Source Type Designer Roles

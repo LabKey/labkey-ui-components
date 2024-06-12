@@ -190,7 +190,3 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
         );
     }
 }
-
-export const EditableGridExportMenu: FC<ExportMenuImplProps> = memo(props => {
-    return <ExportMenuImpl {...props} />;
-});

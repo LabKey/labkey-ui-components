@@ -109,10 +109,7 @@
     font-size: $font-size-large;
 }
 
+// TODO usages of this can be replace with text-danger
 .error-msg {
     color: $brand-danger;
-}
-
-.success-msg {
-    color: $brand-success;
 }

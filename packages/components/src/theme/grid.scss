@@ -453,6 +453,7 @@ $table-cell-max-width: 600px;
     }
   }
 
+  // Specific styling for Firefox (hence the "@-moz...") to support multi-line cells.
   @-moz-document url-prefix() {
     & > tbody > tr > td {
       height: 100%;

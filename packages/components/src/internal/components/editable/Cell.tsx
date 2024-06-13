@@ -76,9 +76,12 @@ interface State {
 
 export class Cell extends React.PureComponent<CellProps, State> {
     private changeTO: number;
+    private displayEl: React.RefObject<HTMLDivElement>;
+    // This is used to record the dimensions of the cell before focusing so that the
+    // subsequently rendered focused textarea can fit to the same dimensions
+    private preFocusDOMRect: React.MutableRefObject<DOMRect>;
     private recordedKeys: string;
     private recordingTO: number;
-    private displayEl: React.RefObject<HTMLDivElement>;
 
     static defaultProps = {
         borderMaskBottom: false,
@@ -101,6 +104,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
         };
 
         this.displayEl = React.createRef();
+        this.preFocusDOMRect = React.createRef();
     }
 
     get isDateTimeField(): boolean {
@@ -113,6 +117,10 @@ export class Cell extends React.PureComponent<CellProps, State> {
         return col.isPublicLookup() || this.isDateTimeField || !!col.validValues;
     }
 
+    get isMultiline(): boolean {
+        return this.props.col.inputType === 'textarea';
+    }
+
     get isReadOnly(): boolean {
         return this.props.readOnly || this.props.col.readOnly || this.props.locked;
     }
@@ -121,15 +129,17 @@ export class Cell extends React.PureComponent<CellProps, State> {
         if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
 
-            if (prevProps.focused) this._preFocusDOMRect = undefined;
-            if (!prevProps.selected) this.loadFilteredLookupKeys();
+            if (prevProps.focused) {
+                this.preFocusDOMRect.current = null;
+            }
+            if (!prevProps.selected) {
+                this.loadFilteredLookupKeys();
+            }
         }
     }
 
-    private _preFocusDOMRect: DOMRect;
-
     focusCell = (colIdx: number, rowIdx: number, clearValue?: boolean): void => {
-        this._preFocusDOMRect = this.displayEl.current.getBoundingClientRect();
+        this.preFocusDOMRect.current = this.displayEl.current.getBoundingClientRect();
         this.props.cellActions.focusCell(colIdx, rowIdx, clearValue);
     };
 
@@ -140,9 +150,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
 
         const linkedFilteredLookupKeys = await getFilteredLookupKeys(linkedValues);
 
-        this.setState({
-            filteredLookupKeys: linkedFilteredLookupKeys,
-        });
+        this.setState({ filteredLookupKeys: linkedFilteredLookupKeys });
     };
 
     handleSelectionBlur = (): void => {
@@ -229,7 +237,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 break;
             case KEYS.Enter:
                 if (focused || this.isReadOnly) {
-                    if (!event.shiftKey) {
+                    // Multi-line cells support "Shift" + "Enter" to start a new line.
+                    if (!event.shiftKey || !this.isMultiline) {
                         cancelEvent(event);
                         selectCell(colIdx, rowIdx + 1);
                     }
@@ -396,6 +405,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
+        const alignRight = col.align === 'right';
         const isDateTimeField = this.isDateTimeField;
         const showLookup = this.isLookup;
         const showMenu = showLookup || (col.inputRenderer && col.inputRenderer !== 'AppendUnitsInput');
@@ -408,6 +418,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
             const displayProps = {
                 autoFocus: selected,
                 className: classNames('cellular-display', {
+                    'cell-align-right': alignRight,
                     'cell-border-top': borderMaskTop,
                     'cell-border-right': borderMaskRight,
                     'cell-border-bottom': borderMaskBottom,
@@ -416,7 +427,6 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     'cell-menu': showMenu,
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
                     'cell-read-only': this.isReadOnly,
-                    'cell-align-right': col.align === 'right',
                     'cell-selected': selected,
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,
@@ -535,11 +545,23 @@ export class Cell extends React.PureComponent<CellProps, State> {
             );
         }
 
+        let style: React.CSSProperties = undefined;
+        if (this.preFocusDOMRect.current) {
+            const { height, width } = this.preFocusDOMRect.current;
+            style = {
+                height: `${height}px`,
+                minHeight: `${height}px`,
+                minWidth: `${width}px`,
+                width: `${width}px`,
+            };
+        }
+
         return (
             <textarea
                 autoFocus
                 className={classNames('cellular-input', {
-                    'cellular-input-multiline': col.inputType === 'textarea',
+                    'cellular-input-align-right': alignRight,
+                    'cellular-input-multiline': this.isMultiline,
                 })}
                 defaultValue={
                     values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : ''
@@ -549,20 +571,9 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeys}
                 placeholder={placeholder}
-                style={{
-                    height: `${this._preFocusDOMRect.height}px`,
-                    minHeight: `${this._preFocusDOMRect.height}px`,
-                    minWidth: `${this._preFocusDOMRect.width}px`,
-                    width: `${this._preFocusDOMRect.width}px`,
-                    textAlign: col.align === 'right' ? 'right' : undefined,
-                }}
+                style={style}
                 tabIndex={-1}
             />
         );
-
-        // TODO: Support cmd+enter in addition or instead of shift+enter?
-        // TODO: Need to trim text values upon save
-        // TODO: Need to see about supporting multi-line value copy within a cell to another cell. Normally, this resolves as a multi-cell copy.
-            // -- This is supported via quotations being wrapped around the content in the clipboard
     }
 }

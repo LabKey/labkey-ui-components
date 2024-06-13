@@ -464,6 +464,11 @@ $table-cell-max-width: 600px;
         width: 100%;
       }
 
+      .cell-content {
+        max-height: $table-cell-max-height - 15px;
+        overflow: auto;
+      }
+
       .cell-content-value, .cell-menu-value {
         display: inline-block;
         padding: 4px 2px;

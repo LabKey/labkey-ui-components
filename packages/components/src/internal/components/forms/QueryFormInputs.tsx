@@ -48,10 +48,6 @@ export interface QueryFormInputsProps {
     // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
     checkRequiredFields?: boolean;
     columnFilter?: (col?: QueryColumn) => boolean;
-    // isIncludedColumn can be used when you want to keep certain columns always filtered out (e.g., aliquot- or
-    // sample-only columns). Note: This props is never used by QueryFormInputs, but is needed because this interface is
-    // shared with other components. We should probably move this particular prop to a more appropriate place.
-    isIncludedColumn?: (col: QueryColumn) => boolean;
     /** A container filter that will be applied to all query-based inputs in this form */
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
@@ -60,11 +56,15 @@ export interface QueryFormInputsProps {
     fireQSChangeOnInit?: boolean;
     includeLabelField?: boolean;
     initiallyDisableFields?: boolean;
+    // isIncludedColumn can be used when you want to keep certain columns always filtered out (e.g., aliquot- or
+    // sample-only columns). Note: This props is never used by QueryFormInputs, but is needed because this interface is
+    // shared with other components. We should probably move this particular prop to a more appropriate place.
+    isIncludedColumn?: (col: QueryColumn) => boolean;
     lookups?: Map<string, number>;
     onAdditionalFormDataChange?: (name: string, value: any) => void;
     onFieldsEnabledChange?: (numEnabled: number) => void;
-    operation?: Operation;
     onSelectChange?: SelectInputChange;
+    operation?: Operation;
     pluralNoun?: string;
     preventCrossFolderEnable?: boolean;
     queryColumns?: ExtendedMap<string, QueryColumn>;

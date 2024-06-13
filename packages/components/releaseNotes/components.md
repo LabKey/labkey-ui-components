@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.X
+*Released*: X June 2024
+- Issue 50483: Creating a required sample-only field after an aliquot field errors on add
+
 ### version 3.53.0
 *Released*: 12 June 2024
 - Issue 50589: Remove option to export editable grid data

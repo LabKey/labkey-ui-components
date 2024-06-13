@@ -454,6 +454,8 @@ export function getLookupFilters(
     return filters;
 }
 
+export const EDIT_GRID_INPUT_CELL_CLASS = 'eg-input-cell';
+
 export const gridCellSelectInputProps: Partial<SelectInputProps> = {
     autoFocus: true,
     containerClass: 'select-input-cell-container',
@@ -493,7 +495,7 @@ export const gridCellSelectInputProps: Partial<SelectInputProps> = {
             baseUnit: 2,
         },
     }),
-    inputClass: 'select-input-cell',
+    inputClass: `select-input-cell ${EDIT_GRID_INPUT_CELL_CLASS}`,
     menuPosition: 'fixed',
     openMenuOnFocus: true,
     placeholder: '',

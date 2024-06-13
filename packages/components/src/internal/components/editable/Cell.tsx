@@ -33,7 +33,7 @@ import { SelectInputChange } from '../forms/input/SelectInput';
 import { CellMessage, ValueDescriptor } from './models';
 
 import { CellActions, MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
-import { gridCellSelectInputProps, onCellSelectChange } from './utils';
+import { EDIT_GRID_INPUT_CELL_CLASS, gridCellSelectInputProps, onCellSelectChange } from './utils';
 import { LookupCell } from './LookupCell';
 import { DateInputCell } from './DateInputCell';
 
@@ -547,7 +547,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
             );
         }
 
-        let style: React.CSSProperties = undefined;
+        let style: React.CSSProperties;
         if (this.preFocusDOMRect.current) {
             const { height, width } = this.preFocusDOMRect.current;
             style = {
@@ -561,7 +561,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
         return (
             <textarea
                 autoFocus
-                className={classNames('cellular-input', {
+                className={classNames(`${EDIT_GRID_INPUT_CELL_CLASS} cellular-input`, {
                     'cellular-input-align-right': alignRight,
                     'cellular-input-multiline': this.isMultiline,
                 })}

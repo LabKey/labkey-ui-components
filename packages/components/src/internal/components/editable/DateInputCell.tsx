@@ -7,7 +7,7 @@ import { formatDate, formatDateTime, isDateTimeCol } from '../../util/Date';
 
 import { MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { ValueDescriptor } from './models';
-import { genCellKey } from './utils';
+import { EDIT_GRID_INPUT_CELL_CLASS, genCellKey } from './utils';
 
 export interface DateInputCellProps {
     col: QueryColumn;
@@ -48,7 +48,7 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
             autoFocus
             disabled={disabled}
             formsy={false}
-            inputClassName="date-input-cell"
+            inputClassName={`date-input-cell ${EDIT_GRID_INPUT_CELL_CLASS}`}
             inputWrapperClassName=""
             isClearable={false}
             isFormInput={false}

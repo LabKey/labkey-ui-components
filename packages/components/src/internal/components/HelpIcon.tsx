@@ -1,24 +1,24 @@
-import React, { FC, memo, MouseEvent, useCallback, useMemo } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import React, { FC, memo, useMemo } from 'react';
 
 import { generateId } from '../util/utils';
+import { Placement } from '../useOverlayPositioning';
+import { Popover } from '../Popover';
+import { OverlayTrigger } from '../OverlayTrigger';
 
 interface Props {
-    placement?: 'top' | 'right' | 'bottom' | 'left';
+    placement?: Placement;
 }
 
 export const HelpIcon: FC<Props> = memo(({ children, placement = 'bottom' }) => {
     const id = useMemo(() => generateId(), []);
-    const overlayContent = <Popover id={id}>{children}</Popover>;
-    const onClick = useCallback((event: MouseEvent<HTMLSpanElement>) => {
-        // We need to preventDefault and stopPropagation here so we can use HelpIcon inside of <label> elements. If we
-        // cancel the event the popover will not render.
-        event.preventDefault();
-        event.stopPropagation();
-    }, []);
+    const overlayContent = (
+        <Popover id={id} placement={placement}>
+            {children}
+        </Popover>
+    );
     return (
-        <span className="help-icon" onClick={onClick}>
-            <OverlayTrigger overlay={overlayContent} placement={placement} rootClose trigger="click">
+        <span className="help-icon">
+            <OverlayTrigger overlay={overlayContent}>
                 <i className="fa fa-question-circle" />
             </OverlayTrigger>
         </span>

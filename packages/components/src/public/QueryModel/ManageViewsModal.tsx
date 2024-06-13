@@ -1,6 +1,4 @@
 import React, { FC, Fragment, memo, useCallback, useEffect, useState } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
-
 import { PermissionTypes } from '@labkey/api';
 
 import { ViewInfo } from '../../internal/ViewInfo';
@@ -15,6 +13,9 @@ import { RequiresPermission } from '../../internal/components/base/Permissions';
 
 import { userCanEditSharedViews } from '../../internal/app/utils';
 import { Modal } from '../../internal/Modal';
+
+import { OverlayTrigger } from '../../internal/OverlayTrigger';
+import { Popover } from '../../internal/Popover';
 
 import { ViewNameInput } from './SaveViewModal';
 
@@ -223,9 +224,8 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                                     <RequiresPermission perms={PermissionTypes.Admin}>
                                         {isDefault && !isRenaming && (
                                             <OverlayTrigger
-                                                placement="top"
                                                 overlay={
-                                                    <Popover id="disabled-button-popover">
+                                                    <Popover id="disabled-button-popover" placement="top">
                                                         Revert back to the system default view.
                                                     </Popover>
                                                 }

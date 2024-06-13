@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD June 2024
+- Convert usages of OverlayTrigger off of react-bootstrap
+
 ### version 3.53.0
 *Released*: 12 June 2024
 - Issue 50589: Remove option to export editable grid data

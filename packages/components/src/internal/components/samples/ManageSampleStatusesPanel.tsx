@@ -375,7 +375,8 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                                     componentRight={
                                         (state.inUse || !state.isLocal) && (
                                             <LockIcon
-                                                iconCls="pull-right choices-list__locked"
+                                                className="pull-right"
+                                                iconCls="choices-list__locked"
                                                 body={getSampleStatusLockedMessage(state, false)}
                                                 id="sample-state-lock-icon"
                                                 title={SAMPLE_STATUS_LOCKED_TITLE}

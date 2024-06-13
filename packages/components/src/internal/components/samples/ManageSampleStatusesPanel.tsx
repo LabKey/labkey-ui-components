@@ -25,12 +25,14 @@ import { useAppContext } from '../../AppContext';
 
 import { Container } from '../base/models/Container';
 
+import { ColorPickerInput } from '../forms/input/ColorPickerInput';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { SampleState } from './models';
 import { getSampleStatusColor, getSampleStatusLockedMessage } from './utils';
-import { ColorPickerInput } from '../forms/input/ColorPickerInput';
 import { SampleStatusTag } from './SampleStatusTag';
 import { SAMPLE_STATUS_COLORS, SampleStateType } from './constants';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = new SchemaQuery('exp', 'SampleStateType');

@@ -319,11 +319,6 @@ $table-cell-max-width: 600px;
             border-left: $table-cell-selected-border;
         }
 
-        .cell-content-wrapper {
-          display: flex;
-          height: 100%;
-        }
-
         .cell-content {
           align-self: flex-end;
         }
@@ -466,6 +461,11 @@ $table-cell-max-width: 600px;
         display: inline-table;
         min-height: 30px;
         width: 100%;
+      }
+
+      .cell-content-value, .cell-menu-value {
+        display: inline-block;
+        padding: 4px 2px;
       }
     }
   }

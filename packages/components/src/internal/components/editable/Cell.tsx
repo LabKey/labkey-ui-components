@@ -446,18 +446,20 @@ export class Cell extends React.PureComponent<CellProps, State> {
             if (showMenu && !this.isReadOnly) {
                 cell = (
                     <div {...displayProps}>
-                        <span className="cell-content">
+                        <div className="cell-content">
                             <div className="cell-menu-value">{valueDisplay}</div>
                             <span className="cell-menu-selector" onClick={this.handleDblClick}>
                                 <i className="fa fa-chevron-down" />
                             </span>
-                        </span>
+                        </div>
                     </div>
                 );
             } else {
                 cell = (
                     <div {...displayProps}>
-                        <span className="cell-content">{valueDisplay}</span>
+                        <div className="cell-content">
+                            <span className="cell-content-value">{valueDisplay}</span>
+                        </div>
                     </div>
                 );
             }

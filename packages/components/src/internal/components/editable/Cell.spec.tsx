@@ -56,7 +56,7 @@ describe('Cell', () => {
 
     test('default props', () => {
         const cell = mount(<Cell {...defaultProps()} />);
-        expect(cell.find('div')).toHaveLength(1);
+        expect(cell.find('div')).toHaveLength(2);
         expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
@@ -73,8 +73,8 @@ describe('Cell', () => {
             <Cell {...defaultProps()} col={queryColumn} colIdx={2} placeholder="placeholder text" rowIdx={3} />
         );
         const div = cell.find('div');
-        expect(div).toHaveLength(1);
-        expect(div.text()).toBe('placeholder text');
+        expect(div).toHaveLength(2);
+        expect(div.at(0).text()).toBe('placeholder text');
         expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
@@ -100,7 +100,7 @@ describe('Cell', () => {
 
     test('readOnly property', () => {
         const cell = mount(<Cell {...defaultProps()} colIdx={3} readOnly rowIdx={3} />);
-        expect(cell.find('div')).toHaveLength(1);
+        expect(cell.find('div')).toHaveLength(2);
         expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
@@ -108,7 +108,7 @@ describe('Cell', () => {
     test('column is readOnly', () => {
         const roColumn = new QueryColumn({ readOnly: true, name: 'roColumn' });
         const cell = mount(<Cell {...defaultProps()} col={roColumn} colIdx={4} readOnly={false} rowIdx={3} />);
-        expect(cell.find('div')).toHaveLength(1);
+        expect(cell.find('div')).toHaveLength(2);
         expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
@@ -119,15 +119,15 @@ describe('Cell', () => {
         );
 
         const div = cell.find('div');
-        expect(div).toHaveLength(1);
-        expect(div.text()).toBe('readOnly placeholder');
+        expect(div).toHaveLength(2);
+        expect(div.at(0).text()).toBe('readOnly placeholder');
         expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
 
     test('col is lookup, not public', () => {
         const cell = mount(<Cell {...defaultProps()} col={lookupCol} colIdx={1} rowIdx={2} />);
-        expect(cell.find('div')).toHaveLength(1);
+        expect(cell.find('div')).toHaveLength(2);
         expect(cell.find('.cell-menu')).toHaveLength(0);
         expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
@@ -179,7 +179,7 @@ describe('Cell', () => {
 
     test('cell renderDragHandle', () => {
         const cell = mount(<Cell {...defaultProps()} col={validValuesCol} renderDragHandle />);
-        expect(cell.find('div')).toHaveLength(2);
+        expect(cell.find('div')).toHaveLength(3);
         expect(cell.find('.cell-menu')).toHaveLength(1);
         expect(cell.find('.cell-menu-value')).toHaveLength(1);
         expect(cell.find('.cell-menu-selector')).toHaveLength(1);

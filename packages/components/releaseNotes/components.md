@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD June 2024
+### version 3.53.1
+*Released*: 13 June 2024
 - Convert usages of OverlayTrigger off of react-bootstrap
 
 ### version 3.53.0

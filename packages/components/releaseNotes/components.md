@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.53.2
+*Released*: 14 June 2024
+- Feature Request 50121: Support multi-line cells in editable grid
+
 ### version 3.53.1
 *Released*: 13 June 2024
 - Convert usages of OverlayTrigger off of react-bootstrap

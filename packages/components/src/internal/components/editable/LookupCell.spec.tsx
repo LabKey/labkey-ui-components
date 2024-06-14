@@ -26,6 +26,7 @@ describe('LookupCell', () => {
             colIdx: 0,
             forUpdate: false,
             modifyCell: jest.fn(),
+            row: undefined,
             rowIdx: 0,
             select: jest.fn(),
             values: List.of({ raw: 'a' } as ValueDescriptor, { raw: 'b' } as ValueDescriptor, {} as ValueDescriptor),

@@ -15,9 +15,10 @@ import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput'
 
 import { getQueryColumnRenderers } from '../../global';
 
+import { QuerySelectOwnProps } from '../forms/QuerySelect';
+
 import { EditorModel, EditorModelProps, EditableGridModels } from './models';
 import { CellActions, CellCoordinates, MODIFICATION_TYPES } from './constants';
-import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
 export const applyEditableGridChangesToModels = (
     dataModels: QueryModel[],

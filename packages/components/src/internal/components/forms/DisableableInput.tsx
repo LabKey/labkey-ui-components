@@ -1,13 +1,15 @@
 import React, { FC, memo, useMemo } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+
 import { generateId } from '../../util/utils';
+import { OverlayTrigger } from '../../OverlayTrigger';
+import { Popover } from '../../Popover';
 
 interface Props {
     className?: string;
     disabledMsg?: string;
     name: string;
-    placeholder?: string;
     onChange: (evt: any) => void;
+    placeholder?: string;
     title?: string;
     value: string;
 }
@@ -19,7 +21,14 @@ export const DisableableInput: FC<Props> = memo(props => {
     return (
         <>
             {disabledMsg ? (
-                <OverlayTrigger placement="bottom" overlay={<Popover id={id} title={title}>{disabledMsg}</Popover>}>
+                <OverlayTrigger
+                    style={{ display: 'inline' }}
+                    overlay={
+                        <Popover id={id} title={title} placement="bottom">
+                            {disabledMsg}
+                        </Popover>
+                    }
+                >
                     <div className="disabled-button-with-tooltip full-width">
                         <input {...inputProps} type="text" disabled />
                     </div>

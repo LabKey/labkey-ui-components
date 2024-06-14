@@ -190,9 +190,13 @@
     margin-bottom: 15px;
   }
 
-    .react-datepicker__triangle {
-        left: -10px !important;
-    }
+  .react-datepicker__triangle {
+    left: -10px !important;
+  }
+
+  .overlay-trigger {
+    display: inline;
+  }
 }
 
 .editable-grid__bulk-header {

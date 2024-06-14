@@ -25,12 +25,14 @@ import { useAppContext } from '../../AppContext';
 
 import { Container } from '../base/models/Container';
 
+import { ColorPickerInput } from '../forms/input/ColorPickerInput';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { SampleState } from './models';
 import { getSampleStatusColor, getSampleStatusLockedMessage } from './utils';
-import { ColorPickerInput } from '../forms/input/ColorPickerInput';
 import { SampleStatusTag } from './SampleStatusTag';
 import { SAMPLE_STATUS_COLORS, SampleStateType } from './constants';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 
 const TITLE = 'Manage Sample Statuses';
 const STATE_TYPE_SQ = new SchemaQuery('exp', 'SampleStateType');
@@ -375,7 +377,8 @@ export const SampleStatusesList: FC<SampleStatusesListProps> = memo(props => {
                                     componentRight={
                                         (state.inUse || !state.isLocal) && (
                                             <LockIcon
-                                                iconCls="pull-right choices-list__locked"
+                                                className="pull-right"
+                                                iconCls="choices-list__locked"
                                                 body={getSampleStatusLockedMessage(state, false)}
                                                 id="sample-state-lock-icon"
                                                 title={SAMPLE_STATUS_LOCKED_TITLE}

@@ -243,6 +243,7 @@ $table-cell-selected-box-shadow: 0 3px 3px darkgrey;
 $table-cell-selection-bg-color: #EDF3FF;
 $table-cell-max-height: 200px;
 $table-cell-max-width: 600px;
+$table-cell-padding: 4px 2px;
 
 .table-cellular {
   border-collapse: collapse;
@@ -285,11 +286,9 @@ $table-cell-max-width: 600px;
       cursor: default;
       display: flex;
       height: 100%;
-      max-height: $table-cell-max-height;
-      max-width: $table-cell-max-width;
       outline: none;
       overflow: hidden;
-      padding: 7px 1px 2px 2px;
+      padding: $table-cell-padding;
       white-space: pre;
 
         &.cell-selection {
@@ -321,6 +320,9 @@ $table-cell-max-width: 600px;
 
         .cell-content {
           align-self: flex-end;
+          max-height: $table-cell-max-height;
+          max-width: $table-cell-max-width;
+          overflow: auto;
         }
     }
 
@@ -341,7 +343,7 @@ $table-cell-max-width: 600px;
       max-height: $table-cell-max-height;
       max-width: 400px;
       outline: none;
-      padding: 7px 1px 2px 2px;
+      padding: $table-cell-padding;
       resize: none;
       width: 100%;
 
@@ -448,7 +450,7 @@ $table-cell-max-width: 600px;
 
       .date-input-cell {
         outline: none;
-        padding: 7px 1px 2px 2px;
+        padding: $table-cell-padding;
       }
     }
   }
@@ -464,14 +466,9 @@ $table-cell-max-width: 600px;
         width: 100%;
       }
 
-      .cell-content {
-        max-height: $table-cell-max-height - 15px;
-        overflow: auto;
-      }
-
       .cell-content-value, .cell-menu-value {
         display: inline-block;
-        padding: 4px 2px;
+        padding: $table-cell-padding;
       }
     }
   }

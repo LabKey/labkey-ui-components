@@ -378,6 +378,13 @@ export class Cell extends React.PureComponent<CellProps, State> {
         onCellSelectChange(cellActions, colIdx, rowIdx, selectedOptions, props_.multiple);
     };
 
+    onFocusCapture: React.FocusEventHandler<HTMLTextAreaElement> = (event): void => {
+        // Move the cursor the end of the input value upon focus
+        if (event.target.value) {
+            event.target.selectionStart = event.target.selectionEnd = event.target.value.length;
+        }
+    };
+
     render() {
         const {
             borderMaskBottom,
@@ -571,6 +578,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 disabled={this.isReadOnly}
                 onBlur={this.handleBlur}
                 onChange={this.handleChange}
+                onFocusCapture={this.onFocusCapture}
                 onKeyDown={this.handleKeys}
                 placeholder={placeholder}
                 style={style}

@@ -35,7 +35,7 @@ import { getValueFromRow } from '../../util/utils';
 import { MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { ValueDescriptor } from './models';
 
-import { getLookupFilters, gridCellSelectInputProps, onCellSelectChange } from './utils';
+import { getLookupFilters, gridCellQuerySelectProps, gridCellSelectInputProps, onCellSelectChange } from './utils';
 
 export interface LookupCellProps {
     col: QueryColumn;
@@ -109,7 +109,7 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
 
     return (
         <QuerySelect
-            {...gridCellSelectInputProps}
+            {...gridCellQuerySelectProps}
             containerFilter={lookup.containerFilter ?? containerFilter ?? getContainerFilterForLookups()}
             containerPath={lookup.containerPath ?? containerPath}
             defaultInputValue={defaultInputValue}

@@ -28,7 +28,8 @@ const IN_USE_TITLE = 'Text Choice In Use';
 const IN_USE_TIP = 'This text choice value cannot be deleted because it is in use.';
 const VALUE_IN_USE = (
     <LockIcon
-        iconCls="pull-right choices-list__locked"
+        className="pull-right"
+        iconCls="choices-list__locked"
         body={IN_USE_TIP}
         id="text-choice-value-lock-icon"
         title={IN_USE_TITLE}
@@ -40,7 +41,8 @@ const LOCKED_TIP =
     'This text choice value cannot be deleted because it is in use and cannot be edited because one or more usages are for read-only items.';
 const VALUE_LOCKED = (
     <LockIcon
-        iconCls="pull-right choices-list__locked"
+        className="pull-right"
+        iconCls="choices-list__locked"
         body={LOCKED_TIP}
         id="text-choice-value-lock-icon"
         title={LOCKED_TITLE}

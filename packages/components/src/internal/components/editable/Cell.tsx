@@ -33,7 +33,7 @@ import { SelectInputChange } from '../forms/input/SelectInput';
 import { CellMessage, ValueDescriptor } from './models';
 
 import { CellActions, MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
-import { gridCellSelectInputProps, onCellSelectChange } from './utils';
+import { EDIT_GRID_INPUT_CELL_CLASS, gridCellSelectInputProps, onCellSelectChange } from './utils';
 import { LookupCell } from './LookupCell';
 import { DateInputCell } from './DateInputCell';
 
@@ -76,9 +76,12 @@ interface State {
 
 export class Cell extends React.PureComponent<CellProps, State> {
     private changeTO: number;
+    private displayEl: React.RefObject<HTMLDivElement>;
+    // This is used to record the dimensions of the cell before focusing so that the
+    // subsequently rendered focused textarea can fit to the same dimensions
+    private preFocusDOMRect: React.MutableRefObject<DOMRect>;
     private recordedKeys: string;
     private recordingTO: number;
-    private displayEl: React.RefObject<any>;
 
     static defaultProps = {
         borderMaskBottom: false,
@@ -101,6 +104,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
         };
 
         this.displayEl = React.createRef();
+        this.preFocusDOMRect = React.createRef();
     }
 
     get isDateTimeField(): boolean {
@@ -113,6 +117,10 @@ export class Cell extends React.PureComponent<CellProps, State> {
         return col.isPublicLookup() || this.isDateTimeField || !!col.validValues;
     }
 
+    get isMultiline(): boolean {
+        return this.props.col.inputType === 'textarea';
+    }
+
     get isReadOnly(): boolean {
         return this.props.readOnly || this.props.col.readOnly || this.props.locked;
     }
@@ -121,9 +129,19 @@ export class Cell extends React.PureComponent<CellProps, State> {
         if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
 
-            if (!prevProps.selected) this.loadFilteredLookupKeys();
+            if (prevProps.focused) {
+                this.preFocusDOMRect.current = null;
+            }
+            if (!prevProps.selected) {
+                this.loadFilteredLookupKeys();
+            }
         }
     }
+
+    focusCell = (colIdx: number, rowIdx: number, clearValue?: boolean): void => {
+        this.preFocusDOMRect.current = this.displayEl.current.getBoundingClientRect();
+        this.props.cellActions.focusCell(colIdx, rowIdx, clearValue);
+    };
 
     loadFilteredLookupKeys = async (): Promise<void> => {
         const { getFilteredLookupKeys, linkedValues, readOnly } = this.props;
@@ -132,9 +150,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
 
         const linkedFilteredLookupKeys = await getFilteredLookupKeys(linkedValues);
 
-        this.setState({
-            filteredLookupKeys: linkedFilteredLookupKeys,
-        });
+        this.setState({ filteredLookupKeys: linkedFilteredLookupKeys });
     };
 
     handleSelectionBlur = (): void => {
@@ -160,13 +176,13 @@ export class Cell extends React.PureComponent<CellProps, State> {
         );
     };
 
-    handleBlur: React.FocusEventHandler<HTMLInputElement> = (evt): void => {
+    handleBlur: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement> = (evt): void => {
         clearTimeout(this.changeTO);
         this.handleSelectionBlur();
         this.replaceCurrentCellValue(evt.target.value, evt.target.value);
     };
 
-    handleChange: React.ChangeEventHandler<HTMLInputElement> = (event): void => {
+    handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event): void => {
         event.persist();
 
         clearTimeout(this.changeTO);
@@ -178,13 +194,13 @@ export class Cell extends React.PureComponent<CellProps, State> {
     handleDblClick = (): void => {
         if (this.isReadOnly) return;
 
-        const { colIdx, cellActions, rowIdx } = this.props;
-        cellActions.focusCell(colIdx, rowIdx);
+        const { colIdx, rowIdx } = this.props;
+        this.focusCell(colIdx, rowIdx);
     };
 
     handleKeys: React.KeyboardEventHandler<HTMLElement> = (event): void => {
         const { cellActions, colIdx, focused, rowIdx, selected } = this.props;
-        const { focusCell, modifyCell, selectCell, fillDown } = cellActions;
+        const { modifyCell, selectCell, fillDown } = cellActions;
         const isRecording = this.recordingTO !== undefined;
 
         switch (event.keyCode) {
@@ -221,8 +237,11 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 break;
             case KEYS.Enter:
                 if (focused || this.isReadOnly) {
-                    cancelEvent(event);
-                    selectCell(colIdx, rowIdx + 1);
+                    // Multi-line cells support "Shift" + "Enter" to start a new line.
+                    if (!event.shiftKey || !this.isMultiline) {
+                        cancelEvent(event);
+                        selectCell(colIdx, rowIdx + 1);
+                    }
                 } else if (selected) {
                     // Record "Enter" key iff recording is in progress. Does not initiate recording.
                     if (isRecording) {
@@ -230,7 +249,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                         this.recordKeys(event);
                     } else {
                         cancelEvent(event);
-                        focusCell(colIdx, rowIdx);
+                        this.focusCell(colIdx, rowIdx);
                     }
                 }
                 break;
@@ -262,7 +281,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     if (this.isLookup && !this.isDateTimeField) {
                         this.recordKeys(event);
                     } else {
-                        focusCell(colIdx, rowIdx, true);
+                        this.focusCell(colIdx, rowIdx, true);
                     }
                 }
                 break;
@@ -289,13 +308,13 @@ export class Cell extends React.PureComponent<CellProps, State> {
         this.recordingTO = window.setTimeout(() => {
             this.recordingTO = undefined;
             const { cellActions, colIdx, rowIdx } = this.props;
-            const { fillText, focusCell, selectCell } = cellActions;
+            const { fillText, selectCell } = cellActions;
 
             if (this.recordedKeys.indexOf('\n') > -1) {
                 fillText(colIdx, rowIdx, this.recordedKeys);
                 selectCell(colIdx, rowIdx + 1);
             } else {
-                focusCell(colIdx, rowIdx, !this.isReadOnly);
+                this.focusCell(colIdx, rowIdx, !this.isReadOnly);
             }
 
             this.recordedKeys = undefined;
@@ -359,6 +378,13 @@ export class Cell extends React.PureComponent<CellProps, State> {
         onCellSelectChange(cellActions, colIdx, rowIdx, selectedOptions, props_.multiple);
     };
 
+    onFocusCapture: React.FocusEventHandler<HTMLTextAreaElement> = (event): void => {
+        // Move the cursor the end of the input value upon focus
+        if (event.target.value) {
+            event.target.selectionStart = event.target.selectionEnd = event.target.value.length;
+        }
+    };
+
     render() {
         const {
             borderMaskBottom,
@@ -386,6 +412,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
         } = this.props;
 
         const { filteredLookupKeys } = this.state;
+        const alignRight = col.align === 'right';
         const isDateTimeField = this.isDateTimeField;
         const showLookup = this.isLookup;
         const showMenu = showLookup || (col.inputRenderer && col.inputRenderer !== 'AppendUnitsInput');
@@ -398,17 +425,18 @@ export class Cell extends React.PureComponent<CellProps, State> {
             const displayProps = {
                 autoFocus: selected,
                 className: classNames('cellular-display', {
+                    'cell-align-right': alignRight,
                     'cell-border-top': borderMaskTop,
                     'cell-border-right': borderMaskRight,
                     'cell-border-bottom': borderMaskBottom,
                     'cell-border-left': borderMaskLeft,
-                    'cell-selected': selected,
-                    'cell-selection': selection,
-                    'cell-warning': message !== undefined,
-                    'cell-read-only': this.isReadOnly,
                     'cell-locked': locked,
                     'cell-menu': showMenu,
                     'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
+                    'cell-read-only': this.isReadOnly,
+                    'cell-selected': selected,
+                    'cell-selection': selection,
+                    'cell-warning': message !== undefined,
                 }),
                 onDoubleClick: this.handleDblClick,
                 onKeyDown: this.handleKeys,
@@ -422,19 +450,25 @@ export class Cell extends React.PureComponent<CellProps, State> {
             if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
             let cell: ReactNode;
 
-            if (showMenu) {
+            if (showMenu && !this.isReadOnly) {
                 cell = (
                     <div {...displayProps}>
-                        <div className="cell-menu-value">{valueDisplay}</div>
-                        {!this.isReadOnly && (
-                            <span onClick={this.handleDblClick} className="cell-menu-selector">
+                        <div className="cell-content">
+                            <div className="cell-menu-value">{valueDisplay}</div>
+                            <span className="cell-menu-selector" onClick={this.handleDblClick}>
                                 <i className="fa fa-chevron-down" />
                             </span>
-                        )}
+                        </div>
                     </div>
                 );
             } else {
-                cell = <div {...displayProps}>{valueDisplay}</div>;
+                cell = (
+                    <div {...displayProps}>
+                        <div className="cell-content">
+                            <span className="cell-content-value">{valueDisplay}</span>
+                        </div>
+                    </div>
+                );
             }
 
             if (message) {
@@ -487,6 +521,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     col={col}
                     colIdx={colIdx}
                     containerFilter={containerFilter}
+                    containerPath={containerPath}
                     defaultInputValue={this.recordedKeys}
                     disabled={this.isReadOnly}
                     lookupValueFilters={lookupValueFilters}
@@ -499,7 +534,6 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     rowIdx={rowIdx}
                     select={cellActions.selectCell}
                     values={values}
-                    containerPath={containerPath}
                 />
             );
         }
@@ -514,26 +548,41 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     disabled={this.isReadOnly}
                     modifyCell={cellActions.modifyCell}
                     onKeyDown={this.handleKeys}
-                    select={cellActions.selectCell}
                     rowIdx={rowIdx}
+                    select={cellActions.selectCell}
                 />
             );
         }
 
+        let style: React.CSSProperties;
+        if (this.preFocusDOMRect.current) {
+            const { height, width } = this.preFocusDOMRect.current;
+            style = {
+                height: `${height}px`,
+                minHeight: `${height}px`,
+                minWidth: `${width}px`,
+                width: `${width}px`,
+            };
+        }
+
         return (
-            <input
+            <textarea
                 autoFocus
-                className="cellular-input"
+                className={classNames(`${EDIT_GRID_INPUT_CELL_CLASS} cellular-input`, {
+                    'cellular-input-align-right': alignRight,
+                    'cellular-input-multiline': this.isMultiline,
+                })}
                 defaultValue={
                     values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : ''
                 }
                 disabled={this.isReadOnly}
                 onBlur={this.handleBlur}
                 onChange={this.handleChange}
+                onFocusCapture={this.onFocusCapture}
                 onKeyDown={this.handleKeys}
                 placeholder={placeholder}
+                style={style}
                 tabIndex={-1}
-                type="text"
             />
         );
     }

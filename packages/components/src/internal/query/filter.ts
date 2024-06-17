@@ -559,3 +559,12 @@ export const IN_EXP_ANCESTORS_OF_FILTER_TYPE = registerFilterType(
     true,
     undefined
 );
+/**
+ * This implements the filter corresponding to SampleInBoxCompareType. Updates there should also be reflected here.
+ */
+export const BOX_SAMPLES_FILTER = registerFilterType('Sample in box', null, 'sampleinbox', true);
+
+/**
+ * This implements the filter corresponding to SampleInLocationCompareType. Updates there should also be reflected here.
+ */
+export const LOCATION_SAMPLES_FILTER = registerFilterType('Sample in location', null, 'sampleinlocation', true);

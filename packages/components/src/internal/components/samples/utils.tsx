@@ -38,6 +38,7 @@ import {
 } from './constants';
 
 import { SampleState, SampleStatus } from './models';
+import { BOX_SAMPLES_FILTER, LOCATION_SAMPLES_FILTER } from '../../query/filter';
 
 export function getOmittedSampleTypeColumns(user: User, moduleContext?: ModuleContext): string[] {
     let cols: string[] = [];
@@ -291,8 +292,9 @@ export function getURLParamsForSampleSelectionKey(
                 const isPicklistFilterType = filterURLSuffix === PICKLIST_SAMPLES_FILTER.getURLSuffix();
                 // and we don't need the LSID LineageOf clause either
                 const isLineageOfFilterType = filterURLSuffix === Filter.Types.EXP_LINEAGE_OF.getURLSuffix();
+                const isSampleInLocationFilterType = filterURLSuffix === LOCATION_SAMPLES_FILTER.getURLSuffix() || filterURLSuffix === BOX_SAMPLES_FILTER.getURLSuffix();
 
-                if (!isPicklistFilterType && !isLineageOfFilterType) {
+                if (!isPicklistFilterType && !isLineageOfFilterType && !isSampleInLocationFilterType) {
                     params[filter.getURLParameterName()] = filter.getURLParameterValue();
                 }
             });

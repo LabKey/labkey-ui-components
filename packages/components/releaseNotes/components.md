@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.X
 *Released*: X June 2024
 - Issue 50483: Creating a required sample-only field after an aliquot field errors on add
-- Issue 50023 LKSM: Import button on Assay Run page is not enable after creating a new aliquot and adding them to a run result.
+- Issue 50023: Import button on Assay Run page is not enable after creating a new aliquot and adding them to a run result.
+- Issue 50608: View Assay Results from Storage Grid View errors
 
 ### version 3.53.2
 *Released*: 14 June 2024

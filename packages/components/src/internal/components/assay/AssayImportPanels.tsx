@@ -415,8 +415,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const fileName = getRunPropertiesFileName(runPropsModel.getRow());
         const gridData = await this.state.model.getInitialGridData();
 
-        if (hasSamples)
-            setIsDirty(true);
+        if (hasSamples) setIsDirty(true);
 
         // Issue 38237: set the runName and comments for the re-import case
         this.setState(state => {
@@ -518,8 +517,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             return result;
         }, {});
 
-        if (isChanged)
-            this.props.setIsDirty?.(true);
+        if (isChanged) this.props.setIsDirty?.(true);
 
         this.handleChange('runProperties', OrderedMap<string, any>(cleanedValues), () => {
             this.setState(state => ({

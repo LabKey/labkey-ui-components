@@ -348,7 +348,7 @@ export class EditorModel
     validateData(
         queryModel: QueryModel,
         uniqueFieldKey?: string,
-        insertColumns?: QueryColumn[],
+        insertColumns?: QueryColumn[]
     ): {
         missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
         uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.

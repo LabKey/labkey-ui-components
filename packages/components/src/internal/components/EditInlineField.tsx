@@ -1,9 +1,9 @@
 import React, { FC, FormEvent, memo, ReactNode, useCallback, useMemo, useReducer, useRef, useState } from 'react';
-import moment from 'moment';
 import classNames from 'classnames';
 import Formsy from 'formsy-react';
 
 import {
+    formatDate,
     getColDateFormat,
     getMomentDateFormat,
     getJsonDateTimeFormatString,
@@ -30,6 +30,7 @@ interface Props {
     name: string;
     onChange?: (name: string, newValue: any) => void;
     placeholder?: string;
+    timezone?: string;
     tooltip?: string; // only shown when component has a label and is allowEdit
     type: string;
     useJsonDateFormat?: boolean;
@@ -50,6 +51,7 @@ export const EditInlineField: FC<Props> = memo(props => {
         value,
         column,
         useJsonDateFormat,
+        timezone,
         tooltip,
     } = props;
     const { container } = useServerContext();
@@ -64,7 +66,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     const inputType = type === 'int' || type === 'float' ? 'number' : 'text';
     const inputRef = useRef(null);
     const _value = typeof value === 'object' ? value?.value : value;
-    const [dateValue, setDateValue] = useState<Date>(isDate && _value ? new Date(_value) : undefined);
+    const [dateValue, setDateValue] = useState<Date>(() => isDate && _value ? new Date(_value) : undefined);
     const [timeJsonValue, setTimeJsonValue] = useState<string>(undefined);
     const [columnBasedValue, setColumnBasedValue] = useState();
 
@@ -75,15 +77,18 @@ export const EditInlineField: FC<Props> = memo(props => {
     });
 
     const displayValue = useMemo<ReactNode>(() => {
-        let value_;
+        let value_: ReactNode;
         if (value?.formattedValue) {
             value_ = value.formattedValue;
         } else if (value?.displayValue) {
             value_ = value.displayValue;
         } else if (_value !== undefined && _value !== null && _value !== '') {
             // value is of type "any" so it could be a number, boolean, etc. Use explicit value checks.
-            if (isDate) value_ = moment(_value).format(dateFormat);
-            else value_ = _value?.toString();
+            if (isDate) {
+                value_ = formatDate(_value, timezone, dateFormat);
+            } else {
+                value_ = _value?.toString();
+            }
         }
 
         // Issue 48196: if the domain column has been setup with a "url" prop, use it in the EditInlineField value display
@@ -97,22 +102,23 @@ export const EditInlineField: FC<Props> = memo(props => {
 
         if (value_) return value_;
         return <span className="edit-inline-field__placeholder">{emptyText}</span>;
-    }, [dateFormat, emptyText, isDate, value, _value]);
+    }, [dateFormat, emptyText, isDate, timezone, value, _value]);
 
     const getInputValue = useCallback((): any => {
         if (isTime) return timeJsonValue;
         if (isDate) {
-            if (useJsonDateFormat)
+            if (useJsonDateFormat) {
                 return isDateOnly ? getJsonDateFormatString(dateValue) : getJsonDateTimeFormatString(dateValue);
+            }
             return dateValue?.valueOf();
         }
         if (column) return columnBasedValue;
         return inputRef.current?.value;
     }, [dateValue, timeJsonValue, isDate, isTime, columnBasedValue, column, useJsonDateFormat, isDateOnly]);
 
-    const onCancel = (): void => {
+    const onCancel = useCallback((): void => {
         setState({ editing: false, ignoreBlur: true });
-    };
+    }, []);
 
     const saveEdit = useCallback(() => {
         const inputValue = getInputValue();
@@ -136,7 +142,7 @@ export const EditInlineField: FC<Props> = memo(props => {
             }
         }
         setState({ ignoreBlur: false });
-    }, [allowBlank, getInputValue, isDate, saveEdit, state.ignoreBlur]);
+    }, [allowBlank, getInputValue, isDate, onCancel, saveEdit, state.ignoreBlur]);
 
     const onDateChange = useCallback(
         (date: Date | string) => {
@@ -167,8 +173,8 @@ export const EditInlineField: FC<Props> = memo(props => {
         }
     }, [allowEdit, state.editing]);
 
-    const toggleKeyDown = useCallback(
-        (evt: React.KeyboardEvent) => {
+    const toggleKeyDown = useCallback<React.KeyboardEventHandler<HTMLSpanElement>>(
+        evt => {
             if (evt.key === Key.ENTER) toggleEdit();
         },
         [toggleEdit]
@@ -178,7 +184,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     // to the beginning of the text. For <input type="text" /> the default browser behavior
     // is to set the cursor to the end of the text. This makes the <textarea /> utilized by
     // this component behave like an <input /> and sets the cursor to the end.
-    const onTextAreaFocus = useCallback((evt: React.FocusEvent<HTMLTextAreaElement>) => {
+    const onTextAreaFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(evt => {
         const valueLength = evt.target.value.length;
 
         if (valueLength > 0) {
@@ -206,7 +212,7 @@ export const EditInlineField: FC<Props> = memo(props => {
                     onKeyDown={onKeyDown}
                     onChange={onDateChange}
                     placeholderText={placeholder}
-                    inlineEdit={true}
+                    inlineEdit
                 />
             )}
             {state.editing && isDateOrTime && !column && (

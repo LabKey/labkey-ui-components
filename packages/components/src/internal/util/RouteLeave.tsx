@@ -28,6 +28,7 @@ export const useRouteLeave = (confirmMessage = CONFIRM_MESSAGE): GetSetIsDirty =
     const isDirty = useRef<boolean>(false);
     const setIsDirty = useCallback(
         (dirty: boolean) => {
+            console.log('setDirty');
             isDirty.current = dirty;
         },
         [isDirty]

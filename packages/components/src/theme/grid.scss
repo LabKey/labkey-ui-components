@@ -253,7 +253,8 @@ $table-cell-padding: 4px 2px;
   }
 
   & > tbody > tr.grid-empty > td {
-      padding: 0 4px;
+    height: 30px;
+    padding: 0 4px;
   }
 
   & > tbody > tr > td {

@@ -41,6 +41,7 @@ describe('Cell', () => {
             cellActions: {
                 clearSelection: jest.fn(),
                 fillDown: jest.fn(),
+                fillText: jest.fn(),
                 focusCell: jest.fn(),
                 inDrag: jest.fn(),
                 modifyCell: jest.fn(),
@@ -55,15 +56,15 @@ describe('Cell', () => {
 
     test('default props', () => {
         const cell = mount(<Cell {...defaultProps()} />);
-        expect(cell.find('div')).toHaveLength(1);
-        expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find('div')).toHaveLength(2);
+        expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
 
     test('with focus', () => {
         const cell = mount(<Cell {...defaultProps()} focused selected />);
         expect(cell.find('div')).toHaveLength(0);
-        expect(cell.find('input')).toHaveLength(1);
+        expect(cell.find('textarea')).toHaveLength(1);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
 
@@ -72,9 +73,9 @@ describe('Cell', () => {
             <Cell {...defaultProps()} col={queryColumn} colIdx={2} placeholder="placeholder text" rowIdx={3} />
         );
         const div = cell.find('div');
-        expect(div).toHaveLength(1);
-        expect(div.text()).toBe('placeholder text');
-        expect(cell.find('input')).toHaveLength(0);
+        expect(div).toHaveLength(2);
+        expect(div.at(0).text()).toBe('placeholder text');
+        expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
 
@@ -92,23 +93,23 @@ describe('Cell', () => {
         );
         expect(cell.find('div')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
-        const input = cell.find('input');
+        const input = cell.find('textarea');
         expect(input).toHaveLength(1);
         expect(input.prop('placeholder')).toBe('placeholder text');
     });
 
     test('readOnly property', () => {
         const cell = mount(<Cell {...defaultProps()} colIdx={3} readOnly rowIdx={3} />);
-        expect(cell.find('div')).toHaveLength(1);
-        expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find('div')).toHaveLength(2);
+        expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
 
     test('column is readOnly', () => {
         const roColumn = new QueryColumn({ readOnly: true, name: 'roColumn' });
         const cell = mount(<Cell {...defaultProps()} col={roColumn} colIdx={4} readOnly={false} rowIdx={3} />);
-        expect(cell.find('div')).toHaveLength(1);
-        expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find('div')).toHaveLength(2);
+        expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
 
@@ -118,27 +119,24 @@ describe('Cell', () => {
         );
 
         const div = cell.find('div');
-        expect(div).toHaveLength(1);
-        expect(div.text()).toBe('readOnly placeholder');
-        expect(cell.find('input')).toHaveLength(0);
+        expect(div).toHaveLength(2);
+        expect(div.at(0).text()).toBe('readOnly placeholder');
+        expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
 
     test('col is lookup, not public', () => {
         const cell = mount(<Cell {...defaultProps()} col={lookupCol} colIdx={1} rowIdx={2} />);
-        expect(cell.find('div')).toHaveLength(1);
+        expect(cell.find('div')).toHaveLength(2);
         expect(cell.find('.cell-menu')).toHaveLength(0);
-        expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
 
     const expectLookup = (cell: ReactWrapper, focused = false, readOnly = false): void => {
-        expect(cell.find('div')).toHaveLength(focused ? 9 : 2);
         expect(cell.find('.cell-menu')).toHaveLength(focused ? 0 : 1);
-        expect(cell.find('.cell-menu-value')).toHaveLength(focused ? 0 : 1);
         expect(cell.find('.cell-menu-selector')).toHaveLength(focused || readOnly ? 0 : 1);
         expect(cell.find('.' + CELL_SELECTION_HANDLE_CLASSNAME)).toHaveLength(0);
-        expect(cell.find('input')).toHaveLength(focused ? 1 : 0);
         expect(cell.find(LookupCell)).toHaveLength(focused ? 1 : 0);
     };
 
@@ -181,12 +179,12 @@ describe('Cell', () => {
 
     test('cell renderDragHandle', () => {
         const cell = mount(<Cell {...defaultProps()} col={validValuesCol} renderDragHandle />);
-        expect(cell.find('div')).toHaveLength(2);
+        expect(cell.find('div')).toHaveLength(3);
         expect(cell.find('.cell-menu')).toHaveLength(1);
         expect(cell.find('.cell-menu-value')).toHaveLength(1);
         expect(cell.find('.cell-menu-selector')).toHaveLength(1);
         expect(cell.find('.' + CELL_SELECTION_HANDLE_CLASSNAME)).toHaveLength(1);
-        expect(cell.find('input')).toHaveLength(0);
+        expect(cell.find('textarea')).toHaveLength(0);
         expect(cell.find(LookupCell)).toHaveLength(0);
     });
 
@@ -197,7 +195,9 @@ describe('Cell', () => {
             if (focused) {
                 expect(cell.find(DateInputCell).prop('defaultValue')).toEqual(rawValue);
                 expect(cell.find('input.date-input-cell').prop('value')).toEqual(value);
-            } else expect(cell.find('.cellular-display').text()).toEqual(value);
+            } else {
+                expect(cell.find('.cellular-display').text()).toEqual(value);
+            }
         }
     };
 

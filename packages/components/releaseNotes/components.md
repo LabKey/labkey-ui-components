@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 3.53.3
+*Released*: 18 June 2024
 - Add support for Ancestor nodes on All Samples grids
   - Update `CustomizeGridViewModal` to not allow multiple levels of ancestors to be added
 

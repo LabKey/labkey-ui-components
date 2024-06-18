@@ -66,7 +66,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     const inputType = type === 'int' || type === 'float' ? 'number' : 'text';
     const inputRef = useRef(null);
     const _value = typeof value === 'object' ? value?.value : value;
-    const [dateValue, setDateValue] = useState<Date>(() => isDate && _value ? new Date(_value) : undefined);
+    const [dateValue, setDateValue] = useState<Date>(() => (isDate && _value ? new Date(_value) : undefined));
     const [timeJsonValue, setTimeJsonValue] = useState<string>(undefined);
     const [columnBasedValue, setColumnBasedValue] = useState();
 
@@ -144,14 +144,11 @@ export const EditInlineField: FC<Props> = memo(props => {
         setState({ ignoreBlur: false });
     }, [allowBlank, getInputValue, isDate, onCancel, saveEdit, state.ignoreBlur]);
 
-    const onDateChange = useCallback(
-        (date: Date | string) => {
-            if (date instanceof Array) throw new Error('Unsupported date/time type');
-            if (typeof date === 'string') setTimeJsonValue(date);
-            else setDateValue(date);
-        },
-        []
-    );
+    const onDateChange = useCallback((date: Date | string) => {
+        if (date instanceof Array) throw new Error('Unsupported date/time type');
+        if (typeof date === 'string') setTimeJsonValue(date);
+        else setDateValue(date);
+    }, []);
 
     const onFormsyColumnChange = useCallback(
         (data: Record<string, any>) => {

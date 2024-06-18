@@ -140,8 +140,9 @@ export function getSelectRowCountColumnsStr(
         if (qFilter) return rawColumns;
     }
 
-    if (pkCols?.length > 0)
+    if (pkCols?.length > 0) {
         return pkCols[0].fieldKey;
+    }
 
     const columns: string[] =
         typeof rawColumns === 'string' ? rawColumns.split(',').map(col => col.trim()) : rawColumns;

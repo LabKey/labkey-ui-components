@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "3.53.3-fb-bugFixes247X.3",
+  "version": "3.53.4-fb-bugFixes247X.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

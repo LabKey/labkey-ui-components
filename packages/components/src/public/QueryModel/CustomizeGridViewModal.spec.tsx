@@ -189,12 +189,12 @@ describe('CustomizeGridViewModal', () => {
 describe('includedColumnsForCustomizationFilter', () => {
     test('hidden', () => {
         let col = new QueryColumn({ name: 'testColumn', hidden: false });
-        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy;
-        expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy;
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
+        expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy();
 
         col = new QueryColumn({ name: 'testColumn', hidden: true });
         expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
-        expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy;
+        expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy();
     });
 
     test('removeFromViews', () => {
@@ -217,5 +217,28 @@ describe('includedColumnsForCustomizationFilter', () => {
         LABKEY.moduleContext = { api: { moduleNames: ['api', 'core', 'premium'] } };
         expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
         expect(includedColumnsForCustomizationFilter(col, true)).toBeTruthy();
+    });
+
+    test('ancestor nodes', () => {
+        let col = new QueryColumn({ name: 'testColumn', fieldKeyPath: 'Run/SampleID/Ancestors' });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
+
+        col = new QueryColumn({ name: 'testColumn', fieldKeyPath: 'Run/SampleID/Ancestors/Samples/Type/Ancestors' });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
+
+        col = new QueryColumn({ name: 'testColumn', fieldKeyPath: 'SampleID/Ancestors/Samples/Type1' });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
+
+        col = new QueryColumn({ name: 'testColumn', fieldKeyPath: 'Ancestors/Samples/Type1' });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
+
+        col = new QueryColumn({ name: 'testColumn', fieldKeyPath: 'Ancestors/Samples/Type1/Ancestors' });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
+
+        col = new QueryColumn({ name: 'testColumn', fieldKeyPath: 'Ancestors/Sources/Type1/Ancestors/Samples/Type2' });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeFalsy();
+
+        col = new QueryColumn({ name: 'testColumn', fieldKeyPath: 'Ancestors' });
+        expect(includedColumnsForCustomizationFilter(col, false)).toBeTruthy();
     });
 });

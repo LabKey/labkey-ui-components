@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 50023: Import button on Assay Run page is not enable after creating a new aliquot and adding them to a run result.
 - Issue 50608: View Assay Results from Storage Grid View errors
 
+### version 3.53.3
+*Released*: 18 June 2024
+- Add support for Ancestor nodes on All Samples grids
+  - Update `CustomizeGridViewModal` to not allow multiple levels of ancestors to be added
+
 ### version 3.53.2
 *Released*: 14 June 2024
 - Feature Request 50121: Support multi-line cells in editable grid

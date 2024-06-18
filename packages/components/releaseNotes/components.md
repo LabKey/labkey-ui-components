@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 3.53.5
+*Released*: 18 June 2024
+- Separate storage styling from editable grid
+
 ### version 3.53.4
 *Released*: 18 June 2024
 - Issue 50533: Support passing through a `timezone` prop on `EditInlineField`

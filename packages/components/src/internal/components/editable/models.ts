@@ -27,11 +27,10 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { GridData } from '../../models';
 
 import { getQueryColumnRenderers } from '../../global';
-import { getColDateFormat, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
 import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 
 import { CellCoordinates, EditableGridEvent } from './constants';
-import { genCellKey, parseCellKey } from './utils';
+import { genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
 
 export interface EditableColumnMetadata {
     align?: string;
@@ -313,14 +312,8 @@ export class EditorModel
                 } else if (col.jsonType === 'time') {
                     row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
                 } else if (col.jsonType === 'date' && !displayValues) {
-                    let dateVal;
-                    if (values.size === 1) {
-                        dateVal = values.first().raw;
-                        dateVal = parseDate(dateVal, getColDateFormat(col));
-                    }
-
-                    // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-                    row = row.set(col.name, getJsonDateTimeFormatString(dateVal));
+                    const val = values.size === 1 ? values.first().raw : undefined;
+                    row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
                 } else {
                     row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
                 }

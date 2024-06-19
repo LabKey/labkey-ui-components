@@ -58,6 +58,24 @@ export const applyEditableGridChangesToModels = (
     };
 };
 
+export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn): { message: string, value: any } => {
+    const isDateTimeType = col.jsonType === 'date';
+    const isDateType = isDateTimeType && col.isDateOnlyColumn;
+    let message;
+    let value = origValue;
+
+    // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+    // Issue 45140: use QueryColumn date format for parseDate()
+    if (isDateType || isDateTimeType) {
+        const dateVal = parseDate(origValue, getColDateFormat(col));
+        const dateStrVal = isDateType ? getJsonDateFormatString(dateVal) : getJsonDateTimeFormatString(dateVal);
+        if (origValue && !dateStrVal) message = isDateType ? 'Invalid date' : 'Invalid date time';
+        value = dateStrVal ?? origValue;
+    }
+
+    return { value, message };
+};
+
 /**
  * Constructs an array of objects (suitable for the rows parameter of updateRows), where each object contains the
  * values in editorRows that are different from the ones in originalGridData
@@ -89,8 +107,7 @@ export function getUpdatedDataFromGrid(
 
                 let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
                 const col = queryInfo.getColumn(key);
-                const isDateTime = col?.jsonType === 'date';
-                const isDate = isDateTime && col.isDateOnlyColumn;
+
                 // Convert empty cell to null
                 if (value === '') value = null;
 
@@ -144,19 +161,13 @@ export function getUpdatedDataFromGrid(
                         }
                     }
                 } else if (!(originalValue == undefined && value == undefined) && originalValue !== value) {
-                    // - only update if the value has changed
-                    // - if the value is 'undefined', it will be removed from the update rows, so in order to
-                    // erase an existing value we set the value to null in our update data
+                    // only update if the value has changed
 
-                    // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-                    // Issue 45140: use QueryColumn date format for parseDate()
-                    if (isDate || isDateTime) {
-                        const dateVal = parseDate(value, getColDateFormat(col));
-                        const dateStrVal = isDate
-                            ? getJsonDateFormatString(dateVal)
-                            : getJsonDateTimeFormatString(dateVal);
-                        row[key] = dateStrVal ?? null;
-                    } else row[key] = value ?? null;
+                    // if the value is 'undefined', it will be removed from the update rows, so in order to
+                    // erase an existing value we set the value to null in our update data
+                    value = value === undefined ? null : value;
+
+                    row[key] = getValidatedEditableGridValue(value, col).value;
                 }
                 return row;
             }, {});

@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 48439: EditableGrid drops invalid date values when calling insertRows/saveRows
   - add getValidatedEditableGridValue() to centralize handling of grid data parsing for insert and update case
   - return original date string value when unable to parseDate()
+- Remove some deprecated code after issue 50589 changes (remove export editable grid option)
 
 ### version 3.53.5
 *Released*: 18 June 2024

@@ -1,5 +1,5 @@
-import { fromJS, Iterable, List, Map, OrderedMap } from 'immutable';
-import { Filter, Utils, UtilsDOM } from '@labkey/api';
+import { fromJS, Iterable, List, Map } from 'immutable';
+import { Filter, Utils } from '@labkey/api';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
@@ -7,9 +7,6 @@ import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { getColDateFormat, getJsonDateFormatString, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
 
 import { QueryInfo } from '../../../public/QueryInfo';
-import { quoteValueWithDelimiters } from '../../util/utils';
-
-import { EXPORT_TYPES } from '../../constants';
 
 import { SelectInputOption, SelectInputProps } from '../forms/input/SelectInput';
 
@@ -210,134 +207,6 @@ export const getUpdatedDataFromEditableGrid = (
         tabIndex,
         updatedRows: getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo),
     };
-};
-
-const getTableExportConfig = (
-    exportType: EXPORT_TYPES,
-    filename: string,
-    exportData: any[][],
-    activeModel: QueryModel
-): UtilsDOM.ConvertToTableOptions => {
-    const config = {
-        rows: exportData,
-        fileNamePrefix: filename,
-        queryinfo: {
-            schema: activeModel.schemaName,
-            query: activeModel.queryName,
-        },
-        auditMessage: 'Exported editable grid to file: ', // Filename will be appended
-    } as UtilsDOM.ConvertToTableOptions;
-
-    switch (exportType) {
-        case EXPORT_TYPES.TSV:
-            config.delim = UtilsDOM.DelimiterType.TAB;
-            break;
-        case EXPORT_TYPES.CSV:
-        default:
-            config.delim = UtilsDOM.DelimiterType.COMMA;
-            break;
-    }
-
-    return config;
-};
-
-export const exportEditedData = (
-    exportType: EXPORT_TYPES,
-    filename: string,
-    exportData: any[][],
-    activeModel: QueryModel
-): void => {
-    if (EXPORT_TYPES.EXCEL === exportType) {
-        const data = {
-            fileName: filename + '.xlsx',
-            sheets: [{ name: 'data', data: exportData }],
-            queryinfo: {
-                schema: activeModel.schemaName,
-                query: activeModel.queryName,
-            },
-            auditMessage: 'Exported editable grid to excel file: ', // Filename will be appended
-        };
-        UtilsDOM.convertToExcel(data);
-        return;
-    }
-
-    const config = getTableExportConfig(exportType, filename, exportData, activeModel);
-    UtilsDOM.convertToTable(config);
-};
-
-export const getEditorExportData = (
-    editorModels: EditorModel[],
-    dataModels: QueryModel[],
-    readOnlyColumns?: string[],
-    insertColumns?: QueryColumn[],
-    updateColumns?: QueryColumn[],
-    forUpdate?: boolean,
-    extraColumns?: Array<Partial<QueryColumn>>,
-    colFilter?: (col: QueryColumn) => boolean
-): any[][] => {
-    const headings = OrderedMap<string, string>().asMutable();
-    const editorData = OrderedMap<string, OrderedMap<string, any>>().asMutable();
-
-    dataModels.forEach((dataModel, i) => {
-        const editorModel = editorModels[i];
-
-        const columns = editorModel.getColumns(
-            dataModel.queryInfo,
-            forUpdate,
-            readOnlyColumns,
-            insertColumns,
-            updateColumns,
-            colFilter
-        );
-
-        // Prepare headers
-        columns.forEach(col => {
-            headings.set(col.fieldKey, col.isLookup() ? col.fieldKey : col.caption);
-        });
-        extraColumns?.forEach(col => {
-            headings.set(col.fieldKey, col.caption ?? col.fieldKey);
-        });
-
-        // Prepare data
-        editorModel.getRawDataFromModel(dataModel, true, forUpdate, true).forEach((editableRow, j) => {
-            const rowKey = dataModel.orderedRows[j];
-            const row = editorData.get(rowKey) ?? OrderedMap<string, any>().asMutable();
-            columns.forEach(col => {
-                row.set(col.fieldKey, editableRow.get(col.fieldKey));
-            });
-
-            extraColumns?.forEach(col => {
-                if (editableRow.has(col.fieldKey)) {
-                    row.set(col.fieldKey, editableRow.get(col.fieldKey));
-                } else {
-                    const data = dataModel.rows[rowKey]?.[col.fieldKey];
-                    if (data) {
-                        if (Array.isArray(data)) {
-                            let sep = '';
-                            row.set(
-                                col.fieldKey,
-                                data.reduce((str, row_) => {
-                                    str += sep + quoteValueWithDelimiters(row_.displayValue ?? row_.value, ',');
-                                    sep = ', ';
-                                    return str;
-                                }, '')
-                            );
-                        } else {
-                            row.set(col.fieldKey, data.displayValue ?? data.value);
-                        }
-                    } else {
-                        row.set(col.fieldKey, row.get(col.fieldKey));
-                    }
-                }
-            });
-
-            editorData.set(rowKey, row);
-        });
-    });
-
-    const rows = [];
-    editorData.forEach(rowMap => rows.push([...rowMap.toArray().values()]));
-    return [headings.toArray(), ...rows];
 };
 
 export function onCellSelectChange(

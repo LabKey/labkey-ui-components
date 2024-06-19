@@ -56,8 +56,8 @@ export const applyEditableGridChangesToModels = (
 };
 
 export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn): { message: string, value: any } => {
-    const isDateTimeType = col.jsonType === 'date';
-    const isDateType = isDateTimeType && col.isDateOnlyColumn;
+    const isDateTimeType = col?.jsonType === 'date';
+    const isDateType = isDateTimeType && col?.isDateOnlyColumn;
     let message;
     let value = origValue;
 

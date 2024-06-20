@@ -21,5 +21,5 @@ export const APPLICATION_ROLES_LABELS = {
     [DATA_CLASS_DESIGNER_ROLE]: 'Source Type Designer',
 };
 export const APPLICATION_ROLES_DESCRIPTIONS = {
-    [DATA_CLASS_DESIGNER_ROLE]: 'Source, Registry & Data Class designers an create and design new data classes or change existing ones.',
+    [DATA_CLASS_DESIGNER_ROLE]: 'Source, Registry & Data Class designers can create and design new data classes or change existing ones.',
 };

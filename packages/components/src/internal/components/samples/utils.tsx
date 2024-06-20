@@ -21,6 +21,8 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { PICKLIST_SAMPLES_FILTER } from '../picklist/models';
 import { SystemField } from '../domainproperties/models';
 
+import { BOX_SAMPLES_FILTER, LOCATION_SAMPLES_FILTER } from '../../query/filter';
+
 import {
     DEFAULT_AVAILABLE_STATUS_COLOR,
     DEFAULT_CONSUMED_STATUS_COLOR,
@@ -133,7 +135,7 @@ export function getSampleStatus(row: any): SampleStatus {
         label,
         statusType: getSampleStatusType(row),
         color,
-        description
+        description,
     };
 }
 
@@ -291,8 +293,11 @@ export function getURLParamsForSampleSelectionKey(
                 const isPicklistFilterType = filterURLSuffix === PICKLIST_SAMPLES_FILTER.getURLSuffix();
                 // and we don't need the LSID LineageOf clause either
                 const isLineageOfFilterType = filterURLSuffix === Filter.Types.EXP_LINEAGE_OF.getURLSuffix();
+                const isSampleInLocationFilterType =
+                    filterURLSuffix === LOCATION_SAMPLES_FILTER.getURLSuffix() ||
+                    filterURLSuffix === BOX_SAMPLES_FILTER.getURLSuffix();
 
-                if (!isPicklistFilterType && !isLineageOfFilterType) {
+                if (!isPicklistFilterType && !isLineageOfFilterType && !isSampleInLocationFilterType) {
                     params[filter.getURLParameterName()] = filter.getURLParameterValue();
                 }
             });

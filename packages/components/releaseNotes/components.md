@@ -8,6 +8,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   - return original date string value when unable to parseDate()
 - Remove some deprecated code after issue 50589 changes (remove export editable grid option)
 
+### version 3.53.6
+*Released*: 20 June 2024
+- Issue 50483: Creating a required sample-only field after an aliquot field errors on add
+- Issue 50023: Import button on Assay Run page is not enable after creating a new aliquot and adding them to a run result.
+- Issue 50608: View Assay Results from Storage Grid View errors
+- Issue 50684: LKSM: Update descriptions for Source & Sample Type designer
+
 ### version 3.53.5
 *Released*: 18 June 2024
 - Separate storage styling from editable grid

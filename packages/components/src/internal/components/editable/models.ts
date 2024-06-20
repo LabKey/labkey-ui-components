@@ -340,13 +340,14 @@ export class EditorModel
      */
     validateData(
         queryModel: QueryModel,
-        uniqueFieldKey?: string
+        uniqueFieldKey?: string,
+        insertColumns?: QueryColumn[]
     ): {
         missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
         uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
     } {
         const data = fromJS(queryModel.rows);
-        const columns = queryModel.queryInfo.getInsertColumns();
+        const columns = insertColumns ?? queryModel.queryInfo.getInsertColumns();
         let uniqueFieldCol;
         const keyColumns = columns.filter(column => column.isKeyField);
         let keyValues = Map<number, List<string>>(); // map from row number to list of key values on that row
@@ -429,8 +430,8 @@ export class EditorModel
         };
     }
 
-    getValidationErrors(queryModel: QueryModel, uniqueFieldKey?: string): string[] {
-        const { uniqueKeyViolations, missingRequired } = this.validateData(queryModel, uniqueFieldKey);
+    getValidationErrors(queryModel: QueryModel, uniqueFieldKey?: string, insertColumns?: QueryColumn[]): string[] {
+        const { uniqueKeyViolations, missingRequired } = this.validateData(queryModel, uniqueFieldKey, insertColumns);
         let errors = [];
         if (!uniqueKeyViolations.isEmpty()) {
             const messages = uniqueKeyViolations.reduce((keyMessages, valueMap, fieldNames) => {

@@ -350,6 +350,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             runProperties: this.getRunPropertiesMap(),
         };
 
+        let hasValidSamples = false;
         if (sampleColumnData) {
             try {
                 // If the assay has a sample column look up at Batch, Run, or Result level then we want to retrieve
@@ -385,6 +386,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
                 modelUpdates.selectedSamples = validSamples;
 
+                hasValidSamples = validSamples.size > 0;
                 if (samples.size > 0) {
                     sampleStatusWarning = getOperationNotAllowedMessage(
                         SampleOperation.AddAssayData,
@@ -402,15 +404,18 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 model: state.model.merge(modelUpdates) as AssayWizardModel,
                 sampleStatusWarning,
             }),
-            this.onInitModelComplete
+            () => this.onInitModelComplete(hasValidSamples)
         );
     };
 
-    onInitModelComplete = async (): Promise<void> => {
+    onInitModelComplete = async (hasSamples?: boolean): Promise<void> => {
+        const { setIsDirty } = this.props;
         const runPropsModel = this.getRunPropsQueryModel();
         const runName = runPropsModel.getRowValue('Name');
         const fileName = getRunPropertiesFileName(runPropsModel.getRow());
         const gridData = await this.state.model.getInitialGridData();
+
+        if (hasSamples) setIsDirty(true);
 
         // Issue 38237: set the runName and comments for the re-import case
         this.setState(state => {
@@ -496,7 +501,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }));
     };
 
-    handleRunChange = (fieldValues: any): void => {
+    handleRunChange = (fieldValues: any, isChanged?: boolean): void => {
         const values = { ...this.state.model.runProperties.toObject(), ...fieldValues };
         let { comment, runName } = this.state.model;
 
@@ -512,7 +517,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             return result;
         }, {});
 
-        this.props.setIsDirty?.(true);
+        if (isChanged) this.props.setIsDirty?.(true);
 
         this.handleChange('runProperties', OrderedMap<string, any>(cleanedValues), () => {
             this.setState(state => ({

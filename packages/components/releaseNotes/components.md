@@ -8,6 +8,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 50608: View Assay Results from Storage Grid View errors
 - Issue 50684: LKSM: Update descriptions for Source & Sample Type designer
 
+### version 3.53.5
+*Released*: 18 June 2024
+- Separate storage styling from editable grid
+
+### version 3.53.4
+*Released*: 18 June 2024
+- Issue 50533: Support passing through a `timezone` prop on `EditInlineField`
+
 ### version 3.53.3
 *Released*: 18 June 2024
 - Add support for Ancestor nodes on All Samples grids

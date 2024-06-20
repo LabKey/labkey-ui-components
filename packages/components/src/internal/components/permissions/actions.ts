@@ -11,7 +11,7 @@ import { ISelectRowsResult, selectRowsDeprecated } from '../../query/api';
 import { Container } from '../base/models/Container';
 import { FetchContainerOptions } from '../security/APIWrapper';
 
-import { APPLICATION_ROLES_LABELS } from '../administration/constants';
+import { APPLICATION_ROLES_LABELS, APPLICATION_ROLES_DESCRIPTIONS } from '../administration/constants';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 
@@ -20,6 +20,8 @@ export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     rawRoles.forEach(roleRaw => {
         const role = roleRaw;
         if (APPLICATION_ROLES_LABELS[role?.uniqueName]) role.displayName = APPLICATION_ROLES_LABELS[role?.uniqueName];
+        if (APPLICATION_ROLES_DESCRIPTIONS[role?.uniqueName])
+            role.description = APPLICATION_ROLES_DESCRIPTIONS[role?.uniqueName];
         roles = roles.push(SecurityRole.create(role));
     });
     return roles;

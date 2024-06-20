@@ -229,6 +229,8 @@ import {
     isNegativeFilterType,
     getLegalIdentifier,
     registerFilterType,
+    BOX_SAMPLES_FILTER,
+    LOCATION_SAMPLES_FILTER,
 } from './internal/query/filter';
 import { selectRows } from './internal/query/selectRows';
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
@@ -1118,6 +1120,8 @@ export {
     getQueryDetails,
     invalidateQueryDetailsCache,
     registerFilterType,
+    BOX_SAMPLES_FILTER,
+    LOCATION_SAMPLES_FILTER,
     COLUMN_IN_FILTER_TYPE,
     COLUMN_NOT_IN_FILTER_TYPE,
     ANCESTOR_MATCHES_ALL_OF_FILTER_TYPE,

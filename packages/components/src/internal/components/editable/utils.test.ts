@@ -13,9 +13,18 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { BOOLEAN_TYPE, DATE_TYPE, INTEGER_TYPE, TEXT_TYPE, TIME_TYPE } from '../domainproperties/PropDescType';
 
+import { DATE_RANGE_URI } from '../domainproperties/constants';
+
 import { initEditableGridModel } from './actions';
 import { EditorMode, EditorModel, EditableGridLoader } from './models';
-import { computeRangeChange, genCellKey, getUpdatedDataFromGrid, parseCellKey, sortCellKeys } from './utils';
+import {
+    computeRangeChange,
+    genCellKey,
+    getUpdatedDataFromGrid,
+    getValidatedEditableGridValue,
+    parseCellKey,
+    sortCellKeys,
+} from './utils';
 
 class MockEditableGridLoader implements EditableGridLoader {
     columns: QueryColumn[];
@@ -553,6 +562,216 @@ describe('getUpdatedDataFromGrid', () => {
         expect(updatedData).toHaveLength(1);
     });
 
+    test('edited row date and time value changes', () => {
+        let updatedData = getUpdatedDataFromGrid(
+            fromJS({
+                448: {
+                    RowId: 448,
+                    Date: '2020-12-23 14:34',
+                    Time: '01:10:00',
+                },
+            }),
+            [
+                Map<string, any>({
+                    RowId: 448,
+                    Date: '2020-12-23 14:35',
+                    Time: '01:10:00',
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData[0]).toStrictEqual({
+            Date: '2020-12-23 14:35',
+            RowId: 448,
+        });
+
+        updatedData = getUpdatedDataFromGrid(
+            fromJS({
+                448: {
+                    RowId: 448,
+                    Date: '2020-12-23 14:34',
+                    Time: '01:10:00',
+                },
+            }),
+            [
+                Map<string, any>({
+                    RowId: 448,
+                    Date: '2020-12-24 14:34',
+                    Time: '01:10:00',
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData[0]).toStrictEqual({
+            Date: '2020-12-24 14:34',
+            RowId: 448,
+        });
+
+        updatedData = getUpdatedDataFromGrid(
+            fromJS({
+                448: {
+                    RowId: 448,
+                    Date: '2020-12-23 14:34',
+                    Time: '01:10:00',
+                },
+            }),
+            [
+                Map<string, any>({
+                    RowId: 448,
+                    Date: '2020-12-INVALID 14:34',
+                    Time: '01:10:00',
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData[0]).toStrictEqual({
+            Date: '2020-12-INVALID 14:34',
+            RowId: 448,
+        });
+
+        updatedData = getUpdatedDataFromGrid(
+            fromJS({
+                448: {
+                    RowId: 448,
+                    Date: '2020-12-23 14:34',
+                    Time: '01:10:00',
+                },
+            }),
+            [
+                Map<string, any>({
+                    RowId: 448,
+                    Date: new Date('2020-12-23 14:34'),
+                    Time: '01:10:00',
+                }),
+            ],
+            'RowId',
+            queryInfo
+        );
+        expect(updatedData[0]).toStrictEqual({
+            Date: new Date('2020-12-23 14:34'),
+            RowId: 448,
+        });
+    });
+});
+
+describe('getValidatedEditableGridValue', () => {
+    const dateCol = new QueryColumn({ jsonType: 'date', rangeURI: DATE_RANGE_URI });
+    const dateTimeCol = new QueryColumn({ jsonType: 'date' });
+    const intCol = new QueryColumn({ jsonType: 'int' });
+    const floatCol = new QueryColumn({ jsonType: 'float' });
+
+    test('no column', () => {
+        expect(getValidatedEditableGridValue('2020-12-23', undefined)).toStrictEqual({
+            message: undefined,
+            value: '2020-12-23',
+        });
+        expect(getValidatedEditableGridValue('Bogus', undefined)).toStrictEqual({ message: undefined, value: 'Bogus' });
+        expect(getValidatedEditableGridValue(true, undefined)).toStrictEqual({ message: undefined, value: true });
+        expect(getValidatedEditableGridValue(13, undefined)).toStrictEqual({ message: undefined, value: 13 });
+    });
+
+    test('valid date value', () => {
+        expect(getValidatedEditableGridValue('2020-12-23', dateCol)).toStrictEqual({
+            message: undefined,
+            value: '2020-12-23',
+        });
+        expect(getValidatedEditableGridValue('2020-12-23 00:00:00', dateCol)).toStrictEqual({
+            message: undefined,
+            value: '2020-12-23',
+        });
+        expect(getValidatedEditableGridValue('2020-12-23 14:34', dateCol)).toStrictEqual({
+            message: undefined,
+            value: '2020-12-23',
+        });
+        expect(getValidatedEditableGridValue(new Date('2020-12-23 14:34'), dateCol)).toStrictEqual({
+            message: undefined,
+            value: '2020-12-23',
+        });
+    });
+
+    test('invalid date value', () => {
+        expect(getValidatedEditableGridValue('BOGUS', dateCol)).toStrictEqual({
+            message: 'Invalid date',
+            value: 'BOGUS',
+        });
+        expect(getValidatedEditableGridValue(true, dateCol)).toStrictEqual({ message: 'Invalid date', value: true });
+        expect(getValidatedEditableGridValue(13, dateCol).message).toBe(undefined);
+        expect(getValidatedEditableGridValue('2020-12-INVALID 14:34', dateCol)).toStrictEqual({
+            message: 'Invalid date',
+            value: '2020-12-INVALID 14:34',
+        });
+        expect(getValidatedEditableGridValue('2020-13-23 14:34', dateCol)).toStrictEqual({
+            message: 'Invalid date',
+            value: '2020-13-23 14:34',
+        });
+        expect(getValidatedEditableGridValue(new Date('2020-13-23 14:34'), dateCol).message).toBe('Invalid date');
+    });
+
+    test('valid dateTimeCol value', () => {
+        expect(getValidatedEditableGridValue('2020-12-23', dateTimeCol)).toStrictEqual({
+            message: undefined,
+            value: '2020-12-23 00:00:00',
+        });
+        expect(getValidatedEditableGridValue('2020-12-23 00:00:00', dateTimeCol)).toStrictEqual({
+            message: undefined,
+            value: '2020-12-23 00:00:00',
+        });
+        expect(getValidatedEditableGridValue('2020-12-23 14:34', dateTimeCol)).toStrictEqual({
+            message: undefined,
+            value: '2020-12-23 14:34:00',
+        });
+        expect(getValidatedEditableGridValue(new Date('2020-12-23 14:34'), dateTimeCol)).toStrictEqual({
+            message: undefined,
+            value: '2020-12-23 14:34:00',
+        });
+    });
+
+    test('invalid dateTimeCol value', () => {
+        expect(getValidatedEditableGridValue('BOGUS', dateTimeCol)).toStrictEqual({
+            message: 'Invalid date time',
+            value: 'BOGUS',
+        });
+        expect(getValidatedEditableGridValue(true, dateTimeCol)).toStrictEqual({
+            message: 'Invalid date time',
+            value: true,
+        });
+        expect(getValidatedEditableGridValue(13, dateTimeCol).message).toBe(undefined);
+        expect(getValidatedEditableGridValue('2020-12-INVALID 14:34', dateTimeCol)).toStrictEqual({
+            message: 'Invalid date time',
+            value: '2020-12-INVALID 14:34',
+        });
+        expect(getValidatedEditableGridValue('2020-13-23 14:34', dateTimeCol)).toStrictEqual({
+            message: 'Invalid date time',
+            value: '2020-13-23 14:34',
+        });
+        expect(getValidatedEditableGridValue(new Date('2020-13-23 14:34'), dateTimeCol).message).toBe(
+            'Invalid date time'
+        );
+    });
+
+    test('non-date columns', () => {
+        expect(getValidatedEditableGridValue('2020-12-23', intCol)).toStrictEqual({
+            message: undefined,
+            value: '2020-12-23',
+        });
+        expect(getValidatedEditableGridValue('Bogus', intCol)).toStrictEqual({ message: undefined, value: 'Bogus' });
+        expect(getValidatedEditableGridValue(true, intCol)).toStrictEqual({ message: undefined, value: true });
+        expect(getValidatedEditableGridValue(13, intCol)).toStrictEqual({ message: undefined, value: 13 });
+
+        expect(getValidatedEditableGridValue('2020-12-23', floatCol)).toStrictEqual({
+            message: undefined,
+            value: '2020-12-23',
+        });
+        expect(getValidatedEditableGridValue('Bogus', floatCol)).toStrictEqual({ message: undefined, value: 'Bogus' });
+        expect(getValidatedEditableGridValue(true, floatCol)).toStrictEqual({ message: undefined, value: true });
+        expect(getValidatedEditableGridValue(13, floatCol)).toStrictEqual({ message: undefined, value: 13 });
+    });
+});
+
+describe('other utils', () => {
     test('genCellKey', () => {
         expect(genCellKey(0, 0)).toBe('0-0');
         expect(genCellKey(1, 2)).toBe('1-2');

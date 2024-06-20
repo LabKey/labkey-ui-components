@@ -20,7 +20,8 @@ export function processGetRolesResponse(rawRoles: any): List<SecurityRole> {
     rawRoles.forEach(roleRaw => {
         const role = roleRaw;
         if (APPLICATION_ROLES_LABELS[role?.uniqueName]) role.displayName = APPLICATION_ROLES_LABELS[role?.uniqueName];
-        if (APPLICATION_ROLES_DESCRIPTIONS[role?.uniqueName]) role.description = APPLICATION_ROLES_DESCRIPTIONS[role?.uniqueName];
+        if (APPLICATION_ROLES_DESCRIPTIONS[role?.uniqueName])
+            role.description = APPLICATION_ROLES_DESCRIPTIONS[role?.uniqueName];
         roles = roles.push(SecurityRole.create(role));
     });
     return roles;

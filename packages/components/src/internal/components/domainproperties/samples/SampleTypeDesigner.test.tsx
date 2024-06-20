@@ -165,7 +165,6 @@ describe('SampleTypeDesigner', () => {
             });
         });
 
-        // expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);
         const panels = document.querySelectorAll('.domain-form-panel');
         expect(panels).toHaveLength(2);
         const panelTitles = document.querySelectorAll('.domain-panel-title');

@@ -575,7 +575,7 @@ describe('getUpdatedDataFromGrid', () => {
                 Map<string, any>({
                     RowId: 448,
                     Date: '2020-12-23 14:35',
-                    Time: '01:10:00',
+                    Time: '01:10:01',
                 }),
             ],
             'RowId',
@@ -583,6 +583,7 @@ describe('getUpdatedDataFromGrid', () => {
         );
         expect(updatedData[0]).toStrictEqual({
             Date: '2020-12-23 14:35',
+            Time: '01:10:01',
             RowId: 448,
         });
 
@@ -598,7 +599,7 @@ describe('getUpdatedDataFromGrid', () => {
                 Map<string, any>({
                     RowId: 448,
                     Date: '2020-12-24 14:34',
-                    Time: '01:10:00',
+                    Time: '01:11:00',
                 }),
             ],
             'RowId',
@@ -606,6 +607,7 @@ describe('getUpdatedDataFromGrid', () => {
         );
         expect(updatedData[0]).toStrictEqual({
             Date: '2020-12-24 14:34',
+            Time: '01:11:00',
             RowId: 448,
         });
 
@@ -621,7 +623,7 @@ describe('getUpdatedDataFromGrid', () => {
                 Map<string, any>({
                     RowId: 448,
                     Date: '2020-12-INVALID 14:34',
-                    Time: '01:10:00',
+                    Time: '01:INVALID:00',
                 }),
             ],
             'RowId',
@@ -629,6 +631,7 @@ describe('getUpdatedDataFromGrid', () => {
         );
         expect(updatedData[0]).toStrictEqual({
             Date: '2020-12-INVALID 14:34',
+            Time: '01:INVALID:00',
             RowId: 448,
         });
 
@@ -660,8 +663,11 @@ describe('getUpdatedDataFromGrid', () => {
 describe('getValidatedEditableGridValue', () => {
     const dateCol = new QueryColumn({ jsonType: 'date', rangeURI: DATE_RANGE_URI });
     const dateTimeCol = new QueryColumn({ jsonType: 'date' });
+    const timeCol = new QueryColumn({ jsonType: 'time' });
     const intCol = new QueryColumn({ jsonType: 'int' });
     const floatCol = new QueryColumn({ jsonType: 'float' });
+    const boolCol = new QueryColumn({ jsonType: 'boolean' });
+    const textCol = new QueryColumn({ jsonType: 'string' });
 
     test('no column', () => {
         expect(getValidatedEditableGridValue('2020-12-23', undefined)).toStrictEqual({
@@ -753,21 +759,13 @@ describe('getValidatedEditableGridValue', () => {
     });
 
     test('non-date columns', () => {
-        expect(getValidatedEditableGridValue('2020-12-23', intCol)).toStrictEqual({
-            message: undefined,
-            value: '2020-12-23',
+        const colTypes = [intCol, floatCol, timeCol, boolCol, textCol];
+        const values = ['2020-12-23', 'Bogus', true, 13, 2.99];
+        colTypes.forEach(col => {
+            values.forEach(value => {
+                expect(getValidatedEditableGridValue(value, col)).toStrictEqual({ message: undefined, value });
+            });
         });
-        expect(getValidatedEditableGridValue('Bogus', intCol)).toStrictEqual({ message: undefined, value: 'Bogus' });
-        expect(getValidatedEditableGridValue(true, intCol)).toStrictEqual({ message: undefined, value: true });
-        expect(getValidatedEditableGridValue(13, intCol)).toStrictEqual({ message: undefined, value: 13 });
-
-        expect(getValidatedEditableGridValue('2020-12-23', floatCol)).toStrictEqual({
-            message: undefined,
-            value: '2020-12-23',
-        });
-        expect(getValidatedEditableGridValue('Bogus', floatCol)).toStrictEqual({ message: undefined, value: 'Bogus' });
-        expect(getValidatedEditableGridValue(true, floatCol)).toStrictEqual({ message: undefined, value: true });
-        expect(getValidatedEditableGridValue(13, floatCol)).toStrictEqual({ message: undefined, value: 13 });
     });
 });
 

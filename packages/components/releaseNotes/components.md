@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Add support in BulkUpdateForm for staging changes to EditorModel without transacting changes
+
 ### version 3.53.6
 *Released*: 20 June 2024
 - Issue 50483: Creating a required sample-only field after an aliquot field errors on add

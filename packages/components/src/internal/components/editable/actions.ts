@@ -650,11 +650,13 @@ export function removeColumn(
     };
 }
 
+// altColumns is used when the columns to be updated do not correspond with the insert columns on queryInfo
 async function prepareUpdateRowDataFromBulkForm(
     queryInfo: QueryInfo,
     rowData: OrderedMap<string, any>,
     isIncludedColumn: (col: QueryColumn) => boolean,
-    containerPath: string
+    containerPath: string,
+    altColumns?: string[]
 ): Promise<{ messages: OrderedMap<number, CellMessage>; values: OrderedMap<number, List<ValueDescriptor>> }> {
     const columns = queryInfo.getInsertColumns(isIncludedColumn);
     let values = OrderedMap<number, List<ValueDescriptor>>();
@@ -662,8 +664,16 @@ async function prepareUpdateRowDataFromBulkForm(
 
     for (const colKey of rowData.keySeq().toArray()) {
         const data = rowData.get(colKey);
-        const colIdx = columns.findIndex(col => col.fieldKey === colKey);
-        const col = columns[colIdx];
+        let colIdx: number;
+        let col: QueryColumn;
+
+        if (altColumns) {
+            colIdx = altColumns.findIndex(c => c === colKey);
+            col = queryInfo.getColumn(colKey);
+        } else {
+            colIdx = columns.findIndex(c => c.fieldKey === colKey);
+            col = columns[colIdx];
+        }
         let cv: List<ValueDescriptor>;
 
         if (data && col && col.isLookup()) {
@@ -699,12 +709,19 @@ export async function updateGridFromBulkForm(
     dataRowIndexes: List<number>,
     lockedOrReadonlyRows: number[],
     isIncludedColumn: (col: QueryColumn) => boolean,
-    containerPath: string
+    containerPath: string,
+    useAdditionalCols: boolean = false
 ): Promise<Partial<EditorModel>> {
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
 
-    const preparedData = await prepareUpdateRowDataFromBulkForm(queryInfo, rowData, isIncludedColumn, containerPath);
+    const preparedData = await prepareUpdateRowDataFromBulkForm(
+        queryInfo,
+        rowData,
+        isIncludedColumn,
+        containerPath,
+        useAdditionalCols && editorModel.columns.toJS()
+    );
     const { values, messages } = preparedData; // {3: 'x', 4: 'z}
 
     dataRowIndexes.forEach(rowIdx => {

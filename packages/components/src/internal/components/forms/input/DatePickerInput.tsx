@@ -267,7 +267,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 autoFocus={autoFocus}
                 className={inputClassName}
                 dateFormat={dateFormat}
-                disabled={isDisabled || invalid}
+                disabled={isDisabled}
                 id={queryColumn.fieldKey}
                 isClearable={isClearable}
                 name={name ? name : queryColumn.fieldKey}
@@ -278,7 +278,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 onMonthChange={this.onChange}
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
                 selected={selectedDate}
-                showTimeSelect={!hideTime && (isDateTimeCol(queryColumn) || isTimeOnly)}
+                showTimeSelect={!hideTime && (isDateTimeCol(queryColumn) || isTimeOnly) && !invalid}
                 showTimeSelectOnly={!hideTime && isTimeOnly}
                 timeIntervals={isTimeOnly ? 10 : 30}
                 timeFormat={timeFormat}

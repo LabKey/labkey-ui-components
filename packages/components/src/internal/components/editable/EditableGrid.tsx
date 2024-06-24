@@ -1017,11 +1017,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     </>
                 )}
                 {showOverlayFromMetadata && (
-                    <LabelHelpTip title={label} popoverClassName={metadata?.popoverClassName}>
+                    <LabelHelpTip title={label} popoverClassName={metadata?.popoverClassName} placement="bottom">
                         <>{metadata?.toolTip}</>
                     </LabelHelpTip>
                 )}
-                {showLabelOverlay && <LabelOverlay column={qColumn} required={req} />}
+                {showLabelOverlay && <LabelOverlay column={qColumn} required={req} placement="bottom" />}
             </>
         );
     };

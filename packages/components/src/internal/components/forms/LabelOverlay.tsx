@@ -67,7 +67,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         return (
             <>
                 {description && (
-                    <p>
+                    <p className="ws-pre-wrap">
                         <strong>Description: </strong>
                         {description}
                     </p>

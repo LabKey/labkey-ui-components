@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Use `LabelOverlay` in headers for grids
+  - Update display of Description in `LabelOverlay` to preserve white space
+  - Update `EditableGrid.renderColumnHeader` to use `LabelOverlay` if custom tool top is not configured
+
 ### version 3.54.0
 *Released*: 24 June 2024
 - Issue 48439: EditableGrid drops invalid date values when calling insertRows/saveRows

@@ -90,6 +90,11 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
                         {column.format}
                     </p>
                 )}
+                {column?.phiProtected && (
+                    <p>
+                        PHI protected data removed.
+                    </p>
+                )}
                 {required && (
                     <p>
                         <small>

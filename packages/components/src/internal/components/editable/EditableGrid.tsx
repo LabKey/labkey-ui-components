@@ -990,7 +990,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
         const metadata = loweredColumnMetadata?.[queryColumn.fieldKey];
         const showOverlayFromMetadata = !!metadata?.toolTip;
-        return showOverlayFromMetadata || !!queryColumn?.description || !!queryColumn?.format || !!queryColumn?.phiProtected;
+        return (
+            showOverlayFromMetadata ||
+            !!queryColumn?.description ||
+            !!queryColumn?.format ||
+            !!queryColumn?.phiProtected
+        );
     };
 
     renderColumnHeader = (col: GridColumn, metadataKey: string, queryColumn?: QueryColumn): React.ReactNode => {

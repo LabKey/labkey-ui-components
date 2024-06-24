@@ -1,32 +1,25 @@
 import React from 'react';
 import { List, Map } from 'immutable';
-import { shallow } from 'enzyme';
+
+import { act } from '@testing-library/react';
+
+import userEvent from '@testing-library/user-event';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
-import DomainForm from '../DomainForm';
 
 import { DomainDetails } from '../models';
-
-import { mountWithAppServerContext, waitForLifecycle } from '../../../test/enzymeTestHelpers';
-
-import { FileAttachmentForm } from '../../../../public/files/FileAttachmentForm';
-
-import { Alert } from '../../base/Alert';
 
 import { getTestAPIWrapper } from '../../../APIWrapper';
 
 import { getEntityTestAPIWrapper } from '../../entities/APIWrapper';
 
-import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
-import { SampleTypeDesigner, SampleTypeDesignerImpl } from './SampleTypeDesigner';
-import { act } from '@testing-library/react';
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
-import userEvent from '@testing-library/user-event';
 
+import { SampleTypeDesigner, SampleTypeDesignerImpl } from './SampleTypeDesigner';
 
 const SERVER_CONTEXT = {
     moduleContext: {
-        query: { hasProductProjects: true}
+        query: { hasProductProjects: true },
     },
 };
 
@@ -102,7 +95,7 @@ describe('SampleTypeDesigner', () => {
         await act(async () => {
             renderWithAppContext(form, {
                 serverContext: SERVER_CONTEXT,
-            })
+            });
         });
 
         expect(document.getElementsByClassName('domain-form-panel')).toHaveLength(2);
@@ -130,7 +123,7 @@ describe('SampleTypeDesigner', () => {
         await act(async () => {
             renderWithAppContext(form, {
                 serverContext: SERVER_CONTEXT,
-            })
+            });
         });
 
         expect(document.getElementsByClassName('domain-form-panel')).toHaveLength(3);
@@ -169,10 +162,9 @@ describe('SampleTypeDesigner', () => {
         await act(async () => {
             renderWithAppContext(form, {
                 serverContext: SERVER_CONTEXT,
-            })
+            });
         });
 
-        //expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);
         const panels = document.querySelectorAll('.domain-form-panel');
         expect(panels).toHaveLength(2);
         const panelTitles = document.querySelectorAll('.domain-panel-title');
@@ -185,13 +177,15 @@ describe('SampleTypeDesigner', () => {
         await act(async () => {
             renderWithAppContext(<SampleTypeDesigner {...BASE_PROPS} />, {
                 serverContext: SERVER_CONTEXT,
-            })
+            });
         });
 
         const panelHeader = document.querySelector('div#domain-header');
         expect(panelHeader.getAttribute('class')).toContain('domain-panel-header-collapsed');
         userEvent.click(panelHeader);
-        expect(document.querySelector('#domain-header').getAttribute('class')).toContain('domain-panel-header-expanded');
+        expect(document.querySelector('#domain-header').getAttribute('class')).toContain(
+            'domain-panel-header-expanded'
+        );
         expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(1);
 
         const alerts = document.getElementsByClassName('alert');
@@ -205,7 +199,7 @@ describe('SampleTypeDesigner', () => {
         await act(async () => {
             renderWithAppContext(<SampleTypeDesigner {...BASE_PROPS} />, {
                 serverContext: SERVER_CONTEXT,
-            })
+            });
         });
 
         const panelHeader = document.querySelector('div#domain-header');

@@ -72,6 +72,7 @@ import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 
 import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 import { computeRangeChange, genCellKey, parseCellKey } from './utils';
+import { LabelOverlay } from '../forms/LabelOverlay';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -917,7 +918,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     width = metadata.minWidth;
                 }
             }
-
+            if (metadata && this.hideHeaderTitle(qCol)) {
+                metadata.hideTitleTooltip = true;
+            }
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
@@ -980,22 +983,40 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return gridColumns;
     };
 
-    renderColumnHeader = (col: GridColumn, metadataKey: string, required?: boolean, format?: string): ReactNode => {
+    hideHeaderTitle = (queryColumn: QueryColumn): boolean => {
+        const loweredColumnMetadata = this.getLoweredColumnMetadata();
+        const metadata = loweredColumnMetadata?.[queryColumn.fieldKey];
+        const showOverlayFromMetadata = !!metadata?.toolTip;
+        return showOverlayFromMetadata || !!queryColumn?.description || !!queryColumn?.format || !!queryColumn?.phiProtected;
+    }
+
+    renderColumnHeader = (col: GridColumn, metadataKey: string, queryColumn?: QueryColumn): React.ReactNode => {
         const label = col.title;
+        const req = !!queryColumn?.required;
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
         const metadata = loweredColumnMetadata?.[metadataKey.toLowerCase()];
-        const showOverlay = metadata?.toolTip || format;
+        const showOverlayFromMetadata = !!metadata?.toolTip;
+        const showLabelOverlay = !showOverlayFromMetadata && (queryColumn?.description || queryColumn?.format || queryColumn?.phiProtected);
         return (
             <>
-                {label}
-                {required && <span className="required-symbol"> *</span>}
-                {showOverlay && (
+                {!showLabelOverlay && (
+                    <>
+                        {label}
+                        {req && <span className="required-symbol"> *</span>}
+                    </>
+                )}
+                {showOverlayFromMetadata && (
                     <LabelHelpTip title={label} popoverClassName={metadata?.popoverClassName}>
                         <>
                             {metadata?.toolTip}
-                            {format && <div>Display Format: {format}</div>}
                         </>
                     </LabelHelpTip>
+                )}
+                {showLabelOverlay && (
+                    <LabelOverlay
+                        column={queryColumn}
+                        required={req}
+                    />
                 )}
             </>
         );
@@ -1010,11 +1031,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         const qColumn = queryInfo.getColumn(col.index);
         if (qColumn) {
-            return this.renderColumnHeader(col, qColumn.fieldKey, qColumn.required, qColumn.format);
+            return this.renderColumnHeader(col, qColumn.fieldKey, qColumn);
         }
 
         if (col.showHeader) {
-            return this.renderColumnHeader(col, col.title, false);
+            return this.renderColumnHeader(col, col.title);
         }
 
         return null;

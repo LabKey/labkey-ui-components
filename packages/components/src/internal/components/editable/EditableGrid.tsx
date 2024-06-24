@@ -908,7 +908,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
 
         this.getColumns().forEach(qCol => {
-            const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
+            let metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
 
             let width = 100;
             let fixedWidth;
@@ -918,7 +918,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     width = metadata.minWidth;
                 }
             }
-            if (metadata && this.hideHeaderTitle(qCol)) {
+            if (this.hideHeaderTitle(qCol)) {
+                if (!metadata) {
+                    metadata = {};
+                }
                 metadata.hideTitleTooltip = true;
             }
             gridColumns = gridColumns.push(
@@ -988,7 +991,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const metadata = loweredColumnMetadata?.[queryColumn.fieldKey];
         const showOverlayFromMetadata = !!metadata?.toolTip;
         return showOverlayFromMetadata || !!queryColumn?.description || !!queryColumn?.format || !!queryColumn?.phiProtected;
-    }
+    };
 
     renderColumnHeader = (col: GridColumn, metadataKey: string, queryColumn?: QueryColumn): React.ReactNode => {
         const label = col.title;

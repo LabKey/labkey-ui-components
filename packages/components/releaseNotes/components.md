@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+- Issue 49025: Assay run import fails if time format is kk:mm
+
 ### version 3.54.0
 *Released*: 24 June 2024
 - Issue 48439: EditableGrid drops invalid date values when calling insertRows/saveRows

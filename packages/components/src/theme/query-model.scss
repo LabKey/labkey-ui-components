@@ -194,6 +194,10 @@
     }
 }
 
+.table-responsive.table-responsive--max-height {
+    max-height: 70vh;
+}
+
 /* Grid sticky/locked column headers on vertical scroll */
 .grid-panel__grid .table-responsive,
 .editable-grid__container .table-responsive {

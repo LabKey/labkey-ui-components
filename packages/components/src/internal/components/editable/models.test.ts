@@ -21,6 +21,9 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
+import { ExtendedMap } from '../../../public/ExtendedMap';
+
+import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
 import { CellMessage, EditorModel, getPkData, ValueDescriptor } from './models';
 
@@ -244,6 +247,43 @@ describe('EditorModel', () => {
             expect(missingRequired.get('Required Data').contains(3)).toBe(false); // Check integer
             const errors = editorModel.getValidationErrors(dataModel, 'Name');
             expect(errors).toHaveLength(1);
+        });
+
+        test('missing required for generated unique id', () => {
+            const myQueryInfo = new QueryInfo({
+                columns: new ExtendedMap({
+                    Barcode: new QueryColumn({
+                        name: 'Barcode',
+                        fieldKey: 'Barcode',
+                        fieldKeyArray: ['Barcode'],
+                        shownInInsertView: true,
+                        userEditable: true,
+                        required: true,
+                        conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
+                    }),
+                }),
+            });
+            const editorModel = new EditorModel({
+                cellValues: Map<string, List<ValueDescriptor>>({
+                    '5-0': List<ValueDescriptor>([
+                        {
+                            display: null,
+                            raw: null,
+                        },
+                    ]),
+                }),
+                columns: List(['Barcode']),
+            });
+            const dataModel = makeTestQueryModel(
+                schemaQ,
+                myQueryInfo,
+                {
+                    '1': {},
+                },
+                ['1']
+            );
+            const { missingRequired } = editorModel.validateData(dataModel, 'Barcode');
+            expect(missingRequired.size).toBe(0);
         });
 
         test('unique key violations', () => {

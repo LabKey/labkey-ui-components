@@ -10,11 +10,11 @@ interface Props {
 }
 
 export const HelpTipRenderer: FC<Props> = memo(props => {
-    const { type } = props;
+    const { type, children, column } = props;
     if (type === SAMPLE_STATUS_LEGEND) {
         return <SampleStatusLegend />;
     } else if (type === DOMAIN_FIELD) {
-        return <DomainFieldMetadata column={props.column}>{props.children}</DomainFieldMetadata>;
+        return <DomainFieldMetadata column={column}>{children}</DomainFieldMetadata>;
     }
 
     return null;

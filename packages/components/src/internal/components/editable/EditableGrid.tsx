@@ -866,7 +866,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     getLoweredColumnMetadata = (): Record<string, EditableColumnMetadata> =>
         this.props.columnMetadata?.reduce((result, value, key) => {
-            result[key.toLowerCase()] = value;
+            result[key.toLowerCase()] = { ...value };
             return result;
         }, {});
 

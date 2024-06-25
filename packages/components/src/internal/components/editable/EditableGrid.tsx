@@ -1021,7 +1021,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         <>{metadata?.toolTip}</>
                     </LabelHelpTip>
                 )}
-                {showLabelOverlay && <LabelOverlay column={qColumn} required={req} placement="bottom" />}
+                {showLabelOverlay && <LabelOverlay column={qColumn} placement="bottom" />}
             </>
         );
     };

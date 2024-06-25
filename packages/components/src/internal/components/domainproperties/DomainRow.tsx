@@ -478,6 +478,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                 draggableId={createFormInputId('domaindrag', domainIndex, index)}
                 index={index}
                 isDragDisabled={showingModal || isDragDisabled}
+                key={index}
             >
                 {provided => (
                     <div

@@ -431,6 +431,7 @@ exports[`DomainRow Sample Field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-0"
                   index={0}
+                  key="0"
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
@@ -2092,6 +2093,7 @@ exports[`DomainRow client side warning on field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
+                  key="1"
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
@@ -3844,6 +3846,7 @@ exports[`DomainRow date time field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-0"
                   index={0}
+                  key="0"
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
@@ -5568,6 +5571,7 @@ exports[`DomainRow decimal field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-2"
                   index={2}
+                  key="2"
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
@@ -7319,6 +7323,7 @@ exports[`DomainRow participant id field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-0"
                   index={0}
+                  key="0"
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
@@ -8904,6 +8909,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
+                  key="1"
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
@@ -10618,6 +10624,7 @@ exports[`DomainRow string field test 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
+                  key="1"
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
@@ -12385,6 +12392,7 @@ exports[`DomainRow with empty domain form 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
+                  key="1"
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}

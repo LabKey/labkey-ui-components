@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Issue 49025: Assay run import fails if time format is kk:mm
 - Issue 50715: Barcode field set as required prevents sample creation because of validateData() check
+- Issue 50605: Field editor drag-n-drop to reorder prevents dragging of a field after it is moved the first time
 
 ### version 3.54.0
 *Released*: 24 June 2024

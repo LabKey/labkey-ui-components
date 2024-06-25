@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Use `LabelOverlay` in headers for grids
   - Update display of Description in `LabelOverlay` to preserve white space
   - Update `EditableGrid.renderColumnHeader` to use `LabelOverlay` if custom tool top is not configured
+  - Add `DomainFieldMetadata` component to be used as new `HelpTipRenderer` when appropriate
 
 ### version 3.54.0
 *Released*: 24 June 2024

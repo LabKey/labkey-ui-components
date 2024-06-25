@@ -1867,7 +1867,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
 
         return (
-            <div>
+            <div className="editable-grid-wrapper">
                 {tabBtnProps?.placement === 'top' && this.renderButtons()}
                 {gridContent}
                 {error && <Alert className="margin-top">{error}</Alert>}

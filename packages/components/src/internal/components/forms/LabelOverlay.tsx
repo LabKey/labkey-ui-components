@@ -60,7 +60,11 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         const { column, required, description, type, children, helpTipRenderer } = this.props;
 
         if (column?.helpTipRenderer || helpTipRenderer) {
-            return <HelpTipRenderer type={column?.helpTipRenderer || helpTipRenderer} column={column} />;
+            return (
+                <HelpTipRenderer type={column?.helpTipRenderer || helpTipRenderer} column={column}>
+                    {children}
+                </HelpTipRenderer>
+            );
         }
 
         return (

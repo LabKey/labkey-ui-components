@@ -45,6 +45,7 @@ import { DisableableMenuItem } from './components/samples/DisableableMenuItem';
 import { usePortalRef } from './hooks';
 import { MenuDivider, MenuItem } from './dropdowns';
 import { LabelOverlay } from './components/forms/LabelOverlay';
+import { DOMAIN_FIELD } from './components/forms/DomainFieldMetadata';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
@@ -118,7 +119,7 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     return (
         <>
             {!showLabelOverlay && initialTitle}
-            {showLabelOverlay && <LabelOverlay column={column}/>}
+            {showLabelOverlay && <LabelOverlay column={column} />}
         </>
     );
 });
@@ -413,8 +414,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
                 )}
                 {!editingTitle && column.helpTipRenderer && (
-                    <LabelHelpTip title={column.title} popoverClassName="label-help-arrow-top">
-                        <HelpTipRenderer type={column.helpTipRenderer} />
+                    <LabelHelpTip placement="bottom" title={column.title} popoverClassName={column.helpTipRenderer === DOMAIN_FIELD ? undefined : 'label-help-arrow-left'}>
+                        <HelpTipRenderer type={column.helpTipRenderer} column={queryColumn} />
                     </LabelHelpTip>
                 )}
             </span>

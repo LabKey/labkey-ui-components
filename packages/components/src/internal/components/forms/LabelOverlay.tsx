@@ -24,6 +24,7 @@ import { Placement } from '../../useOverlayPositioning';
 
 import { HelpTipRenderer } from './HelpTipRenderer';
 import { INPUT_LABEL_CLASS_NAME } from './constants';
+import { DomainFieldMetadata } from './DomainFieldMetadata';
 
 export interface LabelOverlayProps {
     addLabelAsterisk?: boolean;
@@ -56,61 +57,28 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
     }
 
     overlayBody = (): any => {
-        const { column, required, children, helpTipRenderer } = this.props;
-        const description = this.props.description ? this.props.description : column ? column.description : null;
-        const type = this.props.type ? this.props.type : column ? column.type : null;
+        const { column, required, description, type, children, helpTipRenderer } = this.props;
 
         if (column?.helpTipRenderer || helpTipRenderer) {
-            return <HelpTipRenderer type={column?.helpTipRenderer || helpTipRenderer} />;
+            return <HelpTipRenderer type={column?.helpTipRenderer || helpTipRenderer} column={column} />;
         }
 
         return (
-            <>
-                {description && (
-                    <p className="ws-pre-wrap">
-                        <strong>Description: </strong>
-                        {description}
-                    </p>
-                )}
-                {type && (
-                    <p>
-                        <strong>Type: </strong>
-                        {type}
-                    </p>
-                )}
-                {column && column.fieldKey != column.caption && (
-                    <p>
-                        <strong>Field Key: </strong>
-                        {column.fieldKey}
-                    </p>
-                )}
-                {column?.format && (
-                    <p>
-                        <strong>Display Format: </strong>
-                        {column.format}
-                    </p>
-                )}
-                {column?.phiProtected && (
-                    <p>
-                        PHI protected data removed.
-                    </p>
-                )}
-                {required && (
-                    <p>
-                        <small>
-                            <i>This field is required.</i>
-                        </small>
-                    </p>
-                )}
+            <DomainFieldMetadata column={column} required={required} description={description} type={type}>
                 {children}
-            </>
+            </DomainFieldMetadata>
         );
     };
 
     overlayContent() {
         const { column, helpTipRenderer, placement } = this.props;
         const label = this.props.label ? this.props.label : column ? column.caption : null;
-        const popoverClassName = column?.helpTipRenderer || helpTipRenderer ? 'label-help-arrow-top' : undefined;
+        const popoverClassName =
+            column?.helpTipRenderer || helpTipRenderer
+                ? placement === 'bottom'
+                    ? 'label-help-arrow-bottom'
+                    : 'label-help-arrow-top'
+                : undefined;
         const body = this.overlayBody();
         return (
             <Popover id={this._popoverId} title={label} placement={placement} className={popoverClassName}>
@@ -119,7 +87,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         );
     }
 
-    getOverlay() {
+    getOverlay(): ReactNode {
         const { helpTipRenderer } = this.props;
 
         if (helpTipRenderer === 'NONE') return null;
@@ -131,7 +99,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         );
     }
 
-    render() {
+    render(): ReactNode {
         const { column, inputId, isFormsy, labelClass, required, addLabelAsterisk } = this.props;
         const label = this.props.label ? this.props.label : column ? column.caption : null;
 

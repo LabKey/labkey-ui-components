@@ -919,7 +919,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     width = metadata.minWidth;
                 }
             }
-            if (this.hideHeaderTitle(qCol)) {
+            if (qCol.hasHelpTipData) {
                 if (!metadata) {
                     metadata = {};
                 }
@@ -987,18 +987,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return gridColumns;
     };
 
-    hideHeaderTitle = (queryColumn: QueryColumn): boolean => {
-        const loweredColumnMetadata = this.getLoweredColumnMetadata();
-        const metadata = loweredColumnMetadata?.[queryColumn.fieldKey];
-        const showOverlayFromMetadata = !!metadata?.toolTip;
-        return (
-            showOverlayFromMetadata ||
-            !!queryColumn?.description ||
-            !!queryColumn?.format ||
-            !!queryColumn?.phiProtected
-        );
-    };
-
     renderColumnHeader = (col: GridColumn, metadataKey: string): React.ReactNode => {
         const label = col.title;
         const qColumn: QueryColumn = col.raw;
@@ -1006,8 +994,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
         const metadata = loweredColumnMetadata?.[metadataKey.toLowerCase()];
         const showOverlayFromMetadata = !!metadata?.toolTip;
-        const showLabelOverlay =
-            !showOverlayFromMetadata && (qColumn?.description || qColumn?.format || qColumn?.phiProtected);
+        const showLabelOverlay = !showOverlayFromMetadata && qColumn?.hasHelpTipData;
+        // TODO should be able to just use LabelOverlay here since it can handle an alternate tooltip renderer
         return (
             <>
                 {!showLabelOverlay && (

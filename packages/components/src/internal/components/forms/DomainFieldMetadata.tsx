@@ -21,25 +21,25 @@ export const DomainFieldMetadata: FC<Props> = props => {
         <>
             {_description && (
                 <p className="ws-pre-wrap">
-                    <strong>Description: </strong>
+                    <strong>Description </strong>
                     {_description}
                 </p>
             )}
             {_type && (
                 <p>
-                    <strong>Type: </strong>
+                    <strong>Type </strong>
                     {_type}
                 </p>
             )}
             {column && column.fieldKey !== column.caption && (
                 <p>
-                    <strong>Field Key: </strong>
+                    <strong>Field Key </strong>
                     {column.fieldKey}
                 </p>
             )}
             {column?.format && (
                 <p>
-                    <strong>Display Format: </strong>
+                    <strong>Display Format </strong>
                     {column.format}
                 </p>
             )}

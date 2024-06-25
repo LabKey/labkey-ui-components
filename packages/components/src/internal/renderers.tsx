@@ -67,7 +67,7 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
     }, [column.caption, column.name]);
     const [title, setTitle] = useState<string>(initialTitle);
     const showLabelOverlay: boolean = useMemo(() => {
-        return !hideToolTip && (!!column.description || !!column.format || column.phiProtected);
+        return !hideToolTip && column.hasHelpTipData;
     }, [column, hideToolTip]);
 
     const titleInput: React.RefObject<HTMLInputElement> = React.createRef();

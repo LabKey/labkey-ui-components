@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 
 import { SampleStatusLegend, SAMPLE_STATUS_LEGEND } from '../samples/SampleStatusLegend';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { DOMAIN_FIELD, DomainFieldMetadata } from './DomainFieldMetadata';
+import { DOMAIN_FIELD, DomainFieldHelpTipContents } from './DomainFieldHelpTipContents';
 
 interface Props {
     column?: QueryColumn;
@@ -14,7 +14,7 @@ export const HelpTipRenderer: FC<Props> = memo(props => {
     if (type === SAMPLE_STATUS_LEGEND) {
         return <SampleStatusLegend />;
     } else if (type === DOMAIN_FIELD) {
-        return <DomainFieldMetadata column={column}>{children}</DomainFieldMetadata>;
+        return <DomainFieldHelpTipContents column={column}>{children}</DomainFieldHelpTipContents>;
     }
 
     return null;

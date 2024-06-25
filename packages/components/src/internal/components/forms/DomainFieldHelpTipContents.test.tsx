@@ -1,29 +1,32 @@
 import React from 'react';
-import { DomainFieldMetadata } from './DomainFieldMetadata';
+
 import { render } from '@testing-library/react';
+
+import { DomainFieldHelpTipContents } from './DomainFieldHelpTipContents';
+
 import { QueryColumn } from '../../../public/QueryColumn';
 
-describe('DomainFieldMetadata', () => {
+describe('DomainFieldHelpTipContents', () => {
     test('no properties or children', () => {
-        const { container } = render(<DomainFieldMetadata />);
+        const { container } = render(<DomainFieldHelpTipContents />);
         // verify the document body is empty
         expect(container.firstChild).toBeNull();
     });
 
     test('no properties, with children', () => {
         render(
-            <DomainFieldMetadata>
+            <DomainFieldHelpTipContents>
                 <p className="testing-loc">Testing</p>
-            </DomainFieldMetadata>
+            </DomainFieldHelpTipContents>
         );
         expect(document.querySelector('.testing-loc')).not.toBeNull();
     });
 
     test('individual description, no column', () => {
         render(
-            <DomainFieldMetadata description="Some descriptive text">
+            <DomainFieldHelpTipContents description="Some descriptive text">
                 <p className="testing-loc">Testing</p>
-            </DomainFieldMetadata>
+            </DomainFieldHelpTipContents>
         );
         const labels = document.querySelectorAll('strong');
         expect(labels).toHaveLength(1);
@@ -34,9 +37,9 @@ describe('DomainFieldMetadata', () => {
 
     test('individual type, no column', () => {
         render(
-            <DomainFieldMetadata type="boolean">
+            <DomainFieldHelpTipContents type="boolean">
                 <div className="testing-loc">Testing</div>
-            </DomainFieldMetadata>
+            </DomainFieldHelpTipContents>
         );
         const paragraphs = document.querySelectorAll('p');
         const labels = document.querySelectorAll('strong');
@@ -48,9 +51,9 @@ describe('DomainFieldMetadata', () => {
 
     test('type and required, no column', () => {
         render(
-            <DomainFieldMetadata type="boolean" required={true}>
+            <DomainFieldHelpTipContents type="boolean" required={true}>
                 <div className="testing-loc">Testing</div>
-            </DomainFieldMetadata>
+            </DomainFieldHelpTipContents>
         );
         const paragraphs = document.querySelectorAll('p');
         const labels = document.querySelectorAll('strong');
@@ -63,9 +66,9 @@ describe('DomainFieldMetadata', () => {
 
     test('type and not required, no column', () => {
         render(
-            <DomainFieldMetadata type="boolean" required={false}>
+            <DomainFieldHelpTipContents type="boolean" required={false}>
                 <div className="testing-loc">Testing</div>
-            </DomainFieldMetadata>
+            </DomainFieldHelpTipContents>
         );
         const paragraphs = document.querySelectorAll('p');
         const labels = document.querySelectorAll('strong');
@@ -76,7 +79,7 @@ describe('DomainFieldMetadata', () => {
     });
 
     test('all individual props, no column', () => {
-        render(<DomainFieldMetadata description="A rational description" type="boolean" required />);
+        render(<DomainFieldHelpTipContents description="A rational description" type="boolean" required />);
         const paragraphs = document.querySelectorAll('p');
         const labels = document.querySelectorAll('strong');
         expect(labels).toHaveLength(2);
@@ -95,9 +98,9 @@ describe('DomainFieldMetadata', () => {
             required: true,
         });
         render(
-            <DomainFieldMetadata type="boolean" required={false} column={column}>
+            <DomainFieldHelpTipContents type="boolean" required={false} column={column}>
                 <div className="testing-loc">Testing</div>
-            </DomainFieldMetadata>
+            </DomainFieldHelpTipContents>
         );
         const paragraphs = document.querySelectorAll('p');
         const labels = document.querySelectorAll('strong');
@@ -121,9 +124,9 @@ describe('DomainFieldMetadata', () => {
             caption: 'Label',
         });
         render(
-            <DomainFieldMetadata column={column}>
+            <DomainFieldHelpTipContents column={column}>
                 <div className="testing-loc">Testing</div>
-            </DomainFieldMetadata>
+            </DomainFieldHelpTipContents>
         );
         const paragraphs = document.querySelectorAll('p');
         const labels = document.querySelectorAll('strong');
@@ -149,7 +152,7 @@ describe('DomainFieldMetadata', () => {
             fieldKey: 'Label',
             caption: 'Label',
         });
-        render(<DomainFieldMetadata column={column} />);
+        render(<DomainFieldHelpTipContents column={column} />);
         const paragraphs = document.querySelectorAll('p');
         const labels = document.querySelectorAll('strong');
         expect(labels).toHaveLength(1);

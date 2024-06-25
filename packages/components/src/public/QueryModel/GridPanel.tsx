@@ -73,7 +73,7 @@ import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
 import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ChartPanel } from './ChartPanel';
-import { DOMAIN_FIELD } from '../../internal/components/forms/DomainFieldMetadata';
+import { DOMAIN_FIELD } from '../../internal/components/forms/DomainFieldHelpTipContents';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;

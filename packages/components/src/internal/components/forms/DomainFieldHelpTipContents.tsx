@@ -11,7 +11,7 @@ export interface Props {
 
 export const DOMAIN_FIELD = 'DomainField';
 
-export const DomainFieldMetadata: FC<Props> = props => {
+export const DomainFieldHelpTipContents: FC<Props> = props => {
     const { column, children, required, description, type } = props;
     const _description = description ?? (column ? column.description : null);
     const _type = type ?? (column ? column.type : null);

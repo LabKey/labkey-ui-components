@@ -24,7 +24,7 @@ import { Placement } from '../../useOverlayPositioning';
 
 import { HelpTipRenderer } from './HelpTipRenderer';
 import { INPUT_LABEL_CLASS_NAME } from './constants';
-import { DomainFieldMetadata } from './DomainFieldMetadata';
+import { DomainFieldHelpTipContents } from './DomainFieldHelpTipContents';
 
 export interface LabelOverlayProps {
     addLabelAsterisk?: boolean;
@@ -68,9 +68,9 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         }
 
         return (
-            <DomainFieldMetadata column={column} required={required} description={description} type={type}>
+            <DomainFieldHelpTipContents column={column} required={required} description={description} type={type}>
                 {children}
-            </DomainFieldMetadata>
+            </DomainFieldHelpTipContents>
         );
     };
 

@@ -45,7 +45,7 @@ import { DisableableMenuItem } from './components/samples/DisableableMenuItem';
 import { usePortalRef } from './hooks';
 import { MenuDivider, MenuItem } from './dropdowns';
 import { LabelOverlay } from './components/forms/LabelOverlay';
-import { DOMAIN_FIELD } from './components/forms/DomainFieldMetadata';
+import { DOMAIN_FIELD } from './components/forms/DomainFieldHelpTipContents';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();

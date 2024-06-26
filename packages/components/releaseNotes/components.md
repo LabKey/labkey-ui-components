@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 3.55.1
+*Released*: 26 June 2024
+- Issue 49025: Assay run import fails if time format is kk:mm
+- Issue 50715: Barcode field set as required prevents sample creation because of validateData() check
+- Issue 50605: Field editor drag-n-drop to reorder prevents dragging of a field after it is moved the first time
+
 ### version 3.55.0
 *Released*: 25 June 2024
 - Grid: improve styling for sticky headers

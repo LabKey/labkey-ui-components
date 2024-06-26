@@ -187,7 +187,7 @@ describe('QueryInfoForm', () => {
             />
         );
 
-        expect(formWrapper.text()).toContain('Extra Test Column  *');
+        expect(formWrapper.text()).toContain('Extra Test Column *');
         formWrapper.unmount();
     });
 

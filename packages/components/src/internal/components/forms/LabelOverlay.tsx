@@ -115,7 +115,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
             return (
                 <span>
                     {label}&nbsp;
-                    {required || addLabelAsterisk ? <span className="required-symbol">*</span> : null}&nbsp;
+                    {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
                     {overlay}
                 </span>
             );
@@ -124,7 +124,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
         return (
             <label className={(labelClass ? labelClass + ' ' : '') + 'text__truncate-and-wrap'} htmlFor={inputId}>
                 <span>{label}</span>&nbsp;
-                {required || addLabelAsterisk ? <span className="required-symbol">*</span> : null}&nbsp;
+                {required || addLabelAsterisk ? <span className="required-symbol">* </span> : null}
                 {overlay}
             </label>
         );

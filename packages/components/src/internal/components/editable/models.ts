@@ -356,7 +356,7 @@ export class EditorModel
         for (let rn = 0; rn < data.size; rn++) {
             columns.forEach((col, cn) => {
                 const values = this.getValue(cn, rn);
-                if (col.required) {
+                if (col.required && !col.isUniqueIdColumn) {
                     if (values.isEmpty() || values.find(value => this.hasRawValue(value)) == undefined) {
                         if (missingRequired.has(col.caption)) {
                             missingRequired = missingRequired.set(

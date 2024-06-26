@@ -10,8 +10,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.55.0
 *Released*: 25 June 2024
 - Grid: improve styling for sticky headers
-    - No longer compute height via JS
-    - Use max-height, set via CSS
+  - No longer compute height via JS
+  - Use max-height, set via CSS
 
 ### version 3.54.0
 *Released*: 24 June 2024

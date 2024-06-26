@@ -1,5 +1,11 @@
 # @labkey/components
-Components, models, actions, and utility functions for LabKey applications and pages.
+Components, models, actions, and utility functions for LabKey applications and pages
+
+### version 3.55.0
+*Released*: 25 June 2024
+- Grid: improve styling for sticky headers
+  - No longer compute height via JS
+  - Use max-height, set via CSS
 
 ### version TBD
 *Released*: TBD

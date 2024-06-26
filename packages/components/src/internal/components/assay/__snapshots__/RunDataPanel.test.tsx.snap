@@ -48,7 +48,9 @@ exports[`RunDataPanel assay model with results File field types 1`] = `
           <div
             class="form-step"
           >
-            <div>
+            <div
+              class="editable-grid-wrapper"
+            >
               <div
                 class="row editable-grid-buttons"
               >
@@ -91,7 +93,7 @@ exports[`RunDataPanel assay model with results File field types 1`] = `
                 class="editable-grid__container grid-panel__lock-left"
               >
                 <div
-                  class="table-responsive"
+                  class="table-responsive table-responsive--max-height"
                 >
                   <div
                     class="grid-messages"

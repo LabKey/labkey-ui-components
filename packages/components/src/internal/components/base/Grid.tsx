@@ -380,15 +380,6 @@ export const Grid: FC<GridProps> = memo(props => {
     } = props;
     const gridData = processData(data);
     const gridColumns = columns !== undefined ? processColumns(columns) : resolveColumns(gridData);
-
-    const divRef = useRef<HTMLDivElement>();
-    useEffect(() => {
-        if (!fixedHeight) return;
-        const maxHeight = window.innerHeight * 0.7;
-        divRef.current.style.height =
-            divRef.current.lastElementChild?.clientHeight < maxHeight ? 'unset' : maxHeight + 'px';
-    }, [fixedHeight, gridData.size]); // dep on gridData.size to recalculate div height on each grid row count change
-
     const headerProps: GridHeaderProps = {
         calcWidths,
         columns: gridColumns,
@@ -417,10 +408,12 @@ export const Grid: FC<GridProps> = memo(props => {
 
     const wrapperClasses = classNames({
         'table-responsive': responsive,
+        // fixedHeight is a misnomer, we used to set a fixed height, but now we use a max-height set via css
+        'table-responsive--max-height': fixedHeight,
     });
 
     return (
-        <div className={wrapperClasses} data-gridid={gridId} ref={divRef}>
+        <div className={wrapperClasses} data-gridid={gridId}>
             <GridMessages messages={messages} />
 
             <table className={tableClasses} ref={tableRef}>

@@ -710,7 +710,7 @@ export async function updateGridFromBulkForm(
     lockedOrReadonlyRows: number[],
     isIncludedColumn: (col: QueryColumn) => boolean,
     containerPath: string,
-    useAdditionalCols: boolean = false
+    useEditorModelCols: boolean = false
 ): Promise<Partial<EditorModel>> {
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
@@ -720,7 +720,7 @@ export async function updateGridFromBulkForm(
         rowData,
         isIncludedColumn,
         containerPath,
-        useAdditionalCols && editorModel.columns.toJS()
+        useEditorModelCols && editorModel.columns.toJS()
     );
     const { values, messages } = preparedData; // {3: 'x', 4: 'z}
 

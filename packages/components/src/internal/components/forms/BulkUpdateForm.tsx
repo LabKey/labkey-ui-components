@@ -17,7 +17,7 @@ type UpdateRows = (schemaQuery: SchemaQuery, rows: any[], comment?: string) => P
 type UpdateModel = (changes: any) => Promise<void>;
 
 function isUpdateModel(fn: UpdateRows | UpdateModel): fn is UpdateModel {
-    return fn.length === 1;
+    return fn.length === 1; // UpdateModel has only one parameter
 }
 
 interface Props {
@@ -44,7 +44,6 @@ interface Props {
     requiredColumns?: string[]; // Columns we must retrieve data for
     requiredDisplayColumns?: string[]; // Columns that must be rendered in form
     selectedIds: string[];
-    showHeader?: boolean;
     singularNoun?: string;
     // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
     sortString?: string;
@@ -67,7 +66,6 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     static defaultProps = {
         pluralNoun: 'rows',
         singularNoun: 'row',
-        showHeader: true,
         includeCommentField: true,
     };
 
@@ -215,8 +213,8 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     };
 
     renderBulkUpdateHeader() {
-        const { header, showHeader } = this.props;
-        if (!showHeader) return null;
+        const { header } = this.props;
+        if (!header) return null;
 
         const noun = this.getSelectionNoun();
 

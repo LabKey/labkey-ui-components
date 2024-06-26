@@ -1,14 +1,19 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, ReactNode, useCallback, useMemo, useState } from 'react';
+
+import classNames from 'classnames';
 
 import { MenuDivider, MenuItem, preventDocumentHandler } from './dropdowns';
 import { DisableableMenuItem, DisableableMenuItemProps } from './components/samples/DisableableMenuItem';
-import classNames from 'classnames';
 
 const SHOW_FILTER_CUTOFF = 10;
 
+function isString(label: string | ReactNode): label is string {
+    return typeof label === 'string';
+}
+
 export interface MenuSectionItem extends Omit<DisableableMenuItemProps, 'children'> {
     disabledMessage?: string;
-    text: string;
+    label: string | ReactNode;
 }
 
 interface MenuSectionProps {
@@ -40,7 +45,7 @@ export const DropdownSection: FC<MenuSectionProps> = ({ items, showDivider = fal
     const menuItems = useMemo(() => {
         if (filterValue.trim()) {
             const filterValueLC = filterValue.toLowerCase();
-            return items.filter(item => item.text.toLowerCase().indexOf(filterValueLC) > -1)
+            return items.filter(item => isString(item.label) && item.label.toLowerCase().indexOf(filterValueLC) > -1);
         }
         return items;
     }, [filterValue, items]);
@@ -67,9 +72,13 @@ export const DropdownSection: FC<MenuSectionProps> = ({ items, showDivider = fal
             )}
 
             {expanded &&
-                menuItems.map(({ text: menuItemText, ...props }) => (
-                    <DisableableMenuItem key={menuItemText} {...props} className={classNames('dropdown-section__menu-item', props.className)}>
-                        {menuItemText}
+                menuItems.map(({ label: menuItemLabel, ...props }, index) => (
+                    <DisableableMenuItem
+                        key={index}
+                        {...props}
+                        className={classNames('dropdown-section__menu-item', props.className)}
+                    >
+                        {menuItemLabel}
                     </DisableableMenuItem>
                 ))}
 

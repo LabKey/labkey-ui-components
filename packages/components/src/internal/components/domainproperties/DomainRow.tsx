@@ -487,7 +487,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                         ref={provided.innerRef}
                         tabIndex={index}
                     >
-                        <div key={createFormInputId('domainrow', domainIndex, index)} className="row domain-row-container">
+                        <div
+                            key={createFormInputId('domainrow', domainIndex, index)}
+                            className="row domain-row-container"
+                        >
                             {showAdv && (
                                 <AdvancedSettings
                                     domainIndex={domainIndex}
@@ -515,8 +518,8 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                         dragging
                                             ? true
                                             : isDragDisabled
-                                            ? false
-                                            : undefined /* use undefined instead of false to allow for css to handle the highlight color for hover*/
+                                              ? false
+                                              : undefined /* use undefined instead of false to allow for css to handle the highlight color for hover*/
                                     }
                                 />
                             </div>

@@ -249,7 +249,7 @@ describe('EditorModel', () => {
             expect(errors).toHaveLength(1);
         });
 
-        test('missing required for generated unique id', () => {
+        test('generated unique id not counted for missing required check', () => {
             const myQueryInfo = new QueryInfo({
                 columns: new ExtendedMap({
                     Barcode: new QueryColumn({

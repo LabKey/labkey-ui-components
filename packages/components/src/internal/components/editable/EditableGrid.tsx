@@ -866,7 +866,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     getLoweredColumnMetadata = (): Record<string, EditableColumnMetadata> =>
         this.props.columnMetadata?.reduce((result, value, key) => {
-            result[key.toLowerCase()] = { ...value };
+            result[key.toLowerCase()] = value;
             return result;
         }, {});
 
@@ -919,12 +919,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     width = metadata.minWidth;
                 }
             }
-            if (qCol.hasHelpTipData) {
-                if (!metadata) {
-                    metadata = {};
-                }
-                metadata.hideTitleTooltip = true;
-            }
+            const hideTooltip = metadata?.hideTitleTooltip ?? qCol.hasHelpTipData;
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
@@ -947,7 +942,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     raw: qCol,
                     title: metadata?.caption ?? qCol.caption,
                     width,
-                    hideTooltip: metadata?.hideTitleTooltip,
+                    hideTooltip,
                     tableCell: true,
                 })
             );
@@ -1009,7 +1004,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         <>{metadata?.toolTip}</>
                     </LabelHelpTip>
                 )}
-                {showLabelOverlay && <LabelOverlay column={qColumn} placement="bottom" />}
+                {showLabelOverlay && <LabelOverlay column={qColumn} placement="bottom" required={req} />}
             </>
         );
     };

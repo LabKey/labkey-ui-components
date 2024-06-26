@@ -24,7 +24,7 @@ import { Placement } from '../../useOverlayPositioning';
 
 import { HelpTipRenderer } from './HelpTipRenderer';
 import { INPUT_LABEL_CLASS_NAME } from './constants';
-import { DomainFieldHelpTipContents } from './DomainFieldHelpTipContents';
+import { DOMAIN_FIELD, DomainFieldHelpTipContents } from './DomainFieldHelpTipContents';
 
 export interface LabelOverlayProps {
     addLabelAsterisk?: boolean;
@@ -77,11 +77,10 @@ export class LabelOverlay extends React.Component<LabelOverlayProps> {
     overlayContent() {
         const { column, helpTipRenderer, placement } = this.props;
         const label = this.props.label ? this.props.label : column ? column.caption : null;
+        const _helpTipRenderer = column?.helpTipRenderer || helpTipRenderer;
         const popoverClassName =
-            column?.helpTipRenderer || helpTipRenderer
-                ? placement === 'bottom'
-                    ? 'label-help-arrow-bottom'
-                    : 'label-help-arrow-top'
+            _helpTipRenderer && _helpTipRenderer !== DOMAIN_FIELD && placement === 'right'
+                ? 'label-help-arrow-top'
                 : undefined;
         const body = this.overlayBody();
         return (

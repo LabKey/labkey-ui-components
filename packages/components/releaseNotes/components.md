@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 3.??.?
+*Released*: ?? June 2024
+- Add styling for button.clickable-text
+
 ### version 3.56.2
 *Released*: 28 June 2024
 - Update MenuSectionItem to accept ReactNode for label attribute

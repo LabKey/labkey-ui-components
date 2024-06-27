@@ -44,6 +44,8 @@ import { LabelHelpTip } from './components/base/LabelHelpTip';
 import { DisableableMenuItem } from './components/samples/DisableableMenuItem';
 import { usePortalRef } from './hooks';
 import { MenuDivider, MenuItem } from './dropdowns';
+import { LabelOverlay } from './components/forms/LabelOverlay';
+import { DOMAIN_FIELD } from './components/forms/DomainFieldHelpTipContents';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
@@ -52,17 +54,21 @@ export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn
 interface EditableColumnTitleProps {
     column: QueryColumn;
     editing?: boolean;
+    hideToolTip?: boolean;
     onCancel: () => void;
     onChange: (newValue: string) => void;
 }
 
 // exported for jest tests
 export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
-    const { column, editing, onChange, onCancel } = props;
+    const { column, editing, hideToolTip, onChange, onCancel } = props;
     const initialTitle = useMemo(() => {
         return column.caption ?? column.name;
     }, [column.caption, column.name]);
     const [title, setTitle] = useState<string>(initialTitle);
+    const showLabelOverlay: boolean = useMemo(() => {
+        return !hideToolTip && column.hasHelpTipData;
+    }, [column, hideToolTip]);
 
     const titleInput: React.RefObject<HTMLInputElement> = React.createRef();
 
@@ -110,7 +116,12 @@ export const EditableColumnTitle: FC<EditableColumnTitleProps> = memo(props => {
         );
     }
 
-    return <>{initialTitle}</>;
+    return (
+        <>
+            {!showLabelOverlay && initialTitle}
+            {showLabelOverlay && <LabelOverlay column={column} />}
+        </>
+    );
 });
 
 interface SharedHeaderCellProps {
@@ -387,6 +398,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     onChange={onColumnTitleUpdate}
                     editing={editingTitle}
                     onCancel={cancelEditTitle}
+                    hideToolTip={!!column.helpTipRenderer}
                 />
 
                 {!editingTitle && colFilters?.length > 0 && (
@@ -402,8 +414,8 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
                 )}
                 {!editingTitle && column.helpTipRenderer && (
-                    <LabelHelpTip title={column.title} popoverClassName="label-help-arrow-top">
-                        <HelpTipRenderer type={column.helpTipRenderer} />
+                    <LabelHelpTip placement="bottom" title={column.title} popoverClassName={column.helpTipRenderer === DOMAIN_FIELD ? undefined : 'label-help-arrow-left'}>
+                        <HelpTipRenderer type={column.helpTipRenderer} column={queryColumn} />
                     </LabelHelpTip>
                 )}
             </span>

@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 3.56.0
+*Released*: 27 June 2024
+- Use `LabelOverlay` in headers for grids
+    - Update display of Description in `LabelOverlay` to preserve white space
+    - Update `EditableGrid.renderColumnHeader` to use `LabelOverlay` if custom tool top is not configured
+    - Add `DomainFieldMetadata` component to be used as new `HelpTipRenderer` when appropriate
+
+### version 3.55.2
+*Released*: 26 June 2024
+- Add support in BulkUpdateForm for staging changes to EditorModel without transacting changes
+
 ### version 3.55.1
 *Released*: 26 June 2024
 - Issue 49025: Assay run import fails if time format is kk:mm

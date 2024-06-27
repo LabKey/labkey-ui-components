@@ -407,6 +407,10 @@ export class QueryColumn implements IQueryColumn {
         return this.rangeURI === DATE_RANGE_URI;
     }
 
+    get hasHelpTipData(): boolean {
+        return !!this.description || !!this.format || !!this.phiProtected;
+    }
+
     isImportColumn(importName: string): boolean {
         if (!importName) return false;
 

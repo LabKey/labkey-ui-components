@@ -909,7 +909,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
 
         this.getColumns().forEach(qCol => {
-            let metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
+            const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
 
             let width = 100;
             let fixedWidth;
@@ -1004,7 +1004,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         <>{metadata?.toolTip}</>
                     </LabelHelpTip>
                 )}
-                {showLabelOverlay && <LabelOverlay column={qColumn} placement="bottom" required={req} />}
+                {showLabelOverlay && (
+                    <LabelOverlay column={qColumn} label={metadata?.caption} placement="bottom" required={req} />
+                )}
             </>
         );
     };

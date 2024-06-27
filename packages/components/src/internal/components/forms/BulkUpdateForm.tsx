@@ -13,18 +13,25 @@ import { capitalizeFirstChar, caseInsensitive, getCommonDataValues, getUpdatedDa
 
 import { QueryInfoForm } from './QueryInfoForm';
 
+type UpdateRows = (schemaQuery: SchemaQuery, rows: any[], comment?: string) => Promise<any>;
+type UpdateModel = (changes: any) => Promise<void>;
+
+function isUpdateModel(fn: UpdateRows | UpdateModel): fn is UpdateModel {
+    return fn.length === 1; // UpdateModel has only one parameter
+}
+
 interface Props {
     containerFilter?: Query.ContainerFilter;
     disabled?: boolean;
     displayValueFields?: string[];
-    getUpdateColumnsOnly?: boolean;
     header?: ReactNode;
+    includeCommentField?: boolean;
     itemLabel?: string;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     onCancel: () => void;
     onComplete: (data: any, submitForEdit: boolean, auditUserComment?: string) => void;
     onError?: (message: string) => void;
-    onSubmitForEdit: (
+    onSubmitForEdit?: (
         updateData: OrderedMap<string, any>,
         dataForSelection: Map<string, any>,
         dataIdsForSelection: List<any>,
@@ -34,13 +41,14 @@ interface Props {
     queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo: QueryInfo;
     readOnlyColumns?: string[];
-    requiredColumns?: string[];
+    requiredColumns?: string[]; // Columns we must retrieve data for
+    requiredDisplayColumns?: string[]; // Columns that must be rendered in form
     selectedIds: string[];
     singularNoun?: string;
     // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
     sortString?: string;
     uniqueFieldKey?: string;
-    updateRows: (schemaQuery: SchemaQuery, rows: any[], comment?: string) => Promise<any>;
+    updateRows: UpdateRows | UpdateModel;
     // queryInfo.schemaQuery.viewName is likely undefined (i.e., not the current viewName)
     viewName: string;
 }
@@ -58,7 +66,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     static defaultProps = {
         pluralNoun: 'rows',
         singularNoun: 'row',
-        getUpdateColumnsOnly: true,
+        includeCommentField: true,
     };
 
     constructor(props) {
@@ -75,22 +83,10 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     }
 
     componentDidMount = async (): Promise<void> => {
-        const {
-            onCancel,
-            pluralNoun,
-            queryInfo,
-            readOnlyColumns,
-            selectedIds,
-            getUpdateColumnsOnly,
-            sortString,
-            viewName,
-            requiredColumns,
-        } = this.props;
-        // Get all shownInUpdateView and required columns or undefined
-        const columns =
-            getUpdateColumnsOnly || requiredColumns
-                ? queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns ?? []))
-                : undefined;
+        const { onCancel, pluralNoun, queryInfo, readOnlyColumns, selectedIds, sortString, viewName, requiredColumns } =
+            this.props;
+        // Get all shownInUpdateView and required columns
+        const columns = queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns ?? []));
         let columnString = columns?.map(c => c.fieldKey).join(',');
         if (requiredColumns) columnString = `${columnString ? columnString + ',' : ''}${requiredColumns.join(',')}`;
         const { schemaName, name } = queryInfo;
@@ -189,13 +185,21 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
 
     columnFilter = (col: QueryColumn): boolean => {
         const lcUniqueFieldKey = this.props.uniqueFieldKey?.toLowerCase();
-        return col.isUpdateColumn && (!lcUniqueFieldKey || col.name.toLowerCase() !== lcUniqueFieldKey);
+        return (
+            this.props.requiredDisplayColumns?.includes(col.fieldKey) ||
+            (col.isUpdateColumn && (!lcUniqueFieldKey || col.name.toLowerCase() !== lcUniqueFieldKey))
+        );
     };
 
     onSubmit = (data: any, comment?: string): Promise<any> => {
         const { queryInfo, updateRows } = this.props;
         const { displayFieldUpdates } = this.state;
         const updateData = displayFieldUpdates.merge(data);
+
+        if (isUpdateModel(updateRows)) {
+            return updateRows(updateData);
+        }
+
         const rows = !Utils.isEmptyObj(data)
             ? getUpdatedData(this.state.originalDataForSelection, updateData, queryInfo.pkCols, queryInfo.altUpdateKeys)
             : [];
@@ -210,6 +214,8 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
 
     renderBulkUpdateHeader() {
         const { header } = this.props;
+        if (!header) return null;
+
         const noun = this.getSelectionNoun();
 
         return (
@@ -239,6 +245,8 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             queryInfo,
             onAdditionalFormDataChange,
             disabled,
+            includeCommentField,
+            onSubmitForEdit,
         } = this.props;
         const fieldValues =
             isLoadingDataForSelection || !dataForSelection ? undefined : getCommonDataValues(dataForSelection);
@@ -247,6 +255,8 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         // if selections are from multiple containerPaths, disable the lookup and file field inputs
         const containerPath = containerPaths?.length === 1 ? containerPaths[0] : undefined;
         const preventCrossFolderEnable = containerPaths?.length > 1;
+
+        const _onSubmitForEdit = onSubmitForEdit ? this.onSubmitForEdit : undefined;
 
         return (
             <QueryInfoForm
@@ -260,13 +270,13 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 preventCrossFolderEnable={preventCrossFolderEnable}
                 fieldValues={fieldValues}
                 header={this.renderBulkUpdateHeader()}
-                includeCommentField={true}
+                includeCommentField={includeCommentField}
                 includeCountField={false}
                 initiallyDisableFields
                 isLoading={isLoadingDataForSelection}
                 onHide={onCancel}
                 operation={Operation.update}
-                onSubmitForEdit={this.onSubmitForEdit}
+                onSubmitForEdit={_onSubmitForEdit}
                 onSubmit={this.onSubmit}
                 onSuccess={onComplete}
                 renderFileInputs

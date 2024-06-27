@@ -46,7 +46,7 @@ const DEFAULT_PROPS = {
     onSubmitForEdit: jest.fn,
     queryInfo: QUERY_INFO,
     viewName: undefined,
-    selectedIds: new Set<string>(),
+    selectedIds: [],
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise.resolve(),
 };
 

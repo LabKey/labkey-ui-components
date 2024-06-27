@@ -176,6 +176,15 @@ import { DataTypeSelector } from './internal/components/entities/DataTypeSelecto
 import { EditorMode, EditorModel } from './internal/components/editable/models';
 import { EditableGridEvent } from './internal/components/editable/constants';
 import {
+    addColumns,
+    changeColumn,
+    initEditableGridModel,
+    initEditableGridModels,
+    loadEditorModelData,
+    removeColumn,
+    updateGridFromBulkForm,
+} from './internal/components/editable/actions';
+import {
     clearSelected,
     getGridIdsFromTransactionId,
     getSampleTypesFromTransactionIds,
@@ -187,14 +196,6 @@ import {
     setSelected,
     setSnapshotSelections,
 } from './internal/actions';
-import {
-    addColumns,
-    changeColumn,
-    initEditableGridModel,
-    initEditableGridModels,
-    loadEditorModelData,
-    removeColumn,
-} from './internal/components/editable/actions';
 import { cancelEvent } from './internal/events';
 import { createGridModelId } from './internal/models';
 import { initQueryGridState } from './internal/global';
@@ -1148,6 +1149,7 @@ export {
     EditorModel,
     EditorMode,
     EditableGridEvent,
+    updateGridFromBulkForm,
     cancelEvent,
     // url and location related items
     AppURL,

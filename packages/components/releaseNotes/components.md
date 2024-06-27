@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 3.55.2
+*Released*: 26 June 2024
+- Add support in BulkUpdateForm for staging changes to EditorModel without transacting changes
+
 ### version 3.55.1
 *Released*: 26 June 2024
 - Issue 49025: Assay run import fails if time format is kk:mm

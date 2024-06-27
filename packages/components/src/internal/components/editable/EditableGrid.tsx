@@ -48,6 +48,8 @@ import { Tab, Tabs } from '../../Tabs';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
+import { LabelOverlay } from '../forms/LabelOverlay';
+
 import {
     addRows,
     addRowsPerPivotValue,
@@ -917,7 +919,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     width = metadata.minWidth;
                 }
             }
-
+            const hideTooltip = metadata?.hideTitleTooltip ?? qCol.hasHelpTipData;
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
@@ -940,7 +942,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     raw: qCol,
                     title: metadata?.caption ?? qCol.caption,
                     width,
-                    hideTooltip: metadata?.hideTitleTooltip,
+                    hideTooltip,
                     tableCell: true,
                 })
             );
@@ -980,22 +982,30 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return gridColumns;
     };
 
-    renderColumnHeader = (col: GridColumn, metadataKey: string, required?: boolean, format?: string): ReactNode => {
+    renderColumnHeader = (col: GridColumn, metadataKey: string): React.ReactNode => {
         const label = col.title;
+        const qColumn: QueryColumn = col.raw;
+        const req = !!qColumn?.required;
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
         const metadata = loweredColumnMetadata?.[metadataKey.toLowerCase()];
-        const showOverlay = metadata?.toolTip || format;
+        const showOverlayFromMetadata = !!metadata?.toolTip;
+        const showLabelOverlay = !showOverlayFromMetadata && qColumn?.hasHelpTipData;
+        // TODO should be able to just use LabelOverlay here since it can handle an alternate tooltip renderer
         return (
             <>
-                {label}
-                {required && <span className="required-symbol"> *</span>}
-                {showOverlay && (
-                    <LabelHelpTip title={label} popoverClassName={metadata?.popoverClassName}>
-                        <>
-                            {metadata?.toolTip}
-                            {format && <div>Display Format: {format}</div>}
-                        </>
+                {!showLabelOverlay && (
+                    <>
+                        {label}
+                        {req && <span className="required-symbol"> *</span>}
+                    </>
+                )}
+                {showOverlayFromMetadata && (
+                    <LabelHelpTip title={label} popoverClassName={metadata?.popoverClassName} placement="bottom">
+                        <>{metadata?.toolTip}</>
                     </LabelHelpTip>
+                )}
+                {showLabelOverlay && (
+                    <LabelOverlay column={qColumn} label={metadata?.caption} placement="bottom" required={req} />
                 )}
             </>
         );
@@ -1010,11 +1020,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         const qColumn = queryInfo.getColumn(col.index);
         if (qColumn) {
-            return this.renderColumnHeader(col, qColumn.fieldKey, qColumn.required, qColumn.format);
+            return this.renderColumnHeader(col, qColumn.fieldKey);
         }
 
         if (col.showHeader) {
-            return this.renderColumnHeader(col, col.title, false);
+            return this.renderColumnHeader(col, col.title);
         }
 
         return null;

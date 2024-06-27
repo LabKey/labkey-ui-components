@@ -73,6 +73,7 @@ import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
 import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ChartPanel } from './ChartPanel';
+import { DOMAIN_FIELD } from '../../internal/components/forms/DomainFieldHelpTipContents';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -949,6 +950,13 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { isLoading, isLoadingSelections } = model;
 
         let columns: List<GridColumn | QueryColumn> = model?.displayColumns ? List(model.displayColumns) : List();
+        columns.forEach(col => {
+            if (!(col instanceof GridColumn)) {
+                if (!col.helpTipRenderer && col.hasHelpTipData) {
+                    col.helpTipRenderer = DOMAIN_FIELD;
+                }
+            }
+        });
         if (allowSelections) {
             const selectColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,

@@ -2,18 +2,16 @@ import React, { FC, ReactNode, useCallback, useMemo, useState } from 'react';
 
 import classNames from 'classnames';
 
+import { Utils } from '@labkey/api';
+
 import { MenuDivider, MenuItem, preventDocumentHandler } from './dropdowns';
 import { DisableableMenuItem, DisableableMenuItemProps } from './components/samples/DisableableMenuItem';
 
 const SHOW_FILTER_CUTOFF = 10;
 
-function isString(label: string | ReactNode): label is string {
-    return typeof label === 'string';
-}
-
 export interface MenuSectionItem extends Omit<DisableableMenuItemProps, 'children'> {
     disabledMessage?: string;
-    label: string | ReactNode;
+    label: ReactNode;
 }
 
 interface MenuSectionProps {
@@ -45,7 +43,9 @@ export const DropdownSection: FC<MenuSectionProps> = ({ items, showDivider = fal
     const menuItems = useMemo(() => {
         if (filterValue.trim()) {
             const filterValueLC = filterValue.toLowerCase();
-            return items.filter(item => isString(item.label) && item.label.toLowerCase().indexOf(filterValueLC) > -1);
+            return items.filter(
+                item => Utils.isString(item.label) && item.label.toLowerCase().indexOf(filterValueLC) > -1
+            );
         }
         return items;
     }, [filterValue, items]);

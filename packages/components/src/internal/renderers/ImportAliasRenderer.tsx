@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { PureComponent, FC, memo, ReactNode } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { Map } from 'immutable';
 
 import { AppURL } from '../url/AppURL';
@@ -22,18 +22,6 @@ import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../component
 
 interface Props {
     data: Map<any, any>;
-}
-
-export class SampleTypeImportAliasRenderer extends PureComponent<Props> {
-    render(): ReactNode {
-        return <ImportAliasRenderer appRouteMap={{ [SAMPLE_SET_IMPORT_PREFIX]: SAMPLES_KEY }} data={this.props.data} />;
-    }
-}
-
-export class SourceTypeImportAliasRenderer extends PureComponent<Props> {
-    render(): ReactNode {
-        return <ImportAliasRenderer appRouteMap={{ [DATA_CLASS_IMPORT_PREFIX]: SOURCES_KEY }} data={this.props.data} />;
-    }
 }
 
 interface RendererProps extends Props {
@@ -69,4 +57,14 @@ export const ImportAliasRenderer: FC<RendererProps> = memo(props => {
                 })}
         </>
     );
+});
+
+export const SampleTypeImportAliasRenderer: FC<Props> = memo(props => {
+    const appRouteMap = useMemo(() => ({ [SAMPLE_SET_IMPORT_PREFIX]: SAMPLES_KEY }), []);
+    return <ImportAliasRenderer appRouteMap={appRouteMap} data={props.data} />;
+});
+
+export const SourceTypeImportAliasRenderer: FC<Props> = memo(props => {
+    const appRouteMap = useMemo(() => ({ [DATA_CLASS_IMPORT_PREFIX]: SOURCES_KEY }), []);
+    return <ImportAliasRenderer appRouteMap={appRouteMap} data={props.data} />;
 });

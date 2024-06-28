@@ -16,7 +16,7 @@
 import { fromJS, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { immerable } from 'immer';
 import { normalize, schema } from 'normalizr';
-import { Ajax, AuditBehaviorTypes, Filter, Query, QueryDOM, Utils } from '@labkey/api';
+import { ActionURL, Ajax, AuditBehaviorTypes, Filter, Query, QueryDOM, Utils } from '@labkey/api';
 
 import { ExtendedMap } from '../../public/ExtendedMap';
 
@@ -35,7 +35,6 @@ import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
 import { ViewInfo, ViewInfoJson } from '../ViewInfo';
 import { URLResolver } from '../url/URLResolver';
 import { ModuleContext } from '../components/base/ServerContext';
-import { buildURL } from '../url/AppURL';
 
 let queryDetailsCache: Record<string, Promise<QueryInfo>> = {};
 
@@ -165,13 +164,12 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
 }
 
 export function getDefaultVisibleColumns(options: GetQueryDetailsOptions): Promise<QueryColumn[]> {
-    const { containerPath, fields, fk } = options;
     const schemaQuery = options.schemaQuery ?? new SchemaQuery(options.schemaName, options.queryName);
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('query', 'getDefaultVisibleColumns.api', undefined, { container: containerPath }),
+            url: ActionURL.buildURL('query', 'getDefaultVisibleColumns.api', options.containerPath),
             method: 'POST',
-            params: {
+            jsonData: {
                 queryName: schemaQuery.queryName,
                 schemaName: schemaQuery.schemaName,
             },
@@ -359,7 +357,7 @@ function applyViewColumns(
     columns: ExtendedMap<string, QueryColumn>,
     schemaQuery: SchemaQuery,
     rawViewInfo: ViewInfoJson
-) {
+): void {
     if (rawViewInfo && rawViewInfo.fields) {
         rawViewInfo.fields.forEach(rawColumn => {
             const fk = rawColumn.fieldKey.toLowerCase();
@@ -392,11 +390,7 @@ export class Renderers {
         let value = this._check(columnMetadata, rawColumn, 'columnRenderer', metadata);
 
         if (value === undefined) {
-            if (rawColumn.name === 'harvest') {
-                value = 'MaterialLookupColumnRenderer';
-            } else {
-                value = this._applyDefaultRenderer(columnMetadata, rawColumn, metadata);
-            }
+            value = this._applyDefaultRenderer(columnMetadata, rawColumn, metadata);
         }
 
         return value;

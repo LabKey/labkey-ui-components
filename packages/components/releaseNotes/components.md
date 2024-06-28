@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 3.56.1
+*Released*: 28 June 2024
+- Remove reference to `MaterialLookupColumnRenderer`
+
 ### version 3.56.0
 *Released*: 27 June 2024
 - Use `LabelOverlay` in headers for grids

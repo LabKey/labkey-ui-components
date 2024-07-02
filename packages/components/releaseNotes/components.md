@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 50640: Update `MenuSectionModel` URL construction to link to `runs` page for assay names
+
 ### version 3.56.2
 *Released*: 28 June 2024
 - Update MenuSectionItem to accept ReactNode for label attribute

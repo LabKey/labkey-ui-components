@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Issue 50640: Update `MenuSectionModel` URL construction to link to `runs` page for assay names
+- Issue 50753: Fix link resolution for sample type names that are numbers
 
 ### version 3.56.2
 *Released*: 28 June 2024

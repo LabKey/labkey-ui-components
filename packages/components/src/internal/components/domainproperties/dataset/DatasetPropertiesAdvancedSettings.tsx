@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Checkbox, FormControl } from 'react-bootstrap';
+import { Checkbox } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
 
@@ -103,7 +103,8 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
                 {showInAdvancedSettings && <div className="col-xs-1" />}
 
                 <div className="col-xs-7">
-                    <FormControl
+                    <input
+                        className="form-control"
                         id={name}
                         type="text"
                         placeholder={placeholder}

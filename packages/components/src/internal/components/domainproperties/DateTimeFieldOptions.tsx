@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { FormControl } from 'react-bootstrap';
 
 import { DATE_FORMATS_TOPIC, HelpLink, JavaDocsLink } from '../../util/helpLinks';
 
@@ -69,7 +68,8 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                 </div>
                 <div className="row">
                     <div className="col-xs-3">
-                        <FormControl
+                        <input
+                            className="form-control"
                             type="text"
                             value={format || ''}
                             onChange={this.onFieldChange}

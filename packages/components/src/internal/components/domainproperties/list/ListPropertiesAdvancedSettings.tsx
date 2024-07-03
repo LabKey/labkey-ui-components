@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useState } from 'react';
 import classNames from 'classnames';
-import { FormControl, FormGroup, Radio } from 'react-bootstrap';
+import { FormGroup, Radio } from 'react-bootstrap';
 
 import { Modal } from '../../../Modal';
 
@@ -97,8 +97,8 @@ const TitleIndexField: FC<TitleIndexFieldProps> = memo(({ name, titleTemplate, o
     <div>
         <DomainFieldLabel label="Document title" helpTipBody={DOCUMENT_TITLE_TIP} />
         <span>
-            <FormControl
-                className="list__advanced-settings-modal__text-field"
+            <input
+                className="form-control list__advanced-settings-modal__text-field"
                 id={name}
                 type="text"
                 placeholder="Use default"
@@ -164,12 +164,12 @@ export const IndexField: FC<IndexFieldProps> = memo(props => {
             </FormGroup>
 
             {bodySetting === 2 && (
-                <FormControl
+                <input
                     id={id}
                     type="text"
                     value={bodyTemplate}
                     onChange={onInputChange}
-                    className="list__advanced-settings-modal__custom-template-text-field"
+                    className="form-control list__advanced-settings-modal__custom-template-text-field"
                 />
             )}
         </div>

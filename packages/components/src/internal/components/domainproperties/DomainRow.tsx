@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { ReactNode, RefObject } from 'react';
-import { Checkbox, Collapse, FormControl } from 'react-bootstrap';
+import { Checkbox, Collapse } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
@@ -357,7 +357,8 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this.ref}>
                 <div className="col-xs-6">
-                    <FormControl
+                    <input
+                        className="form-control"
                         type="text"
                         value={field.name || ''}
                         name={createFormInputName(DOMAIN_FIELD_NAME)}
@@ -367,8 +368,8 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                     />
                 </div>
                 <div className="col-xs-4">
-                    <FormControl
-                        componentClass="select"
+                    <select
+                        className="form-control"
                         name={createFormInputName(DOMAIN_FIELD_TYPE)}
                         disabled={
                             (!field.isNew() && field.isPrimaryKey) ||
@@ -397,7 +398,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     </option>
                                 ))
                         )}
-                    </FormControl>
+                    </select>
                 </div>
                 <div className="col-xs-2">
                     <div className="domain-field-checkbox-container">

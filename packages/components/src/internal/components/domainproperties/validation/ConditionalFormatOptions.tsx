@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { PureComponent, ReactNode } from 'react';
-import { Checkbox, FormControl } from 'react-bootstrap';
+import { Checkbox } from 'react-bootstrap';
 import { CompactPicker } from 'react-color';
 
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
@@ -172,7 +172,8 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
                 </div>
                 <div className="col-xs-1" />
                 <div className="col-xs-3">
-                    <FormControl
+                    <input
+                        className="form-control"
                         type="text"
                         id={'domain-validator-preview-' + validatorIndex}
                         defaultValue="Preview Text"

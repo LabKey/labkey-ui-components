@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Checkbox, FormControl } from 'react-bootstrap';
+import { Checkbox } from 'react-bootstrap';
 
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
@@ -61,9 +61,8 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                 </div>
                 <div className="col-xs-8">
                     <div>
-                        <FormControl
-                            componentClass="textarea"
-                            className="textarea-fullwidth"
+                        <textarea
+                            className="form-control textarea-fullwidth"
                             rows={3}
                             id={createFormInputId(name, domainIndex, validatorIndex)}
                             name={createFormInputName(name)}
@@ -153,7 +152,8 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                                 <div>Name *</div>
                             </div>
                             <div className="col-xs-8">
-                                <FormControl
+                                <input
+                                    className="form-control"
                                     type="text"
                                     id={createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)}
                                     name={createFormInputName(DOMAIN_VALIDATOR_NAME)}

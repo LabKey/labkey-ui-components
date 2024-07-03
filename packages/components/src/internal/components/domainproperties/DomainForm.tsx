@@ -16,7 +16,7 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { FormControl, Panel } from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';
@@ -1319,9 +1319,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                         field{fields.size > 1 ? 's' : ''}.
                                                     </span>
                                                 )}
-                                                <FormControl
+                                                <input
                                                     id={'domain-search-name-' + domainIndex}
-                                                    className="domain-search-input"
+                                                    className="form-control domain-search-input"
                                                     type="text"
                                                     placeholder="Search Fields"
                                                     onChange={this.onSearch}

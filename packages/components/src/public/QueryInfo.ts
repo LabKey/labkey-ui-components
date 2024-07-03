@@ -130,7 +130,7 @@ export class QueryInfo {
      * adding that same logic to applyQueryMetadata. In the long run this method shouldn't exist and all tests should
      * use makeQueryInfo so we are testing with QueryInfos that are instantiated with the same logic as our apps are.
      *
-     * @param queryInfoJson: The JSON representation of the QueryInfo from LabKey Server
+     * @param queryInfoJson The JSON representation of the QueryInfo from LabKey Server
      * @param includeViews boolean, if true this method parses the views from the JSON object and converts them to
      * ViewInfo objects. Defaults to false.
      */

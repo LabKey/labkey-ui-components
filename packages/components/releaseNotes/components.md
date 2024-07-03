@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 3.??.?
-*Released*: ?? June 2024
+### version 3.57.0
+*Released*: 3 July 2024
 - Add styling for button.clickable-text
 
 ### version 3.56.2

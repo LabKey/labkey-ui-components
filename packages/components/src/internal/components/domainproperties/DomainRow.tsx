@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { ReactNode, RefObject } from 'react';
-import { Checkbox, Collapse } from 'react-bootstrap';
+import { Checkbox } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
@@ -69,6 +69,7 @@ import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
 import { DomainRowWarning } from './DomainRowWarning';
 import { ConfirmDataTypeChangeModal } from './ConfirmDataTypeChangeModal';
+import { Collapsible } from './Collapsible';
 
 export interface DomainRowProps {
     allowUniqueConstraintProperties: boolean;
@@ -81,7 +82,6 @@ export interface DomainRowProps {
     domainId?: number;
     domainIndex: number;
     dragging: boolean;
-    expandTransition: number;
     expanded: boolean;
     field: DomainField;
     fieldDetailsInfo?: Record<string, string>;
@@ -100,7 +100,6 @@ export interface DomainRowProps {
 }
 
 interface DomainRowState {
-    closing: boolean;
     dataTypeChangeToConfirm: string;
     isDragDisabled: boolean;
     showAdv: boolean;
@@ -122,7 +121,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
         this.state = {
             showAdv: false,
-            closing: false,
             showingModal: false,
             dataTypeChangeToConfirm: undefined,
             isDragDisabled: props.isDragDisabled,
@@ -145,7 +143,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
     getDetails = (): ReactNode => {
         const { field, fieldDetailsInfo, fieldError, index, expanded, domainIndex } = this.props;
-        const { closing } = this.state;
         const details = field.getDetailsArray(index, fieldDetailsInfo);
 
         if (fieldError) {
@@ -156,7 +153,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         return (
             <div
                 id={createFormInputId(DOMAIN_FIELD_DETAILS, domainIndex, index)}
-                className={expanded || closing ? 'domain-field-details-expanded' : 'domain-field-details'}
+                className={expanded ? 'domain-field-details-expanded' : 'domain-field-details'}
             >
                 {details}
             </div>
@@ -175,7 +172,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
     getRowCssClasses = (
         expanded: boolean,
-        closing: boolean,
         dragging: boolean,
         selected: boolean,
         fieldError: DomainFieldError
@@ -193,7 +189,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             classes.push('domain-row-border-dragging');
         }
 
-        if (closing || expanded) {
+        if (expanded) {
             classes.push('domain-row-expanded');
         }
 
@@ -324,14 +320,6 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         this.props.onExpand(this.props.index);
     };
 
-    onCollapsed = (): void => {
-        this.setState({ closing: false });
-    };
-
-    onCollapsing = (): void => {
-        this.setState({ closing: true });
-    };
-
     setDragDisabled = (propDragDisabled: boolean, disabled: boolean): void => {
         this.setState({ isDragDisabled: disabled || propDragDisabled });
     };
@@ -420,11 +408,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
     renderButtons = (): ReactNode => {
         const { expanded, index, field, appPropertiesOnly, domainIndex } = this.props;
-        const { closing } = this.state;
 
         return (
             <div className={expanded ? 'domain-field-buttons-expanded' : 'domain-field-buttons'}>
-                {(expanded || closing) && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && (
+                {(expanded) && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && (
                     <button
                         className="domain-row-button btn btn-default"
                         disabled={isFieldFullyLocked(field.lockType)}
@@ -449,12 +436,11 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
     };
 
     render() {
-        const { closing, isDragDisabled, showAdv, showingModal, dataTypeChangeToConfirm } = this.state;
+        const { isDragDisabled, showAdv, showingModal, dataTypeChangeToConfirm } = this.state;
         const {
             index,
             field,
             expanded,
-            expandTransition,
             fieldError,
             maxPhiLevel,
             dragging,
@@ -483,7 +469,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             >
                 {provided => (
                     <div
-                        className={this.getRowCssClasses(expanded, closing, dragging, selected, fieldError)}
+                        className={this.getRowCssClasses(expanded, dragging, selected, fieldError)}
                         {...provided.draggableProps}
                         ref={provided.innerRef}
                         tabIndex={index}
@@ -552,12 +538,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                 </div>
                             </div>
                         </div>
-                        <Collapse
-                            in={expanded}
-                            timeout={expandTransition}
-                            onExited={this.onCollapsed}
-                            onExiting={this.onCollapsing}
-                        >
+                        <Collapsible expanded={expanded}>
                             <div>
                                 <DomainRowExpandedOptions
                                     field={field}
@@ -574,7 +555,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     queryName={queryName}
                                 />
                             </div>
-                        </Collapse>
+                        </Collapsible>
                         {dataTypeChangeToConfirm && (
                             <ConfirmDataTypeChangeModal
                                 originalRangeURI={field.original.rangeURI}

@@ -51,13 +51,9 @@ import { getDefaultAPIWrapper } from '../../APIWrapper';
 
 import { ToggleButtons } from '../buttons/ToggleButtons';
 
-import {
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
-    EXPAND_TRANSITION,
-    EXPAND_TRANSITION_FAST,
-    PHILEVEL_NOT_PHI,
-    SEVERITY_LEVEL_ERROR,
-} from './constants';
+import { CheckboxLK } from '../../Checkbox';
+
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR } from './constants';
 import { LookupProvider } from './Lookup/Context';
 import {
     addDomainField,
@@ -107,7 +103,7 @@ import {
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 import { SystemFields } from './SystemFields';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
-import { CheckboxLK } from '../../Checkbox';
+import { Collapsible } from './Collapsible';
 
 interface IDomainFormInput {
     api?: DomainPropertiesAPIWrapper;
@@ -156,7 +152,6 @@ interface IDomainFormState {
     collapsed: boolean;
     confirmDeleteRowIndex: number;
     dragId?: number;
-    expandTransition: number;
     expandedRowIndex: number;
     // used for quicker access to field information (i.e. details display info and if a field is an ontology)
     fieldDetails: FieldDetails;
@@ -196,7 +191,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         this.state = {
             expandedRowIndex: undefined,
-            expandTransition: EXPAND_TRANSITION,
             confirmDeleteRowIndex: undefined,
             dragId: undefined,
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
@@ -308,13 +302,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
-    setExpandedState = (expandedRowIndex: number, expandTransition: number): void => {
-        this.setState({ expandedRowIndex, expandTransition });
+    setExpandedState = (expandedRowIndex: number): void => {
+        this.setState({ expandedRowIndex });
     };
 
     collapseRow = (): void => {
         if (this.isExpanded()) {
-            this.setExpandedState(undefined, EXPAND_TRANSITION);
+            this.setExpandedState(undefined);
         }
     };
 
@@ -323,7 +317,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { expandedRowIndex } = this.state;
 
         if (expandedRowIndex !== index && index < domain.fields.size) {
-            this.setExpandedState(index, EXPAND_TRANSITION);
+            this.setExpandedState(index);
         }
     };
 
@@ -332,7 +326,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { expandedRowIndex } = this.state;
 
         if (expandedRowIndex !== index && index < domain.fields.size) {
-            this.setExpandedState(index, EXPAND_TRANSITION_FAST);
+            this.setExpandedState(index);
         }
     };
 
@@ -1074,7 +1068,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             this.props;
         const {
             expandedRowIndex,
-            expandTransition,
             fieldDetails,
             maxPhiLevel,
             dragId,
@@ -1160,7 +1153,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                             domainIndex={domainIndex}
                                             index={i}
                                             expanded={expandedRowIndex === i}
-                                            expandTransition={expandTransition}
                                             onChange={this.onFieldsChange}
                                             onExpand={this.onFieldExpandToggle}
                                             onDelete={this.onDeleteField}
@@ -1241,16 +1233,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             <>
                 {confirmDeleteRowIndex !== undefined && this.renderFieldRemoveConfirm()}
                 {bulkDeleteConfirmInfo && this.renderBulkFieldDeleteConfirm()}
-                <Panel
-                    className={getDomainPanelClass(collapsed, controlledCollapse, isApp_)}
-                    expanded={this.isPanelExpanded()}
-                    onToggle={function () {}}
-                >
+                <div className={getDomainPanelClass(collapsed, controlledCollapse, isApp_)}>
                     {showHeader && (
                         <CollapsiblePanelHeader
                             id={getDomainPanelHeaderId(domain)}
                             title={getDomainHeaderName(domain.name, headerTitle, headerPrefix)}
-                            collapsed={!(this.isPanelExpanded() && controlledCollapse)}
+                            collapsed={!this.isPanelExpanded()}
                             collapsible={collapsible}
                             controlledCollapse={controlledCollapse}
                             headerDetails={headerDetails}
@@ -1263,145 +1251,145 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             {children}
                         </CollapsiblePanelHeader>
                     )}
-                    <Panel.Body
-                        className={classNames({ 'domain-field-top-noBuffer': !styleToolbar })}
-                        collapsible={collapsible || controlledCollapse}
-                    >
-                        {isLoading && <LoadingSpinner />}
+                    <Collapsible className="panel-collapse" expanded={this.isPanelExpanded()}>
+                        <div className={classNames('panel-body', { 'domain-field-top-noBuffer': !styleToolbar })}>
+                            {isLoading && <LoadingSpinner />}
 
-                        {!isLoading && (
-                            <>
-                                {systemFields && (
-                                    <SystemFields
-                                        fields={systemFields}
-                                        disabledSystemFields={domain.disabledSystemFields}
-                                        onSystemFieldEnable={this.onSystemFieldEnable}
-                                    />
-                                )}
+                            {!isLoading && (
+                                <>
+                                    {systemFields && (
+                                        <SystemFields
+                                            fields={systemFields}
+                                            disabledSystemFields={domain.disabledSystemFields}
+                                            onSystemFieldEnable={this.onSystemFieldEnable}
+                                        />
+                                    )}
 
-                                {(hasFields || !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) && (
-                                    <div className="row domain-field-toolbar">
-                                        <div className="col-xs-4">
-                                            {!domainFormDisplayOptions?.hideAddFieldsButton && (
-                                                <AddEntityButton
-                                                    entity="Field"
-                                                    containerClass="container--toolbar-button"
-                                                    buttonClass="domain-toolbar-add-btn"
-                                                    onClick={this.onAddField}
-                                                />
-                                            )}
-                                            <ActionButton
-                                                containerClass="container--toolbar-button"
-                                                buttonClass="domain-toolbar-delete-btn"
-                                                onClick={this.onBulkDeleteClick}
-                                                disabled={visibleSelection.size === 0}
-                                            >
-                                                <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
-                                            </ActionButton>
-
-                                            {this.shouldShowImportExport() && (
+                                    {(hasFields ||
+                                        !(this.shouldShowInferFromFile() || this.shouldShowImportExport())) && (
+                                        <div className="row domain-field-toolbar">
+                                            <div className="col-xs-4">
+                                                {!domainFormDisplayOptions?.hideAddFieldsButton && (
+                                                    <AddEntityButton
+                                                        entity="Field"
+                                                        containerClass="container--toolbar-button"
+                                                        buttonClass="domain-toolbar-add-btn"
+                                                        onClick={this.onAddField}
+                                                    />
+                                                )}
                                                 <ActionButton
                                                     containerClass="container--toolbar-button"
-                                                    buttonClass="domain-toolbar-export-btn"
-                                                    onClick={this.onExportFields}
-                                                    disabled={disableExport}
+                                                    buttonClass="domain-toolbar-delete-btn"
+                                                    onClick={this.onBulkDeleteClick}
+                                                    disabled={visibleSelection.size === 0}
                                                 >
-                                                    <i className="fa fa-download domain-toolbar-export-btn-icon" />{' '}
-                                                    Export
+                                                    <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
                                                 </ActionButton>
-                                            )}
-                                        </div>
-                                        <div className="col-xs-8">
-                                            <div className="pull-right domain-field-toolbar-right-aligned">
-                                                {!valueIsEmpty(search) && (
-                                                    <span className="domain-search-text">
-                                                        Showing {fields.filter(f => f.visible).size} of {fields.size}{' '}
-                                                        field{fields.size > 1 ? 's' : ''}.
-                                                    </span>
-                                                )}
-                                                <input
-                                                    id={'domain-search-name-' + domainIndex}
-                                                    className="form-control domain-search-input"
-                                                    type="text"
-                                                    placeholder="Search Fields"
-                                                    onChange={this.onSearch}
-                                                />
 
-                                                {!testMode && (
-                                                    <div className="domain-toolbar-toggle-summary">
-                                                        <span>Mode: </span>
-                                                        <ToggleButtons
-                                                            className=""
-                                                            first="Summary"
-                                                            second="Detail"
-                                                            active={summaryViewMode ? 'Summary' : 'Detail'}
-                                                            onClick={this.onToggleSummaryView}
-                                                        />
-                                                    </div>
+                                                {this.shouldShowImportExport() && (
+                                                    <ActionButton
+                                                        containerClass="container--toolbar-button"
+                                                        buttonClass="domain-toolbar-export-btn"
+                                                        onClick={this.onExportFields}
+                                                        disabled={disableExport}
+                                                    >
+                                                        <i className="fa fa-download domain-toolbar-export-btn-icon" />{' '}
+                                                        Export
+                                                    </ActionButton>
                                                 )}
                                             </div>
-                                        </div>
-                                    </div>
-                                )}
+                                            <div className="col-xs-8">
+                                                <div className="pull-right domain-field-toolbar-right-aligned">
+                                                    {!valueIsEmpty(search) && (
+                                                        <span className="domain-search-text">
+                                                            Showing {fields.filter(f => f.visible).size} of{' '}
+                                                            {fields.size} field{fields.size > 1 ? 's' : ''}.
+                                                        </span>
+                                                    )}
+                                                    <input
+                                                        id={'domain-search-name-' + domainIndex}
+                                                        className="form-control domain-search-input"
+                                                        type="text"
+                                                        placeholder="Search Fields"
+                                                        onChange={this.onSearch}
+                                                    />
 
-                                <div className={helpTopic ? 'row domain-form-hdr-margins' : 'row'}>
-                                    <div className={`col-xs-${helpTopic ? 9 : 12}`} />
-                                    {helpTopic && (
-                                        <div className="col-xs-3">
-                                            <HelpLink topic={helpTopic} className="domain-field-float-right">
-                                                Learn more about this tool
-                                            </HelpLink>
+                                                    {!testMode && (
+                                                        <div className="domain-toolbar-toggle-summary">
+                                                            <span>Mode: </span>
+                                                            <ToggleButtons
+                                                                className=""
+                                                                first="Summary"
+                                                                second="Detail"
+                                                                active={summaryViewMode ? 'Summary' : 'Detail'}
+                                                                onClick={this.onToggleSummaryView}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
                                     )}
-                                </div>
 
-                                {!summaryViewMode &&
-                                    appDomainHeaderRenderer &&
-                                    appDomainHeaderRenderer({
-                                        domain,
-                                        domainIndex,
-                                        modelDomains,
-                                        onChange: this.onFieldsChange,
-                                        onAddField: this.applyAddField,
-                                    })}
-
-                                {hasFields && summaryViewMode && (
-                                    <div className="domain-form__summary-mode">
-                                        <DomainPropertiesGrid
-                                            domain={domain}
-                                            search={search}
-                                            selectAll={selectAll}
-                                            actions={{
-                                                toggleSelectAll: this.toggleSelectAll,
-                                                scrollFunction: this.scrollFunction,
-                                                onFieldsChange: this.onFieldsChange,
-                                            }}
-                                            appPropertiesOnly={appPropertiesOnly}
-                                            hasOntologyModule={hasModule(ONTOLOGY_MODULE_NAME)}
-                                        />
+                                    <div className={helpTopic ? 'row domain-form-hdr-margins' : 'row'}>
+                                        <div className={`col-xs-${helpTopic ? 9 : 12}`} />
+                                        {helpTopic && (
+                                            <div className="col-xs-3">
+                                                <HelpLink topic={helpTopic} className="domain-field-float-right">
+                                                    Learn more about this tool
+                                                </HelpLink>
+                                            </div>
+                                        )}
                                     </div>
-                                )}
 
-                                {hasFields && !summaryViewMode && this.renderDetailedFieldView()}
+                                    {!summaryViewMode &&
+                                        appDomainHeaderRenderer &&
+                                        appDomainHeaderRenderer({
+                                            domain,
+                                            domainIndex,
+                                            modelDomains,
+                                            onChange: this.onFieldsChange,
+                                            onAddField: this.applyAddField,
+                                        })}
 
-                                {!hasFields && this.renderEmptyDomain()}
+                                    {hasFields && summaryViewMode && (
+                                        <div className="domain-form__summary-mode">
+                                            <DomainPropertiesGrid
+                                                domain={domain}
+                                                search={search}
+                                                selectAll={selectAll}
+                                                actions={{
+                                                    toggleSelectAll: this.toggleSelectAll,
+                                                    scrollFunction: this.scrollFunction,
+                                                    onFieldsChange: this.onFieldsChange,
+                                                }}
+                                                appPropertiesOnly={appPropertiesOnly}
+                                                hasOntologyModule={hasModule(ONTOLOGY_MODULE_NAME)}
+                                            />
+                                        </div>
+                                    )}
 
-                                {this.renderAddFieldOption()}
-                            </>
-                        )}
+                                    {hasFields && !summaryViewMode && this.renderDetailedFieldView()}
 
-                        {fieldsAdditionalRenderer?.()}
+                                    {!hasFields && this.renderEmptyDomain()}
 
-                        {filePreviewData && !domainFormDisplayOptions?.hideImportData && (
-                            <ImportDataFilePreview
-                                noun={helpNoun}
-                                filePreviewData={filePreviewData}
-                                setFileImportData={setFileImportData}
-                                file={file}
-                            />
-                        )}
-                    </Panel.Body>
-                </Panel>
+                                    {this.renderAddFieldOption()}
+                                </>
+                            )}
+
+                            {fieldsAdditionalRenderer?.()}
+
+                            {filePreviewData && !domainFormDisplayOptions?.hideImportData && (
+                                <ImportDataFilePreview
+                                    noun={helpNoun}
+                                    filePreviewData={filePreviewData}
+                                    setFileImportData={setFileImportData}
+                                    file={file}
+                                />
+                            )}
+                        </div>
+                    </Collapsible>
+                </div>
                 {hasException && domain.domainException.severity === SEVERITY_LEVEL_ERROR && (
                     <div
                         onClick={this.togglePanel}

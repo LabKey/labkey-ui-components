@@ -73,7 +73,7 @@ import {
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 
 import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
-import { computeRangeChange, genCellKey, parseCellKey } from './utils';
+import { computeRangeChange, genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
 
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
@@ -563,7 +563,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { editorModel, onChange } = this.props;
         const cellKey = genCellKey(colIdx, rowIdx);
         const changes: Partial<EditorModelProps> = {
-            cellMessages: editorModel.cellMessages.remove(cellKey),
+            //cellMessages: editorModel.cellMessages.remove(cellKey),
             focusColIdx: colIdx,
             focusRowIdx: rowIdx,
             focusValue: editorModel.getIn(['cellValues', cellKey]),
@@ -746,7 +746,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return metadata && (metadata.readOnly || metadata.isReadOnlyCell?.(cellValueDataKey));
     }
 
-    modifyCell = (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES): void => {
+    modifyCell = (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES, column?: QueryColumn): void => {
         const { editorModel, onChange } = this.props;
         const { cellMessages, cellValues } = editorModel;
         const cellKey = genCellKey(colIdx, rowIdx);
@@ -768,6 +768,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         } else if (mod === MODIFICATION_TYPES.REPLACE) {
             changes.cellValues = cellValues.set(cellKey, List(newValues));
             changesMade = true;
+            const { message } = getValidatedEditableGridValue(newValues[0].display, column);
+            // if (message)
+                changes.cellMessages = cellMessages.set(cellKey, message);
+            // else
+            //     changes.cellMessages = cellMessages.remove(cellKey);
         } else if (mod === MODIFICATION_TYPES.REMOVE) {
             let values: List<ValueDescriptor> = editorModel.getIn(keyPath);
 

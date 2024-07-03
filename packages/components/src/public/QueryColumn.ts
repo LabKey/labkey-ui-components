@@ -160,6 +160,7 @@ export interface IQueryColumn {
     shortCaption: string;
     addToSystemView: boolean;
     removeFromViewCustomization: boolean;
+    scale: number;
     shownInDetailsView: boolean;
     shownInInsertView: boolean;
     shownInLookupView: boolean;
@@ -238,6 +239,7 @@ export class QueryColumn implements IQueryColumn {
     declare shownInInsertView: boolean;
     declare shownInLookupView: boolean;
     declare shownInUpdateView: boolean;
+    declare scale: number;
     declare sortable: boolean;
     declare sqlType: string;
     declare type: string;

@@ -311,7 +311,7 @@ export class EditorModel
                     }
                 } else if (col.jsonType === 'time') {
                     row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
-                } else if (col.jsonType === 'date' && !displayValues) {
+                } else if (col.jsonType !== 'date' || displayValues) {
                     const val = values.size === 1 ? values.first().raw : undefined;
                     row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
                 } else {
@@ -345,9 +345,11 @@ export class EditorModel
     ): {
         missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
         uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
+        cellMessages: CellMessages; // updated cell messages with missing required errors
     } {
         const data = fromJS(queryModel.rows);
         const columns = insertColumns ?? queryModel.queryInfo.getInsertColumns();
+        let cellMessages = this.cellMessages;
         let uniqueFieldCol;
         const keyColumns = columns.filter(column => column.isKeyField);
         let keyValues = Map<number, List<string>>(); // map from row number to list of key values on that row
@@ -355,9 +357,20 @@ export class EditorModel
         let missingRequired = Map<string, List<number>>(); // map from column caption to list of rows missing a value for that column
         for (let rn = 0; rn < data.size; rn++) {
             columns.forEach((col, cn) => {
+                const cellKey = genCellKey(cn, rn);
                 const values = this.getValue(cn, rn);
                 if (col.required && !col.isUniqueIdColumn) {
+                    const message = this.getMessage(cn, rn);
+                    const missingMsg = col.caption + ' is required.';
+                    let updatedMsg = message?.message;
                     if (values.isEmpty() || values.find(value => this.hasRawValue(value)) == undefined) {
+                        if (!message || message?.message?.indexOf(missingMsg) === -1) {
+                            if (!message || !message.message)
+                                updatedMsg = missingMsg;
+                            else
+                                updatedMsg = message.message + '. ' + missingMsg;
+                        }
+
                         if (missingRequired.has(col.caption)) {
                             missingRequired = missingRequired.set(
                                 col.caption,
@@ -367,6 +380,15 @@ export class EditorModel
                             missingRequired = missingRequired.set(col.caption, List<number>([rn + 1]));
                         }
                     }
+                    else {
+                        if (updatedMsg?.indexOf(missingMsg) > -1) {
+                            updatedMsg = updatedMsg.replace(missingMsg, '');
+                        }
+                    }
+                    if (updatedMsg == null || updatedMsg.trim() === '')
+                        cellMessages = cellMessages.remove(cellKey);
+                    else
+                        cellMessages = cellMessages.set(cellKey, {message: updatedMsg});
                 }
 
                 if (col.isKeyField) {
@@ -427,11 +449,12 @@ export class EditorModel
         return {
             uniqueKeyViolations,
             missingRequired,
+            cellMessages
         };
     }
 
-    getValidationErrors(queryModel: QueryModel, uniqueFieldKey?: string, insertColumns?: QueryColumn[]): string[] {
-        const { uniqueKeyViolations, missingRequired } = this.validateData(queryModel, uniqueFieldKey, insertColumns);
+    getValidationErrors(queryModel: QueryModel, uniqueFieldKey?: string, insertColumns?: QueryColumn[]): {errors: string[], cellMessages: CellMessages} {
+        const { uniqueKeyViolations, missingRequired, cellMessages } = this.validateData(queryModel, uniqueFieldKey, insertColumns);
         let errors = [];
         if (!uniqueKeyViolations.isEmpty()) {
             const messages = uniqueKeyViolations.reduce((keyMessages, valueMap, fieldNames) => {
@@ -468,7 +491,10 @@ export class EditorModel
             errors = errors.concat(messages);
         }
 
-        return errors;
+        return {
+            errors,
+            cellMessages
+        };
     }
 
     getValue(colIdx: number, rowIdx: number): List<ValueDescriptor> {

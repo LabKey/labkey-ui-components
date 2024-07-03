@@ -40,7 +40,7 @@ import {
     ValueDescriptor,
 } from './models';
 
-import { decimalDifference, genCellKey, getLookupFilters, parseCellKey } from './utils';
+import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -1011,6 +1011,99 @@ export function generateFillCellKeys(initialSelection: string[], finalSelection:
     return fillCellKeys;
 }
 
+
+function parsePastedLookup(column: QueryColumn, descriptors: ValueDescriptor[], value: string[] | string): ParseLookupPayload {
+    if (column.required && (value == null || value === '')) {
+        return {
+            values: List([
+                {
+                    display: value,
+                    raw: value,
+                },
+            ]),
+            message: {
+                message: column.caption + ' is required.'
+            }
+        };
+    }
+
+    if (value === undefined || value === null || typeof value !== 'string') {
+        return {
+            values: List([
+                {
+                    display: value,
+                    raw: value,
+                },
+            ]),
+        };
+    }
+
+    let message: CellMessage;
+    const unmatched: string[] = [];
+
+    // parse pasted strings to split properly around quoted values.
+    // Remove the quotes for storing the actual values in the grid.
+    const values = parseCsvString(value, ',', true)
+        .map(v => {
+            const vt = v.trim();
+            if (vt.length > 0) {
+                const vl = vt.toLowerCase();
+                const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
+                if (!vd) {
+                    unmatched.push(vt);
+                    return { display: vt, raw: vt };
+                } else {
+                    return vd;
+                }
+            }
+        })
+        .filter(v => v !== undefined);
+
+    if (unmatched.length) {
+        message = {
+            message:
+                'Could not find data for ' +
+                unmatched
+                    .slice(0, 4)
+                    .map(u => '"' + u + '"')
+                    .join(', '),
+        };
+    }
+
+    return {
+        message,
+        values: List(values),
+    };
+}
+
+async function getParsedLookup(column: QueryColumn,
+                               lookupColumnContainerCache : {},
+                               display: any[],
+                               value: string[] | string,
+                               cellKey: string,
+                               forUpdate: boolean,
+                               targetContainerPath: string,
+                               dataKeys: List<any>,
+                               data: Map<any, Map<string, any>>) : Promise<ParseLookupPayload> {
+    const containerPath = forUpdate ? getFolderValueFromDataRow(cellKey, dataKeys, data) : targetContainerPath;
+    const cacheKey = `${column.fieldKey}||${containerPath}`;
+    let descriptors = lookupColumnContainerCache[cacheKey];
+    if (!descriptors) {
+        const response = await findLookupValues(
+            column,
+            undefined,
+            display,
+            undefined,
+            forUpdate,
+            containerPath
+        );
+        descriptors = response.descriptors;
+        lookupColumnContainerCache[cacheKey] = descriptors;
+    }
+
+    return parsePastedLookup(column, descriptors, value);
+}
+
 /**
  * Fills a column of cells based on the initially selected values.
  * If the initialSelection is for a single cell, the fill operation will always be a copy of that value.
@@ -1054,7 +1147,6 @@ export async function fillColumnCells(
         selectionToFill.reverse();
     }
 
-    const displayValues = [];
     selectionToFill.forEach((cellKey, i) => {
         let fillValue = initialSelectionValues[i % initialSelectionValues.length];
 
@@ -1071,7 +1163,6 @@ export async function fillColumnCells(
             if (prefix !== undefined) raw = prefix + raw;
             const display = raw.toString();
             fillValue = List([{ raw, display }]);
-            displayValues.push(display);
         } else if (incrementType === IncrementType.DATE || incrementType === IncrementType.DATETIME) {
             const dateValue = moment(parseDate(startingValue as string));
 
@@ -1085,44 +1176,36 @@ export async function fillColumnCells(
                 incrementType === IncrementType.DATE
                     ? formatDate(dateValue.toDate())
                     : formatDateTime(dateValue.toDate());
-            displayValues.push(raw);
             fillValue = List([{ raw, display: raw }]);
         }
 
         cellValues = cellValues.set(cellKey, fillValue);
     });
 
-    // If the column is a lookup, then we need to query for the rowIds so we can set the correct raw values,
-    // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
-    if (column.isPublicLookup()) {
-        const filteredLookupValues = columnMetadata?.filteredLookupValues?.toArray();
-        const lookupColumnContainerCache = {};
-        for (const cellKey of selectionToFill) {
+    const filteredLookupValues = columnMetadata?.filteredLookupValues?.toArray();
+    const lookupColumnContainerCache = {};
+    for (const cellKey of selectionToFill) {
+        // If the column is a lookup, then we need to query for the rowIds so we can set the correct raw values,
+        // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
+        if (column.isPublicLookup()) {
             const display = cellValues
                 .get(cellKey)
                 .map(v => v.display)
                 .toArray();
 
-            const containerPath = forUpdate ? getFolderValueFromDataRow(cellKey, dataKeys, data) : targetContainerPath;
-            const cacheKey = `${column.fieldKey}||${containerPath}`;
-            let descriptors = lookupColumnContainerCache[cacheKey];
-            if (!descriptors) {
-                const response = await findLookupValues(
-                    column,
-                    undefined,
-                    display,
-                    undefined,
-                    forUpdate,
-                    containerPath
-                );
-                descriptors = response.descriptors;
-                lookupColumnContainerCache[cacheKey] = descriptors;
-            }
-
-            const { message, values } = parsePastedLookup(descriptors, filteredLookupValues ?? display.join(','));
+            const { message, values } = await getParsedLookup(column, lookupColumnContainerCache, display, filteredLookupValues ?? display.join(','), cellKey, forUpdate, targetContainerPath, dataKeys, data);
             cellValues = cellValues.set(cellKey, values);
             cellMessages = cellMessages.set(cellKey, message);
+
         }
+        else {
+            const { message } = getValidatedEditableGridValue(cellValues.get(cellKey)?.get(0)?.display, column);
+            // if (message)
+                cellMessages = cellMessages.set(cellKey, message);
+            // else
+            //     cellMessages = cellMessages.remove(cellKey);
+        }
+
     }
 
     return { cellValues, cellMessages };
@@ -1370,56 +1453,6 @@ interface ParseLookupPayload {
     values: List<ValueDescriptor>;
 }
 
-function parsePastedLookup(descriptors: ValueDescriptor[], value: string[] | string): ParseLookupPayload {
-    if (value === undefined || value === null || typeof value !== 'string') {
-        return {
-            values: List([
-                {
-                    display: value,
-                    raw: value,
-                },
-            ]),
-        };
-    }
-
-    let message: CellMessage;
-    const unmatched: string[] = [];
-
-    // parse pasted strings to split properly around quoted values.
-    // Remove the quotes for storing the actual values in the grid.
-    const values = parseCsvString(value, ',', true)
-        .map(v => {
-            const vt = v.trim();
-            if (vt.length > 0) {
-                const vl = vt.toLowerCase();
-                const vd = descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
-                if (!vd) {
-                    unmatched.push(vt);
-                    return { display: vt, raw: vt };
-                } else {
-                    return vd;
-                }
-            }
-        })
-        .filter(v => v !== undefined);
-
-    if (unmatched.length) {
-        message = {
-            message:
-                'Could not find data for ' +
-                unmatched
-                    .slice(0, 4)
-                    .map(u => '"' + u + '"')
-                    .join(', '),
-        };
-    }
-
-    return {
-        message,
-        values: List(values),
-    };
-}
-
 function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: string[]): boolean {
     if (pkCols.length === 1 && row) {
         // Coerce pkValue to string because it may actually be a number or other type, and readonlyRows is string[]
@@ -1495,7 +1528,7 @@ async function insertPastedData(
         const pkValue = getPkValue(row, queryInfo);
 
         for (let cn = 0; cn < row.size; cn++) {
-            const value = row.get(cn);
+            const val = row.get(cn);
             const colIdx = colMin + cn;
             const cellKey = genCellKey(colIdx, rowIdx);
             const col = columns[colIdx];
@@ -1510,41 +1543,22 @@ async function insertPastedData(
                 if (col?.isPublicLookup()) {
                     // If the column is a lookup and forUpdate is true, then we need to query for the rowIds so we can set the correct raw values,
                     // otherwise insert will fail. This is most common for cross-folder sample selection (Issue 50363)
-                    const containerPath = forUpdate
-                        ? getFolderValueFromDataRow(cellKey, dataKeys, data)
-                        : targetContainerPath;
-
-                    const cacheKey = `${col.fieldKey}||${containerPath}`;
-                    let descriptors = lookupColumnContainerCache[cacheKey];
-                    if (!descriptors) {
-                        // eslint-disable-next-line no-await-in-loop
-                        const response = await findLookupValues(
-                            col,
-                            undefined,
-                            byColumnValues.get(cn)?.toArray(),
-                            undefined,
-                            forUpdate,
-                            containerPath
-                        );
-                        descriptors = response.descriptors;
-                        lookupColumnContainerCache[cacheKey] = descriptors;
-                    }
-
-                    const { message, values } = parsePastedLookup(descriptors, value);
+                    const display = byColumnValues.get(cn)?.toArray();
+                    const { message, values } = await getParsedLookup(col, lookupColumnContainerCache, display, val, cellKey, forUpdate, targetContainerPath, dataKeys, data);
                     cv = values;
 
-                    if (message) {
-                        msg = message;
-                    }
+                    msg = message;
                 } else {
+                    const { message, value } = getValidatedEditableGridValue(val, col);
                     cv = List([{ display: value, raw: value }]);
+                    msg = message;
                 }
 
-                if (msg) {
+                // if (msg) {
                     cellMessages = cellMessages.set(cellKey, msg);
-                } else {
-                    cellMessages = cellMessages.remove(cellKey);
-                }
+                // } else {
+                //     cellMessages = cellMessages.remove(cellKey);
+                // }
                 cellValues = cellValues.set(cellKey, cv);
             }
 

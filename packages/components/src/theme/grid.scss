@@ -368,13 +368,14 @@ $table-cell-padding: 4px 2px;
 
     .cell-warning {
       position: relative;
+      background-color: $panel-danger-heading-bg;
 
       &:after {
         content: '';
         display: block;
         height: 8px;
         width: 8px;
-        background: #ffcc00;
+        background: $brand-danger;
         position: absolute;
         top: 0;
         right: -5px;

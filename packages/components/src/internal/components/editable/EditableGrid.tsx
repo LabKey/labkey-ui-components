@@ -563,7 +563,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { editorModel, onChange } = this.props;
         const cellKey = genCellKey(colIdx, rowIdx);
         const changes: Partial<EditorModelProps> = {
-            //cellMessages: editorModel.cellMessages.remove(cellKey),
             focusColIdx: colIdx,
             focusRowIdx: rowIdx,
             focusValue: editorModel.getIn(['cellValues', cellKey]),
@@ -746,7 +745,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return metadata && (metadata.readOnly || metadata.isReadOnlyCell?.(cellValueDataKey));
     }
 
-    modifyCell = (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES, column?: QueryColumn): void => {
+    modifyCell = (
+        colIdx: number,
+        rowIdx: number,
+        newValues: ValueDescriptor[],
+        mod: MODIFICATION_TYPES,
+        column?: QueryColumn
+    ): void => {
         const { editorModel, onChange } = this.props;
         const { cellMessages, cellValues } = editorModel;
         const cellKey = genCellKey(colIdx, rowIdx);
@@ -770,7 +775,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             changesMade = true;
             const { message } = getValidatedEditableGridValue(newValues[0].display, column);
             // if (message)
-                changes.cellMessages = cellMessages.set(cellKey, message);
+            changes.cellMessages = cellMessages.set(cellKey, message);
             // else
             //     changes.cellMessages = cellMessages.remove(cellKey);
         } else if (mod === MODIFICATION_TYPES.REMOVE) {

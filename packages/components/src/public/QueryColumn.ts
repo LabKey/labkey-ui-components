@@ -107,25 +107,25 @@ const defaultQueryColumn = {
 };
 
 export interface IQueryColumn {
+    addToSystemView: boolean;
     align: string;
     // autoIncrement: boolean;
     // calculated: boolean;
     caption: string;
+    conceptSubtree: string;
     conceptURI: string;
-    // defaultScale: string;
-    displayField?: string;
-    displayFieldSqlType?: string;
-    displayFieldJsonType?: string;
     defaultValue: any;
+    derivationDataScope: string;
     description: string;
     dimension: boolean;
     displayAsLookup: boolean;
+    // defaultScale: string;
+    displayField?: string;
+    displayFieldJsonType?: string;
+    displayFieldSqlType?: string;
     // excludeFromShifting: boolean;
     // ext: any;
     facetingBehaviorType: string;
-    fieldKey: string;
-    fieldKeyArray: string[];
-    fieldKeyPath: string;
     filterable: boolean;
     format: string;
     // friendlyType: string;
@@ -158,8 +158,8 @@ export interface IQueryColumn {
     required: boolean;
     selectable: boolean;
     shortCaption: string;
-    addToSystemView: boolean;
-    removeFromViewCustomization: boolean;
+    fieldKeyArray: string[];
+    removeFromViews: boolean; // strips this column from all ViewInfo definitions
     scale: number;
     shownInDetailsView: boolean;
     shownInInsertView: boolean;
@@ -173,12 +173,12 @@ export interface IQueryColumn {
     // versionField: boolean;
 
     sorts: '+' | '-';
-    removeFromViews: boolean; // strips this column from all ViewInfo definitions
+    removeFromViewCustomization: boolean;
     units: string;
-    derivationDataScope: string;
+    fieldKey: string;
 
     sourceOntology: string;
-    conceptSubtree: string;
+    fieldKeyPath: string;
 }
 
 export class QueryColumn implements IQueryColumn {

@@ -343,9 +343,9 @@ export class EditorModel
         uniqueFieldKey?: string,
         insertColumns?: QueryColumn[]
     ): {
+        cellMessages: CellMessages; // updated cell messages with missing required errors
         missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
         uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
-        cellMessages: CellMessages; // updated cell messages with missing required errors
     } {
         const data = fromJS(queryModel.rows);
         const columns = insertColumns ?? queryModel.queryInfo.getInsertColumns();
@@ -365,10 +365,8 @@ export class EditorModel
                     let updatedMsg = message?.message;
                     if (values.isEmpty() || values.find(value => this.hasRawValue(value)) == undefined) {
                         if (!message || message?.message?.indexOf(missingMsg) === -1) {
-                            if (!message || !message.message)
-                                updatedMsg = missingMsg;
-                            else
-                                updatedMsg = message.message + '. ' + missingMsg;
+                            if (!message || !message.message) updatedMsg = missingMsg;
+                            else updatedMsg = message.message + '. ' + missingMsg;
                         }
 
                         if (missingRequired.has(col.caption)) {
@@ -379,16 +377,13 @@ export class EditorModel
                         } else {
                             missingRequired = missingRequired.set(col.caption, List<number>([rn + 1]));
                         }
-                    }
-                    else {
+                    } else {
                         if (updatedMsg?.indexOf(missingMsg) > -1) {
                             updatedMsg = updatedMsg.replace(missingMsg, '');
                         }
                     }
-                    if (updatedMsg == null || updatedMsg.trim() === '')
-                        cellMessages = cellMessages.remove(cellKey);
-                    else
-                        cellMessages = cellMessages.set(cellKey, {message: updatedMsg});
+                    if (updatedMsg == null || updatedMsg.trim() === '') cellMessages = cellMessages.remove(cellKey);
+                    else cellMessages = cellMessages.set(cellKey, { message: updatedMsg });
                 }
 
                 if (col.isKeyField) {
@@ -449,12 +444,20 @@ export class EditorModel
         return {
             uniqueKeyViolations,
             missingRequired,
-            cellMessages
+            cellMessages,
         };
     }
 
-    getValidationErrors(queryModel: QueryModel, uniqueFieldKey?: string, insertColumns?: QueryColumn[]): {errors: string[], cellMessages: CellMessages} {
-        const { uniqueKeyViolations, missingRequired, cellMessages } = this.validateData(queryModel, uniqueFieldKey, insertColumns);
+    getValidationErrors(
+        queryModel: QueryModel,
+        uniqueFieldKey?: string,
+        insertColumns?: QueryColumn[]
+    ): { cellMessages: CellMessages; errors: string[] } {
+        const { uniqueKeyViolations, missingRequired, cellMessages } = this.validateData(
+            queryModel,
+            uniqueFieldKey,
+            insertColumns
+        );
         let errors = [];
         if (!uniqueKeyViolations.isEmpty()) {
             const messages = uniqueKeyViolations.reduce((keyMessages, valueMap, fieldNames) => {
@@ -493,7 +496,7 @@ export class EditorModel
 
         return {
             errors,
-            cellMessages
+            cellMessages,
         };
     }
 

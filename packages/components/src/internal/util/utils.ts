@@ -430,18 +430,15 @@ export function getDisambiguatedSelectInputOptions(
     return options;
 }
 
-const TRUE_STRINGS = ["true", "t", "yes", "y", "on", "1"];
-const FALSE_STRINGS = ["false", "f", "no", "n", "off", "0"];
+const TRUE_STRINGS = ['true', 't', 'yes', 'y', 'on', '1'];
+const FALSE_STRINGS = ['false', 'f', 'no', 'n', 'off', '0'];
 
-export function isBoolean(value: string, allowNull : boolean = true): boolean {
-    if (!value)
-        return allowNull;
+export function isBoolean(value: string, allowNull: boolean = true): boolean {
+    if (!value) return allowNull;
 
-    if (TRUE_STRINGS.indexOf(value.toLowerCase()) > -1)
-        return true;
+    if (TRUE_STRINGS.indexOf(value.toLowerCase()) > -1) return true;
 
-    if (FALSE_STRINGS.indexOf(value.toLowerCase()) > -1)
-        return true;
+    if (FALSE_STRINGS.indexOf(value.toLowerCase()) > -1) return true;
 
     return false;
 }

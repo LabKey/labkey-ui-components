@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 3.X
+*Released*: X July 2024
+- Editable Grid Improvements: Validation of fields
+  - TODO
+
 ### version 3.57.0
 *Released*: 3 July 2024
 - Add styling for button.clickable-text

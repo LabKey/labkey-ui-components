@@ -10,7 +10,7 @@ import {
     getJsonDateFormatString,
     getJsonDateTimeFormatString,
     parseDate,
-    parseSimpleTime
+    parseSimpleTime,
 } from '../../util/Date';
 
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -21,9 +21,10 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
+import { isBoolean, isFloat, isInteger } from '../../util/utils';
+
 import { EditorModel, EditorModelProps, EditableGridModels, CellMessage } from './models';
 import { CellActions, CellCoordinates, MODIFICATION_TYPES } from './constants';
-import { isBoolean, isFloat, isInteger } from '../../util/utils';
 
 export const applyEditableGridChangesToModels = (
     dataModels: QueryModel[],
@@ -63,7 +64,10 @@ export const applyEditableGridChangesToModels = (
     };
 };
 
-export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn): { message: CellMessage; value: any } => {
+export const getValidatedEditableGridValue = (
+    origValue: any,
+    col: QueryColumn
+): { message: CellMessage; value: any } => {
     const isDateTimeType = col?.jsonType === 'date';
     const isDateType = isDateTimeType && col?.isDateOnlyColumn;
     let message;
@@ -76,42 +80,33 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
         const dateStrVal = isDateType ? getJsonDateFormatString(dateVal) : getJsonDateTimeFormatString(dateVal);
         if (origValue && !dateStrVal) message = isDateType ? 'Invalid date' : 'Invalid date time';
         value = dateStrVal ?? origValue;
-    }
-    else if (value != null && value !== '' && !col.isPublicLookup()) {
+    } else if (value != null && value !== '' && !col.isPublicLookup()) {
         if (col?.validValues) {
-            if (col.validValues.indexOf(origValue.toString().trim()) === -1)
-                message = 'Invalid text choice';
-        }
-        else if (col?.jsonType === 'time') {
+            if (col.validValues.indexOf(origValue.toString().trim()) === -1) message = 'Invalid text choice';
+        } else if (col?.jsonType === 'time') {
             const time = parseSimpleTime(value);
             if (time instanceof Date && !isNaN(time.getTime())) {
                 value = getFormattedStringFromDate(time, col, false);
-            }
-            else
-                message = 'Invalid time';
-        }
-        else if (col?.jsonType === 'boolean' && !isBoolean(value)) {
+            } else message = 'Invalid time';
+        } else if (col?.jsonType === 'boolean' && !isBoolean(value)) {
             message = 'Invalid boolean';
-        }
-        else if (col?.jsonType === 'int' && !isInteger(value)) {
+        } else if (col?.jsonType === 'int' && !isInteger(value)) {
             message = 'Invalid integer';
-        }
-        else if (col?.jsonType === 'float' && !isFloat(value)) {
+        } else if (col?.jsonType === 'float' && !isFloat(value)) {
             message = 'Invalid decimal';
-        }
-        else if (col?.jsonType === 'string' && col?.scale) {
+        } else if (col?.jsonType === 'string' && col?.scale) {
             if (value.toString().trim().length > col.scale)
                 message = value.toString().trim().length + '/' + col.scale + ' characters';
         }
     }
 
     if (col?.required && (value == null || value === '') && col?.jsonType !== 'boolean') {
-        message = (message ? message + '.' : '') + col.caption + ' is required.'
+        message = (message ? message + '.' : '') + col.caption + ' is required.';
     }
 
     return {
         value,
-        message: !!message ? {message} : undefined
+        message: message ? { message } : undefined,
     };
 };
 

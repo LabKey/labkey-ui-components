@@ -16,7 +16,6 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Filter, Query } from '@labkey/api';
 
 import { cancelEvent, isFillDown, isCtrlOrMetaKey, isSelectAll } from '../../events';
@@ -27,8 +26,9 @@ import { Key } from '../../../public/useEnterEscape';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { resolveInputRenderer } from '../forms/input/InputRenderFactory';
-
 import { SelectInputChange } from '../forms/input/SelectInput';
+import { OverlayTrigger } from '../../OverlayTrigger';
+import { Popover } from '../../Popover';
 
 import { CellMessage, ValueDescriptor } from './models';
 
@@ -127,7 +127,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
 
     componentDidUpdate(prevProps: Readonly<CellProps>): void {
         if (!this.props.focused && this.props.selected) {
-            this.displayEl.current.focus();
+            this.displayEl?.current?.focus();
 
             if (prevProps.focused) {
                 this.preFocusDOMRect.current = null;
@@ -139,7 +139,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
     }
 
     focusCell = (colIdx: number, rowIdx: number, clearValue?: boolean): void => {
-        this.preFocusDOMRect.current = this.displayEl.current.getBoundingClientRect();
+        this.preFocusDOMRect.current = this.displayEl?.current?.getBoundingClientRect();
         this.props.cellActions.focusCell(colIdx, rowIdx, clearValue);
     };
 
@@ -475,11 +475,10 @@ export class Cell extends React.PureComponent<CellProps, State> {
                 cell = (
                     <OverlayTrigger
                         overlay={
-                            <Popover bsClass="popover" id="grid-cell-popover">
+                            <Popover id="grid-cell-popover" placement="top">
                                 {message.message}
                             </Popover>
                         }
-                        placement="top"
                     >
                         {cell}
                     </OverlayTrigger>

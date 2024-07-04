@@ -774,10 +774,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             changes.cellValues = cellValues.set(cellKey, List(newValues));
             changesMade = true;
             const { message } = getValidatedEditableGridValue(newValues[0].display, column);
-            // if (message)
             changes.cellMessages = cellMessages.set(cellKey, message);
-            // else
-            //     changes.cellMessages = cellMessages.remove(cellKey);
         } else if (mod === MODIFICATION_TYPES.REMOVE) {
             let values: List<ValueDescriptor> = editorModel.getIn(keyPath);
 

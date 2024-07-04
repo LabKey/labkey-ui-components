@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version ?.??.?
+*Released*: ? July 2024
+- Remove usages of react-bootstrap
+- Remove FieldEditForm
+
 ### version 3.57.1
 *Released*: 8 July 2024
 - Issue 50640: Update `MenuSectionModel` URL construction to link to `runs` page for assay names

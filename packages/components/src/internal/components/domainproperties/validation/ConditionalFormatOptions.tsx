@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React, { PureComponent, ReactNode } from 'react';
-import { Checkbox } from 'react-bootstrap';
 import { CompactPicker } from 'react-color';
+
+import { Checkbox } from '../Checkbox';
 
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {

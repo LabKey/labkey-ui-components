@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Checkbox } from 'react-bootstrap';
+
+import { Checkbox } from '../Checkbox';
 
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {

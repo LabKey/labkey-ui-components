@@ -1,8 +1,5 @@
 import React, { ReactNode } from 'react';
-
 import { List } from 'immutable';
-
-import { Checkbox } from 'react-bootstrap';
 
 import { headerCell } from '../../renderers';
 
@@ -11,6 +8,8 @@ import { GRID_SELECTION_INDEX } from '../../constants';
 import { GridColumn } from '../base/models/GridColumn';
 
 import { Grid } from '../base/Grid';
+
+import { Checkbox } from './Checkbox';
 
 import { compareStringsAlphabetically } from './propertiesUtil';
 

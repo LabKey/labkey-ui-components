@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
-import { Checkbox } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
+
+import { Checkbox } from '../Checkbox';
 
 import { Modal } from '../../../Modal';
 import { getSubmitButtonClass } from '../../../app/utils';

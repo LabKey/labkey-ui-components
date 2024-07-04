@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { Checkbox } from 'react-bootstrap';
+
+import { Checkbox } from '../Checkbox';
 
 import { Radio } from '../Radio';
 

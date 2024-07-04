@@ -1,5 +1,4 @@
 import React from 'react';
-import { Checkbox } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
@@ -14,6 +13,7 @@ import {
     DOMAIN_VALIDATOR_LOOKUP,
     LOOKUP_VALIDATOR_VALUES,
 } from './constants';
+import { Checkbox } from './Checkbox';
 import { DomainField, IFieldChange, ITypeDependentProps, PropertyValidator } from './models';
 import { FolderSelect, SchemaSelect, TargetTableSelect } from './Lookup/Fields';
 

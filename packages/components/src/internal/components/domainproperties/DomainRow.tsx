@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { ReactNode, RefObject } from 'react';
-import { Checkbox } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
@@ -26,6 +25,8 @@ import { DeleteIcon } from '../base/DeleteIcon';
 import { DragDropHandle } from '../base/DragDropHandle';
 
 import { FieldExpansionToggle } from '../base/FieldExpansionToggle';
+
+import { Checkbox } from './Checkbox';
 
 import {
     DATETIME_CONVERT_URIS,
@@ -411,7 +412,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
         return (
             <div className={expanded ? 'domain-field-buttons-expanded' : 'domain-field-buttons'}>
-                {(expanded) && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && (
+                {expanded && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && (
                     <button
                         className="domain-row-button btn btn-default"
                         disabled={isFieldFullyLocked(field.lockType)}

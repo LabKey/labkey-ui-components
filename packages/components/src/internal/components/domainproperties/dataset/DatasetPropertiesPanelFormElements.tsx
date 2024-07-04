@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 import React, { ReactNode } from 'react';
-import { Checkbox, Radio } from 'react-bootstrap';
+import { Checkbox } from 'react-bootstrap';
+
+import { Radio } from '../Radio';
 
 import { SelectInput } from '../../forms/input/SelectInput';
 

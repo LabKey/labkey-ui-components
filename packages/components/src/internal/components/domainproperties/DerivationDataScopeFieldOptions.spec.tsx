@@ -1,9 +1,9 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { Radio } from 'react-bootstrap';
-
 import { Alert } from '../base/Alert';
+
+import { Radio } from './Radio';
 
 import { DERIVATION_DATA_SCOPES, DOMAIN_FIELD_NOT_LOCKED } from './constants';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';

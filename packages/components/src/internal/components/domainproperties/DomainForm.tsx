@@ -16,7 +16,6 @@
 import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Panel } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';

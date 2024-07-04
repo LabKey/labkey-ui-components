@@ -1,6 +1,5 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useState } from 'react';
 import classNames from 'classnames';
-import { FormGroup, Radio } from 'react-bootstrap';
 
 import { Modal } from '../../../Modal';
 
@@ -13,6 +12,8 @@ import { HelpLink } from '../../../util/helpLinks';
 import { SelectInput } from '../../forms/input/SelectInput';
 
 import { LabelHelpTip } from '../../base/LabelHelpTip';
+
+import { Radio } from '../Radio';
 
 import { AdvancedSettingsForm, EachItemSettings, EntireListSettings, ListModel } from './models';
 
@@ -72,7 +73,7 @@ interface DiscussionLinksProps {
 // TODO: use RadioGroupInput instead
 const DISCUSSION_RADIO_NAME = 'discussionSetting';
 const DiscussionInputs: FC<DiscussionLinksProps> = memo(({ onRadioChange, discussionSetting }) => (
-    <FormGroup>
+    <div className="form-group">
         <Radio name={DISCUSSION_RADIO_NAME} value={0} checked={discussionSetting === 0} onChange={onRadioChange}>
             Disable discussions
         </Radio>
@@ -84,7 +85,7 @@ const DiscussionInputs: FC<DiscussionLinksProps> = memo(({ onRadioChange, discus
         <Radio name={DISCUSSION_RADIO_NAME} value={2} checked={discussionSetting === 2} onChange={onRadioChange}>
             Allow multiple discussions per item
         </Radio>
-    </FormGroup>
+    </div>
 ));
 
 interface TitleIndexFieldProps {
@@ -120,7 +121,7 @@ interface MetadataIndexFieldProps {
 // count from low to high.
 // TODO: use RadioGroupInput instead
 const MetadataIndexField: FC<MetadataIndexFieldProps> = memo(({ indexSetting, name, onRadioChange }) => (
-    <FormGroup>
+    <div className="form-group">
         <Radio name={name} value={2} checked={indexSetting === 2} onChange={onRadioChange}>
             Include both metadata and data
             <LabelHelpTip title="Warning">{DATA_INDEXING_TIP}</LabelHelpTip>
@@ -132,7 +133,7 @@ const MetadataIndexField: FC<MetadataIndexFieldProps> = memo(({ indexSetting, na
         <Radio name={name} value={0} checked={indexSetting === 0} onChange={onRadioChange}>
             Include metadata only (name and description of list and fields)
         </Radio>
-    </FormGroup>
+    </div>
 ));
 
 interface IndexFieldProps {
@@ -150,7 +151,7 @@ export const IndexField: FC<IndexFieldProps> = memo(props => {
     // TODO: Use RadioGroupInput instead
     return (
         <div>
-            <FormGroup>
+            <div className="form-group">
                 <Radio name={name} value={0} checked={bodySetting === 0} onChange={onRadioChange}>
                     Index all non-PHI text fields
                 </Radio>
@@ -161,7 +162,7 @@ export const IndexField: FC<IndexFieldProps> = memo(props => {
                     Index using custom template
                     <LabelHelpTip>{CUSTOM_TEMPLATE_TIP}</LabelHelpTip>
                 </Radio>
-            </FormGroup>
+            </div>
 
             {bodySetting === 2 && (
                 <input

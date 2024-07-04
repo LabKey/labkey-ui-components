@@ -1,7 +1,8 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Radio } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
+
+import { Radio } from './Radio';
 
 import { createFormInputId } from './utils';
 import { isFieldFullyLocked } from './propertiesUtil';

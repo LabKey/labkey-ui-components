@@ -33,6 +33,7 @@ import { SampleFieldOptions } from './SampleFieldOptions';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
 import { TextChoiceOptions } from './TextChoiceOptions';
 import { FileAttachmentOptions } from './FileAttachmentOptions';
+import { CalculatedFieldOptions } from './CalculatedFieldOptions';
 
 interface Props {
     appPropertiesOnly?: boolean;
@@ -255,7 +256,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             <div className="domain-row-container">
                 <div className="domain-row-container-expand-spacer" />
                 <div className="domain-row-container-expanded">
-                    {domainFormDisplayOptions?.derivationDataScopeConfig?.show && (
+                    {domainFormDisplayOptions?.derivationDataScopeConfig?.show && !field.isCalculatedField() && (
                         <div className="col-xs-12">
                             <DerivationDataScopeFieldOptions
                                 index={index}
@@ -268,6 +269,16 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                                 isExistingField={!field.isNew()}
                                 isRequiredField={field.required}
                                 fieldDataType={field.dataType}
+                            />
+                        </div>
+                    )}
+                    {field.isCalculatedField() && (
+                        <div className="col-xs-12">
+                            <CalculatedFieldOptions
+                                domainIndex={domainIndex}
+                                field={field}
+                                index={index}
+                                onChange={onChange}
                             />
                         </div>
                     )}

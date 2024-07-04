@@ -97,7 +97,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                        {!field.isUniqueIdField() && !domainFormDisplayOptions?.hideImportAliases && (
+                        {!field.isUniqueIdField() && !field.isCalculatedField() && !domainFormDisplayOptions?.hideImportAliases && (
                             <>
                                 <div className="domain-field-label">
                                     <DomainFieldLabel
@@ -128,7 +128,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                        {!appPropertiesOnly && hasModule(ONTOLOGY_MODULE_NAME) && (
+                        {!appPropertiesOnly && hasModule(ONTOLOGY_MODULE_NAME) && !field.isUniqueIdField() && !field.isCalculatedField() && (
                             <OntologyConceptAnnotation
                                 id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
                                 field={field}

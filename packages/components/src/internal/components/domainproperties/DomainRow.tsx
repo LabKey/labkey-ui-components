@@ -276,7 +276,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
         this.onFieldChange(
             evt,
-            PropDescType.isLookup(value) || PropDescType.isTextChoice(value) || PropDescType.isUser(value)
+            PropDescType.isLookup(value) || PropDescType.isTextChoice(value) || PropDescType.isUser(value) || PropDescType.isCalculation(value)
         );
     };
 
@@ -351,6 +351,15 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         );
     };
 
+    disableTypeInput = (field: DomainField): boolean => {
+        return (
+            (!field.isNew() && (field.isPrimaryKey || field.isCalculatedField())) ||
+            isFieldPartiallyLocked(field.lockType) ||
+            isFieldFullyLocked(field.lockType) ||
+            isPrimaryKeyFieldLocked(field.lockType)
+        );
+    };
+
     renderBaseFields = (): ReactNode => {
         const { index, field, availableTypes, appPropertiesOnly, domainIndex, domainFormDisplayOptions } = this.props;
 
@@ -370,12 +379,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                     <FormControl
                         componentClass="select"
                         name={createFormInputName(DOMAIN_FIELD_TYPE)}
-                        disabled={
-                            (!field.isNew() && field.isPrimaryKey) ||
-                            isFieldPartiallyLocked(field.lockType) ||
-                            isFieldFullyLocked(field.lockType) ||
-                            isPrimaryKeyFieldLocked(field.lockType)
-                        }
+                        disabled={this.disableTypeInput(field)}
                         id={createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index)}
                         onChange={this.onDataTypeChange}
                         value={field.dataType.name}
@@ -401,7 +405,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                 </div>
                 <div className="col-xs-2">
                     <div className="domain-field-checkbox-container">
-                        {!domainFormDisplayOptions.hideRequired && (
+                        {!domainFormDisplayOptions.hideRequired && !field.isCalculatedField() && (
                             <Checkbox
                                 className="domain-field-checkbox"
                                 name={createFormInputName(DOMAIN_FIELD_REQUIRED)}

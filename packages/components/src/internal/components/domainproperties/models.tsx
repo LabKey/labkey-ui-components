@@ -33,6 +33,7 @@ import { SCHEMAS } from '../../schemas';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
+    CALCULATED_CONCEPT_URI,
     DERIVATION_DATA_SCOPES,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_FULLY_LOCKED,
@@ -62,6 +63,7 @@ import {
     USER_RANGE_URI,
 } from './constants';
 import {
+    CALCULATED_TYPE,
     CONCEPT_URIS_NOT_USED_IN_TYPES,
     DATE_TYPE,
     DATETIME_TYPE,
@@ -248,6 +250,11 @@ export class DomainDesign
 
             if (rawModel.fields) {
                 fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames, uniqueConstraintFieldNames);
+            }
+
+            if (rawModel.calculatedFields) {
+                const calcFields = DomainField.fromJS(rawModel.calculatedFields, mandatoryFieldNames, uniqueConstraintFieldNames);
+                fields = fields.push(...calcFields.toArray());
             }
 
             if (rawModel.defaultValueOptions) {
@@ -883,6 +890,7 @@ export class DomainField
         isPrimaryKey: false,
         lockType: DOMAIN_FIELD_NOT_LOCKED,
         wrappedColumnName: undefined,
+        valueExpression: undefined,
         disablePhiLevel: false,
         lockExistingField: false,
         sourceOntology: undefined,
@@ -943,6 +951,7 @@ export class DomainField
     declare isPrimaryKey: boolean;
     declare lockType: string;
     declare wrappedColumnName?: string;
+    declare valueExpression?: string;
     declare disablePhiLevel?: boolean;
     declare lockExistingField?: boolean;
     declare sourceOntology?: string;
@@ -1159,7 +1168,7 @@ export class DomainField
             return FieldErrors.INVALID_LOOKUP;
         }
 
-        if (!(this.dataType && (this.dataType.rangeURI || this.rangeURI))) {
+        if (!(this.dataType && (this.dataType.rangeURI || this.rangeURI)) && !this.isCalculatedField()) {
             return FieldErrors.MISSING_DATA_TYPE;
         }
 
@@ -1202,6 +1211,10 @@ export class DomainField
 
     isTextChoiceField(): boolean {
         return this.conceptURI === TEXT_CHOICE_CONCEPT_URI;
+    }
+
+    isCalculatedField(): boolean {
+        return this.conceptURI === CALCULATED_CONCEPT_URI;
     }
 
     isPHI(): boolean {
@@ -1439,7 +1452,7 @@ export function resolveAvailableTypes(
 ): List<PropDescType> {
     // field has not been saved -- display all property types allowed by app
     // Issue 40795: need to check wrappedColumnName for alias field in query metadata editor and resolve the datatype fields
-    if (field.isNew() && field.wrappedColumnName == undefined) {
+    if (field.isNew() && field.wrappedColumnName === undefined) {
         return availableTypes
             .filter(type =>
                 isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes)
@@ -1551,8 +1564,8 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
 
     if (!isFieldNew(rawField) || rawField.rangeURI !== undefined) {
         if (rawField.conceptURI === SAMPLE_TYPE_CONCEPT_URI) return SAMPLE_TYPE;
-
         if (rawField.conceptURI === SMILES_CONCEPT_URI) return SMILES_TYPE;
+        if (rawField.conceptURI === CALCULATED_CONCEPT_URI) return CALCULATED_TYPE;
 
         if (rawField.dataType) {
             return rawField.dataType;

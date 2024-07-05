@@ -80,7 +80,7 @@ export const getValidatedEditableGridValue = (
         const dateStrVal = isDateType ? getJsonDateFormatString(dateVal) : getJsonDateTimeFormatString(dateVal);
         if (origValue && !dateStrVal) message = isDateType ? 'Invalid date' : 'Invalid date time';
         value = dateStrVal ?? origValue;
-    } else if (value != null && value !== '' && !col.isPublicLookup()) {
+    } else if (value != null && value !== '' && !col?.isPublicLookup()) {
         if (col?.validValues) {
             if (col.validValues.indexOf(origValue.toString().trim()) === -1) message = 'Invalid text choice';
         } else if (col?.jsonType === 'time') {
@@ -100,7 +100,7 @@ export const getValidatedEditableGridValue = (
         }
     }
 
-    if (col?.required && (value == null || value === '') && col?.jsonType !== 'boolean') {
+    if (col?.required && (value == null || value === '' || value.toString().trim() === '') && col?.jsonType !== 'boolean') {
         message = (message ? message + '.' : '') + col.caption + ' is required.';
     }
 

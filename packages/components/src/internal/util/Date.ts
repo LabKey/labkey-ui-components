@@ -241,7 +241,7 @@ export function parseSimpleTime(rawValue: string): Date {
     let hourMinite = 'HH:mm',
         ampm = '';
     const second = parts > 2 ? ':ss' : '';
-    if (rawValue.toLowerCase().indexOf('am') > -1 || rawValue.toLowerCase().indexOf('pm') > -1) {
+    if (rawValue.toString().toLowerCase().indexOf('am') > -1 || rawValue.toString().toLowerCase().indexOf('pm') > -1) {
         ampm = ' a';
         hourMinite = 'hh:mm';
     }

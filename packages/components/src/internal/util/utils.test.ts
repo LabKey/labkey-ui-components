@@ -41,6 +41,7 @@ import {
     uncapitalizeFirstChar,
     withTransformedKeys,
     getValueFromRow,
+    isBoolean,
 } from './utils';
 
 const emptyList = List<string>();
@@ -983,6 +984,36 @@ describe('parseScientificInt', () => {
     });
 });
 
+describe('isBoolean', () => {
+    test('check boolean', () => {
+        // empty input
+        expect(isBoolean(null)).toBe(true);
+        expect(isBoolean(undefined)).toBe(true);
+        expect(isBoolean('')).toBe(true);
+        expect(isBoolean(' ')).toBe(true);
+
+        ['true', 't', 'yes', 'y', 'on', '1'].forEach(val => {
+            expect(isBoolean(val)).toBe(true);
+        });
+
+        ['true', 't', 'yes', 'y', 'on', '1'].forEach(val => {
+            expect(isBoolean(val.toUpperCase())).toBe(true);
+        });
+
+        ['false', 'f', 'no', 'n', 'off', '0'].forEach(val => {
+            expect(isBoolean(val)).toBe(true);
+        });
+
+        ['false', 'f', 'no', 'n', 'off', '0'].forEach(val => {
+            expect(isBoolean(val.toUpperCase())).toBe(true);
+        });
+
+        ['tr', 'correct', 'wrong', '-1', '0.0', 'fail', 'bogus'].forEach(val => {
+            expect(isBoolean(val)).toBe(false);
+        })
+    });
+});
+
 describe('isInteger', () => {
     test('check numeric input', () => {
         // empty input
@@ -992,8 +1023,6 @@ describe('isInteger', () => {
         expect(isInteger(' ')).toBe(false);
 
         // not number
-        expect(isInteger(NaN)).toBe(false);
-        expect(isInteger('abc')).toBe(false);
         expect(isInteger(NaN)).toBe(false);
         expect(isInteger('abc')).toBe(false);
 

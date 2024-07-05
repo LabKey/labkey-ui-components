@@ -126,6 +126,9 @@ export interface IQueryColumn {
     // excludeFromShifting: boolean;
     // ext: any;
     facetingBehaviorType: string;
+    fieldKey: string;
+    fieldKeyArray: string[];
+    fieldKeyPath: string;
     filterable: boolean;
     format: string;
     // friendlyType: string;
@@ -136,16 +139,12 @@ export interface IQueryColumn {
     // isHidden: boolean; // DUPLICATE
     isKeyField: boolean;
     // isMvEnabled: boolean;
-    // isNullable: boolean;
-    // isReadOnly: boolean;
-    // isSelectable: boolean; // DUPLICATE
-    // isUserEditable: boolean; // DUPLICATE
-    // isVersionField: boolean;
+// isNullable: boolean;
+// isReadOnly: boolean;
+// isSelectable: boolean; // DUPLICATE
+// isUserEditable: boolean; // DUPLICATE
+// isVersionField: boolean;
     jsonType: string;
-    // keyField: boolean;
-    lookup: Record<string, any>;
-    measure: boolean;
-    multiValue: boolean;
     // mvEnabled: boolean;
     name: string;
     nameExpression: string;
@@ -158,7 +157,8 @@ export interface IQueryColumn {
     required: boolean;
     selectable: boolean;
     shortCaption: string;
-    fieldKeyArray: string[];
+    // keyField: boolean;
+    lookup: Record<string, any>;
     removeFromViews: boolean; // strips this column from all ViewInfo definitions
     scale: number;
     shownInDetailsView: boolean;
@@ -175,10 +175,10 @@ export interface IQueryColumn {
     sorts: '+' | '-';
     removeFromViewCustomization: boolean;
     units: string;
-    fieldKey: string;
+    multiValue: boolean;
 
     sourceOntology: string;
-    fieldKeyPath: string;
+    measure: boolean;
 }
 
 export class QueryColumn implements IQueryColumn {

@@ -1016,10 +1016,12 @@ export function parsePastedLookup(
     descriptors: ValueDescriptor[],
     value: string[] | string
 ): ParseLookupPayload {
-    const originalValues = List([{
+    const originalValues = List([
+        {
             display: value,
             raw: value,
-        }]);
+        },
+    ]);
 
     if (column.required && (value == null || value === '')) {
         return {
@@ -1031,7 +1033,7 @@ export function parsePastedLookup(
     }
 
     if (value === undefined || value === null || value.toString().trim() === '' || typeof value !== 'string') {
-        return {values: originalValues};
+        return { values: originalValues };
     }
 
     let message: CellMessage;

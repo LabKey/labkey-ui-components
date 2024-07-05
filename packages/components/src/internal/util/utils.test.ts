@@ -1009,7 +1009,7 @@ describe('isBoolean', () => {
 
         ['tr', 'correct', 'wrong', '-1', '0.0', 'fail', 'bogus', ' '].forEach(val => {
             expect(isBoolean(val)).toBe(false);
-        })
+        });
     });
 });
 

@@ -249,16 +249,16 @@ describe('EditorModel', () => {
             expect(errors.cellMessages.toJS()).toStrictEqual({
                 '1-0': 'description 1 message',
                 '0-0': {
-                    message: 'Name is required.'
+                    message: 'Name is required.',
                 },
                 '5-1': {
-                    message: 'Required Data is required.'
+                    message: 'Required Data is required.',
                 },
                 '0-2': {
-                    message: 'Name is required.'
+                    message: 'Name is required.',
                 },
-            })
-            expect(errors.errors).toEqual(["Name is missing from rows 1, 3. Required Data is missing from row 2."]);
+            });
+            expect(errors.errors).toEqual(['Name is missing from rows 1, 3. Required Data is missing from row 2.']);
         });
 
         test('generated unique id not counted for missing required check', () => {
@@ -421,7 +421,10 @@ describe('EditorModel', () => {
             expect(uniqueKeyViolations.get('Name').has('s-4')).toBe(true);
             expect(uniqueKeyViolations.get('Name').get('s-4')).toEqual(List<number>([4, 5]));
             const errors = editorModel.getValidationErrors(dataModel, 'Name');
-            expect(errors.errors).toEqual(["Duplicate value (s-2) for Name on rows 1, 2.", "Duplicate value (s-4) for Name on rows 4, 5."]);
+            expect(errors.errors).toEqual([
+                'Duplicate value (s-2) for Name on rows 1, 2.',
+                'Duplicate value (s-4) for Name on rows 4, 5.',
+            ]);
 
             const ciUniqueKeyViolations = editorModel.validateData(dataModel, 'Description').uniqueKeyViolations;
             // Check whitespace trimmed when detecting duplicates
@@ -431,7 +434,10 @@ describe('EditorModel', () => {
             expect(ciUniqueKeyViolations.get('Description').has('caseinsensitive')).toBe(true);
             expect(ciUniqueKeyViolations.get('Description').get('caseinsensitive')).toEqual(List<number>([4, 5]));
             const ciErrors = editorModel.getValidationErrors(dataModel, 'Description');
-            expect(ciErrors.errors).toEqual(["Duplicate value (spacedupe) for Description on rows 2, 3.", "Duplicate value (caseinsensitive) for Description on rows 4, 5."]);
+            expect(ciErrors.errors).toEqual([
+                'Duplicate value (spacedupe) for Description on rows 2, 3.',
+                'Duplicate value (caseinsensitive) for Description on rows 4, 5.',
+            ]);
         });
 
         test('missing required and unique key violations', () => {
@@ -531,13 +537,15 @@ describe('EditorModel', () => {
             expect(uniqueKeyViolations.get('Name').get('s-4')).toEqual(List<number>([4, 5]));
             const errors = editorModel.getValidationErrors(dataModel, 'Name');
             expect(errors.errors).toEqual([
-                "Duplicate value (s-2) for Name on rows 1, 2.", "Duplicate value (s-4) for Name on rows 4, 5.", "Required Data is missing from rows 2, 5. Name is missing from row 3."
+                'Duplicate value (s-2) for Name on rows 1, 2.',
+                'Duplicate value (s-4) for Name on rows 4, 5.',
+                'Required Data is missing from rows 2, 5. Name is missing from row 3.',
             ]);
             expect(errors.cellMessages.toJS()).toStrictEqual({
                 '1-0': 'description 1 message',
-                '5-1': {message: 'Required Data is required.'},
-                '0-2': {message: 'Name is required.'},
-                '5-4': {message: 'Required Data is required.'},
+                '5-1': { message: 'Required Data is required.' },
+                '0-2': { message: 'Name is required.' },
+                '5-4': { message: 'Required Data is required.' },
             });
         });
 

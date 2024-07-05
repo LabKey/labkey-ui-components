@@ -696,28 +696,31 @@ describe('getValidatedEditableGridValue', () => {
     test('invalid date value', () => {
         expect(getValidatedEditableGridValue('BOGUS', dateCol)).toStrictEqual({
             message: {
-                message: 'Invalid date'
+                message: 'Invalid date',
             },
             value: 'BOGUS',
         });
-        expect(getValidatedEditableGridValue(true, dateCol)).toStrictEqual({ message: {
-                message: 'Invalid date'
-            }, value: true });
+        expect(getValidatedEditableGridValue(true, dateCol)).toStrictEqual({
+            message: {
+                message: 'Invalid date',
+            },
+            value: true,
+        });
         expect(getValidatedEditableGridValue(13, dateCol).message).toBe(undefined);
         expect(getValidatedEditableGridValue('2020-12-INVALID 14:34', dateCol)).toStrictEqual({
             message: {
-                message: 'Invalid date'
+                message: 'Invalid date',
             },
             value: '2020-12-INVALID 14:34',
         });
         expect(getValidatedEditableGridValue('2020-13-23 14:34', dateCol)).toStrictEqual({
             message: {
-                message: 'Invalid date'
+                message: 'Invalid date',
             },
             value: '2020-13-23 14:34',
         });
         expect(getValidatedEditableGridValue(new Date('2020-13-23 14:34'), dateCol).message).toStrictEqual({
-            message: 'Invalid date'
+            message: 'Invalid date',
         });
     });
 
@@ -743,45 +746,48 @@ describe('getValidatedEditableGridValue', () => {
     test('invalid dateTimeCol value', () => {
         expect(getValidatedEditableGridValue('BOGUS', dateTimeCol)).toStrictEqual({
             message: {
-                message: 'Invalid date time'
+                message: 'Invalid date time',
             },
             value: 'BOGUS',
         });
         expect(getValidatedEditableGridValue(true, dateTimeCol)).toStrictEqual({
             message: {
-                message: 'Invalid date time'
+                message: 'Invalid date time',
             },
             value: true,
         });
         expect(getValidatedEditableGridValue(13, dateTimeCol).message).toBe(undefined);
         expect(getValidatedEditableGridValue('2020-12-INVALID 14:34', dateTimeCol)).toStrictEqual({
             message: {
-                message: 'Invalid date time'
+                message: 'Invalid date time',
             },
             value: '2020-12-INVALID 14:34',
         });
         expect(getValidatedEditableGridValue('2020-13-23 14:34', dateTimeCol)).toStrictEqual({
             message: {
-                message: 'Invalid date time'
+                message: 'Invalid date time',
             },
             value: '2020-13-23 14:34',
         });
         expect(getValidatedEditableGridValue(new Date('2020-13-23 14:34'), dateTimeCol).message).toStrictEqual({
-            message: 'Invalid date time'
+            message: 'Invalid date time',
         });
     });
 
     test('time column', () => {
         const timeCol = new QueryColumn({ jsonType: 'time' });
 
-        let validValues : any[] = [null, undefined, ''];
+        let validValues: any[] = [null, undefined, ''];
         let results = [null, undefined, ''];
         validValues.forEach((value, ind) => {
-            expect(getValidatedEditableGridValue(value, timeCol)).toStrictEqual({ message: undefined, value: results[ind] });
+            expect(getValidatedEditableGridValue(value, timeCol)).toStrictEqual({
+                message: undefined,
+                value: results[ind],
+            });
         });
 
         validValues = [1.11, '100', '1:00 AM', '1:00 PM', '13:24'];
-        results = [' 01:11', ' 10:00', ' 01:00', ' 13:00',' 13:24'];
+        results = [' 01:11', ' 10:00', ' 01:00', ' 13:00', ' 13:24'];
         validValues.forEach((value, ind) => {
             const result = getValidatedEditableGridValue(value, timeCol);
             expect(result.message).toBeUndefined();
@@ -790,62 +796,86 @@ describe('getValidatedEditableGridValue', () => {
 
         const invalidValues = [' ', 'Bogus', true, NaN];
         invalidValues.forEach(value => {
-            expect(getValidatedEditableGridValue(value, timeCol)).toStrictEqual({ message: {
-                    message: 'Invalid time'
-                }, value });
+            expect(getValidatedEditableGridValue(value, timeCol)).toStrictEqual({
+                message: {
+                    message: 'Invalid time',
+                },
+                value,
+            });
         });
-
     });
 
     test('int column', () => {
         const intCol = new QueryColumn({ jsonType: 'int' });
 
-        const validValues = [null, undefined, '', 0, -1, 100, 1.1E3, '100', '0.0'];
+        const validValues = [null, undefined, '', 0, -1, 100, 1.1e3, '100', '0.0'];
         validValues.forEach(value => {
             expect(getValidatedEditableGridValue(value, intCol)).toStrictEqual({ message: undefined, value });
         });
 
         const invalidValues = [1.11, ' ', 'Bogus', true, NaN];
         invalidValues.forEach(value => {
-            expect(getValidatedEditableGridValue(value, intCol)).toStrictEqual({ message: {
-                    message: 'Invalid integer'
-                }, value });
+            expect(getValidatedEditableGridValue(value, intCol)).toStrictEqual({
+                message: {
+                    message: 'Invalid integer',
+                },
+                value,
+            });
         });
-
     });
 
     test('float column', () => {
         const floatCol = new QueryColumn({ jsonType: 'float' });
 
-        const validValues = [null, undefined, '', 0, -1, 100, 1.1E3, '100', '0.0', 1.11, '1.11', 123.456e2];
+        const validValues = [null, undefined, '', 0, -1, 100, 1.1e3, '100', '0.0', 1.11, '1.11', 123.456e2];
         validValues.forEach(value => {
             expect(getValidatedEditableGridValue(value, floatCol)).toStrictEqual({ message: undefined, value });
         });
 
         const invalidValues = [' ', 'Bogus', true, NaN];
         invalidValues.forEach(value => {
-            expect(getValidatedEditableGridValue(value, floatCol)).toStrictEqual({ message: {
-                    message: 'Invalid decimal'
-                }, value });
+            expect(getValidatedEditableGridValue(value, floatCol)).toStrictEqual({
+                message: {
+                    message: 'Invalid decimal',
+                },
+                value,
+            });
         });
-
     });
 
     test('boolean column', () => {
         const boolCol = new QueryColumn({ jsonType: 'boolean' });
 
-        const validValues = [null, undefined, '', 'true', 't', 'yes', 'y', 'on', '1', 'false', 'f', 'no', 'n', 'off', '0'];
+        const validValues = [
+            null,
+            undefined,
+            '',
+            'true',
+            't',
+            'yes',
+            'y',
+            'on',
+            '1',
+            'false',
+            'f',
+            'no',
+            'n',
+            'off',
+            '0',
+        ];
         validValues.forEach(value => {
             expect(getValidatedEditableGridValue(value, boolCol)).toStrictEqual({ message: undefined, value });
         });
 
         const invalidValues = ['tr', 'correct', 'wrong', '-1', '0.0', 'fail', 'bogus'];
         invalidValues.forEach(value => {
-            expect(getValidatedEditableGridValue(value, boolCol)).toStrictEqual({ message: {
-                    message: 'Invalid boolean'
-                }, value });
+            expect(getValidatedEditableGridValue(value, boolCol)).toStrictEqual({
+                message: {
+                    message: 'Invalid boolean',
+                },
+                value,
+            });
         });
-
     });
 
     test('text column', () => {
@@ -859,9 +889,8 @@ describe('getValidatedEditableGridValue', () => {
         const invalidValues = ['ab cd efghi', 'ab cd efghi jkl'];
         invalidValues.forEach(value => {
             const result = getValidatedEditableGridValue(value, textCol);
-            expect(result.message.message).toBe(value.length + '/10 characters')
+            expect(result.message.message).toBe(value.length + '/10 characters');
         });
-
     });
 
     test('textchoice column', () => {
@@ -874,11 +903,13 @@ describe('getValidatedEditableGridValue', () => {
 
         const invalidValues = [' ', 'A', 'b', 'aB', 'ab'];
         invalidValues.forEach(value => {
-            expect(getValidatedEditableGridValue(value, textChoiceCol)).toStrictEqual({ message: {
-                    message: 'Invalid text choice'
-                }, value });
+            expect(getValidatedEditableGridValue(value, textChoiceCol)).toStrictEqual({
+                message: {
+                    message: 'Invalid text choice',
+                },
+                value,
+            });
         });
-
     });
 
     test('required column', () => {
@@ -891,15 +922,22 @@ describe('getValidatedEditableGridValue', () => {
 
         const invalidValues = [null, undefined, '', ' '];
         invalidValues.forEach(value => {
-            expect(getValidatedEditableGridValue(value, requiredCol)).toStrictEqual({ message: {
-                    message: 'ReqCol is required.'
-                }, value });
+            expect(getValidatedEditableGridValue(value, requiredCol)).toStrictEqual({
+                message: {
+                    message: 'ReqCol is required.',
+                },
+                value,
+            });
         });
-
     });
 
     test('lookup column', () => {
-        const stringLookupCol = new QueryColumn({ jsonType: 'string', caption: 'LookCol', scale: 10, lookup: { isPublic: true } });
+        const stringLookupCol = new QueryColumn({
+            jsonType: 'string',
+            caption: 'LookCol',
+            scale: 10,
+            lookup: { isPublic: true },
+        });
 
         let validValues = [null, undefined, '', 'a', 'B', 1, 123, 'too long a value', 12345678901];
         validValues.forEach(value => {
@@ -911,20 +949,29 @@ describe('getValidatedEditableGridValue', () => {
             expect(getValidatedEditableGridValue(value, intLookupCol)).toStrictEqual({ message: undefined, value });
         });
 
-        const requiredLookupCol = new QueryColumn({ jsonType: 'string', required: true, caption: 'LookColReq', lookup: { isPublic: true } });
+        const requiredLookupCol = new QueryColumn({
+            jsonType: 'string',
+            required: true,
+            caption: 'LookColReq',
+            lookup: { isPublic: true },
+        });
         validValues = ['a', 'B', 1, 123];
         const invalidValues = [null, undefined, ''];
         validValues.forEach(value => {
-            expect(getValidatedEditableGridValue(value, requiredLookupCol)).toStrictEqual({ message: undefined, value });
+            expect(getValidatedEditableGridValue(value, requiredLookupCol)).toStrictEqual({
+                message: undefined,
+                value,
+            });
         });
         invalidValues.forEach(value => {
-            expect(getValidatedEditableGridValue(value, requiredLookupCol)).toStrictEqual({ message: {
-                    message: 'LookColReq is required.'
-                }, value });
+            expect(getValidatedEditableGridValue(value, requiredLookupCol)).toStrictEqual({
+                message: {
+                    message: 'LookColReq is required.',
+                },
+                value,
+            });
         });
-
     });
-
 });
 
 describe('other utils', () => {

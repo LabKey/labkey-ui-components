@@ -898,6 +898,33 @@ describe('getValidatedEditableGridValue', () => {
 
     });
 
+    test('lookup column', () => {
+        const stringLookupCol = new QueryColumn({ jsonType: 'string', caption: 'LookCol', scale: 10, lookup: { isPublic: true } });
+
+        let validValues = [null, undefined, '', 'a', 'B', 1, 123, 'too long a value', 12345678901];
+        validValues.forEach(value => {
+            expect(getValidatedEditableGridValue(value, stringLookupCol)).toStrictEqual({ message: undefined, value });
+        });
+
+        const intLookupCol = new QueryColumn({ jsonType: 'int', caption: 'LookCol', lookup: { isPublic: true } });
+        validValues.forEach(value => {
+            expect(getValidatedEditableGridValue(value, intLookupCol)).toStrictEqual({ message: undefined, value });
+        });
+
+        const requiredLookupCol = new QueryColumn({ jsonType: 'string', required: true, caption: 'LookColReq', lookup: { isPublic: true } });
+        validValues = ['a', 'B', 1, 123];
+        const invalidValues = [null, undefined, ''];
+        validValues.forEach(value => {
+            expect(getValidatedEditableGridValue(value, requiredLookupCol)).toStrictEqual({ message: undefined, value });
+        });
+        invalidValues.forEach(value => {
+            expect(getValidatedEditableGridValue(value, requiredLookupCol)).toStrictEqual({ message: {
+                    message: 'LookColReq is required.'
+                }, value });
+        });
+
+    });
+
 });
 
 describe('other utils', () => {

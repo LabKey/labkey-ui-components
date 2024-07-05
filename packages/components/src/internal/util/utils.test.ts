@@ -990,7 +990,6 @@ describe('isBoolean', () => {
         expect(isBoolean(null)).toBe(true);
         expect(isBoolean(undefined)).toBe(true);
         expect(isBoolean('')).toBe(true);
-        expect(isBoolean(' ')).toBe(true);
 
         ['true', 't', 'yes', 'y', 'on', '1'].forEach(val => {
             expect(isBoolean(val)).toBe(true);
@@ -1008,7 +1007,7 @@ describe('isBoolean', () => {
             expect(isBoolean(val.toUpperCase())).toBe(true);
         });
 
-        ['tr', 'correct', 'wrong', '-1', '0.0', 'fail', 'bogus'].forEach(val => {
+        ['tr', 'correct', 'wrong', '-1', '0.0', 'fail', 'bogus', ' '].forEach(val => {
             expect(isBoolean(val)).toBe(false);
         })
     });

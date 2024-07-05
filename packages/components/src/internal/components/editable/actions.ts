@@ -1011,7 +1011,7 @@ export function generateFillCellKeys(initialSelection: string[], finalSelection:
     return fillCellKeys;
 }
 
-function parsePastedLookup(
+export function parsePastedLookup(
     column: QueryColumn,
     descriptors: ValueDescriptor[],
     value: string[] | string
@@ -1030,7 +1030,7 @@ function parsePastedLookup(
         };
     }
 
-    if (value === undefined || value === null || typeof value !== 'string') {
+    if (value === undefined || value === null || value.toString().trim() === '' || typeof value !== 'string') {
         return {values: originalValues};
     }
 

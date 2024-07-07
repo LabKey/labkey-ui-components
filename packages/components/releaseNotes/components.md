@@ -4,7 +4,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 3.X
 *Released*: X July 2024
 - Editable Grid Improvements: Validation of fields
-  - TODO
+  - Update invalid cell style
+  - Add util to validate cell values based on column type and properties
+  - Wire up cell validation on cell modify/blur/paste/fill
+  - Handle missing required cell value check on Submit
 
 ### version 3.57.0
 *Released*: 3 July 2024

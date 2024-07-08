@@ -1076,6 +1076,11 @@ export class DomainField
             }
         }
 
+        // If calculated field, set the rangeURI to the calculated field type
+        if (field.dataType === CALCULATED_TYPE) {
+            field.rangeURI = raw.rangeURI;
+        }
+
         return field;
     }
 

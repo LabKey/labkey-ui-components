@@ -1,5 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { FormControl } from 'react-bootstrap';
+import classNames from 'classnames';
 
 import { HelpLink, LABKEY_SQL_TOPIC } from '../../util/helpLinks';
 
@@ -63,7 +64,9 @@ export class CalculatedFieldOptions extends PureComponent<Props> {
         const { index, field, domainIndex } = this.props;
 
         return (
-            <div>
+            <div className={classNames({
+                    'margin-bottom': !!field?.rangeURI,
+            })}>
                 <div className="row">
                     <div className="col-xs-12">
                         <SectionHeading title="Expression" cls="bottom-spacing" helpTipBody={HELP_TIP_BODY} />

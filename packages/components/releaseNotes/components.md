@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - add calculatedFields to the DomainDesign
   - add CalculatedFieldOptions to DomainRow and Calculation to PropDescType
   - hide some AdvancedSettings for calculated fields
+  - use rangeURI for calculated fields to determine type specific expanded row options to show
 
 ### version 3.57.0
 *Released*: 3 July 2024

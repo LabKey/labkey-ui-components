@@ -66,7 +66,12 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             queryName,
         } = this.props;
 
-        switch (field.dataType.name) {
+        let dataTypeName = field.dataType.name;
+        if (dataTypeName === 'calculation' && field?.rangeURI) {
+            dataTypeName = field?.rangeURI.substring(field?.rangeURI.lastIndexOf('#') + 1);
+        }
+
+        switch (dataTypeName) {
             case 'string':
                 if (domainFormDisplayOptions && !domainFormDisplayOptions.hideTextOptions) {
                     // Issue39877: Max text length options should not be visible for text key field of list
@@ -135,7 +140,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                         excludeFromShifting={field.excludeFromShifting}
                         onChange={onChange}
                         lockType={field.lockType}
-                        type={field.dataType.name}
+                        type={dataTypeName}
                     />
                 );
             case 'int':
@@ -154,6 +159,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                     />
                 );
             case 'double':
+            case 'decimal':
                 return (
                     <NumericFieldOptions
                         index={index}
@@ -237,7 +243,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                     <FileAttachmentOptions
                         index={index}
                         domainIndex={domainIndex}
-                        label={field.dataType.name === 'fileLink' ? 'File' : 'Attachment'}
+                        label={dataTypeName === 'fileLink' ? 'File' : 'Attachment'}
                         displayOption={field.format}
                         onChange={onChange}
                         lockType={field.lockType}

@@ -6,6 +6,8 @@ import { LineageResult } from '../components/lineage/models';
 
 import { registerDefaultURLMappers } from '../test/testHelpers';
 
+import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
+
 import { LookupMapper, URLResolver } from './URLResolver';
 import { AppURL } from './AppURL';
 
@@ -21,10 +23,7 @@ beforeAll(() => {
 
 describe('resolveSearchUsingIndex', () => {
     test('resolve Sample Set url', () => {
-        const resolver = new URLResolver();
-
-        const testJson = fromJS(entitiesJSON);
-        const resolved = resolver.resolveSearchUsingIndex(testJson);
+        const resolved = new URLResolver().resolveSearchUsingIndex(entitiesJSON);
         expect(resolved).toHaveProperty(['hits']);
         expect(resolved).toHaveProperty(['hits', 0]);
         expect(resolved).toHaveProperty(['hits', 0, 'url'], '#/samples/Molecule');
@@ -38,7 +37,9 @@ describe('LookupMapper', () => {
         const resolved = mapper.resolve(
             '#/list/a',
             fromJS({ value: 1 }),
-            fromJS({ lookup: { schemaName: 'list', queryName: 'testing' } })
+            new QueryColumn({ lookup: new QueryLookup({ schemaName: 'list', queryName: 'testing' }) }),
+            undefined,
+            undefined
         );
         expect(resolved).toStrictEqual(AppURL.create('test', 'list', 'testing', 1));
     });
@@ -48,7 +49,15 @@ describe('LookupMapper', () => {
         const resolved = mapper.resolve(
             '#/list/a',
             fromJS({ value: 1 }),
-            fromJS({ lookup: { schemaName: 'list', queryName: 'testing', containerPath: LABKEY.container.path } })
+            new QueryColumn({
+                lookup: new QueryLookup({
+                    schemaName: 'list',
+                    queryName: 'testing',
+                    containerPath: LABKEY.container.path,
+                }),
+            }),
+            undefined,
+            undefined
         );
         expect(resolved).toStrictEqual(AppURL.create('test', 'list', 'testing', 1));
     });
@@ -58,7 +67,11 @@ describe('LookupMapper', () => {
         const resolved = mapper.resolve(
             '#/list/a',
             fromJS({ value: 1 }),
-            fromJS({ lookup: { schemaName: 'list', queryName: 'testing', containerPath: '/other/path' } })
+            new QueryColumn({
+                lookup: new QueryLookup({ schemaName: 'list', queryName: 'testing', containerPath: '/other/path' }),
+            }),
+            undefined,
+            undefined
         );
         expect(resolved).toBeUndefined();
     });

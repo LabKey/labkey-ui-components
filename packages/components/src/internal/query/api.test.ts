@@ -14,7 +14,9 @@ import {
     getContainerFilter,
     getContainerFilterForFolder,
     getContainerFilterForLookups,
+    includesLookupColumns,
     ISelectRowsResult,
+    isSelectRowMetadataRequired,
     quoteValueColumnWithDelimiters,
     Renderers,
     splitRowsByContainer,
@@ -198,5 +200,39 @@ describe('api', () => {
             a: [{ container: 'a' }],
             b: [{ container: 'b' }, { container: 'b' }],
         });
+    });
+
+    test('includesLookupColumns', () => {
+        expect(includesLookupColumns(undefined)).toBe(false);
+        expect(includesLookupColumns(null)).toBe(false);
+        expect(includesLookupColumns('')).toBe(false);
+        expect(includesLookupColumns('/')).toBe(true);
+        expect(includesLookupColumns('a')).toBe(false);
+        expect(includesLookupColumns('a, b')).toBe(false);
+        expect(includesLookupColumns('a/')).toBe(true);
+        expect(includesLookupColumns('a/b')).toBe(true);
+        expect(includesLookupColumns(['a'])).toBe(false);
+        expect(includesLookupColumns(['a', 'b'])).toBe(false);
+        expect(includesLookupColumns(['a/b'])).toBe(true);
+    });
+
+    test('isSelectRowMetadataRequired', () => {
+        // Should default to true -- same as selectRows itself does
+        expect(isSelectRowMetadataRequired()).toBe(true);
+        expect(isSelectRowMetadataRequired(null)).toBe(true);
+
+        // Should respect explicitly set includeMetadata parameter
+        expect(isSelectRowMetadataRequired(true, 'RowId')).toBe(true);
+        expect(isSelectRowMetadataRequired(false, 'RowId')).toBe(false);
+
+        expect(isSelectRowMetadataRequired(undefined, '')).toBe(true);
+        expect(isSelectRowMetadataRequired(undefined, 'RowId')).toBe(false);
+        expect(isSelectRowMetadataRequired(undefined, 'RowId, Name')).toBe(false);
+        expect(isSelectRowMetadataRequired(undefined, 'RowId, Name, Some/Lookup')).toBe(true);
+
+        expect(isSelectRowMetadataRequired(undefined, [])).toBe(true);
+        expect(isSelectRowMetadataRequired(undefined, ['RowId'])).toBe(false);
+        expect(isSelectRowMetadataRequired(undefined, ['RowId', 'Name'])).toBe(false);
+        expect(isSelectRowMetadataRequired(undefined, ['RowId', 'Name', 'Some/Lookup'])).toBe(true);
     });
 });

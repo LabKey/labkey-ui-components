@@ -429,6 +429,27 @@ export class Renderers {
     }
 }
 
+// Returns true if the columns parameter contains lookup columns. This columns parameter
+// is intended to reflect the columns parameter accepted by Query.selectRows() which is either
+// a string ('RowId, Name, Some/Lookup') or a string[] (['RowId', 'Name', 'Some/Lookup']).
+export function includesLookupColumns(columns: string | string[]): boolean {
+    if (!columns) return false;
+
+    let columnsString: string;
+    if (typeof columns === 'string') {
+        columnsString = columns;
+    } else {
+        columnsString = columns.join(',');
+    }
+
+    return columnsString?.indexOf('/') > -1;
+}
+
+// Determines whether "includeMetadata" is required for a selectRows request.
+export function isSelectRowMetadataRequired(includeMetadata?: boolean, columns?: string | string[]): boolean {
+    return includeMetadata ?? (columns?.length > 0 ? includesLookupColumns(columns) : true);
+}
+
 export interface ISelectRowsResult {
     caller?: any;
     key: string;
@@ -455,12 +476,14 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
         }
 
         let hasDetails = false;
-        let details;
+        let details: QueryInfo;
         let hasResults = false;
         let result;
 
         function doResolve() {
             if (hasDetails && hasResults) {
+                result = handleSelectRowsResponse(result, details);
+
                 if (key !== result.key) {
                     key = result.key; // default to model key
                 }
@@ -493,7 +516,7 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                     saveInSession,
                     containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
                     success: json => {
-                        result = handleSelectRowsResponse(json);
+                        result = json;
                         hasResults = true;
                         let resultSchemaQuery: SchemaQuery;
 
@@ -531,17 +554,19 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                 })
             );
         } else {
+            const columns = userConfig.columns ? userConfig.columns : '*';
             Query.selectRows(
                 Object.assign({}, userConfig, {
                     requiredVersion: 17.1,
                     filterArray: userConfig.filterArray,
                     method: 'POST',
                     // put on this another parameter!
-                    columns: userConfig.columns ? userConfig.columns : '*',
+                    columns,
                     containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
+                    includeMetadata: isSelectRowMetadataRequired(userConfig.includeMetadata, columns),
                     includeTotalCount: userConfig.includeTotalCount ?? false, // default to false to improve performance
                     success: json => {
-                        result = handleSelectRowsResponse(json);
+                        result = json;
                         hasResults = true;
                         doResolve();
                     },
@@ -571,18 +596,18 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
     });
 }
 
-export function handleSelectRowsResponse(json): any {
-    const resolved = new URLResolver().resolveSelectRows(json);
+export function handleSelectRowsResponse(response: Query.Response, queryInfo: QueryInfo): any {
+    const resolved = new URLResolver().resolveSelectRows(response, queryInfo);
 
     let count = 0,
         hasRows = false,
-        models = {}, // TODO: Switch to Map
+        models = {},
         orderedModels = {},
         qsKey = 'queries',
-        rowCount = json.rowCount || 0;
+        rowCount = response.rowCount || 0;
 
-    const metadataKey = resolved.metaData.id,
-        modelKey = resolveKeyFromJson(resolved);
+    const metadataKey = resolved.metaData?.id ?? queryInfo.pkCols[0];
+    const modelKey = resolveKeyFromJson(resolved);
 
     // ensure id -- unfortunately, with normalizr 3.x there doesn't seem to be a way to generate the id
     // without attaching directly to the object

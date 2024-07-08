@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedSet } from 'immutable';
-import { ActionURL, Experiment, Filter, getServerContext } from '@labkey/api';
+import { ActionURL, Experiment, Filter, getServerContext, Query } from '@labkey/api';
 
 import { LineageLinkMetadata } from '../components/lineage/types';
 
 import { FREEZER_MANAGER_APP_PROPERTIES, SAMPLES_KEY } from '../app/constants';
 
 import { getCurrentAppProperties, getProjectPath } from '../app/utils';
+
+import { QueryInfo } from '../../public/QueryInfo';
+
+import { QueryColumn } from '../../public/QueryColumn';
+
+import { SearchResult } from '../components/search/actions';
 
 import { AppURL, createProductUrl, createProductUrlFromParts } from './AppURL';
 import { AppRouteResolver } from './models';
@@ -30,8 +36,17 @@ let resolvers = OrderedSet<AppRouteResolver>();
 
 let urlMappers: List<URLMapper> = List<URLMapper>();
 
+export type URLMapperResolverValue = AppURL | string | boolean;
+export type URLMapperResolver = (
+    url: string,
+    row: Map<string, any>,
+    column: QueryColumn,
+    schemaName: string,
+    queryName: string
+) => URLMapperResolverValue;
+
 export interface URLMapper {
-    resolve(url, row, column, schema, query): AppURL | string | boolean;
+    resolve: URLMapperResolver;
 }
 
 export namespace URLService {
@@ -69,38 +84,40 @@ export namespace URLService {
     }
 }
 
+export type LookupResolver = (
+    row?: Map<string, any>,
+    column?: QueryColumn,
+    schemaName?: string,
+    queryName?: string
+) => URLMapperResolverValue;
+
 export class ActionMapper implements URLMapper {
     controller: string;
     action: string;
-    resolver: (row, column, schema, query) => AppURL | string | boolean;
+    resolver: LookupResolver;
     productId: string;
 
-    constructor(
-        controller: string,
-        action: string,
-        resolver: (row?, column?, schema?, query?) => AppURL | string | boolean,
-        productId?: string
-    ) {
+    constructor(controller: string, action: string, resolver: LookupResolver, productId?: string) {
         this.controller = controller.toLowerCase();
         this.action = action.toLowerCase();
         this.resolver = resolver;
         this.productId = productId;
     }
 
-    getProductUrl(url: AppURL): AppURL | string {
+    getProductUrl = (url: AppURL): AppURL | string => {
         return createProductUrl(this.productId, undefined, url);
-    }
+    };
 
-    resolve(url, row, column, schema, query): AppURL | string | boolean {
+    resolve: URLMapperResolver = (url, row, column, schemaName, queryName) => {
         if (url) {
             const parsed = ActionURL.getPathFromLocation(url);
 
             if (parsed.action.toLowerCase() === this.action && parsed.controller.toLowerCase() === this.controller) {
-                const resolvedUrl = this.resolver(row, column, schema, query);
+                const resolvedUrl = this.resolver(row, column, schemaName, queryName);
                 return resolvedUrl instanceof AppURL ? this.getProductUrl(resolvedUrl) : resolvedUrl;
             }
         }
-    }
+    };
 }
 
 interface MapURLOptions {
@@ -114,28 +131,26 @@ interface MapURLOptions {
 // exported for jest tests
 export class LookupMapper implements URLMapper {
     defaultPrefix: string;
-    lookupResolvers: any;
+    lookupResolvers: Record<string, LookupResolver>;
 
-    constructor(defaultPrefix: string, lookupResolvers) {
+    constructor(defaultPrefix: string, lookupResolvers: Record<string, LookupResolver>) {
         this.defaultPrefix = defaultPrefix;
         this.lookupResolvers = lookupResolvers;
     }
 
-    resolve(url, row, column): AppURL {
-        if (column.has('lookup')) {
-            var lookup = column.get('lookup'),
-                schema = lookup.get('schemaName'),
-                query = lookup.get('queryName'),
-                lookupContainerPath = lookup.get('containerPath'),
-                queryKey = [schema, query].join('-').toLowerCase(),
-                schemaKey = schema.toLowerCase();
+    resolve: URLMapperResolver = (url, row, column) => {
+        if (column.isLookup()) {
+            const { lookup } = column;
+            const { containerPath: lookupContainerPath, queryName, schemaName } = lookup;
+            const queryKey = [schemaName, queryName].join('-').toLowerCase();
+            const schemaKey = schemaName.toLowerCase();
 
             if (this.lookupResolvers) {
                 if (this.lookupResolvers[queryKey]) {
-                    return this.lookupResolvers[queryKey](row, column, schema, query);
+                    return this.lookupResolvers[queryKey](row, column, schemaName, queryName);
                 }
                 if (this.lookupResolvers[schemaKey]) {
-                    return this.lookupResolvers[schemaKey](row, column, schema, query);
+                    return this.lookupResolvers[schemaKey](row, column, schemaName, queryName);
                 }
             }
 
@@ -145,16 +160,11 @@ export class LookupMapper implements URLMapper {
                 return undefined;
             }
 
-            const parts = [
-                this.defaultPrefix,
-                lookup.get('schemaName'),
-                lookup.get('queryName'),
-                row.get('value').toString(),
-            ];
+            const parts = [this.defaultPrefix, schemaName, queryName, row.get('value').toString()];
 
             return AppURL.create(...parts);
         }
-    }
+    };
 }
 
 const ASSAY_MAPPERS = [
@@ -243,7 +253,7 @@ const DATA_CLASS_MAPPERS = [
         if (row.has('data')) {
             // search link doesn't use the same url
             identifier = row.getIn(['data', 'name']);
-        } else if (column.has('lookup')) {
+        } else if (column.isLookup()) {
             identifier = row.get('displayValue').toString();
         } else {
             identifier = row.get('value').toString();
@@ -273,7 +283,7 @@ const SAMPLE_TYPE_MAPPERS = [
         if (row.has('data')) {
             // search link doesn't use the same url
             identifier = row.getIn(['data', 'name']);
-        } else if (column.has('lookup')) {
+        } else if (column.isLookup()) {
             identifier = row.get('displayValue').toString();
         } else {
             identifier = row.get('value').toString();
@@ -302,7 +312,7 @@ const SAMPLE_TYPE_MAPPERS = [
 
 const LIST_MAPPERS = [
     new ActionMapper('list', 'details', (row, column) => {
-        if (!column.has('lookup')) {
+        if (!column.isLookup()) {
             const params = ActionURL.getParameters(row.get('url'));
             const urlParts = ActionURL.getPathFromLocation(row.get('url'));
 
@@ -320,7 +330,7 @@ const LIST_MAPPERS = [
     }),
 
     new ActionMapper('list', 'grid', (row, column) => {
-        if (!column.has('lookup')) {
+        if (!column.isLookup()) {
             const params = ActionURL.getParameters(row.get('url'));
             const urlParts = ActionURL.getPathFromLocation(row.get('url'));
 
@@ -614,19 +624,22 @@ export class URLResolver {
     /**
      * Returns a Promise resolving a valid selectRowsResult with URLs replaced with those mapped by this
      * URLResolver.
-     * @param json - selectRowsResult
      */
-    resolveSelectRows(json): any {
-        let resolved = fromJS(JSON.parse(JSON.stringify(json)));
+    resolveSelectRows(response: Query.Response, queryInfo: QueryInfo): any {
+        let resolved = fromJS(JSON.parse(JSON.stringify(response)));
 
         // If no url mappers defined then this is a noop. Using URLs as they are.
         if (URLService.getUrlMappers()?.size > 0) {
             if (resolved.get('rows').count()) {
                 const schema = resolved.get('schemaName').toJS().join('.');
                 const query = resolved.get('queryName');
-                const fields = resolved.getIn(['metaData', 'fields']).reduce((fs, column) => {
-                    return fs.set(column.get('fieldKey'), column);
-                }, Map());
+
+                let fields: Map<string, QueryColumn> = Map();
+                if (resolved.hasIn(['metaData', 'fields'])) {
+                    fields = resolved
+                        .getIn(['metaData', 'fields'])
+                        .reduce((fs, col) => fs.set(col.get('fieldKey'), new QueryColumn(col.toJS())), Map());
+                }
 
                 const rows = resolved.get('rows').map(row => {
                     return row.map((cell, fieldKey) => {
@@ -637,7 +650,7 @@ export class URLResolver {
                                 this.mapURL({
                                     url: cell.get('url'),
                                     row: cell,
-                                    column: fields.get(fieldKey),
+                                    column: fields.get(fieldKey) ?? queryInfo?.getColumn(fieldKey),
                                     schema,
                                     query,
                                 })
@@ -654,7 +667,7 @@ export class URLResolver {
                                             this.mapURL({
                                                 url: innerCell.get('url'),
                                                 row: innerCell,
-                                                column: fields.get(fieldKey),
+                                                column: fields.get(fieldKey) ?? queryInfo?.getColumn(fieldKey),
                                                 schema,
                                                 query,
                                             })
@@ -678,8 +691,8 @@ export class URLResolver {
     }
 
     // ToDo: this is rather fragile and data specific. this should be reworked with the mappers and rest of the resolvers to provide for more thorough coverage of our incoming URLs
-    resolveSearchUsingIndex(json): any {
-        let resolved = fromJS(JSON.parse(JSON.stringify(json)));
+    resolveSearchUsingIndex(result: SearchResult): SearchResult {
+        let resolved = fromJS(JSON.parse(JSON.stringify(result)));
 
         if (resolved.get('hits').count()) {
             const rows = resolved.get('hits').map(row => {

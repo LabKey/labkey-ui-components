@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - add valueExpression to DomainField model
   - add calculatedFields to the DomainDesign
   - add CalculatedFieldOptions to DomainRow and Calculation to PropDescType
+  - hide some AdvancedSettings for calculated fields
 
 ### version 3.57.0
 *Released*: 3 July 2024

@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: ? July 2024
 - Remove usages of react-bootstrap
 - Remove FieldEditForm
+- Popover/Tooltip: support fixed positioning
 
 ### version 3.57.1
 *Released*: 8 July 2024

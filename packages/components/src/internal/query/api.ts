@@ -606,7 +606,13 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
         qsKey = 'queries',
         rowCount = response.rowCount || 0;
 
-    const metadataKey = resolved.metaData?.id ?? queryInfo.pkCols[0];
+    let metadataKey: string;
+    if (resolved.metaData) {
+        // If metaData is present, then use its "id" value regardless of presence of a queryInfo
+        metadataKey = resolved.metaData.id;
+    } else if (queryInfo) {
+        metadataKey = queryInfo.pkCols[0];
+    }
     const modelKey = resolveKeyFromJson(resolved);
 
     // ensure id -- unfortunately, with normalizr 3.x there doesn't seem to be a way to generate the id

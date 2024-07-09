@@ -1,11 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version ?.??.?
+### version 4.0.0
 *Released*: ? July 2024
 - Remove usages of react-bootstrap
 - Remove FieldEditForm
 - Popover/Tooltip: support fixed positioning
+- Remove react-boostrap and @types/react-boostrap dependencies
 
 ### version 3.57.1
 *Released*: 8 July 2024

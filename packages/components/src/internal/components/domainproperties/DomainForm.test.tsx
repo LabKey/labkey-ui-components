@@ -87,9 +87,8 @@ describe('DomainForm', () => {
     test('with empty domain form', async () => {
         const domain = DomainDesign.create({});
 
-        let container;
         await act(async () => {
-            container = renderWithAppContext(
+            renderWithAppContext(
                 <DomainForm
                     api={API}
                     domain={domain}

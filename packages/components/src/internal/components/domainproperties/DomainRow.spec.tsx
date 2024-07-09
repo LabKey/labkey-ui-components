@@ -119,21 +119,19 @@ describe('DomainRow', () => {
 
         const type = row.find({
             id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
         const name = row.find({
             id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
-            bsClass: 'checkbox',
+            type: "checkbox",
         });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
@@ -162,21 +160,19 @@ describe('DomainRow', () => {
 
         const type = row.find({
             id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
         const name = row.find({
             id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
-            bsClass: 'checkbox',
+            type: 'checkbox',
         });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(true);
@@ -205,21 +201,19 @@ describe('DomainRow', () => {
 
         const type = row.find({
             id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
         const name = row.find({
             id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
-            bsClass: 'checkbox',
+            type: 'checkbox',
         });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
@@ -248,21 +242,19 @@ describe('DomainRow', () => {
 
         const type = row.find({
             id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
         const name = row.find({
             id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
-            bsClass: 'checkbox',
+            type: 'checkbox',
         });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
@@ -302,21 +294,19 @@ describe('DomainRow', () => {
 
         const type = row.find({
             id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
         const name = row.find({
             id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
-            bsClass: 'checkbox',
+            type: 'checkbox',
         });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
@@ -358,21 +348,19 @@ describe('DomainRow', () => {
 
         const type = row.find({
             id: createFormInputId(DOMAIN_FIELD_TYPE, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(type.length).toEqual(1);
         expect(type.props().value).toEqual(_propDesc.name);
 
         const name = row.find({
             id: createFormInputId(DOMAIN_FIELD_NAME, _domainIndex, _index),
-            bsClass: 'form-control',
         });
         expect(name.length).toEqual(1);
         expect(name.props().value).toEqual(_name);
 
         const req = row.find({
             id: createFormInputId(DOMAIN_FIELD_REQUIRED, _domainIndex, _index),
-            bsClass: 'checkbox',
+            type: 'checkbox',
         });
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);

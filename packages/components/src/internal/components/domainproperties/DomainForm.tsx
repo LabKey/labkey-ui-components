@@ -1237,7 +1237,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         <CollapsiblePanelHeader
                             id={getDomainPanelHeaderId(domain)}
                             title={getDomainHeaderName(domain.name, headerTitle, headerPrefix)}
-                            collapsed={!this.isPanelExpanded()}
+                            collapsed={!(this.isPanelExpanded() && controlledCollapse)}
                             collapsible={collapsible}
                             controlledCollapse={controlledCollapse}
                             headerDetails={headerDetails}

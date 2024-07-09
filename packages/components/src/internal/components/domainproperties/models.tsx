@@ -129,6 +129,7 @@ export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
 
 interface IDomainDesign {
     allowAttachmentProperties: boolean;
+    allowCalculatedFields: boolean;
     allowFileLinkProperties: boolean;
     allowFlagProperties: boolean;
     allowSampleSubjectProperties: boolean;
@@ -171,6 +172,7 @@ export class DomainDesign
         allowTimepointProperties: false,
         allowUniqueConstraintProperties: false,
         allowUserProperties: true,
+        allowCalculatedFields: false,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
         defaultValueOptions: List<string>(),
@@ -201,6 +203,7 @@ export class DomainDesign
     declare allowTimepointProperties: boolean;
     declare allowUniqueConstraintProperties: boolean;
     declare allowUserProperties: boolean;
+    declare allowCalculatedFields: boolean;
     declare showDefaultValueSettings: boolean;
     declare defaultDefaultValueType: string;
     declare defaultValueOptions: List<string>;
@@ -252,7 +255,7 @@ export class DomainDesign
                 fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames, uniqueConstraintFieldNames);
             }
 
-            if (rawModel.calculatedFields) {
+            if (rawModel.allowCalculatedFields && rawModel.calculatedFields) {
                 const calcFields = DomainField.fromJS(rawModel.calculatedFields, mandatoryFieldNames, uniqueConstraintFieldNames);
                 fields = fields.push(...calcFields.toArray());
             }

@@ -67,7 +67,6 @@
     "numeral": "~2.0.6",
     "react": "~16.14.0",
     "react-beautiful-dnd": "~13.1.1",
-    "react-bootstrap": "~0.33.1",
     "react-color": "~2.19.3",
     "react-datepicker": "~4.17.0",
     "react-dom": "~16.14.0",
@@ -86,7 +85,6 @@
     "@types/numeral": "2.0.5",
     "@types/react": "16.14.59",
     "@types/react-beautiful-dnd": "13.1.8",
-    "@types/react-bootstrap": "0.32.36",
     "@types/react-datepicker": "4.15.0",
     "@types/react-dom": "16.9.24",
     "@types/react-test-renderer": "16.9.12",
@@ -108,7 +106,6 @@
   "peerDependencies": {
     "immutable": "^3.8.2",
     "react": "^16.0",
-    "react-bootstrap": "^0.33.1",
     "react-dom": "^16.0"
   },
   "resolutions": {

@@ -17,6 +17,7 @@ import { List, Record } from 'immutable';
 import { Ajax, Utils, QueryKey } from '@labkey/api';
 
 import { buildURL, createProductUrl, AppURL, createProductUrlFromPartsWithContainer } from '../../url/AppURL';
+import { ASSAYS_KEY } from '../../app/constants';
 
 export class MenuSectionModel extends Record({
     label: undefined,
@@ -98,6 +99,9 @@ export class MenuItemModel extends Record({
                     .split('/')
                     .filter(val => val !== '')
                     .map(QueryKey.decodePart);
+                if (sectionKey === ASSAYS_KEY && subParts.length > 0) { // Issue 50640. We want to link to 'runs' since we'll get better subnav highlighting
+                    subParts.push('runs');
+                }
 
                 const decoded = subParts.join('/');
                 const decodedKey = rawData.key.replace(rawData.key, () => decoded); // use the functional version to skip any additional pattern substitutions https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#specifying_a_string_as_the_replacement

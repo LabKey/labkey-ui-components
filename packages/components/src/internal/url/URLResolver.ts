@@ -280,16 +280,7 @@ const SAMPLE_TYPE_MAPPERS = [
         }
 
         if (identifier !== undefined) {
-            let url: string[];
-            if (/^\d+$/.test(identifier)) {
-                // numeric -- assume rowId and use resolver
-                url = ['rd', 'samples', identifier];
-            } else {
-                // string -- assume sample set name
-                url = [SAMPLES_KEY, identifier];
-            }
-
-            return AppURL.create(...url);
+            return AppURL.create(SAMPLES_KEY, identifier);
         }
     }),
 

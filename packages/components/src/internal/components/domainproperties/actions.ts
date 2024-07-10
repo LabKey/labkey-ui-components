@@ -60,6 +60,7 @@ import {
 } from './constants';
 import {
     ATTACHMENT_TYPE,
+    CALCULATED_TYPE,
     FILE_TYPE,
     FLAG_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
@@ -327,6 +328,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === USERS_TYPE && !domain.allowUserProperties) {
+        return false;
+    }
+
+    if (type === CALCULATED_TYPE && !domain.allowCalculatedFields) {
         return false;
     }
 

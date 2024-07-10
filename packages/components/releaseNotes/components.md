@@ -10,6 +10,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - hide some AdvancedSettings for calculated fields
   - use rangeURI for calculated fields to determine type specific expanded row options to show
 
+### version 3.57.1
+*Released*: 8 July 2024
+- Issue 50640: Update `MenuSectionModel` URL construction to link to `runs` page for assay names
+- Issue 50753: Fix link resolution for sample type names that are numbers
+
 ### version 3.57.0
 *Released*: 3 July 2024
 - Add styling for button.clickable-text

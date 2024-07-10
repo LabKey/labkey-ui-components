@@ -139,12 +139,16 @@ export interface IQueryColumn {
     // isHidden: boolean; // DUPLICATE
     isKeyField: boolean;
     // isMvEnabled: boolean;
-// isNullable: boolean;
-// isReadOnly: boolean;
-// isSelectable: boolean; // DUPLICATE
-// isUserEditable: boolean; // DUPLICATE
-// isVersionField: boolean;
+    // isNullable: boolean;
+    // isReadOnly: boolean;
+    // isSelectable: boolean; // DUPLICATE
+    // isUserEditable: boolean; // DUPLICATE
+    // isVersionField: boolean;
     jsonType: string;
+    // keyField: boolean;
+    lookup: Record<string, any>;
+    measure: boolean;
+    multiValue: boolean;
     // mvEnabled: boolean;
     name: string;
     nameExpression: string;
@@ -153,12 +157,7 @@ export interface IQueryColumn {
     protected: boolean;
     rangeURI: string;
     readOnly: boolean;
-    // recommendedVariable: boolean;
-    required: boolean;
-    selectable: boolean;
-    shortCaption: string;
-    // keyField: boolean;
-    lookup: Record<string, any>;
+    removeFromViewCustomization: boolean;
     removeFromViews: boolean; // strips this column from all ViewInfo definitions
     scale: number;
     shownInDetailsView: boolean;
@@ -173,12 +172,13 @@ export interface IQueryColumn {
     // versionField: boolean;
 
     sorts: '+' | '-';
-    removeFromViewCustomization: boolean;
+    // recommendedVariable: boolean;
+    required: boolean;
     units: string;
-    multiValue: boolean;
+    shortCaption: string;
 
     sourceOntology: string;
-    measure: boolean;
+    selectable: boolean;
 }
 
 export class QueryColumn implements IQueryColumn {

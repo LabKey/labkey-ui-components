@@ -110,7 +110,8 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             props.setValue?.(initDate);
         }
 
-        let invalidStart = false, invalid = false;
+        let invalidStart = false,
+            invalid = false;
         if (props.value && !isRelativeDateFilterValue(props.value)) {
             // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
             invalidStart = this.getInitDate(props, new Date('1000-01-01')) === null;

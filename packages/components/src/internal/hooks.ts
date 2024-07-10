@@ -45,7 +45,7 @@ export function createPortalContainer(portalId): HTMLDivElement {
  * usePortalRef is a method that automatically injects a DOM element for your portal into the document body, and returns
  * a ref that can be used with ReactDOM.createPortal. It will automatically remove the portal element from the DOM when
  * your component unmounts.
- * @param portalId: The unique id to give the portal. The portal id can be re-used among several related components that
+ * @param portalId The unique id to give the portal. The portal id can be re-used among several related components that
  * need to be rendered in a portal, each component using usePortalRef will get a unique DOM element within the shared
  * portal element. The shared portal element will be automatically removed from the DOM when no components are actively
  * using the portalId.

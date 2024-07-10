@@ -15,9 +15,9 @@
  */
 import React, { ReactNode } from 'react';
 
-import { Checkbox } from '../Checkbox';
+import { DomainDesignerCheckbox } from '../DomainDesignerCheckbox';
 
-import { Radio } from '../Radio';
+import { DomainDesignerRadio } from '../DomainDesignerRadio';
 
 import { SelectInput } from '../../forms/input/SelectInput';
 
@@ -166,7 +166,7 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
 
         return (
             <div className="dataset_data_row_uniqueness_container">
-                <Radio
+                <DomainDesignerRadio
                     name={radioName}
                     value={0}
                     checked={dataRowSetting === 0}
@@ -174,9 +174,9 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
                     disabled={isFromAssay}
                 >
                     {participantIdTxt} only (demographic data)
-                </Radio>
+                </DomainDesignerRadio>
 
-                <Radio
+                <DomainDesignerRadio
                     name={radioName}
                     value={1}
                     checked={dataRowSetting === 1}
@@ -184,9 +184,9 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
                     disabled={isFromAssay}
                 >
                     {participantIdTxt} and {timepointTxt.toLowerCase()}
-                </Radio>
+                </DomainDesignerRadio>
 
-                <Radio
+                <DomainDesignerRadio
                     name={radioName}
                     value={2}
                     checked={dataRowSetting === 2}
@@ -194,7 +194,7 @@ class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessEle
                     disabled={isFromAssay}
                 >
                     {participantIdTxt}, {timepointTxt.toLowerCase()}, and additional key field
-                </Radio>
+                </DomainDesignerRadio>
             </div>
         );
     }
@@ -288,14 +288,14 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                 </div>
 
                 <div className={keyPropertyManagedCls}>
-                    <Checkbox
+                    <DomainDesignerCheckbox
                         checked={model.keyPropertyManaged && !managedKeyDisabled}
                         onChange={onCheckBoxChange}
                         id="keyPropertyManaged"
                         disabled={managedKeyDisabled}
                     >
                         Let server manage fields to make entries unique
-                    </Checkbox>
+                    </DomainDesignerCheckbox>
                 </div>
             </>
         );

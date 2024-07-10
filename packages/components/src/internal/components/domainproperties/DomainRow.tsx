@@ -26,7 +26,7 @@ import { DragDropHandle } from '../base/DragDropHandle';
 
 import { FieldExpansionToggle } from '../base/FieldExpansionToggle';
 
-import { Checkbox } from './Checkbox';
+import { DomainDesignerCheckbox } from './DomainDesignerCheckbox';
 
 import {
     DATETIME_CONVERT_URIS,
@@ -392,7 +392,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                 <div className="col-xs-2">
                     <div className="domain-field-checkbox-container">
                         {!domainFormDisplayOptions.hideRequired && (
-                            <Checkbox
+                            <DomainDesignerCheckbox
                                 className="domain-field-checkbox"
                                 name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
                                 id={createFormInputId(DOMAIN_FIELD_REQUIRED, domainIndex, index)}
@@ -512,7 +512,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                 />
                             </div>
                             <div className="domain-row-action-section">
-                                <Checkbox
+                                <DomainDesignerCheckbox
                                     className="domain-field-check-icon"
                                     name={createFormInputName(DOMAIN_FIELD_SELECTED)}
                                     id={createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, index)}

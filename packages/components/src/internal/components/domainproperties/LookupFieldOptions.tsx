@@ -13,7 +13,7 @@ import {
     DOMAIN_VALIDATOR_LOOKUP,
     LOOKUP_VALIDATOR_VALUES,
 } from './constants';
-import { Checkbox } from './Checkbox';
+import { DomainDesignerCheckbox } from './DomainDesignerCheckbox';
 import { DomainField, IFieldChange, ITypeDependentProps, PropertyValidator } from './models';
 import { FolderSelect, SchemaSelect, TargetTableSelect } from './Lookup/Fields';
 
@@ -130,7 +130,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                     )}
                     <div className="col-xs-6">
                         <div className="domain-field-label">Lookup Validator</div>
-                        <Checkbox
+                        <DomainDesignerCheckbox
                             className="domain-field-checkbox-margin"
                             id={createFormInputId(DOMAIN_VALIDATOR_LOOKUP, domainIndex, index)}
                             name={createFormInputName(DOMAIN_VALIDATOR_LOOKUP)}
@@ -144,7 +144,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                                     target table or query
                                 </div>
                             </LabelHelpTip>
-                        </Checkbox>
+                        </DomainDesignerCheckbox>
                     </div>
                 </div>
             </div>

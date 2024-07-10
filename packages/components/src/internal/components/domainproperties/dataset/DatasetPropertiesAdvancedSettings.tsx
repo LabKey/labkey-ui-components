@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import { getServerContext } from '@labkey/api';
 
-import { Checkbox } from '../Checkbox';
+import { DomainDesignerCheckbox } from '../DomainDesignerCheckbox';
 
 import { Modal } from '../../../Modal';
 import { getSubmitButtonClass } from '../../../app/utils';
@@ -284,7 +284,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 <LabelHelpTip title={showInOverviewLabel}>{SHOW_IN_OVERVIEW}</LabelHelpTip>
                             </div>
                             <div className="col-xs-7">
-                                <Checkbox
+                                <DomainDesignerCheckbox
                                     checked={showByDefault}
                                     onChange={this.onInputChange}
                                     id="showByDefault"

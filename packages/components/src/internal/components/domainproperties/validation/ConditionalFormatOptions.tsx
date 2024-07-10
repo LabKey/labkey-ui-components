@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React, { PureComponent, ReactNode } from 'react';
 import { CompactPicker } from 'react-color';
 
-import { Checkbox } from '../Checkbox';
+import { DomainDesignerCheckbox } from '../DomainDesignerCheckbox';
 
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
@@ -103,14 +103,14 @@ export class ConditionalFormatOptions extends PureComponent<ConditionalFormatOpt
         return (
             <div className="row">
                 <div className="col-xs-12 domain-validation-display-checkbox-row">
-                    <Checkbox
+                    <DomainDesignerCheckbox
                         id={createFormInputId(name, domainIndex, validatorIndex)}
                         name={createFormInputName(name)}
                         checked={value}
                         onChange={this.onFieldChange}
                     >
                         {label}
-                    </Checkbox>
+                    </DomainDesignerCheckbox>
                 </div>
             </div>
         );

@@ -9,7 +9,7 @@ import { GridColumn } from '../base/models/GridColumn';
 
 import { Grid } from '../base/Grid';
 
-import { Checkbox } from './Checkbox';
+import { DomainDesignerCheckbox } from './DomainDesignerCheckbox';
 
 import { compareStringsAlphabetically } from './propertiesUtil';
 
@@ -170,7 +170,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         const { selectAll, actions } = this.props;
         if (column.index === GRID_SELECTION_INDEX) {
             return (
-                <Checkbox className="domain-summary-selectAll" checked={selectAll} onChange={actions.toggleSelectAll} />
+                <DomainDesignerCheckbox className="domain-summary-selectAll" checked={selectAll} onChange={actions.toggleSelectAll} />
             );
         }
 

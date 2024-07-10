@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Checkbox } from '../Checkbox';
+import { DomainDesignerCheckbox } from '../DomainDesignerCheckbox';
 
 import { createFormInputId, createFormInputName, getNameFromId } from '../utils';
 import {
@@ -133,7 +133,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                         <div className="row">
                             <div className="col-xs-4" />
                             <div className="col-xs-8 domain-validation-failOnMatch-row">
-                                <Checkbox
+                                <DomainDesignerCheckbox
                                     id={createFormInputId(DOMAIN_VALIDATOR_FAILONMATCH, domainIndex, validatorIndex)}
                                     name={createFormInputName(DOMAIN_VALIDATOR_FAILONMATCH)}
                                     checked={validator.properties.failOnMatch}
@@ -145,7 +145,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                                         regular expression. Check this box if you want validation to fail when the
                                         pattern matches the field value.
                                     </LabelHelpTip>
-                                </Checkbox>
+                                </DomainDesignerCheckbox>
                             </div>
                         </div>
                         <div className="row">

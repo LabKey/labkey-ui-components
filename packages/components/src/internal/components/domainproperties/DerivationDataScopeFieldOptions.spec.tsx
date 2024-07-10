@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Alert } from '../base/Alert';
 
-import { Radio } from './Radio';
+import { DomainDesignerRadio } from './DomainDesignerRadio';
 
 import { DERIVATION_DATA_SCOPES, DOMAIN_FIELD_NOT_LOCKED } from './constants';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
@@ -26,7 +26,7 @@ describe('DerivationDataScopeFieldOptions', () => {
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual('Derivation Data Scope');
 
-        const radios = wrapper.find(Radio);
+        const radios = wrapper.find(DomainDesignerRadio);
         expect(radios).toHaveLength(3);
         expect(radios.at(0).prop('checked')).toBeTruthy();
         expect(radios.at(0).prop('disabled')).toBeFalsy();
@@ -55,7 +55,7 @@ describe('DerivationDataScopeFieldOptions', () => {
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
 
-        const radios = wrapper.find(Radio);
+        const radios = wrapper.find(DomainDesignerRadio);
         expect(radios).toHaveLength(3);
         expect(radios.at(0).prop('checked')).toBeTruthy();
         expect(radios.at(0).prop('disabled')).toBeFalsy();
@@ -81,7 +81,7 @@ describe('DerivationDataScopeFieldOptions', () => {
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
 
-        const radios = wrapper.find(Radio);
+        const radios = wrapper.find(DomainDesignerRadio);
         expect(radios).toHaveLength(3);
         expect(radios.at(0).prop('checked')).toBeTruthy();
         expect(radios.at(0).prop('disabled')).toBeFalsy();
@@ -107,7 +107,7 @@ describe('DerivationDataScopeFieldOptions', () => {
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
 
-        const radios = wrapper.find(Radio);
+        const radios = wrapper.find(DomainDesignerRadio);
         expect(radios).toHaveLength(3);
         expect(radios.at(0).prop('checked')).toBeFalsy();
         expect(radios.at(0).prop('disabled')).toBeTruthy();
@@ -136,7 +136,7 @@ describe('DerivationDataScopeFieldOptions', () => {
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
 
-        const radios = wrapper.find(Radio);
+        const radios = wrapper.find(DomainDesignerRadio);
         expect(radios).toHaveLength(3);
         expect(radios.at(0).prop('checked')).toBeFalsy();
         expect(radios.at(0).prop('disabled')).toBeTruthy();
@@ -178,7 +178,7 @@ describe('DerivationDataScopeFieldOptions', () => {
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(label);
 
-        const radios = wrapper.find(Radio);
+        const radios = wrapper.find(DomainDesignerRadio);
         expect(radios).toHaveLength(3);
         expect(radios.at(0).prop('checked')).toBeTruthy();
         expect(radios.at(0).text()).toBe('Editable for samples only (default)');
@@ -250,7 +250,7 @@ describe('DerivationDataScopeFieldOptions', () => {
 
         const wrapper = mount(<DerivationDataScopeFieldOptions {...props} />);
 
-        const radios = wrapper.find(Radio);
+        const radios = wrapper.find(DomainDesignerRadio);
         expect(radios).toHaveLength(3);
 
         wrapper.unmount();

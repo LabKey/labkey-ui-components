@@ -29,7 +29,7 @@ import { GridColumn } from '../base/models/GridColumn';
 
 import { SCHEMAS } from '../../schemas';
 
-import { Checkbox } from './Checkbox';
+import { DomainDesignerCheckbox } from './DomainDesignerCheckbox';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -457,7 +457,7 @@ export class DomainDesign
 
                 const changes = List.of({ id: formInputId, value: !selected });
                 return (
-                    <Checkbox
+                    <DomainDesignerCheckbox
                         className="domain-summary-selection"
                         id={formInputId}
                         checked={selected}

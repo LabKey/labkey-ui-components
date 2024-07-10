@@ -555,6 +555,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
                         onKeyDown={this.handleKeys}
                         onMouseDown={this.handleSelect}
                         onMouseEnter={this.handleMouseEnter}
+                        placeholder={placeholder}
                         selected={selected}
                         selection={selection}
                         showMenu={showMenu}

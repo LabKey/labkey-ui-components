@@ -74,37 +74,27 @@ exports[`FileAttachmentOptions Attachment data type download 1`] = `
       <div
         className="col-xs-2"
       >
-        <FormControl
-          bsClass="form-control"
-          componentClass="select"
+        <select
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-format-1-1"
           name="domainpropertiesrow-format"
           onChange={[Function]}
           value="attachment"
         >
-          <select
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-format-1-1"
-            name="domainpropertiesrow-format"
-            onChange={[Function]}
+          <option
+            key="domainpropertiesrow-formatoption-inline-1-1"
+            value="inline"
+          >
+            Show Attachment in Browser
+          </option>
+          <option
+            key="domainpropertiesrow-formatoption-attachment-1-1"
             value="attachment"
           >
-            <option
-              key="domainpropertiesrow-formatoption-inline-1-1"
-              value="inline"
-            >
-              Show Attachment in Browser
-            </option>
-            <option
-              key="domainpropertiesrow-formatoption-attachment-1-1"
-              value="attachment"
-            >
-              Download Attachment
-            </option>
-          </select>
-        </FormControl>
+            Download Attachment
+          </option>
+        </select>
       </div>
     </div>
   </div>
@@ -185,37 +175,27 @@ exports[`FileAttachmentOptions File data type inline 1`] = `
       <div
         className="col-xs-2"
       >
-        <FormControl
-          bsClass="form-control"
-          componentClass="select"
+        <select
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-format-1-1"
           name="domainpropertiesrow-format"
           onChange={[Function]}
           value="attachment"
         >
-          <select
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-format-1-1"
-            name="domainpropertiesrow-format"
-            onChange={[Function]}
+          <option
+            key="domainpropertiesrow-formatoption-inline-1-1"
+            value="inline"
+          >
+            Show File in Browser
+          </option>
+          <option
+            key="domainpropertiesrow-formatoption-attachment-1-1"
             value="attachment"
           >
-            <option
-              key="domainpropertiesrow-formatoption-inline-1-1"
-              value="inline"
-            >
-              Show File in Browser
-            </option>
-            <option
-              key="domainpropertiesrow-formatoption-attachment-1-1"
-              value="attachment"
-            >
-              Download File
-            </option>
-          </select>
-        </FormControl>
+            Download File
+          </option>
+        </select>
       </div>
     </div>
   </div>

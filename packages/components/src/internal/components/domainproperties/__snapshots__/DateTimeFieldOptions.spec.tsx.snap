@@ -137,26 +137,15 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
       <div
         className="col-xs-3"
       >
-        <FormControl
-          bsClass="form-control"
-          componentClass="input"
+        <input
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-format-1-1"
           name="domainpropertiesrow-format"
           onChange={[Function]}
           type="text"
           value="MM/dd/yyyy hh:mm"
-        >
-          <input
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-format-1-1"
-            name="domainpropertiesrow-format"
-            onChange={[Function]}
-            type="text"
-            value="MM/dd/yyyy hh:mm"
-          />
-        </FormControl>
+        />
       </div>
       <div
         className="col-xs-9"

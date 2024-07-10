@@ -9,7 +9,7 @@ exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
         class="domain-designer"
       >
         <div
-          class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+          class="panel panel-default domain-form-panel lk-border-theme-light"
         >
           <div
             class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -29,7 +29,7 @@ exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
             </span>
           </div>
           <div
-            class="panel-collapse collapse in"
+            class="collapse panel-collapse in"
           >
             <div
               class="panel-body"
@@ -398,7 +398,7 @@ exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
           </div>
         </div>
         <div
-          class="panel panel-default domain-form-panel panel panel-default"
+          class="panel panel-default domain-form-panel"
         >
           <div
             class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -433,10 +433,10 @@ exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
             </span>
           </div>
           <div
-            class="panel-collapse collapse"
+            class="collapse panel-collapse"
           >
             <div
-              class="domain-field-top-noBuffer panel-body"
+              class="panel-body domain-field-top-noBuffer"
             >
               <span
                 class=""
@@ -518,7 +518,7 @@ exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
       class="domain-designer"
     >
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+        class="panel panel-default domain-form-panel lk-border-theme-light"
       >
         <div
           class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -538,7 +538,7 @@ exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
           </span>
         </div>
         <div
-          class="panel-collapse collapse in"
+          class="collapse panel-collapse in"
         >
           <div
             class="panel-body"
@@ -907,7 +907,7 @@ exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
         </div>
       </div>
       <div
-        class="panel panel-default domain-form-panel panel panel-default"
+        class="panel panel-default domain-form-panel"
       >
         <div
           class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -942,10 +942,10 @@ exports[`IssuesListDefDesignerPanel new Issue List Definition 1`] = `
           </span>
         </div>
         <div
-          class="panel-collapse collapse"
+          class="collapse panel-collapse"
         >
           <div
-            class="domain-field-top-noBuffer panel-body"
+            class="panel-body domain-field-top-noBuffer"
           >
             <span
               class=""

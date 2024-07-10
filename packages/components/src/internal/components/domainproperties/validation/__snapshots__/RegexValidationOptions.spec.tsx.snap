@@ -175,25 +175,14 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
           className="col-xs-8"
         >
           <div>
-            <FormControl
-              bsClass="form-control"
-              className="textarea-fullwidth"
-              componentClass="textarea"
+            <textarea
+              className="form-control textarea-fullwidth"
               id="domainpropertiesrow-expression-1-0"
               name="domainpropertiesrow-expression"
               onChange={[Function]}
               rows={3}
               value="$[abc]"
-            >
-              <textarea
-                className="textarea-fullwidth form-control"
-                id="domainpropertiesrow-expression-1-0"
-                name="domainpropertiesrow-expression"
-                onChange={[Function]}
-                rows={3}
-                value="$[abc]"
-              />
-            </FormControl>
+            />
           </div>
         </div>
       </div>
@@ -211,25 +200,14 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
           className="col-xs-8"
         >
           <div>
-            <FormControl
-              bsClass="form-control"
-              className="textarea-fullwidth"
-              componentClass="textarea"
+            <textarea
+              className="form-control textarea-fullwidth"
               id="domainpropertiesrow-description-1-0"
               name="domainpropertiesrow-description"
               onChange={[Function]}
               rows={3}
               value="This is my validator description"
-            >
-              <textarea
-                className="textarea-fullwidth form-control"
-                id="domainpropertiesrow-description-1-0"
-                name="domainpropertiesrow-description"
-                onChange={[Function]}
-                rows={3}
-                value="This is my validator description"
-              />
-            </FormControl>
+            />
           </div>
         </div>
       </div>
@@ -277,25 +255,14 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
           className="col-xs-8"
         >
           <div>
-            <FormControl
-              bsClass="form-control"
-              className="textarea-fullwidth"
-              componentClass="textarea"
+            <textarea
+              className="form-control textarea-fullwidth"
               id="domainpropertiesrow-errorMessage-1-0"
               name="domainpropertiesrow-errorMessage"
               onChange={[Function]}
               rows={3}
               value="Test Validation Failure"
-            >
-              <textarea
-                className="textarea-fullwidth form-control"
-                id="domainpropertiesrow-errorMessage-1-0"
-                name="domainpropertiesrow-errorMessage"
-                onChange={[Function]}
-                rows={3}
-                value="Test Validation Failure"
-              />
-            </FormControl>
+            />
           </div>
         </div>
       </div>
@@ -308,25 +275,18 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
         <div
           className="col-xs-8 domain-validation-failOnMatch-row"
         >
-          <Checkbox
-            bsClass="checkbox"
+          <Memo()
             checked={true}
-            disabled={false}
             id="domainpropertiesrow-failOnMatch-1-0"
-            inline={false}
             name="domainpropertiesrow-failOnMatch"
             onChange={[Function]}
-            title=""
           >
             <div
               className="checkbox"
             >
-              <label
-                title=""
-              >
+              <label>
                 <input
                   checked={true}
-                  disabled={false}
                   id="domainpropertiesrow-failOnMatch-1-0"
                   name="domainpropertiesrow-failOnMatch"
                   onChange={[Function]}
@@ -365,7 +325,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                 </LabelHelpTip>
               </label>
             </div>
-          </Checkbox>
+          </Memo()>
         </div>
       </div>
       <div
@@ -381,24 +341,14 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
         <div
           className="col-xs-8"
         >
-          <FormControl
-            bsClass="form-control"
-            componentClass="input"
+          <input
+            className="form-control"
             id="domainpropertiesrow-name-1-0"
             name="domainpropertiesrow-name"
             onChange={[Function]}
             type="text"
             value="Test Validator"
-          >
-            <input
-              className="form-control"
-              id="domainpropertiesrow-name-1-0"
-              name="domainpropertiesrow-name"
-              onChange={[Function]}
-              type="text"
-              value="Test Validator"
-            />
-          </FormControl>
+          />
         </div>
       </div>
       <div

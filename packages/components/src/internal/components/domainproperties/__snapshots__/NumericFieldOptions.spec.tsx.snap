@@ -138,61 +138,40 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
       <div
         className="col-xs-3"
       >
-        <FormControl
-          bsClass="form-control"
-          componentClass="input"
+        <input
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-format-1-1"
           name="domainpropertiesrow-format"
           onChange={[Function]}
           type="text"
           value="#.##"
-        >
-          <input
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-format-1-1"
-            name="domainpropertiesrow-format"
-            onChange={[Function]}
-            type="text"
-            value="#.##"
-          />
-        </FormControl>
+        />
       </div>
       <div
         className="col-xs-2"
       >
-        <FormControl
-          bsClass="form-control"
-          componentClass="select"
+        <select
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-defaultScale-1-1"
           name="domainpropertiesrow-defaultScale"
           onChange={[Function]}
           value="LOG"
         >
-          <select
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-defaultScale-1-1"
-            name="domainpropertiesrow-defaultScale"
-            onChange={[Function]}
+          <option
+            key="domainpropertiesrow-defaultScaleoption-LINEAR-1-1"
+            value="LINEAR"
+          >
+            Linear
+          </option>
+          <option
+            key="domainpropertiesrow-defaultScaleoption-LOG-1-1"
             value="LOG"
           >
-            <option
-              key="domainpropertiesrow-defaultScaleoption-LINEAR-1-1"
-              value="LINEAR"
-            >
-              Linear
-            </option>
-            <option
-              key="domainpropertiesrow-defaultScaleoption-LOG-1-1"
-              value="LOG"
-            >
-              Log
-            </option>
-          </select>
-        </FormControl>
+            Log
+          </option>
+        </select>
       </div>
     </div>
     <Memo()

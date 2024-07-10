@@ -1,6 +1,5 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useState } from 'react';
 import classNames from 'classnames';
-import { FormControl, FormGroup, Radio } from 'react-bootstrap';
 
 import { Modal } from '../../../Modal';
 
@@ -13,6 +12,8 @@ import { HelpLink } from '../../../util/helpLinks';
 import { SelectInput } from '../../forms/input/SelectInput';
 
 import { LabelHelpTip } from '../../base/LabelHelpTip';
+
+import { DomainDesignerRadio } from '../DomainDesignerRadio';
 
 import { AdvancedSettingsForm, EachItemSettings, EntireListSettings, ListModel } from './models';
 
@@ -72,19 +73,19 @@ interface DiscussionLinksProps {
 // TODO: use RadioGroupInput instead
 const DISCUSSION_RADIO_NAME = 'discussionSetting';
 const DiscussionInputs: FC<DiscussionLinksProps> = memo(({ onRadioChange, discussionSetting }) => (
-    <FormGroup>
-        <Radio name={DISCUSSION_RADIO_NAME} value={0} checked={discussionSetting === 0} onChange={onRadioChange}>
+    <div className="form-group">
+        <DomainDesignerRadio name={DISCUSSION_RADIO_NAME} value={0} checked={discussionSetting === 0} onChange={onRadioChange}>
             Disable discussions
-        </Radio>
+        </DomainDesignerRadio>
 
-        <Radio name={DISCUSSION_RADIO_NAME} value={1} checked={discussionSetting === 1} onChange={onRadioChange}>
+        <DomainDesignerRadio name={DISCUSSION_RADIO_NAME} value={1} checked={discussionSetting === 1} onChange={onRadioChange}>
             Allow one discussion per item
-        </Radio>
+        </DomainDesignerRadio>
 
-        <Radio name={DISCUSSION_RADIO_NAME} value={2} checked={discussionSetting === 2} onChange={onRadioChange}>
+        <DomainDesignerRadio name={DISCUSSION_RADIO_NAME} value={2} checked={discussionSetting === 2} onChange={onRadioChange}>
             Allow multiple discussions per item
-        </Radio>
-    </FormGroup>
+        </DomainDesignerRadio>
+    </div>
 ));
 
 interface TitleIndexFieldProps {
@@ -97,8 +98,8 @@ const TitleIndexField: FC<TitleIndexFieldProps> = memo(({ name, titleTemplate, o
     <div>
         <DomainFieldLabel label="Document title" helpTipBody={DOCUMENT_TITLE_TIP} />
         <span>
-            <FormControl
-                className="list__advanced-settings-modal__text-field"
+            <input
+                className="form-control list__advanced-settings-modal__text-field"
                 id={name}
                 type="text"
                 placeholder="Use default"
@@ -120,19 +121,19 @@ interface MetadataIndexFieldProps {
 // count from low to high.
 // TODO: use RadioGroupInput instead
 const MetadataIndexField: FC<MetadataIndexFieldProps> = memo(({ indexSetting, name, onRadioChange }) => (
-    <FormGroup>
-        <Radio name={name} value={2} checked={indexSetting === 2} onChange={onRadioChange}>
+    <div className="form-group">
+        <DomainDesignerRadio name={name} value={2} checked={indexSetting === 2} onChange={onRadioChange}>
             Include both metadata and data
             <LabelHelpTip title="Warning">{DATA_INDEXING_TIP}</LabelHelpTip>
-        </Radio>
-        <Radio name={name} value={1} checked={indexSetting === 1} onChange={onRadioChange}>
+        </DomainDesignerRadio>
+        <DomainDesignerRadio name={name} value={1} checked={indexSetting === 1} onChange={onRadioChange}>
             Include data only
             <LabelHelpTip title="Warning">{DATA_INDEXING_TIP}</LabelHelpTip>
-        </Radio>
-        <Radio name={name} value={0} checked={indexSetting === 0} onChange={onRadioChange}>
+        </DomainDesignerRadio>
+        <DomainDesignerRadio name={name} value={0} checked={indexSetting === 0} onChange={onRadioChange}>
             Include metadata only (name and description of list and fields)
-        </Radio>
-    </FormGroup>
+        </DomainDesignerRadio>
+    </div>
 ));
 
 interface IndexFieldProps {
@@ -150,26 +151,26 @@ export const IndexField: FC<IndexFieldProps> = memo(props => {
     // TODO: Use RadioGroupInput instead
     return (
         <div>
-            <FormGroup>
-                <Radio name={name} value={0} checked={bodySetting === 0} onChange={onRadioChange}>
+            <div className="form-group">
+                <DomainDesignerRadio name={name} value={0} checked={bodySetting === 0} onChange={onRadioChange}>
                     Index all non-PHI text fields
-                </Radio>
-                <Radio name={name} value={1} checked={bodySetting === 1} onChange={onRadioChange}>
+                </DomainDesignerRadio>
+                <DomainDesignerRadio name={name} value={1} checked={bodySetting === 1} onChange={onRadioChange}>
                     Index all non-PHI fields (text, number, date, and boolean)
-                </Radio>
-                <Radio name={name} value={2} checked={bodySetting === 2} onChange={onRadioChange}>
+                </DomainDesignerRadio>
+                <DomainDesignerRadio name={name} value={2} checked={bodySetting === 2} onChange={onRadioChange}>
                     Index using custom template
                     <LabelHelpTip>{CUSTOM_TEMPLATE_TIP}</LabelHelpTip>
-                </Radio>
-            </FormGroup>
+                </DomainDesignerRadio>
+            </div>
 
             {bodySetting === 2 && (
-                <FormControl
+                <input
                     id={id}
                     type="text"
                     value={bodyTemplate}
                     onChange={onInputChange}
-                    className="list__advanced-settings-modal__custom-template-text-field"
+                    className="form-control list__advanced-settings-modal__custom-template-text-field"
                 />
             )}
         </div>

@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { FC, memo, MouseEvent, ReactNode, RefObject, useCallback } from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Filter, Query } from '@labkey/api';
+
+import { createPortal } from 'react-dom';
 
 import { cancelEvent, isFillDown, isCtrlOrMetaKey, isSelectAll } from '../../events';
 
@@ -27,8 +28,9 @@ import { Key } from '../../../public/useEnterEscape';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { resolveInputRenderer } from '../forms/input/InputRenderFactory';
-
 import { SelectInputChange } from '../forms/input/SelectInput';
+import { useOverlayTriggerState } from '../../OverlayTrigger';
+import { Popover } from '../../Popover';
 
 import { CellMessage, ValueDescriptor } from './models';
 
@@ -40,11 +42,130 @@ import { DateInputCell } from './DateInputCell';
 // CSS Order: top, right, bottom, left
 export type BorderMask = [boolean, boolean, boolean, boolean];
 
-export interface CellProps {
+interface SharedProps {
     borderMaskBottom?: boolean;
     borderMaskLeft?: boolean;
     borderMaskRight?: boolean;
     borderMaskTop?: boolean;
+    locked?: boolean;
+    message?: CellMessage;
+    placeholder?: string;
+    selected?: boolean;
+    selection?: boolean;
+}
+
+interface DisplayCellProps extends SharedProps {
+    alignRight: boolean;
+    displayValue: string;
+    isReadOnly: boolean;
+    onBlur: () => void;
+    onDoubleClick: () => void;
+    onKeyDown: React.KeyboardEventHandler<HTMLElement>;
+    onMouseDown: React.MouseEventHandler<HTMLDivElement>;
+    onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
+    showMenu: boolean;
+    targetRef: RefObject<HTMLDivElement>;
+}
+
+const DisplayCell: FC<DisplayCellProps> = memo(props => {
+    const {
+        alignRight,
+        borderMaskBottom,
+        borderMaskLeft,
+        borderMaskRight,
+        borderMaskTop,
+        displayValue,
+        isReadOnly,
+        locked,
+        message,
+        onBlur,
+        onDoubleClick,
+        onKeyDown,
+        onMouseDown,
+        onMouseEnter: propsMouseEnter,
+        placeholder,
+        selected,
+        selection,
+        showMenu,
+        targetRef,
+    } = props;
+    const {
+        onMouseEnter: overlayMouseEnter,
+        onMouseLeave,
+        portalEl,
+        show,
+    } = useOverlayTriggerState<HTMLDivElement>('well-cell-overlay', !!message, false, 250);
+    const onMouseEnter = useCallback(
+        (event: MouseEvent<HTMLDivElement>) => {
+            overlayMouseEnter();
+            propsMouseEnter(event);
+        },
+        [overlayMouseEnter, propsMouseEnter]
+    );
+    const className = classNames('cellular-display', {
+        'cell-align-right': alignRight,
+        'cell-border-top': borderMaskTop,
+        'cell-border-right': borderMaskRight,
+        'cell-border-bottom': borderMaskBottom,
+        'cell-border-left': borderMaskLeft,
+        'cell-locked': locked,
+        'cell-menu': showMenu,
+        'cell-placeholder': displayValue.length === 0 && placeholder !== undefined,
+        'cell-read-only': isReadOnly,
+        'cell-selected': selected,
+        'cell-selection': selection,
+        'cell-warning': message !== undefined,
+    });
+    const value = displayValue.length === 0 && placeholder ? placeholder : displayValue;
+    let body;
+    if (showMenu && !isReadOnly) {
+        body = (
+            <div className="cell-content">
+                <div className="cell-menu-value">{value}</div>
+                <span className="cell-menu-selector" onClick={onDoubleClick}>
+                    <i className="fa fa-chevron-down" />
+                </span>
+            </div>
+        );
+    } else {
+        body = (
+            <div className="cell-content">
+                <span className="cell-content-value">{value}</span>
+            </div>
+        );
+    }
+
+    let popover: ReactNode;
+
+    if (message) {
+        popover = (
+            <Popover id="grid-cell-popover" placement="top" targetRef={targetRef}>
+                {message.message}
+            </Popover>
+        );
+    }
+
+    return (
+        <div
+            autoFocus={selected}
+            className={className}
+            onBlur={onBlur}
+            onDoubleClick={onDoubleClick}
+            onKeyDown={onKeyDown}
+            onMouseDown={onMouseDown}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            ref={targetRef}
+            tabIndex={-1}
+        >
+            {body}
+            {show && createPortal(popover, portalEl)}
+        </div>
+    );
+});
+DisplayCell.displayName = 'DisplayCell';
+
+export interface CellProps extends SharedProps {
     cellActions: CellActions;
     col: QueryColumn;
     colIdx: number;
@@ -56,17 +177,12 @@ export interface CellProps {
     forUpdate: boolean;
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
     linkedValues?: any[];
-    locked?: boolean;
     lookupValueFilters?: Filter.IFilter[];
-    message?: CellMessage;
     name?: string;
-    placeholder?: string;
     readOnly?: boolean;
     renderDragHandle?: boolean;
     row?: any;
     rowIdx: number;
-    selected?: boolean;
-    selection?: boolean;
     values?: List<ValueDescriptor>;
 }
 
@@ -127,7 +243,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
 
     componentDidUpdate(prevProps: Readonly<CellProps>): void {
         if (!this.props.focused && this.props.selected) {
-            this.displayEl.current.focus();
+            this.displayEl?.current?.focus();
 
             if (prevProps.focused) {
                 this.preFocusDOMRect.current = null;
@@ -139,7 +255,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
     }
 
     focusCell = (colIdx: number, rowIdx: number, clearValue?: boolean): void => {
-        this.preFocusDOMRect.current = this.displayEl.current.getBoundingClientRect();
+        this.preFocusDOMRect.current = this.displayEl?.current?.getBoundingClientRect();
         this.props.cellActions.focusCell(colIdx, rowIdx, clearValue);
     };
 
@@ -418,77 +534,33 @@ export class Cell extends React.PureComponent<CellProps, State> {
         const showMenu = showLookup || (col.inputRenderer && col.inputRenderer !== 'AppendUnitsInput');
 
         if (!focused) {
-            let valueDisplay = values
+            const displayValue = values
                 .filter(vd => vd && vd.display !== undefined)
                 .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
 
-            const displayProps = {
-                autoFocus: selected,
-                className: classNames('cellular-display', {
-                    'cell-align-right': alignRight,
-                    'cell-border-top': borderMaskTop,
-                    'cell-border-right': borderMaskRight,
-                    'cell-border-bottom': borderMaskBottom,
-                    'cell-border-left': borderMaskLeft,
-                    'cell-locked': locked,
-                    'cell-menu': showMenu,
-                    'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
-                    'cell-read-only': this.isReadOnly,
-                    'cell-selected': selected,
-                    'cell-selection': selection,
-                    'cell-warning': message !== undefined,
-                }),
-                onDoubleClick: this.handleDblClick,
-                onKeyDown: this.handleKeys,
-                onMouseDown: this.handleSelect,
-                onMouseEnter: this.handleMouseEnter,
-                onBlur: this.handleSelectionBlur,
-                ref: this.displayEl,
-                tabIndex: -1,
-            };
-
-            if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
-            let cell: ReactNode;
-
-            if (showMenu && !this.isReadOnly) {
-                cell = (
-                    <div {...displayProps}>
-                        <div className="cell-content">
-                            <div className="cell-menu-value">{valueDisplay}</div>
-                            <span className="cell-menu-selector" onClick={this.handleDblClick}>
-                                <i className="fa fa-chevron-down" />
-                            </span>
-                        </div>
-                    </div>
-                );
-            } else {
-                cell = (
-                    <div {...displayProps}>
-                        <div className="cell-content">
-                            <span className="cell-content-value">{valueDisplay}</span>
-                        </div>
-                    </div>
-                );
-            }
-
-            if (message) {
-                cell = (
-                    <OverlayTrigger
-                        overlay={
-                            <Popover bsClass="popover" id="grid-cell-popover">
-                                {message.message}
-                            </Popover>
-                        }
-                        placement="top"
-                    >
-                        {cell}
-                    </OverlayTrigger>
-                );
-            }
-
             return (
                 <>
-                    {cell}
+                    <DisplayCell
+                        alignRight={alignRight}
+                        borderMaskBottom={borderMaskBottom}
+                        borderMaskLeft={borderMaskLeft}
+                        borderMaskRight={borderMaskRight}
+                        borderMaskTop={borderMaskTop}
+                        displayValue={displayValue}
+                        isReadOnly={this.isReadOnly}
+                        locked={locked}
+                        message={message}
+                        onBlur={this.handleSelectionBlur}
+                        onDoubleClick={this.handleDblClick}
+                        onKeyDown={this.handleKeys}
+                        onMouseDown={this.handleSelect}
+                        onMouseEnter={this.handleMouseEnter}
+                        placeholder={placeholder}
+                        selected={selected}
+                        selection={selection}
+                        showMenu={showMenu}
+                        targetRef={this.displayEl}
+                    />
                     {renderDragHandle && !this.isReadOnly && (
                         <i className={'fa fa-square ' + CELL_SELECTION_HANDLE_CLASSNAME} />
                     )}

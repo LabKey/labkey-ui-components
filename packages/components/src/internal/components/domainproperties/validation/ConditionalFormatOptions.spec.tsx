@@ -44,19 +44,19 @@ describe('ConditionalFormatOptions', () => {
 
         const bold = format.find({
             id: createFormInputId(DOMAIN_VALIDATOR_BOLD, domainIndex, validatorIndex),
-            bsClass: 'checkbox',
+            type: 'checkbox',
         });
         expect(bold.props().checked).toEqual(true);
 
         const italic = format.find({
             id: createFormInputId(DOMAIN_VALIDATOR_ITALIC, domainIndex, validatorIndex),
-            bsClass: 'checkbox',
+            type: 'checkbox',
         });
         expect(italic.props().checked).toEqual(false);
 
         const strike = format.find({
             id: createFormInputId(DOMAIN_VALIDATOR_STRIKETHROUGH, domainIndex, validatorIndex),
-            bsClass: 'checkbox',
+            type: 'checkbox',
         });
         expect(strike.props().checked).toEqual(false);
 

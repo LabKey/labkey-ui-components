@@ -102,27 +102,15 @@ exports[`TextFieldOptions Text data type 1`] = `
       <div
         className="col-xs-12 domain-text-options-col"
       >
-        <FormControl
-          bsClass="form-control"
+        <input
           checked={false}
-          className="domain-text-options-radio1 domain-field-float-left"
-          componentClass="input"
+          className="form-control domain-text-options-radio1 domain-field-float-left"
           disabled={false}
           id="domainpropertiesrow-maxLength-1-1"
           onChange={[Function]}
           type="radio"
           value="maxLength"
-        >
-          <input
-            checked={false}
-            className="domain-text-options-radio1 domain-field-float-left form-control"
-            disabled={false}
-            id="domainpropertiesrow-maxLength-1-1"
-            onChange={[Function]}
-            type="radio"
-            value="maxLength"
-          />
-        </FormControl>
+        />
         <div>
           Unlimited
         </div>
@@ -134,50 +122,27 @@ exports[`TextFieldOptions Text data type 1`] = `
       <div
         className="col-xs-12"
       >
-        <FormControl
-          bsClass="form-control"
+        <input
           checked={true}
-          className="domain-text-options-radio2 domain-field-float-left"
-          componentClass="input"
+          className="form-control domain-text-options-radio2 domain-field-float-left"
           id="domainpropertiesrow-customLength-1-1"
           onChange={[Function]}
           type="radio"
           value="customLength"
-        >
-          <input
-            checked={true}
-            className="domain-text-options-radio2 domain-field-float-left form-control"
-            id="domainpropertiesrow-customLength-1-1"
-            onChange={[Function]}
-            type="radio"
-            value="customLength"
-          />
-        </FormControl>
+        />
         <span
           className="domain-text-options-length domain-field-float-left"
         >
           No longer than 
-          <FormControl
-            bsClass="form-control"
-            className="domain-text-length-field"
-            componentClass="input"
+          <input
+            className="form-control domain-text-length-field"
             disabled={false}
             id="domainpropertiesrow-scale-1-1"
             name="domainpropertiesrow-scale"
             onChange={[Function]}
             type="number"
             value={200}
-          >
-            <input
-              className="domain-text-length-field form-control"
-              disabled={false}
-              id="domainpropertiesrow-scale-1-1"
-              name="domainpropertiesrow-scale"
-              onChange={[Function]}
-              type="number"
-              value={200}
-            />
-          </FormControl>
+          />
            characters
         </span>
       </div>

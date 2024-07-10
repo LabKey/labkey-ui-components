@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FC, memo, useCallback } from 'react';
-import { FormControl } from 'react-bootstrap';
 
 import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
@@ -22,7 +21,8 @@ export const NameInput: FC<BasicPropertiesInputsProps> = memo(({ model, onInputC
         </div>
 
         <div className="col-xs-9 col-lg-8">
-            <FormControl
+            <input
+                className="form-control"
                 id="name"
                 type="text"
                 placeholder="Enter a name for this list"

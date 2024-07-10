@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
-import { Checkbox, FormControl } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
+
+import { DomainDesignerCheckbox } from '../DomainDesignerCheckbox';
 
 import { Modal } from '../../../Modal';
 import { getSubmitButtonClass } from '../../../app/utils';
@@ -103,7 +104,8 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
                 {showInAdvancedSettings && <div className="col-xs-1" />}
 
                 <div className="col-xs-7">
-                    <FormControl
+                    <input
+                        className="form-control"
                         id={name}
                         type="text"
                         placeholder={placeholder}
@@ -282,7 +284,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 <LabelHelpTip title={showInOverviewLabel}>{SHOW_IN_OVERVIEW}</LabelHelpTip>
                             </div>
                             <div className="col-xs-7">
-                                <Checkbox
+                                <DomainDesignerCheckbox
                                     checked={showByDefault}
                                     onChange={this.onInputChange}
                                     id="showByDefault"

@@ -1,7 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { FormControl } from 'react-bootstrap';
 
-import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
+import { HelpLink, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
 import { OntologyConceptAnnotation } from '../ontology/OntologyConceptAnnotation';
 
@@ -59,7 +58,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                 supported, which allows ways to easily substitute and link to other locations in LabKey.
                 <br />
                 <br />
-                Learn more about using {helpLinkNode(URL_ENCODING_TOPIC, 'URL Formatting Options')}.
+                Learn more about using <HelpLink topic={URL_ENCODING_TOPIC}>URL Formatting Options</HelpLink>.
             </>
         );
     };
@@ -77,8 +76,8 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                 <div className="row">
                     <div className="col-xs-5">
                         <div className="domain-field-label">Description</div>
-                        <FormControl
-                            componentClass="textarea"
+                        <textarea
+                            className="form-control"
                             rows={4}
                             value={field.description || ''}
                             id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, domainIndex, index)}
@@ -89,7 +88,8 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                     </div>
                     <div className="col-xs-3">
                         <div className="domain-field-label">Label</div>
-                        <FormControl
+                        <input
+                            className="form-control"
                             type="text"
                             value={field.label || ''}
                             id={createFormInputId(DOMAIN_FIELD_LABEL, domainIndex, index)}
@@ -105,7 +105,8 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                                         helpTipBody={this.getImportAliasHelpText()}
                                     />
                                 </div>
-                                <FormControl
+                                <input
+                                    className="form-control"
                                     type="text"
                                     value={field.importAliases || ''}
                                     id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
@@ -120,7 +121,8 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                         <div className="domain-field-label">
                             <DomainFieldLabel label="URL" helpTipBody={this.getURLHelpText()} />
                         </div>
-                        <FormControl
+                        <input
+                            className="form-control"
                             type="text"
                             value={field.URL || ''}
                             id={createFormInputId(DOMAIN_FIELD_URL, domainIndex, index)}

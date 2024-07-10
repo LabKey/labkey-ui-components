@@ -6,7 +6,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+        class="panel panel-default domain-form-panel lk-border-theme-light"
       >
         <div
           class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -142,7 +142,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
                 class="col-xs-10"
               >
                 <input
-                  class="naming-pattern-border-warning form-control"
+                  class="form-control naming-pattern-border-warning"
                   id="entity-nameExpression"
                   placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                   type="text"
@@ -276,7 +276,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light"
     >
       <div
         class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -412,7 +412,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               class="col-xs-10"
             >
               <input
-                class="naming-pattern-border-warning form-control"
+                class="form-control naming-pattern-border-warning"
                 id="entity-nameExpression"
                 placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                 type="text"
@@ -583,7 +583,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+        class="panel panel-default domain-form-panel lk-border-theme-light"
       >
         <div
           class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -714,7 +714,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
                 class="col-xs-10"
               >
                 <input
-                  class="naming-pattern-border-warning form-control"
+                  class="form-control naming-pattern-border-warning"
                   id="entity-nameExpression"
                   placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                   type="text"
@@ -792,7 +792,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light"
     >
       <div
         class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -923,7 +923,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
               class="col-xs-10"
             >
               <input
-                class="naming-pattern-border-warning form-control"
+                class="form-control naming-pattern-border-warning"
                 id="entity-nameExpression"
                 placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                 type="text"
@@ -1043,7 +1043,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+        class="panel panel-default domain-form-panel lk-border-theme-light"
       >
         <div
           class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -1174,7 +1174,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                 class="col-xs-10"
               >
                 <input
-                  class="naming-pattern-border-warning form-control"
+                  class="form-control naming-pattern-border-warning"
                   id="entity-nameExpression"
                   placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                   type="text"
@@ -1295,7 +1295,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light"
     >
       <div
         class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -1426,7 +1426,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
               class="col-xs-10"
             >
               <input
-                class="naming-pattern-border-warning form-control"
+                class="form-control naming-pattern-border-warning"
                 id="entity-nameExpression"
                 placeholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                 type="text"

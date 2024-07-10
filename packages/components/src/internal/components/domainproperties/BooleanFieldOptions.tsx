@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { FormControl } from 'react-bootstrap';
 
 import { createFormInputId, createFormInputName } from './utils';
 import { isFieldFullyLocked } from './propertiesUtil';
@@ -52,7 +51,8 @@ export class BooleanFieldOptions extends PureComponent<BooleanFieldProps> {
                 </div>
                 <div className="row">
                     <div className="col-xs-3">
-                        <FormControl
+                        <input
+                            className="form-control"
                             type="text"
                             value={format || ''}
                             onChange={this.onFieldChange}

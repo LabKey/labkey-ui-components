@@ -9,7 +9,7 @@ import {
     ProjectConfigurableDataType,
 } from '../components/entities/models';
 import { getEntityTypeOptions, getProjectConfigurableEntityTypeOptions } from '../components/entities/actions';
-import { getProjectDataTypeDataCount, getDataTypeProjectDataCount } from '../components/project/actions';
+import { getDataTypeProjectDataCount, getProjectDataTypeDataCount } from '../components/project/actions';
 
 import {
     clearSelected,
@@ -39,18 +39,19 @@ import {
     deleteRows,
     deleteRowsByContainer,
     DeleteRowsOptions,
+    getDefaultVisibleColumns,
     getQueryDetails,
     GetQueryDetailsOptions,
     insertRows,
     InsertRowsOptions,
     QueryCommandResponse,
+    saveRowsByContainer,
+    SaveRowsOptions,
+    SelectDistinctOptions,
     selectDistinctRows,
     updateRows,
     updateRowsByContainer,
     UpdateRowsOptions,
-    getDefaultVisibleColumns,
-    saveRowsByContainer,
-    SaveRowsOptions,
 } from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
 
@@ -117,7 +118,7 @@ export interface QueryAPIWrapper {
         shared?: boolean,
         replace?: boolean
     ) => Promise<void>;
-    selectDistinctRows: (selectDistinctOptions: Query.SelectDistinctOptions) => Promise<Query.SelectDistinctResponse>;
+    selectDistinctRows: (selectDistinctOptions: SelectDistinctOptions) => Promise<Query.SelectDistinctResponse>;
     selectRows: (options: SelectRowsOptions) => Promise<SelectRowsResponse>;
     setSelected: (
         key: string,

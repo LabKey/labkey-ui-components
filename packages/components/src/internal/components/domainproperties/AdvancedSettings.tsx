@@ -246,8 +246,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         // some domains just don't support default values
         if (!showDefaultValueSettings) return false;
 
-        // Not shown for file types
-        if (field.dataType.isFileType()) return false;
+        // Not shown for file types or calculated fields
+        if (field.dataType.isFileType() || field.isCalculatedField()) return false;
 
         return !this.props.defaultValueOptions.isEmpty();
     };

@@ -6,7 +6,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+        class="panel panel-default domain-form-panel lk-border-theme-light"
       >
         <div
           class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -196,7 +196,7 @@ exports[`ListPropertiesPanel existing list 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light"
     >
       <div
         class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -438,7 +438,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+        class="panel panel-default domain-form-panel lk-border-theme-light"
       >
         <div
           class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -641,7 +641,7 @@ exports[`ListPropertiesPanel list with error 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light"
     >
       <div
         class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -891,7 +891,7 @@ exports[`ListPropertiesPanel new list 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+        class="panel panel-default domain-form-panel lk-border-theme-light"
       >
         <div
           class="domain-panel-header domain-panel-header-expanded labkey-page-nav"
@@ -1074,7 +1074,7 @@ exports[`ListPropertiesPanel new list 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light"
     >
       <div
         class="domain-panel-header domain-panel-header-expanded labkey-page-nav"

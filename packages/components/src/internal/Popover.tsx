@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
+import classNames from 'classnames';
 
 import { useOverlayPositioning } from './useOverlayPositioning';
 import { TooltipProps } from './Tooltip';
-import classNames from 'classnames';
 
 interface PopoverProps extends TooltipProps {
-    title?: string;
     className?: string;
+    title?: string;
 }
 
 /**
@@ -16,9 +16,12 @@ interface PopoverProps extends TooltipProps {
  *
  * See additional docs at components/docs/overlays.md
  */
-export const Popover: FC<PopoverProps> = ({ children, className, targetRef, id, placement = 'right', title }) => {
-    const { overlayRef, style } = useOverlayPositioning(placement, targetRef);
-    const className_ = classNames('lk-popover', 'popover', placement, className);
+export const Popover: FC<PopoverProps> = props => {
+    const { children, className, targetRef, id, isFixedPosition, placement = 'right', title } = props;
+    const { overlayRef, style } = useOverlayPositioning(placement, targetRef, isFixedPosition);
+    const className_ = classNames('lk-popover', 'popover', placement, className, {
+        'lk-popover--is-fixed': isFixedPosition,
+    });
 
     return (
         <div id={id} className={className_} style={style} ref={overlayRef}>
@@ -28,3 +31,4 @@ export const Popover: FC<PopoverProps> = ({ children, className, targetRef, id, 
         </div>
     );
 };
+Popover.displayName = 'Popover';

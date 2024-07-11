@@ -1,7 +1,8 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Radio } from 'react-bootstrap';
 
 import { Alert } from '../base/Alert';
+
+import { DomainDesignerRadio } from './DomainDesignerRadio';
 
 import { createFormInputId } from './utils';
 import { isFieldFullyLocked } from './propertiesUtil';
@@ -81,7 +82,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
             <div className="row">
                 <div className="col-xs-12">
                     <div className="derivation_scope_options_container">
-                        <Radio
+                        <DomainDesignerRadio
                             name={inputId}
                             value={DERIVATION_DATA_SCOPES.PARENT_ONLY}
                             checked={
@@ -91,8 +92,8 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
                             disabled={isFullyLocked || !isParentOnlyValidOption}
                         >
                             {config.labelParent}
-                        </Radio>
-                        <Radio
+                        </DomainDesignerRadio>
+                        <DomainDesignerRadio
                             name={inputId}
                             value={DERIVATION_DATA_SCOPES.CHILD_ONLY}
                             checked={value === DERIVATION_DATA_SCOPES.CHILD_ONLY}
@@ -100,8 +101,8 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
                             disabled={isFullyLocked || !isChildOnlyValidOption || isRequiredField}
                         >
                             {config.labelChild}
-                        </Radio>
-                        <Radio
+                        </DomainDesignerRadio>
+                        <DomainDesignerRadio
                             name={inputId}
                             value={DERIVATION_DATA_SCOPES.ALL}
                             checked={value === DERIVATION_DATA_SCOPES.ALL || (!value && isExistingNonScopedField)}
@@ -109,7 +110,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
                             disabled={isFullyLocked}
                         >
                             {config.labelAll}
-                        </Radio>
+                        </DomainDesignerRadio>
                     </div>
                 </div>
             </div>

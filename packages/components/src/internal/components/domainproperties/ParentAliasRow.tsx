@@ -1,8 +1,6 @@
 import React from 'react';
 import { findDOMNode } from 'react-dom';
 
-import { FormControl, FormControlProps } from 'react-bootstrap';
-
 import classNames from 'classnames';
 
 import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
@@ -26,7 +24,7 @@ interface IParentAliasRow {
 }
 
 export class ParentAliasRow extends React.Component<IParentAliasRow> {
-    private nameInput: React.RefObject<FormControl>;
+    private nameInput: React.RefObject<HTMLInputElement>;
 
     static defaultProps = {
         aliasCaption: 'Parent Alias',
@@ -51,7 +49,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
         }
     };
 
-    onChange = (e: React.ChangeEvent<FormControlProps>): void => {
+    onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { name, value } = e.target;
         this.props.onAliasChange(this.props.id, name, value);
     };
@@ -100,7 +98,8 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                     <DomainFieldLabel label={aliasCaption} required={true} helpTipBody={helpMsg} />
                 </div>
                 <div className={classNames('col-xs-3', { 'has-error': !ignoreAliasError && (aliasBlank || isDupe) })}>
-                    <FormControl
+                    <input
+                        className="form-control"
                         ref={this.nameInput}
                         name="alias"
                         type="text"

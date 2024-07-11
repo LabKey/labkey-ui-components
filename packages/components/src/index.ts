@@ -303,7 +303,6 @@ import { DatePickerInput } from './internal/components/forms/input/DatePickerInp
 import { FileInput } from './internal/components/forms/input/FileInput';
 import { TextInput } from './internal/components/forms/input/TextInput';
 import { TextAreaInput } from './internal/components/forms/input/TextAreaInput';
-import { FieldEditForm, FieldEditProps } from './internal/components/forms/input/FieldEditInput';
 import { ColorPickerInput } from './internal/components/forms/input/ColorPickerInput';
 import { CommentTextArea, COMMENT_FIELD_ID } from './internal/components/forms/input/CommentTextArea';
 import { ColorIcon } from './internal/components/base/ColorIcon';
@@ -1210,8 +1209,6 @@ export {
     ColorIcon,
     CommentTextArea,
     useDataChangeCommentsRequired,
-    FieldEditForm,
-    FieldEditProps,
     QuerySelect,
     UserSelectInput,
     FormsyCheckbox,

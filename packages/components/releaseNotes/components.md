@@ -10,6 +10,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   - hide some AdvancedSettings for calculated fields
   - use rangeURI for calculated fields to determine type specific expanded row options to show
 
+### version 4.0.0
+*Released*: 10 July 2024
+- Remove usages of react-bootstrap
+- Remove FieldEditForm
+- Popover/Tooltip: support fixed positioning
+- Remove react-boostrap and @types/react-boostrap dependencies
+
 ### version 3.57.1
 *Released*: 8 July 2024
 - Issue 50640: Update `MenuSectionModel` URL construction to link to `runs` page for assay names

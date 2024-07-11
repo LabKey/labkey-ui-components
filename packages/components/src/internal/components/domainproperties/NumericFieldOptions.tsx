@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { FormControl } from 'react-bootstrap';
 
 import { HelpLink, JavaDocsLink, NUMBER_FORMATS_TOPIC } from '../../util/helpLinks';
 
@@ -62,7 +61,8 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
                 </div>
                 <div className="row">
                     <div className="col-xs-3">
-                        <FormControl
+                        <input
+                            className="form-control"
                             type="text"
                             value={format || ''}
                             onChange={this.onFieldChange}
@@ -72,8 +72,8 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
                         />
                     </div>
                     <div className="col-xs-2">
-                        <FormControl
-                            componentClass="select"
+                        <select
+                            className="form-control"
                             id={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, domainIndex, index)}
                             disabled={isFieldFullyLocked(lockType)}
                             name={createFormInputName(DOMAIN_FIELD_DEFAULT_SCALE)}
@@ -100,7 +100,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps> 
                             >
                                 Log
                             </option>
-                        </FormControl>
+                        </select>
                     </div>
                 </div>
                 <ScannableOption {...this.props} />

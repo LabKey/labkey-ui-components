@@ -9,7 +9,8 @@ export interface OverlayPositioning<O extends Element = HTMLDivElement> {
 
 export function useOverlayPositioning<T extends Element = HTMLDivElement, O extends Element = HTMLDivElement>(
     placement: Placement,
-    targetRef: MutableRefObject<T>
+    targetRef: MutableRefObject<T>,
+    isFixedPosition: boolean = false
 ): OverlayPositioning<O> {
     const overlayRef = useRef<O>(undefined);
     // Sometimes it takes a little extra time before the useEffect below can compute the style, so we default the
@@ -44,10 +45,13 @@ export function useOverlayPositioning<T extends Element = HTMLDivElement, O exte
 
             // X positioning
             if (placement === 'top' || placement === 'bottom') {
-                // updatedStyle.left = targetRect.left - overlayRect.width / 2;
-                updatedStyle.left = targetRect.left + window.scrollX + targetRect.width / 2 - overlayRect.width / 2;
+                let left = targetRect.left + targetRect.width / 2 - overlayRect.width / 2;
+                if (!isFixedPosition) left = left + window.scrollX;
+                updatedStyle.left = left;
             } else if (placement === 'right') {
-                updatedStyle.left = targetRect.left + window.scrollX + targetRect.width;
+                let left = targetRect.left + targetRect.width;
+                if (!isFixedPosition) left = left + window.scrollX;
+                updatedStyle.left = left;
             } else if (placement === 'left') {
                 updatedStyle.left = targetRect.left - overlayRect.width;
             }
@@ -58,11 +62,17 @@ export function useOverlayPositioning<T extends Element = HTMLDivElement, O exte
 
             // Y positioning
             if (placement === 'left' || placement === 'right') {
-                updatedStyle.top = targetRect.top + window.scrollY + targetRect.height / 2 - overlayRect.height / 2;
+                let top = targetRect.top + targetRect.height / 2 - overlayRect.height / 2;
+                if (!isFixedPosition) top = top + window.scrollY;
+                updatedStyle.top = top;
             } else if (placement === 'top') {
-                updatedStyle.top = targetRect.top + window.scrollY - overlayRect.height;
+                let top = targetRect.top - overlayRect.height;
+                if (!isFixedPosition) top = top + window.scrollY;
+                updatedStyle.top = top;
             } else if (placement === 'bottom') {
-                updatedStyle.top = targetRect.top + window.scrollY + targetRect.height;
+                let top = targetRect.top + targetRect.height;
+                if (!isFixedPosition) top = top + window.scrollY;
+                updatedStyle.top = top;
             }
 
             setStyle(updatedStyle);

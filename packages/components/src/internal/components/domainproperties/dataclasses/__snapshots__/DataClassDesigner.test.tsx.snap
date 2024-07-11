@@ -6,7 +6,7 @@ exports[`DataClassDesigner custom properties 1`] = `
     class="domain-designer"
   >
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -26,7 +26,7 @@ exports[`DataClassDesigner custom properties 1`] = `
         </span>
       </div>
       <div
-        class="panel-collapse collapse in"
+        class="collapse panel-collapse in"
       >
         <div
           class="panel-body"
@@ -169,7 +169,7 @@ exports[`DataClassDesigner custom properties 1`] = `
       </div>
     </div>
     <div
-      class="panel panel-default domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -204,10 +204,10 @@ exports[`DataClassDesigner custom properties 1`] = `
         </span>
       </div>
       <div
-        class="panel-collapse collapse"
+        class="collapse panel-collapse"
       >
         <div
-          class="domain-field-top-noBuffer panel-body"
+          class="panel-body domain-field-top-noBuffer"
         >
           <div
             class="domain-system-fields"
@@ -230,152 +230,156 @@ exports[`DataClassDesigner custom properties 1`] = `
             </div>
           </div>
           <div
-            class="domain-system-fields__grid collapse in"
+            class="collapse in"
           >
             <div
-              class="table-responsive"
+              class="domain-system-fields__grid"
             >
               <div
-                class="grid-messages"
-              />
-              <table
-                class="table table-striped table-bordered table-condensed"
+                class="table-responsive"
               >
-                <thead>
-                  <tr>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Enabled"
+                <div
+                  class="grid-messages"
+                />
+                <table
+                  class="table table-striped table-bordered table-condensed"
+                >
+                  <thead>
+                    <tr>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Enabled"
+                      >
+                        Enabled
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Name"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Label"
+                      >
+                        Label
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="DataType"
+                      >
+                        Data Type
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Required"
+                      >
+                        Required
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Description"
+                      >
+                        Description
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      class="grid-row-alternate"
                     >
-                      Enabled
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Name"
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          checked=""
+                          class="grid-panel__row-checkbox"
+                          disabled=""
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Name
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Name
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Text
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          checked=""
+                          class="grid-panel__row-checkbox"
+                          disabled=""
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Contains a short name for this data object
+                      </td>
+                    </tr>
+                    <tr
+                      class="grid-row"
                     >
-                      Name
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Label"
-                    >
-                      Label
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="DataType"
-                    >
-                      Data Type
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Required"
-                    >
-                      Required
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Description"
-                    >
-                      Description
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    class="grid-row-alternate"
-                  >
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        checked=""
-                        class="grid-panel__row-checkbox"
-                        disabled=""
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Name
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Name
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Text
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        checked=""
-                        class="grid-panel__row-checkbox"
-                        disabled=""
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Contains a short name for this data object
-                    </td>
-                  </tr>
-                  <tr
-                    class="grid-row"
-                  >
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        checked=""
-                        class="grid-panel__row-checkbox"
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Description
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Description
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Text
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        class="grid-panel__row-checkbox"
-                        disabled=""
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Contains a description for this data object
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          checked=""
+                          class="grid-panel__row-checkbox"
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Description
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Description
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Text
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          class="grid-panel__row-checkbox"
+                          disabled=""
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Contains a description for this data object
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
           <div
@@ -529,7 +533,7 @@ exports[`DataClassDesigner default properties 1`] = `
     class="domain-designer"
   >
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -549,7 +553,7 @@ exports[`DataClassDesigner default properties 1`] = `
         </span>
       </div>
       <div
-        class="panel-collapse collapse in"
+        class="collapse panel-collapse in"
       >
         <div
           class="panel-body"
@@ -905,7 +909,7 @@ exports[`DataClassDesigner default properties 1`] = `
       </div>
     </div>
     <div
-      class="panel panel-default domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -940,10 +944,10 @@ exports[`DataClassDesigner default properties 1`] = `
         </span>
       </div>
       <div
-        class="panel-collapse collapse"
+        class="collapse panel-collapse"
       >
         <div
-          class="domain-field-top-noBuffer panel-body"
+          class="panel-body domain-field-top-noBuffer"
         >
           <div
             class="domain-system-fields"
@@ -966,152 +970,156 @@ exports[`DataClassDesigner default properties 1`] = `
             </div>
           </div>
           <div
-            class="domain-system-fields__grid collapse in"
+            class="collapse in"
           >
             <div
-              class="table-responsive"
+              class="domain-system-fields__grid"
             >
               <div
-                class="grid-messages"
-              />
-              <table
-                class="table table-striped table-bordered table-condensed"
+                class="table-responsive"
               >
-                <thead>
-                  <tr>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Enabled"
+                <div
+                  class="grid-messages"
+                />
+                <table
+                  class="table table-striped table-bordered table-condensed"
+                >
+                  <thead>
+                    <tr>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Enabled"
+                      >
+                        Enabled
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Name"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Label"
+                      >
+                        Label
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="DataType"
+                      >
+                        Data Type
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Required"
+                      >
+                        Required
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Description"
+                      >
+                        Description
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      class="grid-row-alternate"
                     >
-                      Enabled
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Name"
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          checked=""
+                          class="grid-panel__row-checkbox"
+                          disabled=""
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Name
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Name
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Text
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          checked=""
+                          class="grid-panel__row-checkbox"
+                          disabled=""
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Contains a short name for this data object
+                      </td>
+                    </tr>
+                    <tr
+                      class="grid-row"
                     >
-                      Name
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Label"
-                    >
-                      Label
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="DataType"
-                    >
-                      Data Type
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Required"
-                    >
-                      Required
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Description"
-                    >
-                      Description
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    class="grid-row-alternate"
-                  >
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        checked=""
-                        class="grid-panel__row-checkbox"
-                        disabled=""
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Name
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Name
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Text
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        checked=""
-                        class="grid-panel__row-checkbox"
-                        disabled=""
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Contains a short name for this data object
-                    </td>
-                  </tr>
-                  <tr
-                    class="grid-row"
-                  >
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        checked=""
-                        class="grid-panel__row-checkbox"
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Description
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Description
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Text
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        class="grid-panel__row-checkbox"
-                        disabled=""
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Contains a description for this data object
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          checked=""
+                          class="grid-panel__row-checkbox"
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Description
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Description
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Text
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          class="grid-panel__row-checkbox"
+                          disabled=""
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Contains a description for this data object
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
           <div
@@ -1265,7 +1273,7 @@ exports[`DataClassDesigner initModel 1`] = `
     class="domain-designer"
   >
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -1292,7 +1300,7 @@ exports[`DataClassDesigner initModel 1`] = `
         </span>
       </div>
       <div
-        class="panel-collapse collapse in"
+        class="collapse panel-collapse in"
       >
         <div
           class="panel-body"
@@ -1650,7 +1658,7 @@ exports[`DataClassDesigner initModel 1`] = `
       </div>
     </div>
     <div
-      class="panel panel-default domain-form-panel panel panel-default"
+      class="panel panel-default domain-form-panel"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-collapsed"
@@ -1682,10 +1690,10 @@ exports[`DataClassDesigner initModel 1`] = `
         </span>
       </div>
       <div
-        class="panel-collapse collapse"
+        class="collapse panel-collapse"
       >
         <div
-          class="domain-field-top-noBuffer panel-body"
+          class="panel-body domain-field-top-noBuffer"
         >
           <div
             class="domain-system-fields"
@@ -1708,152 +1716,156 @@ exports[`DataClassDesigner initModel 1`] = `
             </div>
           </div>
           <div
-            class="domain-system-fields__grid collapse in"
+            class="collapse in"
           >
             <div
-              class="table-responsive"
+              class="domain-system-fields__grid"
             >
               <div
-                class="grid-messages"
-              />
-              <table
-                class="table table-striped table-bordered table-condensed"
+                class="table-responsive"
               >
-                <thead>
-                  <tr>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Enabled"
+                <div
+                  class="grid-messages"
+                />
+                <table
+                  class="table table-striped table-bordered table-condensed"
+                >
+                  <thead>
+                    <tr>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Enabled"
+                      >
+                        Enabled
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Name"
+                      >
+                        Name
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Label"
+                      >
+                        Label
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="DataType"
+                      >
+                        Data Type
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Required"
+                      >
+                        Required
+                      </th>
+                      <th
+                        class="grid-header-cell"
+                        draggable="false"
+                        id="Description"
+                      >
+                        Description
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      class="grid-row-alternate"
                     >
-                      Enabled
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Name"
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          checked=""
+                          class="grid-panel__row-checkbox"
+                          disabled=""
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Name
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Source ID
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Text
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          checked=""
+                          class="grid-panel__row-checkbox"
+                          disabled=""
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Contains a short name for this data object
+                      </td>
+                    </tr>
+                    <tr
+                      class="grid-row"
                     >
-                      Name
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Label"
-                    >
-                      Label
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="DataType"
-                    >
-                      Data Type
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Required"
-                    >
-                      Required
-                    </th>
-                    <th
-                      class="grid-header-cell"
-                      draggable="false"
-                      id="Description"
-                    >
-                      Description
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    class="grid-row-alternate"
-                  >
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        checked=""
-                        class="grid-panel__row-checkbox"
-                        disabled=""
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Name
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Source ID
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Text
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        checked=""
-                        class="grid-panel__row-checkbox"
-                        disabled=""
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Contains a short name for this data object
-                    </td>
-                  </tr>
-                  <tr
-                    class="grid-row"
-                  >
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        checked=""
-                        class="grid-panel__row-checkbox"
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Description
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Description
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Text
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      <input
-                        class="grid-panel__row-checkbox"
-                        disabled=""
-                        type="checkbox"
-                      />
-                    </td>
-                    <td
-                      style="text-align: left;"
-                    >
-                      Contains a description for this data object
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          checked=""
+                          class="grid-panel__row-checkbox"
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Description
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Description
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Text
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        <input
+                          class="grid-panel__row-checkbox"
+                          disabled=""
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        style="text-align: left;"
+                      >
+                        Contains a description for this data object
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
           <div
@@ -1925,7 +1937,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 class="pull-right domain-field-toolbar-right-aligned"
               >
                 <input
-                  class="domain-search-input form-control"
+                  class="form-control domain-search-input"
                   id="domain-search-name-0"
                   placeholder="Search Fields"
                   type="text"
@@ -2056,11 +2068,9 @@ exports[`DataClassDesigner initModel 1`] = `
                     class="domain-row-action-section"
                   >
                     <div
-                      class="domain-field-check-icon checkbox"
+                      class="checkbox domain-field-check-icon"
                     >
-                      <label
-                        title=""
-                      >
+                      <label>
                         <input
                           id="domainpropertiesrow-selected-0-0"
                           name="domainpropertiesrow-selected"
@@ -2145,11 +2155,9 @@ exports[`DataClassDesigner initModel 1`] = `
                             class="domain-field-checkbox-container"
                           >
                             <div
-                              class="domain-field-checkbox checkbox"
+                              class="checkbox domain-field-checkbox"
                             >
-                              <label
-                                title=""
-                              >
+                              <label>
                                 <input
                                   checked=""
                                   id="domainpropertiesrow-required-0-0"
@@ -2188,259 +2196,169 @@ exports[`DataClassDesigner initModel 1`] = `
                 <div
                   class="collapse"
                 >
-                  <div
-                    class="domain-row-container"
-                  >
+                  <div>
                     <div
-                      class="domain-row-container-expand-spacer"
-                    />
-                    <div
-                      class="domain-row-container-expanded"
+                      class="domain-row-container"
                     >
                       <div
-                        class="col-xs-12"
+                        class="domain-row-container-expand-spacer"
+                      />
+                      <div
+                        class="domain-row-container-expanded"
                       >
-                        <div>
-                          <div
-                            class="row"
-                          >
+                        <div
+                          class="col-xs-12"
+                        >
+                          <div>
                             <div
-                              class="col-xs-12"
+                              class="row"
                             >
                               <div
-                                class="domain-field-section-heading"
+                                class="col-xs-12"
                               >
-                                Text Options
+                                <div
+                                  class="domain-field-section-heading"
+                                >
+                                  Text Options
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
                             <div
-                              class="col-xs-12"
+                              class="row"
                             >
                               <div
-                                class="domain-field-label"
+                                class="col-xs-12"
                               >
-                                Maximum Text 
-                                <span
-                                  class="domain-no-wrap"
+                                <div
+                                  class="domain-field-label"
                                 >
-                                  Length
-                                  <div
-                                    class="overlay-trigger"
+                                  Maximum Text 
+                                  <span
+                                    class="domain-no-wrap"
                                   >
-                                    <span
-                                      class="label-help-target"
+                                    Length
+                                    <div
+                                      class="overlay-trigger"
                                     >
                                       <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
-                                  </div>
-                                  
-                                </span>
+                                        class="label-help-target"
+                                      >
+                                        <span
+                                          class="label-help-icon fa fa-question-circle"
+                                        />
+                                      </span>
+                                    </div>
+                                    
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
                             <div
-                              class="col-xs-12 domain-text-options-col"
+                              class="row"
                             >
-                              <input
-                                checked=""
-                                class="domain-text-options-radio1 domain-field-float-left form-control"
-                                id="domainpropertiesrow-maxLength-0-0"
-                                type="radio"
-                                value="maxLength"
-                              />
-                              <div>
-                                Unlimited
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-12"
-                            >
-                              <input
-                                class="domain-text-options-radio2 domain-field-float-left form-control"
-                                id="domainpropertiesrow-customLength-0-0"
-                                type="radio"
-                                value="customLength"
-                              />
-                              <span
-                                class="domain-text-options-length domain-field-float-left"
+                              <div
+                                class="col-xs-12 domain-text-options-col"
                               >
-                                No longer than 
                                 <input
-                                  class="domain-text-length-field form-control"
-                                  disabled=""
-                                  id="domainpropertiesrow-scale-0-0"
-                                  name="domainpropertiesrow-scale"
-                                  type="number"
-                                  value="4000"
+                                  checked=""
+                                  class="form-control domain-text-options-radio1 domain-field-float-left"
+                                  id="domainpropertiesrow-maxLength-0-0"
+                                  type="radio"
+                                  value="maxLength"
                                 />
-                                 characters
-                              </span>
+                                <div>
+                                  Unlimited
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-12"
+                              >
+                                <input
+                                  class="form-control domain-text-options-radio2 domain-field-float-left"
+                                  id="domainpropertiesrow-customLength-0-0"
+                                  type="radio"
+                                  value="customLength"
+                                />
+                                <span
+                                  class="domain-text-options-length domain-field-float-left"
+                                >
+                                  No longer than 
+                                  <input
+                                    class="form-control domain-text-length-field"
+                                    disabled=""
+                                    id="domainpropertiesrow-scale-0-0"
+                                    name="domainpropertiesrow-scale"
+                                    type="number"
+                                    value="4000"
+                                  />
+                                   characters
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div
-                        class="col-xs-12"
-                      >
-                        <div>
-                          <div
-                            class="row"
-                          >
+                        <div
+                          class="col-xs-12"
+                        >
+                          <div>
                             <div
-                              class="col-xs-12"
+                              class="row"
                             >
                               <div
-                                class="domain-field-section-heading domain-field-section-hdr"
-                              >
-                                Name and Linking Options
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-5"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                Description
-                              </div>
-                              <textarea
-                                class="form-control"
-                                id="domainpropertiesrow-description-0-0"
-                                name="domainpropertiesrow-description"
-                                rows="4"
-                              />
-                            </div>
-                            <div
-                              class="col-xs-3"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                Label
-                              </div>
-                              <input
-                                class="form-control"
-                                id="domainpropertiesrow-label-0-0"
-                                name="domainpropertiesrow-label"
-                                type="text"
-                                value=""
-                              />
-                              <div
-                                class="domain-field-label"
-                              >
-                                Import 
-                                <span
-                                  class="domain-no-wrap"
-                                >
-                                  Aliases
-                                  <div
-                                    class="overlay-trigger"
-                                  >
-                                    <span
-                                      class="label-help-target"
-                                    >
-                                      <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
-                                  </div>
-                                  
-                                </span>
-                              </div>
-                              <input
-                                class="form-control"
-                                id="domainpropertiesrow-importAliases-0-0"
-                                name="domainpropertiesrow-importAliases"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                            <div
-                              class="col-xs-4"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                <span
-                                  class="domain-no-wrap"
-                                >
-                                  URL
-                                  <div
-                                    class="overlay-trigger"
-                                  >
-                                    <span
-                                      class="label-help-target"
-                                    >
-                                      <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
-                                  </div>
-                                  
-                                </span>
-                              </div>
-                              <input
-                                class="form-control"
-                                id="domainpropertiesrow-URL-0-0"
-                                name="domainpropertiesrow-URL"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        class="col-xs-12"
-                      >
-                        <div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-12"
-                            >
-                              <div
-                                class="domain-field-section-heading domain-field-section-hdr"
-                              >
-                                Conditional Formatting and Validation Options
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-12"
-                            >
-                              <div
-                                class="domain-validation-group"
+                                class="col-xs-12"
                               >
                                 <div
-                                  class="domain-field-label domain-no-wrap"
+                                  class="domain-field-section-heading domain-field-section-hdr"
                                 >
-                                  Create Conditional Format 
+                                  Name and Linking Options
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-5"
+                              >
+                                <div
+                                  class="domain-field-label"
+                                >
+                                  Description
+                                </div>
+                                <textarea
+                                  class="form-control"
+                                  id="domainpropertiesrow-description-0-0"
+                                  name="domainpropertiesrow-description"
+                                  rows="4"
+                                />
+                              </div>
+                              <div
+                                class="col-xs-3"
+                              >
+                                <div
+                                  class="domain-field-label"
+                                >
+                                  Label
+                                </div>
+                                <input
+                                  class="form-control"
+                                  id="domainpropertiesrow-label-0-0"
+                                  name="domainpropertiesrow-label"
+                                  type="text"
+                                  value=""
+                                />
+                                <div
+                                  class="domain-field-label"
+                                >
+                                  Import 
                                   <span
                                     class="domain-no-wrap"
                                   >
-                                    Criteria
+                                    Aliases
                                     <div
                                       class="overlay-trigger"
                                     >
@@ -2455,33 +2373,24 @@ exports[`DataClassDesigner initModel 1`] = `
                                     
                                   </span>
                                 </div>
-                                <div>
-                                  <button
-                                    class="domain-validation-button btn btn-default"
-                                    id="domainpropertiesrow-conditionalFormat-0-0"
-                                    name="domainpropertiesrow-conditionalFormat"
-                                    type="button"
-                                  >
-                                    Add Format
-                                  </button>
-                                  <span
-                                    class="domain-text-label"
-                                  >
-                                    None Set
-                                  </span>
-                                </div>
+                                <input
+                                  class="form-control"
+                                  id="domainpropertiesrow-importAliases-0-0"
+                                  name="domainpropertiesrow-importAliases"
+                                  type="text"
+                                  value=""
+                                />
                               </div>
                               <div
-                                class="domain-validation-group"
+                                class="col-xs-4"
                               >
                                 <div
-                                  class="domain-field-label domain-no-wrap"
+                                  class="domain-field-label"
                                 >
-                                  Create Regular Expression 
                                   <span
                                     class="domain-no-wrap"
                                   >
-                                    Validator
+                                    URL
                                     <div
                                       class="overlay-trigger"
                                     >
@@ -2496,20 +2405,121 @@ exports[`DataClassDesigner initModel 1`] = `
                                     
                                   </span>
                                 </div>
-                                <div>
-                                  <button
-                                    class="domain-validation-button btn btn-default"
-                                    id="domainpropertiesrow-regexValidator-0-0"
-                                    name="domainpropertiesrow-regexValidator"
-                                    type="button"
+                                <input
+                                  class="form-control"
+                                  id="domainpropertiesrow-URL-0-0"
+                                  name="domainpropertiesrow-URL"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="col-xs-12"
+                        >
+                          <div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-12"
+                              >
+                                <div
+                                  class="domain-field-section-heading domain-field-section-hdr"
+                                >
+                                  Conditional Formatting and Validation Options
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-12"
+                              >
+                                <div
+                                  class="domain-validation-group"
+                                >
+                                  <div
+                                    class="domain-field-label domain-no-wrap"
                                   >
-                                    Add Regex
-                                  </button>
-                                  <span
-                                    class="domain-text-label"
+                                    Create Conditional Format 
+                                    <span
+                                      class="domain-no-wrap"
+                                    >
+                                      Criteria
+                                      <div
+                                        class="overlay-trigger"
+                                      >
+                                        <span
+                                          class="label-help-target"
+                                        >
+                                          <span
+                                            class="label-help-icon fa fa-question-circle"
+                                          />
+                                        </span>
+                                      </div>
+                                      
+                                    </span>
+                                  </div>
+                                  <div>
+                                    <button
+                                      class="domain-validation-button btn btn-default"
+                                      id="domainpropertiesrow-conditionalFormat-0-0"
+                                      name="domainpropertiesrow-conditionalFormat"
+                                      type="button"
+                                    >
+                                      Add Format
+                                    </button>
+                                    <span
+                                      class="domain-text-label"
+                                    >
+                                      None Set
+                                    </span>
+                                  </div>
+                                </div>
+                                <div
+                                  class="domain-validation-group"
+                                >
+                                  <div
+                                    class="domain-field-label domain-no-wrap"
                                   >
-                                    None Set
-                                  </span>
+                                    Create Regular Expression 
+                                    <span
+                                      class="domain-no-wrap"
+                                    >
+                                      Validator
+                                      <div
+                                        class="overlay-trigger"
+                                      >
+                                        <span
+                                          class="label-help-target"
+                                        >
+                                          <span
+                                            class="label-help-icon fa fa-question-circle"
+                                          />
+                                        </span>
+                                      </div>
+                                      
+                                    </span>
+                                  </div>
+                                  <div>
+                                    <button
+                                      class="domain-validation-button btn btn-default"
+                                      id="domainpropertiesrow-regexValidator-0-0"
+                                      name="domainpropertiesrow-regexValidator"
+                                      type="button"
+                                    >
+                                      Add Regex
+                                    </button>
+                                    <span
+                                      class="domain-text-label"
+                                    >
+                                      None Set
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -2553,11 +2563,9 @@ exports[`DataClassDesigner initModel 1`] = `
                     class="domain-row-action-section"
                   >
                     <div
-                      class="domain-field-check-icon checkbox"
+                      class="checkbox domain-field-check-icon"
                     >
-                      <label
-                        title=""
-                      >
+                      <label>
                         <input
                           id="domainpropertiesrow-selected-0-1"
                           name="domainpropertiesrow-selected"
@@ -2647,11 +2655,9 @@ exports[`DataClassDesigner initModel 1`] = `
                             class="domain-field-checkbox-container"
                           >
                             <div
-                              class="domain-field-checkbox checkbox"
+                              class="checkbox domain-field-checkbox"
                             >
-                              <label
-                                title=""
-                              >
+                              <label>
                                 <input
                                   id="domainpropertiesrow-required-0-1"
                                   name="domainpropertiesrow-required"
@@ -2689,257 +2695,47 @@ exports[`DataClassDesigner initModel 1`] = `
                 <div
                   class="collapse"
                 >
-                  <div
-                    class="domain-row-container"
-                  >
+                  <div>
                     <div
-                      class="domain-row-container-expand-spacer"
-                    />
-                    <div
-                      class="domain-row-container-expanded"
+                      class="domain-row-container"
                     >
                       <div
-                        class="col-xs-12"
-                      >
-                        <div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-12"
-                            >
-                              <div
-                                class="domain-field-section-heading"
-                              >
-                                Integer Options
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-3"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                Format for 
-                                <span
-                                  class="domain-no-wrap"
-                                >
-                                  Numbers
-                                  <div
-                                    class="overlay-trigger"
-                                  >
-                                    <span
-                                      class="label-help-target"
-                                    >
-                                      <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
-                                  </div>
-                                  
-                                </span>
-                              </div>
-                            </div>
-                            <div
-                              class="col-xs-2"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                Default Scale Type
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-3"
-                            >
-                              <input
-                                class="form-control"
-                                id="domainpropertiesrow-format-0-1"
-                                name="domainpropertiesrow-format"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                            <div
-                              class="col-xs-2"
-                            >
-                              <select
-                                class="form-control"
-                                id="domainpropertiesrow-defaultScale-0-1"
-                                name="domainpropertiesrow-defaultScale"
-                              >
-                                <option
-                                  value="LINEAR"
-                                >
-                                  Linear
-                                </option>
-                                <option
-                                  value="LOG"
-                                >
-                                  Log
-                                </option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                        class="domain-row-container-expand-spacer"
+                      />
                       <div
-                        class="col-xs-12"
+                        class="domain-row-container-expanded"
                       >
-                        <div>
-                          <div
-                            class="row"
-                          >
+                        <div
+                          class="col-xs-12"
+                        >
+                          <div>
                             <div
-                              class="col-xs-12"
+                              class="row"
                             >
                               <div
-                                class="domain-field-section-heading domain-field-section-hdr"
-                              >
-                                Name and Linking Options
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-5"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                Description
-                              </div>
-                              <textarea
-                                class="form-control"
-                                id="domainpropertiesrow-description-0-1"
-                                name="domainpropertiesrow-description"
-                                rows="4"
-                              />
-                            </div>
-                            <div
-                              class="col-xs-3"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                Label
-                              </div>
-                              <input
-                                class="form-control"
-                                id="domainpropertiesrow-label-0-1"
-                                name="domainpropertiesrow-label"
-                                type="text"
-                                value=""
-                              />
-                              <div
-                                class="domain-field-label"
-                              >
-                                Import 
-                                <span
-                                  class="domain-no-wrap"
-                                >
-                                  Aliases
-                                  <div
-                                    class="overlay-trigger"
-                                  >
-                                    <span
-                                      class="label-help-target"
-                                    >
-                                      <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
-                                  </div>
-                                  
-                                </span>
-                              </div>
-                              <input
-                                class="form-control"
-                                id="domainpropertiesrow-importAliases-0-1"
-                                name="domainpropertiesrow-importAliases"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                            <div
-                              class="col-xs-4"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                <span
-                                  class="domain-no-wrap"
-                                >
-                                  URL
-                                  <div
-                                    class="overlay-trigger"
-                                  >
-                                    <span
-                                      class="label-help-target"
-                                    >
-                                      <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
-                                  </div>
-                                  
-                                </span>
-                              </div>
-                              <input
-                                class="form-control"
-                                id="domainpropertiesrow-URL-0-1"
-                                name="domainpropertiesrow-URL"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        class="col-xs-12"
-                      >
-                        <div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-12"
-                            >
-                              <div
-                                class="domain-field-section-heading domain-field-section-hdr"
-                              >
-                                Conditional Formatting and Validation Options
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-12"
-                            >
-                              <div
-                                class="domain-validation-group"
+                                class="col-xs-12"
                               >
                                 <div
-                                  class="domain-field-label domain-no-wrap"
+                                  class="domain-field-section-heading"
                                 >
-                                  Create Conditional Format 
+                                  Integer Options
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-3"
+                              >
+                                <div
+                                  class="domain-field-label"
+                                >
+                                  Format for 
                                   <span
                                     class="domain-no-wrap"
                                   >
-                                    Criteria
+                                    Numbers
                                     <div
                                       class="overlay-trigger"
                                     >
@@ -2954,33 +2750,112 @@ exports[`DataClassDesigner initModel 1`] = `
                                     
                                   </span>
                                 </div>
-                                <div>
-                                  <button
-                                    class="domain-validation-button btn btn-default"
-                                    id="domainpropertiesrow-conditionalFormat-0-1"
-                                    name="domainpropertiesrow-conditionalFormat"
-                                    type="button"
-                                  >
-                                    Add Format
-                                  </button>
-                                  <span
-                                    class="domain-text-label"
-                                  >
-                                    None Set
-                                  </span>
-                                </div>
                               </div>
                               <div
-                                class=""
+                                class="col-xs-2"
                               >
                                 <div
-                                  class="domain-field-label domain-no-wrap"
+                                  class="domain-field-label"
                                 >
-                                  Create Range 
+                                  Default Scale Type
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-3"
+                              >
+                                <input
+                                  class="form-control"
+                                  id="domainpropertiesrow-format-0-1"
+                                  name="domainpropertiesrow-format"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                              <div
+                                class="col-xs-2"
+                              >
+                                <select
+                                  class="form-control"
+                                  id="domainpropertiesrow-defaultScale-0-1"
+                                  name="domainpropertiesrow-defaultScale"
+                                >
+                                  <option
+                                    value="LINEAR"
+                                  >
+                                    Linear
+                                  </option>
+                                  <option
+                                    value="LOG"
+                                  >
+                                    Log
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="col-xs-12"
+                        >
+                          <div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-12"
+                              >
+                                <div
+                                  class="domain-field-section-heading domain-field-section-hdr"
+                                >
+                                  Name and Linking Options
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-5"
+                              >
+                                <div
+                                  class="domain-field-label"
+                                >
+                                  Description
+                                </div>
+                                <textarea
+                                  class="form-control"
+                                  id="domainpropertiesrow-description-0-1"
+                                  name="domainpropertiesrow-description"
+                                  rows="4"
+                                />
+                              </div>
+                              <div
+                                class="col-xs-3"
+                              >
+                                <div
+                                  class="domain-field-label"
+                                >
+                                  Label
+                                </div>
+                                <input
+                                  class="form-control"
+                                  id="domainpropertiesrow-label-0-1"
+                                  name="domainpropertiesrow-label"
+                                  type="text"
+                                  value=""
+                                />
+                                <div
+                                  class="domain-field-label"
+                                >
+                                  Import 
                                   <span
                                     class="domain-no-wrap"
                                   >
-                                    Validator
+                                    Aliases
                                     <div
                                       class="overlay-trigger"
                                     >
@@ -2995,20 +2870,153 @@ exports[`DataClassDesigner initModel 1`] = `
                                     
                                   </span>
                                 </div>
-                                <div>
-                                  <button
-                                    class="domain-validation-button btn btn-default"
-                                    id="domainpropertiesrow-rangeValidator-0-1"
-                                    name="domainpropertiesrow-rangeValidator"
-                                    type="button"
-                                  >
-                                    Add Range
-                                  </button>
+                                <input
+                                  class="form-control"
+                                  id="domainpropertiesrow-importAliases-0-1"
+                                  name="domainpropertiesrow-importAliases"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                              <div
+                                class="col-xs-4"
+                              >
+                                <div
+                                  class="domain-field-label"
+                                >
                                   <span
-                                    class="domain-text-label"
+                                    class="domain-no-wrap"
                                   >
-                                    None Set
+                                    URL
+                                    <div
+                                      class="overlay-trigger"
+                                    >
+                                      <span
+                                        class="label-help-target"
+                                      >
+                                        <span
+                                          class="label-help-icon fa fa-question-circle"
+                                        />
+                                      </span>
+                                    </div>
+                                    
                                   </span>
+                                </div>
+                                <input
+                                  class="form-control"
+                                  id="domainpropertiesrow-URL-0-1"
+                                  name="domainpropertiesrow-URL"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="col-xs-12"
+                        >
+                          <div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-12"
+                              >
+                                <div
+                                  class="domain-field-section-heading domain-field-section-hdr"
+                                >
+                                  Conditional Formatting and Validation Options
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-12"
+                              >
+                                <div
+                                  class="domain-validation-group"
+                                >
+                                  <div
+                                    class="domain-field-label domain-no-wrap"
+                                  >
+                                    Create Conditional Format 
+                                    <span
+                                      class="domain-no-wrap"
+                                    >
+                                      Criteria
+                                      <div
+                                        class="overlay-trigger"
+                                      >
+                                        <span
+                                          class="label-help-target"
+                                        >
+                                          <span
+                                            class="label-help-icon fa fa-question-circle"
+                                          />
+                                        </span>
+                                      </div>
+                                      
+                                    </span>
+                                  </div>
+                                  <div>
+                                    <button
+                                      class="domain-validation-button btn btn-default"
+                                      id="domainpropertiesrow-conditionalFormat-0-1"
+                                      name="domainpropertiesrow-conditionalFormat"
+                                      type="button"
+                                    >
+                                      Add Format
+                                    </button>
+                                    <span
+                                      class="domain-text-label"
+                                    >
+                                      None Set
+                                    </span>
+                                  </div>
+                                </div>
+                                <div
+                                  class=""
+                                >
+                                  <div
+                                    class="domain-field-label domain-no-wrap"
+                                  >
+                                    Create Range 
+                                    <span
+                                      class="domain-no-wrap"
+                                    >
+                                      Validator
+                                      <div
+                                        class="overlay-trigger"
+                                      >
+                                        <span
+                                          class="label-help-target"
+                                        >
+                                          <span
+                                            class="label-help-icon fa fa-question-circle"
+                                          />
+                                        </span>
+                                      </div>
+                                      
+                                    </span>
+                                  </div>
+                                  <div>
+                                    <button
+                                      class="domain-validation-button btn btn-default"
+                                      id="domainpropertiesrow-rangeValidator-0-1"
+                                      name="domainpropertiesrow-rangeValidator"
+                                      type="button"
+                                    >
+                                      Add Range
+                                    </button>
+                                    <span
+                                      class="domain-text-label"
+                                    >
+                                      None Set
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -3052,11 +3060,9 @@ exports[`DataClassDesigner initModel 1`] = `
                     class="domain-row-action-section"
                   >
                     <div
-                      class="domain-field-check-icon checkbox"
+                      class="checkbox domain-field-check-icon"
                     >
-                      <label
-                        title=""
-                      >
+                      <label>
                         <input
                           id="domainpropertiesrow-selected-0-2"
                           name="domainpropertiesrow-selected"
@@ -3136,11 +3142,9 @@ exports[`DataClassDesigner initModel 1`] = `
                             class="domain-field-checkbox-container"
                           >
                             <div
-                              class="domain-field-checkbox checkbox"
+                              class="checkbox domain-field-checkbox"
                             >
-                              <label
-                                title=""
-                              >
+                              <label>
                                 <input
                                   id="domainpropertiesrow-required-0-2"
                                   name="domainpropertiesrow-required"
@@ -3178,234 +3182,47 @@ exports[`DataClassDesigner initModel 1`] = `
                 <div
                   class="collapse"
                 >
-                  <div
-                    class="domain-row-container"
-                  >
+                  <div>
                     <div
-                      class="domain-row-container-expand-spacer"
-                    />
-                    <div
-                      class="domain-row-container-expanded"
+                      class="domain-row-container"
                     >
                       <div
-                        class="col-xs-12"
-                      >
-                        <div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-12"
-                            >
-                              <div
-                                class="domain-field-section-heading"
-                              >
-                                Date and Time Options
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-3"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                Format for 
-                                <span
-                                  class="domain-no-wrap"
-                                >
-                                  Dates
-                                  <div
-                                    class="overlay-trigger"
-                                  >
-                                    <span
-                                      class="label-help-target"
-                                    >
-                                      <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
-                                  </div>
-                                  
-                                </span>
-                              </div>
-                            </div>
-                            <div
-                              class="col-xs-9"
-                            />
-                          </div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-3"
-                            >
-                              <input
-                                class="form-control"
-                                id="domainpropertiesrow-format-0-2"
-                                name="domainpropertiesrow-format"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                            <div
-                              class="col-xs-9"
-                            />
-                          </div>
-                        </div>
-                      </div>
+                        class="domain-row-container-expand-spacer"
+                      />
                       <div
-                        class="col-xs-12"
+                        class="domain-row-container-expanded"
                       >
-                        <div>
-                          <div
-                            class="row"
-                          >
+                        <div
+                          class="col-xs-12"
+                        >
+                          <div>
                             <div
-                              class="col-xs-12"
+                              class="row"
                             >
                               <div
-                                class="domain-field-section-heading domain-field-section-hdr"
-                              >
-                                Name and Linking Options
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-5"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                Description
-                              </div>
-                              <textarea
-                                class="form-control"
-                                id="domainpropertiesrow-description-0-2"
-                                name="domainpropertiesrow-description"
-                                rows="4"
-                              />
-                            </div>
-                            <div
-                              class="col-xs-3"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                Label
-                              </div>
-                              <input
-                                class="form-control"
-                                id="domainpropertiesrow-label-0-2"
-                                name="domainpropertiesrow-label"
-                                type="text"
-                                value=""
-                              />
-                              <div
-                                class="domain-field-label"
-                              >
-                                Import 
-                                <span
-                                  class="domain-no-wrap"
-                                >
-                                  Aliases
-                                  <div
-                                    class="overlay-trigger"
-                                  >
-                                    <span
-                                      class="label-help-target"
-                                    >
-                                      <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
-                                  </div>
-                                  
-                                </span>
-                              </div>
-                              <input
-                                class="form-control"
-                                id="domainpropertiesrow-importAliases-0-2"
-                                name="domainpropertiesrow-importAliases"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                            <div
-                              class="col-xs-4"
-                            >
-                              <div
-                                class="domain-field-label"
-                              >
-                                <span
-                                  class="domain-no-wrap"
-                                >
-                                  URL
-                                  <div
-                                    class="overlay-trigger"
-                                  >
-                                    <span
-                                      class="label-help-target"
-                                    >
-                                      <span
-                                        class="label-help-icon fa fa-question-circle"
-                                      />
-                                    </span>
-                                  </div>
-                                  
-                                </span>
-                              </div>
-                              <input
-                                class="form-control"
-                                id="domainpropertiesrow-URL-0-2"
-                                name="domainpropertiesrow-URL"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        class="col-xs-12"
-                      >
-                        <div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-12"
-                            >
-                              <div
-                                class="domain-field-section-heading domain-field-section-hdr"
-                              >
-                                Conditional Formatting and Validation Options
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            class="row"
-                          >
-                            <div
-                              class="col-xs-12"
-                            >
-                              <div
-                                class="domain-validation-group"
+                                class="col-xs-12"
                               >
                                 <div
-                                  class="domain-field-label domain-no-wrap"
+                                  class="domain-field-section-heading"
                                 >
-                                  Create Conditional Format 
+                                  Date and Time Options
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-3"
+                              >
+                                <div
+                                  class="domain-field-label"
+                                >
+                                  Format for 
                                   <span
                                     class="domain-no-wrap"
                                   >
-                                    Criteria
+                                    Dates
                                     <div
                                       class="overlay-trigger"
                                     >
@@ -3420,33 +3237,89 @@ exports[`DataClassDesigner initModel 1`] = `
                                     
                                   </span>
                                 </div>
-                                <div>
-                                  <button
-                                    class="domain-validation-button btn btn-default"
-                                    id="domainpropertiesrow-conditionalFormat-0-2"
-                                    name="domainpropertiesrow-conditionalFormat"
-                                    type="button"
-                                  >
-                                    Add Format
-                                  </button>
-                                  <span
-                                    class="domain-text-label"
-                                  >
-                                    None Set
-                                  </span>
-                                </div>
                               </div>
                               <div
-                                class=""
+                                class="col-xs-9"
+                              />
+                            </div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-3"
+                              >
+                                <input
+                                  class="form-control"
+                                  id="domainpropertiesrow-format-0-2"
+                                  name="domainpropertiesrow-format"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                              <div
+                                class="col-xs-9"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="col-xs-12"
+                        >
+                          <div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-12"
                               >
                                 <div
-                                  class="domain-field-label domain-no-wrap"
+                                  class="domain-field-section-heading domain-field-section-hdr"
                                 >
-                                  Create Range 
+                                  Name and Linking Options
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-5"
+                              >
+                                <div
+                                  class="domain-field-label"
+                                >
+                                  Description
+                                </div>
+                                <textarea
+                                  class="form-control"
+                                  id="domainpropertiesrow-description-0-2"
+                                  name="domainpropertiesrow-description"
+                                  rows="4"
+                                />
+                              </div>
+                              <div
+                                class="col-xs-3"
+                              >
+                                <div
+                                  class="domain-field-label"
+                                >
+                                  Label
+                                </div>
+                                <input
+                                  class="form-control"
+                                  id="domainpropertiesrow-label-0-2"
+                                  name="domainpropertiesrow-label"
+                                  type="text"
+                                  value=""
+                                />
+                                <div
+                                  class="domain-field-label"
+                                >
+                                  Import 
                                   <span
                                     class="domain-no-wrap"
                                   >
-                                    Validator
+                                    Aliases
                                     <div
                                       class="overlay-trigger"
                                     >
@@ -3461,20 +3334,153 @@ exports[`DataClassDesigner initModel 1`] = `
                                     
                                   </span>
                                 </div>
-                                <div>
-                                  <button
-                                    class="domain-validation-button btn btn-default"
-                                    id="domainpropertiesrow-rangeValidator-0-2"
-                                    name="domainpropertiesrow-rangeValidator"
-                                    type="button"
-                                  >
-                                    Add Range
-                                  </button>
+                                <input
+                                  class="form-control"
+                                  id="domainpropertiesrow-importAliases-0-2"
+                                  name="domainpropertiesrow-importAliases"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                              <div
+                                class="col-xs-4"
+                              >
+                                <div
+                                  class="domain-field-label"
+                                >
                                   <span
-                                    class="domain-text-label"
+                                    class="domain-no-wrap"
                                   >
-                                    None Set
+                                    URL
+                                    <div
+                                      class="overlay-trigger"
+                                    >
+                                      <span
+                                        class="label-help-target"
+                                      >
+                                        <span
+                                          class="label-help-icon fa fa-question-circle"
+                                        />
+                                      </span>
+                                    </div>
+                                    
                                   </span>
+                                </div>
+                                <input
+                                  class="form-control"
+                                  id="domainpropertiesrow-URL-0-2"
+                                  name="domainpropertiesrow-URL"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="col-xs-12"
+                        >
+                          <div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-12"
+                              >
+                                <div
+                                  class="domain-field-section-heading domain-field-section-hdr"
+                                >
+                                  Conditional Formatting and Validation Options
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="row"
+                            >
+                              <div
+                                class="col-xs-12"
+                              >
+                                <div
+                                  class="domain-validation-group"
+                                >
+                                  <div
+                                    class="domain-field-label domain-no-wrap"
+                                  >
+                                    Create Conditional Format 
+                                    <span
+                                      class="domain-no-wrap"
+                                    >
+                                      Criteria
+                                      <div
+                                        class="overlay-trigger"
+                                      >
+                                        <span
+                                          class="label-help-target"
+                                        >
+                                          <span
+                                            class="label-help-icon fa fa-question-circle"
+                                          />
+                                        </span>
+                                      </div>
+                                      
+                                    </span>
+                                  </div>
+                                  <div>
+                                    <button
+                                      class="domain-validation-button btn btn-default"
+                                      id="domainpropertiesrow-conditionalFormat-0-2"
+                                      name="domainpropertiesrow-conditionalFormat"
+                                      type="button"
+                                    >
+                                      Add Format
+                                    </button>
+                                    <span
+                                      class="domain-text-label"
+                                    >
+                                      None Set
+                                    </span>
+                                  </div>
+                                </div>
+                                <div
+                                  class=""
+                                >
+                                  <div
+                                    class="domain-field-label domain-no-wrap"
+                                  >
+                                    Create Range 
+                                    <span
+                                      class="domain-no-wrap"
+                                    >
+                                      Validator
+                                      <div
+                                        class="overlay-trigger"
+                                      >
+                                        <span
+                                          class="label-help-target"
+                                        >
+                                          <span
+                                            class="label-help-icon fa fa-question-circle"
+                                          />
+                                        </span>
+                                      </div>
+                                      
+                                    </span>
+                                  </div>
+                                  <div>
+                                    <button
+                                      class="domain-validation-button btn btn-default"
+                                      id="domainpropertiesrow-rangeValidator-0-2"
+                                      name="domainpropertiesrow-rangeValidator"
+                                      type="button"
+                                    >
+                                      Add Range
+                                    </button>
+                                    <span
+                                      class="domain-text-label"
+                                    >
+                                      None Set
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
                             </div>

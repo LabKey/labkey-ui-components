@@ -17,8 +17,6 @@ import { fromJS, List, Map, Record } from 'immutable';
 import { ActionURL, Domain, getServerContext, Utils } from '@labkey/api';
 import React, { ReactNode } from 'react';
 
-import { Checkbox } from 'react-bootstrap';
-
 import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
 import { camelCaseToTitleCase, valueIsEmpty } from '../../util/utils';
@@ -30,6 +28,8 @@ import { getCurrentAppProperties, hasPremiumModule } from '../../app/utils';
 import { GridColumn } from '../base/models/GridColumn';
 
 import { SCHEMAS } from '../../schemas';
+
+import { DomainDesignerCheckbox } from './DomainDesignerCheckbox';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -467,7 +467,7 @@ export class DomainDesign
 
                 const changes = List.of({ id: formInputId, value: !selected });
                 return (
-                    <Checkbox
+                    <DomainDesignerCheckbox
                         className="domain-summary-selection"
                         id={formInputId}
                         checked={selected}
@@ -831,7 +831,6 @@ export interface IDomainField {
     rangeURI: string;
     rangeValidators: List<PropertyValidator>;
     recommendedVariable?: boolean;
-    uniqueConstraint?: boolean;
     regexValidators: List<PropertyValidator>;
     required?: boolean;
     scale?: number;
@@ -841,6 +840,7 @@ export interface IDomainField {
     shownInUpdateView?: boolean;
     sourceOntology?: string;
     textChoiceValidator?: PropertyValidator;
+    uniqueConstraint?: boolean;
     updatedField: boolean;
     visible: boolean;
 }

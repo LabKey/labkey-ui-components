@@ -1,8 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { Collapse } from 'react-bootstrap';
-
 import { SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS } from '../samples/constants';
 
 import { SystemFields } from './SystemFields';
@@ -43,14 +41,12 @@ describe('SystemFields', () => {
             <SystemFields fields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} onSystemFieldEnable={jest.fn()} />
         );
 
-        let collapsed = wrapped.find(Collapse).props().in;
-        expect(collapsed).toBe(true);
+        expect(wrapped.find('.collapse.in').exists()).toBe(true);
 
         const header = wrapped.find('.domain-system-fields-header__icon');
         header.simulate('click');
 
-        collapsed = wrapped.find(Collapse).props().in;
-        expect(collapsed).toBe(false);
+        expect(wrapped.find('.collapse.in').exists()).toBe(false);
     });
 
     test('With disabled fields', () => {

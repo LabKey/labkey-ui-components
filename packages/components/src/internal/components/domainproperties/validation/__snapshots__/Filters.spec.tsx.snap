@@ -29,61 +29,51 @@ exports[`Filters Date Range 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="select"
+        <select
+          className="form-control"
           id="domainpropertiesrow-firstFilterType-1-1"
           name="domainpropertiesrow-firstFilterType"
           onChange={[Function]}
           required={true}
           value="eq"
         >
-          <select
-            className="form-control"
-            id="domainpropertiesrow-firstFilterType-1-1"
-            name="domainpropertiesrow-firstFilterType"
-            onChange={[Function]}
-            required={true}
-            value="eq"
+          <option
+            key="dateeq"
+            value="dateeq"
           >
-            <option
-              key="0"
-              value="dateeq"
-            >
-              Equals
-            </option>
-            <option
-              key="1"
-              value="dateneq"
-            >
-              Does Not Equal
-            </option>
-            <option
-              key="2"
-              value="dategt"
-            >
-              Is Greater Than
-            </option>
-            <option
-              key="3"
-              value="dategte"
-            >
-              Is Greater Than or Equal To
-            </option>
-            <option
-              key="4"
-              value="datelt"
-            >
-              Is Less Than
-            </option>
-            <option
-              key="5"
-              value="datelte"
-            >
-              Is Less Than or Equal To
-            </option>
-          </select>
-        </FormControl>
+            Equals
+          </option>
+          <option
+            key="dateneq"
+            value="dateneq"
+          >
+            Does Not Equal
+          </option>
+          <option
+            key="dategt"
+            value="dategt"
+          >
+            Is Greater Than
+          </option>
+          <option
+            key="dategte"
+            value="dategte"
+          >
+            Is Greater Than or Equal To
+          </option>
+          <option
+            key="datelt"
+            value="datelt"
+          >
+            Is Less Than
+          </option>
+          <option
+            key="datelte"
+            value="datelte"
+          >
+            Is Less Than or Equal To
+          </option>
+        </select>
       </div>
     </div>
   </div>
@@ -101,9 +91,8 @@ exports[`Filters Date Range 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="input"
+        <input
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-firstFilterValue-1-1"
           name="domainpropertiesrow-firstFilterValue"
@@ -111,18 +100,7 @@ exports[`Filters Date Range 1`] = `
           required={true}
           type="date"
           value=""
-        >
-          <input
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-firstFilterValue-1-1"
-            name="domainpropertiesrow-firstFilterValue"
-            onChange={[Function]}
-            required={true}
-            type="date"
-            value=""
-          />
-        </FormControl>
+        />
       </div>
     </div>
   </div>
@@ -142,65 +120,56 @@ exports[`Filters Date Range 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="select"
+        <select
+          className="form-control"
           id="domainpropertiesrow-secondFilterType-1-1"
           name="domainpropertiesrow-secondFilterType"
           onChange={[Function]}
           value="None"
         >
-          <select
-            className="form-control"
-            id="domainpropertiesrow-secondFilterType-1-1"
-            name="domainpropertiesrow-secondFilterType"
-            onChange={[Function]}
+          <option
+            key="None"
             value="None"
           >
-            <option
-              key="0"
-              value="None"
-            >
-              No other filter
-            </option>
-            <option
-              key="1"
-              value="dateeq"
-            >
-              Equals
-            </option>
-            <option
-              key="2"
-              value="dateneq"
-            >
-              Does Not Equal
-            </option>
-            <option
-              key="3"
-              value="dategt"
-            >
-              Is Greater Than
-            </option>
-            <option
-              key="4"
-              value="dategte"
-            >
-              Is Greater Than or Equal To
-            </option>
-            <option
-              key="5"
-              value="datelt"
-            >
-              Is Less Than
-            </option>
-            <option
-              key="6"
-              value="datelte"
-            >
-              Is Less Than or Equal To
-            </option>
-          </select>
-        </FormControl>
+            No other filter
+          </option>
+          <option
+            key="dateeq"
+            value="dateeq"
+          >
+            Equals
+          </option>
+          <option
+            key="dateneq"
+            value="dateneq"
+          >
+            Does Not Equal
+          </option>
+          <option
+            key="dategt"
+            value="dategt"
+          >
+            Is Greater Than
+          </option>
+          <option
+            key="dategte"
+            value="dategte"
+          >
+            Is Greater Than or Equal To
+          </option>
+          <option
+            key="datelt"
+            value="datelt"
+          >
+            Is Less Than
+          </option>
+          <option
+            key="datelte"
+            value="datelte"
+          >
+            Is Less Than or Equal To
+          </option>
+        </select>
       </div>
     </div>
   </div>
@@ -218,26 +187,15 @@ exports[`Filters Date Range 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="input"
+        <input
+          className="form-control"
           disabled={true}
           id="domainpropertiesrow-secondFilterValue-1-1"
           name="domainpropertiesrow-secondFilterValue"
           onChange={[Function]}
           type="date"
           value=""
-        >
-          <input
-            className="form-control"
-            disabled={true}
-            id="domainpropertiesrow-secondFilterValue-1-1"
-            name="domainpropertiesrow-secondFilterValue"
-            onChange={[Function]}
-            type="date"
-            value=""
-          />
-        </FormControl>
+        />
       </div>
     </div>
   </div>
@@ -272,139 +230,129 @@ exports[`Filters Empty Filters - string type 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="select"
+        <select
+          className="form-control"
           id="domainpropertiesrow-firstFilterType-1-3"
           name="domainpropertiesrow-firstFilterType"
           onChange={[Function]}
           required={true}
           value="eq"
         >
-          <select
-            className="form-control"
-            id="domainpropertiesrow-firstFilterType-1-3"
-            name="domainpropertiesrow-firstFilterType"
-            onChange={[Function]}
-            required={true}
+          <option
+            key="HAS_ANY_VALUE"
+            value="HAS_ANY_VALUE"
+          >
+            Has Any Value
+          </option>
+          <option
+            key="eq"
             value="eq"
           >
-            <option
-              key="0"
-              value="HAS_ANY_VALUE"
-            >
-              Has Any Value
-            </option>
-            <option
-              key="1"
-              value="eq"
-            >
-              Equals
-            </option>
-            <option
-              key="2"
-              value="neqornull"
-            >
-              Does Not Equal
-            </option>
-            <option
-              key="3"
-              value="isblank"
-            >
-              Is Blank
-            </option>
-            <option
-              key="4"
-              value="isnonblank"
-            >
-              Is Not Blank
-            </option>
-            <option
-              key="5"
-              value="gt"
-            >
-              Is Greater Than
-            </option>
-            <option
-              key="6"
-              value="lt"
-            >
-              Is Less Than
-            </option>
-            <option
-              key="7"
-              value="gte"
-            >
-              Is Greater Than or Equal To
-            </option>
-            <option
-              key="8"
-              value="lte"
-            >
-              Is Less Than or Equal To
-            </option>
-            <option
-              key="9"
-              value="contains"
-            >
-              Contains
-            </option>
-            <option
-              key="10"
-              value="doesnotcontain"
-            >
-              Does Not Contain
-            </option>
-            <option
-              key="11"
-              value="doesnotstartwith"
-            >
-              Does Not Start With
-            </option>
-            <option
-              key="12"
-              value="startswith"
-            >
-              Starts With
-            </option>
-            <option
-              key="13"
-              value="in"
-            >
-              Equals One Of
-            </option>
-            <option
-              key="14"
-              value="notin"
-            >
-              Does Not Equal Any Of
-            </option>
-            <option
-              key="15"
-              value="containsoneof"
-            >
-              Contains One Of
-            </option>
-            <option
-              key="16"
-              value="containsnoneof"
-            >
-              Does Not Contain Any Of
-            </option>
-            <option
-              key="17"
-              value="between"
-            >
-              Between, Inclusive (example usage: -4,4)
-            </option>
-            <option
-              key="18"
-              value="notbetween"
-            >
-              Not Between, Exclusive (example usage: -4,4)
-            </option>
-          </select>
-        </FormControl>
+            Equals
+          </option>
+          <option
+            key="neqornull"
+            value="neqornull"
+          >
+            Does Not Equal
+          </option>
+          <option
+            key="isblank"
+            value="isblank"
+          >
+            Is Blank
+          </option>
+          <option
+            key="isnonblank"
+            value="isnonblank"
+          >
+            Is Not Blank
+          </option>
+          <option
+            key="gt"
+            value="gt"
+          >
+            Is Greater Than
+          </option>
+          <option
+            key="lt"
+            value="lt"
+          >
+            Is Less Than
+          </option>
+          <option
+            key="gte"
+            value="gte"
+          >
+            Is Greater Than or Equal To
+          </option>
+          <option
+            key="lte"
+            value="lte"
+          >
+            Is Less Than or Equal To
+          </option>
+          <option
+            key="contains"
+            value="contains"
+          >
+            Contains
+          </option>
+          <option
+            key="doesnotcontain"
+            value="doesnotcontain"
+          >
+            Does Not Contain
+          </option>
+          <option
+            key="doesnotstartwith"
+            value="doesnotstartwith"
+          >
+            Does Not Start With
+          </option>
+          <option
+            key="startswith"
+            value="startswith"
+          >
+            Starts With
+          </option>
+          <option
+            key="in"
+            value="in"
+          >
+            Equals One Of
+          </option>
+          <option
+            key="notin"
+            value="notin"
+          >
+            Does Not Equal Any Of
+          </option>
+          <option
+            key="containsoneof"
+            value="containsoneof"
+          >
+            Contains One Of
+          </option>
+          <option
+            key="containsnoneof"
+            value="containsnoneof"
+          >
+            Does Not Contain Any Of
+          </option>
+          <option
+            key="between"
+            value="between"
+          >
+            Between, Inclusive (example usage: -4,4)
+          </option>
+          <option
+            key="notbetween"
+            value="notbetween"
+          >
+            Not Between, Exclusive (example usage: -4,4)
+          </option>
+        </select>
       </div>
     </div>
   </div>
@@ -424,9 +372,8 @@ exports[`Filters Empty Filters - string type 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="input"
+        <input
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-firstFilterValue-1-3"
           name="domainpropertiesrow-firstFilterValue"
@@ -434,18 +381,7 @@ exports[`Filters Empty Filters - string type 1`] = `
           required={true}
           type="text"
           value=""
-        >
-          <input
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-firstFilterValue-1-3"
-            name="domainpropertiesrow-firstFilterValue"
-            onChange={[Function]}
-            required={true}
-            type="text"
-            value=""
-          />
-        </FormControl>
+        />
       </div>
     </div>
   </div>
@@ -465,143 +401,134 @@ exports[`Filters Empty Filters - string type 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="select"
+        <select
+          className="form-control"
           id="domainpropertiesrow-secondFilterType-1-3"
           name="domainpropertiesrow-secondFilterType"
           onChange={[Function]}
           value="None"
         >
-          <select
-            className="form-control"
-            id="domainpropertiesrow-secondFilterType-1-3"
-            name="domainpropertiesrow-secondFilterType"
-            onChange={[Function]}
+          <option
+            key="None"
             value="None"
           >
-            <option
-              key="0"
-              value="None"
-            >
-              No other filter
-            </option>
-            <option
-              key="1"
-              value="HAS_ANY_VALUE"
-            >
-              Has Any Value
-            </option>
-            <option
-              key="2"
-              value="eq"
-            >
-              Equals
-            </option>
-            <option
-              key="3"
-              value="neqornull"
-            >
-              Does Not Equal
-            </option>
-            <option
-              key="4"
-              value="isblank"
-            >
-              Is Blank
-            </option>
-            <option
-              key="5"
-              value="isnonblank"
-            >
-              Is Not Blank
-            </option>
-            <option
-              key="6"
-              value="gt"
-            >
-              Is Greater Than
-            </option>
-            <option
-              key="7"
-              value="lt"
-            >
-              Is Less Than
-            </option>
-            <option
-              key="8"
-              value="gte"
-            >
-              Is Greater Than or Equal To
-            </option>
-            <option
-              key="9"
-              value="lte"
-            >
-              Is Less Than or Equal To
-            </option>
-            <option
-              key="10"
-              value="contains"
-            >
-              Contains
-            </option>
-            <option
-              key="11"
-              value="doesnotcontain"
-            >
-              Does Not Contain
-            </option>
-            <option
-              key="12"
-              value="doesnotstartwith"
-            >
-              Does Not Start With
-            </option>
-            <option
-              key="13"
-              value="startswith"
-            >
-              Starts With
-            </option>
-            <option
-              key="14"
-              value="in"
-            >
-              Equals One Of
-            </option>
-            <option
-              key="15"
-              value="notin"
-            >
-              Does Not Equal Any Of
-            </option>
-            <option
-              key="16"
-              value="containsoneof"
-            >
-              Contains One Of
-            </option>
-            <option
-              key="17"
-              value="containsnoneof"
-            >
-              Does Not Contain Any Of
-            </option>
-            <option
-              key="18"
-              value="between"
-            >
-              Between, Inclusive (example usage: -4,4)
-            </option>
-            <option
-              key="19"
-              value="notbetween"
-            >
-              Not Between, Exclusive (example usage: -4,4)
-            </option>
-          </select>
-        </FormControl>
+            No other filter
+          </option>
+          <option
+            key="HAS_ANY_VALUE"
+            value="HAS_ANY_VALUE"
+          >
+            Has Any Value
+          </option>
+          <option
+            key="eq"
+            value="eq"
+          >
+            Equals
+          </option>
+          <option
+            key="neqornull"
+            value="neqornull"
+          >
+            Does Not Equal
+          </option>
+          <option
+            key="isblank"
+            value="isblank"
+          >
+            Is Blank
+          </option>
+          <option
+            key="isnonblank"
+            value="isnonblank"
+          >
+            Is Not Blank
+          </option>
+          <option
+            key="gt"
+            value="gt"
+          >
+            Is Greater Than
+          </option>
+          <option
+            key="lt"
+            value="lt"
+          >
+            Is Less Than
+          </option>
+          <option
+            key="gte"
+            value="gte"
+          >
+            Is Greater Than or Equal To
+          </option>
+          <option
+            key="lte"
+            value="lte"
+          >
+            Is Less Than or Equal To
+          </option>
+          <option
+            key="contains"
+            value="contains"
+          >
+            Contains
+          </option>
+          <option
+            key="doesnotcontain"
+            value="doesnotcontain"
+          >
+            Does Not Contain
+          </option>
+          <option
+            key="doesnotstartwith"
+            value="doesnotstartwith"
+          >
+            Does Not Start With
+          </option>
+          <option
+            key="startswith"
+            value="startswith"
+          >
+            Starts With
+          </option>
+          <option
+            key="in"
+            value="in"
+          >
+            Equals One Of
+          </option>
+          <option
+            key="notin"
+            value="notin"
+          >
+            Does Not Equal Any Of
+          </option>
+          <option
+            key="containsoneof"
+            value="containsoneof"
+          >
+            Contains One Of
+          </option>
+          <option
+            key="containsnoneof"
+            value="containsnoneof"
+          >
+            Does Not Contain Any Of
+          </option>
+          <option
+            key="between"
+            value="between"
+          >
+            Between, Inclusive (example usage: -4,4)
+          </option>
+          <option
+            key="notbetween"
+            value="notbetween"
+          >
+            Not Between, Exclusive (example usage: -4,4)
+          </option>
+        </select>
       </div>
     </div>
   </div>
@@ -621,26 +548,15 @@ exports[`Filters Empty Filters - string type 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="input"
+        <input
+          className="form-control"
           disabled={true}
           id="domainpropertiesrow-secondFilterValue-1-3"
           name="domainpropertiesrow-secondFilterValue"
           onChange={[Function]}
           type="text"
           value=""
-        >
-          <input
-            className="form-control"
-            disabled={true}
-            id="domainpropertiesrow-secondFilterValue-1-3"
-            name="domainpropertiesrow-secondFilterValue"
-            onChange={[Function]}
-            type="text"
-            value=""
-          />
-        </FormControl>
+        />
       </div>
     </div>
   </div>
@@ -677,115 +593,105 @@ exports[`Filters Expressions 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="select"
+        <select
+          className="form-control"
           id="domainpropertiesrow-firstFilterType-1-1"
           name="domainpropertiesrow-firstFilterType"
           onChange={[Function]}
           required={true}
           value="neqornull"
         >
-          <select
-            className="form-control"
-            id="domainpropertiesrow-firstFilterType-1-1"
-            name="domainpropertiesrow-firstFilterType"
-            onChange={[Function]}
-            required={true}
+          <option
+            key="HAS_ANY_VALUE"
+            value="HAS_ANY_VALUE"
+          >
+            Has Any Value
+          </option>
+          <option
+            key="eq"
+            value="eq"
+          >
+            Equals
+          </option>
+          <option
+            key="neqornull"
             value="neqornull"
           >
-            <option
-              key="0"
-              value="HAS_ANY_VALUE"
-            >
-              Has Any Value
-            </option>
-            <option
-              key="1"
-              value="eq"
-            >
-              Equals
-            </option>
-            <option
-              key="2"
-              value="neqornull"
-            >
-              Does Not Equal
-            </option>
-            <option
-              key="3"
-              value="isblank"
-            >
-              Is Blank
-            </option>
-            <option
-              key="4"
-              value="isnonblank"
-            >
-              Is Not Blank
-            </option>
-            <option
-              key="5"
-              value="gt"
-            >
-              Is Greater Than
-            </option>
-            <option
-              key="6"
-              value="lt"
-            >
-              Is Less Than
-            </option>
-            <option
-              key="7"
-              value="gte"
-            >
-              Is Greater Than or Equal To
-            </option>
-            <option
-              key="8"
-              value="lte"
-            >
-              Is Less Than or Equal To
-            </option>
-            <option
-              key="9"
-              value="in"
-            >
-              Equals One Of
-            </option>
-            <option
-              key="10"
-              value="notin"
-            >
-              Does Not Equal Any Of
-            </option>
-            <option
-              key="11"
-              value="between"
-            >
-              Between, Inclusive (example usage: -4,4)
-            </option>
-            <option
-              key="12"
-              value="notbetween"
-            >
-              Not Between, Exclusive (example usage: -4,4)
-            </option>
-            <option
-              key="13"
-              value="hasmvvalue"
-            >
-              Has a missing value indicator
-            </option>
-            <option
-              key="14"
-              value="nomvvalue"
-            >
-              Does not have a missing value indicator
-            </option>
-          </select>
-        </FormControl>
+            Does Not Equal
+          </option>
+          <option
+            key="isblank"
+            value="isblank"
+          >
+            Is Blank
+          </option>
+          <option
+            key="isnonblank"
+            value="isnonblank"
+          >
+            Is Not Blank
+          </option>
+          <option
+            key="gt"
+            value="gt"
+          >
+            Is Greater Than
+          </option>
+          <option
+            key="lt"
+            value="lt"
+          >
+            Is Less Than
+          </option>
+          <option
+            key="gte"
+            value="gte"
+          >
+            Is Greater Than or Equal To
+          </option>
+          <option
+            key="lte"
+            value="lte"
+          >
+            Is Less Than or Equal To
+          </option>
+          <option
+            key="in"
+            value="in"
+          >
+            Equals One Of
+          </option>
+          <option
+            key="notin"
+            value="notin"
+          >
+            Does Not Equal Any Of
+          </option>
+          <option
+            key="between"
+            value="between"
+          >
+            Between, Inclusive (example usage: -4,4)
+          </option>
+          <option
+            key="notbetween"
+            value="notbetween"
+          >
+            Not Between, Exclusive (example usage: -4,4)
+          </option>
+          <option
+            key="hasmvvalue"
+            value="hasmvvalue"
+          >
+            Has a missing value indicator
+          </option>
+          <option
+            key="nomvvalue"
+            value="nomvvalue"
+          >
+            Does not have a missing value indicator
+          </option>
+        </select>
       </div>
     </div>
   </div>
@@ -803,9 +709,8 @@ exports[`Filters Expressions 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="input"
+        <input
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-firstFilterValue-1-1"
           name="domainpropertiesrow-firstFilterValue"
@@ -813,18 +718,7 @@ exports[`Filters Expressions 1`] = `
           required={true}
           type="number"
           value="-5"
-        >
-          <input
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-firstFilterValue-1-1"
-            name="domainpropertiesrow-firstFilterValue"
-            onChange={[Function]}
-            required={true}
-            type="number"
-            value="-5"
-          />
-        </FormControl>
+        />
       </div>
     </div>
   </div>
@@ -844,119 +738,110 @@ exports[`Filters Expressions 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="select"
+        <select
+          className="form-control"
           id="domainpropertiesrow-secondFilterType-1-1"
           name="domainpropertiesrow-secondFilterType"
           onChange={[Function]}
           value="hasmvvalue"
         >
-          <select
-            className="form-control"
-            id="domainpropertiesrow-secondFilterType-1-1"
-            name="domainpropertiesrow-secondFilterType"
-            onChange={[Function]}
+          <option
+            key="None"
+            value="None"
+          >
+            No other filter
+          </option>
+          <option
+            key="HAS_ANY_VALUE"
+            value="HAS_ANY_VALUE"
+          >
+            Has Any Value
+          </option>
+          <option
+            key="eq"
+            value="eq"
+          >
+            Equals
+          </option>
+          <option
+            key="neqornull"
+            value="neqornull"
+          >
+            Does Not Equal
+          </option>
+          <option
+            key="isblank"
+            value="isblank"
+          >
+            Is Blank
+          </option>
+          <option
+            key="isnonblank"
+            value="isnonblank"
+          >
+            Is Not Blank
+          </option>
+          <option
+            key="gt"
+            value="gt"
+          >
+            Is Greater Than
+          </option>
+          <option
+            key="lt"
+            value="lt"
+          >
+            Is Less Than
+          </option>
+          <option
+            key="gte"
+            value="gte"
+          >
+            Is Greater Than or Equal To
+          </option>
+          <option
+            key="lte"
+            value="lte"
+          >
+            Is Less Than or Equal To
+          </option>
+          <option
+            key="in"
+            value="in"
+          >
+            Equals One Of
+          </option>
+          <option
+            key="notin"
+            value="notin"
+          >
+            Does Not Equal Any Of
+          </option>
+          <option
+            key="between"
+            value="between"
+          >
+            Between, Inclusive (example usage: -4,4)
+          </option>
+          <option
+            key="notbetween"
+            value="notbetween"
+          >
+            Not Between, Exclusive (example usage: -4,4)
+          </option>
+          <option
+            key="hasmvvalue"
             value="hasmvvalue"
           >
-            <option
-              key="0"
-              value="None"
-            >
-              No other filter
-            </option>
-            <option
-              key="1"
-              value="HAS_ANY_VALUE"
-            >
-              Has Any Value
-            </option>
-            <option
-              key="2"
-              value="eq"
-            >
-              Equals
-            </option>
-            <option
-              key="3"
-              value="neqornull"
-            >
-              Does Not Equal
-            </option>
-            <option
-              key="4"
-              value="isblank"
-            >
-              Is Blank
-            </option>
-            <option
-              key="5"
-              value="isnonblank"
-            >
-              Is Not Blank
-            </option>
-            <option
-              key="6"
-              value="gt"
-            >
-              Is Greater Than
-            </option>
-            <option
-              key="7"
-              value="lt"
-            >
-              Is Less Than
-            </option>
-            <option
-              key="8"
-              value="gte"
-            >
-              Is Greater Than or Equal To
-            </option>
-            <option
-              key="9"
-              value="lte"
-            >
-              Is Less Than or Equal To
-            </option>
-            <option
-              key="10"
-              value="in"
-            >
-              Equals One Of
-            </option>
-            <option
-              key="11"
-              value="notin"
-            >
-              Does Not Equal Any Of
-            </option>
-            <option
-              key="12"
-              value="between"
-            >
-              Between, Inclusive (example usage: -4,4)
-            </option>
-            <option
-              key="13"
-              value="notbetween"
-            >
-              Not Between, Exclusive (example usage: -4,4)
-            </option>
-            <option
-              key="14"
-              value="hasmvvalue"
-            >
-              Has a missing value indicator
-            </option>
-            <option
-              key="15"
-              value="nomvvalue"
-            >
-              Does not have a missing value indicator
-            </option>
-          </select>
-        </FormControl>
+            Has a missing value indicator
+          </option>
+          <option
+            key="nomvvalue"
+            value="nomvvalue"
+          >
+            Does not have a missing value indicator
+          </option>
+        </select>
       </div>
     </div>
   </div>
@@ -974,26 +859,15 @@ exports[`Filters Expressions 1`] = `
       className="col-xs-8"
     >
       <div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="input"
+        <input
+          className="form-control"
           disabled={true}
           id="domainpropertiesrow-secondFilterValue-1-1"
           name="domainpropertiesrow-secondFilterValue"
           onChange={[Function]}
           type="number"
           value=""
-        >
-          <input
-            className="form-control"
-            disabled={true}
-            id="domainpropertiesrow-secondFilterValue-1-1"
-            name="domainpropertiesrow-secondFilterValue"
-            onChange={[Function]}
-            type="number"
-            value=""
-          />
-        </FormControl>
+        />
       </div>
     </div>
   </div>

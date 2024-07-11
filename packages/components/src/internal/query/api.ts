@@ -611,7 +611,10 @@ export function handleSelectRowsResponse(response: Query.Response, queryInfo: Qu
         // If metaData is present, then use its "id" value regardless of presence of a queryInfo
         metadataKey = resolved.metaData.id;
     } else if (queryInfo) {
-        metadataKey = queryInfo.pkCols[0];
+        // Match ApiQueryResponse logic for determining "metaData.id"
+        if (queryInfo.pkCols.length === 1) {
+            metadataKey = queryInfo.pkCols[0];
+        }
     }
     const modelKey = resolveKeyFromJson(resolved);
 

@@ -990,8 +990,10 @@ describe('isBoolean', () => {
         expect(isBoolean(null)).toBe(true);
         expect(isBoolean(undefined)).toBe(true);
         expect(isBoolean('')).toBe(true);
+        expect(isBoolean(true)).toBe(true);
+        expect(isBoolean(false)).toBe(true);
 
-        ['true', 't', 'yes', 'y', 'on', '1'].forEach(val => {
+        ['true', 't', 'yes', 'y', 'on', '1', 1].forEach(val => {
             expect(isBoolean(val)).toBe(true);
         });
 
@@ -999,7 +1001,7 @@ describe('isBoolean', () => {
             expect(isBoolean(val.toUpperCase())).toBe(true);
         });
 
-        ['false', 'f', 'no', 'n', 'off', '0'].forEach(val => {
+        ['false', 'f', 'no', 'n', 'off', '0', 0].forEach(val => {
             expect(isBoolean(val)).toBe(true);
         });
 

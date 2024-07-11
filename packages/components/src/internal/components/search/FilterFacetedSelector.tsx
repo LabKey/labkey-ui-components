@@ -132,7 +132,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                         setLoading(false);
                     }
                 }
-            }, 500);
+            }, checkForAll ? 0 : 500);
         },
         [api.query, canBeBlank, fieldKey, selectDistinctOptions, resetTimeout]
     );

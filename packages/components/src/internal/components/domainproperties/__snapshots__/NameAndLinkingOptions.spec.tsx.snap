@@ -129,26 +129,15 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
         >
           Description
         </div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="textarea"
+        <textarea
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-description-1-1"
           name="domainpropertiesrow-description"
           onChange={[Function]}
           rows={4}
           value="This is a description"
-        >
-          <textarea
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-description-1-1"
-            name="domainpropertiesrow-description"
-            onChange={[Function]}
-            rows={4}
-            value="This is a description"
-          />
-        </FormControl>
+        />
       </div>
       <div
         className="col-xs-3"
@@ -158,26 +147,15 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
         >
           Label
         </div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="input"
+        <input
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-label-1-1"
           name="domainpropertiesrow-label"
           onChange={[Function]}
           type="text"
           value="This is a label"
-        >
-          <input
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-label-1-1"
-            name="domainpropertiesrow-label"
-            onChange={[Function]}
-            type="text"
-            value="This is a label"
-          />
-        </FormControl>
+        />
         <div
           className="domain-field-label"
         >
@@ -235,26 +213,15 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             </span>
           </DomainFieldLabel>
         </div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="input"
+        <input
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-importAliases-1-1"
           name="domainpropertiesrow-importAliases"
           onChange={[Function]}
           type="text"
           value="This is an alias"
-        >
-          <input
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-importAliases-1-1"
-            name="domainpropertiesrow-importAliases"
-            onChange={[Function]}
-            type="text"
-            value="This is an alias"
-          />
-        </FormControl>
+        />
       </div>
       <div
         className="col-xs-4"
@@ -327,26 +294,15 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             </span>
           </DomainFieldLabel>
         </div>
-        <FormControl
-          bsClass="form-control"
-          componentClass="input"
+        <input
+          className="form-control"
           disabled={false}
           id="domainpropertiesrow-URL-1-1"
           name="domainpropertiesrow-URL"
           onChange={[Function]}
           type="text"
           value="This is a URL"
-        >
-          <input
-            className="form-control"
-            disabled={false}
-            id="domainpropertiesrow-URL-1-1"
-            name="domainpropertiesrow-URL"
-            onChange={[Function]}
-            type="text"
-            value="This is a URL"
-          />
-        </FormControl>
+        />
       </div>
     </div>
   </div>

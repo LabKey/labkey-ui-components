@@ -1,6 +1,5 @@
 import React from 'react';
 import { List } from 'immutable';
-import { FormControl } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
 import { Modal } from '../../Modal';
@@ -9,12 +8,14 @@ import { getSubmitButtonClass } from '../../app/utils';
 import {
     ADVANCED_FIELD_EDITOR_TOPIC,
     CHART_MEASURES_AND_DIMENSIONS_TOPIC,
-    helpLinkNode,
+    HelpLink,
     MISSING_VALUES_TOPIC,
     PROPERTY_FIELDS_PHI_TOPIC,
 } from '../../util/helpLinks';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
+
+import { CheckboxLK } from '../../Checkbox';
 
 import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
 import { DATETIME_TYPE, PropDescType } from './PropDescType';
@@ -40,9 +41,9 @@ import {
 } from './constants';
 
 import { DomainFieldLabel } from './DomainFieldLabel';
-import { CheckboxLK } from '../../Checkbox';
 
 interface AdvancedSettingsProps {
+    allowUniqueConstraintProperties: boolean;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
@@ -56,7 +57,6 @@ interface AdvancedSettingsProps {
     onApply: (any) => any;
     onHide: () => any;
     showDefaultValueSettings: boolean;
-    allowUniqueConstraintProperties: boolean;
 }
 
 interface AdvancedSettingsState {
@@ -108,8 +108,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             defaultValueType: field.defaultValueType
                 ? field.defaultValueType
                 : defaultDefaultValueType
-                ? defaultDefaultValueType
-                : DOMAIN_EDITABLE_DEFAULT,
+                  ? defaultDefaultValueType
+                  : DOMAIN_EDITABLE_DEFAULT,
             defaultDisplayValue: field.defaultDisplayValue || '[none]',
             dimension: field.dimension,
             measure: field.measure,
@@ -210,7 +210,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return (
             <div>
                 <p>Sets Protected Health Information (PHI) level for this field.</p>
-                <p>Learn more about {helpLinkNode(PROPERTY_FIELDS_PHI_TOPIC, 'protecting PHI')} in LabKey.</p>
+                <p>
+                    Learn more about <HelpLink topic={PROPERTY_FIELDS_PHI_TOPIC}>protecting PHI</HelpLink> in LabKey.
+                </p>
             </div>
         );
     };
@@ -224,7 +226,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     Last entered: An editable default value is provided on first use. The last value entered will be
                     provided on later imports.
                 </p>
-                <p>Learn more about using {helpLinkNode(ADVANCED_FIELD_EDITOR_TOPIC, 'Default Type')} settings.</p>
+                <p>
+                    Learn more about using <HelpLink topic={ADVANCED_FIELD_EDITOR_TOPIC}>Default Type</HelpLink>{' '}
+                    settings.
+                </p>
             </div>
         );
     };
@@ -303,19 +308,19 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         <DomainFieldLabel label="Default Type" helpTipBody={this.getDefaultTypeHelpText()} />
                     </div>
                     <div className="col-xs-6">
-                        <FormControl
-                            componentClass="select"
+                        <select
+                            className="form-control"
                             name={createFormInputName(DOMAIN_FIELD_DEFAULT_VALUE_TYPE)}
                             id={createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, domainIndex, index)}
                             onChange={this.handleChange}
                             value={defaultValueType}
                         >
-                            {defaultValueOptions.map((level, i) => (
-                                <option key={i} value={level}>
+                            {defaultValueOptions.map(level => (
+                                <option key={level} value={level}>
                                     {DOMAIN_DEFAULT_TYPES[level]}
                                 </option>
                             ))}
-                        </FormControl>
+                        </select>
                     </div>
                     <div className="col-xs-3" />
                 </div>
@@ -368,8 +373,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         <DomainFieldLabel label="PHI Level" helpTipBody={this.getPhiHelpText()} />
                     </div>
                     <div className="col-xs-6">
-                        <FormControl
-                            componentClass="select"
+                        <select
+                            className="form-control"
                             name={createFormInputName(DOMAIN_FIELD_PHI)}
                             id={createFormInputId(DOMAIN_FIELD_PHI, domainIndex, index)}
                             onChange={this.handleChange}
@@ -386,7 +391,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                     {level.label}
                                 </option>
                             ))}
-                        </FormControl>
+                        </select>
                     </div>
                     <div className="col-xs-3" />
                 </div>
@@ -420,8 +425,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </p>
                                 <p>
                                     Learn more about using{' '}
-                                    {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, 'Measures and Dimensions')} for
-                                    analysis.
+                                    <HelpLink topic={CHART_MEASURES_AND_DIMENSIONS_TOPIC}>
+                                        Measures and Dimensions
+                                    </HelpLink>{' '}
+                                    for analysis.
                                 </p>
                             </div>
                         </LabelHelpTip>
@@ -443,8 +450,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </p>
                                 <p>
                                     Learn more about using{' '}
-                                    {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, 'Measures and Dimensions')} for
-                                    analysis.
+                                    <HelpLink topic={CHART_MEASURES_AND_DIMENSIONS_TOPIC}>
+                                        Measures and Dimensions
+                                    </HelpLink>{' '}
+                                    for analysis.
                                 </p>
                             </div>
                         </LabelHelpTip>
@@ -482,7 +491,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 </p>
                                 <p>
                                     Learn more about using{' '}
-                                    {helpLinkNode(MISSING_VALUES_TOPIC, 'Missing Value Indicators')}.
+                                    <HelpLink topic={MISSING_VALUES_TOPIC}>Missing Value Indicators</HelpLink>
                                 </p>
                             </div>
                         </LabelHelpTip>
@@ -518,11 +527,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 >
                     Cancel
                 </button>
-                {helpLinkNode(
-                    ADVANCED_FIELD_EDITOR_TOPIC,
-                    'Get help with field designer settings',
-                    'domain-adv-footer domain-adv-link'
-                )}
+                <HelpLink topic={ADVANCED_FIELD_EDITOR_TOPIC} className="domain-adv-footer domain-adv-link">
+                    Get help with field designer settings
+                </HelpLink>
                 <button
                     className={`domain-adv-footer domain-adv-apply-btn btn btn-${getSubmitButtonClass()}`}
                     onClick={this.handleApply}

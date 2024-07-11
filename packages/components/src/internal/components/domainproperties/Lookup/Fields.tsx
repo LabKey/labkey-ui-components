@@ -1,6 +1,5 @@
 import React from 'react';
 import { List } from 'immutable';
-import { FormControl } from 'react-bootstrap';
 
 import { decodeLookup, encodeLookup } from '../models';
 import { LOOKUP_TYPE, PropDescType } from '../PropDescType';
@@ -78,7 +77,7 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
         const { containers } = this.state;
 
         return (
-            <FormControl {...this.props} componentClass="select">
+            <select {...this.props} className="form-control">
                 {context.activeContainer && (
                     <option key="_current" value="">
                         Current {context.activeContainer.type.toLowerCase() === 'project' ? 'Project' : 'Folder'}
@@ -91,7 +90,7 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
                         </option>
                     ))
                     .toArray()}
-            </FormControl>
+            </select>
         );
     }
 }
@@ -247,8 +246,8 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
         const disabledField = disabled || (shouldDisableNonExists && !queryNameOptionExists && lookupIsValid);
 
         return (
-            <FormControl
-                componentClass="select"
+            <select
+                className="form-control"
                 disabled={loading || disabledField}
                 value={value}
                 id={id}
@@ -292,7 +291,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                         (No tables)
                     </option>
                 )}
-            </FormControl>
+            </select>
         );
     }
 }
@@ -410,8 +409,8 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
         const blankOption = !hasValue && !isEmpty;
 
         return (
-            <FormControl
-                componentClass="select"
+            <select
+                className="form-control"
                 disabled={disabled}
                 value={value}
                 id={id}
@@ -440,7 +439,7 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
                         (No schemas)
                     </option>
                 )}
-            </FormControl>
+            </select>
         );
     }
 }

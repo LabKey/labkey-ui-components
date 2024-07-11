@@ -1,7 +1,5 @@
 import React, { FC, memo, ReactNode, useCallback, useMemo } from 'react';
 
-import { FormControl } from 'react-bootstrap';
-
 import { ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
 import { createFormInputId, createFormInputName } from './utils';
@@ -45,8 +43,8 @@ export const FileAttachmentOptions: FC<Props> = memo(props => {
             </div>
             <div className="row domain-field-label">
                 <div className="col-xs-2">
-                    <FormControl
-                        componentClass="select"
+                    <select
+                        className="form-control"
                         id={createFormInputId(DOMAIN_FIELD_FILE_DISPLAY, domainIndex, index)}
                         disabled={isFieldFullyLocked(lockType)}
                         name={createFormInputName(DOMAIN_FIELD_FILE_DISPLAY)}
@@ -73,7 +71,7 @@ export const FileAttachmentOptions: FC<Props> = memo(props => {
                         >
                             {`Download ${label}`}
                         </option>
-                    </FormControl>
+                    </select>
                 </div>
             </div>
         </div>

@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { FormControl } from 'react-bootstrap';
 
 import { Filter, Utils } from '@labkey/api';
 
@@ -319,26 +318,26 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                     </div>
                     <div className="col-xs-8">
                         <div>
-                            <FormControl
-                                componentClass="select"
+                            <select
+                                className="form-control"
                                 id={createFormInputId(DOMAIN_FIRST_FILTER_TYPE, domainIndex, validatorIndex)}
                                 name={createFormInputName(DOMAIN_FIRST_FILTER_TYPE)}
                                 value={
                                     filterSet.firstFilterType !== undefined
                                         ? filterSet.firstFilterType
                                         : type === 'date'
-                                        ? 'dateeq'
-                                        : 'eq'
+                                          ? 'dateeq'
+                                          : 'eq'
                                 }
                                 onChange={this.onChange}
                                 required
                             >
-                                {firstFilterTypes.map((type, i) => (
-                                    <option key={i} value={type.value}>
+                                {firstFilterTypes.map(type => (
+                                    <option key={type.value} value={type.value}>
                                         {type.name}
                                     </option>
                                 ))}
-                            </FormControl>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -350,7 +349,8 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                     </div>
                     <div className="col-xs-8">
                         <div>
-                            <FormControl
+                            <input
+                                className="form-control"
                                 type={this.getFormControlType()}
                                 id={createFormInputId(DOMAIN_FIRST_FILTER_VALUE, domainIndex, validatorIndex)}
                                 name={createFormInputName(DOMAIN_FIRST_FILTER_VALUE)}
@@ -371,19 +371,19 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                     </div>
                     <div className="col-xs-8">
                         <div>
-                            <FormControl
-                                componentClass="select"
+                            <select
+                                className="form-control"
                                 id={createFormInputId(DOMAIN_SECOND_FILTER_TYPE, domainIndex, validatorIndex)}
                                 name={createFormInputName(DOMAIN_SECOND_FILTER_TYPE)}
                                 value={filterSet.secondFilterType ? filterSet.secondFilterType : NO_FILTER_TYPE}
                                 onChange={this.onChange}
                             >
-                                {secondFilterTypes.map((type, i) => (
-                                    <option key={i} value={type.value}>
+                                {secondFilterTypes.map(type => (
+                                    <option key={type.value} value={type.value}>
                                         {type.name}
                                     </option>
                                 ))}
-                            </FormControl>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -395,7 +395,8 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                     </div>
                     <div className="col-xs-8">
                         <div>
-                            <FormControl
+                            <input
+                                className="form-control"
                                 type={this.getFormControlType()}
                                 id={createFormInputId(DOMAIN_SECOND_FILTER_VALUE, domainIndex, validatorIndex)}
                                 name={createFormInputName(DOMAIN_SECOND_FILTER_VALUE)}

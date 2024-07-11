@@ -11,6 +11,11 @@
     display: block;
 }
 
+.tooltip.lk-tooltip.lk-tooltip--is-fixed,
+.popover.lk-popover.lk-popover--is-fixed {
+    position: fixed;
+}
+
 .overlay-trigger {
     position: relative;
     display: inline-block;

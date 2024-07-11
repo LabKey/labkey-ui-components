@@ -1,6 +1,4 @@
 import React, { FC } from 'react';
-
-import { FormControl } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { Container } from '../base/models/Container';
@@ -19,8 +17,8 @@ export const AutoLinkToStudyDropdown: FC<Props> = props => {
             {props.containers === undefined ? (
                 <LoadingSpinner />
             ) : (
-                <FormControl
-                    componentClass="select"
+                <select
+                    className="form-control"
                     id={props.autoLinkTarget}
                     onChange={props.onChange}
                     value={props.value || ''}
@@ -31,7 +29,7 @@ export const AutoLinkToStudyDropdown: FC<Props> = props => {
                             {container.path}
                         </option>
                     ))}
-                </FormControl>
+                </select>
             )}
         </>
     );

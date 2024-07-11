@@ -1,5 +1,4 @@
 import React from 'react';
-import { FormControl } from 'react-bootstrap';
 
 import { createFormInputId, createFormInputName, getNameFromId } from './utils';
 import { isFieldFullyLocked } from './propertiesUtil';
@@ -77,11 +76,11 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
         const { index, label, scale, lockType, domainIndex } = this.props;
         const { radio } = this.state;
         const textOptionsFormControl = (
-            <FormControl
+            <input
                 type="number"
                 id={createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index)}
                 name={createFormInputName(DOMAIN_FIELD_SCALE)}
-                className="domain-text-length-field"
+                className="form-control domain-text-length-field"
                 value={typeof scale !== 'undefined' && radio === DOMAIN_FIELD_CUSTOM_LENGTH ? scale : MAX_TEXT_LENGTH}
                 onChange={this.handleChange}
                 disabled={isFieldFullyLocked(lockType) || radio === DOMAIN_FIELD_MAX_LENGTH}
@@ -104,9 +103,9 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 </div>
                 <div className="row">
                     <div className="col-xs-12 domain-text-options-col">
-                        <FormControl
+                        <input
                             type="radio"
-                            className="domain-text-options-radio1 domain-field-float-left"
+                            className="form-control domain-text-options-radio1 domain-field-float-left"
                             value={DOMAIN_FIELD_MAX_LENGTH}
                             checked={radio === DOMAIN_FIELD_MAX_LENGTH}
                             onChange={this.handleChange}
@@ -118,9 +117,9 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 </div>
                 <div className="row">
                     <div className="col-xs-12">
-                        <FormControl
+                        <input
                             type="radio"
-                            className="domain-text-options-radio2 domain-field-float-left"
+                            className="form-control domain-text-options-radio2 domain-field-float-left"
                             value={DOMAIN_FIELD_CUSTOM_LENGTH}
                             checked={radio === DOMAIN_FIELD_CUSTOM_LENGTH}
                             onChange={this.handleChange}

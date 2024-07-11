@@ -196,61 +196,51 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
             className="col-xs-8"
           >
             <div>
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 id="domainpropertiesrow-firstFilterType-1-0"
                 name="domainpropertiesrow-firstFilterType"
                 onChange={[Function]}
                 required={true}
                 value="gt"
               >
-                <select
-                  className="form-control"
-                  id="domainpropertiesrow-firstFilterType-1-0"
-                  name="domainpropertiesrow-firstFilterType"
-                  onChange={[Function]}
-                  required={true}
+                <option
+                  key="eq"
+                  value="eq"
+                >
+                  Equals
+                </option>
+                <option
+                  key="neq"
+                  value="neq"
+                >
+                  Does Not Equal
+                </option>
+                <option
+                  key="gt"
                   value="gt"
                 >
-                  <option
-                    key="0"
-                    value="eq"
-                  >
-                    Equals
-                  </option>
-                  <option
-                    key="1"
-                    value="neq"
-                  >
-                    Does Not Equal
-                  </option>
-                  <option
-                    key="2"
-                    value="gt"
-                  >
-                    Is Greater Than
-                  </option>
-                  <option
-                    key="3"
-                    value="gte"
-                  >
-                    Is Greater Than or Equal To
-                  </option>
-                  <option
-                    key="4"
-                    value="lt"
-                  >
-                    Is Less Than
-                  </option>
-                  <option
-                    key="5"
-                    value="lte"
-                  >
-                    Is Less Than or Equal To
-                  </option>
-                </select>
-              </FormControl>
+                  Is Greater Than
+                </option>
+                <option
+                  key="gte"
+                  value="gte"
+                >
+                  Is Greater Than or Equal To
+                </option>
+                <option
+                  key="lt"
+                  value="lt"
+                >
+                  Is Less Than
+                </option>
+                <option
+                  key="lte"
+                  value="lte"
+                >
+                  Is Less Than or Equal To
+                </option>
+              </select>
             </div>
           </div>
         </div>
@@ -268,9 +258,8 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
             className="col-xs-8"
           >
             <div>
-              <FormControl
-                bsClass="form-control"
-                componentClass="input"
+              <input
+                className="form-control"
                 disabled={false}
                 id="domainpropertiesrow-firstFilterValue-1-0"
                 name="domainpropertiesrow-firstFilterValue"
@@ -278,18 +267,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                 required={true}
                 type="number"
                 value="0"
-              >
-                <input
-                  className="form-control"
-                  disabled={false}
-                  id="domainpropertiesrow-firstFilterValue-1-0"
-                  name="domainpropertiesrow-firstFilterValue"
-                  onChange={[Function]}
-                  required={true}
-                  type="number"
-                  value="0"
-                />
-              </FormControl>
+              />
             </div>
           </div>
         </div>
@@ -339,65 +317,56 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
             className="col-xs-8"
           >
             <div>
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 id="domainpropertiesrow-secondFilterType-1-0"
                 name="domainpropertiesrow-secondFilterType"
                 onChange={[Function]}
                 value="lt"
               >
-                <select
-                  className="form-control"
-                  id="domainpropertiesrow-secondFilterType-1-0"
-                  name="domainpropertiesrow-secondFilterType"
-                  onChange={[Function]}
+                <option
+                  key="None"
+                  value="None"
+                >
+                  No other filter
+                </option>
+                <option
+                  key="eq"
+                  value="eq"
+                >
+                  Equals
+                </option>
+                <option
+                  key="neq"
+                  value="neq"
+                >
+                  Does Not Equal
+                </option>
+                <option
+                  key="gt"
+                  value="gt"
+                >
+                  Is Greater Than
+                </option>
+                <option
+                  key="gte"
+                  value="gte"
+                >
+                  Is Greater Than or Equal To
+                </option>
+                <option
+                  key="lt"
                   value="lt"
                 >
-                  <option
-                    key="0"
-                    value="None"
-                  >
-                    No other filter
-                  </option>
-                  <option
-                    key="1"
-                    value="eq"
-                  >
-                    Equals
-                  </option>
-                  <option
-                    key="2"
-                    value="neq"
-                  >
-                    Does Not Equal
-                  </option>
-                  <option
-                    key="3"
-                    value="gt"
-                  >
-                    Is Greater Than
-                  </option>
-                  <option
-                    key="4"
-                    value="gte"
-                  >
-                    Is Greater Than or Equal To
-                  </option>
-                  <option
-                    key="5"
-                    value="lt"
-                  >
-                    Is Less Than
-                  </option>
-                  <option
-                    key="6"
-                    value="lte"
-                  >
-                    Is Less Than or Equal To
-                  </option>
-                </select>
-              </FormControl>
+                  Is Less Than
+                </option>
+                <option
+                  key="lte"
+                  value="lte"
+                >
+                  Is Less Than or Equal To
+                </option>
+              </select>
             </div>
           </div>
         </div>
@@ -415,26 +384,15 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
             className="col-xs-8"
           >
             <div>
-              <FormControl
-                bsClass="form-control"
-                componentClass="input"
+              <input
+                className="form-control"
                 disabled={false}
                 id="domainpropertiesrow-secondFilterValue-1-0"
                 name="domainpropertiesrow-secondFilterValue"
                 onChange={[Function]}
                 type="number"
                 value="10"
-              >
-                <input
-                  className="form-control"
-                  disabled={false}
-                  id="domainpropertiesrow-secondFilterValue-1-0"
-                  name="domainpropertiesrow-secondFilterValue"
-                  onChange={[Function]}
-                  type="number"
-                  value="10"
-                />
-              </FormControl>
+              />
             </div>
           </div>
         </div>
@@ -453,25 +411,14 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
           className="col-xs-8"
         >
           <div>
-            <FormControl
-              bsClass="form-control"
-              className="textarea-fullwidth"
-              componentClass="textarea"
+            <textarea
+              className="form-control textarea-fullwidth"
               id="domainpropertiesrow-description-1-0"
               name="domainpropertiesrow-description"
               onChange={[Function]}
               rows={3}
               value="This is a range validator"
-            >
-              <textarea
-                className="textarea-fullwidth form-control"
-                id="domainpropertiesrow-description-1-0"
-                name="domainpropertiesrow-description"
-                onChange={[Function]}
-                rows={3}
-                value="This is a range validator"
-              />
-            </FormControl>
+            />
           </div>
         </div>
       </div>
@@ -489,25 +436,14 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
           className="col-xs-8"
         >
           <div>
-            <FormControl
-              bsClass="form-control"
-              className="textarea-fullwidth"
-              componentClass="textarea"
+            <textarea
+              className="form-control textarea-fullwidth"
               id="domainpropertiesrow-errorMessage-1-0"
               name="domainpropertiesrow-errorMessage"
               onChange={[Function]}
               rows={3}
               value="Range validation failed"
-            >
-              <textarea
-                className="textarea-fullwidth form-control"
-                id="domainpropertiesrow-errorMessage-1-0"
-                name="domainpropertiesrow-errorMessage"
-                onChange={[Function]}
-                rows={3}
-                value="Range validation failed"
-              />
-            </FormControl>
+            />
           </div>
         </div>
       </div>
@@ -524,24 +460,14 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
         <div
           className="col-xs-8"
         >
-          <FormControl
-            bsClass="form-control"
-            componentClass="input"
+          <input
+            className="form-control"
             id="domainpropertiesrow-name-1-0"
             name="domainpropertiesrow-name"
             onChange={[Function]}
             type="text"
             value="Test range validator"
-          >
-            <input
-              className="form-control"
-              id="domainpropertiesrow-name-1-0"
-              name="domainpropertiesrow-name"
-              onChange={[Function]}
-              type="text"
-              value="Test range validator"
-            />
-          </FormControl>
+          />
         </div>
       </div>
       <div

@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { FormControl } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
@@ -157,7 +156,13 @@ export class SingularItemNameInput extends PureComponent<IssuesListDefBasicPrope
                 </div>
 
                 <div className="col-xs-9 col-lg-8">
-                    <FormControl id="singularItemName" type="text" value={value} onChange={onInputChange} />
+                    <input
+                        className="form-control"
+                        id="singularItemName"
+                        type="text"
+                        value={value}
+                        onChange={onInputChange}
+                    />
                 </div>
             </div>
         );
@@ -179,7 +184,13 @@ export class PluralItemNameInput extends PureComponent<IssuesListDefBasicPropert
                 </div>
 
                 <div className="col-xs-9 col-lg-8">
-                    <FormControl id="pluralItemName" type="text" value={value} onChange={onInputChange} />
+                    <input
+                        className="form-control"
+                        id="pluralItemName"
+                        type="text"
+                        value={value}
+                        onChange={onInputChange}
+                    />
                 </div>
             </div>
         );

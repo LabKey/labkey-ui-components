@@ -20,7 +20,7 @@ describe('TextFieldOptions', () => {
         const customLengthRadio = { id: createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, 1, 1) };
         const scaleInput = {
             id: createFormInputId(DOMAIN_FIELD_SCALE, 1, 1),
-            className: 'domain-text-length-field form-control',
+            className: 'form-control domain-text-length-field',
         };
 
         const _section = 'Text Field Options';

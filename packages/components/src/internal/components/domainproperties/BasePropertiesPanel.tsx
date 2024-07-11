@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Panel } from 'react-bootstrap';
+
 import { isApp } from '../../app/utils';
 
 import { Alert } from '../base/Alert';
@@ -9,10 +9,7 @@ import { getDomainAlertClasses, getDomainPanelClass } from './actions';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { PROPERTIES_PANEL_ERROR_MSG } from './constants';
 import { InjectedDomainPropertiesPanelCollapseProps } from './DomainPropertiesPanelCollapse';
-
-// This is needed to suppress JS warning about providing an expanded prop without onToggle
-// eslint-disable-next-line no-empty-function,@typescript-eslint/no-empty-function
-const noop = (): void => {};
+import { Collapsible } from './Collapsible';
 
 export interface BasePropertiesPanelProps {
     panelStatus: DomainPanelStatus;
@@ -68,9 +65,19 @@ export class BasePropertiesPanel extends React.PureComponent<Props> {
         } = this.props;
         const isApp_ = isApp();
 
+        let body = <div className="panel-body">{children}</div>;
+
+        if (collapsible || controlledCollapse) {
+            body = (
+                <Collapsible className="panel-collapse" expanded={!collapsed}>
+                    {body}
+                </Collapsible>
+            );
+        }
+
         return (
             <>
-                <Panel className={getDomainPanelClass(collapsed, true, isApp_)} expanded={!collapsed} onToggle={noop}>
+                <div className={getDomainPanelClass(collapsed, true, isApp_)}>
                     <CollapsiblePanelHeader
                         id={headerId}
                         title={title}
@@ -84,8 +91,8 @@ export class BasePropertiesPanel extends React.PureComponent<Props> {
                         iconHelpMsg={PROPERTIES_PANEL_ERROR_MSG}
                         todoIconHelpMsg={todoIconHelpMsg}
                     />
-                    <Panel.Body collapsible={collapsible || controlledCollapse}>{children}</Panel.Body>
-                </Panel>
+                    {body}
+                </div>
                 {!isValid && (
                     <div onClick={this.toggleLocalPanel} className={getDomainAlertClasses(collapsed, true, isApp_)}>
                         <Alert bsStyle="danger">{PROPERTIES_PANEL_ERROR_MSG}</Alert>

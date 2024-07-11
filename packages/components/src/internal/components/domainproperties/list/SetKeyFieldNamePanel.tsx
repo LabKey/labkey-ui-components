@@ -1,5 +1,4 @@
 import React from 'react';
-import { FormControl } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 
 import { DomainField, IAppDomainHeader, IDomainField } from '../models';
@@ -113,8 +112,8 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                         />
                     </div>
                     <div className="col-xs-5">
-                        <FormControl
-                            componentClass="select"
+                        <select
+                            className="form-control"
                             name="keyField"
                             onChange={this.onSelectionChange}
                             value={pkRowIndex > -1 ? pkRowIndex : undefined}
@@ -140,7 +139,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                                         </option>
                                     ) : undefined;
                                 })}
-                        </FormControl>
+                        </select>
                     </div>
                 </div>
             </Alert>

@@ -1,5 +1,4 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { FormControl } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { HelpLink, LABKEY_SQL_TOPIC } from '../../util/helpLinks';
@@ -74,8 +73,8 @@ export class CalculatedFieldOptions extends PureComponent<Props> {
                 </div>
                 <div className="row">
                     <div className="col-xs-12">
-                        <FormControl
-                            componentClass="textarea"
+                        <textarea
+                            className="form-control"
                             rows={4}
                             value={field.valueExpression || ''}
                             id={createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index)}

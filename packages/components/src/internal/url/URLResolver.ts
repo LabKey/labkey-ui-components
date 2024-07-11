@@ -703,7 +703,7 @@ export class URLResolver {
 
                     // TODO: add reroute for assays/runs when pages and URLs are decided
                     if (row.has('data') && row.hasIn(['data', 'dataClass'])) {
-                        query = row.getIn(['data', 'dataClass', 'name']); // dataClass is a nested Map/Object inside 'data' return
+                        query = row.getIn(['data', 'dataClass', 'name']);
                         url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
                         return row.set('url', this.mapURL({ url, row, query }));
                     } else if (id.indexOf('dataClass') >= 0) {

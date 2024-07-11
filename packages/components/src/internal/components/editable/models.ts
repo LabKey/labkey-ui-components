@@ -311,7 +311,7 @@ export class EditorModel
                     }
                 } else if (col.jsonType === 'time') {
                     row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
-                } else if (col.jsonType !== 'date' || displayValues) {
+                } else if (col.jsonType !== 'date' || !displayValues) {
                     const val = values.size === 1 ? values.first().raw : undefined;
                     row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
                 } else {

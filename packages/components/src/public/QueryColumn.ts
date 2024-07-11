@@ -159,26 +159,26 @@ export interface IQueryColumn {
     readOnly: boolean;
     removeFromViewCustomization: boolean;
     removeFromViews: boolean; // strips this column from all ViewInfo definitions
+    // recommendedVariable: boolean;
+    required: boolean;
     scale: number;
+    selectable: boolean;
+    shortCaption: string;
     shownInDetailsView: boolean;
     shownInInsertView: boolean;
     shownInLookupView: boolean;
     shownInUpdateView: boolean;
     sortable: boolean;
-    // sqlType: string;
-    type: string;
-    userEditable: boolean;
-    validValues: string[];
     // versionField: boolean;
 
     sorts: '+' | '-';
-    // recommendedVariable: boolean;
-    required: boolean;
-    units: string;
-    shortCaption: string;
-
     sourceOntology: string;
-    selectable: boolean;
+    // sqlType: string;
+    type: string;
+    units: string;
+
+    userEditable: boolean;
+    validValues: string[];
 }
 
 export class QueryColumn implements IQueryColumn {

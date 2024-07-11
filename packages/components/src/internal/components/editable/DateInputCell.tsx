@@ -14,7 +14,13 @@ export interface DateInputCellProps {
     colIdx: number;
     defaultValue?: string;
     disabled?: boolean;
-    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES, col?: QueryColumn) => void;
+    modifyCell: (
+        colIdx: number,
+        rowIdx: number,
+        newValues: ValueDescriptor[],
+        mod: MODIFICATION_TYPES,
+        col?: QueryColumn
+    ) => void;
     onKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void;
     rowIdx: number;
     select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;

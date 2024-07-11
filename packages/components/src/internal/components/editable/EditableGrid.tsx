@@ -805,9 +805,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 let updatedCellMessages = editorModel.cellMessages;
 
                 editorModel.selectionCells.forEach(key => {
-                    if (!updatedCellMessages.has(key))
-                        updatedCellMessages = updatedCellMessages.set(key, undefined);
-                })
+                    if (!updatedCellMessages.has(key)) updatedCellMessages = updatedCellMessages.set(key, undefined);
+                });
                 changes.cellMessages = updatedCellMessages.reduce((result, value, key) => {
                     const isReadOnly = this.isReadOnly(key);
                     if (!isReadOnly && editorModel.selectionCells.includes(key)) {
@@ -815,10 +814,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         const { colIdx } = parseCellKey(key);
                         const col = insertColumns?.[colIdx];
                         const { message } = getValidatedEditableGridValue(null, col);
-                        if (message)
-                            return result.set(key, message);
-                        else
-                            return result.remove(key);
+                        if (message) return result.set(key, message);
+                        else return result.remove(key);
                     }
                     return result.set(key, value);
                 }, Map<string, CellMessage>());

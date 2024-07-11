@@ -9,8 +9,9 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 
-import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
 import { useRequestHandler } from '../../util/RequestHandler';
+
+import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
 
 const MAX_DISTINCT_FILTER_OPTIONS = 250;
 
@@ -59,82 +60,91 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
 
     const setDistinctValues = useCallback(
         async (checkForAll: boolean, searchStr?: string) => {
+            let aborted = false;
+            try {
+                setLoading(true);
+                setError(undefined);
+                resetTimeout();
+
+                const filterArray = searchStr
+                    ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(
+                          selectDistinctOptions?.filterArray
+                      )
+                    : selectDistinctOptions?.filterArray;
+
+                const result = await api.query.selectDistinctRows({
+                    ...selectDistinctOptions,
+                    filterArray,
+                    maxRows: MAX_DISTINCT_FILTER_OPTIONS + 1,
+                    requestHandler,
+                });
+                resetRequestHandler();
+
+                const toShow = result.values.slice(0, MAX_DISTINCT_FILTER_OPTIONS);
+                const distinctValues = toShow.sort(naturalSort).map(val => {
+                    if (val === '' || val === null || val === undefined) return EMPTY_VALUE_DISPLAY;
+                    return val;
+                });
+
+                let hasBlank = false;
+                // move [blank] to first
+                if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) >= 0) {
+                    hasBlank = true;
+                    distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
+                }
+                // Issue 47544: don't show 'blank' if we have all the values and none are blank
+                if (
+                    toShow.length > 0 &&
+                    (hasBlank || (canBeBlank && result.values.length > MAX_DISTINCT_FILTER_OPTIONS))
+                ) {
+                    distinctValues.unshift(EMPTY_VALUE_DISPLAY);
+                }
+
+                // add [All] to first if the total distinct values is < 250
+                const hasAllValues = !searchStr && result.values.length <= MAX_DISTINCT_FILTER_OPTIONS;
+                if (hasAllValues) distinctValues.unshift(ALL_VALUE_DISPLAY);
+                if (checkForAll) {
+                    setAllShown(hasAllValues);
+                }
+
+                if (searchStr) {
+                    setSearchDistinctValues(distinctValues);
+                } else {
+                    setFieldDistinctValues(distinctValues);
+                }
+            } catch (e) {
+                aborted = !e.status;
+                if (!aborted) {
+                    console.error(e);
+                    setAllShown(true);
+                    if (searchStr) {
+                        setSearchDistinctValues([]);
+                    } else {
+                        setFieldDistinctValues([]);
+                    }
+                    setError(resolveErrorMessage(e));
+                }
+            } finally {
+                if (!aborted) {
+                    resetTimeout();
+                    setLoading(false);
+                }
+            }
+        },
+        [api.query, canBeBlank, fieldKey, requestHandler, resetRequestHandler, resetTimeout, selectDistinctOptions]
+    );
+
+    const setDistinctValuesForSearch = useCallback(
+        async (searchStr?: string) => {
             if (timerRef.current !== undefined) {
                 resetTimeout();
             }
-            let aborted = false;
+
             timerRef.current = setTimeout(async () => {
-                try {
-                    setLoading(true);
-                    setError(undefined);
-                    resetTimeout();
-
-                    const filterArray = searchStr
-                        ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(
-                              selectDistinctOptions?.filterArray
-                          )
-                        : selectDistinctOptions?.filterArray;
-
-
-                    const result = await api.query.selectDistinctRows({
-                        ...selectDistinctOptions,
-                        filterArray,
-                        maxRows: MAX_DISTINCT_FILTER_OPTIONS + 1,
-                        requestHandler,
-                    });
-                    resetRequestHandler();
-
-                    const toShow = result.values.slice(0, MAX_DISTINCT_FILTER_OPTIONS);
-                    const distinctValues = toShow.sort(naturalSort).map(val => {
-                        if (val === '' || val === null || val === undefined) return EMPTY_VALUE_DISPLAY;
-                        return val;
-                    });
-
-                    let hasBlank = false;
-                    // move [blank] to first
-                    if (distinctValues.indexOf(EMPTY_VALUE_DISPLAY) >= 0) {
-                        hasBlank = true;
-                        distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
-                    }
-                    // Issue 47544: don't show 'blank' if we have all the values and none are blank
-                    if (toShow.length > 0 && (hasBlank || (canBeBlank && result.values.length > MAX_DISTINCT_FILTER_OPTIONS))) {
-                        distinctValues.unshift(EMPTY_VALUE_DISPLAY);
-                    }
-
-                    // add [All] to first if the total distinct values is < 250
-                    const hasAllValues = !searchStr && result.values.length <= MAX_DISTINCT_FILTER_OPTIONS;
-                    if (hasAllValues) distinctValues.unshift(ALL_VALUE_DISPLAY);
-                    if (checkForAll) {
-                        setAllShown(hasAllValues);
-                    }
-
-                    if (searchStr) {
-                        setSearchDistinctValues(distinctValues);
-                    } else {
-                        setFieldDistinctValues(distinctValues);
-                    }
-
-                } catch (e) {
-                    aborted = !e.status;
-                    if (!aborted) {
-                        console.error(e);
-                        setAllShown(true);
-                        if (searchStr) {
-                            setSearchDistinctValues([]);
-                        } else {
-                            setFieldDistinctValues([]);
-                        }
-                        setError(resolveErrorMessage(e));
-                    }
-                } finally {
-                    if (!aborted) {
-                        resetTimeout()
-                        setLoading(false);
-                    }
-                }
-            }, checkForAll ? 0 : 500);
+                setDistinctValues(false, searchStr);
+            }, 500);
         },
-        [api.query, canBeBlank, fieldKey, selectDistinctOptions, resetTimeout]
+        [resetTimeout, setDistinctValues]
     );
 
     const checkedValues = useMemo(() => {
@@ -146,10 +156,13 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         return checkedValues;
     }, [checkedValues]);
 
-    const onSearchStrChange = useCallback(e => {
-        setSearchStr(e.target.value);
-        setDistinctValues(false, e.target.value);
-    }, []);
+    const onSearchStrChange = useCallback(
+        e => {
+            setSearchStr(e.target.value);
+            setDistinctValuesForSearch(e.target.value);
+        },
+        [setDistinctValuesForSearch]
+    );
 
     const onChange = useCallback(
         (value: string, checked: boolean, uncheckOthers?: boolean) => {
@@ -172,7 +185,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         if (!searchStr) return fieldDistinctValues;
 
         return searchDistinctValues?.filter(val => {
-            return val !== ALL_VALUE_DISPLAY && val != EMPTY_VALUE_DISPLAY;
+            return val !== ALL_VALUE_DISPLAY && val !== EMPTY_VALUE_DISPLAY;
         });
     }, [fieldDistinctValues, searchDistinctValues, searchStr]);
 

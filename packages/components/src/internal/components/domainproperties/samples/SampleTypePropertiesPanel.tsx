@@ -1,6 +1,5 @@
 import React, { FC, memo, PureComponent } from 'react';
 import { List } from 'immutable';
-import { FormControl, FormControlProps } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Filter, Query } from '@labkey/api';
 
@@ -385,14 +384,14 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                             </div>
                         </div>
                         <div className="col-xs-10">
-                            <FormControl
-                                className={classNames({
+                            <input
+                                className={classNames('form-control', {
                                     'naming-pattern-border-warning': warning?.startsWith('Aliquot'),
                                 })}
                                 name="aliquotNameExpression"
                                 type="text"
                                 placeholder={aliquotNameExpressionPlaceholder ?? ALIQUOT_NAME_PLACEHOLDER}
-                                onChange={(e: React.ChangeEvent<FormControlProps>) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     this.onFieldChange(e.target.name, e.target.value);
                                 }}
                                 value={model.aliquotNameExpression}
@@ -449,7 +448,8 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                             </div>
 
                             <div className="col-xs-5">
-                                <FormControl
+                                <input
+                                    className="form-control"
                                     type="text"
                                     id={ENTITY_FORM_IDS.AUTO_LINK_CATEGORY}
                                     onChange={this.onFormChange}
@@ -509,13 +509,14 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                                             value={model.metricUnit}
                                         />
                                     ) : (
-                                        <FormControl
+                                        <input
+                                            className="form-control"
                                             name="metricUnit"
                                             type="text"
                                             placeholder="Enter a unit"
                                             required={metricUnitRequired}
                                             value={model.metricUnit}
-                                            onChange={(e: React.ChangeEvent<FormControlProps>) => {
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                                 this.onFieldChange(e.target.name, e.target.value);
                                             }}
                                         />

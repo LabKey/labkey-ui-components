@@ -1,13 +1,20 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 3.X
+### version 4.X
 *Released*: X July 2024
 - Editable Grid Improvements: Validation of fields
   - Update invalid cell style
   - Add util to validate cell values based on column type and properties
   - Wire up cell validation on cell modify/blur/paste/fill
   - Handle missing required cell value check on Submit
+
+### version 4.0.0
+*Released*: 10 July 2024
+- Remove usages of react-bootstrap
+- Remove FieldEditForm
+- Popover/Tooltip: support fixed positioning
+- Remove react-boostrap and @types/react-boostrap dependencies
 
 ### version 3.57.1
 *Released*: 8 July 2024

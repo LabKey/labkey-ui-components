@@ -1,5 +1,4 @@
 import React, { FC, memo } from 'react';
-import { FormControl } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 
 import classNames from 'classnames';
@@ -86,7 +85,8 @@ interface InputProps {
 export function NameInput(props: InputProps) {
     return (
         <AssayPropertiesInput label="Name" required={true} hideAdvancedProperties={props.hideAdvancedProperties}>
-            <FormControl
+            <input
+                className="form-control"
                 id={FORM_IDS.ASSAY_NAME}
                 type="text"
                 placeholder="Enter a name for this assay"
@@ -145,8 +145,8 @@ export function PlateTemplatesInput(props: InputProps) {
                 </p>
             }
         >
-            <FormControl
-                componentClass="select"
+            <select
+                className="form-control"
                 id={FORM_IDS.PLATE_TEMPLATE}
                 onChange={props.onChange}
                 value={props.model.selectedPlateTemplate}
@@ -157,7 +157,7 @@ export function PlateTemplatesInput(props: InputProps) {
                         {type}
                     </option>
                 ))}
-            </FormControl>
+            </select>
             <a className="labkey-text-link" href={buildURL('plate', 'plateTemplateList')}>
                 Configure Templates
             </a>
@@ -173,8 +173,8 @@ export function DetectionMethodsInput(props: InputProps) {
             colSize={6}
             hideAdvancedProperties={props.hideAdvancedProperties}
         >
-            <FormControl
-                componentClass="select"
+            <select
+                className="form-control"
                 id={FORM_IDS.DETECTION_METHOD}
                 onChange={props.onChange}
                 value={props.model.selectedDetectionMethod}
@@ -185,7 +185,7 @@ export function DetectionMethodsInput(props: InputProps) {
                         {method}
                     </option>
                 ))}
-            </FormControl>
+            </select>
         </AssayPropertiesInput>
     );
 }
@@ -213,8 +213,8 @@ export function MetadataInputFormatsInput(props: InputProps) {
                 </>
             }
         >
-            <FormControl
-                componentClass="select"
+            <select
+                className="form-control"
                 id={FORM_IDS.METADATA_INPUT_FORMAT}
                 onChange={props.onChange}
                 value={props.model.selectedMetadataInputFormat}
@@ -224,7 +224,7 @@ export function MetadataInputFormatsInput(props: InputProps) {
                         {props.model.availableMetadataInputFormats[key]}
                     </option>
                 ))}
-            </FormControl>
+            </select>
         </AssayPropertiesInput>
     );
 }
@@ -383,7 +383,8 @@ export const AutoLinkCategoryInput: FC<InputProps> = memo(props => {
                 </>
             }
         >
-            <FormControl
+            <input
+                className="form-control"
                 id={FORM_IDS.AUTO_LINK_CATEGORY}
                 type="text"
                 value={model.autoLinkCategory}

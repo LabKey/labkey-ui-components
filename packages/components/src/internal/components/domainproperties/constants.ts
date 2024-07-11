@@ -112,9 +112,6 @@ export const DEFAULT_SCALE_LOG = 'LOG';
 export const FILE_DISPLAY_INLINE = 'inline';
 export const FILE_DISPLAY_ATTACHMENT = 'attachment';
 
-export const EXPAND_TRANSITION = 300;
-export const EXPAND_TRANSITION_FAST = 0;
-
 // URIs for data types
 export const STRING_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#string';
 export const MULTILINE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#multiLine';

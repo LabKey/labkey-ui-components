@@ -240,9 +240,8 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
               onChange={[Function]}
               value="/StudyVerifyProject/My Study"
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 context={
                   {
                     "activeContainer": Container {
@@ -281,55 +280,14 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                 onChange={[Function]}
                 value="/StudyVerifyProject/My Study"
               >
-                <select
-                  className="form-control"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
-                  disabled={false}
-                  id="domainpropertiesrow-lookupContainer-1-1"
-                  name="domainpropertiesrow-lookupContainer"
-                  onChange={[Function]}
-                  value="/StudyVerifyProject/My Study"
+                <option
+                  key="_current"
+                  value=""
                 >
-                  <option
-                    key="_current"
-                    value=""
-                  >
-                    Current 
-                    Folder
-                  </option>
-                </select>
-              </FormControl>
+                  Current 
+                  Folder
+                </option>
+              </select>
             </FolderSelectImpl>
           </FolderSelect>
         </div>
@@ -389,9 +347,8 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
               onChange={[Function]}
               value="exp"
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 disabled={false}
                 id="domainpropertiesrow-lookupSchema-1-1"
                 name="domainpropertiesrow-lookupSchema"
@@ -399,24 +356,14 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                 placeholder="Select Schema"
                 value="exp"
               >
-                <select
-                  className="form-control"
-                  disabled={false}
-                  id="domainpropertiesrow-lookupSchema-1-1"
-                  name="domainpropertiesrow-lookupSchema"
-                  onChange={[Function]}
-                  placeholder="Select Schema"
+                <option
+                  disabled={true}
+                  key="_loading"
                   value="exp"
                 >
-                  <option
-                    disabled={true}
-                    key="_loading"
-                    value="exp"
-                  >
-                    Loading...
-                  </option>
-                </select>
-              </FormControl>
+                  Loading...
+                </option>
+              </select>
             </SchemaSelectImpl>
           </SchemaSelect>
         </div>
@@ -484,32 +431,22 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
               shouldDisableNonExists={true}
               value="Data"
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 disabled={true}
                 id="domainpropertiesrow-lookupQueryValue-1-1"
                 name="domainpropertiesrow-lookupQueryValue"
                 onChange={[Function]}
                 value="Data"
               >
-                <select
-                  className="form-control"
+                <option
                   disabled={true}
-                  id="domainpropertiesrow-lookupQueryValue-1-1"
-                  name="domainpropertiesrow-lookupQueryValue"
-                  onChange={[Function]}
+                  key="_loading"
                   value="Data"
                 >
-                  <option
-                    disabled={true}
-                    key="_loading"
-                    value="Data"
-                  >
-                    Loading...
-                  </option>
-                </select>
-              </FormControl>
+                  Loading...
+                </option>
+              </select>
             </TargetTableSelectImpl>
           </TargetTableSelect>
         </div>
@@ -521,26 +458,19 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           >
             Lookup Validator
           </div>
-          <Checkbox
-            bsClass="checkbox"
+          <Memo()
             checked={false}
             className="domain-field-checkbox-margin"
-            disabled={false}
             id="domainpropertiesrow-lookupValidator-1-1"
-            inline={false}
             name="domainpropertiesrow-lookupValidator"
             onChange={[Function]}
-            title=""
           >
             <div
-              className="domain-field-checkbox-margin checkbox"
+              className="checkbox domain-field-checkbox-margin"
             >
-              <label
-                title=""
-              >
+              <label>
                 <input
                   checked={false}
-                  disabled={false}
                   id="domainpropertiesrow-lookupValidator-1-1"
                   name="domainpropertiesrow-lookupValidator"
                   onChange={[Function]}
@@ -585,7 +515,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                 </LabelHelpTip>
               </label>
             </div>
-          </Checkbox>
+          </Memo()>
         </div>
       </div>
     </div>
@@ -833,9 +763,8 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
               onChange={[Function]}
               value="/StudyVerifyProject"
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 context={
                   {
                     "activeContainer": Container {
@@ -874,67 +803,26 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                 onChange={[Function]}
                 value="/StudyVerifyProject"
               >
-                <select
-                  className="form-control"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
-                  disabled={false}
-                  id="domainpropertiesrow-lookupContainer-1-1"
-                  name="domainpropertiesrow-lookupContainer"
-                  onChange={[Function]}
+                <option
+                  key="_current"
+                  value=""
+                >
+                  Current 
+                  Folder
+                </option>
+                <option
+                  key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
                   value="/StudyVerifyProject"
                 >
-                  <option
-                    key="_current"
-                    value=""
-                  >
-                    Current 
-                    Folder
-                  </option>
-                  <option
-                    key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
-                    value="/StudyVerifyProject"
-                  >
-                    /StudyVerifyProject
-                  </option>
-                  <option
-                    key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
-                    value="/StudyVerifyProject/My Study"
-                  >
-                    /StudyVerifyProject/My Study
-                  </option>
-                </select>
-              </FormControl>
+                  /StudyVerifyProject
+                </option>
+                <option
+                  key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
+                  value="/StudyVerifyProject/My Study"
+                >
+                  /StudyVerifyProject/My Study
+                </option>
+              </select>
             </FolderSelectImpl>
           </FolderSelect>
         </div>
@@ -994,9 +882,8 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
               onChange={[Function]}
               value=""
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 disabled={false}
                 id="domainpropertiesrow-lookupSchema-1-1"
                 name="domainpropertiesrow-lookupSchema"
@@ -1004,50 +891,40 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                 placeholder="Select Schema"
                 value=""
               >
-                <select
-                  className="form-control"
-                  disabled={false}
-                  id="domainpropertiesrow-lookupSchema-1-1"
-                  name="domainpropertiesrow-lookupSchema"
-                  onChange={[Function]}
-                  placeholder="Select Schema"
-                  value=""
+                <option
+                  key="_default"
+                />
+                <option
+                  key="exp"
+                  value="exp"
                 >
-                  <option
-                    key="_default"
-                  />
-                  <option
-                    key="exp"
-                    value="exp"
-                  >
-                    exp
-                  </option>
-                  <option
-                    key="exp.data"
-                    value="exp.data"
-                  >
-                    exp.data
-                  </option>
-                  <option
-                    key="exp.materials"
-                    value="exp.materials"
-                  >
-                    exp.materials
-                  </option>
-                  <option
-                    key="lists"
-                    value="lists"
-                  >
-                    lists
-                  </option>
-                  <option
-                    key="study"
-                    value="study"
-                  >
-                    study
-                  </option>
-                </select>
-              </FormControl>
+                  exp
+                </option>
+                <option
+                  key="exp.data"
+                  value="exp.data"
+                >
+                  exp.data
+                </option>
+                <option
+                  key="exp.materials"
+                  value="exp.materials"
+                >
+                  exp.materials
+                </option>
+                <option
+                  key="lists"
+                  value="lists"
+                >
+                  lists
+                </option>
+                <option
+                  key="study"
+                  value="study"
+                >
+                  study
+                </option>
+              </select>
             </SchemaSelectImpl>
           </SchemaSelect>
         </div>
@@ -1115,58 +992,48 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
               shouldDisableNonExists={true}
               value=""
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1-1"
                 name="domainpropertiesrow-lookupQueryValue"
                 onChange={[Function]}
                 value=""
               >
-                <select
-                  className="form-control"
+                <option
+                  key="_default"
+                />
+                <option
                   disabled={false}
-                  id="domainpropertiesrow-lookupQueryValue-1-1"
-                  name="domainpropertiesrow-lookupQueryValue"
-                  onChange={[Function]}
-                  value=""
+                  key="http://www.w3.org/2001/XMLSchema#int|Data"
+                  value="http://www.w3.org/2001/XMLSchema#int|Data"
                 >
-                  <option
-                    key="_default"
-                  />
-                  <option
-                    disabled={false}
-                    key="http://www.w3.org/2001/XMLSchema#int|Data"
-                    value="http://www.w3.org/2001/XMLSchema#int|Data"
-                  >
-                    Data
-                     (
-                    Integer
-                    )
-                  </option>
-                  <option
-                    disabled={false}
-                    key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                    value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                  >
-                    DataInputs
-                     (
-                    Integer
-                    )
-                  </option>
-                  <option
-                    disabled={false}
-                    key="http://www.w3.org/2001/XMLSchema#int|Runs"
-                    value="http://www.w3.org/2001/XMLSchema#int|Runs"
-                  >
-                    Runs
-                     (
-                    Integer
-                    )
-                  </option>
-                </select>
-              </FormControl>
+                  Data
+                   (
+                  Integer
+                  )
+                </option>
+                <option
+                  disabled={false}
+                  key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                  value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                >
+                  DataInputs
+                   (
+                  Integer
+                  )
+                </option>
+                <option
+                  disabled={false}
+                  key="http://www.w3.org/2001/XMLSchema#int|Runs"
+                  value="http://www.w3.org/2001/XMLSchema#int|Runs"
+                >
+                  Runs
+                   (
+                  Integer
+                  )
+                </option>
+              </select>
             </TargetTableSelectImpl>
           </TargetTableSelect>
         </div>
@@ -1178,26 +1045,19 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           >
             Lookup Validator
           </div>
-          <Checkbox
-            bsClass="checkbox"
+          <Memo()
             checked={false}
             className="domain-field-checkbox-margin"
-            disabled={false}
             id="domainpropertiesrow-lookupValidator-1-1"
-            inline={false}
             name="domainpropertiesrow-lookupValidator"
             onChange={[Function]}
-            title=""
           >
             <div
-              className="domain-field-checkbox-margin checkbox"
+              className="checkbox domain-field-checkbox-margin"
             >
-              <label
-                title=""
-              >
+              <label>
                 <input
                   checked={false}
-                  disabled={false}
                   id="domainpropertiesrow-lookupValidator-1-1"
                   name="domainpropertiesrow-lookupValidator"
                   onChange={[Function]}
@@ -1242,7 +1102,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                 </LabelHelpTip>
               </label>
             </div>
-          </Checkbox>
+          </Memo()>
         </div>
       </div>
     </div>
@@ -1490,9 +1350,8 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
               onChange={[Function]}
               value="/StudyVerifyProject"
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 context={
                   {
                     "activeContainer": Container {
@@ -1531,67 +1390,26 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                 onChange={[Function]}
                 value="/StudyVerifyProject"
               >
-                <select
-                  className="form-control"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
-                  disabled={false}
-                  id="domainpropertiesrow-lookupContainer-1-1"
-                  name="domainpropertiesrow-lookupContainer"
-                  onChange={[Function]}
+                <option
+                  key="_current"
+                  value=""
+                >
+                  Current 
+                  Folder
+                </option>
+                <option
+                  key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
                   value="/StudyVerifyProject"
                 >
-                  <option
-                    key="_current"
-                    value=""
-                  >
-                    Current 
-                    Folder
-                  </option>
-                  <option
-                    key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
-                    value="/StudyVerifyProject"
-                  >
-                    /StudyVerifyProject
-                  </option>
-                  <option
-                    key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
-                    value="/StudyVerifyProject/My Study"
-                  >
-                    /StudyVerifyProject/My Study
-                  </option>
-                </select>
-              </FormControl>
+                  /StudyVerifyProject
+                </option>
+                <option
+                  key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
+                  value="/StudyVerifyProject/My Study"
+                >
+                  /StudyVerifyProject/My Study
+                </option>
+              </select>
             </FolderSelectImpl>
           </FolderSelect>
         </div>
@@ -1651,9 +1469,8 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
               onChange={[Function]}
               value=""
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 disabled={false}
                 id="domainpropertiesrow-lookupSchema-1-1"
                 name="domainpropertiesrow-lookupSchema"
@@ -1661,50 +1478,40 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                 placeholder="Select Schema"
                 value=""
               >
-                <select
-                  className="form-control"
-                  disabled={false}
-                  id="domainpropertiesrow-lookupSchema-1-1"
-                  name="domainpropertiesrow-lookupSchema"
-                  onChange={[Function]}
-                  placeholder="Select Schema"
-                  value=""
+                <option
+                  key="_default"
+                />
+                <option
+                  key="exp"
+                  value="exp"
                 >
-                  <option
-                    key="_default"
-                  />
-                  <option
-                    key="exp"
-                    value="exp"
-                  >
-                    exp
-                  </option>
-                  <option
-                    key="exp.data"
-                    value="exp.data"
-                  >
-                    exp.data
-                  </option>
-                  <option
-                    key="exp.materials"
-                    value="exp.materials"
-                  >
-                    exp.materials
-                  </option>
-                  <option
-                    key="lists"
-                    value="lists"
-                  >
-                    lists
-                  </option>
-                  <option
-                    key="study"
-                    value="study"
-                  >
-                    study
-                  </option>
-                </select>
-              </FormControl>
+                  exp
+                </option>
+                <option
+                  key="exp.data"
+                  value="exp.data"
+                >
+                  exp.data
+                </option>
+                <option
+                  key="exp.materials"
+                  value="exp.materials"
+                >
+                  exp.materials
+                </option>
+                <option
+                  key="lists"
+                  value="lists"
+                >
+                  lists
+                </option>
+                <option
+                  key="study"
+                  value="study"
+                >
+                  study
+                </option>
+              </select>
             </SchemaSelectImpl>
           </SchemaSelect>
         </div>
@@ -1769,65 +1576,55 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
               shouldDisableNonExists={true}
               value=""
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1-1"
                 name="domainpropertiesrow-lookupQueryValue"
                 onChange={[Function]}
                 value=""
               >
-                <select
-                  className="form-control"
+                <option
+                  key="_default"
+                />
+                <option
                   disabled={false}
-                  id="domainpropertiesrow-lookupQueryValue-1-1"
-                  name="domainpropertiesrow-lookupQueryValue"
-                  onChange={[Function]}
-                  value=""
                 >
-                  <option
-                    key="_default"
-                  />
-                  <option
-                    disabled={false}
-                  >
-                     (
-                    Unknown
-                    )
-                  </option>
-                  <option
-                    disabled={false}
-                    key="http://www.w3.org/2001/XMLSchema#int|Data"
-                    value="http://www.w3.org/2001/XMLSchema#int|Data"
-                  >
-                    Data
-                     (
-                    Integer
-                    )
-                  </option>
-                  <option
-                    disabled={false}
-                    key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                    value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                  >
-                    DataInputs
-                     (
-                    Integer
-                    )
-                  </option>
-                  <option
-                    disabled={false}
-                    key="http://www.w3.org/2001/XMLSchema#int|Runs"
-                    value="http://www.w3.org/2001/XMLSchema#int|Runs"
-                  >
-                    Runs
-                     (
-                    Integer
-                    )
-                  </option>
-                </select>
-              </FormControl>
+                   (
+                  Unknown
+                  )
+                </option>
+                <option
+                  disabled={false}
+                  key="http://www.w3.org/2001/XMLSchema#int|Data"
+                  value="http://www.w3.org/2001/XMLSchema#int|Data"
+                >
+                  Data
+                   (
+                  Integer
+                  )
+                </option>
+                <option
+                  disabled={false}
+                  key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                  value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                >
+                  DataInputs
+                   (
+                  Integer
+                  )
+                </option>
+                <option
+                  disabled={false}
+                  key="http://www.w3.org/2001/XMLSchema#int|Runs"
+                  value="http://www.w3.org/2001/XMLSchema#int|Runs"
+                >
+                  Runs
+                   (
+                  Integer
+                  )
+                </option>
+              </select>
             </TargetTableSelectImpl>
           </TargetTableSelect>
         </div>
@@ -1839,26 +1636,19 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           >
             Lookup Validator
           </div>
-          <Checkbox
-            bsClass="checkbox"
+          <Memo()
             checked={false}
             className="domain-field-checkbox-margin"
-            disabled={false}
             id="domainpropertiesrow-lookupValidator-1-1"
-            inline={false}
             name="domainpropertiesrow-lookupValidator"
             onChange={[Function]}
-            title=""
           >
             <div
-              className="domain-field-checkbox-margin checkbox"
+              className="checkbox domain-field-checkbox-margin"
             >
-              <label
-                title=""
-              >
+              <label>
                 <input
                   checked={false}
-                  disabled={false}
                   id="domainpropertiesrow-lookupValidator-1-1"
                   name="domainpropertiesrow-lookupValidator"
                   onChange={[Function]}
@@ -1903,7 +1693,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                 </LabelHelpTip>
               </label>
             </div>
-          </Checkbox>
+          </Memo()>
         </div>
       </div>
     </div>
@@ -2151,9 +1941,8 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
               onChange={[Function]}
               value="/StudyVerifyProject/My Study"
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 context={
                   {
                     "activeContainer": Container {
@@ -2192,67 +1981,26 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                 onChange={[Function]}
                 value="/StudyVerifyProject/My Study"
               >
-                <select
-                  className="form-control"
-                  context={
-                    {
-                      "activeContainer": Container {
-                        "activeModules": [],
-                        "effectivePermissions": [],
-                        "folderType": "",
-                        "formats": {
-                          "dateFormat": "",
-                          "dateTimeFormat": "",
-                          "numberFormat": "",
-                          "timeFormat": "",
-                        },
-                        "hasRestrictedActiveModule": false,
-                        "iconHref": "",
-                        "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
-                        "isContainerTab": false,
-                        "isWorkbook": false,
-                        "name": "My Study",
-                        "parentId": "",
-                        "parentPath": "",
-                        "path": "/StudyVerifyProject/My Study",
-                        "sortOrder": 0,
-                        "startUrl": "",
-                        "title": "",
-                        "type": "",
-                      },
-                      "fetchContainers": [Function],
-                      "fetchQueries": [Function],
-                      "fetchSchemas": [Function],
-                      "getExcludedSchemaQueryNames": [Function],
-                    }
-                  }
-                  disabled={false}
-                  id="domainpropertiesrow-lookupContainer-1-1"
-                  name="domainpropertiesrow-lookupContainer"
-                  onChange={[Function]}
+                <option
+                  key="_current"
+                  value=""
+                >
+                  Current 
+                  Folder
+                </option>
+                <option
+                  key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
+                  value="/StudyVerifyProject"
+                >
+                  /StudyVerifyProject
+                </option>
+                <option
+                  key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
                   value="/StudyVerifyProject/My Study"
                 >
-                  <option
-                    key="_current"
-                    value=""
-                  >
-                    Current 
-                    Folder
-                  </option>
-                  <option
-                    key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
-                    value="/StudyVerifyProject"
-                  >
-                    /StudyVerifyProject
-                  </option>
-                  <option
-                    key="e0ea3e55-3420-1035-8057-68fea9bfb3a0"
-                    value="/StudyVerifyProject/My Study"
-                  >
-                    /StudyVerifyProject/My Study
-                  </option>
-                </select>
-              </FormControl>
+                  /StudyVerifyProject/My Study
+                </option>
+              </select>
             </FolderSelectImpl>
           </FolderSelect>
         </div>
@@ -2312,9 +2060,8 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
               onChange={[Function]}
               value="study"
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 disabled={false}
                 id="domainpropertiesrow-lookupSchema-1-1"
                 name="domainpropertiesrow-lookupSchema"
@@ -2322,47 +2069,37 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                 placeholder="Select Schema"
                 value="study"
               >
-                <select
-                  className="form-control"
-                  disabled={false}
-                  id="domainpropertiesrow-lookupSchema-1-1"
-                  name="domainpropertiesrow-lookupSchema"
-                  onChange={[Function]}
-                  placeholder="Select Schema"
+                <option
+                  key="exp"
+                  value="exp"
+                >
+                  exp
+                </option>
+                <option
+                  key="exp.data"
+                  value="exp.data"
+                >
+                  exp.data
+                </option>
+                <option
+                  key="exp.materials"
+                  value="exp.materials"
+                >
+                  exp.materials
+                </option>
+                <option
+                  key="lists"
+                  value="lists"
+                >
+                  lists
+                </option>
+                <option
+                  key="study"
                   value="study"
                 >
-                  <option
-                    key="exp"
-                    value="exp"
-                  >
-                    exp
-                  </option>
-                  <option
-                    key="exp.data"
-                    value="exp.data"
-                  >
-                    exp.data
-                  </option>
-                  <option
-                    key="exp.materials"
-                    value="exp.materials"
-                  >
-                    exp.materials
-                  </option>
-                  <option
-                    key="lists"
-                    value="lists"
-                  >
-                    lists
-                  </option>
-                  <option
-                    key="study"
-                    value="study"
-                  >
-                    study
-                  </option>
-                </select>
-              </FormControl>
+                  study
+                </option>
+              </select>
             </SchemaSelectImpl>
           </SchemaSelect>
         </div>
@@ -2430,65 +2167,55 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
               shouldDisableNonExists={true}
               value=""
             >
-              <FormControl
-                bsClass="form-control"
-                componentClass="select"
+              <select
+                className="form-control"
                 disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1-1"
                 name="domainpropertiesrow-lookupQueryValue"
                 onChange={[Function]}
                 value=""
               >
-                <select
-                  className="form-control"
+                <option
+                  key="_default"
+                />
+                <option
                   disabled={false}
-                  id="domainpropertiesrow-lookupQueryValue-1-1"
-                  name="domainpropertiesrow-lookupQueryValue"
-                  onChange={[Function]}
-                  value=""
                 >
-                  <option
-                    key="_default"
-                  />
-                  <option
-                    disabled={false}
-                  >
-                     (
-                    Lookup
-                    )
-                  </option>
-                  <option
-                    disabled={false}
-                    key="http://www.w3.org/2001/XMLSchema#int|Data"
-                    value="http://www.w3.org/2001/XMLSchema#int|Data"
-                  >
-                    Data
-                     (
-                    Integer
-                    )
-                  </option>
-                  <option
-                    disabled={false}
-                    key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                    value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
-                  >
-                    DataInputs
-                     (
-                    Integer
-                    )
-                  </option>
-                  <option
-                    disabled={false}
-                    key="http://www.w3.org/2001/XMLSchema#int|Runs"
-                    value="http://www.w3.org/2001/XMLSchema#int|Runs"
-                  >
-                    Runs
-                     (
-                    Integer
-                    )
-                  </option>
-                </select>
-              </FormControl>
+                   (
+                  Lookup
+                  )
+                </option>
+                <option
+                  disabled={false}
+                  key="http://www.w3.org/2001/XMLSchema#int|Data"
+                  value="http://www.w3.org/2001/XMLSchema#int|Data"
+                >
+                  Data
+                   (
+                  Integer
+                  )
+                </option>
+                <option
+                  disabled={false}
+                  key="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                  value="http://www.w3.org/2001/XMLSchema#int|DataInputs"
+                >
+                  DataInputs
+                   (
+                  Integer
+                  )
+                </option>
+                <option
+                  disabled={false}
+                  key="http://www.w3.org/2001/XMLSchema#int|Runs"
+                  value="http://www.w3.org/2001/XMLSchema#int|Runs"
+                >
+                  Runs
+                   (
+                  Integer
+                  )
+                </option>
+              </select>
             </TargetTableSelectImpl>
           </TargetTableSelect>
         </div>
@@ -2500,26 +2227,19 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           >
             Lookup Validator
           </div>
-          <Checkbox
-            bsClass="checkbox"
+          <Memo()
             checked={false}
             className="domain-field-checkbox-margin"
-            disabled={false}
             id="domainpropertiesrow-lookupValidator-1-1"
-            inline={false}
             name="domainpropertiesrow-lookupValidator"
             onChange={[Function]}
-            title=""
           >
             <div
-              className="domain-field-checkbox-margin checkbox"
+              className="checkbox domain-field-checkbox-margin"
             >
-              <label
-                title=""
-              >
+              <label>
                 <input
                   checked={false}
-                  disabled={false}
                   id="domainpropertiesrow-lookupValidator-1-1"
                   name="domainpropertiesrow-lookupValidator"
                   onChange={[Function]}
@@ -2564,7 +2284,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                 </LabelHelpTip>
               </label>
             </div>
-          </Checkbox>
+          </Memo()>
         </div>
       </div>
     </div>

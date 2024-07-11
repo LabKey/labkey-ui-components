@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
-import { FormControl } from 'react-bootstrap';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
 import { useNotificationsContext } from '../notifications/NotificationsContext';
@@ -170,8 +169,8 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
                     </div>
                     <div className="row margin-top">
                         <div className="col-xs-5">
-                            <FormControl
-                                className="update-genId-input "
+                            <input
+                                className="form-control update-genId-input "
                                 min={minNewGenId}
                                 step={1}
                                 name="newgenidval"

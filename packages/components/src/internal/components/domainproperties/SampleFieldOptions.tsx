@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { FormControl } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
@@ -96,8 +95,8 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                 </div>
                 <div className="row">
                     <div className="col-xs-5">
-                        <FormControl
-                            componentClass="select"
+                        <select
+                            className="form-control"
                             id={id}
                             key={id}
                             disabled={isFieldFullyLocked(lockType)}
@@ -133,7 +132,7 @@ export class SampleFieldOptions extends PureComponent<SampleFieldProps, State> {
                                         );
                                     })
                                     .toArray()}
-                        </FormControl>
+                        </select>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+        class="panel panel-default domain-form-panel lk-border-theme-light"
       >
         <div
           class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -33,7 +33,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
           </span>
         </div>
         <div
-          class="panel-collapse collapse in"
+          class="collapse panel-collapse in"
         >
           <div
             class="panel-body"
@@ -337,9 +337,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                   <div
                     class="radio"
                   >
-                    <label
-                      title=""
-                    >
+                    <label>
                       <input
                         name="dataRowSetting"
                         type="radio"
@@ -352,9 +350,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                   <div
                     class="radio"
                   >
-                    <label
-                      title=""
-                    >
+                    <label>
                       <input
                         name="dataRowSetting"
                         type="radio"
@@ -368,9 +364,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                   <div
                     class="radio"
                   >
-                    <label
-                      title=""
-                    >
+                    <label>
                       <input
                         checked=""
                         name="dataRowSetting"
@@ -512,9 +506,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                   <div
                     class="checkbox"
                   >
-                    <label
-                      title=""
-                    >
+                    <label>
                       <input
                         id="keyPropertyManaged"
                         type="checkbox"
@@ -567,7 +559,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -594,7 +586,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
         </span>
       </div>
       <div
-        class="panel-collapse collapse in"
+        class="collapse panel-collapse in"
       >
         <div
           class="panel-body"
@@ -898,9 +890,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 <div
                   class="radio"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       name="dataRowSetting"
                       type="radio"
@@ -913,9 +903,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 <div
                   class="radio"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       name="dataRowSetting"
                       type="radio"
@@ -929,9 +917,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 <div
                   class="radio"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       checked=""
                       name="dataRowSetting"
@@ -1073,9 +1059,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                 <div
                   class="checkbox"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       id="keyPropertyManaged"
                       type="checkbox"
@@ -1160,7 +1144,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
   "baseElement": <body>
     <div>
       <div
-        class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+        class="panel panel-default domain-form-panel lk-border-theme-light"
       >
         <div
           class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -1187,7 +1171,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
           </span>
         </div>
         <div
-          class="panel-collapse collapse in"
+          class="collapse panel-collapse in"
         >
           <div
             class="panel-body"
@@ -1474,9 +1458,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                   <div
                     class="radio"
                   >
-                    <label
-                      title=""
-                    >
+                    <label>
                       <input
                         name="dataRowSetting"
                         type="radio"
@@ -1489,9 +1471,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                   <div
                     class="radio"
                   >
-                    <label
-                      title=""
-                    >
+                    <label>
                       <input
                         checked=""
                         name="dataRowSetting"
@@ -1506,9 +1486,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                   <div
                     class="radio"
                   >
-                    <label
-                      title=""
-                    >
+                    <label>
                       <input
                         name="dataRowSetting"
                         type="radio"
@@ -1646,11 +1624,9 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                   class="dataset_data_row_element_hide"
                 >
                   <div
-                    class="checkbox disabled"
+                    class="checkbox"
                   >
-                    <label
-                      title=""
-                    >
+                    <label>
                       <input
                         disabled=""
                         id="keyPropertyManaged"
@@ -1704,7 +1680,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
   </body>,
   "container": <div>
     <div
-      class="panel panel-default domain-form-panel lk-border-theme-light panel panel-default"
+      class="panel panel-default domain-form-panel lk-border-theme-light"
     >
       <div
         class="domain-panel-header domain-heading-collapsible domain-panel-header-expanded labkey-page-nav"
@@ -1731,7 +1707,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
         </span>
       </div>
       <div
-        class="panel-collapse collapse in"
+        class="collapse panel-collapse in"
       >
         <div
           class="panel-body"
@@ -2018,9 +1994,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                 <div
                   class="radio"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       name="dataRowSetting"
                       type="radio"
@@ -2033,9 +2007,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                 <div
                   class="radio"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       checked=""
                       name="dataRowSetting"
@@ -2050,9 +2022,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                 <div
                   class="radio"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       name="dataRowSetting"
                       type="radio"
@@ -2190,11 +2160,9 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                 class="dataset_data_row_element_hide"
               >
                 <div
-                  class="checkbox disabled"
+                  class="checkbox"
                 >
-                  <label
-                    title=""
-                  >
+                  <label>
                     <input
                       disabled=""
                       id="keyPropertyManaged"

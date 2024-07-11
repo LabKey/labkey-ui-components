@@ -3,14 +3,12 @@ import { List } from 'immutable';
 
 import classNames from 'classnames';
 
-import { Collapse } from 'react-bootstrap';
-
 import { Grid } from '../base/Grid';
 
 import { GridColumn } from '../base/models/GridColumn';
 
 import { SystemField } from './models';
-import { EXPAND_TRANSITION } from './constants';
+import { Collapsible } from './Collapsible';
 
 interface Props {
     disabledSystemFields?: string[];
@@ -112,11 +110,11 @@ export const SystemFields: FC<Props> = memo(({ fields, disabledSystemFields, onS
                 </div>
             </div>
 
-            <Collapse in={!collapsed} timeout={EXPAND_TRANSITION}>
+            <Collapsible expanded={!collapsed}>
                 <div className="domain-system-fields__grid">
                     <Grid data={gridData} condensed={true} columns={systemFieldColumns} />
                 </div>
-            </Collapse>
+            </Collapsible>
 
             <div className="domain-custom-fields-header__text"> Custom Fields </div>
         </>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { FormControl } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import classNames from 'classnames';
@@ -64,7 +63,8 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                         <DomainFieldLabel label="Name" required={true} />
                     </div>
                     <div className="col-xs-10">
-                        <FormControl
+                        <input
+                            className="form-control"
                             id={ENTITY_FORM_IDS.NAME}
                             type="text"
                             placeholder={`Enter a name for this ${noun.toLowerCase()}`}
@@ -119,8 +119,8 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                         </div>
                     </div>
                     <div className="col-xs-10">
-                        <FormControl
-                            className={classNames({
+                        <input
+                            className={classNames('form-control', {
                                 'naming-pattern-border-warning':
                                     warning !== undefined && !warning.startsWith('Aliquot'),
                             })}

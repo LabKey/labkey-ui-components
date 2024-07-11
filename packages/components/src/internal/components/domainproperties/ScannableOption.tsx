@@ -1,5 +1,4 @@
 import React, { FC, memo, useCallback } from 'react';
-import { FormControl } from 'react-bootstrap';
 
 import { DomainFieldLabel } from './DomainFieldLabel';
 import { createFormInputId, createFormInputName } from './utils';
@@ -44,11 +43,11 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
             </div>
             <div className="row">
                 <div className="col-xs-12 domain-text-options-col">
-                    <FormControl
+                    <input
                         type="checkbox"
                         id={createFormInputId(DOMAIN_FIELD_SCANNABLE_OPTION, domainIndex, index)}
                         name={createFormInputName(DOMAIN_FIELD_SCANNABLE_OPTION)}
-                        className="domain-text-option-scannable"
+                        className="form-control domain-text-option-scannable"
                         onChange={handleOptionToggle}
                         disabled={isFieldFullyLocked(lockType)}
                         checked={scannable}

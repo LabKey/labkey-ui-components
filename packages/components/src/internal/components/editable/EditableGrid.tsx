@@ -789,6 +789,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             changes.cellValues = cellValues.set(cellKey, values);
             changesMade = true;
         } else if (mod === MODIFICATION_TYPES.REMOVE_ALL) {
+            const insertColumns = this.getColumns();
             if (editorModel.selectionCells.length > 0) {
                 // Remove all values and messages for the selected cells
                 changes.cellValues = editorModel.cellValues.reduce((result, value, key) => {
@@ -801,16 +802,32 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     }
                     return result.set(key, value);
                 }, Map<string, List<ValueDescriptor>>());
-                changes.cellMessages = editorModel.cellMessages.reduce((result, value, key) => {
+                let updatedCellMessages = editorModel.cellMessages;
+
+                editorModel.selectionCells.forEach(key => {
+                    if (!updatedCellMessages.has(key))
+                        updatedCellMessages = updatedCellMessages.set(key, undefined);
+                })
+                changes.cellMessages = updatedCellMessages.reduce((result, value, key) => {
                     const isReadOnly = this.isReadOnly(key);
                     if (!isReadOnly && editorModel.selectionCells.includes(key)) {
                         changesMade = true;
-                        return result.remove(key);
+                        const { colIdx } = parseCellKey(key);
+                        const col = insertColumns?.[colIdx];
+                        const { message } = getValidatedEditableGridValue(null, col);
+                        if (message)
+                            return result.set(key, message);
+                        else
+                            return result.remove(key);
                     }
                     return result.set(key, value);
                 }, Map<string, CellMessage>());
             } else if (!this.isReadOnly(cellKey)) {
                 changes.cellValues = cellValues.set(cellKey, List());
+                const { colIdx } = parseCellKey(cellKey);
+                const col = insertColumns?.[colIdx];
+                const { message } = getValidatedEditableGridValue(null, col);
+                changes.cellMessages = cellMessages.set(cellKey, message);
                 changesMade = true;
             }
         }

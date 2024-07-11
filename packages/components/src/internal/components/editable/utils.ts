@@ -105,7 +105,7 @@ export const getValidatedEditableGridValue = (
         (value == null || value === '' || value.toString().trim() === '') &&
         col?.jsonType !== 'boolean'
     ) {
-        message = (message ? message + '.' : '') + col.caption + ' is required.';
+        message = (message ? message + '. ' : '') + col.caption + ' is required.';
     }
 
     return {

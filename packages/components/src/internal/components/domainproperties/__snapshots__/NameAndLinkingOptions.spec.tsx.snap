@@ -84,6 +84,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "isPrimaryKey": false,
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
+      "valueExpression": undefined,
       "disablePhiLevel": false,
       "lockExistingField": false,
       "sourceOntology": undefined,

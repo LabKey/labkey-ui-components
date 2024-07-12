@@ -278,7 +278,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
     };
 
     replaceCurrentCellValue = (display: any, raw: any): void => {
-        const { colIdx, rowIdx, cellActions } = this.props;
+        const { colIdx, rowIdx, cellActions, col } = this.props;
         cellActions.modifyCell(
             colIdx,
             rowIdx,
@@ -288,7 +288,8 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     raw,
                 },
             ],
-            MODIFICATION_TYPES.REPLACE
+            MODIFICATION_TYPES.REPLACE,
+            col
         );
     };
 

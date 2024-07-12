@@ -70,7 +70,8 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
 }
 
 interface DatePickerInputState extends DisableableInputState {
-    invalid: boolean;
+    invalid: boolean; // not a date/time value
+    invalidStart: boolean; // is a date/time, but start before year 1000
     relativeInputValue?: string;
     selectedDate: any;
 }
@@ -109,10 +110,12 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             props.setValue?.(initDate);
         }
 
-        let invalid = false;
+        let invalidStart = false,
+            invalid = false;
         if (props.value && !isRelativeDateFilterValue(props.value)) {
             // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
-            invalid = this.getInitDate(props, new Date('1000-01-01')) === null;
+            invalidStart = this.getInitDate(props, new Date('1000-01-01')) === null;
+            invalid = this.getInitDate(props) === null;
         }
 
         this.input = React.createRef();
@@ -121,6 +124,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             isDisabled: props.initiallyDisabled,
             selectedDate: initDate,
             invalid,
+            invalidStart,
             relativeInputValue: undefined,
         };
     }
@@ -154,7 +158,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
         const { hideTime, queryColumn } = this.props;
         const isTimeOnly = queryColumn.isTimeColumn;
         const isDateOnly = queryColumn.isDateOnlyColumn;
-        this.setState({ selectedDate: date, invalid: false });
+        this.setState({ selectedDate: date, invalid: false, invalidStart: false });
 
         if (this.state.relativeInputValue) {
             this.props.onChange?.(this.state.relativeInputValue, this.state.relativeInputValue);
@@ -197,7 +201,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 const time = parseSimpleTime(value);
                 if (time instanceof Date && !isNaN(time.getTime())) {
                     // Issue 50102: LKSM: When bulk updating a time-only field and entering a value with PM results in the AM time being selected
-                    this.setState({ selectedDate: time, invalid: false });
+                    this.setState({ selectedDate: time, invalid: false, invalidStart: false });
 
                     const formatted = getFormattedStringFromDate(time, queryColumn, false);
                     this.props.onChange?.(formatted, formatted);
@@ -256,9 +260,9 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
             onBlur,
             inlineEdit,
         } = this.props;
-        const { isDisabled, selectedDate, invalid } = this.state;
+        const { isDisabled, selectedDate, invalid, invalidStart } = this.state;
         const { dateFormat, timeFormat } = getPickerDateAndTimeFormat(queryColumn, hideTime);
-
+        const validValueInvalidStart = !invalid && invalidStart;
         const isTimeOnly = queryColumn.isTimeColumn;
         const picker = (
             <DatePicker
@@ -277,8 +281,8 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
                 onKeyDown={onKeyDown}
                 onMonthChange={this.onChange}
                 placeholderText={placeholderText ?? `Select ${queryColumn.caption.toLowerCase()}`}
-                selected={selectedDate}
-                showTimeSelect={!hideTime && (isDateTimeCol(queryColumn) || isTimeOnly) && !invalid}
+                selected={invalid ? null : selectedDate}
+                showTimeSelect={!hideTime && (isDateTimeCol(queryColumn) || isTimeOnly) && !validValueInvalidStart}
                 showTimeSelectOnly={!hideTime && isTimeOnly}
                 timeIntervals={isTimeOnly ? 10 : 30}
                 timeFormat={timeFormat}

@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.0.2
+*Released*: 12 July 2024
+- Editable Grid Improvements: Validation of fields
+  - Update invalid cell style
+  - Add util to validate cell values based on column type and properties
+  - Wire up cell validation on cell modify/blur/paste/fill
+  - Handle missing required cell value check on Submit
+
 ### version 4.0.1
 *Released*: 10 July 2024
 - SelectRows: support optionally requesting metadata

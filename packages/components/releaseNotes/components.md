@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.0.1
+*Released*: 10 July 2024
+- SelectRows: support optionally requesting metadata
+
 ### version 4.0.0
 *Released*: 10 July 2024
 - Remove usages of react-bootstrap

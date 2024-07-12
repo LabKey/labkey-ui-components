@@ -149,6 +149,7 @@ export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPr
         'url',
         'conditionalFormats',
         'propertyValidators',
+        'valueExpression',
         // Advanced Settings
         'hidden',
         'shownInUpdateView',

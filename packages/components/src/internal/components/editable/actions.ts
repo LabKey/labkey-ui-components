@@ -285,7 +285,7 @@ async function getLookupValueDescriptors(
 }
 
 async function getLookupDisplayValue(column: QueryColumn, value: any, containerPath: string): Promise<MessageAndValue> {
-    if (value === undefined || value === null || typeof value === 'string') {
+    if (value === undefined || value === null) {
         return {
             valueDescriptor: {
                 display: value,
@@ -328,8 +328,8 @@ async function prepareInsertRowDataFromBulkForm(
             cv = List<ValueDescriptor>();
             // value had better be the rowId here, but it may be several in a comma-separated list.
             // If it's the display value, which happens to be a number, much confusion will arise.
-            const values = data.toString().split(',');
-            for (const val of values) {
+            const values_ = data.toString().split(',');
+            for (const val of values_) {
                 const { message, valueDescriptor } = await getLookupDisplayValue(
                     col,
                     parseIntIfNumber(val),
@@ -654,9 +654,9 @@ export function removeColumn(
 async function prepareUpdateRowDataFromBulkForm(
     queryInfo: QueryInfo,
     rowData: OrderedMap<string, any>,
-    isIncludedColumn: (col: QueryColumn) => boolean,
-    containerPath: string,
-    altColumns?: string[]
+    isIncludedColumn?: (col: QueryColumn) => boolean,
+    containerPath?: string,
+    altColumns?: string[] // TODO: This should use the same metadata for columns as the rest of the editable grid
 ): Promise<{ messages: OrderedMap<number, CellMessage>; values: OrderedMap<number, List<ValueDescriptor>> }> {
     const columns = queryInfo.getInsertColumns(isIncludedColumn);
     let values = OrderedMap<number, List<ValueDescriptor>>();
@@ -707,9 +707,9 @@ export async function updateGridFromBulkForm(
     queryInfo: QueryInfo,
     rowData: OrderedMap<string, any>,
     dataRowIndexes: List<number>,
-    lockedOrReadonlyRows: number[],
-    isIncludedColumn: (col: QueryColumn) => boolean,
-    containerPath: string,
+    lockedOrReadonlyRows?: number[],
+    isIncludedColumn?: (col: QueryColumn) => boolean,
+    containerPath?: string,
     useEditorModelCols: boolean = false
 ): Promise<Partial<EditorModel>> {
     let cellMessages = editorModel.cellMessages;

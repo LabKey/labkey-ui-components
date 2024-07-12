@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.0.3
+*Released*: 12 July 2024
+- getSelectedData: use async implementation, accept columns as `string[]`
+- EditableGrid: action `getLookupDisplayValue()` should support resolving string values
+- BulkUpdateForm: remove `requiredDisplayColumns` prop
+
 ### version 4.0.2
 *Released*: 12 July 2024
 - Editable Grid Improvements: Validation of fields
@@ -10,7 +16,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Handle missing required cell value check on Submit
 
 ### version 4.0.1
-*Released*: 10 July 2024
+*Released*: 12 July 2024
 - SelectRows: support optionally requesting metadata
 
 ### version 4.0.0

@@ -23,7 +23,7 @@ import { camelCaseToTitleCase, valueIsEmpty } from '../../util/utils';
 
 import { getConceptForCode } from '../ontology/actions';
 
-import { getCurrentAppProperties, hasPremiumModule } from '../../app/utils';
+import { getCurrentAppProperties, hasPremiumModule, isCalculatedFieldsEnabled } from '../../app/utils';
 
 import { GridColumn } from '../base/models/GridColumn';
 
@@ -255,7 +255,7 @@ export class DomainDesign
                 fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames, uniqueConstraintFieldNames);
             }
 
-            if (rawModel.allowCalculatedFields && rawModel.calculatedFields) {
+            if (isCalculatedFieldsEnabled() && rawModel.allowCalculatedFields && rawModel.calculatedFields) {
                 const calcFields = DomainField.fromJS(rawModel.calculatedFields, mandatoryFieldNames, uniqueConstraintFieldNames);
                 fields = fields.push(...calcFields.toArray());
             }

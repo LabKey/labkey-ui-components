@@ -389,6 +389,12 @@ export function isDataChangeCommentRequirementFeatureEnabled(moduleContext?: Mod
     return isFeatureEnabled(ProductFeature.DataChangeCommentRequirement, moduleContext);
 }
 
+export function isCalculatedFieldsEnabled(moduleContext?: ModuleContext): boolean {
+    return isApp()
+        ? isFeatureEnabled(ProductFeature.CalculatedFields, moduleContext)
+        : !isCommunityDistribution(moduleContext);
+}
+
 export function isFeatureEnabled(flag: ProductFeature, moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.core?.productFeatures?.indexOf(flag) >= 0;
 }

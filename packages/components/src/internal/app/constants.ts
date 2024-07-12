@@ -122,6 +122,7 @@ export enum ProductFeature {
     ApiKeys = 'ApiKeys',
     Assay = 'Assay',
     AssayQC = 'AssayQC',
+    CalculatedFields = 'CalculatedFields',
     DataChangeCommentRequirement = 'DataChangeCommentRequirement',
     ELN = 'ELN',
     FreezerManagement = 'FreezerManagement',

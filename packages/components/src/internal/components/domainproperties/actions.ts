@@ -23,7 +23,7 @@ import { SimpleResponse } from '../files/models';
 
 import { ConceptModel, OntologyModel } from '../ontology/models';
 
-import { isCommunityDistribution } from '../../app/utils';
+import {isCalculatedFieldsEnabled, isCommunityDistribution} from '../../app/utils';
 
 import { Container } from '../base/models/Container';
 import { naturalSortByProperty } from '../../../public/sort';
@@ -331,7 +331,7 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
         return false;
     }
 
-    if (type === CALCULATED_TYPE && !domain.allowCalculatedFields) {
+    if (type === CALCULATED_TYPE && (!isCalculatedFieldsEnabled() || !domain.allowCalculatedFields)) {
         return false;
     }
 

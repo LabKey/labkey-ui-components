@@ -131,6 +131,7 @@ const gridDataAppPropsOnlyConst = [
         description: '',
         required: 'false',
         scannable: 'false',
+        valueExpression: '',
     },
 ];
 const gridDataConst = [
@@ -152,6 +153,7 @@ const gridDataConst = [
         mvEnabled: 'false',
         lookupSchema: '',
         measure: '',
+        valueExpression: '',
     },
 ];
 const gridDataConstWithOntology = [
@@ -209,6 +211,11 @@ const gridColumnsConst = [
     {
         index: 'propertyValidators',
         caption: 'Property Validators',
+        sortable: true,
+    },
+    {
+        index: 'valueExpression',
+        caption: 'Value Expression',
         sortable: true,
     },
     { index: 'hidden', caption: 'Hidden', sortable: true },

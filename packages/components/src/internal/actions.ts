@@ -28,7 +28,6 @@ import {
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
     GENBANK_EXPORT_CONTROLLER,
-    STORAGE_MAP_EXPORT_CONTROLLER,
     VIEW_NOT_FOUND_EXCEPTION_CLASS,
 } from './constants';
 import { DataViewInfo } from './DataViewInfo';
@@ -375,40 +374,33 @@ export function getSelected(
     });
 }
 
-export function getSelectedData(
+export async function getSelectedData(
     schemaName?: string,
     queryName?: string,
     selections?: string[],
-    columns?: string,
+    columns?: string | string[],
     sorts?: string,
     queryParameters?: Record<string, any>,
     viewName?: string,
     keyColumn = 'RowId'
 ): Promise<GridResponse> {
-    return new Promise((resolve, reject) =>
-        selectRowsDeprecated({
-            schemaName,
-            queryName,
-            viewName,
-            filterArray: [Filter.create(keyColumn, selections, Filter.Types.IN)],
-            parameters: queryParameters,
-            sort: sorts,
-            columns,
-            offset: 0,
-        })
-            .then(response => {
-                const { models, orderedModels } = response;
-                const dataKey = resolveKey(schemaName, queryName);
-                resolve({
-                    data: fromJS(models[dataKey]),
-                    dataIds: List(orderedModels[dataKey]),
-                });
-            })
-            .catch(reason => {
-                console.error(reason);
-                reject(resolveErrorMessage(reason));
-            })
-    );
+    const { models, orderedModels } = await selectRowsDeprecated({
+        schemaName,
+        queryName,
+        viewName,
+        filterArray: [Filter.create(keyColumn, selections, Filter.Types.IN)],
+        parameters: queryParameters,
+        sort: sorts,
+        columns,
+        offset: 0,
+    });
+
+    const dataKey = resolveKey(schemaName, queryName);
+
+    return {
+        data: fromJS(models[dataKey]),
+        dataIds: List(orderedModels[dataKey]),
+    };
 }
 
 export interface SelectResponse {

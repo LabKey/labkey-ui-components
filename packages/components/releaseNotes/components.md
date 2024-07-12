@@ -7,6 +7,24 @@ Components, models, actions, and utility functions for LabKey applications and p
   - move `useRequestHandler` hook from ui-premium to here
 - Issue 50447-adjacent: Impose limit on number of items to add to picklist for different button/menu item rendering
 
+### version 4.0.3
+*Released*: 12 July 2024
+- getSelectedData: use async implementation, accept columns as `string[]`
+- EditableGrid: action `getLookupDisplayValue()` should support resolving string values
+- BulkUpdateForm: remove `requiredDisplayColumns` prop
+
+### version 4.0.2
+*Released*: 12 July 2024
+- Editable Grid Improvements: Validation of fields
+  - Update invalid cell style
+  - Add util to validate cell values based on column type and properties
+  - Wire up cell validation on cell modify/blur/paste/fill
+  - Handle missing required cell value check on Submit
+
+### version 4.0.1
+*Released*: 12 July 2024
+- SelectRows: support optionally requesting metadata
+
 ### version 4.0.0
 *Released*: 10 July 2024
 - Remove usages of react-bootstrap

@@ -409,7 +409,7 @@ export class QueryColumn implements IQueryColumn {
         return this.rangeURI === DATE_RANGE_URI;
     }
 
-    get isCalculatedColumn(): boolean {
+    get isCalculatedField(): boolean {
         return this.conceptURI === CALCULATED_CONCEPT_URI;
     }
 

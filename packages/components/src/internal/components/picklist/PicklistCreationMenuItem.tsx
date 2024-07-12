@@ -7,8 +7,8 @@ import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 import { User } from '../base/models/User';
 
 import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
-import { MAX_SELECTIONS_PER_ADD } from './constants';
-import { MenuItem } from '../../dropdowns';
+import { MAX_SELECTIONS_MESSAGE, MAX_SELECTIONS_PER_ADD } from './constants';
+import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 
 interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
     asMenuItem?: boolean;
@@ -38,6 +38,9 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
         return null;
     }
 
+    const numSamples = sampleIds?.length ?? queryModel?.selections?.size ?? 0;
+    const excessSamples = numSamples > MAX_SELECTIONS_PER_ADD;
+
     return (
         <>
             {queryModel && (
@@ -49,9 +52,23 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
                     maxSelection={MAX_SELECTIONS_PER_ADD}
                 />
             )}
-            {!queryModel && asMenuItem && <MenuItem onClick={onClick}>{itemText}</MenuItem>}
+            {!queryModel && asMenuItem && (
+                <DisableableMenuItem
+                    onClick={onClick}
+                    disabled={excessSamples}
+                    disabledMessage={MAX_SELECTIONS_MESSAGE}
+                >
+                    {itemText}
+                </DisableableMenuItem>
+            )}
             {!queryModel && !asMenuItem && (
-                <button className="btn btn-success" onClick={onClick} type="button">
+                <button
+                    disabled={excessSamples}
+                    title={excessSamples ? MAX_SELECTIONS_MESSAGE : undefined}
+                    className="btn btn-success"
+                    onClick={onClick}
+                    type="button"
+                >
                     {itemText}
                 </button>
             )}

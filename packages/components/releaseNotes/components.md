@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.0.4
+*Released*: 12 July 2024
+- Issue 50661: Update `FilterFacetedSelector` to cancel requests as needed while typing
+  - move `useRequestHandler` hook from ui-premium to here
+- Issue 50447-adjacent: Impose limit on number of items to add to picklist for different button/menu item rendering
+
 ### version 4.0.3
 *Released*: 12 July 2024
 - getSelectedData: use async implementation, accept columns as `string[]`

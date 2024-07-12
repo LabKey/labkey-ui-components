@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Filter, Query } from '@labkey/api';
 
@@ -8,6 +8,8 @@ import { resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { useRequestHandler } from '../../util/RequestHandler';
 
 import { ALL_VALUE_DISPLAY, EMPTY_VALUE_DISPLAY, getCheckedFilterValues, getUpdatedChooseValuesFilter } from './utils';
 
@@ -37,6 +39,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         showSearchLength,
     } = props;
 
+    const timerRef = useRef(undefined);
     const [fieldDistinctValues, setFieldDistinctValues] = useState<string[]>(undefined);
     const [searchDistinctValues, setSearchDistinctValues] = useState<string[]>(undefined);
     const [error, setError] = useState<string>(undefined);
@@ -44,15 +47,24 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     const [allShown, setAllShown] = useState<boolean>(undefined);
     const [loading, setLoading] = useState<boolean>(true);
 
+    const { requestHandler, resetRequestHandler } = useRequestHandler();
+
+    const resetTimeout = useCallback(() => {
+        clearTimeout(timerRef.current);
+        timerRef.current = undefined;
+    }, []);
+
     useEffect(() => {
         setDistinctValues(true);
     }, [fieldKey]); // on fieldKey change, reload selection values
 
     const setDistinctValues = useCallback(
         async (checkForAll: boolean, searchStr?: string) => {
+            let aborted = false;
             try {
                 setLoading(true);
                 setError(undefined);
+                resetTimeout();
 
                 const filterArray = searchStr
                     ? [Filter.create(fieldKey, searchStr, Filter.Types.CONTAINS)].concat(
@@ -64,7 +76,9 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     ...selectDistinctOptions,
                     filterArray,
                     maxRows: MAX_DISTINCT_FILTER_OPTIONS + 1,
+                    requestHandler,
                 });
+                resetRequestHandler();
 
                 const toShow = result.values.slice(0, MAX_DISTINCT_FILTER_OPTIONS);
                 const distinctValues = toShow.sort(naturalSort).map(val => {
@@ -79,7 +93,10 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     distinctValues.splice(distinctValues.indexOf(EMPTY_VALUE_DISPLAY), 1);
                 }
                 // Issue 47544: don't show 'blank' if we have all the values and none are blank
-                if (toShow.length > 0 && (hasBlank || (canBeBlank && result.values.length > MAX_DISTINCT_FILTER_OPTIONS))) {
+                if (
+                    toShow.length > 0 &&
+                    (hasBlank || (canBeBlank && result.values.length > MAX_DISTINCT_FILTER_OPTIONS))
+                ) {
                     distinctValues.unshift(EMPTY_VALUE_DISPLAY);
                 }
 
@@ -96,19 +113,38 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
                     setFieldDistinctValues(distinctValues);
                 }
             } catch (e) {
-                console.error(e);
-                setAllShown(true);
-                if (searchStr) {
-                    setSearchDistinctValues([]);
-                } else {
-                    setFieldDistinctValues([]);
+                aborted = !e.status;
+                if (!aborted) {
+                    console.error(e);
+                    setAllShown(true);
+                    if (searchStr) {
+                        setSearchDistinctValues([]);
+                    } else {
+                        setFieldDistinctValues([]);
+                    }
+                    setError(resolveErrorMessage(e));
                 }
-                setError(resolveErrorMessage(e));
             } finally {
-                setLoading(false);
+                if (!aborted) {
+                    resetTimeout();
+                    setLoading(false);
+                }
             }
         },
-        [api.query, canBeBlank, fieldKey, selectDistinctOptions]
+        [api.query, canBeBlank, fieldKey, requestHandler, resetRequestHandler, resetTimeout, selectDistinctOptions]
+    );
+
+    const setDistinctValuesForSearch = useCallback(
+        async (searchStr?: string) => {
+            if (timerRef.current !== undefined) {
+                resetTimeout();
+            }
+
+            timerRef.current = setTimeout(async () => {
+                setDistinctValues(false, searchStr);
+            }, 500);
+        },
+        [resetTimeout, setDistinctValues]
     );
 
     const checkedValues = useMemo(() => {
@@ -120,10 +156,13 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         return checkedValues;
     }, [checkedValues]);
 
-    const onSearchStrChange = useCallback(e => {
-        setSearchStr(e.target.value);
-        setDistinctValues(false, e.target.value);
-    }, []);
+    const onSearchStrChange = useCallback(
+        e => {
+            setSearchStr(e.target.value);
+            setDistinctValuesForSearch(e.target.value);
+        },
+        [setDistinctValuesForSearch]
+    );
 
     const onChange = useCallback(
         (value: string, checked: boolean, uncheckOthers?: boolean) => {
@@ -146,7 +185,7 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
         if (!searchStr) return fieldDistinctValues;
 
         return searchDistinctValues?.filter(val => {
-            return val !== ALL_VALUE_DISPLAY && val != EMPTY_VALUE_DISPLAY;
+            return val !== ALL_VALUE_DISPLAY && val !== EMPTY_VALUE_DISPLAY;
         });
     }, [fieldDistinctValues, searchDistinctValues, searchStr]);
 

@@ -12,7 +12,7 @@ import { User } from '../base/models/User';
 
 import { PicklistEditModal } from './PicklistEditModal';
 import { ChoosePicklistModal } from './ChoosePicklistModal';
-import { MAX_SELECTIONS_PER_ADD } from './constants';
+import { MAX_SELECTIONS_MESSAGE, MAX_SELECTIONS_PER_ADD } from './constants';
 
 interface Props {
     currentProductId?: string;
@@ -62,7 +62,10 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
     const useSelection = sampleIds === undefined;
     const selectionKey = sampleIds ? undefined : queryModel?.selectionKey;
     const numSelected = sampleIds ? sampleIds.length : queryModel.selections?.size;
-
+    const operationPermitted = isSampleOperationPermitted(
+        getSampleStatusType(queryModel.getRow()),
+        SampleOperation.AddToPicklist
+    );
     return (
         <>
             {useSelection ? (
@@ -76,12 +79,8 @@ export const AddToPicklistMenuItem: FC<Props> = memo(props => {
             ) : (
                 <DisableableMenuItem
                     onClick={onClick}
-                    disabled={
-                        !isSampleOperationPermitted(
-                            getSampleStatusType(queryModel.getRow()),
-                            SampleOperation.AddToPicklist
-                        )
-                    }
+                    disabled={!operationPermitted || numSelected > MAX_SELECTIONS_PER_ADD}
+                    disabledMessage={numSelected > MAX_SELECTIONS_PER_ADD ? MAX_SELECTIONS_MESSAGE : undefined}
                 >
                     Add to Picklist
                 </DisableableMenuItem>

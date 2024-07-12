@@ -17,6 +17,8 @@ import { fromJS, Map } from 'immutable';
 
 import { registerDefaultURLMappers } from '../test/testHelpers';
 
+import { QueryInfo } from '../../public/QueryInfo';
+
 import { ExperimentRunResolver, ListResolver } from './AppURLResolver';
 import { URLResolver } from './URLResolver';
 import { AppURL } from './AppURL';
@@ -237,7 +239,7 @@ describe('URL Resolvers', () => {
         // avoid false positives by defining number of assertions in a test
         expect.assertions(9);
 
-        const result = resolver.resolveSelectRows(selectRowsResult);
+        const result = resolver.resolveSelectRows(selectRowsResult, new QueryInfo({}));
         const newResult = fromJS(result);
 
         // validate ActionMapper('experiment', 'showDataClass') -- no lookup
@@ -279,7 +281,7 @@ describe('URL Resolvers', () => {
         // avoid false positives by defining number of assertions in a test
         expect.assertions(9);
 
-        const result = resolver.resolveSelectRows(selectRowsResult);
+        const result = resolver.resolveSelectRows(selectRowsResult, new QueryInfo({}));
         const newResult = fromJS(result);
 
         // validate ActionMapper('experiment', 'showDataClass') -- no lookup
@@ -333,7 +335,7 @@ describe('URL Resolvers', () => {
         // avoid false positives by defining number of assertions in a test
         expect.assertions(9);
 
-        const result = resolver.resolveSelectRows(selectRowsResult);
+        const result = resolver.resolveSelectRows(selectRowsResult, new QueryInfo({}));
         const newResult = fromJS(result);
 
         // validate ActionMapper('experiment', 'showDataClass') -- no lookup
@@ -375,7 +377,7 @@ describe('URL Resolvers', () => {
         // avoid false positives by defining number of assertions in a test
         expect.assertions(9);
 
-        const result = resolver.resolveSelectRows(selectRowsResult);
+        const result = resolver.resolveSelectRows(selectRowsResult, new QueryInfo({}));
         const newResult = fromJS(result);
 
         // validate ActionMapper('experiment', 'showDataClass') -- no lookup

@@ -62,7 +62,7 @@ export const parseQueryResponse = (getQueryResponse): Partial<ISelectRowsResult>
     // Hack: need to stringify and parse the query response object because Query.Response modifies the object in place,
     // which causes errors if you try to use the same response object twice.
     const response = new Query.Response(JSON.parse(JSON.stringify(getQueryResponse)));
-    return handleSelectRowsResponse(response);
+    return handleSelectRowsResponse(response, new QueryInfo({}));
 };
 
 export const makeTestISelectRowsResult = (getQueryResponse, getQueryDetailsResponse): ISelectRowsResult => {

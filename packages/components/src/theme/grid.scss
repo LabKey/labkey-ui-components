@@ -368,17 +368,17 @@ $table-cell-padding: 4px 2px;
 
     .cell-warning {
       position: relative;
+      background-color: $panel-danger-heading-bg;
 
       &:after {
         content: '';
         display: block;
         height: 8px;
         width: 8px;
-        background: #ffcc00;
+        background-image: linear-gradient(225deg, $brand-danger, $brand-danger 6px, transparent 6px, transparent);
         position: absolute;
-        top: 0;
-        right: -5px;
-        transform: skewX(45deg);
+        top: 1px;
+        right: -1px;
       }
 
       &.cell-selected {

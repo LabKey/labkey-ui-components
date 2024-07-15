@@ -4,7 +4,7 @@ import { SchemaQuery } from '../../public/SchemaQuery';
 import { QueryInfo } from '../../public/QueryInfo';
 import { URLResolver } from '../url/URLResolver';
 
-import { getContainerFilter, getQueryDetails } from './api';
+import { getContainerFilter, getQueryDetails, isSelectRowMetadataRequired } from './api';
 
 export interface SelectRowsOptions
     extends Omit<Query.SelectRowsOptions, 'queryName' | 'requiredVersion' | 'schemaName' | 'scope'> {
@@ -31,6 +31,7 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
     const {
         containerFilter = getContainerFilter(options.containerPath),
         columns = '*',
+        includeMetadata,
         includeTotalCount = false, // default to false to improve performance
         method = 'POST',
         schemaQuery,
@@ -38,21 +39,22 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
     } = options;
     const { queryName, schemaName, viewName } = schemaQuery;
 
-    const [queryInfo, resolved] = await Promise.all([
+    const [queryInfo, response] = await Promise.all([
         getQueryDetails({ containerPath: options.containerPath, schemaQuery }),
         new Promise<any>((resolve, reject) => {
             Query.selectRows({
                 ...selectRowsOptions,
                 columns,
                 containerFilter,
+                includeMetadata: isSelectRowMetadataRequired(includeMetadata, columns),
                 includeTotalCount,
                 method,
                 queryName,
                 requiredVersion: 17.1,
                 schemaName,
                 viewName,
-                success: json => {
-                    resolve(new URLResolver().resolveSelectRows(json));
+                success: response_ => {
+                    resolve(response_);
                 },
                 failure: (data, request) => {
                     console.error('There was a problem retrieving the data', data);
@@ -66,6 +68,8 @@ export async function selectRows(options: SelectRowsOptions): Promise<SelectRows
             });
         }),
     ]);
+
+    const resolved = new URLResolver().resolveSelectRows(response, queryInfo);
 
     return {
         messages: resolved.messages,

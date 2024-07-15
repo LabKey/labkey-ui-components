@@ -547,6 +547,7 @@ import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination } from './internal/components/pagination/Pagination';
 import { getQueryModelExportParams, runDetailsColumnsForQueryModel } from './public/QueryModel/utils';
 import { useRouteLeave, CONFIRM_MESSAGE } from './internal/util/RouteLeave';
+import { useRequestHandler } from './internal/util/RequestHandler';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
 import { HorizontalBarSection } from './internal/components/chart/HorizontalBarSection';
 import { ItemsLegend } from './internal/components/chart/ItemsLegend';
@@ -1612,6 +1613,7 @@ export {
     encodePart,
     decodePart,
     DATE_FORMATS_TOPIC,
+    useRequestHandler,
     // devTools functions
     applyDevTools,
     devToolsActive,

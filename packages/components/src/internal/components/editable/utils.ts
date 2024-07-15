@@ -4,7 +4,14 @@ import { Filter, Utils } from '@labkey/api';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
-import { getColDateFormat, getJsonDateFormatString, getJsonDateTimeFormatString, parseDate } from '../../util/Date';
+import {
+    getColDateFormat,
+    getFormattedStringFromDate,
+    getJsonDateFormatString,
+    getJsonDateTimeFormatString,
+    parseDate,
+    parseSimpleTime,
+} from '../../util/Date';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
@@ -14,7 +21,9 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
-import { EditorModel, EditorModelProps, EditableGridModels } from './models';
+import { isBoolean, isFloat, isInteger } from '../../util/utils';
+
+import { EditorModel, EditorModelProps, EditableGridModels, CellMessage } from './models';
 import { CellActions, CellCoordinates, MODIFICATION_TYPES } from './constants';
 
 export const applyEditableGridChangesToModels = (
@@ -55,7 +64,10 @@ export const applyEditableGridChangesToModels = (
     };
 };
 
-export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn): { message: string; value: any } => {
+export const getValidatedEditableGridValue = (
+    origValue: any,
+    col: QueryColumn
+): { message: CellMessage; value: any } => {
     const isDateTimeType = col?.jsonType === 'date';
     const isDateType = isDateTimeType && col?.isDateOnlyColumn;
     let message;
@@ -68,9 +80,38 @@ export const getValidatedEditableGridValue = (origValue: any, col: QueryColumn):
         const dateStrVal = isDateType ? getJsonDateFormatString(dateVal) : getJsonDateTimeFormatString(dateVal);
         if (origValue && !dateStrVal) message = isDateType ? 'Invalid date' : 'Invalid date time';
         value = dateStrVal ?? origValue;
+    } else if (value != null && value !== '' && !col?.isPublicLookup()) {
+        if (col?.validValues) {
+            if (col.validValues.indexOf(origValue.toString().trim()) === -1) message = 'Invalid text choice';
+        } else if (col?.jsonType === 'time') {
+            const time = parseSimpleTime(value);
+            if (time instanceof Date && !isNaN(time.getTime())) {
+                value = getFormattedStringFromDate(time, col, false);
+            } else message = 'Invalid time';
+        } else if (col?.jsonType === 'boolean' && !isBoolean(value)) {
+            message = 'Invalid boolean';
+        } else if (col?.jsonType === 'int' && !isInteger(value)) {
+            message = 'Invalid integer';
+        } else if (col?.jsonType === 'float' && !isFloat(value)) {
+            message = 'Invalid decimal';
+        } else if (col?.jsonType === 'string' && col?.scale) {
+            if (value.toString().trim().length > col.scale)
+                message = value.toString().trim().length + '/' + col.scale + ' characters';
+        }
     }
 
-    return { value, message };
+    if (
+        col?.required &&
+        (value == null || value === '' || value.toString().trim() === '') &&
+        col?.jsonType !== 'boolean'
+    ) {
+        message = (message ? message + '. ' : '') + col.caption + ' is required.';
+    }
+
+    return {
+        value,
+        message: message ? { message } : undefined,
+    };
 };
 
 /**

@@ -1,3 +1,5 @@
+import { QueryColumn } from '../../../public/QueryColumn';
+
 import { ValueDescriptor } from './models';
 
 export const EDITABLE_GRID_CONTAINER_CLS = 'editable-grid__container';
@@ -24,7 +26,13 @@ export interface CellActions {
     fillText: (colIdx: number, rowIdx: number, text: string) => void;
     focusCell: (colIdx: number, rowIdx: number, clearValue?: boolean) => void;
     inDrag: () => boolean; // Not really an action, but useful to be part of this interface
-    modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
+    modifyCell: (
+        colIdx: number,
+        rowIdx: number,
+        newValues: ValueDescriptor[],
+        mod: MODIFICATION_TYPES,
+        col?: QueryColumn
+    ) => void;
     selectCell: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
 }
 

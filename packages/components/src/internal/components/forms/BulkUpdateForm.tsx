@@ -42,7 +42,6 @@ interface Props {
     queryInfo: QueryInfo;
     readOnlyColumns?: string[];
     requiredColumns?: string[]; // Columns we must retrieve data for
-    requiredDisplayColumns?: string[]; // Columns that must be rendered in form
     selectedIds: string[];
     singularNoun?: string;
     // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
@@ -74,29 +73,31 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
 
         this.state = {
             containerPaths: undefined,
-            originalDataForSelection: undefined,
             dataForSelection: undefined,
-            displayFieldUpdates: {},
             dataIdsForSelection: undefined,
+            displayFieldUpdates: {},
             isLoadingDataForSelection: true,
+            originalDataForSelection: undefined,
         };
     }
 
     componentDidMount = async (): Promise<void> => {
         const { onCancel, pluralNoun, queryInfo, readOnlyColumns, selectedIds, sortString, viewName, requiredColumns } =
             this.props;
-        // Get all shownInUpdateView and required columns
-        const columns = queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns ?? []));
-        let columnString = columns?.map(c => c.fieldKey).join(',');
-        if (requiredColumns) columnString = `${columnString ? columnString + ',' : ''}${requiredColumns.join(',')}`;
         const { schemaName, name } = queryInfo;
+
+        const columns = queryInfo
+            .getPkCols()
+            .concat(queryInfo.getUpdateColumns(readOnlyColumns))
+            .map(c => c.fieldKey)
+            .concat(requiredColumns);
 
         try {
             const { data, dataIds } = await getSelectedData(
                 schemaName,
                 name,
                 selectedIds,
-                columnString,
+                columns,
                 sortString,
                 undefined,
                 viewName
@@ -185,10 +186,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
 
     columnFilter = (col: QueryColumn): boolean => {
         const lcUniqueFieldKey = this.props.uniqueFieldKey?.toLowerCase();
-        return (
-            this.props.requiredDisplayColumns?.includes(col.fieldKey) ||
-            (col.isUpdateColumn && (!lcUniqueFieldKey || col.name.toLowerCase() !== lcUniqueFieldKey))
-        );
+        return col.isUpdateColumn && (!lcUniqueFieldKey || col.name.toLowerCase() !== lcUniqueFieldKey);
     };
 
     onSubmit = (data: any, comment?: string): Promise<any> => {

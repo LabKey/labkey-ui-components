@@ -430,6 +430,22 @@ export function getDisambiguatedSelectInputOptions(
     return options;
 }
 
+const TRUE_STRINGS = ['true', 't', 'yes', 'y', 'on', '1'];
+const FALSE_STRINGS = ['false', 'f', 'no', 'n', 'off', '0'];
+
+export function isBoolean(value: any, allowNull: boolean = true): boolean {
+    if (typeof value === "boolean")
+        return true;
+
+    if (!value) return allowNull;
+
+    if (TRUE_STRINGS.indexOf(value.toString().toLowerCase()) > -1) return true;
+
+    return FALSE_STRINGS.indexOf(value.toString().toLowerCase()) > -1;
+
+
+}
+
 export function isFloat(value: number | string): boolean {
     return !isNaN(Number(value)) && !isNaN(parseFloat(value + ''));
 }

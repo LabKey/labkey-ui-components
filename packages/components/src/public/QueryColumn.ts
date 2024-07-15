@@ -108,19 +108,22 @@ const defaultQueryColumn = {
 };
 
 export interface IQueryColumn {
+    addToSystemView: boolean;
     align: string;
     // autoIncrement: boolean;
     // calculated: boolean;
     caption: string;
+    conceptSubtree: string;
     conceptURI: string;
-    // defaultScale: string;
-    displayField?: string;
-    displayFieldSqlType?: string;
-    displayFieldJsonType?: string;
     defaultValue: any;
+    derivationDataScope: string;
     description: string;
     dimension: boolean;
     displayAsLookup: boolean;
+    // defaultScale: string;
+    displayField?: string;
+    displayFieldJsonType?: string;
+    displayFieldSqlType?: string;
     // excludeFromShifting: boolean;
     // ext: any;
     facetingBehaviorType: string;
@@ -155,30 +158,28 @@ export interface IQueryColumn {
     protected: boolean;
     rangeURI: string;
     readOnly: boolean;
+    removeFromViewCustomization: boolean;
+    removeFromViews: boolean; // strips this column from all ViewInfo definitions
     // recommendedVariable: boolean;
     required: boolean;
+    scale: number;
     selectable: boolean;
     shortCaption: string;
-    addToSystemView: boolean;
-    removeFromViewCustomization: boolean;
     shownInDetailsView: boolean;
     shownInInsertView: boolean;
     shownInLookupView: boolean;
     shownInUpdateView: boolean;
     sortable: boolean;
-    // sqlType: string;
-    type: string;
-    userEditable: boolean;
-    validValues: string[];
     // versionField: boolean;
 
     sorts: '+' | '-';
-    removeFromViews: boolean; // strips this column from all ViewInfo definitions
-    units: string;
-    derivationDataScope: string;
-
     sourceOntology: string;
-    conceptSubtree: string;
+    // sqlType: string;
+    type: string;
+    units: string;
+
+    userEditable: boolean;
+    validValues: string[];
 }
 
 export class QueryColumn implements IQueryColumn {
@@ -239,6 +240,7 @@ export class QueryColumn implements IQueryColumn {
     declare shownInInsertView: boolean;
     declare shownInLookupView: boolean;
     declare shownInUpdateView: boolean;
+    declare scale: number;
     declare sortable: boolean;
     declare sqlType: string;
     declare type: string;

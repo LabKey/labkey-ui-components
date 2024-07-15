@@ -109,11 +109,15 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
 
     network: InternalVisNetwork;
 
-    refs: {
-        visgraph: HTMLElement;
-    };
+    private visgraph: React.RefObject<HTMLDivElement>;
 
-    readonly state: VisGraphState = { selected: undefined };
+    constructor(props: VisGraphProps) {
+        super(props);
+
+        this.state = { selected: undefined };
+
+        this.visgraph = React.createRef();
+    }
 
     componentDidMount(): void {
         this.generateGraph(this.props);
@@ -321,7 +325,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
                     y: canvasBox.bottom,
                 });
 
-                const rect = this.refs.visgraph.getBoundingClientRect();
+                const rect = this.visgraph.current.getBoundingClientRect();
                 const coords = {
                     top: rect.top + topLeftDOM.y,
                     left: rect.left + topLeftDOM.x,
@@ -404,7 +408,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
             nodes: options.nodes,
         };
 
-        this.network = new Network(this.refs.visgraph, this.data, options.options) as InternalVisNetwork;
+        this.network = new Network(this.visgraph.current, this.data, options.options) as InternalVisNetwork;
         this.network.on('afterDrawing', this.doAfterDrawing);
         this.network.on('blurNode', this.onNodeBlur);
         this.network.on('click', this.onClick);
@@ -440,7 +444,7 @@ export class VisGraph extends Component<VisGraphProps, VisGraphState> {
 
         return (
             <div className="lineage-visgraph-ct">
-                <div ref="visgraph" style={{ height: graphHeight }} />
+                <div ref={this.visgraph} style={{ height: graphHeight }} />
                 <VisGraphControls
                     getNetwork={this.getNetwork}
                     onReset={this.onReset}

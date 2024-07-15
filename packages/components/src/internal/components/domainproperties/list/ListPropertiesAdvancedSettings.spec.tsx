@@ -23,6 +23,7 @@ import {
     IndexField,
 } from './ListPropertiesAdvancedSettings';
 import { ListModel } from './models';
+import {DomainField} from "../models";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
@@ -71,7 +72,7 @@ describe('AdvancedSettings', () => {
     });
 
     test('display title select dropdown with new list and some fields present', () => {
-        const newModelWithOneField = emptyNewModel.setIn(['domain', 'fields'], List(['dummyField'])) as ListModel;
+        const newModelWithOneField = emptyNewModel.setIn(['domain', 'fields'], List.of(DomainField.create({name: 'dummyField'}))) as ListModel;
 
         const displayTitle = mount(
             <DisplayTitle model={newModelWithOneField} onSelectChange={jest.fn()} titleColumn={null} />

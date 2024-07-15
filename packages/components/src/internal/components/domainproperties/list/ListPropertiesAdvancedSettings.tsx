@@ -44,7 +44,7 @@ interface DisplayTitleProps {
 }
 
 export const DisplayTitle: FC<DisplayTitleProps> = memo(({ model, onSelectChange, titleColumn }) => {
-    const fields = model.domain.fields;
+    const fields = model.domain.fields.filter(field => !field.isCalculatedField());
     const disabled = fields.size === 0;
     const placeholder = disabled ? 'No fields have been defined yet' : 'Auto';
 

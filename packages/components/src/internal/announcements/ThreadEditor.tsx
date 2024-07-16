@@ -253,6 +253,7 @@ export interface ThreadEditorProps {
     onUpdate?: (updatedThread: AnnouncementModel) => void;
     parent?: string;
     thread?: AnnouncementModel;
+    setPendingChange?: (threadId: number, hasPendingChange: boolean) => void;
 }
 
 export const ThreadEditor: FC<ThreadEditorProps> = props => {
@@ -267,6 +268,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         onUpdate,
         parent,
         thread,
+        setPendingChange,
     } = props;
     const bodyInputRef = useRef<HTMLTextAreaElement>(null);
     const [error, setError] = useState<string>(undefined);
@@ -417,9 +419,15 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         (event: ChangeEvent<HTMLTextAreaElement>) => {
             setError(undefined);
             setBody(event.target.value);
+            setPendingChange?.(thread?.rowId ?? -1, !!event.target.value);
         },
         [setBody]
     );
+
+    const handleCancel = useCallback(() => {
+        onCancel?.();
+        setPendingChange?.(thread?.rowId ?? -1, false);
+    }, [thread?.rowId, onCancel, setPendingChange]);
 
     const onSubmit = useCallback(() => {
         if (submitting) return;
@@ -429,6 +437,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         } else {
             updateThread();
         }
+        setPendingChange?.(thread?.rowId ?? -1, false);
     }, [createThread, isCreate, setSubmitting, submitting, updateThread]);
 
     const onKeyDown = useCallback(
@@ -494,7 +503,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
                 <input multiple onChange={onFileInputChange} type="file" />
             </label>
 
-            <span className="clickable-text thread-editor__cancel-btn" onClick={onCancel}>
+            <span className="clickable-text thread-editor__cancel-btn" onClick={handleCancel}>
                 Cancel
             </span>
 

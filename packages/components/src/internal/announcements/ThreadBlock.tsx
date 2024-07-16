@@ -130,6 +130,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
         showResponses,
         thread,
         user,
+        setPendingChange,
     } = props;
     const [editing, setEditing] = useState(false);
     const [error, setError] = useState<string>(undefined);
@@ -235,6 +236,7 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
                         onCreate={onReplied}
                         parent={thread.parent ?? thread.entityId}
                         thread={undefined}
+                        setPendingChange={setPendingChange}
                     />
                 </div>
             )}

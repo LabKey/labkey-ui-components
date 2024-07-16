@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 50742: Reset/Update genId result in error if samples exists only in child folders
 - Issue 50709: LKSM: Pasting in editable grid when an aliquot field is between two sample fields doesn't work
 - Issue 50650: LKSM: SampleFinder doesn't show ancestor column data if default view also contains the same ancestors
+- Issue 42183: SM: Need better indication that comment in a workflow task has not been saved.
 
 ### version 4.0.4
 *Released*: 12 July 2024

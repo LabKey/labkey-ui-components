@@ -931,7 +931,6 @@ function getPkValue(row: any, queryInfo: QueryInfo): string {
 }
 
 interface CellReadStatus {
-    isLockedRow: boolean;
     isReadonlyCell: boolean;
     isReadonlyRow: boolean;
 }
@@ -940,17 +939,15 @@ export function checkCellReadStatus(
     row: any,
     queryInfo: QueryInfo,
     columnMetadata: EditableColumnMetadata,
-    readonlyRows: string[],
-    lockedRows: string[]
+    readonlyRows: string[]
 ): CellReadStatus {
-    if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
+    if (readonlyRows || columnMetadata?.isReadOnlyCell) {
         const keyCols = queryInfo.getPkCols();
         if (keyCols.length === 1) {
             const key = getPkValue(row, queryInfo);
             return {
                 isReadonlyRow: readonlyRows && key ? readonlyRows.includes(key) : false,
                 isReadonlyCell: columnMetadata?.isReadOnlyCell ? columnMetadata.isReadOnlyCell(key) : false,
-                isLockedRow: lockedRows && key ? lockedRows.includes(key) : false,
             };
         } else {
             console.warn(
@@ -962,7 +959,6 @@ export function checkCellReadStatus(
     return {
         isReadonlyRow: false,
         isReadonlyCell: false,
-        isLockedRow: false,
     };
 }
 
@@ -1230,7 +1226,6 @@ type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
  * @param columns
  * @param columnMetadata Array of column metadata, in the same order as the columns in the grid
  * @param readonlyRows A list of readonly rows
- * @param lockedRows A list of locked rows
  * @param forUpdate True if this is operating on update query filters.
  * @param targetContainerPath The container path to use when looking up lookup values in the forUpdate false case
  */
@@ -1243,7 +1238,6 @@ export async function dragFillEvent(
     columns: QueryColumn[],
     columnMetadata: EditableColumnMetadata[],
     readonlyRows: string[],
-    lockedRows: string[],
     forUpdate: boolean,
     targetContainerPath: string
 ): Promise<CellMessagesAndValues> {
@@ -1269,14 +1263,13 @@ export async function dragFillEvent(
         const selectionToFillByCol = columnCells.filter(cellKey => {
             const { rowIdx } = parseCellKey(cellKey);
             const row = data.get(dataKeys.get(rowIdx));
-            const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
+            const { isReadonlyCell, isReadonlyRow } = checkCellReadStatus(
                 row,
                 queryInfo,
                 metadata,
-                readonlyRows,
-                lockedRows
+                readonlyRows
             );
-            return !isReadonlyCell && !isReadonlyRow && !isLockedRow;
+            return !isReadonlyCell && !isReadonlyRow;
         });
 
         // eslint-disable-next-line no-await-in-loop
@@ -1469,7 +1462,6 @@ async function insertPastedData(
     paste: PasteModel,
     columnMetadata: Map<string, EditableColumnMetadata>,
     readonlyRows: string[],
-    lockedRows: string[],
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string,
@@ -1496,22 +1488,13 @@ async function insertPastedData(
     const pkCols = queryInfo.getPkCols();
     let rowIdx = rowMin;
     let hasReachedRowLimit = false;
-    let allReadOnlyRows: string[];
-
-    if (readonlyRows && lockedRows) {
-        allReadOnlyRows = readonlyRows.concat(lockedRows);
-    } else if (readonlyRows) {
-        allReadOnlyRows = readonlyRows;
-    } else if (lockedRows) {
-        allReadOnlyRows = lockedRows;
-    }
 
     for (let r = 0; r < pastedData.size; r++) {
         const row = pastedData.get(r);
         if (hasReachedRowLimit && lockRowCount) return;
 
-        if (allReadOnlyRows) {
-            while (rowIdx < rowCount && isReadonlyRow(data.get(dataKeys.get(rowIdx)), pkCols, allReadOnlyRows)) {
+        if (readonlyRows) {
+            while (rowIdx < rowCount && isReadonlyRow(data.get(dataKeys.get(rowIdx)), pkCols, readonlyRows)) {
                 // Skip over readonly rows
                 rowIdx++;
             }
@@ -1632,7 +1615,6 @@ export async function validateAndInsertPastedData(
     value: string,
     columnMetadata: Map<string, EditableColumnMetadata>,
     readonlyRows: string[],
-    lockedRows: string[],
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string,
@@ -1655,7 +1637,6 @@ export async function validateAndInsertPastedData(
             paste,
             columnMetadata,
             readonlyRows,
-            lockedRows,
             lockRowCount,
             forUpdate,
             targetContainerPath,
@@ -1680,7 +1661,6 @@ export async function pasteEvent(
     event: any,
     columnMetadata: Map<string, EditableColumnMetadata>,
     readonlyRows: string[],
-    lockedRows: string[],
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string
@@ -1698,7 +1678,6 @@ export async function pasteEvent(
             value,
             columnMetadata,
             readonlyRows,
-            lockedRows,
             lockRowCount,
             forUpdate,
             targetContainerPath,

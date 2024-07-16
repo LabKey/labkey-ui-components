@@ -3,6 +3,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 4.8.0
 *Released*: ?? July 2024
+- EditableGrid: remove unused and unnecessary props
+  - allowFieldDisable
+  - bordered
+  - condensed
+  - lockedRows
+  - notDeletable
+  - onSelectionChange
+  - removeColumnTitle
+  - showBulkTabOnLoad
+  - striped
+  - tabAdditionalBtn
+  - tabBtnProps
+- EditableGrid: remove dependence on QueryModel
 - ExportMenu: Remove extraExportMenuOptions
   - This feature is no longer used
 

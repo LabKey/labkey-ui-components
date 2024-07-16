@@ -294,7 +294,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             allowBulkAdd={allowBulkInsert}
                                             allowBulkRemove={allowBulkRemove}
                                             allowBulkUpdate={allowBulkUpdate}
-                                            bordered
                                             bulkAddText="Bulk Insert"
                                             bulkAddProps={{
                                                 title: 'Bulk Insert Assay Rows',
@@ -311,7 +310,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             metricFeatureArea="assayResultsEditableGrid"
                                             model={queryModel}
                                             onChange={this.props.onGridChange}
-                                            striped
                                             getIsDirty={getIsDirty}
                                             setIsDirty={setIsDirty}
                                         />

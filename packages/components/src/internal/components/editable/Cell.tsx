@@ -47,7 +47,6 @@ interface SharedProps {
     borderMaskLeft?: boolean;
     borderMaskRight?: boolean;
     borderMaskTop?: boolean;
-    locked?: boolean;
     message?: CellMessage;
     placeholder?: string;
     selected?: boolean;
@@ -76,7 +75,6 @@ const DisplayCell: FC<DisplayCellProps> = memo(props => {
         borderMaskTop,
         displayValue,
         isReadOnly,
-        locked,
         message,
         onBlur,
         onDoubleClick,
@@ -108,7 +106,6 @@ const DisplayCell: FC<DisplayCellProps> = memo(props => {
         'cell-border-right': borderMaskRight,
         'cell-border-bottom': borderMaskBottom,
         'cell-border-left': borderMaskLeft,
-        'cell-locked': locked,
         'cell-menu': showMenu,
         'cell-placeholder': displayValue.length === 0 && placeholder !== undefined,
         'cell-read-only': isReadOnly,
@@ -238,7 +235,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
     }
 
     get isReadOnly(): boolean {
-        return this.props.readOnly || this.props.col.readOnly || this.props.locked;
+        return this.props.readOnly || this.props.col.readOnly
     }
 
     componentDidUpdate(prevProps: Readonly<CellProps>): void {
@@ -515,7 +512,6 @@ export class Cell extends React.PureComponent<CellProps, State> {
             filteredLookupValues,
             focused,
             forUpdate,
-            locked,
             lookupValueFilters,
             message,
             placeholder,
@@ -549,7 +545,6 @@ export class Cell extends React.PureComponent<CellProps, State> {
                         borderMaskTop={borderMaskTop}
                         displayValue={displayValue}
                         isReadOnly={this.isReadOnly}
-                        locked={locked}
                         message={message}
                         onBlur={this.handleSelectionBlur}
                         onDoubleClick={this.handleDblClick}

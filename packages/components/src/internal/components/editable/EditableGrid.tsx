@@ -160,7 +160,6 @@ function inputCellFactory(
     hideCountCol: boolean,
     columnMetadata: EditableColumnMetadata,
     readonlyRows: string[],
-    lockedRows: string[],
     cellActions: CellActions,
     containerFilter: Query.ContainerFilter,
     forUpdate: boolean,
@@ -177,13 +176,7 @@ function inputCellFactory(
         const rn = row.get(GRID_EDIT_INDEX);
         const colIdx = cn - colOffset;
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
-        const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
-            row,
-            queryInfo,
-            columnMetadata,
-            readonlyRows,
-            lockedRows
-        );
+        const { isReadonlyCell, isReadonlyRow } = checkCellReadStatus(row, queryInfo, columnMetadata, readonlyRows);
 
         let linkedValues;
         if (columnMetadata?.getFilteredLookupKeys) {
@@ -245,7 +238,6 @@ function inputCellFactory(
                     containerFilter={containerFilter}
                     placeholder={columnMetadata?.placeholder}
                     readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
-                    locked={isLockedRow}
                     rowIdx={rn}
                     focused={focused}
                     forUpdate={forUpdate}
@@ -298,25 +290,22 @@ export interface SharedEditableGridProps {
     allowBulkAdd?: boolean;
     allowBulkRemove?: boolean;
     allowBulkUpdate?: boolean;
-    allowFieldDisable?: boolean;
     allowRemove?: boolean;
     allowSelection?: boolean;
-    bordered?: boolean;
     bulkAddProps?: Partial<QueryInfoFormProps>;
     bulkAddText?: string;
     bulkRemoveText?: string;
-    bulkTabHeaderComponent?: ReactNode;
+    bulkTabHeaderComponent?: ReactNode; // TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
     bulkUpdateProps?: Partial<BulkUpdateQueryInfoFormProps>;
     bulkUpdateText?: string;
     columnMetadata?: Map<string, EditableColumnMetadata>;
-    condensed?: boolean;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     disabled?: boolean;
     emptyGridMsg?: string;
     fixedHeight?: boolean;
     forUpdate?: boolean;
-    gridTabHeaderComponent?: ReactNode;
+    gridTabHeaderComponent?: ReactNode; // TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
     hideCheckboxCol?: boolean;
     hideCountCol?: boolean;
     hideReadonlyRows?: boolean;
@@ -324,23 +313,17 @@ export interface SharedEditableGridProps {
     insertColumns?: QueryColumn[];
     isSubmitting?: boolean;
     lockLeftOnScroll?: boolean; // lock the left columns when scrolling horizontally
-    lockedRows?: string[]; // list of key values for rows that are locked. locked rows are readonly but might have a different display from readonly rows
     maxRows?: number;
     metricFeatureArea?: string;
-    notDeletable?: List<any>; // list of key values that cannot be deleted.
-    onSelectionChange?: (selected: Set<number>) => void;
-    primaryBtnProps?: EditableGridBtnProps;
+    primaryBtnProps?: EditableGridBtnProps; // TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
+    // TODO: readOnlyColumns is only used by usages of DataClassEditableGridPanelForUpdate in Biologics and SM. We
+    //  should use columnMetadata instead, and move the duplicated logic into DataClassEditableGridPanelForUpdate
     readOnlyColumns?: string[];
     readonlyRows?: string[]; // list of key values for rows that are readonly.
-    removeColumnTitle?: string;
     rowNumColumn?: GridColumn;
-    saveBtnClickedCount?: number;
+    saveBtnClickedCount?: number;// TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
     showAsTab?: boolean; // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
-    showBulkTabOnLoad?: boolean;
-    striped?: boolean;
-    tabAdditionalBtn?: ReactNode;
-    tabBtnProps?: EditableGridBtnProps;
     tabContainerCls?: string;
     updateColumns?: QueryColumn[];
 }
@@ -409,23 +392,18 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         allowBulkRemove: false,
         allowBulkUpdate: false,
         allowRemove: false,
-        removeColumnTitle: 'Delete',
         addControlProps: {
             nounPlural: 'Rows',
             nounSingular: 'Row',
         },
-        bordered: false,
         bulkAddText: 'Bulk Add',
         bulkRemoveText: 'Delete Rows',
         bulkUpdateText: 'Bulk Update',
         columnMetadata: Map<string, EditableColumnMetadata>(),
-        notDeletable: List<any>(),
         fixedHeight: true,
         lockLeftOnScroll: true,
-        condensed: false,
         disabled: false,
         isSubmitting: false,
-        striped: false,
         maxRows: MAX_EDITABLE_GRID_ROWS,
         hideCountCol: false,
         hideTopControls: false,
@@ -533,11 +511,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             }
 
             return nextState;
-        }, this.onAfterSelection);
-    };
-
-    onAfterSelection = (): void => {
-        this.props.onSelectionChange?.(this.state.selected);
+        });
     };
 
     selectAll = (evt: ChangeEvent<HTMLInputElement>): void => {
@@ -551,7 +525,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 selectedState: selected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE,
                 selectionPivot: undefined,
             };
-        }, this.onAfterSelection);
+        });
     };
 
     getColumns = (): QueryColumn[] => {
@@ -728,12 +702,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
      */
     isReadOnly(cellKey: string): boolean {
         const { colIdx, rowIdx } = parseCellKey(cellKey);
-        const { dataKeys, lockedRows, readonlyRows } = this.props;
+        const { dataKeys, readonlyRows } = this.props;
         const cellValueDataKey = dataKeys.get(rowIdx);
 
         if (readonlyRows?.includes(cellValueDataKey)) return true;
-
-        if (lockedRows?.includes(cellValueDataKey)) return true;
 
         const queryCol = this.getColumns()[colIdx];
 
@@ -901,7 +873,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             queryInfo,
             rowNumColumn,
             readonlyRows,
-            lockedRows,
             containerPath,
         } = this.props;
 
@@ -951,7 +922,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         hideCountCol,
                         metadata,
                         readonlyRows,
-                        lockedRows,
                         this.cellActions,
                         metadata?.containerFilter ?? containerFilter,
                         forUpdate,
@@ -973,7 +943,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 new GridColumn({
                     index: GRID_EDIT_INDEX,
                     tableCell: true,
-                    title: this.props.removeColumnTitle,
+                    title: 'Delete',
                     width: 45,
                     cell: (d, row: Map<string, any>, c, rn) => {
                         const keyCols = queryInfo.getPkCols();
@@ -982,7 +952,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
                         if (size === 1) {
                             const key = caseInsensitive(row.toJS(), keyCols[0].fieldKey);
-                            canDelete = !key || !this.props.notDeletable.contains(key);
+                            canDelete = !key;
                         } else {
                             console.warn(
                                 `Preventing deletion for models with ${size} keys is not currently supported.`
@@ -1227,8 +1197,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     _dragFill = async (initialSelection: string[]): Promise<void> => {
-        const { editorModel, forUpdate, containerPath, onChange, data, dataKeys, queryInfo, readonlyRows, lockedRows } =
-            this.props;
+        const { editorModel, forUpdate, containerPath, onChange, data, dataKeys, queryInfo, readonlyRows } = this.props;
 
         if (editorModel.isMultiSelect) {
             const loweredColumnMetadata = this.getLoweredColumnMetadata();
@@ -1243,7 +1212,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 columns,
                 columnMetadata,
                 readonlyRows,
-                lockedRows,
                 forUpdate,
                 containerPath
             );
@@ -1287,7 +1255,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             onChange,
             queryInfo,
             readonlyRows,
-            lockedRows,
             containerPath,
         } = this.props;
 
@@ -1303,7 +1270,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             text,
             columnMetadata,
             readonlyRows,
-            lockedRows,
             !allowAdd,
             forUpdate,
             containerPath,
@@ -1326,7 +1292,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             onChange,
             queryInfo,
             readonlyRows,
-            lockedRows,
             containerPath,
         } = this.props;
 
@@ -1342,7 +1307,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             event,
             columnMetadata,
             readonlyRows,
-            lockedRows,
             !allowAdd,
             forUpdate,
             containerPath
@@ -1616,13 +1580,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderBulkAdd = (): ReactNode => {
-        const { addControlProps, allowFieldDisable, bulkAddProps, data, forUpdate, maxRows, queryInfo, containerPath } =
-            this.props;
+        const { addControlProps, bulkAddProps, data, forUpdate, maxRows, queryInfo, containerPath } = this.props;
         const maxToAdd =
             maxRows && maxRows - data.size < MAX_EDITABLE_GRID_ROWS ? maxRows - data.size : MAX_EDITABLE_GRID_ROWS;
         return (
             <QueryInfoForm
-                allowFieldDisable={allowFieldDisable}
                 onSubmitForEdit={this.bulkAdd}
                 asModal
                 checkRequiredFields={false}
@@ -1723,26 +1685,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         });
     };
 
-    renderButtons = (): ReactNode => {
-        const { primaryBtnProps, tabAdditionalBtn, tabBtnProps } = this.props;
-        if (!tabBtnProps?.show) return null;
-
-        const btnClass = primaryBtnProps.cls ?? 'btn';
-        return (
-            <div className={tabBtnProps?.cls}>
-                {tabAdditionalBtn}
-                <button
-                    className={`${btnClass} ${btnClass}-primary`}
-                    disabled={primaryBtnProps.disabled}
-                    onClick={this.onSaveClick}
-                    type="button"
-                >
-                    {primaryBtnProps.caption ?? 'Save'}
-                </button>
-            </div>
-        );
-    };
-
     renderBulkUpdate = (): ReactNode => {
         const {
             bulkTabHeaderComponent,
@@ -1773,18 +1715,18 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 {bulkTabHeaderComponent}
                 <BulkAddUpdateForm
                     asModal={!showAsTab}
+                    columnFilter={bulkUpdateProps?.columnFilter}
                     containerPath={containerPath}
                     data={data}
                     dataKeys={dataKeys}
                     editorModel={editorModel}
-                    columnFilter={bulkUpdateProps?.columnFilter}
-                    queryFilters={bulkUpdateProps?.queryFilters}
                     onFormChangeWithData={showAsTab ? this.onBulkUpdateFormDataChange : undefined}
                     onHide={this.toggleBulkUpdate}
-                    operation={forUpdate ? Operation.update : Operation.insert}
                     onSubmitForEdit={this.bulkUpdate}
                     onSuccess={this.toggleBulkUpdate}
+                    operation={forUpdate ? Operation.update : Operation.insert}
                     pluralNoun={addControlProps?.nounPlural}
+                    queryFilters={bulkUpdateProps?.queryFilters}
                     queryInfo={queryInfo}
                     selectedRowIndexes={this.getSelectedRowIndices()}
                     singularNoun={addControlProps?.nounSingular}
@@ -1799,14 +1741,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             allowAdd,
             editorModel,
             error,
-            bordered,
-            condensed,
             fixedHeight,
             emptyGridMsg,
-            striped,
             allowBulkUpdate,
             showAsTab,
-            tabBtnProps,
             maxRows,
             hideTopControls,
             tabContainerCls,
@@ -1835,17 +1773,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     onMouseUp={this.onMouseUp}
                 >
                     <Grid
-                        bordered={bordered}
                         calcWidths
                         cellular
                         columns={this.generateColumns()}
-                        condensed={condensed}
                         data={this.getGridData()}
                         emptyText={emptyGridMsg}
                         fixedHeight={fixedHeight}
                         headerCell={this.headerCell}
                         rowKey={GRID_EDIT_INDEX}
-                        striped={striped}
                     />
                 </div>
                 {allowAdd && this.getControlsPlacement() !== 'top' && this.renderAddRowsControl('bottom')}
@@ -1857,39 +1792,33 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             const showGrid = editorModel.rowCount <= maxRows;
 
             return (
-                <>
-                    {tabBtnProps?.placement === 'top' && this.renderButtons()}
-                    <Tabs activeKey={activeEditTab} className={tabContainerCls} onSelect={this.onTabChange}>
-                        {/* TODO: tabbed bulk add note yet supported */}
-                        {allowBulkUpdate && (
-                            <Tab
-                                className="top-spacing"
-                                disabled={bulkDisabled}
-                                eventKey={EditableGridTabs.BulkUpdate}
-                                title="Edit in Bulk"
-                            >
-                                <Alert>{error}</Alert>
-                                {this.renderBulkUpdate()}
-                            </Tab>
-                        )}
-                        {showGrid && (
-                            <Tab className="top-spacing" eventKey={EditableGridTabs.Grid} title="Edit Individually">
-                                <Alert>{error}</Alert>
-                                {gridContent}
-                            </Tab>
-                        )}
-                    </Tabs>
-                    {tabBtnProps?.placement === 'bottom' && this.renderButtons()}
-                </>
+                <Tabs activeKey={activeEditTab} className={tabContainerCls} onSelect={this.onTabChange}>
+                    {/* TODO: tabbed bulk add note yet supported */}
+                    {allowBulkUpdate && (
+                        <Tab
+                            className="top-spacing"
+                            disabled={bulkDisabled}
+                            eventKey={EditableGridTabs.BulkUpdate}
+                            title="Edit in Bulk"
+                        >
+                            <Alert>{error}</Alert>
+                            {this.renderBulkUpdate()}
+                        </Tab>
+                    )}
+                    {showGrid && (
+                        <Tab className="top-spacing" eventKey={EditableGridTabs.Grid} title="Edit Individually">
+                            <Alert>{error}</Alert>
+                            {gridContent}
+                        </Tab>
+                    )}
+                </Tabs>
             );
         }
 
         return (
             <div className="editable-grid-wrapper">
-                {tabBtnProps?.placement === 'top' && this.renderButtons()}
                 {gridContent}
                 {error && <Alert className="margin-top">{error}</Alert>}
-                {tabBtnProps?.placement === 'bottom' && this.renderButtons()}
                 {showBulkAdd && this.renderBulkAdd()}
                 {showBulkUpdate && this.renderBulkUpdate()}
             </div>

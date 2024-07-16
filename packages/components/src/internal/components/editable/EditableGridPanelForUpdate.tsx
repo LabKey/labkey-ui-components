@@ -173,9 +173,7 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
             <EditableGridPanel
                 allowAdd={false}
                 allowRemove={false}
-                bordered
                 bsStyle="info"
-                striped
                 title={`Edit selected ${pluralNoun}`}
                 {...editableGridProps}
                 columnMetadata={columnMetadata}

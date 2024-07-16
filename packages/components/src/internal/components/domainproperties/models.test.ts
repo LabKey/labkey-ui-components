@@ -26,7 +26,7 @@ import { ConceptModel } from '../ontology/models';
 import {
     ATTACHMENT_TYPE,
     AUTOINT_TYPE,
-    BOOLEAN_TYPE,
+    BOOLEAN_TYPE, CALCULATED_TYPE,
     DATE_TYPE,
     DATETIME_TYPE,
     DOUBLE_TYPE,
@@ -84,7 +84,7 @@ import {
     DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     DATETIME_RANGE_URI,
     DATE_RANGE_URI,
-    TIME_RANGE_URI,
+    TIME_RANGE_URI, CALCULATED_CONCEPT_URI,
 } from './constants';
 
 beforeAll(() => {
@@ -475,6 +475,8 @@ describe('PropDescType', () => {
         expect(isPropertyTypeAllowed(false, VISIT_ID_TYPE, true, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(false, FILE_TYPE, false, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(false, FLAG_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(true, CALCULATED_TYPE, true, false)).toBeTruthy();
+        expect(isPropertyTypeAllowed(false, CALCULATED_TYPE, true, false)).toBeTruthy();
     });
 
     test('isPropertyTypeAllowed with premium', () => {
@@ -504,6 +506,8 @@ describe('PropDescType', () => {
         expect(isPropertyTypeAllowed(true, VISIT_ID_TYPE, true, false)).toBeFalsy();
         expect(isPropertyTypeAllowed(true, VISIT_ID_TYPE, true, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(false, VISIT_ID_TYPE, true, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(true, CALCULATED_TYPE, true, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(false, CALCULATED_TYPE, true, true)).toBeTruthy();
     });
 
     test('acceptablePropertyType', () => {
@@ -828,6 +832,12 @@ describe('DomainField', () => {
         expect(DomainField.create({ name: 'foo', PHI: PHILEVEL_RESTRICTED_PHI }).isPHI()).toBeTruthy();
     });
 
+    test('isCalculatedField', () => {
+        expect(DomainField.create({ name: 'foo' }).isCalculatedField()).toBeFalsy();
+        expect(DomainField.create({ name: 'foo', conceptURI: TEXT_CHOICE_CONCEPT_URI }).isCalculatedField()).toBeFalsy();
+        expect(DomainField.create({ name: 'foo', conceptURI: CALCULATED_CONCEPT_URI }).isCalculatedField()).toBeTruthy();
+    });
+
     test('isDeletable', () => {
         expect(DomainField.create({ name: 'foo', lockExistingField: true }).isDeletable()).toBeFalsy();
         expect(DomainField.create({ name: 'foo', lockType: DOMAIN_FIELD_PARTIALLY_LOCKED }).isDeletable()).toBeFalsy();
@@ -870,10 +880,12 @@ describe('DomainField', () => {
     });
 
     test('getErrors', () => {
-        // TODO add checks for FieldErrors.MISSING_SCHEMA_QUERY and FieldErrors.MISSING_DATA_TYPE
-
-        expect(DomainField.create({ name: '' }).getErrors()).toBe(FieldErrors.MISSING_FIELD_NAME);
         expect(DomainField.create({ name: 'test' }).getErrors()).toBe(FieldErrors.NONE);
+        expect(DomainField.create({ name: '' }).getErrors()).toBe(FieldErrors.MISSING_FIELD_NAME);
+
+        expect(DomainField.create({ name: 'test', rangeURI: INT_RANGE_URI, dataType: LOOKUP_TYPE }).getErrors()).toBe(FieldErrors.MISSING_SCHEMA_QUERY);
+        expect(DomainField.create({ name: 'test', rangeURI: INT_RANGE_URI, dataType: LOOKUP_TYPE, lookupSchema: 'schema' }).getErrors()).toBe(FieldErrors.MISSING_SCHEMA_QUERY);
+        expect(DomainField.create({ name: 'test', rangeURI: INT_RANGE_URI, dataType: LOOKUP_TYPE, lookupSchema: 'schema', lookupQuery: 'query' }).getErrors()).toBe(FieldErrors.INVALID_LOOKUP);
 
         expect(
             DomainField.create({

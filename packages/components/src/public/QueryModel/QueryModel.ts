@@ -686,7 +686,16 @@ export class QueryModel {
             fieldKeys = fieldKeys.filter(fieldKey => !lowerOmit.has(fieldKey.toLowerCase()));
         }
 
-        return fieldKeys.join(',');
+        // remove duplicate
+        const fieldKeysLc = [], fieldKeysCleaned = [];
+        fieldKeys.forEach(fieldKey => {
+            if (fieldKeysLc.indexOf(fieldKey.toLowerCase()) === -1) {
+                fieldKeysCleaned.push(fieldKey);
+                fieldKeysLc.push(fieldKey.toLowerCase());
+            }
+        })
+
+        return fieldKeysCleaned.join(',');
     }
 
     /**

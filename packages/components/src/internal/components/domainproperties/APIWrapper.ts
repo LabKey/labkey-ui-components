@@ -9,7 +9,6 @@ import {
     validateDomainNameExpressions,
     getGenId,
     setGenId,
-    hasExistingDomainData,
     fetchDomainDetails,
     FetchDomainDetailsOptions,
     getMaxPhiLevel,
@@ -30,12 +29,6 @@ export interface DomainPropertiesAPIWrapper {
     getGenId: (rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string) => Promise<number>;
     getMaxPhiLevel: (containerPath?: string) => Promise<string>;
     getValidPublishTargets: (containerPath?: string) => Promise<Container[]>;
-    hasExistingDomainData: (
-        kindName: 'SampleSet' | 'DataClass',
-        dataTypeLSID?: string,
-        rowId?: number,
-        containerPath?: string
-    ) => Promise<boolean>;
     saveDomain: (options: SaveDomainOptions) => Promise<DomainDesign>;
     setGenId: (
         rowId: number,
@@ -59,7 +52,6 @@ export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {
     getGenId = getGenId;
     getMaxPhiLevel = getMaxPhiLevel;
     getValidPublishTargets = getValidPublishTargets;
-    hasExistingDomainData = hasExistingDomainData;
     saveDomain = saveDomain;
     setGenId = setGenId;
     validateDomainNameExpressions = validateDomainNameExpressions;
@@ -83,8 +75,7 @@ export function getDomainPropertiesTestAPIWrapper(
         // probably make Jest an explicit dependency since we are actually exporting test utilities.
         getMaxPhiLevel: () => Promise.resolve(PHILEVEL_FULL_PHI),
         getValidPublishTargets: mockFn(),
-        hasExistingDomainData: mockFn(),
-        saveDomain: mockFn(),
+         saveDomain: mockFn(),
         setGenId: mockFn(),
         validateDomainNameExpressions: mockFn(),
         ...overrides,

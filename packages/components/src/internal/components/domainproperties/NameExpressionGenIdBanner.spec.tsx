@@ -9,6 +9,7 @@ import { NotificationsContextProvider } from '../notifications/NotificationsCont
 
 import { NameExpressionGenIdBanner } from './NameExpressionGenIdBanner';
 import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
+import { getEntityTestAPIWrapper } from '../entities/APIWrapper';
 
 describe('NameExpressionGenIdBanner', () => {
     test('with existing data', async () => {
@@ -20,9 +21,11 @@ describe('NameExpressionGenIdBanner', () => {
                     kindName="DataClass"
                     api={getTestAPIWrapper(jest.fn, {
                         domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
-                            hasExistingDomainData: () => Promise.resolve(true),
                             getGenId: () => Promise.resolve(123),
                         }),
+                        entity: getEntityTestAPIWrapper(jest.fn, {
+                            isDataTypeEmpty: () => Promise.resolve(false),
+                        })
                     })}
                 />
             </NotificationsContextProvider>
@@ -42,9 +45,11 @@ describe('NameExpressionGenIdBanner', () => {
                     kindName="DataClass"
                     api={getTestAPIWrapper(jest.fn, {
                         domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
-                            hasExistingDomainData: () => Promise.resolve(false),
                             getGenId: () => Promise.resolve(0),
                         }),
+                        entity: getEntityTestAPIWrapper(jest.fn, {
+                            isDataTypeEmpty: () => Promise.resolve(true),
+                        })
                     })}
                 />
             </NotificationsContextProvider>
@@ -64,9 +69,11 @@ describe('NameExpressionGenIdBanner', () => {
                     kindName="DataClass"
                     api={getTestAPIWrapper(jest.fn, {
                         domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
-                            hasExistingDomainData: () => Promise.resolve(false),
                             getGenId: () => Promise.resolve(123),
                         }),
+                        entity: getEntityTestAPIWrapper(jest.fn, {
+                            isDataTypeEmpty: () => Promise.resolve(true),
+                        })
                     })}
                 />
             </NotificationsContextProvider>

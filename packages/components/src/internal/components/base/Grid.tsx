@@ -33,6 +33,7 @@ import { GRID_SELECTION_INDEX, GRID_HEADER_CELL_BODY } from '../../constants';
 
 import { LabelHelpTip } from './LabelHelpTip';
 import { GridColumn } from './models/GridColumn';
+import { caseInsensitive } from '../../util/utils';
 
 function processColumns(columns: List<any>): List<GridColumn> {
     return columns
@@ -257,6 +258,7 @@ interface GridRowProps {
 const GridRow: FC<GridRowProps> = memo(({ columns, highlight, row, rowIdx }) => {
     // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
     // "textAlign" property correctly for <td> elements.
+    const rowObj = row.toObject();
     return (
         <tr
             className={classNames({
@@ -270,7 +272,7 @@ const GridRow: FC<GridRowProps> = memo(({ columns, highlight, row, rowIdx }) => 
                     <Fragment key={column.index}>{column.cell(row.get(column.index), row, column, rowIdx, c)}</Fragment>
                 ) : (
                     <td key={column.index} style={{ textAlign: column.align || 'left' } as any}>
-                        {column.cell(row.get(column.index), row, column, rowIdx, c)}
+                        {column.cell(caseInsensitive(rowObj, column.index), row, column, rowIdx, c)}
                     </td>
                 )
             )}

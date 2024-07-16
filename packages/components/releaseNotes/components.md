@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.8.0
+*Released*: ?? July 2024
+- ExportMenu: Remove extraExportMenuOptions
+  - This feature is no longer used
+
 ### version 4.7.3
 *Released*: 16 August 2024
 - Fix DomainField.fromJS accessing undefined object issue

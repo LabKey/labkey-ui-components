@@ -11,19 +11,8 @@ import { DropdownButton, MenuDivider, MenuHeader, MenuItem } from '../../interna
 import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
 
-interface ExportMenuOption {
-    onExport: () => void;
-    option: ExportOption;
-}
-
-export interface ExtraExportMenuOptions {
-    extraOptions: ExportMenuOption[];
-    label: string;
-}
-
 interface ExportMenuProps {
     advancedOptions?: Record<string, any>;
-    extraExportMenuOptions?: ExtraExportMenuOptions[];
     model: QueryModel;
     onExport?: Record<string, (modelId?: string) => void>;
     supportedTypes?: Set<EXPORT_TYPES>;
@@ -104,14 +93,13 @@ const ExportMenuItem: FC<ExportMenuItemProps> = ({ hasSelections, onExport, opti
 
 export interface ExportMenuImplProps extends Omit<ExportMenuProps, 'model'> {
     exportHandler: (option: ExportOption) => void;
-    extraExportMenuOptions?: ExtraExportMenuOptions[];
     hasData: boolean;
     hasSelections?: boolean;
     id: string;
 }
 
 const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
-    const { id, hasData, supportedTypes, hasSelections, exportHandler, onExport, extraExportMenuOptions } = props;
+    const { id, hasData, supportedTypes, hasSelections, exportHandler, onExport } = props;
 
     const exportCallback = useCallback(
         (option: ExportOption) => {
@@ -142,23 +130,6 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
                                 option={option}
                                 supportedTypes={supportedTypes}
                             />
-                        ))}
-
-                        {extraExportMenuOptions?.map(obj => (
-                            <React.Fragment key={obj.label}>
-                                <MenuDivider />
-
-                                <MenuHeader text={obj.label} />
-
-                                {obj.extraOptions.map(option => (
-                                    <ExportMenuItem
-                                        key={option.option.label}
-                                        hasSelections={hasSelections}
-                                        supportedTypes={supportedTypes}
-                                        {...option}
-                                    />
-                                ))}
-                            </React.Fragment>
                         ))}
                     </DropdownButton>
                 </Tip>

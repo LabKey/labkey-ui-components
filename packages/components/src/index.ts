@@ -1968,7 +1968,6 @@ export type { UserLimitSettings } from './internal/components/permissions/action
 export type { ModalProps } from './internal/Modal';
 export type { QueryLookupFilterGroup, QueryLookupFilterGroupFilter } from './public/QueryColumn';
 export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';
-export type { ExtraExportMenuOptions } from './public/QueryModel/ExportMenu';
 export type { LabelsAPIWrapper } from './internal/components/labels/APIWrapper';
 export type { InputRendererProps } from './internal/components/forms/input/types';
 export type { InputRenderContext, InputRendererComponent } from './internal/components/forms/input/InputRenderFactory';

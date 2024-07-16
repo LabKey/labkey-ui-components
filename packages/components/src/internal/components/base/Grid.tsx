@@ -31,9 +31,10 @@ import { HelpTipRenderer } from '../forms/HelpTipRenderer';
 
 import { GRID_SELECTION_INDEX, GRID_HEADER_CELL_BODY } from '../../constants';
 
+import { caseInsensitive } from '../../util/utils';
+
 import { LabelHelpTip } from './LabelHelpTip';
 import { GridColumn } from './models/GridColumn';
-import { caseInsensitive } from '../../util/utils';
 
 function processColumns(columns: List<any>): List<GridColumn> {
     return columns

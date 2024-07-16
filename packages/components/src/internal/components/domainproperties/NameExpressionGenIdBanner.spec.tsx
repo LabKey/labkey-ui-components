@@ -7,9 +7,10 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { NotificationsContextProvider } from '../notifications/NotificationsContext';
 
+import { getEntityTestAPIWrapper } from '../entities/APIWrapper';
+
 import { NameExpressionGenIdBanner } from './NameExpressionGenIdBanner';
 import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
-import { getEntityTestAPIWrapper } from '../entities/APIWrapper';
 
 describe('NameExpressionGenIdBanner', () => {
     test('with existing data', async () => {
@@ -25,7 +26,7 @@ describe('NameExpressionGenIdBanner', () => {
                         }),
                         entity: getEntityTestAPIWrapper(jest.fn, {
                             isDataTypeEmpty: () => Promise.resolve(false),
-                        })
+                        }),
                     })}
                 />
             </NotificationsContextProvider>
@@ -49,7 +50,7 @@ describe('NameExpressionGenIdBanner', () => {
                         }),
                         entity: getEntityTestAPIWrapper(jest.fn, {
                             isDataTypeEmpty: () => Promise.resolve(true),
-                        })
+                        }),
                     })}
                 />
             </NotificationsContextProvider>
@@ -73,7 +74,7 @@ describe('NameExpressionGenIdBanner', () => {
                         }),
                         entity: getEntityTestAPIWrapper(jest.fn, {
                             isDataTypeEmpty: () => Promise.resolve(true),
-                        })
+                        }),
                     })}
                 />
             </NotificationsContextProvider>

@@ -75,7 +75,7 @@ export function getDomainPropertiesTestAPIWrapper(
         // probably make Jest an explicit dependency since we are actually exporting test utilities.
         getMaxPhiLevel: () => Promise.resolve(PHILEVEL_FULL_PHI),
         getValidPublishTargets: mockFn(),
-         saveDomain: mockFn(),
+        saveDomain: mockFn(),
         setGenId: mockFn(),
         validateDomainNameExpressions: mockFn(),
         ...overrides,

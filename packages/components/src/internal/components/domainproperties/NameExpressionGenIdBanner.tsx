@@ -39,7 +39,12 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
     const init = async () => {
         if (rowId && kindName) {
             try {
-                const canResetGen = await api.entity.isDataTypeEmpty(kindName === 'DataClass' ? 'DataClass' : 'SampleType', dataTypeLSID, rowId, containerPath);
+                const canResetGen = await api.entity.isDataTypeEmpty(
+                    kindName === 'DataClass' ? 'DataClass' : 'SampleType',
+                    dataTypeLSID,
+                    rowId,
+                    containerPath
+                );
                 setCanReset(canResetGen);
 
                 try {

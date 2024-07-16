@@ -17,8 +17,8 @@ interface Props {
     nounPlural?: string;
     nounSingular?: string;
     readOnly?: boolean;
-    user: UserWithPermissions;
     setHasPendingChanges?: (hasPendingChanges: boolean) => void;
+    user: UserWithPermissions;
 }
 
 export const Discussions: FC<Props> = memo(props => {
@@ -32,7 +32,7 @@ export const Discussions: FC<Props> = memo(props => {
         nounSingular,
         readOnly,
         user,
-        setHasPendingChanges
+        setHasPendingChanges,
     } = props;
     const { canInsert } = user;
     const [error, setError] = useState<string>(undefined);
@@ -65,15 +65,16 @@ export const Discussions: FC<Props> = memo(props => {
         setShowEditor(true);
     }, []);
 
-    const updatePendingThread = useCallback((threadId: number, hasPendingChange: boolean) => {
-        const updatedPendingChanges = new Set(pendingChanges);
-        if (hasPendingChange)
-            updatedPendingChanges.add(threadId);
-        else
-            updatedPendingChanges.delete(threadId);
-        setPendingChanges(updatedPendingChanges);
-        setHasPendingChanges?.(updatedPendingChanges.size > 0);
-    }, [pendingChanges]);
+    const updatePendingThread = useCallback(
+        (threadId: number, hasPendingChange: boolean) => {
+            const updatedPendingChanges = new Set(pendingChanges);
+            if (hasPendingChange) updatedPendingChanges.add(threadId);
+            else updatedPendingChanges.delete(threadId);
+            setPendingChanges(updatedPendingChanges);
+            setHasPendingChanges?.(updatedPendingChanges.size > 0);
+        },
+        [pendingChanges]
+    );
 
     useEffect(() => {
         if (autoLoad) loadDiscussions();

@@ -18,11 +18,12 @@ import { resolveErrorMessage } from '../util/messaging';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
 import { Key } from '../../public/useEnterEscape';
 
+import { DropdownAnchor, MenuItem } from '../dropdowns';
+
 import { AnnouncementsAPIWrapper } from './APIWrapper';
 
 import { RemoveAttachmentModal, ThreadAttachments } from './ThreadAttachments';
 import { Attachment, AnnouncementModel } from './model';
-import { DropdownAnchor, MenuItem } from '../dropdowns';
 
 // Check if a line starts with any spaces, a number, followed by a period and a space.
 const orderedBulletRe = /^\s*\d+. /;
@@ -252,8 +253,8 @@ export interface ThreadEditorProps {
     onCreate?: (newThread: AnnouncementModel) => void;
     onUpdate?: (updatedThread: AnnouncementModel) => void;
     parent?: string;
-    thread?: AnnouncementModel;
     setPendingChange?: (threadId: number, hasPendingChange: boolean) => void;
+    thread?: AnnouncementModel;
 }
 
 export const ThreadEditor: FC<ThreadEditorProps> = props => {
@@ -487,7 +488,12 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
                 <Preview containerPath={containerPath} content={model.body} renderContent={api.renderContent} />
             )}
 
-            <ThreadAttachments attachments={attachments} error={attachmentError} onRemove={openRemoveModal} containerPath={containerPath}/>
+            <ThreadAttachments
+                attachments={attachments}
+                error={attachmentError}
+                onRemove={openRemoveModal}
+                containerPath={containerPath}
+            />
 
             <button
                 type="button"

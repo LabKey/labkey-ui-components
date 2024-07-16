@@ -687,13 +687,14 @@ export class QueryModel {
         }
 
         // remove duplicate
-        const fieldKeysLc = [], fieldKeysCleaned = [];
+        const fieldKeysLc = [],
+            fieldKeysCleaned = [];
         fieldKeys.forEach(fieldKey => {
             if (fieldKeysLc.indexOf(fieldKey.toLowerCase()) === -1) {
                 fieldKeysCleaned.push(fieldKey);
                 fieldKeysLc.push(fieldKey.toLowerCase());
             }
-        })
+        });
 
         return fieldKeysCleaned.join(',');
     }

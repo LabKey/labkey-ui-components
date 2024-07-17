@@ -11,6 +11,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - use rangeURI for calculated fields to determine type specific expanded row options to show
   - add ProductFeature.CalculatedFields and isCalculatedFieldsEnabled() helper
 
+### version 4.0.5
+*Released*: 17 July 2024
+- EditableGrid: bulk data resolve public lookups
+
 ### version 4.0.4
 *Released*: 12 July 2024
 - Issue 50661: Update `FilterFacetedSelector` to cancel requests as needed while typing

@@ -24,6 +24,7 @@ export const ModalButtons: FC<ModalButtonsProps> = memo(props => {
         actionName = 'Update',
         cancelText = 'Cancel',
         canConfirm = true,
+        children,
         confirmClass = 'btn-success',
         confirmText = 'Save',
         confirmingText = 'Saving...',
@@ -45,6 +46,7 @@ export const ModalButtons: FC<ModalButtonsProps> = memo(props => {
                         {cancelText}
                     </button>
                 )}
+                {children}
                 {onCommentChange && (
                     <CommentTextArea
                         containerClassName="inline-comment"

@@ -960,7 +960,7 @@ describe('EditorModel', () => {
         });
 
         test('isInBounds', () => {
-            const model = new EditorModel({ columns: List(['a']), rowCount: 1 });
+            const model = new EditorModel({ orderedColumns: List(['a']), rowCount: 1 });
             expect(model.isInBounds(-1, -1)).toBeFalsy();
             expect(model.isInBounds(0, -1)).toBeFalsy();
             expect(model.isInBounds(-1, 0)).toBeFalsy();

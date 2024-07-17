@@ -66,11 +66,11 @@ export type CellValues = Map<string, List<ValueDescriptor>>;
 export interface EditorModelProps {
     cellMessages: CellMessages;
     cellValues: CellValues;
-    columns: List<string>;
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
     id: string;
+    orderedColumns: List<string>; // List of field keys visible in the grid
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;
@@ -126,7 +126,7 @@ export class EditorModel
     extends ImmutableRecord({
         cellMessages: Map<string, CellMessage>(),
         cellValues: Map<string, List<ValueDescriptor>>(),
-        columns: List<string>(),
+        orderedColumns: List<string>(),
         deletedIds: ImmutableSet<any>(),
         focusColIdx: -1,
         focusRowIdx: -1,
@@ -143,7 +143,7 @@ export class EditorModel
 {
     declare cellMessages: CellMessages;
     declare cellValues: CellValues;
-    declare columns: List<string>;
+    declare orderedColumns: List<string>;
     declare deletedIds: ImmutableSet<any>;
     declare focusColIdx: number;
     declare focusRowIdx: number;
@@ -213,7 +213,7 @@ export class EditorModel
     }
 
     getColumnValues(columnName: string): List<List<ValueDescriptor>> {
-        const colIdx = this.columns.findIndex(colName => colName === columnName);
+        const colIdx = this.orderedColumns.findIndex(colName => colName === columnName);
         if (colIdx === -1) {
             console.warn(`Unable to resolve column "${columnName}". Cannot retrieve column values.`);
             return List();
@@ -253,7 +253,7 @@ export class EditorModel
         forExport?: boolean
     ): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
-        const columnMap = this.columns.reduce((map, fieldKey) => {
+        const columnMap = this.orderedColumns.reduce((map, fieldKey) => {
             const col = queryInfo.getColumn(fieldKey);
             // Log a warning but still retain the key in the map for column order
             if (!col) console.warn(`Unable to resolve column "${fieldKey}". Cannot retrieve raw data.`);
@@ -537,7 +537,7 @@ export class EditorModel
     }
 
     isInBounds(colIdx: number, rowIdx: number): boolean {
-        return colIdx >= 0 && colIdx < this.columns.size && rowIdx >= 0 && rowIdx < this.rowCount;
+        return colIdx >= 0 && colIdx < this.orderedColumns.size && rowIdx >= 0 && rowIdx < this.rowCount;
     }
 
     inSelection(colIdx: number, rowIdx: number): boolean {

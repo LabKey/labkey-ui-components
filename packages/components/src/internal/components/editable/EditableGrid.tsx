@@ -572,7 +572,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         switch (selection) {
             case SELECTION_TYPES.ALL: {
-                for (let c = 0; c < editorModel.columns.size; c++) {
+                for (let c = 0; c < editorModel.orderedColumns.size; c++) {
                     for (let r = 0; r < rowCount; r++) {
                         selectionCells.push(genCellKey(c, r));
                     }
@@ -632,7 +632,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
                 // Constrain the area selection within the editable cells dimensions
                 minColIdx = Math.max(minColIdx, 0);
-                maxColIdx = Math.min(maxColIdx, editorModel.columns.size - 1);
+                maxColIdx = Math.min(maxColIdx, editorModel.orderedColumns.size - 1);
                 minRowIdx = Math.max(minRowIdx, 0);
                 maxRowIdx = Math.min(maxRowIdx, rowCount - 1);
 
@@ -665,7 +665,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         // accepts processing of negative indices.
         if (
             selection !== SELECTION_TYPES.AREA_CHANGE &&
-            (colIdx < 0 || rowIdx < 0 || colIdx >= editorModel.columns.size)
+            (colIdx < 0 || rowIdx < 0 || colIdx >= editorModel.orderedColumns.size)
         ) {
             // out of bounds, do nothing
             return;
@@ -1150,7 +1150,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         nextCol = found.colIdx;
                         nextRow = found.rowIdx;
                     } else {
-                        nextCol = editorModel.columns.size - 1;
+                        nextCol = editorModel.orderedColumns.size - 1;
                         nextRow = rowIdx;
                     }
                 } else {
@@ -1181,7 +1181,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 break;
 
             case Key.END:
-                nextCol = editorModel.columns.size - 1;
+                nextCol = editorModel.orderedColumns.size - 1;
                 nextRow = rowIdx;
                 break;
 

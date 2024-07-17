@@ -116,7 +116,7 @@ export const loadEditorModelData = async (
 
     return {
         cellValues,
-        columns: List(columns.map(col => col.fieldKey)),
+        orderedColumns: List(columns.map(col => col.fieldKey)),
         deletedIds: ImmutableSet<any>(),
         rowCount: orderedRows.length,
     };
@@ -454,7 +454,7 @@ export function addColumns(
 
     // if fieldKey is provided, find that index and we will insert after it (or at the beginning if there is no such field)
     const leftColIndex = fieldKey
-        ? editorModel.columns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey))
+        ? editorModel.orderedColumns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey))
         : -1;
 
     const editorModelIndex = leftColIndex + 1;
@@ -498,15 +498,15 @@ export function addColumns(
         })
         .toMap();
 
-    let { columns } = editorModel;
+    let { orderedColumns } = editorModel;
     queryColumns.valueArray.forEach((col, i) => {
-        columns = columns.insert(i + editorModelIndex, col.fieldKey);
+        orderedColumns = orderedColumns.insert(i + editorModelIndex, col.fieldKey);
     });
-    columns = columns.toList();
+    orderedColumns = orderedColumns.toList();
 
     return {
         editorModelChanges: {
-            columns,
+            orderedColumns,
             focusColIdx: -1,
             focusRowIdx: -1,
             selectedColIdx: -1,
@@ -527,7 +527,7 @@ export function changeColumn(
     existingFieldKey: string,
     newQueryColumn: QueryColumn
 ): EditorModelUpdates {
-    const colIndex = editorModel.columns.findIndex(column => Utils.caseInsensitiveEquals(column, existingFieldKey));
+    const colIndex = editorModel.orderedColumns.findIndex(column => Utils.caseInsensitiveEquals(column, existingFieldKey));
     // nothing to do if there is no such column
     if (colIndex === -1) return {};
 
@@ -570,14 +570,14 @@ export function changeColumn(
         }
     });
 
-    let editorModelColumns = editorModel.columns;
+    let orderedColumns = editorModel.orderedColumns;
     if (colIndex > -1) {
-        editorModelColumns = editorModelColumns.set(colIndex, newQueryColumn.fieldKey);
+        orderedColumns = orderedColumns.set(colIndex, newQueryColumn.fieldKey);
     }
 
     return {
         editorModelChanges: {
-            columns: editorModelColumns,
+            orderedColumns,
             focusColIdx: -1,
             focusRowIdx: -1,
             selectedColIdx: -1,
@@ -597,7 +597,7 @@ export function removeColumn(
     originalData: Map<any, Map<string, any>>,
     fieldKey: string
 ): EditorModelUpdates {
-    const deleteIndex = editorModel.columns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey));
+    const deleteIndex = editorModel.orderedColumns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey));
     // nothing to do if there is no such column
     if (deleteIndex === -1) return {};
 
@@ -627,14 +627,14 @@ export function removeColumn(
     // remove column from all rows in model data
     const data = originalData.map(rowData => rowData.remove(fieldKey)).toMap();
 
-    let columns = editorModel.columns;
+    let orderedColumns = editorModel.orderedColumns;
     if (deleteIndex > -1) {
-        columns = columns.remove(deleteIndex);
+        orderedColumns = orderedColumns.remove(deleteIndex);
     }
 
     return {
         editorModelChanges: {
-            columns,
+            orderedColumns,
             focusColIdx: -1,
             focusRowIdx: -1,
             selectedColIdx: -1,
@@ -720,7 +720,7 @@ export async function updateGridFromBulkForm(
         rowData,
         isIncludedColumn,
         containerPath,
-        useEditorModelCols && editorModel.columns.toJS()
+        useEditorModelCols && editorModel.orderedColumns.toJS()
     );
     const { values, messages } = preparedData; // {3: 'x', 4: 'z}
 
@@ -1359,7 +1359,7 @@ function validatePaste(
 
     // If P = 1 then target can be 1 or M
     // If P = M(x,y) then target can be 1 or exact M(x,y)
-    if (coordinates.colMax >= model.columns.size) {
+    if (coordinates.colMax >= model.orderedColumns.size) {
         success = false;
         message = 'Unable to paste. Cannot paste columns beyond the columns found in the grid.';
     } else if (coordinates.rowMax - coordinates.rowMin > maxRowPaste) {

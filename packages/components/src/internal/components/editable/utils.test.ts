@@ -58,7 +58,7 @@ describe('Editable Grids Utils', () => {
             expect(models.dataModel.queryInfoLoadingState).toEqual(LoadingState.LOADED);
             expect(models.dataModel.rowsLoadingState).toEqual(LoadingState.LOADED);
             expect(models.editorModel.cellValues.size).toEqual(0);
-            expect(models.editorModel.columns.toArray()).toEqual(expectedInsertColumns);
+            expect(models.editorModel.orderedColumns.toArray()).toEqual(expectedInsertColumns);
         });
 
         test('respects loader mode for columns', async () => {
@@ -66,7 +66,7 @@ describe('Editable Grids Utils', () => {
             const editorModel = new EditorModel({});
             const expectedUpdateColumns = queryInfo.getUpdateColumns().map(col => col.fieldKey);
             const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
-            expect(models.editorModel.columns.toArray()).toEqual(expectedUpdateColumns);
+            expect(models.editorModel.orderedColumns.toArray()).toEqual(expectedUpdateColumns);
         });
 
         test('respects loader supplied columns', async () => {
@@ -75,7 +75,7 @@ describe('Editable Grids Utils', () => {
             const editorModel = new EditorModel({});
 
             const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
-            expect(models.editorModel.columns.toArray()).toEqual(columns.map(col => col.fieldKey));
+            expect(models.editorModel.orderedColumns.toArray()).toEqual(columns.map(col => col.fieldKey));
         });
     });
 });

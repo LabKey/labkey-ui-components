@@ -70,7 +70,7 @@ describe('column mutation actions', () => {
                 },
             ]),
         }),
-        columns: insertColumnFieldKeys,
+        orderedColumns: insertColumnFieldKeys,
         id: 'insert-samples|samples/sample set 2',
         isPasting: false,
         focusColIdx: 1,
@@ -151,8 +151,8 @@ describe('column mutation actions', () => {
             expect(updates.editorModelChanges.cellValues.get('2-0').get(0).display).toBe('Description 1');
             expect(updates.editorModelChanges.cellValues.get('1-1').get(0).display).toBe('S-2');
             expect(updates.editorModelChanges.cellValues.get('2-1').get(0).display).toBe('Description 2');
-            expect(updates.editorModelChanges.columns.get(0)).toEqual(queryColumn.fieldKey);
-            expect(updates.editorModelChanges.columns.size).toEqual(editorModel.columns.size + 1);
+            expect(updates.editorModelChanges.orderedColumns.get(0)).toEqual(queryColumn.fieldKey);
+            expect(updates.editorModelChanges.orderedColumns.size).toEqual(editorModel.orderedColumns.size + 1);
             expect(updates.queryInfo.getColumnIndex('Description')).toBe(
                 queryModel.queryInfo.getColumnIndex('Description') + 1
             );
@@ -175,8 +175,8 @@ describe('column mutation actions', () => {
             expect(updates.editorModelChanges.cellValues.get('2-0').get(0).display).toBe('Description 1');
             expect(updates.editorModelChanges.cellValues.get('1-1').get(0).display).toBe('S-2');
             expect(updates.editorModelChanges.cellValues.get('2-1').get(0).display).toBe('Description 2');
-            expect(updates.editorModelChanges.columns.get(0)).toEqual(queryColumn.fieldKey);
-            expect(updates.editorModelChanges.columns.size).toEqual(editorModel.columns.size + 1);
+            expect(updates.editorModelChanges.orderedColumns.get(0)).toEqual(queryColumn.fieldKey);
+            expect(updates.editorModelChanges.orderedColumns.size).toEqual(editorModel.orderedColumns.size + 1);
             expect(updates.queryInfo.getColumnIndex('Description')).toBe(
                 queryModel.queryInfo.getColumnIndex('Description') + 1
             );
@@ -200,7 +200,7 @@ describe('column mutation actions', () => {
             expect(updates.editorModelChanges.cellValues.get('1-0').get(0).display).toBe('Description 1');
             expect(updates.editorModelChanges.cellValues.get('0-1').get(0).display).toBe('S-2');
             expect(updates.editorModelChanges.cellValues.get('1-1').get(0).display).toBe('Description 2');
-            expect(updates.editorModelChanges.columns.get(updates.editorModelChanges.columns.size - 1)).toEqual(
+            expect(updates.editorModelChanges.orderedColumns.get(updates.editorModelChanges.orderedColumns.size - 1)).toEqual(
                 queryColumn.fieldKey
             );
             expect(updates.queryInfo.getColumnIndex('description')).toBe(
@@ -229,8 +229,8 @@ describe('column mutation actions', () => {
             expect(updates.editorModelChanges.cellValues.get('2-0').get(0).display).toBe('Description 1');
             expect(updates.editorModelChanges.cellValues.get('0-1').get(0).display).toBe('S-2');
             expect(updates.editorModelChanges.cellValues.get('2-1').get(0).display).toBe('Description 2');
-            expect(updates.editorModelChanges.columns.findIndex(fieldKey => fieldKey === queryColumn.fieldKey)).toEqual(
-                updates.editorModelChanges.columns.findIndex(fieldKey => fieldKey === 'Name') + 1
+            expect(updates.editorModelChanges.orderedColumns.findIndex(fieldKey => fieldKey === queryColumn.fieldKey)).toEqual(
+                updates.editorModelChanges.orderedColumns.findIndex(fieldKey => fieldKey === 'Name') + 1
             );
 
             expect(updates.queryInfo.getColumnIndex('name')).toBe(nameColIndex);
@@ -269,9 +269,9 @@ describe('column mutation actions', () => {
             expect(updates.editorModelChanges.cellValues.get('1-0')).toBeFalsy();
             expect(updates.editorModelChanges.cellValues.get('1-1')).toBeFalsy();
             expect(updates.editorModelChanges.cellValues.get('1-2')).toBeFalsy();
-            expect(updates.editorModelChanges.columns.find(fieldKey => fieldKey === 'Description')).toBeUndefined();
-            expect(updates.editorModelChanges.columns.findIndex(fieldKey => fieldKey === queryColumn.fieldKey)).toEqual(
-                editorModel.columns.findIndex(fieldKey => fieldKey === 'Description')
+            expect(updates.editorModelChanges.orderedColumns.find(fieldKey => fieldKey === 'Description')).toBeUndefined();
+            expect(updates.editorModelChanges.orderedColumns.findIndex(fieldKey => fieldKey === queryColumn.fieldKey)).toEqual(
+                editorModel.orderedColumns.findIndex(fieldKey => fieldKey === 'Description')
             );
 
             const colIndex = queryModel.queryInfo.columns.keyArray.findIndex(column => column === 'description');
@@ -304,9 +304,9 @@ describe('column mutation actions', () => {
             expect(updates.editorModelChanges.cellMessages.size).toBe(1);
             expect(updates.editorModelChanges.cellValues.get('0-0').get(0).display).toBe('Description 1');
             expect(updates.editorModelChanges.cellValues.get('0-1').get(0).display).toBe('Description 2');
-            expect(updates.editorModelChanges.columns.size).toEqual(editorModel.columns.size - 1);
+            expect(updates.editorModelChanges.orderedColumns.size).toEqual(editorModel.orderedColumns.size - 1);
             expect(
-                updates.editorModelChanges.columns.find(fieldKey => fieldKey === firstInputColumn.fieldKey)
+                updates.editorModelChanges.orderedColumns.find(fieldKey => fieldKey === firstInputColumn.fieldKey)
             ).toBeUndefined();
             expect(updates.data.find(row => row.has(firstInputColumn.fieldKey))).toBeFalsy();
         });
@@ -325,9 +325,9 @@ describe('column mutation actions', () => {
             expect(updates.editorModelChanges.cellValues.get('0-0').get(0).display).toBe('S-1');
             expect(updates.editorModelChanges.cellValues.get('0-1').get(0).display).toBe('S-2');
             expect(updates.editorModelChanges.cellValues.has('5-0')).toBe(false);
-            expect(updates.editorModelChanges.columns.size).toEqual(editorModel.columns.size - 1);
+            expect(updates.editorModelChanges.orderedColumns.size).toEqual(editorModel.orderedColumns.size - 1);
             expect(
-                updates.editorModelChanges.columns.find(fieldKey => fieldKey === lastInputColumn.fieldKey)
+                updates.editorModelChanges.orderedColumns.find(fieldKey => fieldKey === lastInputColumn.fieldKey)
             ).toBeUndefined();
             expect(updates.data.find(row => row.has(lastInputColumn.fieldKey))).toBeFalsy();
         });
@@ -339,8 +339,8 @@ describe('column mutation actions', () => {
             expect(updates.editorModelChanges.cellMessages.size).toBe(0);
             expect(updates.editorModelChanges.cellValues.get('0-0').get(0).display).toBe('S-1');
             expect(updates.editorModelChanges.cellValues.has('1-0')).toBe(false);
-            expect(updates.editorModelChanges.columns.size).toEqual(editorModel.columns.size - 1);
-            expect(updates.editorModelChanges.columns.find(fk => fk === fieldKey)).toBeUndefined();
+            expect(updates.editorModelChanges.orderedColumns.size).toEqual(editorModel.orderedColumns.size - 1);
+            expect(updates.editorModelChanges.orderedColumns.find(fk => fk === fieldKey)).toBeUndefined();
             expect(updates.data.find(row => row.has(fieldKey))).toBeFalsy();
         });
     });
@@ -500,7 +500,7 @@ describe('fillColumnCells', () => {
                 },
             ]),
         }),
-        columns: List(['a', 'b', 'c', 'd', 'e']),
+        orderedColumns: List(['a', 'b', 'c', 'd', 'e']),
         rowCount: 10,
     }) as EditorModel;
 

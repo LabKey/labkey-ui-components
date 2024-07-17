@@ -10,6 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - hide some AdvancedSettings for calculated fields
   - use rangeURI for calculated fields to determine type specific expanded row options to show
   - add ProductFeature.CalculatedFields and isCalculatedFieldsEnabled() helper
+  - add experimental feature flag for calculated fields in the Field Editor
 
 ### version 4.0.5
 *Released*: 17 July 2024

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.0.5
+*Released*: 17 July 2024
+- EditableGrid: bulk data resolve public lookups
+
 ### version 4.0.4
 *Released*: 12 July 2024
 - Issue 50661: Update `FilterFacetedSelector` to cancel requests as needed while typing

@@ -324,7 +324,7 @@ async function prepareInsertRowDataFromBulkForm(
         const col = insertColumns.get(colIdx);
         let cv: List<ValueDescriptor>;
 
-        if (data && col && col.isLookup()) {
+        if (data && col && col.isPublicLookup()) {
             cv = List<ValueDescriptor>();
             // value had better be the rowId here, but it may be several in a comma-separated list.
             // If it's the display value, which happens to be a number, much confusion will arise.
@@ -646,7 +646,7 @@ export function removeColumn(
         data,
         queryInfo: queryInfo.mutate({
             columns: queryInfo.columns.filter(col => col.fieldKey.toLowerCase() !== fieldKey.toLowerCase()),
-        }) as QueryInfo,
+        }),
     };
 }
 
@@ -676,7 +676,7 @@ async function prepareUpdateRowDataFromBulkForm(
         }
         let cv: List<ValueDescriptor>;
 
-        if (data && col && col.isLookup()) {
+        if (data && col && col.isPublicLookup()) {
             cv = List<ValueDescriptor>();
             // value had better be the rowId here, but it may be several in a comma-separated list.
             // If it's the display value, which happens to be a number, much confusion will arise.
@@ -969,8 +969,8 @@ export function checkCellReadStatus(
 /**
  * Returns only the newly selected area given an initial selection and a final selection. These are the keys that will
  * be filled with generated data based on the initially selected data.
- * @param initialSelection: The area initially selected
- * @param finalSelection: The final area selected, including the initially selected area
+ * @param initialSelection The area initially selected
+ * @param finalSelection The final area selected, including the initially selected area
  */
 export function generateFillCellKeys(initialSelection: string[], finalSelection: string[]): string[][] {
     const firstInitial = parseCellKey(initialSelection[0]);
@@ -981,8 +981,8 @@ export function generateFillCellKeys(initialSelection: string[], finalSelection:
     const initialMaxRow = lastInitial.rowIdx;
     const finalMinRow = parseCellKey(finalSelection[0]).rowIdx;
     const finalMaxRow = parseCellKey(finalSelection[finalSelection.length - 1]).rowIdx;
-    let start;
-    let end;
+    let start: number;
+    let end: number;
 
     if (finalMaxRow > initialMaxRow) {
         // Final selected area is below the initial selection, so we will be incrementing from the row after
@@ -1076,7 +1076,7 @@ export function parsePastedLookup(
 
 async function getParsedLookup(
     column: QueryColumn,
-    lookupColumnContainerCache: {},
+    lookupColumnContainerCache: Record<string, ValueDescriptor[]>,
     display: any[],
     value: string[] | string,
     cellKey: string,

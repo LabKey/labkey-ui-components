@@ -67,16 +67,16 @@ export const ModalHeader: FC<ModalHeaderProps> = ({ title, onCancel }) => {
 ModalHeader.displayName = 'ModalHeader';
 
 export interface ModalProps extends BaseModalProps, ModalButtonsProps {
-    buttonBarContent?: ReactNode;
     // Note: you probably shouldn't use footer, instead use the other props to render the appropriate footer
     footer?: ReactNode;
+    // This is partial content of the default footer rendered by the Modal. It is ignored if a "footer" is supplied.
+    footerContent?: ReactNode;
     title?: ReactNode;
 }
 
 export const Modal: FC<ModalProps> = memo(props => {
     const {
         actionName,
-        buttonBarContent,
         bsSize,
         cancelText,
         canConfirm,
@@ -86,6 +86,7 @@ export const Modal: FC<ModalProps> = memo(props => {
         confirmText,
         confirmingText,
         footer,
+        footerContent,
         isConfirming,
         onCancel,
         onCommentChange,
@@ -114,7 +115,7 @@ export const Modal: FC<ModalProps> = memo(props => {
                     onCancel={onCancel}
                     requiresUserComment={requiresUserComment}
                 >
-                    {buttonBarContent}
+                    {footerContent}
                 </ModalButtons>
             )}
 

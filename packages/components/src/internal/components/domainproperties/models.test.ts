@@ -434,6 +434,13 @@ describe('PropDescType', () => {
         expect(PropDescType.fromName('time')).toBe(TIME_TYPE);
     });
 
+    test('isCalculation', () => {
+        expect(PropDescType.isCalculation('text')).toBeFalsy();
+        expect(PropDescType.isCalculation('Calculation')).toBeFalsy();
+        expect(PropDescType.isCalculation('calculation')).toBeTruthy();
+        expect(PropDescType.isCalculation(CALCULATED_CONCEPT_URI)).toBeTruthy();
+    });
+
     test('isFileType', () => {
         expect(INTEGER_TYPE.isFileType()).toBeFalsy();
         expect(TEXT_TYPE.isFileType()).toBeFalsy();

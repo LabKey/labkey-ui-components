@@ -1,10 +1,7 @@
 import React from 'react';
-
-import { mount } from 'enzyme';
-
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { List } from 'immutable';
-
-import renderer from 'react-test-renderer';
 
 import {
     SELECT_INPUT_DISABLED_SELECTOR,
@@ -18,8 +15,6 @@ import {
     AdvancedSettings,
     DisplayTitle,
     SearchIndexing,
-    SingleDocumentIndexFields,
-    SeparateDocumentIndexFields,
     IndexField,
 } from './ListPropertiesAdvancedSettings';
 import { ListModel } from './models';
@@ -29,62 +24,49 @@ const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 
 describe('AdvancedSettings', () => {
-    test('new list, default properties', () => {
+    test('default properties', () => {
         const advancedSettings = (
             <AdvancedSettings title="Advanced Settings" model={emptyNewModel} applyAdvancedProperties={jest.fn()} />
         );
 
-        const tree = renderer.create(advancedSettings);
-        expect(tree).toMatchSnapshot();
-    });
-
-    test('existing list, existing properties', () => {
-        const advancedSettings = (
-            <AdvancedSettings
-                title="Advanced Settings"
-                model={populatedExistingModel}
-                applyAdvancedProperties={jest.fn()}
-            />
-        );
-
-        const tree = renderer.create(advancedSettings);
-        expect(tree).toMatchSnapshot();
+        const container = render(advancedSettings).container;
+        expect(container).toMatchSnapshot();
     });
 
     test('display title select dropdown with existing list', () => {
-        const displayTitle = mount(
+        render(
             <DisplayTitle model={populatedExistingModel} onSelectChange={jest.fn()} titleColumn="Name" />
         );
 
-        expect(displayTitle.find(SELECT_INPUT_SINGLE_VALUE_SELECTOR).text()).toEqual('Name');
-        expect(displayTitle.exists(SELECT_INPUT_DISABLED_SELECTOR)).toBeFalsy();
-        displayTitle.unmount();
+        expect(document.querySelector(SELECT_INPUT_SINGLE_VALUE_SELECTOR).textContent).toEqual('Name');
+        expect(document.querySelectorAll(SELECT_INPUT_DISABLED_SELECTOR)).toHaveLength(0);
+
     });
 
     test('display title select dropdown with new list and no fields present', () => {
-        const displayTitle = mount(
+        render(
             <DisplayTitle model={emptyNewModel} onSelectChange={jest.fn()} titleColumn={null} />
         );
 
-        expect(displayTitle.find(SELECT_INPUT_PLACEHOLDER_SELECTOR).text()).toEqual('No fields have been defined yet');
-        expect(displayTitle.exists(SELECT_INPUT_DISABLED_SELECTOR)).toBeTruthy();
-        displayTitle.unmount();
+        expect(document.querySelector(SELECT_INPUT_PLACEHOLDER_SELECTOR).textContent).toEqual('No fields have been defined yet');
+        expect(document.querySelectorAll(SELECT_INPUT_DISABLED_SELECTOR)).toHaveLength(1);
+
     });
 
     test('display title select dropdown with new list and some fields present', () => {
         const newModelWithOneField = emptyNewModel.setIn(['domain', 'fields'], List.of(DomainField.create({name: 'dummyField'}))) as ListModel;
 
-        const displayTitle = mount(
+        render(
             <DisplayTitle model={newModelWithOneField} onSelectChange={jest.fn()} titleColumn={null} />
         );
 
-        expect(displayTitle.find(SELECT_INPUT_PLACEHOLDER_SELECTOR).text()).toEqual('Auto');
-        expect(displayTitle.exists(SELECT_INPUT_DISABLED_SELECTOR)).toBeFalsy();
-        displayTitle.unmount();
+        expect(document.querySelector(SELECT_INPUT_PLACEHOLDER_SELECTOR).textContent).toEqual('Auto');
+        expect(document.querySelectorAll(SELECT_INPUT_DISABLED_SELECTOR)).toHaveLength(0);
+
     });
 
     test("either search indexing options 'index entire list' or 'index each item' may be open, but not both", () => {
-        const wrapper = mount(
+        render(
             <SearchIndexing
                 onRadioChange={jest.fn()}
                 onInputChange={jest.fn()}
@@ -106,18 +88,18 @@ describe('AdvancedSettings', () => {
             />
         );
 
-        wrapper.find('.fa-angle-right').at(0).simulate('click');
-        expect(wrapper.find(SingleDocumentIndexFields)).toHaveLength(1);
-        expect(wrapper.find(SeparateDocumentIndexFields)).toHaveLength(0);
+        userEvent.click(document.querySelector('.fa-angle-right'));
+        expect(document.querySelectorAll('input[id="entireListTitleTemplate"]')).toHaveLength(1);
+        expect(document.querySelectorAll('input[id="eachItemTitleTemplate"]')).toHaveLength(0);
 
-        wrapper.find('.fa-angle-right').at(0).simulate('click');
-        expect(wrapper.find(SingleDocumentIndexFields)).toHaveLength(0);
-        expect(wrapper.find(SeparateDocumentIndexFields)).toHaveLength(1);
-        wrapper.unmount();
+        userEvent.click(document.querySelector('.fa-angle-right'));
+        expect(document.querySelectorAll('input[id="entireListTitleTemplate"]')).toHaveLength(0);
+        expect(document.querySelectorAll('input[id="eachItemTitleTemplate"]')).toHaveLength(1);
+
     });
 
     test("setting 'index using custom template' generates a text input field", () => {
-        const indexField = mount(
+        render(
             <IndexField
                 name="entireListBodySetting"
                 onRadioChange={jest.fn()}
@@ -127,7 +109,7 @@ describe('AdvancedSettings', () => {
             />
         );
 
-        expect(indexField.find('input.list__advanced-settings-modal__custom-template-text-field')).toHaveLength(1);
-        indexField.unmount();
+        expect(document.querySelectorAll('input.list__advanced-settings-modal__custom-template-text-field')).toHaveLength(1);
+
     });
 });

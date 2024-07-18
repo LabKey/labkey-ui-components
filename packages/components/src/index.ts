@@ -180,7 +180,6 @@ import {
     changeColumn,
     initEditableGridModel,
     initEditableGridModels,
-    loadEditorModelData,
     removeColumn,
     updateGridFromBulkForm,
 } from './internal/components/editable/actions';
@@ -1152,7 +1151,6 @@ export {
     processSchemas,
     invalidateFullQueryDetailsCache,
     // editable grid related items
-    loadEditorModelData,
     applyEditableGridChangesToModels,
     getUpdatedDataFromEditableGrid,
     initEditableGridModel,

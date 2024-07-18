@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, {FC, memo, PureComponent, ReactNode, useCallback} from 'react';
 import classNames from 'classnames';
 
 import { HelpLink, LABKEY_SQL_TOPIC } from '../../util/helpLinks';
@@ -51,41 +51,35 @@ interface Props {
     onChange: (string, any) => void;
 }
 
-export class CalculatedFieldOptions extends PureComponent<Props> {
-    handleChange = (evt: any): void => {
-        this.onChange(evt.target.id, evt.target.value);
-    };
+export const CalculatedFieldOptions: FC<Props> = memo(props => {
+    const { index, field, domainIndex, onChange } = props;
 
-    onChange = (id: string, value: any): void => {
-        this.props?.onChange(id, value);
-    };
+    const handleChange = useCallback((evt: any): void => {
+        onChange(evt.target.id, evt.target.value);
+    }, [onChange]);
 
-    render(): ReactNode {
-        const { index, field, domainIndex } = this.props;
-
-        return (
-            <div className={classNames({
-                    'margin-bottom': !!field?.rangeURI && !PropDescType.isString(field.rangeURI),
-            })}>
-                <div className="row">
-                    <div className="col-xs-12">
-                        <SectionHeading title="Expression" cls="bottom-spacing" helpTipBody={HELP_TIP_BODY} />
-                    </div>
+    return (
+        <div className={classNames({
+            'margin-bottom': !!field?.rangeURI && !PropDescType.isString(field.rangeURI),
+        })}>
+            <div className="row">
+                <div className="col-xs-12">
+                    <SectionHeading title="Expression" cls="bottom-spacing" helpTipBody={HELP_TIP_BODY} />
                 </div>
-                <div className="row">
-                    <div className="col-xs-12">
+            </div>
+            <div className="row">
+                <div className="col-xs-12">
                         <textarea
                             className="form-control"
                             rows={4}
                             value={field.valueExpression || ''}
                             id={createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index)}
                             name={createFormInputName(DOMAIN_FIELD_VALUE_EXPRESSION)}
-                            onChange={this.handleChange}
+                            onChange={handleChange}
                             disabled={isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType)}
                         />
-                    </div>
                 </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+});

@@ -39,6 +39,7 @@ import {
     isAssayQCEnabled,
     isAssayRequestsEnabled,
     isBiologicsEnabled,
+    isCalculatedFieldsEnabled,
     isCommunityDistribution,
     isELNEnabled,
     isFreezerManagementEnabled,
@@ -416,6 +417,10 @@ describe('getMenuSectionConfigs', () => {
 });
 
 describe('utils', () => {
+    beforeEach(() => {
+        window.history.pushState({}, 'Test Title', '/');
+    });
+
     test('userCanDesignSourceTypes', () => {
         expect(userCanDesignSourceTypes(TEST_USER_GUEST)).toBeFalsy();
         expect(userCanDesignSourceTypes(TEST_USER_READER)).toBeFalsy();
@@ -820,6 +825,19 @@ describe('utils', () => {
         expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, biologics: {} })).toStrictEqual(
             BIOLOGICS_APP_PROPERTIES
         );
+    });
+
+    test('isCalculatedFieldsEnabled', () => {
+        expect(isCalculatedFieldsEnabled()).toBeFalsy();
+        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': false }})).toBeFalsy();
+        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true }})).toBeFalsy();
+        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true }, api: { moduleNames: [] }})).toBeFalsy(); // community
+        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true }, api: { moduleNames: ['premium'] }})).toBeTruthy(); // LKS Prof
+
+        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
+        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true }})).toBeFalsy();
+        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true, productFeatures: [] }})).toBeFalsy();
+        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true, productFeatures: [ProductFeature.CalculatedFields] }})).toBeTruthy();
     });
 });
 

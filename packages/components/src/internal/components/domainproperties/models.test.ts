@@ -1075,6 +1075,14 @@ describe('DomainField', () => {
                 })
             )
         ).toBeFalsy();
+        expect(
+            DomainField.hasRegExValidation(
+                DomainField.create({
+                    name: 'foo',
+                    conceptURI: CALCULATED_TYPE.conceptURI,
+                })
+            )
+        ).toBeFalsy();
         expect(DomainField.hasRegExValidation(DomainField.create({}))).toBeTruthy();
     });
 

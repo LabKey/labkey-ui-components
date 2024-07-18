@@ -8,6 +8,7 @@ import { DOMAIN_FIELD_VALUE_EXPRESSION } from './constants';
 import { DomainField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
+import {PropDescType} from "./PropDescType";
 
 const HELP_TIP_BODY = (
     <>
@@ -30,7 +31,7 @@ const HELP_TIP_BODY = (
                     <code>CURDATE()</code>
                 </li>
                 <li>
-                    <code>TIMESTAMPDIFF('SQL_TSI_DAY', CURDATE(), TIMESTAMPADD('SQL_TSI_MONTH', 6, dateField))</code>
+                    <code>TIMESTAMPDIFF( 'SQL_TSI_DAY', CURDATE(), TIMESTAMPADD( 'SQL_TSI_MONTH', 6, dateField))</code>
                 </li>
                 <li>
                     <code>
@@ -64,7 +65,7 @@ export class CalculatedFieldOptions extends PureComponent<Props> {
 
         return (
             <div className={classNames({
-                    'margin-bottom': !!field?.rangeURI,
+                    'margin-bottom': !!field?.rangeURI && !PropDescType.isString(field.rangeURI),
             })}>
                 <div className="row">
                     <div className="col-xs-12">

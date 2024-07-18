@@ -74,8 +74,9 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
         switch (dataTypeName) {
             case 'string':
                 if (domainFormDisplayOptions && !domainFormDisplayOptions.hideTextOptions) {
-                    // Issue39877: Max text length options should not be visible for text key field of list
-                    if (field.isPrimaryKey) {
+                    // Issue 39877: Max text length options should not be visible for text key field of list
+                    // Also, don't show max text length options for calculated fields
+                    if (field.isPrimaryKey || field.isCalculatedField()) {
                         return;
                     }
 
@@ -155,7 +156,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                         lockType={field.lockType}
                         scannable={field.scannable}
                         appPropertiesOnly={appPropertiesOnly}
-                        showScannableOption={domainFormDisplayOptions?.showScannableOption}
+                        showScannableOption={domainFormDisplayOptions?.showScannableOption && !field.isCalculatedField()}
                     />
                 );
             case 'double':

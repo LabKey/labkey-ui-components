@@ -32,10 +32,7 @@ export const ScannableOption: FC<ScannableProps> = memo(props => {
                         <DomainFieldLabel
                             label="Barcode Field"
                             helpTipBody={
-                                'When using the Find Samples dialog from the search bar and choosing the\n' +
-                                '                                        "Barcodes" option, fields\n' +
-                                '                                        that are designated as Barcode fields will be queried\n' +
-                                '                                        along with any UniqueId fields for this sample type.'
+                                'When using the Find Samples dialog from the search bar and choosing the "Barcodes" option, fields that are designated as Barcode fields will be queried along with any UniqueId fields for this sample type.'
                             }
                         />
                     </div>

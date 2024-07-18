@@ -1167,6 +1167,10 @@ export class DomainField
         return json;
     }
 
+    getRangeURI(): string {
+        return this.dataType.rangeURI || this.rangeURI;
+    }
+
     getErrors(): FieldErrors {
         if (this.dataType.isLookup() && (!this.lookupSchema || !this.lookupQuery)) {
             return FieldErrors.MISSING_SCHEMA_QUERY;
@@ -1176,7 +1180,7 @@ export class DomainField
             return FieldErrors.INVALID_LOOKUP;
         }
 
-        if (!(this.dataType && (this.dataType.rangeURI || this.rangeURI)) && !this.isCalculatedField()) {
+        if ((!this.dataType || !this.getRangeURI()) && !this.isCalculatedField()) {
             return FieldErrors.MISSING_DATA_TYPE;
         }
 
@@ -1245,7 +1249,7 @@ export class DomainField
     }
 
     static hasRegExValidation(field: DomainField): boolean {
-        return field.dataType.isString() && !field.isUniqueIdField() && !field.isTextChoiceField();
+        return field.dataType.isString() && !field.isUniqueIdField() && !field.isTextChoiceField() && !field.isCalculatedField();
     }
 
     static updateDefaultValues(field: DomainField): DomainField {

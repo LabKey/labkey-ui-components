@@ -1,5 +1,5 @@
 import { Filter, Utils } from '@labkey/api';
-import { fromJS, List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
+import { List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
 import moment from 'moment';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
@@ -54,13 +54,15 @@ export const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
     editorColumns?: QueryColumn[],
     forUpdate?: boolean
+    // TODO: When all non EditorModel.init usages of this are gone update this to only return cellValues and move it to
+    //  EditorModel
 ): Promise<Partial<EditorModel>> => {
     const { orderedRows, rows, queryInfo } = queryModelData;
     const columns = editorColumns ?? queryInfo.getInsertColumns();
     const lookupValueDescriptors = await getLookupValueDescriptors(
         columns,
-        fromJS(rows),
-        fromJS(orderedRows),
+        rows,
+        orderedRows,
         forUpdate
     );
     let cellValues = Map<string, List<ValueDescriptor>>();
@@ -248,20 +250,20 @@ const findLookupValues = async (
 
 async function getLookupValueDescriptors(
     columns: QueryColumn[],
-    rows: Map<any, Map<string, any>>,
-    ids: List<any>,
+    rows: Record<string, Record<string, any>>,
+    ids: string[],
     forUpdate?: boolean
 ): Promise<{ [colKey: string]: ValueDescriptor[] }> {
     const descriptorMap = {};
     // for each lookup column, find the unique values in the rows and query for those values when they look like ids
     for (let cn = 0; cn < columns.length; cn++) {
         const col = columns[cn];
-        let values = ImmutableSet<number>();
+        let values = new Set<number>();
 
         if (col.isPublicLookup()) {
             ids.forEach(id => {
-                const row = rows.get(id);
-                const value = row?.get(col.fieldKey);
+                const row = rows[id];
+                const value = row?.[col.fieldKey];
                 if (Utils.isNumber(value)) {
                     values = values.add(value);
                 } else if (List.isList(value)) {
@@ -274,8 +276,8 @@ async function getLookupValueDescriptors(
                     });
                 }
             });
-            if (!values.isEmpty()) {
-                const { descriptors } = await findLookupValues(col, values.toArray(), undefined, undefined, forUpdate);
+            if (values.size > 0) {
+                const { descriptors } = await findLookupValues(col, Array.from(values), undefined, undefined, forUpdate);
                 descriptorMap[col.lookupKey] = descriptors;
             }
         }

@@ -3,14 +3,35 @@ import { AssayDOM } from '@labkey/api';
 
 import { AssayUploadTabs } from '../../constants';
 import { generateNameWithTimestamp } from '../../util/Date';
-import { loadEditorModelData } from '../editable/actions';
+import { initEditableGridModel } from '../editable/actions';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
 import { FileAttachmentFormModel } from '../files/models';
 import { AppURL } from '../../url/AppURL';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { EditorModel } from '../editable/models';
+import { EditableGridLoader, EditorMode, EditorModel, GridResponse } from '../editable/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+class AssayWizardModelEditableGridLoader implements EditableGridLoader {
+    columns: QueryColumn[];
+    id: string;
+    mode: EditorMode;
+    queryInfo: QueryInfo;
+    data: Map<string, Map<string, any>>;
+
+    constructor(queryInfo: QueryInfo, data: Map<string, Map<string, any>>) {
+        this.mode = EditorMode.Insert;
+        this.queryInfo = queryInfo;
+        this.data = data;
+    }
+
+    async fetch(model: QueryModel): Promise<GridResponse> {
+        return {
+            data: this.data,
+            dataIds: this.data.keySeq().toList(),
+        };
+    }
+}
 
 export interface AssayUploadOptions extends AssayDOM.ImportRunOptions {
     dataRows?: any; // Array<any>
@@ -218,23 +239,20 @@ export class AssayWizardModel
         return assayData;
     }
 
-    getInitialQueryModelData(): { orderedRows: string[]; queryInfo: QueryInfo; rows: { [key: string]: any } } {
-        const { assayDef, selectedSamples } = this;
-        const sampleColumnData = assayDef.getSampleColumn();
-        const sampleColInResults = sampleColumnData && sampleColumnData.domain === AssayDomainTypes.RESULT;
-        const hasSamples = sampleColInResults && selectedSamples;
-        // We only care about passing samples to the data grid if there is a sample column in the results domain.
-        const rows = hasSamples ? selectedSamples.toJS() : {};
-        return { rows, orderedRows: Object.keys(rows), queryInfo: this.queryInfo };
-    }
-
     /**
      * This method instantiates the initial data used in the editable grid during assay upload, it includes data for
      * an EditorModel and QueryModel.
      */
     async getInitialGridData(): Promise<{ editorModel: Partial<EditorModel>; queryModel: Partial<QueryModel> }> {
-        const queryModelData = this.getInitialQueryModelData();
-        const editorModelData = await loadEditorModelData(queryModelData);
-        return { editorModel: editorModelData, queryModel: queryModelData };
+        const { assayDef, selectedSamples } = this;
+        const sampleColumnData = assayDef.getSampleColumn();
+        const sampleColInResults = sampleColumnData && sampleColumnData.domain === AssayDomainTypes.RESULT;
+        const hasSamples = sampleColInResults && selectedSamples;
+        // We only care about passing samples to the data grid if there is a sample column in the results domain.
+        const rows = hasSamples ? selectedSamples : Map<string, Map<string, any>>({});
+        const loader = new AssayWizardModelEditableGridLoader(this.queryInfo, rows);
+        const dataModel = new QueryModel({ schemaQuery: this.queryInfo.schemaQuery }).mutate({ queryInfo: this.queryInfo });
+        const editorModelData = await initEditableGridModel(dataModel, new EditorModel({ id: dataModel.id }), loader, dataModel);
+        return { editorModel: editorModelData.editorModel, queryModel: editorModelData.dataModel };
     }
 }

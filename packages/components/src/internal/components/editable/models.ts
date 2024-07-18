@@ -665,14 +665,32 @@ export class EditorModel
 export interface GridResponse {
     data: Map<any, any>;
     dataIds: List<any>;
-    messages?: List<Map<string, string>>;
-    totalRows?: number;
 }
 
 interface GridSelectionResponse {
     selectedIds: List<any>;
 }
 
+/**
+ * TODO: GridLoader and EditableGridLoader are artifacts of QueryGridModel, this is why they return GridResponse, which
+ * uses Immutable, despite the data loaded from EditableGridLoaders going into QueryModels, which end up converting the
+ * data back to regular JS objects. We should revisit this class, and consider maybe using QueryModelLoaders instead, or
+ * maybe something else altogether. Many cases of EditableGridLoader do not actually asynchronously fetch data, since
+ * they get their data from existing QueryModels, we may be able to eliminate the need for async fetch altogether.
+ *
+ * Implementations that do not asynchronously load data:
+ * - MoveSamplesGridLoader
+ * - SingleStorageEditableGridLoader
+ * - AssayWizardModelEditableGridLoader
+ * - PlateSetCreateGridLoader
+ * - PlateGridLoader
+ * - EntityGridLoader
+ * - MultiStorageGridLoader
+ *
+ * Implementations that do asynchronously load data:
+ * - StorageEditableGridLoaderFromSelection (uses getSelectedData)
+ * - EditableGridLoaderFromSelection (uses getSelectedData)
+ */
 export interface GridLoader {
     fetch: (model: QueryModel) => Promise<GridResponse>;
     fetchSelection?: (model: QueryModel) => Promise<GridSelectionResponse>;

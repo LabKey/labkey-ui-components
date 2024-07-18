@@ -9,6 +9,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 42183: SM: Need better indication that comment in a workflow task has not been saved.
 - Issue 50607: Updated field labels are not shown in the grid
 
+### version 4.0.5
+*Released*: 17 July 2024
+- EditableGrid: bulk data resolve public lookups
+
 ### version 4.0.4
 *Released*: 12 July 2024
 - Issue 50661: Update `FilterFacetedSelector` to cancel requests as needed while typing

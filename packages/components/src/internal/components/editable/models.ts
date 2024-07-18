@@ -132,7 +132,6 @@ export class EditorModel
         focusRowIdx: -1,
         focusValue: undefined,
         id: undefined,
-        isPasting: false,
         isSparseSelection: false,
         rowCount: 0,
         selectedColIdx: -1,
@@ -149,7 +148,6 @@ export class EditorModel
     declare focusRowIdx: number;
     declare focusValue: List<ValueDescriptor>;
     declare id: string;
-    declare isPasting: boolean;
     // NK: This is precomputed property that is updated whenever the selection is updated.
     // See applyEditableGridChangesToModels().
     declare isSparseSelection: boolean;

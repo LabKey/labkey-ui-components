@@ -72,7 +72,6 @@ describe('column mutation actions', () => {
         }),
         orderedColumns: insertColumnFieldKeys,
         id: 'insert-samples|samples/sample set 2',
-        isPasting: false,
         focusColIdx: 1,
         focusRowIdx: 1,
         rowCount: 3,

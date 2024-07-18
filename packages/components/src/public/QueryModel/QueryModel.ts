@@ -539,6 +539,15 @@ export class QueryModel {
         return this.queryInfo?.getDisplayColumns(this.viewName, this.omittedColumns);
     }
 
+    // Issue 50607: Updated field labels are not shown in the grid if the default grid view has been changed.
+    getCustomViewTitleOverride(column: QueryColumn): string {
+        const label = column.customViewTitle;
+        const originalCol = this.queryInfo.columns.get(column.fieldKey.toLowerCase());
+        if (!originalCol || (originalCol.caption !== label))
+            return label;
+        return '';
+    }
+
     /**
      * Array of all [[QueryColumn]] objects from the [[QueryInfo]] view. This will exclude those columns listed
      * in omittedColumns.

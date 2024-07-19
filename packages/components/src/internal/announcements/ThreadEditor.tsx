@@ -416,19 +416,23 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         [model]
     );
 
+    const handlePendingChange = useCallback((hasPendingChange = false) => {
+        setPendingChange?.(thread?.rowId ?? -1, hasPendingChange);
+    }, [setPendingChange, thread?.rowId]);
+
     const onBodyChange = useCallback(
         (event: ChangeEvent<HTMLTextAreaElement>) => {
             setError(undefined);
             setBody(event.target.value);
-            setPendingChange?.(thread?.rowId ?? -1, !!event.target.value);
+            handlePendingChange(!!event.target.value);
         },
-        [setBody]
+        [setBody, handlePendingChange]
     );
 
     const handleCancel = useCallback(() => {
         onCancel?.();
-        setPendingChange?.(thread?.rowId ?? -1, false);
-    }, [thread?.rowId, onCancel, setPendingChange]);
+        handlePendingChange();
+    }, [thread?.rowId, onCancel, handlePendingChange]);
 
     const onSubmit = useCallback(() => {
         if (submitting) return;
@@ -438,8 +442,8 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         } else {
             updateThread();
         }
-        setPendingChange?.(thread?.rowId ?? -1, false);
-    }, [createThread, isCreate, setSubmitting, submitting, updateThread]);
+        handlePendingChange();
+    }, [createThread, isCreate, setSubmitting, submitting, updateThread, handlePendingChange]);
 
     const onKeyDown = useCallback(
         (evt: KeyboardEvent) => {

@@ -22,10 +22,10 @@ describe('NameExpressionGenIdBanner', () => {
                     kindName="DataClass"
                     api={getTestAPIWrapper(jest.fn, {
                         domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
-                            getGenId: () => Promise.resolve(123),
+                            getGenId: jest.fn().mockResolvedValue(123),
                         }),
                         entity: getEntityTestAPIWrapper(jest.fn, {
-                            isDataTypeEmpty: () => Promise.resolve(false),
+                            isDataTypeEmpty: jest.fn().mockResolvedValue(false),
                         }),
                     })}
                 />
@@ -46,10 +46,10 @@ describe('NameExpressionGenIdBanner', () => {
                     kindName="DataClass"
                     api={getTestAPIWrapper(jest.fn, {
                         domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
-                            getGenId: () => Promise.resolve(0),
+                            getGenId: jest.fn().mockResolvedValue(0),
                         }),
                         entity: getEntityTestAPIWrapper(jest.fn, {
-                            isDataTypeEmpty: () => Promise.resolve(true),
+                            isDataTypeEmpty: jest.fn().mockResolvedValue(true),
                         }),
                     })}
                 />
@@ -70,10 +70,10 @@ describe('NameExpressionGenIdBanner', () => {
                     kindName="DataClass"
                     api={getTestAPIWrapper(jest.fn, {
                         domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
-                            getGenId: () => Promise.resolve(123),
+                            getGenId: jest.fn().mockResolvedValue(123),
                         }),
                         entity: getEntityTestAPIWrapper(jest.fn, {
-                            isDataTypeEmpty: () => Promise.resolve(true),
+                            isDataTypeEmpty: jest.fn().mockResolvedValue(true),
                         }),
                     })}
                 />

@@ -542,7 +542,7 @@ export class QueryModel {
     // Issue 50607: Updated field labels are not shown in the grid if the default grid view has been changed.
     getCustomViewTitleOverride(column: QueryColumn): string {
         const label = column.customViewTitle;
-        const originalCol = this.queryInfo.columns.get(column.fieldKey.toLowerCase());
+        const originalCol = this.queryInfo.getColumn(column.fieldKey);
         if (!originalCol || (originalCol.caption !== label))
             return label;
         return '';
@@ -696,12 +696,12 @@ export class QueryModel {
         }
 
         // remove duplicate
-        const fieldKeysLc = [],
+        const fieldKeysLc = new Set(),
             fieldKeysCleaned = [];
         fieldKeys.forEach(fieldKey => {
-            if (fieldKeysLc.indexOf(fieldKey.toLowerCase()) === -1) {
+            if (!fieldKeysLc.has(fieldKey.toLowerCase())) {
                 fieldKeysCleaned.push(fieldKey);
-                fieldKeysLc.push(fieldKey.toLowerCase());
+                fieldKeysLc.add(fieldKey.toLowerCase());
             }
         });
 

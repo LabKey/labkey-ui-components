@@ -1,6 +1,6 @@
 import { ActionURL } from '@labkey/api';
 
-import { BIOLOGICS_APP_PROPERTIES, SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
+import { BIOLOGICS_APP_PROPERTIES, LIMS_APP_PROPERTIES, SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { getHelpLink, HELP_LINK_REFERRER } from '../../util/helpLinks';
 import { imageURL } from '../../url/ActionURL';
 
@@ -11,6 +11,10 @@ export const SAMPLE_MANAGER_PRODUCT_ICON = 'LK-SampleManager-Badge-COLOR.svg';
 export const SAMPLE_MANAGER_ALT_PRODUCT_ICON = 'LK-SampleManager-Badge-WHITE.svg';
 export const SAMPLE_MANAGER_DISABLED_PRODUCT_ICON = 'LK-SampleManager-Badge-GRAY.svg';
 
+export const LIMS_PRODUCT_ICON = 'LK-LIMS-Badge-COLOR.svg';
+export const LIMS_ALT_PRODUCT_ICON = 'LK-LIMS-Badge-WHITE.svg';
+export const LIMS_DISABLED_PRODUCT_ICON = 'LK-LIMS-Badge-GRAY.svg';
+
 export const BIOLOGICS_PRODUCT_ICON = 'lk-bio-logo-badge-color.svg';
 export const BIOLOGICS_ALT_PRODUCT_ICON = 'lk-bio-logo-badge.svg';
 export const BIOLOGICS_DISABLED_PRODUCT_ICON = 'lk-bio-logo-badge-gray.svg';
@@ -20,13 +24,17 @@ export const PRODUCT_ID_IMG_SRC_MAP = {
     [SAMPLE_MANAGER_APP_PROPERTIES.productId.toLowerCase()]: {
         iconUrl: imageURL('sampleManagement/images', SAMPLE_MANAGER_PRODUCT_ICON),
         iconUrlAlt: imageURL('sampleManagement/images', SAMPLE_MANAGER_ALT_PRODUCT_ICON),
-
         iconUrlDisabled: imageURL('sampleManagement/images', SAMPLE_MANAGER_DISABLED_PRODUCT_ICON),
     },
     [BIOLOGICS_APP_PROPERTIES.productId.toLowerCase()]: {
         iconUrl: imageURL('biologics/images', BIOLOGICS_PRODUCT_ICON),
         iconUrlAlt: imageURL('biologics/images', BIOLOGICS_ALT_PRODUCT_ICON),
         iconUrlDisabled: imageURL('biologics/images', BIOLOGICS_DISABLED_PRODUCT_ICON),
+    },
+    [LIMS_APP_PROPERTIES.productId.toLowerCase()]: {
+        iconUrl: imageURL('lims/images', LIMS_PRODUCT_ICON),
+        iconUrlAlt: imageURL('lims/images', LIMS_ALT_PRODUCT_ICON),
+        iconUrlDisabled: imageURL('lims/images', LIMS_DISABLED_PRODUCT_ICON),
     },
 };
 

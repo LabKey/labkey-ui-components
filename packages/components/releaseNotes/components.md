@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Add LIMS product and product feature checks for transform scripts and charts
+
 ### version 4.0.5
 *Released*: 17 July 2024
 - EditableGrid: bulk data resolve public lookups

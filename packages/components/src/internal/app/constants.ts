@@ -15,15 +15,18 @@ import { AppProperties } from './models';
 // These ids should match what is used by the MenuProviders in the Java code so we can avoid toLowerCase comparisons.
 export const LKS_PRODUCT_ID = 'LabKeyServer';
 const BIOLOGICS_PRODUCT_ID = 'Biologics';
+const LIMS_PRODUCT_ID = 'LIMS';
 const SAMPLE_MANAGER_PRODUCT_ID = 'SampleManager';
 const FREEZER_MANAGER_PRODUCT_ID = 'FreezerManager';
 
 const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';
 const BIOLOGICS_PRODUCT_NAME = 'Biologics';
+const LIMS_PRODUCT_NAME = 'LabKey LIMS';
 export const LABKEY_SERVER_PRODUCT_NAME = 'LabKey Server';
 const FREEZER_MANAGER_PRODUCT_NAME = 'Freezer Manager';
 
 const BIOLOGICS_CONTROLLER_NAME = 'biologics';
+const LIMS_CONTROLLER_NAME = 'sampleManager';
 const SAMPLE_MANAGER_CONTROLLER_NAME = 'sampleManager';
 const FREEZER_MANAGER_CONTROLLER_NAME = 'freezerManager';
 
@@ -122,12 +125,15 @@ export enum ProductFeature {
     ApiKeys = 'ApiKeys',
     Assay = 'Assay',
     AssayQC = 'AssayQC',
+    BiologicsRegistry = 'BiologicsRegistry',
+    ChartBuilding = 'ChartBuilding',
     DataChangeCommentRequirement = 'DataChangeCommentRequirement',
     ELN = 'ELN',
     FreezerManagement = 'FreezerManagement',
     Media = 'Media',
     Projects = 'Projects',
     SampleManagement = 'SampleManagement',
+    TransformScripts = 'TransformScripts',
     Workflow = 'Workflow',
 }
 
@@ -143,6 +149,19 @@ export const BIOLOGICS_APP_PROPERTIES: AppProperties = {
     dataClassUrlPart: REGISTRY_KEY,
     releaseNoteLink: 'bioReleaseNotes',
     baseProductHelpLinkPrefix: BASE_APP_HELP_LINK,
+};
+
+export const LIMS_APP_PROPERTIES: AppProperties = {
+    productId: LIMS_PRODUCT_ID,
+    name: LIMS_PRODUCT_NAME,
+    logoWithTextImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-appmenu-WHITE.svg'),
+    logoBadgeImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-WHITE.svg'),
+    logoBadgeColorImageUrl: imageURL('sampleManagement/images', 'LK-SampleManager-Badge-COLOR-LIGHT.svg'),
+    controllerName: LIMS_CONTROLLER_NAME,
+    moduleName: 'sampleManagement',
+    searchPlaceholder: SAMPLE_MANAGER_SEARCH_PLACEHOLDER,
+    dataClassUrlPart: SOURCES_KEY,
+    releaseNoteLink: 'releaseNotes',
 };
 
 export const SAMPLE_MANAGER_APP_PROPERTIES: AppProperties = {

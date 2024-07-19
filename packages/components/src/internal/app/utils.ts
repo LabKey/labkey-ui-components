@@ -30,6 +30,7 @@ import {
     FREEZERS_KEY,
     HOME_KEY,
     LABKEY_SERVER_PRODUCT_NAME,
+    LIMS_APP_PROPERTIES,
     MEDIA_KEY,
     NEW_ASSAY_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
@@ -233,6 +234,10 @@ export function biologicsIsPrimaryApp(moduleContext?: ModuleContext): boolean {
     return getPrimaryAppProperties(moduleContext)?.productId === BIOLOGICS_APP_PROPERTIES.productId;
 }
 
+export function limsIsPrimaryApp(moduleContext?: ModuleContext): boolean {
+    return getPrimaryAppProperties(moduleContext)?.productId === LIMS_APP_PROPERTIES.productId;
+}
+
 export function freezerManagerIsCurrentApp(): boolean {
     return getCurrentAppProperties()?.productId === FREEZER_MANAGER_APP_PROPERTIES.productId;
 }
@@ -250,6 +255,8 @@ export function getCurrentAppProperties(): AppProperties {
         return BIOLOGICS_APP_PROPERTIES;
     } else if (lcController === FREEZER_MANAGER_APP_PROPERTIES.controllerName.toLowerCase()) {
         return FREEZER_MANAGER_APP_PROPERTIES;
+    } else if (lcController === LIMS_APP_PROPERTIES.controllerName.toLowerCase()) {
+        return LIMS_APP_PROPERTIES;
     }
     return undefined;
 }
@@ -272,13 +279,16 @@ export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppPrope
     const currentAppProperties = getCurrentAppProperties();
     if (
         currentAppProperties?.productId === BIOLOGICS_APP_PROPERTIES.productId ||
-        currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId
+        currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
+        currentAppProperties?.productId === LIMS_APP_PROPERTIES.productId
     ) {
         return currentAppProperties;
     }
 
     if (isBiologicsEnabled(moduleContext)) {
         return BIOLOGICS_APP_PROPERTIES;
+    } else if (isLIMSEnabled(moduleContext)) {
+        return LIMS_APP_PROPERTIES;
     } else if (isSampleManagerEnabled(moduleContext)) {
         return SAMPLE_MANAGER_APP_PROPERTIES;
     } else if (isFreezerManagementEnabled(moduleContext)) {
@@ -353,9 +363,14 @@ export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
 
 export function isChartBuilderEnabled(moduleContext?: ModuleContext): boolean {
     return (
-        isLIMSEnabled(moduleContext) &&
+        isFeatureEnabled(ProductFeature.ChartBuilding, moduleContext) &&
         resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_CHART_BUILDER] === true
     );
+}
+
+// Should be enabled for LKS Starter, which won't have any product features
+export function isTransformScriptsEnabled(moduleContext?: ModuleContext): boolean {
+    return isFeatureEnabled(ProductFeature.TransformScripts, moduleContext) || hasPremiumModule(moduleContext);
 }
 
 export function isRReportsEnabled(moduleContext?: ModuleContext): boolean {
@@ -363,6 +378,7 @@ export function isRReportsEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isLIMSEnabled(moduleContext?: ModuleContext): boolean {
+    // TODO
     return biologicsIsPrimaryApp(moduleContext);
 }
 

@@ -676,7 +676,7 @@ export class QueryModel {
         const _omittedColumns = omittedColumns ?? this.omittedColumns;
 
         // Note: ES6 Set is being used here, not Immutable Set
-        const uniqueFieldKeys = new Set(_requiredColumns);
+        const uniqueFieldKeys : Set<string> = new Set();
         this.keyColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
 
         this.uniqueIdColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
@@ -687,6 +687,10 @@ export class QueryModel {
         } else {
             this.displayColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
         }
+
+        // add requiredColumns last so fieldKeys from QueryColumns are preferred, when there is a case difference
+        // For example, choose Ancestors/RegistryAndSources/Participant (from displayColumns) over Ancestors/RegistryAndSources/participant (from requiredColumns)
+        requiredColumns?.forEach(col => uniqueFieldKeys.add(col));
 
         let fieldKeys = Array.from(uniqueFieldKeys);
 

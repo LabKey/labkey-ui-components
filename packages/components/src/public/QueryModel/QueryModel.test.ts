@@ -129,7 +129,7 @@ describe('QueryModel', () => {
         model = model.mutate({ queryInfo: QUERY_INFO });
         expect(model.columnString).toEqual('RowId,Name,Flag,mixtureTypeId,expirationTime,extraTestColumn');
         model = model.mutate({ requiredColumns: ['Name'] });
-        expect(model.columnString).toEqual('Name,RowId,Flag,mixtureTypeId,expirationTime,extraTestColumn');
+        expect(model.columnString).toEqual('RowId,Name,Flag,mixtureTypeId,expirationTime,extraTestColumn');
         expect(model.keyColumns).toEqual([cols.get('rowid')]);
         let expectedDisplayCols = [
             cols.get('name'),
@@ -158,7 +158,7 @@ describe('QueryModel', () => {
             cols.get('expirationtime'),
         ];
         expect(model.displayColumns).toEqual(expectedDisplayCols);
-        expect(model.columnString).toEqual('Name,RowId,Flag,mixtureTypeId,expirationTime');
+        expect(model.columnString).toEqual('RowId,Name,Flag,mixtureTypeId,expirationTime');
     });
 
     test('SelectedState', () => {

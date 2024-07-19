@@ -690,7 +690,7 @@ export class QueryModel {
 
         // add requiredColumns last so fieldKeys from QueryColumns are preferred, when there is a case difference
         // For example, choose Ancestors/RegistryAndSources/Participant (from displayColumns) over Ancestors/RegistryAndSources/participant (from requiredColumns)
-        requiredColumns?.forEach(col => uniqueFieldKeys.add(col));
+        _requiredColumns?.forEach(col => uniqueFieldKeys.add(col));
 
         let fieldKeys = Array.from(uniqueFieldKeys);
 

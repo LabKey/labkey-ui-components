@@ -208,16 +208,12 @@ export const SAMPLE_INSERT_EXTRA_COLUMNS = [...AMOUNT_AND_UNITS_COLUMNS, ...SAMP
 // those lookup values are at Home project level, no need to reload on target folder change
 export const SAMPLE_ALL_PROJECT_LOOKUP_FIELDS = ['SampleState', 'Units'];
 
-export const SAMPLE_EXPORT_CONFIG = {
+export const SAMPLE_DATA_EXPORT_CONFIG = {
     'exportAlias.name': DEFAULT_SAMPLE_FIELD_CONFIG.label,
     'exportAlias.aliquotedFromLSID': ALIQUOTED_FROM_COL,
     'exportAlias.aliquotedFromLSID/name': ALIQUOTED_FROM_COL,
     'exportAlias.sampleState': STATUS_COL,
     'exportAlias.storedAmount': 'Amount',
-};
-
-export const SAMPLE_DATA_EXPORT_CONFIG = {
-    ...SAMPLE_EXPORT_CONFIG,
 };
 
 // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded everywhere in the application

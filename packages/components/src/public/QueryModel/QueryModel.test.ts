@@ -159,6 +159,11 @@ describe('QueryModel', () => {
         ];
         expect(model.displayColumns).toEqual(expectedDisplayCols);
         expect(model.columnString).toEqual('RowId,Name,Flag,mixtureTypeId,expirationTime');
+
+        expect(model.getRequestColumnsString(['nAME'])).toEqual('RowId,Name,Flag,mixtureTypeId,expirationTime');
+        expect(model.getRequestColumnsString(['OtherField'])).toEqual('RowId,Name,Flag,mixtureTypeId,expirationTime,OtherField');
+        expect(model.getRequestColumnsString(['nAME', 'OtherField'])).toEqual('RowId,Name,Flag,mixtureTypeId,expirationTime,OtherField');
+        expect(model.getRequestColumnsString(['OtherField', 'Name'], ['mixtureTypeId'])).toEqual('RowId,Name,Flag,expirationTime,OtherField');
     });
 
     test('SelectedState', () => {

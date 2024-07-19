@@ -66,6 +66,8 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             queryName,
         } = this.props;
 
+        // In most cases we will use the selected data type to determine which field options to show,
+        // however in the calculated field data type case, we need to use the rangeURI.
         let dataTypeName = field.dataType.name;
         if (dataTypeName === 'calculation' && field?.rangeURI) {
             dataTypeName = field?.rangeURI.substring(field?.rangeURI.lastIndexOf('#') + 1);

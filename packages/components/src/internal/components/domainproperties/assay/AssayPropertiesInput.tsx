@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import classNames from 'classnames';
@@ -536,7 +536,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         document.execCommand('copy');
     };
 
-    renderLabel() {
+    renderLabel(): ReactNode {
         return (
             <div className="col col-xs-3 col-lg-4">
                 <DomainFieldLabel
@@ -566,7 +566,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         );
     }
 
-    render() {
+    render(): ReactNode {
         const { model } = this.props;
         const { error, addingScript, addingScriptPath } = this.state;
         const protocolTransformScripts = model.protocolTransformScripts || List<string>();

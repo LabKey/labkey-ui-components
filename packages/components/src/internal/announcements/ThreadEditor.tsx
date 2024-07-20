@@ -416,9 +416,12 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         [model]
     );
 
-    const handlePendingChange = useCallback((hasPendingChange = false) => {
-        setPendingChange?.(thread?.rowId ?? -1, hasPendingChange);
-    }, [setPendingChange, thread?.rowId]);
+    const handlePendingChange = useCallback(
+        (hasPendingChange = false) => {
+            setPendingChange?.(thread?.rowId ?? -1, hasPendingChange);
+        },
+        [setPendingChange, thread?.rowId]
+    );
 
     const onBodyChange = useCallback(
         (event: ChangeEvent<HTMLTextAreaElement>) => {

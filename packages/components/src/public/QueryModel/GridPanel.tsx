@@ -49,6 +49,8 @@ import { User } from '../../internal/components/base/models/User';
 
 import { MenuItem, SplitButton } from '../../internal/dropdowns';
 
+import { DOMAIN_FIELD } from '../../internal/components/forms/DomainFieldHelpTipContents';
+
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
 import { SearchAction } from './grid/actions/Search';
@@ -73,7 +75,6 @@ import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
 import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ChartPanel } from './ChartPanel';
-import { DOMAIN_FIELD } from '../../internal/components/forms/DomainFieldHelpTipContents';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -779,7 +780,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                         title: model.getCustomViewTitleOverride(col),
                     };
                 }
-            })
+            });
         }
         const viewInfo = model.currentView.mutate(updates);
 
@@ -858,8 +859,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                     return {
                         fieldKey: col.fieldKeyPath /* 46256: use encoded fieldKeyPath */,
                         title: model.getCustomViewTitleOverride(col),
-                    }
-                })
+                    };
+                }),
             });
 
             if (view.session) {

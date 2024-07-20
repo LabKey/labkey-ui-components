@@ -543,8 +543,7 @@ export class QueryModel {
     getCustomViewTitleOverride(column: QueryColumn): string {
         const label = column.customViewTitle;
         const originalCol = this.queryInfo.getColumn(column.fieldKey);
-        if (!originalCol || (originalCol.caption !== label))
-            return label;
+        if (!originalCol || originalCol.caption !== label) return label;
         return '';
     }
 
@@ -676,7 +675,7 @@ export class QueryModel {
         const _omittedColumns = omittedColumns ?? this.omittedColumns;
 
         // Note: ES6 Set is being used here, not Immutable Set
-        const uniqueFieldKeys : Set<string> = new Set();
+        const uniqueFieldKeys: Set<string> = new Set();
         this.keyColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
 
         this.uniqueIdColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));

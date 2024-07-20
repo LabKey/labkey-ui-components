@@ -1522,7 +1522,8 @@ async function insertPastedData(
             }
         }
 
-        const pkValue = getPkValue(row, queryInfo);
+        let pkValue = getPkValue(row, queryInfo);
+        if (!pkValue) pkValue = dataKeys.get(rowIdx);
 
         for (let cn = 0; cn < row.size; cn++) {
             const val = row.get(cn);

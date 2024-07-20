@@ -539,6 +539,14 @@ export class QueryModel {
         return this.queryInfo?.getDisplayColumns(this.viewName, this.omittedColumns);
     }
 
+    // Issue 50607: Updated field labels are not shown in the grid if the default grid view has been changed.
+    getCustomViewTitleOverride(column: QueryColumn): string {
+        const label = column.customViewTitle;
+        const originalCol = this.queryInfo.getColumn(column.fieldKey);
+        if (!originalCol || originalCol.caption !== label) return label;
+        return '';
+    }
+
     /**
      * Array of all [[QueryColumn]] objects from the [[QueryInfo]] view. This will exclude those columns listed
      * in omittedColumns.
@@ -667,7 +675,7 @@ export class QueryModel {
         const _omittedColumns = omittedColumns ?? this.omittedColumns;
 
         // Note: ES6 Set is being used here, not Immutable Set
-        const uniqueFieldKeys = new Set(_requiredColumns);
+        const uniqueFieldKeys: Set<string> = new Set();
         this.keyColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
 
         this.uniqueIdColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
@@ -679,6 +687,10 @@ export class QueryModel {
             this.displayColumns.forEach(col => uniqueFieldKeys.add(col.fieldKey));
         }
 
+        // add requiredColumns last so fieldKeys from QueryColumns are preferred, when there is a case difference
+        // For example, choose Ancestors/RegistryAndSources/Participant (from displayColumns) over Ancestors/RegistryAndSources/participant (from requiredColumns)
+        _requiredColumns?.forEach(col => uniqueFieldKeys.add(col));
+
         let fieldKeys = Array.from(uniqueFieldKeys);
 
         if (_omittedColumns.length) {
@@ -686,7 +698,17 @@ export class QueryModel {
             fieldKeys = fieldKeys.filter(fieldKey => !lowerOmit.has(fieldKey.toLowerCase()));
         }
 
-        return fieldKeys.join(',');
+        // remove duplicate
+        const fieldKeysLc = new Set(),
+            fieldKeysCleaned = [];
+        fieldKeys.forEach(fieldKey => {
+            if (!fieldKeysLc.has(fieldKey.toLowerCase())) {
+                fieldKeysCleaned.push(fieldKey);
+                fieldKeysLc.add(fieldKey.toLowerCase());
+            }
+        });
+
+        return fieldKeysCleaned.join(',');
     }
 
     /**

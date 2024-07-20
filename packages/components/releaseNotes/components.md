@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.0.6
+*Released*: 20 July 2024
+- Issue 50742: Reset/Update genId result in error if samples exists only in child folders
+- Issue 50709: LKSM: Pasting in editable grid when an aliquot field is between two sample fields doesn't work
+- Issue 50650: LKSM: SampleFinder doesn't show ancestor column data if default view also contains the same ancestors
+- Issue 42183: SM: Need better indication that comment in a workflow task has not been saved.
+- Issue 50607: Updated field labels are not shown in the grid
+
 ### version 4.0.5
 *Released*: 17 July 2024
 - EditableGrid: bulk data resolve public lookups

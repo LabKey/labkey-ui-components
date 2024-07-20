@@ -49,6 +49,8 @@ import { User } from '../../internal/components/base/models/User';
 
 import { MenuItem, SplitButton } from '../../internal/dropdowns';
 
+import { DOMAIN_FIELD } from '../../internal/components/forms/DomainFieldHelpTipContents';
+
 import { ActionValue } from './grid/actions/Action';
 import { FilterAction } from './grid/actions/Filter';
 import { SearchAction } from './grid/actions/Search';
@@ -73,7 +75,6 @@ import { CustomizeGridViewModal } from './CustomizeGridViewModal';
 import { ManageViewsModal } from './ManageViewsModal';
 import { Actions, InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ChartPanel } from './ChartPanel';
-import { DOMAIN_FIELD } from '../../internal/components/forms/DomainFieldHelpTipContents';
 
 export interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
@@ -740,7 +741,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 .filter(column => column.index !== columnToHide.index)
                 .map(col => ({
                     fieldKey: col.fieldKeyPath /* 46256: use encoded fieldKeyPath */,
-                    title: col.customViewTitle,
+                    title: model.getCustomViewTitleOverride(col),
                 })),
         });
     };
@@ -758,28 +759,29 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
 
     updateColumnTitle = (updatedCol: QueryColumn): void => {
         const { model } = this.props;
-        this.saveAsSessionView({
-            columns: model.displayColumns.map(col => {
-                if (col.index === updatedCol.index) {
+        this.saveAsSessionView({}, updatedCol);
+        this.setState({ disableColumnDrag: false });
+    };
+
+    saveAsSessionView = (updates: Partial<ViewInfo>, updatedCol?: QueryColumn): void => {
+        const { model } = this.props;
+        const { schemaQuery, containerPath } = model;
+        const changedFilters = updates.filters && !filterArraysEqual(updates.filters, model.currentView.filters);
+        if (!updates.columns) {
+            updates.columns = model.displayColumns.map(col => {
+                if (updatedCol && col.index === updatedCol.index) {
                     return {
                         fieldKey: updatedCol.fieldKeyPath /* 46256: use encoded fieldKeyPath */,
-                        title: updatedCol.customViewTitle,
+                        title: model.getCustomViewTitleOverride(updatedCol),
                     };
                 } else {
                     return {
                         fieldKey: col.fieldKeyPath /* 46256: use encoded fieldKeyPath */,
-                        title: col.customViewTitle,
+                        title: model.getCustomViewTitleOverride(col),
                     };
                 }
-            }),
-        });
-        this.setState({ disableColumnDrag: false });
-    };
-
-    saveAsSessionView = (updates: Partial<ViewInfo>): void => {
-        const { model } = this.props;
-        const { schemaQuery, containerPath } = model;
-        const changedFilters = updates.filters && !filterArraysEqual(updates.filters, model.currentView.filters);
+            });
+        }
         const viewInfo = model.currentView.mutate(updates);
 
         saveAsSessionView(schemaQuery, containerPath, viewInfo)
@@ -853,6 +855,12 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 // update/set sorts and filters to combine view and user-defined items
                 filters: model.filterArray.concat(view.filters),
                 sorts: model.sorts.concat(view.sorts),
+                columns: model.displayColumns.map(col => {
+                    return {
+                        fieldKey: col.fieldKeyPath /* 46256: use encoded fieldKeyPath */,
+                        title: model.getCustomViewTitleOverride(col),
+                    };
+                }),
             });
 
             if (view.session) {
@@ -981,7 +989,8 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     };
 
     onColumnDrop = (source: string, target: string): void => {
-        const { displayColumns } = this.props.model;
+        const { model } = this.props;
+        const { displayColumns } = model;
 
         const sourceIndex = displayColumns.findIndex(col => col.index === source);
         const colInMotion = displayColumns.find(col => col.index === source);
@@ -998,7 +1007,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 this.saveAsSessionView({
                     columns: updatedColumns.map(col => ({
                         fieldKey: col.fieldKeyPath /* 46256: use encoded fieldKeyPath */,
-                        title: col.customViewTitle,
+                        title: model.getCustomViewTitleOverride(col),
                     })),
                 });
 

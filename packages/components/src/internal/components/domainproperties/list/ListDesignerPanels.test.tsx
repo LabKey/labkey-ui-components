@@ -12,26 +12,26 @@ import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.js
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
+import { getTestAPIWrapper } from '../../../APIWrapper';
+
 import { ListModel } from './models';
-import { ListDesignerPanels, ListDesignerPanelsImpl } from './ListDesignerPanels';
+import { ListDesignerPanels, ListDesignerPanelsProps, ListDesignerPanelsImpl } from './ListDesignerPanels';
 
 describe('ListDesignerPanel', () => {
-    const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
-
-    function getDefaultProps() {
+    function getDefaultProps(): ListDesignerPanelsProps {
         return {
-            initModel: emptyNewModel,
-            onComplete: jest.fn(),
+            api: getTestAPIWrapper(jest.fn),
+            initModel: ListModel.create(null, DEFAULT_LIST_SETTINGS),
             onCancel: jest.fn(),
             onChange: jest.fn(),
+            onComplete: jest.fn(),
             testMode: true,
         };
     }
 
     test('visible properties', async () => {
-        let container;
         await act(async () => {
-            container = renderWithAppContext(<ListDesignerPanels {...getDefaultProps()} />);
+            renderWithAppContext(<ListDesignerPanels {...getDefaultProps()} />);
         });
 
         const panelHeaders = document.getElementsByClassName('domain-panel-header');
@@ -70,7 +70,7 @@ describe('ListDesignerPanel', () => {
                 <ListDesignerPanelsImpl
                     {...getDefaultProps()}
                     currentPanelIndex={0}
-                    firstState={true}
+                    firstState
                     onFinish={jest.fn()}
                     onTogglePanel={jest.fn()}
                     setSubmitting={jest.fn()}
@@ -85,16 +85,14 @@ describe('ListDesignerPanel', () => {
     });
 
     test('existing list', async () => {
-        const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
-
         let container;
         await act(async () => {
             container = renderWithAppContext(
                 <ListDesignerPanelsImpl
                     {...getDefaultProps()}
-                    initModel={populatedExistingModel}
+                    initModel={ListModel.create(getDomainDetailsJSON)}
                     currentPanelIndex={0}
-                    firstState={true}
+                    firstState
                     onFinish={jest.fn()}
                     onTogglePanel={jest.fn()}
                     setSubmitting={jest.fn()}

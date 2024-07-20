@@ -19,11 +19,14 @@ import { Progress } from '../../base/Progress';
 
 import { AUTO_INT_CONCEPT_URI } from '../constants';
 
+import { ComponentsAPIWrapper } from '../../../APIWrapper';
+
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 
-interface Props {
+export interface ListDesignerPanelsProps {
+    api?: ComponentsAPIWrapper;
     initModel?: ListModel;
     onCancel: () => void;
     onChange: (model: ListModel) => void;
@@ -41,8 +44,11 @@ interface State {
 }
 
 // export for testing
-export class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
-    constructor(props: Props & InjectedBaseDomainDesignerProps) {
+export class ListDesignerPanelsImpl extends React.PureComponent<
+    ListDesignerPanelsProps & InjectedBaseDomainDesignerProps,
+    State
+> {
+    constructor(props: ListDesignerPanelsProps & InjectedBaseDomainDesignerProps) {
         super(props);
 
         this.state = {
@@ -63,7 +69,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
         );
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges?: DomainFieldIndexChange[]) => {
+    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges?: DomainFieldIndexChange[]): void => {
         const { model } = this.state;
 
         // Issue 40262: If we have a titleColumn selected and the name changes (not the row index), update the titleColumn
@@ -254,6 +260,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
 
     render() {
         const {
+            api,
             onCancel,
             visitedPanels,
             currentPanelIndex,
@@ -291,6 +298,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
                     onToggle={this.toggleListPropertiesPanel}
                 />
                 <DomainForm
+                    api={api?.domain}
                     key={model.domain.domainId || 0}
                     domainIndex={0}
                     domain={model.domain}
@@ -332,4 +340,4 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
     }
 }
 
-export const ListDesignerPanels = withBaseDomainDesigner<Props>(ListDesignerPanelsImpl);
+export const ListDesignerPanels = withBaseDomainDesigner<ListDesignerPanelsProps>(ListDesignerPanelsImpl);

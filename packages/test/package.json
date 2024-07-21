@@ -29,8 +29,8 @@
   },
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
-    "properties-reader": "2.2.0",
-    "supertest": "6.3.3"
+    "properties-reader": "2.3.0",
+    "supertest": "7.0.0"
   },
   "devDependencies": {
     "@labkey/api": "1.34.2-fb-package-updates-0724.2",

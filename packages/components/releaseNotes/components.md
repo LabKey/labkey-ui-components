@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Add LIMS product and product feature checks for transform scripts and charts
   - Add utility methods for checking other features (nonstandard assays, study linking, registry, general LKS support)
   - Refactors for sharing renderer definitions
+  - add utility method for registering pipeline listeners
 
 ### version 4.0.6
 *Released*: 20 July 2024

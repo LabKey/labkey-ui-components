@@ -80,13 +80,12 @@ describe('ListDesignerPanel', () => {
             );
         });
 
-        expect(container).toMatchSnapshot();
+        expect(document.querySelectorAll('.domain-field-row').length).toEqual(0);
     });
 
     test('existing list', async () => {
-        let container;
         await act(async () => {
-            container = renderWithAppContext(
+            renderWithAppContext(
                 <ListDesignerPanelsImpl
                     {...getDefaultProps()}
                     initModel={ListModel.create(getDomainDetailsJSON)}
@@ -102,6 +101,6 @@ describe('ListDesignerPanel', () => {
             );
         });
 
-        expect(container).toMatchSnapshot();
+        expect(document.querySelectorAll('.domain-field-row').length).toEqual(14);
     });
 });

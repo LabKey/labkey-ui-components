@@ -207,7 +207,6 @@ describe('AssayPropertiesInput', () => {
         render(
             <ModuleProvidedScriptsInput
                 model={AssayProtocolModel.create({ moduleTransformScripts: ['a', 'b'] })}
-                onChange={jest.fn}
             />
         );
         validate('Scripts', false, true, 0);

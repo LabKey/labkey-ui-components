@@ -68,7 +68,7 @@ export const CustomizeGridViewModal: FC<Props> = memo(props => {
                 const viewInfo = model.currentView.mutate({
                     columns: selectedColumns.map(col => ({
                         fieldKey: col.fieldKeyPath /* Issue 46256: use encoded fieldKeyPath */,
-                        title: col.customViewTitle,
+                        title: model.getCustomViewTitleOverride(col),
                     })),
                 });
                 await saveAsSessionView(model.schemaQuery, model.containerPath, viewInfo);

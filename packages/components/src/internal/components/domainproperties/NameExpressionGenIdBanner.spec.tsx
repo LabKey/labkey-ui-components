@@ -7,6 +7,8 @@ import { getTestAPIWrapper } from '../../APIWrapper';
 
 import { NotificationsContextProvider } from '../notifications/NotificationsContext';
 
+import { getEntityTestAPIWrapper } from '../entities/APIWrapper';
+
 import { NameExpressionGenIdBanner } from './NameExpressionGenIdBanner';
 import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
 
@@ -20,8 +22,10 @@ describe('NameExpressionGenIdBanner', () => {
                     kindName="DataClass"
                     api={getTestAPIWrapper(jest.fn, {
                         domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
-                            hasExistingDomainData: () => Promise.resolve(true),
-                            getGenId: () => Promise.resolve(123),
+                            getGenId: jest.fn().mockResolvedValue(123),
+                        }),
+                        entity: getEntityTestAPIWrapper(jest.fn, {
+                            isDataTypeEmpty: jest.fn().mockResolvedValue(false),
                         }),
                     })}
                 />
@@ -42,8 +46,10 @@ describe('NameExpressionGenIdBanner', () => {
                     kindName="DataClass"
                     api={getTestAPIWrapper(jest.fn, {
                         domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
-                            hasExistingDomainData: () => Promise.resolve(false),
-                            getGenId: () => Promise.resolve(0),
+                            getGenId: jest.fn().mockResolvedValue(0),
+                        }),
+                        entity: getEntityTestAPIWrapper(jest.fn, {
+                            isDataTypeEmpty: jest.fn().mockResolvedValue(true),
                         }),
                     })}
                 />
@@ -64,8 +70,10 @@ describe('NameExpressionGenIdBanner', () => {
                     kindName="DataClass"
                     api={getTestAPIWrapper(jest.fn, {
                         domain: getDomainPropertiesTestAPIWrapper(jest.fn, {
-                            hasExistingDomainData: () => Promise.resolve(false),
-                            getGenId: () => Promise.resolve(123),
+                            getGenId: jest.fn().mockResolvedValue(123),
+                        }),
+                        entity: getEntityTestAPIWrapper(jest.fn, {
+                            isDataTypeEmpty: jest.fn().mockResolvedValue(true),
                         }),
                     })}
                 />

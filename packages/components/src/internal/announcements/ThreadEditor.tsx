@@ -18,11 +18,12 @@ import { resolveErrorMessage } from '../util/messaging';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
 import { Key } from '../../public/useEnterEscape';
 
+import { DropdownAnchor, MenuItem } from '../dropdowns';
+
 import { AnnouncementsAPIWrapper } from './APIWrapper';
 
 import { RemoveAttachmentModal, ThreadAttachments } from './ThreadAttachments';
 import { Attachment, AnnouncementModel } from './model';
-import { DropdownAnchor, MenuItem } from '../dropdowns';
 
 // Check if a line starts with any spaces, a number, followed by a period and a space.
 const orderedBulletRe = /^\s*\d+. /;
@@ -252,6 +253,7 @@ export interface ThreadEditorProps {
     onCreate?: (newThread: AnnouncementModel) => void;
     onUpdate?: (updatedThread: AnnouncementModel) => void;
     parent?: string;
+    setPendingChange?: (threadId: number, hasPendingChange: boolean) => void;
     thread?: AnnouncementModel;
 }
 
@@ -267,6 +269,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         onUpdate,
         parent,
         thread,
+        setPendingChange,
     } = props;
     const bodyInputRef = useRef<HTMLTextAreaElement>(null);
     const [error, setError] = useState<string>(undefined);
@@ -413,13 +416,26 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         [model]
     );
 
+    const handlePendingChange = useCallback(
+        (hasPendingChange = false) => {
+            setPendingChange?.(thread?.rowId ?? -1, hasPendingChange);
+        },
+        [setPendingChange, thread?.rowId]
+    );
+
     const onBodyChange = useCallback(
         (event: ChangeEvent<HTMLTextAreaElement>) => {
             setError(undefined);
             setBody(event.target.value);
+            handlePendingChange(!!event.target.value);
         },
-        [setBody]
+        [setBody, handlePendingChange]
     );
+
+    const handleCancel = useCallback(() => {
+        onCancel?.();
+        handlePendingChange();
+    }, [thread?.rowId, onCancel, handlePendingChange]);
 
     const onSubmit = useCallback(() => {
         if (submitting) return;
@@ -429,7 +445,8 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
         } else {
             updateThread();
         }
-    }, [createThread, isCreate, setSubmitting, submitting, updateThread]);
+        handlePendingChange();
+    }, [createThread, isCreate, setSubmitting, submitting, updateThread, handlePendingChange]);
 
     const onKeyDown = useCallback(
         (evt: KeyboardEvent) => {
@@ -478,7 +495,12 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
                 <Preview containerPath={containerPath} content={model.body} renderContent={api.renderContent} />
             )}
 
-            <ThreadAttachments attachments={attachments} error={attachmentError} onRemove={openRemoveModal} containerPath={containerPath}/>
+            <ThreadAttachments
+                attachments={attachments}
+                error={attachmentError}
+                onRemove={openRemoveModal}
+                containerPath={containerPath}
+            />
 
             <button
                 type="button"
@@ -494,7 +516,7 @@ export const ThreadEditor: FC<ThreadEditorProps> = props => {
                 <input multiple onChange={onFileInputChange} type="file" />
             </label>
 
-            <span className="clickable-text thread-editor__cancel-btn" onClick={onCancel}>
+            <span className="clickable-text thread-editor__cancel-btn" onClick={handleCancel}>
                 Cancel
             </span>
 

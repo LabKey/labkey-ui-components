@@ -5,7 +5,12 @@
 import { User } from '../components/base/models/User';
 import { ServerActivity } from '../components/notifications/model';
 
-import { LABKEY_WEBSOCKET } from '../constants';
+import {
+    LABKEY_WEBSOCKET,
+    PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
+    PIPELINE_JOB_NOTIFICATION_EVENT_START,
+    PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS
+} from '../constants';
 
 import {
     MENU_INVALIDATE,
@@ -13,12 +18,12 @@ import {
     MENU_LOADING_ERROR,
     MENU_LOADING_START,
     MENU_RELOAD,
-    UPDATE_USER,
-    UPDATE_USER_DISPLAY_NAME,
-    SERVER_NOTIFICATIONS_LOADING_START,
+    SERVER_NOTIFICATIONS_INVALIDATE,
     SERVER_NOTIFICATIONS_LOADING_END,
     SERVER_NOTIFICATIONS_LOADING_ERROR,
-    SERVER_NOTIFICATIONS_INVALIDATE,
+    SERVER_NOTIFICATIONS_LOADING_START,
+    UPDATE_USER,
+    UPDATE_USER_DISPLAY_NAME,
 } from './constants';
 import { getAppProductIds } from './utils';
 
@@ -133,4 +138,14 @@ export function registerWebSocketListeners(
             });
         });
     }
+}
+
+const PIPELINE_JOB_NOTIFICATION_EVENTS = [
+    PIPELINE_JOB_NOTIFICATION_EVENT_START,
+    PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
+    PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
+];
+
+export function registerPipelineWebSocketListeners(store): void {
+    registerWebSocketListeners(store, PIPELINE_JOB_NOTIFICATION_EVENTS, PIPELINE_JOB_NOTIFICATION_EVENTS)
 }

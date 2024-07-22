@@ -155,6 +155,13 @@ export function isProductNavigationEnabled(productId: string, moduleContext?: Mo
     return false;
 }
 
+export function isStudyEnabled(moduleContext?: ModuleContext): boolean {
+    return biologicsIsPrimaryApp(moduleContext) && hasModule('study');
+}
+
+export function isExperimentAliasEnabled(moduleContext?: ModuleContext): boolean {
+    return biologicsIsPrimaryApp(moduleContext);
+}
 export function isProductProjectsEnabled(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.query?.isProductProjectsEnabled === true;
 }
@@ -354,6 +361,10 @@ export function isAssayDesignExportEnabled(moduleContext?: ModuleContext): boole
     return hasPremiumModule(moduleContext);
 }
 
+export function isNonstandardAssayEnabled(moduleContext?: ModuleContext): boolean {
+    return isFeatureEnabled(ProductFeature.NonstandardAssay, moduleContext);
+}
+
 export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
     return (
         biologicsIsPrimaryApp(moduleContext) &&
@@ -377,6 +388,10 @@ export function isRReportsEnabled(moduleContext?: ModuleContext): boolean {
     return biologicsIsPrimaryApp(moduleContext);
 }
 
+export function isLKSSupportEnabled(moduleContext?: ModuleContext): boolean {
+    return biologicsIsPrimaryApp(moduleContext);
+}
+
 export function isLIMSEnabled(moduleContext?: ModuleContext): boolean {
     // TODO
     return biologicsIsPrimaryApp(moduleContext);
@@ -392,6 +407,10 @@ export function isProtectedDataEnabled(moduleContext?: ModuleContext): boolean {
 
 export function isMediaEnabled(moduleContext?: ModuleContext): boolean {
     return isFeatureEnabled(ProductFeature.Media, moduleContext);
+}
+
+export function isRegistryEnabled(moduleContext?: ModuleContext): boolean {
+    return biologicsIsPrimaryApp(moduleContext) && isFeatureEnabled(ProductFeature.BiologicsRegistry, moduleContext);
 }
 
 export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {

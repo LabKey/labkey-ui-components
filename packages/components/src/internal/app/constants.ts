@@ -131,6 +131,7 @@ export enum ProductFeature {
     ELN = 'ELN',
     FreezerManagement = 'FreezerManagement',
     Media = 'Media',
+    NonstandardAssay = 'NonstandardAssay',
     Projects = 'Projects',
     SampleManagement = 'SampleManagement',
     TransformScripts = 'TransformScripts',

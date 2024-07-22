@@ -258,16 +258,8 @@ export class ListDesignerPanelsImpl extends React.PureComponent<
     };
 
     render() {
-        const {
-            api,
-            onCancel,
-            visitedPanels,
-            currentPanelIndex,
-            firstState,
-            validatePanel,
-            submitting,
-            saveBtnText,
-        } = this.props;
+        const { api, onCancel, visitedPanels, currentPanelIndex, firstState, validatePanel, submitting, saveBtnText } =
+            this.props;
         const { model, file, importError } = this.state;
 
         return (

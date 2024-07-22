@@ -113,7 +113,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
             const exception =
                 appIsValidMsg !== undefined
                     ? appIsValidMsg
-                    : textChoiceValidMsg ?? protocolModel.getFirstDomainFieldError();
+                    : (textChoiceValidMsg ?? protocolModel.getFirstDomainFieldError());
             const updatedModel = protocolModel.set('exception', exception) as AssayProtocolModel;
             setSubmitting(false, () => {
                 this.setState(

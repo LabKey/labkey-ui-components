@@ -707,6 +707,14 @@ export function updateDataType(field: DomainField, value: any): DomainField {
                 regexValidators: [],
                 scale: MAX_TEXT_LENGTH,
             }) as DomainField;
+        } else if (field.isCalculatedField()) {
+            field = field.merge({
+                importAliases: undefined,
+                principalConceptCode: undefined,
+                regexValidators: [],
+                uniqueConstraint: false,
+                PHI: undefined,
+            }) as DomainField;
         } else {
             field = field.merge({
                 lookupValidator: PropDescType.isUser(value)

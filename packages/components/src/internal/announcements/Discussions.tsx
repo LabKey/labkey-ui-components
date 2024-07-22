@@ -17,6 +17,7 @@ interface Props {
     nounPlural?: string;
     nounSingular?: string;
     readOnly?: boolean;
+    setHasPendingChanges?: (hasPendingChanges: boolean) => void;
     user: UserWithPermissions;
 }
 
@@ -31,11 +32,13 @@ export const Discussions: FC<Props> = memo(props => {
         nounSingular,
         readOnly,
         user,
+        setHasPendingChanges,
     } = props;
     const { canInsert } = user;
     const [error, setError] = useState<string>(undefined);
     const [discussions, setDiscussions] = useState<AnnouncementModel[]>([]);
     const [showEditor, setShowEditor] = useState(false);
+    const [pendingChanges, setPendingChanges] = useState<Set<number>>(new Set());
 
     const allowCreateThread = !readOnly && canInsert;
     const hasError = error !== undefined;
@@ -61,6 +64,17 @@ export const Discussions: FC<Props> = memo(props => {
     const onShow = useCallback(() => {
         setShowEditor(true);
     }, []);
+
+    const updatePendingThread = useCallback(
+        (threadId: number, hasPendingChange: boolean) => {
+            const updatedPendingChanges = new Set(pendingChanges);
+            if (hasPendingChange) updatedPendingChanges.add(threadId);
+            else updatedPendingChanges.delete(threadId);
+            setPendingChanges(updatedPendingChanges);
+            setHasPendingChanges?.(updatedPendingChanges.size > 0);
+        },
+        [pendingChanges]
+    );
 
     useEffect(() => {
         if (autoLoad) loadDiscussions();
@@ -95,6 +109,7 @@ export const Discussions: FC<Props> = memo(props => {
                     readOnly={readOnly}
                     thread={thread}
                     user={user}
+                    setPendingChange={updatePendingThread}
                 />
             ))}
 
@@ -115,6 +130,7 @@ export const Discussions: FC<Props> = memo(props => {
                     nounSingular={nounSingular}
                     onCancel={onCancel}
                     onCreate={onCreate}
+                    setPendingChange={updatePendingThread}
                 />
             )}
         </div>

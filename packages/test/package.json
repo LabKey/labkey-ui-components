@@ -12,7 +12,8 @@
     "build": "npm run clean && cross-env NODE_ENV=production webpack --config webpack.config.js --color --progress --profile",
     "clean": "rimraf dist",
     "cleanAll": "rimraf dist && rimraf node_modules",
-    "prepublishOnly": "npm install --legacy-peer-deps && cross-env WEBPACK_STATS=errors-only && npm run build",
+    "prepublishOnly": "npm run clean && npm run setup && cross-env WEBPACK_STATS=errors-only && npm run build",
+    "setup": "npm ci --legacy-peer-deps",
     "test-integration": "cross-env NODE_ENV=test jest -c test/config/jest.config.integration.js"
   },
   "repository": {

@@ -25,7 +25,6 @@ describe('ListDesignerPanel', () => {
             onCancel: jest.fn(),
             onChange: jest.fn(),
             onComplete: jest.fn(),
-            testMode: true,
         };
     }
 

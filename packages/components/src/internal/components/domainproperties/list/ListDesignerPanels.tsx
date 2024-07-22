@@ -32,7 +32,6 @@ export interface ListDesignerPanelsProps {
     onChange: (model: ListModel) => void;
     onComplete: (model: ListModel) => void;
     saveBtnText?: string;
-    testMode?: boolean;
 }
 
 interface State {
@@ -268,7 +267,6 @@ export class ListDesignerPanelsImpl extends React.PureComponent<
             validatePanel,
             submitting,
             saveBtnText,
-            testMode,
         } = this.props;
         const { model, file, importError } = this.state;
 
@@ -287,7 +285,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<
                 <ListPropertiesPanel
                     model={model}
                     onChange={this.onPropertiesChange}
-                    controlledCollapse={true}
+                    controlledCollapse
                     initCollapsed={currentPanelIndex !== 0}
                     panelStatus={
                         model.isNew()
@@ -308,7 +306,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}
                     setFileImportData={this.setFileImportData}
-                    controlledCollapse={true}
+                    controlledCollapse
                     initCollapsed={currentPanelIndex !== 1}
                     validate={validatePanel === 1}
                     panelStatus={
@@ -318,10 +316,9 @@ export class ListDesignerPanelsImpl extends React.PureComponent<
                     }
                     onToggle={this.toggleDomainForm}
                     appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}
-                    testMode={testMode}
                 />
                 <Progress
-                    modal={true}
+                    modal
                     delay={1000}
                     estimate={file ? file.size * 0.005 : undefined}
                     title="Importing data from selected file..."

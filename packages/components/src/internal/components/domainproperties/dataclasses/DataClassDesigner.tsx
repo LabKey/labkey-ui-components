@@ -61,7 +61,6 @@ interface Props {
     onComplete: (model: DataClassModel) => void;
     saveBtnText?: string;
     showGenIdBanner?: boolean;
-    testMode?: boolean;
     validateNameExpressions?: boolean;
 }
 
@@ -83,8 +82,10 @@ const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
 const PROJECTS_PANEL_INDEX = 2;
 
+export type DataClassDesignerProps = Props & InjectedBaseDomainDesignerProps;
+
 // Exported for testing
-export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps, State> {
     static defaultProps = {
         api: getDefaultAPIWrapper(),
         nounSingular: 'Data Class',
@@ -94,7 +95,7 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
         validateNameExpressions: true,
     };
 
-    constructor(props: Props & InjectedBaseDomainDesignerProps) {
+    constructor(props: DataClassDesignerProps) {
         super(props);
 
         this.state = produce(
@@ -441,7 +442,6 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
             validatePanel,
             firstState,
             helpTopic,
-            testMode,
             domainFormDisplayOptions,
             showGenIdBanner,
             allowParentAlias,
@@ -522,7 +522,6 @@ export class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDom
                     onChange={this.onDomainChange}
                     onToggle={this.formToggle}
                     appPropertiesOnly={appPropertiesOnly}
-                    testMode={testMode}
                     domainFormDisplayOptions={domainFormDisplayOptions}
                     systemFields={model.options.systemFields}
                 />

@@ -95,7 +95,7 @@ interface Props {
     headerText?: string;
     helpTopic?: string;
     includeDataClasses?: boolean;
-    initModel: DomainDetails;
+    initModel?: DomainDetails;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
     metricUnitProps?: MetricUnitProps;
     nameExpressionInfoUrl?: string;
@@ -112,7 +112,6 @@ interface Props {
     showGenIdBanner?: boolean;
     showLinkToStudy?: boolean;
     showParentLabelPrefix?: boolean;
-    testMode?: boolean;
     useSeparateDataClassesAliasMenu?: boolean;
     validateNameExpressions?: boolean;
     validateProperties?: (designerDetails?: any) => Promise<any>;
@@ -642,7 +641,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             dataClassTypeCaption,
             dataClassParentageLabel,
             metricUnitProps,
-            testMode,
             domainFormDisplayOptions,
             showLinkToStudy,
             aliquotNamePatternProps,
@@ -766,7 +764,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     onChange={this.domainChangeHandler}
                     onToggle={this.formToggle}
                     appPropertiesOnly={appPropertiesOnly}
-                    testMode={testMode}
                     domainFormDisplayOptions={{
                         ...domainFormDisplayOptions,
                         hideStudyPropertyTypes: !_showLinkToStudy,

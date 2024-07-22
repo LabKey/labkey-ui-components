@@ -253,11 +253,13 @@ export class DomainDesign
 
             if (rawModel.standardFields) {
                 fields = DomainField.fromJS(rawModel.standardFields, mandatoryFieldNames, uniqueConstraintFieldNames);
-            }
 
-            if (isCalculatedFieldsEnabled() && rawModel.allowCalculatedFields && rawModel.calculatedFields) {
-                const calcFields = DomainField.fromJS(rawModel.calculatedFields, mandatoryFieldNames, uniqueConstraintFieldNames);
-                fields = fields.push(...calcFields.toArray());
+                if (isCalculatedFieldsEnabled() && rawModel.allowCalculatedFields && rawModel.calculatedFields) {
+                    const calcFields = DomainField.fromJS(rawModel.calculatedFields, mandatoryFieldNames, uniqueConstraintFieldNames);
+                    fields = fields.push(...calcFields.toArray());
+                }
+            } else if (rawModel.fields) {
+                fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames, uniqueConstraintFieldNames);
             }
 
             if (rawModel.defaultValueOptions) {

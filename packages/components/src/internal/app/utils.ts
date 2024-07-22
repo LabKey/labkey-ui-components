@@ -155,10 +155,6 @@ export function isProductNavigationEnabled(productId: string, moduleContext?: Mo
     return false;
 }
 
-export function isStudyEnabled(moduleContext?: ModuleContext): boolean {
-    return biologicsIsPrimaryApp(moduleContext) && hasModule('study');
-}
-
 export function isExperimentAliasEnabled(moduleContext?: ModuleContext): boolean {
     return biologicsIsPrimaryApp(moduleContext);
 }
@@ -409,6 +405,7 @@ export function isMediaEnabled(moduleContext?: ModuleContext): boolean {
     return isFeatureEnabled(ProductFeature.Media, moduleContext);
 }
 
+// N.B. eventually the primary app check will go away, but we leave it for now for ease of development
 export function isRegistryEnabled(moduleContext?: ModuleContext): boolean {
     return biologicsIsPrimaryApp(moduleContext) && isFeatureEnabled(ProductFeature.BiologicsRegistry, moduleContext);
 }

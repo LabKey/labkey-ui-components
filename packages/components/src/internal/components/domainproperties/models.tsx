@@ -251,8 +251,8 @@ export class DomainDesign
                     });
             }
 
-            if (rawModel.fields) {
-                fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames, uniqueConstraintFieldNames);
+            if (rawModel.standardFields) {
+                fields = DomainField.fromJS(rawModel.standardFields, mandatoryFieldNames, uniqueConstraintFieldNames);
             }
 
             if (isCalculatedFieldsEnabled() && rawModel.allowCalculatedFields && rawModel.calculatedFields) {

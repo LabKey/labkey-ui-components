@@ -672,7 +672,9 @@ describe('utils', () => {
         expect(isLIMSEnabled({})).toBeFalsy();
         expect(isLIMSEnabled({ inventory: {} })).toBeFalsy();
         expect(isLIMSEnabled({ inventory: {}, samplemanagement: {} })).toBeFalsy();
-        expect(isLIMSEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
+        expect(isLIMSEnabled({ inventory: {}, samplemanagement: {}, lims: {} })).toBeTruthy();
+        expect(isLIMSEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeFalsy();
+        expect(isLIMSEnabled({ biologics: {}, lims: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
     });
 
     test('setProductProjects', () => {

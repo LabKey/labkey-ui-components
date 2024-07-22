@@ -417,3 +417,5 @@ export const SAMPLE_STATUS_COLORS = {
         backgroundColor: '#C2C2C2',
     },
 };
+
+export const EXCLUDED_EXPORT_COLUMNS = ['flag', 'alias', 'StorageStatus', 'Ancestors', 'RawAmount', 'RawUnits'];

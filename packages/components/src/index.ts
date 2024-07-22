@@ -285,9 +285,11 @@ import { NoLinkRenderer } from './internal/renderers/NoLinkRenderer';
 import { UserDetailsRenderer } from './internal/renderers/UserDetailsRenderer';
 import {
     ImportAliasRenderer,
+    ParentImportAliasRenderer,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
 } from './internal/renderers/ImportAliasRenderer';
+import { DataClassTemplateDownloadRenderer } from './internal/renderers/DataClassTemplateDownloadRenderer';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
 import {
@@ -649,6 +651,7 @@ import {
     ALIQUOT_FILTER_MODE,
     ALIQUOTED_FROM_COL,
     DEFAULT_SAMPLE_FIELD_CONFIG,
+    EXCLUDED_EXPORT_COLUMNS,
     FIND_BY_IDS_QUERY_PARAM,
     IS_ALIQUOT_COL,
     SAMPLE_ALL_PROJECT_LOOKUP_FIELDS,
@@ -1188,6 +1191,7 @@ export {
     ANCESTOR_LOOKUP_CONCEPT_URI,
     AncestorRenderer,
     AppendUnits,
+    DataClassTemplateDownloadRenderer,
     DefaultRenderer,
     FileColumnRenderer,
     LabelColorRenderer,
@@ -1198,6 +1202,7 @@ export {
     StoredAmountRenderer,
     SampleStatusRenderer,
     ImportAliasRenderer,
+    ParentImportAliasRenderer,
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
     UserDetailsRenderer,
@@ -1302,6 +1307,7 @@ export {
     getSampleStatusType,
     getURLParamsForSampleSelectionKey,
     DisableableMenuItem,
+    EXCLUDED_EXPORT_COLUMNS,
     SampleOperation,
     SampleStateType,
     SampleStatusTag,

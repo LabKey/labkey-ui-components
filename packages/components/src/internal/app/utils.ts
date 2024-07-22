@@ -385,12 +385,11 @@ export function isRReportsEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isLKSSupportEnabled(moduleContext?: ModuleContext): boolean {
-    return biologicsIsPrimaryApp(moduleContext);
+    return isBiologicsEnabled(moduleContext) || hasPremiumModule(moduleContext);
 }
 
 export function isLIMSEnabled(moduleContext?: ModuleContext): boolean {
-    // TODO
-    return biologicsIsPrimaryApp(moduleContext);
+    return resolveModuleContext(moduleContext)?.lims !== undefined;
 }
 
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {
@@ -407,7 +406,7 @@ export function isMediaEnabled(moduleContext?: ModuleContext): boolean {
 
 // N.B. eventually the primary app check will go away, but we leave it for now for ease of development
 export function isRegistryEnabled(moduleContext?: ModuleContext): boolean {
-    return biologicsIsPrimaryApp(moduleContext) && isFeatureEnabled(ProductFeature.BiologicsRegistry, moduleContext);
+    return isBiologicsEnabled(moduleContext) && isFeatureEnabled(ProductFeature.BiologicsRegistry, moduleContext);
 }
 
 export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {

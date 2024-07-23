@@ -69,6 +69,8 @@ ModalHeader.displayName = 'ModalHeader';
 export interface ModalProps extends BaseModalProps, ModalButtonsProps {
     // Note: you probably shouldn't use footer, instead use the other props to render the appropriate footer
     footer?: ReactNode;
+    // This is partial content of the default footer rendered by the Modal. It is ignored if a "footer" is supplied.
+    footerContent?: ReactNode;
     title?: ReactNode;
 }
 
@@ -84,6 +86,7 @@ export const Modal: FC<ModalProps> = memo(props => {
         confirmText,
         confirmingText,
         footer,
+        footerContent,
         isConfirming,
         onCancel,
         onCommentChange,
@@ -111,7 +114,9 @@ export const Modal: FC<ModalProps> = memo(props => {
                     onCommentChange={onCommentChange}
                     onCancel={onCancel}
                     requiresUserComment={requiresUserComment}
-                />
+                >
+                    {footerContent}
+                </ModalButtons>
             )}
 
             {footer && <div className="modal-footer">{footer}</div>}

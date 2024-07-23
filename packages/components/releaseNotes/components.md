@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.0.7
+*Released*: 23 July 2024
+- Add `footerContent` prop on `Modal` which is passed through as the `children` of `ModalButtons`.
+Useful for rendering content to the left of the modal confirmation buttons.
+
 ### version 4.0.6
 *Released*: 20 July 2024
 - Issue 50742: Reset/Update genId result in error if samples exists only in child folders

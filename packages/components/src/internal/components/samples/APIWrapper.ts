@@ -1,5 +1,3 @@
-import { List } from 'immutable';
-
 import { ISelectRowsResult } from '../../query/api';
 
 import { getSampleOperationConfirmationData } from '../entities/actions';

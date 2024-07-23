@@ -9,17 +9,6 @@ import { getQueryTestAPIWrapper } from '../../query/APIWrapper';
 
 import { FilterFacetedSelector } from './FilterFacetedSelector';
 
-beforeAll(() => {
-    LABKEY.container = {
-        formats: {
-            dateFormat: 'yyyy-MM-dd',
-            dateTimeFormat: 'yyyy-MM-dd HH:mm',
-            timeFormat: 'HH:mm',
-            numberFormat: null,
-        },
-    };
-});
-
 const valuesListShort = ['ed', 'ned', '', 'ted', 'red', 'bed'];
 const allDisplayValuesShort = ['[All]', '[blank]', 'bed', 'ed', 'ned', 'red', 'ted'];
 const allWithoutBlankDisplayValuesShort = ['[All]', 'bed', 'ed', 'ned', 'red', 'ted'];
@@ -77,7 +66,7 @@ const largeValuesWithoutBlankResp = {
 const DEFAULT_PROPS = {
     api: getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
-            selectDistinctRows: () => Promise.resolve(distinctValuesResp),
+            selectDistinctRows: jest.fn().mockResolvedValue(distinctValuesResp),
         }),
     }),
     fieldKey: 'stringField',
@@ -159,7 +148,7 @@ describe('FilterFacetedSelector', () => {
                         ...DEFAULT_PROPS,
                         api: getTestAPIWrapper(jest.fn, {
                             query: getQueryTestAPIWrapper(jest.fn, {
-                                selectDistinctRows: () => Promise.resolve(distinctValuesWithoutBlankResp),
+                                selectDistinctRows: jest.fn().mockResolvedValue(distinctValuesWithoutBlankResp),
                             }),
                         }),
                         canBeBlank: false,
@@ -181,7 +170,7 @@ describe('FilterFacetedSelector', () => {
                         ...DEFAULT_PROPS,
                         api: getTestAPIWrapper(jest.fn, {
                             query: getQueryTestAPIWrapper(jest.fn, {
-                                selectDistinctRows: () => Promise.resolve(largeValuesWithoutBlankResp),
+                                selectDistinctRows: jest.fn().mockResolvedValue(largeValuesWithoutBlankResp),
                             }),
                         }),
                     }}

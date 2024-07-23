@@ -108,6 +108,7 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
 
             const queryConfig_ = savedChartModel.visualizationConfig.queryConfig;
             queryConfig_.containerFilter = containerFilter;
+            queryConfig_.requiredVersion = '17.1'; // Issue 47898: include formattedValue in response row objects
             if (filters) {
                 queryConfig_.filterArray = [...queryConfig_.filterArray, ...filters];
             }

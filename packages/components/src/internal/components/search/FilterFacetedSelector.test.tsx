@@ -185,9 +185,7 @@ describe('FilterFacetedSelector', () => {
 
     test('with eq filter', async () => {
         await act(async () => {
-            render(
-                <FilterFacetedSelector {...DEFAULT_PROPS} fieldFilters={[Filter.create('stringField', 'ed')]}/>
-            );
+            render(<FilterFacetedSelector {...DEFAULT_PROPS} fieldFilters={[Filter.create('stringField', 'ed')]} />);
         });
         expect(document.querySelector('.fa-spinner')).toBeNull();
 

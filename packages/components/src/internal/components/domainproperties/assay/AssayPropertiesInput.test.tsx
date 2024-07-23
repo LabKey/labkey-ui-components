@@ -205,9 +205,7 @@ describe('AssayPropertiesInput', () => {
 
     test('ModuleProvidedScriptsInput', () => {
         render(
-            <ModuleProvidedScriptsInput
-                model={AssayProtocolModel.create({ moduleTransformScripts: ['a', 'b'] })}
-            />
+            <ModuleProvidedScriptsInput model={AssayProtocolModel.create({ moduleTransformScripts: ['a', 'b'] })} />
         );
         validate('Scripts', false, true, 0);
         expect(document.querySelectorAll('.module-transform-script').length).toBe(2);

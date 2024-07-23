@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 50449: App grid filter to expand icon click area to remove filter value
+- Issue 50537: LineageDetail to only show the "Properties" column in the detail view for the exp schema
+- Issue 49754: App charts to expand width and scroll horizontally to match LKS
+- Issue 47898: App charts to use formattedValue in response row objects for bar/box plot tick labels
+
 ### version 4.0.6
 *Released*: 20 July 2024
 - Issue 50742: Reset/Update genId result in error if samples exists only in child folders

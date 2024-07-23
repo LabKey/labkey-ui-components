@@ -73,6 +73,7 @@ import {
     USERS_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
+    VISIT_LABEL_TYPE,
 } from './PropDescType';
 import {
     decodeLookup,
@@ -302,7 +303,7 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
         return false;
     }
 
-    if ((type === VISIT_DATE_TYPE || type === VISIT_ID_TYPE) && !domain.allowTimepointProperties) {
+    if ((type === VISIT_DATE_TYPE || type === VISIT_ID_TYPE || type === VISIT_LABEL_TYPE) && !domain.allowTimepointProperties) {
         return false;
     }
 

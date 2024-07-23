@@ -6,16 +6,16 @@ import { FormButtons } from './FormButtons';
 import { CommentTextArea } from './components/forms/input/CommentTextArea';
 
 export interface ModalButtonsProps {
-    cancelText?: string;
+    actionName?: string;
     canConfirm?: boolean;
+    cancelText?: string;
     confirmClass?: string;
     confirmText?: string;
     confirmingText?: string;
     isConfirming?: boolean;
     onCancel?: () => void;
-    onConfirm?: () => void;
-    actionName?: string;
     onCommentChange?: (comment: string) => void;
+    onConfirm?: () => void;
     requiresUserComment?: boolean;
 }
 
@@ -24,6 +24,7 @@ export const ModalButtons: FC<ModalButtonsProps> = memo(props => {
         actionName = 'Update',
         cancelText = 'Cancel',
         canConfirm = true,
+        children,
         confirmClass = 'btn-success',
         confirmText = 'Save',
         confirmingText = 'Saving...',
@@ -45,6 +46,7 @@ export const ModalButtons: FC<ModalButtonsProps> = memo(props => {
                         {cancelText}
                     </button>
                 )}
+                {children}
                 {onCommentChange && (
                     <CommentTextArea
                         containerClassName="inline-comment"

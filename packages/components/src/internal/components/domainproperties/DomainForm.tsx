@@ -104,7 +104,7 @@ import { SystemFields } from './SystemFields';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
 import { Collapsible } from './Collapsible';
 
-interface IDomainFormInput {
+export interface DomainFormProps {
     api?: DomainPropertiesAPIWrapper;
     appDomainHeaderRenderer?: HeaderRenderer;
     appPropertiesOnly?: boolean; // Flag to indicate if LKS specific properties/features should be excluded, default to false
@@ -140,12 +140,11 @@ interface IDomainFormInput {
     setFileImportData?: (file: File, shouldImportData: boolean) => void;
     showHeader?: boolean;
     systemFields?: SystemField[];
-    testMode?: boolean;
     todoIconHelpMsg?: string;
     validate?: boolean;
 }
 
-interface IDomainFormState {
+interface State {
     availableTypes: List<PropDescType>;
     bulkDeleteConfirmInfo: BulkDeleteConfirmInfo;
     collapsed: boolean;
@@ -170,7 +169,7 @@ interface IDomainFormState {
 /**
  * Form containing all properties of a domain
  */
-export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
+export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> {
     refsArray: DomainRow[];
     static defaultProps = {
         api: getDefaultAPIWrapper().domain,
@@ -182,10 +181,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         appPropertiesOnly: false,
         domainIndex: 0,
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
-        testMode: false,
     };
 
-    constructor(props: IDomainFormInput) {
+    constructor(props: DomainFormProps) {
         super(props);
 
         this.state = {
@@ -240,7 +238,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.setState({ isLoading: false });
     };
 
-    componentDidUpdate(prevProps: IDomainFormInput): void {
+    componentDidUpdate(prevProps: DomainFormProps): void {
         const { controlledCollapse, domain, initCollapsed, validate, onChange } = this.props;
 
         // if controlled collapsible, allow the prop change to update the collapsed state
@@ -1202,7 +1200,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             setFileImportData,
             showHeader,
             systemFields,
-            testMode,
             todoIconHelpMsg,
         } = this.props;
         const {
@@ -1313,18 +1310,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                         onChange={this.onSearch}
                                                     />
 
-                                                    {!testMode && (
-                                                        <div className="domain-toolbar-toggle-summary">
-                                                            <span>Mode: </span>
-                                                            <ToggleButtons
-                                                                className=""
-                                                                first="Summary"
-                                                                second="Detail"
-                                                                active={summaryViewMode ? 'Summary' : 'Detail'}
-                                                                onClick={this.onToggleSummaryView}
-                                                            />
-                                                        </div>
-                                                    )}
+                                                    <div className="domain-toolbar-toggle-summary">
+                                                        <span>Mode: </span>
+                                                        <ToggleButtons
+                                                            className=""
+                                                            first="Summary"
+                                                            second="Detail"
+                                                            active={summaryViewMode ? 'Summary' : 'Detail'}
+                                                            onClick={this.onToggleSummaryView}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1402,7 +1397,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 }
 
-const DomainForm: FC<IDomainFormInput> = memo(props => (
+const DomainForm: FC<DomainFormProps> = memo(props => (
     <LookupProvider>
         <DomainFormImpl {...props} />
     </LookupProvider>

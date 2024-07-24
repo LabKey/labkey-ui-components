@@ -13,7 +13,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 
-import { GENERAL_ASSAY_PROVIDER_NAME, PLATE_TEMPLATE_COLUMN } from '../../assay/constants';
+import { GENERAL_ASSAY_PROVIDER_NAME } from '../../assay/constants';
 
 import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
 
@@ -44,7 +44,6 @@ export interface AssayDesignerPanelsProps {
     onChange?: (model: AssayProtocolModel) => void;
     onComplete: (model: AssayProtocolModel) => void;
     saveBtnText?: string;
-    testMode?: boolean;
 }
 
 type Props = AssayDesignerPanelsProps & InjectedBaseDomainDesignerProps;
@@ -114,7 +113,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
             const exception =
                 appIsValidMsg !== undefined
                     ? appIsValidMsg
-                    : textChoiceValidMsg ?? protocolModel.getFirstDomainFieldError();
+                    : (textChoiceValidMsg ?? protocolModel.getFirstDomainFieldError());
             const updatedModel = protocolModel.set('exception', exception) as AssayProtocolModel;
             setSubmitting(false, () => {
                 this.setState(
@@ -220,7 +219,6 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
             submitting,
             onCancel,
             saveBtnText,
-            testMode,
         } = this.props;
         const { protocolModel } = this.state;
 
@@ -307,7 +305,6 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             appDomainHeaderRenderer={appDomainHeaderRenderer}
                             modelDomains={protocolModel.domains}
                             appPropertiesOnly={hideAdvancedProperties}
-                            testMode={testMode}
                             domainFormDisplayOptions={{
                                 ...domainFormDisplayOptions,
                                 domainKindDisplayName: 'assay design',

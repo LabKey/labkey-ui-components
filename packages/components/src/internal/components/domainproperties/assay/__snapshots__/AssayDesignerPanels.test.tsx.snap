@@ -1308,6 +1308,29 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   placeholder="Search Fields"
                   type="text"
                 />
+                <div
+                  class="domain-toolbar-toggle-summary"
+                >
+                  <span>
+                    Mode: 
+                  </span>
+                  <div
+                    class="toggle btn-group toggle-off"
+                  >
+                    <button
+                      class="btn btn-default"
+                      type="button"
+                    >
+                      Summary
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                    >
+                      Detail
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -2079,6 +2102,29 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   placeholder="Search Fields"
                   type="text"
                 />
+                <div
+                  class="domain-toolbar-toggle-summary"
+                >
+                  <span>
+                    Mode: 
+                  </span>
+                  <div
+                    class="toggle btn-group toggle-off"
+                  >
+                    <button
+                      class="btn btn-default"
+                      type="button"
+                    >
+                      Summary
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                    >
+                      Detail
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -6207,6 +6253,29 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   placeholder="Search Fields"
                   type="text"
                 />
+                <div
+                  class="domain-toolbar-toggle-summary"
+                >
+                  <span>
+                    Mode: 
+                  </span>
+                  <div
+                    class="toggle btn-group toggle-off"
+                  >
+                    <button
+                      class="btn btn-default"
+                      type="button"
+                    >
+                      Summary
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                    >
+                      Detail
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -6978,6 +7047,29 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   placeholder="Search Fields"
                   type="text"
                 />
+                <div
+                  class="domain-toolbar-toggle-summary"
+                >
+                  <span>
+                    Mode: 
+                  </span>
+                  <div
+                    class="toggle btn-group toggle-off"
+                  >
+                    <button
+                      class="btn btn-default"
+                      type="button"
+                    >
+                      Summary
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                    >
+                      Detail
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -9262,6 +9354,29 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   placeholder="Search Fields"
                   type="text"
                 />
+                <div
+                  class="domain-toolbar-toggle-summary"
+                >
+                  <span>
+                    Mode: 
+                  </span>
+                  <div
+                    class="toggle btn-group toggle-off"
+                  >
+                    <button
+                      class="btn btn-default"
+                      type="button"
+                    >
+                      Summary
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                    >
+                      Detail
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -10033,6 +10148,29 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   placeholder="Search Fields"
                   type="text"
                 />
+                <div
+                  class="domain-toolbar-toggle-summary"
+                >
+                  <span>
+                    Mode: 
+                  </span>
+                  <div
+                    class="toggle btn-group toggle-off"
+                  >
+                    <button
+                      class="btn btn-default"
+                      type="button"
+                    >
+                      Summary
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                    >
+                      Detail
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -1,6 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
-
 import { hasProductProjects } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
@@ -165,6 +164,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                     {!relatedProjectConfigurableDataType && (
                         <div className="col-xs-12 bottom-spacing">
                             <DataTypeSelector
+                                api={api}
                                 entityDataType={entityDataType}
                                 allDataCounts={allDataCounts}
                                 allDataTypes={childProjects}
@@ -180,6 +180,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                         <>
                             <div className="col-xs-6 bottom-spacing">
                                 <DataTypeSelector
+                                    api={api}
                                     entityDataType={entityDataType}
                                     allDataCounts={allDataCounts}
                                     allDataTypes={childProjects}
@@ -190,6 +191,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                             </div>
                             <div className="col-xs-6 bottom-spacing">
                                 <DataTypeSelector
+                                    api={api}
                                     dataTypePrefix="Dashboard"
                                     entityDataType={entityDataType}
                                     allDataTypes={allProjects}

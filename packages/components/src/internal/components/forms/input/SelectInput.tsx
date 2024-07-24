@@ -273,6 +273,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     private readonly _id: string;
     private _isMounted: boolean;
     private CHANGE_LOCK = false;
+    private reactSelect: React.RefObject<any>;
 
     constructor(props: SelectInputProps) {
         super(props);
@@ -288,11 +289,9 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             originalOptions: selectedOptions,
             selectedOptions,
         };
-    }
 
-    refs: {
-        reactSelect: any;
-    };
+        this.reactSelect = React.createRef();
+    }
 
     componentDidMount(): void {
         this._isMounted = true;
@@ -334,7 +333,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
 
         // Issue 33774: fields should be able to preserve input onBlur
         if (saveOnBlur) {
-            const select = this.refs.reactSelect;
+            const select = this.reactSelect.current;
 
             if (select?.selectOption && select.state?.focusedOption) {
                 select.selectOption(select.state.focusedOption);
@@ -364,14 +363,14 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         if (openMenuOnFocus && closeMenuOnSelect && multiple && context?.action === 'select-option') {
             setTimeout(() => {
                 if (this._isMounted) {
-                    this.refs.reactSelect.onMenuClose();
+                    this.reactSelect.current.onMenuClose();
                 }
             }, 10);
         }
     };
 
     handleFocus = (event): void => {
-        this.props.onFocus?.(event, this.refs.reactSelect);
+        this.props.onFocus?.(event, this.reactSelect.current);
     };
 
     isAsync = (): boolean => {
@@ -639,7 +638,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
             openMenuOnFocus,
             options,
             placeholder,
-            ref: 'reactSelect',
+            ref: this.reactSelect,
             styles: { ..._customStyles, ...customStyles },
             tabSelectsValue,
             theme: customTheme || _customTheme,

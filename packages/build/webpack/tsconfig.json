@@ -9,8 +9,8 @@
     // sourceMap needs to be true in order for our tests have accurate stack traces, it does not noticeably impact
     // compile times
     "sourceMap": true,
-    "target": "es6",
-    "lib": ["es2019", "dom", "dom.iterable"],
+    "target": "ES2021",
+    "lib": ["ES2021", "DOM", "DOM.Iterable"],
     "types": ["jest"],
   }
 }

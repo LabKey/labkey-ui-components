@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 
@@ -28,20 +27,17 @@ import { DatasetModel } from './models';
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 
 describe('Dataset Properties Panel', () => {
-    const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
-    const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
-
     test('New dataset', async () => {
         let container;
         await act(async () => {
             container = renderWithAppContext(
                 <DatasetPropertiesPanel
                     initCollapsed={false}
-                    model={newDatasetModel}
+                    model={DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE)}
                     controlledCollapse={true}
                     panelStatus="COMPLETE"
                     validate={false}
-                    onToggle={(collapsed, callback) => {}}
+                    onToggle={jest.fn()}
                     onChange={jest.fn()}
                 />
             );
@@ -56,7 +52,7 @@ describe('Dataset Properties Panel', () => {
             container = renderWithAppContext(
                 <DatasetPropertiesPanel
                     initCollapsed={false}
-                    model={populatedDatasetModel}
+                    model={DatasetModel.create(null, getDatasetDesign)}
                     controlledCollapse={true}
                     panelStatus="COMPLETE"
                     validate={false}

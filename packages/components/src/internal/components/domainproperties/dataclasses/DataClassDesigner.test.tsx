@@ -10,41 +10,32 @@ import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
 
 import { DataClassModel } from './models';
-import { DataClassDesigner, DataClassDesignerImpl } from './DataClassDesigner';
-
-const BASE_PROPS = {
-    api: getTestAPIWrapper(jest.fn),
-    onComplete: jest.fn(),
-    onCancel: jest.fn(),
-    loadNameExpressionOptions: jest.fn(async () => ({ prefix: '', allowUserSpecifiedNames: true })),
-    testMode: true,
-};
-
-const SERVER_CONTEXT = {
-    moduleContext: {
-        query: { hasProductProjects: true },
-    },
-};
+import { DataClassDesigner, DataClassDesignerImpl, DataClassDesignerProps } from './DataClassDesigner';
 
 describe('DataClassDesigner', () => {
-    beforeAll(() => {
-        global.console.error = jest.fn();
-    });
+    const BASE_PROPS: DataClassDesignerProps = {
+        api: getTestAPIWrapper(jest.fn),
+        currentPanelIndex: 0,
+        firstState: true,
+        loadNameExpressionOptions: jest.fn().mockResolvedValue({ allowUserSpecifiedNames: true, prefix: '' }),
+        onCancel: jest.fn(),
+        onComplete: jest.fn(),
+        onFinish: jest.fn(),
+        onTogglePanel: jest.fn(),
+        setSubmitting: jest.fn(),
+        submitting: false,
+        validatePanel: 0,
+        visitedPanels: List(),
+    };
+
+    const SERVER_CONTEXT = {
+        moduleContext: {
+            query: { hasProductProjects: true },
+        },
+    };
 
     test('default properties', async () => {
-        const component = (
-            <DataClassDesignerImpl
-                {...BASE_PROPS}
-                currentPanelIndex={0}
-                firstState={true}
-                onFinish={jest.fn()}
-                onTogglePanel={jest.fn()}
-                setSubmitting={jest.fn()}
-                submitting={false}
-                validatePanel={0}
-                visitedPanels={List()}
-            />
-        );
+        const component = <DataClassDesignerImpl {...BASE_PROPS} />;
         await act(async () => {
             const { container } = renderWithAppContext(component, {
                 serverContext: SERVER_CONTEXT,
@@ -61,21 +52,13 @@ describe('DataClassDesigner', () => {
         const component = (
             <DataClassDesignerImpl
                 {...BASE_PROPS}
-                nounSingular="Source"
-                nounPlural="Sources"
+                appPropertiesOnly
+                headerText="header text test"
                 nameExpressionInfoUrl="https://www.labkey.org/Documentation"
                 nameExpressionPlaceholder="name expression placeholder test"
-                headerText="header text test"
-                appPropertiesOnly={true}
+                nounPlural="Sources"
+                nounSingular="Source"
                 saveBtnText="Finish it up"
-                currentPanelIndex={0}
-                firstState={true}
-                onFinish={jest.fn()}
-                onTogglePanel={jest.fn()}
-                setSubmitting={jest.fn()}
-                submitting={false}
-                validatePanel={0}
-                visitedPanels={List()}
             />
         );
         await act(async () => {
@@ -93,18 +76,7 @@ describe('DataClassDesigner', () => {
 
     test('initModel', async () => {
         const component = (
-            <DataClassDesignerImpl
-                {...BASE_PROPS}
-                initModel={DataClassModel.create(getDomainDetailsJSON)}
-                currentPanelIndex={0}
-                firstState={true}
-                onFinish={jest.fn()}
-                onTogglePanel={jest.fn()}
-                setSubmitting={jest.fn()}
-                submitting={false}
-                validatePanel={0}
-                visitedPanels={List()}
-            />
+            <DataClassDesignerImpl {...BASE_PROPS} initModel={DataClassModel.create(getDomainDetailsJSON)} />
         );
         await act(async () => {
             const { container } = renderWithAppContext(component, {
@@ -122,23 +94,13 @@ describe('DataClassDesigner', () => {
         const component = (
             <DataClassDesignerImpl
                 {...BASE_PROPS}
-                initModel={DataClassModel.create(getDomainDetailsJSON)}
-                currentPanelIndex={0}
-                firstState={true}
-                onFinish={jest.fn()}
-                onTogglePanel={jest.fn()}
-                setSubmitting={jest.fn()}
-                submitting={false}
-                validatePanel={0}
-                visitedPanels={List()}
-                appPropertiesOnly
                 allowProjectExclusion
+                appPropertiesOnly
+                initModel={DataClassModel.create(getDomainDetailsJSON)}
             />
         );
         await act(async () => {
-            const { container } = renderWithAppContext(component, {
-                serverContext: SERVER_CONTEXT,
-            });
+            renderWithAppContext(component, { serverContext: SERVER_CONTEXT });
         });
 
         expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
@@ -148,11 +110,18 @@ describe('DataClassDesigner', () => {
     });
 
     test('open fields panel', async () => {
-        const component = <DataClassDesigner {...BASE_PROPS} />;
         await act(async () => {
-            renderWithAppContext(component, {
-                serverContext: SERVER_CONTEXT,
-            });
+            renderWithAppContext(
+                <DataClassDesigner
+                    api={getTestAPIWrapper(jest.fn)}
+                    loadNameExpressionOptions={jest
+                        .fn()
+                        .mockResolvedValue({ allowUserSpecifiedNames: true, prefix: '' })}
+                    onCancel={jest.fn()}
+                    onComplete={jest.fn()}
+                />,
+                { serverContext: SERVER_CONTEXT }
+            );
         });
 
         let panelHeader = document.querySelector('div#domain-header');

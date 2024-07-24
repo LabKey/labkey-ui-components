@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Refactors for sharing renderer definitions
   - add utility method for registering pipeline listeners
 
+### version 4.2.0
+*Released*: 24 July 2024
+- Package updates
+
 ### version 4.1.0
 *Released*: 24 July 2024
 - Calculated Columns support in the Field Editor

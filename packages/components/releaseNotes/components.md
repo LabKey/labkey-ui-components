@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 4.1.0
+*Released*: 24 July 2024
 - Calculated Columns support in the Field Editor
   - add valueExpression to DomainField model
   - add calculatedFields to the DomainDesign

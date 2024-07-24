@@ -279,6 +279,16 @@ exports[`DomainRow Sample Field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Label",
+                      "name": "visitLabel",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
@@ -1819,6 +1829,16 @@ exports[`DomainRow client side warning on field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Label",
+                      "name": "visitLabel",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
@@ -2274,6 +2294,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                         value="visitId"
                                       >
                                         Visit ID
+                                      </option>
+                                      <option
+                                        key="visitLabel"
+                                        value="visitLabel"
+                                      >
+                                        Visit Label
                                       </option>
                                     </select>
                                   </div>
@@ -3469,6 +3495,16 @@ exports[`DomainRow date time field 1`] = `
                       "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Label",
+                      "name": "visitLabel",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -5083,6 +5119,16 @@ exports[`DomainRow decimal field 1`] = `
                       "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Label",
+                      "name": "visitLabel",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -6721,6 +6767,16 @@ exports[`DomainRow participant id field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Label",
+                      "name": "visitLabel",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
@@ -7086,6 +7142,12 @@ exports[`DomainRow participant id field 1`] = `
                                         value="textChoice"
                                       >
                                         Text Choice
+                                      </option>
+                                      <option
+                                        key="visitLabel"
+                                        value="visitLabel"
+                                      >
+                                        Visit Label
                                       </option>
                                     </select>
                                   </div>
@@ -8195,6 +8257,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Label",
+                      "name": "visitLabel",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
@@ -8650,6 +8722,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         value="visitId"
                                       >
                                         Visit ID
+                                      </option>
+                                      <option
+                                        key="visitLabel"
+                                        value="visitLabel"
+                                      >
+                                        Visit Label
                                       </option>
                                     </select>
                                   </div>
@@ -9813,6 +9891,16 @@ exports[`DomainRow string field test 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Label",
+                      "name": "visitLabel",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
@@ -10178,6 +10266,12 @@ exports[`DomainRow string field test 1`] = `
                                         value="textChoice"
                                       >
                                         Text Choice
+                                      </option>
+                                      <option
+                                        key="visitLabel"
+                                        value="visitLabel"
+                                      >
+                                        Visit Label
                                       </option>
                                     </select>
                                   </div>
@@ -11446,6 +11540,16 @@ exports[`DomainRow with empty domain form 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Label",
+                      "name": "visitLabel",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
                       "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
@@ -11889,6 +11993,12 @@ exports[`DomainRow with empty domain form 1`] = `
                                         value="visitId"
                                       >
                                         Visit ID
+                                      </option>
+                                      <option
+                                        key="visitLabel"
+                                        value="visitLabel"
+                                      >
+                                        Visit Label
                                       </option>
                                     </select>
                                   </div>

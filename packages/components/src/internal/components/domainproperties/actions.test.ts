@@ -61,6 +61,7 @@ import {
     USERS_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
+    VISIT_LABEL_TYPE,
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -347,6 +348,7 @@ describe('domain properties actions', () => {
         expect(available.contains(TEXT_TYPE)).toBeTruthy();
         expect(available.contains(VISIT_DATE_TYPE)).toBeTruthy();
         expect(available.contains(VISIT_ID_TYPE)).toBeTruthy();
+        expect(available.contains(VISIT_LABEL_TYPE)).toBeTruthy();
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
         expect(available.contains(TEXT_CHOICE_TYPE)).toBeTruthy();
         expect(available.contains(SAMPLE_TYPE)).toBeTruthy();
@@ -370,6 +372,7 @@ describe('domain properties actions', () => {
         expect(available.contains(TEXT_TYPE)).toBeTruthy();
         expect(available.contains(VISIT_DATE_TYPE)).toBeFalsy();
         expect(available.contains(VISIT_ID_TYPE)).toBeFalsy();
+        expect(available.contains(VISIT_LABEL_TYPE)).toBeFalsy();
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
         expect(available.contains(TEXT_CHOICE_TYPE)).toBeFalsy();
         expect(available.contains(SAMPLE_TYPE)).toBeFalsy();

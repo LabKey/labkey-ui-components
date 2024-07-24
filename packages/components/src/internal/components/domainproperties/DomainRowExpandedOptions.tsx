@@ -17,7 +17,6 @@ import React, { ReactNode } from 'react';
 
 import { List } from 'immutable';
 
-
 import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
 import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
@@ -33,6 +32,7 @@ import { SampleFieldOptions } from './SampleFieldOptions';
 import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
 import { TextChoiceOptions } from './TextChoiceOptions';
 import { FileAttachmentOptions } from './FileAttachmentOptions';
+import { CalculatedFieldOptions } from './CalculatedFieldOptions';
 
 interface Props {
     appPropertiesOnly?: boolean;
@@ -65,11 +65,19 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             queryName,
         } = this.props;
 
-        switch (field.dataType.name) {
+        // In most cases we will use the selected data type to determine which field options to show,
+        // however in the calculated field data type case, we need to use the rangeURI.
+        let dataTypeName = field.dataType.name;
+        if (dataTypeName === 'calculation' && field?.rangeURI) {
+            dataTypeName = field?.rangeURI.substring(field?.rangeURI.lastIndexOf('#') + 1);
+        }
+
+        switch (dataTypeName) {
             case 'string':
                 if (domainFormDisplayOptions && !domainFormDisplayOptions.hideTextOptions) {
-                    // Issue39877: Max text length options should not be visible for text key field of list
-                    if (field.isPrimaryKey) {
+                    // Issue 39877: Max text length options should not be visible for text key field of list
+                    // Also, don't show max text length options for calculated fields
+                    if (field.isPrimaryKey || field.isCalculatedField()) {
                         return;
                     }
 
@@ -134,7 +142,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                         excludeFromShifting={field.excludeFromShifting}
                         onChange={onChange}
                         lockType={field.lockType}
-                        type={field.dataType.name}
+                        type={dataTypeName}
                     />
                 );
             case 'int':
@@ -149,10 +157,13 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                         lockType={field.lockType}
                         scannable={field.scannable}
                         appPropertiesOnly={appPropertiesOnly}
-                        showScannableOption={domainFormDisplayOptions?.showScannableOption}
+                        showScannableOption={
+                            domainFormDisplayOptions?.showScannableOption && !field.isCalculatedField()
+                        }
                     />
                 );
             case 'double':
+            case 'decimal':
                 return (
                     <NumericFieldOptions
                         index={index}
@@ -236,7 +247,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                     <FileAttachmentOptions
                         index={index}
                         domainIndex={domainIndex}
-                        label={field.dataType.name === 'fileLink' ? 'File' : 'Attachment'}
+                        label={dataTypeName === 'fileLink' ? 'File' : 'Attachment'}
                         displayOption={field.format}
                         onChange={onChange}
                         lockType={field.lockType}
@@ -255,7 +266,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
             <div className="domain-row-container">
                 <div className="domain-row-container-expand-spacer" />
                 <div className="domain-row-container-expanded">
-                    {domainFormDisplayOptions?.derivationDataScopeConfig?.show && (
+                    {domainFormDisplayOptions?.derivationDataScopeConfig?.show && !field.isCalculatedField() && (
                         <div className="col-xs-12">
                             <DerivationDataScopeFieldOptions
                                 index={index}
@@ -268,6 +279,16 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                                 isExistingField={!field.isNew()}
                                 isRequiredField={field.required}
                                 fieldDataType={field.dataType}
+                            />
+                        </div>
+                    )}
+                    {field.isCalculatedField() && (
+                        <div className="col-xs-12">
+                            <CalculatedFieldOptions
+                                domainIndex={domainIndex}
+                                field={field}
+                                index={index}
+                                onChange={onChange}
                             />
                         </div>
                     )}

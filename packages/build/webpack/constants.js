@@ -300,7 +300,6 @@ module.exports = {
                         module: lkModule,
                         name: app.name,
                         title: app.title,
-                        permission: app.permission,
                         viewTemplate: app.template,
                         filename: '../../web/gen/' + app.name + '.lib.xml',
                         template: 'node_modules/@labkey/build/webpack/lib.template.xml',
@@ -314,7 +313,7 @@ module.exports = {
                         module: lkModule,
                         name: app.name,
                         title: app.title,
-                        permission: app.permission,
+                        permission: app.permission, // deprecated
                         permissionClasses: app.permissionClasses,
                         viewTemplate: app.template,
                         filename: '../../views/gen/' + app.name + '.view.xml',
@@ -333,7 +332,7 @@ module.exports = {
                         module: lkModule,
                         name: app.name,
                         title: app.title,
-                        permission: app.permission,
+                        permission: app.permission, // deprecated
                         permissionClasses: app.permissionClasses,
                         viewTemplate: app.template,
                         filename: '../../views/gen/' + app.name + 'Dev.view.xml',

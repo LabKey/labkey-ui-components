@@ -87,9 +87,11 @@ export function getAdditionalKeyFields(domain: DomainDesign): List<SelectInputOp
         additionalKeyFields = additionalKeyFields.push({ value: TIME_KEY_FIELD_KEY, label: TIME_KEY_FIELD_DISPLAY });
     }
 
-    domain.fields.map(field => {
-        additionalKeyFields = additionalKeyFields.push({ value: field.name, label: field.name });
-    });
+    domain.fields
+        .filter(field => !field.isCalculatedField())
+        .map(field => {
+            additionalKeyFields = additionalKeyFields.push({ value: field.name, label: field.name });
+        });
 
     return additionalKeyFields;
 }

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdvancedSettings default properties 1`] = `
+<div>
+  <button
+    class="domain-field-float-right btn btn-default"
+    type="button"
+  >
+    Advanced Settings
+  </button>
+</div>
+`;

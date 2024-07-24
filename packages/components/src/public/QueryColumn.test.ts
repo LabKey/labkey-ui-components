@@ -1,6 +1,9 @@
 import { FieldKey } from '@labkey/api';
 
-import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
+import {
+    CALCULATED_CONCEPT_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
+} from '../internal/components/domainproperties/constants';
 
 import { insertColumnFilter, QueryColumn, QueryLookup } from './QueryColumn';
 
@@ -461,6 +464,12 @@ describe('QueryColumn', () => {
         expect(QueryColumn.isUserLookup({ schemaName: 'test', queryName: 'test' })).toBeFalsy();
         expect(QueryColumn.isUserLookup({ schemaName: 'core', queryName: 'Users' })).toBeTruthy();
         expect(QueryColumn.isUserLookup({ schemaName: 'core', queryName: 'SiteUsers' })).toBeTruthy();
+    });
+
+    test('isCalculatedField', () => {
+        expect(new QueryColumn({}).isCalculatedField).toBeFalsy();
+        expect(new QueryColumn({ conceptURI: 'test' }).isCalculatedField).toBeFalsy();
+        expect(new QueryColumn({ conceptURI: CALCULATED_CONCEPT_URI }).isCalculatedField).toBeTruthy();
     });
 });
 

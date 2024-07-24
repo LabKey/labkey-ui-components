@@ -5,23 +5,12 @@ import { mount } from 'enzyme';
 import { FindAndSearchDropdown } from './FindAndSearchDropdown';
 
 describe('FindAndSearchDropdown', () => {
-    const { location } = window;
-
-    beforeAll(() => {
-        delete window.location;
-    });
-
-    afterAll(() => {
-        window.location = location;
+    beforeEach(() => {
+        window.history.pushState({}, 'Test Title', '/');
     });
 
     test('search but no find', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Sam Man/samplemanager-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', 'labkey/Sam Man/samplemanager-app.view#');
         LABKEY.moduleContext = {
             samplemanagement: {
                 productId: 'SampleManager',
@@ -40,12 +29,7 @@ describe('FindAndSearchDropdown', () => {
     });
 
     test('find but no search', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Sam Man/samplemanager-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', 'labkey/Sam Man/samplemanager-app.view#');
         LABKEY.moduleContext = {
             samplemanagement: {
                 productId: 'SampleManager',

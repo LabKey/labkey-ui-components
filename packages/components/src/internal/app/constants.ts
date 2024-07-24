@@ -26,7 +26,7 @@ export const LABKEY_SERVER_PRODUCT_NAME = 'LabKey Server';
 const FREEZER_MANAGER_PRODUCT_NAME = 'Freezer Manager';
 
 const BIOLOGICS_CONTROLLER_NAME = 'biologics';
-const LIMS_CONTROLLER_NAME = 'sampleManager';
+const LIMS_CONTROLLER_NAME = 'lims';
 const SAMPLE_MANAGER_CONTROLLER_NAME = 'sampleManager';
 const FREEZER_MANAGER_CONTROLLER_NAME = 'freezerManager';
 
@@ -159,7 +159,7 @@ export const LIMS_APP_PROPERTIES: AppProperties = {
     logoBadgeImageUrl: imageURL('lims/images', 'LK-LIMS-Badge-WHITE.svg'),
     logoBadgeColorImageUrl: imageURL('lims/images', 'LK-LIMS-Badge-COLOR-LIGHT.svg'),
     controllerName: LIMS_CONTROLLER_NAME,
-    moduleName: 'lims',
+    moduleName: 'sampleManagement',
     searchPlaceholder: SAMPLE_MANAGER_SEARCH_PLACEHOLDER,
     dataClassUrlPart: SOURCES_KEY,
     releaseNoteLink: 'releaseNotes',

@@ -3,6 +3,8 @@
 ### version 7.4.0
 *Released*: 24 July 2024
 - Package updates
+- Update TypeScript compiler `target` option to `"ES2021"'
+- Update TypeScript compiler `lib` option to `["ES2021", "DOM", "DOM.Iterable"]`
 
 ### version 7.3.0
 *Released*: 26 March 2024

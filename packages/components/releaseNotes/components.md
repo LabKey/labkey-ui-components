@@ -8,6 +8,22 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Refactors for sharing renderer definitions
   - add utility method for registering pipeline listeners
 
+### version 4.1.0
+*Released*: 24 July 2024
+- Calculated Columns support in the Field Editor
+  - add valueExpression to DomainField model
+  - add calculatedFields to the DomainDesign
+  - add CalculatedFieldOptions to DomainRow and Calculation to PropDescType
+  - hide some AdvancedSettings for calculated fields
+  - use rangeURI for calculated fields to determine type specific expanded row options to show
+  - add ProductFeature.CalculatedFields and isCalculatedFieldsEnabled() helper
+  - add experimental feature flag for calculated fields in the Field Editor
+
+### version 4.0.7
+*Released*: 23 July 2024
+- Add `footerContent` prop on `Modal` which is passed through as the `children` of `ModalButtons`.
+Useful for rendering content to the left of the modal confirmation buttons.
+
 ### version 4.0.6
 *Released*: 20 July 2024
 - Issue 50742: Reset/Update genId result in error if samples exists only in child folders

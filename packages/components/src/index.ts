@@ -618,6 +618,7 @@ import { DataTypeProjectsPanel } from './internal/components/domainproperties/Da
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import {
+    AppContextTestProvider,
     makeQueryInfo,
     makeTestISelectRowsResult,
     registerDefaultURLMappers,
@@ -1758,6 +1759,7 @@ export {
     BACKGROUND_IMPORT_MIN_ROW_SIZE,
     DATA_IMPORT_FILE_SIZE_LIMITS,
     // Test Helpers
+    AppContextTestProvider,
     sleep,
     createMockWithRouteLeave,
     makeQueryInfo,
@@ -1974,3 +1976,4 @@ export type { ExtraExportMenuOptions } from './public/QueryModel/ExportMenu';
 export type { LabelsAPIWrapper } from './internal/components/labels/APIWrapper';
 export type { InputRendererProps } from './internal/components/forms/input/types';
 export type { InputRenderContext, InputRendererComponent } from './internal/components/forms/input/InputRenderFactory';
+export type { AppContextTestProviderProps } from './internal/test/testHelpers';

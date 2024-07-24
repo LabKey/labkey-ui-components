@@ -16,6 +16,7 @@ export const DATE_FORMATS_TOPIC = 'dateFormats#date';
 export const NUMBER_FORMATS_TOPIC = 'dateFormats#number';
 export const ONTOLOGY_LOOKUP_TOPIC = 'ontologyLookup';
 export const ONTOLOGY_CONCEPT_TOPIC = 'ontologyConcept';
+export const LABKEY_SQL_TOPIC = 'labkeysql';
 
 export const ASSAY_EDIT_PLATE_TEMPLATE_TOPIC = 'editPlateTemplate';
 export const CONFIGURE_SCRIPTING_TOPIC = 'configureScripting';

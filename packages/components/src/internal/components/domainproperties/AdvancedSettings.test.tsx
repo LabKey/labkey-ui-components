@@ -7,6 +7,7 @@ import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { createFormInputId } from './utils';
 import {
+    CALCULATED_CONCEPT_URI,
     DOMAIN_EDITABLE_DEFAULT,
     DOMAIN_FIELD_DEFAULT_VALUE_TYPE,
     DOMAIN_FIELD_DIMENSION,
@@ -193,5 +194,27 @@ describe('AdvancedSettings', () => {
         const options = phi.querySelectorAll('option');
         expect(options).toHaveLength(4);
         expect(options[0].textContent).toBe('BOGUS');
+    });
+
+    test('Calculated Field hidden properties', async () => {
+        await act(async () => {
+            renderWithAppContext(
+                <AdvancedSettings
+                    {...props}
+                    field={DomainField.create({ ...fieldProps, conceptURI: CALCULATED_CONCEPT_URI })}
+                />
+            );
+        });
+
+        let id = createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(0);
+        id = createFormInputId(DOMAIN_FIELD_HIDDEN, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(1);
+        id = createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(0);
+        id = createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(0);
+        id = createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, _domainIndex, _index);
+        expect(document.querySelectorAll('#' + id)).toHaveLength(1);
     });
 });

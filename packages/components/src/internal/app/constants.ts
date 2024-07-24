@@ -115,6 +115,7 @@ export const EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED = 'queryProductPro
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
 export const EXPERIMENTAL_CHART_BUILDER = 'experimental-biologics-chart-builder';
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
+export const EXPERIMENTAL_CALCULATED_FIELDS = 'experimental-calculated-fields';
 
 export const PROJECT_DATA_TYPE_EXCLUSIONS = 'dataTypeExclusions';
 
@@ -126,6 +127,7 @@ export enum ProductFeature {
     Assay = 'Assay',
     AssayQC = 'AssayQC',
     BiologicsRegistry = 'BiologicsRegistry',
+    CalculatedFields = 'CalculatedFields',
     ChartBuilding = 'ChartBuilding',
     DataChangeCommentRequirement = 'DataChangeCommentRequirement',
     ELN = 'ELN',

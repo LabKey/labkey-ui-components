@@ -340,7 +340,7 @@ const initRequestContext = async (
  */
 const parseSessionId = (response: Response): string => {
     let sessionId: string;
-    const cookies: string[] = response.header['set-cookie'];
+    const cookies: string[] = response.get('Set-Cookie');
 
     if (cookies) {
         cookies.forEach(cookieString => {

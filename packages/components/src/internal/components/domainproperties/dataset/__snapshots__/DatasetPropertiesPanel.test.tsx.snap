@@ -226,7 +226,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                             class="select-input__control css-13cymwt-control"
                           >
                             <div
-                              class="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="select-input__value-container select-input__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="select-input__single-value css-1dimb5e-singleValue"
@@ -234,7 +234,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                                 A
                               </div>
                               <div
-                                class="select-input__input-container css-qbdosj-Input"
+                                class="select-input__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -257,7 +257,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                               </div>
                             </div>
                             <div
-                              class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="select-input__indicators css-1wy0on6"
                             >
                               <div
                                 aria-hidden="true"
@@ -434,7 +434,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                               class="select-input__control css-13cymwt-control"
                             >
                               <div
-                                class="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
+                                class="select-input__value-container select-input__value-container--has-value css-hlgwow"
                               >
                                 <div
                                   class="select-input__single-value css-1dimb5e-singleValue"
@@ -442,7 +442,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                                   Name
                                 </div>
                                 <div
-                                  class="select-input__input-container css-qbdosj-Input"
+                                  class="select-input__input-container css-19bb58m"
                                   data-value=""
                                 >
                                   <input
@@ -465,7 +465,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                                 </div>
                               </div>
                               <div
-                                class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="select-input__indicators css-1wy0on6"
                               >
                                 <span
                                   class="select-input__indicator-separator css-1u9des2-indicatorSeparator"
@@ -779,7 +779,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                           class="select-input__control css-13cymwt-control"
                         >
                           <div
-                            class="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
+                            class="select-input__value-container select-input__value-container--has-value css-hlgwow"
                           >
                             <div
                               class="select-input__single-value css-1dimb5e-singleValue"
@@ -787,7 +787,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                               A
                             </div>
                             <div
-                              class="select-input__input-container css-qbdosj-Input"
+                              class="select-input__input-container css-19bb58m"
                               data-value=""
                             >
                               <input
@@ -810,7 +810,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                             </div>
                           </div>
                           <div
-                            class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                            class="select-input__indicators css-1wy0on6"
                           >
                             <div
                               aria-hidden="true"
@@ -987,7 +987,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                             class="select-input__control css-13cymwt-control"
                           >
                             <div
-                              class="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="select-input__value-container select-input__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="select-input__single-value css-1dimb5e-singleValue"
@@ -995,7 +995,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                                 Name
                               </div>
                               <div
-                                class="select-input__input-container css-qbdosj-Input"
+                                class="select-input__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -1018,7 +1018,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
                               </div>
                             </div>
                             <div
-                              class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="select-input__indicators css-1wy0on6"
                             >
                               <span
                                 class="select-input__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1362,7 +1362,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                             class="select-input__control css-13cymwt-control"
                           >
                             <div
-                              class="select-input__value-container css-1fdsijx-ValueContainer"
+                              class="select-input__value-container css-hlgwow"
                             >
                               <div
                                 class="select-input__placeholder css-1jqq78o-placeholder"
@@ -1371,7 +1371,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                                 Select dataset category
                               </div>
                               <div
-                                class="select-input__input-container css-qbdosj-Input"
+                                class="select-input__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -1395,7 +1395,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                               </div>
                             </div>
                             <div
-                              class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="select-input__indicators css-1wy0on6"
                             >
                               <span
                                 class="select-input__indicator-separator css-1u9des2-indicatorSeparator"
@@ -1556,7 +1556,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                               class="select-input__control select-input__control--is-disabled css-1mgq1wa-control"
                             >
                               <div
-                                class="select-input__value-container css-1fdsijx-ValueContainer"
+                                class="select-input__value-container css-hlgwow"
                               >
                                 <div
                                   class="select-input__placeholder css-pxd85q-placeholder"
@@ -1565,7 +1565,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                                   Select...
                                 </div>
                                 <div
-                                  class="select-input__input-container css-1h01tm3-Input"
+                                  class="select-input__input-container css-1mkvw8y"
                                   data-value=""
                                 >
                                   <input
@@ -1590,7 +1590,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                                 </div>
                               </div>
                               <div
-                                class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="select-input__indicators css-1wy0on6"
                               >
                                 <span
                                   class="select-input__indicator-separator css-894a34-indicatorSeparator"
@@ -1898,7 +1898,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                           class="select-input__control css-13cymwt-control"
                         >
                           <div
-                            class="select-input__value-container css-1fdsijx-ValueContainer"
+                            class="select-input__value-container css-hlgwow"
                           >
                             <div
                               class="select-input__placeholder css-1jqq78o-placeholder"
@@ -1907,7 +1907,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                               Select dataset category
                             </div>
                             <div
-                              class="select-input__input-container css-qbdosj-Input"
+                              class="select-input__input-container css-19bb58m"
                               data-value=""
                             >
                               <input
@@ -1931,7 +1931,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                             </div>
                           </div>
                           <div
-                            class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                            class="select-input__indicators css-1wy0on6"
                           >
                             <span
                               class="select-input__indicator-separator css-1u9des2-indicatorSeparator"
@@ -2092,7 +2092,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                             class="select-input__control select-input__control--is-disabled css-1mgq1wa-control"
                           >
                             <div
-                              class="select-input__value-container css-1fdsijx-ValueContainer"
+                              class="select-input__value-container css-hlgwow"
                             >
                               <div
                                 class="select-input__placeholder css-pxd85q-placeholder"
@@ -2101,7 +2101,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                                 Select...
                               </div>
                               <div
-                                class="select-input__input-container css-1h01tm3-Input"
+                                class="select-input__input-container css-1mkvw8y"
                                 data-value=""
                               >
                                 <input
@@ -2126,7 +2126,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
                               </div>
                             </div>
                             <div
-                              class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="select-input__indicators css-1wy0on6"
                             >
                               <span
                                 class="select-input__indicator-separator css-894a34-indicatorSeparator"

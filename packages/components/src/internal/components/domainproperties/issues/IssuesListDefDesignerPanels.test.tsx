@@ -21,7 +21,6 @@ describe('IssuesListDefDesignerPanel', () => {
         api: getIssuesTestAPIWrapper(jest.fn),
         onComplete: jest.fn(),
         onCancel: jest.fn(),
-        testMode: true,
     };
 
     test('new Issue List Definition', async () => {
@@ -32,7 +31,7 @@ describe('IssuesListDefDesignerPanel', () => {
                     {...BASE_PROPS}
                     initModel={emptyNewModel}
                     currentPanelIndex={0}
-                    firstState={true}
+                    firstState
                     onFinish={jest.fn()}
                     onTogglePanel={jest.fn()}
                     setSubmitting={jest.fn()}

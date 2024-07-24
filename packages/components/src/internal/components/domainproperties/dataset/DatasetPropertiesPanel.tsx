@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import React from 'react';
-
-
 import { produce } from 'immer';
-
 import { List } from 'immutable';
 
 import {
@@ -57,15 +53,9 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     Props & InjectedDomainPropertiesPanelCollapseProps,
     State
 > {
-    constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
-        super(props);
+    state: Readonly<State> = { isValid: true };
 
-        this.state = {
-            isValid: true,
-        };
-    }
-
-    updateValidStatus = (newModel?: DatasetModel) => {
+    updateValidStatus = (newModel?: DatasetModel): void => {
         const { model, onChange } = this.props;
         const updatedModel = newModel || model;
 
@@ -111,7 +101,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
         this.updateValidStatus(newModel);
     };
 
-    onDataRowRadioChange = e => {
+    onDataRowRadioChange = (e): void => {
         const { model, onIndexChange, visitDatePropertyIndex } = this.props;
         const value = e.target.value;
 
@@ -181,7 +171,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
         this.updateValidStatus(newModel);
     };
 
-    applyAdvancedProperties = (advancedSettingsForm: DatasetAdvancedSettingsForm) => {
+    applyAdvancedProperties = (advancedSettingsForm: DatasetAdvancedSettingsForm): void => {
         const { model, onIndexChange, keyPropertyIndex } = this.props;
 
         let visitDatePropIndex;
@@ -200,17 +190,17 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     };
 
     render() {
-        const { model, keyPropertyIndex, visitDatePropertyIndex } = this.props;
-
-        const { isValid } = this.state;
+        // Extract OwnProps
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { keyPropertyIndex, model, onChange, onIndexChange, visitDatePropertyIndex, ...baseProps } = this.props;
 
         return (
             <BasePropertiesPanel
-                {...this.props}
+                {...baseProps}
                 headerId="dataset-header-id"
+                isValid={this.state.isValid}
                 title="Dataset Properties"
                 titlePrefix={model.name}
-                isValid={isValid}
                 updateValidStatus={this.updateValidStatus}
             >
                 <div className="row margin-bottom">

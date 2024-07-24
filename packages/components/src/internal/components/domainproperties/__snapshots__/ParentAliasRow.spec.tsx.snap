@@ -73,7 +73,7 @@ exports[`<ParentAliasRow/> With parent value not an option in select 1`] = `
             onTouchEnd={[Function]}
           >
             <div
-              className="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
+              className="select-input__value-container select-input__value-container--has-value css-hlgwow"
             >
               <div
                 className="select-input__single-value css-1dimb5e-singleValue"
@@ -81,7 +81,7 @@ exports[`<ParentAliasRow/> With parent value not an option in select 1`] = `
                 materialInputs/test
               </div>
               <div
-                className="select-input__input-container css-qbdosj-Input"
+                className="select-input__input-container css-19bb58m"
                 data-value=""
               >
                 <input
@@ -124,7 +124,7 @@ exports[`<ParentAliasRow/> With parent value not an option in select 1`] = `
               </div>
             </div>
             <div
-              className="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+              className="select-input__indicators css-1wy0on6"
             >
               <div
                 aria-hidden="true"
@@ -269,7 +269,7 @@ exports[`<ParentAliasRow/> With values 1`] = `
             onTouchEnd={[Function]}
           >
             <div
-              className="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
+              className="select-input__value-container select-input__value-container--has-value css-hlgwow"
             >
               <div
                 className="select-input__single-value css-1dimb5e-singleValue"
@@ -277,7 +277,7 @@ exports[`<ParentAliasRow/> With values 1`] = `
                 test
               </div>
               <div
-                className="select-input__input-container css-qbdosj-Input"
+                className="select-input__input-container css-19bb58m"
                 data-value=""
               >
                 <input
@@ -320,7 +320,7 @@ exports[`<ParentAliasRow/> With values 1`] = `
               </div>
             </div>
             <div
-              className="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+              className="select-input__indicators css-1wy0on6"
             >
               <div
                 aria-hidden="true"

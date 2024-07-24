@@ -18,7 +18,7 @@ import { SectionHeading } from '../domainproperties/SectionHeading';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
-import { sampleManagerIsPrimaryApp } from '../../app/utils';
+import { biologicsIsPrimaryApp } from '../../app/utils';
 
 import { DomainPropertiesAPIWrapper } from '../domainproperties/APIWrapper';
 
@@ -31,7 +31,7 @@ import { fetchParentPaths, getParentsConceptCodePath } from './actions';
 const LEARN_MORE = (
     <p>
         Learn more about{' '}
-        <HelpLink topic={sampleManagerIsPrimaryApp() ? ADVANCED_FIELD_EDITOR_TOPIC : ONTOLOGY_LOOKUP_TOPIC}>
+        <HelpLink topic={!biologicsIsPrimaryApp() ? ADVANCED_FIELD_EDITOR_TOPIC : ONTOLOGY_LOOKUP_TOPIC}>
             ontology integration
         </HelpLink>{' '}
         in LabKey.

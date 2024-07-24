@@ -74,15 +74,30 @@ interface DiscussionLinksProps {
 const DISCUSSION_RADIO_NAME = 'discussionSetting';
 const DiscussionInputs: FC<DiscussionLinksProps> = memo(({ onRadioChange, discussionSetting }) => (
     <div className="form-group">
-        <DomainDesignerRadio name={DISCUSSION_RADIO_NAME} value={0} checked={discussionSetting === 0} onChange={onRadioChange}>
+        <DomainDesignerRadio
+            name={DISCUSSION_RADIO_NAME}
+            value={0}
+            checked={discussionSetting === 0}
+            onChange={onRadioChange}
+        >
             Disable discussions
         </DomainDesignerRadio>
 
-        <DomainDesignerRadio name={DISCUSSION_RADIO_NAME} value={1} checked={discussionSetting === 1} onChange={onRadioChange}>
+        <DomainDesignerRadio
+            name={DISCUSSION_RADIO_NAME}
+            value={1}
+            checked={discussionSetting === 1}
+            onChange={onRadioChange}
+        >
             Allow one discussion per item
         </DomainDesignerRadio>
 
-        <DomainDesignerRadio name={DISCUSSION_RADIO_NAME} value={2} checked={discussionSetting === 2} onChange={onRadioChange}>
+        <DomainDesignerRadio
+            name={DISCUSSION_RADIO_NAME}
+            value={2}
+            checked={discussionSetting === 2}
+            onChange={onRadioChange}
+        >
             Allow multiple discussions per item
         </DomainDesignerRadio>
     </div>

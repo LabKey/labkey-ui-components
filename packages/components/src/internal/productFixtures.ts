@@ -53,11 +53,9 @@ export const TEST_LKSM_STARTER_AND_WORKFLOW_MODULE_CONTEXT = {
         productId: FREEZER_MANAGER_APP_PROPERTIES.productId,
     },
     core: {
-        productFeatures: [
-            ProductFeature.Workflow,
-        ],
+        productFeatures: [ProductFeature.Workflow],
     },
-}
+};
 
 export const TEST_LKS_STARTER_MODULE_CONTEXT = {
     api: {

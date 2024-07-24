@@ -1,4 +1,4 @@
-import React, {FC, memo, PureComponent, ReactNode, useCallback} from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useCallback } from 'react';
 import classNames from 'classnames';
 
 import { HelpLink, LABKEY_SQL_TOPIC } from '../../util/helpLinks';
@@ -8,7 +8,7 @@ import { DOMAIN_FIELD_VALUE_EXPRESSION } from './constants';
 import { DomainField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
-import {PropDescType} from "./PropDescType";
+import { PropDescType } from './PropDescType';
 
 const HELP_TIP_BODY = (
     <>
@@ -54,14 +54,19 @@ interface Props {
 export const CalculatedFieldOptions: FC<Props> = memo(props => {
     const { index, field, domainIndex, onChange } = props;
 
-    const handleChange = useCallback((evt: any): void => {
-        onChange(evt.target.id, evt.target.value);
-    }, [onChange]);
+    const handleChange = useCallback(
+        (evt: any): void => {
+            onChange(evt.target.id, evt.target.value);
+        },
+        [onChange]
+    );
 
     return (
-        <div className={classNames({
-            'margin-bottom': !!field?.rangeURI && !PropDescType.isString(field.rangeURI),
-        })}>
+        <div
+            className={classNames({
+                'margin-bottom': !!field?.rangeURI && !PropDescType.isString(field.rangeURI),
+            })}
+        >
             <div className="row">
                 <div className="col-xs-12">
                     <SectionHeading title="Expression" cls="bottom-spacing" helpTipBody={HELP_TIP_BODY} />
@@ -69,15 +74,15 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
             </div>
             <div className="row">
                 <div className="col-xs-12">
-                        <textarea
-                            className="form-control"
-                            rows={4}
-                            value={field.valueExpression || ''}
-                            id={createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index)}
-                            name={createFormInputName(DOMAIN_FIELD_VALUE_EXPRESSION)}
-                            onChange={handleChange}
-                            disabled={isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType)}
-                        />
+                    <textarea
+                        className="form-control"
+                        rows={4}
+                        value={field.valueExpression || ''}
+                        id={createFormInputId(DOMAIN_FIELD_VALUE_EXPRESSION, domainIndex, index)}
+                        name={createFormInputName(DOMAIN_FIELD_VALUE_EXPRESSION)}
+                        onChange={handleChange}
+                        disabled={isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType)}
+                    />
                 </div>
             </div>
         </div>

@@ -17,7 +17,6 @@ import React, { ReactNode } from 'react';
 
 import { List } from 'immutable';
 
-
 import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
 import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
@@ -158,7 +157,9 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                         lockType={field.lockType}
                         scannable={field.scannable}
                         appPropertiesOnly={appPropertiesOnly}
-                        showScannableOption={domainFormDisplayOptions?.showScannableOption && !field.isCalculatedField()}
+                        showScannableOption={
+                            domainFormDisplayOptions?.showScannableOption && !field.isCalculatedField()
+                        }
                     />
                 );
             case 'double':

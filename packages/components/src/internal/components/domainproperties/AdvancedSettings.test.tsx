@@ -199,7 +199,10 @@ describe('AdvancedSettings', () => {
     test('Calculated Field hidden properties', async () => {
         await act(async () => {
             renderWithAppContext(
-                <AdvancedSettings {...props} field={DomainField.create({ ...fieldProps, conceptURI: CALCULATED_CONCEPT_URI })} />
+                <AdvancedSettings
+                    {...props}
+                    field={DomainField.create({ ...fieldProps, conceptURI: CALCULATED_CONCEPT_URI })}
+                />
             );
         });
 

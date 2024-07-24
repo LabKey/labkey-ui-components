@@ -21,6 +21,12 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { ConceptModel, OntologyModel } from '../ontology/models';
 
+import {
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT,
+} from '../../productFixtures';
+
 import { createFormInputId } from './utils';
 import {
     downloadJsonFile,
@@ -77,11 +83,6 @@ import {
     STRING_RANGE_URI,
 } from './constants';
 import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
-import {
-    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
-    TEST_LKS_STARTER_MODULE_CONTEXT,
-    TEST_LKSM_STARTER_MODULE_CONTEXT
-} from "../../productFixtures";
 
 describe('domain properties actions', () => {
     beforeEach(() => {
@@ -291,8 +292,12 @@ describe('domain properties actions', () => {
         expect(getDomainPanelClass(true, true, true)).toBe('panel panel-default domain-form-panel');
         expect(getDomainPanelClass(true, false, false)).toBe('panel panel-default domain-form-panel');
         expect(getDomainPanelClass(true, false, true)).toBe('panel panel-default domain-form-panel');
-        expect(getDomainPanelClass(false, true, false)).toBe('panel panel-default domain-form-panel lk-border-theme-light');
-        expect(getDomainPanelClass(false, true, true)).toBe('panel panel-default domain-form-panel domain-panel-no-theme');
+        expect(getDomainPanelClass(false, true, false)).toBe(
+            'panel panel-default domain-form-panel lk-border-theme-light'
+        );
+        expect(getDomainPanelClass(false, true, true)).toBe(
+            'panel panel-default domain-form-panel domain-panel-no-theme'
+        );
         expect(getDomainPanelClass(false, false, false)).toBe('panel panel-default domain-form-panel');
         expect(getDomainPanelClass(false, false, true)).toBe('panel panel-default domain-form-panel');
     });
@@ -341,7 +346,7 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypes, all optional allowed', () => {
-        LABKEY.moduleContext = {...TEST_LKS_STARTER_MODULE_CONTEXT};
+        LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
         LABKEY.moduleContext.core['experimental-calculated-fields'] = true;
         const domain = DomainDesign.create({
             allowFlagProperties: true,
@@ -599,11 +604,11 @@ describe('domain properties actions', () => {
         document.body.removeChild = jest.fn();
         downloadJsonFile('test-file', 'fileName');
 
-        expect(createElementSpy).toBeCalledWith('a');
+        expect(createElementSpy).toHaveBeenCalledWith('a');
         expect(mockLink.style.display).toBe('none');
-        expect(document.body.appendChild).toBeCalledWith(mockLink);
-        expect(mockLink.click).toBeCalled();
-        expect(document.body.removeChild).toBeCalledWith(mockLink);
+        expect(document.body.appendChild).toHaveBeenCalledWith(mockLink);
+        expect(mockLink.click).toHaveBeenCalled();
+        expect(document.body.removeChild).toHaveBeenCalledWith(mockLink);
     });
 
     test('processJsonImport', () => {

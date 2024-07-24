@@ -256,7 +256,11 @@ export class DomainDesign
             }
 
             if (isCalculatedFieldsEnabled() && rawModel.allowCalculatedFields && rawModel.calculatedFields) {
-                const calcFields = DomainField.fromJS(rawModel.calculatedFields, mandatoryFieldNames, uniqueConstraintFieldNames);
+                const calcFields = DomainField.fromJS(
+                    rawModel.calculatedFields,
+                    mandatoryFieldNames,
+                    uniqueConstraintFieldNames
+                );
                 fields = fields.push(...calcFields.toArray());
             }
 
@@ -1249,7 +1253,12 @@ export class DomainField
     }
 
     static hasRegExValidation(field: DomainField): boolean {
-        return field.dataType.isString() && !field.isUniqueIdField() && !field.isTextChoiceField() && !field.isCalculatedField();
+        return (
+            field.dataType.isString() &&
+            !field.isUniqueIdField() &&
+            !field.isTextChoiceField() &&
+            !field.isCalculatedField()
+        );
     }
 
     static updateDefaultValues(field: DomainField): DomainField {

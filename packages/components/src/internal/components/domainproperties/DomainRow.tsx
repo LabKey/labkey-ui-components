@@ -273,7 +273,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
         this.onFieldChange(
             evt,
-            PropDescType.isLookup(value) || PropDescType.isTextChoice(value) || PropDescType.isUser(value) || PropDescType.isCalculation(value)
+            PropDescType.isLookup(value) ||
+                PropDescType.isTextChoice(value) ||
+                PropDescType.isUser(value) ||
+                PropDescType.isCalculation(value)
         );
     };
 

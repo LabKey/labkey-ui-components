@@ -1,6 +1,9 @@
 import { FieldKey } from '@labkey/api';
 
-import {CALCULATED_CONCEPT_URI, STORAGE_UNIQUE_ID_CONCEPT_URI} from '../internal/components/domainproperties/constants';
+import {
+    CALCULATED_CONCEPT_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
+} from '../internal/components/domainproperties/constants';
 
 import { insertColumnFilter, QueryColumn, QueryLookup } from './QueryColumn';
 

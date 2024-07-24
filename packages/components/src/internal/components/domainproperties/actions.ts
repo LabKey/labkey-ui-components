@@ -23,7 +23,7 @@ import { SimpleResponse } from '../files/models';
 
 import { ConceptModel, OntologyModel } from '../ontology/models';
 
-import {isCalculatedFieldsEnabled, isCommunityDistribution} from '../../app/utils';
+import { isCalculatedFieldsEnabled, isCommunityDistribution } from '../../app/utils';
 
 import { Container } from '../base/models/Container';
 import { naturalSortByProperty } from '../../../public/sort';

@@ -147,8 +147,12 @@ export function isOntologyEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isProductNavigationEnabled(productId: string, moduleContext?: ModuleContext): boolean {
-    if (productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
-        return isSampleManagerEnabled(moduleContext) && !isBiologicsEnabled(moduleContext);
+    if (productId === LIMS_APP_PROPERTIES.productId) {
+        return isLIMSEnabled(moduleContext);
+    } else if (productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
+        return (
+            isSampleManagerEnabled(moduleContext) && !isLIMSEnabled(moduleContext) && !isBiologicsEnabled(moduleContext)
+        );
     } else if (productId === BIOLOGICS_APP_PROPERTIES.productId) {
         return isBiologicsEnabled(moduleContext);
     }
@@ -390,7 +394,11 @@ export function isLKSSupportEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isLIMSEnabled(moduleContext?: ModuleContext): boolean {
-    return !isBiologicsEnabled(moduleContext) && isTransformScriptsEnabled(moduleContext);
+    // Can't check for a module context module since this is defined in sampleManagement, so we base it on feature availability
+    // Currently neither chart builder nor transform scripts is a great choice because you need the experimental flag for chart builder
+    // and transform scripts may be enabled by virtue of having the premium module. We choose chart builder since it will give
+    // false negatives less often and can be updated via a setting.
+    return isSampleManagerEnabled(moduleContext) && isChartBuilderEnabled(moduleContext);
 }
 
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {

@@ -85,7 +85,6 @@ To add a new `entryPoint` for a LabKey React page:
     For the new entry point, set the following properties:
     1. `name=<action name for the entryPoint page>`
     1. `title=<page title>`
-    1. `permission=<view.xml permissionType>` (optional)
     1. `permissionClasses=[<view.xml permissionClassType>]` (optional)
     1. `path=<entryPoint code path from step #1>`
 1. In your `src/client/<ENTRYPOINT_NAME>` dir, create an `app.tsx` file and a `dev.tsx` file based on

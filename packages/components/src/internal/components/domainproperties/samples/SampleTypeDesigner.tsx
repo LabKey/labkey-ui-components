@@ -113,9 +113,9 @@ interface Props {
     showLinkToStudy?: boolean;
     showParentLabelPrefix?: boolean;
     testMode?: boolean;
+    useSeparateDataClassesAliasMenu?: boolean;
     validateNameExpressions?: boolean;
     validateProperties?: (designerDetails?: any) => Promise<any>;
-    useSeparateDataClassesAliasMenu?: boolean;
 }
 
 interface State {
@@ -428,7 +428,12 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 if (response.error) {
                     const updatedModel = model.set('exception', response.error) as SampleTypeModel;
                     setSubmitting(false, () => {
-                        this.setState(() => ({ model: updatedModel, showUniqueIdConfirmation: false }));
+                        this.setState(
+                            () => ({ model: updatedModel, showUniqueIdConfirmation: false }),
+                            () => {
+                                scrollDomainErrorIntoView();
+                            }
+                        );
                     });
                     return;
                 }
@@ -437,10 +442,15 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             console.error(error);
             const exception = resolveErrorMessage(error);
             setSubmitting(false, () => {
-                this.setState(() => ({
-                    model: model.set('exception', exception) as SampleTypeModel,
-                    showUniqueIdConfirmation: false,
-                }));
+                this.setState(
+                    () => ({
+                        model: model.set('exception', exception) as SampleTypeModel,
+                        showUniqueIdConfirmation: false,
+                    }),
+                    () => {
+                        scrollDomainErrorIntoView();
+                    }
+                );
             });
             return;
         }
@@ -456,12 +466,17 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 if (response.errors?.length > 0 || response.warnings?.length > 0) {
                     const updatedModel = model.set('exception', response.errors?.join('\n')) as SampleTypeModel;
                     setSubmitting(false, () => {
-                        this.setState(() => ({
-                            model: updatedModel,
-                            nameExpressionWarnings: response.warnings,
-                            namePreviews: response.previews,
-                            showUniqueIdConfirmation: false,
-                        }));
+                        this.setState(
+                            () => ({
+                                model: updatedModel,
+                                nameExpressionWarnings: response.warnings,
+                                namePreviews: response.previews,
+                                showUniqueIdConfirmation: false,
+                            }),
+                            () => {
+                                scrollDomainErrorIntoView();
+                            }
+                        );
                     });
                     return;
                 }
@@ -470,10 +485,15 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             console.error(error);
             const exception = resolveErrorMessage(error);
             setSubmitting(false, () => {
-                this.setState(() => ({
-                    model: model.set('exception', exception) as SampleTypeModel,
-                    showUniqueIdConfirmation: false,
-                }));
+                this.setState(
+                    () => ({
+                        model: model.set('exception', exception) as SampleTypeModel,
+                        showUniqueIdConfirmation: false,
+                    }),
+                    () => {
+                        scrollDomainErrorIntoView();
+                    }
+                );
             });
             return;
         }

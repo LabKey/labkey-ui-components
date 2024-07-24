@@ -97,25 +97,27 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                        {!field.isUniqueIdField() && !domainFormDisplayOptions?.hideImportAliases && (
-                            <>
-                                <div className="domain-field-label">
-                                    <DomainFieldLabel
-                                        label="Import Aliases"
-                                        helpTipBody={this.getImportAliasHelpText()}
+                        {!field.isUniqueIdField() &&
+                            !field.isCalculatedField() &&
+                            !domainFormDisplayOptions?.hideImportAliases && (
+                                <>
+                                    <div className="domain-field-label">
+                                        <DomainFieldLabel
+                                            label="Import Aliases"
+                                            helpTipBody={this.getImportAliasHelpText()}
+                                        />
+                                    </div>
+                                    <input
+                                        className="form-control"
+                                        type="text"
+                                        value={field.importAliases || ''}
+                                        id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
+                                        name={createFormInputName(DOMAIN_FIELD_IMPORTALIASES)}
+                                        onChange={this.handleChange}
+                                        disabled={isFieldFullyLocked(field.lockType)}
                                     />
-                                </div>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    value={field.importAliases || ''}
-                                    id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
-                                    name={createFormInputName(DOMAIN_FIELD_IMPORTALIASES)}
-                                    onChange={this.handleChange}
-                                    disabled={isFieldFullyLocked(field.lockType)}
-                                />
-                            </>
-                        )}
+                                </>
+                            )}
                     </div>
                     <div className="col-xs-4">
                         <div className="domain-field-label">
@@ -130,13 +132,16 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                        {!appPropertiesOnly && hasModule(ONTOLOGY_MODULE_NAME) && (
-                            <OntologyConceptAnnotation
-                                id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
-                                field={field}
-                                onChange={this.onChange}
-                            />
-                        )}
+                        {!appPropertiesOnly &&
+                            hasModule(ONTOLOGY_MODULE_NAME) &&
+                            !field.isUniqueIdField() &&
+                            !field.isCalculatedField() && (
+                                <OntologyConceptAnnotation
+                                    id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
+                                    field={field}
+                                    onChange={this.onChange}
+                                />
+                            )}
                     </div>
                 </div>
             </div>

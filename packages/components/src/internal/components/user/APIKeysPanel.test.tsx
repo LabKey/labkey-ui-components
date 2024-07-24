@@ -44,6 +44,10 @@ describe('KeyGenerator', () => {
 });
 
 describe('APIKeysPanel', () => {
+    beforeEach(() => {
+        window.history.pushState({}, 'Test Title', '/');
+    });
+
     function defaultServerContext(overrides?: Partial<ServerContext>): Partial<ServerContext> {
         return {
             container: TEST_PROJECT_CONTAINER,
@@ -53,6 +57,8 @@ describe('APIKeysPanel', () => {
     }
 
     test('SM Starter, not enabled', async () => {
+        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
+
         await act(async () => {
             const { container } = renderWithAppContext(<APIKeysPanel />, {
                 serverContext: defaultServerContext({
@@ -66,6 +72,8 @@ describe('APIKeysPanel', () => {
     });
 
     test('SM Starter, enabled', async () => {
+        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
+
         await act(async () => {
             const { container } = renderWithAppContext(<APIKeysPanel />, {
                 serverContext: defaultServerContext({

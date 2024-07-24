@@ -39,6 +39,7 @@ import {
     isAssayQCEnabled,
     isAssayRequestsEnabled,
     isBiologicsEnabled,
+    isCalculatedFieldsEnabled,
     isCommunityDistribution,
     isELNEnabled,
     isFreezerManagementEnabled,
@@ -416,6 +417,10 @@ describe('getMenuSectionConfigs', () => {
 });
 
 describe('utils', () => {
+    beforeEach(() => {
+        window.history.pushState({}, 'Test Title', '/');
+    });
+
     test('userCanDesignSourceTypes', () => {
         expect(userCanDesignSourceTypes(TEST_USER_GUEST)).toBeFalsy();
         expect(userCanDesignSourceTypes(TEST_USER_READER)).toBeFalsy();
@@ -821,133 +826,85 @@ describe('utils', () => {
             BIOLOGICS_APP_PROPERTIES
         );
     });
+
+    test('isCalculatedFieldsEnabled', () => {
+        expect(isCalculatedFieldsEnabled()).toBeFalsy();
+        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': false } })).toBeFalsy();
+        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true } })).toBeFalsy();
+        expect(
+            isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true }, api: { moduleNames: [] } })
+        ).toBeFalsy(); // community
+        expect(
+            isCalculatedFieldsEnabled({
+                core: { 'experimental-calculated-fields': true },
+                api: { moduleNames: ['premium'] },
+            })
+        ).toBeTruthy(); // LKS Prof
+
+        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
+        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true } })).toBeFalsy();
+        expect(
+            isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true, productFeatures: [] } })
+        ).toBeFalsy();
+        expect(
+            isCalculatedFieldsEnabled({
+                core: { 'experimental-calculated-fields': true, productFeatures: [ProductFeature.CalculatedFields] },
+            })
+        ).toBeTruthy();
+    });
 });
 
 describe('freezerManagerIsCurrentApp', () => {
-    const { location } = window;
-
-    beforeAll(() => {
-        delete window.location;
-    });
-
-    afterAll(() => {
-        window.location = location;
+    beforeEach(() => {
+        window.history.pushState({}, 'Test Title', '/');
     });
 
     test('LKFM', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: '/Biologics/freezermanager-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', '/freezermanager-app.view#'); // isApp()
         expect(freezerManagerIsCurrentApp()).toBe(true);
     });
 
     test('LKSM', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Sam Man/samplemanager-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
         expect(freezerManagerIsCurrentApp()).toBe(false);
     });
 
     test('LKB', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: '/Biologics/biologics-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', '/biologics-app.view#'); // isApp()
         expect(freezerManagerIsCurrentApp()).toBe(false);
     });
 });
 
 describe('getCurrentAppProperties', () => {
-    const { location } = window;
-
-    beforeAll(() => {
-        delete window.location;
-    });
-
-    afterAll(() => {
-        window.location = location;
+    beforeEach(() => {
+        window.history.pushState({}, 'Test Title', '/');
     });
 
     test('Sample Manager controller', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Sam Man/samplemanager-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', 'labkey/Sam Man/samplemanager-app.view#');
         expect(getCurrentAppProperties()).toStrictEqual(SAMPLE_MANAGER_APP_PROPERTIES);
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Biologics/samplemanager-app.view#',
-            }
-        );
-        expect(getCurrentAppProperties()).toStrictEqual(SAMPLE_MANAGER_APP_PROPERTIES);
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: 'labkey/Biologics/sampleManager-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', 'labkey/Biologics/samplemanager-app.view#');
         expect(getCurrentAppProperties()).toStrictEqual(SAMPLE_MANAGER_APP_PROPERTIES);
     });
 
     test('Biologics controller', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: '/Biologics/biologics-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', 'labkey/Biologics/biologics-app.view#');
         expect(getCurrentAppProperties()).toStrictEqual(BIOLOGICS_APP_PROPERTIES);
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: '/samplemanager/biologics-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', 'labkey/samplemanager/biologics-app.view#');
         expect(getCurrentAppProperties()).toStrictEqual(BIOLOGICS_APP_PROPERTIES);
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: '/Biologics/BiologicS-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', 'labkey/Biologics/BiologicS-app.view#');
         expect(getCurrentAppProperties()).toStrictEqual(BIOLOGICS_APP_PROPERTIES);
     });
 
     test('Freezer Manager controller', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: '/Biologics/freezermanager-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', 'labkey/Biologics/freezermanager-app.view#');
         expect(getCurrentAppProperties()).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: '/sampleManager/FreezerManager-app.view#',
-            }
-        );
+        window.history.pushState({}, 'Test Title', 'labkey/sampleManager/FreezerManager-app.view#');
         expect(getCurrentAppProperties()).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
     });
 
     test('Non-app controller', () => {
-        window.location = Object.assign(
-            { ...location },
-            {
-                pathname: '/Biologics/project-begin.view',
-            }
-        );
+        window.history.pushState({}, 'Test Title', 'labkey/Biologics/project-begin.view');
         expect(getCurrentAppProperties()).toBe(undefined);
     });
 });

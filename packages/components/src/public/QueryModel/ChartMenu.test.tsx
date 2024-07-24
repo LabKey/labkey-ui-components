@@ -77,6 +77,8 @@ describe('ChartMenu', () => {
                 moduleContext: {
                     biologics: {
                         productId: BIOLOGICS_APP_PROPERTIES.productId,
+                    },
+                    samplemanagement: {
                         [EXPERIMENTAL_CHART_BUILDER]: true,
                     },
                 },
@@ -97,6 +99,8 @@ describe('ChartMenu', () => {
                 moduleContext: {
                     biologics: {
                         productId: BIOLOGICS_APP_PROPERTIES.productId,
+                    },
+                    samplemanagement: {
                         [EXPERIMENTAL_CHART_BUILDER]: true,
                     },
                 },

@@ -19,8 +19,8 @@ interface State {
     selectedCreationType: SampleCreationType;
 }
 
-addValidationRule('isPositiveLt', (vs, v, smax) => {
-    if (v === '' || v === undefined || isNaN(v)) {
+addValidationRule<string>('isPositiveLt', (vs, v, smax) => {
+    if (v === '' || v === undefined) {
         return true;
     }
 

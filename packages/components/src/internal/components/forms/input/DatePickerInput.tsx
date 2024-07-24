@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { FC, ReactNode, RefObject } from 'react';
-import { withFormsy } from 'formsy-react';
+import { FormsyInjectedProps, withFormsy } from 'formsy-react';
 import DatePicker from 'react-datepicker';
 
 import { FieldLabel } from '../FieldLabel';
@@ -31,16 +31,11 @@ import {
 } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
-import {
-    INPUT_CONTAINER_CLASS_NAME,
-    INPUT_LABEL_CLASS_NAME,
-    INPUT_WRAPPER_CLASS_NAME,
-    WithFormsyProps,
-} from '../constants';
+import { INPUT_CONTAINER_CLASS_NAME, INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-export interface DatePickerInputProps extends DisableableInputProps, WithFormsyProps {
+export interface DatePickerInputProps extends DisableableInputProps {
     addLabelAsterisk?: boolean;
     allowRelativeInput?: boolean;
     autoFocus?: boolean;
@@ -65,9 +60,10 @@ export interface DatePickerInputProps extends DisableableInputProps, WithFormsyP
     queryColumn: QueryColumn;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     showLabel?: boolean;
-    value?: any;
     wrapperClassName?: string;
 }
+
+type DatePickerInputImplProps = DatePickerInputProps & FormsyInjectedProps<string>;
 
 interface DatePickerInputState extends DisableableInputState {
     invalid: boolean; // not a date/time value
@@ -77,7 +73,7 @@ interface DatePickerInputState extends DisableableInputState {
 }
 
 // export for jest testing
-export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePickerInputState> {
+export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplProps, DatePickerInputState> {
     static defaultProps = {
         addLabelAsterisk: false,
         allowDisable: false,
@@ -95,23 +91,21 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
 
     input: RefObject<DatePicker>;
 
-    constructor(props: DatePickerInputProps) {
+    constructor(props: DatePickerInputImplProps) {
         super(props);
-
-        const { queryColumn } = props;
-        const isTimeOnly = queryColumn.isTimeColumn;
 
         this.toggleDisabled = this.toggleDisabled.bind(this);
 
         // Issue 45140: formsy values will hold on to the initial formatted value until onChange.
         // We instead need to make sure that the unformatted Date value is passed to setValue if there is an init value.
         const initDate = this.getInitDate(props);
-        if (props.formsy && !isTimeOnly) {
+        if (props.formsy && !props.queryColumn.isTimeColumn) {
+            // @ts-expect-error -- FIXME: Here we setValue(Date), everywhere else setValue(string)
             props.setValue?.(initDate);
         }
 
-        let invalidStart = false,
-            invalid = false;
+        let invalidStart = false;
+        let invalid = false;
         if (props.value && !isRelativeDateFilterValue(props.value)) {
             // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
             invalidStart = this.getInitDate(props, new Date('1000-01-01')) === null;
@@ -343,13 +337,13 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, 
  * This class is a wrapper around DatePickerInput to be able to bind formsy-react. It uses
  * the Formsy.Decorator to bind formsy-react so the element can be validated, submitted, etc.
  */
-const DatePickerInputFormsy = withFormsy(DatePickerInputImpl);
+const DatePickerInputFormsy = withFormsy<DatePickerInputProps, string>(DatePickerInputImpl);
 
 export const DatePickerInput: FC<DatePickerInputProps> = props => {
     if (props.formsy) {
         return <DatePickerInputFormsy name={props.name ?? props.queryColumn.name} {...props} />;
     }
-    return <DatePickerInputImpl {...props} />;
+    return <DatePickerInputImpl {...(props as DatePickerInputImplProps)} />;
 };
 
 DatePickerInput.defaultProps = {

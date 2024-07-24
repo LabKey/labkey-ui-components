@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { Component, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
-import { withFormsy } from 'formsy-react';
+import { FormsyInjectedProps, withFormsy } from 'formsy-react';
 import ReactSelect, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
@@ -28,7 +28,6 @@ import {
     INPUT_CONTAINER_CLASS_NAME,
     INPUT_LABEL_CLASS_NAME,
     INPUT_WRAPPER_CLASS_NAME,
-    WithFormsyProps,
 } from '../constants';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
@@ -160,7 +159,7 @@ export function initOptions(props: SelectInputProps): SelectInputOption | Select
 
 const nullComponent: FC = () => null;
 
-export interface SelectInputProps extends WithFormsyProps {
+export interface SelectInputProps {
     addLabelAsterisk?: boolean;
     allowCreate?: boolean;
     allowDisable?: boolean;
@@ -230,6 +229,8 @@ export interface SelectInputProps extends WithFormsyProps {
     valueRenderer?: any;
 }
 
+type SelectInputImplProps = SelectInputProps & FormsyInjectedProps<any>;
+
 interface State {
     // This state property is used in conjunction with the prop "clearCacheOnChange" which when true
     // is intended to clear the underlying asynchronous React Select's cache.
@@ -243,7 +244,7 @@ interface State {
 }
 
 // Implementation exported only for tests
-export class SelectInputImpl extends Component<SelectInputProps, State> {
+export class SelectInputImpl extends Component<SelectInputImplProps, State> {
     static defaultProps = {
         allowCreate: false,
         allowDisable: false,
@@ -275,7 +276,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     private CHANGE_LOCK = false;
     private reactSelect: React.RefObject<any>;
 
-    constructor(props: SelectInputProps) {
+    constructor(props: SelectInputImplProps) {
         super(props);
 
         this._id = generateId('selectinput-');
@@ -297,7 +298,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
         this._isMounted = true;
     }
 
-    componentDidUpdate(prevProps: SelectInputProps): void {
+    componentDidUpdate(prevProps: SelectInputImplProps): void {
         if (!this.CHANGE_LOCK && this.props.autoValue && !this.isAsync() && prevProps.value !== this.props.value) {
             // If "autoValue" is enabled and the value has changed for a non-async configuration, then we need
             // to reinitialize "selectedOptions" from the latest props. The async case is handled in this.loadOptions().
@@ -678,9 +679,8 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
     };
 
     render() {
-        const { containerClass, formsy, getErrorMessage, help, inputClass } = this.props;
-        const error = getErrorMessage?.();
-        const hasError = formsy && !!error;
+        const { containerClass, errorMessage, formsy, help, inputClass } = this.props;
+        const hasError = formsy && !!errorMessage;
 
         return (
             <div className={`select-input-container ${containerClass}`}>
@@ -689,7 +689,7 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
                     {this.renderSelect()}
                     {hasError && (
                         <div className="has-error">
-                            <span className="error-message help-block">{error}</span>
+                            <span className="error-message help-block">{errorMessage}</span>
                         </div>
                     )}
                     {!hasError && !!help && <span className="help-block">{help}</span>}
@@ -703,13 +703,13 @@ export class SelectInputImpl extends Component<SelectInputProps, State> {
  * This class is a wrapper around ReactSelect to be able to bind formsy-react. It uses
  * the Formsy.Decorator to bind formsy-react so the element can be validated, submitted, etc.
  */
-const SelectInputFormsy = withFormsy(SelectInputImpl);
+const SelectInputFormsy = withFormsy<SelectInputProps, any>(SelectInputImpl);
 
 export const SelectInput: FC<SelectInputProps> = props => {
     if (props.formsy) {
-        return <SelectInputFormsy {...props} />;
+        return <SelectInputFormsy name={undefined} {...props} />;
     }
-    return <SelectInputImpl {...props} />;
+    return <SelectInputImpl {...(props as SelectInputImplProps)} />;
 };
 
 SelectInput.defaultProps = {

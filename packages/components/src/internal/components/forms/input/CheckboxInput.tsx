@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, ReactNode } from 'react';
-import { withFormsy } from 'formsy-react';
+import React, { ChangeEventHandler, FC, ReactNode } from 'react';
+import { FormsyInjectedProps, withFormsy } from 'formsy-react';
 
 import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
-import {
-    INPUT_CONTAINER_CLASS_NAME,
-    INPUT_LABEL_CLASS_NAME,
-    INPUT_WRAPPER_CLASS_NAME,
-    WithFormsyProps,
-} from '../constants';
+import { INPUT_CONTAINER_CLASS_NAME, INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-interface CheckboxInputProps extends DisableableInputProps, WithFormsyProps {
+interface CheckboxInputProps extends DisableableInputProps {
     addLabelAsterisk?: boolean;
     containerClassName?: string;
     formsy?: boolean;
@@ -44,11 +39,13 @@ interface CheckboxInputProps extends DisableableInputProps, WithFormsyProps {
     wrapperClassName?: string;
 }
 
+type CheckboxInputImplProps = CheckboxInputProps & FormsyInjectedProps<boolean>;
+
 interface CheckboxInputState extends DisableableInputState {
     checked: boolean;
 }
 
-class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInputState> {
+class CheckboxInputImpl extends DisableableInput<CheckboxInputImplProps, CheckboxInputState> {
     static defaultProps = {
         ...DisableableInput.defaultProps,
         containerClassName: INPUT_CONTAINER_CLASS_NAME,
@@ -57,7 +54,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         wrapperClassName: INPUT_WRAPPER_CLASS_NAME,
     };
 
-    constructor(props: CheckboxInputProps) {
+    constructor(props: CheckboxInputImplProps) {
         super(props);
 
         this.state = {
@@ -66,8 +63,8 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         };
     }
 
-    onChange = e => {
-        const checked = e.target.checked;
+    onChange: ChangeEventHandler<HTMLInputElement> = evt => {
+        const checked = evt.target.checked;
         this.setState({ checked });
         if (this.props.formsy) {
             this.props.setValue?.(checked);
@@ -94,13 +91,13 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
             allowDisable,
             containerClassName,
             formsy,
-            getValue,
             label,
             labelClassName,
             name,
             queryColumn,
             showLabel,
             renderFieldLabel,
+            value,
             wrapperClassName,
         } = this.props;
         const { checked, isDisabled } = this.state;
@@ -143,7 +140,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                         // cause any false value (i.e. unchecked) to prevent submission.
                         // required={queryColumn.required}
                         type="checkbox"
-                        value={formsy ? getValue() : checked}
+                        value={formsy ? value : checked}
                         checked={checked}
                         onChange={this.onChange}
                     />
@@ -157,13 +154,13 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
  * This class is a wrapper around ReactSelect to be able to bind formsy-react. It uses
  * the Formsy.Decorator to bind formsy-react so the element can be validated, submitted, etc.
  */
-const CheckboxInputFormsy = withFormsy(CheckboxInputImpl);
+const CheckboxInputFormsy = withFormsy<CheckboxInputProps, boolean>(CheckboxInputImpl);
 
 export const CheckboxInput: FC<CheckboxInputProps> = props => {
     if (props.formsy) {
         return <CheckboxInputFormsy name={props.name ?? props.queryColumn.name} {...props} />;
     }
-    return <CheckboxInputImpl {...props} />;
+    return <CheckboxInputImpl {...(props as CheckboxInputImplProps)} />;
 };
 
 CheckboxInput.defaultProps = {

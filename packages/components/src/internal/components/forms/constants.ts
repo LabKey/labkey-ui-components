@@ -20,25 +20,43 @@ export const INPUT_WRAPPER_CLASS_NAME = 'col-sm-9 col-xs-12';
 
 export const DELIMITER = ',';
 
+// export interface InjectedProps<V> {
+//     errorMessage: ValidationError;
+//     errorMessages: ValidationError[];
+//     hasValue: boolean;
+//     isFormDisabled: boolean;
+//     isFormSubmitted: boolean;
+//     isPristine: boolean;
+//     isRequired: boolean;
+//     isValid: boolean;
+//     isValidValue: (value: V) => boolean;
+//     ref?: React.Ref<any>;
+//     resetValue: () => void;
+//     setValidations: (validations: Validations<V>, required: RequiredValidation<V>) => void;
+//     setValue: (value: V, validate?: boolean) => void;
+//     showError: boolean;
+//     showRequired: boolean;
+// }
+
 // Interface for components that support the withFormsy() component wrapper.
-export interface WithFormsyProps {
-    getErrorMessage?: Function;
-    getErrorMessages?: Function;
-    getValue?: Function;
-    hasValue?: Function;
-    innerRef?: any;
-    isFormDisabled?: Function;
-    isFormSubmitted?: Function;
-    isPristine?: Function;
-    isRequired?: () => boolean;
-    isValid?: Function;
-    isValidValue?: Function;
-    resetValue?: Function;
-    setValidations?: Function;
-    setValue?: Function;
-    showError?: () => boolean;
-    showRequired?: Function;
-    validationError?: string;
-    validationErrors?: any; // Record<string, any> | string;
-    validations?: any; // Record<string, any> | string;
-}
+// export interface WithFormsyProps {
+//     // getErrorMessage?: Function; -- use errorMessage: ValidationError;
+//     // getErrorMessages?: Function; -- use errorMessages: ValidationError[];
+//     getValue?: Function;
+//     hasValue?: Function;
+//     innerRef?: any;
+//     // isFormDisabled?: Function; -- use isFormDisabled: boolean;
+//     // isFormSubmitted?: Function; -- use isFormSubmitted: boolean;
+//     // isPristine?: Function; -- use isPristine: boolean;
+//     // isRequired?: () => boolean; -- use isRequired: boolean;
+//     // isValid?: Function; -- use isValid: boolean;
+//     isValidValue?: Function;
+//     resetValue?: Function;
+//     setValidations?: Function;
+//     setValue?: Function;
+//     // showError?: () => boolean; -- use showError: boolean;
+//     // showRequired?: Function; -- use showRequired: boolean;
+//     validationError?: string;
+//     validationErrors?: any; // Record<string, any> | string;
+//     validations?: any; // Record<string, any> | string;
+// }

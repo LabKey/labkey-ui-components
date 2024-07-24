@@ -371,7 +371,7 @@ export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
 export function isChartBuilderEnabled(moduleContext?: ModuleContext): boolean {
     return (
         isFeatureEnabled(ProductFeature.ChartBuilding, moduleContext) &&
-        resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_CHART_BUILDER] === true
+        resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_CHART_BUILDER] === true
     );
 }
 
@@ -389,7 +389,7 @@ export function isLKSSupportEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isLIMSEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.lims !== undefined;
+    return !isBiologicsEnabled(moduleContext) && isTransformScriptsEnabled(moduleContext);
 }
 
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {
@@ -400,13 +400,28 @@ export function isProtectedDataEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('compliance', moduleContext) && hasModule('complianceActivities', moduleContext);
 }
 
+export function isNamingPrefixEnabled(moduleContext?: ModuleContext): boolean {
+    return isBiologicsEnabled(moduleContext);
+}
+
 export function isMediaEnabled(moduleContext?: ModuleContext): boolean {
     return isFeatureEnabled(ProductFeature.Media, moduleContext);
 }
 
-// N.B. eventually the primary app check will go away, but we leave it for now for ease of development
 export function isRegistryEnabled(moduleContext?: ModuleContext): boolean {
     return isBiologicsEnabled(moduleContext) && isFeatureEnabled(ProductFeature.BiologicsRegistry, moduleContext);
+}
+
+export function isSourceTypeEnabled(moduleContext?: ModuleContext): boolean {
+    return !isRegistryEnabled(moduleContext);
+}
+
+export function isAdvancedDomainPropertiesEnabled(moduleContext?: ModuleContext): boolean {
+    return !sampleManagerIsPrimaryApp(moduleContext) || hasPremiumModule(moduleContext);
+}
+
+export function isNotebookTagsEnabled(moduleContext?: ModuleContext): boolean {
+    return isBiologicsEnabled(moduleContext);
 }
 
 export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {
@@ -604,17 +619,14 @@ export function getMenuSectionConfigs(
 ): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 
-    const currentAppProperties = getCurrentAppProperties(); // based on the controller name
-    const isSMPrimary = sampleManagerIsPrimaryApp(moduleContext);
-    const isBioPrimary = biologicsIsPrimaryApp(moduleContext);
-    const isBioOrSM = isSMPrimary || isBioPrimary;
-    const inSMApp = isSMPrimary || currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
-    if (inSMApp) {
-        sectionConfigs = addSourcesSectionConfig(user, sectionConfigs);
-    } else if (isBioPrimary) {
+    const isBioEnabled = isBiologicsEnabled(moduleContext);
+    const isSMEnabled = isSampleManagerEnabled(moduleContext);
+    if (isRegistryEnabled(moduleContext)) {
         sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig() }));
+    } else if (isSMEnabled) {
+        sectionConfigs = addSourcesSectionConfig(user, sectionConfigs);
     }
-    if (isBioOrSM) {
+    if (isSMEnabled) {
         let configs = Map<string, MenuSectionConfig>({ [SAMPLES_KEY]: getSamplesSectionConfig(user) });
         if (isPlatesEnabled(moduleContext)) {
             configs = configs.set(PLATES_KEY, getPlatesSectionConfig());
@@ -622,26 +634,13 @@ export function getMenuSectionConfigs(
         sectionConfigs = sectionConfigs.push(configs);
 
         if (isAssayEnabled(moduleContext)) {
-            sectionConfigs = addAssaysSectionConfig(user, sectionConfigs, isSMPrimary);
+            sectionConfigs = addAssaysSectionConfig(user, sectionConfigs, isNonstandardAssayEnabled(moduleContext));
         }
     }
 
     const storageConfig = getStorageSectionConfig(user, currentProductId, moduleContext);
 
-    if (inSMApp) {
-        if (storageConfig) {
-            sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
-        }
-        let configs = Map<string, MenuSectionConfig>({});
-        if (isWorkflowEnabled(moduleContext)) {
-            configs = configs.set(WORKFLOW_KEY, getWorkflowSectionConfig());
-        }
-        configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
-        if (isELNEnabled(moduleContext)) {
-            configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
-        }
-        sectionConfigs = sectionConfigs.push(configs);
-    } else if (isBioPrimary) {
+    if (isBioEnabled) {
         if (isAssayRequestsEnabled(moduleContext)) {
             // When "Requests" are enabled render as two columns
             let requestsCol = Map({
@@ -659,6 +658,19 @@ export function getMenuSectionConfigs(
 
             sectionConfigs = sectionConfigs.push(getBioWorkflowNotebookMediaConfigs());
         }
+    } else if (isSMEnabled) {
+        if (storageConfig) {
+            sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
+        }
+        let configs = Map<string, MenuSectionConfig>({});
+        if (isWorkflowEnabled(moduleContext)) {
+            configs = configs.set(WORKFLOW_KEY, getWorkflowSectionConfig());
+        }
+        configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
+        if (isELNEnabled(moduleContext)) {
+            configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
+        }
+        sectionConfigs = sectionConfigs.push(configs);
     } else {
         if (storageConfig) {
             sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
@@ -694,7 +706,8 @@ export function getAppProductIds(appProductId: string): List<string> {
     let productIds = List.of(appProductId);
     if (
         appProductId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
-        appProductId === BIOLOGICS_APP_PROPERTIES.productId
+        appProductId === BIOLOGICS_APP_PROPERTIES.productId ||
+        appProductId === LIMS_APP_PROPERTIES.productId
     ) {
         productIds = productIds.push(FREEZER_MANAGER_APP_PROPERTIES.productId);
     }

@@ -6,14 +6,12 @@ import React, { ReactNode } from 'react';
 import { Map } from 'immutable';
 
 import {
-    biologicsIsPrimaryApp,
     isAssayEnabled,
-    isBiologicsEnabled,
     isELNEnabled,
     isProductProjectsEnabled,
+    isRegistryEnabled,
     isSampleManagerEnabled,
     isWorkflowEnabled,
-    sampleManagerIsPrimaryApp,
 } from '../../app/utils';
 import { ASSAYS_KEY, BOXES_KEY, SAMPLES_KEY, USER_KEY, WORKFLOW_KEY } from '../../app/constants';
 import { naturalSortByProperty } from '../../../public/sort';
@@ -22,16 +20,16 @@ import { AppURL } from '../../url/AppURL';
 import { ModuleContext } from '../base/ServerContext';
 
 import {
-    AuditQuery,
     ASSAY_AUDIT_QUERY,
+    AuditQuery,
     COMMON_AUDIT_QUERIES,
+    DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     NOTEBOOK_AUDIT_QUERY,
     NOTEBOOK_REVIEW_AUDIT_QUERY,
     PROJECT_AUDIT_QUERY,
     REGISTRY_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
-    DATACLASS_DATA_UPDATE_AUDIT_QUERY,
 } from './constants';
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
@@ -39,8 +37,8 @@ export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     if (isProductProjectsEnabled(ctx)) queries.push(PROJECT_AUDIT_QUERY);
     if (isWorkflowEnabled(ctx)) queries.push(WORKFLOW_AUDIT_QUERY);
     if (isAssayEnabled(ctx)) queries.push(ASSAY_AUDIT_QUERY);
-    if (isSampleManagerEnabled(ctx) && sampleManagerIsPrimaryApp(ctx)) queries.push(SOURCE_AUDIT_QUERY);
-    if (isBiologicsEnabled(ctx) && biologicsIsPrimaryApp(ctx)) {
+    if (isSampleManagerEnabled(ctx) && !isRegistryEnabled(ctx)) queries.push(SOURCE_AUDIT_QUERY);
+    if (isRegistryEnabled(ctx)) {
         queries.push(DATACLASS_DATA_UPDATE_AUDIT_QUERY);
         queries.push(REGISTRY_AUDIT_QUERY);
     }

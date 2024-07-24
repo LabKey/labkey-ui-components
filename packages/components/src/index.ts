@@ -701,6 +701,7 @@ import { AppReducers, ProductMenuReducers, ServerNotificationReducers } from './
 
 import {
     biologicsIsPrimaryApp,
+    limsIsPrimaryApp,
     CloseEventCode,
     freezerManagerIsCurrentApp,
     getAppHomeFolderId,
@@ -972,6 +973,7 @@ const App = {
     getDateTimeFormat,
     getTimeFormat,
     useMenuSectionConfigs,
+    limsIsPrimaryApp,
     menuInit,
     menuInvalidate,
     menuReload,

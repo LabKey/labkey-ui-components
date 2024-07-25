@@ -725,7 +725,7 @@ exports[`DataClassDesigner default properties 1`] = `
                       class="select-input__control select-input__control--is-disabled css-1mgq1wa-control"
                     >
                       <div
-                        class="select-input__value-container css-hlgwow"
+                        class="select-input__value-container css-1fdsijx-ValueContainer"
                       >
                         <div
                           class="select-input__placeholder css-pxd85q-placeholder"
@@ -734,7 +734,7 @@ exports[`DataClassDesigner default properties 1`] = `
                           Loading...
                         </div>
                         <div
-                          class="select-input__input-container css-1mkvw8y"
+                          class="select-input__input-container css-1h01tm3-Input"
                           data-value=""
                         >
                           <input
@@ -759,7 +759,7 @@ exports[`DataClassDesigner default properties 1`] = `
                         </div>
                       </div>
                       <div
-                        class="select-input__indicators css-1wy0on6"
+                        class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
                       >
                         <span
                           class="select-input__indicator-separator css-894a34-indicatorSeparator"
@@ -842,7 +842,7 @@ exports[`DataClassDesigner default properties 1`] = `
                       class="select-input__control select-input__control--is-disabled css-1mgq1wa-control"
                     >
                       <div
-                        class="select-input__value-container css-hlgwow"
+                        class="select-input__value-container css-1fdsijx-ValueContainer"
                       >
                         <div
                           class="select-input__placeholder css-pxd85q-placeholder"
@@ -851,7 +851,7 @@ exports[`DataClassDesigner default properties 1`] = `
                           Loading...
                         </div>
                         <div
-                          class="select-input__input-container css-1mkvw8y"
+                          class="select-input__input-container css-1h01tm3-Input"
                           data-value=""
                         >
                           <input
@@ -876,7 +876,7 @@ exports[`DataClassDesigner default properties 1`] = `
                         </div>
                       </div>
                       <div
-                        class="select-input__indicators css-1wy0on6"
+                        class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
                       >
                         <span
                           class="select-input__indicator-separator css-894a34-indicatorSeparator"
@@ -1474,7 +1474,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       class="select-input__control select-input__control--is-disabled css-1mgq1wa-control"
                     >
                       <div
-                        class="select-input__value-container css-hlgwow"
+                        class="select-input__value-container css-1fdsijx-ValueContainer"
                       >
                         <div
                           class="select-input__placeholder css-pxd85q-placeholder"
@@ -1483,7 +1483,7 @@ exports[`DataClassDesigner initModel 1`] = `
                           Loading...
                         </div>
                         <div
-                          class="select-input__input-container css-1mkvw8y"
+                          class="select-input__input-container css-1h01tm3-Input"
                           data-value=""
                         >
                           <input
@@ -1508,7 +1508,7 @@ exports[`DataClassDesigner initModel 1`] = `
                         </div>
                       </div>
                       <div
-                        class="select-input__indicators css-1wy0on6"
+                        class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
                       >
                         <span
                           class="select-input__indicator-separator css-894a34-indicatorSeparator"
@@ -1591,7 +1591,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       class="select-input__control select-input__control--is-disabled css-1mgq1wa-control"
                     >
                       <div
-                        class="select-input__value-container css-hlgwow"
+                        class="select-input__value-container css-1fdsijx-ValueContainer"
                       >
                         <div
                           class="select-input__placeholder css-pxd85q-placeholder"
@@ -1600,7 +1600,7 @@ exports[`DataClassDesigner initModel 1`] = `
                           Loading...
                         </div>
                         <div
-                          class="select-input__input-container css-1mkvw8y"
+                          class="select-input__input-container css-1h01tm3-Input"
                           data-value=""
                         >
                           <input
@@ -1625,7 +1625,7 @@ exports[`DataClassDesigner initModel 1`] = `
                         </div>
                       </div>
                       <div
-                        class="select-input__indicators css-1wy0on6"
+                        class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
                       >
                         <span
                           class="select-input__indicator-separator css-894a34-indicatorSeparator"

@@ -206,7 +206,7 @@ export function withFormsy<T, V>(
             } = this.props;
 
             return (
-                // @ts-ignore
+                // @ts-expect-error cannot correctly deduce types of wrapped component
                 <WrappedComponent
                     {...rest}
                     errorMessage={this.getErrorMessage()}

@@ -109,8 +109,7 @@ export const RadioGroupInput: FC<OwnProps> = props => {
         return <RadioGroupInputFormsy {...props} />;
     }
 
-    // @ts-ignore
-    return <RadioGroupInputImpl {...props} />;
+    return <RadioGroupInputImpl {...props as any} />;
 };
 
 RadioGroupInput.defaultProps = {

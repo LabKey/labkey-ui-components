@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Map } from 'immutable';
+import { fromJS, Map } from 'immutable';
 
 // Don't touch this directly, if you need access to it use getQueryMetadata, if you need to set the value use
 // setQueryMetadata
@@ -28,9 +28,9 @@ let _queryColumnRenderers = {};
  * @param metadata Optional Map to set the query metadata for this application
  * @param columnRenderers Optional Map to set the column renderers for this application
  */
-export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?: Record<string, any>): void {
+export function initQueryGridState(metadata?: Record<string, any>, columnRenderers?: Record<string, any>): void {
     if (metadata) {
-        setQueryMetadata(metadata);
+        setQueryMetadata(fromJS(metadata));
     }
 
     if (columnRenderers) {

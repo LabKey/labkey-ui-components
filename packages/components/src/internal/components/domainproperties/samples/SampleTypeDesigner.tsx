@@ -149,7 +149,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
-        initQueryGridState();
         let domainDetails = this.props.initModel || DomainDetails.create();
         if (props.defaultSampleFieldConfig) {
             const domainDesign = domainDetails.domainDesign.merge({

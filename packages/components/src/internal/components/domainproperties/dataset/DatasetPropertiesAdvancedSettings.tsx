@@ -140,8 +140,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         super(props);
         const initialState = this.getInitialState();
 
-        initQueryGridState(); // needed for selectRows usage
-
         this.state = {
             modalOpen: false,
             ...initialState,

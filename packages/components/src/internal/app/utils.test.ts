@@ -64,6 +64,7 @@ import {
 import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
+    EXPERIMENTAL_CHART_BUILDER,
     EXPERIMENTAL_REQUESTS_MENU,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
@@ -677,9 +678,22 @@ describe('utils', () => {
         expect(isLIMSEnabled({})).toBeFalsy();
         expect(isLIMSEnabled({ inventory: {} })).toBeFalsy();
         expect(isLIMSEnabled({ inventory: {}, samplemanagement: {} })).toBeFalsy();
-        expect(isLIMSEnabled({ inventory: {}, samplemanagement: {}, lims: {} })).toBeTruthy();
+        expect(
+            isLIMSEnabled({
+                inventory: {},
+                samplemanagement: { EXPERIMENTAL_CHART_BUILDER: true },
+                core: { productFeatures: [ProductFeature.ChartBuilding] },
+            })
+        ).toBeTruthy();
         expect(isLIMSEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeFalsy();
-        expect(isLIMSEnabled({ biologics: {}, lims: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
+        expect(
+            isLIMSEnabled({
+                biologics: {},
+                samplemanagement: { EXPERIMENTAL_CHART_BUILDER: true },
+                inventory: {},
+                core: { productFeatures: [ProductFeature.ChartBuilding] },
+            })
+        ).toBeTruthy();
     });
 
     test('setProductProjects', () => {

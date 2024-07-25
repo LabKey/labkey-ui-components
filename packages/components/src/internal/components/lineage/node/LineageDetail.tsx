@@ -23,9 +23,12 @@ const LineageDetailImpl: FC<LineageDetailProps & InjectedQueryModels> = memo(pro
     if (queryModels.model.isLoading) return <LoadingSpinner />;
     if (queryModels.model.hasLoadErrors) return <Alert>{queryModels.model.loadErrors[0]}</Alert>;
 
-    const additionalCols = queryModels.model.allColumns.filter(
-        col => ADDITIONAL_DETAIL_FIELDS.indexOf(col.fieldKey?.toLowerCase()) > -1
-    );
+    // Issue 50537: only show the "Properties" column in the detail view for the exp schema
+    const isExpSchema = queryModels.model.schemaName === 'exp';
+
+    const additionalCols = isExpSchema
+        ? queryModels.model.allColumns.filter(col => ADDITIONAL_DETAIL_FIELDS.indexOf(col.fieldKey?.toLowerCase()) > -1)
+        : [];
     const detailColumns = [...queryModels.model.detailColumns, ...additionalCols];
 
     return (

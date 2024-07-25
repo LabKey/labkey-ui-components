@@ -130,7 +130,7 @@ export const getChartBuilderQueryConfig = (
 
     return {
         maxRows: -1, // this will be saved with the queryConfig, but we will override it for the preview in the modal
-        requiredVersion: '13.2',
+        requiredVersion: '17.1', // Issue 47898: include formattedValue in response row objects
         schemaName: savedConfig?.schemaName || schemaName,
         queryName: savedConfig?.queryName || queryName,
         viewName: savedConfig?.viewName || viewName,

@@ -59,7 +59,14 @@ interface Dimensions {
 
 const MAX_HEIGHT = 500;
 
-function computeDimensions(width: number): Dimensions {
+function computeDimensions(chartConfig: ChartConfig, measureStore, defaultWidth: number): Dimensions {
+    // Issue 49754: use getChartTypeBasedWidth() to determine width
+    const width = LABKEY_VIS.GenericChartHelper.getChartTypeBasedWidth(
+        chartConfig.renderType,
+        chartConfig.measures,
+        measureStore,
+        defaultWidth
+    );
     const dimensions = {
         width,
         height: (width * 9) / 16, // 16:9 aspect ratio
@@ -96,14 +103,12 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
         try {
             const savedChartModel = await api.fetchGenericChart(reportId);
 
-            const chartConfig_ = {
-                ...savedChartModel.visualizationConfig.chartConfig,
-                ...computeDimensions(ref.current.offsetWidth),
-            };
+            const chartConfig_ = { ...savedChartModel.visualizationConfig.chartConfig };
             setChartConfig(chartConfig_);
 
             const queryConfig_ = savedChartModel.visualizationConfig.queryConfig;
             queryConfig_.containerFilter = containerFilter;
+            queryConfig_.requiredVersion = '17.1'; // Issue 47898: include formattedValue in response row objects
             if (filters) {
                 queryConfig_.filterArray = [...queryConfig_.filterArray, ...filters];
             }
@@ -118,17 +123,8 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
     }, [api, containerFilter, reportId, filterKey]);
 
     const updateChartSize = useCallback(() => {
-        setChartConfig(currentChartConfig => {
-            if (currentChartConfig === undefined || ref.current === undefined) return currentChartConfig;
-
-            const updatedChartConfig = {
-                ...currentChartConfig,
-                ...computeDimensions(ref.current.offsetWidth),
-            };
-            setChartConfig(updatedChartConfig);
-
-            return updatedChartConfig;
-        });
+        // call to setChartConfig to force re-render
+        setChartConfig(currentChartConfig => ({ ...currentChartConfig }));
     }, []);
 
     useEffect(() => {
@@ -156,7 +152,15 @@ export const SVGChart: FC<Props> = memo(({ api, chart, container, filters }) => 
                         setLoadingData(false);
                     });
                 } else {
-                    LABKEY_VIS.GenericChartHelper.generateChartSVG(divId, chartConfig, measureStore);
+                    LABKEY_VIS.GenericChartHelper.generateChartSVG(
+                        divId,
+                        {
+                            ...chartConfig,
+                            // Issue 49754: need to wait until we have measureStore to calculated width
+                            ...computeDimensions(chartConfig, measureStore, ref.current.offsetWidth),
+                        },
+                        measureStore
+                    );
                 }
             }
         };

@@ -43,6 +43,15 @@ export class Value extends React.Component<ValueProps, ValueState> {
     }
 
     onClick = (event): void => {
+        // Issue 50449: Expand icon click area to remove filter value
+        const filterBoundBoxClick = event.target.className?.indexOf('filter-status-value') > -1;
+        const boxLeftEdge = event.target.getBoundingClientRect().left;
+        const isIconClick = event.clientX - boxLeftEdge < 30;
+        if (filterBoundBoxClick && isIconClick) {
+            this.onIconClick(event);
+            return;
+        }
+
         event.stopPropagation();
         event.preventDefault();
         if (this.props.onClick && this.props.actionValue.isReadOnly === undefined) {

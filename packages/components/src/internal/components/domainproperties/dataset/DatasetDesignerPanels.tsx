@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import React, { ReactNode } from 'react';
 
 import { List } from 'immutable';
@@ -61,7 +60,6 @@ interface Props {
     onChange?: (model: DatasetModel) => void;
     onComplete: (model: DatasetModel) => void;
     saveBtnText?: string;
-    testMode?: boolean;
 }
 
 interface State {
@@ -490,7 +488,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             firstState,
             validatePanel,
             saveBtnText,
-            testMode,
         } = this.props;
 
         const { model, file, keyPropertyIndex, visitDatePropertyIndex, importError } = this.state;
@@ -513,7 +510,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     keyPropertyIndex={keyPropertyIndex}
                     visitDatePropertyIndex={visitDatePropertyIndex}
                     onIndexChange={this.onIndexChange}
-                    controlledCollapse={true}
+                    controlledCollapse
                     panelStatus={
                         model.isNew()
                             ? getDomainPanelStatus(0, currentPanelIndex, visitedPanels, firstState)
@@ -535,7 +532,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}
                     setFileImportData={this.setFileImportData}
-                    controlledCollapse={true}
+                    controlledCollapse
                     initCollapsed={currentPanelIndex !== 1}
                     validate={validatePanel === 1}
                     panelStatus={
@@ -553,10 +550,9 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                         hideImportData: model.definitionIsShared, // Shared (Dataspace) study does not have permission to import data. See study-importAction.validatePermission
                         retainReservedFields: true, // reserved fields are used for mapping the participant and visit columns.
                     }}
-                    testMode={testMode}
                 />
                 <Progress
-                    modal={true}
+                    modal
                     delay={1000}
                     estimate={file ? file.size * 0.005 : undefined}
                     title="Importing data from selected file..."

@@ -21,6 +21,12 @@ import { QueryColumn } from '../../../public/QueryColumn';
 
 import { ConceptModel, OntologyModel } from '../ontology/models';
 
+import {
+    TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT,
+    TEST_LKS_STARTER_MODULE_CONTEXT,
+    TEST_LKSM_STARTER_MODULE_CONTEXT,
+} from '../../productFixtures';
+
 import { createFormInputId } from './utils';
 import {
     downloadJsonFile,
@@ -47,6 +53,7 @@ import { DEFAULT_TEXT_CHOICE_VALIDATOR, DomainDesign, DomainException, DomainFie
 import {
     ATTACHMENT_TYPE,
     BOOLEAN_TYPE,
+    CALCULATED_TYPE,
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
@@ -79,6 +86,10 @@ import {
 import { getDomainPropertiesTestAPIWrapper } from './APIWrapper';
 
 describe('domain properties actions', () => {
+    beforeEach(() => {
+        window.history.pushState({}, 'Test Title', '/');
+    });
+
     test('create id', () => {
         return expect(createFormInputId('marty', 0, 100)).toBe(DOMAIN_FIELD_PREFIX + '-marty-0-100');
     });
@@ -282,8 +293,12 @@ describe('domain properties actions', () => {
         expect(getDomainPanelClass(true, true, true)).toBe('panel panel-default domain-form-panel');
         expect(getDomainPanelClass(true, false, false)).toBe('panel panel-default domain-form-panel');
         expect(getDomainPanelClass(true, false, true)).toBe('panel panel-default domain-form-panel');
-        expect(getDomainPanelClass(false, true, false)).toBe('panel panel-default domain-form-panel lk-border-theme-light');
-        expect(getDomainPanelClass(false, true, true)).toBe('panel panel-default domain-form-panel domain-panel-no-theme');
+        expect(getDomainPanelClass(false, true, false)).toBe(
+            'panel panel-default domain-form-panel lk-border-theme-light'
+        );
+        expect(getDomainPanelClass(false, true, true)).toBe(
+            'panel panel-default domain-form-panel domain-panel-no-theme'
+        );
         expect(getDomainPanelClass(false, false, false)).toBe('panel panel-default domain-form-panel');
         expect(getDomainPanelClass(false, false, true)).toBe('panel panel-default domain-form-panel');
     });
@@ -332,6 +347,8 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypes, all optional allowed', () => {
+        LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
+        LABKEY.moduleContext.core['experimental-calculated-fields'] = true;
         const domain = DomainDesign.create({
             allowFlagProperties: true,
             allowFileLinkProperties: true,
@@ -339,6 +356,7 @@ describe('domain properties actions', () => {
             allowTimepointProperties: true,
             allowTextChoiceProperties: true,
             allowSampleSubjectProperties: true,
+            allowCalculatedFields: true,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeTruthy();
@@ -353,9 +371,12 @@ describe('domain properties actions', () => {
         expect(available.contains(TEXT_CHOICE_TYPE)).toBeTruthy();
         expect(available.contains(SAMPLE_TYPE)).toBeTruthy();
         expect(available.contains(PARTICIPANT_TYPE)).toBeTruthy();
+        expect(available.contains(CALCULATED_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypes, no optional allowed', () => {
+        LABKEY.moduleContext = { ...TEST_LKS_STARTER_MODULE_CONTEXT };
+        LABKEY.moduleContext.core['experimental-calculated-fields'] = true;
         const domain = DomainDesign.create({
             allowFlagProperties: false,
             allowFileLinkProperties: false,
@@ -363,6 +384,7 @@ describe('domain properties actions', () => {
             allowTimepointProperties: false,
             allowTextChoiceProperties: false,
             allowSampleSubjectProperties: false,
+            allowCalculatedFields: false,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeFalsy();
@@ -377,6 +399,29 @@ describe('domain properties actions', () => {
         expect(available.contains(TEXT_CHOICE_TYPE)).toBeFalsy();
         expect(available.contains(SAMPLE_TYPE)).toBeFalsy();
         expect(available.contains(PARTICIPANT_TYPE)).toBeFalsy();
+        expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
+    });
+
+    test('getAvailableTypes calculated fields, LKSM Starter', () => {
+        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#');
+        LABKEY.moduleContext = { ...TEST_LKSM_STARTER_MODULE_CONTEXT };
+        LABKEY.moduleContext.core['experimental-calculated-fields'] = true;
+        const domain = DomainDesign.create({
+            allowCalculatedFields: true,
+        });
+        const available = getAvailableTypes(domain);
+        expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
+    });
+
+    test('getAvailableTypes calculated fields, LKSM Professional', () => {
+        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#');
+        LABKEY.moduleContext = { ...TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT };
+        LABKEY.moduleContext.core['experimental-calculated-fields'] = true;
+        const domain = DomainDesign.create({
+            allowCalculatedFields: true,
+        });
+        const available = getAvailableTypes(domain);
+        expect(available.contains(CALCULATED_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypesForOntology', async () => {
@@ -419,20 +464,26 @@ describe('domain properties actions', () => {
 
     test('getAvailableTypes, sampleType Premium', () => {
         LABKEY.moduleContext.api = { moduleNames: ['premium'] };
+        LABKEY.moduleContext.core = { 'experimental-calculated-fields': true };
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
+            allowCalculatedFields: true,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(UNIQUE_ID_TYPE)).toBeTruthy();
+        expect(available.contains(CALCULATED_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypes, sampleType community', () => {
         LABKEY.moduleContext.api = { moduleNames: ['api', 'core'] };
+        LABKEY.moduleContext.core = { 'experimental-calculated-fields': true };
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
+            allowCalculatedFields: true,
         });
         const available = getAvailableTypes(domain);
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
+        expect(available.contains(CALCULATED_TYPE)).toBeFalsy();
     });
 
     test('updateOntologyFieldProperties', () => {
@@ -556,11 +607,11 @@ describe('domain properties actions', () => {
         document.body.removeChild = jest.fn();
         downloadJsonFile('test-file', 'fileName');
 
-        expect(createElementSpy).toBeCalledWith('a');
+        expect(createElementSpy).toHaveBeenCalledWith('a');
         expect(mockLink.style.display).toBe('none');
-        expect(document.body.appendChild).toBeCalledWith(mockLink);
-        expect(mockLink.click).toBeCalled();
-        expect(document.body.removeChild).toBeCalledWith(mockLink);
+        expect(document.body.appendChild).toHaveBeenCalledWith(mockLink);
+        expect(mockLink.click).toHaveBeenCalled();
+        expect(document.body.removeChild).toHaveBeenCalledWith(mockLink);
     });
 
     test('processJsonImport', () => {

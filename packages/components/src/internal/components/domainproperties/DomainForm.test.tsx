@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 
@@ -22,7 +22,7 @@ import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS } from '../samples/constants';
 
 import { DomainDesign } from './models';
-import DomainForm, { DomainFormImpl } from './DomainForm';
+import DomainForm, { DomainFormImpl, DomainFormProps } from './DomainForm';
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
@@ -50,51 +50,37 @@ const API = getDomainPropertiesTestAPIWrapper(jest.fn, {
 
 interface Props {
     hideInferFromFile?: boolean;
-    testMode?: boolean;
 }
 
-class DomainFormContainer extends React.PureComponent<Props, any> {
-    constructor(props: Props) {
-        super(props);
+const DomainFormContainer: FC<Props> = memo(props => {
+    const { hideInferFromFile } = props;
+    const [domain, setDomain] = useState<DomainDesign>(() => DomainDesign.create({}));
 
-        this.state = {
+    const onChange = useCallback((newDomain: DomainDesign) => {
+        setDomain(newDomain);
+    }, []);
+
+    return (
+        <DomainForm api={API} domain={domain} domainFormDisplayOptions={{ hideInferFromFile }} onChange={onChange} />
+    );
+});
+
+describe('DomainForm', () => {
+    function defaultProps(): DomainFormProps {
+        return {
+            api: API,
             domain: DomainDesign.create({}),
+            domainFormDisplayOptions: { hideInferFromFile: true },
+            onChange: jest.fn(),
         };
     }
 
-    onChange = (newDomain: DomainDesign) => {
-        this.setState(() => ({
-            domain: newDomain,
-        }));
-    };
-
-    render() {
-        return (
-            <DomainForm
-                api={API}
-                domain={this.state.domain}
-                domainFormDisplayOptions={{
-                    hideInferFromFile: this.props.hideInferFromFile,
-                }}
-                onChange={this.onChange}
-                testMode={this.props.testMode}
-            />
-        );
-    }
-}
-
-describe('DomainForm', () => {
     test('with empty domain form', async () => {
-        const domain = DomainDesign.create({});
-
         await act(async () => {
             renderWithAppContext(
                 <DomainForm
-                    api={API}
-                    domain={domain}
-                    onChange={jest.fn()}
+                    {...defaultProps()}
                     domainFormDisplayOptions={{ hideImportExport: true, hideInferFromFile: true }}
-                    testMode={true}
                 />
             );
         });
@@ -120,22 +106,15 @@ describe('DomainForm', () => {
     });
 
     test('with showHeader, helpNoun, and helpTopic', async () => {
-        const domain = DomainDesign.create({});
-
         let container;
         await act(async () => {
             container = renderWithAppContext(
                 <DomainForm
-                    api={API}
-                    domain={domain}
+                    {...defaultProps()}
+                    domainFormDisplayOptions={{ hideInferFromFile: true }}
                     helpNoun="assay"
                     helpTopic="assays"
-                    domainFormDisplayOptions={{
-                        hideInferFromFile: true,
-                    }}
                     showHeader={false}
-                    onChange={jest.fn()}
-                    testMode={true}
                 />
             );
         });
@@ -155,15 +134,7 @@ describe('DomainForm', () => {
 
         let container;
         await act(async () => {
-            container = renderWithAppContext(
-                <DomainForm
-                    api={API}
-                    domain={domain}
-                    domainFormDisplayOptions={{ hideInferFromFile: true }}
-                    onChange={jest.fn()}
-                    testMode={true}
-                />
-            );
+            container = renderWithAppContext(<DomainForm {...defaultProps()} domain={domain} />);
         });
 
         expect(container).toMatchSnapshot();
@@ -252,9 +223,7 @@ describe('DomainForm', () => {
 
         let container;
         await act(async () => {
-            container = renderWithAppContext(
-                <DomainForm api={API} domain={domain} onChange={jest.fn()} testMode={true} />
-            );
+            container = renderWithAppContext(<DomainForm api={API} domain={domain} onChange={jest.fn()} />);
         });
 
         expect(container).toMatchSnapshot();
@@ -304,9 +273,7 @@ describe('DomainForm', () => {
 
         let container;
         await act(async () => {
-            container = renderWithAppContext(
-                <DomainForm api={API} domain={domain} onChange={jest.fn()} testMode={true} />
-            );
+            container = renderWithAppContext(<DomainForm api={API} domain={domain} onChange={jest.fn()} />);
         });
 
         expect(container).toMatchSnapshot();
@@ -337,7 +304,7 @@ describe('DomainForm', () => {
         let container;
         await act(async () => {
             container = renderWithAppContext(
-                <DomainForm api={API} domain={domain} key="domainForm" onChange={jest.fn()} testMode={true} />
+                <DomainForm api={API} domain={domain} key="domainForm" onChange={jest.fn()} />
             );
         });
 
@@ -365,14 +332,7 @@ describe('DomainForm', () => {
 
         await act(async () => {
             renderWithAppContext(
-                <DomainForm
-                    api={API}
-                    domain={domain}
-                    collapsible={false}
-                    initCollapsed={true}
-                    onChange={jest.fn()}
-                    testMode={true}
-                />
+                <DomainForm api={API} domain={domain} collapsible={false} initCollapsed onChange={jest.fn()} />
             );
         });
 
@@ -406,9 +366,8 @@ describe('DomainForm', () => {
                     api={API}
                     domain={domain}
                     collapsible={false}
-                    initCollapsed={true}
+                    initCollapsed
                     onChange={jest.fn()}
-                    testMode={true}
                     panelStatus="COMPLETE"
                 />
             );
@@ -420,21 +379,14 @@ describe('DomainForm', () => {
     });
 
     test('domain form headerPrefix', async () => {
-        const domain = DomainDesign.create({ name: 'Foo headerPrefix' });
-
         await act(async () => {
             renderWithAppContext(
                 <DomainForm
-                    api={API}
-                    domain={domain}
-                    domainFormDisplayOptions={{
-                        hideInferFromFile: true,
-                    }}
+                    {...defaultProps()}
                     collapsible={false}
-                    initCollapsed={true}
+                    domain={DomainDesign.create({ name: 'Foo headerPrefix' })}
                     headerPrefix="Foo" // this text should be removed from the panel header display text
-                    onChange={jest.fn()}
-                    testMode={true}
+                    initCollapsed
                 />
             );
         });
@@ -445,17 +397,9 @@ describe('DomainForm', () => {
     });
 
     test('with hideInferFromFile false', async () => {
-        const domain = DomainDesign.create({});
-
         await act(async () => {
             renderWithAppContext(
-                <DomainForm
-                    api={API}
-                    domain={domain}
-                    domainFormDisplayOptions={{ hideInferFromFile: false }}
-                    onChange={jest.fn()}
-                    testMode={true}
-                />
+                <DomainForm {...defaultProps()} domainFormDisplayOptions={{ hideInferFromFile: false }} />
             );
         });
 
@@ -464,17 +408,9 @@ describe('DomainForm', () => {
     });
 
     test('with hideImportExport false', async () => {
-        const domain = DomainDesign.create({});
-
         await act(async () => {
             renderWithAppContext(
-                <DomainForm
-                    api={API}
-                    domain={domain}
-                    domainFormDisplayOptions={{ hideInferFromFile: false }}
-                    onChange={jest.fn()}
-                    testMode={true}
-                />
+                <DomainForm {...defaultProps()} domainFormDisplayOptions={{ hideInferFromFile: false }} />
             );
         });
 
@@ -483,16 +419,11 @@ describe('DomainForm', () => {
     });
 
     test('with hideInferFromFile true and hideImportExport true', async () => {
-        const domain = DomainDesign.create({});
-
         await act(async () => {
             renderWithAppContext(
                 <DomainForm
-                    api={API}
-                    domain={domain}
+                    {...defaultProps()}
                     domainFormDisplayOptions={{ hideInferFromFile: true, hideImportExport: true }}
-                    onChange={jest.fn()}
-                    testMode={true}
                 />
             );
         });
@@ -508,7 +439,7 @@ describe('DomainForm', () => {
 
     test('hideInferFromFile false click domain-form-manual-btn', async () => {
         await act(async () => {
-            renderWithAppContext(<DomainFormContainer hideInferFromFile={false} testMode={true} />);
+            renderWithAppContext(<DomainFormContainer hideInferFromFile={false} />);
         });
 
         expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(1);
@@ -538,7 +469,7 @@ describe('DomainForm', () => {
 
         await act(async () => {
             renderWithAppContext(
-                <DomainForm api={API} domain={domain} onChange={jest.fn} collapsible controlledCollapse testMode />
+                <DomainForm api={API} domain={domain} onChange={jest.fn()} collapsible controlledCollapse />
             );
         });
 
@@ -580,22 +511,14 @@ describe('DomainForm', () => {
         const _headerId = 'mock-app-header';
         const _headerText = 'This is a mock app header';
 
-        const mockAppHeader = jest.fn();
-        mockAppHeader.mockReturnValue(
-            <>
-                <div id={_headerId}>{_headerText}</div>
-            </>
-        );
-
         await act(async () => {
             renderWithAppContext(
                 <DomainForm
                     api={API}
+                    appDomainHeaderRenderer={jest.fn().mockReturnValue(<div id={_headerId}>{_headerText}</div>)}
+                    collapsible
                     domain={domain}
-                    onChange={jest.fn}
-                    collapsible={true}
-                    appDomainHeaderRenderer={mockAppHeader}
-                    testMode={true}
+                    onChange={jest.fn()}
                 />
             );
         });
@@ -631,7 +554,6 @@ describe('DomainForm', () => {
                     domainFormDisplayOptions={{
                         hideRequired: true,
                     }}
-                    testMode={true}
                 />
             );
         });
@@ -653,7 +575,6 @@ describe('DomainForm', () => {
                         hideAddFieldsButton: true,
                         hideInferFromFile: true,
                     }}
-                    testMode={true}
                 />
             );
         });
@@ -666,7 +587,7 @@ describe('DomainForm', () => {
         const domain = DomainDesign.create({});
 
         await act(async () => {
-            renderWithAppContext(<DomainForm api={API} domain={domain} onChange={jest.fn()} testMode={true} />);
+            renderWithAppContext(<DomainForm api={API} domain={domain} onChange={jest.fn()} />);
         });
 
         expect(document.getElementsByClassName('domain-form-manual-section').length).toEqual(1);
@@ -702,7 +623,6 @@ describe('DomainForm', () => {
                     domainFormDisplayOptions={{
                         hideRequired: true,
                     }}
-                    testMode={true}
                 />
             );
         });
@@ -743,7 +663,6 @@ describe('DomainForm', () => {
                         hideRequired: true,
                         hideImportExport: true,
                     }}
-                    testMode={true}
                 />
             );
         });
@@ -764,7 +683,7 @@ describe('DomainForm', () => {
         const domain = DomainDesign.create({ fields });
 
         await act(async () => {
-            renderWithAppContext(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={false} />);
+            renderWithAppContext(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} />);
         });
 
         expect(document.getElementsByClassName('domain-field-row').length).toEqual(4);
@@ -791,7 +710,7 @@ describe('DomainForm', () => {
 
         const domain = DomainDesign.create({ fields, domainKindName: 'VarList' });
         await act(async () => {
-            renderWithAppContext(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={false} />);
+            renderWithAppContext(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} />);
         });
 
         await act(async () => {
@@ -810,7 +729,7 @@ describe('DomainForm', () => {
 
         const domain = DomainDesign.create({ fields, domainKindName: INT_LIST });
         await act(async () => {
-            renderWithAppContext(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} testMode={false} />);
+            renderWithAppContext(<DomainFormImpl api={API} domain={domain} onChange={jest.fn()} />);
         });
 
         await act(async () => {
@@ -822,17 +741,9 @@ describe('DomainForm', () => {
     });
 
     test('with systemFields', async () => {
-        const domain = DomainDesign.create({});
-
         await act(async () => {
             renderWithAppContext(
-                <DomainFormImpl
-                    api={API}
-                    domain={domain}
-                    onChange={jest.fn()}
-                    systemFields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS}
-                    testMode={true}
-                />
+                <DomainFormImpl {...defaultProps()} systemFields={SAMPLE_DOMAIN_DEFAULT_SYSTEM_FIELDS} />
             );
         });
 

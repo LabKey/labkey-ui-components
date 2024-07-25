@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NameAndLinkingOptions Name and Linking options 1`] = `
+<div>
+  <div>
+    <div
+      class="row"
+    >
+      <div
+        class="col-xs-12"
+      >
+        <div
+          class="domain-field-section-heading domain-field-section-hdr"
+        >
+          Name and Linking Options
+        </div>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="col-xs-5"
+      >
+        <div
+          class="domain-field-label"
+        >
+          Description
+        </div>
+        <textarea
+          class="form-control"
+          id="domainpropertiesrow-description-1-1"
+          name="domainpropertiesrow-description"
+          rows="4"
+        >
+          This is a description
+        </textarea>
+      </div>
+      <div
+        class="col-xs-3"
+      >
+        <div
+          class="domain-field-label"
+        >
+          Label
+        </div>
+        <input
+          class="form-control"
+          id="domainpropertiesrow-label-1-1"
+          name="domainpropertiesrow-label"
+          type="text"
+          value="This is a label"
+        />
+        <div
+          class="domain-field-label"
+        >
+          Import 
+          <span
+            class="domain-no-wrap"
+          >
+            Aliases
+            <div
+              class="overlay-trigger"
+            >
+              <span
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
+            
+          </span>
+        </div>
+        <input
+          class="form-control"
+          id="domainpropertiesrow-importAliases-1-1"
+          name="domainpropertiesrow-importAliases"
+          type="text"
+          value="This is an alias"
+        />
+      </div>
+      <div
+        class="col-xs-4"
+      >
+        <div
+          class="domain-field-label"
+        >
+          <span
+            class="domain-no-wrap"
+          >
+            URL
+            <div
+              class="overlay-trigger"
+            >
+              <span
+                class="label-help-target"
+              >
+                <span
+                  class="label-help-icon fa fa-question-circle"
+                />
+              </span>
+            </div>
+            
+          </span>
+        </div>
+        <input
+          class="form-control"
+          id="domainpropertiesrow-URL-1-1"
+          name="domainpropertiesrow-URL"
+          type="text"
+          value="This is a URL"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

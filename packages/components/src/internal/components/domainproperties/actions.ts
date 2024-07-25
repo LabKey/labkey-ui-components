@@ -23,7 +23,7 @@ import { SimpleResponse } from '../files/models';
 
 import { ConceptModel, OntologyModel } from '../ontology/models';
 
-import { isCommunityDistribution } from '../../app/utils';
+import { isCalculatedFieldsEnabled, isCommunityDistribution } from '../../app/utils';
 
 import { Container } from '../base/models/Container';
 import { naturalSortByProperty } from '../../../public/sort';
@@ -60,6 +60,7 @@ import {
 } from './constants';
 import {
     ATTACHMENT_TYPE,
+    CALCULATED_TYPE,
     FILE_TYPE,
     FLAG_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
@@ -328,6 +329,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === USERS_TYPE && !domain.allowUserProperties) {
+        return false;
+    }
+
+    if (type === CALCULATED_TYPE && (!isCalculatedFieldsEnabled() || !domain.allowCalculatedFields)) {
         return false;
     }
 
@@ -683,6 +688,7 @@ export function updateDataType(field: DomainField, value: any): DomainField {
             conceptImportColumn: undefined,
             scannable: undefined,
             textChoiceValidator: undefined,
+            valueExpression: undefined,
         }) as DomainField;
 
         if (field.isNew()) {
@@ -701,6 +707,14 @@ export function updateDataType(field: DomainField, value: any): DomainField {
                 rangeValidators: [],
                 regexValidators: [],
                 scale: MAX_TEXT_LENGTH,
+            }) as DomainField;
+        } else if (field.isCalculatedField()) {
+            field = field.merge({
+                importAliases: undefined,
+                principalConceptCode: undefined,
+                regexValidators: [],
+                uniqueConstraint: false,
+                PHI: undefined,
             }) as DomainField;
         } else {
             field = field.merge({

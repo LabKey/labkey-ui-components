@@ -16,7 +16,7 @@ export const filterDataTypeHiddenEntity = (dataType: DataTypeEntity, hiddenEntit
     return !hiddenEntities || hiddenEntities?.indexOf(dataType.rowId ?? dataType.lsid) === -1;
 };
 
-interface Props {
+export interface DataTypeSelectorProps {
     allDataCounts?: Record<string, number>;
     allDataTypes?: DataTypeEntity[]; // either use allDataTypes to pass in dataTypes, or specify entityDataType to query dataTypes
     api?: ComponentsAPIWrapper;
@@ -64,7 +64,7 @@ export const getUncheckedEntityWarning = (
     return null;
 };
 
-export const DataTypeSelector: FC<Props> = memo(props => {
+export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
     const {
         api,
         toggleSelectAll,
@@ -84,12 +84,12 @@ export const DataTypeSelector: FC<Props> = memo(props => {
         dataTypePrefix = '',
     } = props;
 
-    const [dataTypes, setDataTypes] = useState<DataTypeEntity[]>(undefined);
-    const [dataType, setDataType] = useState<ProjectConfigurableDataType>(undefined);
-    const [error, setError] = useState<string>(undefined);
+    const [dataTypes, setDataTypes] = useState<DataTypeEntity[]>();
+    const [dataType, setDataType] = useState<ProjectConfigurableDataType>();
+    const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
-    const [dataCounts, setDataCounts] = useState<Record<string, number>>(undefined);
-    const [uncheckedEntities, setUncheckedEntities] = useState<any[] /* number[] | string[]*/>(undefined);
+    const [dataCounts, setDataCounts] = useState<Record<string, number>>();
+    const [uncheckedEntities, setUncheckedEntities] = useState<any[] /* number[] | string[]*/>();
 
     const loadDataTypes = useCallback(async () => {
         try {
@@ -160,7 +160,7 @@ export const DataTypeSelector: FC<Props> = memo(props => {
             updateUncheckedTypes(dataType, updated);
             setUncheckedEntities(updated);
         },
-        [disabled, uncheckedEntities, dataType, ensureCount]
+        [disabled, ensureCount, uncheckedEntities, updateUncheckedTypes, dataType]
     );
 
     const allSelected = useMemo(() => {

@@ -3,6 +3,7 @@
 import { Filter, Query } from '@labkey/api';
 
 import {
+    CALCULATED_CONCEPT_URI,
     CONCEPT_CODE_CONCEPT_URI,
     DATE_RANGE_URI,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -246,6 +247,7 @@ export class QueryColumn implements IQueryColumn {
     declare userEditable: boolean;
     declare validValues: string[];
     // declare versionField: boolean;
+    declare valueExpression: string;
     declare wrappedColumnName: string;
 
     declare cell: Function;
@@ -407,6 +409,10 @@ export class QueryColumn implements IQueryColumn {
 
     get isDateOnlyColumn(): boolean {
         return this.rangeURI === DATE_RANGE_URI;
+    }
+
+    get isCalculatedField(): boolean {
+        return this.conceptURI === CALCULATED_CONCEPT_URI;
     }
 
     get hasHelpTipData(): boolean {

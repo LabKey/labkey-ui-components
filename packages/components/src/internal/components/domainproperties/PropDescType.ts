@@ -5,6 +5,7 @@ import {
     AUTO_INT_CONCEPT_URI,
     BINARY_RANGE_URI,
     BOOLEAN_RANGE_URI,
+    CALCULATED_CONCEPT_URI,
     CONCEPT_CODE_CONCEPT_URI,
     CREATED_TIMESTAMP_CONCEPT_URI,
     DATE_RANGE_URI,
@@ -86,11 +87,15 @@ export class PropDescType
     static isTextChoice(name: string): boolean {
         // in the case of the field editor row data type select input change, the field input name is provided
         // so check for that case here as well
-        return name === TEXT_CHOICE_CONCEPT_URI || name === 'textChoice';
+        return name === TEXT_CHOICE_CONCEPT_URI || name === TEXT_CHOICE_TYPE.name;
     }
 
     static isLookup(name: string): boolean {
         return name === 'lookup';
+    }
+
+    static isCalculation(name: string): boolean {
+        return name === CALCULATED_CONCEPT_URI || name === CALCULATED_TYPE.name;
     }
 
     static isInteger(rangeURI: string): boolean {
@@ -347,6 +352,12 @@ export const SMILES_TYPE = new PropDescType({
     conceptURI: SMILES_CONCEPT_URI,
 });
 
+export const CALCULATED_TYPE = new PropDescType({
+    name: 'calculation',
+    display: 'Calculation',
+    conceptURI: CALCULATED_CONCEPT_URI,
+});
+
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
     MULTILINE_TYPE,
@@ -370,6 +381,7 @@ export const PROP_DESC_TYPES = List([
     VISIT_LABEL_TYPE,
     UNIQUE_ID_TYPE,
     TEXT_CHOICE_TYPE,
+    CALCULATED_TYPE,
 ]);
 
 export const READONLY_DESC_TYPES = List([

@@ -6,7 +6,7 @@ import { DomainDesign, DomainDetails, IAppDomainHeader, IDomainField, IDomainFor
 import DomainForm from '../DomainForm';
 
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DERIVATION_DATA_SCOPES } from '../constants';
-import { addDomainField, getDomainPanelStatus, saveDomain, scrollDomainErrorIntoView } from '../actions';
+import { addDomainField, getDomainPanelStatus, scrollDomainErrorIntoView } from '../actions';
 import { DEFAULT_SAMPLE_FIELD_CONFIG, SAMPLE_TYPE_NAME_EXPRESSION_TOPIC } from '../../samples/constants';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
@@ -95,7 +95,7 @@ interface Props {
     headerText?: string;
     helpTopic?: string;
     includeDataClasses?: boolean;
-    initModel: DomainDetails;
+    initModel?: DomainDetails;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
     metricUnitProps?: MetricUnitProps;
     nameExpressionInfoUrl?: string;
@@ -112,7 +112,6 @@ interface Props {
     showGenIdBanner?: boolean;
     showLinkToStudy?: boolean;
     showParentLabelPrefix?: boolean;
-    testMode?: boolean;
     useSeparateDataClassesAliasMenu?: boolean;
     validateNameExpressions?: boolean;
     validateProperties?: (designerDetails?: any) => Promise<any>;
@@ -159,13 +158,8 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             domainDetails = domainDetails.set('domainDesign', domainDesign) as DomainDetails;
         }
 
-        const model = SampleTypeModel.create(
-            domainDetails,
-            domainDetails.domainDesign ? domainDetails.domainDesign.name : undefined
-        );
-
         this.state = {
-            model,
+            model: SampleTypeModel.create(domainDetails, domainDetails.domainDesign?.name),
             parentOptions: undefined,
             error: undefined,
             showUniqueIdConfirmation: false,
@@ -216,33 +210,24 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         const { name, parentAliases } = model;
         const aliases = {};
 
-        if (parentAliases) {
-            parentAliases.forEach((alias: IParentAlias) => {
-                const { parentValue } = alias;
+        parentAliases?.forEach((alias: IParentAlias) => {
+            const { parentValue } = alias;
 
-                let value = parentValue && parentValue.value ? (parentValue.value as string) : '';
-                if (parentValue === NEW_SAMPLE_SET_OPTION) {
-                    value = SAMPLE_SET_IMPORT_PREFIX + name;
-                }
+            let value = parentValue && parentValue.value ? (parentValue.value as string) : '';
+            if (parentValue === NEW_SAMPLE_SET_OPTION) {
+                value = SAMPLE_SET_IMPORT_PREFIX + name;
+            }
 
-                aliases[alias.alias] = value;
-            });
-        }
+            aliases[alias.alias] = value;
+        });
 
         return Map<string, string>(aliases);
     }
 
     onFieldChange = (model: SampleTypeModel): void => {
-        const { onChange } = this.props;
-
-        this.setState(
-            () => ({ model, uniqueIdsConfirmed: undefined }),
-            () => {
-                if (onChange) {
-                    onChange(model);
-                }
-            }
-        );
+        this.setState({ model, uniqueIdsConfirmed: undefined }, () => {
+            this.props.onChange?.(model);
+        });
     };
 
     propertiesToggle = (collapsed: boolean, callback: () => void): void => {
@@ -301,55 +286,39 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
     };
 
     domainChangeHandler = (domain: DomainDesign, dirty: boolean): void => {
-        const { onChange } = this.props;
-        const { model } = this.state;
-
         this.setState(
-            () => ({
-                model: model.merge({ domain }) as SampleTypeModel,
+            state => ({
+                model: state.model.merge({ domain }) as SampleTypeModel,
             }),
             () => {
                 // Issue 39918: use the dirty property that DomainForm onChange passes
-                if (onChange && dirty) {
-                    onChange(model);
+                if (dirty) {
+                    this.props.onChange?.(this.state.model);
                 }
             }
         );
     };
 
     onUniqueIdCancel = (): void => {
-        this.setState({
-            showUniqueIdConfirmation: false,
-            uniqueIdsConfirmed: false,
-        });
+        this.setState({ showUniqueIdConfirmation: false, uniqueIdsConfirmed: false });
     };
 
     onUniqueIdConfirm = (): void => {
-        this.setState(
-            () => ({
-                uniqueIdsConfirmed: true,
-            }),
-            () => this.onFinish()
-        );
+        this.setState({ uniqueIdsConfirmed: true }, this.onFinish);
     };
 
     onNameExpressionWarningCancel = (): void => {
         const { setSubmitting } = this.props;
 
         setSubmitting(false, () => {
-            this.setState({
-                nameExpressionWarnings: undefined,
-            });
+            this.setState({ nameExpressionWarnings: undefined });
         });
     };
 
     onNameExpressionWarningConfirm = (): void => {
-        this.setState(
-            () => ({
-                nameExpressionWarnings: undefined,
-            }),
-            () => this.saveDomain(true)
-        );
+        this.setState({ nameExpressionWarnings: undefined }, () => {
+            this.saveDomain(true);
+        });
     };
 
     onFinish = (): void => {
@@ -357,53 +326,47 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         const { model, uniqueIdsConfirmed } = this.state;
 
         if (!model.isNew() && this.getNumNewUniqueIdFields() > 0 && !uniqueIdsConfirmed) {
-            this.setState({
-                showUniqueIdConfirmation: true,
-            });
+            this.setState({ showUniqueIdConfirmation: true });
             return;
         }
 
-        const metricUnitLabel = metricUnitProps?.metricUnitLabel;
         const metricUnitRequired = metricUnitProps?.metricUnitRequired;
         const isValid = model.isValid(defaultSampleFieldConfig, metricUnitRequired);
 
         this.props.onFinish(isValid, this.saveDomain);
 
-        if (!isValid) {
-            let exception: string;
+        if (isValid) return;
 
-            if (model.hasInvalidNameField(defaultSampleFieldConfig)) {
-                exception =
-                    'The ' +
-                    defaultSampleFieldConfig.name +
-                    ' field name is reserved for imported or generated sample ids.';
-            } else if (getDuplicateAlias(model.parentAliases, true).size > 0) {
-                exception =
-                    'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases, true).join(', ');
-            } else if (!model.isMetricUnitValid(metricUnitRequired)) {
-                exception = metricUnitLabel + ' field is required.';
-            } else {
-                exception = model.domain.getFirstFieldError();
-            }
+        let exception: string;
 
-            const updatedModel = model.set('exception', exception) as SampleTypeModel;
-            setSubmitting(false, () => {
-                this.setState(
-                    () => ({ model: updatedModel }),
-                    () => {
-                        scrollDomainErrorIntoView();
-                    }
-                );
-            });
+        if (model.hasInvalidNameField(defaultSampleFieldConfig)) {
+            exception =
+                'The ' +
+                defaultSampleFieldConfig.name +
+                ' field name is reserved for imported or generated sample ids.';
+        } else if (getDuplicateAlias(model.parentAliases, true).size > 0) {
+            exception =
+                'Duplicate parent alias header found: ' + getDuplicateAlias(model.parentAliases, true).join(', ');
+        } else if (!model.isMetricUnitValid(metricUnitRequired)) {
+            exception = metricUnitProps?.metricUnitLabel + ' field is required.';
+        } else {
+            exception = model.domain.getFirstFieldError();
         }
+
+        const updatedModel = model.set('exception', exception) as SampleTypeModel;
+        setSubmitting(false, () => {
+            this.setState({ model: updatedModel }, () => {
+                scrollDomainErrorIntoView();
+            });
+        });
     };
 
-    saveDomain = async (hasConfirmedNameExpression?: boolean) => {
-        const { beforeFinish, setSubmitting, api } = this.props;
+    saveDomain = async (hasConfirmedNameExpression?: boolean): Promise<void> => {
+        const { api, beforeFinish, setSubmitting } = this.props;
         const { model } = this.state;
         const { name, domain, description } = model;
-        if (beforeFinish && !hasConfirmedNameExpression) {
-            beforeFinish(model);
+        if (!hasConfirmedNameExpression) {
+            beforeFinish?.(model);
         }
 
         let domainDesign = domain.merge({
@@ -415,11 +378,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
         if (model.isNew()) {
             // Initialize a sampleId column, this is not displayed as part of the designer.
-            const nameCol = {
-                name: 'Name',
-            };
-
-            domainDesign = addDomainField(domainDesign, nameCol);
+            domainDesign = addDomainField(domainDesign, { name: 'Name' });
         }
 
         try {
@@ -439,7 +398,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 }
             }
         } catch (error) {
-            console.error(error);
             const exception = resolveErrorMessage(error);
             setSubmitting(false, () => {
                 this.setState(
@@ -499,7 +457,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         }
 
         try {
-            const response: DomainDesign = await saveDomain({
+            const response = await api.domain.saveDomain({
                 containerPath: model.isNew()
                     ? getAppHomeFolderPath(new Container(getServerContext().container))
                     : model.containerPath,
@@ -522,19 +480,16 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                   }) as SampleTypeModel);
 
             setSubmitting(false, () => {
-                this.setState(
-                    () => ({ model: updatedModel, showUniqueIdConfirmation: false }),
-                    () => {
-                        scrollDomainErrorIntoView();
-                    }
-                );
+                this.setState({ model: updatedModel, showUniqueIdConfirmation: false }, () => {
+                    scrollDomainErrorIntoView();
+                });
             });
         }
     };
 
     onAddUniqueIdField = (fieldConfig: Partial<IDomainField>): void => {
         this.setState(state => ({
-            model: state.model.set('domain', addDomainField(this.state.model.domain, fieldConfig)) as SampleTypeModel,
+            model: state.model.set('domain', addDomainField(state.model.domain, fieldConfig)) as SampleTypeModel,
         }));
     };
 
@@ -580,7 +535,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         };
     };
 
-    onNameFieldHover = async () => {
+    onNameFieldHover = async (): Promise<void> => {
         const { api } = this.props;
         const { model, namePreviewsLoading } = this.state;
 
@@ -593,26 +548,18 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             description,
         }) as DomainDesign;
 
-        const details = this.getDomainDetails();
-
         try {
             if (this.props.validateNameExpressions) {
                 const response = await api.domain.validateDomainNameExpressions(
                     domainDesign,
                     Domain.KINDS.SAMPLE_TYPE,
-                    details,
+                    this.getDomainDetails(),
                     true
                 );
-                this.setState(() => ({
-                    namePreviewsLoading: false,
-                    namePreviews: response?.previews,
-                }));
+                this.setState({ namePreviews: response?.previews, namePreviewsLoading: false });
             }
         } catch (error) {
-            console.error(error);
-            this.setState(() => ({
-                namePreviewsLoading: false,
-            }));
+            this.setState({ namePreviewsLoading: false });
         }
     };
 
@@ -642,7 +589,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             dataClassTypeCaption,
             dataClassParentageLabel,
             metricUnitProps,
-            testMode,
             domainFormDisplayOptions,
             showLinkToStudy,
             aliquotNamePatternProps,
@@ -766,7 +712,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     onChange={this.domainChangeHandler}
                     onToggle={this.formToggle}
                     appPropertiesOnly={appPropertiesOnly}
-                    testMode={testMode}
                     domainFormDisplayOptions={{
                         ...domainFormDisplayOptions,
                         hideStudyPropertyTypes: !_showLinkToStudy,

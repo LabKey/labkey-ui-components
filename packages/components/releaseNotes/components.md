@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Issue 49754: App charts to expand width and scroll horizontally to match LKS
 - Issue 49753: App charts to use formattedValue in response row objects for bar/box plot tick labels
 
+### version 4.2.0
+*Released*: 24 July 2024
+- Package updates
+
 ### version 4.1.0
 *Released*: 24 July 2024
 - Calculated Columns support in the Field Editor

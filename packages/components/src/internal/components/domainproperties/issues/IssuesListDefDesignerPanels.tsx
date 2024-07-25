@@ -20,7 +20,6 @@ interface Props {
     onChange?: (model: IssuesListDefModel) => void;
     onComplete: (model: IssuesListDefModel) => void;
     saveBtnText?: string;
-    testMode?: boolean;
 }
 
 interface State {
@@ -154,7 +153,6 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
             submitting,
             onTogglePanel,
             saveBtnText,
-            testMode,
         } = this.props;
         const { model } = this.state;
 
@@ -174,7 +172,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
                     api={api}
                     model={model}
                     onChange={this.onPropertiesChange}
-                    controlledCollapse={true}
+                    controlledCollapse
                     initCollapsed={currentPanelIndex !== 0}
                     panelStatus={
                         model.isNew()
@@ -194,7 +192,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
                     helpNoun="issues list"
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}
-                    controlledCollapse={true}
+                    controlledCollapse
                     initCollapsed={currentPanelIndex !== 1}
                     validate={validatePanel === 1}
                     panelStatus={
@@ -211,7 +209,6 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
                         hideImportExport: true,
                         hideInferFromFile: true,
                     }}
-                    testMode={testMode}
                 />
             </BaseDomainDesigner>
         );

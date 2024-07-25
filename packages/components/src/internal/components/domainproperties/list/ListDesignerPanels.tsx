@@ -19,17 +19,19 @@ import { Progress } from '../../base/Progress';
 
 import { AUTO_INT_CONCEPT_URI } from '../constants';
 
+import { ComponentsAPIWrapper } from '../../../APIWrapper';
+
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 
-interface Props {
+export interface ListDesignerPanelsProps {
+    api?: ComponentsAPIWrapper;
     initModel?: ListModel;
     onCancel: () => void;
     onChange: (model: ListModel) => void;
     onComplete: (model: ListModel) => void;
     saveBtnText?: string;
-    testMode?: boolean;
 }
 
 interface State {
@@ -41,8 +43,11 @@ interface State {
 }
 
 // export for testing
-export class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
-    constructor(props: Props & InjectedBaseDomainDesignerProps) {
+export class ListDesignerPanelsImpl extends React.PureComponent<
+    ListDesignerPanelsProps & InjectedBaseDomainDesignerProps,
+    State
+> {
+    constructor(props: ListDesignerPanelsProps & InjectedBaseDomainDesignerProps) {
         super(props);
 
         this.state = {
@@ -63,7 +68,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
         );
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges?: DomainFieldIndexChange[]) => {
+    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges?: DomainFieldIndexChange[]): void => {
         const { model } = this.state;
 
         // Issue 40262: If we have a titleColumn selected and the name changes (not the row index), update the titleColumn
@@ -253,16 +258,8 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
     };
 
     render() {
-        const {
-            onCancel,
-            visitedPanels,
-            currentPanelIndex,
-            firstState,
-            validatePanel,
-            submitting,
-            saveBtnText,
-            testMode,
-        } = this.props;
+        const { api, onCancel, visitedPanels, currentPanelIndex, firstState, validatePanel, submitting, saveBtnText } =
+            this.props;
         const { model, file, importError } = this.state;
 
         return (
@@ -280,7 +277,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
                 <ListPropertiesPanel
                     model={model}
                     onChange={this.onPropertiesChange}
-                    controlledCollapse={true}
+                    controlledCollapse
                     initCollapsed={currentPanelIndex !== 0}
                     panelStatus={
                         model.isNew()
@@ -291,6 +288,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
                     onToggle={this.toggleListPropertiesPanel}
                 />
                 <DomainForm
+                    api={api?.domain}
                     key={model.domain.domainId || 0}
                     domainIndex={0}
                     domain={model.domain}
@@ -300,7 +298,7 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}
                     setFileImportData={this.setFileImportData}
-                    controlledCollapse={true}
+                    controlledCollapse
                     initCollapsed={currentPanelIndex !== 1}
                     validate={validatePanel === 1}
                     panelStatus={
@@ -310,10 +308,9 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
                     }
                     onToggle={this.toggleDomainForm}
                     appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}
-                    testMode={testMode}
                 />
                 <Progress
-                    modal={true}
+                    modal
                     delay={1000}
                     estimate={file ? file.size * 0.005 : undefined}
                     title="Importing data from selected file..."
@@ -332,4 +329,4 @@ export class ListDesignerPanelsImpl extends React.PureComponent<Props & Injected
     }
 }
 
-export const ListDesignerPanels = withBaseDomainDesigner<Props>(ListDesignerPanelsImpl);
+export const ListDesignerPanels = withBaseDomainDesigner<ListDesignerPanelsProps>(ListDesignerPanelsImpl);

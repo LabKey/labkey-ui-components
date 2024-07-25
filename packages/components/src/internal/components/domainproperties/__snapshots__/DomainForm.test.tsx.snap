@@ -93,6 +93,29 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                     placeholder="Search Fields"
                     type="text"
                   />
+                  <div
+                    class="domain-toolbar-toggle-summary"
+                  >
+                    <span>
+                      Mode: 
+                    </span>
+                    <div
+                      class="toggle btn-group toggle-off"
+                    >
+                      <button
+                        class="btn btn-default"
+                        type="button"
+                      >
+                        Summary
+                      </button>
+                      <button
+                        class="btn btn-primary"
+                        type="button"
+                      >
+                        Detail
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -857,6 +880,29 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                   placeholder="Search Fields"
                   type="text"
                 />
+                <div
+                  class="domain-toolbar-toggle-summary"
+                >
+                  <span>
+                    Mode: 
+                  </span>
+                  <div
+                    class="toggle btn-group toggle-off"
+                  >
+                    <button
+                      class="btn btn-default"
+                      type="button"
+                    >
+                      Summary
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                    >
+                      Detail
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1637,6 +1683,29 @@ exports[`DomainForm domain form with all field types 1`] = `
                     placeholder="Search Fields"
                     type="text"
                   />
+                  <div
+                    class="domain-toolbar-toggle-summary"
+                  >
+                    <span>
+                      Mode: 
+                    </span>
+                    <div
+                      class="toggle btn-group toggle-off"
+                    >
+                      <button
+                        class="btn btn-default"
+                        type="button"
+                      >
+                        Summary
+                      </button>
+                      <button
+                        class="btn btn-primary"
+                        type="button"
+                      >
+                        Detail
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -7052,6 +7121,29 @@ exports[`DomainForm domain form with all field types 1`] = `
                   placeholder="Search Fields"
                   type="text"
                 />
+                <div
+                  class="domain-toolbar-toggle-summary"
+                >
+                  <span>
+                    Mode: 
+                  </span>
+                  <div
+                    class="toggle btn-group toggle-off"
+                  >
+                    <button
+                      class="btn btn-default"
+                      type="button"
+                    >
+                      Summary
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                    >
+                      Detail
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -12607,6 +12699,29 @@ exports[`DomainForm domain form with updated fields 1`] = `
                     placeholder="Search Fields"
                     type="text"
                   />
+                  <div
+                    class="domain-toolbar-toggle-summary"
+                  >
+                    <span>
+                      Mode: 
+                    </span>
+                    <div
+                      class="toggle btn-group toggle-off"
+                    >
+                      <button
+                        class="btn btn-default"
+                        type="button"
+                      >
+                        Summary
+                      </button>
+                      <button
+                        class="btn btn-primary"
+                        type="button"
+                      >
+                        Detail
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -14680,6 +14795,29 @@ exports[`DomainForm domain form with updated fields 1`] = `
                   placeholder="Search Fields"
                   type="text"
                 />
+                <div
+                  class="domain-toolbar-toggle-summary"
+                >
+                  <span>
+                    Mode: 
+                  </span>
+                  <div
+                    class="toggle btn-group toggle-off"
+                  >
+                    <button
+                      class="btn btn-default"
+                      type="button"
+                    >
+                      Summary
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                    >
+                      Detail
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

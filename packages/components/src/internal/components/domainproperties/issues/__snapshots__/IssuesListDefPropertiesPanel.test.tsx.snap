@@ -111,7 +111,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                               class="select-input__control css-13cymwt-control"
                             >
                               <div
-                                class="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
+                                class="select-input__value-container select-input__value-container--has-value css-hlgwow"
                               >
                                 <div
                                   class="select-input__single-value css-1dimb5e-singleValue"
@@ -119,7 +119,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                                   Oldest first
                                 </div>
                                 <div
-                                  class="select-input__input-container css-qbdosj-Input"
+                                  class="select-input__input-container css-19bb58m"
                                   data-value=""
                                 >
                                   <input
@@ -142,7 +142,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                                 </div>
                               </div>
                               <div
-                                class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                                class="select-input__indicators css-1wy0on6"
                               >
                                 <span
                                   class="select-input__indicator-separator css-1u9des2-indicatorSeparator"
@@ -522,7 +522,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                             class="select-input__control css-13cymwt-control"
                           >
                             <div
-                              class="select-input__value-container select-input__value-container--has-value css-1fdsijx-ValueContainer"
+                              class="select-input__value-container select-input__value-container--has-value css-hlgwow"
                             >
                               <div
                                 class="select-input__single-value css-1dimb5e-singleValue"
@@ -530,7 +530,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                                 Oldest first
                               </div>
                               <div
-                                class="select-input__input-container css-qbdosj-Input"
+                                class="select-input__input-container css-19bb58m"
                                 data-value=""
                               >
                                 <input
@@ -553,7 +553,7 @@ exports[`IssuesListDefPropertiesPanel new Issue Def 1`] = `
                               </div>
                             </div>
                             <div
-                              class="select-input__indicators css-1hb7zxy-IndicatorsContainer"
+                              class="select-input__indicators css-1wy0on6"
                             >
                               <span
                                 class="select-input__indicator-separator css-1u9des2-indicatorSeparator"

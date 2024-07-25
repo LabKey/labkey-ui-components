@@ -21,6 +21,47 @@ import {
     TestUser,
 } from './integrationUtils';
 import { sleep } from './utils';
+import {
+    insertRows,
+    insertSamples,
+    createSource,
+    importSample,
+    updateRows,
+    updateSamples,
+    saveRows,
+    doCrossFolderSamplesAction,
+    deleteRows,
+    deleteSamples,
+    getRows,
+    getSamplesData,
+    sampleExists,
+    getSampleDataByName,
+    getSourcesData,
+    sourceExists,
+    createSample,
+    getAliquotsByRootId
+} from './ExperimentCrudUtils';
+
+const ExperimentCRUDUtils = {
+    insertRows,
+    insertSamples,
+    createSource,
+    importSample,
+    updateRows,
+    updateSamples,
+    saveRows,
+    doCrossFolderSamplesAction,
+    deleteRows,
+    deleteSamples,
+    getRows,
+    getSamplesData,
+    sampleExists,
+    getSampleDataByName,
+    getSourcesData,
+    sourceExists,
+    createSample,
+    getAliquotsByRootId
+}
 
 export {
     hookServer,
@@ -29,4 +70,5 @@ export {
     sleep,
     successfulResponse,
     TestUser,
+    ExperimentCRUDUtils
 };

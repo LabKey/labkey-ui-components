@@ -19,7 +19,7 @@ interface State {
     selectedCreationType: SampleCreationType;
 }
 
-addValidationRule<string>('isPositiveLt', (vs, v, smax) => {
+addValidationRule<string>('isPositiveLt', (_, v, smax) => {
     if (v === '' || v === undefined) {
         return true;
     }

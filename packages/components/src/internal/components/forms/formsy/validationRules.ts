@@ -8,11 +8,11 @@ import {
     isValueUndefined,
 } from './utils';
 
-export function isExisty<V>(value: V): boolean {
+function isExisty<V>(value: V): boolean {
     return !isValueNullOrUndefined(value);
 }
 
-export function isEmpty<V>(value: V): boolean {
+function isEmpty<V>(value: V): boolean {
     if (isString(value)) {
         return isValueStringEmpty(value);
     }
@@ -22,12 +22,12 @@ export function isEmpty<V>(value: V): boolean {
     return isValueUndefined(value);
 }
 
-export function isDefaultRequiredValue(value: unknown) {
+export function isDefaultRequiredValue(value: unknown): boolean {
     return isString(value) ? isValueStringEmpty(value) : isValueNullOrUndefined(value);
 }
 
-export function matchRegexp<V>(_values: Values, value: V, regexp: RegExp) {
-    return !isExisty(value) || isEmpty(value) || regexp.test(`${value}`);
+function matchRegexp<V>(_values: Values, value: V, regexp: RegExp): boolean {
+    return !isExisty<V>(value) || isEmpty<V>(value) || regexp.test(`${value}`);
 }
 
 interface Validations<V> {
@@ -37,8 +37,7 @@ interface Validations<V> {
 const REGEX_PATTERNS = {
     ALPHA: /^[A-Z]+$/i,
     ALPHANUMERIC: /^[0-9A-Z]+$/i,
-    EMAIL:
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i, // from http://emailregex.com/
+    EMAIL: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i, // from http://emailregex.com/
     FLOAT: /^(?:[-+]?(?:\d+))?(?:\.\d*)?(?:[eE][+-]?(?:\d+))?$/,
     INT: /^(?:[-+]?(?:0|[1-9]\d*))$/,
     NUMERIC: /^[-+]?(?:\d*[.])?\d+$/,
@@ -71,6 +70,6 @@ export const validationRules: Validations<any> = {
     minLength: (_values, value: string, length: number) => !isExisty(value) || isEmpty(value) || value.length >= length,
 };
 
-export const addValidationRule = <V>(name: string, func: ValidationFunction<V>) => {
+export const addValidationRule = <V>(name: string, func: ValidationFunction<V>): void => {
     validationRules[name] = func;
 };

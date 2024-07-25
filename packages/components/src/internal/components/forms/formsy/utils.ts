@@ -1,17 +1,17 @@
 import { ValidationError, Validations, Values } from './types';
 
-function getTag(value) {
+function getTag(value): string {
     if (value == null) {
         return value === undefined ? '[object Undefined]' : '[object Null]'
     }
-    return Object.prototype.toString.call(value)
+    return Object.prototype.toString.call(value);
 }
 
-function isObjectLike(value) {
+function isObjectLike(value): boolean {
     return typeof value === 'object' && value !== null;
 }
 
-function isPlainObject(value) {
+function isPlainObject(value): boolean {
     if (!isObjectLike(value) || getTag(value) !== '[object Object]') {
         return false;
     }
@@ -69,7 +69,7 @@ export function isValueUndefined(value: unknown): boolean {
     return value === undefined;
 }
 
-export function noop() {
+export function noop(): void {
     // do nothing.
 }
 

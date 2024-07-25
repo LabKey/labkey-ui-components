@@ -11,15 +11,16 @@ import {
     OnSubmitCallback,
     FormsyInjectedProps,
     RunValidationResponse,
+    Values,
 } from './types';
-import { debounce, isObject, isSame, isString, noop, protectAgainstParamReassignment, runRules } from './utils';
+import { debounce, isObject, isSame, isString, protectAgainstParamReassignment, runRules } from './utils';
 import { validationRules } from './validationRules';
 
 export type FormHTMLAttributesCleaned = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onChange' | 'onSubmit'>;
 
 export interface FormsyProps extends FormHTMLAttributesCleaned {
     disabled: boolean;
-    mapping: null | ((model: IModel) => IModel);
+    mapping?: (model: IModel) => IModel;
     onChange: (model: IModel, isChanged: boolean) => void;
     onInvalid: () => void;
     onReset?: () => void;
@@ -43,18 +44,19 @@ export interface FormsyState {
 
 const ONE_RENDER_FRAME = 66;
 
+function noop(): void {
+    // do nothing.
+}
+
 export class Formsy extends Component<FormsyProps, FormsyState> {
 
     static defaultProps: Partial<FormsyProps> = {
         disabled: false,
-        mapping: null,
         onChange: noop,
         onInvalid: noop,
         onInvalidSubmit: noop,
         onReset: noop,
-        onSubmit: noop,
         onValid: noop,
-        onValidSubmit: noop,
         preventDefaultSubmit: true,
         preventExternalInvalidation: false,
         validationErrors: {},
@@ -62,16 +64,18 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
 
     public inputs: InstanceType<any & FormsyInjectedProps<any>>[];
     public emptyArray: any[];
+    private _mounted = true;
     public prevInputNames: any[] | null = null;
-    public static displayName = 'Formsy';
     private readonly debouncedValidateForm: () => void;
 
-    public constructor(props: FormsyProps) {
+    constructor(props: FormsyProps) {
         super(props);
+
+        this.inputs = [];
+        this.emptyArray = [];
+
         this.state = {
             canChange: false,
-            isSubmitting: false,
-            isValid: true,
             contextValue: {
                 attachToForm: this.attachToForm,
                 detachFromForm: this.detachFromForm,
@@ -80,9 +84,10 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
                 validate: this.validate,
                 runValidation: this.runValidation,
             },
+            isSubmitting: false,
+            isValid: true,
         };
-        this.inputs = [];
-        this.emptyArray = [];
+
         this.debouncedValidateForm = debounce(this.validateForm, ONE_RENDER_FRAME);
     }
 
@@ -106,52 +111,43 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
 
         // Keep the disabled value in state/context the same as from props
         if (disabled !== prevProps.disabled) {
+            if (!this._mounted) return;
             // eslint-disable-next-line
-            this.setState((state) => ({
-                ...state,
-                contextValue: {
-                    ...state.contextValue,
-                    isFormDisabled: disabled,
-                },
+            this.setState(state => ({
+                contextValue: { ...state.contextValue, isFormDisabled: disabled },
             }));
         }
     }
 
+    componentWillUnmount(): void {
+        this._mounted = false;
+    }
+
     // Method put on each input component to register itself to the form
-    attachToForm = (component): void => {
+    attachToForm = (component: InputComponent<any>): void => {
         if (this.inputs.indexOf(component) === -1) {
             this.inputs.push(component);
         }
 
-        const { onChange } = this.props;
-        const { canChange } = this.state;
-
-        // Trigger onChange
-        if (canChange) {
-            onChange(this.getModel(), this.isChanged());
-        }
-
+        this.triggerChange();
         this.debouncedValidateForm();
     };
 
     // Method put on each input component to unregister itself from the form
     detachFromForm = (component: InputComponent<any>): void => {
-        this.inputs = this.inputs.filter((input) => input !== component);
+        this.inputs = this.inputs.filter(i => i !== component);
         this.debouncedValidateForm();
     };
 
-    getCurrentValues = () => {
-        return this.inputs.reduce((values, component) => {
+    getCurrentValues = (): Values => {
+        return this.inputs.reduce<Values>((values, component) => {
             const { props: { name }, state: { value } } = component;
             values[name] = protectAgainstParamReassignment(value);
             return values;
         }, {});
     };
 
-    getModel = () => {
-        const currentValues = this.getCurrentValues();
-        return this.mapModel(currentValues);
-    }
+    getModel = (): IModel => this.mapModel(this.getCurrentValues());
 
     getPristineValues = () => {
         return this.inputs.reduce((values, component) => {
@@ -196,7 +192,7 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
 
     // Reset each key in the model to the original / initial / specified value
     resetModel: IResetModel = (data): void => {
-        this.inputs.forEach((component) => {
+        this.inputs.forEach(component => {
             const { name } = component.props;
             if (data && data.hasOwnProperty(name)) {
                 component.setValue(data[name]);
@@ -244,36 +240,34 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
                         .filter((x, pos, arr) => arr.indexOf(x) === pos); // remove duplicates
                 }
 
-                // This line is not reachable
-                // istanbul ignore next
                 return undefined;
             })(),
         };
     };
 
     setFormPristine = (isPristine: boolean): void => {
+        if (!this._mounted) return;
+
         this.setState({ formSubmitted: !isPristine });
 
         // Iterate through each component and set it as pristine
         // or "dirty".
-        this.inputs.forEach((component) => {
+        this.inputs.forEach(component => {
             component.setState({ formSubmitted: !isPristine, isPristine });
         });
     };
 
-    setFormValidState = (allIsValid: boolean): void => {
+    setFormValidState = (isValid: boolean): void => {
+        if (!this._mounted) return;
         const { onValid, onInvalid } = this.props;
 
-        this.setState({ isValid: allIsValid });
+        this.setState({ isValid });
 
-        if (allIsValid) {
-            onValid();
-        } else {
-            onInvalid();
-        }
+        isValid ? onValid() : onInvalid();
     };
 
     setInputValidationErrors = (errors): void => {
+        if (!this._mounted) return;
         const { preventExternalInvalidation } = this.props;
         const { isValid } = this.state;
 
@@ -303,12 +297,18 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         // so validation becomes visible (if based on isPristine)
         this.setFormPristine(false);
         const model = this.getModel();
-        onSubmit(model, this.resetModel, this.updateInputsWithError, event);
+        onSubmit?.(model, this.resetModel, this.updateInputsWithError, event);
 
         if (isValid) {
-            onValidSubmit(model, this.resetModel, this.updateInputsWithError, event);
+            onValidSubmit?.(model, this.resetModel, this.updateInputsWithError, event);
         } else {
             onInvalidSubmit(model, this.resetModel, this.updateInputsWithError, event);
+        }
+    };
+
+    triggerChange = (): void => {
+        if (this.state.canChange) {
+            this.props.onChange(this.getModel(), this.isChanged());
         }
     };
 
@@ -316,6 +316,7 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
     // stored in the inputs map. Change their state to invalid
     // and set the serverError message
     updateInputsWithError: IUpdateInputsWithError = (errors, invalidate): void => {
+        if (!this._mounted) return;
         const { preventExternalInvalidation } = this.props;
         const { isValid } = this.state;
 
@@ -339,7 +340,7 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
 
     // Set the value of components
     updateInputsWithValue: IUpdateInputsWithValue<any> = (data, validate): void => {
-        this.inputs.forEach((component) => {
+        this.inputs.forEach(component => {
             const { name } = component.props;
             if (data && data.hasOwnProperty(name)) {
                 component.setValue(data[name], validate);
@@ -351,42 +352,39 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
     // validate the input and set its state. Then check the
     // state of the form itself
     validate = (component: InputComponent<any>): void => {
-        const { onChange } = this.props;
-        const { canChange } = this.state;
-
-        // Trigger onChange
-        if (canChange) {
-            onChange(this.getModel(), this.isChanged());
-        }
+        if (!this._mounted) return;
+        this.triggerChange();
 
         // Run through the validations, split them up and call
         // the validator IF there is a value or it is required
         component.setState(this.runValidation(component), this.validateForm);
     };
 
+    // We need a callback as we are validating all inputs again.
+    // This will run when the last input has set its state
+    onValidationComplete = (): void => {
+        if (!this._mounted) return;
+        this.setFormValidState(this.inputs.every(c => c.state.isValid));
+
+        // Tell the form that it can start to trigger change events
+        this.setState({ canChange: true });
+    };
+
     validateForm = (): void => {
-        // We need a callback as we are validating all inputs again. This will
-        // run when the last input has set its state
-        const onValidationComplete = () => {
-            const allIsValid = this.inputs.every(c => c.state.isValid);
-            this.setFormValidState(allIsValid);
-
-            // Tell the form that it can start to trigger change events
-            this.setState({ canChange: true });
-        };
-
+        if (!this._mounted) return;
         if (this.inputs.length === 0) {
-            onValidationComplete();
-        } else {
-            // Run validation again in case affected by other inputs. The
-            // last component validated will run the onValidationComplete callback
-            this.inputs.forEach((component, index) => {
-                const validationState = this.runValidation(component);
-                const isLastInput = index === this.inputs.length - 1;
-                const callback = isLastInput ? onValidationComplete : null;
-                component.setState(validationState, callback);
-            });
+            this.onValidationComplete();
+            return;
         }
+
+        // Run validation again in case affected by other inputs. The
+        // last component validated will run the onValidationComplete callback
+        this.inputs.forEach((component, index) => {
+            const validationState = this.runValidation(component);
+            const isLastInput = index === this.inputs.length - 1;
+            const callback = isLastInput ? this.onValidationComplete : undefined;
+            component.setState(validationState, callback);
+        });
     };
 
     render() {
@@ -405,13 +403,13 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
             preventDefaultSubmit,
             preventExternalInvalidation,
             validationErrors,
-            ...nonFormsyProps
+            ...formProps
         } = this.props;
         const { contextValue } = this.state;
 
         return (
             <FormsyContext.Provider value={contextValue}>
-                <form onReset={this.resetInternal} onSubmit={this.submit} {...nonFormsyProps}>
+                <form onReset={this.resetInternal} onSubmit={this.submit} {...formProps}>
                     {children}
                 </form>
             </FormsyContext.Provider>

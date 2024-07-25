@@ -8,7 +8,6 @@ import {
     RequiredValidation,
     ValidationError,
     Validations,
-    WrappedComponentClass,
     WrapperInstanceMethods,
     WrapperProps,
     WrapperState,
@@ -18,37 +17,33 @@ import { isSame, isString } from './utils';
 import { isDefaultRequiredValue } from './validationRules';
 
 function convertValidationsToObject<V>(validations: false | Validations<V>): Validations<V> {
-    if (isString(validations)) {
-        return validations.split(/,(?![^{[]*[}\]])/g).reduce((validationsAccumulator, validation) => {
-            let args: string[] = validation.split(':');
-            const validateMethod: string = args.shift();
-
-            args = args.map((arg) => {
-                try {
-                    return JSON.parse(arg);
-                } catch (e) {
-                    return arg; // It is a string if it can not parse it
-                }
-            });
-
-            if (args.length > 1) {
-                throw new Error(
-                    'Formsy does not support multiple args on string validations. Use object format of validations instead.',
-                );
-            }
-
-            // Avoid parameter reassignment
-            const copy: Validations<V> = { ...validationsAccumulator };
-            copy[validateMethod] = args.length ? args[0] : true;
-            return copy;
-        }, {});
+    if (!isString(validations)) {
+        return validations || {};
     }
 
-    return validations || {};
-}
+    return validations.split(/,(?![^{[]*[}\]])/g).reduce((validations_, validation) => {
+        let args: string[] = validation.split(':');
+        const validateMethod: string = args.shift();
 
-function getDisplayName(component: WrappedComponentClass) {
-    return component.displayName || component.name || (isString(component) ? component : 'Component');
+        args = args.map((arg) => {
+            try {
+                return JSON.parse(arg);
+            } catch (e) {
+                return arg;
+            }
+        });
+
+        if (args.length > 1) {
+            throw new Error(
+                'Formsy does not support multiple args on string validations. Use object format of validations instead.',
+            );
+        }
+
+        // Avoid parameter reassignment
+        const copy: Validations<V> = { ...validations_ };
+        copy[validateMethod] = args.length ? args[0] : true;
+        return copy;
+    }, {});
 }
 
 function isChanged(a: object, b: object): boolean {
@@ -63,7 +58,6 @@ export function withFormsy<T, V>(
     class WithFormsyWrapper extends React.Component<WrappedProps, WrapperState<V>> implements WrapperInstanceMethods<V> {
         public validations?: Validations<V>;
         public requiredValidations?: Validations<V>;
-        public static displayName = `Formsy(${getDisplayName(WrappedComponent)})`;
 
         static defaultProps = {
             innerRef: null,
@@ -74,9 +68,11 @@ export function withFormsy<T, V>(
             value: (WrappedComponent as ComponentWithStaticAttributes).defaultValue,
         };
 
+        private _mounted = true;
+
         constructor(props: WrappedProps) {
             super(props);
-            const { runValidation, validations, required, value } = props;
+            const { runValidation, required, validations, value } = props;
 
             this.state = { value } as any;
 
@@ -91,22 +87,22 @@ export function withFormsy<T, V>(
             };
         }
 
-        componentDidMount() {
-            const { name, attachToForm } = this.props;
+        componentDidMount = (): void => {
+            const { attachToForm, name } = this.props;
 
             if (!name) {
                 throw new Error('Form Input requires a name property when used');
             }
 
             attachToForm(this);
-        }
+        };
 
-        shouldComponentUpdate(nextProps, nextState): boolean {
+        shouldComponentUpdate = (nextProps: WrappedProps, nextState: WrapperState<V>): boolean => {
             return isChanged(this.props, nextProps) || isChanged(this.state, nextState);
-        }
+        };
 
-        componentDidUpdate(prevProps) {
-            const { value, validations, required, validate } = this.props;
+        componentDidUpdate = (prevProps: WrappedProps): void => {
+            const { required, value, validations, validate } = this.props;
 
             // If the value passed has changed, set it. If value is not passed it will
             // internally update, and this will never run
@@ -119,11 +115,12 @@ export function withFormsy<T, V>(
                 this.setValidations(validations, required);
                 validate(this);
             }
-        }
+        };
 
-        componentWillUnmount() {
+        componentWillUnmount = (): void => {
+            this._mounted = false;
             this.props.detachFromForm(this);
-        }
+        };
 
         getErrorMessage = (): ValidationError | null => {
             const messages = this.getErrorMessages();
@@ -154,6 +151,7 @@ export function withFormsy<T, V>(
         isValidValue = (value: V) => this.props.isValidValue(this, value);
 
         resetValue = (): void => {
+            if (!this._mounted) return;
             this.setState(state => ({ isPristine: true, value: state.pristineValue }), () => { this.props.validate(this); });
         };
 
@@ -167,6 +165,7 @@ export function withFormsy<T, V>(
         // By default, we validate after the value has been set.
         // A user can override this and pass a second parameter of `false` to skip validation.
         setValue = (value: V, validate = true): void => {
+            if (!this._mounted) return;
             const { validate: validateForm } = this.props;
 
             if (!validate) {
@@ -181,37 +180,45 @@ export function withFormsy<T, V>(
         showRequired = (): boolean => this.state.isRequired;
 
         render() {
-            const { innerRef } = this.props;
-            const propsForElement: T & FormsyInjectedProps<V> = {
-                ...this.props,
-                errorMessage: this.getErrorMessage(),
-                errorMessages: this.getErrorMessages(),
-                hasValue: this.hasValue(),
-                isFormDisabled: this.isFormDisabled(),
-                isFormSubmitted: this.isFormSubmitted(),
-                isPristine: this.isPristine(),
-                isRequired: this.isRequired(),
-                isValid: this.isValid(),
-                isValidValue: this.isValidValue,
-                resetValue: this.resetValue,
-                setValidations: this.setValidations,
-                setValue: this.setValue,
-                showError: this.showError(),
-                showRequired: this.showRequired(),
-                value: this.getValue(),
-            };
-
-            if (innerRef) {
-                propsForElement.ref = innerRef;
-            }
+            const {
+                attachToForm,
+                detachFromForm,
+                innerRef,
+                isFormDisabled,
+                isValidValue,
+                runValidation,
+                validate,
+                ...rest
+            } = this.props;
 
             return (
-                <FormsyContext.Consumer>
-                    {context => <WrappedComponent {...propsForElement as any} {...context} />}
-                </FormsyContext.Consumer>
+                // @ts-ignore
+                <WrappedComponent
+                    {...rest}
+                    errorMessage={this.getErrorMessage()}
+                    errorMessages={this.getErrorMessages()}
+                    hasValue={this.hasValue()}
+                    isFormDisabled={this.isFormDisabled()}
+                    isFormSubmitted={this.isFormSubmitted()}
+                    isPristine={this.isPristine()}
+                    isRequired={this.isRequired()}
+                    isValid={this.isValid()}
+                    isValidValue={this.isValidValue}
+                    ref={innerRef}
+                    resetValue={this.resetValue}
+                    setValidations={this.setValidations}
+                    setValue={this.setValue}
+                    showError={this.showError()}
+                    showRequired={this.showRequired()}
+                    value={this.getValue()}
+                />
             );
         }
     }
 
-    return WithFormsyWrapper as any;
+    return props => (
+        <FormsyContext.Consumer>
+            {context => <WithFormsyWrapper {...props as any} {...context} />}
+        </FormsyContext.Consumer>
+    );
 }

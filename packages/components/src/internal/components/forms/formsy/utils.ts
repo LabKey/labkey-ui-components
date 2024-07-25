@@ -11,7 +11,7 @@ function isObjectLike(value): boolean {
     return typeof value === 'object' && value !== null;
 }
 
-function isPlainObject(value): boolean {
+export function isObject(value: unknown): value is object {
     if (!isObjectLike(value) || getTag(value) !== '[object Object]') {
         return false;
     }
@@ -23,18 +23,6 @@ function isPlainObject(value): boolean {
         proto = Object.getPrototypeOf(proto);
     }
     return Object.getPrototypeOf(value) === proto;
-}
-
-export function isArray(value: unknown): value is unknown[] {
-    return Array.isArray(value);
-}
-
-export function isObject(value: unknown): value is object {
-    return isPlainObject(value);
-}
-
-export function isTypeUndefined(value: unknown): value is undefined {
-    return typeof value === 'undefined';
 }
 
 export function isDate(value: unknown): value is Date {
@@ -49,34 +37,18 @@ export function isString(value: unknown): value is string {
     return typeof value === 'string';
 }
 
-export function isNumber(value: unknown): value is number {
-    return typeof value === 'number';
-}
-
 export function isRegex(value: unknown): value is RegExp {
     return value instanceof RegExp;
-}
-
-export function isValueStringEmpty(value: string): boolean {
-    return value === '';
 }
 
 export function isValueNullOrUndefined(value: unknown): boolean {
     return value === null || value === undefined;
 }
 
-export function isValueUndefined(value: unknown): boolean {
-    return value === undefined;
-}
-
-export function noop(): void {
-    // do nothing.
-}
-
 export function protectAgainstParamReassignment(value: unknown) {
     // Clone objects to avoid accidental param reassignment
     if (isObject(value)) return { ...value };
-    if (isArray(value)) return [...value];
+    if (Array.isArray(value)) return [...value];
     return value;
 }
 
@@ -85,7 +57,7 @@ export function isSame(a: unknown, b: unknown): boolean {
         return false;
     }
 
-    if (isArray(a) && isArray(b)) {
+    if (Array.isArray(a) && Array.isArray(b)) {
         if (a.length !== b.length) {
             return false;
         }

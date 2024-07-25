@@ -1,12 +1,5 @@
 import { ValidationFunction, Values } from './types';
-import {
-    isNumber,
-    isString,
-    isTypeUndefined,
-    isValueNullOrUndefined,
-    isValueStringEmpty,
-    isValueUndefined,
-} from './utils';
+import { isString, isValueNullOrUndefined } from './utils';
 
 function isExisty<V>(value: V): boolean {
     return !isValueNullOrUndefined(value);
@@ -14,24 +7,20 @@ function isExisty<V>(value: V): boolean {
 
 function isEmpty<V>(value: V): boolean {
     if (isString(value)) {
-        return isValueStringEmpty(value);
+        return value === '';
     }
-    if (isTypeUndefined(value)) {
+    if (typeof value === 'undefined') {
         return false;
     }
-    return isValueUndefined(value);
+    return value === undefined;
 }
 
 export function isDefaultRequiredValue(value: unknown): boolean {
-    return isString(value) ? isValueStringEmpty(value) : isValueNullOrUndefined(value);
+    return isString(value) ? value === '' : isValueNullOrUndefined(value);
 }
 
 function matchRegexp<V>(_values: Values, value: V, regexp: RegExp): boolean {
     return !isExisty<V>(value) || isEmpty<V>(value) || regexp.test(`${value}`);
-}
-
-interface Validations<V> {
-    [key: string]: ValidationFunction<V>;
 }
 
 const REGEX_PATTERNS = {
@@ -46,7 +35,7 @@ const REGEX_PATTERNS = {
     WORDS: /^[A-Z\s]+$/i,
 };
 
-export const validationRules: Validations<any> = {
+export const validationRules: Record<string, ValidationFunction<any>> = {
     equals: <V>(_values, value: V, eql: V) => !isExisty(value) || isEmpty(value) || value === eql,
     equalsField: <V>(values, value: V, field: string) => value === values[field],
     isAlpha: <V>(values, value: V) => matchRegexp(values, value, REGEX_PATTERNS.ALPHA),
@@ -59,10 +48,10 @@ export const validationRules: Validations<any> = {
     isFloat: <V>(values, value: V) => matchRegexp(values, value, REGEX_PATTERNS.FLOAT),
     isInt: <V>(values, value: V) => matchRegexp(values, value, REGEX_PATTERNS.INT),
     isLength: (_values, value: string, length: number) => !isExisty(value) || isEmpty(value) || value.length === length,
-    isNumeric: <V>(values, value: V) => isNumber(value) || matchRegexp(values, value, REGEX_PATTERNS.NUMERIC),
+    isNumeric: <V>(values, value: V) => typeof value === 'number' || matchRegexp(values, value, REGEX_PATTERNS.NUMERIC),
     isSpecialWords: <V>(values, value: V) => matchRegexp(values, value, REGEX_PATTERNS.SPECIAL_WORDS),
     isTrue: (_values, value: boolean | string) => value === true,
-    isUndefined: <V>(_values, value: V) => isValueUndefined(value),
+    isUndefined: <V>(_values, value: V) => value === undefined,
     isUrl: <V>(values, value: V) => matchRegexp(values, value, REGEX_PATTERNS.URL),
     isWords: <V>(values, value: V) => matchRegexp(values, value, REGEX_PATTERNS.WORDS),
     matchRegexp,
@@ -70,6 +59,6 @@ export const validationRules: Validations<any> = {
     minLength: (_values, value: string, length: number) => !isExisty(value) || isEmpty(value) || value.length >= length,
 };
 
-export const addValidationRule = <V>(name: string, func: ValidationFunction<V>): void => {
+export function addValidationRule<V>(name: string, func: ValidationFunction<V>): void {
     validationRules[name] = func;
-};
+}

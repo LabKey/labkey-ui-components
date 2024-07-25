@@ -38,7 +38,8 @@ const REGEX_PATTERNS = {
     WORDS: /^[A-Z\s]+$/i,
 };
 
-export const validationRules: Record<string, ValidationFunction<any>> = {
+// Formerly "validationRules". Renamed so it is clear from the name that this applies only to Formsy.
+export const formsyRules: Record<string, ValidationFunction<any>> = {
     equals: <V>(_values, value: V, eql: V) => !isExisty(value) || isEmpty(value) || value === eql,
     equalsField: <V>(values, value: V, field: string) => value === values[field],
     isAlpha: <V>(values, value: V) => matchRegexp(values, value, REGEX_PATTERNS.ALPHA),
@@ -62,6 +63,7 @@ export const validationRules: Record<string, ValidationFunction<any>> = {
     minLength: (_values, value: string, length: number) => !isExisty(value) || isEmpty(value) || value.length >= length,
 };
 
-export function addValidationRule<V>(name: string, func: ValidationFunction<V>): void {
-    validationRules[name] = func;
+// Formerly "addValidationRule". Renamed so it is clear from the name that this applies only to Formsy.
+export function addFormsyRule<V>(name: string, func: ValidationFunction<V>): void {
+    formsyRules[name] = func;
 }

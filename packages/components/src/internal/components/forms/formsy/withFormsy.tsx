@@ -18,7 +18,7 @@ import {
 } from './types';
 
 import { isSame, isString } from './utils';
-import { isDefaultRequiredValue } from './validationRules';
+import { isDefaultRequiredValue } from './formsyRules';
 
 function convertValidationsToObject<V>(validations: false | Validations<V>): Validations<V> {
     if (!isString(validations)) {

@@ -1,20 +1,20 @@
 import React, { FC, memo } from 'react';
 
-import { addValidationRule, validationRules } from '../formsy';
+import { addFormsyRule, formsyRules } from '../formsy';
 
 import { InputRendererProps } from './types';
 import { TextInput } from './TextInput';
 
 const isNumericWithError = (values: any, v: string | number): any =>
-    validationRules.isNumeric(values, v) || 'Please enter a number.';
+    formsyRules.isNumeric(values, v) || 'Please enter a number.';
 
 export const AppendUnitsInput: FC<InputRendererProps> = memo(props => {
     const { col, formsy, inputClass, showLabel, value, ...otherProps } = props;
     const { allowFieldDisable, initiallyDisabled, onToggleDisable } = otherProps;
 
     // Issue 23462: Global Formsy validation rule for numbers
-    if (!validationRules.isNumericWithError) {
-        addValidationRule('isNumericWithError', isNumericWithError);
+    if (!formsyRules.isNumericWithError) {
+        addFormsyRule('isNumericWithError', isNumericWithError);
     }
 
     // If/when we migrate away from formsy we can implement this using our non-formsy input component

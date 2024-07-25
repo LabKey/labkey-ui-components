@@ -17,7 +17,7 @@ import {
     Values,
 } from './types';
 import { debounce, isObject, isSame, isString, protectAgainstParamReassignment, runRules } from './utils';
-import { validationRules } from './validationRules';
+import { formsyRules } from './formsyRules';
 
 export type FormHTMLAttributesCleaned = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onChange' | 'onSubmit'>;
 
@@ -215,8 +215,8 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         const { validationErrors } = this.props;
         const { validationError, validationErrors: componentValidationErrors, name } = component.props;
         const currentValues = this.getCurrentValues();
-        const validationResults = runRules(value, currentValues, component.validations, validationRules);
-        const requiredResults = runRules(value, currentValues, component.requiredValidations, validationRules);
+        const validationResults = runRules(value, currentValues, component.validations, formsyRules);
+        const requiredResults = runRules(value, currentValues, component.requiredValidations, formsyRules);
         const isRequired = Object.keys(component.requiredValidations).length ? !!requiredResults.success.length : false;
         const isValid =
             !validationResults.failed.length && !(validationErrors && validationErrors[component.props.name]);

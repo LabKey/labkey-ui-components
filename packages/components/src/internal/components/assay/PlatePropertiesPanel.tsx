@@ -1,5 +1,4 @@
 import React, { FC, memo, useMemo } from 'react';
-import Formsy from 'formsy-react';
 import { List } from 'immutable';
 
 import { Filter } from '@labkey/api';
@@ -7,6 +6,7 @@ import { Filter } from '@labkey/api';
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { Formsy } from '../forms/formsy';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
 
 import { getContainerFilterForLookups } from '../../query/api';

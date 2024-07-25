@@ -1,8 +1,8 @@
 import React, { FC, ReactNode, useCallback, useState } from 'react';
-import Formsy from 'formsy-react';
 import { fromJS } from 'immutable';
 import { AuditBehaviorTypes, Query } from '@labkey/api';
 
+import { Formsy } from '../../internal/components/forms/formsy';
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
 import { DetailRenderer } from '../../internal/components/forms/detail/DetailDisplay';
 import { extractChanges } from '../../internal/components/forms/detail/utils';

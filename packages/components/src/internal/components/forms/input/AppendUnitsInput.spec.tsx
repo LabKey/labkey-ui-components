@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Formsy from 'formsy-react';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
+import { Formsy } from '../formsy';
 import { FormsyInput } from './FormsyReactComponents';
 
 import { AppendUnitsInput } from './AppendUnitsInput';

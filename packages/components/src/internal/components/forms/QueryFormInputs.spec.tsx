@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React from 'react';
-import Formsy from 'formsy-react';
 import { List } from 'immutable';
 
 import { mount } from 'enzyme';
@@ -23,6 +22,7 @@ import { makeQueryInfo } from '../../test/testHelpers';
 import assayGpatDataQueryInfo from '../../../test/data/assayGpatData-getQueryDetails.json';
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { Formsy } from './formsy';
 import { QueryFormInputs } from './QueryFormInputs';
 import { TextInput } from './input/TextInput';
 import { CheckboxInput } from './input/CheckboxInput';

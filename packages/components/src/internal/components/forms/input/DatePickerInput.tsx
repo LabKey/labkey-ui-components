@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import React, { FC, ReactNode, RefObject } from 'react';
-import { FormsyInjectedProps, withFormsy } from 'formsy-react';
 import DatePicker from 'react-datepicker';
 
+import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { FieldLabel } from '../FieldLabel';
 import {
     getFormattedStringFromDate,

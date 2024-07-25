@@ -106,5 +106,5 @@ export type OnSubmitCallback = (
     model: IModel,
     resetModel: IResetModel,
     updateInputsWithError: IUpdateInputsWithError,
-    event: React.SyntheticEvent<HTMLFormElement>,
+    event: React.SyntheticEvent<HTMLFormElement>
 ) => void;

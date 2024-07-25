@@ -1,12 +1,12 @@
 import { List, fromJS, Map } from 'immutable';
 import React from 'react';
-import Formsy from 'formsy-react';
 import { mount, ReactWrapper, shallow } from 'enzyme';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
+import { Formsy } from '../formsy';
 import { LabelOverlay } from '../LabelOverlay';
 import { AliasInput } from '../input/AliasInput';
 import { QuerySelect } from '../QuerySelect';

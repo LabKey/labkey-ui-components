@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { Component, FC, FocusEvent, KeyboardEvent, ReactNode } from 'react';
-import { FormsyInjectedProps, withFormsy } from 'formsy-react';
 import ReactSelect, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
@@ -22,7 +21,7 @@ import CreatableSelect from 'react-select/creatable';
 import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
-
+import { FormsyInjectedProps, withFormsy } from '../formsy';
 import {
     DELIMITER,
     INPUT_CONTAINER_CLASS_NAME,

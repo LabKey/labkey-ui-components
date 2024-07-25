@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import { addValidationRule } from 'formsy-react';
 
 import { SampleCreationType, SampleCreationTypeModel } from '../samples/models';
 
+import { addValidationRule } from './formsy';
 import { FormsyInput } from './input/FormsyReactComponents';
 import { RadioGroupInput } from './input/RadioGroupInput';
 

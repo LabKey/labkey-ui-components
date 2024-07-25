@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import React, { ChangeEventHandler, FC, ReactNode } from 'react';
-import { FormsyInjectedProps, withFormsy } from 'formsy-react';
 
+import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { FieldLabel } from '../FieldLabel';
 
 import { QueryColumn } from '../../../../public/QueryColumn';

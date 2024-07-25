@@ -1,8 +1,7 @@
 import React, { ChangeEventHandler, FC, PureComponent, ReactNode } from 'react';
-import { FormsyInjectedProps, withFormsy } from 'formsy-react';
-
 import classNames from 'classnames';
 
+import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 // export for jest test usage

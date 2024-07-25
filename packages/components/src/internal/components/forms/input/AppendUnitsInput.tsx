@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 
-import { addValidationRule, validationRules } from 'formsy-react';
+import { addValidationRule, validationRules } from '../formsy';
 
 import { InputRendererProps } from './types';
 import { TextInput } from './TextInput';

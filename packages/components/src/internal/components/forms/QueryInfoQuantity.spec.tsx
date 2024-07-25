@@ -1,10 +1,9 @@
 import React from 'react';
-import Formsy from 'formsy-react';
-
 import { mount, ReactWrapper } from 'enzyme';
 
 import { DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION } from '../samples/models';
 
+import { Formsy } from './formsy';
 import { QueryInfoQuantity } from './QueryInfoQuantity';
 import { FormsyInput } from './input/FormsyReactComponents';
 import { RadioGroupInput } from './input/RadioGroupInput';

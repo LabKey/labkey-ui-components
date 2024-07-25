@@ -16,8 +16,8 @@
 import React, { FC, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 import { Map } from 'immutable';
-import { FormsyInjectedProps, withFormsy } from 'formsy-react';
 
+import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { INPUT_WRAPPER_CLASS_NAME } from '../constants';
 import { FieldLabel } from '../FieldLabel';
 import { cancelEvent } from '../../../events';

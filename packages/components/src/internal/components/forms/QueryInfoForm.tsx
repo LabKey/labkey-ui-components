@@ -16,7 +16,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Filter, getServerContext, Utils } from '@labkey/api';
 import { List, OrderedMap } from 'immutable';
-import Formsy from 'formsy-react';
 
 import { Operation } from '../../../public/QueryColumn';
 
@@ -26,6 +25,7 @@ import { Modal } from '../../Modal';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { FormButtons } from '../../FormButtons';
 
+import { Formsy } from './formsy';
 import { SampleCreationTypeModel } from '../samples/models';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { formatDate, formatDateTime } from '../../util/Date';

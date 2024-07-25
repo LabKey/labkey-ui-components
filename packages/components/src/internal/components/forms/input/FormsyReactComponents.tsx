@@ -15,9 +15,9 @@ import React, {
     useCallback,
     useMemo,
 } from 'react';
-import { FormsyInjectedProps, withFormsy } from 'formsy-react';
 import classNames from 'classnames';
 
+import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { INPUT_WRAPPER_CLASS_NAME } from '../constants';
 
 type LayoutType = 'elementOnly' | 'horizontal' | 'vertical';

@@ -8,6 +8,13 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Refactors for sharing renderer definitions
   - add utility method for registering pipeline listeners
 
+### version 4.3.0
+*Released*: 25 July 2024
+- Issue 50449: App grid filter to expand icon click area to remove filter value
+- Issue 50537: LineageDetail to only show the "Properties" column in the detail view for the exp schema
+- Issue 49754: App charts to expand width and scroll horizontally to match LKS
+- Issue 49753: App charts to use formattedValue in response row objects for bar/box plot tick labels
+
 ### version 4.2.0
 *Released*: 24 July 2024
 - Package updates

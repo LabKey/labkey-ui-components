@@ -1,3 +1,6 @@
+// This file was originally derived from the "formsy-react" package, specifically, v2.3.2.
+// Credit: Christian Alfoni and the Formsy Authors
+// Repository: https://github.com/formsy/formsy-react/tree/0226fab133a25
 import React from 'react';
 
 import { FormsyContextInterface } from './types';

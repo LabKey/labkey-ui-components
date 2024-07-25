@@ -3,11 +3,6 @@ import { FormsyContextInterface, FormsyInjectedProps, OnSubmitCallback } from '.
 import { addValidationRule, validationRules } from './validationRules';
 import { withFormsy } from './withFormsy';
 
-export {
-    addValidationRule,
-    Formsy,
-    validationRules,
-    withFormsy,
-};
+export { addValidationRule, Formsy, validationRules, withFormsy };
 
 export type { FormsyContextInterface, FormsyInjectedProps, OnSubmitCallback };

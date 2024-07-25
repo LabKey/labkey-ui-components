@@ -23,11 +23,11 @@ export interface FormsyProps extends FormHTMLAttributesCleaned {
     mapping?: (model: IModel) => IModel;
     onChange: (model: IModel, isChanged: boolean) => void;
     onInvalid: () => void;
+    onInvalidSubmit: OnSubmitCallback;
     onReset?: () => void;
     onSubmit?: OnSubmitCallback;
-    onValidSubmit?: OnSubmitCallback;
-    onInvalidSubmit: OnSubmitCallback;
     onValid: () => void;
+    onValidSubmit?: OnSubmitCallback;
     preventDefaultSubmit?: boolean;
     preventExternalInvalidation?: boolean;
     validationErrors?: null | object;
@@ -49,7 +49,6 @@ function noop(): void {
 }
 
 export class Formsy extends Component<FormsyProps, FormsyState> {
-
     static defaultProps: Partial<FormsyProps> = {
         disabled: false,
         onChange: noop,
@@ -62,10 +61,10 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         validationErrors: {},
     };
 
-    public inputs: InstanceType<any & FormsyInjectedProps<any>>[];
-    public emptyArray: any[];
+    inputs: Array<InstanceType<any & FormsyInjectedProps<any>>>;
+    emptyArray: any[];
     private _mounted = true;
-    public prevInputNames: any[] | null = null;
+    prevInputNames: any[] | null = null;
     private readonly debouncedValidateForm: () => void;
 
     constructor(props: FormsyProps) {
@@ -91,12 +90,12 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         this.debouncedValidateForm = debounce(this.validateForm, ONE_RENDER_FRAME);
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.prevInputNames = this.inputs.map(c => c.props.name);
         this.validateForm();
     }
 
-    componentDidUpdate(prevProps: FormsyProps) {
+    componentDidUpdate(prevProps: FormsyProps): void {
         const { validationErrors, disabled } = this.props;
 
         if (validationErrors && isObject(validationErrors) && Object.keys(validationErrors).length > 0) {
@@ -141,7 +140,10 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
 
     getCurrentValues = (): Values => {
         return this.inputs.reduce<Values>((values, component) => {
-            const { props: { name }, state: { value } } = component;
+            const {
+                props: { name },
+                state: { value },
+            } = component;
             values[name] = protectAgainstParamReassignment(value);
             return values;
         }, {});
@@ -151,7 +153,9 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
 
     getPristineValues = () => {
         return this.inputs.reduce((values, component) => {
-            const { props: { name, value } } = component;
+            const {
+                props: { name, value },
+            } = component;
             values[name] = protectAgainstParamReassignment(value);
             return values;
         }, {});
@@ -160,7 +164,7 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
     // Checks if the values have changed from their initial value
     isChanged = (): boolean => !isSame(this.getPristineValues(), this.getCurrentValues());
 
-    isFormDisabled = () => this.props.disabled;
+    isFormDisabled = (): boolean => this.props.disabled;
 
     isValidValue = (component, value) => this.runValidation(component, value).isValid;
 
@@ -172,7 +176,7 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         }
 
         const returnModel = {};
-        Object.keys(model).forEach((key) => {
+        Object.keys(model).forEach(key => {
             returnModel[key] = model[key];
         });
         return returnModel;
@@ -211,7 +215,8 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         const validationResults = runRules(value, currentValues, component.validations, validationRules);
         const requiredResults = runRules(value, currentValues, component.requiredValidations, validationRules);
         const isRequired = Object.keys(component.requiredValidations).length ? !!requiredResults.success.length : false;
-        const isValid = !validationResults.failed.length && !(validationErrors && validationErrors[component.props.name]);
+        const isValid =
+            !validationResults.failed.length && !(validationErrors && validationErrors[component.props.name]);
 
         return {
             isRequired,
@@ -236,7 +241,9 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
 
                 if (validationResults.failed.length) {
                     return validationResults.failed
-                        .map((failed) => (componentValidationErrors[failed] ? componentValidationErrors[failed] : validationError))
+                        .map(failed =>
+                            componentValidationErrors[failed] ? componentValidationErrors[failed] : validationError
+                        )
                         .filter((x, pos, arr) => arr.indexOf(x) === pos); // remove duplicates
                 }
 
@@ -271,7 +278,7 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         const { preventExternalInvalidation } = this.props;
         const { isValid } = this.state;
 
-        this.inputs.forEach((component) => {
+        this.inputs.forEach(component => {
             const { name } = component.props;
             component.setState({
                 isValid: !(name in errors),
@@ -321,10 +328,10 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
         const { isValid } = this.state;
 
         Object.entries(errors).forEach(([name, error]) => {
-            const component = this.inputs.find((input) => input.props.name === name);
+            const component = this.inputs.find(input => input.props.name === name);
             if (!component) {
                 throw new Error(
-                    `You are trying to update an input that does not exist. Verify errors object with input names. ${JSON.stringify(errors)}`,
+                    `You are trying to update an input that does not exist. Verify errors object with input names. ${JSON.stringify(errors)}`
                 );
             }
             component.setState({

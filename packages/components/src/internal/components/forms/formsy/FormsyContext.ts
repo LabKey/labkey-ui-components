@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { FormsyContextInterface } from './types';
 
 const throwNoFormsyProvider = () => {

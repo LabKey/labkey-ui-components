@@ -2,7 +2,7 @@ import { ValidationError, Validations, Values } from './types';
 
 function getTag(value): string {
     if (value == null) {
-        return value === undefined ? '[object Undefined]' : '[object Null]'
+        return value === undefined ? '[object Undefined]' : '[object Null]';
     }
     return Object.prototype.toString.call(value);
 }
@@ -78,7 +78,7 @@ export function isSame(a: unknown, b: unknown): boolean {
             return false;
         }
 
-        return Object.keys(a).every((key) => isSame(a[key], b[key]));
+        return Object.keys(a).every(key => isSame(a[key], b[key]));
     }
 
     if (isRegex(a) && isRegex(b)) {
@@ -98,7 +98,7 @@ export function runRules<V>(
     value: V,
     currentValues: Values,
     validations: Validations<V>,
-    validationRules: Validations<V>,
+    validationRules: Validations<V>
 ) {
     const results: RulesResult = {
         errors: [],
@@ -106,10 +106,10 @@ export function runRules<V>(
         success: [],
     };
 
-    Object.keys(validations).forEach((validationName) => {
+    Object.keys(validations).forEach(validationName => {
         const validationsVal = validations[validationName];
         const validationRulesVal = validationRules[validationName];
-        const addToResults = (validation) => {
+        const addToResults = validation => {
             if (isString(validation)) {
                 results.errors.push(validation);
                 results.failed.push(validationName);

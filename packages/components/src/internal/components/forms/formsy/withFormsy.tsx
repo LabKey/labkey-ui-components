@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { FormsyContext } from './FormsyContext';
 import {
     ComponentWithStaticAttributes,
@@ -25,7 +26,7 @@ function convertValidationsToObject<V>(validations: false | Validations<V>): Val
         let args: string[] = validation.split(':');
         const validateMethod: string = args.shift();
 
-        args = args.map((arg) => {
+        args = args.map(arg => {
             try {
                 return JSON.parse(arg);
             } catch (e) {
@@ -35,7 +36,7 @@ function convertValidationsToObject<V>(validations: false | Validations<V>): Val
 
         if (args.length > 1) {
             throw new Error(
-                'Formsy does not support multiple args on string validations. Use object format of validations instead.',
+                'Formsy does not support multiple args on string validations. Use object format of validations instead.'
             );
         }
 
@@ -51,13 +52,16 @@ function isChanged(a: object, b: object): boolean {
 }
 
 export function withFormsy<T, V>(
-    WrappedComponent: React.ComponentType<T & FormsyInjectedProps<V>>,
+    WrappedComponent: React.ComponentType<T & FormsyInjectedProps<V>>
 ): React.ComponentType<Omit<T & WrapperProps<V>, keyof InjectedProps<V>>> {
     type WrappedProps = T & WrapperProps<V> & FormsyContextInterface;
 
-    class WithFormsyWrapper extends React.Component<WrappedProps, WrapperState<V>> implements WrapperInstanceMethods<V> {
-        public validations?: Validations<V>;
-        public requiredValidations?: Validations<V>;
+    class WithFormsyWrapper
+        extends React.Component<WrappedProps, WrapperState<V>>
+        implements WrapperInstanceMethods<V>
+    {
+        validations?: Validations<V>;
+        requiredValidations?: Validations<V>;
 
         static defaultProps = {
             innerRef: null,
@@ -152,7 +156,12 @@ export function withFormsy<T, V>(
 
         resetValue = (): void => {
             if (!this._mounted) return;
-            this.setState(state => ({ isPristine: true, value: state.pristineValue }), () => { this.props.validate(this); });
+            this.setState(
+                state => ({ isPristine: true, value: state.pristineValue }),
+                () => {
+                    this.props.validate(this);
+                }
+            );
         };
 
         setValidations = (validations: Validations<V>, required: RequiredValidation<V>): void => {
@@ -171,7 +180,9 @@ export function withFormsy<T, V>(
             if (!validate) {
                 this.setState({ value });
             } else {
-                this.setState({ isPristine: false, value }, () => { validateForm(this); });
+                this.setState({ isPristine: false, value }, () => {
+                    validateForm(this);
+                });
             }
         };
 
@@ -218,7 +229,7 @@ export function withFormsy<T, V>(
 
     return props => (
         <FormsyContext.Consumer>
-            {context => <WithFormsyWrapper {...props as any} {...context} />}
+            {context => <WithFormsyWrapper {...(props as any)} {...context} />}
         </FormsyContext.Consumer>
     );
 }

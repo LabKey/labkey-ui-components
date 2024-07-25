@@ -1,6 +1,21 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.2.0
+*Released*: 24 July 2024
+- Package updates
+
+### version 4.1.0
+*Released*: 24 July 2024
+- Calculated Columns support in the Field Editor
+  - add valueExpression to DomainField model
+  - add calculatedFields to the DomainDesign
+  - add CalculatedFieldOptions to DomainRow and Calculation to PropDescType
+  - hide some AdvancedSettings for calculated fields
+  - use rangeURI for calculated fields to determine type specific expanded row options to show
+  - add ProductFeature.CalculatedFields and isCalculatedFieldsEnabled() helper
+  - add experimental feature flag for calculated fields in the Field Editor
+
 ### version 4.0.7
 *Released*: 23 July 2024
 - Add `footerContent` prop on `Modal` which is passed through as the `children` of `ModalButtons`.

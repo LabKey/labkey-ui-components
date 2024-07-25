@@ -91,7 +91,6 @@ describe('AssayDesignerPanels', () => {
             initModel: EMPTY_MODEL,
             onComplete: jest.fn(),
             onCancel: jest.fn(),
-            testMode: true,
         };
     }
 

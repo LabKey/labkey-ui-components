@@ -57,6 +57,7 @@ export const DOMAIN_FIELD_ONTOLOGY_LABEL_COL = 'conceptLabelColumn';
 export const DOMAIN_FIELD_ONTOLOGY_IMPORT_COL = 'conceptImportColumn';
 export const DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT = 'principalConceptCode';
 export const DOMAIN_FIELD_DERIVATION_DATA_SCOPE = 'derivationDataScope';
+export const DOMAIN_FIELD_VALUE_EXPRESSION = 'valueExpression';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
@@ -158,6 +159,7 @@ export const CREATED_TIMESTAMP_CONCEPT_URI = 'http://www.labkey.org/types#create
 export const MODIFIED_TIMESTAMP_CONCEPT_URI = 'http://www.labkey.org/types#modifiedTimestamp';
 export const SMILES_CONCEPT_URI = 'http://www.labkey.org/exp/xml#smiles';
 export const AUTO_INT_CONCEPT_URI = 'http://www.labkey.org/types#autoInt';
+export const CALCULATED_CONCEPT_URI = 'http://www.labkey.org/exp/xml#calculated';
 
 export const UNLIMITED_TEXT_LENGTH = 2147483647; // Integer.MAX_VALUE
 export const MAX_TEXT_LENGTH = 4000;

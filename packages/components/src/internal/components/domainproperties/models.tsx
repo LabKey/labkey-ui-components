@@ -23,7 +23,7 @@ import { camelCaseToTitleCase, valueIsEmpty } from '../../util/utils';
 
 import { getConceptForCode } from '../ontology/actions';
 
-import { getCurrentAppProperties, hasPremiumModule } from '../../app/utils';
+import { getCurrentAppProperties, hasPremiumModule, isCalculatedFieldsEnabled } from '../../app/utils';
 
 import { GridColumn } from '../base/models/GridColumn';
 
@@ -33,6 +33,7 @@ import { DomainDesignerCheckbox } from './DomainDesignerCheckbox';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
+    CALCULATED_CONCEPT_URI,
     DERIVATION_DATA_SCOPES,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_FULLY_LOCKED,
@@ -62,6 +63,7 @@ import {
     USER_RANGE_URI,
 } from './constants';
 import {
+    CALCULATED_TYPE,
     CONCEPT_URIS_NOT_USED_IN_TYPES,
     DATE_TYPE,
     DATETIME_TYPE,
@@ -127,6 +129,7 @@ export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
 
 interface IDomainDesign {
     allowAttachmentProperties: boolean;
+    allowCalculatedFields: boolean;
     allowFileLinkProperties: boolean;
     allowFlagProperties: boolean;
     allowSampleSubjectProperties: boolean;
@@ -169,6 +172,7 @@ export class DomainDesign
         allowTimepointProperties: false,
         allowUniqueConstraintProperties: false,
         allowUserProperties: true,
+        allowCalculatedFields: false,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
         defaultValueOptions: List<string>(),
@@ -199,6 +203,7 @@ export class DomainDesign
     declare allowTimepointProperties: boolean;
     declare allowUniqueConstraintProperties: boolean;
     declare allowUserProperties: boolean;
+    declare allowCalculatedFields: boolean;
     declare showDefaultValueSettings: boolean;
     declare defaultDefaultValueType: string;
     declare defaultValueOptions: List<string>;
@@ -248,6 +253,15 @@ export class DomainDesign
 
             if (rawModel.fields) {
                 fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames, uniqueConstraintFieldNames);
+            }
+
+            if (isCalculatedFieldsEnabled() && rawModel.allowCalculatedFields && rawModel.calculatedFields) {
+                const calcFields = DomainField.fromJS(
+                    rawModel.calculatedFields,
+                    mandatoryFieldNames,
+                    uniqueConstraintFieldNames
+                );
+                fields = fields.push(...calcFields.toArray());
             }
 
             if (rawModel.defaultValueOptions) {
@@ -883,6 +897,7 @@ export class DomainField
         isPrimaryKey: false,
         lockType: DOMAIN_FIELD_NOT_LOCKED,
         wrappedColumnName: undefined,
+        valueExpression: undefined,
         disablePhiLevel: false,
         lockExistingField: false,
         sourceOntology: undefined,
@@ -943,6 +958,7 @@ export class DomainField
     declare isPrimaryKey: boolean;
     declare lockType: string;
     declare wrappedColumnName?: string;
+    declare valueExpression?: string;
     declare disablePhiLevel?: boolean;
     declare lockExistingField?: boolean;
     declare sourceOntology?: string;
@@ -1067,6 +1083,11 @@ export class DomainField
             }
         }
 
+        // If calculated field, set the rangeURI to the calculated field type
+        if (field.dataType === CALCULATED_TYPE) {
+            field.rangeURI = raw.rangeURI;
+        }
+
         return field;
     }
 
@@ -1150,6 +1171,10 @@ export class DomainField
         return json;
     }
 
+    getRangeURI(): string {
+        return this.dataType.rangeURI || this.rangeURI;
+    }
+
     getErrors(): FieldErrors {
         if (this.dataType.isLookup() && (!this.lookupSchema || !this.lookupQuery)) {
             return FieldErrors.MISSING_SCHEMA_QUERY;
@@ -1159,7 +1184,7 @@ export class DomainField
             return FieldErrors.INVALID_LOOKUP;
         }
 
-        if (!(this.dataType && (this.dataType.rangeURI || this.rangeURI))) {
+        if ((!this.dataType || !this.getRangeURI()) && !this.isCalculatedField()) {
             return FieldErrors.MISSING_DATA_TYPE;
         }
 
@@ -1204,6 +1229,10 @@ export class DomainField
         return this.conceptURI === TEXT_CHOICE_CONCEPT_URI;
     }
 
+    isCalculatedField(): boolean {
+        return this.conceptURI === CALCULATED_CONCEPT_URI;
+    }
+
     isPHI(): boolean {
         return this.PHI !== PHILEVEL_NOT_PHI;
     }
@@ -1224,7 +1253,12 @@ export class DomainField
     }
 
     static hasRegExValidation(field: DomainField): boolean {
-        return field.dataType.isString() && !field.isUniqueIdField() && !field.isTextChoiceField();
+        return (
+            field.dataType.isString() &&
+            !field.isUniqueIdField() &&
+            !field.isTextChoiceField() &&
+            !field.isCalculatedField()
+        );
     }
 
     static updateDefaultValues(field: DomainField): DomainField {
@@ -1439,7 +1473,7 @@ export function resolveAvailableTypes(
 ): List<PropDescType> {
     // field has not been saved -- display all property types allowed by app
     // Issue 40795: need to check wrappedColumnName for alias field in query metadata editor and resolve the datatype fields
-    if (field.isNew() && field.wrappedColumnName == undefined) {
+    if (field.isNew() && field.wrappedColumnName === undefined) {
         return availableTypes
             .filter(type =>
                 isPropertyTypeAllowed(appPropertiesOnly, type, showFilePropertyType, showStudyPropertyTypes)
@@ -1551,8 +1585,8 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
 
     if (!isFieldNew(rawField) || rawField.rangeURI !== undefined) {
         if (rawField.conceptURI === SAMPLE_TYPE_CONCEPT_URI) return SAMPLE_TYPE;
-
         if (rawField.conceptURI === SMILES_CONCEPT_URI) return SMILES_TYPE;
+        if (rawField.conceptURI === CALCULATED_CONCEPT_URI) return CALCULATED_TYPE;
 
         if (rawField.dataType) {
             return rawField.dataType;

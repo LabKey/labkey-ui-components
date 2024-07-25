@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 
@@ -21,7 +20,6 @@ import { act } from 'react-dom/test-utils';
 
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
-import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
 import { getDomainPropertiesTestAPIWrapper } from '../APIWrapper';
 
@@ -32,18 +30,14 @@ import { DatasetDesignerPanels } from './DatasetDesignerPanels';
 import { DatasetModel } from './models';
 
 describe('Dataset Designer', () => {
-    const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);
-
     test('for alert/message', async () => {
-        let container;
         await act(async () => {
-            container = renderWithAppContext(
+            renderWithAppContext(
                 <DatasetDesignerPanels
                     api={getDomainPropertiesTestAPIWrapper(jest.fn)}
-                    initModel={newDatasetModel}
+                    initModel={DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE)}
                     onCancel={jest.fn()}
                     onComplete={jest.fn()}
-                    testMode={true}
                 />
             );
         });

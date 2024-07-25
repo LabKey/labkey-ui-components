@@ -1,5 +1,3 @@
-import { List } from 'immutable';
-
 import { ISelectRowsResult } from '../../query/api';
 
 import { getSampleOperationConfirmationData } from '../entities/actions';
@@ -36,6 +34,8 @@ import { SampleOperation } from './constants';
 export interface SamplesAPIWrapper {
     createSessionAssayRunSummaryQuery: (sampleIds: number[]) => Promise<ISelectRowsResult>;
 
+    getDefaultDiscardStatus: (containerPath?: string) => Promise<number>;
+
     getDistinctAssaysPerSample: (sampleIds: number[]) => Promise<string[]>;
 
     getFieldLookupFromSelection: (
@@ -61,8 +61,6 @@ export interface SamplesAPIWrapper {
     ) => Promise<OperationConfirmationData>;
 
     getSampleStatuses: (includeInUse?: boolean, containerPath?: string) => Promise<SampleState[]>;
-
-    getDefaultDiscardStatus: (containerPath?: string) => Promise<number>;
 
     getSampleStorageId: (sampleRowId: number) => Promise<number>;
 

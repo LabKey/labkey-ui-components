@@ -15,6 +15,8 @@ import { getEntityTestAPIWrapper } from '../../entities/APIWrapper';
 
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
+import { TEST_LKS_STARTER_MODULE_CONTEXT } from '../../../productFixtures';
+
 import { SampleTypeDesigner, SampleTypeDesignerImpl } from './SampleTypeDesigner';
 
 const SERVER_CONTEXT = {
@@ -57,17 +59,14 @@ const PARENT_OPTIONS = [
 
 const BASE_PROPS = {
     appPropertiesOnly: true,
-    initModel: undefined,
     onComplete: jest.fn(),
     onCancel: jest.fn(),
-    testMode: true,
     api: getTestAPIWrapper(jest.fn, {
         entity: getEntityTestAPIWrapper(jest.fn, {
-            initParentOptionsSelects: () =>
-                Promise.resolve({
-                    parentOptions: PARENT_OPTIONS,
-                    parentAliases: Map(),
-                }),
+            initParentOptionsSelects: jest.fn().mockResolvedValue({
+                parentOptions: PARENT_OPTIONS,
+                parentAliases: Map(),
+            }),
         }),
     }),
 };
@@ -195,10 +194,14 @@ describe('SampleTypeDesigner', () => {
     });
 
     test('open fields panel, with barcodes', async () => {
-        LABKEY.moduleContext = { api: { moduleNames: ['samplemanagement', 'api', 'core', 'premium'] } };
         await act(async () => {
             renderWithAppContext(<SampleTypeDesigner {...BASE_PROPS} />, {
-                serverContext: SERVER_CONTEXT,
+                serverContext: {
+                    moduleContext: {
+                        ...TEST_LKS_STARTER_MODULE_CONTEXT,
+                        query: { hasProductProjects: true },
+                    },
+                },
             });
         });
 

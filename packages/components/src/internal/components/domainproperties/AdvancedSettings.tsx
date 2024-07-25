@@ -246,15 +246,15 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         // some domains just don't support default values
         if (!showDefaultValueSettings) return false;
 
-        // Not shown for file types
-        if (field.dataType.isFileType()) return false;
+        // Not shown for file types or calculated fields
+        if (field.dataType.isFileType() || field.isCalculatedField()) return false;
 
         return !this.props.defaultValueOptions.isEmpty();
     };
 
     renderDisplayOptions = () => {
         const { hidden, shownInDetailsView, shownInInsertView, shownInUpdateView } = this.state;
-        const { index, domainIndex } = this.props;
+        const { index, domainIndex, field } = this.props;
 
         return (
             <>
@@ -268,22 +268,26 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 >
                     Show field on default view of the grid
                 </CheckboxLK>
-                <CheckboxLK
-                    checked={shownInUpdateView === true}
-                    onChange={this.handleCheckbox}
-                    name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
-                    id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, domainIndex, index)}
-                >
-                    Show on update form when updating a single row of data
-                </CheckboxLK>
-                <CheckboxLK
-                    checked={shownInInsertView === true}
-                    onChange={this.handleCheckbox}
-                    name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
-                    id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, domainIndex, index)}
-                >
-                    Show on insert form when updating a single row of data
-                </CheckboxLK>
+                {!field.isCalculatedField() && (
+                    <>
+                        <CheckboxLK
+                            checked={shownInUpdateView === true}
+                            onChange={this.handleCheckbox}
+                            name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
+                            id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, domainIndex, index)}
+                        >
+                            Show on update form when updating a single row of data
+                        </CheckboxLK>
+                        <CheckboxLK
+                            checked={shownInInsertView === true}
+                            onChange={this.handleCheckbox}
+                            name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
+                            id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, domainIndex, index)}
+                        >
+                            Show on insert form when updating a single row of data
+                        </CheckboxLK>
+                    </>
+                )}
                 <CheckboxLK
                     checked={shownInDetailsView === true}
                     onChange={this.handleCheckbox}
@@ -368,33 +372,35 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return (
             <>
                 <div className="domain-adv-misc-options">Miscellaneous Options</div>
-                <div className="row">
-                    <div className="col-xs-3">
-                        <DomainFieldLabel label="PHI Level" helpTipBody={this.getPhiHelpText()} />
+                {!field.isCalculatedField() && (
+                    <div className="row">
+                        <div className="col-xs-3">
+                            <DomainFieldLabel label="PHI Level" helpTipBody={this.getPhiHelpText()} />
+                        </div>
+                        <div className="col-xs-6">
+                            <select
+                                className="form-control"
+                                name={createFormInputName(DOMAIN_FIELD_PHI)}
+                                id={createFormInputId(DOMAIN_FIELD_PHI, domainIndex, index)}
+                                onChange={this.handleChange}
+                                value={PHI}
+                                disabled={disablePhiSelect}
+                            >
+                                {!currentValueExists && (
+                                    <option key={PHI} value={PHI}>
+                                        {DOMAIN_PHI_LEVELS.find(level => level.value === PHI)?.label ?? PHI}
+                                    </option>
+                                )}
+                                {phiLevels.map(level => (
+                                    <option key={level.value} value={level.value}>
+                                        {level.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="col-xs-3" />
                     </div>
-                    <div className="col-xs-6">
-                        <select
-                            className="form-control"
-                            name={createFormInputName(DOMAIN_FIELD_PHI)}
-                            id={createFormInputId(DOMAIN_FIELD_PHI, domainIndex, index)}
-                            onChange={this.handleChange}
-                            value={PHI}
-                            disabled={disablePhiSelect}
-                        >
-                            {!currentValueExists && (
-                                <option key={PHI} value={PHI}>
-                                    {DOMAIN_PHI_LEVELS.find(level => level.value === PHI)?.label ?? PHI}
-                                </option>
-                            )}
-                            {phiLevels.map(level => (
-                                <option key={level.value} value={level.value}>
-                                    {level.label}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="col-xs-3" />
-                </div>
+                )}
                 {field.dataType === DATETIME_TYPE && (
                     <CheckboxLK
                         checked={excludeFromShifting}
@@ -473,7 +479,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </div>
                     </LabelHelpTip>
                 </CheckboxLK>
-                {PropDescType.isMvEnableable(field.dataType.rangeURI) && (
+                {PropDescType.isMvEnableable(field.dataType.rangeURI) && !field.isCalculatedField() && (
                     <CheckboxLK
                         checked={mvEnabled}
                         onChange={this.handleCheckbox}
@@ -497,7 +503,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </LabelHelpTip>
                     </CheckboxLK>
                 )}
-                {allowUniqueConstraintProperties && (
+                {allowUniqueConstraintProperties && !field.isCalculatedField() && (
                     <CheckboxLK
                         checked={uniqueConstraint || field.isPrimaryKey}
                         disabled={field.isPrimaryKey}

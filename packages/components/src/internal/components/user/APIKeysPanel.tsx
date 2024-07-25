@@ -17,12 +17,7 @@ import { useServerContext } from '../base/ServerContext';
 import { Alert } from '../base/Alert';
 import { AppContext, useAppContext } from '../../AppContext';
 import { setCopyValue } from '../../events';
-import {
-    biologicsIsPrimaryApp,
-    getCurrentAppProperties,
-    getPrimaryAppProperties,
-    isFeatureEnabled,
-} from '../../app/utils';
+import { biologicsIsPrimaryApp, getCurrentAppProperties, isApp, isFeatureEnabled } from '../../app/utils';
 import { ProductFeature } from '../../app/constants';
 import {
     InjectedQueryModels,
@@ -231,7 +226,7 @@ const APIKeysPanelBody: FC<APIKeysPanelBodyProps & InjectedQueryModels> = props 
     );
 
     // We are meant to not show this panel for LKSM Starter, but show it in LKS and LKSM Prof+
-    if (getPrimaryAppProperties(moduleContext) && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)) return null;
+    if (isApp() && !isFeatureEnabled(ProductFeature.ApiKeys, moduleContext)) return null;
 
     return (
         <div className="panel panel-content panel-default">

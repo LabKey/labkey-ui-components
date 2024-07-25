@@ -3,6 +3,8 @@
 // Repository: https://github.com/formsy/formsy-react/tree/0226fab133a25
 import React, { Component } from 'react';
 
+import { debounce } from '../../../util/utils';
+
 import { FormsyContext } from './FormsyContext';
 import {
     FormsyContextInterface,
@@ -16,7 +18,7 @@ import {
     RunValidationResponse,
     Values,
 } from './types';
-import { debounce, isObject, isSame, isString, protectAgainstParamReassignment, runRules } from './utils';
+import { isObject, isSame, isString, protectAgainstParamReassignment, runRules } from './utils';
 import { formsyRules } from './formsyRules';
 
 export type FormHTMLAttributesCleaned = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onChange' | 'onSubmit'>;
@@ -260,8 +262,7 @@ export class Formsy extends Component<FormsyProps, FormsyState> {
 
         this.setState({ formSubmitted: !isPristine });
 
-        // Iterate through each component and set it as pristine
-        // or "dirty".
+        // Iterate through each component and set it as pristine or "dirty".
         this.inputs.forEach(component => {
             component.setState({ formSubmitted: !isPristine, isPristine });
         });

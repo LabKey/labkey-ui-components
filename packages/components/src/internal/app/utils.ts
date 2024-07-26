@@ -254,6 +254,10 @@ export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('SampleManagement', moduleContext);
 }
 
+export function isQueryMetadataEditor(): boolean {
+    return ActionURL.getAction()?.toLowerCase().startsWith('querymetadataeditor');
+}
+
 export function getCurrentAppProperties(): AppProperties {
     const lcController = ActionURL.getController().toLowerCase();
     if (!lcController) return undefined;

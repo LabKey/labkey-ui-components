@@ -29,7 +29,6 @@ import {
     LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC,
     SAMPLE_ALIQUOT_FIELDS_TOPIC,
 } from '../../../util/helpLinks';
-import { initQueryGridState } from '../../../global';
 import { resolveErrorMessage } from '../../../util/messaging';
 import { Modal } from '../../../Modal';
 import { Alert } from '../../base/Alert';

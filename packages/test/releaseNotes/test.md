@@ -1,8 +1,8 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
-### version 1.X
-*Released* X 2024
+### version 1.6.0
+*Released* 26 July 2024
 * Add ExperimentCRUDUtils
 
 ### version 1.5.0

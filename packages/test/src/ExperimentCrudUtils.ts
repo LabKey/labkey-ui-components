@@ -1,11 +1,12 @@
-import { AuditBehaviorTypes, Query } from '@labkey/api';
+import { AuditBehaviorTypes } from '@labkey/api';
 import { IntegrationTestServer, RequestOptions, successfulResponse } from './integrationUtils';
 import { sleep } from './utils';
 
-export async function insertRows(server: IntegrationTestServer, rows: any[], schema: string, dataType: string, folderOptions: RequestOptions, userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
+// TODO, move non sample/dataclass crud util to a generic class
+export async function insertRows(server: IntegrationTestServer, rows: any[], schemaName: string, queryName: string, folderOptions: RequestOptions, userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
     const response = await server.post('query', 'insertRows', {
-        schemaName: schema,
-        queryName: dataType,
+        schemaName,
+        queryName,
         rows,
         auditBehavior,
     }, { ...folderOptions, ...userOptions }).expect(successfulResponse);
@@ -14,49 +15,11 @@ export async function insertRows(server: IntegrationTestServer, rows: any[], sch
     return response.body.rows;
 }
 
-export async function insertSamples(server: IntegrationTestServer, rows: any[], sampleType: string, folderOptions: RequestOptions, userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
-    return await insertRows(server, rows, 'samples', sampleType, folderOptions, userOptions, auditBehavior, debug);
-}
-
-export async function createSample(server: IntegrationTestServer, sampleName: string, sampleType: string, folderOptions: RequestOptions, userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
-    return await insertRows(server, [{ name: sampleName }], 'samples', sampleType, folderOptions, userOptions, auditBehavior, debug);
-}
-
-export async function createSource(server: IntegrationTestServer, sourceName: string, sourceType: string, folderOptions: RequestOptions, userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
-    return await insertRows(server, [{ name: sourceName }], 'exp.data', sourceType, folderOptions, userOptions, auditBehavior, debug);
-}
-
-// import, update from file, merge
-export async function importSample(server: IntegrationTestServer, importText: string, sampleType: string, insertOption = "IMPORT", folderOptions: RequestOptions , userOptions: RequestOptions, useAsync = false, debug?: boolean) : Promise<any> {
-    const response = await server.request('experiment', 'importSamples', (agent, url) => {
-            return agent
-                .post(url + '?auditBehavior=DETAILED&crossFolderImport=true')
-                .type('form')
-                .send({
-                    schemaName: 'samples',
-                    queryName: sampleType,
-                    useAsync,
-                    insertOption,
-                    text: importText,
-                    importLookupByAlternateKey: true
-                });
-        },
-        { ...folderOptions, ...userOptions }).expect(successfulResponse);
-
-    if (useAsync)
-        await sleep(100);
-
-    if (debug)
-        console.log(response);
-
-    return response;
-}
-
 // update using api, rowIds will call _update, lsids will call data iterator
-export async function updateRows(server: IntegrationTestServer, rows: any[], schemaName: string, dataType: string, folderOptions: RequestOptions , userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
+export async function updateRows(server: IntegrationTestServer, rows: any[], schemaName: string, queryName: string, folderOptions: RequestOptions , userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
     const response = await server.post('query', 'updateRows', {
-        schemaName: schemaName,
-        queryName: dataType,
+        schemaName,
+        queryName,
         rows,
         auditBehavior,
     }, { ...folderOptions, ...userOptions }).expect(successfulResponse);
@@ -65,11 +28,6 @@ export async function updateRows(server: IntegrationTestServer, rows: any[], sch
         console.log(response);
 
     return response.body.rows;
-}
-
-// update using api, rowIds will call _update, lsids will call data iterator
-export async function updateSamples(server: IntegrationTestServer, rows: any[], sampleType: string, folderOptions: RequestOptions , userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
-    return await updateRows(server, rows, 'samples', sampleType, folderOptions, userOptions, auditBehavior, debug);
 }
 
 export async function saveRows(server: IntegrationTestServer, containerRows: {[key: string] : any[]}, schemaName: string, queryName: string, command: string = 'update', folderOptions: RequestOptions, userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any> {
@@ -93,30 +51,6 @@ export async function saveRows(server: IntegrationTestServer, containerRows: {[k
     return response;
 }
 
-export async function doCrossFolderSamplesAction(server: IntegrationTestServer, containerRows: {[key: string] : any[]}, sampleType: string, command: string = 'update', folderOptions: RequestOptions, userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any> {
-    return await saveRows(server, containerRows, 'samples', sampleType, command, folderOptions, userOptions, auditBehavior, debug);
-}
-
-export async function deleteRows(server: IntegrationTestServer, rowIds: number[], schemaName: string, dataType: string, folderOptions: RequestOptions , userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any> {
-    const rows = [];
-    rowIds.forEach(rowId => {
-        rows.push({rowId});
-    })
-    const response = await server.post('query', 'deleteRows', {
-        schemaName: schemaName,
-        queryName: dataType,
-        rows,
-        auditBehavior,
-    }, { ...folderOptions, ...userOptions }).expect(successfulResponse);
-    if (debug)
-        console.log(response);
-    return response;
-}
-
-export async function deleteSamples(server: IntegrationTestServer, sampleIds: number[], sampleType: string, folderOptions: RequestOptions , userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any> {
-    return await deleteRows(server, sampleIds, 'samples', sampleType, folderOptions, userOptions, auditBehavior, debug);
-}
-
 export async function getRows(server: IntegrationTestServer, rowIds: number[], schemaName: string, queryName: string, columns: string = 'Name, RowId', folderOptions: RequestOptions , userOptions: RequestOptions, debug?: boolean) : Promise<any[]> {
     const response = await server.post('query', 'selectRows', {
         schemaName,
@@ -129,6 +63,84 @@ export async function getRows(server: IntegrationTestServer, rowIds: number[], s
     return response.body.rows;
 }
 
+export async function getAllRows(server: IntegrationTestServer, schemaName: string, queryName: string, columns: string = 'Name, RowId', folderOptions: RequestOptions , userOptions: RequestOptions, debug?: boolean) : Promise<any[]> {
+    const response = await server.post('query', 'selectRows', {
+        schemaName,
+        queryName,
+        'query.columns': columns,
+    }, { ...folderOptions, ...userOptions }).expect(successfulResponse);
+    if (debug)
+        console.log(response);
+    return response.body.rows;
+}
+
+export async function deleteRows(server: IntegrationTestServer, rowIds: number[], schemaName: string, queryName: string, folderOptions: RequestOptions , userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any> {
+    const rows = [];
+    rowIds.forEach(rowId => {
+        rows.push({rowId});
+    })
+    const response = await server.post('query', 'deleteRows', {
+        schemaName,
+        queryName,
+        rows,
+        auditBehavior,
+    }, { ...folderOptions, ...userOptions }).expect(successfulResponse);
+    if (debug)
+        console.log(response);
+    return response;
+}
+
+export async function insertSamples(server: IntegrationTestServer, rows: any[], sampleType: string, folderOptions: RequestOptions, userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
+    return await insertRows(server, rows, 'samples', sampleType, folderOptions, userOptions, auditBehavior, debug);
+}
+
+export async function createSample(server: IntegrationTestServer, sampleName: string, sampleType: string, folderOptions: RequestOptions, userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
+    return await insertRows(server, [{ name: sampleName }], 'samples', sampleType, folderOptions, userOptions, auditBehavior, debug);
+}
+
+export async function createSource(server: IntegrationTestServer, sourceName: string, sourceType: string, folderOptions: RequestOptions, userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
+    return await insertRows(server, [{ name: sourceName }], 'exp.data', sourceType, folderOptions, userOptions, auditBehavior, debug);
+}
+
+// import, update from file, merge
+export async function importSample(server: IntegrationTestServer, importText: string, queryName: string, insertOption = "IMPORT", folderOptions: RequestOptions , userOptions: RequestOptions, useAsync = false, debug?: boolean) : Promise<any> {
+    const response = await server.request('experiment', 'importSamples', (agent, url) => {
+            return agent
+                .post(url + '?auditBehavior=DETAILED&crossFolderImport=true')
+                .type('form')
+                .send({
+                    schemaName: 'samples',
+                    queryName,
+                    useAsync,
+                    insertOption,
+                    text: importText,
+                    importLookupByAlternateKey: true
+                });
+        },
+        { ...folderOptions, ...userOptions }).expect(successfulResponse);
+
+    if (useAsync)
+        await sleep(100);
+
+    if (debug)
+        console.log(response);
+
+    return response;
+}
+
+// update using api, rowIds will call _update, lsids will call data iterator
+export async function updateSamples(server: IntegrationTestServer, rows: any[], sampleType: string, folderOptions: RequestOptions , userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any[]> {
+    return await updateRows(server, rows, 'samples', sampleType, folderOptions, userOptions, auditBehavior, debug);
+}
+
+export async function doCrossFolderSamplesAction(server: IntegrationTestServer, containerRows: {[key: string] : any[]}, sampleType: string, command: string = 'update', folderOptions: RequestOptions, userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any> {
+    return await saveRows(server, containerRows, 'samples', sampleType, command, folderOptions, userOptions, auditBehavior, debug);
+}
+
+export async function deleteSamples(server: IntegrationTestServer, sampleIds: number[], sampleType: string, folderOptions: RequestOptions , userOptions: RequestOptions, auditBehavior: AuditBehaviorTypes = AuditBehaviorTypes.DETAILED, debug?: boolean) : Promise<any> {
+    return await deleteRows(server, sampleIds, 'samples', sampleType, folderOptions, userOptions, auditBehavior, debug);
+}
+
 export async function getSamplesData(server: IntegrationTestServer, rowIds: number[], sampleType: string, columns: string = 'Name, RowId', folderOptions: RequestOptions , userOptions: RequestOptions, debug?: boolean) : Promise<any[]> {
     return await getRows(server, rowIds, 'samples', sampleType, columns, folderOptions, userOptions, debug);
 }
@@ -138,10 +150,10 @@ export async function sampleExists(server: IntegrationTestServer, sampleRowId: n
     return response.length === 1;
 }
 
-export async function getSampleDataByName(server: IntegrationTestServer, sampleName: string, sampleType: string, columns: string = 'Name, RowId', folderOptions: RequestOptions , userOptions: RequestOptions, debug?: boolean) : Promise<any> {
+export async function getSampleDataByName(server: IntegrationTestServer, sampleName: string, queryName: string, columns: string = 'Name, RowId', folderOptions: RequestOptions , userOptions: RequestOptions, debug?: boolean) : Promise<any> {
     const response = await server.post('query', 'selectRows', {
         schemaName: 'samples',
-        queryName: sampleType,
+        queryName,
         'query.Name~eq': sampleName,
         'query.columns': columns,
     }, { ...folderOptions, ...userOptions }).expect(successfulResponse);
@@ -159,10 +171,10 @@ export async function sourceExists(server: IntegrationTestServer, sourceRowId: n
     return response.length === 1;
 }
 
-export async function getAliquotsByRootId(server: IntegrationTestServer, rootId: number, sampleType: string, columns: string = 'Name, RowId, Lsid, rootmaterialrowid, aliquotedfromlsid', folderOptions: RequestOptions , userOptions: RequestOptions, debug?: boolean) : Promise<any[]> {
+export async function getAliquotsByRootId(server: IntegrationTestServer, rootId: number, queryName: string, columns: string = 'Name, RowId, Lsid, rootmaterialrowid, aliquotedfromlsid', folderOptions: RequestOptions , userOptions: RequestOptions, debug?: boolean) : Promise<any[]> {
     const response = await server.post('query', 'selectRows', {
         schemaName: 'samples',
-        queryName: sampleType,
+        queryName,
         'query.rootmaterialrowid~eq': rootId,
         'query.rowid~neq': rootId,
         'query.columns': columns,

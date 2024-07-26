@@ -39,7 +39,8 @@ import {
     getSourcesData,
     sourceExists,
     createSample,
-    getAliquotsByRootId
+    getAliquotsByRootId,
+    getAllRows
 } from './ExperimentCrudUtils';
 
 const ExperimentCRUDUtils = {
@@ -60,7 +61,8 @@ const ExperimentCRUDUtils = {
     getSourcesData,
     sourceExists,
     createSample,
-    getAliquotsByRootId
+    getAliquotsByRootId,
+    getAllRows,
 }
 
 export {

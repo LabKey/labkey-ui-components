@@ -393,14 +393,15 @@ export function isLKSSupportEnabled(moduleContext?: ModuleContext): boolean {
     return isBiologicsEnabled(moduleContext) || hasPremiumModule(moduleContext);
 }
 
-export function isLIMSEnabled(moduleContext?: ModuleContext): boolean {
-    // Can't check for a moduleContext module since this is defined in sampleManagement, so we base it on feature availability.
-    // We choose chartBuilding over transform scrips because transform scripts may be enabled by virtue of having the premium module.
-    return isSampleManagerEnabled(moduleContext) && isFeatureEnabled(ProductFeature.ChartBuilding, moduleContext);
+export function isLIMSEnabled(moduleContext?: ModuleContext, container?: Container): boolean {
+    // The check for folder type is not ideal here, but since the product is provided through the sampleManagement module
+    // a simple module check isn't sufficient. Since the product configuration is global to the server, we have no good
+    // way to know which URLs to construct in a particular container except by inspecting the folder type (at the moment).
+    return isSampleManagerEnabled(moduleContext) && (container ?? getServerContext().container)?.folderType === 'LIMS';
 }
 
 export function isAssayFileUploadEnabled(moduleContext?: ModuleContext): boolean {
-    return isLIMSEnabled(moduleContext);
+    return isBiologicsEnabled(moduleContext) || isLIMSEnabled(moduleContext);
 }
 
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {

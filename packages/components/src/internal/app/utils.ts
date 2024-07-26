@@ -394,11 +394,13 @@ export function isLKSSupportEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isLIMSEnabled(moduleContext?: ModuleContext): boolean {
-    // Can't check for a module context module since this is defined in sampleManagement, so we base it on feature availability
-    // Currently neither chart builder nor transform scripts is a great choice because you need the experimental flag for chart builder
-    // and transform scripts may be enabled by virtue of having the premium module. We choose chart builder since it will give
-    // false negatives less often and can be updated via a setting.
-    return isSampleManagerEnabled(moduleContext) && isChartBuilderEnabled(moduleContext);
+    // Can't check for a moduleContext module since this is defined in sampleManagement, so we base it on feature availability.
+    // We choose chartBuilding over transform scrips because transform scripts may be enabled by virtue of having the premium module.
+    return isSampleManagerEnabled(moduleContext) && isFeatureEnabled(ProductFeature.ChartBuilding, moduleContext);
+}
+
+export function isAssayFileUploadEnabled(moduleContext?: ModuleContext): boolean {
+    return isLIMSEnabled(moduleContext);
 }
 
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {

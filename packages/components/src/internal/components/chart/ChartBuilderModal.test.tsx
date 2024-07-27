@@ -402,7 +402,7 @@ describe('getChartBuilderQueryConfig', () => {
     test('based on model', () => {
         const config = getChartBuilderQueryConfig(model, fieldValues, chartConfig, undefined);
         expect(config.maxRows).toBe(-1);
-        expect(config.requiredVersion).toBe('13.2');
+        expect(config.requiredVersion).toBe('17.1');
         expect(config.schemaName).toBe('schema');
         expect(config.queryName).toBe('query');
         expect(config.viewName).toBe('view');
@@ -421,7 +421,7 @@ describe('getChartBuilderQueryConfig', () => {
 
         const config = getChartBuilderQueryConfig(model, fieldValues, chartConfig, savedConfig);
         expect(config.maxRows).toBe(-1);
-        expect(config.requiredVersion).toBe('13.2');
+        expect(config.requiredVersion).toBe('17.1');
         expect(config.schemaName).toBe('savedSchema');
         expect(config.queryName).toBe('savedQuery');
         expect(config.viewName).toBe('savedView');

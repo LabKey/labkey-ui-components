@@ -21,6 +21,12 @@
         <% }); %>
     </permissionClasses>
     <% } %>
+    <% if (htmlWebpackPlugin.options.requiresLogin) { %>
+    <requiresLogin/>
+    <% } %>
+    <% if (htmlWebpackPlugin.options.requiresNoPermission) { %>
+    <requiresNoPermission/>
+    <% } %>
     <dependencies>
         <dependency path="clientapi"/>
         <dependency path="passwordGauge.js"/>

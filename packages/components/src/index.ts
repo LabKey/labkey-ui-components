@@ -178,6 +178,7 @@ import { EditableGridEvent } from './internal/components/editable/constants';
 import {
     addColumns,
     changeColumn,
+    initEditorModel,
     initEditableGridModel,
     initEditableGridModels,
     removeColumn,
@@ -1153,6 +1154,7 @@ export {
     // editable grid related items
     applyEditableGridChangesToModels,
     getUpdatedDataFromEditableGrid,
+    initEditorModel,
     initEditableGridModel,
     initEditableGridModels,
     MAX_EDITABLE_GRID_ROWS,

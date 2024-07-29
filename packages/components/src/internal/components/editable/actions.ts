@@ -1,5 +1,5 @@
 import { Filter, Utils } from '@labkey/api';
-import { List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
+import { fromJS, List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
 import moment from 'moment';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
@@ -13,7 +13,6 @@ import { GridData } from '../../models';
 import { formatDate, formatDateTime, parseDate } from '../../util/Date';
 import {
     caseInsensitive,
-    getValueFromRow,
     isFloat,
     isInteger,
     parseCsvString,
@@ -117,6 +116,73 @@ export const loadEditorModelData = async (
         deletedIds: ImmutableSet<any>(),
         rowCount: orderedRows.length,
     };
+};
+
+export const initEditorModel = async (
+    queryModel: QueryModel,
+    loader: EditableGridLoader,
+    columnMetadata?: Map<string, EditableColumnMetadata>
+): Promise<EditorModel> => {
+    // TODO: look at EditorModel.getColumns and make sure we're matching the behavior from there as well e.g. file
+    //  columns
+    const { columns: loaderColumns, queryInfo } = loader;
+    // TODO: Most EditableGridLoaders do not actually asynchronously fetch data (see note in EditableGridLoader), we
+    //  can most likely just drop loader as an arg, and have consumers pass in their QueryModel data (if any), and
+    //  skip this whole dance.
+    const { data, dataIds } = await loader.fetch(queryModel);
+    const rows = data.toJS();
+    const orderedRows = dataIds.toArray();
+    const forUpdate = loader.mode === EditorMode.Update;
+    let columns: QueryColumn[];
+
+    if (loaderColumns) {
+        // TODO: investigate how many loaders actually setting columns, there may be a better path forward
+        columns = loader.columns;
+    } else if (forUpdate) {
+        columns = queryInfo.getUpdateColumns();
+    } else {
+        columns = queryModel.queryInfo.getInsertColumns();
+    }
+
+    // Calculate orderedColumns here before we add PK and Container columns to the columns array because they should
+    // be hidden by default.
+    const orderedColumns = columns.map(queryColumn => queryColumn.fieldKey);
+    const columnMap = columns.reduce((result, column) => {
+        result[column.fieldKey] = column;
+        return result;
+    }, {});
+
+    if (forUpdate) {
+        // If we're updating then we need to ensure that the pkCol is in the columnMap so things like readonlyRows
+        // will work.
+        const pkCol = queryInfo.getPkCols()[0];
+        columnMap[pkCol.fieldKey] = pkCol;
+        columns.push(pkCol);
+
+        // If we're updating we need to ensure that the container column is in the column map, so we can validate
+        // against it during events like paste.
+        const containerCol = queryInfo.getColumn('Container') ?? queryInfo.getColumn('Folder');
+
+        if (containerCol) {
+            columnMap[containerCol.fieldKey] = containerCol;
+            columns.push(containerCol);
+        }
+    }
+
+    // TODO: because we use loadEditorModelData we cannot put this method on EditorModel as a static method, which is
+    //  really where it belongs. Once we convert all usages of initEditableGridModel to use this method we can move it,
+    //  as well as loadEditorModelData and getLookupValueDescriptors to EditorModel.
+    const { cellValues } = await loadEditorModelData({ rows, orderedRows }, columns, forUpdate);
+
+    return new EditorModel({
+        cellValues,
+        columnMetadata,
+        columnMap: fromJS(columnMap),
+        orderedColumns: fromJS(orderedColumns),
+        id: queryModel.id,
+        queryInfo,
+        rowCount: orderedRows.length,
+    });
 };
 
 /**
@@ -1100,7 +1166,7 @@ export async function fillColumnCells(
     initialSelection: string[],
     selectionToFill: string[],
     forUpdate: boolean,
-    targetContainerPath: string,
+    targetContainerPath: string
 ): Promise<CellMessagesAndValues> {
     const { direction, increment, incrementType, prefix, startingValue, initialSelectionValues } =
         inferSelectionIncrement(editorModel, initialSelection, selectionToFill);
@@ -1226,7 +1292,7 @@ export async function dragFillEvent(
             initialSelectionByCol,
             selectionToFillByCol,
             forUpdate,
-            targetContainerPath,
+            targetContainerPath
         );
         cellValues = messagesAndValues.cellValues;
         cellMessages = messagesAndValues.cellMessages;

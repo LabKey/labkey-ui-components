@@ -32,10 +32,6 @@ import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 import { CellCoordinates, EditableGridEvent } from './constants';
 import { genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
 
-// FIXME: this is a circular import, we should probably move loadEditorModelData, initEditableGridModel,
-//  initEditableGridModels to this file
-import { loadEditorModelData } from './actions';
-
 export interface EditableColumnMetadata {
     align?: string;
     caption?: string;
@@ -177,70 +173,6 @@ export class EditorModel
     // NK: This is pre-sorted array that is updated whenever the selection is updated.
     // See applyEditableGridChangesToModels().
     declare selectionCells: string[];
-
-    static async init(
-        queryModel: QueryModel,
-        loader: EditableGridLoader,
-        columnMetadata?: Map<string, EditableColumnMetadata>
-    ) {
-        const { columns: loaderColumns, queryInfo } = loader;
-        // TODO: Most EditableGridLoaders do not actually asynchronously fetch data (see note in EditableGridLoader), we
-        //  can most likely just drop loader as an arg, and have consumers pass in their QueryModel data (if any), and
-        //  skip this whole dance.
-        const { data, dataIds } = await loader.fetch(queryModel);
-        const rows = data.toJS();
-        const orderedRows = dataIds.toArray();
-        const forUpdate = loader.mode === EditorMode.Update;
-        let columns: QueryColumn[];
-
-        if (loaderColumns) {
-            // TODO: investigate how many loaders actually setting columns, there may be a better path forward
-            columns = loader.columns;
-        } else if (forUpdate) {
-            columns = queryInfo.getUpdateColumns();
-        } else {
-            columns = queryModel.queryInfo.getInsertColumns();
-        }
-
-        // Calculate orderedColumns here before we add PK and Container columns to the columns array because they should
-        // be hidden by default.
-        const orderedColumns = columns.map(queryColumn => queryColumn.fieldKey);
-        const columnMap = columns.reduce((result, column) => {
-            result[column.fieldKey] = column;
-            return result;
-        }, {});
-
-        if (forUpdate) {
-            // If we're updating then we need to ensure that the pkCol is in the columnMap so things like readonlyRows
-            // will work.
-            const pkCol = queryInfo.getPkCols()[0];
-            columnMap[pkCol.fieldKey] = pkCol;
-            columns.push(pkCol);
-
-            // If we're updating we need to ensure that the container column is in the column map, so we can validate
-            // against it during events like paste.
-            const containerCol = queryInfo.getColumn('Container') ?? queryInfo.getColumn('Folder');
-
-            if (containerCol) {
-                columnMap[containerCol.fieldKey] = containerCol;
-                columns.push(containerCol);
-            }
-        }
-
-        // TODO: this causes a circular import between models.ts and actions.ts, we could just add a new method
-        //  to actions called initEditorModel. Alternatively we move the other actions to EditorModel.
-        const { cellValues } = await loadEditorModelData({ rows, orderedRows }, columns, forUpdate);
-
-        return new EditorModel({
-            cellValues,
-            columnMetadata,
-            columnMap: fromJS(columnMap),
-            orderedColumns: fromJS(orderedColumns),
-            id: queryModel.id,
-            queryInfo,
-            rowCount: orderedRows.length,
-        });
-    }
 
     get pkFieldKey(): string {
         return this.queryInfo.getPkCols()[0].fieldKey;
@@ -431,12 +363,9 @@ export class EditorModel
      * of key fields that are duplicated, and, optionally, which sets of rows have duplicated values for a
      * given field key.
      *
-     * @param queryModel the model whose data we are validating
      * @param uniqueFieldKey optional (non-key) field that should be unique.
      */
-    validateData(
-        uniqueFieldKey?: string
-    ): {
+    validateData(uniqueFieldKey?: string): {
         cellMessages: CellMessages; // updated cell messages with missing required errors
         missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
         uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
@@ -542,12 +471,8 @@ export class EditorModel
         };
     }
 
-    getValidationErrors(
-        uniqueFieldKey?: string,
-    ): { cellMessages: CellMessages; errors: string[] } {
-        const { uniqueKeyViolations, missingRequired, cellMessages } = this.validateData(
-            uniqueFieldKey,
-        );
+    getValidationErrors(uniqueFieldKey?: string): { cellMessages: CellMessages; errors: string[] } {
+        const { uniqueKeyViolations, missingRequired, cellMessages } = this.validateData(uniqueFieldKey);
         let errors = [];
         if (!uniqueKeyViolations.isEmpty()) {
             const messages = uniqueKeyViolations.reduce((keyMessages, valueMap, fieldNames) => {
@@ -608,7 +533,7 @@ export class EditorModel
         return {
             isReadonlyCell: this.columnMetadata.get(fieldKey)?.isReadOnlyCell(pkValue),
             isReadonlyRow: readonlyRows.includes(pkValue),
-        }
+        };
     }
 
     getFolderValueForCellKey(cellKey: string): string {
@@ -617,7 +542,6 @@ export class EditorModel
         if (!containerCol) return undefined;
         return this.cellValues.get(genCellKey(containerCol.fieldKey, rowIdx)).get(0).raw;
     }
-
 
     get hasFocus(): boolean {
         return this.focusColIdx > -1 && this.focusRowIdx > -1;

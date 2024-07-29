@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { isBefore, isValid, parse } from 'date-fns';
+import { format, isBefore, isValid, parse } from 'date-fns';
+import { format as formatTz, toZonedTime } from 'date-fns-tz';
 import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import numeral from 'numeral';
@@ -439,7 +440,23 @@ function parseDateUsingMoment(
     return validDate ? validDate.toDate() : null;
 }
 
-function _formatDate(date: Date | number, dateFormat: string, timezone?: string): string {
+function _formatDate(date: Date | number, dateFormat: string, timezone?: string, usingDateFNS = true): string {
+    if (usingDateFNS) {
+        return formatDateUsingDateFNS(date, dateFormat, timezone);
+    }
+    return formatDateUsingMoment(date, dateFormat, timezone);
+}
+
+function formatDateUsingDateFNS(date: Date | number, dateFormat: string, timezone?: string): string {
+    if (!date) return undefined;
+    const _dateFormat = toDateFNSFormatString(dateFormat);
+    if (timezone) {
+        return formatTz(toZonedTime(date, timezone), _dateFormat, { timeZone: timezone });
+    }
+    return format(date, _dateFormat);
+}
+
+function formatDateUsingMoment(date: Date | number, dateFormat: string, timezone?: string): string {
     if (!date) return undefined;
     let _date: moment.Moment;
     if (timezone) {
@@ -450,12 +467,27 @@ function _formatDate(date: Date | number, dateFormat: string, timezone?: string)
     return formatWithJDF(_date, dateFormat);
 }
 
-export function formatDate(date: Date | number, timezone?: string, dateFormat?: string): string {
-    return _formatDate(date, dateFormat ?? getMomentDateFormat(), timezone);
+export function formatDate(date: Date | number, timezone?: string, dateFormat?: string, usingDateFNS = true): string {
+    return _formatDate(
+        date,
+        dateFormat ?? (usingDateFNS ? getDateFNSDateFormat() : getMomentDateFormat()),
+        timezone,
+        usingDateFNS
+    );
 }
 
-export function formatDateTime(date: Date | number, timezone?: string, dateFormat?: string): string {
-    return _formatDate(date, dateFormat ?? getMomentDateTimeFormat(), timezone);
+export function formatDateTime(
+    date: Date | number,
+    timezone?: string,
+    dateFormat?: string,
+    usingDateFNS = true
+): string {
+    return _formatDate(
+        date,
+        dateFormat ?? (usingDateFNS ? getDateFNSDateTimeFormat() : getMomentDateTimeFormat()),
+        timezone,
+        usingDateFNS
+    );
 }
 
 export function getUnFormattedNumber(n): number {

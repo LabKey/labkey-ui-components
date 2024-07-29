@@ -1561,25 +1561,22 @@ async function insertPastedData(
     };
 }
 
-function getReadonlyRowCount(
-    rowCount: number,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
-    queryInfo: QueryInfo,
-    startRowInd: number,
-    readonlyRows: string[]
-): number {
-    const pkCols = queryInfo.getPkCols();
+function getReadonlyRowCount(editorModel: EditorModel, startRowInd: number, readonlyRows: string[]): number {
+    const pkCols = editorModel.queryInfo.getPkCols();
 
     // Rows with multiple PKs are always read-only
     if (pkCols.length !== 1) {
-        return rowCount - startRowInd;
+        return editorModel.rowCount - startRowInd;
     }
 
-    return dataKeys.slice(startRowInd, rowCount).reduce((total, index) => {
-        if (isReadonlyRow(data.get(dataKeys.get(index)), pkCols, readonlyRows)) total++;
-        return total;
-    }, 0);
+    let total = 0;
+
+    for (let index = startRowInd; index < editorModel.rowCount; index++) {
+        const pkValue = editorModel.getPkValue(index);
+        if (readonlyRows.includes(pkValue.toString())) total++;
+    }
+
+    return total;
 }
 
 // Gets the non-blank values pasted for each column.  The values in the resulting lists may not align to the rows
@@ -1616,16 +1613,7 @@ export async function validateAndInsertPastedData(
 ): Promise<EditorModelAndGridData> {
     const { selectedColIdx, selectedRowIdx } = editorModel;
     const readOnlyRowCount =
-        readonlyRows && !lockRowCount
-            ? getReadonlyRowCount(
-                  editorModel.rowCount,
-                  dataKeys,
-                  data,
-                  editorModel.queryInfo,
-                  selectedRowIdx,
-                  readonlyRows
-              )
-            : 0;
+        readonlyRows && !lockRowCount ? getReadonlyRowCount(editorModel, selectedRowIdx, readonlyRows) : 0;
     const paste = validatePaste(editorModel, selectedColIdx, selectedRowIdx, value, readOnlyRowCount);
 
     if (paste.success) {

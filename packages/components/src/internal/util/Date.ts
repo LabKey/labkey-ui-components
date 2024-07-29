@@ -106,20 +106,12 @@ export function getPickerDateAndTimeFormat(
     };
 }
 
-export function getFormattedTimeString(date: Date, queryColumn?: QueryColumn): string {
-    if (!date) return null;
-
-    const formatStr = getColDateFormat(queryColumn, queryColumn.format ?? 'Time');
-    if (!formatStr) return getJsonTimeFormatString(date);
-
-    try {
-        return moment(date).format(toMomentFormatString(formatStr));
-    } catch (e) {
-        return getJsonTimeFormatString(date);
-    }
-}
-
-export function getFormattedStringFromDate(date: Date, queryColumn: QueryColumn, hideTime?: boolean): string {
+export function getFormattedStringFromDate(
+    date: Date,
+    queryColumn: QueryColumn,
+    hideTime?: boolean,
+    usingDateFNS = USING_DATE_FNS
+): string {
     if (!date) return undefined;
 
     const isTimeOnly = queryColumn.isTimeColumn;
@@ -132,7 +124,11 @@ export function getFormattedStringFromDate(date: Date, queryColumn: QueryColumn,
     }
 
     try {
-        return moment(date).format(toMomentFormatString(formatStr));
+        if (usingDateFNS) {
+            return format(date, toDateFNSFormatString(formatStr));
+        } else {
+            return moment(date).format(toMomentFormatString(formatStr));
+        }
     } catch (e) {
         return getJsonFormatString(date, rawType);
     }
@@ -182,18 +178,18 @@ export function parseDateFNSTimeFormat(dateFormat: string): string {
     if (!dateFormat) return undefined;
     let splitIndex = dateFormat.indexOf(' ');
 
-    let format: string;
+    let _format: string;
     if (splitIndex > -1) {
         const remaining = dateFormat.substring(splitIndex + 1);
-        format = parseFNSTimeFormat(remaining);
-        if (!format && remaining.indexOf(' h') > 0) {
+        _format = parseFNSTimeFormat(remaining);
+        if (!_format && remaining.indexOf(' h') > 0) {
             // yyyy MM dd hh:mm
             splitIndex = remaining.indexOf(' h');
-            format = parseFNSTimeFormat(remaining.substring(splitIndex + 1));
+            _format = parseFNSTimeFormat(remaining.substring(splitIndex + 1));
         }
     }
 
-    return format;
+    return _format;
 }
 
 export function _getColFormattedDateFilterValue(column: QueryColumn, value: any): any {
@@ -217,40 +213,65 @@ export function getColFormattedDateFilterValue(column: QueryColumn, value: any):
     return _getColFormattedDateFilterValue(column, value);
 }
 
-export function _getColFormattedTimeFilterValue(column: QueryColumn, value: any): string {
+function includesAMPM(rawValue: string): boolean {
+    if (!rawValue || typeof rawValue !== 'string') return false;
+    const lower = rawValue.toLowerCase();
+    return lower.indexOf('am') > -1 || lower.indexOf('pm') > -1;
+}
+
+function _getColFormattedTimeFilterValue(column: QueryColumn, value: any, usingDateFNS: boolean): string {
     if (!value) return value;
     const timeFormat = getColDateFormat(column, column?.format ?? 'Time', false);
     if (!timeFormat) return value;
-    const valueFormat =
-        value.toLowerCase().indexOf(' am') > 0 || value.toLowerCase().indexOf(' pm') > 0 ? 'hh:mm:ss a' : 'HH:mm:ss';
-    return moment(value, valueFormat).format(toMomentFormatString(timeFormat));
+    const includesSeconds = value.split(':').length > 2;
+
+    if (usingDateFNS) {
+        let valueFormat = includesSeconds ? 'HH:mm:ss' : 'HH:mm';
+        if (includesAMPM(value)) {
+            valueFormat = valueFormat.replace('HH', 'hh');
+            valueFormat += ' a';
+        }
+
+        // https://stackoverflow.com/a/68727535
+        const parsed = safeParse(value, valueFormat, new Date());
+        if (!parsed) return undefined;
+
+        return format(parsed, timeFormat);
+    } else {
+        const valueFormat = includesAMPM(value) ? 'hh:mm:ss a' : 'HH:mm:ss';
+        return moment(value, valueFormat).format(toMomentFormatString(timeFormat));
+    }
 }
 
-export function getColFormattedTimeFilterValue(column: QueryColumn, value: any): string | string[] {
+export function getColFormattedTimeFilterValue(
+    column: QueryColumn,
+    value: any,
+    usingDateFNS = USING_DATE_FNS
+): string | string[] {
     if (value instanceof Array) {
         const results = [];
         value.forEach(val => {
-            results.push(_getColFormattedTimeFilterValue(column, val));
+            results.push(_getColFormattedTimeFilterValue(column, val, usingDateFNS));
         });
 
         return results;
     }
-    return _getColFormattedTimeFilterValue(column, value);
+    return _getColFormattedTimeFilterValue(column, value, usingDateFNS);
 }
 
 export function parseSimpleTime(rawValue: string): Date {
     if (!rawValue) return null;
 
     const parts = rawValue.toString().split(':').length;
-    let hourMinite = 'HH:mm',
+    let hourMinute = 'HH:mm',
         ampm = '';
     const second = parts > 2 ? ':ss' : '';
-    if (rawValue.toString().toLowerCase().indexOf('am') > -1 || rawValue.toString().toLowerCase().indexOf('pm') > -1) {
+    if (includesAMPM(rawValue)) {
         ampm = ' a';
-        hourMinite = 'hh:mm';
+        hourMinute = 'hh:mm';
     }
-    const format = hourMinite + second + ampm;
-    return moment(rawValue, format).toDate();
+    const _format = hourMinute + second + ampm;
+    return moment(rawValue, _format).toDate();
 }
 
 type ContainerFormats = {
@@ -260,12 +281,8 @@ type ContainerFormats = {
     timeFormat: string;
 };
 
-function getContainer(container?: Partial<Container>): Partial<Container> {
-    return container ?? getServerContext().container;
-}
-
 function getFormats(container?: Partial<Container>): ContainerFormats {
-    return getContainer(container).formats;
+    return (container ?? getServerContext().container).formats;
 }
 
 export function getDateFormat(container?: Partial<Container>): string {

@@ -195,6 +195,7 @@ export function parseDateFNSTimeFormat(dateFormat: string): string {
 export function _getColFormattedDateFilterValue(column: QueryColumn, value: any): any {
     let valueFull = value;
     if (value && typeof value === 'string' && value.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
+        // TODO: Confirm we have test coverage of this specific scenario
         valueFull = value + 'T00:00:00'; // Force local timezone. In ISO format, if you provide time and Z is not present in the end of string, the date will be local time zone instead of UTC time zone.
     }
     const dateFormat = getColDateFormat(column, null, true); // date or datetime fields always filter by 'date' portion only

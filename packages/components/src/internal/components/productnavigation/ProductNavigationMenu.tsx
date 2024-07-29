@@ -48,9 +48,9 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
         Security.getContainers({
             container: homeContainer,
             includeSubfolders: false,
-            includeEffectivePermissions: false,
+            includeEffectivePermissions: true,
             success: data => {
-                setHomeVisible(data.userPermissions !== 0);
+                setHomeVisible(!!data.effectivePermissions);
             },
             failure: errorInfo => {
                 console.error(errorInfo);

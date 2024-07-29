@@ -110,7 +110,7 @@ function computeSelectionCellKeys(
 
     for (let c = minColIdx; c <= maxColIdx; c++) {
         for (let r = minRowIdx; r <= maxRowIdx; r++) {
-            const fieldKey = editorModel.columnMap[editorModel.orderedColumns[c]].fieldKey;
+            const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(c)).fieldKey;
             selectionCells.push(genCellKey(fieldKey, r));
         }
     }
@@ -177,13 +177,16 @@ function inputCellFactory(
 
         const rn = row.get(GRID_EDIT_INDEX);
         const colIdx = cn - colOffset;
-        const fieldKey = editorModel.columnMap[editorModel.orderedColumns[colIdx]];
+        const { columnMap, orderedColumns } = editorModel;
+        const fieldKey = columnMap.get(orderedColumns.get(colIdx)).fieldKey;
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
         const { isReadonlyCell, isReadonlyRow } = checkCellReadStatus(row, queryInfo, columnMetadata, readonlyRows);
 
         let linkedValues;
         if (columnMetadata?.getFilteredLookupKeys) {
-            const linkedFieldKey = editorModel.orderedColumns[columnMetadata.linkedColInd];
+            const linkedFieldKey = editorModel.columnMap.get(
+                editorModel.orderedColumns.get(columnMetadata.linkedColInd)
+            ).fieldKey;
             linkedValues = editorModel
                 .getValue(linkedFieldKey, rn)
                 .map(vd => vd.raw)
@@ -199,8 +202,8 @@ function inputCellFactory(
             const minCell = parseCellKey(selectionCells[0]);
             const maxCell = parseCellKey(selectionCells[selectionCells.length - 1]);
             borderMask = computeBorderMask(
-                minCell.colIdx,
-                maxCell.colIdx,
+                orderedColumns.indexOf(minCell.fieldKey),
+                orderedColumns.indexOf(maxCell.fieldKey),
                 minCell.rowIdx,
                 maxCell.rowIdx,
                 colIdx,
@@ -213,8 +216,8 @@ function inputCellFactory(
             const minCell = parseCellKey(initialSelection[0]);
             const maxCell = parseCellKey(initialSelection[initialSelection.length - 1]);
             borderMask = computeBorderMask(
-                minCell.colIdx,
-                maxCell.colIdx,
+                orderedColumns.indexOf(minCell.fieldKey),
+                orderedColumns.indexOf(maxCell.fieldKey),
                 minCell.rowIdx,
                 maxCell.rowIdx,
                 colIdx,
@@ -326,7 +329,7 @@ export interface SharedEditableGridProps {
     readOnlyColumns?: string[];
     readonlyRows?: string[]; // list of key values for rows that are readonly.
     rowNumColumn?: GridColumn;
-    saveBtnClickedCount?: number;// TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
+    saveBtnClickedCount?: number; // TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
     showAsTab?: boolean; // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
     tabContainerCls?: string;
     updateColumns?: QueryColumn[];
@@ -540,7 +543,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     // TODO: update focusCell to take fieldKey instead of colIdx
     focusCell = (colIdx: number, rowIdx: number, clearValue?: boolean): void => {
         const { editorModel, onChange } = this.props;
-        const fieldKey = editorModel.columnMap[editorModel.orderedColumns[colIdx]];
+        const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx)).fieldKey;
         const cellKey = genCellKey(fieldKey, rowIdx);
         const changes: Partial<EditorModelProps> = {
             focusColIdx: colIdx,
@@ -571,7 +574,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     applySelection = (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES): Partial<EditorModel> => {
         const { initialSelection } = this.state;
         const { editorModel } = this.props;
-        const { rowCount } = editorModel;
+        const { orderedColumns, rowCount } = editorModel;
         let selectionCells: string[] = [];
         const hasSelection = editorModel.hasSelection;
         let selectedColIdx = colIdx;
@@ -602,8 +605,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         // only expand a selection upwards or downwards, just like in Excel/Sheets.
                         const minInitialCell = parseCellKey(initialSelection[0]);
                         const maxInitialCell = parseCellKey(initialSelection[initialSelection.length - 1]);
-                        minColIdx = minInitialCell.colIdx;
-                        maxColIdx = maxInitialCell.colIdx;
+                        orderedColumns.indexOf(minInitialCell.fieldKey);
+                        minColIdx = orderedColumns.indexOf(minInitialCell.fieldKey);
+                        maxColIdx = orderedColumns.indexOf(maxInitialCell.fieldKey);
                         minRowIdx = Math.min(minRowIdx, minInitialCell.rowIdx);
                         maxRowIdx = Math.max(maxRowIdx, maxInitialCell.rowIdx);
                     }
@@ -627,8 +631,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 let end: CellCoordinates;
 
                 if (editorModel.selectionCells && editorModel.selectionCells.length > 0) {
-                    start = parseCellKey(editorModel.selectionCells[0]);
-                    end = parseCellKey(editorModel.selectionCells[editorModel.selectionCells.length - 1]);
+                    const startParts = parseCellKey(editorModel.selectionCells[0]);
+                    const endParts = parseCellKey(editorModel.selectionCells[editorModel.selectionCells.length - 1]);
+                    start = { colIdx: orderedColumns.indexOf(startParts.fieldKey), rowIdx: startParts.rowIdx };
+                    end = { colIdx: orderedColumns.indexOf(endParts.fieldKey), rowIdx: endParts.rowIdx };
                 } else {
                     start = { colIdx: selectedColIdx, rowIdx: selectedRowIdx };
                     end = start;
@@ -648,7 +654,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             }
             case SELECTION_TYPES.SINGLE: {
                 selectionCells = [...editorModel.selectionCells];
-                const fieldKey = editorModel.columnMap[editorModel.orderedColumns[colIdx]];
+                const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx)).fieldKey;
                 selectionCells.push(genCellKey(fieldKey, rowIdx));
                 break;
             }
@@ -658,7 +664,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             // if a cell was previously selected and there are remaining selectionCells then mark the previously
             // selected cell as in "selection"
             if (hasSelection) {
-                const fieldKey = editorModel.columnMap[editorModel.orderedColumns[editorModel.selectedColIdx]];
+                const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(editorModel.selectedColIdx)).fieldKey;
                 selectionCells.push(genCellKey(fieldKey, editorModel.selectedRowIdx));
             }
         }
@@ -695,7 +701,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
             if (resetValue) {
                 changes.focusValue = undefined;
-                const fieldKey = editorModel.columnMap[editorModel.orderedColumns[colIdx]].fieldKey;
+                const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx)).fieldKey;
                 changes.cellValues = cellValues.set(genCellKey(fieldKey, rowIdx), focusValue);
             }
 
@@ -712,13 +718,13 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
      * only cells (e.g. during delete).
      */
     isReadOnly(cellKey: string): boolean {
-        const { colIdx, rowIdx } = parseCellKey(cellKey);
+        const { fieldKey, rowIdx } = parseCellKey(cellKey);
         const { dataKeys, readonlyRows } = this.props;
         const cellValueDataKey = dataKeys.get(rowIdx);
 
         if (readonlyRows?.includes(cellValueDataKey)) return true;
 
-        const queryCol = this.getColumns()[colIdx];
+        const queryCol = this.props.editorModel.columnMap.get(fieldKey);
 
         if (queryCol.readOnly) return true;
 
@@ -737,8 +743,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         column?: QueryColumn
     ): void => {
         const { editorModel, onChange } = this.props;
-        const { cellMessages, cellValues } = editorModel;
-        const fieldKey = editorModel.columnMap[editorModel.orderedColumns[colIdx]];
+        const { cellMessages, cellValues, columnMap, orderedColumns } = editorModel;
+        const fieldKey = columnMap.get(orderedColumns.get(colIdx)).fieldKey;
         const cellKey = genCellKey(fieldKey, rowIdx);
         const keyPath = ['cellValues', cellKey];
         const changes: Partial<EditorModel> = { cellMessages: cellMessages.delete(cellKey) };
@@ -774,7 +780,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             changes.cellValues = cellValues.set(cellKey, values);
             changesMade = true;
         } else if (mod === MODIFICATION_TYPES.REMOVE_ALL) {
-            const insertColumns = this.getColumns();
             if (editorModel.selectionCells.length > 0) {
                 // Remove all values and messages for the selected cells
                 changes.cellValues = editorModel.cellValues.reduce((result, value, key) => {
@@ -796,8 +801,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     const isReadOnly = this.isReadOnly(key);
                     if (!isReadOnly && editorModel.selectionCells.includes(key)) {
                         changesMade = true;
-                        const { colIdx } = parseCellKey(key);
-                        const col = insertColumns?.[colIdx];
+                        const col = columnMap.get(parseCellKey(key).fieldKey);
                         const { message } = getValidatedEditableGridValue(null, col);
                         if (message) return result.set(key, message);
                         else return result.remove(key);
@@ -806,8 +810,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 }, Map<string, CellMessage>());
             } else if (!this.isReadOnly(cellKey)) {
                 changes.cellValues = cellValues.set(cellKey, List());
-                const { colIdx } = parseCellKey(cellKey);
-                const col = insertColumns?.[colIdx];
+                const col = columnMap.get(parseCellKey(cellKey).fieldKey);
                 const { message } = getValidatedEditableGridValue(null, col);
                 changes.cellMessages = cellMessages.set(cellKey, message);
                 changesMade = true;
@@ -1213,17 +1216,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { editorModel, forUpdate, containerPath, onChange, data, dataKeys, queryInfo, readonlyRows } = this.props;
 
         if (editorModel.isMultiSelect) {
-            const loweredColumnMetadata = this.getLoweredColumnMetadata();
-            const columns = this.getColumns();
-            const columnMetadata = columns.map(col => loweredColumnMetadata[col.fieldKey.toLowerCase()]);
             const { cellMessages, cellValues } = await dragFillEvent(
                 editorModel,
                 initialSelection,
                 dataKeys,
                 data,
-                queryInfo,
-                columns,
-                columnMetadata,
                 readonlyRows,
                 forUpdate,
                 containerPath
@@ -1258,17 +1255,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     // TODO: update fillText to take fieldKey instead of colIdx
     fillText = async (colIdx: number, rowIdx: number, text: string): Promise<void> => {
-        const {
-            allowAdd,
-            data,
-            dataKeys,
-            disabled,
-            editorModel,
-            forUpdate,
-            onChange,
-            readonlyRows,
-            containerPath,
-        } = this.props;
+        const { allowAdd, data, dataKeys, disabled, editorModel, forUpdate, onChange, readonlyRows, containerPath } =
+            this.props;
 
         if (disabled) return;
 
@@ -1290,17 +1278,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     onPaste = async (event: ClipboardEvent): Promise<void> => {
-        const {
-            allowAdd,
-            data,
-            dataKeys,
-            disabled,
-            editorModel,
-            forUpdate,
-            onChange,
-            readonlyRows,
-            containerPath,
-        } = this.props;
+        const { allowAdd, data, dataKeys, disabled, editorModel, forUpdate, onChange, readonlyRows, containerPath } =
+            this.props;
 
         if (disabled) return;
 
@@ -1620,7 +1599,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const { editorModel, hideReadonlyRows, readonlyRows } = this.props;
         let gridData = List<Map<string, any>>();
 
-        for(let i = 0; i < editorModel.rowCount; i++) {
+        for (let i = 0; i < editorModel.rowCount; i++) {
             const pkCellKey = editorModel.genPkCellKey(i);
             if (hideReadonlyRows && readonlyRows && readonlyRows.includes(pkCellKey)) continue;
             gridData = gridData.push(Map({ [GRID_EDIT_INDEX]: i }));

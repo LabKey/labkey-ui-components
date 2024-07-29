@@ -119,6 +119,9 @@ export const loadEditorModelData = async (
     };
 };
 
+/**
+ * @deprecated use EditorModel.init instead
+ */
 export const initEditableGridModel = async (
     dataModel: QueryModel,
     editorModel: EditorModel,
@@ -372,7 +375,7 @@ export async function addRowsToEditorModel(
     for (let rowIdx = rowMin; rowIdx < rowMin + numToAdd; rowIdx++) {
         // eslint-disable-next-line no-loop-func
         rowData.forEach((value, colIdx) => {
-            const fieldKey = editorModel.columnMap[editorModel.orderedColumns[colIdx]];
+            const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx)).fieldKey;
             const cellKey = genCellKey(fieldKey, rowIdx);
             cellMessages = cellMessages.set(cellKey, messages.get(colIdx));
             selectionCells.push(cellKey);
@@ -976,11 +979,8 @@ export function generateFillCellKeys(
 ): string[][] {
     const firstInitial = parseCellKey(initialSelection[0]);
     const lastInitial = parseCellKey(initialSelection[initialSelection.length - 1]);
-    // TODO: when parseCellKey returns fieldKeys:
-    // const minCol = editorModel.orderedColumns.indexOf(firstInitial.fieldKey);
-    // const maxCol = editorModel.orderedColumns.indexOf(lastInitial.fieldKey);
-    const minCol = firstInitial.colIdx;
-    const maxCol = lastInitial.colIdx;
+    const minCol = editorModel.orderedColumns.indexOf(firstInitial.fieldKey);
+    const maxCol = editorModel.orderedColumns.indexOf(lastInitial.fieldKey);
     const initialMinRow = firstInitial.rowIdx;
     const initialMaxRow = lastInitial.rowIdx;
     const finalMinRow = parseCellKey(finalSelection[0]).rowIdx;
@@ -1006,7 +1006,7 @@ export function generateFillCellKeys(
         const columnKeys = [];
 
         for (let rowIdx = start; rowIdx <= end; rowIdx++) {
-            columnKeys.push(genCellKey(editorModel.orderedColumns[colIdx].fieldKey, rowIdx));
+            columnKeys.push(genCellKey(editorModel.orderedColumns.get(colIdx), rowIdx));
         }
 
         fillCellKeys.push(columnKeys);
@@ -1121,6 +1121,7 @@ async function getParsedLookup(
  * @param selectionToFill An array of sorted cell keys, all from the same column, to be filled with values based on the
  * content of initialSelection
  * @param forUpdate True if this is operating on update query filters.
+ * @param targetContainerPath
  * @param dataKeys The orderedRows Object from a QueryModel
  * @param data The rows object from a QueryModel
  */
@@ -1230,9 +1231,6 @@ type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
  * @param initialSelection The initial selection before the selection was expanded
  * @param dataKeys The orderedRows Object from a QueryModel
  * @param data The rows object from a QueryModel
- * @param queryInfo A QueryInfo
- * @param columns
- * @param columnMetadata Array of column metadata, in the same order as the columns in the grid
  * @param readonlyRows A list of readonly rows
  * @param forUpdate True if this is operating on update query filters.
  * @param targetContainerPath The container path to use when looking up lookup values in the forUpdate false case
@@ -1242,26 +1240,22 @@ export async function dragFillEvent(
     initialSelection: string[],
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
-    queryInfo: QueryInfo,
-    columns: QueryColumn[],
-    columnMetadata: EditableColumnMetadata[],
     readonlyRows: string[],
     forUpdate: boolean,
     targetContainerPath: string
 ): Promise<CellMessagesAndValues> {
-    const finalSelection = editorModel.selectionCells;
-    let cellValues = editorModel.cellValues;
-    let cellMessages = editorModel.cellMessages;
+    const { columnMap, columnMetadata, queryInfo, selectionCells } = editorModel;
+    let { cellMessages, cellValues } = editorModel;
 
     // If the selection size hasn't changed, then the selection hasn't changed, so return the existing cellValues
-    if (finalSelection.length === initialSelection.length) return { cellMessages, cellValues };
+    if (selectionCells.length === initialSelection.length) return { cellMessages, cellValues };
 
-    const selectionToFill = generateFillCellKeys(editorModel, initialSelection, finalSelection);
+    const selectionToFill = generateFillCellKeys(editorModel, initialSelection, selectionCells);
     for (const columnCells of selectionToFill) {
-        const { colIdx } = parseCellKey(columnCells[0]);
-        const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).colIdx === colIdx);
-        const column = columns[colIdx];
-        const metadata = columnMetadata[colIdx];
+        const { fieldKey } = parseCellKey(columnCells[0]);
+        const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).fieldKey === fieldKey);
+        const column = columnMap.get(fieldKey);
+        const metadata = columnMetadata.get(fieldKey);
 
         // Don't manipulate any values in read only columns
         if (column.readOnly) {
@@ -1305,10 +1299,11 @@ export async function dragFillEvent(
  * paste the contents twice across the selected columns.
  */
 function expandPaste(model: EditorModel, payload: ParsePastePayload): ParsePastePayload {
-    const selection = model.selectionCells;
-    const minSelection = parseCellKey(selection[0]);
-    const maxSelection = parseCellKey(selection[selection.length - 1]);
-    const selectionColCount = maxSelection.colIdx - minSelection.colIdx + 1;
+    const { orderedColumns, selectionCells } = model;
+    const minSelection = parseCellKey(selectionCells[0]);
+    const maxSelection = parseCellKey(selectionCells[selectionCells.length - 1]);
+    const selectionColCount =
+        orderedColumns.indexOf(maxSelection.fieldKey) - orderedColumns.indexOf(minSelection.fieldKey) + 1;
     const selectionRowCount = maxSelection.rowIdx - minSelection.rowIdx + 1;
     let { data, numCols, numRows } = payload;
 
@@ -1513,7 +1508,7 @@ async function insertPastedData(
         for (let cn = 0; cn < row.size; cn++) {
             const val = row.get(cn);
             const colIdx = colMin + cn;
-            const col = editorModel.columnMap[editorModel.orderedColumns[colIdx]];
+            const col = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx));
             const cellKey = genCellKey(col.fieldKey, rowIdx);
             const metadata = editorModel.columnMetadata?.get(col?.fieldKey.toLowerCase());
             const readOnlyCol = col?.readOnly || metadata?.readOnly;
@@ -1622,7 +1617,14 @@ export async function validateAndInsertPastedData(
     const { selectedColIdx, selectedRowIdx } = editorModel;
     const readOnlyRowCount =
         readonlyRows && !lockRowCount
-            ? getReadonlyRowCount(editorModel.rowCount, dataKeys, data, editorModel.queryInfo, selectedRowIdx, readonlyRows)
+            ? getReadonlyRowCount(
+                  editorModel.rowCount,
+                  dataKeys,
+                  data,
+                  editorModel.queryInfo,
+                  selectedRowIdx,
+                  readonlyRows
+              )
             : 0;
     const paste = validatePaste(editorModel, selectedColIdx, selectedRowIdx, value, readOnlyRowCount);
 
@@ -1639,7 +1641,7 @@ export async function validateAndInsertPastedData(
             selectCells
         );
     } else {
-        const fieldKey = editorModel.orderedColumns[selectedColIdx];
+        const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(selectedColIdx)).fieldKey;
         const cellKey = genCellKey(fieldKey, selectedRowIdx);
         return {
             data: undefined,
@@ -1698,14 +1700,14 @@ function getCopyValue(model: EditorModel): string {
     let copyValue = '';
     const EOL = '\n';
     const selectionCells = [...model.selectionCells];
-    const fieldKey = model.orderedColumns[model.selectedColIdx];
+    const fieldKey = model.orderedColumns.get(model.selectedColIdx);
     selectionCells.push(genCellKey(fieldKey, model.selectedRowIdx));
 
     for (let rn = 0; rn < model.rowCount; rn++) {
         let cellSep = '';
         let inSelection = false;
 
-        model.orderedColumns.forEach((fieldKey) => {
+        model.orderedColumns.forEach(fieldKey => {
             const cellKey = genCellKey(fieldKey, rn);
 
             if (selectionCells.find(key => key === cellKey)) {

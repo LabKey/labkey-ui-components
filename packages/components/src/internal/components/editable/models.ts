@@ -263,7 +263,7 @@ export class EditorModel
             ({ colIdx, rowIdx } = advance(colIdx, rowIdx));
             if (!this.isInBounds(colIdx, rowIdx)) break;
 
-            const fieldKey = this.columnMap[this.orderedColumns[colIdx]];
+            const fieldKey = this.columnMap.get(this.orderedColumns.get(colIdx)).fieldKey;
             const value = this.getValue(fieldKey, rowIdx);
             if (predicate(value, colIdx, rowIdx)) {
                 return {
@@ -609,8 +609,8 @@ export class EditorModel
     get isMultiColumnSelection(): boolean {
         if (!this.isMultiSelect) return false;
 
-        const firstCellColIdx = parseCellKey(this.selectionCells[0]).colIdx;
-        return this.selectionCells.some(cellKey => parseCellKey(cellKey).colIdx !== firstCellColIdx);
+        const firstCellColIdx = parseCellKey(this.selectionCells[0]).fieldKey;
+        return this.selectionCells.some(cellKey => parseCellKey(cellKey).fieldKey !== firstCellColIdx);
     }
 
     get hasSelection(): boolean {
@@ -618,7 +618,7 @@ export class EditorModel
     }
 
     get selectionKey(): string {
-        const fieldKey = this.columnMap[this.orderedColumns[this.selectedColIdx]].fieldKey;
+        const fieldKey = this.columnMap.get(this.orderedColumns.get(this.selectedColIdx)).fieldKey;
         if (this.hasSelection) return genCellKey(fieldKey, this.selectedRowIdx);
         return undefined;
     }

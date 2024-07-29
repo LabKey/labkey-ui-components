@@ -24,7 +24,7 @@ import { QuerySelectOwnProps } from '../forms/QuerySelect';
 import { isBoolean, isFloat, isInteger } from '../../util/utils';
 
 import { EditorModel, EditorModelProps, EditableGridModels, CellMessage } from './models';
-import { CellActions, CellCoordinates, MODIFICATION_TYPES } from './constants';
+import { CellActions, MODIFICATION_TYPES } from './constants';
 
 export const applyEditableGridChangesToModels = (
     dataModels: QueryModel[],
@@ -42,7 +42,7 @@ export const applyEditableGridChangesToModels = (
     // Immutable.fromJS() which turns the Array into a List. We want to maintain the property
     // as an Array so here we set it explicitly.
     if (editorModelChanges?.selectionCells !== undefined) {
-        const selectionCells = sortCellKeys(editorModelChanges.selectionCells);
+        const selectionCells = sortCellKeys(editorModel.orderedColumns.toArray(), editorModelChanges.selectionCells);
         editorModel = editorModel.set('selectionCells', selectionCells) as EditorModel;
         editorModel = editorModel.set(
             'isSparseSelection',
@@ -285,11 +285,16 @@ export function genCellKey(fieldKey: string, rowIdx: number): string {
     return [fieldKey, rowIdx].join('&&');
 }
 
-export function parseCellKey(cellKey: string): CellCoordinates {
-    const [colIdx, rowIdx] = cellKey.split('-');
+interface CellKeyParts {
+    fieldKey: string;
+    rowIdx: number;
+}
+
+export function parseCellKey(cellKey: string): CellKeyParts {
+    const [fieldKey, rowIdx] = cellKey.split('&&');
 
     return {
-        colIdx: parseInt(colIdx, 10),
+        fieldKey,
         rowIdx: parseInt(rowIdx, 10),
     };
 }
@@ -297,11 +302,11 @@ export function parseCellKey(cellKey: string): CellCoordinates {
 /**
  * Sorts cell keys left to right, top to bottom.
  */
-export function sortCellKeys(cellKeys: string[]): string[] {
+export function sortCellKeys(orderedColumns: string[], cellKeys: string[]): string[] {
     return Array.from(new Set(cellKeys)).sort((a, b) => {
         const aCoords = parseCellKey(a);
         const bCoords = parseCellKey(b);
-        if (aCoords.rowIdx === bCoords.rowIdx) return aCoords.colIdx - bCoords.colIdx;
+        if (aCoords.rowIdx === bCoords.rowIdx) return orderedColumns.indexOf(aCoords.fieldKey) - orderedColumns.indexOf(bCoords.fieldKey);
         return aCoords.rowIdx - bCoords.rowIdx;
     });
 }
@@ -326,8 +331,8 @@ function isSparseSelection(orderedColumns: string[], selection: string[]): boole
 
     const firstCell = parseCellKey(selection[0]);
     const lastCell = parseCellKey(selection[selection.length - 1]);
-    const minCol = firstCell.colIdx;
-    const maxCol = lastCell.colIdx;
+    const minCol = orderedColumns.indexOf(firstCell.fieldKey);
+    const maxCol = orderedColumns.indexOf(lastCell.fieldKey);
     const minRow = firstCell.rowIdx;
     const maxRow = lastCell.rowIdx;
     const expectedCellCount = (maxCol - minCol + 1) * (maxRow - minRow + 1);

@@ -307,18 +307,21 @@ export function getDateFNSDateTimeFormat(container?: Partial<Container>): string
 }
 
 export function getDateFNSTimeFormat(container?: Partial<Container>): string {
-    return toDateFNSFormatString(getTimeFormat(container));
+    return toDateFNSFormatString(getTimeFormat(container)) ?? 'HH:mm:ss';
 }
 
+// TODO: Factor out all usages of getMomentDateFormat
 // Issue 30834: get look and feel display formats
-export function getMomentDateFormat(container?: Partial<Container>): string {
+function getMomentDateFormat(container?: Partial<Container>): string {
     return toMomentFormatString(getDateFormat(container));
 }
 
-export function getMomentDateTimeFormat(container?: Partial<Container>): string {
+// TODO: Factor out all usages of getMomentDateTimeFormat
+function getMomentDateTimeFormat(container?: Partial<Container>): string {
     return toMomentFormatString(getDateTimeFormat(container));
 }
 
+// TODO: Factor out all usages of getMomentTimeFormat
 // hard-coded value, see docs: https://www.labkey.org/Documentation/Archive/21.7/wiki-page.view?name=studyDateNumber#short
 function getMomentTimeFormat(container?: Partial<Container>): string {
     return toMomentFormatString(getTimeFormat(container)) ?? 'HH:mm:ss';

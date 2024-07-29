@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { isBefore, isValid, parse } from 'date-fns';
 import moment from 'moment';
 import momentTZ from 'moment-timezone';
 import numeral from 'numeral';
@@ -102,7 +103,7 @@ export function getPickerDateAndTimeFormat(
     };
 }
 
-export function getFormattedTimeString(date: Date, queryColumn?: QueryColumn) {
+export function getFormattedTimeString(date: Date, queryColumn?: QueryColumn): string {
     if (!date) return null;
 
     const formatStr = getColDateFormat(queryColumn, queryColumn.format ?? 'Time');
@@ -115,7 +116,7 @@ export function getFormattedTimeString(date: Date, queryColumn?: QueryColumn) {
     }
 }
 
-export function getFormattedStringFromDate(date: Date, queryColumn: QueryColumn, hideTime?: boolean) {
+export function getFormattedStringFromDate(date: Date, queryColumn: QueryColumn, hideTime?: boolean): string {
     if (!date) return undefined;
 
     const isTimeOnly = queryColumn.isTimeColumn;
@@ -171,14 +172,14 @@ export function parseFNSTimeFormat(timePart: string): string {
 // NK: That said, this is a far-reaching over simplification / contrived implementation which presumes the time
 // format follows the date format. For a more precise implementation we would search for time-specific portions within
 // the string (or use some more grand date format parsing library utility), however, there are so many different
-// formats (Java, Moment, Date-FNS, JavaScript, etc) and a seemingly infinite number of ways to configure a date/time
+// formats (Java, Moment, Date-FNS, JavaScript, etc.) and a seemingly infinite number of ways to configure a date/time
 // format that I've elected to just assume the second part of a space-split string that contains a ":" is the time
 // format (e.g. it supports formats similar to "yyyy-MM-dd hh:mm" or "yyyy-MM-dd hh:mm a").
 export function parseDateFNSTimeFormat(dateFormat: string): string {
     if (!dateFormat) return undefined;
     let splitIndex = dateFormat.indexOf(' ');
 
-    let format;
+    let format: string;
     if (splitIndex > -1) {
         const remaining = dateFormat.substring(splitIndex + 1);
         format = parseFNSTimeFormat(remaining);
@@ -213,7 +214,7 @@ export function getColFormattedDateFilterValue(column: QueryColumn, value: any):
     return _getColFormattedDateFilterValue(column, value);
 }
 
-export function _getColFormattedTimeFilterValue(column: QueryColumn, value: any): any {
+export function _getColFormattedTimeFilterValue(column: QueryColumn, value: any): string {
     if (!value) return value;
     const timeFormat = getColDateFormat(column, column?.format ?? 'Time', false);
     if (!timeFormat) return value;
@@ -222,7 +223,7 @@ export function _getColFormattedTimeFilterValue(column: QueryColumn, value: any)
     return moment(value, valueFormat).format(toMomentFormatString(timeFormat));
 }
 
-export function getColFormattedTimeFilterValue(column: QueryColumn, value: any): any {
+export function getColFormattedTimeFilterValue(column: QueryColumn, value: any): string | string[] {
     if (value instanceof Array) {
         const results = [];
         value.forEach(val => {
@@ -249,33 +250,147 @@ export function parseSimpleTime(rawValue: string): Date {
     return moment(rawValue, format).toDate();
 }
 
+type ContainerFormats = {
+    dateFormat: string;
+    dateTimeFormat: string;
+    numberFormat: string;
+    timeFormat: string;
+};
+
+function getContainer(container?: Partial<Container>): Partial<Container> {
+    return container ?? getServerContext().container;
+}
+
+function getFormats(container?: Partial<Container>): ContainerFormats {
+    return getContainer(container).formats;
+}
+
 export function getDateFormat(container?: Partial<Container>): string {
-    return (container ?? getServerContext().container).formats.dateFormat;
+    return getFormats(container).dateFormat;
 }
 
 export function getDateTimeFormat(container?: Partial<Container>): string {
-    return (container ?? getServerContext().container).formats.dateTimeFormat;
+    return getFormats(container).dateTimeFormat;
 }
 
 export function getTimeFormat(container?: Partial<Container>): string {
-    return (container ?? getServerContext().container).formats.timeFormat;
+    return getFormats(container).timeFormat;
+}
+
+function toDateFNSFormatString(javaDateFormatString: string): string {
+    // See https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md
+    return javaDateFormatString?.replace('YYYY', 'yyyy').replace('YY', 'yy').replace('DD', 'dd');
+}
+
+export function getDateFNSDateFormat(container?: Partial<Container>): string {
+    return toDateFNSFormatString(getDateFormat(container));
+}
+
+export function getDateFNSDateTimeFormat(container?: Partial<Container>): string {
+    return toDateFNSFormatString(getDateTimeFormat(container));
+}
+
+export function getDateFNSTimeFormat(container?: Partial<Container>): string {
+    return toDateFNSFormatString(getTimeFormat(container));
 }
 
 // Issue 30834: get look and feel display formats
 export function getMomentDateFormat(container?: Partial<Container>): string {
-    return toMomentFormatString((container ?? getServerContext().container).formats.dateFormat);
+    return toMomentFormatString(getDateFormat(container));
 }
 
 export function getMomentDateTimeFormat(container?: Partial<Container>): string {
-    return toMomentFormatString((container ?? getServerContext().container).formats.dateTimeFormat);
+    return toMomentFormatString(getDateTimeFormat(container));
 }
 
 // hard-coded value, see docs: https://www.labkey.org/Documentation/Archive/21.7/wiki-page.view?name=studyDateNumber#short
 function getMomentTimeFormat(container?: Partial<Container>): string {
-    return toMomentFormatString((container ?? getServerContext().container).formats.timeFormat) ?? 'HH:mm:ss';
+    return toMomentFormatString(getTimeFormat(container)) ?? 'HH:mm:ss';
 }
 
 export function parseDate(
+    dateStr: string,
+    dateFormat?: string,
+    minDate?: Date,
+    timeOnly?: boolean,
+    dateOnly?: boolean,
+    usingDateFNS = true
+): Date {
+    if (usingDateFNS) {
+        return parseDateUsingDateFNS(dateStr, dateFormat, minDate, timeOnly, dateOnly);
+    }
+
+    return parseDateUsingMoment(dateStr, dateFormat, minDate, timeOnly, dateOnly);
+}
+
+function safeParse(dateStr: string, formatStr: string, referenceDate: number | Date, options?: any): Date {
+    try {
+        return parse(dateStr, formatStr, referenceDate, options);
+    } catch (e) {
+        // It is possible for date-fns to throw when parsing. Treat this as an invalid date / format.
+        return undefined;
+    }
+}
+
+function parseDateUsingDateFNS(
+    dateStr: string | Date,
+    dateFormat?: string,
+    minDate?: Date,
+    timeOnly?: boolean,
+    dateOnly?: boolean
+): Date {
+    if (!dateStr) return null;
+    if (dateStr instanceof Date) return dateStr;
+    if (typeof dateStr !== 'string') return null;
+
+    let validDate;
+    if (dateFormat) {
+        const _dateFormat = toDateFNSFormatString(dateFormat);
+        const date = safeParse(dateStr, _dateFormat, new Date());
+
+        if (isValid(date)) {
+            validDate = date;
+        }
+    }
+
+    // Issue 45140: If we failed to parse from a dateFormat or a dateFormat was not provided,
+    // then try the default container format.
+    if (!validDate) {
+        let date: Date;
+        if (timeOnly) {
+            date = safeParse(dateStr, getDateFNSTimeFormat(), new Date());
+        } else if (dateOnly) {
+            date = safeParse(dateStr, getDateFNSDateFormat(), new Date());
+        } else {
+            date = safeParse(dateStr, getDateFNSDateTimeFormat(), new Date());
+            if (!isValid(date)) {
+                date = safeParse(dateStr, getDateFNSDateFormat(), new Date());
+            }
+        }
+
+        if (isValid(date)) {
+            validDate = date;
+        } else {
+            // date-fns does not provide a format-speculative parse() function.
+            // Recommendation is to fall back to new Date() / Date.parse().
+            // See https://github.com/orgs/date-fns/discussions/2231
+            date = new Date(dateStr);
+
+            if (isValid(date)) {
+                validDate = date;
+            }
+        }
+    }
+
+    // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
+    if (validDate && minDate && isBefore(validDate, minDate)) {
+        return null;
+    }
+
+    return validDate ? validDate : null;
+}
+
+function parseDateUsingMoment(
     dateStr: string,
     dateFormat?: string,
     minDate?: Date,
@@ -288,7 +403,7 @@ export function parseDate(
     // https://github.com/Hacker0x01/react-datepicker/issues/1609
     const _dateFormat = dateFNSToMoment(dateFormat);
 
-    let validDate;
+    let validDate: moment.Moment;
     if (_dateFormat) {
         const date = moment(dateStr, _dateFormat, true);
         if (date && date.isValid()) {
@@ -411,7 +526,7 @@ export function getNDaysStrFromToday(ndays?: number): string {
 }
 
 // TODO add jest
-export function filterDate(date: Date, start: Date, end: Date) {
+export function filterDate(date: Date, start: Date, end: Date): boolean {
     const dateOnly = new Date(date.getTime());
     dateOnly.setHours(0, 0, 0, 0);
 

@@ -61,13 +61,14 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
 
     // TODO: When EditableGridPanelDeprecated is removed we should be able to just pass model.rows and model.orderedRows
     //  to the EditableGrid.
-    const { orderedRows, queryInfo, rows } = activeModel;
-    const data = useMemo(() => fromJS(rows), [rows]);
-    const dataKeys = useMemo(() => fromJS(orderedRows), [orderedRows]);
-    const error = activeModel.hasLoadErrors
-        ? activeModel.loadErrors[0] ?? 'Something went wrong loading the data.'
+    // const { orderedRows, queryInfo, rows } = activeModel ?? {};
+    // const data = useMemo(() => fromJS(rows), [rows]);
+    // const dataKeys = useMemo(() => fromJS(orderedRows), [orderedRows]);
+    const error = activeModel?.hasLoadErrors
+        ? activeModel?.loadErrors[0] ?? 'Something went wrong loading the data.'
         : undefined;
 
+    const { queryInfo } = activeEditorModel;
     let activeColumnMetadata = columnMetadata;
     if (!activeColumnMetadata && getColumnMetadata) activeColumnMetadata = getColumnMetadata(activeTab);
     if (!activeColumnMetadata) activeColumnMetadata = getUniqueIdColumnMetadata(queryInfo);
@@ -84,8 +85,6 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
         <EditableGrid
             {...gridProps}
             columnMetadata={activeColumnMetadata}
-            data={data}
-            dataKeys={dataKeys}
             editorModel={activeEditorModel}
             error={error}
             onChange={_onChange}

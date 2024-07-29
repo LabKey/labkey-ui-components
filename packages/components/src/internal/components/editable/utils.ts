@@ -44,7 +44,10 @@ export const applyEditableGridChangesToModels = (
     if (editorModelChanges?.selectionCells !== undefined) {
         const selectionCells = sortCellKeys(editorModelChanges.selectionCells);
         editorModel = editorModel.set('selectionCells', selectionCells) as EditorModel;
-        editorModel = editorModel.set('isSparseSelection', isSparseSelection(selectionCells)) as EditorModel;
+        editorModel = editorModel.set(
+            'isSparseSelection',
+            isSparseSelection(editorModel.orderedColumns.toArray(), selectionCells)
+        ) as EditorModel;
     }
 
     updatedEditorModels.splice(tabIndex, 1, editorModel);
@@ -278,8 +281,8 @@ export function onCellSelectChange(
     }
 }
 
-export function genCellKey(colIdx: number, rowIdx: number): string {
-    return [colIdx, rowIdx].join('-');
+export function genCellKey(fieldKey: string, rowIdx: number): string {
+    return [fieldKey, rowIdx].join('&&');
 }
 
 export function parseCellKey(cellKey: string): CellCoordinates {
@@ -315,9 +318,10 @@ export function decimalDifference(first, second, subtract = true): number {
  *  0 1 1 0 0
  *  0 0 0 1 1
  *  0 1 1 0 0
+ * @param orderedColumns the orderedColumns from the EditorModel
  * @param selection An array of cell keys representing the selected cells, ordered left to right, top to bottom.
  */
-function isSparseSelection(selection: string[]): boolean {
+function isSparseSelection(orderedColumns: string[], selection: string[]): boolean {
     if (selection.length === 0) return false;
 
     const firstCell = parseCellKey(selection[0]);
@@ -337,7 +341,7 @@ function isSparseSelection(selection: string[]): boolean {
     // all match we know it's a sparse selection.
     for (let rowIdx = minRow; rowIdx <= maxRow; rowIdx++) {
         for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
-            const expectedCellKey = genCellKey(colIdx, rowIdx);
+            const expectedCellKey = genCellKey(orderedColumns[colIdx], rowIdx);
             const actualCellKey = selection[selIdx];
 
             if (expectedCellKey !== actualCellKey) return true;

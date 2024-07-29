@@ -58,7 +58,7 @@ export const DateInputCell: FC<DateInputCellProps> = memo(props => {
             inputWrapperClassName=""
             isClearable={false}
             isFormInput={false}
-            key={genCellKey(colIdx, rowIdx)}
+            key={genCellKey(col.fieldKey, rowIdx)}
             onCalendarClose={onCalendarClose}
             onChange={onDateInputChange}
             onKeyDown={onKeyDown}

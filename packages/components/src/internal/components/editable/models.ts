@@ -45,7 +45,7 @@ export interface EditableColumnMetadata {
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
     hideTitleTooltip?: boolean;
     isReadOnlyCell?: (rowKey: string) => boolean;
-    linkedColInd?: number;
+    linkedColInd?: number; // TODO: change to linkedColFieldKey
     lookupValueFilters?: Filter.IFilter[];
     minWidth?: number;
     placeholder?: string;
@@ -167,7 +167,7 @@ export class EditorModel
     declare isSparseSelection: boolean;
     declare queryInfo: QueryInfo;
     declare rowCount: number;
-    declare selectedColIdx: number;
+    declare selectedColIdx: number; // TODO: replace with selectedFieldKey
     declare selectedRowIdx: number;
     // NK: This is pre-sorted array that is updated whenever the selection is updated.
     // See applyEditableGridChangesToModels().
@@ -237,11 +237,24 @@ export class EditorModel
         });
     }
 
+    get pkFieldKey(): string {
+        return this.queryInfo.getPkCols()[0].fieldKey;
+    }
+
+    genPkCellKey(rowIndex: number): string {
+        return genCellKey(this.pkFieldKey, rowIndex);
+    }
+
+    getPkValue(rowIndex: number): ValueDescriptor[] {
+        return this.cellValues.get(this.genPkCellKey(rowIndex))?.get(0).raw;
+    }
+
+    // TODO: make findNextCell take fieldKey
     findNextCell(
         startCol: number,
         startRow: number,
         predicate: (value: List<ValueDescriptor>, colIdx: number, rowIdx: number) => boolean,
-        advance: (colIdx: number, rowIdx: number) => CellCoordinates
+        advance: (colIdx: number, rowIdx: number) => CellCoordinates // TODO: make advance take fieldKey
     ): { colIdx: number; rowIdx: number; value: List<ValueDescriptor> } {
         let colIdx = startCol,
             rowIdx = startRow;
@@ -250,7 +263,8 @@ export class EditorModel
             ({ colIdx, rowIdx } = advance(colIdx, rowIdx));
             if (!this.isInBounds(colIdx, rowIdx)) break;
 
-            const value = this.getValue(colIdx, rowIdx);
+            const fieldKey = this.columnMap[this.orderedColumns[colIdx]];
+            const value = this.getValue(fieldKey, rowIdx);
             if (predicate(value, colIdx, rowIdx)) {
                 return {
                     value,
@@ -264,8 +278,9 @@ export class EditorModel
         return undefined;
     }
 
-    getMessage(colIdx: number, rowIdx: number): CellMessage {
-        return this.cellMessages.get(genCellKey(colIdx, rowIdx));
+    // TODO: update getMessage to take fieldKey instead of colIdx
+    getMessage(fieldKey: string, rowIdx: number): CellMessage {
+        return this.cellMessages.get(genCellKey(fieldKey, rowIdx));
     }
 
     getColumns(
@@ -289,16 +304,16 @@ export class EditorModel
         return columns.filter(col => !col.isFileInput);
     }
 
-    getColumnValues(columnName: string): List<List<ValueDescriptor>> {
-        const colIdx = this.orderedColumns.findIndex(colName => colName === columnName);
+    getColumnValues(fieldKey: string): List<List<ValueDescriptor>> {
+        const colIdx = this.orderedColumns.findIndex(colName => colName === fieldKey);
         if (colIdx === -1) {
-            console.warn(`Unable to resolve column "${columnName}". Cannot retrieve column values.`);
+            console.warn(`Unable to resolve column with fieldKey "${fieldKey}". Cannot retrieve column values.`);
             return List();
         }
 
         const values = List<List<ValueDescriptor>>().asMutable();
         for (let i = 0; i < this.rowCount; i++) {
-            values.push(this.getValue(colIdx, i));
+            values.push(this.getValue(fieldKey, i));
         }
 
         return values.asImmutable();
@@ -339,9 +354,9 @@ export class EditorModel
 
         for (let rn = 0; rn < dataKeys.size; rn++) {
             let row = Map<string, any>();
-            columnMap.valueSeq().forEach((col, cn) => {
+            columnMap.valueSeq().forEach(col => {
                 if (!col) return;
-                const values = this.getValue(cn, rn);
+                const values = this.getValue(col.fieldKey, rn);
 
                 // Some column types have special handling of raw data, such as multi value columns like alias,
                 // so first check renderer for how to retrieve raw data
@@ -416,28 +431,26 @@ export class EditorModel
      * @param uniqueFieldKey optional (non-key) field that should be unique.
      */
     validateData(
-        queryModel: QueryModel,
-        uniqueFieldKey?: string,
-        insertColumns?: QueryColumn[]
+        uniqueFieldKey?: string
     ): {
         cellMessages: CellMessages; // updated cell messages with missing required errors
         missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
         uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
     } {
-        const data = fromJS(queryModel.rows);
-        const columns = insertColumns ?? queryModel.queryInfo.getInsertColumns();
+        const columns = this.columnMap.valueSeq().toArray();
         let cellMessages = this.cellMessages;
         let uniqueFieldCol;
         const keyColumns = columns.filter(column => column.isKeyField);
         let keyValues = Map<number, List<string>>(); // map from row number to list of key values on that row
         let uniqueKeyMap = Map<string, List<number>>(); // map from value to rows with that value
         let missingRequired = Map<string, List<number>>(); // map from column caption to list of rows missing a value for that column
-        for (let rn = 0; rn < data.size; rn++) {
-            columns.forEach((col, cn) => {
-                const cellKey = genCellKey(cn, rn);
-                const values = this.getValue(cn, rn);
+        for (let rn = 0; rn < this.rowCount; rn++) {
+            columns.forEach(col => {
+                const fieldKey = col.fieldKey;
+                const cellKey = genCellKey(fieldKey, rn);
+                const values = this.getValue(fieldKey, rn);
                 if (col.required && !col.isUniqueIdColumn) {
-                    const message = this.getMessage(cn, rn);
+                    const message = this.getMessage(fieldKey, rn);
                     const missingMsg = col.caption + ' is required.';
                     let updatedMsg = message?.message;
                     if (values.isEmpty() || values.find(value => this.hasRawValue(value)) == undefined) {
@@ -526,14 +539,10 @@ export class EditorModel
     }
 
     getValidationErrors(
-        queryModel: QueryModel,
         uniqueFieldKey?: string,
-        insertColumns?: QueryColumn[]
     ): { cellMessages: CellMessages; errors: string[] } {
         const { uniqueKeyViolations, missingRequired, cellMessages } = this.validateData(
-            queryModel,
             uniqueFieldKey,
-            insertColumns
         );
         let errors = [];
         if (!uniqueKeyViolations.isEmpty()) {
@@ -577,8 +586,8 @@ export class EditorModel
         };
     }
 
-    getValue(colIdx: number, rowIdx: number): List<ValueDescriptor> {
-        return this.getValueForCellKey(genCellKey(colIdx, rowIdx));
+    getValue(fieldKey: string, rowIdx: number): List<ValueDescriptor> {
+        return this.getValueForCellKey(genCellKey(fieldKey, rowIdx));
     }
 
     getValueForCellKey(cellKey: string): List<ValueDescriptor> {
@@ -609,7 +618,8 @@ export class EditorModel
     }
 
     get selectionKey(): string {
-        if (this.hasSelection) return genCellKey(this.selectedColIdx, this.selectedRowIdx);
+        const fieldKey = this.columnMap[this.orderedColumns[this.selectedColIdx]].fieldKey;
+        if (this.hasSelection) return genCellKey(fieldKey, this.selectedRowIdx);
         return undefined;
     }
 
@@ -617,9 +627,9 @@ export class EditorModel
         return colIdx >= 0 && colIdx < this.orderedColumns.size && rowIdx >= 0 && rowIdx < this.rowCount;
     }
 
-    inSelection(colIdx: number, rowIdx: number): boolean {
-        if (colIdx < 0 || rowIdx < 0) return false;
-        const cellKey = genCellKey(colIdx, rowIdx);
+    inSelection(fieldKey: string, rowIdx: number): boolean {
+        if (rowIdx < 0) return false;
+        const cellKey = genCellKey(fieldKey, rowIdx);
         return this.selectionCells.find(ck => cellKey === ck) !== undefined;
     }
 
@@ -733,9 +743,9 @@ export class EditorModel
         };
     }
 
-    lastSelection(colIdx: number, rowIdx: number): boolean {
+    lastSelection(fieldKey: string, rowIdx: number): boolean {
         const cellKeys = this.isMultiSelect ? this.selectionCells : [this.selectionKey];
-        return genCellKey(colIdx, rowIdx) === cellKeys[cellKeys.length - 1];
+        return genCellKey(fieldKey, rowIdx) === cellKeys[cellKeys.length - 1];
     }
 }
 

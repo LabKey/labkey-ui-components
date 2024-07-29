@@ -64,6 +64,11 @@ export interface CellMessage {
     message: string;
 }
 
+interface CellReadStatus {
+    isReadonlyCell: boolean;
+    isReadonlyRow: boolean;
+}
+
 export type CellMessages = Map<string, CellMessage>;
 export type CellValues = Map<string, List<ValueDescriptor>>;
 
@@ -245,7 +250,7 @@ export class EditorModel
         return genCellKey(this.pkFieldKey, rowIndex);
     }
 
-    getPkValue(rowIndex: number): ValueDescriptor[] {
+    getPkValue(rowIndex: number): any {
         return this.cellValues.get(this.genPkCellKey(rowIndex))?.get(0).raw;
     }
 
@@ -278,7 +283,6 @@ export class EditorModel
         return undefined;
     }
 
-    // TODO: update getMessage to take fieldKey instead of colIdx
     getMessage(fieldKey: string, rowIdx: number): CellMessage {
         return this.cellMessages.get(genCellKey(fieldKey, rowIdx));
     }
@@ -597,6 +601,23 @@ export class EditorModel
 
         return List<ValueDescriptor>();
     }
+
+    getCellReadStatus(fieldKey: string, rowIdx: number, readonlyRows: string[]): CellReadStatus {
+        const pkValue = this.getPkValue(rowIdx).toString();
+
+        return {
+            isReadonlyCell: this.columnMetadata.get(fieldKey)?.isReadOnlyCell(pkValue),
+            isReadonlyRow: readonlyRows.includes(pkValue),
+        }
+    }
+
+    getFolderValueForCellKey(cellKey: string): string {
+        const { rowIdx } = parseCellKey(cellKey);
+        const containerCol = this.columnMap.get('Folder') ?? this.columnMap.get('Container');
+        if (!containerCol) return undefined;
+        return this.cellValues.get(genCellKey(containerCol.fieldKey, rowIdx)).get(0).raw;
+    }
+
 
     get hasFocus(): boolean {
         return this.focusColIdx > -1 && this.focusRowIdx > -1;

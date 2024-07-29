@@ -53,7 +53,6 @@ import { LabelOverlay } from '../forms/LabelOverlay';
 import {
     addRows,
     addRowsPerPivotValue,
-    checkCellReadStatus,
     copyEvent,
     dragFillEvent,
     pasteEvent,
@@ -180,7 +179,7 @@ function inputCellFactory(
         const { columnMap, orderedColumns } = editorModel;
         const fieldKey = columnMap.get(orderedColumns.get(colIdx)).fieldKey;
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
-        const { isReadonlyCell, isReadonlyRow } = checkCellReadStatus(row, queryInfo, columnMetadata, readonlyRows);
+        const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rn, readonlyRows);
 
         let linkedValues;
         if (columnMetadata?.getFilteredLookupKeys) {
@@ -1213,14 +1212,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     _dragFill = async (initialSelection: string[]): Promise<void> => {
-        const { editorModel, forUpdate, containerPath, onChange, data, dataKeys, queryInfo, readonlyRows } = this.props;
+        const { editorModel, forUpdate, containerPath, onChange, readonlyRows } = this.props;
 
         if (editorModel.isMultiSelect) {
             const { cellMessages, cellValues } = await dragFillEvent(
                 editorModel,
                 initialSelection,
-                dataKeys,
-                data,
                 readonlyRows,
                 forUpdate,
                 containerPath

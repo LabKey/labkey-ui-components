@@ -11,7 +11,6 @@ import {
     addColumns,
     changeColumn,
     fillColumnCells,
-    getFolderValueFromDataRow,
     parseIntIfNumber,
     parsePastedLookup,
     removeColumn,
@@ -733,40 +732,6 @@ describe('fillColumnCells', () => {
         expect(cellValues.get('5-4').get(0).raw).toEqual('asdf');
         expect(cellValues.get('5-5').get(0).display).toEqual('zxcv');
         expect(cellValues.get('5-5').get(0).raw).toEqual('zxcv');
-    });
-});
-
-describe('getFolderValueFromDataRow', () => {
-    const dataEmpty = fromJS({ '123': {}, '456': {}, '789': {} });
-    const dataWithout = fromJS({ '123': { test: 'a' }, '456': { test: 'b' }, '789': { test: 'c' } });
-    const dataFolder = fromJS({
-        '123': { test: 'a', folder: 'f1' },
-        '456': { test: 'b', Folder: 'f2' },
-        '789': { test: 'c', FOLDER: 'f3' },
-    });
-    const dataContainer = fromJS({
-        '123': { test: 'a', container: 'c1' },
-        '456': { test: 'b', Container: 'c2' },
-        '789': { test: 'c', CONTAINER: 'c3' },
-    });
-    const dataKeys = fromJS(['123', '456', '789']);
-
-    test('undefined', () => {
-        expect(getFolderValueFromDataRow('0-0', dataKeys, dataEmpty)).toBe(undefined);
-        expect(getFolderValueFromDataRow('1-1', dataKeys, dataEmpty)).toBe(undefined);
-        expect(getFolderValueFromDataRow('2-2', dataKeys, dataEmpty)).toBe(undefined);
-        expect(getFolderValueFromDataRow('0-0', dataKeys, dataWithout)).toBe(undefined);
-        expect(getFolderValueFromDataRow('1-1', dataKeys, dataWithout)).toBe(undefined);
-        expect(getFolderValueFromDataRow('2-2', dataKeys, dataWithout)).toBe(undefined);
-    });
-
-    test('defined', () => {
-        expect(getFolderValueFromDataRow('0-0', dataKeys, dataFolder)).toBe('f1');
-        expect(getFolderValueFromDataRow('1-1', dataKeys, dataFolder)).toBe('f2');
-        expect(getFolderValueFromDataRow('2-2', dataKeys, dataFolder)).toBe('f3');
-        expect(getFolderValueFromDataRow('0-0', dataKeys, dataContainer)).toBe('c1');
-        expect(getFolderValueFromDataRow('1-1', dataKeys, dataContainer)).toBe('c2');
-        expect(getFolderValueFromDataRow('2-2', dataKeys, dataContainer)).toBe('c3');
     });
 });
 

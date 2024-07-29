@@ -934,41 +934,10 @@ function getPkValue(row: any, queryInfo: QueryInfo): string {
     return key?.toString();
 }
 
-interface CellReadStatus {
-    isReadonlyCell: boolean;
-    isReadonlyRow: boolean;
-}
-
-export function checkCellReadStatus(
-    row: any,
-    queryInfo: QueryInfo,
-    columnMetadata: EditableColumnMetadata,
-    readonlyRows: string[]
-): CellReadStatus {
-    if (readonlyRows || columnMetadata?.isReadOnlyCell) {
-        const keyCols = queryInfo.getPkCols();
-        if (keyCols.length === 1) {
-            const key = getPkValue(row, queryInfo);
-            return {
-                isReadonlyRow: readonlyRows && key ? readonlyRows.includes(key) : false,
-                isReadonlyCell: columnMetadata?.isReadOnlyCell ? columnMetadata.isReadOnlyCell(key) : false,
-            };
-        } else {
-            console.warn(
-                'Setting readonly rows or cells for models with ' + keyCols.length + ' keys is not currently supported.'
-            );
-        }
-    }
-
-    return {
-        isReadonlyRow: false,
-        isReadonlyCell: false,
-    };
-}
-
 /**
  * Returns only the newly selected area given an initial selection and a final selection. These are the keys that will
  * be filled with generated data based on the initially selected data.
+ * @param editorModel The EditorModel
  * @param initialSelection The area initially selected
  * @param finalSelection The final area selected, including the initially selected area
  */
@@ -1086,10 +1055,9 @@ async function getParsedLookup(
     cellKey: string,
     forUpdate: boolean,
     targetContainerPath: string,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>
+    editorModel: EditorModel
 ): Promise<ParseLookupPayload> {
-    const containerPath = forUpdate ? getFolderValueFromDataRow(cellKey, dataKeys, data) : targetContainerPath;
+    const containerPath = forUpdate ? editorModel.getFolderValueForCellKey(cellKey) : targetContainerPath;
     const cacheKey = `${column.fieldKey}||${containerPath}`;
     let descriptors = lookupColumnContainerCache[cacheKey];
     if (!descriptors) {
@@ -1122,8 +1090,6 @@ async function getParsedLookup(
  * content of initialSelection
  * @param forUpdate True if this is operating on update query filters.
  * @param targetContainerPath
- * @param dataKeys The orderedRows Object from a QueryModel
- * @param data The rows object from a QueryModel
  */
 export async function fillColumnCells(
     editorModel: EditorModel,
@@ -1135,8 +1101,6 @@ export async function fillColumnCells(
     selectionToFill: string[],
     forUpdate: boolean,
     targetContainerPath: string,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>
 ): Promise<CellMessagesAndValues> {
     const { direction, increment, incrementType, prefix, startingValue, initialSelectionValues } =
         inferSelectionIncrement(editorModel, initialSelection, selectionToFill);
@@ -1199,8 +1163,7 @@ export async function fillColumnCells(
                 cellKey,
                 forUpdate,
                 targetContainerPath,
-                dataKeys,
-                data
+                editorModel
             );
             cellValues = cellValues.set(cellKey, values);
             cellMessages = cellMessages.set(cellKey, message);
@@ -1213,24 +1176,11 @@ export async function fillColumnCells(
     return { cellValues, cellMessages };
 }
 
-export function getFolderValueFromDataRow(
-    cellKey: string,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>
-): string {
-    const { rowIdx } = parseCellKey(cellKey);
-    const dataRow = data.get(dataKeys.get(rowIdx))?.toJS();
-    const value = getValueFromRow(dataRow, 'Folder') ?? getValueFromRow(dataRow, 'Container');
-    return value?.toString();
-}
-
 type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
 
 /**
  * @param editorModel
  * @param initialSelection The initial selection before the selection was expanded
- * @param dataKeys The orderedRows Object from a QueryModel
- * @param data The rows object from a QueryModel
  * @param readonlyRows A list of readonly rows
  * @param forUpdate True if this is operating on update query filters.
  * @param targetContainerPath The container path to use when looking up lookup values in the forUpdate false case
@@ -1238,8 +1188,6 @@ type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
 export async function dragFillEvent(
     editorModel: EditorModel,
     initialSelection: string[],
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
     readonlyRows: string[],
     forUpdate: boolean,
     targetContainerPath: string
@@ -1263,9 +1211,8 @@ export async function dragFillEvent(
         }
 
         const selectionToFillByCol = columnCells.filter(cellKey => {
-            const { rowIdx } = parseCellKey(cellKey);
-            const row = data.get(dataKeys.get(rowIdx));
-            const { isReadonlyCell, isReadonlyRow } = checkCellReadStatus(row, queryInfo, metadata, readonlyRows);
+            const { fieldKey, rowIdx } = parseCellKey(cellKey);
+            const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
             return !isReadonlyCell && !isReadonlyRow;
         });
 
@@ -1280,8 +1227,6 @@ export async function dragFillEvent(
             selectionToFillByCol,
             forUpdate,
             targetContainerPath,
-            dataKeys,
-            data
         );
         cellValues = messagesAndValues.cellValues;
         cellMessages = messagesAndValues.cellMessages;
@@ -1530,11 +1475,9 @@ async function insertPastedData(
                         cellKey,
                         forUpdate,
                         targetContainerPath,
-                        dataKeys,
-                        data
+                        editorModel
                     );
                     cv = values;
-
                     msg = message;
                 } else {
                     const { message, value } = getValidatedEditableGridValue(val, col);

@@ -181,9 +181,8 @@ export function getExportParams(
         params.headerType = 'FieldKey';
         // don't export aliases if headType is FieldKey
         Object.keys(params).forEach(param => {
-            if (param.startsWith('exportAlias.'))
-                delete params[param];
-        })
+            if (param.startsWith('exportAlias.')) delete params[param];
+        });
         incrementClientSideMetricCount('BarTender', 'DownloadTemplateCount');
     }
 

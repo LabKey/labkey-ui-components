@@ -62,7 +62,10 @@ const ExportMenuItem: FC<ExportMenuItemProps> = ({ hasSelections, onExport, opti
 
     if (option.hidden && !supportedTypes?.includes(option.type)) return null;
 
-    if (option.type === EXPORT_TYPES.LABEL || (option.type === EXPORT_TYPES.LABEL_TEMPLATE && !supportedTypes?.includes(EXPORT_TYPES.LABEL))) {
+    if (
+        option.type === EXPORT_TYPES.LABEL ||
+        (option.type === EXPORT_TYPES.LABEL_TEMPLATE && !supportedTypes?.includes(EXPORT_TYPES.LABEL))
+    ) {
         const exportAndPrintHeader = 'Bartender';
         return (
             <React.Fragment key={option.type}>

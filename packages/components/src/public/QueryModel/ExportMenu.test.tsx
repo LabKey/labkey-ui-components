@@ -90,7 +90,11 @@ describe('ExportMenu', () => {
     });
 
     test('supported types: all', () => {
-        const supportedTypes = ImmutableSet.of(EXPORT_TYPES.LABEL, EXPORT_TYPES.LABEL_TEMPLATE, EXPORT_TYPES.STORAGE_MAP);
+        const supportedTypes = ImmutableSet.of(
+            EXPORT_TYPES.LABEL,
+            EXPORT_TYPES.LABEL_TEMPLATE,
+            EXPORT_TYPES.STORAGE_MAP
+        );
 
         render(<ExportMenu model={MODEL} supportedTypes={supportedTypes} />);
 

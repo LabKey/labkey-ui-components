@@ -219,23 +219,19 @@ function includesAMPM(rawValue: string): boolean {
     return lower.indexOf('am') > -1 || lower.indexOf('pm') > -1;
 }
 
-function _getColFormattedTimeFilterValue(column: QueryColumn, value: any, usingDateFNS: boolean): string {
+function includesSeconds(rawValue: string): boolean {
+    if (!rawValue || typeof rawValue !== 'string') return false;
+    return rawValue.split(':').length > 2;
+}
+
+function _getColFormattedTimeFilterValue(column: QueryColumn, value: string, usingDateFNS: boolean): string {
     if (!value) return value;
     const timeFormat = getColDateFormat(column, column?.format ?? 'Time', false);
     if (!timeFormat) return value;
-    const includesSeconds = value.split(':').length > 2;
 
     if (usingDateFNS) {
-        let valueFormat = includesSeconds ? 'HH:mm:ss' : 'HH:mm';
-        if (includesAMPM(value)) {
-            valueFormat = valueFormat.replace('HH', 'hh');
-            valueFormat += ' a';
-        }
-
-        // https://stackoverflow.com/a/68727535
-        const parsed = safeParse(value, valueFormat, new Date());
+        const parsed = parseTimeUsingDateFNS(value);
         if (!parsed) return undefined;
-
         return format(parsed, timeFormat);
     } else {
         const valueFormat = includesAMPM(value) ? 'hh:mm:ss a' : 'HH:mm:ss';
@@ -245,33 +241,32 @@ function _getColFormattedTimeFilterValue(column: QueryColumn, value: any, usingD
 
 export function getColFormattedTimeFilterValue(
     column: QueryColumn,
-    value: any,
+    value: string | string[],
     usingDateFNS = USING_DATE_FNS
 ): string | string[] {
     if (value instanceof Array) {
-        const results = [];
-        value.forEach(val => {
-            results.push(_getColFormattedTimeFilterValue(column, val, usingDateFNS));
-        });
-
-        return results;
+        return value.map(v => _getColFormattedTimeFilterValue(column, v, usingDateFNS));
     }
     return _getColFormattedTimeFilterValue(column, value, usingDateFNS);
 }
 
-export function parseSimpleTime(rawValue: string): Date {
+export function parseSimpleTime(rawValue: string, usingDateFNS = USING_DATE_FNS): Date {
     if (!rawValue) return null;
+    const _value = rawValue.toString();
 
-    const parts = rawValue.toString().split(':').length;
-    let hourMinute = 'HH:mm',
-        ampm = '';
-    const second = parts > 2 ? ':ss' : '';
-    if (includesAMPM(rawValue)) {
-        ampm = ' a';
-        hourMinute = 'hh:mm';
+    if (usingDateFNS) {
+        return parseTimeUsingDateFNS(_value);
+    } else {
+        let hourMinute = 'HH:mm',
+            ampm = '';
+        const second = includesSeconds(_value) ? ':ss' : '';
+        if (includesAMPM(_value)) {
+            ampm = ' a';
+            hourMinute = 'hh:mm';
+        }
+        const _format = hourMinute + second + ampm;
+        return moment(_value, _format).toDate();
     }
-    const _format = hourMinute + second + ampm;
-    return moment(rawValue, _format).toDate();
 }
 
 type ContainerFormats = {
@@ -341,6 +336,17 @@ export function parseDate(
     }
 
     return parseDateUsingMoment(dateStr, dateFormat, minDate, timeOnly, dateOnly);
+}
+
+function parseTimeUsingDateFNS(value: string): Date {
+    let valueFormat = includesSeconds(value) ? 'HH:mm:ss' : 'HH:mm';
+    if (includesAMPM(value)) {
+        valueFormat = valueFormat.replace('HH', 'hh');
+        valueFormat += ' a';
+    }
+
+    // https://stackoverflow.com/a/68727535
+    return safeParse(value, valueFormat, new Date());
 }
 
 function safeParse(dateStr: string, formatStr: string, referenceDate: number | Date, options?: any): Date {

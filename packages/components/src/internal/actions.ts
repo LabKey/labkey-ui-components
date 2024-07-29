@@ -176,6 +176,17 @@ export function getExportParams(
         params.delim = 'COMMA';
     }
 
+    if (type === EXPORT_TYPES.LABEL_TEMPLATE) {
+        params.delim = 'COMMA';
+        params.headerType = 'FieldKey';
+        // don't export aliases if headType is FieldKey
+        Object.keys(params).forEach(param => {
+            if (param.startsWith('exportAlias.'))
+                delete params[param];
+        })
+        incrementClientSideMetricCount('BarTender', 'DownloadTemplateCount');
+    }
+
     if (options) {
         if (options.columns) {
             let columnsString = options.columns;
@@ -255,7 +266,7 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
     });
 
     let controller, action;
-    if (type === EXPORT_TYPES.CSV || type === EXPORT_TYPES.TSV) {
+    if (type === EXPORT_TYPES.CSV || type === EXPORT_TYPES.TSV || type === EXPORT_TYPES.LABEL_TEMPLATE) {
         controller = 'query';
         action = 'exportRowsTsv.post';
     } else if (type === EXPORT_TYPES.EXCEL) {

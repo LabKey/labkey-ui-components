@@ -45,6 +45,7 @@ export enum EXPORT_TYPES {
     GENBANK,
     LABEL,
     STORAGE_MAP,
+    LABEL_TEMPLATE
 }
 
 export enum KEYS {

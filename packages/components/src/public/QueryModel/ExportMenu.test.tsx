@@ -62,6 +62,42 @@ describe('ExportMenu', () => {
         expect(exportFn).toHaveBeenCalledTimes(1);
     });
 
+    test('supported types, can print template, but not label', () => {
+        const supportedTypes = ImmutableSet.of(EXPORT_TYPES.LABEL_TEMPLATE);
+
+        render(<ExportMenu model={MODEL} supportedTypes={supportedTypes} />);
+
+        expect(document.querySelectorAll('.export-menu-icon').length).toBe(4);
+        expect(document.querySelectorAll('.divider').length).toBe(1);
+    });
+
+    test('supported types, can print label, but not template', () => {
+        const supportedTypes = ImmutableSet.of(EXPORT_TYPES.LABEL);
+
+        render(<ExportMenu model={MODEL} supportedTypes={supportedTypes} />);
+
+        expect(document.querySelectorAll('.export-menu-icon').length).toBe(4);
+        expect(document.querySelectorAll('.divider').length).toBe(1);
+    });
+
+    test('supported types, can print label and template', () => {
+        const supportedTypes = ImmutableSet.of(EXPORT_TYPES.LABEL, EXPORT_TYPES.LABEL_TEMPLATE);
+
+        render(<ExportMenu model={MODEL} supportedTypes={supportedTypes} />);
+
+        expect(document.querySelectorAll('.export-menu-icon').length).toBe(5);
+        expect(document.querySelectorAll('.divider').length).toBe(1);
+    });
+
+    test('supported types: all', () => {
+        const supportedTypes = ImmutableSet.of(EXPORT_TYPES.LABEL, EXPORT_TYPES.LABEL_TEMPLATE, EXPORT_TYPES.STORAGE_MAP);
+
+        render(<ExportMenu model={MODEL} supportedTypes={supportedTypes} />);
+
+        expect(document.querySelectorAll('.export-menu-icon').length).toBe(6);
+        expect(document.querySelectorAll('.divider').length).toBe(2);
+    });
+
     test('extraExportMenuOptions', () => {
         const exportFn = jest.fn();
         const extraOptions = [

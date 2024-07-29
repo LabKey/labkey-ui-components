@@ -40,7 +40,8 @@ const exportOptions = [
     { type: EXPORT_TYPES.CSV, icon: 'fa-file-o', label: 'CSV' },
     { type: EXPORT_TYPES.EXCEL, icon: 'fa-file-excel-o', label: 'Excel' },
     { type: EXPORT_TYPES.TSV, icon: 'fa-file-text-o', label: 'TSV' },
-    { type: EXPORT_TYPES.LABEL, icon: 'fa-tag', label: 'Label', hidden: true },
+    { type: EXPORT_TYPES.LABEL, icon: 'fa-print', label: 'Print Label', hidden: true },
+    { type: EXPORT_TYPES.LABEL_TEMPLATE, icon: 'fa-file-o', label: 'Download Template', hidden: true },
     { type: EXPORT_TYPES.STORAGE_MAP, icon: 'fa-file-excel-o', label: 'Storage Map (Excel)', hidden: true },
     // Note: EXPORT_TYPES and exportRows (used in export function below) also include support for FASTA and GENBANK,
     // but they were never used in the QueryGridPanel version of export. We're explicitly not supporting them in
@@ -61,15 +62,15 @@ const ExportMenuItem: FC<ExportMenuItemProps> = ({ hasSelections, onExport, opti
 
     if (option.hidden && !supportedTypes?.includes(option.type)) return null;
 
-    if (option.type === EXPORT_TYPES.LABEL) {
-        const exportAndPrintHeader = 'Export and Print' + (hasSelections ? ' Selected Data' : ' Data');
+    if (option.type === EXPORT_TYPES.LABEL || (option.type === EXPORT_TYPES.LABEL_TEMPLATE && !supportedTypes?.includes(EXPORT_TYPES.LABEL))) {
+        const exportAndPrintHeader = 'Bartender';
         return (
             <React.Fragment key={option.type}>
                 <MenuDivider />
                 <MenuHeader text={exportAndPrintHeader} />
                 <MenuItem onClick={onClick}>
                     <span className={`fa ${option.icon} export-menu-icon`} />
-                    &nbsp; {option.label}
+                    {option.label}
                 </MenuItem>
             </React.Fragment>
         );
@@ -82,7 +83,7 @@ const ExportMenuItem: FC<ExportMenuItemProps> = ({ hasSelections, onExport, opti
                 <MenuHeader text="Export Map" />
                 <MenuItem onClick={onClick}>
                     <span className={`fa ${option.icon} export-menu-icon`} />
-                    &nbsp; {option.label}
+                    {option.label}
                 </MenuItem>
             </React.Fragment>
         );

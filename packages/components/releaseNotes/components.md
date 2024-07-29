@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.X
+*Released*: X 2024
+- BarTender: supply file export needed for BarTender integration
+  - Update label and icon for bartender label printing option
+  - Support new "Download template" option for bartender with FieldKey instead of column title
+
 ### version 4.3.0
 *Released*: 25 July 2024
 - Issue 50449: App grid filter to expand icon click area to remove filter value

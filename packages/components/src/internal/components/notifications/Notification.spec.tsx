@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import moment from 'moment';
+import { addDays } from 'date-fns';
 import { Map } from 'immutable';
 
 import { mountWithAppServerContext } from '../../test/enzymeTestHelpers';
@@ -22,11 +22,13 @@ import { TEST_USER_APP_ADMIN, TEST_USER_READER } from '../../userFixtures';
 
 import { Container } from '../base/models/Container';
 
+import { getJsonDateFormatString } from '../../util/Date';
+
 import { Notifications } from './Notifications';
 import { NotificationItemModel } from './model';
 import { NotificationItem } from './NotificationItem';
 
-describe('<Notification/>', () => {
+describe('Notifications', () => {
     test('no notifications', () => {
         const notifications = mountWithAppServerContext(<Notifications />, {}, { user: TEST_USER_READER });
         expect(notifications.find(NotificationItem)).toHaveLength(0);
@@ -88,7 +90,7 @@ describe('<Notification/>', () => {
     test('with trial notification for non-admin', () => {
         const moduleContext = {
             trialservices: {
-                trialEndDate: moment().add(1, 'days').format('YYYY-MM-DD'),
+                trialEndDate: getJsonDateFormatString(addDays(new Date(), 1)),
                 upgradeLink: 'your/link/to/the/future',
                 upgradeLinkText: 'Upgrade now',
             },
@@ -116,7 +118,7 @@ describe('<Notification/>', () => {
     test('with trial notification for admin', () => {
         const moduleContext = {
             trialservices: {
-                trialEndDate: moment().add(1, 'days').format('YYYY-MM-DD'),
+                trialEndDate: getJsonDateFormatString(addDays(new Date(), 1)),
                 upgradeLink: 'your/link/to/the/future',
                 upgradeLinkText: 'Upgrade now',
             },

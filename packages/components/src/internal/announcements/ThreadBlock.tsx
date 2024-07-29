@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
-import { differenceInMilliseconds } from 'date-fns';
+import { differenceInSeconds } from 'date-fns';
 import { User, UserWithPermissions } from '@labkey/api';
 
 import { resolveErrorMessage } from '../util/messaging';
@@ -66,7 +66,7 @@ const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
 
         return {
             formattedCreate: fromNow(createdDate),
-            isEdited: differenceInMilliseconds(modifiedDate, createdDate) > 1000,
+            isEdited: differenceInSeconds(modifiedDate, createdDate) > 1,
         };
     }, [created, modified]);
 

@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 7.5.0
+*Released*: 27 July 2024
+- Add option to add requiresLogin and requiresNoPermission to entry points
+
 ### version 7.4.0
 *Released*: 24 July 2024
 - Package updates

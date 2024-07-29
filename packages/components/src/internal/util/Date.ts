@@ -26,6 +26,8 @@ import { TIME_RANGE_URI } from '../components/domainproperties/constants';
 
 import { formatWithJDF, toMomentFormatString } from './jDateFormatParser';
 
+const USING_DATE_FNS = true;
+
 export function datePlaceholder(col: QueryColumn): string {
     let placeholder: string;
 
@@ -315,7 +317,7 @@ export function parseDate(
     minDate?: Date,
     timeOnly?: boolean,
     dateOnly?: boolean,
-    usingDateFNS = true
+    usingDateFNS = USING_DATE_FNS
 ): Date {
     if (usingDateFNS) {
         return parseDateUsingDateFNS(dateStr, dateFormat, minDate, timeOnly, dateOnly);
@@ -440,7 +442,12 @@ function parseDateUsingMoment(
     return validDate ? validDate.toDate() : null;
 }
 
-function _formatDate(date: Date | number, dateFormat: string, timezone?: string, usingDateFNS = true): string {
+function _formatDate(
+    date: Date | number,
+    dateFormat: string,
+    timezone?: string,
+    usingDateFNS = USING_DATE_FNS
+): string {
     if (usingDateFNS) {
         return formatDateUsingDateFNS(date, dateFormat, timezone);
     }
@@ -467,7 +474,12 @@ function formatDateUsingMoment(date: Date | number, dateFormat: string, timezone
     return formatWithJDF(_date, dateFormat);
 }
 
-export function formatDate(date: Date | number, timezone?: string, dateFormat?: string, usingDateFNS = true): string {
+export function formatDate(
+    date: Date | number,
+    timezone?: string,
+    dateFormat?: string,
+    usingDateFNS = USING_DATE_FNS
+): string {
     return _formatDate(
         date,
         dateFormat ?? (usingDateFNS ? getDateFNSDateFormat() : getMomentDateFormat()),
@@ -480,7 +492,7 @@ export function formatDateTime(
     date: Date | number,
     timezone?: string,
     dateFormat?: string,
-    usingDateFNS = true
+    usingDateFNS = USING_DATE_FNS
 ): string {
     return _formatDate(
         date,

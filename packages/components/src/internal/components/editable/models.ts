@@ -32,6 +32,10 @@ import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
 import { CellCoordinates, EditableGridEvent } from './constants';
 import { genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
 
+// FIXME: this is a circular import, we should probably move loadEditorModelData, initEditableGridModel,
+//  initEditableGridModels to this file
+import { loadEditorModelData } from './actions';
+
 export interface EditableColumnMetadata {
     align?: string;
     caption?: string;
@@ -66,11 +70,16 @@ export type CellValues = Map<string, List<ValueDescriptor>>;
 export interface EditorModelProps {
     cellMessages: CellMessages;
     cellValues: CellValues;
+    // columnMap is a Map of fieldKey to QueryColumn, it includes potentially hidden columns such as RowId or Container,
+    // which are necessary when updating data. If you need the visible columns use orderedColumns.
+    columnMap: Map<string, QueryColumn>;
+    columnMetadata: Map<string, EditableColumnMetadata>;
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
     id: string;
-    orderedColumns: List<string>; // List of field keys visible in the grid
+    orderedColumns: List<string>; // List of fieldKeys visible in the grid
+    queryInfo: QueryInfo;
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;
@@ -126,6 +135,8 @@ export class EditorModel
     extends ImmutableRecord({
         cellMessages: Map<string, CellMessage>(),
         cellValues: Map<string, List<ValueDescriptor>>(),
+        columnMap: Map<string, QueryColumn>,
+        columnMetadata: Map<string, EditableColumnMetadata>(),
         orderedColumns: List<string>(),
         deletedIds: ImmutableSet<any>(),
         focusColIdx: -1,
@@ -133,6 +144,7 @@ export class EditorModel
         focusValue: undefined,
         id: undefined,
         isSparseSelection: false,
+        queryInfo: undefined,
         rowCount: 0,
         selectedColIdx: -1,
         selectedRowIdx: -1,
@@ -142,6 +154,8 @@ export class EditorModel
 {
     declare cellMessages: CellMessages;
     declare cellValues: CellValues;
+    declare columnMap: Map<string, QueryColumn>;
+    declare columnMetadata: Map<string, EditableColumnMetadata>;
     declare orderedColumns: List<string>;
     declare deletedIds: ImmutableSet<any>;
     declare focusColIdx: number;
@@ -151,12 +165,77 @@ export class EditorModel
     // NK: This is precomputed property that is updated whenever the selection is updated.
     // See applyEditableGridChangesToModels().
     declare isSparseSelection: boolean;
+    declare queryInfo: QueryInfo;
     declare rowCount: number;
     declare selectedColIdx: number;
     declare selectedRowIdx: number;
     // NK: This is pre-sorted array that is updated whenever the selection is updated.
     // See applyEditableGridChangesToModels().
     declare selectionCells: string[];
+
+    static async init(
+        queryModel: QueryModel,
+        loader: EditableGridLoader,
+        columnMetadata?: Map<string, EditableColumnMetadata>
+    ) {
+        const { columns: loaderColumns, queryInfo } = loader;
+        // TODO: Most EditableGridLoaders do not actually asynchronously fetch data (see note in EditableGridLoader), we
+        //  can most likely just drop loader as an arg, and have consumers pass in their QueryModel data (if any), and
+        //  skip this whole dance.
+        const { data, dataIds } = await loader.fetch(queryModel);
+        const rows = data.toJS();
+        const orderedRows = dataIds.toArray();
+        const forUpdate = loader.mode === EditorMode.Update;
+        let columns: QueryColumn[];
+
+        if (loaderColumns) {
+            // TODO: investigate how many loaders actually setting columns, there may be a better path forward
+            columns = loader.columns;
+        } else if (forUpdate) {
+            columns = queryInfo.getUpdateColumns();
+        } else {
+            columns = queryModel.queryInfo.getInsertColumns();
+        }
+
+        // Calculate orderedColumns here before we add PK and Container columns to the columns array because they should
+        // be hidden by default.
+        const orderedColumns = columns.map(queryColumn => queryColumn.fieldKey);
+        const columnMap = columns.reduce((result, column) => {
+            result[column.fieldKey] = column;
+            return result;
+        }, {});
+
+        if (forUpdate) {
+            // If we're updating then we need to ensure that the pkCol is in the columnMap so things like readonlyRows
+            // will work.
+            const pkCol = queryInfo.getPkCols()[0];
+            columnMap[pkCol.fieldKey] = pkCol;
+            columns.push(pkCol);
+
+            // If we're updating we need to ensure that the container column is in the column map, so we can validate
+            // against it during events like paste.
+            const containerCol = queryInfo.getColumn('Container') ?? queryInfo.getColumn('Folder');
+
+            if (containerCol) {
+                columnMap[containerCol.fieldKey] = containerCol;
+                columns.push(containerCol);
+            }
+        }
+
+        // TODO: this causes a circular import between models.ts and actions.ts, we could just add a new method
+        //  to actions called initEditorModel. Alternatively we move the other actions to EditorModel.
+        const { cellValues } = await loadEditorModelData({ rows, orderedRows }, columns, forUpdate);
+
+        return new EditorModel({
+            cellValues,
+            columnMetadata,
+            columnMap: fromJS(columnMap),
+            orderedColumns: fromJS(orderedColumns),
+            id: queryModel.id,
+            queryInfo,
+            rowCount: orderedRows.length,
+        });
+    }
 
     findNextCell(
         startCol: number,

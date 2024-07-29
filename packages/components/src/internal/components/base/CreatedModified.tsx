@@ -15,10 +15,11 @@
  */
 import React, { Component, ReactNode } from 'react';
 import classNames from 'classnames';
-import moment from 'moment';
 import { Query } from '@labkey/api';
 
 import { caseInsensitive } from '../../util/utils';
+
+import { fromDate, fromNow, parseDate } from '../../util/Date';
 
 import { LoadingSpinner } from './LoadingSpinner';
 
@@ -138,7 +139,8 @@ export class CreatedModified extends Component<CreatedModifiedProps, State> {
         if (config.display) {
             // also supports '/'
             const timestamp = config.useCreated ? config.createdTS : config.modifiedTS;
-            const displayTxt = serverDate ? moment(timestamp).from(serverDate) : moment(timestamp).fromNow();
+            const parsedDate = parseDate(timestamp);
+            const displayTxt = serverDate ? fromDate(parsedDate, serverDate) : fromNow(parsedDate);
 
             return (
                 <span

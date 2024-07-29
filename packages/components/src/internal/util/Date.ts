@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { format, isBefore, isValid, parse } from 'date-fns';
+import { format, formatDistance, isBefore, isValid, parse } from 'date-fns';
 import { format as formatTz, toZonedTime } from 'date-fns-tz';
 import moment from 'moment';
 import momentTZ from 'moment-timezone';
@@ -323,19 +323,31 @@ function getMomentTimeFormat(container?: Partial<Container>): string {
     return toMomentFormatString(getTimeFormat(container)) ?? 'HH:mm:ss';
 }
 
+export function fromDate(date: Date, baseDate: Date, addSuffix = true): string {
+    return formatDistance(date, baseDate, { addSuffix });
+}
+
+export function fromNow(date: Date, addSuffix = true): string {
+    return fromDate(date, new Date(), addSuffix);
+}
+
 export function parseDate(
-    dateStr: string,
+    dateValue: Date | string | number,
     dateFormat?: string,
     minDate?: Date,
     timeOnly?: boolean,
     dateOnly?: boolean,
     usingDateFNS = USING_DATE_FNS
 ): Date {
+    if (dateValue instanceof Date) return dateValue;
+    if (typeof dateValue === 'number') return new Date(dateValue);
+    if (typeof dateValue !== 'string') return null;
+
     if (usingDateFNS) {
-        return parseDateUsingDateFNS(dateStr, dateFormat, minDate, timeOnly, dateOnly);
+        return parseDateUsingDateFNS(dateValue, dateFormat, minDate, timeOnly, dateOnly);
     }
 
-    return parseDateUsingMoment(dateStr, dateFormat, minDate, timeOnly, dateOnly);
+    return parseDateUsingMoment(dateValue, dateFormat, minDate, timeOnly, dateOnly);
 }
 
 function parseTimeUsingDateFNS(value: string): Date {
@@ -359,17 +371,15 @@ function safeParse(dateStr: string, formatStr: string, referenceDate: number | D
 }
 
 function parseDateUsingDateFNS(
-    dateStr: string | Date,
+    dateStr: string,
     dateFormat?: string,
     minDate?: Date,
     timeOnly?: boolean,
     dateOnly?: boolean
 ): Date {
     if (!dateStr) return null;
-    if (dateStr instanceof Date) return dateStr;
-    if (typeof dateStr !== 'string') return null;
 
-    let validDate;
+    let validDate: Date;
     if (dateFormat) {
         const _dateFormat = toDateFNSFormatString(dateFormat);
         const date = safeParse(dateStr, _dateFormat, new Date());

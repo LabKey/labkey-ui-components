@@ -5,7 +5,7 @@ import { getQueryModelExportParams } from '../../../public/QueryModel/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 import { EXPORT_TYPES } from '../../constants';
 import { buildURL } from '../../url/AppURL';
-import { SAMPLE_EXPORT_CONFIG } from '../samples/constants';
+import { SAMPLE_DATA_EXPORT_CONFIG } from '../samples/constants';
 
 import { selectRows } from '../../query/selectRows';
 
@@ -143,7 +143,7 @@ export class LabelPrintingServerAPIWrapper implements LabelPrintingAPIWrapper {
             Ajax.request({
                 url: buildURL(SAMPLE_MANAGER_APP_PROPERTIES.controllerName, 'printBarTenderLabels.api'),
                 params: getQueryModelExportParams(sampleModel, EXPORT_TYPES.LABEL, {
-                    ...SAMPLE_EXPORT_CONFIG,
+                    ...SAMPLE_DATA_EXPORT_CONFIG,
                     labelFormat,
                     numCopies,
                     // We override the showRows value because of the strange default behavior for grid export that

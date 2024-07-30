@@ -31,6 +31,7 @@ import {
     FREEZERS_KEY,
     HOME_KEY,
     LABKEY_SERVER_PRODUCT_NAME,
+    LIMS_APP_PROPERTIES,
     MEDIA_KEY,
     NEW_ASSAY_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
@@ -146,8 +147,12 @@ export function isOntologyEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isProductNavigationEnabled(productId: string, moduleContext?: ModuleContext): boolean {
-    if (productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
-        return isSampleManagerEnabled(moduleContext) && !isBiologicsEnabled(moduleContext);
+    if (productId === LIMS_APP_PROPERTIES.productId) {
+        return isLIMSEnabled(moduleContext);
+    } else if (productId === SAMPLE_MANAGER_APP_PROPERTIES.productId) {
+        return (
+            isSampleManagerEnabled(moduleContext) && !isLIMSEnabled(moduleContext) && !isBiologicsEnabled(moduleContext)
+        );
     } else if (productId === BIOLOGICS_APP_PROPERTIES.productId) {
         return isBiologicsEnabled(moduleContext);
     }
@@ -155,6 +160,9 @@ export function isProductNavigationEnabled(productId: string, moduleContext?: Mo
     return false;
 }
 
+export function isExperimentAliasEnabled(moduleContext?: ModuleContext): boolean {
+    return biologicsIsPrimaryApp(moduleContext);
+}
 export function isProductProjectsEnabled(moduleContext?: ModuleContext): boolean {
     return resolveModuleContext(moduleContext)?.query?.isProductProjectsEnabled === true;
 }
@@ -234,12 +242,20 @@ export function biologicsIsPrimaryApp(moduleContext?: ModuleContext): boolean {
     return getPrimaryAppProperties(moduleContext)?.productId === BIOLOGICS_APP_PROPERTIES.productId;
 }
 
+export function limsIsPrimaryApp(moduleContext?: ModuleContext): boolean {
+    return getPrimaryAppProperties(moduleContext)?.productId === LIMS_APP_PROPERTIES.productId;
+}
+
 export function freezerManagerIsCurrentApp(): boolean {
     return getCurrentAppProperties()?.productId === FREEZER_MANAGER_APP_PROPERTIES.productId;
 }
 
 export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('SampleManagement', moduleContext);
+}
+
+export function isQueryMetadataEditor(): boolean {
+    return ActionURL.getAction()?.toLowerCase().startsWith('querymetadataeditor');
 }
 
 export function getCurrentAppProperties(): AppProperties {
@@ -251,6 +267,8 @@ export function getCurrentAppProperties(): AppProperties {
         return BIOLOGICS_APP_PROPERTIES;
     } else if (lcController === FREEZER_MANAGER_APP_PROPERTIES.controllerName.toLowerCase()) {
         return FREEZER_MANAGER_APP_PROPERTIES;
+    } else if (lcController === LIMS_APP_PROPERTIES.controllerName.toLowerCase()) {
+        return LIMS_APP_PROPERTIES;
     }
     return undefined;
 }
@@ -273,13 +291,16 @@ export function getPrimaryAppProperties(moduleContext?: ModuleContext): AppPrope
     const currentAppProperties = getCurrentAppProperties();
     if (
         currentAppProperties?.productId === BIOLOGICS_APP_PROPERTIES.productId ||
-        currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId
+        currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
+        currentAppProperties?.productId === LIMS_APP_PROPERTIES.productId
     ) {
         return currentAppProperties;
     }
 
     if (isBiologicsEnabled(moduleContext)) {
         return BIOLOGICS_APP_PROPERTIES;
+    } else if (isLIMSEnabled(moduleContext)) {
+        return LIMS_APP_PROPERTIES;
     } else if (isSampleManagerEnabled(moduleContext)) {
         return SAMPLE_MANAGER_APP_PROPERTIES;
     } else if (isFreezerManagementEnabled(moduleContext)) {
@@ -345,6 +366,10 @@ export function isAssayDesignExportEnabled(moduleContext?: ModuleContext): boole
     return hasPremiumModule(moduleContext);
 }
 
+export function isNonstandardAssayEnabled(moduleContext?: ModuleContext): boolean {
+    return isFeatureEnabled(ProductFeature.NonstandardAssay, moduleContext);
+}
+
 export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
     return (
         biologicsIsPrimaryApp(moduleContext) &&
@@ -354,17 +379,33 @@ export function isPlatesEnabled(moduleContext?: ModuleContext): boolean {
 
 export function isChartBuilderEnabled(moduleContext?: ModuleContext): boolean {
     return (
-        isLIMSEnabled(moduleContext) &&
-        resolveModuleContext(moduleContext)?.biologics?.[EXPERIMENTAL_CHART_BUILDER] === true
+        isFeatureEnabled(ProductFeature.ChartBuilding, moduleContext) &&
+        resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_CHART_BUILDER] === true
     );
+}
+
+// Should be enabled for LKS Starter, which won't have any product features
+export function isTransformScriptsEnabled(moduleContext?: ModuleContext): boolean {
+    return isFeatureEnabled(ProductFeature.TransformScripts, moduleContext) || hasPremiumModule(moduleContext);
 }
 
 export function isRReportsEnabled(moduleContext?: ModuleContext): boolean {
     return biologicsIsPrimaryApp(moduleContext);
 }
 
-export function isLIMSEnabled(moduleContext?: ModuleContext): boolean {
-    return biologicsIsPrimaryApp(moduleContext);
+export function isLKSSupportEnabled(moduleContext?: ModuleContext): boolean {
+    return isBiologicsEnabled(moduleContext) || hasPremiumModule(moduleContext);
+}
+
+export function isLIMSEnabled(moduleContext?: ModuleContext, container?: Container): boolean {
+    // The check for folder type is not ideal here, but since the product is provided through the sampleManagement module
+    // a simple module check isn't sufficient. Since the product configuration is global to the server, we have no good
+    // way to know which URLs to construct in a particular container except by inspecting the folder type (at the moment).
+    return isSampleManagerEnabled(moduleContext) && (container ?? getServerContext().container)?.folderType === 'LIMS';
+}
+
+export function isAssayFileUploadEnabled(moduleContext?: ModuleContext): boolean {
+    return isBiologicsEnabled(moduleContext) || isLIMSEnabled(moduleContext);
 }
 
 export function isELNEnabled(moduleContext?: ModuleContext): boolean {
@@ -375,8 +416,28 @@ export function isProtectedDataEnabled(moduleContext?: ModuleContext): boolean {
     return hasModule('compliance', moduleContext) && hasModule('complianceActivities', moduleContext);
 }
 
+export function isNamingPrefixEnabled(moduleContext?: ModuleContext): boolean {
+    return isBiologicsEnabled(moduleContext);
+}
+
 export function isMediaEnabled(moduleContext?: ModuleContext): boolean {
     return isFeatureEnabled(ProductFeature.Media, moduleContext);
+}
+
+export function isRegistryEnabled(moduleContext?: ModuleContext): boolean {
+    return isBiologicsEnabled(moduleContext) && isFeatureEnabled(ProductFeature.BiologicsRegistry, moduleContext);
+}
+
+export function isSourceTypeEnabled(moduleContext?: ModuleContext): boolean {
+    return isSampleManagerEnabled(moduleContext) && !isRegistryEnabled(moduleContext);
+}
+
+export function isAdvancedDomainPropertiesEnabled(moduleContext?: ModuleContext): boolean {
+    return !sampleManagerIsPrimaryApp(moduleContext) || hasPremiumModule(moduleContext);
+}
+
+export function isNotebookTagsEnabled(moduleContext?: ModuleContext): boolean {
+    return isBiologicsEnabled(moduleContext);
 }
 
 export function isWorkflowEnabled(moduleContext?: ModuleContext): boolean {
@@ -584,17 +645,14 @@ export function getMenuSectionConfigs(
 ): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 
-    const currentAppProperties = getCurrentAppProperties(); // based on the controller name
-    const isSMPrimary = sampleManagerIsPrimaryApp(moduleContext);
-    const isBioPrimary = biologicsIsPrimaryApp(moduleContext);
-    const isBioOrSM = isSMPrimary || isBioPrimary;
-    const inSMApp = isSMPrimary || currentAppProperties?.productId === SAMPLE_MANAGER_APP_PROPERTIES.productId;
-    if (inSMApp) {
-        sectionConfigs = addSourcesSectionConfig(user, sectionConfigs);
-    } else if (isBioPrimary) {
+    const isBioEnabled = isBiologicsEnabled(moduleContext);
+    const isSMEnabled = isSampleManagerEnabled(moduleContext);
+    if (isRegistryEnabled(moduleContext)) {
         sectionConfigs = sectionConfigs.push(Map({ [REGISTRY_KEY]: getRegistrySectionConfig() }));
+    } else if (isSMEnabled) {
+        sectionConfigs = addSourcesSectionConfig(user, sectionConfigs);
     }
-    if (isBioOrSM) {
+    if (isSMEnabled) {
         let configs = Map<string, MenuSectionConfig>({ [SAMPLES_KEY]: getSamplesSectionConfig(user) });
         if (isPlatesEnabled(moduleContext)) {
             configs = configs.set(PLATES_KEY, getPlatesSectionConfig());
@@ -602,26 +660,13 @@ export function getMenuSectionConfigs(
         sectionConfigs = sectionConfigs.push(configs);
 
         if (isAssayEnabled(moduleContext)) {
-            sectionConfigs = addAssaysSectionConfig(user, sectionConfigs, isSMPrimary);
+            sectionConfigs = addAssaysSectionConfig(user, sectionConfigs, isNonstandardAssayEnabled(moduleContext));
         }
     }
 
     const storageConfig = getStorageSectionConfig(user, currentProductId, moduleContext);
 
-    if (inSMApp) {
-        if (storageConfig) {
-            sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
-        }
-        let configs = Map<string, MenuSectionConfig>({});
-        if (isWorkflowEnabled(moduleContext)) {
-            configs = configs.set(WORKFLOW_KEY, getWorkflowSectionConfig());
-        }
-        configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
-        if (isELNEnabled(moduleContext)) {
-            configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
-        }
-        sectionConfigs = sectionConfigs.push(configs);
-    } else if (isBioPrimary) {
+    if (isBioEnabled) {
         if (isAssayRequestsEnabled(moduleContext)) {
             // When "Requests" are enabled render as two columns
             let requestsCol = Map({
@@ -639,6 +684,19 @@ export function getMenuSectionConfigs(
 
             sectionConfigs = sectionConfigs.push(getBioWorkflowNotebookMediaConfigs());
         }
+    } else if (isSMEnabled) {
+        if (storageConfig) {
+            sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
+        }
+        let configs = Map<string, MenuSectionConfig>({});
+        if (isWorkflowEnabled(moduleContext)) {
+            configs = configs.set(WORKFLOW_KEY, getWorkflowSectionConfig());
+        }
+        configs = configs.set(PICKLIST_KEY, getPicklistsSectionConfig());
+        if (isELNEnabled(moduleContext)) {
+            configs = configs.set(NOTEBOOKS_KEY, getNotebooksSectionConfig());
+        }
+        sectionConfigs = sectionConfigs.push(configs);
     } else {
         if (storageConfig) {
             sectionConfigs = sectionConfigs.push(Map({ [FREEZERS_KEY]: storageConfig }));
@@ -674,7 +732,8 @@ export function getAppProductIds(appProductId: string): List<string> {
     let productIds = List.of(appProductId);
     if (
         appProductId === SAMPLE_MANAGER_APP_PROPERTIES.productId ||
-        appProductId === BIOLOGICS_APP_PROPERTIES.productId
+        appProductId === BIOLOGICS_APP_PROPERTIES.productId ||
+        appProductId === LIMS_APP_PROPERTIES.productId
     ) {
         productIds = productIds.push(FREEZER_MANAGER_APP_PROPERTIES.productId);
     }

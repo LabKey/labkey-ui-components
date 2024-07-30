@@ -17,7 +17,7 @@ import React, { FC, memo, useMemo } from 'react';
 import { Map } from 'immutable';
 
 import { AppURL } from '../url/AppURL';
-import { SAMPLES_KEY, SOURCES_KEY } from '../app/constants';
+import { REGISTRY_KEY, SAMPLES_KEY, SOURCES_KEY } from '../app/constants';
 import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../components/entities/constants';
 
 interface Props {
@@ -68,3 +68,13 @@ export const SourceTypeImportAliasRenderer: FC<Props> = memo(props => {
     const appRouteMap = useMemo(() => ({ [DATA_CLASS_IMPORT_PREFIX]: SOURCES_KEY }), []);
     return <ImportAliasRenderer appRouteMap={appRouteMap} data={props.data} />;
 });
+
+export const ParentImportAliasRenderer: FC<RendererProps> = memo(({ data }) => {
+    const appRouteMap = useMemo(
+        () => ({ [SAMPLE_SET_IMPORT_PREFIX]: SAMPLES_KEY, [DATA_CLASS_IMPORT_PREFIX]: REGISTRY_KEY }),
+        []
+    );
+    return <ImportAliasRenderer appRouteMap={appRouteMap} data={data} />;
+});
+
+ParentImportAliasRenderer.displayName = 'ParentImportAliasRenderer';

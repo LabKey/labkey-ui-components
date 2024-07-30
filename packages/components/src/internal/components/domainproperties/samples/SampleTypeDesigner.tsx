@@ -29,7 +29,6 @@ import {
     LKS_SAMPLE_ALIQUOT_FIELDS_TOPIC,
     SAMPLE_ALIQUOT_FIELDS_TOPIC,
 } from '../../../util/helpLinks';
-import { initQueryGridState } from '../../../global';
 import { resolveErrorMessage } from '../../../util/messaging';
 import { Modal } from '../../../Modal';
 import { Alert } from '../../base/Alert';
@@ -149,7 +148,6 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
-        initQueryGridState();
         let domainDetails = this.props.initModel || DomainDetails.create();
         if (props.defaultSampleFieldConfig) {
             const domainDesign = domainDetails.domainDesign.merge({

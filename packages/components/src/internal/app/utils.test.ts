@@ -44,6 +44,7 @@ import {
     isELNEnabled,
     isFreezerManagementEnabled,
     isLIMSEnabled,
+    isLKSSupportEnabled,
     isMediaEnabled,
     isPremiumProductEnabled,
     isProductNavigationEnabled,
@@ -52,7 +53,9 @@ import {
     isSampleManagerEnabled,
     isSampleStatusEnabled,
     isSharedDefinition,
+    isTransformScriptsEnabled,
     isWorkflowEnabled,
+    limsIsPrimaryApp,
     sampleManagerIsPrimaryApp,
     setProductProjects,
     userCanDesignLocations,
@@ -67,6 +70,7 @@ import {
     EXPERIMENTAL_REQUESTS_MENU,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
+    LIMS_APP_PROPERTIES,
     MEDIA_KEY,
     NOTEBOOKS_KEY,
     PICKLIST_KEY,
@@ -205,7 +209,7 @@ describe('getMenuSectionConfigs', () => {
                 productId: BIOLOGICS_APP_PROPERTIES.productId,
             },
             core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN],
+                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN, ProductFeature.BiologicsRegistry],
             },
         };
 
@@ -273,7 +277,7 @@ describe('getMenuSectionConfigs', () => {
                 [EXPERIMENTAL_REQUESTS_MENU]: true,
             },
             core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN],
+                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN, ProductFeature.BiologicsRegistry],
             },
         };
 
@@ -634,6 +638,50 @@ describe('utils', () => {
         ).toBeTruthy();
     });
 
+    test('isTransformScriptsEnabled', () => {
+        expect(isTransformScriptsEnabled({})).toBe(false);
+        expect(isTransformScriptsEnabled({ inventory: {} })).toBe(false);
+        expect(isTransformScriptsEnabled({ api: { moduleNames: ['premium'] }, })).toBe(true);
+        expect(isTransformScriptsEnabled({ samplemanagement: {} })).toBe(false);
+        expect(
+            isTransformScriptsEnabled({
+                samplemanagement: {},
+                core: { productFeatures: [ProductFeature.TransformScripts] },
+            })
+        ).toBe(true);
+
+        expect(
+            isTransformScriptsEnabled({
+                samplemanagement: {},
+                biologics: {},
+                core: { productFeatures: [ProductFeature.TransformScripts] },
+            })
+        ).toBe(true);
+        expect(
+            isTransformScriptsEnabled({
+                biologics: {},
+            })
+        ).toBe(false);
+    });
+
+    test('isLKSSupportEnabled', () => {
+        expect(isLKSSupportEnabled({})).toBe(false);
+        expect(isLKSSupportEnabled({ inventory: {} })).toBe(false);
+        expect(isLKSSupportEnabled({ api: { moduleNames: ['premium'] }, })).toBe(true);
+        expect(isLKSSupportEnabled({ samplemanagement: {} })).toBe(false);
+        expect(
+            isLKSSupportEnabled({
+                samplemanagement: {},
+                biologics: {},
+            })
+        ).toBe(true);
+        expect(
+            isLKSSupportEnabled({
+                biologics: {},
+            })
+        ).toBe(true);
+    });
+
     test('isSampleManagerEnabled', () => {
         expect(isSampleManagerEnabled({})).toBeFalsy();
         expect(isSampleManagerEnabled({ inventory: {} })).toBeFalsy();
@@ -677,7 +725,28 @@ describe('utils', () => {
         expect(isLIMSEnabled({})).toBeFalsy();
         expect(isLIMSEnabled({ inventory: {} })).toBeFalsy();
         expect(isLIMSEnabled({ inventory: {}, samplemanagement: {} })).toBeFalsy();
-        expect(isLIMSEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeTruthy();
+        expect(
+            isLIMSEnabled(
+                {
+                    inventory: {},
+                    samplemanagement: { EXPERIMENTAL_CHART_BUILDER: true },
+                    core: { productFeatures: [ProductFeature.ChartBuilding] },
+                },
+                new Container({ folderType: 'LIMS' })
+            )
+        ).toBeTruthy();
+        expect(isLIMSEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeFalsy();
+        expect(
+            isLIMSEnabled(
+                {
+                    biologics: {},
+                    samplemanagement: { EXPERIMENTAL_CHART_BUILDER: true },
+                    inventory: {},
+                    core: { productFeatures: [ProductFeature.ChartBuilding] },
+                },
+                new Container({ folderType: 'LIMS' })
+            )
+        ).toBeTruthy();
     });
 
     test('setProductProjects', () => {
@@ -808,6 +877,15 @@ describe('utils', () => {
         expect(sampleManagerIsPrimaryApp({ samplemanagement: {} })).toBeTruthy();
     });
 
+    test('limsIsPrimaryApp', () => {
+        LABKEY.container = { folderType: 'LIMS' };
+        expect(limsIsPrimaryApp({})).toBe(false);
+        expect(limsIsPrimaryApp({ inventory: {} })).toBeFalsy();
+        expect(limsIsPrimaryApp({ samplemanagement: {}, inventory: {} })).toBeTruthy();
+        expect(limsIsPrimaryApp({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeFalsy();
+        expect(limsIsPrimaryApp({ samplemanagement: {} })).toBeTruthy();
+    });
+
     test('biologcisIsPrimaryApp', () => {
         expect(biologicsIsPrimaryApp({})).toBeFalsy();
         expect(biologicsIsPrimaryApp({ samplemanagement: {} })).toBeFalsy();
@@ -817,6 +895,7 @@ describe('utils', () => {
     });
 
     test('getPrimaryAppProperties', () => {
+        LABKEY.container = {};
         expect(getPrimaryAppProperties({})).toBe(undefined);
         expect(getPrimaryAppProperties({ inventory: {} })).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
         expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {} })).toStrictEqual(
@@ -825,6 +904,11 @@ describe('utils', () => {
         expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, biologics: {} })).toStrictEqual(
             BIOLOGICS_APP_PROPERTIES
         );
+        LABKEY.container = { folderType: 'LIMS' };
+        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {} })).toStrictEqual(
+            LIMS_APP_PROPERTIES
+        );
+        LABKEY.container = { };
     });
 
     test('isCalculatedFieldsEnabled', () => {
@@ -866,6 +950,11 @@ describe('freezerManagerIsCurrentApp', () => {
 
     test('LKSM', () => {
         window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
+        expect(freezerManagerIsCurrentApp()).toBe(false);
+    });
+
+    test('LIMS', () => {
+        window.history.pushState({}, 'Test Title', '/lims-app.view#'); // isApp()
         expect(freezerManagerIsCurrentApp()).toBe(false);
     });
 

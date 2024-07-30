@@ -42,7 +42,7 @@ import { AssayDomainTypes } from '../../AssayDefinitionModel';
 
 import { LabelOverlay } from '../forms/LabelOverlay';
 
-import { isLIMSEnabled } from '../../app/utils';
+import { isAssayFileUploadEnabled } from '../../app/utils';
 
 import { getRunPropertiesFileName } from './actions';
 import { AssayWizardModel } from './AssayWizardModel';
@@ -254,7 +254,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
         const isLoading = !wizardModel.isInit || queryModel.isLoading;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
         const columnMetadata = this.getEditableGridColumnMetadata();
-        const fileColumnNames = isLIMSEnabled()
+        const fileColumnNames = isAssayFileUploadEnabled()
             ? wizardModel.assayDef.getDomainFileColumns(AssayDomainTypes.RESULT)?.map(col => col.name)
             : undefined;
         const assayFileFieldTooltip = (

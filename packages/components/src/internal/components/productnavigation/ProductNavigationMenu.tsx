@@ -1,5 +1,5 @@
 import React, { FC, memo, MutableRefObject, useCallback, useEffect, useMemo, useState } from 'react';
-import { getServerContext, Security } from '@labkey/api';
+import { getServerContext, PermissionTypes, Security } from '@labkey/api';
 
 import classNames from 'classnames';
 
@@ -48,9 +48,9 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
         Security.getContainers({
             container: homeContainer,
             includeSubfolders: false,
-            includeEffectivePermissions: false,
+            includeEffectivePermissions: true,
             success: data => {
-                setHomeVisible(data.userPermissions !== 0);
+                setHomeVisible(data.effectivePermissions?.indexOf(PermissionTypes.Read) > -1);
             },
             failure: errorInfo => {
                 console.error(errorInfo);

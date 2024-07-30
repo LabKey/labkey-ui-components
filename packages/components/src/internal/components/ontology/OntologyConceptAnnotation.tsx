@@ -46,7 +46,7 @@ function getOntologyConceptAnnotationHelpTipBody(): ReactNode {
     return (
         <>
             <p>Select an ontology concept to use as an annotation for this field.</p>
-            <p>Learn more about{' '}<HelpLink topic={sampleManagerIsPrimaryApp() ? ADVANCED_FIELD_EDITOR_TOPIC : ONTOLOGY_LOOKUP_TOPIC}>ontology integration</HelpLink>{' '}in LabKey.</p>
+            <p>Learn more about{' '}<HelpLink topic={sampleManagerIsPrimaryApp() ?  ADVANCED_FIELD_EDITOR_TOPIC : ONTOLOGY_LOOKUP_TOPIC }>ontology integration</HelpLink>{' '}in LabKey.</p>
         </>
     );
 }

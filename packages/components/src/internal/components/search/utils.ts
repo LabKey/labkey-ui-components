@@ -1,4 +1,4 @@
-import { Filter, Utils, Query } from '@labkey/api';
+import { Filter, Query, Utils } from '@labkey/api';
 
 import { JsonType } from '../domainproperties/PropDescType';
 
@@ -578,13 +578,7 @@ export function getSearchResultCardData(
             if (type === 'sampleSet') {
                 return {
                     iconSrc:
-                        queryMetadata?.getIn([
-                            'schema',
-                            SCHEMAS.SAMPLE_SETS.SCHEMA,
-                            'query',
-                            data['name'].toLowerCase(),
-                            'iconURL',
-                        ]) || 'sample_set',
+                        queryMetadata?.schema?.[SCHEMAS.SAMPLE_SETS.SCHEMA]?.query?.[data['name'].toLowerCase()]?.iconURL || 'sample_set',
                     altText: 'sample_type-icon',
                     category: 'Sample Type',
                     title: dataName,
@@ -613,8 +607,7 @@ export function getSearchResultCardData(
 
             return {
                 iconSrc:
-                    queryMetadata?.getIn(['schema', SCHEMAS.SAMPLE_SETS.SCHEMA, 'query', sampleSetName, 'iconURL']) ||
-                    'samples',
+                    queryMetadata?.schema?.[SCHEMAS.SAMPLE_SETS.SCHEMA]?.query?.[sampleSetName]?.iconURL || 'samples',
                 altText: 'sample_type-icon',
                 category: 'Sample Type',
                 title: dataName,

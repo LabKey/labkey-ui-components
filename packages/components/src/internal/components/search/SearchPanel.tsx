@@ -15,10 +15,9 @@ import { useServerContext } from '../base/ServerContext';
 import { SearchResultsPanel } from './SearchResultsPanel';
 
 import { GetCardDataFn, SearchResultsModel } from './models';
-import { SearchCategory, SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE } from './constants';
+import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchCategory } from './constants';
 import { searchUsingIndex } from './actions';
 import { getSearchResultCardData } from './utils';
-import { fromJS } from 'immutable';
 
 interface SearchPanelProps {
     appName: string;
@@ -178,7 +177,7 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
         return categories;
     }, [isBiologics, platesEnabled]);
     const getCardDataFn = useCallback<GetCardDataFn>(
-        (data, cat) => getSearchResultCardData(data, cat, fromJS(searchMetadata)),
+        (data, cat) => getSearchResultCardData(data, cat, searchMetadata),
         [searchMetadata]
     );
 

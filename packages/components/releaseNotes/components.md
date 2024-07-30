@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 4.4.0
+*Released*: 30 July 2024
 - Add LIMS product and product feature checks for transform scripts and charts
   - Add utility methods for checking other features (nonstandard assays, study linking, registry, general LKS support)
   - Refactors for sharing renderer definitions

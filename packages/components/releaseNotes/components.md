@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Refactors for sharing renderer definitions
   - add utility method for registering pipeline listeners
 
+### version 4.3.1
+*Released*: 30 July 2024
+- Issue 50224: link-to-study does not accept visit labels instead of sequencenums
+
 ### version 4.3.0
 *Released*: 25 July 2024
 - Issue 50449: App grid filter to expand icon click area to remove filter value

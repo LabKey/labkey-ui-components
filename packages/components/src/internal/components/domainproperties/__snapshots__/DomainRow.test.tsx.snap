@@ -1122,6 +1122,11 @@ exports[`DomainRow client side warning on field 1`] = `
                   >
                     Visit ID
                   </option>
+                  <option
+                    value="visitLabel"
+                  >
+                    Visit Label
+                  </option>
                 </select>
               </div>
               <div
@@ -2548,6 +2553,11 @@ exports[`DomainRow participant id field 1`] = `
                   >
                     Text Choice
                   </option>
+                  <option
+                    value="visitLabel"
+                  >
+                    Visit Label
+                  </option>
                 </select>
               </div>
               <div
@@ -3040,6 +3050,11 @@ exports[`DomainRow server side error on reserved field 1`] = `
                   >
                     Visit ID
                   </option>
+                  <option
+                    value="visitLabel"
+                  >
+                    Visit Label
+                  </option>
                 </select>
               </div>
               <div
@@ -3479,6 +3494,11 @@ exports[`DomainRow string field test 1`] = `
                     value="textChoice"
                   >
                     Text Choice
+                  </option>
+                  <option
+                    value="visitLabel"
+                  >
+                    Visit Label
                   </option>
                 </select>
               </div>
@@ -4062,6 +4082,11 @@ exports[`DomainRow with empty domain form 1`] = `
                     value="visitId"
                   >
                     Visit ID
+                  </option>
+                  <option
+                    value="visitLabel"
+                  >
+                    Visit Label
                   </option>
                 </select>
               </div>

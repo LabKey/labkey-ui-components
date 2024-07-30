@@ -1,7 +1,5 @@
 import { Filter } from '@labkey/api';
 
-import { fromJS } from 'immutable';
-
 import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { SCHEMAS } from '../../schemas';
@@ -39,6 +37,7 @@ beforeAll(() => {
             dateFormat: 'yyyy-MM-dd',
             dateTimeFormat: 'yyyy-MM-dd HH:mm',
             numberFormat: null,
+            timeFormat: 'HH:mm',
         },
     };
 });
@@ -1127,7 +1126,7 @@ describe('getUpdatedFilterSelection', () => {
 });
 
 describe('getSearchResultCardData', () => {
-    const QUERY_METADATA = fromJS({
+    const QUERY_METADATA = {
         schema: {
             samples: {
                 query: {
@@ -1137,7 +1136,7 @@ describe('getSearchResultCardData', () => {
                 },
             },
         },
-    });
+    };
     test('no data, not workflow', () => {
         expect(getSearchResultCardData(undefined, 'other' as SearchCategory)).toStrictEqual({});
     });

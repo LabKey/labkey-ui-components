@@ -206,7 +206,7 @@ describe('getMenuSectionConfigs', () => {
                 productId: BIOLOGICS_APP_PROPERTIES.productId,
             },
             core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN],
+                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN, ProductFeature.BiologicsRegistry],
             },
         };
 
@@ -274,7 +274,7 @@ describe('getMenuSectionConfigs', () => {
                 [EXPERIMENTAL_REQUESTS_MENU]: true,
             },
             core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN],
+                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN, ProductFeature.BiologicsRegistry],
             },
         };
 
@@ -679,20 +679,26 @@ describe('utils', () => {
         expect(isLIMSEnabled({ inventory: {} })).toBeFalsy();
         expect(isLIMSEnabled({ inventory: {}, samplemanagement: {} })).toBeFalsy();
         expect(
-            isLIMSEnabled({
-                inventory: {},
-                samplemanagement: { EXPERIMENTAL_CHART_BUILDER: true },
-                core: { productFeatures: [ProductFeature.ChartBuilding] },
-            })
+            isLIMSEnabled(
+                {
+                    inventory: {},
+                    samplemanagement: { EXPERIMENTAL_CHART_BUILDER: true },
+                    core: { productFeatures: [ProductFeature.ChartBuilding] },
+                },
+                new Container({ folderType: 'LIMS' })
+            )
         ).toBeTruthy();
         expect(isLIMSEnabled({ biologics: {}, samplemanagement: {}, inventory: {} })).toBeFalsy();
         expect(
-            isLIMSEnabled({
-                biologics: {},
-                samplemanagement: { EXPERIMENTAL_CHART_BUILDER: true },
-                inventory: {},
-                core: { productFeatures: [ProductFeature.ChartBuilding] },
-            })
+            isLIMSEnabled(
+                {
+                    biologics: {},
+                    samplemanagement: { EXPERIMENTAL_CHART_BUILDER: true },
+                    inventory: {},
+                    core: { productFeatures: [ProductFeature.ChartBuilding] },
+                },
+                new Container({ folderType: 'LIMS' })
+            )
         ).toBeTruthy();
     });
 

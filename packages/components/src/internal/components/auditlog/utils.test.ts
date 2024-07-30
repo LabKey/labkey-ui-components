@@ -65,7 +65,7 @@ describe('getAuditQueries', () => {
             inventory: {},
             biologics: {},
             core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay],
+                productFeatures: [ProductFeature.Workflow, ProductFeature.ELN, ProductFeature.Assay, ProductFeature.BiologicsRegistry],
             },
         };
         const auditQueries = getAuditQueries(moduleContext);

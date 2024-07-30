@@ -1597,8 +1597,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         let gridData = List<Map<string, any>>();
 
         for (let i = 0; i < editorModel.rowCount; i++) {
-            const pkCellKey = editorModel.genPkCellKey(i);
-            if (hideReadonlyRows && readonlyRows && readonlyRows.includes(pkCellKey)) continue;
+            const pkValue = editorModel.getPkValue(i)?.toString();
+            if (hideReadonlyRows && readonlyRows && readonlyRows.includes(pkValue)) continue;
             gridData = gridData.push(Map({ [GRID_EDIT_INDEX]: i }));
         }
 

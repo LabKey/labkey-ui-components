@@ -429,7 +429,7 @@ export function isRegistryEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isSourceTypeEnabled(moduleContext?: ModuleContext): boolean {
-    return !isRegistryEnabled(moduleContext);
+    return isSampleManagerEnabled(moduleContext) && !isRegistryEnabled(moduleContext);
 }
 
 export function isAdvancedDomainPropertiesEnabled(moduleContext?: ModuleContext): boolean {

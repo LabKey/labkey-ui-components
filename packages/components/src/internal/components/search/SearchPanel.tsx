@@ -197,6 +197,9 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                 );
                 setModel(SearchResultsModel.create({ entities, isLoaded: true }));
             } catch (response) {
+                if (!response.exception) {
+                    console.error(response);
+                }
                 setModel(
                     SearchResultsModel.create({
                         error: resolveErrorMessage(response.exception) ?? 'Unknown error getting search results.',

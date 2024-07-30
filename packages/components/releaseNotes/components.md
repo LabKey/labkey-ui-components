@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 4.3.1
-*Released*: 29 July 2024
+*Released*: 30 July 2024
 - Issue 50224: link-to-study does not accept visit labels instead of sequencenums
 
 ### version 4.3.0

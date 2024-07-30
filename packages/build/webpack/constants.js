@@ -315,6 +315,8 @@ module.exports = {
                         title: app.title,
                         permission: app.permission, // deprecated
                         permissionClasses: app.permissionClasses,
+                        requiresLogin: app.requiresLogin,
+                        requiresNoPermission: app.requiresNoPermission,
                         viewTemplate: app.template,
                         filename: '../../views/gen/' + app.name + '.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml',
@@ -334,6 +336,8 @@ module.exports = {
                         title: app.title,
                         permission: app.permission, // deprecated
                         permissionClasses: app.permissionClasses,
+                        requiresLogin: app.requiresLogin,
+                        requiresNoPermission: app.requiresNoPermission,
                         viewTemplate: app.template,
                         filename: '../../views/gen/' + app.name + 'Dev.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml',

@@ -259,6 +259,12 @@ export function isAllSamplesSchema(schemaQuery: SchemaQuery): boolean {
     )
         return true;
 
+    if (
+        lcSchemaName === SCHEMAS.EXP_TABLES.SCHEMA &&
+        lcQueryName.startsWith('exp_temp_') // Find Sample by ID/Barcode
+    )
+        return true;
+
     if (lcSchemaName === SCHEMAS.SAMPLE_MANAGEMENT.SCHEMA) {
         return (
             lcQueryName === SCHEMAS.SAMPLE_MANAGEMENT.SOURCE_SAMPLES.queryName.toLowerCase() ||

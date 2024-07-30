@@ -324,6 +324,12 @@ export const VISIT_ID_TYPE = new PropDescType({
     rangeURI: DOUBLE_RANGE_URI,
     conceptURI: VISITID_CONCEPT_URI,
 });
+export const VISIT_LABEL_TYPE = new PropDescType({
+    name: 'visitLabel',
+    display: 'Visit Label',
+    rangeURI: STRING_RANGE_URI,
+    conceptURI: VISITID_CONCEPT_URI,
+});
 
 export const UNIQUE_ID_TYPE = new PropDescType({
     name: 'uniqueId',
@@ -372,6 +378,7 @@ export const PROP_DESC_TYPES = List([
     ONTOLOGY_LOOKUP_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
+    VISIT_LABEL_TYPE,
     UNIQUE_ID_TYPE,
     TEXT_CHOICE_TYPE,
     CALCULATED_TYPE,

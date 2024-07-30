@@ -203,7 +203,7 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'yyyy-MM HH HH:mm', true)).toBe('yyyy-MM HH HH:mm');
         });
 
-        test('moment.js replacement', () => {
+        test('date-fns replacement', () => {
             const col = new QueryColumn({ shortCaption: 'DateCol', rangeURI: DATETIME_TYPE.rangeURI });
             expect(getColDateFormat(col, 'YYYY-MM-DD')).toBe('yyyy-MM-dd');
             expect(getColDateFormat(col, 'YY-MM-dd')).toBe('yy-MM-dd');

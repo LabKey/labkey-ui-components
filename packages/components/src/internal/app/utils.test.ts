@@ -70,6 +70,7 @@ import {
     EXPERIMENTAL_REQUESTS_MENU,
     FREEZER_MANAGER_APP_PROPERTIES,
     FREEZERS_KEY,
+    LIMS_APP_PROPERTIES,
     MEDIA_KEY,
     NOTEBOOKS_KEY,
     PICKLIST_KEY,
@@ -894,6 +895,7 @@ describe('utils', () => {
     });
 
     test('getPrimaryAppProperties', () => {
+        LABKEY.container = {};
         expect(getPrimaryAppProperties({})).toBe(undefined);
         expect(getPrimaryAppProperties({ inventory: {} })).toStrictEqual(FREEZER_MANAGER_APP_PROPERTIES);
         expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {} })).toStrictEqual(
@@ -902,6 +904,11 @@ describe('utils', () => {
         expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {}, biologics: {} })).toStrictEqual(
             BIOLOGICS_APP_PROPERTIES
         );
+        LABKEY.container = { folderType: 'LIMS' };
+        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {} })).toStrictEqual(
+            LIMS_APP_PROPERTIES
+        );
+        LABKEY.container = { };
     });
 
     test('isCalculatedFieldsEnabled', () => {

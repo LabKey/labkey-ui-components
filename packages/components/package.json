@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "4.3.1-limsProduct.14",
+  "version": "4.3.1-limsProduct.15",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

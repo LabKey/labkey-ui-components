@@ -25,6 +25,7 @@ import { isBoolean, isFloat, isInteger } from '../../util/utils';
 
 import { EditorModel, EditorModelProps, EditableGridModels, CellMessage } from './models';
 import { CellActions, MODIFICATION_TYPES } from './constants';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 export const applyEditableGridChangesToModels = (
     dataModels: QueryModel[],
@@ -224,13 +225,20 @@ export function getUpdatedDataFromGrid(
     return updatedRows;
 }
 
+interface EditableGridUpdatedData {
+    originalRows: Record<string, any>;
+    schemaQuery: SchemaQuery;
+    tabIndex: number;
+    updatedRows: any[];
+}
+
 export const getUpdatedDataFromEditableGrid = (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
     idField: string,
     selectionData?: Map<string, any>,
     tabIndex = 0
-): Record<string, any> => {
+): EditableGridUpdatedData => {
     const model = dataModels[tabIndex];
     const editorModel = editorModels[tabIndex];
 

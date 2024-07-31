@@ -48,15 +48,15 @@ interface EditableGridPanelForUpdateProps extends InheritedEditableGridPanelProp
     loader: EditableGridLoader;
     onCancel: () => void;
     onComplete: () => void;
-    pluralNoun?: string;
+    pluralNoun: string;
     queryModel: QueryModel;
     selectionData: Map<string, any>;
-    singularNoun?: string;
+    singularNoun: string;
     updateRows: (
         schemaQuery: SchemaQuery,
         rows: Array<Record<string, any>>,
         comment: string,
-        originalRows: Array<Record<string, any>>
+        originalRows: Record<string, any>
     ) => Promise<any>;
 }
 
@@ -210,9 +210,4 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
             </WizardNavButtons>
         </>
     );
-};
-
-EditableGridPanelForUpdate.defaultProps = {
-    singularNoun: 'row',
-    pluralNoun: 'rows',
 };

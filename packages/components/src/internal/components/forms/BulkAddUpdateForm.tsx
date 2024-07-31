@@ -23,8 +23,6 @@ type BaseProps = Omit<
 >;
 
 interface BulkAddUpdateFormProps extends BaseProps {
-    data: Map<any, Map<string, any>>;
-    dataKeys: List<any>;
     editorModel: EditorModel;
     operation: Operation;
     selectedRowIndexes: List<number>;
@@ -32,7 +30,7 @@ interface BulkAddUpdateFormProps extends BaseProps {
 }
 
 export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
-    const { data, dataKeys, editorModel, queryInfo, selectedRowIndexes, warning, ...queryInfoFormProps } = props;
+    const { editorModel, queryInfo, selectedRowIndexes, warning, ...queryInfoFormProps } = props;
     const {
         pluralNoun = 'rows',
         singularNoun = 'row',
@@ -48,7 +46,7 @@ export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
             .filter((val, index) => selectedRowIndexes.contains(index))
             .toMap();
         return getCommonDataValues(editorData);
-    }, [data, dataKeys, editorModel, queryInfo, selectedRowIndexes]);
+    }, [editorModel, selectedRowIndexes]);
 
     return (
         <>

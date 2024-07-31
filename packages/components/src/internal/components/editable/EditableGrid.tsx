@@ -434,10 +434,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             selectCell: this.selectCell,
         };
 
-        let selectionCells = Set<number>();
+        let selected = Set<number>();
         let selectedState = GRID_CHECKBOX_OPTIONS.NONE;
         if (props.activeEditTab === EditableGridTabs.BulkUpdate || props.hideCheckboxCol) {
-            selectionCells = Set<number>(props.dataKeys.map((v, i) => i, Set<number>()));
+            for (let i = 0; i < props.editorModel.rowCount; i++) {
+                selected = selected.add(i);
+            }
             selectedState = GRID_CHECKBOX_OPTIONS.ALL;
         }
 
@@ -445,7 +447,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             activeEditTab: props.activeEditTab ? props.activeEditTab : EditableGridTabs.Grid,
             inDrag: false,
             initialSelection: undefined,
-            selected: selectionCells,
+            selected,
             selectedState,
             selectionPivot: undefined,
             showBulkAdd: false,
@@ -479,7 +481,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const isShiftSelect = (event.nativeEvent as any).shiftKey ?? false;
 
         this.setState(state => {
-            const { dataKeys } = this.props;
+            const { editorModel } = this.props;
             const { selectionPivot } = state;
             let { selected } = state;
             const key = row.get(GRID_EDIT_INDEX);
@@ -504,7 +506,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             let selectedState: GRID_CHECKBOX_OPTIONS;
             if (selected.size === 0) {
                 selectedState = GRID_CHECKBOX_OPTIONS.NONE;
-            } else if (dataKeys.size === selected.size) {
+            } else if (editorModel.rowCount === selected.size) {
                 selectedState = GRID_CHECKBOX_OPTIONS.ALL;
             } else {
                 selectedState = GRID_CHECKBOX_OPTIONS.SOME;
@@ -521,14 +523,22 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     selectAll = (evt: ChangeEvent<HTMLInputElement>): void => {
-        const { dataKeys } = this.props;
+        const { editorModel } = this.props;
         const checked = evt.currentTarget.checked === true;
 
         this.setState(state => {
-            const selected = checked && state.selectedState !== GRID_CHECKBOX_OPTIONS.ALL;
+            const selectAll = checked && state.selectedState !== GRID_CHECKBOX_OPTIONS.ALL;
+            let selected = Set<number>();
+
+            if (selectAll) {
+                for (let i = 0; i < editorModel.rowCount; i++) {
+                    selected = selected.add(i);
+                }
+            }
+
             return {
-                selected: selected ? Set<number>(dataKeys.map((v, i) => i, Set<number>())) : Set<number>(),
-                selectedState: selected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE,
+                selected,
+                selectedState: selectAll ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE,
                 selectionPivot: undefined,
             };
         });
@@ -715,12 +725,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
      */
     isReadOnly(cellKey: string): boolean {
         const { fieldKey, rowIdx } = parseCellKey(cellKey);
-        const { dataKeys, readonlyRows } = this.props;
-        const cellValueDataKey = dataKeys.get(rowIdx);
+        const { editorModel, readonlyRows } = this.props;
+        const cellValueDataKey = editorModel.getPkValue(rowIdx).toString();
 
         if (readonlyRows?.includes(cellValueDataKey)) return true;
 
-        const queryCol = this.props.editorModel.columnMap.get(fieldKey);
+        const queryCol = editorModel.columnMap.get(fieldKey);
 
         if (queryCol.readOnly) return true;
 
@@ -1249,7 +1259,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     // TODO: update fillText to take fieldKey instead of colIdx
     fillText = async (colIdx: number, rowIdx: number, text: string): Promise<void> => {
-        const { allowAdd, data, dataKeys, disabled, editorModel, forUpdate, onChange, readonlyRows, containerPath } =
+        const { allowAdd, disabled, editorModel, forUpdate, onChange, readonlyRows, containerPath } =
             this.props;
 
         if (disabled) return;
@@ -1257,8 +1267,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         this.showMask();
         const changes = await validateAndInsertPastedData(
             editorModel,
-            dataKeys,
-            data,
             text,
             readonlyRows,
             !allowAdd,
@@ -1268,11 +1276,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         );
         this.hideMask();
 
-        onChange(EditableGridEvent.FILL_TEXT, changes.editorModel, changes.dataKeys, changes.data);
+        onChange(EditableGridEvent.FILL_TEXT, changes);
     };
 
     onPaste = async (event: ClipboardEvent): Promise<void> => {
-        const { allowAdd, data, dataKeys, disabled, editorModel, forUpdate, onChange, readonlyRows, containerPath } =
+        const { allowAdd, disabled, editorModel, forUpdate, onChange, readonlyRows, containerPath } =
             this.props;
 
         if (disabled) return;
@@ -1280,8 +1288,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         this.showMask();
         const changes = await pasteEvent(
             editorModel,
-            dataKeys,
-            data,
             event,
             readonlyRows,
             !allowAdd,
@@ -1290,7 +1296,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         );
         this.hideMask();
 
-        onChange(EditableGridEvent.PASTE, changes.editorModel, changes.dataKeys, changes.data);
+        if (changes === undefined) return;
+
+        onChange(EditableGridEvent.PASTE, changes);
     };
 
     showMask = (): void => {
@@ -1362,8 +1370,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             addControlProps,
             bulkAddProps,
             editorModel,
-            data,
-            dataKeys,
             metricFeatureArea,
             onChange,
             processBulkData,
@@ -1399,18 +1405,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (pivotKey && pivotValues?.length > 0) {
             const changes = await addRowsPerPivotValue(
                 editorModel,
-                dataKeys,
-                data,
                 numItems,
                 pivotKey,
                 pivotValues,
                 bulkData,
                 containerPath
             );
-            onChange(EditableGridEvent.BULK_ADD, changes.editorModel, changes.dataKeys, changes.data);
+            onChange(EditableGridEvent.BULK_ADD, changes);
         } else {
-            const changes = await addRows(editorModel, dataKeys, data, numItems, bulkData, containerPath);
-            onChange(EditableGridEvent.BULK_ADD, changes.editorModel, changes.dataKeys, changes.data);
+            const changes = await addRows(editorModel, numItems, bulkData, containerPath);
+            onChange(EditableGridEvent.BULK_ADD, changes);
         }
 
         if (metricFeatureArea) {
@@ -1446,9 +1450,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     addRows = async (count: number): Promise<void> => {
-        const { data, dataKeys, editorModel, onChange, containerPath } = this.props;
-        const changes = await addRows(editorModel, dataKeys, data, count, undefined, containerPath);
-        onChange(EditableGridEvent.ADD_ROWS, changes.editorModel, changes.dataKeys, changes.data);
+        const { editorModel, onChange, containerPath } = this.props;
+        const changes = await addRows(editorModel, count, undefined, containerPath);
+        onChange(EditableGridEvent.ADD_ROWS, changes);
     };
 
     renderAddRowsControl = (placement: PlacementType): ReactNode => {
@@ -1651,8 +1655,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             bulkTabHeaderComponent,
             addControlProps,
             bulkUpdateProps,
-            data,
-            dataKeys,
             editorModel,
             forUpdate,
             queryInfo,
@@ -1678,8 +1680,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     asModal={!showAsTab}
                     columnFilter={bulkUpdateProps?.columnFilter}
                     containerPath={containerPath}
-                    data={data}
-                    dataKeys={dataKeys}
                     editorModel={editorModel}
                     onFormChangeWithData={showAsTab ? this.onBulkUpdateFormDataChange : undefined}
                     onHide={this.toggleBulkUpdate}

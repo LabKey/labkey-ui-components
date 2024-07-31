@@ -122,7 +122,7 @@ export const initEditorModel = async (
     const { columns: loaderColumns, queryInfo } = loader;
     // TODO: Most EditableGridLoaders do not actually asynchronously fetch data (see note in EditableGridLoader), we
     //  can most likely just drop loader as an arg, and have consumers pass in their QueryModel data (if any), and
-    //  skip this whole dance.
+    //  skip having QueryModel as an arg.
     const { data, dataIds } = await loader.fetch(queryModel);
     const rows = data.toJS();
     const orderedRows = dataIds.toArray();
@@ -135,7 +135,7 @@ export const initEditorModel = async (
     } else if (forUpdate) {
         columns = queryInfo.getUpdateColumns();
     } else {
-        columns = queryModel.queryInfo.getInsertColumns();
+        columns = queryInfo.getInsertColumns();
     }
 
     // Calculate orderedColumns here before we add PK and Container columns to the columns array because they should
@@ -423,16 +423,16 @@ export async function addRowsToEditorModel(
     editorModel: EditorModel,
     rowData: List<any>,
     numToAdd: number,
-    rowMin = 0,
     containerPath: string
 ): Promise<Partial<EditorModel>> {
-    let { cellMessages, cellValues, rowCount } = editorModel;
+    let { cellMessages, cellValues } = editorModel;
     const selectionCells: string[] = [];
     const insertCols = editorModel.queryInfo.getInsertColumns();
     const preparedData = await prepareInsertRowDataFromBulkForm(insertCols, rowData, 0, containerPath);
     const { values, messages } = preparedData;
+    const rowCount = editorModel.rowCount + numToAdd;
 
-    for (let rowIdx = rowMin; rowIdx < rowMin + numToAdd; rowIdx++) {
+    for (let rowIdx = editorModel.rowCount; rowIdx < rowCount; rowIdx++) {
         // eslint-disable-next-line no-loop-func
         rowData.forEach((value, colIdx) => {
             const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx)).fieldKey;
@@ -447,34 +447,16 @@ export async function addRowsToEditorModel(
         cellValues,
         cellMessages,
         selectionCells,
-        rowCount: Math.max(rowMin + Number(numToAdd), rowCount),
+        rowCount,
     };
-}
-
-function addRowsToGridData(
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
-    count: number,
-    rowData?: Map<string, any>
-): GridData {
-    for (let i = 0; i < count; i++) {
-        // ensure we don't step on another ID
-        const id = GRID_EDIT_INDEX + ID_COUNTER++;
-        data = data.set(id, rowData || EMPTY_ROW);
-        dataKeys = dataKeys.push(id);
-    }
-
-    return { data, dataKeys };
 }
 
 export async function addRows(
     editorModel: EditorModel,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
     numToAdd: number,
     rowData: Map<string, any>,
     containerPath: string
-): Promise<EditorModelAndGridData> {
+): Promise<Partial<EditorModel>> {
     let editorModelChanges: Partial<EditorModel>;
 
     if (rowData) {
@@ -482,18 +464,13 @@ export async function addRows(
             editorModel,
             rowData.toList(),
             numToAdd,
-            data.size,
             containerPath
         );
     } else {
         editorModelChanges = { rowCount: editorModel.rowCount + numToAdd };
     }
 
-    const dataChanges = addRowsToGridData(dataKeys, data, numToAdd, rowData);
-    data = dataChanges.data;
-    dataKeys = dataChanges.dataKeys;
-
-    return { editorModel: editorModelChanges, data, dataKeys };
+    return editorModelChanges;
 }
 
 /**
@@ -803,14 +780,12 @@ export async function updateGridFromBulkForm(
 
 export async function addRowsPerPivotValue(
     editorModel: EditorModel,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
     numPerParent: number,
     pivotKey: string,
     pivotValues: string[],
     rowData: Map<string, any>,
     containerPath: string
-): Promise<EditorModelAndGridData> {
+): Promise<Partial<EditorModel>> {
     let { cellMessages, cellValues, rowCount } = editorModel;
 
     if (numPerParent > 0) {
@@ -820,19 +795,15 @@ export async function addRowsPerPivotValue(
                 editorModel,
                 rowData.toList(),
                 numPerParent,
-                dataKeys.size,
                 containerPath
             );
             cellMessages = changes.cellMessages;
             cellValues = changes.cellValues;
             rowCount = changes.rowCount;
-            const dataChanges = addRowsToGridData(dataKeys, data, numPerParent, rowData);
-            data = dataChanges.data;
-            dataKeys = dataChanges.dataKeys;
         }
     }
 
-    return { editorModel: { cellMessages, cellValues, rowCount }, data, dataKeys };
+    return { cellMessages, cellValues, rowCount };
 }
 
 /**
@@ -1442,19 +1413,7 @@ interface ParseLookupPayload {
     values: List<ValueDescriptor>;
 }
 
-function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: string[]): boolean {
-    if (pkCols.length === 1 && row) {
-        // Coerce pkValue to string because it may actually be a number or other type, and readonlyRows is string[]
-        const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey)?.toString();
-        return readonlyRows.includes(pkValue);
-    }
-
-    return false;
-}
-
 async function insertPastedData(
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
     editorModel: EditorModel,
     paste: PasteModel,
     readonlyRows: string[],
@@ -1462,27 +1421,21 @@ async function insertPastedData(
     forUpdate: boolean,
     targetContainerPath: string,
     selectCells: boolean
-): Promise<EditorModelAndGridData> {
+): Promise<Partial<EditorModel>> {
     const pastedData = paste.payload.data;
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
     const selectionCells: string[] = [];
     let rowCount = editorModel.rowCount;
-    let updatedDataKeys: List<any>;
-    let updatedData: Map<any, Map<string, any>>;
 
     if (paste.rowsToAdd > 0 && !lockRowCount) {
         rowCount += paste.rowsToAdd;
-        const dataChanges = addRowsToGridData(dataKeys, data, paste.rowsToAdd);
-        updatedData = dataChanges.data;
-        updatedDataKeys = dataChanges.dataKeys;
     }
 
     const byColumnValues = getPasteValuesByColumn(paste);
     const lookupColumnContainerCache = {};
     // TODO: colMin may be wrong here because we're now storing hidden columns (e.g. RowId) in EditorModel
     const { colMin, rowMin } = paste.coordinates;
-    const pkCols = editorModel.queryInfo.getPkCols();
     let rowIdx = rowMin;
     let hasReachedRowLimit = false;
 
@@ -1491,7 +1444,7 @@ async function insertPastedData(
         if (hasReachedRowLimit && lockRowCount) return;
 
         if (readonlyRows) {
-            while (rowIdx < rowCount && isReadonlyRow(data.get(dataKeys.get(rowIdx)), pkCols, readonlyRows)) {
+            while (rowIdx < rowCount && editorModel.isReadOnlyRow(rowIdx, readonlyRows)) {
                 // Skip over readonly rows
                 rowIdx++;
             }
@@ -1503,7 +1456,7 @@ async function insertPastedData(
         }
 
         let pkValue = getPkValue(row, editorModel.queryInfo);
-        if (!pkValue) pkValue = dataKeys.get(rowIdx);
+        if (!pkValue) pkValue = editorModel.getPkValue(rowIdx);
 
         // TODO: given that we're storing all columns in EditorModel now this may not be correct.
         for (let cn = 0; cn < row.size; cn++) {
@@ -1553,11 +1506,7 @@ async function insertPastedData(
         rowIdx++;
     }
 
-    return {
-        editorModel: { cellMessages, cellValues, rowCount, selectionCells },
-        data: updatedData,
-        dataKeys: updatedDataKeys,
-    };
+    return { cellMessages, cellValues, rowCount, selectionCells };
 }
 
 function getReadonlyRowCount(editorModel: EditorModel, startRowInd: number, readonlyRows: string[]): number {
@@ -1601,15 +1550,13 @@ function getPasteValuesByColumn(paste: PasteModel): List<List<string>> {
 
 export async function validateAndInsertPastedData(
     editorModel: EditorModel,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
     value: string,
     readonlyRows: string[],
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string,
     selectCells: boolean
-): Promise<EditorModelAndGridData> {
+): Promise<Partial<EditorModel>> {
     const { selectedColIdx, selectedRowIdx } = editorModel;
     const readOnlyRowCount =
         readonlyRows && !lockRowCount ? getReadonlyRowCount(editorModel, selectedRowIdx, readonlyRows) : 0;
@@ -1617,8 +1564,6 @@ export async function validateAndInsertPastedData(
 
     if (paste.success) {
         return insertPastedData(
-            dataKeys,
-            data,
             editorModel,
             paste,
             readonlyRows,
@@ -1630,32 +1575,24 @@ export async function validateAndInsertPastedData(
     } else {
         const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(selectedColIdx)).fieldKey;
         const cellKey = genCellKey(fieldKey, selectedRowIdx);
-        return {
-            data: undefined,
-            dataKeys: undefined,
-            editorModel: { cellMessages: editorModel.cellMessages.set(cellKey, { message: paste.message }) },
-        };
+        return { cellMessages: editorModel.cellMessages.set(cellKey, { message: paste.message }) };
     }
 }
 
 export async function pasteEvent(
     editorModel: EditorModel,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
     event: any,
     readonlyRows: string[],
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string
-): Promise<EditorModelAndGridData> {
+): Promise<Partial<EditorModel>> {
     // If a cell has focus do not accept incoming paste events -- allow for normal paste to input
     if (editorModel && editorModel.hasSelection && !editorModel.hasFocus) {
         cancelEvent(event);
         const value = getPasteValue(event);
         return await validateAndInsertPastedData(
             editorModel,
-            dataKeys,
-            data,
             value,
             readonlyRows,
             lockRowCount,
@@ -1665,7 +1602,7 @@ export async function pasteEvent(
         );
     }
 
-    return { data: undefined, dataKeys: undefined, editorModel: undefined };
+    return undefined;
 }
 
 function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {

@@ -186,6 +186,18 @@ export class EditorModel
         return this.cellValues.get(this.genPkCellKey(rowIndex))?.get(0).raw;
     }
 
+    getPkValueForCell(cellKey: string): any {
+        const { rowIdx } = parseCellKey(cellKey);
+        return this.getPkValue(rowIdx);
+    }
+
+    getFolderValueForCell(cellKey: string): string {
+        const { rowIdx } = parseCellKey(cellKey);
+        const containerCol = this.columnMap.get('Folder') ?? this.columnMap.get('Container');
+        if (!containerCol) return undefined;
+        return this.cellValues.get(genCellKey(containerCol.fieldKey, rowIdx)).get(0).raw;
+    }
+
     // TODO: make findNextCell take fieldKey
     findNextCell(
         startCol: number,
@@ -531,16 +543,9 @@ export class EditorModel
         const pkValue = this.getPkValue(rowIdx).toString();
 
         return {
-            isReadonlyCell: this.columnMetadata.get(fieldKey)?.isReadOnlyCell(pkValue),
-            isReadonlyRow: readonlyRows.includes(pkValue),
+            isReadonlyCell: this.columnMetadata?.get(fieldKey)?.isReadOnlyCell(pkValue),
+            isReadonlyRow: readonlyRows?.includes(pkValue),
         };
-    }
-
-    getFolderValueForCellKey(cellKey: string): string {
-        const { rowIdx } = parseCellKey(cellKey);
-        const containerCol = this.columnMap.get('Folder') ?? this.columnMap.get('Container');
-        if (!containerCol) return undefined;
-        return this.cellValues.get(genCellKey(containerCol.fieldKey, rowIdx)).get(0).raw;
     }
 
     get hasFocus(): boolean {

@@ -155,7 +155,6 @@ type GridMouseEvent = React.MouseEvent<HTMLDivElement> | MouseEvent;
 // the column index for cell values and cell messages does not include either the selection
 // column or the row number column, so we adjust the value passed to <Cell> to accommodate.
 function inputCellFactory(
-    queryInfo: QueryInfo,
     editorModel: EditorModel,
     allowSelection: boolean,
     hideCountCol: boolean,
@@ -534,11 +533,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         });
     };
 
-    getColumns = (): QueryColumn[] => {
-        const { editorModel, forUpdate, insertColumns, queryInfo, readOnlyColumns, updateColumns } = this.props;
-        return editorModel.getColumns(queryInfo, forUpdate, readOnlyColumns, insertColumns, updateColumns);
-    };
-
     // TODO: update focusCell to take fieldKey instead of colIdx
     focusCell = (colIdx: number, rowIdx: number, clearValue?: boolean): void => {
         const { editorModel, onChange } = this.props;
@@ -885,7 +879,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             editorModel,
             forUpdate,
             hideCountCol,
-            queryInfo,
             rowNumColumn,
             readonlyRows,
             containerPath,
@@ -915,7 +908,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         const loweredColumnMetadata = this.getLoweredColumnMetadata();
 
-        this.getColumns().forEach(qCol => {
+        editorModel.orderedColumns.forEach(fieldKey => {
+            const qCol = editorModel.columnMap.get(fieldKey);
             const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
 
             let width = 100;
@@ -931,7 +925,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 new GridColumn({
                     align: qCol.align,
                     cell: inputCellFactory(
-                        queryInfo,
                         editorModel,
                         showCheckboxes,
                         hideCountCol,
@@ -954,6 +947,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             );
         });
         if (allowRemove) {
+            const pkCols = editorModel.queryInfo.getPkCols();
             gridColumns = gridColumns.push(
                 new GridColumn({
                     index: GRID_EDIT_INDEX,
@@ -961,12 +955,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     title: 'Delete',
                     width: 45,
                     cell: (d, row: Map<string, any>, c, rn) => {
-                        const keyCols = queryInfo.getPkCols();
-                        const size = keyCols.length;
+                        const size = pkCols.length;
                         let canDelete = true;
 
                         if (size === 1) {
-                            const key = caseInsensitive(row.toJS(), keyCols[0].fieldKey);
+                            const key = caseInsensitive(row.toJS(), pkCols[0].fieldKey);
                             canDelete = !key;
                         } else {
                             console.warn(
@@ -1018,13 +1011,14 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     headerCell = (col: GridColumn): ReactNode => {
-        const { queryInfo } = this.props;
+        const { editorModel } = this.props;
 
         if (col.index.toLowerCase() === GRID_SELECTION_INDEX && this.showSelectionCheckboxes()) {
             return headerSelectionCell(this.selectAll, this.state.selectedState, false, 'grid-panel__checkbox');
         }
 
-        const qColumn = queryInfo.getColumn(col.index);
+        const qColumn = editorModel.queryInfo.getColumn(col.index);
+
         if (qColumn) {
             return this.renderColumnHeader(col, qColumn.fieldKey);
         }
@@ -1353,11 +1347,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     restoreBulkInsertData = (data: Map<string, any>): Map<string, any> => {
-        const allInsertCols = OrderedMap<string, any>().asMutable();
-        this.props.queryInfo
+        const insertData = OrderedMap<string, any>().asMutable();
+        this.props.editorModel.queryInfo
             .getInsertColumns(this.props.bulkAddProps.isIncludedColumn)
-            .forEach(col => allInsertCols.set(col.name, undefined));
-        return allInsertCols.merge(data).asImmutable();
+            .forEach(col => insertData.set(col.name, undefined));
+        return insertData.merge(data).asImmutable();
     };
 
     bulkAdd = async (bulkData: OrderedMap<string, any>): Promise<void> => {
@@ -1370,7 +1364,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             metricFeatureArea,
             onChange,
             processBulkData,
-            queryInfo,
             containerPath,
         } = this.props;
         const nounPlural = addControlProps?.nounPlural;
@@ -1405,7 +1398,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 editorModel,
                 dataKeys,
                 data,
-                List(queryInfo.getInsertColumns()),
                 numItems,
                 pivotKey,
                 pivotValues,
@@ -1418,7 +1410,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 editorModel,
                 dataKeys,
                 data,
-                List(queryInfo.getInsertColumns()),
                 numItems,
                 bulkData,
                 containerPath
@@ -1459,12 +1450,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     addRows = async (count: number): Promise<void> => {
-        const { data, dataKeys, editorModel, onChange, queryInfo, containerPath } = this.props;
+        const { data, dataKeys, editorModel, onChange, containerPath } = this.props;
         const changes = await addRows(
             editorModel,
             dataKeys,
             data,
-            List(queryInfo.getInsertColumns()),
             count,
             undefined,
             containerPath

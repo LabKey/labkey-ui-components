@@ -382,7 +382,7 @@ async function getLookupDisplayValue(column: QueryColumn, value: any, containerP
 }
 
 async function prepareInsertRowDataFromBulkForm(
-    insertColumns: List<QueryColumn>,
+    insertColumns: QueryColumn[],
     rowData: List<any>,
     colMin = 0,
     containerPath: string
@@ -393,7 +393,7 @@ async function prepareInsertRowDataFromBulkForm(
     for (let cn = 0; cn < rowData.size; cn++) {
         const data = rowData.get(cn);
         const colIdx = colMin + cn;
-        const col = insertColumns.get(colIdx);
+        const col = insertColumns[colIdx];
         let cv: List<ValueDescriptor>;
 
         if (data && col && col.isPublicLookup()) {
@@ -427,7 +427,6 @@ async function prepareInsertRowDataFromBulkForm(
 
 export async function addRowsToEditorModel(
     editorModel: EditorModel,
-    insertColumns: List<QueryColumn>,
     rowData: List<any>,
     numToAdd: number,
     rowMin = 0,
@@ -435,7 +434,8 @@ export async function addRowsToEditorModel(
 ): Promise<Partial<EditorModel>> {
     let { cellMessages, cellValues, rowCount } = editorModel;
     const selectionCells: string[] = [];
-    const preparedData = await prepareInsertRowDataFromBulkForm(insertColumns, rowData, 0, containerPath);
+    const insertCols = editorModel.queryInfo.getInsertColumns();
+    const preparedData = await prepareInsertRowDataFromBulkForm(insertCols, rowData, 0, containerPath);
     const { values, messages } = preparedData;
 
     for (let rowIdx = rowMin; rowIdx < rowMin + numToAdd; rowIdx++) {
@@ -477,7 +477,6 @@ export async function addRows(
     editorModel: EditorModel,
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
-    insertColumns: List<QueryColumn>,
     numToAdd: number,
     rowData: Map<string, any>,
     containerPath: string
@@ -487,7 +486,6 @@ export async function addRows(
     if (rowData) {
         editorModelChanges = await addRowsToEditorModel(
             editorModel,
-            insertColumns,
             rowData.toList(),
             numToAdd,
             data.size,
@@ -813,7 +811,6 @@ export async function addRowsPerPivotValue(
     editorModel: EditorModel,
     dataKeys: List<any>,
     data: Map<any, Map<string, any>>,
-    insertColumns: List<QueryColumn>,
     numPerParent: number,
     pivotKey: string,
     pivotValues: string[],
@@ -827,7 +824,6 @@ export async function addRowsPerPivotValue(
             rowData = rowData.set(pivotKey, value);
             const changes = await addRowsToEditorModel(
                 editorModel,
-                insertColumns,
                 rowData.toList(),
                 numPerParent,
                 dataKeys.size,
@@ -1123,7 +1119,7 @@ async function getParsedLookup(
     targetContainerPath: string,
     editorModel: EditorModel
 ): Promise<ParseLookupPayload> {
-    const containerPath = forUpdate ? editorModel.getFolderValueForCellKey(cellKey) : targetContainerPath;
+    const containerPath = forUpdate ? editorModel.getFolderValueForCell(cellKey) : targetContainerPath;
     const cacheKey = `${column.fieldKey}||${containerPath}`;
     let descriptors = lookupColumnContainerCache[cacheKey];
     if (!descriptors) {

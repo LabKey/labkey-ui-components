@@ -641,14 +641,7 @@ describe('utils', () => {
     test('isTransformScriptsEnabled', () => {
         expect(isTransformScriptsEnabled({})).toBe(true);
         expect(isTransformScriptsEnabled({ api: { moduleNames: ['premium'] } })).toBe(true);
-
-        expect(isTransformScriptsEnabled({ samplemanagement: {} })).toBe(false);
-        expect(
-            isTransformScriptsEnabled({
-                samplemanagement: {},
-                core: { productFeatures: [ProductFeature.TransformScripts] },
-            })
-        ).toBe(true);
+        expect(isTransformScriptsEnabled({ samplemanagement: {} })).toBe(true);
 
         expect(
             isTransformScriptsEnabled({
@@ -661,15 +654,26 @@ describe('utils', () => {
             isTransformScriptsEnabled({
                 samplemanagement: {},
                 biologics: {},
+            })
+        ).toBe(true);
+
+        window.history.pushState({}, 'isApp', '/lims-app.view#'); // isApp()
+        expect(
+            isTransformScriptsEnabled({
+                samplemanagement: {},
                 core: { productFeatures: [ProductFeature.TransformScripts] },
             })
         ).toBe(true);
+
+        window.history.pushState({}, 'isApp', '/samplemanager-app.view#'); // isApp()
         expect(
             isTransformScriptsEnabled({
                 samplemanagement: {},
                 biologics: {},
+                core: { productFeatures: [ProductFeature.TransformScripts] },
             })
-        ).toBe(false);
+        ).toBe(true);
+
     });
 
     test('isLKSSupportEnabled', () => {

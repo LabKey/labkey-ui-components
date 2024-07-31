@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.4.2
+*Released*: 31 July 2024
+- Fix `isTransformScriptsEnabled` check
+
 ### version 4.4.1
 *Released*: 30 July 2024
 - BarTender: supply file export needed for BarTender integration

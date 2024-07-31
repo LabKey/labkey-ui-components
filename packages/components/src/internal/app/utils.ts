@@ -384,9 +384,11 @@ export function isChartBuilderEnabled(moduleContext?: ModuleContext): boolean {
     );
 }
 
-// Should be enabled for LKS Starter, which won't have any product features
+// Should be enabled for LKS Community & LKS Starter, but in the apps only if the feature is enabled
 export function isTransformScriptsEnabled(moduleContext?: ModuleContext): boolean {
-    return isFeatureEnabled(ProductFeature.TransformScripts, moduleContext) || hasPremiumModule(moduleContext);
+    return isApp()
+        ? isFeatureEnabled(ProductFeature.TransformScripts, moduleContext)
+        : true;
 }
 
 export function isRReportsEnabled(moduleContext?: ModuleContext): boolean {

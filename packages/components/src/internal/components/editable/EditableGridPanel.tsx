@@ -46,24 +46,16 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
         insertColumns,
         ...gridProps
     } = props;
-
     const [activeTab, setActiveTab] = useState<number>(props.activeTab ?? 0);
     const models = Array.isArray(model) ? model : [model];
     const activeModel = models[activeTab];
     const editorModels = Array.isArray(editorModel) ? editorModel : [editorModel];
     const activeEditorModel = editorModels[activeTab];
     const hasTabs = models.length > 1;
-
     const _onChange = useCallback<EditableGridChange>(
         (event, editorModelChanges) => onChange(event, editorModelChanges, activeTab),
         [activeTab, onChange]
     );
-
-    // TODO: When EditableGridPanelDeprecated is removed we should be able to just pass model.rows and model.orderedRows
-    //  to the EditableGrid.
-    // const { orderedRows, queryInfo, rows } = activeModel ?? {};
-    // const data = useMemo(() => fromJS(rows), [rows]);
-    // const dataKeys = useMemo(() => fromJS(orderedRows), [orderedRows]);
     const error = activeModel?.hasLoadErrors
         ? activeModel?.loadErrors[0] ?? 'Something went wrong loading the data.'
         : undefined;

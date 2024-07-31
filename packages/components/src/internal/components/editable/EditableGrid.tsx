@@ -1259,8 +1259,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     // TODO: update fillText to take fieldKey instead of colIdx
     fillText = async (colIdx: number, rowIdx: number, text: string): Promise<void> => {
-        const { allowAdd, disabled, editorModel, forUpdate, onChange, readonlyRows, containerPath } =
-            this.props;
+        const { allowAdd, disabled, editorModel, forUpdate, onChange, readonlyRows, containerPath } = this.props;
 
         if (disabled) return;
 
@@ -1280,20 +1279,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     onPaste = async (event: ClipboardEvent): Promise<void> => {
-        const { allowAdd, disabled, editorModel, forUpdate, onChange, readonlyRows, containerPath } =
-            this.props;
+        const { allowAdd, disabled, editorModel, forUpdate, onChange, readonlyRows, containerPath } = this.props;
 
         if (disabled) return;
 
         this.showMask();
-        const changes = await pasteEvent(
-            editorModel,
-            event,
-            readonlyRows,
-            !allowAdd,
-            forUpdate,
-            containerPath
-        );
+        const changes = await pasteEvent(editorModel, event, readonlyRows, !allowAdd, forUpdate, containerPath);
         this.hideMask();
 
         if (changes === undefined) return;

@@ -10,7 +10,13 @@ import {
 import { SectionHeading } from '../SectionHeading';
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 
-import { hasModule, isAssayQCEnabled, isPlatesEnabled, isPremiumProductEnabled } from '../../../app/utils';
+import {
+    hasModule,
+    isAssayQCEnabled,
+    isPlatesEnabled,
+    isPremiumProductEnabled,
+    isTransformScriptsEnabled,
+} from '../../../app/utils';
 
 import { useServerContext } from '../../base/ServerContext';
 
@@ -175,10 +181,10 @@ const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
                         {model.allowBackgroundUpload && (
                             <BackgroundUploadInput model={model} onChange={onInputChange} />
                         )}
-                        {model.allowTransformationScript && (
+                        {model.allowTransformationScript && isTransformScriptsEnabled(moduleContext) && (
                             <TransformScriptsInput model={model} onChange={onValueChange} />
                         )}
-                        {model.allowTransformationScript && (
+                        {model.allowTransformationScript && isTransformScriptsEnabled(moduleContext) && (
                             <SaveScriptDataInput model={model} onChange={onInputChange} />
                         )}
                         {model.moduleTransformScripts?.size > 0 && <ModuleProvidedScriptsInput model={model} />}

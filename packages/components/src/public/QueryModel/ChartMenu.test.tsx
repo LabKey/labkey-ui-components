@@ -9,7 +9,7 @@ import { ViewInfo } from '../../internal/ViewInfo';
 import { LoadingState } from '../LoadingState';
 import { renderWithAppContext } from '../../internal/test/reactTestLibraryHelpers';
 import { TEST_USER_GUEST, TEST_USER_READER } from '../../internal/userFixtures';
-import { BIOLOGICS_APP_PROPERTIES, EXPERIMENTAL_CHART_BUILDER } from '../../internal/app/constants';
+import { BIOLOGICS_APP_PROPERTIES, EXPERIMENTAL_CHART_BUILDER, ProductFeature } from '../../internal/app/constants';
 
 import { makeTestActions, makeTestQueryModel } from './testUtils';
 import { ChartMenu, ChartMenuItem } from './ChartMenu';
@@ -64,6 +64,9 @@ describe('ChartMenu', () => {
         renderWithAppContext(<ChartMenu actions={actions} model={NO_CHART_MODEL} />, {
             serverContext: {
                 user: TEST_USER_READER,
+                moduleContext: {
+                    core: { productFeatures: [ProductFeature.ChartBuilding] },
+                },
             },
         });
 
@@ -77,8 +80,11 @@ describe('ChartMenu', () => {
                 moduleContext: {
                     biologics: {
                         productId: BIOLOGICS_APP_PROPERTIES.productId,
+                    },
+                    samplemanagement: {
                         [EXPERIMENTAL_CHART_BUILDER]: true,
                     },
+                    core: { productFeatures: [ProductFeature.ChartBuilding] },
                 },
             },
         });
@@ -97,8 +103,11 @@ describe('ChartMenu', () => {
                 moduleContext: {
                     biologics: {
                         productId: BIOLOGICS_APP_PROPERTIES.productId,
+                    },
+                    samplemanagement: {
                         [EXPERIMENTAL_CHART_BUILDER]: true,
                     },
+                    core: { productFeatures: [ProductFeature.ChartBuilding] },
                 },
             },
         });

@@ -1,21 +1,12 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import {
-    BIOLOGICS_APP_PROPERTIES,
-    SAMPLE_MANAGER_APP_PROPERTIES,
-} from '../../app/constants';
+import { BIOLOGICS_APP_PROPERTIES, LIMS_APP_PROPERTIES, SAMPLE_MANAGER_APP_PROPERTIES, } from '../../app/constants';
 
 import { DEFAULT_ICON_ALT_URL, DEFAULT_ICON_URL, ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductAppMenuItem } from './ProductAppMenuItem';
 import { ProductModel } from './models';
-import {
-    BIOLOGICS_ALT_PRODUCT_ICON,
-    BIOLOGICS_DISABLED_PRODUCT_ICON,
-    BIOLOGICS_PRODUCT_ICON,
-    SAMPLE_MANAGER_DISABLED_PRODUCT_ICON,
-    SAMPLE_MANAGER_PRODUCT_ICON,
-} from './constants';
+import { BIOLOGICS_ALT_PRODUCT_ICON, BIOLOGICS_PRODUCT_ICON, SAMPLE_MANAGER_PRODUCT_ICON, } from './constants';
 
 const DEFAULT_PROPS = {
     products: [],
@@ -23,14 +14,8 @@ const DEFAULT_PROPS = {
     onClick: jest.fn,
 };
 
-const TEST_PRODUCTS = [
-    new ProductModel({ productId: SAMPLE_MANAGER_APP_PROPERTIES.productId, productName: 'LKSM Name' }),
-    new ProductModel({ productId: BIOLOGICS_APP_PROPERTIES.productId, productName: 'LKB Name' }),
-    new ProductModel({ productId: 'other', productName: 'Other Name' }),
-];
-
 describe('ProductAppsDrawer', () => {
-    function validate(wrapper: ReactWrapper, count: number) {
+    function validate(wrapper: ReactWrapper, count: number): void {
         expect(wrapper.find(ProductAppMenuItem)).toHaveLength(count);
 
         const lksProduct = wrapper.find(ProductAppMenuItem).first();
@@ -58,17 +43,7 @@ describe('ProductAppsDrawer', () => {
         wrapper.unmount();
     });
 
-    test('products', () => {
-        const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={TEST_PRODUCTS} />);
-        validate(wrapper, 4);
-        TEST_PRODUCTS.forEach((product, index) => {
-            const item = wrapper.find(ProductAppMenuItem).at(index + 1);
-            expect(item.prop('title')).toBe(product.productName);
-        });
-        wrapper.unmount();
-    });
-
-    test('iconUrl and iconUrlAlt, sm disabled', () => {
+    test('iconUrl and iconUrlAlt, lkb', () => {
         LABKEY.moduleContext = {
             samplemanagement: {},
             biologics: {},
@@ -77,25 +52,18 @@ describe('ProductAppsDrawer', () => {
         const products = [
             new ProductModel({ productId: SAMPLE_MANAGER_APP_PROPERTIES.productId, productName: 'LKSM Name' }),
             new ProductModel({ productId: BIOLOGICS_APP_PROPERTIES.productId, productName: 'LKB Name' }),
+            new ProductModel({ productId: LIMS_APP_PROPERTIES.productId, productName: 'LIMS Name' }),
             new ProductModel({ productId: 'other', productName: 'Other Name' }),
         ];
         const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);
-        validate(wrapper, 4);
+        validate(wrapper, 2);
         expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrl')).toBe(
-            '/labkey/sampleManagement/images/' + SAMPLE_MANAGER_DISABLED_PRODUCT_ICON
-        );
-        expect(wrapper.find(ProductAppMenuItem).at(1).text()).toContain("Application not enabled in this location");
-        expect(wrapper.find(ProductAppMenuItem).at(2).prop('iconUrl')).toBe(
             '/labkey/biologics/images/' + BIOLOGICS_PRODUCT_ICON
         );
-        expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrl')).toBe(DEFAULT_ICON_URL);
         expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrlAlt')).toBe(
-            '/labkey/sampleManagement/images/' + SAMPLE_MANAGER_DISABLED_PRODUCT_ICON
-        );
-        expect(wrapper.find(ProductAppMenuItem).at(2).prop('iconUrlAlt')).toBe(
             '/labkey/biologics/images/' + BIOLOGICS_ALT_PRODUCT_ICON
         );
-        expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrlAlt')).toBe(DEFAULT_ICON_URL);
+        expect(wrapper.find(ProductAppMenuItem).at(1).prop('title')).toBe(products[1].productName);
 
         wrapper.unmount();
     });
@@ -111,13 +79,9 @@ describe('ProductAppsDrawer', () => {
             new ProductModel({ productId: 'other', productName: 'Other Name' }),
         ];
         const wrapper = mount(<ProductAppsDrawer {...DEFAULT_PROPS} products={products} />);
-        validate(wrapper, 4);
+        validate(wrapper, 2);
         expect(wrapper.find(ProductAppMenuItem).at(1).prop('iconUrl')).toBe(
             '/labkey/sampleManagement/images/' + SAMPLE_MANAGER_PRODUCT_ICON
         );
-        expect(wrapper.find(ProductAppMenuItem).at(2).prop('iconUrl')).toBe(
-            '/labkey/biologics/images/' + BIOLOGICS_DISABLED_PRODUCT_ICON
-        );
-        expect(wrapper.find(ProductAppMenuItem).at(3).prop('iconUrl')).toBe(DEFAULT_ICON_URL);
     });
 });

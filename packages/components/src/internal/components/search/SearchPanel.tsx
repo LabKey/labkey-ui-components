@@ -15,7 +15,7 @@ import { useServerContext } from '../base/ServerContext';
 import { SearchResultsPanel } from './SearchResultsPanel';
 
 import { GetCardDataFn, SearchResultsModel } from './models';
-import { SearchCategory, SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE } from './constants';
+import { SEARCH_HELP_TOPIC, SEARCH_PAGE_DEFAULT_SIZE, SearchCategory } from './constants';
 import { searchUsingIndex } from './actions';
 import { getSearchResultCardData } from './utils';
 
@@ -197,6 +197,9 @@ export const SearchPanel: FC<SearchPanelProps> = memo(props => {
                 );
                 setModel(SearchResultsModel.create({ entities, isLoaded: true }));
             } catch (response) {
+                if (!response.exception) {
+                    console.error(response);
+                }
                 setModel(
                     SearchResultsModel.create({
                         error: resolveErrorMessage(response.exception) ?? 'Unknown error getting search results.',

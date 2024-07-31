@@ -31,27 +31,29 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                 subtitle={getServerContext().project?.title ?? 'Root'}
                 onClick={onClick}
             />
-            {products.map(product => {
-                const imgSrc = PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()];
-                let iconUrl = imgSrc?.iconUrl ?? DEFAULT_ICON_URL;
-                let iconUrlAlt = imgSrc?.iconUrlAlt ?? DEFAULT_ICON_ALT_URL;
-                if (product.disabled) {
-                    iconUrl = imgSrc?.iconUrlDisabled ?? DEFAULT_ICON_URL;
-                    iconUrlAlt = imgSrc?.iconUrlDisabled ?? DEFAULT_ICON_URL;
-                }
-                return (
-                    <ProductAppMenuItem
-                        key={product.productId}
-                        disabled={product.disabled}
-                        iconUrl={iconUrl}
-                        iconUrlAlt={iconUrlAlt}
-                        productId={product.productId}
-                        title={product.productName}
-                        subtitle={product.disabled ? 'Application not enabled in this location' : undefined}
-                        onClick={onClick}
-                    />
-                );
-            })}
+            {products
+                .filter(product => !product.disabled)
+                .map(product => {
+                    const imgSrc = PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()];
+                    let iconUrl = imgSrc?.iconUrl ?? DEFAULT_ICON_URL;
+                    let iconUrlAlt = imgSrc?.iconUrlAlt ?? DEFAULT_ICON_ALT_URL;
+                    if (product.disabled) {
+                        iconUrl = imgSrc?.iconUrlDisabled ?? DEFAULT_ICON_URL;
+                        iconUrlAlt = imgSrc?.iconUrlDisabled ?? DEFAULT_ICON_URL;
+                    }
+                    return (
+                        <ProductAppMenuItem
+                            key={product.productId}
+                            disabled={product.disabled}
+                            iconUrl={iconUrl}
+                            iconUrlAlt={iconUrlAlt}
+                            productId={product.productId}
+                            title={product.productName}
+                            subtitle={product.disabled ? 'Application not enabled in this location' : undefined}
+                            onClick={onClick}
+                        />
+                    );
+                })}
         </>
     );
 });

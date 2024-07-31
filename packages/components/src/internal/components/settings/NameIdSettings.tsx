@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useReducer } from 'react';
 
 import { PermissionTypes } from '@labkey/api';
 
-import { biologicsIsPrimaryApp, sampleManagerIsPrimaryApp } from '../../app/utils';
+import { isNamingPrefixEnabled, isRegistryEnabled } from '../../app/utils';
 
 import { invalidateFullQueryDetailsCache } from '../../query/api';
 
@@ -316,7 +316,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         When users are not permitted to create their own IDs/Names, the ID/Name field
                                         will be hidden during creation and update of rows, and when accessing the design
                                         of a new or existing Sample Type or{' '}
-                                        {sampleManagerIsPrimaryApp(moduleContext) ? 'Source Type' : 'Data Class'}.
+                                        {isRegistryEnabled(moduleContext) ? 'Data Class' : 'Source Type'}.
                                     </p>
                                     <p>
                                         Additionally, attempting to import data and update existing rows during file
@@ -328,7 +328,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                     )}
                 </div>
 
-                {biologicsIsPrimaryApp(moduleContext) && (
+                {isNamingPrefixEnabled(moduleContext) && (
                     <div className="name-id-setting__setting-section">
                         <div className="list__bold-text margin-bottom margin-top">ID/Name Prefix</div>
                         <div>
@@ -378,10 +378,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                             <p>
                                                 This action will change the Naming Pattern for all new and existing
                                                 Sample Types and{' '}
-                                                {sampleManagerIsPrimaryApp(moduleContext)
-                                                    ? 'Source Types'
-                                                    : 'Data Classes'}
-                                                . No existing IDs/Names will be affected but any new IDs/Names will have
+                                                {isRegistryEnabled(moduleContext) ? 'Data Classes' : 'Source Types'}.
+                                                No existing IDs/Names will be affected but any new IDs/Names will have
                                                 the prefix applied. Are you sure you want to apply the prefix?
                                             </p>
                                         </div>

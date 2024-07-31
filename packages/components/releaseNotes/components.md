@@ -1,11 +1,22 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 4.X
-*Released*: X 2024
+### version 4.4.1
+*Released*: 30 July 2024
 - BarTender: supply file export needed for BarTender integration
   - Update label and icon for bartender label printing option
   - Support new "Download template" option for bartender with FieldKey instead of column title
+
+### version 4.4.0
+*Released*: 30 July 2024
+- Add LIMS product and product feature checks for transform scripts and charts
+  - Add utility methods for checking other features (nonstandard assays, study linking, registry, general LKS support)
+  - Refactors for sharing renderer definitions
+  - add utility method for registering pipeline listeners
+
+### version 4.3.1
+*Released*: 30 July 2024
+- Issue 50224: link-to-study does not accept visit labels instead of sequencenums
 
 ### version 4.3.0
 *Released*: 25 July 2024

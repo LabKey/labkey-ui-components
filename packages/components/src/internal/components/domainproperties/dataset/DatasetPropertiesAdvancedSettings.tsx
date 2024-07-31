@@ -15,8 +15,6 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { SelectInput, SelectInputOption } from '../../forms/input/SelectInput';
 
-import { initQueryGridState } from '../../../global';
-
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
@@ -139,8 +137,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     constructor(props) {
         super(props);
         const initialState = this.getInitialState();
-
-        initQueryGridState(); // needed for selectRows usage
 
         this.state = {
             modalOpen: false,

@@ -23,7 +23,12 @@ import { camelCaseToTitleCase, valueIsEmpty } from '../../util/utils';
 
 import { getConceptForCode } from '../ontology/actions';
 
-import { getCurrentAppProperties, hasPremiumModule, isCalculatedFieldsEnabled } from '../../app/utils';
+import {
+    getCurrentAppProperties,
+    hasPremiumModule,
+    isCalculatedFieldsEnabled,
+    isQueryMetadataEditor,
+} from '../../app/utils';
 
 import { GridColumn } from '../base/models/GridColumn';
 
@@ -255,7 +260,11 @@ export class DomainDesign
                 fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames, uniqueConstraintFieldNames);
             }
 
-            if (isCalculatedFieldsEnabled() && rawModel.allowCalculatedFields && rawModel.calculatedFields) {
+            // allow calculated fields if the feature is enabled and the domain kind allows it,
+            // or if the user is in the query metadata editor (then we always want to include calculated fields)
+            const allowCalculatedFields =
+                (isCalculatedFieldsEnabled() && rawModel.allowCalculatedFields) || isQueryMetadataEditor();
+            if (allowCalculatedFields && rawModel.calculatedFields) {
                 const calcFields = DomainField.fromJS(
                     rawModel.calculatedFields,
                     mandatoryFieldNames,

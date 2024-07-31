@@ -300,7 +300,7 @@ export class EditorModel
             return map.set(fieldKey, col);
         }, OrderedMap<string, QueryColumn>());
 
-        for (let rn = 0; rn < dataKeys.size; rn++) {
+        for (let rn = 0; rn < this.rowCount; rn++) {
             let row = Map<string, any>();
             columnMap.valueSeq().forEach(col => {
                 if (!col) return;

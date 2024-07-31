@@ -229,6 +229,7 @@ function inputCellFactory(
         const className = classNames({ 'grid-col-with-width': hasCellWidthOverride(columnMetadata) });
         const style = { textAlign: columnMetadata?.align ?? c.align ?? 'left' } as any;
 
+        // TODO: simplify Cell props by passing columnMetadata instead of all of the properties of it individually
         return (
             <td className={className} key={inputCellKey(c.raw, row)} style={style}>
                 <Cell
@@ -657,7 +658,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             // if a cell was previously selected and there are remaining selectionCells then mark the previously
             // selected cell as in "selection"
             if (hasSelection) {
-                const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(editorModel.selectedColIdx)).fieldKey;
+                const fieldKey = editorModel.columnMap.get(
+                    editorModel.orderedColumns.get(editorModel.selectedColIdx)
+                ).fieldKey;
                 selectionCells.push(genCellKey(fieldKey, editorModel.selectedRowIdx));
             }
         }
@@ -1406,14 +1409,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             );
             onChange(EditableGridEvent.BULK_ADD, changes.editorModel, changes.dataKeys, changes.data);
         } else {
-            const changes = await addRows(
-                editorModel,
-                dataKeys,
-                data,
-                numItems,
-                bulkData,
-                containerPath
-            );
+            const changes = await addRows(editorModel, dataKeys, data, numItems, bulkData, containerPath);
             onChange(EditableGridEvent.BULK_ADD, changes.editorModel, changes.dataKeys, changes.data);
         }
 
@@ -1451,14 +1447,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     addRows = async (count: number): Promise<void> => {
         const { data, dataKeys, editorModel, onChange, containerPath } = this.props;
-        const changes = await addRows(
-            editorModel,
-            dataKeys,
-            data,
-            count,
-            undefined,
-            containerPath
-        );
+        const changes = await addRows(editorModel, dataKeys, data, count, undefined, containerPath);
         onChange(EditableGridEvent.ADD_ROWS, changes.editorModel, changes.dataKeys, changes.data);
     };
 
@@ -1492,7 +1481,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             bulkAddText,
             bulkRemoveText,
             bulkUpdateText,
-            data,
+            editorModel,
             isSubmitting,
             maxRows,
             showAsTab,
@@ -1500,7 +1489,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const nounPlural = addControlProps?.nounPlural ?? 'rows';
         const showAddOnTop = allowAdd && this.getControlsPlacement() !== 'bottom';
         const invalidSel = this.state.selected.size === 0;
-        const canAddRows = !isSubmitting && data.size < maxRows;
+        const canAddRows = !isSubmitting && editorModel.rowCount < maxRows;
         const addTitle = canAddRows
             ? 'Add multiple ' + nounPlural + ' with the same values'
             : 'The grid contains the maximum number of ' + nounPlural + '.';
@@ -1550,9 +1539,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderBulkAdd = (): ReactNode => {
-        const { addControlProps, bulkAddProps, data, forUpdate, maxRows, queryInfo, containerPath } = this.props;
-        const maxToAdd =
-            maxRows && maxRows - data.size < MAX_EDITABLE_GRID_ROWS ? maxRows - data.size : MAX_EDITABLE_GRID_ROWS;
+        const { addControlProps, bulkAddProps, editorModel, forUpdate, maxRows, containerPath } = this.props;
+        const { rowCount, queryInfo } = editorModel;
+        const amountLeft = maxRows - rowCount;
+        const maxToAdd = maxRows && amountLeft < MAX_EDITABLE_GRID_ROWS ? amountLeft : MAX_EDITABLE_GRID_ROWS;
         return (
             <QueryInfoForm
                 onSubmitForEdit={this.bulkAdd}

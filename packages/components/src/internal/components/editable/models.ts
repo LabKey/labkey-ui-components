@@ -562,12 +562,17 @@ export class EditorModel
         return List<ValueDescriptor>();
     }
 
-    getCellReadStatus(fieldKey: string, rowIdx: number, readonlyRows: string[]): CellReadStatus {
+    isReadOnlyRow(rowIdx: number, readonlyRows: string[]): boolean {
         const pkValue = this.getPkValue(rowIdx).toString();
+        return readonlyRows?.includes(pkValue);
+    }
+
+    getCellReadStatus(fieldKey: string, rowIdx: number, readonlyRows: string[]): CellReadStatus {
+        const pkValue = this.getPkValue(rowIdx)?.toString();
 
         return {
-            isReadonlyCell: this.columnMetadata?.get(fieldKey)?.isReadOnlyCell(pkValue),
-            isReadonlyRow: readonlyRows?.includes(pkValue),
+            isReadonlyCell: this.columnMetadata?.get(fieldKey)?.isReadOnlyCell(pkValue) ?? false,
+            isReadonlyRow: readonlyRows?.includes(pkValue) ?? false,
         };
     }
 

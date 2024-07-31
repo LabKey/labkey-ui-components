@@ -639,10 +639,17 @@ describe('utils', () => {
     });
 
     test('isTransformScriptsEnabled', () => {
-        expect(isTransformScriptsEnabled({})).toBe(false);
-        expect(isTransformScriptsEnabled({ inventory: {} })).toBe(false);
-        expect(isTransformScriptsEnabled({ api: { moduleNames: ['premium'] }, })).toBe(true);
+        expect(isTransformScriptsEnabled({})).toBe(true);
+        expect(isTransformScriptsEnabled({ api: { moduleNames: ['premium'] } })).toBe(true);
+
         expect(isTransformScriptsEnabled({ samplemanagement: {} })).toBe(false);
+        expect(
+            isTransformScriptsEnabled({
+                samplemanagement: {},
+                core: { productFeatures: [ProductFeature.TransformScripts] },
+            })
+        ).toBe(true);
+
         expect(
             isTransformScriptsEnabled({
                 samplemanagement: {},
@@ -659,6 +666,7 @@ describe('utils', () => {
         ).toBe(true);
         expect(
             isTransformScriptsEnabled({
+                samplemanagement: {},
                 biologics: {},
             })
         ).toBe(false);

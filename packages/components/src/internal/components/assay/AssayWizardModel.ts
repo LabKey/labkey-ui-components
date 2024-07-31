@@ -219,7 +219,7 @@ export class AssayWizardModel
         } else if (this.isGridTab(currentStep)) {
             // need to get the EditorModel for the data to use in the import
             assayData.dataRows = editorModel
-                .getRawDataFromModel(queryModel, false, false)
+                .getDataForServerUpload(false)
                 .valueSeq()
                 .map(row => row.filter(v => v !== undefined && v !== null && ('' + v).trim() !== ''))
                 .toList()

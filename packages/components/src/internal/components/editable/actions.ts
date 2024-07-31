@@ -11,13 +11,7 @@ import { GRID_EDIT_INDEX } from '../../constants';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
 import { GridData } from '../../models';
 import { formatDate, formatDateTime, parseDate } from '../../util/Date';
-import {
-    caseInsensitive,
-    isFloat,
-    isInteger,
-    parseCsvString,
-    parseScientificInt,
-} from '../../util/utils';
+import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
 
 import { selectRows } from '../../query/selectRows';

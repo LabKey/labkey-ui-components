@@ -289,8 +289,10 @@ export function onCellSelectChange(
     }
 }
 
+const CELL_KEY_SEPARATOR = '&&';
+
 export function genCellKey(fieldKey: string, rowIdx: number): string {
-    return [fieldKey, rowIdx].join('&&');
+    return [fieldKey, rowIdx].join(CELL_KEY_SEPARATOR);
 }
 
 interface CellKeyParts {
@@ -299,7 +301,7 @@ interface CellKeyParts {
 }
 
 export function parseCellKey(cellKey: string): CellKeyParts {
-    const [fieldKey, rowIdx] = cellKey.split('&&');
+    const [fieldKey, rowIdx] = cellKey.split(CELL_KEY_SEPARATOR);
 
     return {
         fieldKey,

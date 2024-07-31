@@ -25,7 +25,8 @@ import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
-import { CellMessage, EditorModel, getPkData, ValueDescriptor } from './models';
+import { CellMessage, EditorModel, ValueDescriptor } from './models';
+import { genCellKey } from './utils';
 
 const schemaQ = new SchemaQuery('samples', 'Sample Set 2');
 
@@ -1010,61 +1011,49 @@ describe('EditorModel', () => {
             });
             expect(model.hasData).toBeTruthy();
         });
-    });
-});
 
-describe('getPkData', () => {
-    const config = {
-        appEditableTable: true,
-        pkCols: ['RowId'],
-        columns: fromJS({
-            rowid: new QueryColumn({
-                caption: 'Row Id',
-                fieldKey: 'RowId',
-                inputType: 'number',
-            }),
-            lsid: new QueryColumn({
-                caption: 'LSID',
-                fieldKey: 'lsid',
-                inputType: 'text',
-            }),
-            description: new QueryColumn({
-                caption: 'Description',
-                fieldKey: 'Description',
-                inputType: 'textarea',
-            }),
-        }),
-    };
-    const queryInfo = new QueryInfo(config);
-    const queryInfoWithAltKey = new QueryInfo({
-        ...config,
-        altUpdateKeys: new Set<string>(['lsid']),
-    });
+        test('getPkValues', () => {
+            const config = {
+                appEditableTable: true,
+                pkCols: ['RowId'],
+                columns: fromJS({
+                    rowid: new QueryColumn({
+                        caption: 'Row Id',
+                        fieldKey: 'RowId',
+                        inputType: 'number',
+                    }),
+                    lsid: new QueryColumn({
+                        caption: 'LSID',
+                        fieldKey: 'lsid',
+                        inputType: 'text',
+                    }),
+                    description: new QueryColumn({
+                        caption: 'Description',
+                        fieldKey: 'Description',
+                        inputType: 'textarea',
+                    }),
+                }),
+            };
+            const queryInfo = new QueryInfo(config);
+            const queryInfoWithAltKey = new QueryInfo({
+                ...config,
+                altUpdateKeys: new Set<string>(['lsid']),
+            });
+            const cellValues = fromJS({
+                [genCellKey('RowId', 0)]: List([{ raw: 1 } as ValueDescriptor]),
+                [genCellKey('lsid', 0)]: List([{ raw: 'abc' } as ValueDescriptor]),
+            });
+            let model = new EditorModel({
+                queryInfo: queryInfo,
+                cellValues,
+            });
+            expect(model.getPkValues(0)).toStrictEqual({ RowId: 1 });
 
-    test('as value', () => {
-        expect(getPkData(queryInfo, Map.of('RowId', 1, 'lsid', 'abc'))).toStrictEqual({ RowId: 1 });
-    });
-
-    test('with altUpdateKeys', () => {
-        expect(getPkData(queryInfoWithAltKey, Map.of('RowId', 1, 'lsid', 'abc'))).toStrictEqual({
-            RowId: 1,
-            lsid: 'abc',
+            model = new EditorModel({
+                queryInfo: queryInfoWithAltKey,
+                cellValues,
+            });
+            expect(model.getPkValues(0)).toStrictEqual({ RowId: 1, lsid: 'abc' });
         });
-    });
-
-    test('as object', () => {
-        expect(getPkData(queryInfo, Map.of('RowId', { value: 1, displayValue: '1' }))).toStrictEqual({ RowId: 1 });
-    });
-
-    test('as array', () => {
-        expect(getPkData(queryInfo, Map.of('RowId', [1]))).toStrictEqual({ RowId: 1 });
-    });
-
-    test('as array of objects', () => {
-        expect(getPkData(queryInfo, Map.of('RowId', [{ value: 1, displayValue: '1' }]))).toStrictEqual({ RowId: 1 });
-    });
-
-    test('as list of maps', () => {
-        expect(getPkData(queryInfo, Map.of('RowId', List.of(Map.of('value', 1))))).toStrictEqual({ RowId: 1 });
     });
 });

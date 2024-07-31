@@ -44,7 +44,7 @@ export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
 
     const fieldValues = useMemo(() => {
         const editorData = editorModel
-            .getRawDataFromGridData(data, dataKeys, queryInfo, false)
+            .getDataForServerUpload(false)
             .filter((val, index) => selectedRowIndexes.contains(index))
             .toMap();
         return getCommonDataValues(editorData);

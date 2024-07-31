@@ -182,6 +182,11 @@ export class EditorModel
         return genCellKey(this.pkFieldKey, rowIndex);
     }
 
+    /**
+     * Gets the pkValue for a given rowIndex. This assumes there is a single PK column, and is mostly used for handling
+     * readonly rows. If you are getting pkValues in order to send data to the server use getPkValues, which will
+     * honor multiple PK columns.
+     */
     getPkValue(rowIndex: number): any {
         return this.cellValues.get(this.genPkCellKey(rowIndex))?.get(0).raw;
     }
@@ -189,6 +194,27 @@ export class EditorModel
     getPkValueForCell(cellKey: string): any {
         const { rowIdx } = parseCellKey(cellKey);
         return this.getPkValue(rowIdx);
+    }
+
+    /**
+     * Gets all of the primary key values for a given row.
+     * @param rowIndex
+     */
+    getPkValues(rowIndex: number): Record<string, any> {
+        const data = {};
+        const pkCols = new Set<string>();
+        this.queryInfo.getPkCols().forEach(col => pkCols.add(col.fieldKey));
+        this.queryInfo.altUpdateKeys?.forEach(key => pkCols.add(key));
+        pkCols.forEach(pkCol => {
+            const pkVal = this.getValue(pkCol, rowIndex).get(0).raw;
+
+            if (pkVal !== undefined && pkVal !== null) {
+                data[pkCol] = pkVal;
+            } else {
+                console.warn('Unable to find value for pkCol "' + pkCol + '"');
+            }
+        });
+        return data;
     }
 
     getFolderValueForCell(cellKey: string): string {
@@ -267,34 +293,30 @@ export class EditorModel
         return values.asImmutable();
     }
 
+    /** deprecated Use getDataForServerUpload **/
     getRawDataFromModel(
         queryModel: QueryModel,
         displayValues?: boolean,
         forUpdate?: boolean,
         forExport?: boolean
     ): List<Map<string, any>> {
-        return this.getRawDataFromGridData(
-            fromJS(queryModel.rows),
-            fromJS(queryModel.orderedRows),
-            queryModel.queryInfo,
-            displayValues,
-            forUpdate,
-            forExport
-        );
+        return this.getDataForServerUpload(displayValues, forUpdate, forExport);
     }
 
-    /** @deprecated Use getRawDataFromModel() instead. */
-    getRawDataFromGridData(
-        data: Map<any, Map<string, any>>,
-        dataKeys: List<any>,
-        queryInfo: QueryInfo,
-        displayValues = true,
-        forUpdate = false,
-        forExport?: boolean
-    ): List<Map<string, any>> {
+    /**
+     * This method formats the EditorModel data so we can upload the data to LKS via insert/updateRows
+     * @param displayValues
+     * @param forUpdate
+     * @param forExport
+     */
+    getDataForServerUpload(displayValues = true, forUpdate = false, forExport = false): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
+        // TODO: NEED REVIEWER INPUT. Would it be safe here to just use this.columnMap? It would include pk columns and
+        //  folder/container columns, which we currently special case below (see the if (forUpdate) clause below). I
+        //  think it may be safe to use this.columnMap because insert cases won't have those columns, but update cases
+        //  will, so things should just work™.
         const columnMap = this.orderedColumns.reduce((map, fieldKey) => {
-            const col = queryInfo.getColumn(fieldKey);
+            const col = this.queryInfo.getColumn(fieldKey);
             // Log a warning but still retain the key in the map for column order
             if (!col) console.warn(`Unable to resolve column "${fieldKey}". Cannot retrieve raw data.`);
             return map.set(fieldKey, col);
@@ -360,8 +382,9 @@ export class EditorModel
             });
 
             if (forUpdate) {
-                const gridRow = data.get(dataKeys.get(rn));
-                row = row.merge(getPkData(queryInfo, gridRow));
+                // TODO: for reviewers, should we also check for a Folder/Container column and add that as well? The
+                //  existence of appendFolderToRow implies yes, but I am not sure if we _always_ want to include it.
+                row = row.merge(this.getPkValues(rn));
             }
 
             rawData = rawData.push(row);

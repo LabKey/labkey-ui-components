@@ -3,6 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 4.8.0
 *Released*: ?? July 2024
+- Do not export loadEditorModelData
 - EditableGrid: remove unused and unnecessary props
   - allowFieldDisable
   - bordered

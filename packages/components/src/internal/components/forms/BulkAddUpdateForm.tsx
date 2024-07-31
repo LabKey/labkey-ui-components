@@ -34,8 +34,9 @@ interface BulkAddUpdateFormProps extends BaseProps {
 export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
     const { data, dataKeys, editorModel, queryInfo, selectedRowIndexes, warning, ...queryInfoFormProps } = props;
     const {
-        pluralNoun,
-        singularNoun,
+        pluralNoun = 'rows',
+        singularNoun = 'row',
+        asModal = true,
         submitForEditText = `Finish Editing ${capitalizeFirstChar(pluralNoun)}`,
     } = queryInfoFormProps;
     const title =
@@ -55,24 +56,21 @@ export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
             <QueryInfoForm
                 {...queryInfoFormProps}
                 allowFieldDisable
+                asModal={asModal}
                 checkRequiredFields={false}
                 fieldValues={fieldValues}
                 hideButtons={!queryInfoFormProps.asModal}
                 includeCountField={false}
                 initiallyDisableFields={true}
+                pluralNoun={pluralNoun}
                 queryInfo={queryInfo.getInsertQueryInfo()}
                 showLabelAsterisk
+                singularNoun={singularNoun}
                 submitForEditText={submitForEditText}
                 title={title}
             />
         </>
     );
-};
-
-BulkAddUpdateForm.defaultProps = {
-    asModal: true,
-    pluralNoun: 'rows',
-    singularNoun: 'row',
 };
 
 BulkAddUpdateForm.displayName = 'BulkAddUpdateForm';

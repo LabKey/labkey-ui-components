@@ -106,15 +106,15 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
     }, []);
 
     const onGridChange: EditableGridChange = useCallback(
-        (event, editorModelChanges, dataKeys, data, index = 0): void => {
+        (event, editorModelChanges, index = 0): void => {
             setModels(_models => {
                 const { dataModels, editorModels } = applyEditableGridChangesToModels(
                     [_models.dataModel],
                     [_models.editorModel],
                     editorModelChanges,
                     undefined,
-                    dataKeys,
-                    data,
+                    undefined,
+                    undefined,
                     index
                 );
                 const [dataModel] = dataModels;

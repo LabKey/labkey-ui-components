@@ -714,7 +714,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         this.setState({ comment });
     };
 
-    onGridChange: EditableGridChange = (event, editorModelChanges, dataKeys, data): void => {
+    onGridChange: EditableGridChange = (event, editorModelChanges): void => {
         this.setState(state => {
             const { dataModel, editorModel } = state;
             const updatedModels = applyEditableGridChangesToModels(
@@ -722,8 +722,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 [editorModel],
                 editorModelChanges,
                 undefined,
-                dataKeys,
-                data
             );
 
             this.props.setIsDirty?.(true);

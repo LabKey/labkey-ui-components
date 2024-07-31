@@ -3,7 +3,7 @@ import { AssayDOM } from '@labkey/api';
 
 import { AssayUploadTabs } from '../../constants';
 import { generateNameWithTimestamp } from '../../util/Date';
-import { initEditableGridModel } from '../editable/actions';
+import { initEditorModel } from '../editable/actions';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
 import { FileAttachmentFormModel } from '../files/models';
@@ -252,7 +252,8 @@ export class AssayWizardModel
         const rows = hasSamples ? selectedSamples : Map<string, Map<string, any>>({});
         const loader = new AssayWizardModelEditableGridLoader(this.queryInfo, rows);
         const dataModel = new QueryModel({ schemaQuery: this.queryInfo.schemaQuery }).mutate({ queryInfo: this.queryInfo });
-        const editorModelData = await initEditableGridModel(dataModel, new EditorModel({ id: dataModel.id }), loader, dataModel);
-        return { editorModel: editorModelData.editorModel, queryModel: editorModelData.dataModel };
+        const editorModel = await initEditorModel(dataModel, loader);
+        // TODO: don't return dataModel, as it's not really needed.
+        return { editorModel, queryModel: dataModel };
     }
 }

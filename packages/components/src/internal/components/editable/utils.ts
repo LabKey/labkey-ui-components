@@ -27,6 +27,7 @@ import { EditorModel, EditorModelProps, EditableGridModels, CellMessage } from '
 import { CellActions, MODIFICATION_TYPES } from './constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
+// TODO: remove dataKeys, data, queryInfo
 export const applyEditableGridChangesToModels = (
     dataModels: QueryModel[],
     editorModels: EditorModel[],

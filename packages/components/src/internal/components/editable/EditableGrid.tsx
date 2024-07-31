@@ -358,14 +358,10 @@ export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
 export type EditableGridChange = (
     event: EditableGridEvent,
     editorModelChanges: Partial<EditorModelProps>,
-    dataKeys?: List<any>,
-    data?: Map<any, Map<string, any>>,
     index?: number
 ) => void;
 
 export interface EditableGridProps extends SharedEditableGridProps {
-    data?: Map<any, Map<string, any>>;
-    dataKeys?: List<any>;
     editorModel: EditorModel;
     error: string;
     onChange: EditableGridChange;
@@ -826,27 +822,31 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         if (changesMade) onChange(EditableGridEvent.MODIFY_CELL, changes);
     };
 
-    removeRows = (dataIdIndexes: Set<number>): void => {
-        const { dataKeys, editorModel, onChange } = this.props;
-        let deletedIds = Set<number>();
-        const updatedKeys = this.props.dataKeys.filter((_, i) => !dataIdIndexes.has(i)).toList();
-        const updatedData = this.props.data.reduce((result, value, key) => {
-            if (updatedKeys.has(key)) {
-                return result.set(key, value);
+    removeRows = (rowIndicesToDelete: Set<number>): void => {
+        const { editorModel, onChange } = this.props;
+        // Track all of the existing row indices that we want to keep in an array, their index in this array is their
+        // updated index after we've deleted the existing rows.
+        const rowIndicesToKeep = [];
+        let deletedIds = Set<string>();
+
+        for (let idx = 0; idx < editorModel.rowCount; idx++) {
+            if (rowIndicesToDelete.has(idx)) {
+                const pkValue = editorModel.getPkValue(idx);
+                if (pkValue) deletedIds = deletedIds.add(pkValue.toString());
+                continue;
             }
 
-            deletedIds = deletedIds.add(key);
-            return result;
-        }, Map<any, Map<string, any>>());
-        const cellReducer = (result, value, cellKey) => {
-            const [colIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
+            rowIndicesToKeep.push(idx);
+        }
+
+        const cellReducer = (result, value, cellKey): Map<string, any> => {
+            const { fieldKey, rowIdx: oldRowIdx } = parseCellKey(cellKey);
 
             // If this value is part of a deleted row don't include it in the result.
-            if (dataIdIndexes.has(oldRowIdx)) return result;
+            if (rowIndicesToDelete.has(oldRowIdx)) return result;
 
-            const key = dataKeys.get(oldRowIdx);
-            const newRowIdx = updatedKeys.indexOf(key);
-            return result.set(genCellKey(colIdx, newRowIdx), value);
+            const newRowIdx = rowIndicesToKeep.indexOf(oldRowIdx);
+            return result.set(genCellKey(fieldKey, newRowIdx), value);
         };
         const cellMessages = editorModel.cellMessages.reduce(cellReducer, Map<string, CellMessage>());
         const cellValues = editorModel.cellValues.reduce(cellReducer, Map<string, ValueDescriptor>());
@@ -854,7 +854,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             deletedIds: editorModel.deletedIds.merge(deletedIds),
             focusColIdx: -1,
             focusRowIdx: -1,
-            rowCount: editorModel.rowCount - dataIdIndexes.size,
+            rowCount: editorModel.rowCount - rowIndicesToDelete.size,
             selectedColIdx: -1,
             selectedRowIdx: -1,
             selectionCells: [],
@@ -862,7 +862,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             cellValues,
         };
 
-        onChange(EditableGridEvent.REMOVE_ROWS, editorModelChanges, updatedKeys, updatedData);
+        onChange(EditableGridEvent.REMOVE_ROWS, editorModelChanges);
 
         this.setState({
             selected: Set<number>(),

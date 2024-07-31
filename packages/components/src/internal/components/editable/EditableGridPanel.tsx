@@ -55,7 +55,7 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
     const hasTabs = models.length > 1;
 
     const _onChange = useCallback<EditableGridChange>(
-        (event, editorModelChanges, dataKeys, data) => onChange(event, editorModelChanges, dataKeys, data, activeTab),
+        (event, editorModelChanges) => onChange(event, editorModelChanges, activeTab),
         [activeTab, onChange]
     );
 

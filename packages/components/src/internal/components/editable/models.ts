@@ -79,7 +79,8 @@ export interface EditorModelProps {
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
     id: string;
-    orderedColumns: List<string>; // List of fieldKeys visible in the grid
+    orderedColumns: List<string>; // List of fieldKeys for the visible columns in the grid
+    originalData: Map<string, Map<string, any>>; // The original data associated with this model if we're updating rows
     queryInfo: QueryInfo;
     rowCount: number;
     selectedColIdx: number;
@@ -138,13 +139,14 @@ export class EditorModel
         cellValues: Map<string, List<ValueDescriptor>>(),
         columnMap: Map<string, QueryColumn>,
         columnMetadata: Map<string, EditableColumnMetadata>(),
-        orderedColumns: List<string>(),
         deletedIds: ImmutableSet<any>(),
         focusColIdx: -1,
         focusRowIdx: -1,
         focusValue: undefined,
         id: undefined,
         isSparseSelection: false,
+        orderedColumns: List<string>(),
+        originalData: undefined,
         queryInfo: undefined,
         rowCount: 0,
         selectedColIdx: -1,
@@ -157,7 +159,6 @@ export class EditorModel
     declare cellValues: CellValues;
     declare columnMap: Map<string, QueryColumn>;
     declare columnMetadata: Map<string, EditableColumnMetadata>;
-    declare orderedColumns: List<string>;
     declare deletedIds: ImmutableSet<any>;
     declare focusColIdx: number;
     declare focusRowIdx: number;
@@ -166,6 +167,8 @@ export class EditorModel
     // NK: This is precomputed property that is updated whenever the selection is updated.
     // See applyEditableGridChangesToModels().
     declare isSparseSelection: boolean;
+    declare orderedColumns: List<string>;
+    declare originalData: Map<string, Map<string, any>>;
     declare queryInfo: QueryInfo;
     declare rowCount: number;
     declare selectedColIdx: number; // TODO: replace with selectedFieldKey
@@ -311,25 +314,18 @@ export class EditorModel
      */
     getDataForServerUpload(displayValues = true, forUpdate = false, forExport = false): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
-        // TODO: NEED REVIEWER INPUT. Would it be safe here to just use this.columnMap? It would include pk columns and
-        //  folder/container columns, which we currently special case below (see the if (forUpdate) clause below). I
-        //  think it may be safe to use this.columnMap because insert cases won't have those columns, but update cases
-        //  will, so things should just work™.
-        const columnMap = this.orderedColumns.reduce((map, fieldKey) => {
-            const col = this.queryInfo.getColumn(fieldKey);
-            // Log a warning but still retain the key in the map for column order
-            if (!col) console.warn(`Unable to resolve column "${fieldKey}". Cannot retrieve raw data.`);
-            return map.set(fieldKey, col);
-        }, OrderedMap<string, QueryColumn>());
-
+        // TODO: NEED REVIEWER INPUT. Is it safe to use this.columnMap below? It includes pk columns (which we used to
+        //  pull from queryModel rows when forUpdate is true) and folder/container columns. I think it is safe to use
+        //  this.columnMap because insert cases won't have those columns, but update cases will, so things should just
+        //  work™.
         for (let rn = 0; rn < this.rowCount; rn++) {
             let row = Map<string, any>();
-            columnMap.valueSeq().forEach(col => {
+            this.columnMap.valueSeq().forEach(col => {
                 if (!col) return;
                 const values = this.getValue(col.fieldKey, rn);
 
-                // Some column types have special handling of raw data, such as multi value columns like alias,
-                // so first check renderer for how to retrieve raw data
+                // Some column types have special handling of raw data, such as multi value columns like alias, so first
+                // check renderer for how to retrieve raw data
                 let renderer;
                 if (col.columnRenderer) {
                     renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
@@ -380,12 +376,6 @@ export class EditorModel
                     row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
                 }
             });
-
-            if (forUpdate) {
-                // TODO: for reviewers, should we also check for a Folder/Container column and add that as well? The
-                //  existence of appendFolderToRow implies yes, but I am not sure if we _always_ want to include it.
-                row = row.merge(this.getPkValues(rn));
-            }
 
             rawData = rawData.push(row);
         }
@@ -770,12 +760,8 @@ export interface EditableGridLoader extends GridLoader {
     requiredColumns?: string[];
 }
 
-export interface EditorModelAndGridData extends GridData {
-    editorModel: Partial<EditorModel>;
-}
-
 export interface EditorModelUpdates {
-    data?: Map<any, Map<string, any>>;
+    data?: Map<any, Map<string, any>>; // TODO: remove this
     editorModelChanges?: Partial<EditorModelProps>;
     queryInfo?: QueryInfo;
 }
@@ -785,6 +771,7 @@ export interface MessageAndValue {
     valueDescriptor: ValueDescriptor;
 }
 
+// TODO: remove this
 export interface EditableGridModels {
     dataModels: QueryModel[];
     editorModels: EditorModel[];

@@ -7,9 +7,7 @@ import { LoadingState } from '../../../public/LoadingState';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { GRID_EDIT_INDEX } from '../../constants';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
-import { GridData } from '../../models';
 import { formatDate, formatDateTime, parseDate } from '../../util/Date';
 import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
@@ -27,7 +25,6 @@ import {
     EditableGridModels,
     EditorMode,
     EditorModel,
-    EditorModelAndGridData,
     EditorModelUpdates,
     MessageAndValue,
     ValueDescriptor,
@@ -35,15 +32,10 @@ import {
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
 
-const EMPTY_ROW = Map<string, any>();
-let ID_COUNTER = 0;
-
 /**
- * @deprecated Use initEditableGridModel() or initEditableGridModels() instead.
- * This method does not make use the grid loader paradigm. Usages of this method directly
- * is susceptible to data misalignment errors with the associated view.
+ * Do not use this method directly, use initEditorModel instead
  */
-export const loadEditorModelData = async (
+const loadEditorModelData = async (
     queryModelData: Partial<QueryModel>,
     editorColumns?: QueryColumn[],
     forUpdate?: boolean
@@ -112,6 +104,9 @@ export const loadEditorModelData = async (
     };
 };
 
+// TODO: we should refactor EditableGridLoader to make queryModel irrelevant. Some cases like AssayImportPanels create
+//  what is essentially a fake QueryModel just to satisfy this arg. EditableGridPanelForUpdateWithLineage passes the
+//  same QueryModel to every loader (it uses initEditorModels).
 export const initEditorModel = async (
     queryModel: QueryModel,
     loader: EditableGridLoader,
@@ -124,6 +119,7 @@ export const initEditorModel = async (
     //  can most likely just drop loader as an arg, and have consumers pass in their QueryModel data (if any), and
     //  skip having QueryModel as an arg.
     const { data, dataIds } = await loader.fetch(queryModel);
+    // TODO: store rows and orderedRows on EditorModel so we can use it with getUpdatedDataFromEditableGrid
     const rows = data.toJS();
     const orderedRows = dataIds.toArray();
     const forUpdate = loader.mode === EditorMode.Update;
@@ -174,13 +170,22 @@ export const initEditorModel = async (
         columnMap: fromJS(columnMap),
         orderedColumns: fromJS(orderedColumns),
         id: queryModel.id,
+        originalData: data,
         queryInfo,
         rowCount: orderedRows.length,
     });
 };
 
+export const initEditorModels = async (
+    queryModels: QueryModel[],
+    loaders: EditableGridLoader[],
+    columnMetadata?: Array<Map<string, EditableColumnMetadata>>
+) => {
+    return await Promise.all(queryModels.map((qm, i) => initEditorModel(qm, loaders[i], columnMetadata?.[i])));
+};
+
 /**
- * @deprecated use EditorModel.init instead
+ * @deprecated use initEditorModel instead
  */
 export const initEditableGridModel = async (
     dataModel: QueryModel,
@@ -223,6 +228,9 @@ export const initEditableGridModel = async (
     };
 };
 
+/**
+ * @deprecated use initEditorModels instead
+ */
 export const initEditableGridModels = async (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
@@ -460,12 +468,7 @@ export async function addRows(
     let editorModelChanges: Partial<EditorModel>;
 
     if (rowData) {
-        editorModelChanges = await addRowsToEditorModel(
-            editorModel,
-            rowData.toList(),
-            numToAdd,
-            containerPath
-        );
+        editorModelChanges = await addRowsToEditorModel(editorModel, rowData.toList(), numToAdd, containerPath);
     } else {
         editorModelChanges = { rowCount: editorModel.rowCount + numToAdd };
     }
@@ -484,8 +487,6 @@ export async function addRows(
  */
 export function addColumns(
     editorModel: EditorModel,
-    queryInfo: QueryInfo,
-    originalData: Map<any, Map<string, any>>,
     queryColumns: ExtendedMap<string, QueryColumn>,
     fieldKey?: string
 ): EditorModelUpdates {
@@ -497,7 +498,7 @@ export function addColumns(
         : -1;
 
     const editorModelIndex = leftColIndex + 1;
-    const queryColIndex = queryInfo.getColumnIndex(fieldKey) + 1;
+    const queryColIndex = editorModel.queryInfo.getColumnIndex(fieldKey) + 1;
 
     // TODO: delete these commented out blocks after we've verified the new implementation is working correctly
     // const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
@@ -531,7 +532,7 @@ export function addColumns(
         });
     }
 
-    const data = originalData
+    const data = editorModel.originalData
         .map(rowData => {
             queryColumns.forEach(column => {
                 rowData = rowData.set(column.fieldKey, undefined);
@@ -558,14 +559,14 @@ export function addColumns(
             cellValues: newCellValues,
         },
         data,
-        queryInfo: queryInfo.mutate({ columns: queryInfo.columns.mergeAt(queryColIndex, queryColumns) }),
+        queryInfo: editorModel.queryInfo.mutate({
+            columns: editorModel.queryInfo.columns.mergeAt(queryColIndex, queryColumns),
+        }),
     };
 }
 
 export function changeColumn(
     editorModel: EditorModel,
-    queryInfo: QueryInfo,
-    originalData: Map<any, Map<string, any>>,
     existingFieldKey: string,
     newQueryColumn: QueryColumn
 ): EditorModelUpdates {
@@ -595,10 +596,10 @@ export function changeColumn(
         return cellValues;
     }, Map<string, List<ValueDescriptor>>());
 
-    const currentCol = queryInfo.getColumn(existingFieldKey);
+    const currentCol = editorModel.queryInfo.getColumn(existingFieldKey);
 
     // remove existing column and set new column in data
-    const data = originalData
+    const data = editorModel.originalData
         .map(rowData => {
             rowData = rowData.remove(currentCol.fieldKey);
             return rowData.set(newQueryColumn.fieldKey, undefined);
@@ -606,7 +607,7 @@ export function changeColumn(
         .toMap();
 
     const columns = new ExtendedMap<string, QueryColumn>();
-    queryInfo.columns.forEach((column, key) => {
+    editorModel.queryInfo.columns.forEach((column, key) => {
         if (column.fieldKey === currentCol.fieldKey) {
             columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
         } else {
@@ -631,16 +632,11 @@ export function changeColumn(
             cellValues: newCellValues,
         },
         data,
-        queryInfo: queryInfo.mutate({ columns }),
+        queryInfo: editorModel.queryInfo.mutate({ columns }),
     };
 }
 
-export function removeColumn(
-    editorModel: EditorModel,
-    queryInfo: QueryInfo,
-    originalData: Map<any, Map<string, any>>,
-    fieldKey: string
-): EditorModelUpdates {
+export function removeColumn(editorModel: EditorModel, fieldKey: string): EditorModelUpdates {
     const deleteIndex = editorModel.orderedColumns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey));
     // nothing to do if there is no such column
     if (deleteIndex === -1) return {};
@@ -669,7 +665,7 @@ export function removeColumn(
     }, Map<string, List<ValueDescriptor>>());
 
     // remove column from all rows in model data
-    const data = originalData.map(rowData => rowData.remove(fieldKey)).toMap();
+    const data = editorModel.originalData.map(rowData => rowData.remove(fieldKey)).toMap();
 
     let orderedColumns = editorModel.orderedColumns;
     if (deleteIndex > -1) {
@@ -688,8 +684,8 @@ export function removeColumn(
             cellValues: newCellValues,
         },
         data,
-        queryInfo: queryInfo.mutate({
-            columns: queryInfo.columns.filter(col => col.fieldKey.toLowerCase() !== fieldKey.toLowerCase()),
+        queryInfo: editorModel.queryInfo.mutate({
+            columns: editorModel.queryInfo.columns.filter(col => col.fieldKey.toLowerCase() !== fieldKey.toLowerCase()),
         }),
     };
 }
@@ -791,12 +787,7 @@ export async function addRowsPerPivotValue(
     if (numPerParent > 0) {
         for (const value of pivotValues) {
             rowData = rowData.set(pivotKey, value);
-            const changes = await addRowsToEditorModel(
-                editorModel,
-                rowData.toList(),
-                numPerParent,
-                containerPath
-            );
+            const changes = await addRowsToEditorModel(editorModel, rowData.toList(), numPerParent, containerPath);
             cellMessages = changes.cellMessages;
             cellValues = changes.cellValues;
             rowCount = changes.rowCount;
@@ -1219,7 +1210,7 @@ export async function dragFillEvent(
     forUpdate: boolean,
     targetContainerPath: string
 ): Promise<CellMessagesAndValues> {
-    const { columnMap, columnMetadata, queryInfo, selectionCells } = editorModel;
+    const { columnMap, columnMetadata, selectionCells } = editorModel;
     let { cellMessages, cellValues } = editorModel;
 
     // If the selection size hasn't changed, then the selection hasn't changed, so return the existing cellValues
@@ -1230,7 +1221,7 @@ export async function dragFillEvent(
         const { fieldKey } = parseCellKey(columnCells[0]);
         const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).fieldKey === fieldKey);
         const column = columnMap.get(fieldKey);
-        const metadata = columnMetadata.get(fieldKey);
+        const metadata = columnMetadata?.get(fieldKey);
 
         // Don't manipulate any values in read only columns
         if (column.readOnly) {

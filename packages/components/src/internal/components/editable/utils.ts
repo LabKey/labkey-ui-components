@@ -23,11 +23,36 @@ import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
 import { isBoolean, isFloat, isInteger } from '../../util/utils';
 
-import { EditorModel, EditorModelProps, EditableGridModels, CellMessage } from './models';
-import { CellActions, MODIFICATION_TYPES } from './constants';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-// TODO: remove dataKeys, data, queryInfo
+import { EditorModel, EditorModelProps, EditableGridModels, CellMessage } from './models';
+import { CellActions, MODIFICATION_TYPES } from './constants';
+
+export function applyEditorModelChanges(
+    models: EditorModel[],
+    changes: Partial<EditorModel>,
+    tabIndex = 0
+): EditorModel[] {
+    const updatedModels = [...models];
+    let editorModel = models[tabIndex].merge(changes) as EditorModel;
+    // NK: The "selectionCells" property is of type string[]. When merge() is used it utilizes
+    // Immutable.fromJS() which turns the Array into a List. We want to maintain the property
+    // as an Array so here we set it explicitly.
+    if (changes?.selectionCells !== undefined) {
+        const selectionCells = sortCellKeys(editorModel.orderedColumns.toArray(), changes.selectionCells);
+        editorModel = editorModel.set('selectionCells', selectionCells) as EditorModel;
+        editorModel = editorModel.set(
+            'isSparseSelection',
+            isSparseSelection(editorModel.orderedColumns.toArray(), selectionCells)
+        ) as EditorModel;
+    }
+    updatedModels[tabIndex] = editorModel;
+    return updatedModels;
+}
+
+/**
+ * @deprecated use applyEditorModelChanges
+ */
 export const applyEditableGridChangesToModels = (
     dataModels: QueryModel[],
     editorModels: EditorModel[],
@@ -37,30 +62,14 @@ export const applyEditableGridChangesToModels = (
     data?: Map<string, Map<string, any>>,
     tabIndex = 0
 ): EditableGridModels => {
-    const updatedEditorModels = [...editorModels];
-    let editorModel = editorModels[tabIndex].merge(editorModelChanges) as EditorModel;
-
-    // NK: The "selectionCells" property is of type string[]. When merge() is used it utilizes
-    // Immutable.fromJS() which turns the Array into a List. We want to maintain the property
-    // as an Array so here we set it explicitly.
-    if (editorModelChanges?.selectionCells !== undefined) {
-        const selectionCells = sortCellKeys(editorModel.orderedColumns.toArray(), editorModelChanges.selectionCells);
-        editorModel = editorModel.set('selectionCells', selectionCells) as EditorModel;
-        editorModel = editorModel.set(
-            'isSparseSelection',
-            isSparseSelection(editorModel.orderedColumns.toArray(), selectionCells)
-        ) as EditorModel;
-    }
-
-    updatedEditorModels.splice(tabIndex, 1, editorModel);
-
+    const updatedEditorModels = applyEditorModelChanges(editorModels, editorModelChanges, tabIndex);
     const updatedDataModels = [...dataModels];
     const orderedRows = dataKeys?.toJS();
     const rows = data?.toJS();
     if (orderedRows && rows) {
         let dataModel = dataModels[tabIndex].mutate({ orderedRows, rows });
         if (queryInfo) dataModel = dataModels[tabIndex].mutate({ queryInfo });
-        updatedDataModels.splice(tabIndex, 1, dataModel);
+        updatedDataModels[tabIndex] = dataModel;
     }
 
     return {
@@ -234,13 +243,10 @@ interface EditableGridUpdatedData {
 }
 
 export const getUpdatedDataFromEditableGrid = (
-    dataModels: QueryModel[],
     editorModels: EditorModel[],
-    idField: string,
-    selectionData?: Map<string, any>,
+    bulkEditData?: Map<string, any>,
     tabIndex = 0
 ): EditableGridUpdatedData => {
-    const model = dataModels[tabIndex];
     const editorModel = editorModels[tabIndex];
 
     if (!editorModel) {
@@ -248,17 +254,15 @@ export const getUpdatedDataFromEditableGrid = (
         return null;
     }
 
-    // Issue 37842: if we have data for the selection, this was the data that came from the display grid and was used
-    // to populate the queryInfoForm. If we don't have this data, we came directly to the editable grid
-    // using values from the display grid to initialize the editable grid model, so we use that.
-    const initData = selectionData ?? fromJS(model.rows);
-    const editorData = editorModel.getRawDataFromModel(model, true, true, false).toArray();
-
+    // If we have data from bulk edit then we need to use that as originalData instead of the data on the EditorModel
+    // otherwise we'll incorrectly diff the changes when we call getUpdatedDataFromGrid below.
+    const originalData = bulkEditData ?? editorModel.originalData;
+    const editorData = editorModel.getDataForServerUpload(true, true, false).toArray();
     return {
-        originalRows: model.rows,
-        schemaQuery: model.queryInfo.schemaQuery,
+        originalRows: editorModel.toJS(),
+        schemaQuery: editorModel.queryInfo.schemaQuery,
         tabIndex,
-        updatedRows: getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo),
+        updatedRows: getUpdatedDataFromGrid(originalData, editorData, editorModel.pkFieldKey, editorModel.queryInfo),
     };
 };
 
@@ -317,7 +321,8 @@ export function sortCellKeys(orderedColumns: string[], cellKeys: string[]): stri
     return Array.from(new Set(cellKeys)).sort((a, b) => {
         const aCoords = parseCellKey(a);
         const bCoords = parseCellKey(b);
-        if (aCoords.rowIdx === bCoords.rowIdx) return orderedColumns.indexOf(aCoords.fieldKey) - orderedColumns.indexOf(bCoords.fieldKey);
+        if (aCoords.rowIdx === bCoords.rowIdx)
+            return orderedColumns.indexOf(aCoords.fieldKey) - orderedColumns.indexOf(bCoords.fieldKey);
         return aCoords.rowIdx - bCoords.rowIdx;
     });
 }

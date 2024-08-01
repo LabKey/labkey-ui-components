@@ -86,7 +86,6 @@ interface Props {
     onTextChange: (value: any) => void;
     operation: Operation;
     plateSupportEnabled?: boolean;
-    queryModel: QueryModel;
     runPropertiesRow?: Record<string, any>;
     setIsDirty?: (isDirty: boolean) => void;
     showTabs?: boolean;
@@ -242,7 +241,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
             currentStep,
             editorModel,
             maxEditableGridRowMsg,
-            queryModel,
             showTabs,
             wizardModel,
             getIsDirty,
@@ -251,7 +249,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
             onResultsFileRemoval,
         } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
-        const isLoading = !wizardModel.isInit || queryModel.isLoading;
+        const isLoading = !wizardModel.isInit;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
         const columnMetadata = this.getEditableGridColumnMetadata();
         const fileColumnNames = isAssayFileUploadEnabled()
@@ -308,7 +306,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             lockLeftOnScroll={false}
                                             maxRows={this.props.maxRows}
                                             metricFeatureArea="assayResultsEditableGrid"
-                                            model={queryModel}
+                                            model={undefined}
                                             onChange={this.props.onGridChange}
                                             getIsDirty={getIsDirty}
                                             setIsDirty={setIsDirty}

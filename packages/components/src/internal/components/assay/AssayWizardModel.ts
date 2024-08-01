@@ -163,7 +163,7 @@ export class AssayWizardModel
         return false;
     }
 
-    prepareFormData(currentStep: number, editorModel: EditorModel, queryModel: QueryModel): AssayUploadOptions {
+    prepareFormData(currentStep: number, editorModel: EditorModel): AssayUploadOptions {
         const {
             batchId,
             batchProperties,
@@ -243,7 +243,7 @@ export class AssayWizardModel
      * This method instantiates the initial data used in the editable grid during assay upload, it includes data for
      * an EditorModel and QueryModel.
      */
-    async getInitialGridData(): Promise<{ editorModel: Partial<EditorModel>; queryModel: Partial<QueryModel> }> {
+    async getInitialEditorModel(): Promise<EditorModel> {
         const { assayDef, selectedSamples } = this;
         const sampleColumnData = assayDef.getSampleColumn();
         const sampleColInResults = sampleColumnData && sampleColumnData.domain === AssayDomainTypes.RESULT;
@@ -252,8 +252,6 @@ export class AssayWizardModel
         const rows = hasSamples ? selectedSamples : Map<string, Map<string, any>>({});
         const loader = new AssayWizardModelEditableGridLoader(this.queryInfo, rows);
         const dataModel = new QueryModel({ schemaQuery: this.queryInfo.schemaQuery }).mutate({ queryInfo: this.queryInfo });
-        const editorModel = await initEditorModel(dataModel, loader);
-        // TODO: don't return dataModel, as it's not really needed.
-        return { editorModel, queryModel: dataModel };
+        return await initEditorModel(dataModel, loader);
     }
 }

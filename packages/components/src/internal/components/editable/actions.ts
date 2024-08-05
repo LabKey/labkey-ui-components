@@ -25,7 +25,6 @@ import {
     EditableGridModels,
     EditorMode,
     EditorModel,
-    EditorModelUpdates,
     MessageAndValue,
     ValueDescriptor,
 } from './models';
@@ -489,7 +488,7 @@ export function addColumns(
     editorModel: EditorModel,
     queryColumns: ExtendedMap<string, QueryColumn>,
     fieldKey?: string
-): EditorModelUpdates {
+): Partial<EditorModel> {
     if (queryColumns.size === 0) return {};
 
     // if fieldKey is provided, find that index and we will insert after it (or at the beginning if there is no such field)
@@ -500,68 +499,35 @@ export function addColumns(
     const editorModelIndex = leftColIndex + 1;
     const queryColIndex = editorModel.queryInfo.getColumnIndex(fieldKey) + 1;
 
-    // TODO: delete these commented out blocks after we've verified the new implementation is working correctly
-    // const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
-    //     const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-    //     if (oldColIdx >= editorModelIndex) {
-    //         return cellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
-    //     } else if (oldColIdx < editorModelIndex) {
-    //         return cellMessages.set(cellKey, message);
-    //     }
-    //
-    //     return cellMessages;
-    // }, Map<string, CellMessage>());
-
-    // let newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
-    //     const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-    //
-    //     if (oldColIdx >= editorModelIndex) {
-    //         return cellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
-    //     } else if (oldColIdx < editorModelIndex) {
-    //         return cellValues.set(cellKey, value);
-    //     }
-    //
-    //     return cellValues;
-    // }, Map<string, List<ValueDescriptor>>());
-
     let newCellValues = editorModel.cellValues;
 
     for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
+        // eslint-disable-next-line no-loop-func
         queryColumns.forEach((value: QueryColumn) => {
             newCellValues = newCellValues.set(genCellKey(value.fieldKey, rowIdx), List<ValueDescriptor>());
         });
     }
 
-    const data = editorModel.originalData
-        .map(rowData => {
-            queryColumns.forEach(column => {
-                rowData = rowData.set(column.fieldKey, undefined);
-            });
-            return rowData;
-        })
-        .toMap();
-
-    let { orderedColumns } = editorModel;
+    let { orderedColumns, columnMap } = editorModel;
     queryColumns.valueArray.forEach((col, i) => {
         orderedColumns = orderedColumns.insert(i + editorModelIndex, col.fieldKey);
+        columnMap = columnMap.set(col.fieldKey, col);
     });
-    orderedColumns = orderedColumns.toList();
+    const queryInfo = editorModel.queryInfo.mutate({
+        columns: editorModel.queryInfo.columns.mergeAt(queryColIndex, queryColumns),
+    });
 
     return {
-        editorModelChanges: {
-            orderedColumns,
-            focusColIdx: -1,
-            focusRowIdx: -1,
-            selectedColIdx: -1,
-            selectedRowIdx: -1,
-            selectionCells: [],
-            cellMessages: editorModel.cellMessages,
-            cellValues: newCellValues,
-        },
-        data,
-        queryInfo: editorModel.queryInfo.mutate({
-            columns: editorModel.queryInfo.columns.mergeAt(queryColIndex, queryColumns),
-        }),
+        cellMessages: editorModel.cellMessages,
+        cellValues: newCellValues,
+        columnMap,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        orderedColumns,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: [],
+        queryInfo,
     };
 }
 
@@ -569,124 +535,76 @@ export function changeColumn(
     editorModel: EditorModel,
     existingFieldKey: string,
     newQueryColumn: QueryColumn
-): EditorModelUpdates {
+): Partial<EditorModel> {
     const colIndex = editorModel.orderedColumns.findIndex(column =>
         Utils.caseInsensitiveEquals(column, existingFieldKey)
     );
     // nothing to do if there is no such column
     if (colIndex === -1) return {};
 
-    // get rid of existing messages and values at the designated index.
-    const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
-        const [oldColIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-        if (oldColIdx !== colIndex) {
-            return cellMessages.set(cellKey, message);
-        }
+    let { cellMessages, cellValues, columnMap } = editorModel;
 
-        return cellMessages;
-    }, Map<string, CellMessage>());
-
-    const newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
-        const [oldColIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-
-        if (oldColIdx !== colIndex) {
-            return cellValues.set(cellKey, value);
-        }
-
-        return cellValues;
-    }, Map<string, List<ValueDescriptor>>());
-
-    const currentCol = editorModel.queryInfo.getColumn(existingFieldKey);
-
-    // remove existing column and set new column in data
-    const data = editorModel.originalData
-        .map(rowData => {
-            rowData = rowData.remove(currentCol.fieldKey);
-            return rowData.set(newQueryColumn.fieldKey, undefined);
-        })
-        .toMap();
-
-    const columns = new ExtendedMap<string, QueryColumn>();
-    editorModel.queryInfo.columns.forEach((column, key) => {
-        if (column.fieldKey === currentCol.fieldKey) {
-            columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
-        } else {
-            columns.set(key, column);
-        }
-    });
-
-    let orderedColumns = editorModel.orderedColumns;
-    if (colIndex > -1) {
-        orderedColumns = orderedColumns.set(colIndex, newQueryColumn.fieldKey);
+    // Delete the existing data and initialize cells for the new column.
+    for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
+        const existingCellKey = genCellKey(existingFieldKey, rowIdx);
+        const updatedCellKey = genCellKey(newQueryColumn.fieldKey, rowIdx);
+        cellValues = cellValues.delete(existingCellKey);
+        cellValues = cellValues.set(updatedCellKey, List());
+        cellMessages = cellMessages.delete(existingCellKey);
+        cellMessages = cellMessages.set(updatedCellKey, undefined);
     }
 
+    columnMap = columnMap.delete(existingFieldKey);
+    columnMap = columnMap.set(newQueryColumn.fieldKey, newQueryColumn);
+    const columns = new ExtendedMap<string, QueryColumn>(editorModel.queryInfo.columns);
+    columns.delete(existingFieldKey.toLowerCase());
+    columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
+
     return {
-        editorModelChanges: {
-            orderedColumns,
-            focusColIdx: -1,
-            focusRowIdx: -1,
-            selectedColIdx: -1,
-            selectedRowIdx: -1,
-            selectionCells: [],
-            cellMessages: newCellMessages,
-            cellValues: newCellValues,
-        },
-        data,
+        cellMessages,
+        cellValues,
+        columnMap,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        orderedColumns: editorModel.orderedColumns.set(colIndex, newQueryColumn.fieldKey),
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: [],
         queryInfo: editorModel.queryInfo.mutate({ columns }),
     };
 }
 
-export function removeColumn(editorModel: EditorModel, fieldKey: string): EditorModelUpdates {
+export function removeColumn(editorModel: EditorModel, fieldKey: string): Partial<EditorModel> {
     const deleteIndex = editorModel.orderedColumns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey));
     // nothing to do if there is no such column
     if (deleteIndex === -1) return {};
 
-    const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-        if (oldColIdx > deleteIndex) {
-            return cellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
-        } else if (oldColIdx < deleteIndex) {
-            return cellMessages.set(cellKey, message);
-        }
+    let { cellMessages, cellValues, columnMap } = editorModel;
 
-        return cellMessages;
-    }, Map<string, CellMessage>());
+    columnMap = columnMap.delete(fieldKey);
 
-    const newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-
-        if (oldColIdx > deleteIndex) {
-            return cellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
-        } else if (oldColIdx < deleteIndex) {
-            return cellValues.set(cellKey, value);
-        }
-
-        return cellValues;
-    }, Map<string, List<ValueDescriptor>>());
-
-    // remove column from all rows in model data
-    const data = editorModel.originalData.map(rowData => rowData.remove(fieldKey)).toMap();
-
-    let orderedColumns = editorModel.orderedColumns;
-    if (deleteIndex > -1) {
-        orderedColumns = orderedColumns.remove(deleteIndex);
+    // Delete the existing data and initialize cells for the new column.
+    for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
+        const cellkey = genCellKey(fieldKey, rowIdx);
+        cellValues = cellValues.delete(cellkey);
+        cellMessages = cellMessages.delete(cellkey);
     }
 
+    const columns = new ExtendedMap<string, QueryColumn>(editorModel.queryInfo.columns);
+    columns.delete(fieldKey.toLowerCase());
+    const queryInfo = editorModel.queryInfo.mutate({ columns });
+
     return {
-        editorModelChanges: {
-            orderedColumns,
-            focusColIdx: -1,
-            focusRowIdx: -1,
-            selectedColIdx: -1,
-            selectedRowIdx: -1,
-            selectionCells: [],
-            cellMessages: newCellMessages,
-            cellValues: newCellValues,
-        },
-        data,
-        queryInfo: editorModel.queryInfo.mutate({
-            columns: editorModel.queryInfo.columns.filter(col => col.fieldKey.toLowerCase() !== fieldKey.toLowerCase()),
-        }),
+        cellMessages,
+        cellValues,
+        columnMap,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        orderedColumns: editorModel.orderedColumns.remove(deleteIndex),
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: [],
+        queryInfo,
     };
 }
 

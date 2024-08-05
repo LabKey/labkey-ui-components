@@ -1864,7 +1864,6 @@ export type {
     EditableGridLoader,
     EditableGridModels,
     EditorModelProps,
-    EditorModelUpdates,
     GridLoader,
     GridResponse,
 } from './internal/components/editable/models';

@@ -760,12 +760,6 @@ export interface EditableGridLoader extends GridLoader {
     requiredColumns?: string[];
 }
 
-export interface EditorModelUpdates {
-    data?: Map<any, Map<string, any>>; // TODO: remove this
-    editorModelChanges?: Partial<EditorModelProps>;
-    queryInfo?: QueryInfo;
-}
-
 export interface MessageAndValue {
     message?: CellMessage;
     valueDescriptor: ValueDescriptor;

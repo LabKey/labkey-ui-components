@@ -15,10 +15,12 @@ import { Alert } from '../../internal/components/base/Alert';
 
 import { useDataChangeCommentsRequired } from '../../internal/components/forms/input/useDataChangeCommentsRequired';
 import { CommentTextArea } from '../../internal/components/forms/input/CommentTextArea';
+
+import { useAppContext } from '../../internal/AppContext';
+
 import { QueryModel } from './QueryModel';
 
 import { DetailPanel, DetailPanelWithModel } from './DetailPanel';
-import { useAppContext } from '../../internal/AppContext';
 
 export interface EditableDetailPanelProps {
     appEditable?: boolean;
@@ -34,9 +36,9 @@ export interface EditableDetailPanelProps {
     model: QueryModel;
     onAdditionalFormDataChange?: (name: string, value: any) => any;
     onBeforeUpdate?: (row: Record<string, any>) => void;
+    onCommentChange?: (comment: string) => void;
     onEditToggle?: (editing: boolean) => void;
     onUpdate: () => void;
-    onCommentChange?: (comment: string) => void;
     queryColumns?: QueryColumn[];
     submitText?: string;
     title?: string;
@@ -63,7 +65,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         submitText,
         title,
         onAdditionalFormDataChange,
-    } =  props;
+    } = props;
 
     const { api } = useAppContext();
     const [canSubmit, setCanSubmit] = useState<boolean>(false);
@@ -72,10 +74,13 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     const [warning, setWarning] = useState<string>(undefined);
     const [comment, setComment] = useState<string>();
     const { requiresUserComment } = useDataChangeCommentsRequired();
-    const _onCommentChange = useCallback(_comment => {
-        setComment(_comment);
-        onCommentChange?.(_comment);
-    }, [onCommentChange]);
+    const _onCommentChange = useCallback(
+        _comment => {
+            setComment(_comment);
+            onCommentChange?.(_comment);
+        },
+        [onCommentChange]
+    );
 
     const hasValidUserComment = comment?.trim()?.length > 0;
 
@@ -95,7 +100,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         setCanSubmit(true);
     }, []);
 
-   const handleFormChange = useCallback((): void => {
+    const handleFormChange = useCallback((): void => {
         setWarning(undefined);
     }, []);
 
@@ -104,49 +109,51 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     }, []);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleSubmit = useCallback(async (values: Record<string, any>): Promise<void> => {
-        const { queryInfo } = model;
-        const row = model.getRow();
-        const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
+    const handleSubmit = useCallback(
+        async (values: Record<string, any>): Promise<void> => {
+            const { queryInfo } = model;
+            const row = model.getRow();
+            const updatedValues = extractChanges(queryInfo, fromJS(model.getRow()), values);
 
-        if (Object.keys(updatedValues).length === 0) {
-            setCanSubmit(false);
-            setError(undefined);
-            setWarning('No changes detected. Please update the form and click save.');
-            return;
-        }
-
-        // iterate the set of pkCols for this QueryInfo -- include value from queryData
-        queryInfo.getPkCols().forEach(pkCol => {
-            const pkVal = row[pkCol.fieldKey]?.value;
-
-            if (pkVal !== undefined && pkVal !== null) {
-                updatedValues[pkCol.fieldKey] = pkVal;
-            } else {
-                console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
+            if (Object.keys(updatedValues).length === 0) {
+                setCanSubmit(false);
+                setError(undefined);
+                setWarning('No changes detected. Please update the form and click save.');
+                return;
             }
-        });
 
-        try {
-            onBeforeUpdate?.(updatedValues);
+            // iterate the set of pkCols for this QueryInfo -- include value from queryData
+            queryInfo.getPkCols().forEach(pkCol => {
+                const pkVal = row[pkCol.fieldKey]?.value;
 
-            await api.query.updateRows({
-                auditBehavior: AuditBehaviorTypes.DETAILED,
-                containerPath,
-                rows: [updatedValues],
-                schemaQuery: queryInfo.schemaQuery,
-                auditUserComment: comment,
+                if (pkVal !== undefined && pkVal !== null) {
+                    updatedValues[pkCol.fieldKey] = pkVal;
+                } else {
+                    console.warn('Unable to find value for pkCol "' + pkCol.fieldKey + '"');
+                }
             });
 
-           setEditing(false);
-           onUpdate?.(); // eslint-disable-line no-unused-expressions
-           onEditToggle?.(false); // eslint-disable-line no-unused-expressions
-        } catch (e) {
-            setError(resolveErrorMessage(e, 'data', undefined, 'update'));
-            setWarning(undefined);
-        }
-    }, [model, onBeforeUpdate, api.query, containerPath, comment, onUpdate, onEditToggle]);
+            try {
+                onBeforeUpdate?.(updatedValues);
 
+                await api.query.updateRows({
+                    auditBehavior: AuditBehaviorTypes.DETAILED,
+                    containerPath,
+                    rows: [updatedValues],
+                    schemaQuery: queryInfo.schemaQuery,
+                    auditUserComment: comment,
+                });
+
+                setEditing(false);
+                onUpdate?.(); // eslint-disable-line no-unused-expressions
+                onEditToggle?.(false); // eslint-disable-line no-unused-expressions
+            } catch (e) {
+                setError(resolveErrorMessage(e, 'data', undefined, 'update'));
+                setWarning(undefined);
+            }
+        },
+        [model, onBeforeUpdate, api.query, containerPath, comment, onUpdate, onEditToggle]
+    );
 
     const isEditable = !model.isLoading && model.hasRows && (model.queryInfo?.isAppEditable() || appEditable);
 
@@ -223,7 +230,11 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
                         requiresUserComment={requiresUserComment}
                         inline
                     />
-                    <button className="btn btn-success" type="submit" disabled={!canSubmit || (requiresUserComment && !hasValidUserComment) || disabled}>
+                    <button
+                        className="btn btn-success"
+                        type="submit"
+                        disabled={!canSubmit || (requiresUserComment && !hasValidUserComment) || disabled}
+                    >
                         {submitText}
                     </button>
                 </FormButtons>
@@ -234,8 +245,8 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     }
 
     return panel;
-}
+};
 
 EditableDetailPanel.defaultProps = {
     submitText: 'Save',
-}
+};

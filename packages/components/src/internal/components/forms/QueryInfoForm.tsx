@@ -25,7 +25,6 @@ import { Modal } from '../../Modal';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { FormButtons } from '../../FormButtons';
 
-import { Formsy } from './formsy';
 import { SampleCreationTypeModel } from '../samples/models';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { formatDate, formatDateTime } from '../../util/Date';
@@ -35,6 +34,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { getAppHomeFolderPath } from '../../app/utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { Formsy } from './formsy';
 
 import { QueryInfoQuantity } from './QueryInfoQuantity';
 import { QueryFormInputs, QueryFormInputsProps } from './QueryFormInputs';

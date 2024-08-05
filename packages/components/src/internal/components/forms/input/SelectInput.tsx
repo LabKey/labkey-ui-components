@@ -22,12 +22,7 @@ import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 import { FormsyInjectedProps, withFormsy } from '../formsy';
-import {
-    DELIMITER,
-    INPUT_CONTAINER_CLASS_NAME,
-    INPUT_LABEL_CLASS_NAME,
-    INPUT_WRAPPER_CLASS_NAME,
-} from '../constants';
+import { DELIMITER, INPUT_CONTAINER_CLASS_NAME, INPUT_LABEL_CLASS_NAME, INPUT_WRAPPER_CLASS_NAME } from '../constants';
 import { QueryColumn } from '../../../../public/QueryColumn';
 import { generateId } from '../../../util/utils';
 

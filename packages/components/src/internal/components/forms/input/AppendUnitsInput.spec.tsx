@@ -4,6 +4,7 @@ import { mount } from 'enzyme';
 import { QueryColumn } from '../../../../public/QueryColumn';
 
 import { Formsy } from '../formsy';
+
 import { FormsyInput } from './FormsyReactComponents';
 
 import { AppendUnitsInput } from './AppendUnitsInput';

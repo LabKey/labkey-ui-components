@@ -14,21 +14,15 @@ const TYPES = {
     isString: ['', 'Hello', 'Goodbye'],
 };
 
-const VALUES = [
-    null,
-    ...TYPES.isDate,
-    ...TYPES.isFunction,
-    ...TYPES.isObject,
-    ...TYPES.isString,
-];
+const VALUES = [null, ...TYPES.isDate, ...TYPES.isFunction, ...TYPES.isObject, ...TYPES.isString];
 
 describe('utils', () => {
     // For each function in types
-    Object.keys(TYPES).forEach((isFn) => {
+    Object.keys(TYPES).forEach(isFn => {
         // Create a test for that functiojn
         it(isFn, () => {
             // For each value in values
-            VALUES.forEach((value) => {
+            VALUES.forEach(value => {
                 // Make sure that if it is in that types TYPES array, it returns true
                 expect(utils[isFn](value)).toBe(TYPES[isFn].includes(value));
             });
@@ -51,10 +45,12 @@ describe('utils', () => {
         expect(utils.runRules('', {}, {}, {})).toEqual({ errors: [], failed: [], success: [] });
 
         expect(() => utils.runRules('', {}, { rule: () => {} }, { rule: () => {} })).toThrow(
-            'Formsy does not allow you to override default validations: rule',
+            'Formsy does not allow you to override default validations: rule'
         );
 
-        expect(() => utils.runRules('', {}, { rule: true }, {})).toThrow('Formsy does not have the validation rule: rule');
+        expect(() => utils.runRules('', {}, { rule: true }, {})).toThrow(
+            'Formsy does not have the validation rule: rule'
+        );
 
         expect(utils.runRules('', {}, { rule: () => 'Error' }, {})).toEqual({
             errors: ['Error'],

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import React, { FC, memo, useMemo } from 'react';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
 

@@ -15,9 +15,12 @@ type FormsyInputProps = Omit<React.HTMLProps<HTMLInputElement>, 'required' | 'va
 
 const TestInput = withFormsy<FormsyInputProps, any>(props => {
     const { setValue, type } = props;
-    const onChange = useCallback(evt => {
-        setValue(evt.target[type === 'checkbox' ? 'checked' : 'value']);
-    }, [setValue, type]);
+    const onChange = useCallback(
+        evt => {
+            setValue(evt.target[type === 'checkbox' ? 'checked' : 'value']);
+        },
+        [setValue, type]
+    );
 
     return (
         <input
@@ -62,7 +65,7 @@ const DynamicInputForm: FC<DynamicInputFormProps> = props => {
     );
 };
 
-type TestComponentProps = { testId?: string; name?: string } & FormsyInjectedProps<string>;
+type TestComponentProps = { name?: string; testId?: string } & FormsyInjectedProps<string>;
 
 class TestComponent extends React.Component<TestComponentProps> {
     render() {
@@ -122,7 +125,7 @@ describe('Formsy', () => {
 
             function TestForm() {
                 return (
-                    <Formsy onSubmit={(formModel) => submitSpy(formModel)} data-testid="form">
+                    <Formsy onSubmit={formModel => submitSpy(formModel)} data-testid="form">
                         <h1>Test</h1>
                         {null}
                         {undefined}
@@ -142,7 +145,7 @@ describe('Formsy', () => {
         it('should allow for inputs being added dynamically', () => {
             const submitSpy = jest.fn();
 
-            const screen = render(<DynamicInputForm onSubmit={(formModel) => submitSpy(formModel)} inputName="test" />);
+            const screen = render(<DynamicInputForm onSubmit={formModel => submitSpy(formModel)} inputName="test" />);
             const form = screen.getByTestId('form');
             const addInputBtn = screen.getByTestId('add-input-btn');
 
@@ -155,7 +158,7 @@ describe('Formsy', () => {
         it('should allow dynamically added inputs to update the form-model', () => {
             const submitSpy = jest.fn();
 
-            const screen = render(<DynamicInputForm onSubmit={(formModel) => submitSpy(formModel)} inputName="test" />);
+            const screen = render(<DynamicInputForm onSubmit={formModel => submitSpy(formModel)} inputName="test" />);
             const form = screen.getByTestId('form');
             const addInputBtn = screen.getByTestId('add-input-btn');
 
@@ -184,7 +187,7 @@ describe('Formsy', () => {
                 render() {
                     const { inputValue } = this.state;
                     return (
-                        <Formsy onSubmit={(formModel) => submitSpy(formModel)} data-testid="form">
+                        <Formsy onSubmit={formModel => submitSpy(formModel)} data-testid="form">
                             <TestInput name="test" value={inputValue} testId="test-input" />
                             <button type="button" onClick={this.updateInputValue} data-testid="update-btn">
                                 Update
@@ -211,7 +214,7 @@ describe('Formsy', () => {
 
     describe('mapModel', () => {
         it('should honor mapModel transformations', () => {
-            const mapping = jest.fn((model) => ({
+            const mapping = jest.fn(model => ({
                 ...model,
                 testChange: true,
             }));
@@ -235,7 +238,7 @@ describe('Formsy', () => {
                 { 'parent.child': 'test', testChange: true },
                 expect.any(Function),
                 expect.any(Function),
-                expect.any(Object),
+                expect.any(Object)
             );
         });
     });
@@ -251,7 +254,7 @@ describe('Formsy', () => {
             const screen = render(
                 <Formsy>
                     <TestInput name="one" validations="runRule" value="foo" testId="test-input" />
-                </Formsy>,
+                </Formsy>
             );
 
             const input = screen.getByTestId('test-input');
@@ -326,7 +329,9 @@ describe('Formsy', () => {
                     return (
                         <Formsy ref={this.formRef} onInvalid={isInValidSpy} onValid={isValidSpy}>
                             <TestInput name="one" validations="isEmail" value="foo@bar.com" />
-                            {this.state.showSecondInput ? <TestInput name="two" validations="isEmail" value="foo@bar" /> : null}
+                            {this.state.showSecondInput ? (
+                                <TestInput name="two" validations="isEmail" value="foo@bar" />
+                            ) : null}
                             <button type="button" onClick={this.addInput} data-testid="add-input-btn" />
                         </Formsy>
                     );
@@ -365,7 +370,9 @@ describe('Formsy', () => {
                     return (
                         <Formsy ref={this.formRef} onValid={isValidSpy} onInvalid={isInValidSpy}>
                             <TestInput name="one" validations="isEmail" value="foo@bar.com" />
-                            {this.state.showSecondInput ? <TestInput name="two" validations="isEmail" value="foo@bar" /> : null}
+                            {this.state.showSecondInput ? (
+                                <TestInput name="two" validations="isEmail" value="foo@bar" />
+                            ) : null}
                             <button type="button" onClick={this.removeInput} data-testid="remove-input-btn" />
                         </Formsy>
                     );
@@ -391,7 +398,7 @@ describe('Formsy', () => {
             const screen = render(
                 <Formsy>
                     <TestInput name="one" validations="ruleA,ruleB" value="foo" testId="test-input" />
-                </Formsy>,
+                </Formsy>
             );
 
             const input = screen.getByTestId('test-input');
@@ -420,7 +427,7 @@ describe('Formsy', () => {
             const screen = render(
                 <Formsy onChange={hasChanged}>
                     <TestInput name="foo" value="" testId="test-input" />
-                </Formsy>,
+                </Formsy>
             );
 
             fireEvent.change(screen.getByTestId('test-input'), { target: { value: 'bar' } });
@@ -512,7 +519,7 @@ describe('Formsy', () => {
                     };
                 }
 
-                onChange = (values) => {
+                onChange = values => {
                     this.setState(values.foo ? { validationErrors: {} } : { validationErrors: { foo: 'bar' } });
                 };
 
@@ -641,7 +648,7 @@ describe('Formsy', () => {
                 { foo: false },
                 expect.any(Function),
                 expect.any(Function),
-                expect.any(Object),
+                expect.any(Object)
             );
         });
 
@@ -685,7 +692,7 @@ describe('Formsy', () => {
                 { foo: false },
                 expect.any(Function),
                 expect.any(Function),
-                expect.any(Object),
+                expect.any(Object)
             );
         });
 
@@ -759,7 +766,7 @@ describe('Formsy', () => {
         });
 
         it('should be able to set a value to components with updateInputsWithValue', () => {
-            class TestForm extends React.Component<{}, { valueFoo: boolean; valueBar: boolean }> {
+            class TestForm extends React.Component<{}, { valueBar: boolean; valueFoo: boolean }> {
                 formRef = React.createRef<Formsy>();
 
                 constructor(props) {
@@ -800,7 +807,7 @@ describe('Formsy', () => {
         });
 
         it('should be able to reset the form using custom data', () => {
-            class TestForm extends React.Component<{}, { value: number; }> {
+            class TestForm extends React.Component<{}, { value: number }> {
                 formRef = React.createRef<Formsy>();
 
                 constructor(props) {
@@ -918,7 +925,7 @@ describe('Formsy', () => {
             render(
                 <Formsy onChange={hasOnChanged} ref={formRef}>
                     <TestInput name="one" value="foo" />
-                </Formsy>,
+                </Formsy>
             );
 
             expect(formRef.current.isChanged()).toEqual(false);
@@ -930,7 +937,7 @@ describe('Formsy', () => {
             const screen = render(
                 <Formsy onChange={hasOnChanged}>
                     <TestInput name="one" value="foo" testId="test-input" />
-                </Formsy>,
+                </Formsy>
             );
             const input = screen.getByTestId('test-input');
             fireEvent.change(input, {
@@ -945,7 +952,7 @@ describe('Formsy', () => {
             const screen = render(
                 <Formsy onChange={hasOnChanged}>
                     <TestInput name="one" value="foo" testId="test-input" />
-                </Formsy>,
+                </Formsy>
             );
             const input = screen.getByTestId('test-input');
             fireEvent.change(input, {
@@ -1017,7 +1024,7 @@ describe('Formsy', () => {
                     }
                 };
 
-                public componentDidCatch(error: Error) {
+                componentDidCatch(error: Error) {
                     errorSpy(error);
                 }
 
@@ -1034,7 +1041,7 @@ describe('Formsy', () => {
             const form = screen.getByTestId('form');
             fireEvent.submit(form);
             expect(errorSpy).toHaveBeenCalledWith(
-                expect.stringContaining('You are trying to update an input that does not exist'),
+                expect.stringContaining('You are trying to update an input that does not exist')
             );
             mockConsoleError.mockRestore();
         });
@@ -1069,9 +1076,17 @@ describe('Formsy', () => {
 
                 render() {
                     return (
-                        <Formsy onInvalid={this.onInvalid} onValid={this.onValid} validationErrors={this.state.validationErrors}>
+                        <Formsy
+                            onInvalid={this.onInvalid}
+                            onValid={this.onValid}
+                            validationErrors={this.state.validationErrors}
+                        >
                             <TestInput name="foo" />
-                            <button type="button" onClick={() => this.setValidationErrors()} data-testid="validation-btn" />
+                            <button
+                                type="button"
+                                onClick={() => this.setValidationErrors()}
+                                data-testid="validation-btn"
+                            />
                         </Formsy>
                     );
                 }
@@ -1122,7 +1137,11 @@ describe('Formsy', () => {
                             validationErrors={this.state.validationErrors}
                         >
                             <TestInput name="foo" />
-                            <button type="button" onClick={() => this.setValidationErrors()} data-testid="validation-btn" />
+                            <button
+                                type="button"
+                                onClick={() => this.setValidationErrors()}
+                                data-testid="validation-btn"
+                            />
                         </Formsy>
                     );
                 }
@@ -1149,7 +1168,12 @@ describe('Formsy', () => {
                             +
                         </button>
                         {Array.from(Array(counter)).map((_, index) => (
-                            <TestInput key={index} name={`foo-${index}`} required value={index === 0 ? 'bla' : undefined} />
+                            <TestInput
+                                key={index}
+                                name={`foo-${index}`}
+                                required
+                                value={index === 0 ? 'bla' : undefined}
+                            />
                         ))}
                     </>
                 );
@@ -1180,7 +1204,7 @@ describe('Formsy', () => {
                 <Formsy onValid={validSpy}>
                     {/* onValid is called each time the form revalidates */}
                     {Array.from(Array(5)).map((_, index) => (
-                        <TestInput key={index} name={`foo-${index}`} required value={'bla'} />
+                        <TestInput key={index} name={`foo-${index}`} required value="bla" />
                     ))}
                 </Formsy>
             );
@@ -1192,7 +1216,7 @@ describe('Formsy', () => {
     });
 
     describe('onSubmit/onValidSubmit/onInvalidSubmit', () => {
-        ['onSubmit', 'onValidSubmit', 'onInvalidSubmit'].forEach((key) => {
+        ['onSubmit', 'onValidSubmit', 'onInvalidSubmit'].forEach(key => {
             it(`should pass submit event to "${key}"`, () => {
                 const submitSpy = jest.fn();
 
@@ -1200,7 +1224,7 @@ describe('Formsy', () => {
                     <Formsy {...{ [key]: submitSpy }}>
                         <button type="submit" data-testid="submit-btn" />
                         {key === 'onInvalidSubmit' && <TestInput name="test" required />}
-                    </Formsy>,
+                    </Formsy>
                 );
                 const button = screen.getByTestId('submit-btn');
 
@@ -1210,7 +1234,7 @@ describe('Formsy', () => {
                     expect.any(Object),
                     expect.any(Function),
                     expect.any(Function),
-                    expect.any(Object),
+                    expect.any(Object)
                 );
             });
         });

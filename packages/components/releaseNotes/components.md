@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Mark new `Visit Label` field as a study field
+
 ### version 4.4.2
 *Released*: 31 July 2024
 - Fix `isTransformScriptsEnabled` check

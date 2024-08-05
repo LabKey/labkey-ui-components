@@ -249,7 +249,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
             onResultsFileRemoval,
         } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
-        const isLoading = !wizardModel.isInit;
+        const isLoading = !wizardModel.isInit || editorModel === undefined;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
         const columnMetadata = this.getEditableGridColumnMetadata();
         const fileColumnNames = isAssayFileUploadEnabled()

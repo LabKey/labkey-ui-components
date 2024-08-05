@@ -153,7 +153,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const schemaQuery = new SchemaQuery(props.assayDefinition.protocolSchemaName, 'Data');
         this.state = {
             comment: undefined,
-            editorModel: new EditorModel({ id: DATA_GRID_ID }),
+            editorModel: undefined,
             error: undefined,
             model: new AssayWizardModel({ isInit: false, runId: props.runId }),
             schemaQuery,
@@ -730,8 +730,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             getIsDirty,
             setIsDirty,
         } = this.props;
-        const { comment, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } =
-            this.state;
+        const { comment, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } = this.state;
         const runPropsModel = this.getRunPropsQueryModel();
         const resultsFilesCount = model.getResultsFiles().length;
 

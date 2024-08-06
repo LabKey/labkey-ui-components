@@ -306,7 +306,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                             lockLeftOnScroll={false}
                                             maxRows={this.props.maxRows}
                                             metricFeatureArea="assayResultsEditableGrid"
-                                            model={undefined}
                                             onChange={this.props.onGridChange}
                                             getIsDirty={getIsDirty}
                                             setIsDirty={setIsDirty}

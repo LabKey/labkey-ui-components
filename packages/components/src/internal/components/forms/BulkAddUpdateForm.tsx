@@ -20,6 +20,7 @@ type BaseProps = Omit<
     | 'initiallyDisableFields'
     | 'showLabelAsterisk'
     | 'title'
+    | 'queryInfo'
 >;
 
 interface BulkAddUpdateFormProps extends BaseProps {
@@ -30,7 +31,7 @@ interface BulkAddUpdateFormProps extends BaseProps {
 }
 
 export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
-    const { editorModel, queryInfo, selectedRowIndexes, warning, ...queryInfoFormProps } = props;
+    const { editorModel, selectedRowIndexes, warning, ...queryInfoFormProps } = props;
     const {
         pluralNoun = 'rows',
         singularNoun = 'row',
@@ -61,7 +62,7 @@ export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
                 includeCountField={false}
                 initiallyDisableFields={true}
                 pluralNoun={pluralNoun}
-                queryInfo={queryInfo.getInsertQueryInfo()}
+                queryInfo={editorModel.queryInfo.getInsertQueryInfo()}
                 showLabelAsterisk
                 singularNoun={singularNoun}
                 submitForEditText={submitForEditText}

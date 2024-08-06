@@ -148,7 +148,6 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
                 {...editableGridProps}
                 editorModel={editorModel}
                 forUpdate
-                model={undefined}
                 onChange={onGridChange}
             />
             <Alert id={ERROR_ALERT_ID}>{error}</Alert>

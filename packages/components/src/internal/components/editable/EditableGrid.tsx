@@ -347,7 +347,7 @@ export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
     activeTab?: number;
     bsStyle?: any;
     className?: string;
-    getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>;
+    getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>; // TODO: Remove this, it's been replaced by "allColumnMetadata" on EditableGridPanelForUpdateWithLineage
     getReadOnlyRows?: (tabId?: number) => string[];
     getTabHeader?: (tabId?: number) => ReactNode;
     getTabTitle?: (tabId?: number) => string;
@@ -363,9 +363,8 @@ export type EditableGridChange = (
 
 export interface EditableGridProps extends SharedEditableGridProps {
     editorModel: EditorModel;
-    error: string;
+    error?: string; // TODO: remove, this was exclusively sourced from the incoming queryModels (via EditableGridPanel), but those are gone
     onChange: EditableGridChange;
-    queryInfo: QueryInfo;
 }
 
 export interface EditableGridState {
@@ -1407,13 +1406,12 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     bulkUpdate = async (updatedData: OrderedMap<string, any>): Promise<Partial<EditorModelProps>> => {
-        const { editorModel, queryInfo, onChange, bulkUpdateProps, metricFeatureArea, containerPath } = this.props;
+        const { editorModel, onChange, bulkUpdateProps, metricFeatureArea, containerPath } = this.props;
         if (!updatedData) return Promise.resolve(undefined);
 
         const selectedIndices = this.getSelectedRowIndices();
         const editorModelChanges = await updateGridFromBulkForm(
             editorModel,
-            queryInfo,
             updatedData,
             selectedIndices,
             bulkUpdateProps?.excludeRowIdx,
@@ -1638,7 +1636,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             bulkUpdateProps,
             editorModel,
             forUpdate,
-            queryInfo,
             showAsTab,
             containerPath,
         } = this.props;
@@ -1669,7 +1666,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     operation={forUpdate ? Operation.update : Operation.insert}
                     pluralNoun={addControlProps?.nounPlural}
                     queryFilters={bulkUpdateProps?.queryFilters}
-                    queryInfo={queryInfo}
                     selectedRowIndexes={this.getSelectedRowIndices()}
                     singularNoun={addControlProps?.nounSingular}
                     warning={bulkUpdateProps?.warning}

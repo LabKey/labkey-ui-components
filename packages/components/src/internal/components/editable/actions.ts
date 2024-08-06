@@ -22,12 +22,13 @@ import {
     EditableColumnMetadata,
     EditableGridLoader,
     EditorMode,
-    EditorModel,
+    EditorModel, EditorModelProps,
     MessageAndValue,
     ValueDescriptor,
 } from './models';
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
+import { EditableGridProps } from './EditableGrid';
 
 /**
  * Do not use this method directly, use initEditorModel instead
@@ -166,11 +167,11 @@ export const initEditorModel = async (
         columnMetadata,
         columnMap: fromJS(columnMap),
         orderedColumns: fromJS(orderedColumns),
-        id: queryModel.id,
         originalData: data,
         queryInfo,
         rowCount: orderedRows.length,
-    });
+        tabTitle: queryModel.title ?? queryModel.queryName,
+    } as Partial<EditorModelProps>);
 };
 
 export const initEditorModels = async (
@@ -586,7 +587,6 @@ async function prepareUpdateRowDataFromBulkForm(
 
 export async function updateGridFromBulkForm(
     editorModel: EditorModel,
-    queryInfo: QueryInfo,
     rowData: OrderedMap<string, any>,
     dataRowIndexes: List<number>,
     lockedOrReadonlyRows?: number[],
@@ -598,7 +598,7 @@ export async function updateGridFromBulkForm(
     let cellValues = editorModel.cellValues;
 
     const preparedData = await prepareUpdateRowDataFromBulkForm(
-        queryInfo,
+        editorModel.queryInfo,
         rowData,
         isIncludedColumn,
         containerPath,

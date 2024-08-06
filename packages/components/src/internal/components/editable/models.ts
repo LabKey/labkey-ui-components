@@ -78,7 +78,6 @@ export interface EditorModelProps {
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
-    id: string;
     orderedColumns: List<string>; // List of fieldKeys for the visible columns in the grid
     originalData: Map<string, Map<string, any>>; // The original data associated with this model if we're updating rows
     queryInfo: QueryInfo;
@@ -86,29 +85,7 @@ export interface EditorModelProps {
     selectedColIdx: number;
     selectedRowIdx: number;
     selectionCells: string[];
-}
-
-export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<string, any> {
-    const data = {};
-    const pkCols = new Set<string>();
-    queryInfo.getPkCols().forEach(col => pkCols.add(col.fieldKey));
-    queryInfo.altUpdateKeys?.forEach(key => pkCols.add(key));
-    pkCols.forEach(pkCol => {
-        let pkVal = caseInsensitive(row.toJS(), pkCol);
-        if (Array.isArray(pkVal)) pkVal = pkVal[0];
-        if (List.isList(pkVal)) pkVal = pkVal.get(0);
-
-        if (pkVal !== undefined && pkVal !== null) {
-            // when backing an editable grid, the data is a simple value, but when
-            // backing a grid, it is a Map, which has type 'object'.
-            if (Map.isMap(pkVal)) pkVal = pkVal.toJS();
-
-            data[pkCol] = typeof pkVal === 'object' ? pkVal.value : pkVal;
-        } else {
-            console.warn('Unable to find value for pkCol "' + pkCol + '"');
-        }
-    });
-    return data;
+    tabTitle?: string;
 }
 
 const DATA_CHANGE_EVENTS: EditableGridEvent[] = [
@@ -152,6 +129,7 @@ export class EditorModel
         selectedColIdx: -1,
         selectedRowIdx: -1,
         selectionCells: [],
+        tabTitle: undefined,
     })
     implements EditorModelProps
 {
@@ -163,7 +141,6 @@ export class EditorModel
     declare focusColIdx: number;
     declare focusRowIdx: number;
     declare focusValue: List<ValueDescriptor>;
-    declare id: string;
     // NK: This is precomputed property that is updated whenever the selection is updated.
     // See applyEditableGridChangesToModels().
     declare isSparseSelection: boolean;
@@ -176,6 +153,7 @@ export class EditorModel
     // NK: This is pre-sorted array that is updated whenever the selection is updated.
     // See applyEditableGridChangesToModels().
     declare selectionCells: string[];
+    declare tabTitle: string;
 
     get pkFieldKey(): string {
         // You are not guaranteed to have pkCols, specifically in insert cases

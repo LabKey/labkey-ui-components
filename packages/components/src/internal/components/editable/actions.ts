@@ -1373,9 +1373,9 @@ async function insertPastedData(
             const colIdx = colMin + cn;
             const col = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx));
             const cellKey = genCellKey(col.fieldKey, rowIdx);
-            const metadata = editorModel.columnMetadata?.get(col?.fieldKey.toLowerCase());
+            const metadata = editorModel.columnMetadata?.get(col?.fieldKey);
             const readOnlyCol = col?.readOnly || metadata?.readOnly;
-            const readOnlyCell = metadata?.isReadOnlyCell(pkValue);
+            const readOnlyCell = metadata?.isReadOnlyCell?.(pkValue);
 
             if (!readOnlyCol && !readOnlyCell) {
                 let cv: List<ValueDescriptor>;

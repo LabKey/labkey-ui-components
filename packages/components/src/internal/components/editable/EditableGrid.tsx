@@ -730,9 +730,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         if (queryCol.readOnly) return true;
 
-        const loweredColumnMetadata = this.getLoweredColumnMetadata();
-        const metadata = loweredColumnMetadata[queryCol.fieldKey.toLowerCase()];
-
+        const metadata = editorModel.columnMetadata?.get(queryCol.fieldKey);
         return metadata && (metadata.readOnly || metadata.isReadOnlyCell?.(cellValueDataKey));
     }
 
@@ -879,12 +877,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         }
     };
 
-    getLoweredColumnMetadata = (): Record<string, EditableColumnMetadata> =>
-        this.props.columnMetadata?.reduce((result, value, key) => {
-            result[key.toLowerCase()] = value;
-            return result;
-        }, {});
-
     generateColumns = (): List<GridColumn> => {
         const {
             allowRemove,
@@ -919,11 +911,9 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             gridColumns = gridColumns.push(rowNumColumn ? rowNumColumn : COUNT_COL);
         }
 
-        const loweredColumnMetadata = this.getLoweredColumnMetadata();
-
         editorModel.orderedColumns.forEach(fieldKey => {
             const qCol = editorModel.columnMap.get(fieldKey);
-            const metadata = loweredColumnMetadata[qCol.fieldKey.toLowerCase()];
+            const metadata = editorModel.columnMetadata?.get(qCol.fieldKey);
 
             let width = 100;
             let fixedWidth;
@@ -995,11 +985,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderColumnHeader = (col: GridColumn, metadataKey: string): React.ReactNode => {
+        const { columnMetadata } = this.props.editorModel;
         const label = col.title;
         const qColumn: QueryColumn = col.raw;
         const req = !!qColumn?.required;
-        const loweredColumnMetadata = this.getLoweredColumnMetadata();
-        const metadata = loweredColumnMetadata?.[metadataKey.toLowerCase()];
+        const metadata = columnMetadata?.get(metadataKey);
         const showOverlayFromMetadata = !!metadata?.toolTip;
         const showLabelOverlay = !showOverlayFromMetadata && qColumn?.hasHelpTipData;
         // TODO should be able to just use LabelOverlay here since it can handle an alternate tooltip renderer

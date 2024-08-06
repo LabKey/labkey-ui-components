@@ -315,7 +315,6 @@ export interface SharedEditableGridProps {
     hideCountCol?: boolean;
     hideReadonlyRows?: boolean;
     hideTopControls?: boolean;
-    insertColumns?: QueryColumn[];
     isSubmitting?: boolean;
     lockLeftOnScroll?: boolean; // lock the left columns when scrolling horizontally
     maxRows?: number;
@@ -330,7 +329,6 @@ export interface SharedEditableGridProps {
     saveBtnClickedCount?: number; // TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
     showAsTab?: boolean; // Toggle "Edit in Grid" and "Edit in Bulk" as tabs
     tabContainerCls?: string;
-    updateColumns?: QueryColumn[];
 }
 
 export interface EditableGridBtnProps {
@@ -349,7 +347,6 @@ export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
     getReadOnlyRows?: (tabId?: number) => string[];
     getTabHeader?: (tabId?: number) => ReactNode;
     getTabTitle?: (tabId?: number) => string;
-    getUpdateColumns?: (tabId?: number) => QueryColumn[];
     title?: string;
 }
 

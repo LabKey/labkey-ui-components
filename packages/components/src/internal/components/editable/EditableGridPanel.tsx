@@ -50,13 +50,10 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
         className = '',
         readonlyRows,
         getReadOnlyRows,
-        updateColumns,
-        getUpdateColumns,
         getTabHeader,
         getTabTitle,
         readOnlyColumns,
         forUpdate,
-        insertColumns,
         ...gridProps
     } = props;
     const [activeTab, setActiveTab] = useState<number>(props.activeTab ?? 0);
@@ -70,9 +67,6 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
     let activeReadOnlyRows = readonlyRows;
     if (!activeReadOnlyRows && getReadOnlyRows) activeReadOnlyRows = getReadOnlyRows(activeTab);
 
-    let activeUpdateColumns = updateColumns;
-    if (!activeUpdateColumns && getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
-
     const editableGrid = (
         <EditableGrid
             {...gridProps}
@@ -80,8 +74,6 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
             onChange={_onChange}
             readonlyRows={activeReadOnlyRows}
             readOnlyColumns={readOnlyColumns}
-            updateColumns={activeUpdateColumns}
-            insertColumns={insertColumns}
             forUpdate={forUpdate}
         />
     );

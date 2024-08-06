@@ -1,10 +1,8 @@
-import React, { ChangeEvent, FC, PureComponent, ReactNode } from 'react';
-import { withFormsy } from 'formsy-react';
-
+import React, { ChangeEventHandler, FC, PureComponent, ReactNode } from 'react';
 import classNames from 'classnames';
 
+import { FormsyInjectedProps, withFormsy } from '../formsy';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
-import { WithFormsyProps } from '../constants';
 
 // export for jest test usage
 export interface RadioGroupOption {
@@ -15,7 +13,7 @@ export interface RadioGroupOption {
     value: string;
 }
 
-interface Props extends WithFormsyProps {
+interface OwnProps {
     formsy?: boolean;
     name: string;
     onValueChange?: (value) => void;
@@ -23,12 +21,14 @@ interface Props extends WithFormsyProps {
     showDescriptions?: boolean;
 }
 
+type RadioGroupInputProps = OwnProps & FormsyInjectedProps<any>;
+
 interface State {
     selectedValue: string;
 }
 
-class RadioGroupInputImpl extends PureComponent<Props, State> {
-    constructor(props: Props) {
+class RadioGroupInputImpl extends PureComponent<RadioGroupInputProps, State> {
+    constructor(props: RadioGroupInputProps) {
         super(props);
 
         const selected = props.options?.find(option => option.selected);
@@ -40,7 +40,7 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
         }
     }
 
-    onValueChange = (evt: ChangeEvent<HTMLInputElement>): void => {
+    onValueChange: ChangeEventHandler<HTMLInputElement> = (evt): void => {
         const { formsy, onValueChange, setValue } = this.props;
         const { value } = evt.target;
 
@@ -62,12 +62,12 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
                 inputs.push(
                     <div key={options[0].value}>
                         <input
-                            hidden
                             checked
-                            type="radio"
+                            hidden
                             name={name}
-                            value={options[0].value}
                             onChange={this.onValueChange}
+                            type="radio"
+                            value={options[0].value}
                         />
                     </div>
                 );
@@ -102,13 +102,14 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
     }
 }
 
-const RadioGroupInputFormsy = withFormsy(RadioGroupInputImpl);
+const RadioGroupInputFormsy = withFormsy<OwnProps, any>(RadioGroupInputImpl);
 
-export const RadioGroupInput: FC<Props> = props => {
+export const RadioGroupInput: FC<OwnProps> = props => {
     if (props.formsy) {
         return <RadioGroupInputFormsy {...props} />;
     }
-    return <RadioGroupInputImpl {...props} />;
+
+    return <RadioGroupInputImpl {...(props as any)} />;
 };
 
 RadioGroupInput.defaultProps = {

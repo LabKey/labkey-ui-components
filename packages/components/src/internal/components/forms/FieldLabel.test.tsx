@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Formsy from 'formsy-react';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { Formsy } from './formsy';
 import { FieldLabel } from './FieldLabel';
 
 const queryColumn = new QueryColumn({

@@ -16,7 +16,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Filter, getServerContext, Utils } from '@labkey/api';
 import { List, OrderedMap } from 'immutable';
-import Formsy from 'formsy-react';
 
 import { Operation } from '../../../public/QueryColumn';
 
@@ -35,6 +34,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { getAppHomeFolderPath } from '../../app/utils';
 
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../APIWrapper';
+
+import { Formsy } from './formsy';
 
 import { QueryInfoQuantity } from './QueryInfoQuantity';
 import { QueryFormInputs, QueryFormInputsProps } from './QueryFormInputs';

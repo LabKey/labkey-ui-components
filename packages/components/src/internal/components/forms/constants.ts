@@ -19,26 +19,3 @@ export const INPUT_LABEL_CLASS_NAME = 'control-label col-sm-3 col-xs-12 text-lef
 export const INPUT_WRAPPER_CLASS_NAME = 'col-sm-9 col-xs-12';
 
 export const DELIMITER = ',';
-
-// Interface for components that support the withFormsy() component wrapper.
-export interface WithFormsyProps {
-    getErrorMessage?: Function;
-    getErrorMessages?: Function;
-    getValue?: Function;
-    hasValue?: Function;
-    innerRef?: any;
-    isFormDisabled?: Function;
-    isFormSubmitted?: Function;
-    isPristine?: Function;
-    isRequired?: () => boolean;
-    isValid?: Function;
-    isValidValue?: Function;
-    resetValue?: Function;
-    setValidations?: Function;
-    setValue?: Function;
-    showError?: () => boolean;
-    showRequired?: Function;
-    validationError?: string;
-    validationErrors?: any; // Record<string, any> | string;
-    validations?: any; // Record<string, any> | string;
-}

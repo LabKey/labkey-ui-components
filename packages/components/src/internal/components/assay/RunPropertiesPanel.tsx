@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React, { FC, memo, useMemo } from 'react';
-import Formsy from 'formsy-react';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
@@ -22,6 +21,7 @@ import { QueryColumn } from '../../../public/QueryColumn';
 import { AssayTaskInput } from '../forms/input/AssayTaskInput';
 
 import { isWorkflowEnabled } from '../../app/utils';
+import { Formsy } from '../forms/formsy';
 import { LabelOverlay } from '../forms/LabelOverlay';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
 import { FormsyInput, FormsyTextArea } from '../forms/input/FormsyReactComponents';

@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import { addValidationRule } from 'formsy-react';
 
 import { SampleCreationType, SampleCreationTypeModel } from '../samples/models';
 
+import { addFormsyRule } from './formsy';
 import { FormsyInput } from './input/FormsyReactComponents';
 import { RadioGroupInput } from './input/RadioGroupInput';
 
@@ -19,8 +19,8 @@ interface State {
     selectedCreationType: SampleCreationType;
 }
 
-addValidationRule('isPositiveLt', (vs, v, smax) => {
-    if (v === '' || v === undefined || isNaN(v)) {
+addFormsyRule<string>('isPositiveLt', (_, v, smax) => {
+    if (v === '' || v === undefined) {
         return true;
     }
 

@@ -1,6 +1,5 @@
 import React, { FC, FormEvent, memo, ReactNode, useCallback, useMemo, useReducer, useRef, useState } from 'react';
 import classNames from 'classnames';
-import Formsy from 'formsy-react';
 
 import {
     formatDate,
@@ -13,6 +12,8 @@ import {
 import { Key, useEnterEscape } from '../../public/useEnterEscape';
 
 import { QueryColumn } from '../../public/QueryColumn';
+
+import { Formsy } from './forms/formsy';
 
 import { DateInput } from './DateInput';
 import { useServerContext } from './base/ServerContext';

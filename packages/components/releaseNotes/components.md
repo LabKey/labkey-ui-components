@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.5.0
+*Released*: 6 August 2024
+- Remove `formsy-react` dependency.
+- Inline `formsy-react` implementation. This is a port of v2.3.2.
+
 ### version 4.4.2
 *Released*: 31 July 2024
 - Fix `isTransformScriptsEnabled` check

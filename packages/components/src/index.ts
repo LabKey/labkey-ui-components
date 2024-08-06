@@ -289,6 +289,7 @@ import {
     SampleTypeImportAliasRenderer,
     SourceTypeImportAliasRenderer,
 } from './internal/renderers/ImportAliasRenderer';
+import { addFormsyRule, Formsy, formsyRules, withFormsy } from './internal/components/forms/formsy';
 import { DataClassTemplateDownloadRenderer } from './internal/renderers/DataClassTemplateDownloadRenderer';
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
@@ -1217,6 +1218,11 @@ export {
     UserDetailsRenderer,
     resolveDetailRenderer,
     registerInputRenderer,
+    // Formsy
+    addFormsyRule,
+    Formsy,
+    formsyRules,
+    withFormsy,
     // form related items
     BulkUpdateForm,
     QueryFormInputs,

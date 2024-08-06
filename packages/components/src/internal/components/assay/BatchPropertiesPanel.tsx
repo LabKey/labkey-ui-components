@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 import React, { FC, memo, useMemo } from 'react';
-import Formsy from 'formsy-react';
+
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
 
+import { Formsy } from '../forms/formsy';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
 
 import { getContainerFilterForLookups } from '../../query/api';

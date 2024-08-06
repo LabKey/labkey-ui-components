@@ -16,9 +16,9 @@
 import React, { FC, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 import { Map } from 'immutable';
-import { withFormsy } from 'formsy-react';
 
-import { INPUT_WRAPPER_CLASS_NAME, WithFormsyProps } from '../constants';
+import { FormsyInjectedProps, withFormsy } from '../formsy';
+import { INPUT_WRAPPER_CLASS_NAME } from '../constants';
 import { FieldLabel } from '../FieldLabel';
 import { cancelEvent } from '../../../events';
 
@@ -27,7 +27,7 @@ import { FileColumnRenderer } from '../../../renderers/FileColumnRenderer';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-interface Props extends DisableableInputProps, WithFormsyProps {
+export interface FileInputProps extends DisableableInputProps {
     addLabelAsterisk?: boolean;
     changeDebounceInterval?: number;
     elementWrapperClassName?: string;
@@ -42,6 +42,8 @@ interface Props extends DisableableInputProps, WithFormsyProps {
     toggleDisabledTooltip?: string;
 }
 
+type FileInputImplProps = FileInputProps & FormsyInjectedProps<any>;
+
 interface State extends DisableableInputState {
     data: any;
     error: string;
@@ -49,7 +51,7 @@ interface State extends DisableableInputState {
     isHover: boolean;
 }
 
-class FileInputImpl extends DisableableInput<Props, State> {
+class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
     fileInput: RefObject<HTMLInputElement>;
 
     static defaultProps = {
@@ -61,7 +63,7 @@ class FileInputImpl extends DisableableInput<Props, State> {
         },
     };
 
-    constructor(props) {
+    constructor(props: FileInputImplProps) {
         super(props);
         this.processFiles = this.processFiles.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -260,13 +262,13 @@ class FileInputImpl extends DisableableInput<Props, State> {
  * This class is a wrapper around FileInputImpl to be able to bind formsy-react. It uses
  * the Formsy.Decorator to bind formsy-react so the element can be validated, submitted, etc.
  */
-const FileInputFormsy = withFormsy(FileInputImpl);
+const FileInputFormsy = withFormsy<FileInputProps, any>(FileInputImpl);
 
-export const FileInput: FC<Props> = props => {
+export const FileInput: FC<FileInputProps> = props => {
     if (props.formsy) {
-        return <FileInputFormsy {...props} />;
+        return <FileInputFormsy name={undefined} {...props} />;
     }
-    return <FileInputImpl {...props} />;
+    return <FileInputImpl {...(props as FileInputImplProps)} />;
 };
 
 FileInput.defaultProps = {

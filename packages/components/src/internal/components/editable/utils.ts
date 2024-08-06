@@ -259,7 +259,7 @@ export const getUpdatedDataFromEditableGrid = (
     const originalData = bulkEditData ?? editorModel.originalData;
     const editorData = editorModel.getDataForServerUpload(true, true, false).toArray();
     return {
-        originalRows: editorModel.toJS(),
+        originalRows: editorModel.originalData.toJS(),
         schemaQuery: editorModel.queryInfo.schemaQuery,
         tabIndex,
         updatedRows: getUpdatedDataFromGrid(originalData, editorData, editorModel.pkFieldKey, editorModel.queryInfo),

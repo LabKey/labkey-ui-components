@@ -570,7 +570,7 @@ export class EditorModel
         const pkValue = this.getPkValue(rowIdx)?.toString();
 
         return {
-            isReadonlyCell: this.columnMetadata?.get(fieldKey)?.isReadOnlyCell(pkValue) ?? false,
+            isReadonlyCell: this.columnMetadata?.get(fieldKey)?.isReadOnlyCell?.(pkValue) ?? false,
             isReadonlyRow: readonlyRows?.includes(pkValue) ?? false,
         };
     }

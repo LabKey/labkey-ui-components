@@ -178,10 +178,15 @@ export class EditorModel
     declare selectionCells: string[];
 
     get pkFieldKey(): string {
-        return this.queryInfo.getPkCols()[0].fieldKey;
+        // You are not guaranteed to have pkCols, specifically in insert cases
+        return this.queryInfo.getPkCols()[0]?.fieldKey;
     }
 
     genPkCellKey(rowIndex: number): string {
+        const pkFieldKey = this.pkFieldKey;
+
+        if (pkFieldKey === undefined) return undefined;
+
         return genCellKey(this.pkFieldKey, rowIndex);
     }
 
@@ -191,6 +196,10 @@ export class EditorModel
      * honor multiple PK columns.
      */
     getPkValue(rowIndex: number): any {
+        const cellKey = this.genPkCellKey(rowIndex);
+
+        if (cellKey === undefined) return undefined;
+
         return this.cellValues.get(this.genPkCellKey(rowIndex))?.get(0).raw;
     }
 

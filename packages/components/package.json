@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "4.5.0",
+  "version": "4.5.0-fb-renameProject50833.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

@@ -15,7 +15,6 @@ import { BOOLEAN_TYPE, DATE_TYPE, INTEGER_TYPE, TEXT_TYPE, TIME_TYPE } from '../
 
 import { DATE_RANGE_URI } from '../domainproperties/constants';
 
-import { initEditableGridModel } from './actions';
 import { EditorMode, EditorModel, EditableGridLoader } from './models';
 import {
     computeRangeChange,

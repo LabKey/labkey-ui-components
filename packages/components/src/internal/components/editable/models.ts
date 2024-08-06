@@ -773,9 +773,3 @@ export interface MessageAndValue {
     message?: CellMessage;
     valueDescriptor: ValueDescriptor;
 }
-
-// TODO: remove this
-export interface EditableGridModels {
-    dataModels: QueryModel[];
-    editorModels: EditorModel[];
-}

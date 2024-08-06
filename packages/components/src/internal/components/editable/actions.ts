@@ -3,7 +3,6 @@ import { fromJS, List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
 import moment from 'moment';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
-import { LoadingState } from '../../../public/LoadingState';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -22,7 +21,6 @@ import {
     CellValues,
     EditableColumnMetadata,
     EditableGridLoader,
-    EditableGridModels,
     EditorMode,
     EditorModel,
     MessageAndValue,
@@ -181,77 +179,6 @@ export const initEditorModels = async (
     columnMetadata?: Array<Map<string, EditableColumnMetadata>>
 ) => {
     return await Promise.all(queryModels.map((qm, i) => initEditorModel(qm, loaders[i], columnMetadata?.[i])));
-};
-
-/**
- * @deprecated use initEditorModel instead
- */
-export const initEditableGridModel = async (
-    dataModel: QueryModel,
-    editorModel: EditorModel,
-    loader: EditableGridLoader,
-    queryModel: QueryModel,
-    colFilter?: (col: QueryColumn) => boolean
-): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
-    const response = await loader.fetch(queryModel);
-    const gridData: Partial<QueryModel> = {
-        rows: response.data.toJS(),
-        orderedRows: response.dataIds.toArray(),
-        queryInfo: loader.queryInfo,
-    };
-
-    let columns: QueryColumn[];
-    const forUpdate = loader.mode === EditorMode.Update;
-    if (loader.columns) {
-        columns = editorModel.getColumns(
-            gridData.queryInfo,
-            forUpdate,
-            undefined,
-            loader.columns,
-            loader.columns,
-            colFilter
-        );
-    } else {
-        columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, undefined, undefined, colFilter);
-    }
-
-    const editorModelData = await loadEditorModelData(gridData, columns, forUpdate);
-
-    return {
-        dataModel: dataModel.mutate({
-            ...gridData,
-            rowsLoadingState: LoadingState.LOADED,
-            queryInfoLoadingState: LoadingState.LOADED,
-        }),
-        editorModel: editorModel.merge(editorModelData) as EditorModel,
-    };
-};
-
-/**
- * @deprecated use initEditorModels instead
- */
-export const initEditableGridModels = async (
-    dataModels: QueryModel[],
-    editorModels: EditorModel[],
-    loaders: EditableGridLoader[],
-    queryModel: QueryModel
-): Promise<EditableGridModels> => {
-    const updatedDataModels = [];
-    const updatedEditorModels = [];
-
-    const results = await Promise.all(
-        dataModels.map((dataModel, i) => initEditableGridModel(dataModels[i], editorModels[i], loaders[i], queryModel))
-    );
-
-    results.forEach(result => {
-        updatedDataModels.push(result.dataModel);
-        updatedEditorModels.push(result.editorModel);
-    });
-
-    return {
-        dataModels: updatedDataModels,
-        editorModels: updatedEditorModels,
-    };
 };
 
 export function parseIntIfNumber(val: any): number | string {

@@ -180,8 +180,6 @@ import {
     changeColumn,
     initEditorModel,
     initEditorModels,
-    initEditableGridModel,
-    initEditableGridModels,
     removeColumn,
     updateGridFromBulkForm,
 } from './internal/components/editable/actions';
@@ -263,7 +261,7 @@ import {
 } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
-import { applyEditableGridChangesToModels, applyEditorModelChanges, getUpdatedDataFromEditableGrid } from './internal/components/editable/utils';
+import { applyEditorModelChanges, getUpdatedDataFromEditableGrid } from './internal/components/editable/utils';
 import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
@@ -1153,13 +1151,10 @@ export {
     processSchemas,
     invalidateFullQueryDetailsCache,
     // editable grid related items
-    applyEditableGridChangesToModels,
     applyEditorModelChanges,
     getUpdatedDataFromEditableGrid,
     initEditorModel,
     initEditorModels,
-    initEditableGridModel,
-    initEditableGridModels,
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
@@ -1862,7 +1857,6 @@ export type { ITab } from './internal/components/navigation/types';
 export type {
     EditableColumnMetadata,
     EditableGridLoader,
-    EditableGridModels,
     EditorModelProps,
     GridLoader,
     GridResponse,

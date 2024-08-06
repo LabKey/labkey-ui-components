@@ -1,7 +1,6 @@
-import { fromJS, Iterable, List, Map } from 'immutable';
+import { Iterable, List, Map } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
 import {
@@ -25,7 +24,7 @@ import { isBoolean, isFloat, isInteger } from '../../util/utils';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { EditorModel, EditorModelProps, EditableGridModels, CellMessage } from './models';
+import { EditorModel, CellMessage } from './models';
 import { CellActions, MODIFICATION_TYPES } from './constants';
 
 export function applyEditorModelChanges(
@@ -49,34 +48,6 @@ export function applyEditorModelChanges(
     updatedModels[tabIndex] = editorModel;
     return updatedModels;
 }
-
-/**
- * @deprecated use applyEditorModelChanges
- */
-export const applyEditableGridChangesToModels = (
-    dataModels: QueryModel[],
-    editorModels: EditorModel[],
-    editorModelChanges: Partial<EditorModelProps>,
-    queryInfo?: QueryInfo,
-    dataKeys?: List<any>,
-    data?: Map<string, Map<string, any>>,
-    tabIndex = 0
-): EditableGridModels => {
-    const updatedEditorModels = applyEditorModelChanges(editorModels, editorModelChanges, tabIndex);
-    const updatedDataModels = [...dataModels];
-    const orderedRows = dataKeys?.toJS();
-    const rows = data?.toJS();
-    if (orderedRows && rows) {
-        let dataModel = dataModels[tabIndex].mutate({ orderedRows, rows });
-        if (queryInfo) dataModel = dataModels[tabIndex].mutate({ queryInfo });
-        updatedDataModels[tabIndex] = dataModel;
-    }
-
-    return {
-        dataModels: updatedDataModels,
-        editorModels: updatedEditorModels,
-    };
-};
 
 export const getValidatedEditableGridValue = (
     origValue: any,

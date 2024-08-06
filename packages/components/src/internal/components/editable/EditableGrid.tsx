@@ -304,7 +304,6 @@ export interface SharedEditableGridProps {
     bulkTabHeaderComponent?: ReactNode; // TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
     bulkUpdateProps?: Partial<BulkUpdateQueryInfoFormProps>;
     bulkUpdateText?: string;
-    columnMetadata?: Map<string, EditableColumnMetadata>;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     disabled?: boolean;
@@ -347,7 +346,6 @@ export interface SharedEditableGridPanelProps extends SharedEditableGridProps {
     activeTab?: number;
     bsStyle?: any;
     className?: string;
-    getColumnMetadata?: (tabId?: number) => Map<string, EditableColumnMetadata>; // TODO: Remove this, it's been replaced by "allColumnMetadata" on EditableGridPanelForUpdateWithLineage
     getReadOnlyRows?: (tabId?: number) => string[];
     getTabHeader?: (tabId?: number) => ReactNode;
     getTabTitle?: (tabId?: number) => string;

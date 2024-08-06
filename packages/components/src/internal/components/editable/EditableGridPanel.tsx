@@ -48,7 +48,6 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
         title,
         bsStyle,
         className = '',
-        columnMetadata,
         readonlyRows,
         getReadOnlyRows,
         updateColumns,
@@ -68,11 +67,8 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
         (event, editorModelChanges) => onChange(event, editorModelChanges, activeTab),
         [activeTab, onChange]
     );
-    const { queryInfo } = activeEditorModel;
-    // TODO: remove this, columnMetadata is now sourced by initEditorModel
-    let activeColumnMetadata = columnMetadata;
     // TODO: do we need to move this logic into initEditorModel?
-    if (!activeColumnMetadata) activeColumnMetadata = getUniqueIdColumnMetadata(queryInfo);
+    // if (!activeColumnMetadata) activeColumnMetadata = getUniqueIdColumnMetadata(queryInfo);
 
     let activeReadOnlyRows = readonlyRows;
     if (!activeReadOnlyRows && getReadOnlyRows) activeReadOnlyRows = getReadOnlyRows(activeTab);
@@ -83,7 +79,6 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
     const editableGrid = (
         <EditableGrid
             {...gridProps}
-            columnMetadata={activeColumnMetadata}
             editorModel={activeEditorModel}
             onChange={_onChange}
             readonlyRows={activeReadOnlyRows}

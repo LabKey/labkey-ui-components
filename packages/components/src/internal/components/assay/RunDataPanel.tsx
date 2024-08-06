@@ -220,18 +220,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
         this.resetMessage();
     };
 
-    getEditableGridColumnMetadata = (): Map<string, EditableColumnMetadata> => {
-        const { wizardModel, plateSupportEnabled } = this.props;
-        const selectedPlateSet = wizardModel.runProperties?.get('PlateSet');
-        if (!plateSupportEnabled || !selectedPlateSet) return undefined;
-
-        return Map({
-            Plate: {
-                lookupValueFilters: [Filter.create('PlateSet', selectedPlateSet)],
-            },
-        });
-    };
-
     render() {
         const {
             acceptedPreviewFileFormats,
@@ -251,7 +239,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || editorModel === undefined;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
-        const columnMetadata = this.getEditableGridColumnMetadata();
         const fileColumnNames = isAssayFileUploadEnabled()
             ? wizardModel.assayDef.getDomainFileColumns(AssayDomainTypes.RESULT)?.map(col => col.name)
             : undefined;
@@ -297,7 +284,6 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 title: 'Bulk Insert Assay Rows',
                                                 header: 'Add a batch of assay data rows that will share the properties set below.',
                                             }}
-                                            columnMetadata={columnMetadata}
                                             containerFilter={getContainerFilterForLookups()}
                                             disabled={currentStep !== AssayUploadTabs.Grid}
                                             editorModel={editorModel}

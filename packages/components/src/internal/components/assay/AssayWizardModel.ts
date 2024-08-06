@@ -1,5 +1,5 @@
 import { Map, OrderedMap, Record } from 'immutable';
-import { AssayDOM } from '@labkey/api';
+import { AssayDOM, Filter } from '@labkey/api';
 
 import { AssayUploadTabs } from '../../constants';
 import { generateNameWithTimestamp } from '../../util/Date';
@@ -9,7 +9,7 @@ import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionMod
 import { FileAttachmentFormModel } from '../files/models';
 import { AppURL } from '../../url/AppURL';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { EditableGridLoader, EditorMode, EditorModel, GridResponse } from '../editable/models';
+import { EditableColumnMetadata, EditableGridLoader, EditorMode, EditorModel, GridResponse } from '../editable/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 class AssayWizardModelEditableGridLoader implements EditableGridLoader {
@@ -243,7 +243,18 @@ export class AssayWizardModel
      * This method instantiates the initial data used in the editable grid during assay upload, it includes data for
      * an EditorModel and QueryModel.
      */
-    async getInitialEditorModel(): Promise<EditorModel> {
+    async getInitialEditorModel(isPlatesEnabled: boolean): Promise<EditorModel> {
+        let columnMetadata: Map<string, EditableColumnMetadata>;
+        const selectedPlateSet = this.runProperties?.get('PlateSet');
+
+        if (isPlatesEnabled && selectedPlateSet) {
+            columnMetadata = Map({
+                Plate: {
+                    lookupValueFilters: [Filter.create('PlateSet', selectedPlateSet)],
+                },
+            });
+        }
+
         const { assayDef, selectedSamples } = this;
         const sampleColumnData = assayDef.getSampleColumn();
         const sampleColInResults = sampleColumnData && sampleColumnData.domain === AssayDomainTypes.RESULT;
@@ -252,6 +263,6 @@ export class AssayWizardModel
         const rows = hasSamples ? selectedSamples : Map<string, Map<string, any>>({});
         const loader = new AssayWizardModelEditableGridLoader(this.queryInfo, rows);
         const dataModel = new QueryModel({ schemaQuery: this.queryInfo.schemaQuery }).mutate({ queryInfo: this.queryInfo });
-        return await initEditorModel(dataModel, loader);
+        return await initEditorModel(dataModel, loader, columnMetadata);
     }
 }

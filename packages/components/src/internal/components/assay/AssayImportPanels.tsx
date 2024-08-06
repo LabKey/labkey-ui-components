@@ -19,7 +19,6 @@ import React, { Component, FC, ReactNode, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
-import { LoadingState } from '../../../public/LoadingState';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -90,7 +89,6 @@ import { RunPropertiesPanel } from './RunPropertiesPanel';
 
 const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';
-const DATA_GRID_ID = 'assay-grid-data';
 const IMPORT_ERROR_ID = 'assay-import-error';
 
 interface OwnProps {
@@ -411,7 +409,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const runPropsModel = this.getRunPropsQueryModel();
         const runName = runPropsModel.getRowValue('Name');
         const fileName = getRunPropertiesFileName(runPropsModel.getRow());
-        const editorModel = await this.state.model.getInitialEditorModel();
+        const editorModel = await this.state.model.getInitialEditorModel(this.plateSupportEnabled);
 
         if (hasSamples) setIsDirty(true);
 
@@ -630,7 +628,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     onSuccessContinue = async (response: AssayUploadResultModel, isAsync?: boolean): Promise<void> => {
         this.props.onSave?.(response, isAsync);
-        const editorModel = await this.state.model.getInitialEditorModel();
+        const editorModel = await this.state.model.getInitialEditorModel(this.plateSupportEnabled);
 
         // Reset the data for the AssayWizardModel
         this.setState(state => {
@@ -789,7 +787,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     onChange={this.handleRunChange}
                     onWorkflowTaskChange={this.handleWorkflowTaskChange}
                 />
-                {this.plateSupportEnabled && (
+                {plateSupportEnabled && (
                     <PlatePropertiesPanel model={model} operation={operation} onChange={this.handleRunChange} />
                 )}
                 <RunDataPanel

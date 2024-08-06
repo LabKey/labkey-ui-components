@@ -67,9 +67,6 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
         (event, editorModelChanges) => onChange(event, editorModelChanges, activeTab),
         [activeTab, onChange]
     );
-    // TODO: do we need to move this logic into initEditorModel?
-    // if (!activeColumnMetadata) activeColumnMetadata = getUniqueIdColumnMetadata(queryInfo);
-
     let activeReadOnlyRows = readonlyRows;
     if (!activeReadOnlyRows && getReadOnlyRows) activeReadOnlyRows = getReadOnlyRows(activeTab);
 

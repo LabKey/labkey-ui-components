@@ -361,7 +361,6 @@ export type EditableGridChange = (
 
 export interface EditableGridProps extends SharedEditableGridProps {
     editorModel: EditorModel;
-    error?: string; // TODO: remove, this was exclusively sourced from the incoming queryModels (via EditableGridPanel), but those are gone
     onChange: EditableGridChange;
 }
 
@@ -1676,7 +1675,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         const {
             allowAdd,
             editorModel,
-            error,
             fixedHeight,
             emptyGridMsg,
             allowBulkUpdate,
@@ -1737,13 +1735,11 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                             eventKey={EditableGridTabs.BulkUpdate}
                             title="Edit in Bulk"
                         >
-                            <Alert>{error}</Alert>
                             {this.renderBulkUpdate()}
                         </Tab>
                     )}
                     {showGrid && (
                         <Tab className="top-spacing" eventKey={EditableGridTabs.Grid} title="Edit Individually">
-                            <Alert>{error}</Alert>
                             {gridContent}
                         </Tab>
                     )}
@@ -1754,7 +1750,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         return (
             <div className="editable-grid-wrapper">
                 {gridContent}
-                {error && <Alert className="margin-top">{error}</Alert>}
                 {showBulkAdd && this.renderBulkAdd()}
                 {showBulkUpdate && this.renderBulkUpdate()}
             </div>

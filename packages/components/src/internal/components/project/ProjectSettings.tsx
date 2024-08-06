@@ -15,21 +15,21 @@ import { NameIdSettings } from '../settings/NameIdSettings';
 import { biologicsIsPrimaryApp, isAppHomeFolder, isProtectedDataEnabled } from '../../app/utils';
 import { ProtectedDataSettingsPanel } from '../administration/ProtectedDataSettingsPanel';
 
-import { useRouteLeave } from '../../util/RouteLeave';
+import { InjectedRouteLeaveProps } from '../../util/RouteLeave';
 
 import { ProjectNameSetting } from './ProjectNameSetting';
 import { ProjectDataTypeSelections } from './ProjectDataTypeSelections';
 import { DeleteProjectModal } from './DeleteProjectModal';
 
-export interface ProjectSettingsProps {
+export interface ProjectSettingsProps extends InjectedRouteLeaveProps {
     onChange: (dirty?: boolean) => void;
     onPageError: (e: string) => void;
-    onSuccess: (dirty?: boolean, reload?: boolean, isDelete?: boolean) => void;
+    onSuccess: (dirty?: boolean, reload?: boolean, isDelete?: boolean, renamedProject?: Container) => void;
     project?: Container;
 }
 
 export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
-    const { onChange, onSuccess, onPageError, project } = props;
+    const { onChange, onSuccess, onPageError, project, getIsDirty, setIsDirty } = props;
 
     const [showModal, setShowModal] = useState<boolean>(false);
     const [nameDirty, setNameDirty] = useState<boolean>(false);
@@ -46,7 +46,6 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
     const { container, user, moduleContext } = useServerContext();
     const isAppHomeSelected = isAppHomeFolder(project, moduleContext);
     const dispatch = useServerContextDispatch();
-    const [getIsDirty, setIsDirty] = useRouteLeave();
 
     const onNameChange = useCallback(
         (name: string) => {
@@ -114,7 +113,7 @@ export const ProjectSettings: FC<ProjectSettingsProps> = memo(props => {
 
                 renamedProject = await api.folder.renameProject(options, project.path);
                 setNameDirty(false);
-                onSuccess(dataTypeDirty || dashboardDirty || storageDirty || barDirty || nameIdDirty);
+                onSuccess(dataTypeDirty || dashboardDirty || storageDirty || barDirty || nameIdDirty, true, false, renamedProject);
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to update project settings');
             } finally {

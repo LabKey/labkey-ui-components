@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.5.1
+*Released*: 7 August 2024
+- Merge from release24.8-SNAPSHOT to develop
+    - includes changes from 4.4.3 #1545
+
 ### version 4.5.0
 *Released*: 6 August 2024
 - Remove `formsy-react` dependency.

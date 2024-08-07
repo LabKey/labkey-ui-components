@@ -361,10 +361,6 @@ import {
     isValidFilterField,
     SAMPLE_FILTER_METRIC_AREA,
 } from './internal/components/search/utils';
-import { useFolderDataTypeExclusions } from './internal/components/project/useFolderDataTypeExclusions';
-import { ProjectNameSetting } from './internal/components/project/ProjectNameSetting';
-import { ProjectDataTypeSelections } from './internal/components/project/ProjectDataTypeSelections';
-import { ProjectSettings } from './internal/components/project/ProjectSettings';
 import { useAdministrationSubNav } from './internal/components/administration/useAdministrationSubNav';
 import { useAdminAppContext } from './internal/components/administration/useAdminAppContext';
 import { ProtectedDataSettingsPanel } from './internal/components/administration/ProtectedDataSettingsPanel';
@@ -1430,13 +1426,9 @@ export {
     getFilterValuesAsArray,
     getFieldFiltersValidationResult,
     // administration
-    ProjectNameSetting,
-    ProjectDataTypeSelections,
-    ProjectSettings,
     ProtectedDataSettingsPanel,
     NameIdSettings,
     AuditSettings,
-    useFolderDataTypeExclusions,
     useAdministrationSubNav,
     useAdminAppContext,
     showPremiumFeatures,

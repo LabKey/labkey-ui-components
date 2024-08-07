@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD August 2024
 - Issue 50833: Renaming a project doesn't get fully reloaded until page refresh
   - ProjectSettings to use getIsDirty and setIsDirty from parent component and to pass renamedProject to onSuccess
+  - Move several admin setting project related components to @labkey/premium
 
 ### version 4.5.0
 *Released*: 6 August 2024

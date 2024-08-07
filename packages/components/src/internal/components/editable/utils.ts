@@ -228,7 +228,7 @@ export const getUpdatedDataFromEditableGrid = (
     // If we have data from bulk edit then we need to use that as originalData instead of the data on the EditorModel
     // otherwise we'll incorrectly diff the changes when we call getUpdatedDataFromGrid below.
     const originalData = bulkEditData ?? editorModel.originalData;
-    const editorData = editorModel.getDataForServerUpload(true, true, false).toArray();
+    const editorData = editorModel.getDataForServerUpload().toArray();
     return {
         originalRows: editorModel.originalData.toJS(),
         schemaQuery: editorModel.queryInfo.schemaQuery,

@@ -283,23 +283,11 @@ export class EditorModel
         return values.asImmutable();
     }
 
-    /** deprecated Use getDataForServerUpload **/
-    getRawDataFromModel(
-        queryModel: QueryModel,
-        displayValues?: boolean,
-        forUpdate?: boolean,
-        forExport?: boolean
-    ): List<Map<string, any>> {
-        return this.getDataForServerUpload(displayValues, forUpdate, forExport);
-    }
-
     /**
      * This method formats the EditorModel data so we can upload the data to LKS via insert/updateRows
      * @param displayValues
-     * @param forUpdate
-     * @param forExport
      */
-    getDataForServerUpload(displayValues = true, forUpdate = false, forExport = false): List<Map<string, any>> {
+    getDataForServerUpload(displayValues = true): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
         // TODO: NEED REVIEWER INPUT. Is it safe to use this.columnMap below? It includes pk columns (which we used to
         //  pull from queryModel rows when forUpdate is true) and folder/container columns. I think it is safe to use
@@ -337,7 +325,7 @@ export class EditorModel
                         row = row.set(
                             col.name,
                             values.reduce((arr, vd) => {
-                                const val = forExport ? vd.display : vd.raw;
+                                const val = vd.raw;
                                 if (val !== undefined && val !== null) {
                                     arr.push(val);
                                 }
@@ -351,7 +339,7 @@ export class EditorModel
                         );
                     } else {
                         let val;
-                        if (values.size === 1) val = forExport ? values.first()?.display : values.first()?.raw;
+                        if (values.size === 1) val = values.first()?.raw;
                         row = row.set(col.name, val);
                     }
                 } else if (col.jsonType === 'time') {

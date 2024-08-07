@@ -369,7 +369,7 @@ export class EntityIdCreationModel extends Record({
         auditUserComment?: string
     ): Promise<QueryCommandResponse> {
         const rows = editorModel
-            .getDataForServerUpload(false, false)
+            .getDataForServerUpload(false)
             .valueSeq()
             .reduce((rows_, row) => {
                 let map = row.toMap();

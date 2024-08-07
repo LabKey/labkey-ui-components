@@ -132,6 +132,9 @@ export const initEditorModel = async (
         columns = queryInfo.getInsertColumns();
     }
 
+    // file input columns are not supported in the editable grid, so remove them
+    columns = columns.filter(col => !col.isFileInput);
+
     // Calculate orderedColumns here before we add PK and Container columns to the columns array because they should
     // be hidden by default.
     const orderedColumns = columns.map(queryColumn => queryColumn.fieldKey);
@@ -147,13 +150,17 @@ export const initEditorModel = async (
         columnMap[pkCol.fieldKey] = pkCol;
         columns.push(pkCol);
 
-        // If we're updating we need to ensure that the container column is in the column map, so we can validate
-        // against it during events like paste.
-        const containerCol = queryInfo.getColumn('Container') ?? queryInfo.getColumn('Folder');
+        const hasContainerCol = columns.filter(c => c.fieldKey === 'Container' || c.fieldKey === 'Folder').length > 0;
 
-        if (containerCol) {
-            columnMap[containerCol.fieldKey] = containerCol;
-            columns.push(containerCol);
+        if (!hasContainerCol) {
+            // If we're updating we need to ensure that the container column is in the column map, so we can validate
+            // against it during events like paste.
+            const containerCol = queryInfo.getColumn('Container') ?? queryInfo.getColumn('Folder');
+
+            if (containerCol) {
+                columnMap[containerCol.fieldKey] = containerCol;
+                columns.push(containerCol);
+            }
         }
     }
 

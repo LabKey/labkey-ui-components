@@ -1,8 +1,6 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
-import { getUniqueIdColumnMetadata } from '../entities/utils';
-
 import { EditorModel } from './models';
 
 import { EditableGrid, EditableGridChange, SharedEditableGridPanelProps } from './EditableGrid';
@@ -52,7 +50,6 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
         getReadOnlyRows,
         getTabHeader,
         getTabTitle,
-        readOnlyColumns,
         forUpdate,
         ...gridProps
     } = props;
@@ -73,7 +70,6 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
             editorModel={activeEditorModel}
             onChange={_onChange}
             readonlyRows={activeReadOnlyRows}
-            readOnlyColumns={readOnlyColumns}
             forUpdate={forUpdate}
         />
     );

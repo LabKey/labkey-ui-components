@@ -321,9 +321,6 @@ export interface SharedEditableGridProps {
     metricFeatureArea?: string;
     primaryBtnProps?: EditableGridBtnProps; // TODO: Only used by MultiTargetStorageEditableGrid, is there another way?
     processBulkData?: (data: OrderedMap<string, any>) => BulkAddData;
-    // TODO: readOnlyColumns is only used by usages of DataClassEditableGridPanelForUpdate in Biologics and SM. We
-    //  should use columnMetadata instead, and move the duplicated logic into DataClassEditableGridPanelForUpdate
-    readOnlyColumns?: string[];
     readonlyRows?: string[]; // list of key values for rows that are readonly.
     rowNumColumn?: GridColumn;
     saveBtnClickedCount?: number; // TODO: Only used by MultiTargetStorageEditableGrid, is there another way?

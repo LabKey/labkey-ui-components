@@ -3,8 +3,6 @@ import { Map } from 'immutable';
 
 import { capitalizeFirstChar } from '../../util/utils';
 
-import { getUniqueIdColumnMetadata } from '../entities/utils';
-
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -23,7 +21,7 @@ import { OperationConfirmationData } from '../entities/models';
 
 import { getOperationNotPermittedMessage } from '../samples/utils';
 
-import { EditorModel, EditableGridLoader } from './models';
+import { EditorModel, EditableGridLoader, EditableColumnMetadata } from './models';
 
 import { EditableGridPanel, EditableGridPanelProps } from './EditableGridPanel';
 import { initEditorModel } from './actions';
@@ -38,6 +36,7 @@ type InheritedEditableGridPanelProps = Omit<
 >;
 
 interface EditableGridPanelForUpdateProps extends InheritedEditableGridPanelProps {
+    columnMetadata?: Map<string, EditableColumnMetadata>;
     editStatusData?: OperationConfirmationData;
     loader: EditableGridLoader;
     onCancel: () => void;
@@ -54,8 +53,11 @@ interface EditableGridPanelForUpdateProps extends InheritedEditableGridPanelProp
     ) => Promise<any>;
 }
 
+// Note: presently this is only used by AssayGridPanel. We should consider moving it to premium and integrating it into
+// the AssayGridPanel component.
 export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = props => {
     const {
+        columnMetadata,
         editStatusData,
         loader,
         onCancel,
@@ -79,7 +81,6 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
         () => getOperationNotPermittedMessage(editStatusData, singularNoun, pluralNoun),
         [editStatusData, singularNoun, pluralNoun]
     );
-    const columnMetadata = useMemo(() => getUniqueIdColumnMetadata(queryModel.queryInfo), [queryModel.queryInfo]);
 
     useEffect(() => {
         (async (): Promise<void> => {

@@ -361,13 +361,8 @@ import {
     isValidFilterField,
     SAMPLE_FILTER_METRIC_AREA,
 } from './internal/components/search/utils';
-import { useFolderDataTypeExclusions } from './internal/components/project/useFolderDataTypeExclusions';
-import { ProjectNameSetting } from './internal/components/project/ProjectNameSetting';
-import { ProjectDataTypeSelections } from './internal/components/project/ProjectDataTypeSelections';
-import { ProjectSettings } from './internal/components/project/ProjectSettings';
 import { useAdministrationSubNav } from './internal/components/administration/useAdministrationSubNav';
 import { useAdminAppContext } from './internal/components/administration/useAdminAppContext';
-import { ProtectedDataSettingsPanel } from './internal/components/administration/ProtectedDataSettingsPanel';
 import { fetchGroupMembership, getGroupMembership } from './internal/components/administration/actions';
 import { MemberType } from './internal/components/administration/models';
 import {
@@ -746,6 +741,7 @@ import {
     isSharedDefinition,
     isSourceTypeEnabled,
     isWorkflowEnabled,
+    isDataChangeCommentRequirementFeatureEnabled,
     setProductProjects,
     useMenuSectionConfigs,
     userCanDeletePublicPicklists,
@@ -905,7 +901,6 @@ import { isLoginAutoRedirectEnabled, showPremiumFeatures } from './internal/comp
 import { LineageGridModel, LineageResult } from './internal/components/lineage/models';
 import { ActiveUserLimit, ActiveUserLimitMessage } from './internal/components/settings/ActiveUserLimit';
 import { NameIdSettings } from './internal/components/settings/NameIdSettings';
-import { AuditSettings } from './internal/components/settings/AuditSettings';
 import { BaseModal, Modal, ModalHeader } from './internal/Modal';
 import { Tab, Tabs } from './internal/Tabs';
 import { CheckboxLK } from './internal/Checkbox';
@@ -951,6 +946,7 @@ const App = {
     isSampleAliquotSelectorEnabled,
     isProjectContainer,
     isProtectedDataEnabled,
+    isDataChangeCommentRequirementFeatureEnabled,
     isSharedDefinition,
     freezerManagerIsCurrentApp,
     isSampleStatusEnabled,
@@ -1430,13 +1426,7 @@ export {
     getFilterValuesAsArray,
     getFieldFiltersValidationResult,
     // administration
-    ProjectNameSetting,
-    ProjectDataTypeSelections,
-    ProjectSettings,
-    ProtectedDataSettingsPanel,
     NameIdSettings,
-    AuditSettings,
-    useFolderDataTypeExclusions,
     useAdministrationSubNav,
     useAdminAppContext,
     showPremiumFeatures,

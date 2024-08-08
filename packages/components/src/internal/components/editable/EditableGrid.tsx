@@ -714,16 +714,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     isReadOnly(cellKey: string): boolean {
         const { fieldKey, rowIdx } = parseCellKey(cellKey);
         const { editorModel, readonlyRows } = this.props;
-        const cellValueDataKey = editorModel.getPkValue(rowIdx).toString();
+        const pkValue = editorModel.getPkValue(rowIdx);
 
-        if (readonlyRows?.includes(cellValueDataKey)) return true;
+        if (pkValue !== undefined && readonlyRows?.includes(pkValue.toString())) return true;
 
         const queryCol = editorModel.columnMap.get(fieldKey);
 
         if (queryCol.readOnly) return true;
 
         const metadata = editorModel.columnMetadata?.get(queryCol.fieldKey);
-        return metadata && (metadata.readOnly || metadata.isReadOnlyCell?.(cellValueDataKey));
+        return metadata && (metadata.readOnly || metadata.isReadOnlyCell?.(pkValue));
     }
 
     // TODO: update modifyCell to take fieldKey instead of colIdx

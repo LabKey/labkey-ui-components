@@ -208,7 +208,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
 
     constructor(props: CellProps) {
         super(props);
-        this.state = { filteredLookupKeys: props.columnMetadata.filteredLookupKeys };
+        this.state = { filteredLookupKeys: props.columnMetadata?.filteredLookupKeys };
         this.displayEl = React.createRef();
         this.preFocusDOMRect = React.createRef();
     }
@@ -252,7 +252,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
     loadFilteredLookupKeys = async (): Promise<void> => {
         const { columnMetadata, linkedValues, readOnly } = this.props;
 
-        if (!columnMetadata.getFilteredLookupKeys || readOnly) return;
+        if (!columnMetadata?.getFilteredLookupKeys || readOnly) return;
 
         const linkedFilteredLookupKeys = await columnMetadata.getFilteredLookupKeys(linkedValues);
 

@@ -7,10 +7,19 @@ Components, models, actions, and utility functions for LabKey applications and p
   - ProjectSettings to use getIsDirty and setIsDirty from parent component and to pass renamedProject to onSuccess
   - Move several admin setting project related components to @labkey/premium
 
+### version 4.5.1
+*Released*: 7 August 2024
+- Merge from release24.8-SNAPSHOT to develop
+    - includes changes from 4.4.3 #1545
+
 ### version 4.5.0
 *Released*: 6 August 2024
 - Remove `formsy-react` dependency.
 - Inline `formsy-react` implementation. This is a port of v2.3.2.
+
+### version 4.4.3
+*Released*: 6 August 2024
+- Mark new `Visit Label` field as a study field
 
 ### version 4.4.2
 *Released*: 31 July 2024

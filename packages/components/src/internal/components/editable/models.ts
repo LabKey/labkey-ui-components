@@ -207,11 +207,15 @@ export class EditorModel
         return data;
     }
 
-    getFolderValueForCell(cellKey: string): string {
-        const { rowIdx } = parseCellKey(cellKey);
+    getFolderValueForRow(rowIdx: number): string {
         const containerCol = this.columnMap.get('Folder') ?? this.columnMap.get('Container');
         if (!containerCol) return undefined;
         return this.cellValues.get(genCellKey(containerCol.fieldKey, rowIdx)).get(0).raw;
+    }
+
+    getFolderValueForCell(cellKey: string): string {
+        const { rowIdx } = parseCellKey(cellKey);
+        return this.getFolderValueForRow(rowIdx);
     }
 
     // TODO: make findNextCell take fieldKey
@@ -284,74 +288,86 @@ export class EditorModel
     }
 
     /**
+     * Formats the values for an entire row into a Map<string, any>
+     * @param rowIdx
+     * @param displayValues
+     */
+    getRowValue(rowIdx: number, displayValues = true): Map<string, any> {
+        let row = Map<string, any>();
+
+        // TODO: NEED REVIEWER INPUT. Is it safe to use this.columnMap below? It includes pk columns (which we used to
+        //  pull from queryModel rows when forUpdate is true) and folder/container columns. I think it is safe to use
+        //  this.columnMap because insert cases won't have those columns, but update cases will, so things should just
+        //  work™.
+        this.columnMap.valueSeq().forEach(col => {
+            if (!col) return;
+            const values = this.getValue(col.fieldKey, rowIdx);
+
+            // Some column types have special handling of raw data, such as multi value columns like alias, so first
+            // check renderer for how to retrieve raw data
+            let renderer;
+            if (col.columnRenderer) {
+                renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
+            }
+
+            if (renderer?.getEditableRawValue) {
+                row = row.set(col.name, renderer.getEditableRawValue(values));
+            } else if (col.isLookup()) {
+                if (col.isExpInput() || col.isAliquotParent()) {
+                    let sep = '';
+                    row = row.set(
+                        col.name,
+                        values.reduce((str, vd) => {
+                            if (vd.display !== undefined && vd.display !== null) {
+                                str += sep + quoteValueWithDelimiters(vd.display, ',');
+                                sep = ', ';
+                            }
+                            return str;
+                        }, '')
+                    );
+                } else if (col.isJunctionLookup()) {
+                    row = row.set(
+                        col.name,
+                        values.reduce((arr, vd) => {
+                            const val = vd.raw;
+                            if (val !== undefined && val !== null) {
+                                arr.push(val);
+                            }
+                            return arr;
+                        }, [])
+                    );
+                } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
+                    row = row.set(
+                        col.name,
+                        values.size === 1 ? quoteValueWithDelimiters(values.first()?.display, ',') : undefined
+                    );
+                } else {
+                    let val;
+                    if (values.size === 1) val = values.first()?.raw;
+                    row = row.set(col.name, val);
+                }
+            } else if (col.jsonType === 'time') {
+                row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
+            } else if (col.jsonType !== 'date' || !displayValues) {
+                const val = values.size === 1 ? values.first().raw : undefined;
+                row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
+            } else {
+                row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
+            }
+        });
+
+        return row;
+    }
+
+    /**
      * This method formats the EditorModel data so we can upload the data to LKS via insert/updateRows
      * @param displayValues
      */
     getDataForServerUpload(displayValues = true): List<Map<string, any>> {
         let rawData = List<Map<string, any>>();
-        // TODO: NEED REVIEWER INPUT. Is it safe to use this.columnMap below? It includes pk columns (which we used to
-        //  pull from queryModel rows when forUpdate is true) and folder/container columns. I think it is safe to use
-        //  this.columnMap because insert cases won't have those columns, but update cases will, so things should just
-        //  work™.
+
         for (let rn = 0; rn < this.rowCount; rn++) {
-            let row = Map<string, any>();
-            this.columnMap.valueSeq().forEach(col => {
-                if (!col) return;
-                const values = this.getValue(col.fieldKey, rn);
-
-                // Some column types have special handling of raw data, such as multi value columns like alias, so first
-                // check renderer for how to retrieve raw data
-                let renderer;
-                if (col.columnRenderer) {
-                    renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
-                }
-
-                if (renderer?.getEditableRawValue) {
-                    row = row.set(col.name, renderer.getEditableRawValue(values));
-                } else if (col.isLookup()) {
-                    if (col.isExpInput() || col.isAliquotParent()) {
-                        let sep = '';
-                        row = row.set(
-                            col.name,
-                            values.reduce((str, vd) => {
-                                if (vd.display !== undefined && vd.display !== null) {
-                                    str += sep + quoteValueWithDelimiters(vd.display, ',');
-                                    sep = ', ';
-                                }
-                                return str;
-                            }, '')
-                        );
-                    } else if (col.isJunctionLookup()) {
-                        row = row.set(
-                            col.name,
-                            values.reduce((arr, vd) => {
-                                const val = vd.raw;
-                                if (val !== undefined && val !== null) {
-                                    arr.push(val);
-                                }
-                                return arr;
-                            }, [])
-                        );
-                    } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
-                        row = row.set(
-                            col.name,
-                            values.size === 1 ? quoteValueWithDelimiters(values.first()?.display, ',') : undefined
-                        );
-                    } else {
-                        let val;
-                        if (values.size === 1) val = values.first()?.raw;
-                        row = row.set(col.name, val);
-                    }
-                } else if (col.jsonType === 'time') {
-                    row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
-                } else if (col.jsonType !== 'date' || !displayValues) {
-                    const val = values.size === 1 ? values.first().raw : undefined;
-                    row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
-                } else {
-                    row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
-                }
-            });
-
+            const row = this.getRowValue(rn, displayValues);
             rawData = rawData.push(row);
         }
 

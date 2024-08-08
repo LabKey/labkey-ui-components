@@ -173,12 +173,19 @@ function inputCellFactory(
         if (allowSelection) colOffset += 1;
         if (!hideCountCol) colOffset += 1;
 
-        const rn = row.get(GRID_EDIT_INDEX);
+        const rowIdx = row.get(GRID_EDIT_INDEX);
         const colIdx = cn - colOffset;
         const { columnMap, orderedColumns } = editorModel;
         const fieldKey = columnMap.get(orderedColumns.get(colIdx)).fieldKey;
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
-        const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rn, readonlyRows);
+        const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
+        const rowContainer = editorModel.getFolderValueForRow(rowIdx);
+        const focused = editorModel.isFocused(colIdx, rowIdx);
+        const className = classNames({ 'grid-col-with-width': hasCellWidthOverride(columnMetadata) });
+        const style = { textAlign: columnMetadata?.align ?? c.align ?? 'left' } as any;
+
+        // If we're updating then we want to use the container path from each row if present
+        if (forUpdate && rowContainer) containerPath = rowContainer;
 
         let linkedValues;
         if (columnMetadata?.getFilteredLookupKeys) {
@@ -186,14 +193,14 @@ function inputCellFactory(
                 editorModel.orderedColumns.get(columnMetadata.linkedColInd)
             ).fieldKey;
             linkedValues = editorModel
-                .getValue(linkedFieldKey, rn)
+                .getValue(linkedFieldKey, rowIdx)
                 .map(vd => vd.raw)
                 .toArray();
         }
 
         const { isSparseSelection, selectionCells } = editorModel;
-        const renderDragHandle = !isSparseSelection && editorModel.lastSelection(fieldKey, rn);
-        let inSelection = editorModel.inSelection(fieldKey, rn);
+        const renderDragHandle = !isSparseSelection && editorModel.lastSelection(fieldKey, rowIdx);
+        let inSelection = editorModel.inSelection(fieldKey, rowIdx);
         let borderMask: BorderMask = [false, false, false, false];
 
         if (!isSparseSelection && selectionCells.length) {
@@ -205,7 +212,7 @@ function inputCellFactory(
                 minCell.rowIdx,
                 maxCell.rowIdx,
                 colIdx,
-                rn,
+                rowIdx,
                 borderMask
             );
         }
@@ -219,17 +226,12 @@ function inputCellFactory(
                 minCell.rowIdx,
                 maxCell.rowIdx,
                 colIdx,
-                rn,
+                rowIdx,
                 borderMask
             );
-            inSelection = initialSelection.includes(genCellKey(fieldKey, rn));
+            inSelection = initialSelection.includes(genCellKey(fieldKey, rowIdx));
         }
 
-        const focused = editorModel.isFocused(colIdx, rn);
-        const className = classNames({ 'grid-col-with-width': hasCellWidthOverride(columnMetadata) });
-        const style = { textAlign: columnMetadata?.align ?? c.align ?? 'left' } as any;
-
-        // TODO: simplify Cell props by passing columnMetadata instead of all of the properties of it individually
         return (
             <td className={className} key={inputCellKey(c.raw, row)} style={style}>
                 <Cell
@@ -240,22 +242,19 @@ function inputCellFactory(
                     cellActions={cellActions}
                     col={c.raw}
                     colIdx={colIdx}
-                    row={focused ? row : undefined}
+                    columnMetadata={columnMetadata}
+                    row={focused ? editorModel.getRowValue(rowIdx) : undefined}
                     containerFilter={containerFilter}
                     placeholder={columnMetadata?.placeholder}
                     readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
-                    rowIdx={rn}
+                    rowIdx={rowIdx}
                     focused={focused}
                     forUpdate={forUpdate}
-                    message={editorModel.getMessage(fieldKey, rn)}
-                    selected={editorModel.isSelected(colIdx, rn)}
+                    message={editorModel.getMessage(fieldKey, rowIdx)}
+                    selected={editorModel.isSelected(colIdx, rowIdx)}
                     selection={inSelection}
                     renderDragHandle={renderDragHandle}
-                    values={editorModel.getValue(fieldKey, rn)}
-                    lookupValueFilters={columnMetadata?.lookupValueFilters}
-                    filteredLookupValues={columnMetadata?.filteredLookupValues}
-                    filteredLookupKeys={columnMetadata?.filteredLookupKeys}
-                    getFilteredLookupKeys={columnMetadata?.getFilteredLookupKeys}
+                    values={editorModel.getValue(fieldKey, rowIdx)}
                     linkedValues={linkedValues}
                     containerPath={containerPath}
                 />

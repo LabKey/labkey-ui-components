@@ -30,8 +30,6 @@ import { QuerySelect } from '../forms/QuerySelect';
 
 import { getQueryColumnRenderers } from '../../global';
 
-import { getValueFromRow } from '../../util/utils';
-
 import { MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { ValueDescriptor } from './models';
 
@@ -50,7 +48,6 @@ export interface LookupCellProps {
     lookupValueFilters?: Filter.IFilter[];
     modifyCell: (colIdx: number, rowIdx: number, newValues: ValueDescriptor[], mod: MODIFICATION_TYPES) => void;
     onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
-    row: any;
     rowIdx: number;
     select: (colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => void;
     values: List<ValueDescriptor>;
@@ -129,7 +126,7 @@ const QueryLookupCell: FC<QueryLookupCellProps> = memo(props => {
 QueryLookupCell.displayName = 'QueryLookupCell';
 
 export const LookupCell: FC<LookupCellProps> = memo(props => {
-    const { col, colIdx, disabled, modifyCell, onKeyDown, row, rowIdx, select, values, containerPath } = props;
+    const { col, colIdx, disabled, modifyCell, onKeyDown, rowIdx, select, values, containerPath } = props;
 
     const onSelectChange = useCallback<SelectInputChange>(
         (fieldName, formValue, options, props_) => {
@@ -161,19 +158,12 @@ export const LookupCell: FC<LookupCellProps> = memo(props => {
         );
     }
 
-    // if the column is a lookup, we need to pass the containerPath to the QuerySelect
-    // TODO: Need to find another way to get the containerPath for a lookup cell, as row is going to be removed
-    const containerPath_ =
-        containerPath ??
-        getValueFromRow(row?.toJS(), 'Folder')?.toString() ??
-        getValueFromRow(row?.toJS(), 'Container')?.toString();
-
     return (
         <QueryLookupCell
             {...props}
             onSelectChange={onSelectChange}
             rawValues={rawValues}
-            containerPath={containerPath_}
+            containerPath={containerPath}
         />
     );
 });

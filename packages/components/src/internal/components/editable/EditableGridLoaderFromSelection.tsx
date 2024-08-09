@@ -39,7 +39,9 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
     constructor(
         id: string,
         queryInfo: QueryInfo,
-        updateData: Map<string, any>,
+        // FIXME: the types I'm seeing passed as updateData imply Map<string, any> is the correct type, however assuming
+        //  that makes the code fall over
+        updateData: any,
         requiredColumns?: string[],
         omittedColumns?: string[],
         columns?: QueryColumn[],
@@ -75,7 +77,9 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
         return {
             data: EditorModel.convertQueryDataToEditorData(
                 data,
-                this.updateData,
+                // Coerce to Map<string, any> because despite types seeming to align they're getting clobbered somewhere
+                // and we're not actually passing Map<string, any>.
+                Map<string, any>(this.updateData),
                 this.idsNotToUpdate,
                 this.fieldsNotToUpdate
             ),

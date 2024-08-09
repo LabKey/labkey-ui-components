@@ -295,10 +295,6 @@ export class EditorModel
     getRowValue(rowIdx: number, displayValues = true): Map<string, any> {
         let row = Map<string, any>();
 
-        // TODO: NEED REVIEWER INPUT. Is it safe to use this.columnMap below? It includes pk columns (which we used to
-        //  pull from queryModel rows when forUpdate is true) and folder/container columns. I think it is safe to use
-        //  this.columnMap because insert cases won't have those columns, but update cases will, so things should just
-        //  work™.
         this.columnMap.valueSeq().forEach(col => {
             if (!col) return;
             const values = this.getValue(col.fieldKey, rowIdx);

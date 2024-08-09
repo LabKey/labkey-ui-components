@@ -39,7 +39,7 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
     constructor(
         id: string,
         queryInfo: QueryInfo,
-        updateData,
+        updateData: Map<string, any>,
         requiredColumns?: string[],
         omittedColumns?: string[],
         columns?: QueryColumn[],
@@ -62,7 +62,6 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
     async fetch(queryModel: QueryModel): Promise<GridResponse> {
         const { queryName, queryParameters, schemaName, sortString, viewName } = queryModel;
         const selectedIds = queryModel.getSelectedIds(this.idsNotPermitted);
-
         const { data, dataIds } = await getSelectedData(
             schemaName,
             queryName,
@@ -76,7 +75,7 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
         return {
             data: EditorModel.convertQueryDataToEditorData(
                 data,
-                Map<any, any>(this.updateData),
+                this.updateData,
                 this.idsNotToUpdate,
                 this.fieldsNotToUpdate
             ),

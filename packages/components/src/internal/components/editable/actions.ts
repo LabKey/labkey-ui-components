@@ -28,20 +28,18 @@ import {
 } from './models';
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
-import { EditableGridProps } from './EditableGrid';
 
 /**
  * Do not use this method directly, use initEditorModel instead
  */
 const loadEditorModelData = async (
-    queryModelData: Partial<QueryModel>,
-    editorColumns?: QueryColumn[],
+    orderedRows: string[],
+    rows: Record<string, any>,
+    columns?: QueryColumn[],
     forUpdate?: boolean
     // TODO: When all non EditorModel.init usages of this are gone update this to only return cellValues and move it to
     //  EditorModel
 ): Promise<Partial<EditorModel>> => {
-    const { orderedRows, rows, queryInfo } = queryModelData;
-    const columns = editorColumns ?? queryInfo.getInsertColumns();
     const lookupValueDescriptors = await getLookupValueDescriptors(columns, rows, orderedRows, forUpdate);
     let cellValues = Map<string, List<ValueDescriptor>>();
 
@@ -144,11 +142,21 @@ export const initEditorModel = async (
     }, {});
 
     if (forUpdate) {
-        // If we're updating then we need to ensure that the pkCol is in the columnMap so things like readonlyRows
-        // will work.
-        const pkCol = queryInfo.getPkCols()[0];
-        columnMap[pkCol.fieldKey] = pkCol;
-        columns.push(pkCol);
+        // If we're updating then we need to ensure that the pkCols and altUpdateKeys are in the columnMap
+        queryInfo.getPkCols().forEach(pkCol => {
+            if (!columnMap[pkCol.fieldKey]) {
+                columnMap[pkCol.fieldKey] = pkCol;
+                columns.push(pkCol);
+            }
+        });
+
+        queryInfo.altUpdateKeys?.forEach(fieldKey => {
+            const col = queryInfo.getColumn(fieldKey);
+            if (col && !columnMap[fieldKey]) {
+                columnMap[fieldKey] = col;
+                columns.push(col);
+            }
+        });
 
         const hasContainerCol = columns.filter(c => c.fieldKey === 'Container' || c.fieldKey === 'Folder').length > 0;
 
@@ -167,7 +175,7 @@ export const initEditorModel = async (
     // TODO: because we use loadEditorModelData we cannot put this method on EditorModel as a static method, which is
     //  really where it belongs. Once we convert all usages of initEditableGridModel to use this method we can move it,
     //  as well as loadEditorModelData and getLookupValueDescriptors to EditorModel.
-    const { cellValues } = await loadEditorModelData({ rows, orderedRows }, columns, forUpdate);
+    const { cellValues } = await loadEditorModelData(orderedRows, rows, columns, forUpdate);
 
     return new EditorModel({
         cellValues,

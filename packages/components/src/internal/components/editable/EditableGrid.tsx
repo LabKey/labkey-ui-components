@@ -1551,9 +1551,15 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         let gridData = List<Map<string, any>>();
 
         for (let i = 0; i < editorModel.rowCount; i++) {
+            const pkFieldKey = editorModel.pkFieldKey;
             const pkValue = editorModel.getPkValue(i)?.toString();
             if (hideReadonlyRows && readonlyRows && readonlyRows.includes(pkValue)) continue;
-            gridData = gridData.push(Map({ [GRID_EDIT_INDEX]: i }));
+            const row = { [GRID_EDIT_INDEX]: i };
+
+            // FIXME: this is a hack that is needed for FM in order to properly render the position column, but I don't
+            //  have time to fix that right now. For more context look at BoxViewerModel.getLocationColumn.
+            if (pkFieldKey && pkValue) row[pkFieldKey] = pkValue;
+            gridData = gridData.push(Map(row));
         }
 
         return gridData;

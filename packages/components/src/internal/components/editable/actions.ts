@@ -1285,7 +1285,6 @@ async function insertPastedData(
 
     const byColumnValues = getPasteValuesByColumn(paste);
     const lookupColumnContainerCache = {};
-    // TODO: colMin may be wrong here because we're now storing hidden columns (e.g. RowId) in EditorModel
     const { colMin, rowMin } = paste.coordinates;
     let rowIdx = rowMin;
     let hasReachedRowLimit = false;
@@ -1309,7 +1308,6 @@ async function insertPastedData(
         let pkValue = getPkValue(row, editorModel.queryInfo);
         if (!pkValue) pkValue = editorModel.getPkValue(rowIdx);
 
-        // TODO: given that we're storing all columns in EditorModel now this may not be correct.
         for (let cn = 0; cn < row.size; cn++) {
             const val = row.get(cn);
             const colIdx = colMin + cn;

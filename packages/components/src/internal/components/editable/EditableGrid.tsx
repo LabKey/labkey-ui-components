@@ -19,7 +19,6 @@ import { List, Map, OrderedMap, Set } from 'immutable';
 import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
 
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
-import { QueryInfo } from '../../../public/QueryInfo';
 import { SelectionPivot } from '../../../public/QueryModel/QueryModel';
 import { Key } from '../../../public/useEnterEscape';
 
@@ -597,7 +596,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                         // only expand a selection upwards or downwards, just like in Excel/Sheets.
                         const minInitialCell = parseCellKey(initialSelection[0]);
                         const maxInitialCell = parseCellKey(initialSelection[initialSelection.length - 1]);
-                        orderedColumns.indexOf(minInitialCell.fieldKey);
                         minColIdx = orderedColumns.indexOf(minInitialCell.fieldKey);
                         maxColIdx = orderedColumns.indexOf(maxInitialCell.fieldKey);
                         minRowIdx = Math.min(minRowIdx, minInitialCell.rowIdx);

@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X August 2024
 - Issue 50924: Sample timeline event details throws error if the parent sample name starts with double quote
 
+### version 4.7.0
+*Released*: 12 August 2024
+- Issue 49966: Add new `StorageUnitLabel` column as a known column to allow attaching a label to a box created during import
+
 ### version 4.6.0
 *Released*: 8 August 2024
 - Issue 50833: Renaming a project doesn't get fully reloaded until page refresh

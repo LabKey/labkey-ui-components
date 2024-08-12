@@ -180,6 +180,7 @@ export const SAMPLE_STORAGE_COLUMNS = [
     'StorageRow',
     'StorageCol',
     'StorageUnit',
+    'StorageUnitLabel',
     'RawAmount',
     'RawUnits',
     'FreezeThawCount',

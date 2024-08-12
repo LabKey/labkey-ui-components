@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 50657: Use default view when printing labels from a sample's details page
+
 ### version 4.7.0
 *Released*: 12 August 2024
 - Issue 49966: Add new `StorageUnitLabel` column as a known column to allow attaching a label to a box created during import

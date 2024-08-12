@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 4.6.1
+*Released*: 12 August 2024
 - Issue 49966: Add new `StorageUnitLabel` column as a known column to allow attaching a label to a box created during import
 
 ### version 4.6.0

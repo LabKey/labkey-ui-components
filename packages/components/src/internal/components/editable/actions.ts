@@ -642,19 +642,21 @@ export async function addRowsPerPivotValue(
     rowData: Map<string, any>,
     containerPath: string
 ): Promise<Partial<EditorModel>> {
-    let { cellMessages, cellValues, rowCount } = editorModel;
+    let updatedModel = editorModel;
 
     if (numPerParent > 0) {
         for (const value of pivotValues) {
             rowData = rowData.set(pivotKey, value);
-            const changes = await addRowsToEditorModel(editorModel, rowData.toList(), numPerParent, containerPath);
-            cellMessages = changes.cellMessages;
-            cellValues = changes.cellValues;
-            rowCount = changes.rowCount;
+            const changes = await addRowsToEditorModel(updatedModel, rowData.toList(), numPerParent, containerPath);
+            updatedModel = updatedModel.merge(changes) as EditorModel;
         }
     }
 
-    return { cellMessages, cellValues, rowCount };
+    return {
+        cellMessages: updatedModel.cellMessages,
+        cellValues: updatedModel.cellValues,
+        rowCount: updatedModel.rowCount,
+    }
 }
 
 /**

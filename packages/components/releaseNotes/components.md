@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD August 2024
+- Calculated fields validation of value expression
+  - update tooltip text and examples
+  - validate expression on component mount and on text area blur
+  - display validation message or error in textarea footer
+
 ### version 4.7.0
 *Released*: 12 August 2024
 - Issue 49966: Add new `StorageUnitLabel` column as a known column to allow attaching a label to a box created during import

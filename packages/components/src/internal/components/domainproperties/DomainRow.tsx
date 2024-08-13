@@ -54,7 +54,7 @@ import {
     DomainOnChange,
     IDomainFormDisplayOptions,
     IFieldChange,
-    resolveAvailableTypes,
+    resolveAvailableTypes, SystemField,
 } from './models';
 import { PropDescType } from './PropDescType';
 import { getCheckedValue } from './actions';
@@ -87,7 +87,7 @@ export interface DomainRowProps {
     field: DomainField;
     fieldDetailsInfo?: Record<string, string>;
     fieldError?: DomainFieldError;
-    getDomainFields?: () => List<DomainField>;
+    getDomainFields?: () => { domainFields: List<DomainField>, systemFields: SystemField[] };
     helpNoun: string;
     index: number;
     isDragDisabled?: boolean;

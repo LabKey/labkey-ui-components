@@ -1050,8 +1050,11 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
         return !collapsed;
     };
 
-    getDomainFields = (): List<DomainField> => {
-        return this.props.domain.fields;
+    getDomainFields = (): { domainFields: List<DomainField>, systemFields: SystemField[] } => {
+        return {
+            domainFields: this.props.domain.fields,
+            systemFields: this.props.systemFields,
+        };
     };
 
     scrollFunction = (i: number): void => {

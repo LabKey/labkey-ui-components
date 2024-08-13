@@ -587,6 +587,7 @@ export class DomainIndex
 export enum FieldErrors {
     ALIQUOT_ONLY_REQUIRED = "Fields that are 'Editable for aliquots only' cannot be 'Required'.",
     INVALID_LOOKUP = 'Lookup target table does not exist.',
+    MISSING_CALCULATION_EXPRESSION = 'Please provide an expression value for each calculated field.',
     MISSING_DATA_TYPE = 'Please provide a data type for each field.',
     MISSING_FIELD_NAME = 'Please provide a name for each field.',
     MISSING_ONTOLOGY_PROPERTIES = 'Missing required ontology source or label field property.',
@@ -1209,6 +1210,10 @@ export class DomainField
         // Issue 46733: Editable for aliquots only/Required Field: Adding Samples gives error
         if (this.derivationDataScope === DERIVATION_DATA_SCOPES.CHILD_ONLY && this.required) {
             return FieldErrors.ALIQUOT_ONLY_REQUIRED;
+        }
+
+        if (this.isCalculatedField() && (!this.valueExpression || this.valueExpression.trim().length === 0)) {
+            return FieldErrors.MISSING_CALCULATION_EXPRESSION;
         }
 
         return FieldErrors.NONE;

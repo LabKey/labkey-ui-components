@@ -1135,7 +1135,7 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
                                 {domain.fields.map((field, i) => {
                                     // use the propertyId in the row key for saved fields (helps with issues 49481 and 50076)
                                     let key = 'domain-row-key-new' + i;
-                                    if (!field.isNew() && !field.isCalculatedField()) {
+                                    if (!field.isNew() && !field.isCalculatedField() && field.propertyId > 0) {
                                         key = 'domain-row-key-prop' + field.propertyId;
                                     }
 

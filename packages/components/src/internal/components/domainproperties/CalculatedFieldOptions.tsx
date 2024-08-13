@@ -1,18 +1,18 @@
-import React, {FC, memo, useCallback, useEffect, useMemo, useState} from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
 import { List } from 'immutable';
 
 import { FIELD_EDITOR_CALC_COLS_TOPIC, HelpLink, LABKEY_SQL_TOPIC } from '../../util/helpLinks';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
+import { resolveErrorMessage } from '../../util/messaging';
 
 import { createFormInputId, createFormInputName } from './utils';
-import { DOMAIN_FIELD_VALUE_EXPRESSION } from './constants';
-import {DomainField, SystemField} from './models';
+import { DOMAIN_FIELD_CLIENT_SIDE_ERROR, DOMAIN_FIELD_VALUE_EXPRESSION, SEVERITY_LEVEL_WARN } from './constants';
+import { DomainField, DomainFieldError, SystemField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
-import {CALCULATED_TYPE, PropDescType} from './PropDescType';
+import { CALCULATED_TYPE, PropDescType } from './PropDescType';
 import { parseCalculatedColumn } from './actions';
 
 const typeToDisplay = (type: string): string => {
@@ -63,13 +63,14 @@ const HELP_TIP_BODY = (
 interface Props {
     domainIndex: number;
     field: DomainField;
-    getDomainFields: () => { domainFields: List<DomainField>, systemFields: SystemField[] };
+    getDomainFields: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
     index: number;
     onChange: (string, any) => void;
 }
 
 export const CalculatedFieldOptions: FC<Props> = memo(props => {
     const { index, field, domainIndex, onChange, getDomainFields } = props;
+    const [loading, setLoading] = useState<boolean>(!field.isNew());
     const [error, setError] = useState<string>(undefined);
     const [parsedType, setParsedType] = useState<string>(undefined);
     const isNew = useMemo(() => field.isNew(), [field]);
@@ -83,15 +84,36 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
 
     const validateExpression = useCallback(
         async (value: string): Promise<void> => {
+            setLoading(true);
             setError(undefined);
             setParsedType(undefined);
             const { domainFields, systemFields } = getDomainFields();
             const colTypeMap = getColumnTypeMap(domainFields, systemFields);
-            const response = await parseCalculatedColumn(value, colTypeMap);
-            setError(response.error);
-            setParsedType(response.type);
+            try {
+                const response = await parseCalculatedColumn(value, colTypeMap);
+                setError(response.error);
+                setParsedType(response.type);
+
+                const warningId = createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, domainIndex, index);
+                if (response.error) {
+                    const domainFieldWarning = new DomainFieldError({
+                        message: 'Field expression is invalid.',
+                        fieldName: field.name,
+                        propertyId: undefined,
+                        severity: SEVERITY_LEVEL_WARN,
+                        rowIndexes: List<number>([index]),
+                    });
+                    onChange(warningId, domainFieldWarning);
+                } else {
+                    onChange(warningId, undefined);
+                }
+            } catch (e) {
+                setError(resolveErrorMessage(e) ?? 'Failed to validate expression.');
+            } finally {
+                setLoading(false);
+            }
         },
-        [getDomainFields]
+        [domainIndex, field.name, getDomainFields, index, onChange]
     );
 
     const handleBlur = useCallback(
@@ -138,8 +160,12 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                     />
                     <div className="domain-field-calc-footer">
                         {error && <div className="error">{error}</div>}
-                        {!error && parsedType && <div className="validated">Validated. Calculated data type is "{typeToDisplay(parsedType)}".</div>}
-                        {!isNew && !error && !parsedType && <LoadingSpinner msg="Validating expression..." />}
+                        {!error && parsedType && (
+                            <div className="validated">
+                                Validated. Calculated data type is "{typeToDisplay(parsedType)}".
+                            </div>
+                        )}
+                        {loading && <div>Validating expression...</div>}
                     </div>
                 </div>
             </div>

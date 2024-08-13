@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Filter, Query } from '@labkey/api';
-import { fromJS, Iterable, List, Map, OrderedMap, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
+import { fromJS, Iterable, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { ReactNode } from 'react';
 
 import { encodePart } from '../../../public/SchemaQuery';
@@ -24,10 +24,9 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { GridData } from '../../models';
 
 import { getQueryColumnRenderers } from '../../global';
-import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
+import { quoteValueWithDelimiters } from '../../util/utils';
 
 import { CellCoordinates, EditableGridEvent } from './constants';
 import { genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
@@ -205,6 +204,10 @@ export class EditorModel
             }
         });
         return data;
+    }
+
+    getColumnMetadata(fieldKey: string) {
+        return this.columnMetadata?.get(fieldKey.toLowerCase());
     }
 
     getFolderValueForRow(rowIdx: number): string {
@@ -548,7 +551,7 @@ export class EditorModel
         const pkValue = this.getPkValue(rowIdx)?.toString();
 
         return {
-            isReadonlyCell: this.columnMetadata?.get(fieldKey)?.isReadOnlyCell?.(pkValue) ?? false,
+            isReadonlyCell: this.getColumnMetadata(fieldKey)?.isReadOnlyCell?.(pkValue) ?? false,
             isReadonlyRow: readonlyRows?.includes(pkValue) ?? false,
         };
     }

@@ -720,7 +720,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         if (queryCol.readOnly) return true;
 
-        const metadata = editorModel.columnMetadata?.get(queryCol.fieldKey);
+        const metadata = editorModel.getColumnMetadata(queryCol.fieldKey);
         return metadata && (metadata.readOnly || metadata.isReadOnlyCell?.(pkValue));
     }
 
@@ -903,8 +903,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
         editorModel.orderedColumns.forEach(fieldKey => {
             const qCol = editorModel.columnMap.get(fieldKey);
-            const metadata = editorModel.columnMetadata?.get(qCol.fieldKey);
-
+            const metadata = editorModel.getColumnMetadata(qCol.fieldKey);
             let width = 100;
             let fixedWidth;
             if (hasCellWidthOverride(metadata)) {
@@ -975,11 +974,10 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     renderColumnHeader = (col: GridColumn, metadataKey: string): React.ReactNode => {
-        const { columnMetadata } = this.props.editorModel;
         const label = col.title;
         const qColumn: QueryColumn = col.raw;
         const req = !!qColumn?.required;
-        const metadata = columnMetadata?.get(metadataKey);
+        const metadata = this.props.editorModel.getColumnMetadata(metadataKey);
         const showOverlayFromMetadata = !!metadata?.toolTip;
         const showLabelOverlay = !showOverlayFromMetadata && qColumn?.hasHelpTipData;
         // TODO should be able to just use LabelOverlay here since it can handle an alternate tooltip renderer

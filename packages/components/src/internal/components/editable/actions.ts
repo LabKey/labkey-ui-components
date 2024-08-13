@@ -177,6 +177,13 @@ export const initEditorModel = async (
     //  as well as loadEditorModelData and getLookupValueDescriptors to EditorModel.
     const { cellValues } = await loadEditorModelData(orderedRows, rows, columns, forUpdate);
 
+    if (columnMetadata) {
+        // If columnMetadata is present force it to use lowercase keys
+        columnMetadata = columnMetadata.reduce((result, value, key) => {
+            return result.set(key.toLowerCase(), value);
+        }, Map<string, EditableColumnMetadata>());
+    }
+
     return new EditorModel({
         cellValues,
         columnMetadata,
@@ -1083,7 +1090,7 @@ export async function dragFillEvent(
         const { fieldKey } = parseCellKey(columnCells[0]);
         const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).fieldKey === fieldKey);
         const column = columnMap.get(fieldKey);
-        const metadata = columnMetadata?.get(fieldKey);
+        const metadata = editorModel.getColumnMetadata(fieldKey);
 
         // Don't manipulate any values in read only columns
         if (column.readOnly) {
@@ -1315,7 +1322,7 @@ async function insertPastedData(
             const colIdx = colMin + cn;
             const col = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx));
             const cellKey = genCellKey(col.fieldKey, rowIdx);
-            const metadata = editorModel.columnMetadata?.get(col?.fieldKey);
+            const metadata = editorModel.getColumnMetadata(col?.fieldKey);
             const readOnlyCol = col?.readOnly || metadata?.readOnly;
             const readOnlyCell = metadata?.isReadOnlyCell?.(pkValue);
 

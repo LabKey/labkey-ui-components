@@ -261,7 +261,11 @@ import {
 } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
-import { applyEditorModelChanges, getUpdatedDataFromEditableGrid } from './internal/components/editable/utils';
+import {
+    applyEditorModelChanges,
+    genCellKey,
+    getUpdatedDataFromEditableGrid,
+} from './internal/components/editable/utils';
 import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
@@ -1152,6 +1156,7 @@ export {
     invalidateFullQueryDetailsCache,
     // editable grid related items
     applyEditorModelChanges,
+    genCellKey,
     getUpdatedDataFromEditableGrid,
     initEditorModel,
     initEditorModels,

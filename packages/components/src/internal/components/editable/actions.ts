@@ -1076,7 +1076,7 @@ export async function dragFillEvent(
     forUpdate: boolean,
     targetContainerPath: string
 ): Promise<CellMessagesAndValues> {
-    const { columnMap, columnMetadata, selectionCells } = editorModel;
+    const { columnMap, selectionCells } = editorModel;
     let { cellMessages, cellValues } = editorModel;
 
     // If the selection size hasn't changed, then the selection hasn't changed, so return the existing cellValues

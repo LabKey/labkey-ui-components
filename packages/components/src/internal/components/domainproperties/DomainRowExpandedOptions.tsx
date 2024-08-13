@@ -43,7 +43,7 @@ interface Props {
     field: DomainField;
     getDomainFields?: () => { domainFields: List<DomainField>, systemFields: SystemField[] };
     index: number;
-    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => void;
+    onChange: (fieldId: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean) => void;
     onMultiChange: (changes: List<IFieldChange>) => void;
     queryName?: string;
     schemaName?: string;

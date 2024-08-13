@@ -208,9 +208,9 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         this.onSingleFieldChange(evt.target.id, value, index, expand);
     };
 
-    onSingleFieldChange = (id: string, value: any, index?: number, expand?: boolean): void => {
+    onSingleFieldChange = (id: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean): void => {
         const changes = List([{ id, value } as IFieldChange]);
-        this.props.onChange(changes, index, expand === true);
+        this.props.onChange(changes, index, expand === true, skipDirtyCheck);
     };
 
     onMultiFieldChange = (changes: List<IFieldChange>): void => {

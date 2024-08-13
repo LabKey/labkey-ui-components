@@ -65,7 +65,7 @@ interface Props {
     field: DomainField;
     getDomainFields: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
     index: number;
-    onChange: (string, any) => void;
+    onChange: (fieldId: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean) => void;
 }
 
 export const CalculatedFieldOptions: FC<Props> = memo(props => {
@@ -103,9 +103,9 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                         severity: SEVERITY_LEVEL_WARN,
                         rowIndexes: List<number>([index]),
                     });
-                    onChange(warningId, domainFieldWarning);
+                    onChange(warningId, domainFieldWarning, index, false, true);
                 } else {
-                    onChange(warningId, undefined);
+                    onChange(warningId, undefined, index, false, true);
                 }
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to validate expression.');

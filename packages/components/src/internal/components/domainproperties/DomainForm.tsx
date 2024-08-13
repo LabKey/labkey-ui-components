@@ -596,12 +596,13 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
         this.onDomainChange(handleSystemFieldUpdates(domain, field, enable));
     };
 
-    onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean): void => {
+    onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean, skipDirtyCheck = false): void => {
         const { domain } = this.props;
         const firstChange = changes.get(0);
         const rowSelectedChange = getNameFromId(firstChange?.id) === 'selected';
+        const dirty = skipDirtyCheck ? false : !rowSelectedChange;
 
-        this.onDomainChange(handleDomainUpdates(domain, changes), !rowSelectedChange);
+        this.onDomainChange(handleDomainUpdates(domain, changes), dirty);
 
         if (rowSelectedChange) {
             this.setState(

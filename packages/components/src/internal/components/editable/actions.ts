@@ -22,7 +22,8 @@ import {
     EditableColumnMetadata,
     EditableGridLoader,
     EditorMode,
-    EditorModel, EditorModelProps,
+    EditorModel,
+    EditorModelProps,
     MessageAndValue,
     ValueDescriptor,
 } from './models';
@@ -131,30 +132,32 @@ export const initEditorModel = async (
 
     // Calculate orderedColumns here before we add PK and Container columns to the columns array because they should
     // be hidden by default.
-    const orderedColumns = columns.map(queryColumn => queryColumn.fieldKey);
+    const orderedColumns = columns.map(queryColumn => queryColumn.fieldKey.toLowerCase());
     const columnMap = columns.reduce((result, column) => {
-        result[column.fieldKey] = column;
+        result[column.fieldKey.toLowerCase()] = column;
         return result;
     }, {});
 
     if (forUpdate) {
         // If we're updating then we need to ensure that the pkCols and altUpdateKeys are in the columnMap
         queryInfo.getPkCols().forEach(pkCol => {
-            if (!columnMap[pkCol.fieldKey]) {
-                columnMap[pkCol.fieldKey] = pkCol;
+            if (!columnMap[pkCol.fieldKey.toLowerCase()]) {
+                columnMap[pkCol.fieldKey.toLowerCase()] = pkCol;
                 columns.push(pkCol);
             }
         });
 
         queryInfo.altUpdateKeys?.forEach(fieldKey => {
             const col = queryInfo.getColumn(fieldKey);
-            if (col && !columnMap[fieldKey]) {
-                columnMap[fieldKey] = col;
+            if (col && !columnMap[fieldKey.toLowerCase()]) {
+                columnMap[fieldKey.toLowerCase()] = col;
                 columns.push(col);
             }
         });
 
-        const hasContainerCol = columns.filter(c => c.fieldKey === 'Container' || c.fieldKey === 'Folder').length > 0;
+        const hasContainerCol =
+            columns.filter(c => c.fieldKey.toLowerCase() === 'container' || c.fieldKey.toLowerCase() === 'folder')
+                .length > 0;
 
         if (!hasContainerCol) {
             // If we're updating we need to ensure that the container column is in the column map, so we can validate
@@ -162,7 +165,7 @@ export const initEditorModel = async (
             const containerCol = queryInfo.getColumn('Container') ?? queryInfo.getColumn('Folder');
 
             if (containerCol) {
-                columnMap[containerCol.fieldKey] = containerCol;
+                columnMap[containerCol.fieldKey.toLowerCase()] = containerCol;
                 columns.push(containerCol);
             }
         }
@@ -386,7 +389,7 @@ export async function addRowsToEditorModel(
     for (let rowIdx = editorModel.rowCount; rowIdx < rowCount; rowIdx++) {
         // eslint-disable-next-line no-loop-func
         rowData.forEach((value, colIdx) => {
-            const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx)).fieldKey;
+            const fieldKey = editorModel.getFieldKeyByIndex(colIdx);
             const cellKey = genCellKey(fieldKey, rowIdx);
             cellMessages = cellMessages.set(cellKey, messages.get(colIdx));
             selectionCells.push(cellKey);
@@ -657,7 +660,7 @@ export async function addRowsPerPivotValue(
         cellMessages: updatedModel.cellMessages,
         cellValues: updatedModel.cellValues,
         rowCount: updatedModel.rowCount,
-    }
+    };
 }
 
 /**
@@ -1314,7 +1317,7 @@ async function insertPastedData(
         for (let cn = 0; cn < row.size; cn++) {
             const val = row.get(cn);
             const colIdx = colMin + cn;
-            const col = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx));
+            const col = editorModel.getColumnByIndex(colIdx);
             const cellKey = genCellKey(col.fieldKey, rowIdx);
             const metadata = editorModel.getColumnMetadata(col?.fieldKey);
             const readOnlyCol = col?.readOnly || metadata?.readOnly;
@@ -1425,7 +1428,7 @@ export async function validateAndInsertPastedData(
             selectCells
         );
     } else {
-        const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(selectedColIdx)).fieldKey;
+        const fieldKey = editorModel.getFieldKeyByIndex(selectedColIdx);
         const cellKey = genCellKey(fieldKey, selectedRowIdx);
         return { cellMessages: editorModel.cellMessages.set(cellKey, { message: paste.message }) };
     }

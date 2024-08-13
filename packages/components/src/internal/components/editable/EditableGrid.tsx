@@ -104,9 +104,9 @@ function computeSelectionCellKeys(
 ): string[] {
     const selectionCells: string[] = [];
 
-    for (let c = minColIdx; c <= maxColIdx; c++) {
+    for (let colIdx = minColIdx; colIdx <= maxColIdx; colIdx++) {
         for (let r = minRowIdx; r <= maxRowIdx; r++) {
-            const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(c)).fieldKey;
+            const fieldKey = editorModel.getFieldKeyByIndex(colIdx);
             selectionCells.push(genCellKey(fieldKey, r));
         }
     }
@@ -172,8 +172,8 @@ function inputCellFactory(
 
         const rowIdx = row.get(GRID_EDIT_INDEX);
         const colIdx = cn - colOffset;
-        const { columnMap, orderedColumns } = editorModel;
-        const fieldKey = columnMap.get(orderedColumns.get(colIdx)).fieldKey;
+        const { orderedColumns } = editorModel;
+        const fieldKey = editorModel.getFieldKeyByIndex(colIdx);
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
         const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
         const rowContainer = editorModel.getFolderValueForRow(rowIdx);
@@ -186,9 +186,7 @@ function inputCellFactory(
 
         let linkedValues;
         if (columnMetadata?.getFilteredLookupKeys) {
-            const linkedFieldKey = editorModel.columnMap.get(
-                editorModel.orderedColumns.get(columnMetadata.linkedColInd)
-            ).fieldKey;
+            const linkedFieldKey = editorModel.getFieldKeyByIndex(columnMetadata.linkedColInd);
             linkedValues = editorModel
                 .getValue(linkedFieldKey, rowIdx)
                 .map(vd => vd.raw)
@@ -530,7 +528,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     // TODO: update focusCell to take fieldKey instead of colIdx
     focusCell = (colIdx: number, rowIdx: number, clearValue?: boolean): void => {
         const { editorModel, onChange } = this.props;
-        const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx)).fieldKey;
+        const fieldKey = editorModel.getFieldKeyByIndex(colIdx);
         const cellKey = genCellKey(fieldKey, rowIdx);
         const changes: Partial<EditorModelProps> = {
             focusColIdx: colIdx,
@@ -640,7 +638,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             }
             case SELECTION_TYPES.SINGLE: {
                 selectionCells = [...editorModel.selectionCells];
-                const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx)).fieldKey;
+                const fieldKey = editorModel.getFieldKeyByIndex(colIdx);
                 selectionCells.push(genCellKey(fieldKey, rowIdx));
                 break;
             }
@@ -650,9 +648,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
             // if a cell was previously selected and there are remaining selectionCells then mark the previously
             // selected cell as in "selection"
             if (hasSelection) {
-                const fieldKey = editorModel.columnMap.get(
-                    editorModel.orderedColumns.get(editorModel.selectedColIdx)
-                ).fieldKey;
+                const fieldKey = editorModel.getFieldKeyByIndex(editorModel.selectedColIdx);
                 selectionCells.push(genCellKey(fieldKey, editorModel.selectedRowIdx));
             }
         }
@@ -689,7 +685,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
             if (resetValue) {
                 changes.focusValue = undefined;
-                const fieldKey = editorModel.columnMap.get(editorModel.orderedColumns.get(colIdx)).fieldKey;
+                const fieldKey = editorModel.getFieldKeyByIndex(colIdx);
                 changes.cellValues = cellValues.set(genCellKey(fieldKey, rowIdx), focusValue);
             }
 
@@ -729,8 +725,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         column?: QueryColumn
     ): void => {
         const { editorModel, onChange } = this.props;
-        const { cellMessages, cellValues, columnMap, orderedColumns } = editorModel;
-        const fieldKey = columnMap.get(orderedColumns.get(colIdx)).fieldKey;
+        const { cellMessages, cellValues, columnMap } = editorModel;
+        const fieldKey = editorModel.getFieldKeyByIndex(colIdx);
         const cellKey = genCellKey(fieldKey, rowIdx);
         const keyPath = ['cellValues', cellKey];
         const changes: Partial<EditorModel> = { cellMessages: cellMessages.delete(cellKey) };

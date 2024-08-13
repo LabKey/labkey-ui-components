@@ -211,7 +211,7 @@ export class EditorModel
     }
 
     getFolderValueForRow(rowIdx: number): string {
-        const containerCol = this.columnMap.get('Folder') ?? this.columnMap.get('Container');
+        const containerCol = this.columnMap.get('folder') ?? this.columnMap.get('container');
         if (!containerCol) return undefined;
         return this.cellValues.get(genCellKey(containerCol.fieldKey, rowIdx)).get(0).raw;
     }
@@ -235,7 +235,7 @@ export class EditorModel
             ({ colIdx, rowIdx } = advance(colIdx, rowIdx));
             if (!this.isInBounds(colIdx, rowIdx)) break;
 
-            const fieldKey = this.columnMap.get(this.orderedColumns.get(colIdx)).fieldKey;
+            const fieldKey = this.getFieldKeyByIndex(colIdx);
             const value = this.getValue(fieldKey, rowIdx);
             if (predicate(value, colIdx, rowIdx)) {
                 return {
@@ -288,6 +288,14 @@ export class EditorModel
         }
 
         return values.asImmutable();
+    }
+
+    getColumnByIndex(colIdx: number): QueryColumn {
+        return this.columnMap.get(this.orderedColumns.get(colIdx));
+    }
+
+    getFieldKeyByIndex(colIdx: number): string {
+        return this.getColumnByIndex(colIdx)?.fieldKey;
     }
 
     /**
@@ -572,7 +580,7 @@ export class EditorModel
     }
 
     get selectionKey(): string {
-        const fieldKey = this.columnMap.get(this.orderedColumns.get(this.selectedColIdx)).fieldKey;
+        const fieldKey = this.getFieldKeyByIndex(this.selectedColIdx);
         if (this.hasSelection) return genCellKey(fieldKey, this.selectedRowIdx);
         return undefined;
     }

@@ -298,8 +298,7 @@ export class EditorModel
     getRowValue(rowIdx: number, displayValues = true): Map<string, any> {
         let row = Map<string, any>();
 
-        this.columnMap.valueSeq().forEach(col => {
-            if (!col) return;
+        this.columnMap.forEach(col => {
             const values = this.getValue(col.fieldKey, rowIdx);
 
             // Some column types have special handling of raw data, such as multi value columns like alias, so first
@@ -313,16 +312,12 @@ export class EditorModel
                 row = row.set(col.name, renderer.getEditableRawValue(values));
             } else if (col.isLookup()) {
                 if (col.isExpInput() || col.isAliquotParent()) {
-                    let sep = '';
                     row = row.set(
                         col.name,
-                        values.reduce((str, vd) => {
-                            if (vd.display !== undefined && vd.display !== null) {
-                                str += sep + quoteValueWithDelimiters(vd.display, ',');
-                                sep = ', ';
-                            }
-                            return str;
-                        }, '')
+                        values
+                            .filter(vd => vd.display !== undefined && vd.display !== null)
+                            .map(vd => quoteValueWithDelimiters(vd.display, ','))
+                            .join(', ')
                     );
                 } else if (col.isJunctionLookup()) {
                     row = row.set(
@@ -543,7 +538,8 @@ export class EditorModel
     }
 
     isReadOnlyRow(rowIdx: number, readonlyRows: string[]): boolean {
-        const pkValue = this.getPkValue(rowIdx).toString();
+        const pkValue = this.getPkValue(rowIdx)?.toString();
+        if (pkValue === undefined) return false;
         return readonlyRows?.includes(pkValue);
     }
 

@@ -460,8 +460,8 @@ export function addColumns(
 
     let { orderedColumns, columnMap } = editorModel;
     queryColumns.valueArray.forEach((col, i) => {
-        orderedColumns = orderedColumns.insert(i + editorModelIndex, col.fieldKey);
-        columnMap = columnMap.set(col.fieldKey, col);
+        orderedColumns = orderedColumns.insert(i + editorModelIndex, col.fieldKey.toLowerCase());
+        columnMap = columnMap.set(col.fieldKey.toLowerCase(), col);
     });
     const queryInfo = editorModel.queryInfo.mutate({
         columns: editorModel.queryInfo.columns.mergeAt(queryColIndex, queryColumns),
@@ -505,7 +505,7 @@ export function changeColumn(
     }
 
     columnMap = columnMap.delete(existingFieldKey);
-    columnMap = columnMap.set(newQueryColumn.fieldKey, newQueryColumn);
+    columnMap = columnMap.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
     const columns = new ExtendedMap<string, QueryColumn>(editorModel.queryInfo.columns);
     columns.delete(existingFieldKey.toLowerCase());
     columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);

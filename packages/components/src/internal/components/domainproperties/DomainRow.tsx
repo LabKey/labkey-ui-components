@@ -236,16 +236,13 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                 value: undefined,
             });
         } else {
-            const fieldName = value;
-            const severity = SEVERITY_LEVEL_WARN;
-            const indexes = List<number>([index]);
             const domainFieldError = new DomainFieldError({
                 message: FIELD_NAME_CHAR_WARNING_MSG,
                 extraInfo: FIELD_NAME_CHAR_WARNING_INFO,
-                fieldName,
+                fieldName: value,
                 propertyId: undefined,
-                severity,
-                rowIndexes: indexes,
+                severity: SEVERITY_LEVEL_WARN,
+                rowIndexes: List<number>([index]),
             });
 
             // set value for field error

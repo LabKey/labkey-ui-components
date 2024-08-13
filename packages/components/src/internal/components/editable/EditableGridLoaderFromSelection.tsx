@@ -25,6 +25,7 @@ import { EditorMode, EditorModel, EditableGridLoader, GridResponse } from './mod
 
 export class EditableGridLoaderFromSelection implements EditableGridLoader {
     columns: QueryColumn[];
+    extraColumns?: QueryColumn[];
     id: string;
     idsNotPermitted: number[];
     idsNotToUpdate: number[];
@@ -47,9 +48,11 @@ export class EditableGridLoaderFromSelection implements EditableGridLoader {
         columns?: QueryColumn[],
         idsNotToUpdate?: number[],
         fieldsNotToUpdate?: string[],
-        idsNotPermitted?: number[]
+        idsNotPermitted?: number[],
+        extraColumns?: QueryColumn[]
     ) {
         this.columns = columns;
+        this.extraColumns = extraColumns;
         this.id = id;
         this.mode = EditorMode.Update;
         this.queryInfo = queryInfo;

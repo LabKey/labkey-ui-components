@@ -227,9 +227,6 @@ function inputCellFactory(
             inSelection = initialSelection.includes(genCellKey(fieldKey, rowIdx));
         }
 
-        // TODO: It would be really nice to drop the "row" prop in cell below, however the AssayTaskInputRenderer needs
-        //  it in order to pull the assayId (maybe linkedValues could work as a replacement?), and the AliasInput needs
-        //  it (however, the AliasGridInput converts the values object to "data" so we can probably work around that).
         return (
             <td className={className} key={inputCellKey(c.raw, row)} style={style}>
                 <Cell

@@ -29,6 +29,7 @@ import {
 } from './models';
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
+import { encodePart } from '../../../public/SchemaQuery';
 
 /**
  * Do not use this method directly, use initEditorModel instead
@@ -36,11 +37,9 @@ import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGr
 const loadEditorModelData = async (
     orderedRows: string[],
     rows: Record<string, any>,
-    columns?: QueryColumn[],
-    forUpdate?: boolean
-    // TODO: When all non EditorModel.init usages of this are gone update this to only return cellValues and move it to
-    //  EditorModel
-): Promise<Partial<EditorModel>> => {
+    columns: QueryColumn[],
+    forUpdate: boolean
+): Promise<CellValues> => {
     const lookupValueDescriptors = await getLookupValueDescriptors(columns, rows, orderedRows, forUpdate);
     let cellValues = Map<string, List<ValueDescriptor>>();
 
@@ -49,7 +48,9 @@ const loadEditorModelData = async (
         orderedRows.forEach((id, rn) => {
             const row = rows[id];
             const cellKey = genCellKey(col.fieldKey, rn);
-            const value = row[col.fieldKey];
+            // Our loaders (e.g. EditableGridLoaderFromSelection) use EditorModel.convertQueryDataToEditorData which
+            // uses encodePart, so we check for the encoded fieldKey.
+            const value = row[col.fieldKey] ?? row[encodePart(col.fieldKey)];
 
             if (Array.isArray(value)) {
                 // assume to be list of {displayValue, value} objects
@@ -93,12 +94,7 @@ const loadEditorModelData = async (
         });
     });
 
-    return {
-        cellValues,
-        orderedColumns: List(columns.map(col => col.fieldKey)),
-        deletedIds: ImmutableSet<any>(),
-        rowCount: orderedRows.length,
-    };
+    return cellValues;
 };
 
 // TODO: we should refactor EditableGridLoader to make queryModel irrelevant. Some cases like AssayImportPanels create
@@ -138,6 +134,13 @@ export const initEditorModel = async (
         return result;
     }, {});
 
+    if (loader.extraColumns) {
+        loader.extraColumns.forEach(col => {
+            columnMap[col.fieldKey.toLowerCase()] = col;
+            columns.push(col);
+        });
+    }
+
     if (forUpdate) {
         // If we're updating then we need to ensure that the pkCols and altUpdateKeys are in the columnMap
         queryInfo.getPkCols().forEach(pkCol => {
@@ -172,7 +175,7 @@ export const initEditorModel = async (
     }
 
     // TODO: Move initEditorModel, loadEditorModelData, and getLookupValueDescriptors to EditorModel as static methods
-    const { cellValues } = await loadEditorModelData(orderedRows, rows, columns, forUpdate);
+    const cellValues = await loadEditorModelData(orderedRows, rows, columns, forUpdate);
 
     if (columnMetadata) {
         // If columnMetadata is present force it to use lowercase keys

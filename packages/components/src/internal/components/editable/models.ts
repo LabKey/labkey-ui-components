@@ -747,6 +747,7 @@ export interface GridLoader {
 
 export interface EditableGridLoader extends GridLoader {
     columns?: QueryColumn[];
+    extraColumns?: QueryColumn[]; // These are columns we want in the EditorModel.columnMap, but not in orderedColumns
     id: string;
     mode: EditorMode;
     omittedColumns?: string[];

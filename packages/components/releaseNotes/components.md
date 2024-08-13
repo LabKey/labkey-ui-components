@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 4.7.1
+*Released*: 13 August 2024
 - Issue 50657: Use default view when printing labels from a sample's details page
 
 ### version 4.7.0

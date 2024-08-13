@@ -23,6 +23,7 @@ import {
     EXPERIMENTAL_APP_PLATE_SUPPORT,
     EXPERIMENTAL_CALCULATED_FIELDS,
     EXPERIMENTAL_CHART_BUILDER,
+    EXPERIMENTAL_IDENTIFYING_FIELDS,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
     EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED,
     EXPERIMENTAL_REQUESTS_MENU,
@@ -384,11 +385,13 @@ export function isChartBuilderEnabled(moduleContext?: ModuleContext): boolean {
     );
 }
 
+export function isIdentifyingFieldsEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.samplemanagement?.[EXPERIMENTAL_IDENTIFYING_FIELDS] === true;
+}
+
 // Should be enabled for LKS Community & LKS Starter, but in the apps only if the feature is enabled
 export function isTransformScriptsEnabled(moduleContext?: ModuleContext): boolean {
-    return isApp()
-        ? isFeatureEnabled(ProductFeature.TransformScripts, moduleContext)
-        : true;
+    return isApp() ? isFeatureEnabled(ProductFeature.TransformScripts, moduleContext) : true;
 }
 
 export function isRReportsEnabled(moduleContext?: ModuleContext): boolean {

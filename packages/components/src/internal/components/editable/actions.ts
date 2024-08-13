@@ -102,27 +102,23 @@ const loadEditorModelData = async (
 
 // TODO: we should refactor EditableGridLoader to make queryModel irrelevant. Some cases like AssayImportPanels create
 //  what is essentially a fake QueryModel just to satisfy this arg. EditableGridPanelForUpdateWithLineage passes the
-//  same QueryModel to every loader (it uses initEditorModels).
+//  same QueryModel to every loader (it uses initEditorModels). I think the solution will be to add it to the
+//  constructor of any loader that needs it, and remove it from the fetch args. Alternatively we get rid of the whole
+//  loader pattern entirely, since most don't even fetch data (they immediately resolve promises), the GridLoader
+//  pattern is an artifact of the long-gone QueryGridModel.
 export const initEditorModel = async (
     queryModel: QueryModel,
     loader: EditableGridLoader,
     columnMetadata?: Map<string, EditableColumnMetadata>
 ): Promise<EditorModel> => {
-    // TODO: look at EditorModel.getColumns and make sure we're matching the behavior from there as well e.g. file
-    //  columns
     const { columns: loaderColumns, queryInfo } = loader;
-    // TODO: Most EditableGridLoaders do not actually asynchronously fetch data (see note in EditableGridLoader), we
-    //  can most likely just drop loader as an arg, and have consumers pass in their QueryModel data (if any), and
-    //  skip having QueryModel as an arg.
     const { data, dataIds } = await loader.fetch(queryModel);
-    // TODO: store rows and orderedRows on EditorModel so we can use it with getUpdatedDataFromEditableGrid
     const rows = data.toJS();
     const orderedRows = dataIds.toArray();
     const forUpdate = loader.mode === EditorMode.Update;
     let columns: QueryColumn[];
 
     if (loaderColumns) {
-        // TODO: investigate how many loaders actually setting columns, there may be a better path forward
         columns = loader.columns;
     } else if (forUpdate) {
         columns = queryInfo.getUpdateColumns();
@@ -172,9 +168,7 @@ export const initEditorModel = async (
         }
     }
 
-    // TODO: because we use loadEditorModelData we cannot put this method on EditorModel as a static method, which is
-    //  really where it belongs. Once we convert all usages of initEditableGridModel to use this method we can move it,
-    //  as well as loadEditorModelData and getLookupValueDescriptors to EditorModel.
+    // TODO: Move initEditorModel, loadEditorModelData, and getLookupValueDescriptors to EditorModel as static methods
     const { cellValues } = await loadEditorModelData(orderedRows, rows, columns, forUpdate);
 
     if (columnMetadata) {

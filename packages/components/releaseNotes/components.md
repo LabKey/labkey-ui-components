@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - update tooltip text and examples
   - validate expression on component mount and on text area blur
   - display validation message or error in textarea footer
+  - SampleTypeDesigner uniqueId field addition warning modal button change
 
 ### version 4.7.0
 *Released*: 12 August 2024

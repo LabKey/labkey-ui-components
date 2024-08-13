@@ -32,10 +32,10 @@ const typeToDisplay = (type: string): string => {
 
 const getColumnTypeMap = (domainFields: List<DomainField>, systemFields: SystemField[]): Record<string, string> => {
     const colTypeMap = {};
-    systemFields.forEach(df => {
+    systemFields?.forEach(df => {
         colTypeMap[df.Name] = df.DataType.toUpperCase();
     });
-    domainFields.forEach(df => {
+    domainFields?.forEach(df => {
         if (df.dataType.name !== CALCULATED_TYPE.name) {
             colTypeMap[df.name] = df.dataType.name === 'int' ? 'INTEGER' : df.dataType.name.toUpperCase();
         }

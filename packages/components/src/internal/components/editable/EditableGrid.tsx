@@ -33,9 +33,7 @@ import {
 import { cancelEvent, isCtrlOrMetaKey } from '../../events';
 
 import { headerSelectionCell } from '../../renderers';
-import { blurActiveElement, capitalizeFirstChar, caseInsensitive, not } from '../../util/utils';
-import { Alert } from '../base/Alert';
-import { DeleteIcon } from '../base/DeleteIcon';
+import { blurActiveElement, capitalizeFirstChar, not } from '../../util/utils';
 import { Grid } from '../base/Grid';
 
 import { GridColumn, GridColumnCellRenderer } from '../base/models/GridColumn';
@@ -297,7 +295,6 @@ export interface SharedEditableGridProps {
     allowBulkAdd?: boolean;
     allowBulkRemove?: boolean;
     allowBulkUpdate?: boolean;
-    allowRemove?: boolean;
     allowSelection?: boolean;
     bulkAddProps?: Partial<QueryInfoFormProps>;
     bulkAddText?: string;
@@ -384,7 +381,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         allowBulkAdd: false,
         allowBulkRemove: false,
         allowBulkUpdate: false,
-        allowRemove: false,
         addControlProps: {
             nounPlural: 'Rows',
             nounSingular: 'Row',
@@ -869,7 +865,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
 
     generateColumns = (): List<GridColumn> => {
         const {
-            allowRemove,
             containerFilter,
             editorModel,
             forUpdate,
@@ -938,37 +933,6 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                 })
             );
         });
-        if (allowRemove) {
-            const pkCols = editorModel.queryInfo.getPkCols();
-            gridColumns = gridColumns.push(
-                new GridColumn({
-                    index: GRID_EDIT_INDEX,
-                    tableCell: true,
-                    title: 'Delete',
-                    width: 45,
-                    cell: (d, row: Map<string, any>, c, rn) => {
-                        const size = pkCols.length;
-                        let canDelete = true;
-
-                        if (size === 1) {
-                            const key = caseInsensitive(row.toJS(), pkCols[0].fieldKey);
-                            canDelete = !key;
-                        } else {
-                            console.warn(
-                                `Preventing deletion for models with ${size} keys is not currently supported.`
-                            );
-                        }
-
-                        return (
-                            <td key={'delete' + rn}>
-                                {canDelete && <DeleteIcon onDelete={() => this.removeRows(Set([rn]))} />}
-                                {!canDelete && <>&nbsp;</>}
-                            </td>
-                        );
-                    },
-                })
-            );
-        }
 
         return gridColumns;
     };

@@ -143,7 +143,6 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
             {notPermittedText && <Alert bsStyle="warning">{notPermittedText}</Alert>}
             <EditableGridPanel
                 allowAdd={false}
-                allowRemove={false}
                 bsStyle="info"
                 title={`Edit selected ${pluralNoun}`}
                 {...editableGridProps}

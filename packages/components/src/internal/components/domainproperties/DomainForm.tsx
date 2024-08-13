@@ -846,7 +846,10 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
                 confirmClass="btn-danger"
                 confirmText="Yes, Remove Field"
             >
-                <div>Are you sure you want to remove {fieldName}? All of its data will be deleted as well.</div>
+                <div>
+                    Are you sure you want to remove {fieldName}?{' '}
+                    {!field.isCalculatedField() && 'All of its data will be deleted as well.'}
+                </div>
             </Modal>
         );
     }

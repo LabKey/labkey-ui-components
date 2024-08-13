@@ -1475,7 +1475,9 @@ function isFieldNew(field: Partial<IDomainField>): boolean {
 }
 
 function isFieldSaved(field: Partial<IDomainField>): boolean {
-    return !isFieldNew(field) && field.propertyId !== 0;
+    // calculated fields that are saved will have a rangeURI
+    const isSavedCalcField = field.conceptURI === CALCULATED_CONCEPT_URI && field.rangeURI !== undefined;
+    return !isFieldNew(field) && (field.propertyId !== 0 || isSavedCalcField);
 }
 
 export function resolveAvailableTypes(

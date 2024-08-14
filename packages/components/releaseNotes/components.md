@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Use initEditorModel, initEditorModels, applyEditorModelChanges instead
 - EditableGrid: remove unused and unnecessary props
   - allowFieldDisable
+  - allowRemove
   - bordered
   - condensed
   - lockedRows

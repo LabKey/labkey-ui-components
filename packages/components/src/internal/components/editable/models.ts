@@ -164,7 +164,7 @@ export class EditorModel
 
         if (pkFieldKey === undefined) return undefined;
 
-        return genCellKey(this.pkFieldKey, rowIndex);
+        return genCellKey(pkFieldKey, rowIndex);
     }
 
     /**
@@ -177,7 +177,7 @@ export class EditorModel
 
         if (cellKey === undefined) return undefined;
 
-        return this.cellValues.get(this.genPkCellKey(rowIndex))?.get(0).raw;
+        return this.cellValues.get(cellKey)?.get(0).raw;
     }
 
     getPkValueForCell(cellKey: string): any {

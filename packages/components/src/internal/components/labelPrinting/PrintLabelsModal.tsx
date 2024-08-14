@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 
 import { Modal } from '../../Modal';
@@ -16,6 +16,8 @@ import { FormButtons } from '../../FormButtons';
 
 import { BarTenderResponse } from './models';
 import { BAR_TENDER_TOPIC, LABEL_NOT_FOUND_ERROR, LABEL_TEMPLATE_SQ } from './constants';
+import { ViewInfo } from '../../ViewInfo';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
 export interface PrintModalProps {
     afterPrint?: (numSamples: number, numLabels: number) => void;
@@ -65,13 +67,19 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         const { model } = this.props;
 
+        let schemaQuery = model?.schemaQuery;
+        // Issue 50657: from a sample's details page, use the default view instead of the details view for printing,
+        // but use the given view's filters (filtering to this sample), since the default view may exclude this sample
+        if (model?.schemaQuery.viewName === ViewInfo.DETAIL_NAME) {
+            schemaQuery = new SchemaQuery(model.schemaQuery.schemaName, model.schemaQuery.queryName);
+        }
         this.props.actions.addModel(
             {
                 id: this._modelId,
-                schemaQuery: model?.schemaQuery,
+                schemaQuery,
                 baseFilters: model?.filters,
                 sorts: model?.sorts,
             },
@@ -80,7 +88,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         );
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState): void {
         // only set initial model selections once after the loadingSelections state changes to LOADED
         if (this.state.loadingSelections && !this.getModel().isLoadingSelections) {
             this.setState(() => ({ loadingSelections: false }));
@@ -88,20 +96,20 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         this.props.actions.clearSelections(this._modelId);
     }
 
-    getModel() {
+    getModel(): QueryModel {
         return this.props.queryModels[this._modelId];
     }
 
-    getSampleCount() {
+    getSampleCount(): number {
         return this.state.sampleCount;
     }
 
-    onCopyCountChange = event => {
-        let numCopies = parseInt(event.target.value);
+    onCopyCountChange = (event): void => {
+        let numCopies = parseInt(event.target.value, 10);
 
         if (isNaN(numCopies)) {
             numCopies = undefined;
@@ -157,7 +165,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         }
     }
 
-    changeSampleSelection = (name: string, value: string) => {
+    changeSampleSelection = (name: string, value: string): void => {
         const sampleIds = value ? value.split(',') : [];
         this.setState(() => ({ sampleCount: sampleIds.length }));
         this.props.actions.replaceSelections(this._modelId, sampleIds);
@@ -178,7 +186,7 @@ export class PrintLabelsModalImpl extends PureComponent<PrintModalProps & Inject
         );
     }
 
-    render() {
+    render(): ReactNode {
         const { onCancel, showSelection } = this.props;
         const { error, labelTemplate, numCopies, submitting } = this.state;
         const model = this.getModel();

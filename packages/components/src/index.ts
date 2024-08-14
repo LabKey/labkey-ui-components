@@ -265,6 +265,7 @@ import {
     applyEditorModelChanges,
     genCellKey,
     getUpdatedDataFromEditableGrid,
+    parseCellKey,
 } from './internal/components/editable/utils';
 import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
@@ -1157,6 +1158,7 @@ export {
     // editable grid related items
     applyEditorModelChanges,
     genCellKey,
+    parseCellKey,
     getUpdatedDataFromEditableGrid,
     initEditorModel,
     initEditorModels,

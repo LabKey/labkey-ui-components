@@ -276,7 +276,8 @@ export class EditorModel
     }
 
     getColumnValues(fieldKey: string): List<List<ValueDescriptor>> {
-        const colIdx = this.orderedColumns.findIndex(colName => colName === fieldKey);
+        const fieldKeyLower = fieldKey.toLowerCase();
+        const colIdx = this.orderedColumns.indexOf(fieldKeyLower);
         if (colIdx === -1) {
             console.warn(`Unable to resolve column with fieldKey "${fieldKey}". Cannot retrieve column values.`);
             return List();
@@ -284,7 +285,7 @@ export class EditorModel
 
         const values = List<List<ValueDescriptor>>().asMutable();
         for (let i = 0; i < this.rowCount; i++) {
-            values.push(this.getValue(fieldKey, i));
+            values.push(this.getValue(fieldKeyLower, i));
         }
 
         return values.asImmutable();

@@ -2,8 +2,6 @@ import { fromJS, List, Map } from 'immutable';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
 
-import { LoadingState } from '../../../public/LoadingState';
-
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
@@ -15,7 +13,7 @@ import { BOOLEAN_TYPE, DATE_TYPE, INTEGER_TYPE, TEXT_TYPE, TIME_TYPE } from '../
 
 import { DATE_RANGE_URI } from '../domainproperties/constants';
 
-import { EditorMode, EditorModel, EditableGridLoader } from './models';
+import { EditorMode, EditableGridLoader } from './models';
 import {
     computeRangeChange,
     genCellKey,
@@ -28,6 +26,7 @@ import { initEditorModel } from './actions';
 
 class MockEditableGridLoader implements EditableGridLoader {
     columns: QueryColumn[];
+    extraColumns: QueryColumn[];
     id: string;
     mode = EditorMode.Insert;
     queryInfo: QueryInfo;
@@ -35,6 +34,7 @@ class MockEditableGridLoader implements EditableGridLoader {
     constructor(queryInfo: QueryInfo, props?: Partial<EditableGridLoader>) {
         this.queryInfo = queryInfo;
         this.columns = props?.columns;
+        this.extraColumns = props?.extraColumns;
         this.id = props?.id ?? 'mockEditableGridLoader';
         this.mode = props?.mode;
     }
@@ -70,6 +70,18 @@ describe('Editable Grids Utils', () => {
             const loader = new MockEditableGridLoader(queryInfo, { columns });
             const editorModel = await initEditorModel(dataModel, loader);
             expect(editorModel.orderedColumns.toArray()).toEqual(columns.map(col => col.fieldKey.toLowerCase()));
+        });
+
+        test('respects loader extra columns', async () => {
+            const columns = [queryInfo.getColumn('SampleID')];
+            const extraColumns = [queryInfo.getColumn('Date')];
+            const loader = new MockEditableGridLoader(queryInfo, { columns, extraColumns });
+            const editorModel = await initEditorModel(dataModel, loader);
+
+            // Extra columns should not show up in the orderedColumns array
+            expect(editorModel.orderedColumns.find((col) => col == extraColumns[0].fieldKey.toLowerCase())).toEqual(undefined);
+            // Extra columns should show up in the columnMap
+            expect(editorModel.columnMap.get('date')).toEqual(extraColumns[0]);
         });
     });
 });
@@ -982,8 +994,6 @@ describe('other utils', () => {
     });
 
     test('getSortedCellKeys', () => {
-        // expect(sortCellKeys(['0-0', '1-1', '1-1', '0-1', '1-0'])).toStrictEqual(['0-0', '1-0', '0-1', '1-1']);
-        // expect(sortCellKeys(['1-1', '1-15', '0-10', '1-5'])).toStrictEqual(['1-1', '1-5', '0-10', '1-15']);
         const orderedColumns = ['test', 'other'];
         let unsorted = ['test&&0', 'other&&1', 'other&&1', 'test&&1', 'other&&0'];
         expect(sortCellKeys(orderedColumns, unsorted)).toStrictEqual(['test&&0', 'other&&0', 'test&&1', 'other&&1']);

@@ -1,5 +1,5 @@
 import { Filter, Utils } from '@labkey/api';
-import { fromJS, List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
+import { fromJS, List, Map, OrderedMap } from 'immutable';
 import moment from 'moment';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';

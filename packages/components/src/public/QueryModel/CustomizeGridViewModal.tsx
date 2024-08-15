@@ -11,7 +11,6 @@ import { SCHEMAS } from '../../internal/schemas';
 
 import { QueryModel } from './QueryModel';
 
-// exported for jest testing
 export const includedColumnsForCustomizationFilter = (column: QueryColumn, showAllColumns: boolean): boolean => {
     const isAncestor = column.fieldKeyPath?.indexOf('/Ancestors') >= 0;
     const isAncestorChild = column.fieldKeyPath?.indexOf('Ancestors/') >= 0;

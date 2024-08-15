@@ -630,6 +630,7 @@ import {
 } from './internal/test/enzymeTestHelpers';
 import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
 import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
+import { includedColumnsForCustomizationFilter } from './public/QueryModel/CustomizeGridViewModal';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
@@ -905,6 +906,7 @@ import { NameIdSettings } from './internal/components/settings/NameIdSettings';
 import { BaseModal, Modal, ModalHeader } from './internal/Modal';
 import { Tab, Tabs } from './internal/Tabs';
 import { CheckboxLK } from './internal/Checkbox';
+import { IDENTIFYING_FIELDS_VIEW_NAME, SAMPLE_FINDER_VIEW_NAME } from './public/QueryModel/SaveViewModal';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -1023,6 +1025,8 @@ const App = {
     BOXES_KEY,
     HOME_KEY,
     USER_KEY,
+    SAMPLE_FINDER_VIEW_NAME,
+    IDENTIFYING_FIELDS_VIEW_NAME,
     GRID_INSERT_SAMPLES_HREF,
     FILE_IMPORT_SAMPLES_HREF,
     FILE_UPDATE_SAMPLES_HREF,
@@ -1130,6 +1134,7 @@ export {
     InsertOptions,
     getVerbForInsertOption,
     insertRows,
+    includedColumnsForCustomizationFilter,
     selectDistinctRows,
     selectRows,
     selectRowsDeprecated,

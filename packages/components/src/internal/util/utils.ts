@@ -683,16 +683,21 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
             while (true) {
                 // find the end of the quoted value
                 end = value.indexOf('"', end + 1);
-                if (end === -1) {
-                    // no ending quote
-                    end = value.length;
+                if (end === -1)
                     break;
-                }
                 if (end === value.length - 1 || value[end + 1] !== '"') {
                     // end quote at end of string or without double quote
                     break;
                 }
                 end++; // skip double ""
+            }
+            // if no ending quote, don't remove quotes;
+            if (end === -1){
+                end = value.indexOf(delimiter, start);
+                if (end === -1) end = value.length;
+                parsedValues.push(value.substring(start, end));
+                start = end + delimiter.length;
+                continue;
             }
             let parsedValue = removeQuotes ? value.substring(start + 1, end) : value.substring(start, end + 1); // start is at the quote
             if (removeQuotes && parsedValue.indexOf('""') !== -1) {

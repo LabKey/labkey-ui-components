@@ -9,6 +9,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   - display validation message or error in textarea footer and set domain row warning state
   - SampleTypeDesigner uniqueId field addition warning modal button change
 
+### version 4.7.2
+*Released*: 14 August 2024
+- Issue 50924: Sample timeline event details throws error if the parent sample name starts with double quote
+
+### version 4.7.1
+*Released*: 13 August 2024
+- Issue 50657: Use default view when printing labels from a sample's details page
+
 ### version 4.7.0
 *Released*: 12 August 2024
 - Issue 49966: Add new `StorageUnitLabel` column as a known column to allow attaching a label to a box created during import

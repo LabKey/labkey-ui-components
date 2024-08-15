@@ -28,12 +28,16 @@ import { Cell, CellProps } from './Cell';
 import { LookupCell } from './LookupCell';
 import { DateInputCell } from './DateInputCell';
 
-const queryColumn = new QueryColumn({ lookup: undefined, name: 'myColumn' });
-const lookupCol = new QueryColumn({ name: 'test', lookup: { isPublic: false } as QueryLookup });
-const publicLookupCol = new QueryColumn({ name: 'test', lookup: { isPublic: true } as QueryLookup });
-const validValuesCol = new QueryColumn({ name: 'test', validValues: ['a', 'b'] });
-const dateCol = new QueryColumn({ name: 'test', jsonType: 'date', caption: 'Test' });
-const timeCol = new QueryColumn({ name: 'test', jsonType: 'time', caption: 'Test' });
+const queryColumn = new QueryColumn({ lookup: undefined, name: 'myColumn', fieldKey: 'qc' });
+const lookupCol = new QueryColumn({ name: 'test', lookup: { isPublic: false } as QueryLookup, fieldKey: 'lookup' });
+const publicLookupCol = new QueryColumn({
+    name: 'test',
+    lookup: { isPublic: true } as QueryLookup,
+    fieldKey: 'publiclookup',
+});
+const validValuesCol = new QueryColumn({ name: 'test', validValues: ['a', 'b'], fieldKey: 'validvalues' });
+const dateCol = new QueryColumn({ name: 'test', jsonType: 'date', caption: 'Test', fieldKey: 'date' });
+const timeCol = new QueryColumn({ name: 'test', jsonType: 'time', caption: 'Test', fieldKey: 'time' });
 
 describe('Cell', () => {
     function defaultProps(): CellProps {
@@ -173,7 +177,6 @@ describe('Cell', () => {
         expect(cell.find('.cell-menu-value')).toHaveLength(0);
         expect(cell.find('.cell-menu-selector')).toHaveLength(0);
         expect(cell.find('.' + CELL_SELECTION_HANDLE_CLASSNAME)).toHaveLength(0);
-        expect(cell.find('input')).toHaveLength(1);
         expect(cell.find(LookupCell)).toHaveLength(1);
     });
 

@@ -17,36 +17,37 @@ import { fromJS, List, Map } from 'immutable';
 
 import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.json';
 
-import { SchemaQuery } from '../../../public/SchemaQuery';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryInfo } from '../../../public/QueryInfo';
 import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
-import { ExtendedMap } from '../../../public/ExtendedMap';
 
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
-import { CellMessage, EditorModel, ValueDescriptor } from './models';
-import { genCellKey } from './utils';
-
-const schemaQ = new SchemaQuery('samples', 'Sample Set 2');
+import { EditorModel, ValueDescriptor } from './models';
+import { applyEditorModelChanges, genCellKey } from './utils';
 
 const COLUMN_CAN_INSERT_AND_UPDATE = new QueryColumn({
+    caption: 'Both',
     fieldKey: 'both',
     fieldKeyArray: ['both'],
     shownInInsertView: true,
     shownInUpdateView: true,
     userEditable: true,
     readOnly: false,
+    required: true,
 });
 const COLUMN_CAN_INSERT = new QueryColumn({
+    caption: 'Insert',
     fieldKey: 'insert',
     fieldKeyArray: ['insert'],
     shownInInsertView: true,
     shownInUpdateView: false,
     userEditable: true,
     readOnly: false,
+    required: true,
 });
 const COLUMN_CAN_UPDATE = new QueryColumn({
+    caption: 'Update',
     fieldKey: 'update',
     fieldKeyArray: ['update'],
     shownInInsertView: false,
@@ -55,6 +56,7 @@ const COLUMN_CAN_UPDATE = new QueryColumn({
     readOnly: false,
 });
 const COLUMN_CANNOT_INSERT_AND_UPDATE = new QueryColumn({
+    caption: 'Neither',
     fieldKey: 'neither',
     fieldKeyArray: ['neither'],
     shownInInsertView: false,
@@ -62,487 +64,207 @@ const COLUMN_CANNOT_INSERT_AND_UPDATE = new QueryColumn({
     userEditable: true,
     readOnly: false,
 });
-const COLUMN_FILE_INPUT = new QueryColumn({
-    fieldKey: 'fileInput',
-    fieldKeyArray: ['fileInput'],
+const COLUMN_BARCODE = new QueryColumn({
+    name: 'Barcode',
+    fieldKey: 'Barcode',
+    fieldKeyArray: ['Barcode'],
     shownInInsertView: true,
-    shownInUpdateView: true,
     userEditable: true,
-    readOnly: false,
-    inputType: 'file',
+    required: true,
+    conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
 });
+
 const QUERY_INFO = QueryInfo.fromJsonForTests({
     columns: {
         both: COLUMN_CAN_INSERT_AND_UPDATE,
         insert: COLUMN_CAN_INSERT,
         update: COLUMN_CAN_UPDATE,
         neither: COLUMN_CANNOT_INSERT_AND_UPDATE,
-        fileInput: COLUMN_FILE_INPUT,
     },
 });
+
+const orderedColumns = fromJS(QUERY_INFO.columns.mapValues(col => col.fieldKey.toLowerCase()).sort());
+const columnMap = fromJS(
+    QUERY_INFO.columns.reduce((result, col, key) => {
+        result[key] = col;
+        return result;
+    }, {})
+);
+const colOneFk = orderedColumns.get(0);
+const colOneCaption = columnMap.get(colOneFk).caption;
+const colTwoFk = orderedColumns.get(1);
+const colTwoCaption = columnMap.get(colTwoFk).caption;
+const basicCellValues = fromJS({
+    [genCellKey(colOneFk, 0)]: List([{ display: 'A', raw: 'a' } as ValueDescriptor]),
+    [genCellKey(colOneFk, 1)]: List([{ display: 'AA', raw: 'aa' } as ValueDescriptor]),
+    [genCellKey(colTwoFk, 0)]: List([{ display: 'B', raw: 'b' } as ValueDescriptor]),
+    [genCellKey(colTwoFk, 1)]: List([{ display: 'BB', raw: 'bb' } as ValueDescriptor]),
+});
+const basicEditorModel = new EditorModel({
+    cellMessages: fromJS({
+        [genCellKey(colOneFk, 0)]: 'a',
+        [genCellKey(colTwoFk, 1)]: 'b',
+    }),
+    cellValues: basicCellValues,
+    columnMap,
+    orderedColumns,
+    queryInfo: QUERY_INFO,
+    rowCount: 2,
+});
+
+function modifyEm(changes: Partial<EditorModel>, em?: EditorModel): EditorModel {
+    const models = [em ?? basicEditorModel];
+    return applyEditorModelChanges(models, changes)[0];
+}
 
 describe('EditorModel', () => {
     const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
 
     describe('data validation', () => {
         test('no data', () => {
-            const editorModel = new EditorModel({ id: 'insert-samples|samples/sample set 2' });
-            const emptyDataModel = makeTestQueryModel(schemaQ, queryInfo, {}, [], 0);
-            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(emptyDataModel, 'Name');
+            const editorModel = modifyEm({ cellValues: fromJS({}), rowCount: 0 });
+            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(colOneFk);
             expect(uniqueKeyViolations.isEmpty()).toBe(true);
             expect(missingRequired.isEmpty()).toBe(true);
-            const errors = editorModel.getValidationErrors(emptyDataModel, 'Name');
+            const errors = editorModel.getValidationErrors('Name');
             expect(errors.errors).toHaveLength(0);
         });
 
         test('valid data', () => {
-            const editorModel = new EditorModel({
-                cellMessages: Map<string, CellMessage>({
-                    '1-0': 'description 1 message',
-                }),
-                cellValues: Map<string, List<ValueDescriptor>>({
-                    '0-0': List<ValueDescriptor>([
-                        {
-                            display: 'S-1',
-                            raw: 'S-1',
-                        },
-                    ]),
-                    '0-1': List<ValueDescriptor>([
-                        {
-                            display: 'S-2',
-                            raw: 'S-2',
-                        },
-                    ]),
-                    '1-0': List<ValueDescriptor>([
-                        {
-                            display: 'Description 1',
-                            raw: 'Description 1',
-                        },
-                    ]),
-                    '1-1': List<ValueDescriptor>([
-                        {
-                            display: 'Description 2',
-                            raw: 'Description 2',
-                        },
-                    ]),
-                    '5-0': List<ValueDescriptor>([
-                        {
-                            display: 'requirement 1',
-                            raw: 'requirement 1',
-                        },
-                    ]),
-                    '5-1': List<ValueDescriptor>([
-                        {
-                            display: 'requirement 2',
-                            raw: 'requirement 2',
-                        },
-                    ]),
-                }),
-                columns: List(['a', 'b', 'c', 'd', 'e']),
-                id: 'insert-samples|samples/sample set 2',
-                focusColIdx: 1,
-                focusRowIdx: 1,
-                rowCount: 2,
-                selectedColIdx: 1,
-                selectedRowIdx: 1,
-                selectionCells: [],
-            });
-            const dataModel = makeTestQueryModel(
-                schemaQ,
-                queryInfo,
-                {
-                    '1': {
-                        RequiredData: 'Grid Requirement 1',
-                    },
-                    '2': {
-                        Description: 'grid S-2 Description',
-                    },
-                },
-                ['1']
-            );
-            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(dataModel, 'Name');
+            const { uniqueKeyViolations, missingRequired } = basicEditorModel.validateData(colOneFk);
             expect(uniqueKeyViolations.isEmpty()).toBe(true);
             expect(missingRequired.isEmpty()).toBe(true);
-            const errors = editorModel.getValidationErrors(dataModel, 'Name');
+            const errors = basicEditorModel.getValidationErrors('Name');
             expect(errors.errors).toHaveLength(0);
         });
 
         test('missing required data', () => {
-            const editorModel = new EditorModel({
-                cellMessages: Map<string, CellMessage>({
-                    '1-0': 'description 1 message',
+            const model = modifyEm({
+                cellMessages: fromJS({}),
+                cellValues: fromJS({
+                    [genCellKey(colOneFk, 0)]: List([]),
+                    [genCellKey(colOneFk, 1)]: List([{ display: 'A', raw: 'a' } as ValueDescriptor]),
+                    [genCellKey(colOneFk, 2)]: List([{ display: '    ', raw: '    ' } as ValueDescriptor]),
+                    [genCellKey(colOneFk, 3)]: List([{ display: '4', raw: 4 } as ValueDescriptor]),
+                    [genCellKey(colTwoFk, 0)]: List([{ display: 'asdf', raw: 'asdf' } as ValueDescriptor]),
+                    [genCellKey(colTwoFk, 1)]: List([]),
+                    [genCellKey(colTwoFk, 2)]: List([{ display: 'asdf', raw: 'asdf' } as ValueDescriptor]),
+                    [genCellKey(colTwoFk, 3)]: List([{ display: 'asdf', raw: 'asdf' } as ValueDescriptor]),
                 }),
-                cellValues: Map<string, List<ValueDescriptor>>({
-                    '0-1': List<ValueDescriptor>([
-                        {
-                            display: 'S-2',
-                            raw: 'S-2',
-                        },
-                    ]),
-                    '1-0': List<ValueDescriptor>([
-                        {
-                            display: 'Description 1',
-                            raw: 'Description 1',
-                        },
-                    ]),
-                    '1-1': List<ValueDescriptor>([
-                        {
-                            display: 'Description 2',
-                            raw: 'Description 2',
-                        },
-                    ]),
-                    '5-0': List<ValueDescriptor>([
-                        {
-                            display: 'requirement 1',
-                            raw: 'requirement 1',
-                        },
-                    ]),
-                    '5-1': List<ValueDescriptor>([
-                        {
-                            display: '    ',
-                            raw: '    ',
-                        },
-                    ]),
-                    '5-2': List<ValueDescriptor>([
-                        {
-                            display: '1',
-                            raw: 1,
-                        },
-                    ]),
-                }),
-                columns: List(['a', 'b', 'c', 'd', 'e']),
-                id: 'insert-samples|samples/sample set 2',
-                focusColIdx: 1,
-                focusRowIdx: 1,
-                rowCount: 3,
-                selectedColIdx: 1,
-                selectedRowIdx: 1,
-                selectionCells: [],
+                rowCount: 4,
             });
-            const dataModel = makeTestQueryModel(
-                schemaQ,
-                queryInfo,
-                {
-                    '1': {
-                        Description: 'grid S-1 Description',
-                    },
-                    '2': {
-                        Description: 'grid S-2 Description',
-                    },
-                    '3': {
-                        Description: 'grid S-3 Description',
-                    },
-                },
-                ['1', '2', '3']
-            );
-            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(dataModel, 'Name');
+            const { uniqueKeyViolations, missingRequired } = model.validateData(colOneFk);
             expect(uniqueKeyViolations.isEmpty()).toBe(true);
             expect(missingRequired.size).toBe(2);
-            expect(missingRequired.has('Name')).toBe(true);
-            expect(missingRequired.get('Name').size).toBe(2);
-            expect(missingRequired.get('Name').contains(1)).toBe(true);
-            expect(missingRequired.get('Name').contains(3)).toBe(true);
-            expect(missingRequired.get('Required Data').contains(2)).toBe(true); // Check whitespace trimmed
-            expect(missingRequired.get('Required Data').contains(3)).toBe(false); // Check integer
-            const errors = editorModel.getValidationErrors(dataModel, 'Name');
+            expect(missingRequired.has(colOneCaption)).toBe(true);
+            expect(missingRequired.get(colOneCaption).size).toBe(2);
+            expect(missingRequired.get(colOneCaption).contains(1)).toBe(true);
+            expect(missingRequired.get(colOneCaption).contains(3)).toBe(true); // Check whitespace trimmed
+            expect(missingRequired.get(colOneCaption).contains(4)).toBe(false); // Check integer
+            const errors = model.getValidationErrors(colOneFk);
             expect(errors.cellMessages.toJS()).toStrictEqual({
-                '1-0': 'description 1 message',
-                '0-0': {
-                    message: 'Name is required.',
+                [genCellKey(colOneFk, 0)]: {
+                    message: `${colOneCaption} is required.`,
                 },
-                '5-1': {
-                    message: 'Required Data is required.',
+                [genCellKey(colOneFk, 2)]: {
+                    message: `${colOneCaption} is required.`,
                 },
-                '0-2': {
-                    message: 'Name is required.',
+                [genCellKey(colTwoFk, 1)]: {
+                    message: `${colTwoCaption} is required.`,
                 },
             });
-            expect(errors.errors).toEqual(['Name is missing from rows 1, 3. Required Data is missing from row 2.']);
+            expect(errors.errors).toEqual([
+                `${colOneCaption} is missing from rows 1, 3. ${colTwoCaption} is missing from row 2.`,
+            ]);
         });
 
         test('generated unique id not counted for missing required check', () => {
-            const myQueryInfo = new QueryInfo({
-                columns: new ExtendedMap({
-                    Barcode: new QueryColumn({
-                        name: 'Barcode',
-                        fieldKey: 'Barcode',
-                        fieldKeyArray: ['Barcode'],
-                        shownInInsertView: true,
-                        userEditable: true,
-                        required: true,
-                        conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
-                    }),
+            const editorModel = modifyEm({
+                cellValues: fromJS({
+                    [genCellKey('barcode', 0)]: List([{ display: null, raw: null }]),
                 }),
+                columnMap: fromJS({ barcode: COLUMN_BARCODE }),
+                orderedColumns: fromJS(['barcode']),
+                rowCount: 1,
             });
-            const editorModel = new EditorModel({
-                cellValues: Map<string, List<ValueDescriptor>>({
-                    '5-0': List<ValueDescriptor>([
-                        {
-                            display: null,
-                            raw: null,
-                        },
-                    ]),
-                }),
-                columns: List(['Barcode']),
-            });
-            const dataModel = makeTestQueryModel(
-                schemaQ,
-                myQueryInfo,
-                {
-                    '1': {},
-                },
-                ['1']
-            );
-            const { missingRequired } = editorModel.validateData(dataModel, 'Barcode');
+            const { missingRequired } = editorModel.validateData('Barcode');
             expect(missingRequired.size).toBe(0);
         });
 
         test('unique key violations', () => {
-            const editorModel = new EditorModel({
-                cellMessages: Map<string, CellMessage>({
-                    '1-0': 'description 1 message',
+            const editorModel = modifyEm({
+                orderedColumns: fromJS([colOneFk.toLowerCase()]),
+                columnMap: fromJS({ [colOneFk.toLowerCase()]: COLUMN_CAN_INSERT_AND_UPDATE }),
+                cellValues: fromJS({
+                    [genCellKey(colOneFk, 0)]: List([{ display: 'A', raw: 'a' } as ValueDescriptor]),
+                    [genCellKey(colOneFk, 1)]: List([{ display: 'A', raw: 'a' } as ValueDescriptor]),
+                    [genCellKey(colOneFk, 2)]: List([
+                        { display: 'caseInSenSiTive', raw: 'caseInSenSiTive' } as ValueDescriptor,
+                    ]),
+                    [genCellKey(colOneFk, 3)]: List([
+                        { display: 'CaseInsensItive', raw: 'CaseInsensItive' } as ValueDescriptor,
+                    ]),
+                    [genCellKey(colOneFk, 4)]: List([
+                        { display: ' spaceDupe ', raw: ' spaceDupe \n' } as ValueDescriptor,
+                    ]),
+                    [genCellKey(colOneFk, 5)]: List([{ display: 'spaceDupe', raw: '\tspaceDupe' } as ValueDescriptor]),
                 }),
-                cellValues: Map<string, List<ValueDescriptor>>({
-                    '0-0': List<ValueDescriptor>([
-                        {
-                            display: 'S-2',
-                            raw: 'S-2',
-                        },
-                    ]),
-                    '0-1': List<ValueDescriptor>([
-                        {
-                            display: 'S-2',
-                            raw: 'S-2',
-                        },
-                    ]),
-                    '0-2': List<ValueDescriptor>([
-                        {
-                            display: 'S-3',
-                            raw: 'S-3',
-                        },
-                    ]),
-                    '0-3': List<ValueDescriptor>([
-                        {
-                            display: 'S-4',
-                            raw: 'S-4',
-                        },
-                    ]),
-                    '0-4': List<ValueDescriptor>([
-                        {
-                            display: 'S-4',
-                            raw: 'S-4',
-                        },
-                    ]),
-                    '1-1': List<ValueDescriptor>([
-                        {
-                            display: ' spaceDupe ',
-                            raw: ' spaceDupe \n',
-                        },
-                    ]),
-                    '1-2': List<ValueDescriptor>([
-                        {
-                            display: 'spaceDupe',
-                            raw: ' \tspaceDupe',
-                        },
-                    ]),
-                    '1-3': List<ValueDescriptor>([
-                        {
-                            display: 'caseInSenSiTive',
-                            raw: 'caseInSenSiTive',
-                        },
-                    ]),
-                    '1-4': List<ValueDescriptor>([
-                        {
-                            display: 'CaseInsensItive',
-                            raw: 'CaseInsensItive',
-                        },
-                    ]),
-                    '5-0': List<ValueDescriptor>([
-                        {
-                            display: 'requirement 1',
-                            raw: 'requirement 1',
-                        },
-                    ]),
-                    '5-1': List<ValueDescriptor>([
-                        {
-                            display: 'requirement 2',
-                            raw: 'requirement 2',
-                        },
-                    ]),
-                    '5-2': List<ValueDescriptor>([
-                        {
-                            display: 'requirement 3',
-                            raw: 'requirement 3',
-                        },
-                    ]),
-                    '5-3': List<ValueDescriptor>([
-                        {
-                            display: 'requirement 4',
-                            raw: 'requirement 4',
-                        },
-                    ]),
-                    '5-4': List<ValueDescriptor>([
-                        {
-                            display: 'requirement 5',
-                            raw: 'requirement 5',
-                        },
-                    ]),
-                }),
-                columns: List(['a', 'b', 'c', 'd', 'e']),
-                id: 'insert-samples|samples/sample set 2',
-                focusColIdx: 1,
-                focusRowIdx: 1,
-                rowCount: 5,
-                selectedColIdx: 1,
-                selectedRowIdx: 1,
-                selectionCells: [],
+                rowCount: 6,
             });
-            const dataModel = makeTestQueryModel(
-                schemaQ,
-                queryInfo,
-                {
-                    '1': {},
-                    '2': {},
-                    '3': {},
-                    '4': {},
-                    '5': {},
-                },
-                ['1', '2', '3', '4', '5']
-            );
-            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(dataModel, 'Name');
+            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(colOneFk);
             expect(missingRequired.isEmpty()).toBe(true);
             expect(uniqueKeyViolations.size).toBe(1);
-            expect(uniqueKeyViolations.has('Name')).toBe(true);
-            expect(uniqueKeyViolations.get('Name').size).toBe(2);
-            expect(uniqueKeyViolations.get('Name').has('s-2')).toBe(true);
-            expect(uniqueKeyViolations.get('Name').get('s-2')).toEqual(List<number>([1, 2]));
-            expect(uniqueKeyViolations.get('Name').has('s-4')).toBe(true);
-            expect(uniqueKeyViolations.get('Name').get('s-4')).toEqual(List<number>([4, 5]));
-            const errors = editorModel.getValidationErrors(dataModel, 'Name');
+            expect(uniqueKeyViolations.has(colOneCaption)).toBe(true);
+            expect(uniqueKeyViolations.get(colOneCaption).size).toBe(3);
+            expect(uniqueKeyViolations.get(colOneCaption).has('a')).toBe(true);
+            expect(uniqueKeyViolations.get(colOneCaption).get('a')).toEqual(List<number>([1, 2]));
+            expect(uniqueKeyViolations.get(colOneCaption).has('caseinsensitive')).toBe(true);
+            expect(uniqueKeyViolations.get(colOneCaption).get('caseinsensitive')).toEqual(List<number>([3, 4]));
+            expect(uniqueKeyViolations.get(colOneCaption).has('spacedupe')).toBe(true);
+            expect(uniqueKeyViolations.get(colOneCaption).get('spacedupe')).toEqual(List<number>([5, 6]));
+            const errors = editorModel.getValidationErrors(colOneFk);
             expect(errors.errors).toEqual([
-                'Duplicate value (s-2) for Name on rows 1, 2.',
-                'Duplicate value (s-4) for Name on rows 4, 5.',
-            ]);
-
-            const ciUniqueKeyViolations = editorModel.validateData(dataModel, 'Description').uniqueKeyViolations;
-            // Check whitespace trimmed when detecting duplicates
-            expect(ciUniqueKeyViolations.get('Description').has('spacedupe')).toBe(true);
-            expect(ciUniqueKeyViolations.get('Description').get('spacedupe')).toEqual(List<number>([2, 3]));
-            // check case insensitivity when detecting duplicates
-            expect(ciUniqueKeyViolations.get('Description').has('caseinsensitive')).toBe(true);
-            expect(ciUniqueKeyViolations.get('Description').get('caseinsensitive')).toEqual(List<number>([4, 5]));
-            const ciErrors = editorModel.getValidationErrors(dataModel, 'Description');
-            expect(ciErrors.errors).toEqual([
-                'Duplicate value (spacedupe) for Description on rows 2, 3.',
-                'Duplicate value (caseinsensitive) for Description on rows 4, 5.',
+                `Duplicate value (a) for ${colOneCaption} on rows 1, 2.`,
+                `Duplicate value (caseinsensitive) for ${colOneCaption} on rows 3, 4.`,
+                `Duplicate value (spacedupe) for ${colOneCaption} on rows 5, 6.`,
             ]);
         });
 
         test('missing required and unique key violations', () => {
-            const editorModel = new EditorModel({
-                cellMessages: Map<string, CellMessage>({
-                    '1-0': 'description 1 message',
+            const editorModel = modifyEm({
+                cellMessages: fromJS({}),
+                cellValues: fromJS({
+                    [genCellKey(colOneFk, 0)]: List([{ display: null, raw: null } as ValueDescriptor]),
+                    [genCellKey(colOneFk, 1)]: List([{ display: 'A', raw: 'a' } as ValueDescriptor]),
+                    [genCellKey(colOneFk, 2)]: List([
+                        { display: 'caseInSenSiTive', raw: 'caseInSenSiTive' } as ValueDescriptor,
+                    ]),
+                    [genCellKey(colOneFk, 3)]: List([
+                        { display: 'CaseInsensItive', raw: 'CaseInsensItive' } as ValueDescriptor,
+                    ]),
                 }),
-                cellValues: Map<string, List<ValueDescriptor>>({
-                    '0-0': List<ValueDescriptor>([
-                        {
-                            display: 'S-2',
-                            raw: 'S-2',
-                        },
-                    ]),
-                    '0-1': List<ValueDescriptor>([
-                        {
-                            display: 'S-2',
-                            raw: 'S-2',
-                        },
-                    ]),
-                    // missing Name for row index 2
-                    '0-3': List<ValueDescriptor>([
-                        {
-                            display: 'S-4',
-                            raw: 'S-4',
-                        },
-                    ]),
-                    '0-4': List<ValueDescriptor>([
-                        {
-                            display: 'S-4',
-                            raw: 'S-4',
-                        },
-                    ]),
-                    '5-0': List<ValueDescriptor>([
-                        {
-                            display: 'requirement 1',
-                            raw: 'requirement 1',
-                        },
-                    ]),
-                    '5-1': List<ValueDescriptor>([
-                        {
-                            display: ' \n\t ',
-                            raw: ' \n\t ',
-                        },
-                    ]),
-                    '5-2': List<ValueDescriptor>([
-                        {
-                            display: 'requirement 3',
-                            raw: 'requirement 3',
-                        },
-                    ]),
-                    '5-3': List<ValueDescriptor>([
-                        {
-                            display: 'requirement 4',
-                            raw: 'requirement 4',
-                        },
-                    ]),
-                    // missing RequiredData for row index 4
-                }),
-                columns: List(['a', 'b', 'c', 'd', 'e']),
-                id: 'insert-samples|samples/sample set 2',
-                focusColIdx: 1,
-                focusRowIdx: 1,
-                rowCount: 5,
-                selectedColIdx: 1,
-                selectedRowIdx: 1,
-                selectionCells: [],
+                columnMap: fromJS({ [colOneFk.toLowerCase()]: COLUMN_CAN_INSERT_AND_UPDATE }),
+                orderedColumns: fromJS([colOneFk.toLowerCase()]),
+                rowCount: 4,
             });
-            const dataModel = makeTestQueryModel(
-                schemaQ,
-                queryInfo,
-                {
-                    '1': {},
-                    '2': {},
-                    '3': {},
-                    '4': {},
-                    '5': {},
-                },
-                ['1', '2', '3', '4', '5']
-            );
-            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(dataModel, 'Name');
-            expect(missingRequired.size).toBe(2);
-            expect(missingRequired.has('Name')).toBe(true);
-            expect(missingRequired.get('Name').size).toBe(1);
-            expect(missingRequired.get('Name').contains(3)).toBe(true);
-            expect(missingRequired.has('Required Data')).toBe(true);
-            expect(missingRequired.get('Required Data').contains(2)).toBe(true);
-            expect(missingRequired.get('Required Data').contains(5)).toBe(true);
+            const { uniqueKeyViolations, missingRequired } = editorModel.validateData(colOneFk);
+            expect(missingRequired.size).toBe(1);
+            expect(missingRequired.has(colOneCaption)).toBe(true);
+            expect(missingRequired.get(colOneCaption).size).toBe(1);
+            expect(missingRequired.get(colOneCaption).contains(1)).toBe(true);
 
             expect(uniqueKeyViolations.size).toBe(1);
-            expect(uniqueKeyViolations.has('Name')).toBe(true);
-            expect(uniqueKeyViolations.get('Name').size).toBe(2);
-            expect(uniqueKeyViolations.get('Name').has('s-2')).toBe(true);
-            expect(uniqueKeyViolations.get('Name').get('s-2')).toEqual(List<number>([1, 2]));
-            expect(uniqueKeyViolations.get('Name').has('s-4')).toBe(true);
-            expect(uniqueKeyViolations.get('Name').get('s-4')).toEqual(List<number>([4, 5]));
-            const errors = editorModel.getValidationErrors(dataModel, 'Name');
+            expect(uniqueKeyViolations.has(colOneCaption)).toBe(true);
+            expect(uniqueKeyViolations.get(colOneCaption).size).toBe(1);
+            expect(uniqueKeyViolations.get(colOneCaption).has('caseinsensitive')).toBe(true);
+            expect(uniqueKeyViolations.get(colOneCaption).get('caseinsensitive')).toEqual(List<number>([3, 4]));
+            const errors = editorModel.getValidationErrors(colOneFk);
             expect(errors.errors).toEqual([
-                'Duplicate value (s-2) for Name on rows 1, 2.',
-                'Duplicate value (s-4) for Name on rows 4, 5.',
-                'Required Data is missing from rows 2, 5. Name is missing from row 3.',
+                `Duplicate value (caseinsensitive) for ${colOneCaption} on rows 3, 4.`,
+                `${colOneCaption} is missing from row 1.`,
             ]);
             expect(errors.cellMessages.toJS()).toStrictEqual({
-                '1-0': 'description 1 message',
-                '5-1': { message: 'Required Data is required.' },
-                '0-2': { message: 'Name is required.' },
-                '5-4': { message: 'Required Data is required.' },
+                [genCellKey(colOneFk, 0)]: { message: `${colOneCaption} is required.` },
             });
         });
 
@@ -742,90 +464,41 @@ describe('EditorModel', () => {
 
     describe('utils', () => {
         test('getMessage', () => {
-            const model = new EditorModel({
-                cellMessages: fromJS({
-                    '0-0': 'a',
-                    '1-1': 'b',
-                }),
-            });
-            expect(model.getMessage(0, 0)).toBe('a');
-            expect(model.getMessage(1, 0)).toBe(undefined);
-            expect(model.getMessage(0, 1)).toBe(undefined);
-            expect(model.getMessage(1, 1)).toBe('b');
-        });
-
-        test('getColumns without queryInfo', () => {
-            const editorModel = new EditorModel({});
-            const queryInfo = new QueryInfo({});
-            expect(editorModel.getColumns(queryInfo).length).toBe(0);
-            expect(editorModel.getColumns(queryInfo, true).length).toBe(0);
-        });
-
-        test('getColumns forInsert', () => {
-            const editorModel = new EditorModel({});
-            const columns = editorModel.getColumns(QUERY_INFO);
-            expect(columns.length).toBe(2);
-            expect(columns[0]).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
-            expect(columns[1]).toStrictEqual(COLUMN_CAN_INSERT);
-        });
-
-        test('getColumns forUpdate', () => {
-            const editorModel = new EditorModel({});
-            const columns = editorModel.getColumns(QUERY_INFO, true);
-            expect(columns.length).toBe(2);
-            expect(columns[0]).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
-            expect(columns[1]).toStrictEqual(COLUMN_CAN_UPDATE);
-        });
-
-        test('getColumns readOnlyColumns', () => {
-            const editorModel = new EditorModel({});
-            const columns = editorModel.getColumns(QUERY_INFO, true, ['neither']);
-            expect(columns.length).toBe(3);
-            expect(columns[0]).toStrictEqual(COLUMN_CAN_INSERT_AND_UPDATE);
-            expect(columns[1]).toStrictEqual(COLUMN_CAN_UPDATE);
-            expect(columns[2].fieldKey).toBe(COLUMN_CANNOT_INSERT_AND_UPDATE.fieldKey);
-            expect(columns[2].readOnly).toBe(true);
-        });
-
-        test('getColumns getInsertColumns', () => {
-            const editorModel = new EditorModel({});
-            const columns = editorModel.getColumns(QUERY_INFO, false, undefined, [
-                COLUMN_CANNOT_INSERT_AND_UPDATE,
-                COLUMN_CAN_INSERT,
-            ]);
-            expect(columns.length).toBe(2);
-            expect(columns[0]).toBe(COLUMN_CANNOT_INSERT_AND_UPDATE);
-            expect(columns[1]).toBe(COLUMN_CAN_INSERT);
+            expect(basicEditorModel.getMessage(colOneFk, 0)).toBe('a');
+            expect(basicEditorModel.getMessage(colTwoFk, 0)).toBe(undefined);
+            expect(basicEditorModel.getMessage(colOneFk, 1)).toBe(undefined);
+            expect(basicEditorModel.getMessage(colTwoFk, 1)).toBe('b');
         });
 
         test('getValue', () => {
-            const model = new EditorModel({
-                cellValues: fromJS({
-                    '0-0': List([{ display: 'A', raw: 'a' } as ValueDescriptor]),
-                    '1-1': List([{ display: 'B', raw: 'b' } as ValueDescriptor]),
-                }),
-            });
-            expect(model.getValue(0, 0).size).toBe(1);
-            expect(model.getValue(0, 0).get(0).raw).toBe('a');
-            expect(model.getValue(1, 0).size).toBe(0);
-            expect(model.getValue(0, 1).size).toBe(0);
-            expect(model.getValue(1, 1).size).toBe(1);
-            expect(model.getValue(1, 1).get(0).raw).toBe('b');
+            expect(basicEditorModel.getValue(colOneFk, 0).size).toBe(1);
+            expect(basicEditorModel.getValue(colOneFk, 0).get(0).raw).toBe('a');
+            expect(basicEditorModel.getValue(colOneFk, 1).size).toBe(1);
+            expect(basicEditorModel.getValue(colOneFk, 1).get(0).raw).toBe('aa');
+
+            expect(basicEditorModel.getValue(colTwoFk, 0).size).toBe(1);
+            expect(basicEditorModel.getValue(colTwoFk, 0).get(0).raw).toBe('b');
+            expect(basicEditorModel.getValue(colTwoFk, 1).size).toBe(1);
+            expect(basicEditorModel.getValue(colTwoFk, 1).get(0).raw).toBe('bb');
+
+            expect(basicEditorModel.getValue(colOneFk, 2).size).toBe(0);
         });
 
         test('getValueForCellKey', () => {
             const model = new EditorModel({
-                cellValues: fromJS({
-                    '0-0': List([{ display: 'A', raw: 'a' } as ValueDescriptor]),
-                    '1-1': List([{ display: 'B', raw: 'b' } as ValueDescriptor]),
-                }),
+                cellValues: basicCellValues,
             });
-            expect(model.getValueForCellKey('0-0').size).toBe(1);
-            expect(model.getValueForCellKey('0-0').get(0).raw).toBe('a');
-            expect(model.getValueForCellKey('1-0').size).toBe(0);
-            expect(model.getValueForCellKey('0-1').size).toBe(0);
-            expect(model.getValueForCellKey('1-1').size).toBe(1);
-            expect(model.getValueForCellKey('1-1').get(0).raw).toBe('b');
+            expect(model.getValueForCellKey(genCellKey(colOneFk, 0)).size).toBe(1);
+            expect(model.getValueForCellKey(genCellKey(colOneFk, 0)).get(0).raw).toBe('a');
+            expect(model.getValueForCellKey(genCellKey(colOneFk, 1)).size).toBe(1);
+            expect(model.getValueForCellKey(genCellKey(colOneFk, 1)).get(0).raw).toBe('aa');
+
+            expect(model.getValueForCellKey(genCellKey(colTwoFk, 0)).size).toBe(1);
+            expect(model.getValueForCellKey(genCellKey(colTwoFk, 0)).get(0).raw).toBe('b');
+            expect(model.getValueForCellKey(genCellKey(colTwoFk, 1)).size).toBe(1);
+            expect(model.getValueForCellKey(genCellKey(colTwoFk, 1)).get(0).raw).toBe('bb');
+
+            expect(basicEditorModel.getValueForCellKey(genCellKey(colOneFk, 2)).size).toBe(0);
         });
 
         test('hasFocus', () => {
@@ -854,12 +527,12 @@ describe('EditorModel', () => {
         });
 
         test('selectionKey', () => {
-            expect(new EditorModel({ selectedColIdx: -1, selectedRowIdx: -1 }).selectionKey).toBe(undefined);
-            expect(new EditorModel({ selectedColIdx: -1, selectedRowIdx: 0 }).selectionKey).toBe(undefined);
-            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: -1 }).selectionKey).toBe(undefined);
-            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: 0 }).selectionKey).toBe('0-0');
-            expect(new EditorModel({ selectedColIdx: 0, selectedRowIdx: 1 }).selectionKey).toBe('0-1');
-            expect(new EditorModel({ selectedColIdx: 1, selectedRowIdx: 0 }).selectionKey).toBe('1-0');
+            expect(modifyEm({ selectedColIdx: -1, selectedRowIdx: -1 }).selectionKey).toBe(undefined);
+            expect(modifyEm({ selectedColIdx: -1, selectedRowIdx: 0 }).selectionKey).toBe(undefined);
+            expect(modifyEm({ selectedColIdx: 0, selectedRowIdx: -1 }).selectionKey).toBe(undefined);
+            expect(modifyEm({ selectedColIdx: 0, selectedRowIdx: 0 }).selectionKey).toBe(genCellKey(colOneFk, 0));
+            expect(modifyEm({ selectedColIdx: 0, selectedRowIdx: 1 }).selectionKey).toBe(genCellKey(colOneFk, 1));
+            expect(modifyEm({ selectedColIdx: 1, selectedRowIdx: 0 }).selectionKey).toBe(genCellKey(colTwoFk, 0));
         });
 
         test('isSelected', () => {
@@ -874,90 +547,58 @@ describe('EditorModel', () => {
         });
 
         test('hasMultipleSelection', () => {
-            expect(new EditorModel({ selectionCells: [] }).isMultiSelect).toBeFalsy();
-            expect(new EditorModel({ selectionCells: ['0-0'] }).isMultiSelect).toBeFalsy();
-            expect(new EditorModel({ selectionCells: ['0-0', '1-1'] }).isMultiSelect).toBeTruthy();
+            expect(modifyEm({ selectionCells: [] }).isMultiSelect).toBeFalsy();
+            expect(modifyEm({ selectionCells: [genCellKey(colOneFk, 0)] }).isMultiSelect).toBeFalsy();
+            expect(
+                modifyEm({ selectionCells: [genCellKey(colOneFk, 0), genCellKey(colTwoFk, 1)] }).isMultiSelect
+            ).toBeTruthy();
         });
 
         test('isMultiColumnSelection', () => {
-            expect(new EditorModel({ selectionCells: [] }).isMultiColumnSelection).toBeFalsy();
-            expect(new EditorModel({ selectionCells: ['0-0'] }).isMultiColumnSelection).toBeFalsy();
-            expect(new EditorModel({ selectionCells: ['0-0', '0-1'] }).isMultiColumnSelection).toBeFalsy();
-            expect(new EditorModel({ selectionCells: ['0-0', '1-1'] }).isMultiColumnSelection).toBeTruthy();
+            expect(modifyEm({ selectionCells: [] }).isMultiColumnSelection).toBeFalsy();
+            expect(modifyEm({ selectionCells: [genCellKey(colOneFk, 0)] }).isMultiColumnSelection).toBeFalsy();
+            expect(
+                modifyEm({ selectionCells: [genCellKey(colOneFk, 0), genCellKey(colOneFk, 1)] }).isMultiColumnSelection
+            ).toBeFalsy();
+            expect(
+                modifyEm({ selectionCells: [genCellKey(colOneFk, 0), genCellKey(colTwoFk, 1)] }).isMultiColumnSelection
+            ).toBeTruthy();
         });
 
         test('lastSelection', () => {
-            // multiple columns should always return false
-            expect(
-                new EditorModel({
-                    selectionCells: ['0-0', '0-1', '1-0', '1-1'],
-                    rowCount: 100,
-                }).lastSelection(0, 0)
-            ).toBeFalsy();
-            expect(
-                new EditorModel({
-                    selectionCells: ['0-0', '0-1', '1-0', '1-1'],
-                    rowCount: 100,
-                }).lastSelection(1, 1)
-            ).toBeTruthy();
-            expect(
-                new EditorModel({
-                    selectionCells: ['1-0', '1-1', '0-0', '0-1'],
-                    rowCount: 100,
-                }).lastSelection(0, 0)
-            ).toBeFalsy();
-            expect(
-                new EditorModel({
-                    selectionCells: ['1-0', '0-0', '0-1', '1-1'],
-                    rowCount: 100,
-                }).lastSelection(1, 1)
-            ).toBeTruthy();
-            // single column should have a true
-            expect(
-                new EditorModel({
-                    selectionCells: ['1-0', '1-1', '1-2', '1-3'],
-                    rowCount: 100,
-                }).lastSelection(1, 0)
-            ).toBeFalsy();
-            expect(
-                new EditorModel({
-                    selectionCells: ['1-0', '1-1', '1-2', '1-3'],
-                    rowCount: 100,
-                }).lastSelection(1, 1)
-            ).toBeFalsy();
-            expect(
-                new EditorModel({
-                    selectionCells: ['1-0', '1-1', '1-2', '1-3'],
-                    rowCount: 100,
-                }).lastSelection(1, 2)
-            ).toBeFalsy();
-            expect(
-                new EditorModel({
-                    selectionCells: ['1-0', '1-1', '1-2', '1-3'],
-                    rowCount: 100,
-                }).lastSelection(1, 3)
-            ).toBeTruthy();
-            // single cell should always be true
-            expect(
-                new EditorModel({
-                    selectionCells: [],
-                    selectedColIdx: 0,
-                    selectedRowIdx: 0,
-                    rowCount: 100,
-                }).lastSelection(0, 0)
-            ).toBeTruthy();
-            expect(
-                new EditorModel({
-                    selectionCells: [],
-                    selectedColIdx: 100,
-                    selectedRowIdx: 100,
-                    rowCount: 100,
-                }).lastSelection(100, 100)
-            ).toBeTruthy();
+            // No selection is falsy
+            expect(basicEditorModel.lastSelection(colOneFk, 0)).toBeFalsy();
+            expect(basicEditorModel.lastSelection(colOneFk, 1)).toBeFalsy();
+            expect(basicEditorModel.lastSelection(colTwoFk, 0)).toBeFalsy();
+            expect(basicEditorModel.lastSelection(colTwoFk, 1)).toBeFalsy();
+
+            // Single Cell checks against selectionKey and not selectionCells
+            const singleCellSel = modifyEm({
+                selectionCells: [],
+                selectedColIdx: 0,
+                selectedRowIdx: 0,
+                rowCount: 100,
+            });
+            expect(singleCellSel.lastSelection(colOneFk, 0)).toBeTruthy();
+            expect(singleCellSel.lastSelection(colOneFk, 1)).toBeFalsy();
+            expect(singleCellSel.lastSelection(colTwoFk, 0)).toBeFalsy();
+
+            // Multiple Cell selection checks against selectionCells
+            const multiCellSel = modifyEm({
+                selectionCells: [
+                    genCellKey(colOneFk, 0),
+                    genCellKey(colTwoFk, 0),
+                    genCellKey(colOneFk, 1),
+                    genCellKey(colTwoFk, 1),
+                ],
+                rowCount: 100,
+            });
+            expect(multiCellSel.lastSelection(colOneFk, 0)).toBeFalsy();
+            expect(multiCellSel.lastSelection(colTwoFk, 1)).toBeTruthy();
         });
 
         test('isInBounds', () => {
-            const model = new EditorModel({ orderedColumns: List(['a']), rowCount: 1 });
+            const model = modifyEm({ orderedColumns: List([colOneFk]), rowCount: 1 });
             expect(model.isInBounds(-1, -1)).toBeFalsy();
             expect(model.isInBounds(0, -1)).toBeFalsy();
             expect(model.isInBounds(-1, 0)).toBeFalsy();
@@ -968,14 +609,14 @@ describe('EditorModel', () => {
         });
 
         test('inSelection', () => {
-            const model = new EditorModel({ selectionCells: ['0-0', '1-1'] });
-            expect(model.inSelection(-1, -1)).toBeFalsy();
-            expect(model.inSelection(0, -1)).toBeFalsy();
-            expect(model.inSelection(-1, 0)).toBeFalsy();
-            expect(model.inSelection(0, 0)).toBeTruthy();
-            expect(model.inSelection(0, 1)).toBeFalsy();
-            expect(model.inSelection(1, 0)).toBeFalsy();
-            expect(model.inSelection(1, 1)).toBeTruthy();
+            const model = modifyEm({ selectionCells: [genCellKey(colOneFk, 0), genCellKey(colTwoFk, 1)] });
+            expect(model.inSelection('invalid', -1)).toBeFalsy();
+            expect(model.inSelection(colOneFk, -1)).toBeFalsy();
+            expect(model.inSelection('invalid', 0)).toBeFalsy();
+            expect(model.inSelection(colOneFk, 0)).toBeTruthy();
+            expect(model.inSelection(colOneFk, 1)).toBeFalsy();
+            expect(model.inSelection(colTwoFk, 0)).toBeFalsy();
+            expect(model.inSelection(colTwoFk, 1)).toBeTruthy();
         });
 
         test('hasRawValue', () => {
@@ -990,23 +631,23 @@ describe('EditorModel', () => {
         });
 
         test('hasData', () => {
-            let model = new EditorModel({
+            let model = modifyEm({
                 cellValues: fromJS({
-                    '0-0': List([{} as ValueDescriptor]),
+                    [genCellKey(colOneFk, 0)]: List([{} as ValueDescriptor]),
                 }),
             });
             expect(model.hasData).toBeFalsy();
 
-            model = new EditorModel({
+            model = modifyEm({
                 cellValues: fromJS({
-                    '0-0': List([{ raw: ' ' } as ValueDescriptor]),
+                    [genCellKey(colOneFk, 0)]: List([{ raw: ' ' } as ValueDescriptor]),
                 }),
             });
             expect(model.hasData).toBeFalsy();
 
-            model = new EditorModel({
+            model = modifyEm({
                 cellValues: fromJS({
-                    '0-0': List([{ raw: 'a' } as ValueDescriptor]),
+                    [genCellKey(colOneFk, 0)]: List([{ raw: 'a' } as ValueDescriptor]),
                 }),
             });
             expect(model.hasData).toBeTruthy();
@@ -1044,7 +685,7 @@ describe('EditorModel', () => {
                 [genCellKey('lsid', 0)]: List([{ raw: 'abc' } as ValueDescriptor]),
             });
             let model = new EditorModel({
-                queryInfo: queryInfo,
+                queryInfo,
                 cellValues,
             });
             expect(model.getPkValues(0)).toStrictEqual({ RowId: 1 });

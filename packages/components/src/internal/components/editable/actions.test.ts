@@ -1,4 +1,4 @@
-import { fromJS, List, Map, Set } from 'immutable';
+import { List, Map, Set } from 'immutable';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
@@ -17,59 +17,67 @@ import {
     splitPrefixedNumber,
 } from './actions';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
+import { genCellKey } from './utils';
 
 describe('column mutation actions', () => {
     const queryInfo = QueryInfo.fromJsonForTests(sampleSet2QueryInfo);
-    const insertColumnFieldKeys = List(queryInfo.getInsertColumns().map(col => col.fieldKey));
+    const insertColumnFieldKeys = List(queryInfo.getInsertColumns().map(col => col.fieldKey.toLowerCase()));
+    const firstFK = insertColumnFieldKeys.get(0);
+    const secondFk = insertColumnFieldKeys.get(1);
+    const sixthFk = insertColumnFieldKeys.get(5);
     const editorModel = new EditorModel({
         cellMessages: Map<string, CellMessage>({
-            '1-0': 'description 1 message',
+            [genCellKey(secondFk, 0)]: 'description 1 message',
         }),
         cellValues: Map<string, List<ValueDescriptor>>({
-            '0-0': List<ValueDescriptor>([
+            [genCellKey(firstFK, 0)]: List<ValueDescriptor>([
                 {
                     display: 'S-1',
                     raw: 'S-1',
                 },
             ]),
-            '0-1': List<ValueDescriptor>([
+            [genCellKey(firstFK, 1)]: List<ValueDescriptor>([
                 {
                     display: 'S-2',
                     raw: 'S-2',
                 },
             ]),
-            '0-2': List<ValueDescriptor>([
+            [genCellKey(firstFK, 2)]: List<ValueDescriptor>([
                 {
                     display: 'S-3',
                     raw: 'S-3',
                 },
             ]),
-            '1-0': List<ValueDescriptor>([
+            [genCellKey(secondFk, 0)]: List<ValueDescriptor>([
                 {
                     display: 'Description 1',
                     raw: 'Description 1',
                 },
             ]),
-            '1-1': List<ValueDescriptor>([
+            [genCellKey(secondFk, 1)]: List<ValueDescriptor>([
                 {
                     display: 'Description 2',
                     raw: 'Description 2',
                 },
             ]),
-            '1-2': List<ValueDescriptor>([
+            [genCellKey(secondFk, 2)]: List<ValueDescriptor>([
                 {
                     display: 'Description 3',
                     raw: 'Description 3',
                 },
             ]),
-            '5-0': List<ValueDescriptor>([
+            [genCellKey(sixthFk, 0)]: List<ValueDescriptor>([
                 {
                     display: 'requirement 1',
                     raw: 'requirement 1',
                 },
             ]),
         }),
+        queryInfo,
         orderedColumns: insertColumnFieldKeys,
+        columnMap: insertColumnFieldKeys.reduce((result, key) => {
+            return result.set(key, queryInfo.getColumn(key));
+        }, Map<string, any>()),
         id: 'insert-samples|samples/sample set 2',
         focusColIdx: 1,
         focusRowIdx: 1,
@@ -96,7 +104,7 @@ describe('column mutation actions', () => {
         dataRows,
         dataKeys,
         dataKeys.length,
-        editorModel.id
+        'insert-samples|samples/sample set 2'
     );
 
     const queryColumn = new QueryColumn({
@@ -126,60 +134,41 @@ describe('column mutation actions', () => {
 
     describe('addColumns', () => {
         test('no columns provided', () => {
-            const updates = addColumns(
-                editorModel,
-                queryModel.queryInfo,
-                fromJS(queryModel.rows),
-                new ExtendedMap<string, QueryColumn>()
-            );
-            expect(updates.editorModelChanges).toBe(undefined);
+            const updates = addColumns(editorModel, new ExtendedMap<string, QueryColumn>());
+            expect(updates).toEqual({});
         });
 
         test('add at beginning', () => {
+            const addedFk = queryColumn.fieldKey;
             const updates = addColumns(
                 editorModel,
-                queryModel.queryInfo,
-                fromJS(queryModel.rows),
                 new ExtendedMap<string, QueryColumn>({ [queryColumn.fieldKey]: queryColumn })
             );
-            expect(updates.editorModelChanges.cellMessages.size).toBe(1);
-            expect(updates.editorModelChanges.cellMessages.has('2-0')).toBe(true);
-            expect(updates.editorModelChanges.cellValues.get('0-0').size).toBe(0);
-            expect(updates.editorModelChanges.cellValues.get('1-0').get(0).display).toBe('S-1');
-            expect(updates.editorModelChanges.cellValues.get('2-0').get(0).display).toBe('Description 1');
-            expect(updates.editorModelChanges.cellValues.get('1-1').get(0).display).toBe('S-2');
-            expect(updates.editorModelChanges.cellValues.get('2-1').get(0).display).toBe('Description 2');
-            expect(updates.editorModelChanges.orderedColumns.get(0)).toEqual(queryColumn.fieldKey);
-            expect(updates.editorModelChanges.orderedColumns.size).toEqual(editorModel.orderedColumns.size + 1);
+            expect(updates.cellMessages).toEqual(editorModel.cellMessages);
+            expect(updates.cellValues.get(genCellKey(addedFk, 0))).not.toBeUndefined();
+            expect(updates.cellValues.get(genCellKey(addedFk, 1))).not.toBeUndefined();
+            expect(updates.cellValues.get(genCellKey(addedFk, 2))).not.toBeUndefined();
+            expect(updates.orderedColumns.get(0)).toEqual(queryColumn.fieldKey.toLowerCase());
+            expect(updates.orderedColumns.size).toEqual(editorModel.orderedColumns.size + 1);
             expect(updates.queryInfo.getColumnIndex('Description')).toBe(
                 queryModel.queryInfo.getColumnIndex('Description') + 1
             );
             expect(updates.queryInfo.getColumnIndex(queryColumn.fieldKey)).toBe(0);
-            expect(updates.data.findEntry(rowValues => rowValues.has(queryColumn.fieldKey))).toBeTruthy();
         });
 
         test('add at beginning, insert fieldKey does not exist', () => {
             const updates = addColumns(
                 editorModel,
-                queryModel.queryInfo,
-                fromJS(queryModel.rows),
                 new ExtendedMap<string, QueryColumn>({ [queryColumn.fieldKey]: queryColumn }),
                 'Bogus'
             );
-            expect(updates.editorModelChanges.cellMessages.size).toBe(1);
-            expect(updates.editorModelChanges.cellMessages.has('2-0')).toBe(true);
-            expect(updates.editorModelChanges.cellValues.get('0-0').size).toBe(0);
-            expect(updates.editorModelChanges.cellValues.get('1-0').get(0).display).toBe('S-1');
-            expect(updates.editorModelChanges.cellValues.get('2-0').get(0).display).toBe('Description 1');
-            expect(updates.editorModelChanges.cellValues.get('1-1').get(0).display).toBe('S-2');
-            expect(updates.editorModelChanges.cellValues.get('2-1').get(0).display).toBe('Description 2');
-            expect(updates.editorModelChanges.orderedColumns.get(0)).toEqual(queryColumn.fieldKey);
-            expect(updates.editorModelChanges.orderedColumns.size).toEqual(editorModel.orderedColumns.size + 1);
+            expect(updates.cellMessages).toEqual(editorModel.cellMessages);
+            expect(updates.orderedColumns.get(0)).toEqual(queryColumn.fieldKey.toLowerCase());
+            expect(updates.orderedColumns.size).toEqual(editorModel.orderedColumns.size + 1);
             expect(updates.queryInfo.getColumnIndex('Description')).toBe(
                 queryModel.queryInfo.getColumnIndex('Description') + 1
             );
             expect(updates.queryInfo.getColumnIndex(queryColumn.fieldKey)).toBe(0);
-            expect(updates.data.findEntry(rowValues => rowValues.has(queryColumn.fieldKey))).toBeTruthy();
         });
 
         test('add at end', () => {
@@ -187,19 +176,12 @@ describe('column mutation actions', () => {
             const lastInsertColKey = insertCols[insertCols.length - 1].fieldKey;
             const updates = addColumns(
                 editorModel,
-                queryModel.queryInfo,
-                fromJS(queryModel.rows),
                 new ExtendedMap<string, QueryColumn>({ [queryColumn.fieldKey]: queryColumn }),
                 lastInsertColKey
             );
-            expect(updates.editorModelChanges.cellMessages.size).toBe(1);
-            expect(updates.editorModelChanges.cellMessages.has('1-0')).toBe(true);
-            expect(updates.editorModelChanges.cellValues.get('0-0').get(0).display).toBe('S-1');
-            expect(updates.editorModelChanges.cellValues.get('1-0').get(0).display).toBe('Description 1');
-            expect(updates.editorModelChanges.cellValues.get('0-1').get(0).display).toBe('S-2');
-            expect(updates.editorModelChanges.cellValues.get('1-1').get(0).display).toBe('Description 2');
-            expect(updates.editorModelChanges.orderedColumns.get(updates.editorModelChanges.orderedColumns.size - 1)).toEqual(
-                queryColumn.fieldKey
+            expect(updates.cellMessages).toEqual(editorModel.cellMessages);
+            expect(updates.orderedColumns.get(updates.orderedColumns.size - 1)).toEqual(
+                queryColumn.fieldKey.toLowerCase()
             );
             expect(updates.queryInfo.getColumnIndex('description')).toBe(
                 queryModel.queryInfo.getColumnIndex('description')
@@ -207,298 +189,230 @@ describe('column mutation actions', () => {
             expect(updates.queryInfo.getColumnIndex(queryColumn.fieldKey)).toBe(
                 queryModel.queryInfo.getColumnIndex(lastInsertColKey) + 1
             );
-            expect(updates.data.findEntry(rowValues => rowValues.has(queryColumn.fieldKey))).toBeTruthy();
         });
 
         test('add in the middle', () => {
             const nameColIndex = queryModel.queryInfo.getColumnIndex('name');
-
             const updates = addColumns(
                 editorModel,
-                queryModel.queryInfo,
-                fromJS(queryModel.rows),
                 new ExtendedMap<string, QueryColumn>({ [queryColumn.fieldKey]: queryColumn }),
                 'Name'
             );
 
-            expect(updates.editorModelChanges.cellMessages.size).toBe(1);
-            expect(updates.editorModelChanges.cellMessages.has('2-0')).toBe(true);
-            expect(updates.editorModelChanges.cellValues.get('0-0').get(0).display).toBe('S-1');
-            expect(updates.editorModelChanges.cellValues.get('2-0').get(0).display).toBe('Description 1');
-            expect(updates.editorModelChanges.cellValues.get('0-1').get(0).display).toBe('S-2');
-            expect(updates.editorModelChanges.cellValues.get('2-1').get(0).display).toBe('Description 2');
-            expect(updates.editorModelChanges.orderedColumns.findIndex(fieldKey => fieldKey === queryColumn.fieldKey)).toEqual(
-                updates.editorModelChanges.orderedColumns.findIndex(fieldKey => fieldKey === 'Name') + 1
+            expect(updates.cellMessages).toEqual(editorModel.cellMessages);
+            expect(updates.orderedColumns.indexOf(queryColumn.fieldKey.toLowerCase())).toEqual(
+                updates.orderedColumns.indexOf('name') + 1
             );
-
             expect(updates.queryInfo.getColumnIndex('name')).toBe(nameColIndex);
             expect(updates.queryInfo.getColumnIndex('description')).toBe(
                 queryModel.queryInfo.getColumnIndex('description') + 1
             );
             expect(updates.queryInfo.getColumnIndex(queryColumn.fieldKey)).toBe(nameColIndex + 1);
-            expect(updates.data.findEntry(rowValues => rowValues.has(queryColumn.fieldKey))).toBeTruthy();
         });
     });
 
     describe('changeColumn', () => {
         test('column not found', () => {
-            const updates = changeColumn(
-                editorModel,
-                queryModel.queryInfo,
-                fromJS(queryModel.rows),
-                'Nonesuch',
-                queryColumn
-            );
-            expect(updates.editorModelChanges).toBe(undefined);
+            const updates = changeColumn(editorModel, 'Nonesuch', queryColumn);
+            expect(updates).toEqual({});
         });
 
         test('has values and messages', () => {
-            expect(editorModel.cellMessages.size).toBe(1);
-
             const updates = changeColumn(
                 editorModel,
-                queryModel.queryInfo,
-                fromJS(queryModel.rows),
                 'DESCRIPTION', // case-insensitive
                 queryColumn
             );
 
-            expect(updates.editorModelChanges.cellMessages.size).toBe(0);
-            expect(updates.editorModelChanges.cellValues.get('1-0')).toBeFalsy();
-            expect(updates.editorModelChanges.cellValues.get('1-1')).toBeFalsy();
-            expect(updates.editorModelChanges.cellValues.get('1-2')).toBeFalsy();
-            expect(updates.editorModelChanges.orderedColumns.find(fieldKey => fieldKey === 'Description')).toBeUndefined();
-            expect(updates.editorModelChanges.orderedColumns.findIndex(fieldKey => fieldKey === queryColumn.fieldKey)).toEqual(
-                editorModel.orderedColumns.findIndex(fieldKey => fieldKey === 'Description')
+            expect(updates.cellMessages.size).toBe(0);
+            expect(updates.orderedColumns.find(fieldKey => fieldKey === 'Description')).toBeUndefined();
+            expect(updates.orderedColumns.indexOf(queryColumn.fieldKey.toLowerCase())).toEqual(
+                editorModel.orderedColumns.indexOf('description')
             );
-
-            const colIndex = queryModel.queryInfo.columns.keyArray.findIndex(column => column === 'description');
             expect(updates.queryInfo.getColumn('Description')).toBeFalsy();
             expect(updates.queryInfo.getColumn(queryColumn.fieldKey)).toBeTruthy();
-            const newColIndex = updates.queryInfo.columns.keyArray.findIndex(
-                column => column === queryColumn.fieldKey.toLowerCase()
-            );
-            expect(newColIndex).toBe(colIndex);
-            expect(updates.data.findEntry(rowValues => rowValues.has('Description)'))).toBeFalsy();
-            expect(updates.data.findEntry(rowValues => rowValues.has(queryColumn.fieldKey))).toBeTruthy();
         });
     });
 
     describe('removeColumn', () => {
         test('column not found', () => {
-            const updates = removeColumn(editorModel, queryModel.queryInfo, fromJS(queryModel.rows), 'Modified'); // not an insert column, so cannot be removed
-            expect(updates.editorModelChanges).toBe(undefined);
+            const updates = removeColumn(editorModel, 'Modified'); // not an insert column, so cannot be removed
+            expect(updates).toEqual({});
         });
 
         test('first column', () => {
             const firstInputColumn = queryModel.queryInfo.getInsertColumns()[0];
-            const updates = removeColumn(
-                editorModel,
-                queryModel.queryInfo,
-                fromJS(queryModel.rows),
-                firstInputColumn.fieldKey
-            );
+            const updates = removeColumn(editorModel, firstInputColumn.fieldKey);
 
-            expect(updates.editorModelChanges.cellMessages.size).toBe(1);
-            expect(updates.editorModelChanges.cellValues.get('0-0').get(0).display).toBe('Description 1');
-            expect(updates.editorModelChanges.cellValues.get('0-1').get(0).display).toBe('Description 2');
-            expect(updates.editorModelChanges.orderedColumns.size).toEqual(editorModel.orderedColumns.size - 1);
-            expect(
-                updates.editorModelChanges.orderedColumns.find(fieldKey => fieldKey === firstInputColumn.fieldKey)
-            ).toBeUndefined();
-            expect(updates.data.find(row => row.has(firstInputColumn.fieldKey))).toBeFalsy();
+            expect(updates.cellMessages.size).toBe(1);
+            expect(updates.cellValues.has(genCellKey(firstFK, 0))).toBe(false);
+            expect(updates.cellValues.has(genCellKey(firstFK, 1))).toBe(false);
+            expect(updates.cellValues.has(genCellKey(firstFK, 2))).toBe(false);
+            expect(updates.cellValues.get(genCellKey(secondFk, 0)).get(0).display).toBe('Description 1');
+            expect(updates.cellValues.get(genCellKey(secondFk, 1)).get(0).display).toBe('Description 2');
+            expect(updates.cellValues.get(genCellKey(secondFk, 2)).get(0).display).toBe('Description 3');
+            expect(updates.cellValues.get(genCellKey(sixthFk, 0)).get(0).display).toBe('requirement 1');
+            expect(updates.orderedColumns.size).toEqual(editorModel.orderedColumns.size - 1);
+            expect(updates.orderedColumns.find(fieldKey => fieldKey === firstInputColumn.fieldKey)).toBeUndefined();
         });
 
         test('last column', () => {
             const insertCols = queryModel.queryInfo.getInsertColumns();
             const lastInputColumn = insertCols[insertCols.length - 1];
-            const updates = removeColumn(
-                editorModel,
-                queryModel.queryInfo,
-                fromJS(queryModel.rows),
-                lastInputColumn.fieldKey
-            );
+            const updates = removeColumn(editorModel, lastInputColumn.fieldKey);
 
-            expect(updates.editorModelChanges.cellMessages.size).toBe(1);
-            expect(updates.editorModelChanges.cellValues.get('0-0').get(0).display).toBe('S-1');
-            expect(updates.editorModelChanges.cellValues.get('0-1').get(0).display).toBe('S-2');
-            expect(updates.editorModelChanges.cellValues.has('5-0')).toBe(false);
-            expect(updates.editorModelChanges.orderedColumns.size).toEqual(editorModel.orderedColumns.size - 1);
-            expect(
-                updates.editorModelChanges.orderedColumns.find(fieldKey => fieldKey === lastInputColumn.fieldKey)
-            ).toBeUndefined();
-            expect(updates.data.find(row => row.has(lastInputColumn.fieldKey))).toBeFalsy();
+            expect(updates.cellMessages.size).toBe(1);
+            expect(updates.cellValues.get(genCellKey(firstFK, 0)).get(0).display).toBe('S-1');
+            expect(updates.cellValues.get(genCellKey(firstFK, 1)).get(0).display).toBe('S-2');
+            expect(updates.cellValues.get(genCellKey(firstFK, 2)).get(0).display).toBe('S-3');
+            expect(updates.cellValues.get(genCellKey(secondFk, 0)).get(0).display).toBe('Description 1');
+            expect(updates.cellValues.get(genCellKey(secondFk, 1)).get(0).display).toBe('Description 2');
+            expect(updates.cellValues.get(genCellKey(secondFk, 2)).get(0).display).toBe('Description 3');
+            expect(updates.cellValues.has(genCellKey(sixthFk, 0))).toBe(false);
+            expect(updates.orderedColumns.size).toEqual(editorModel.orderedColumns.size - 1);
+            expect(updates.orderedColumns.find(fieldKey => fieldKey === lastInputColumn.fieldKey)).toBeUndefined();
         });
 
         test('middle column', () => {
             const fieldKey = 'Description';
-            const updates = removeColumn(editorModel, queryModel.queryInfo, fromJS(queryModel.rows), fieldKey);
+            const updates = removeColumn(editorModel, fieldKey);
 
-            expect(updates.editorModelChanges.cellMessages.size).toBe(0);
-            expect(updates.editorModelChanges.cellValues.get('0-0').get(0).display).toBe('S-1');
-            expect(updates.editorModelChanges.cellValues.has('1-0')).toBe(false);
-            expect(updates.editorModelChanges.orderedColumns.size).toEqual(editorModel.orderedColumns.size - 1);
-            expect(updates.editorModelChanges.orderedColumns.find(fk => fk === fieldKey)).toBeUndefined();
-            expect(updates.data.find(row => row.has(fieldKey))).toBeFalsy();
+            expect(updates.cellMessages.size).toBe(0);
+            expect(updates.cellValues.get(genCellKey(firstFK, 0)).get(0).display).toBe('S-1');
+            expect(updates.cellValues.get(genCellKey(firstFK, 1)).get(0).display).toBe('S-2');
+            expect(updates.cellValues.get(genCellKey(firstFK, 2)).get(0).display).toBe('S-3');
+            expect(updates.cellValues.has(genCellKey(secondFk, 0))).toBe(false);
+            expect(updates.cellValues.has(genCellKey(secondFk, 1))).toBe(false);
+            expect(updates.cellValues.has(genCellKey(secondFk, 2))).toBe(false);
+            expect(updates.cellValues.get(genCellKey(sixthFk, 0)).get(0).display).toBe('requirement 1');
+            expect(updates.orderedColumns.size).toEqual(editorModel.orderedColumns.size - 1);
+            expect(updates.orderedColumns.find(fk => fk === fieldKey)).toBeUndefined();
         });
     });
 });
 
 describe('fillColumnCells', () => {
-    const data = fromJS({ 123: {}, 456: {}, 789: {} });
-    const dataKeys = fromJS([123, 456, 789]);
-
-    const editorModel = new EditorModel({ id: 'generate|fill|sequence' }).merge({
+    const lookupFk = 'lookup';
+    const intFk = 'int';
+    const floatFk = 'float';
+    const dateFk = 'date';
+    const datetimeFk = 'datetime';
+    const strFk = 'str';
+    const editorModel = new EditorModel({}).merge({
         cellMessages: Map<string, CellMessage>({
             '1-0': 'description 1 message',
         }),
         cellValues: Map<string, List<ValueDescriptor>>({
-            '0-0': List<ValueDescriptor>([
+            [genCellKey(lookupFk, 0)]: List<ValueDescriptor>([
                 {
                     display: 'S-1',
                     raw: 1,
                 },
             ]),
-            '0-1': List<ValueDescriptor>([
+            [genCellKey(lookupFk, 1)]: List<ValueDescriptor>([
                 {
                     display: 'S-2',
                     raw: 2,
                 },
             ]),
-            '0-2': List<ValueDescriptor>([
+            [genCellKey(lookupFk, 2)]: List<ValueDescriptor>([
                 {
                     display: 'S-3',
                     raw: 3,
                 },
             ]),
-            '1-0': List<ValueDescriptor>([
+            [genCellKey(intFk, 0)]: List<ValueDescriptor>([
                 {
                     display: '1',
                     raw: 1,
                 },
             ]),
-            '1-1': List<ValueDescriptor>([
+            [genCellKey(intFk, 1)]: List<ValueDescriptor>([
                 {
                     display: '3',
                     raw: 3,
                 },
             ]),
-            '1-2': List<ValueDescriptor>([
+            [genCellKey(intFk, 2)]: List<ValueDescriptor>([
                 {
                     display: '5',
                     raw: 5,
                 },
             ]),
-            '2-0': List<ValueDescriptor>([
+            [genCellKey(floatFk, 0)]: List<ValueDescriptor>([
                 {
                     display: '3.0',
                     raw: 3.0,
                 },
             ]),
-            '2-1': List<ValueDescriptor>([
+            [genCellKey(floatFk, 1)]: List<ValueDescriptor>([
                 {
                     display: '1.5',
                     raw: 1.5,
                 },
             ]),
-            '2-2': List<ValueDescriptor>([
+            [genCellKey(floatFk, 2)]: List<ValueDescriptor>([
                 {
                     display: '0',
                     raw: 0,
                 },
             ]),
-            '3-0': List<ValueDescriptor>([
-                {
-                    display: 'Lookup 1',
-                    raw: 1,
-                },
-            ]),
-            '3-1': List<ValueDescriptor>([
-                {
-                    display: 'Lookup 2',
-                    raw: 2,
-                },
-            ]),
-            '3-2': List<ValueDescriptor>([
-                {
-                    display: 'Lookup 2',
-                    raw: 2,
-                },
-            ]),
-            '4-0': List<ValueDescriptor>([
-                {
-                    display: 'S-1',
-                    raw: 'S-1',
-                },
-            ]),
-            '4-1': List<ValueDescriptor>([
-                {
-                    display: 2,
-                    raw: 2,
-                },
-            ]),
-            '4-2': List<ValueDescriptor>([
-                {
-                    display: 'Lookup 5',
-                    raw: 5,
-                },
-            ]),
-            '5-0': List<ValueDescriptor>([
+            [genCellKey(strFk, 0)]: List<ValueDescriptor>([
                 {
                     display: 'qwer',
                     raw: 'qwer',
                 },
             ]),
-            '5-1': List<ValueDescriptor>([
+            [genCellKey(strFk, 1)]: List<ValueDescriptor>([
                 {
                     display: 'asdf',
                     raw: 'asdf',
                 },
             ]),
-            '5-2': List<ValueDescriptor>([
+            [genCellKey(strFk, 2)]: List<ValueDescriptor>([
                 {
                     display: 'zxcv',
                     raw: 'zxcv',
                 },
             ]),
-            '6-0': List<ValueDescriptor>([
+            [genCellKey(dateFk, 0)]: List<ValueDescriptor>([
                 {
                     display: '2023-06-01',
                     raw: '2023-06-01',
                 },
             ]),
-            '6-1': List<ValueDescriptor>([
+            [genCellKey(dateFk, 1)]: List<ValueDescriptor>([
                 {
                     display: '',
                     raw: '',
                 },
             ]),
-            '6-2': List<ValueDescriptor>([
+            [genCellKey(dateFk, 2)]: List<ValueDescriptor>([
                 {
                     display: '2023-04-16',
                     raw: '2023-04-16',
                 },
             ]),
-            '7-0': List<ValueDescriptor>([
+            [genCellKey(datetimeFk, 0)]: List<ValueDescriptor>([
                 {
                     display: '2023-06-01 10:42',
                     raw: '2023-06-01 10:42',
                 },
             ]),
-            '7-1': List<ValueDescriptor>([
+            [genCellKey(datetimeFk, 1)]: List<ValueDescriptor>([
                 {
                     display: '',
                     raw: '',
                 },
             ]),
-            '7-2': List<ValueDescriptor>([
+            [genCellKey(datetimeFk, 2)]: List<ValueDescriptor>([
                 {
                     display: '2023-04-16 11:11',
                     raw: '2023-04-16 11:11',
                 },
             ]),
         }),
-        orderedColumns: List(['a', 'b', 'c', 'd', 'e']),
+        orderedColumns: List([lookupFk, intFk, floatFk, strFk, dateFk, datetimeFk]),
         rowCount: 10,
     }) as EditorModel;
 
@@ -518,17 +432,15 @@ describe('fillColumnCells', () => {
             undefined,
             editorModel.cellMessages,
             editorModel.cellValues,
-            ['0-0'],
-            ['0-1', '0-2', '0-3'],
+            [genCellKey(lookupFk, 0)],
+            [genCellKey(lookupFk, 1), genCellKey(lookupFk, 2), genCellKey(lookupFk, 3)],
             true,
-            undefined,
-            dataKeys,
-            data
+            undefined
         );
         // Filled values should be copies of the initial selection
         for (let i = 1; i <= 3; i++) {
-            expect(cellValues.get(`0-${i}`).get(0).display).toEqual('S-1');
-            expect(cellValues.get(`0-${i}`).get(0).raw).toEqual(1);
+            expect(cellValues.get(genCellKey(lookupFk, i)).get(0).display).toEqual('S-1');
+            expect(cellValues.get(genCellKey(lookupFk, i)).get(0).raw).toEqual(1);
         }
     });
 
@@ -539,17 +451,15 @@ describe('fillColumnCells', () => {
             undefined,
             editorModel.cellMessages,
             editorModel.cellValues,
-            ['0-0', '0-1', '0-2'],
-            ['0-3', '0-4'],
+            [genCellKey(lookupFk, 0), genCellKey(lookupFk, 1), genCellKey(lookupFk, 2)],
+            [genCellKey(lookupFk, 3), genCellKey(lookupFk, 4)],
             true,
-            undefined,
-            dataKeys,
-            data
+            undefined
         );
-        expect(cellValues.get('0-3').get(0).display).toEqual('S-4');
-        expect(cellValues.get('0-3').get(0).raw).toEqual('S-4');
-        expect(cellValues.get('0-4').get(0).display).toEqual('S-5');
-        expect(cellValues.get('0-4').get(0).raw).toEqual('S-5');
+        expect(cellValues.get(genCellKey(lookupFk, 3)).get(0).display).toEqual('S-4');
+        expect(cellValues.get(genCellKey(lookupFk, 3)).get(0).raw).toEqual('S-4');
+        expect(cellValues.get(genCellKey(lookupFk, 4)).get(0).display).toEqual('S-5');
+        expect(cellValues.get(genCellKey(lookupFk, 4)).get(0).raw).toEqual('S-5');
     });
 
     test('integer, multi initialSelection, forward', async () => {
@@ -559,17 +469,15 @@ describe('fillColumnCells', () => {
             undefined,
             editorModel.cellMessages,
             editorModel.cellValues,
-            ['1-0', '1-1', '1-2'],
-            ['1-3', '1-4'],
+            [genCellKey(intFk, 0), genCellKey(intFk, 1), genCellKey(intFk, 2)],
+            [genCellKey(intFk, 3), genCellKey(intFk, 4)],
             true,
-            undefined,
-            dataKeys,
-            data
+            undefined
         );
-        expect(cellValues.get('1-3').get(0).display).toEqual('7');
-        expect(cellValues.get('1-3').get(0).raw).toEqual(7);
-        expect(cellValues.get('1-4').get(0).display).toEqual('9');
-        expect(cellValues.get('1-4').get(0).raw).toEqual(9);
+        expect(cellValues.get(genCellKey(intFk, 3)).get(0).display).toEqual('7');
+        expect(cellValues.get(genCellKey(intFk, 3)).get(0).raw).toEqual(7);
+        expect(cellValues.get(genCellKey(intFk, 4)).get(0).display).toEqual('9');
+        expect(cellValues.get(genCellKey(intFk, 4)).get(0).raw).toEqual(9);
     });
 
     test('integer, multi initialSelection, backward', async () => {
@@ -579,15 +487,13 @@ describe('fillColumnCells', () => {
             undefined,
             editorModel.cellMessages,
             editorModel.cellValues,
-            ['1-1', '1-2'],
-            ['1-0'],
+            [genCellKey(intFk, 1), genCellKey(intFk, 2)],
+            [genCellKey(intFk, 0)],
             true,
-            undefined,
-            dataKeys,
-            data
+            undefined
         );
-        expect(cellValues.get('1-0').get(0).display).toEqual('1');
-        expect(cellValues.get('1-0').get(0).raw).toEqual(1);
+        expect(cellValues.get(genCellKey(intFk, 0)).get(0).display).toEqual('1');
+        expect(cellValues.get(genCellKey(intFk, 0)).get(0).raw).toEqual(1);
     });
 
     test('float, multi initialSelection, forward', async () => {
@@ -597,17 +503,15 @@ describe('fillColumnCells', () => {
             undefined,
             editorModel.cellMessages,
             editorModel.cellValues,
-            ['2-0', '2-1', '2-2'],
-            ['2-3', '2-4'],
+            [genCellKey(floatFk, 0), genCellKey(floatFk, 1), genCellKey(floatFk, 2)],
+            [genCellKey(floatFk, 3), genCellKey(floatFk, 4)],
             true,
-            undefined,
-            dataKeys,
-            data
+            undefined
         );
-        expect(cellValues.get('2-3').get(0).display).toEqual('-1.5');
-        expect(cellValues.get('2-3').get(0).raw).toEqual(-1.5);
-        expect(cellValues.get('2-4').get(0).display).toEqual('-3');
-        expect(cellValues.get('2-4').get(0).raw).toEqual(-3);
+        expect(cellValues.get(genCellKey(floatFk, 3)).get(0).display).toEqual('-1.5');
+        expect(cellValues.get(genCellKey(floatFk, 3)).get(0).raw).toEqual(-1.5);
+        expect(cellValues.get(genCellKey(floatFk, 4)).get(0).display).toEqual('-3');
+        expect(cellValues.get(genCellKey(floatFk, 4)).get(0).raw).toEqual(-3);
     });
 
     test('float, multi initialSelection, backward', async () => {
@@ -617,15 +521,13 @@ describe('fillColumnCells', () => {
             undefined,
             editorModel.cellMessages,
             editorModel.cellValues,
-            ['2-1', '2-2'],
-            ['2-0'],
+            [genCellKey(floatFk, 1), genCellKey(floatFk, 2)],
+            [genCellKey(floatFk, 0)],
             true,
-            undefined,
-            dataKeys,
-            data
+            undefined
         );
-        expect(cellValues.get('2-0').get(0).display).toEqual('3');
-        expect(cellValues.get('2-0').get(0).raw).toEqual(3);
+        expect(cellValues.get(genCellKey(floatFk, 0)).get(0).display).toEqual('3');
+        expect(cellValues.get(genCellKey(floatFk, 0)).get(0).raw).toEqual(3);
     });
 
     test('date, single row initialSelection, forward', async () => {
@@ -635,17 +537,15 @@ describe('fillColumnCells', () => {
             undefined,
             editorModel.cellMessages,
             editorModel.cellValues,
-            ['6-0'],
-            ['6-1', '6-2', '6-3'],
+            [genCellKey(dateFk, 0)],
+            [genCellKey(dateFk, 1), genCellKey(dateFk, 2), genCellKey(dateFk, 3)],
             true,
-            undefined,
-            dataKeys,
-            data
+            undefined
         );
         // Filled values should be copies of the initial selection
         for (let i = 1; i <= 3; i++) {
-            expect(cellValues.get(`6-${i}`).get(0).display).toEqual(`2023-06-0${i + 1}`);
-            expect(cellValues.get(`6-${i}`).get(0).raw).toEqual(`2023-06-0${i + 1}`);
+            expect(cellValues.get(genCellKey(dateFk, i)).get(0).display).toEqual(`2023-06-0${i + 1}`);
+            expect(cellValues.get(genCellKey(dateFk, i)).get(0).raw).toEqual(`2023-06-0${i + 1}`);
         }
     });
 
@@ -656,17 +556,15 @@ describe('fillColumnCells', () => {
             undefined,
             editorModel.cellMessages,
             editorModel.cellValues,
-            ['6-2'],
-            ['6-0', '6-1'],
+            [genCellKey(dateFk, 2)],
+            [genCellKey(dateFk, 0), genCellKey(dateFk, 1)],
             true,
-            undefined,
-            dataKeys,
-            data
+            undefined
         );
         // Filled values should be copies of the initial selection
         for (let i = 0; i <= 2; i++) {
-            expect(cellValues.get(`6-${i}`).get(0).display).toEqual(`2023-04-${14 + i}`);
-            expect(cellValues.get(`6-${i}`).get(0).raw).toEqual(`2023-04-${14 + i}`);
+            expect(cellValues.get(genCellKey(dateFk, i)).get(0).display).toEqual(`2023-04-${14 + i}`);
+            expect(cellValues.get(genCellKey(dateFk, i)).get(0).raw).toEqual(`2023-04-${14 + i}`);
         }
     });
 
@@ -677,17 +575,15 @@ describe('fillColumnCells', () => {
             undefined,
             editorModel.cellMessages,
             editorModel.cellValues,
-            ['7-0'],
-            ['7-1', '7-2', '7-3'],
+            [genCellKey(datetimeFk, 0)],
+            [genCellKey(datetimeFk, 1), genCellKey(datetimeFk, 2), genCellKey(datetimeFk, 3)],
             true,
-            undefined,
-            dataKeys,
-            data
+            undefined
         );
         // Filled values should be copies of the initial selection
         for (let i = 1; i <= 3; i++) {
-            expect(cellValues.get(`7-${i}`).get(0).display).toEqual(`2023-06-0${i + 1} 10:42`);
-            expect(cellValues.get(`7-${i}`).get(0).raw).toEqual(`2023-06-0${i + 1} 10:42`);
+            expect(cellValues.get(genCellKey(datetimeFk, i)).get(0).display).toEqual(`2023-06-0${i + 1} 10:42`);
+            expect(cellValues.get(genCellKey(datetimeFk, i)).get(0).raw).toEqual(`2023-06-0${i + 1} 10:42`);
         }
     });
 
@@ -698,17 +594,15 @@ describe('fillColumnCells', () => {
             undefined,
             editorModel.cellMessages,
             editorModel.cellValues,
-            ['7-2'],
-            ['7-0', '7-1'],
+            [genCellKey(datetimeFk, 2)],
+            [genCellKey(datetimeFk, 0), genCellKey(datetimeFk, 1)],
             true,
-            undefined,
-            dataKeys,
-            data
+            undefined
         );
         // Filled values should be copies of the initial selection
         for (let i = 0; i <= 2; i++) {
-            expect(cellValues.get(`7-${i}`).get(0).display).toEqual(`2023-04-${14 + i} 11:11`);
-            expect(cellValues.get(`7-${i}`).get(0).raw).toEqual(`2023-04-${14 + i} 11:11`);
+            expect(cellValues.get(genCellKey(datetimeFk, i)).get(0).display).toEqual(`2023-04-${14 + i} 11:11`);
+            expect(cellValues.get(genCellKey(datetimeFk, i)).get(0).raw).toEqual(`2023-04-${14 + i} 11:11`);
         }
     });
 
@@ -719,19 +613,17 @@ describe('fillColumnCells', () => {
             undefined,
             editorModel.cellMessages,
             editorModel.cellValues,
-            ['5-0', '5-1', '5-2'],
-            ['5-3', '5-4', '5-5'],
+            [genCellKey(strFk, 0), genCellKey(strFk, 1), genCellKey(strFk, 2)],
+            [genCellKey(strFk, 3), genCellKey(strFk, 4), genCellKey(strFk, 5)],
             true,
-            undefined,
-            dataKeys,
-            data
+            undefined
         );
-        expect(cellValues.get('5-3').get(0).display).toEqual('qwer');
-        expect(cellValues.get('5-3').get(0).raw).toEqual('qwer');
-        expect(cellValues.get('5-4').get(0).display).toEqual('asdf');
-        expect(cellValues.get('5-4').get(0).raw).toEqual('asdf');
-        expect(cellValues.get('5-5').get(0).display).toEqual('zxcv');
-        expect(cellValues.get('5-5').get(0).raw).toEqual('zxcv');
+        expect(cellValues.get(genCellKey(strFk, 3)).get(0).display).toEqual('qwer');
+        expect(cellValues.get(genCellKey(strFk, 3)).get(0).raw).toEqual('qwer');
+        expect(cellValues.get(genCellKey(strFk, 4)).get(0).display).toEqual('asdf');
+        expect(cellValues.get(genCellKey(strFk, 4)).get(0).raw).toEqual('asdf');
+        expect(cellValues.get(genCellKey(strFk, 5)).get(0).display).toEqual('zxcv');
+        expect(cellValues.get(genCellKey(strFk, 5)).get(0).raw).toEqual('zxcv');
     });
 });
 
@@ -784,12 +676,20 @@ describe('splitPrefixedNumber', () => {
 });
 
 describe('parsePastedLookup', () => {
-    const intLookupCol = new QueryColumn({ jsonType: 'int', caption: 'LookCol', lookup: { isPublic: true } });
-    const stringLookupCol = new QueryColumn({ jsonType: 'string', caption: 'LookCol', lookup: { isPublic: true } });
+    const intLookupCol = new QueryColumn({
+        jsonType: 'int',
+        caption: 'LookCol',
+        lookup: new QueryLookup({ isPublic: true }),
+    });
+    const stringLookupCol = new QueryColumn({
+        jsonType: 'string',
+        caption: 'LookCol',
+        lookup: new QueryLookup({ isPublic: true }),
+    });
     const requiredLookupCol = new QueryColumn({
         jsonType: 'string',
         caption: 'ReqLookCol',
-        lookup: { isPublic: true },
+        lookup: new QueryLookup({ isPublic: true }),
         required: true,
     });
 

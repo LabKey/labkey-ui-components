@@ -10,7 +10,7 @@ import { makeTestQueryModel } from '../../../public/QueryModel/testUtils';
 
 import { QueryInfo } from '../../../public/QueryInfo';
 
-import { QueryColumn } from '../../../public/QueryColumn';
+import { QueryColumn, QueryLookup } from '../../../public/QueryColumn';
 import { BOOLEAN_TYPE, DATE_TYPE, INTEGER_TYPE, TEXT_TYPE, TIME_TYPE } from '../domainproperties/PropDescType';
 
 import { DATE_RANGE_URI } from '../domainproperties/constants';
@@ -24,6 +24,7 @@ import {
     parseCellKey,
     sortCellKeys,
 } from './utils';
+import { initEditorModel } from './actions';
 
 class MockEditableGridLoader implements EditableGridLoader {
     columns: QueryColumn[];
@@ -45,36 +46,30 @@ class MockEditableGridLoader implements EditableGridLoader {
 }
 
 describe('Editable Grids Utils', () => {
-    describe('initEditableGridModel', () => {
+    describe('initEditorModel', () => {
         const { queryInfo } = ASSAY_WIZARD_MODEL;
         const dataModel = makeTestQueryModel(queryInfo.schemaQuery, queryInfo);
 
         test('defaults to insert columns', async () => {
             const loader = new MockEditableGridLoader(queryInfo);
-            const editorModel = new EditorModel({});
-            const expectedInsertColumns = queryInfo.getInsertColumns().map(col => col.fieldKey);
-            const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
-            expect(models.dataModel.queryInfoLoadingState).toEqual(LoadingState.LOADED);
-            expect(models.dataModel.rowsLoadingState).toEqual(LoadingState.LOADED);
-            expect(models.editorModel.cellValues.size).toEqual(0);
-            expect(models.editorModel.orderedColumns.toArray()).toEqual(expectedInsertColumns);
+            const expectedInsertColumns = queryInfo.getInsertColumns().map(col => col.fieldKey.toLowerCase());
+            const editorModel = await initEditorModel(dataModel, loader);
+            expect(editorModel.cellValues.size).toEqual(0);
+            expect(editorModel.orderedColumns.toArray()).toEqual(expectedInsertColumns);
         });
 
         test('respects loader mode for columns', async () => {
             const loader = new MockEditableGridLoader(queryInfo, { mode: EditorMode.Update });
-            const editorModel = new EditorModel({});
-            const expectedUpdateColumns = queryInfo.getUpdateColumns().map(col => col.fieldKey);
-            const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
-            expect(models.editorModel.orderedColumns.toArray()).toEqual(expectedUpdateColumns);
+            const expectedUpdateColumns = queryInfo.getUpdateColumns().map(col => col.fieldKey.toLowerCase());
+            const editorModel = await initEditorModel(dataModel, loader);
+            expect(editorModel.orderedColumns.toArray()).toEqual(expectedUpdateColumns);
         });
 
         test('respects loader supplied columns', async () => {
             const columns = [queryInfo.getColumn('SampleID'), queryInfo.getColumn('Date')];
             const loader = new MockEditableGridLoader(queryInfo, { columns });
-            const editorModel = new EditorModel({});
-
-            const models = await initEditableGridModel(dataModel, editorModel, loader, dataModel);
-            expect(models.editorModel.orderedColumns.toArray()).toEqual(columns.map(col => col.fieldKey));
+            const editorModel = await initEditorModel(dataModel, loader);
+            expect(editorModel.orderedColumns.toArray()).toEqual(columns.map(col => col.fieldKey.toLowerCase()));
         });
     });
 });
@@ -952,7 +947,7 @@ describe('getValidatedEditableGridValue', () => {
             jsonType: 'string',
             required: true,
             caption: 'LookColReq',
-            lookup: { isPublic: true },
+            lookup: new QueryLookup({ isPublic: true }),
         });
         validValues = ['a', 'B', 1, 123];
         const invalidValues = [null, undefined, ''];
@@ -975,20 +970,25 @@ describe('getValidatedEditableGridValue', () => {
 
 describe('other utils', () => {
     test('genCellKey', () => {
-        expect(genCellKey(0, 0)).toBe('0-0');
-        expect(genCellKey(1, 2)).toBe('1-2');
+        expect(genCellKey('test', 0)).toBe('test&&0');
+        expect(genCellKey('other', 2)).toBe('other&&2');
     });
 
     test('parseCellKey', () => {
-        expect(parseCellKey('0-0').colIdx).toBe(0);
-        expect(parseCellKey('0-0').rowIdx).toBe(0);
-        expect(parseCellKey('1-2').colIdx).toBe(1);
-        expect(parseCellKey('1-2').rowIdx).toBe(2);
+        expect(parseCellKey('test&&0').fieldKey).toBe('test');
+        expect(parseCellKey('test&&0').rowIdx).toBe(0);
+        expect(parseCellKey('other&&2').fieldKey).toBe('other');
+        expect(parseCellKey('other&&2').rowIdx).toBe(2);
     });
 
     test('getSortedCellKeys', () => {
-        expect(sortCellKeys(['0-0', '1-1', '1-1', '0-1', '1-0'])).toStrictEqual(['0-0', '1-0', '0-1', '1-1']);
-        expect(sortCellKeys(['1-1', '1-15', '0-10', '1-5'])).toStrictEqual(['1-1', '1-5', '0-10', '1-15']);
+        // expect(sortCellKeys(['0-0', '1-1', '1-1', '0-1', '1-0'])).toStrictEqual(['0-0', '1-0', '0-1', '1-1']);
+        // expect(sortCellKeys(['1-1', '1-15', '0-10', '1-5'])).toStrictEqual(['1-1', '1-5', '0-10', '1-15']);
+        const orderedColumns = ['test', 'other'];
+        let unsorted = ['test&&0', 'other&&1', 'other&&1', 'test&&1', 'other&&0'];
+        expect(sortCellKeys(orderedColumns, unsorted)).toStrictEqual(['test&&0', 'other&&0', 'test&&1', 'other&&1']);
+        unsorted = ['other&&1', 'other&&15', 'test&&10', 'other&&5'];
+        expect(sortCellKeys(orderedColumns, unsorted)).toStrictEqual(['other&&1', 'other&&5', 'test&&10', 'other&&15']);
     });
 
     test('computeRangeChange', () => {

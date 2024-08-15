@@ -630,7 +630,7 @@ import {
 } from './internal/test/enzymeTestHelpers';
 import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
 import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
-import { includedColumnsForCustomizationFilter } from './public/QueryModel/CustomizeGridViewModal';
+import { includedColumnsForCustomizationFilter, getExpandQueryInfo } from './public/QueryModel/CustomizeGridViewModal';
 import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
@@ -1135,6 +1135,7 @@ export {
     getVerbForInsertOption,
     insertRows,
     includedColumnsForCustomizationFilter,
+    getExpandQueryInfo,
     selectDistinctRows,
     selectRows,
     selectRowsDeprecated,

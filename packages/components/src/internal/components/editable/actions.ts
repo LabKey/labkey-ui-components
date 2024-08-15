@@ -501,7 +501,6 @@ export function changeColumn(
         cellValues = cellValues.delete(existingCellKey);
         cellValues = cellValues.set(updatedCellKey, List());
         cellMessages = cellMessages.delete(existingCellKey);
-        cellMessages = cellMessages.set(updatedCellKey, undefined);
     }
 
     columnMap = columnMap.delete(existingFieldKey);
@@ -516,7 +515,7 @@ export function changeColumn(
         columnMap,
         focusColIdx: -1,
         focusRowIdx: -1,
-        orderedColumns: editorModel.orderedColumns.set(colIndex, newQueryColumn.fieldKey),
+        orderedColumns: editorModel.orderedColumns.set(colIndex, newQueryColumn.fieldKey.toLowerCase()),
         selectedColIdx: -1,
         selectedRowIdx: -1,
         selectionCells: [],
@@ -682,8 +681,9 @@ type PrefixAndNumber = [string | undefined, string | undefined];
  * number the number suffix is undefined. If the entire string is a number the prefix will be undefined. This method
  * intentionally does not parse the numbers.
  */
-export function splitPrefixedNumber(text: string): PrefixAndNumber {
-    if (text === undefined || text === null || text === '') return [undefined, undefined];
+export function splitPrefixedNumber(value: string | number): PrefixAndNumber {
+    if (value === undefined || value === null || value === '') return [undefined, undefined];
+    const text = value.toString();
     const matches = text?.toString().match(POSTFIX_REGEX);
 
     if (matches === null) {

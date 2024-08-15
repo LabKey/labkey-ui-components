@@ -254,27 +254,6 @@ export class EditorModel
         return this.cellMessages.get(genCellKey(fieldKey, rowIdx));
     }
 
-    getColumns(
-        queryInfo: QueryInfo,
-        forUpdate?: boolean,
-        readOnlyColumns?: string[],
-        insertColumns?: QueryColumn[],
-        updateColumns?: QueryColumn[],
-        colFilter?: (col: QueryColumn) => boolean
-    ): QueryColumn[] {
-        let columns: QueryColumn[];
-
-        if (forUpdate) {
-            columns = updateColumns ?? queryInfo.getUpdateColumns(readOnlyColumns);
-        } else {
-            columns = insertColumns ?? queryInfo.getInsertColumns();
-        }
-
-        if (colFilter) columns = columns.filter(colFilter);
-        // file input columns are not supported in the editable grid, so remove them
-        return columns.filter(col => !col.isFileInput);
-    }
-
     getColumnValues(fieldKey: string): List<List<ValueDescriptor>> {
         const fieldKeyLower = fieldKey.toLowerCase();
         const colIdx = this.orderedColumns.indexOf(fieldKeyLower);
@@ -405,7 +384,7 @@ export class EditorModel
                     const message = this.getMessage(fieldKey, rn);
                     const missingMsg = col.caption + ' is required.';
                     let updatedMsg = message?.message;
-                    if (values.isEmpty() || values.find(value => this.hasRawValue(value)) == undefined) {
+                    if (values.isEmpty() || values.find(value => this.hasRawValue(value)) === undefined) {
                         if (!message || message?.message?.indexOf(missingMsg) === -1) {
                             if (!message || !message.message) updatedMsg = missingMsg;
                             else updatedMsg = message.message + '. ' + missingMsg;
@@ -441,7 +420,7 @@ export class EditorModel
                             keyValues = keyValues.set(rn + 1, List<string>([valueDescriptor.raw.toString()]));
                         }
                     }
-                } else if (uniqueFieldKey && col.fieldKey === uniqueFieldKey) {
+                } else if (uniqueFieldKey && col.fieldKey.toLowerCase() === uniqueFieldKey.toLowerCase()) {
                     uniqueFieldCol = col;
                     // there better be only one of these
                     const valueDescriptor = values.get(0);
@@ -581,9 +560,9 @@ export class EditorModel
     }
 
     get selectionKey(): string {
+        if (!this.hasSelection) return undefined;
         const fieldKey = this.getFieldKeyByIndex(this.selectedColIdx);
-        if (this.hasSelection) return genCellKey(fieldKey, this.selectedRowIdx);
-        return undefined;
+        return genCellKey(fieldKey, this.selectedRowIdx);
     }
 
     isInBounds(colIdx: number, rowIdx: number): boolean {

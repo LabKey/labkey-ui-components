@@ -63,6 +63,7 @@ import {
     userCanEditStorageData,
     userCanReadGroupDetails,
     userCanReadUserDetails,
+    isQueryMetadataEditor,
 } from './utils';
 import {
     ASSAYS_KEY,
@@ -947,6 +948,16 @@ describe('utils', () => {
                 core: { 'experimental-calculated-fields': true, productFeatures: [ProductFeature.CalculatedFields] },
             })
         ).toBeTruthy();
+    });
+
+    test('isQueryMetadataEditor', () => {
+        expect(isQueryMetadataEditor()).toBe(false);
+        window.history.pushState({}, 'Test Title', '/query-metadataQuery.view#');
+        expect(isQueryMetadataEditor()).toBe(true);
+        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#');
+        expect(isQueryMetadataEditor()).toBe(false);
+        window.history.pushState({}, 'Test Title', '/core-queryMetadataEditorDev.view#');
+        expect(isQueryMetadataEditor()).toBe(true);
     });
 });
 

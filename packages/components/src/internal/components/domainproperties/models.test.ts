@@ -832,6 +832,20 @@ describe('DomainField', () => {
         expect(f2.isSaved()).toBeFalsy();
         const f3 = DomainField.create({ name: 'foo', rangeURI: TEXT_TYPE.rangeURI, propertyId: 1 });
         expect(f3.isSaved()).toBeTruthy();
+        const f4 = DomainField.create({
+            name: 'foo',
+            conceptURI: CALCULATED_CONCEPT_URI,
+            rangeURI: undefined,
+            propertyId: 0,
+        });
+        expect(f4.isSaved()).toBeFalsy();
+        const f5 = DomainField.create({
+            name: 'foo',
+            conceptURI: CALCULATED_CONCEPT_URI,
+            rangeURI: TEXT_TYPE.rangeURI,
+            propertyId: 0,
+        });
+        expect(f5.isSaved()).toBeTruthy();
     });
 
     test('isPHI', () => {
@@ -940,6 +954,24 @@ describe('DomainField', () => {
                 rangeURI: STRING_RANGE_URI,
                 conceptURI: CONCEPT_CODE_CONCEPT_URI,
                 sourceOntology: 'test1',
+            }).getErrors()
+        ).toBe(FieldErrors.NONE);
+
+        expect(
+            DomainField.create({
+                name: 'test',
+                rangeURI: STRING_RANGE_URI,
+                conceptURI: CALCULATED_CONCEPT_URI,
+                valueExpression: '  ',
+            }).getErrors()
+        ).toBe(FieldErrors.MISSING_CALCULATION_EXPRESSION);
+
+        expect(
+            DomainField.create({
+                name: 'test',
+                rangeURI: STRING_RANGE_URI,
+                conceptURI: CALCULATED_CONCEPT_URI,
+                valueExpression: ' 1+1 ',
             }).getErrors()
         ).toBe(FieldErrors.NONE);
     });

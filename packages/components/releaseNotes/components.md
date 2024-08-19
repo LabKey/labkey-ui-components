@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 4.8.0
-*Released*: ?? July 2024
+*Released*: 19 August 2024
 - Do not export loadEditorModelData
 - Remove initEditableGridModel, initEditableGridModels, applyEditableGridChangesToModels, EditableGridModels
   - Use initEditorModel, initEditorModels, applyEditorModelChanges instead
@@ -20,6 +20,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - tabAdditionalBtn
   - tabBtnProps
 - EditableGrid: remove dependence on QueryModel
+  - Including utils and action methods used by EditableGrid and those for manipulating EditorModel
 - ExportMenu: Remove extraExportMenuOptions
   - This feature is no longer used
 

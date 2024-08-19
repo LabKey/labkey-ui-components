@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { act } from 'react-dom/test-utils';
 import { mount, MountRendererProps, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
 
@@ -29,7 +29,7 @@ export const mountWithAppServerContextOptions = (
     printLabelsContext?: Partial<LabelPrintingContext>
 ): MountRendererProps => {
     return {
-        wrappingComponent: AppContextTestProvider,
+        // wrappingComponent: AppContextTestProvider,
         wrappingComponentProps: {
             appContext,
             serverContext,
@@ -59,11 +59,8 @@ export const mountWithAppServerContext = (
     notificationContext?: Partial<NotificationsContextState>,
     options?: MountRendererProps,
     printLabelsContext?: Partial<LabelPrintingContext>
-): ReactWrapper => {
-    return mount(
-        node,
-        mountWithAppServerContextOptions(appContext, serverContext, notificationContext, options, printLabelsContext)
-    );
+): ReactElement => {
+    return node;
 };
 
 /**
@@ -95,7 +92,7 @@ export const mountWithServerContextOptions = (
     options?: MountRendererProps
 ): MountRendererProps => {
     return {
-        wrappingComponent: ServerContextProvider,
+        // wrappingComponent: ServerContextProvider,
         wrappingComponentProps: { initialContext },
         ...options,
     };
@@ -114,8 +111,8 @@ export const mountWithServerContext = (
     node: ReactElement,
     initialContext?: any,
     options?: MountRendererProps
-): ReactWrapper => {
-    return mount(node, mountWithServerContextOptions(initialContext, options));
+): ReactElement => {
+    return node;
 };
 
 /**
@@ -125,8 +122,8 @@ export const shallowWithServerContext = (
     node: ReactElement,
     initialContext?: any,
     options?: MountRendererProps
-): ShallowWrapper<any, React.Component['state'], React.Component> => {
-    return shallow(node, mountWithServerContextOptions(initialContext, options));
+): ReactElement => {
+    return node;
 };
 
 /**
@@ -141,7 +138,7 @@ export const shallowWithServerContext = (
  * @param wrapper: enzyme ReactWrapper or ShallowWrapper
  * @param ms: the amount of time (in ms) to sleep
  */
-export const waitForLifecycle = (wrapper: ReactWrapper | ShallowWrapper, ms?: number): Promise<undefined> => {
+export const waitForLifecycle = (wrapper: ReactWrapper | ShallowWrapper, ms?: number): Promise<void> => {
     // Wrap in react-dom/utils act so we don't get errors in our test logs
     return act(async () => {
         await sleep(ms);

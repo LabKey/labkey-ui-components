@@ -259,7 +259,10 @@ describe('Date Utilities', () => {
                 rangeURI: DATETIME_TYPE.rangeURI,
                 format: 'dd/MM/yyyy HH:mm',
             });
-            expect(getColFormattedDateFilterValue(col, '2022-04-19 01:02')).toBe('19/04/2022 01:02');
+
+            expect(
+                getColFormattedDateFilterValue(col, ['', null, '2022-04-19 01:02', 'ABCDEFG'])
+            ).toStrictEqual(['', null, '19/04/2022 01:02', 'ABCDEFG']);
         });
 
         test('formatDateTime without QueryColumn format', () => {

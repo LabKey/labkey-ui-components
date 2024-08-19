@@ -157,24 +157,27 @@ export function parseDateFNSTimeFormat(dateFormat: string): string {
     return _format;
 }
 
-export function _getColFormattedDateFilterValue(column: QueryColumn, value: any): string {
+function _getColFormattedDateFilterValue(column: QueryColumn, value: string): string {
+    if (!value) return value;
+
     let valueFull = value;
-    if (value && typeof value === 'string' && value.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
-        // TODO: Confirm we have test coverage of this specific scenario
-        valueFull = value + 'T00:00:00'; // Force local timezone. In ISO format, if you provide time and Z is not present in the end of string, the date will be local time zone instead of UTC time zone.
+    if (typeof value === 'string' && value.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
+        // Issue 46460: Force local timezone. In ISO format, if you provide time and Z is not present
+        // in the end of string, the date will be local time zone instead of UTC time zone.
+        valueFull = value + 'T00:00:00';
     }
-    const dateFormat = getColDateFormat(column, null, true); // date or datetime fields always filter by 'date' portion only
-    return formatDate(new Date(valueFull), null, dateFormat);
+
+    const date = parseDate(valueFull);
+    if (!isValid(date)) return value;
+
+    // date or datetime fields always filter by 'date' portion only
+    const dateFormat = getColDateFormat(column, undefined, true);
+    return formatDate(date, null, dateFormat);
 }
 
-export function getColFormattedDateFilterValue(column: QueryColumn, value: any): string | string[] {
+export function getColFormattedDateFilterValue(column: QueryColumn, value: string | string[]): string | string[] {
     if (value instanceof Array) {
-        const results = [];
-        value.forEach(val => {
-            results.push(_getColFormattedDateFilterValue(column, val));
-        });
-
-        return results;
+        return value.map(v => _getColFormattedDateFilterValue(column, v));
     }
     return _getColFormattedDateFilterValue(column, value);
 }
@@ -197,7 +200,7 @@ function _getColFormattedTimeFilterValue(column: QueryColumn, value: string): st
     if (!timeFormat) return value;
 
     const parsed = parseTimeUsingDateFNS(value);
-    if (!parsed) return undefined;
+    if (!isValid(parsed)) return undefined;
 
     return format(parsed, timeFormat);
 }

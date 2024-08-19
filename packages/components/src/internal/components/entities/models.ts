@@ -363,14 +363,13 @@ export class EntityIdCreationModel extends Record({
 
     postEntityGrid(
         api: ComponentsAPIWrapper,
-        dataModel: QueryModel,
         editorModel: EditorModel,
         containerPath?: string,
         extraColumnsToInclude?: QueryColumn[],
         auditUserComment?: string
     ): Promise<QueryCommandResponse> {
         const rows = editorModel
-            .getRawDataFromModel(dataModel, false, false)
+            .getDataForServerUpload(false)
             .valueSeq()
             .reduce((rows_, row) => {
                 let map = row.toMap();

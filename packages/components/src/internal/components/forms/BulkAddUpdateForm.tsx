@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { List, Map } from 'immutable';
+
 import { Operation } from '../../../public/QueryColumn';
 
 import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
@@ -9,9 +10,20 @@ import { Alert } from '../base/Alert';
 
 import { QueryInfoForm, QueryInfoFormProps } from './QueryInfoForm';
 
-interface BulkAddUpdateFormProps extends Omit<QueryInfoFormProps, 'fieldValues'> {
-    data: Map<any, Map<string, any>>;
-    dataKeys: List<any>;
+type BaseProps = Omit<
+    QueryInfoFormProps,
+    | 'allowFieldDisable'
+    | 'checkRequiredFields'
+    | 'fieldValues'
+    | 'hideButtons'
+    | 'includeCountField'
+    | 'initiallyDisableFields'
+    | 'showLabelAsterisk'
+    | 'title'
+    | 'queryInfo'
+>;
+
+interface BulkAddUpdateFormProps extends BaseProps {
     editorModel: EditorModel;
     operation: Operation;
     selectedRowIndexes: List<number>;
@@ -19,46 +31,45 @@ interface BulkAddUpdateFormProps extends Omit<QueryInfoFormProps, 'fieldValues'>
 }
 
 export const BulkAddUpdateForm: FC<BulkAddUpdateFormProps> = props => {
-    const { data, dataKeys, editorModel, queryInfo, selectedRowIndexes, warning, ...queryInfoFormProps } = props;
+    const { editorModel, selectedRowIndexes, warning, ...queryInfoFormProps } = props;
     const {
-        pluralNoun,
-        singularNoun,
+        pluralNoun = 'rows',
+        singularNoun = 'row',
+        asModal = true,
         submitForEditText = `Finish Editing ${capitalizeFirstChar(pluralNoun)}`,
-        title = 'Update ' + selectedRowIndexes.size + ' ' + (selectedRowIndexes.size === 1 ? singularNoun : pluralNoun),
     } = queryInfoFormProps;
+    const title =
+        'Update ' + selectedRowIndexes.size + ' ' + (selectedRowIndexes.size === 1 ? singularNoun : pluralNoun);
 
     const fieldValues = useMemo(() => {
         const editorData = editorModel
-            .getRawDataFromGridData(data, dataKeys, queryInfo, false)
+            .getDataForServerUpload(false)
             .filter((val, index) => selectedRowIndexes.contains(index))
             .toMap();
         return getCommonDataValues(editorData);
-    }, [data, dataKeys, editorModel, queryInfo, selectedRowIndexes]);
+    }, [editorModel, selectedRowIndexes]);
 
     return (
         <>
             <Alert bsStyle="warning">{warning}</Alert>
             <QueryInfoForm
                 {...queryInfoFormProps}
+                allowFieldDisable
+                asModal={asModal}
+                checkRequiredFields={false}
                 fieldValues={fieldValues}
-                queryInfo={queryInfo.getInsertQueryInfo()}
+                hideButtons={!queryInfoFormProps.asModal}
+                includeCountField={false}
+                initiallyDisableFields={true}
+                pluralNoun={pluralNoun}
+                queryInfo={editorModel.queryInfo.getInsertQueryInfo()}
+                showLabelAsterisk
+                singularNoun={singularNoun}
                 submitForEditText={submitForEditText}
                 title={title}
-                hideButtons={!queryInfoFormProps.asModal}
             />
         </>
     );
-};
-
-BulkAddUpdateForm.defaultProps = {
-    allowFieldDisable: true,
-    asModal: true,
-    checkRequiredFields: false,
-    includeCountField: false,
-    initiallyDisableFields: true,
-    pluralNoun: 'rows',
-    showLabelAsterisk: true,
-    singularNoun: 'row',
 };
 
 BulkAddUpdateForm.displayName = 'BulkAddUpdateForm';

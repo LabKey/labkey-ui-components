@@ -17,8 +17,6 @@ import React, { FC, HTMLProps, ReactNode } from 'react';
 import classNames from 'classnames';
 
 export interface AlertProps extends HTMLProps<HTMLDivElement> {
-    // bsClass?: string; -- not used by us
-    // bsSize?: string; -- not supported by bootstrap
     bsStyle?: string;
     closeLabel?: ReactNode;
     onDismiss?: () => void;

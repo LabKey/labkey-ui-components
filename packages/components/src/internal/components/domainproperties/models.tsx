@@ -1060,7 +1060,7 @@ export class DomainField
 
         for (let i = 0; i < rawFields.length; i++) {
             const rawField = rawFields[i];
-            rawField.uniqueConstraint = lowerUniqueConstraintFieldNames.indexOf(rawField.name?.toLowerCase()) > -1;
+            rawField.uniqueConstraint = lowerUniqueConstraintFieldNames?.indexOf(rawField.name?.toLowerCase()) > -1;
             fields = fields.push(DomainField.create(rawField, undefined, mandatoryFieldNames));
         }
 

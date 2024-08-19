@@ -190,10 +190,10 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                                                 section={getSectionModel(key)}
                                             />
                                         );
-                                    })}
+                                    }).toArray()}
                                 </div>
                             );
-                        })}
+                        }).toArray()}
                 </div>
             </div>
         </div>

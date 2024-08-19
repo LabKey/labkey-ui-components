@@ -81,7 +81,7 @@ export const CustomPropertiesRenderer: FC<RendererProps> = memo(({ data }) => {
                             <td className="lineage-detail-prop-cell">{row.get('value')}</td>
                         </tr>
                     );
-                })}
+                }).toArray()}
             </tbody>
         </table>
     );

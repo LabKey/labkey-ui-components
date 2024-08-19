@@ -162,7 +162,7 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
                                     <MenuSectionItemLabel config={config} item={item} />
                                 </li>
                             );
-                        })}
+                        }).toArray()}
                 </ul>
             </div>
         </>

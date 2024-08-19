@@ -297,7 +297,7 @@ const OntologyTextDomainFieldSelect: FC<OntologyTextDomainFieldSelectProps> = me
                         {df.name}
                     </option>
                 );
-            })}
+            }).toArray()}
         </select>
     );
 });

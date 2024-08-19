@@ -68,7 +68,7 @@ interface AdvancedSettingsState {
     hidden?: boolean;
     measure?: boolean;
     mvEnabled?: boolean;
-    phiLevels?: List<any>;
+    phiLevels?: Array<{ label: string; value: string; }>;
     recommendedVariable?: boolean;
     shownInDetailsView?: boolean;
     shownInInsertView?: boolean;
@@ -98,7 +98,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const phiIndex = this.getPhiLevelIndex(maxPhiLevel);
         const phiLevels = DOMAIN_PHI_LEVELS.filter((value, index) => {
             return index <= phiIndex;
-        }) as List<any>;
+        });
 
         return {
             hidden: field.hidden,
@@ -323,7 +323,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 <option key={level} value={level}>
                                     {DOMAIN_DEFAULT_TYPES[level]}
                                 </option>
-                            ))}
+                            )).toArray()}
                         </select>
                     </div>
                     <div className="col-xs-3" />

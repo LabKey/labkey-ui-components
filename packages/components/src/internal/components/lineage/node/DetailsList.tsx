@@ -104,7 +104,7 @@ export const DetailsListSteps: FC<DetailsListStepProps> = memo(({ node, onSelect
                         Details
                     </LineageDataLink>
                 </div>
-            ))}
+            )).toArray()}
         </DetailsList>
     );
 });

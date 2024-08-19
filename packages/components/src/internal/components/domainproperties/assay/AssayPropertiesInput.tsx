@@ -310,7 +310,7 @@ export function BackgroundUploadInput(props: InputProps) {
 }
 
 interface AutoLinkDataInputState {
-    containers: List<Container>;
+    containers: Container[];
 }
 
 export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkDataInputState> {
@@ -325,10 +325,10 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
     componentDidMount(): void {
         getValidPublishTargets(this.props.model.container)
             .then(containers => {
-                this.setState({ containers: List(containers) });
+                this.setState({ containers });
             })
             .catch(response => {
-                this.setState({ containers: List<Container>() });
+                this.setState({ containers: [] });
             });
     }
 
@@ -417,13 +417,13 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
                 </>
             }
         >
-            {props.model.moduleTransformScripts.map((script, i) => {
-                return (
+            {props.model.moduleTransformScripts
+                .map((script, i) => (
                     <div key={i} className="module-transform-script" style={{ overflowWrap: 'break-word' }}>
                         {script}
                     </div>
-                );
-            })}
+                ))
+                .toArray()}
         </AssayPropertiesInput>
     );
 }

@@ -1179,7 +1179,7 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
                                             queryName={queryName ?? domain.queryName}
                                         />
                                     );
-                                })}
+                                }).toArray()}
                                 {provided.placeholder}
                             </form>
                         </div>

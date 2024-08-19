@@ -72,7 +72,7 @@ export class EffectiveRolesList extends React.PureComponent<Props> {
                                         )}
                                     </li>
                                 );
-                            })}
+                            }).toArray()}
                         </ul>
                     </div>
                 </div>

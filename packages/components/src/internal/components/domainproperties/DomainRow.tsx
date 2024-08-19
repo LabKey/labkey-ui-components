@@ -396,7 +396,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                     <option key={type.name} value={type.name}>
                                         {type.display}
                                     </option>
-                                ))
+                                )).toArray()
                         )}
                     </select>
                 </div>

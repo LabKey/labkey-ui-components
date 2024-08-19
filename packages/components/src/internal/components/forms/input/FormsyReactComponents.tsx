@@ -210,7 +210,7 @@ Control.defaultProps = {
 
 Control.displayName = 'Row';
 
-interface InputGroupProps {
+interface InputGroupProps extends PropsWithChildren {
     addonAfter?: ReactNode;
     addonBefore?: ReactNode;
     buttonAfter?: ReactNode;

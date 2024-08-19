@@ -1,7 +1,6 @@
-import { fromJS, Iterable, List, Map } from 'immutable';
+import { Iterable, List, Map } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 
 import {
@@ -23,46 +22,32 @@ import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
 import { isBoolean, isFloat, isInteger } from '../../util/utils';
 
-import { EditorModel, EditorModelProps, EditableGridModels, CellMessage } from './models';
-import { CellActions, CellCoordinates, MODIFICATION_TYPES } from './constants';
+import { SchemaQuery } from '../../../public/SchemaQuery';
 
-export const applyEditableGridChangesToModels = (
-    dataModels: QueryModel[],
-    editorModels: EditorModel[],
-    editorModelChanges: Partial<EditorModelProps>,
-    queryInfo?: QueryInfo,
-    dataKeys?: List<any>,
-    data?: Map<string, Map<string, any>>,
+import { EditorModel, CellMessage } from './models';
+import { CellActions, MODIFICATION_TYPES } from './constants';
+
+export function applyEditorModelChanges(
+    models: EditorModel[],
+    changes: Partial<EditorModel>,
     tabIndex = 0
-): EditableGridModels => {
-    const updatedEditorModels = [...editorModels];
-    let editorModel = editorModels[tabIndex].merge(editorModelChanges) as EditorModel;
-
+): EditorModel[] {
+    const updatedModels = [...models];
+    let editorModel = models[tabIndex].merge(changes) as EditorModel;
     // NK: The "selectionCells" property is of type string[]. When merge() is used it utilizes
     // Immutable.fromJS() which turns the Array into a List. We want to maintain the property
     // as an Array so here we set it explicitly.
-    if (editorModelChanges?.selectionCells !== undefined) {
-        const selectionCells = sortCellKeys(editorModelChanges.selectionCells);
+    if (changes?.selectionCells !== undefined) {
+        const selectionCells = sortCellKeys(editorModel.orderedColumns.toArray(), changes.selectionCells);
         editorModel = editorModel.set('selectionCells', selectionCells) as EditorModel;
-        editorModel = editorModel.set('isSparseSelection', isSparseSelection(selectionCells)) as EditorModel;
+        editorModel = editorModel.set(
+            'isSparseSelection',
+            isSparseSelection(editorModel.orderedColumns.toArray(), selectionCells)
+        ) as EditorModel;
     }
-
-    updatedEditorModels.splice(tabIndex, 1, editorModel);
-
-    const updatedDataModels = [...dataModels];
-    const orderedRows = dataKeys?.toJS();
-    const rows = data?.toJS();
-    if (orderedRows && rows) {
-        let dataModel = dataModels[tabIndex].mutate({ orderedRows, rows });
-        if (queryInfo) dataModel = dataModels[tabIndex].mutate({ queryInfo });
-        updatedDataModels.splice(tabIndex, 1, dataModel);
-    }
-
-    return {
-        dataModels: updatedDataModels,
-        editorModels: updatedEditorModels,
-    };
-};
+    updatedModels[tabIndex] = editorModel;
+    return updatedModels;
+}
 
 export const getValidatedEditableGridValue = (
     origValue: any,
@@ -221,14 +206,18 @@ export function getUpdatedDataFromGrid(
     return updatedRows;
 }
 
+interface EditableGridUpdatedData {
+    originalRows: Record<string, any>;
+    schemaQuery: SchemaQuery;
+    tabIndex: number;
+    updatedRows: any[];
+}
+
 export const getUpdatedDataFromEditableGrid = (
-    dataModels: QueryModel[],
     editorModels: EditorModel[],
-    idField: string,
-    selectionData?: Map<string, any>,
+    bulkEditData?: Map<string, any>,
     tabIndex = 0
-): Record<string, any> => {
-    const model = dataModels[tabIndex];
+): EditableGridUpdatedData => {
     const editorModel = editorModels[tabIndex];
 
     if (!editorModel) {
@@ -236,17 +225,15 @@ export const getUpdatedDataFromEditableGrid = (
         return null;
     }
 
-    // Issue 37842: if we have data for the selection, this was the data that came from the display grid and was used
-    // to populate the queryInfoForm. If we don't have this data, we came directly to the editable grid
-    // using values from the display grid to initialize the editable grid model, so we use that.
-    const initData = selectionData ?? fromJS(model.rows);
-    const editorData = editorModel.getRawDataFromModel(model, true, true, false).toArray();
-
+    // If we have data from bulk edit then we need to use that as originalData instead of the data on the EditorModel
+    // otherwise we'll incorrectly diff the changes when we call getUpdatedDataFromGrid below.
+    const originalData = bulkEditData ?? editorModel.originalData;
+    const editorData = editorModel.getDataForServerUpload().toArray();
     return {
-        originalRows: model.rows,
-        schemaQuery: model.queryInfo.schemaQuery,
+        originalRows: editorModel.originalData.toJS(),
+        schemaQuery: editorModel.queryInfo.schemaQuery,
         tabIndex,
-        updatedRows: getUpdatedDataFromGrid(initData, editorData, idField, model.queryInfo),
+        updatedRows: getUpdatedDataFromGrid(originalData, editorData, editorModel.pkFieldKey, editorModel.queryInfo),
     };
 };
 
@@ -278,15 +265,22 @@ export function onCellSelectChange(
     }
 }
 
-export function genCellKey(colIdx: number, rowIdx: number): string {
-    return [colIdx, rowIdx].join('-');
+const CELL_KEY_SEPARATOR = '&&';
+
+export function genCellKey(fieldKey: string, rowIdx: number): string {
+    return [fieldKey.toLowerCase(), rowIdx].join(CELL_KEY_SEPARATOR);
 }
 
-export function parseCellKey(cellKey: string): CellCoordinates {
-    const [colIdx, rowIdx] = cellKey.split('-');
+interface CellKeyParts {
+    fieldKey: string;
+    rowIdx: number;
+}
+
+export function parseCellKey(cellKey: string): CellKeyParts {
+    const [fieldKey, rowIdx] = cellKey.split(CELL_KEY_SEPARATOR);
 
     return {
-        colIdx: parseInt(colIdx, 10),
+        fieldKey,
         rowIdx: parseInt(rowIdx, 10),
     };
 }
@@ -294,11 +288,12 @@ export function parseCellKey(cellKey: string): CellCoordinates {
 /**
  * Sorts cell keys left to right, top to bottom.
  */
-export function sortCellKeys(cellKeys: string[]): string[] {
+export function sortCellKeys(orderedColumns: string[], cellKeys: string[]): string[] {
     return Array.from(new Set(cellKeys)).sort((a, b) => {
         const aCoords = parseCellKey(a);
         const bCoords = parseCellKey(b);
-        if (aCoords.rowIdx === bCoords.rowIdx) return aCoords.colIdx - bCoords.colIdx;
+        if (aCoords.rowIdx === bCoords.rowIdx)
+            return orderedColumns.indexOf(aCoords.fieldKey) - orderedColumns.indexOf(bCoords.fieldKey);
         return aCoords.rowIdx - bCoords.rowIdx;
     });
 }
@@ -315,15 +310,16 @@ export function decimalDifference(first, second, subtract = true): number {
  *  0 1 1 0 0
  *  0 0 0 1 1
  *  0 1 1 0 0
+ * @param orderedColumns the orderedColumns from the EditorModel
  * @param selection An array of cell keys representing the selected cells, ordered left to right, top to bottom.
  */
-function isSparseSelection(selection: string[]): boolean {
+function isSparseSelection(orderedColumns: string[], selection: string[]): boolean {
     if (selection.length === 0) return false;
 
     const firstCell = parseCellKey(selection[0]);
     const lastCell = parseCellKey(selection[selection.length - 1]);
-    const minCol = firstCell.colIdx;
-    const maxCol = lastCell.colIdx;
+    const minCol = orderedColumns.indexOf(firstCell.fieldKey);
+    const maxCol = orderedColumns.indexOf(lastCell.fieldKey);
     const minRow = firstCell.rowIdx;
     const maxRow = lastCell.rowIdx;
     const expectedCellCount = (maxCol - minCol + 1) * (maxRow - minRow + 1);
@@ -337,7 +333,7 @@ function isSparseSelection(selection: string[]): boolean {
     // all match we know it's a sparse selection.
     for (let rowIdx = minRow; rowIdx <= maxRow; rowIdx++) {
         for (let colIdx = minCol; colIdx <= maxCol; colIdx++) {
-            const expectedCellKey = genCellKey(colIdx, rowIdx);
+            const expectedCellKey = genCellKey(orderedColumns[colIdx], rowIdx);
             const actualCellKey = selection[selIdx];
 
             if (expectedCellKey !== actualCellKey) return true;

@@ -32,7 +32,7 @@ import { SelectInputChange } from '../forms/input/SelectInput';
 import { useOverlayTriggerState } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
 
-import { CellMessage, ValueDescriptor } from './models';
+import { CellMessage, EditableColumnMetadata, ValueDescriptor } from './models';
 
 import { CellActions, MODIFICATION_TYPES, SELECTION_TYPES } from './constants';
 import { EDIT_GRID_INPUT_CELL_CLASS, gridCellSelectInputProps, onCellSelectChange } from './utils';
@@ -47,7 +47,6 @@ interface SharedProps {
     borderMaskLeft?: boolean;
     borderMaskRight?: boolean;
     borderMaskTop?: boolean;
-    locked?: boolean;
     message?: CellMessage;
     placeholder?: string;
     selected?: boolean;
@@ -76,7 +75,6 @@ const DisplayCell: FC<DisplayCellProps> = memo(props => {
         borderMaskTop,
         displayValue,
         isReadOnly,
-        locked,
         message,
         onBlur,
         onDoubleClick,
@@ -108,7 +106,6 @@ const DisplayCell: FC<DisplayCellProps> = memo(props => {
         'cell-border-right': borderMaskRight,
         'cell-border-bottom': borderMaskBottom,
         'cell-border-left': borderMaskLeft,
-        'cell-locked': locked,
         'cell-menu': showMenu,
         'cell-placeholder': displayValue.length === 0 && placeholder !== undefined,
         'cell-read-only': isReadOnly,
@@ -169,15 +166,12 @@ export interface CellProps extends SharedProps {
     cellActions: CellActions;
     col: QueryColumn;
     colIdx: number;
+    columnMetadata: EditableColumnMetadata;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
-    filteredLookupKeys?: List<any>;
-    filteredLookupValues?: List<string>;
     focused?: boolean;
     forUpdate: boolean;
-    getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
     linkedValues?: any[];
-    lookupValueFilters?: Filter.IFilter[];
     name?: string;
     readOnly?: boolean;
     renderDragHandle?: boolean;
@@ -214,11 +208,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
 
     constructor(props: CellProps) {
         super(props);
-
-        this.state = {
-            filteredLookupKeys: this.props.filteredLookupKeys,
-        };
-
+        this.state = { filteredLookupKeys: props.columnMetadata?.filteredLookupKeys };
         this.displayEl = React.createRef();
         this.preFocusDOMRect = React.createRef();
     }
@@ -238,7 +228,7 @@ export class Cell extends React.PureComponent<CellProps, State> {
     }
 
     get isReadOnly(): boolean {
-        return this.props.readOnly || this.props.col.readOnly || this.props.locked;
+        return this.props.readOnly || this.props.col.readOnly
     }
 
     componentDidUpdate(prevProps: Readonly<CellProps>): void {
@@ -260,11 +250,11 @@ export class Cell extends React.PureComponent<CellProps, State> {
     };
 
     loadFilteredLookupKeys = async (): Promise<void> => {
-        const { getFilteredLookupKeys, linkedValues, readOnly } = this.props;
+        const { columnMetadata, linkedValues, readOnly } = this.props;
 
-        if (!getFilteredLookupKeys || readOnly) return;
+        if (!columnMetadata?.getFilteredLookupKeys || readOnly) return;
 
-        const linkedFilteredLookupKeys = await getFilteredLookupKeys(linkedValues);
+        const linkedFilteredLookupKeys = await columnMetadata.getFilteredLookupKeys(linkedValues);
 
         this.setState({ filteredLookupKeys: linkedFilteredLookupKeys });
     };
@@ -511,12 +501,10 @@ export class Cell extends React.PureComponent<CellProps, State> {
             cellActions,
             col,
             colIdx,
+            columnMetadata,
             containerFilter,
-            filteredLookupValues,
             focused,
             forUpdate,
-            locked,
-            lookupValueFilters,
             message,
             placeholder,
             renderDragHandle,
@@ -549,7 +537,6 @@ export class Cell extends React.PureComponent<CellProps, State> {
                         borderMaskTop={borderMaskTop}
                         displayValue={displayValue}
                         isReadOnly={this.isReadOnly}
-                        locked={locked}
                         message={message}
                         onBlur={this.handleSelectionBlur}
                         onDoubleClick={this.handleDblClick}
@@ -597,13 +584,12 @@ export class Cell extends React.PureComponent<CellProps, State> {
                     containerPath={containerPath}
                     defaultInputValue={this.recordedKeys}
                     disabled={this.isReadOnly}
-                    lookupValueFilters={lookupValueFilters}
+                    lookupValueFilters={columnMetadata?.lookupValueFilters}
                     filteredLookupKeys={filteredLookupKeys}
-                    filteredLookupValues={filteredLookupValues}
+                    filteredLookupValues={columnMetadata?.filteredLookupValues}
                     forUpdate={forUpdate}
                     modifyCell={cellActions.modifyCell}
                     onKeyDown={this.handleFocusedDropdownKeys}
-                    row={row}
                     rowIdx={rowIdx}
                     select={cellActions.selectCell}
                     values={values}

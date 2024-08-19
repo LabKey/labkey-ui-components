@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Filter, Query } from '@labkey/api';
-import { fromJS, Iterable, List, Map, OrderedMap, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
+import { fromJS, Iterable, List, Map, Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
 import { ReactNode } from 'react';
 
 import { encodePart } from '../../../public/SchemaQuery';
@@ -24,10 +24,9 @@ import { QueryInfo } from '../../../public/QueryInfo';
 import { QueryColumn } from '../../../public/QueryColumn';
 
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { GridData } from '../../models';
 
 import { getQueryColumnRenderers } from '../../global';
-import { caseInsensitive, quoteValueWithDelimiters } from '../../util/utils';
+import { quoteValueWithDelimiters } from '../../util/utils';
 
 import { CellCoordinates, EditableGridEvent } from './constants';
 import { genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
@@ -41,7 +40,7 @@ export interface EditableColumnMetadata {
     getFilteredLookupKeys?: (linkedValues: any[]) => Promise<List<any>>;
     hideTitleTooltip?: boolean;
     isReadOnlyCell?: (rowKey: string) => boolean;
-    linkedColInd?: number;
+    linkedColInd?: number; // TODO: change to linkedColFieldKey
     lookupValueFilters?: Filter.IFilter[];
     minWidth?: number;
     placeholder?: string;
@@ -60,44 +59,32 @@ export interface CellMessage {
     message: string;
 }
 
+interface CellReadStatus {
+    isReadonlyCell: boolean;
+    isReadonlyRow: boolean;
+}
+
 export type CellMessages = Map<string, CellMessage>;
 export type CellValues = Map<string, List<ValueDescriptor>>;
 
 export interface EditorModelProps {
     cellMessages: CellMessages;
     cellValues: CellValues;
-    columns: List<string>;
+    // columnMap is a Map of fieldKey to QueryColumn, it includes potentially hidden columns such as RowId or Container,
+    // which are necessary when updating data. If you need the visible columns use orderedColumns.
+    columnMap: Map<string, QueryColumn>;
+    columnMetadata: Map<string, EditableColumnMetadata>;
     focusColIdx: number;
     focusRowIdx: number;
     focusValue: List<ValueDescriptor>;
-    id: string;
+    orderedColumns: List<string>; // List of fieldKeys for the visible columns in the grid
+    originalData: Map<string, Map<string, any>>; // The original data associated with this model if we're updating rows
+    queryInfo: QueryInfo;
     rowCount: number;
     selectedColIdx: number;
     selectedRowIdx: number;
     selectionCells: string[];
-}
-
-export function getPkData(queryInfo: QueryInfo, row: Map<string, any>): Record<string, any> {
-    const data = {};
-    const pkCols = new Set<string>();
-    queryInfo.getPkCols().forEach(col => pkCols.add(col.fieldKey));
-    queryInfo.altUpdateKeys?.forEach(key => pkCols.add(key));
-    pkCols.forEach(pkCol => {
-        let pkVal = caseInsensitive(row.toJS(), pkCol);
-        if (Array.isArray(pkVal)) pkVal = pkVal[0];
-        if (List.isList(pkVal)) pkVal = pkVal.get(0);
-
-        if (pkVal !== undefined && pkVal !== null) {
-            // when backing an editable grid, the data is a simple value, but when
-            // backing a grid, it is a Map, which has type 'object'.
-            if (Map.isMap(pkVal)) pkVal = pkVal.toJS();
-
-            data[pkCol] = typeof pkVal === 'object' ? pkVal.value : pkVal;
-        } else {
-            console.warn('Unable to find value for pkCol "' + pkCol + '"');
-        }
-    });
-    return data;
+    tabTitle?: string;
 }
 
 const DATA_CHANGE_EVENTS: EditableGridEvent[] = [
@@ -126,45 +113,120 @@ export class EditorModel
     extends ImmutableRecord({
         cellMessages: Map<string, CellMessage>(),
         cellValues: Map<string, List<ValueDescriptor>>(),
-        columns: List<string>(),
+        columnMap: Map<string, QueryColumn>,
+        columnMetadata: Map<string, EditableColumnMetadata>(),
         deletedIds: ImmutableSet<any>(),
         focusColIdx: -1,
         focusRowIdx: -1,
         focusValue: undefined,
         id: undefined,
-        isPasting: false,
         isSparseSelection: false,
+        orderedColumns: List<string>(),
+        originalData: undefined,
+        queryInfo: undefined,
         rowCount: 0,
         selectedColIdx: -1,
         selectedRowIdx: -1,
         selectionCells: [],
+        tabTitle: undefined,
     })
     implements EditorModelProps
 {
     declare cellMessages: CellMessages;
     declare cellValues: CellValues;
-    declare columns: List<string>;
+    declare columnMap: Map<string, QueryColumn>;
+    declare columnMetadata: Map<string, EditableColumnMetadata>;
     declare deletedIds: ImmutableSet<any>;
     declare focusColIdx: number;
     declare focusRowIdx: number;
     declare focusValue: List<ValueDescriptor>;
-    declare id: string;
-    declare isPasting: boolean;
     // NK: This is precomputed property that is updated whenever the selection is updated.
     // See applyEditableGridChangesToModels().
     declare isSparseSelection: boolean;
+    declare orderedColumns: List<string>;
+    declare originalData: Map<string, Map<string, any>>;
+    declare queryInfo: QueryInfo;
     declare rowCount: number;
-    declare selectedColIdx: number;
+    declare selectedColIdx: number; // TODO: replace with selectedFieldKey
     declare selectedRowIdx: number;
     // NK: This is pre-sorted array that is updated whenever the selection is updated.
     // See applyEditableGridChangesToModels().
     declare selectionCells: string[];
+    declare tabTitle: string;
 
+    get pkFieldKey(): string {
+        // You are not guaranteed to have pkCols, specifically in insert cases
+        return this.queryInfo.getPkCols()[0]?.fieldKey;
+    }
+
+    genPkCellKey(rowIndex: number): string {
+        const pkFieldKey = this.pkFieldKey;
+
+        if (pkFieldKey === undefined) return undefined;
+
+        return genCellKey(pkFieldKey, rowIndex);
+    }
+
+    /**
+     * Gets the pkValue for a given rowIndex. This assumes there is a single PK column, and is mostly used for handling
+     * readonly rows. If you are getting pkValues in order to send data to the server use getPkValues, which will
+     * honor multiple PK columns.
+     */
+    getPkValue(rowIndex: number): any {
+        const cellKey = this.genPkCellKey(rowIndex);
+
+        if (cellKey === undefined) return undefined;
+
+        return this.cellValues.get(cellKey)?.get(0).raw;
+    }
+
+    getPkValueForCell(cellKey: string): any {
+        const { rowIdx } = parseCellKey(cellKey);
+        return this.getPkValue(rowIdx);
+    }
+
+    /**
+     * Gets all of the primary key values for a given row.
+     * @param rowIndex
+     */
+    getPkValues(rowIndex: number): Record<string, any> {
+        const data = {};
+        const pkCols = new Set<string>();
+        this.queryInfo.getPkCols().forEach(col => pkCols.add(col.fieldKey));
+        this.queryInfo.altUpdateKeys?.forEach(key => pkCols.add(key));
+        pkCols.forEach(pkCol => {
+            const pkVal = this.getValue(pkCol, rowIndex).get(0).raw;
+
+            if (pkVal !== undefined && pkVal !== null) {
+                data[pkCol] = pkVal;
+            } else {
+                console.warn('Unable to find value for pkCol "' + pkCol + '"');
+            }
+        });
+        return data;
+    }
+
+    getColumnMetadata(fieldKey: string) {
+        return this.columnMetadata?.get(fieldKey.toLowerCase());
+    }
+
+    getFolderValueForRow(rowIdx: number): string {
+        const containerCol = this.columnMap.get('folder') ?? this.columnMap.get('container');
+        if (!containerCol) return undefined;
+        return this.cellValues.get(genCellKey(containerCol.fieldKey, rowIdx)).get(0).raw;
+    }
+
+    getFolderValueForCell(cellKey: string): string {
+        const { rowIdx } = parseCellKey(cellKey);
+        return this.getFolderValueForRow(rowIdx);
+    }
+
+    // TODO: make findNextCell take fieldKey
     findNextCell(
         startCol: number,
         startRow: number,
         predicate: (value: List<ValueDescriptor>, colIdx: number, rowIdx: number) => boolean,
-        advance: (colIdx: number, rowIdx: number) => CellCoordinates
+        advance: (colIdx: number, rowIdx: number) => CellCoordinates // TODO: make advance take fieldKey
     ): { colIdx: number; rowIdx: number; value: List<ValueDescriptor> } {
         let colIdx = startCol,
             rowIdx = startRow;
@@ -173,7 +235,8 @@ export class EditorModel
             ({ colIdx, rowIdx } = advance(colIdx, rowIdx));
             if (!this.isInBounds(colIdx, rowIdx)) break;
 
-            const value = this.getValue(colIdx, rowIdx);
+            const fieldKey = this.getFieldKeyByIndex(colIdx);
+            const value = this.getValue(fieldKey, rowIdx);
             if (predicate(value, colIdx, rowIdx)) {
                 return {
                     value,
@@ -187,143 +250,106 @@ export class EditorModel
         return undefined;
     }
 
-    getMessage(colIdx: number, rowIdx: number): CellMessage {
-        return this.cellMessages.get(genCellKey(colIdx, rowIdx));
+    getMessage(fieldKey: string, rowIdx: number): CellMessage {
+        return this.cellMessages.get(genCellKey(fieldKey, rowIdx));
     }
 
-    getColumns(
-        queryInfo: QueryInfo,
-        forUpdate?: boolean,
-        readOnlyColumns?: string[],
-        insertColumns?: QueryColumn[],
-        updateColumns?: QueryColumn[],
-        colFilter?: (col: QueryColumn) => boolean
-    ): QueryColumn[] {
-        let columns: QueryColumn[];
-
-        if (forUpdate) {
-            columns = updateColumns ?? queryInfo.getUpdateColumns(readOnlyColumns);
-        } else {
-            columns = insertColumns ?? queryInfo.getInsertColumns();
-        }
-
-        if (colFilter) columns = columns.filter(colFilter);
-        // file input columns are not supported in the editable grid, so remove them
-        return columns.filter(col => !col.isFileInput);
-    }
-
-    getColumnValues(columnName: string): List<List<ValueDescriptor>> {
-        const colIdx = this.columns.findIndex(colName => colName === columnName);
+    getColumnValues(fieldKey: string): List<List<ValueDescriptor>> {
+        const fieldKeyLower = fieldKey.toLowerCase();
+        const colIdx = this.orderedColumns.indexOf(fieldKeyLower);
         if (colIdx === -1) {
-            console.warn(`Unable to resolve column "${columnName}". Cannot retrieve column values.`);
+            console.warn(`Unable to resolve column with fieldKey "${fieldKey}". Cannot retrieve column values.`);
             return List();
         }
 
         const values = List<List<ValueDescriptor>>().asMutable();
         for (let i = 0; i < this.rowCount; i++) {
-            values.push(this.getValue(colIdx, i));
+            values.push(this.getValue(fieldKeyLower, i));
         }
 
         return values.asImmutable();
     }
 
-    getRawDataFromModel(
-        queryModel: QueryModel,
-        displayValues?: boolean,
-        forUpdate?: boolean,
-        forExport?: boolean
-    ): List<Map<string, any>> {
-        return this.getRawDataFromGridData(
-            fromJS(queryModel.rows),
-            fromJS(queryModel.orderedRows),
-            queryModel.queryInfo,
-            displayValues,
-            forUpdate,
-            forExport
-        );
+    getColumnByIndex(colIdx: number): QueryColumn {
+        return this.columnMap.get(this.orderedColumns.get(colIdx));
     }
 
-    /** @deprecated Use getRawDataFromModel() instead. */
-    getRawDataFromGridData(
-        data: Map<any, Map<string, any>>,
-        dataKeys: List<any>,
-        queryInfo: QueryInfo,
-        displayValues = true,
-        forUpdate = false,
-        forExport?: boolean
-    ): List<Map<string, any>> {
-        let rawData = List<Map<string, any>>();
-        const columnMap = this.columns.reduce((map, fieldKey) => {
-            const col = queryInfo.getColumn(fieldKey);
-            // Log a warning but still retain the key in the map for column order
-            if (!col) console.warn(`Unable to resolve column "${fieldKey}". Cannot retrieve raw data.`);
-            return map.set(fieldKey, col);
-        }, OrderedMap<string, QueryColumn>());
+    getFieldKeyByIndex(colIdx: number): string {
+        return this.getColumnByIndex(colIdx)?.fieldKey;
+    }
 
-        for (let rn = 0; rn < dataKeys.size; rn++) {
-            let row = Map<string, any>();
-            columnMap.valueSeq().forEach((col, cn) => {
-                if (!col) return;
-                const values = this.getValue(cn, rn);
+    /**
+     * Formats the values for an entire row into a Map<string, any>
+     * @param rowIdx
+     * @param displayValues
+     */
+    getRowValue(rowIdx: number, displayValues = true): Map<string, any> {
+        let row = Map<string, any>();
 
-                // Some column types have special handling of raw data, such as multi value columns like alias,
-                // so first check renderer for how to retrieve raw data
-                let renderer;
-                if (col.columnRenderer) {
-                    renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
-                }
+        this.columnMap.forEach(col => {
+            const values = this.getValue(col.fieldKey, rowIdx);
 
-                if (renderer?.getEditableRawValue) {
-                    row = row.set(col.name, renderer.getEditableRawValue(values));
-                } else if (col.isLookup()) {
-                    if (col.isExpInput() || col.isAliquotParent()) {
-                        let sep = '';
-                        row = row.set(
-                            col.name,
-                            values.reduce((str, vd) => {
-                                if (vd.display !== undefined && vd.display !== null) {
-                                    str += sep + quoteValueWithDelimiters(vd.display, ',');
-                                    sep = ', ';
-                                }
-                                return str;
-                            }, '')
-                        );
-                    } else if (col.isJunctionLookup()) {
-                        row = row.set(
-                            col.name,
-                            values.reduce((arr, vd) => {
-                                const val = forExport ? vd.display : vd.raw;
-                                if (val !== undefined && val !== null) {
-                                    arr.push(val);
-                                }
-                                return arr;
-                            }, [])
-                        );
-                    } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
-                        row = row.set(
-                            col.name,
-                            values.size === 1 ? quoteValueWithDelimiters(values.first()?.display, ',') : undefined
-                        );
-                    } else {
-                        let val;
-                        if (values.size === 1) val = forExport ? values.first()?.display : values.first()?.raw;
-                        row = row.set(col.name, val);
-                    }
-                } else if (col.jsonType === 'time') {
-                    row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
-                } else if (col.jsonType !== 'date' || !displayValues) {
-                    const val = values.size === 1 ? values.first().raw : undefined;
-                    row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
-                } else {
-                    row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
-                }
-            });
-
-            if (forUpdate) {
-                const gridRow = data.get(dataKeys.get(rn));
-                row = row.merge(getPkData(queryInfo, gridRow));
+            // Some column types have special handling of raw data, such as multi value columns like alias, so first
+            // check renderer for how to retrieve raw data
+            let renderer;
+            if (col.columnRenderer) {
+                renderer = getQueryColumnRenderers()[col.columnRenderer.toLowerCase()];
             }
 
+            if (renderer?.getEditableRawValue) {
+                row = row.set(col.name, renderer.getEditableRawValue(values));
+            } else if (col.isLookup()) {
+                if (col.isExpInput() || col.isAliquotParent()) {
+                    row = row.set(
+                        col.name,
+                        values
+                            .filter(vd => vd.display !== undefined && vd.display !== null)
+                            .map(vd => quoteValueWithDelimiters(vd.display, ','))
+                            .join(', ')
+                    );
+                } else if (col.isJunctionLookup()) {
+                    row = row.set(
+                        col.name,
+                        values.reduce((arr, vd) => {
+                            const val = vd.raw;
+                            if (val !== undefined && val !== null) {
+                                arr.push(val);
+                            }
+                            return arr;
+                        }, [])
+                    );
+                } else if (col.lookup.displayColumn === col.lookup.keyColumn) {
+                    row = row.set(
+                        col.name,
+                        values.size === 1 ? quoteValueWithDelimiters(values.first()?.display, ',') : undefined
+                    );
+                } else {
+                    let val;
+                    if (values.size === 1) val = values.first()?.raw;
+                    row = row.set(col.name, val);
+                }
+            } else if (col.jsonType === 'time') {
+                row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
+            } else if (col.jsonType !== 'date' || !displayValues) {
+                const val = values.size === 1 ? values.first().raw : undefined;
+                row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
+            } else {
+                row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
+            }
+        });
+
+        return row;
+    }
+
+    /**
+     * This method formats the EditorModel data so we can upload the data to LKS via insert/updateRows
+     * @param displayValues
+     */
+    getDataForServerUpload(displayValues = true): List<Map<string, any>> {
+        let rawData = List<Map<string, any>>();
+
+        for (let rn = 0; rn < this.rowCount; rn++) {
+            const row = this.getRowValue(rn, displayValues);
             rawData = rawData.push(row);
         }
 
@@ -335,35 +361,30 @@ export class EditorModel
      * of key fields that are duplicated, and, optionally, which sets of rows have duplicated values for a
      * given field key.
      *
-     * @param queryModel the model whose data we are validating
      * @param uniqueFieldKey optional (non-key) field that should be unique.
      */
-    validateData(
-        queryModel: QueryModel,
-        uniqueFieldKey?: string,
-        insertColumns?: QueryColumn[]
-    ): {
+    validateData(uniqueFieldKey?: string): {
         cellMessages: CellMessages; // updated cell messages with missing required errors
         missingRequired: Map<string, List<number>>; // map from column caption to row numbers with missing values
         uniqueKeyViolations: Map<string, Map<string, List<number>>>; // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
     } {
-        const data = fromJS(queryModel.rows);
-        const columns = insertColumns ?? queryModel.queryInfo.getInsertColumns();
+        const columns = this.columnMap.valueSeq().toArray();
         let cellMessages = this.cellMessages;
         let uniqueFieldCol;
         const keyColumns = columns.filter(column => column.isKeyField);
         let keyValues = Map<number, List<string>>(); // map from row number to list of key values on that row
         let uniqueKeyMap = Map<string, List<number>>(); // map from value to rows with that value
         let missingRequired = Map<string, List<number>>(); // map from column caption to list of rows missing a value for that column
-        for (let rn = 0; rn < data.size; rn++) {
-            columns.forEach((col, cn) => {
-                const cellKey = genCellKey(cn, rn);
-                const values = this.getValue(cn, rn);
+        for (let rn = 0; rn < this.rowCount; rn++) {
+            columns.forEach(col => {
+                const fieldKey = col.fieldKey;
+                const cellKey = genCellKey(fieldKey, rn);
+                const values = this.getValue(fieldKey, rn);
                 if (col.required && !col.isUniqueIdColumn) {
-                    const message = this.getMessage(cn, rn);
+                    const message = this.getMessage(fieldKey, rn);
                     const missingMsg = col.caption + ' is required.';
                     let updatedMsg = message?.message;
-                    if (values.isEmpty() || values.find(value => this.hasRawValue(value)) == undefined) {
+                    if (values.isEmpty() || values.find(value => this.hasRawValue(value)) === undefined) {
                         if (!message || message?.message?.indexOf(missingMsg) === -1) {
                             if (!message || !message.message) updatedMsg = missingMsg;
                             else updatedMsg = message.message + '. ' + missingMsg;
@@ -399,7 +420,7 @@ export class EditorModel
                             keyValues = keyValues.set(rn + 1, List<string>([valueDescriptor.raw.toString()]));
                         }
                     }
-                } else if (uniqueFieldKey && col.fieldKey === uniqueFieldKey) {
+                } else if (uniqueFieldKey && col.fieldKey.toLowerCase() === uniqueFieldKey.toLowerCase()) {
                     uniqueFieldCol = col;
                     // there better be only one of these
                     const valueDescriptor = values.get(0);
@@ -448,16 +469,8 @@ export class EditorModel
         };
     }
 
-    getValidationErrors(
-        queryModel: QueryModel,
-        uniqueFieldKey?: string,
-        insertColumns?: QueryColumn[]
-    ): { cellMessages: CellMessages; errors: string[] } {
-        const { uniqueKeyViolations, missingRequired, cellMessages } = this.validateData(
-            queryModel,
-            uniqueFieldKey,
-            insertColumns
-        );
+    getValidationErrors(uniqueFieldKey?: string): { cellMessages: CellMessages; errors: string[] } {
+        const { uniqueKeyViolations, missingRequired, cellMessages } = this.validateData(uniqueFieldKey);
         let errors = [];
         if (!uniqueKeyViolations.isEmpty()) {
             const messages = uniqueKeyViolations.reduce((keyMessages, valueMap, fieldNames) => {
@@ -500,8 +513,8 @@ export class EditorModel
         };
     }
 
-    getValue(colIdx: number, rowIdx: number): List<ValueDescriptor> {
-        return this.getValueForCellKey(genCellKey(colIdx, rowIdx));
+    getValue(fieldKey: string, rowIdx: number): List<ValueDescriptor> {
+        return this.getValueForCellKey(genCellKey(fieldKey, rowIdx));
     }
 
     getValueForCellKey(cellKey: string): List<ValueDescriptor> {
@@ -510,6 +523,21 @@ export class EditorModel
         }
 
         return List<ValueDescriptor>();
+    }
+
+    isReadOnlyRow(rowIdx: number, readonlyRows: string[]): boolean {
+        const pkValue = this.getPkValue(rowIdx)?.toString();
+        if (pkValue === undefined) return false;
+        return readonlyRows?.includes(pkValue);
+    }
+
+    getCellReadStatus(fieldKey: string, rowIdx: number, readonlyRows: string[]): CellReadStatus {
+        const pkValue = this.getPkValue(rowIdx)?.toString();
+
+        return {
+            isReadonlyCell: this.getColumnMetadata(fieldKey)?.isReadOnlyCell?.(pkValue) ?? false,
+            isReadonlyRow: readonlyRows?.includes(pkValue) ?? false,
+        };
     }
 
     get hasFocus(): boolean {
@@ -523,8 +551,8 @@ export class EditorModel
     get isMultiColumnSelection(): boolean {
         if (!this.isMultiSelect) return false;
 
-        const firstCellColIdx = parseCellKey(this.selectionCells[0]).colIdx;
-        return this.selectionCells.some(cellKey => parseCellKey(cellKey).colIdx !== firstCellColIdx);
+        const firstCellColIdx = parseCellKey(this.selectionCells[0]).fieldKey;
+        return this.selectionCells.some(cellKey => parseCellKey(cellKey).fieldKey !== firstCellColIdx);
     }
 
     get hasSelection(): boolean {
@@ -532,17 +560,18 @@ export class EditorModel
     }
 
     get selectionKey(): string {
-        if (this.hasSelection) return genCellKey(this.selectedColIdx, this.selectedRowIdx);
-        return undefined;
+        if (!this.hasSelection) return undefined;
+        const fieldKey = this.getFieldKeyByIndex(this.selectedColIdx);
+        return genCellKey(fieldKey, this.selectedRowIdx);
     }
 
     isInBounds(colIdx: number, rowIdx: number): boolean {
-        return colIdx >= 0 && colIdx < this.columns.size && rowIdx >= 0 && rowIdx < this.rowCount;
+        return colIdx >= 0 && colIdx < this.orderedColumns.size && rowIdx >= 0 && rowIdx < this.rowCount;
     }
 
-    inSelection(colIdx: number, rowIdx: number): boolean {
-        if (colIdx < 0 || rowIdx < 0) return false;
-        const cellKey = genCellKey(colIdx, rowIdx);
+    inSelection(fieldKey: string, rowIdx: number): boolean {
+        if (rowIdx < 0) return false;
+        const cellKey = genCellKey(fieldKey, rowIdx);
         return this.selectionCells.find(ck => cellKey === ck) !== undefined;
     }
 
@@ -656,23 +685,41 @@ export class EditorModel
         };
     }
 
-    lastSelection(colIdx: number, rowIdx: number): boolean {
+    lastSelection(fieldKey: string, rowIdx: number): boolean {
         const cellKeys = this.isMultiSelect ? this.selectionCells : [this.selectionKey];
-        return genCellKey(colIdx, rowIdx) === cellKeys[cellKeys.length - 1];
+        return genCellKey(fieldKey, rowIdx) === cellKeys[cellKeys.length - 1];
     }
 }
 
 export interface GridResponse {
     data: Map<any, any>;
     dataIds: List<any>;
-    messages?: List<Map<string, string>>;
-    totalRows?: number;
 }
 
 interface GridSelectionResponse {
     selectedIds: List<any>;
 }
 
+/**
+ * TODO: GridLoader and EditableGridLoader are artifacts of QueryGridModel, this is why they return GridResponse, which
+ * uses Immutable, despite the data loaded from EditableGridLoaders going into QueryModels, which end up converting the
+ * data back to regular JS objects. We should revisit this class, and consider maybe using QueryModelLoaders instead, or
+ * maybe something else altogether. Many cases of EditableGridLoader do not actually asynchronously fetch data, since
+ * they get their data from existing QueryModels, we may be able to eliminate the need for async fetch altogether.
+ *
+ * Implementations that do not asynchronously load data:
+ * - MoveSamplesGridLoader
+ * - SingleStorageEditableGridLoader
+ * - AssayWizardModelEditableGridLoader
+ * - PlateSetCreateGridLoader
+ * - PlateGridLoader
+ * - EntityGridLoader
+ * - MultiStorageGridLoader
+ *
+ * Implementations that do asynchronously load data:
+ * - StorageEditableGridLoaderFromSelection (uses getSelectedData)
+ * - EditableGridLoaderFromSelection (uses getSelectedData)
+ */
 export interface GridLoader {
     fetch: (model: QueryModel) => Promise<GridResponse>;
     fetchSelection?: (model: QueryModel) => Promise<GridSelectionResponse>;
@@ -680,6 +727,7 @@ export interface GridLoader {
 
 export interface EditableGridLoader extends GridLoader {
     columns?: QueryColumn[];
+    extraColumns?: QueryColumn[]; // These are columns we want in the EditorModel.columnMap, but not in orderedColumns
     id: string;
     mode: EditorMode;
     omittedColumns?: string[];
@@ -687,22 +735,7 @@ export interface EditableGridLoader extends GridLoader {
     requiredColumns?: string[];
 }
 
-export interface EditorModelAndGridData extends GridData {
-    editorModel: Partial<EditorModel>;
-}
-
-export interface EditorModelUpdates {
-    data?: Map<any, Map<string, any>>;
-    editorModelChanges?: Partial<EditorModelProps>;
-    queryInfo?: QueryInfo;
-}
-
 export interface MessageAndValue {
     message?: CellMessage;
     valueDescriptor: ValueDescriptor;
-}
-
-export interface EditableGridModels {
-    dataModels: QueryModel[];
-    editorModels: EditorModel[];
 }

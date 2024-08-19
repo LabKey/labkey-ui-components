@@ -207,6 +207,8 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
 
     onSubmitForEdit = (updateData: OrderedMap<string, any>, comment?: string) => {
         const { dataForSelection, dataIdsForSelection } = this.state;
+        // TODO: 100% of usages return Promise.resolve(dataForSelection), so we really don't need to expect
+        //  onSubmitForEdit to return anything.
         return this.props.onSubmitForEdit(updateData, dataForSelection, dataIdsForSelection, comment);
     };
 

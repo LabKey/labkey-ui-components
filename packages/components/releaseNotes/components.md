@@ -1,6 +1,29 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.8.0
+*Released*: 19 August 2024
+- Do not export loadEditorModelData
+- Remove initEditableGridModel, initEditableGridModels, applyEditableGridChangesToModels, EditableGridModels
+  - Use initEditorModel, initEditorModels, applyEditorModelChanges instead
+- EditableGrid: remove unused and unnecessary props
+  - allowFieldDisable
+  - allowRemove
+  - bordered
+  - condensed
+  - lockedRows
+  - notDeletable
+  - onSelectionChange
+  - removeColumnTitle
+  - showBulkTabOnLoad
+  - striped
+  - tabAdditionalBtn
+  - tabBtnProps
+- EditableGrid: remove dependence on QueryModel
+  - Including utils and action methods used by EditableGrid and those for manipulating EditorModel
+- ExportMenu: Remove extraExportMenuOptions
+  - This feature is no longer used
+
 ### version 4.7.3
 *Released*: 16 August 2024
 - Fix DomainField.fromJS accessing undefined object issue

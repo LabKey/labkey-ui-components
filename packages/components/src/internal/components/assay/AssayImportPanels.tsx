@@ -19,7 +19,6 @@ import React, { Component, FC, ReactNode, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
-import { LoadingState } from '../../../public/LoadingState';
 import { Operation, QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -62,7 +61,7 @@ import { getOperationNotAllowedMessage } from '../samples/utils';
 
 import { EditableGridChange } from '../editable/EditableGrid';
 
-import { applyEditableGridChangesToModels } from '../editable/utils';
+import { applyEditorModelChanges } from '../editable/utils';
 
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 
@@ -90,7 +89,6 @@ import { RunPropertiesPanel } from './RunPropertiesPanel';
 
 const BASE_FILE_TYPES = ['.csv', '.tsv', '.txt', '.xlsx', '.xls'];
 const BATCH_PROPERTIES_GRID_ID = 'assay-batch-details';
-const DATA_GRID_ID = 'assay-grid-data';
 const IMPORT_ERROR_ID = 'assay-import-error';
 
 interface OwnProps {
@@ -127,7 +125,6 @@ type Props = AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps & Inject
 
 interface State {
     comment: string;
-    dataModel: QueryModel;
     duplicateFileResponse?: DuplicateFilesResponse;
     editorModel: EditorModel;
     error: ReactNode;
@@ -154,8 +151,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const schemaQuery = new SchemaQuery(props.assayDefinition.protocolSchemaName, 'Data');
         this.state = {
             comment: undefined,
-            dataModel: new QueryModel({ id: DATA_GRID_ID, schemaQuery }),
-            editorModel: new EditorModel({ id: DATA_GRID_ID }),
+            editorModel: undefined,
             error: undefined,
             model: new AssayWizardModel({ isInit: false, runId: props.runId }),
             schemaQuery,
@@ -413,7 +409,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const runPropsModel = this.getRunPropsQueryModel();
         const runName = runPropsModel.getRowValue('Name');
         const fileName = getRunPropertiesFileName(runPropsModel.getRow());
-        const gridData = await this.state.model.getInitialGridData();
+        const editorModel = await this.state.model.getInitialEditorModel(this.plateSupportEnabled);
 
         if (hasSamples) setIsDirty(true);
 
@@ -425,13 +421,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             }) as AssayWizardModel;
             return {
                 model,
-                dataModel: state.dataModel.mutate({
-                    ...gridData.queryModel,
-                    queryInfo: model.queryInfo,
-                    rowsLoadingState: LoadingState.LOADED,
-                    queryInfoLoadingState: LoadingState.LOADED,
-                }),
-                editorModel: state.editorModel.merge(gridData.editorModel) as EditorModel,
+                editorModel,
             };
         });
     };
@@ -586,7 +576,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const { currentStep, onSave, jobNotificationProvider, assayProtocol, searchParams, dismissNotifications } =
             this.props;
         const { model, comment } = this.state;
-        const data = model.prepareFormData(currentStep, this.state.editorModel, this.state.dataModel);
+        const data = model.prepareFormData(currentStep, this.state.editorModel);
         this.setModelState(true, undefined);
         dismissNotifications();
 
@@ -638,9 +628,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     onSuccessContinue = async (response: AssayUploadResultModel, isAsync?: boolean): Promise<void> => {
         this.props.onSave?.(response, isAsync);
-        const initialGridData = await this.state.model.getInitialGridData();
+        const editorModel = await this.state.model.getInitialEditorModel(this.plateSupportEnabled);
 
-        // Reset the data for the AssayWizardModel and dataModel
+        // Reset the data for the AssayWizardModel
         this.setState(state => {
             const model = state.model.merge({
                 batchId: response.batchId,
@@ -653,9 +643,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 runProperties: Map<string, any>(),
                 // Note: leave batchProperties alone since those are preserved in this case
             }) as AssayWizardModel;
-            const dataModel = state.dataModel.mutate(initialGridData.queryModel);
-            const editorModel = state.editorModel.merge(initialGridData.editorModel) as EditorModel;
-            return { dataModel, editorModel, model };
+            return { editorModel, model };
         });
     };
 
@@ -684,7 +672,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             return;
         }
 
-        const data = model.prepareFormData(this.props.currentStep, this.state.editorModel, this.state.dataModel);
+        const data = model.prepareFormData(this.props.currentStep, this.state.editorModel);
 
         if (data.files?.length > 0) {
             // the data file (i.e. attachedFiles) will be processed so the size of the file gets much greater weight
@@ -714,21 +702,11 @@ class AssayImportPanelsBody extends Component<Props, State> {
         this.setState({ comment });
     };
 
-    onGridChange: EditableGridChange = (event, editorModelChanges, dataKeys, data): void => {
+    onGridChange: EditableGridChange = (event, editorModelChanges): void => {
         this.setState(state => {
-            const { dataModel, editorModel } = state;
-            const updatedModels = applyEditableGridChangesToModels(
-                [dataModel],
-                [editorModel],
-                editorModelChanges,
-                undefined,
-                dataKeys,
-                data
-            );
-
+            const updatedModels = applyEditorModelChanges([state.editorModel], editorModelChanges);
             this.props.setIsDirty?.(true);
-
-            return { dataModel: updatedModels.dataModels[0], editorModel: updatedModels.editorModels[0] };
+            return { editorModel: updatedModels[0] };
         });
     };
 
@@ -750,8 +728,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             getIsDirty,
             setIsDirty,
         } = this.props;
-        const { comment, dataModel, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } =
-            this.state;
+        const { comment, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } = this.state;
         const runPropsModel = this.getRunPropsQueryModel();
         const resultsFilesCount = model.getResultsFiles().length;
 
@@ -810,7 +787,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     onChange={this.handleRunChange}
                     onWorkflowTaskChange={this.handleWorkflowTaskChange}
                 />
-                {this.plateSupportEnabled && (
+                {plateSupportEnabled && (
                     <PlatePropertiesPanel model={model} operation={operation} onChange={this.handleRunChange} />
                 )}
                 <RunDataPanel
@@ -831,7 +808,6 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     operation={operation}
                     onTextChange={this.handleDataTextChange}
                     plateSupportEnabled={plateSupportEnabled}
-                    queryModel={dataModel}
                     runPropertiesRow={runProps}
                     showTabs={showUploadTabs}
                     wizardModel={model}

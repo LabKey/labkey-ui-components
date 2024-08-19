@@ -8,8 +8,6 @@ import { EditorModel } from '../editable/models';
 import { TEST_USER_EDITOR } from '../../userFixtures';
 
 import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-import { LoadingState } from '../../../public/LoadingState';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { Operation } from '../../../public/QueryColumn';
@@ -21,7 +19,6 @@ import { TEST_LIMS_STARTER_MODULE_CONTEXT } from '../../productFixtures';
 import { AssayWizardModel } from './AssayWizardModel';
 import { RunDataPanel } from './RunDataPanel';
 
-const MODEL_ID_NOT_LOADED = 'not loaded';
 const MODEL_ID_LOADED = 'loaded';
 
 interface OwnProps {
@@ -34,17 +31,7 @@ class RunDataPanelWrapperImpl extends React.Component<Props, any> {
     render() {
         const { currentStep, showTabs, wizardModel } = this.props;
         const queryInfo = wizardModel.queryInfo;
-        const queryModel = new QueryModel({
-            id: MODEL_ID_LOADED,
-            schemaQuery: queryInfo.schemaQuery,
-        }).mutate({
-            rows: {},
-            orderedRows: [],
-            rowsLoadingState: LoadingState.LOADED,
-            queryInfoLoadingState: LoadingState.LOADED,
-            queryInfo,
-        });
-        const editorModel = new EditorModel({ id: MODEL_ID_LOADED });
+        const editorModel = new EditorModel({ id: MODEL_ID_LOADED, queryInfo });
 
         return (
             <RunDataPanel
@@ -57,7 +44,6 @@ class RunDataPanelWrapperImpl extends React.Component<Props, any> {
                 onResultsFileRemoval={jest.fn()}
                 onTextChange={jest.fn()}
                 operation={Operation.insert}
-                queryModel={queryModel}
                 showTabs={showTabs}
                 wizardModel={wizardModel}
             />
@@ -72,16 +58,11 @@ const RunDataPanelWrapper = withFormSteps(RunDataPanelWrapperImpl, {
 });
 
 describe('RunDataPanel', () => {
-    test('loading state based on gridModel', () => {
-        const queryModel = new QueryModel({
-            id: MODEL_ID_LOADED,
-            schemaQuery: ASSAY_WIZARD_MODEL.queryInfo.schemaQuery,
-        });
-        const editorModel = new EditorModel({ id: MODEL_ID_NOT_LOADED });
+    test('loading state', () => {
         const component = (
             <RunDataPanel
                 currentStep={AssayUploadTabs.Files}
-                editorModel={editorModel}
+                editorModel={undefined}
                 onDataFileChange={jest.fn()}
                 onDataFileRemoval={jest.fn()}
                 onGridChange={jest.fn()}
@@ -89,7 +70,6 @@ describe('RunDataPanel', () => {
                 onResultsFileRemoval={jest.fn()}
                 onTextChange={jest.fn()}
                 operation={Operation.insert}
-                queryModel={queryModel}
                 wizardModel={ASSAY_WIZARD_MODEL}
             />
         );

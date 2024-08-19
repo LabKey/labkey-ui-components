@@ -222,6 +222,15 @@ exports[`DomainRow Calculated Field 1`] = `
                         name="domainpropertiesrow-valueExpression"
                         rows="4"
                       />
+                      <div
+                        class="domain-field-calc-footer"
+                      >
+                        <div
+                          class="error"
+                        >
+                          Error: an expression value is required.
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

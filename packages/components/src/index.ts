@@ -178,9 +178,8 @@ import { EditableGridEvent } from './internal/components/editable/constants';
 import {
     addColumns,
     changeColumn,
-    initEditableGridModel,
-    initEditableGridModels,
-    loadEditorModelData,
+    initEditorModel,
+    initEditorModels,
     removeColumn,
     updateGridFromBulkForm,
 } from './internal/components/editable/actions';
@@ -262,7 +261,12 @@ import {
 } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
-import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid } from './internal/components/editable/utils';
+import {
+    applyEditorModelChanges,
+    genCellKey,
+    getUpdatedDataFromEditableGrid,
+    parseCellKey,
+} from './internal/components/editable/utils';
 import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
@@ -1160,11 +1164,12 @@ export {
     processSchemas,
     invalidateFullQueryDetailsCache,
     // editable grid related items
-    loadEditorModelData,
-    applyEditableGridChangesToModels,
+    applyEditorModelChanges,
+    genCellKey,
+    parseCellKey,
     getUpdatedDataFromEditableGrid,
-    initEditableGridModel,
-    initEditableGridModels,
+    initEditorModel,
+    initEditorModels,
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
     EditableGridPanel,
@@ -1867,9 +1872,7 @@ export type { ITab } from './internal/components/navigation/types';
 export type {
     EditableColumnMetadata,
     EditableGridLoader,
-    EditableGridModels,
     EditorModelProps,
-    EditorModelUpdates,
     GridLoader,
     GridResponse,
 } from './internal/components/editable/models';
@@ -1976,7 +1979,6 @@ export type { UserLimitSettings } from './internal/components/permissions/action
 export type { ModalProps } from './internal/Modal';
 export type { QueryLookupFilterGroup, QueryLookupFilterGroupFilter } from './public/QueryColumn';
 export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';
-export type { ExtraExportMenuOptions } from './public/QueryModel/ExportMenu';
 export type { LabelsAPIWrapper } from './internal/components/labels/APIWrapper';
 export type { InputRendererProps } from './internal/components/forms/input/types';
 export type { InputRenderContext, InputRendererComponent } from './internal/components/forms/input/InputRenderFactory';

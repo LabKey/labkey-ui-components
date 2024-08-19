@@ -1,16 +1,37 @@
 import { Map, OrderedMap, Record } from 'immutable';
-import { AssayDOM } from '@labkey/api';
+import { AssayDOM, Filter } from '@labkey/api';
 
 import { AssayUploadTabs } from '../../constants';
 import { generateNameWithTimestamp } from '../../util/Date';
-import { loadEditorModelData } from '../editable/actions';
+import { initEditorModel } from '../editable/actions';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { AssayDefinitionModel, AssayDomainTypes } from '../../AssayDefinitionModel';
 import { FileAttachmentFormModel } from '../files/models';
 import { AppURL } from '../../url/AppURL';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { EditorModel } from '../editable/models';
+import { EditableColumnMetadata, EditableGridLoader, EditorMode, EditorModel, GridResponse } from '../editable/models';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
+
+class AssayWizardModelEditableGridLoader implements EditableGridLoader {
+    columns: QueryColumn[];
+    id: string;
+    mode: EditorMode;
+    queryInfo: QueryInfo;
+    data: Map<string, Map<string, any>>;
+
+    constructor(queryInfo: QueryInfo, data: Map<string, Map<string, any>>) {
+        this.mode = EditorMode.Insert;
+        this.queryInfo = queryInfo;
+        this.data = data;
+    }
+
+    async fetch(model: QueryModel): Promise<GridResponse> {
+        return {
+            data: this.data,
+            dataIds: this.data.keySeq().toList(),
+        };
+    }
+}
 
 export interface AssayUploadOptions extends AssayDOM.ImportRunOptions {
     dataRows?: any; // Array<any>
@@ -137,12 +158,12 @@ export class AssayWizardModel
                 return true;
             }
         } else if (this.isGridTab(currentStep)) {
-            return editorModel.hasData;
+            return !!editorModel?.hasData;
         }
         return false;
     }
 
-    prepareFormData(currentStep: number, editorModel: EditorModel, queryModel: QueryModel): AssayUploadOptions {
+    prepareFormData(currentStep: number, editorModel: EditorModel): AssayUploadOptions {
         const {
             batchId,
             batchProperties,
@@ -198,7 +219,7 @@ export class AssayWizardModel
         } else if (this.isGridTab(currentStep)) {
             // need to get the EditorModel for the data to use in the import
             assayData.dataRows = editorModel
-                .getRawDataFromModel(queryModel, false, false)
+                .getDataForServerUpload(false)
                 .valueSeq()
                 .map(row => row.filter(v => v !== undefined && v !== null && ('' + v).trim() !== ''))
                 .toList()
@@ -218,23 +239,30 @@ export class AssayWizardModel
         return assayData;
     }
 
-    getInitialQueryModelData(): { orderedRows: string[]; queryInfo: QueryInfo; rows: { [key: string]: any } } {
+    /**
+     * This method instantiates the initial data used in the editable grid during assay upload, it includes data for
+     * an EditorModel and QueryModel.
+     */
+    async getInitialEditorModel(isPlatesEnabled: boolean): Promise<EditorModel> {
+        let columnMetadata: Map<string, EditableColumnMetadata>;
+        const selectedPlateSet = this.runProperties?.get('PlateSet');
+
+        if (isPlatesEnabled && selectedPlateSet) {
+            columnMetadata = Map({
+                Plate: {
+                    lookupValueFilters: [Filter.create('PlateSet', selectedPlateSet)],
+                },
+            });
+        }
+
         const { assayDef, selectedSamples } = this;
         const sampleColumnData = assayDef.getSampleColumn();
         const sampleColInResults = sampleColumnData && sampleColumnData.domain === AssayDomainTypes.RESULT;
         const hasSamples = sampleColInResults && selectedSamples;
         // We only care about passing samples to the data grid if there is a sample column in the results domain.
-        const rows = hasSamples ? selectedSamples.toJS() : {};
-        return { rows, orderedRows: Object.keys(rows), queryInfo: this.queryInfo };
-    }
-
-    /**
-     * This method instantiates the initial data used in the editable grid during assay upload, it includes data for
-     * an EditorModel and QueryModel.
-     */
-    async getInitialGridData(): Promise<{ editorModel: Partial<EditorModel>; queryModel: Partial<QueryModel> }> {
-        const queryModelData = this.getInitialQueryModelData();
-        const editorModelData = await loadEditorModelData(queryModelData);
-        return { editorModel: editorModelData, queryModel: queryModelData };
+        const rows = hasSamples ? selectedSamples : Map<string, Map<string, any>>({});
+        const loader = new AssayWizardModelEditableGridLoader(this.queryInfo, rows);
+        const dataModel = new QueryModel({ schemaQuery: this.queryInfo.schemaQuery }).mutate({ queryInfo: this.queryInfo });
+        return await initEditorModel(dataModel, loader, columnMetadata);
     }
 }

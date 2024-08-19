@@ -3,8 +3,6 @@ import { Map } from 'immutable';
 
 import { capitalizeFirstChar } from '../../util/utils';
 
-import { getUniqueIdColumnMetadata } from '../entities/utils';
-
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -23,19 +21,14 @@ import { OperationConfirmationData } from '../entities/models';
 
 import { getOperationNotPermittedMessage } from '../samples/utils';
 
-import { EditorModel, EditableGridLoader } from './models';
+import { EditorModel, EditableGridLoader, EditableColumnMetadata } from './models';
 
 import { EditableGridPanel, EditableGridPanelProps } from './EditableGridPanel';
-import { initEditableGridModel } from './actions';
-import { applyEditableGridChangesToModels, getUpdatedDataFromEditableGrid } from './utils';
+import { initEditorModel } from './actions';
+import { applyEditorModelChanges, getUpdatedDataFromEditableGrid } from './utils';
 import { EditableGridChange } from './EditableGrid';
 
 const ERROR_ALERT_ID = 'editable-grid-error';
-
-type Models = {
-    dataModel: QueryModel;
-    editorModel: EditorModel;
-};
 
 type InheritedEditableGridPanelProps = Omit<
     EditableGridPanelProps,
@@ -43,27 +36,29 @@ type InheritedEditableGridPanelProps = Omit<
 >;
 
 interface EditableGridPanelForUpdateProps extends InheritedEditableGridPanelProps {
+    columnMetadata?: Map<string, EditableColumnMetadata>;
     editStatusData?: OperationConfirmationData;
-    idField: string;
     loader: EditableGridLoader;
     onCancel: () => void;
     onComplete: () => void;
-    pluralNoun?: string;
+    pluralNoun: string;
     queryModel: QueryModel;
     selectionData: Map<string, any>;
-    singularNoun?: string;
+    singularNoun: string;
     updateRows: (
         schemaQuery: SchemaQuery,
         rows: Array<Record<string, any>>,
         comment: string,
-        originalRows: Array<Record<string, any>>
+        originalRows: Record<string, any>
     ) => Promise<any>;
 }
 
+// Note: presently this is only used by AssayGridPanel. We should consider moving it to premium and integrating it into
+// the AssayGridPanel component.
 export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = props => {
     const {
+        columnMetadata,
         editStatusData,
-        idField,
         loader,
         onCancel,
         onComplete,
@@ -76,17 +71,11 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
         setIsDirty,
         ...editableGridProps
     } = props;
-    const id = loader.id;
-
-    const [models, setModels] = useState<Models>(() => ({
-        dataModel: new QueryModel({ id, schemaQuery: queryModel.schemaQuery }),
-        editorModel: new EditorModel({ id }),
-    }));
+    const [editorModel, setEditorModel] = useState<EditorModel>(undefined);
     const [error, setError] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [comment, setComment] = useState<string>();
     const { requiresUserComment } = useDataChangeCommentsRequired();
-
     const hasValidUserComment = comment?.trim()?.length > 0;
     const notPermittedText = useMemo(
         () => getOperationNotPermittedMessage(editStatusData, singularNoun, pluralNoun),
@@ -96,8 +85,8 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
     useEffect(() => {
         (async (): Promise<void> => {
             try {
-                const models_ = await initEditableGridModel(models.dataModel, models.editorModel, loader, queryModel);
-                setModels(models_);
+                const model = await initEditorModel(queryModel, loader, columnMetadata);
+                setEditorModel(model);
             } catch (e) {
                 console.error(e);
                 setError(resolveErrorMessage(e) ?? 'Failed to initialize editable grid.');
@@ -106,20 +95,11 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
     }, []);
 
     const onGridChange: EditableGridChange = useCallback(
-        (event, editorModelChanges, dataKeys, data, index = 0): void => {
-            setModels(_models => {
-                const { dataModels, editorModels } = applyEditableGridChangesToModels(
-                    [_models.dataModel],
-                    [_models.editorModel],
-                    editorModelChanges,
-                    undefined,
-                    dataKeys,
-                    data,
-                    index
-                );
-                const [dataModel] = dataModels;
+        (event, editorModelChanges, index = 0): void => {
+            setEditorModel(currentModel => {
+                const editorModels = applyEditorModelChanges([currentModel], editorModelChanges, index);
                 const [editorModel] = editorModels;
-                return { dataModel, editorModel };
+                return editorModel;
             });
             if (EditorModel.isDataChangeEvent(event)) {
                 setIsDirty?.(true);
@@ -129,12 +109,7 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
     );
 
     const onSubmit = useCallback(async (): Promise<void> => {
-        const gridData = getUpdatedDataFromEditableGrid(
-            [models.dataModel],
-            [models.editorModel],
-            idField,
-            selectionData
-        );
+        const gridData = getUpdatedDataFromEditableGrid([editorModel], selectionData);
 
         if (!gridData) {
             onComplete();
@@ -144,6 +119,7 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
         setIsSubmitting(true);
 
         try {
+            // TODO: I suspect we can skip passing originalRows since getDataForServerUpload appends folder/container
             await updateRows(gridData.schemaQuery, gridData.updatedRows, comment, gridData.originalRows);
             setIsSubmitting(false);
             onComplete();
@@ -152,18 +128,13 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
             setIsSubmitting(false);
             document.querySelector('#' + ERROR_ALERT_ID)?.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [comment, models, idField, onComplete, selectionData, singularNoun, updateRows]);
+    }, [comment, editorModel, onComplete, selectionData, singularNoun, updateRows]);
 
     const onCommentChange = useCallback((_comment: string): void => {
         setComment(_comment);
     }, []);
 
-    const columnMetadata = useMemo(
-        () => getUniqueIdColumnMetadata(models.dataModel.queryInfo),
-        [models.dataModel.queryInfo]
-    );
-
-    if (models.dataModel.isLoading) {
+    if (editorModel === undefined) {
         return <LoadingSpinner />;
     }
 
@@ -172,16 +143,11 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
             {notPermittedText && <Alert bsStyle="warning">{notPermittedText}</Alert>}
             <EditableGridPanel
                 allowAdd={false}
-                allowRemove={false}
-                bordered
                 bsStyle="info"
-                striped
                 title={`Edit selected ${pluralNoun}`}
                 {...editableGridProps}
-                columnMetadata={columnMetadata}
-                editorModel={models.editorModel}
+                editorModel={editorModel}
                 forUpdate
-                model={models.dataModel}
                 onChange={onGridChange}
             />
             <Alert id={ERROR_ALERT_ID}>{error}</Alert>
@@ -195,11 +161,9 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
                 isFinishedText="Finished Updating"
                 finishText={
                     'Finish Updating ' +
-                    models.dataModel.orderedRows.length +
+                    editorModel.rowCount +
                     ' ' +
-                    (models.dataModel.orderedRows.length === 1
-                        ? capitalizeFirstChar(singularNoun)
-                        : capitalizeFirstChar(pluralNoun))
+                    (editorModel.rowCount === 1 ? capitalizeFirstChar(singularNoun) : capitalizeFirstChar(pluralNoun))
                 }
             >
                 <CommentTextArea
@@ -212,9 +176,4 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
             </WizardNavButtons>
         </>
     );
-};
-
-EditableGridPanelForUpdate.defaultProps = {
-    singularNoun: 'row',
-    pluralNoun: 'rows',
 };

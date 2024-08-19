@@ -101,29 +101,4 @@ describe('ExportMenu', () => {
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(6);
         expect(document.querySelectorAll('.divider').length).toBe(2);
     });
-
-    test('extraExportMenuOptions', () => {
-        const exportFn = jest.fn();
-        const extraOptions = [
-            {
-                label: 'export plate set file',
-                extraOptions: [
-                    {
-                        option: { type: EXPORT_TYPES.EXCEL, icon: 'fa-file-excel-o', label: 'Extra Item 1' },
-                        onExport: jest.fn(),
-                    },
-                    {
-                        option: { type: EXPORT_TYPES.EXCEL, icon: 'fa-file-excel-o', label: 'Extra Item 2' },
-                        onExport: exportFn,
-                    },
-                ],
-            },
-        ];
-
-        render(<ExportMenu model={MODEL} extraExportMenuOptions={extraOptions} />);
-
-        expect(document.querySelectorAll('.export-menu-icon').length).toBe(5);
-        userEvent.click(document.querySelectorAll('[role="menuitem"]')[4]);
-        expect(exportFn).toHaveBeenCalledTimes(1);
-    });
 });

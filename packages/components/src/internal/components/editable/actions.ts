@@ -1,24 +1,14 @@
 import { Filter, Utils } from '@labkey/api';
-import { fromJS, List, Map, OrderedMap, Set as ImmutableSet } from 'immutable';
+import { fromJS, List, Map, OrderedMap } from 'immutable';
 import moment from 'moment';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
-import { LoadingState } from '../../../public/LoadingState';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { QueryInfo } from '../../../public/QueryInfo';
-import { GRID_EDIT_INDEX } from '../../constants';
 import { cancelEvent, getPasteValue, setCopyValue } from '../../events';
-import { GridData } from '../../models';
 import { formatDate, formatDateTime, parseDate } from '../../util/Date';
-import {
-    caseInsensitive,
-    getValueFromRow,
-    isFloat,
-    isInteger,
-    parseCsvString,
-    parseScientificInt,
-} from '../../util/utils';
+import { caseInsensitive, isFloat, isInteger, parseCsvString, parseScientificInt } from '../../util/utils';
 import { ViewInfo } from '../../ViewInfo';
 
 import { selectRows } from '../../query/selectRows';
@@ -31,46 +21,36 @@ import {
     CellValues,
     EditableColumnMetadata,
     EditableGridLoader,
-    EditableGridModels,
     EditorMode,
     EditorModel,
-    EditorModelAndGridData,
-    EditorModelUpdates,
+    EditorModelProps,
     MessageAndValue,
     ValueDescriptor,
 } from './models';
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
-
-const EMPTY_ROW = Map<string, any>();
-let ID_COUNTER = 0;
+import { encodePart } from '../../../public/SchemaQuery';
 
 /**
- * @deprecated Use initEditableGridModel() or initEditableGridModels() instead.
- * This method does not make use the grid loader paradigm. Usages of this method directly
- * is susceptible to data misalignment errors with the associated view.
+ * Do not use this method directly, use initEditorModel instead
  */
-export const loadEditorModelData = async (
-    queryModelData: Partial<QueryModel>,
-    editorColumns?: QueryColumn[],
-    forUpdate?: boolean
-): Promise<Partial<EditorModel>> => {
-    const { orderedRows, rows, queryInfo } = queryModelData;
-    const columns = editorColumns ?? queryInfo.getInsertColumns();
-    const lookupValueDescriptors = await getLookupValueDescriptors(
-        columns,
-        fromJS(rows),
-        fromJS(orderedRows),
-        forUpdate
-    );
+const loadEditorModelData = async (
+    orderedRows: string[],
+    rows: Record<string, any>,
+    columns: QueryColumn[],
+    forUpdate: boolean
+): Promise<CellValues> => {
+    const lookupValueDescriptors = await getLookupValueDescriptors(columns, rows, orderedRows, forUpdate);
     let cellValues = Map<string, List<ValueDescriptor>>();
 
     // data is initialized in column order
-    columns.forEach((col, cn) => {
+    columns.forEach(col => {
         orderedRows.forEach((id, rn) => {
             const row = rows[id];
-            const cellKey = genCellKey(cn, rn);
-            const value = row[col.fieldKey];
+            const cellKey = genCellKey(col.fieldKey, rn);
+            // Our loaders (e.g. EditableGridLoaderFromSelection) use EditorModel.convertQueryDataToEditorData which
+            // uses encodePart, so we check for the encoded fieldKey.
+            const value = row[col.fieldKey] ?? row[encodePart(col.fieldKey)];
 
             if (Array.isArray(value)) {
                 // assume to be list of {displayValue, value} objects
@@ -114,77 +94,114 @@ export const loadEditorModelData = async (
         });
     });
 
-    return {
-        cellValues,
-        columns: List(columns.map(col => col.fieldKey)),
-        deletedIds: ImmutableSet<any>(),
-        rowCount: orderedRows.length,
-    };
+    return cellValues;
 };
 
-export const initEditableGridModel = async (
-    dataModel: QueryModel,
-    editorModel: EditorModel,
-    loader: EditableGridLoader,
+// TODO: we should refactor EditableGridLoader to make queryModel irrelevant. Some cases like AssayImportPanels create
+//  what is essentially a fake QueryModel just to satisfy this arg. EditableGridPanelForUpdateWithLineage passes the
+//  same QueryModel to every loader (it uses initEditorModels). I think the solution will be to add it to the
+//  constructor of any loader that needs it, and remove it from the fetch args. Alternatively we get rid of the whole
+//  loader pattern entirely, since most don't even fetch data (they immediately resolve promises), the GridLoader
+//  pattern is an artifact of the long-gone QueryGridModel.
+export const initEditorModel = async (
     queryModel: QueryModel,
-    colFilter?: (col: QueryColumn) => boolean
-): Promise<{ dataModel: QueryModel; editorModel: EditorModel }> => {
-    const response = await loader.fetch(queryModel);
-    const gridData: Partial<QueryModel> = {
-        rows: response.data.toJS(),
-        orderedRows: response.dataIds.toArray(),
-        queryInfo: loader.queryInfo,
-    };
-
-    let columns: QueryColumn[];
+    loader: EditableGridLoader,
+    columnMetadata?: Map<string, EditableColumnMetadata>
+): Promise<EditorModel> => {
+    const { columns: loaderColumns, queryInfo } = loader;
+    const { data, dataIds } = await loader.fetch(queryModel);
+    const rows = data.toJS();
+    const orderedRows = dataIds.toArray();
     const forUpdate = loader.mode === EditorMode.Update;
-    if (loader.columns) {
-        columns = editorModel.getColumns(
-            gridData.queryInfo,
-            forUpdate,
-            undefined,
-            loader.columns,
-            loader.columns,
-            colFilter
-        );
+    let columns: QueryColumn[];
+
+    if (loaderColumns) {
+        columns = loader.columns;
+    } else if (forUpdate) {
+        columns = queryInfo.getUpdateColumns();
     } else {
-        columns = editorModel.getColumns(gridData.queryInfo, forUpdate, undefined, undefined, undefined, colFilter);
+        columns = queryInfo.getInsertColumns();
     }
 
-    const editorModelData = await loadEditorModelData(gridData, columns, forUpdate);
+    // file input columns are not supported in the editable grid, so remove them
+    columns = columns.filter(col => !col.isFileInput);
 
-    return {
-        dataModel: dataModel.mutate({
-            ...gridData,
-            rowsLoadingState: LoadingState.LOADED,
-            queryInfoLoadingState: LoadingState.LOADED,
-        }),
-        editorModel: editorModel.merge(editorModelData) as EditorModel,
-    };
+    // Calculate orderedColumns here before we add PK and Container columns to the columns array because they should
+    // be hidden by default.
+    const orderedColumns = columns.map(queryColumn => queryColumn.fieldKey.toLowerCase());
+    const columnMap = columns.reduce((result, column) => {
+        result[column.fieldKey.toLowerCase()] = column;
+        return result;
+    }, {});
+
+    if (loader.extraColumns) {
+        loader.extraColumns.forEach(col => {
+            columnMap[col.fieldKey.toLowerCase()] = col;
+            columns.push(col);
+        });
+    }
+
+    if (forUpdate) {
+        // If we're updating then we need to ensure that the pkCols and altUpdateKeys are in the columnMap
+        queryInfo.getPkCols().forEach(pkCol => {
+            if (!columnMap[pkCol.fieldKey.toLowerCase()]) {
+                columnMap[pkCol.fieldKey.toLowerCase()] = pkCol;
+                columns.push(pkCol);
+            }
+        });
+
+        queryInfo.altUpdateKeys?.forEach(fieldKey => {
+            const col = queryInfo.getColumn(fieldKey);
+            if (col && !columnMap[fieldKey.toLowerCase()]) {
+                columnMap[fieldKey.toLowerCase()] = col;
+                columns.push(col);
+            }
+        });
+
+        const hasContainerCol =
+            columns.filter(c => c.fieldKey.toLowerCase() === 'container' || c.fieldKey.toLowerCase() === 'folder')
+                .length > 0;
+
+        if (!hasContainerCol) {
+            // If we're updating we need to ensure that the container column is in the column map, so we can validate
+            // against it during events like paste.
+            const containerCol = queryInfo.getColumn('Container') ?? queryInfo.getColumn('Folder');
+
+            if (containerCol) {
+                columnMap[containerCol.fieldKey.toLowerCase()] = containerCol;
+                columns.push(containerCol);
+            }
+        }
+    }
+
+    // TODO: Move initEditorModel, loadEditorModelData, and getLookupValueDescriptors to EditorModel as static methods
+    const cellValues = await loadEditorModelData(orderedRows, rows, columns, forUpdate);
+
+    if (columnMetadata) {
+        // If columnMetadata is present force it to use lowercase keys
+        columnMetadata = columnMetadata.reduce((result, value, key) => {
+            return result.set(key.toLowerCase(), value);
+        }, Map<string, EditableColumnMetadata>());
+    }
+
+    return new EditorModel({
+        cellValues,
+        columnMetadata,
+        columnMap: fromJS(columnMap),
+        orderedColumns: fromJS(orderedColumns),
+        originalData: data,
+        queryInfo,
+        rowCount: orderedRows.length,
+        tabTitle: queryModel.title ?? queryModel.queryName,
+    } as Partial<EditorModelProps>);
 };
 
-export const initEditableGridModels = async (
-    dataModels: QueryModel[],
-    editorModels: EditorModel[],
+export const initEditorModels = async (
+    queryModels: QueryModel[],
     loaders: EditableGridLoader[],
-    queryModel: QueryModel
-): Promise<EditableGridModels> => {
-    const updatedDataModels = [];
-    const updatedEditorModels = [];
-
-    const results = await Promise.all(
-        dataModels.map((dataModel, i) => initEditableGridModel(dataModels[i], editorModels[i], loaders[i], queryModel))
-    );
-
-    results.forEach(result => {
-        updatedDataModels.push(result.dataModel);
-        updatedEditorModels.push(result.editorModel);
-    });
-
-    return {
-        dataModels: updatedDataModels,
-        editorModels: updatedEditorModels,
-    };
+    columnMetadata?: Array<Map<string, EditableColumnMetadata>>
+) => {
+    return await Promise.all(queryModels.map((qm, i) => initEditorModel(qm, loaders[i], columnMetadata?.[i])));
 };
 
 export function parseIntIfNumber(val: any): number | string {
@@ -248,20 +265,20 @@ const findLookupValues = async (
 
 async function getLookupValueDescriptors(
     columns: QueryColumn[],
-    rows: Map<any, Map<string, any>>,
-    ids: List<any>,
+    rows: Record<string, Record<string, any>>,
+    ids: string[],
     forUpdate?: boolean
 ): Promise<{ [colKey: string]: ValueDescriptor[] }> {
     const descriptorMap = {};
     // for each lookup column, find the unique values in the rows and query for those values when they look like ids
     for (let cn = 0; cn < columns.length; cn++) {
         const col = columns[cn];
-        let values = ImmutableSet<number>();
+        let values = new Set<number>();
 
         if (col.isPublicLookup()) {
             ids.forEach(id => {
-                const row = rows.get(id);
-                const value = row?.get(col.fieldKey);
+                const row = rows[id];
+                const value = row?.[col.fieldKey];
                 if (Utils.isNumber(value)) {
                     values = values.add(value);
                 } else if (List.isList(value)) {
@@ -274,8 +291,14 @@ async function getLookupValueDescriptors(
                     });
                 }
             });
-            if (!values.isEmpty()) {
-                const { descriptors } = await findLookupValues(col, values.toArray(), undefined, undefined, forUpdate);
+            if (values.size > 0) {
+                const { descriptors } = await findLookupValues(
+                    col,
+                    Array.from(values),
+                    undefined,
+                    undefined,
+                    forUpdate
+                );
                 descriptorMap[col.lookupKey] = descriptors;
             }
         }
@@ -310,7 +333,7 @@ async function getLookupDisplayValue(column: QueryColumn, value: any, containerP
 }
 
 async function prepareInsertRowDataFromBulkForm(
-    insertColumns: List<QueryColumn>,
+    insertColumns: QueryColumn[],
     rowData: List<any>,
     colMin = 0,
     containerPath: string
@@ -321,7 +344,7 @@ async function prepareInsertRowDataFromBulkForm(
     for (let cn = 0; cn < rowData.size; cn++) {
         const data = rowData.get(cn);
         const colIdx = colMin + cn;
-        const col = insertColumns.get(colIdx);
+        const col = insertColumns[colIdx];
         let cv: List<ValueDescriptor>;
 
         if (data && col && col.isPublicLookup()) {
@@ -354,23 +377,23 @@ async function prepareInsertRowDataFromBulkForm(
 }
 
 export async function addRowsToEditorModel(
-    rowCount: number,
-    cellMessages: CellMessages,
-    cellValues: CellValues,
-    insertColumns: List<QueryColumn>,
+    editorModel: EditorModel,
     rowData: List<any>,
     numToAdd: number,
-    rowMin = 0,
     containerPath: string
 ): Promise<Partial<EditorModel>> {
+    let { cellMessages, cellValues } = editorModel;
     const selectionCells: string[] = [];
-    const preparedData = await prepareInsertRowDataFromBulkForm(insertColumns, rowData, 0, containerPath);
+    const insertCols = editorModel.queryInfo.getInsertColumns();
+    const preparedData = await prepareInsertRowDataFromBulkForm(insertCols, rowData, 0, containerPath);
     const { values, messages } = preparedData;
+    const rowCount = editorModel.rowCount + numToAdd;
 
-    for (let rowIdx = rowMin; rowIdx < rowMin + numToAdd; rowIdx++) {
+    for (let rowIdx = editorModel.rowCount; rowIdx < rowCount; rowIdx++) {
         // eslint-disable-next-line no-loop-func
         rowData.forEach((value, colIdx) => {
-            const cellKey = genCellKey(colIdx, rowIdx);
+            const fieldKey = editorModel.getFieldKeyByIndex(colIdx);
+            const cellKey = genCellKey(fieldKey, rowIdx);
             cellMessages = cellMessages.set(cellKey, messages.get(colIdx));
             selectionCells.push(cellKey);
             cellValues = cellValues.set(cellKey, values.get(colIdx));
@@ -381,57 +404,25 @@ export async function addRowsToEditorModel(
         cellValues,
         cellMessages,
         selectionCells,
-        rowCount: Math.max(rowMin + Number(numToAdd), rowCount),
+        rowCount,
     };
-}
-
-function addRowsToGridData(
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
-    count: number,
-    rowData?: Map<string, any>
-): GridData {
-    for (let i = 0; i < count; i++) {
-        // ensure we don't step on another ID
-        const id = GRID_EDIT_INDEX + ID_COUNTER++;
-        data = data.set(id, rowData || EMPTY_ROW);
-        dataKeys = dataKeys.push(id);
-    }
-
-    return { data, dataKeys };
 }
 
 export async function addRows(
     editorModel: EditorModel,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
-    insertColumns: List<QueryColumn>,
     numToAdd: number,
     rowData: Map<string, any>,
     containerPath: string
-): Promise<EditorModelAndGridData> {
+): Promise<Partial<EditorModel>> {
     let editorModelChanges: Partial<EditorModel>;
 
     if (rowData) {
-        editorModelChanges = await addRowsToEditorModel(
-            editorModel.rowCount,
-            editorModel.cellMessages,
-            editorModel.cellValues,
-            insertColumns,
-            rowData.toList(),
-            numToAdd,
-            data.size,
-            containerPath
-        );
+        editorModelChanges = await addRowsToEditorModel(editorModel, rowData.toList(), numToAdd, containerPath);
     } else {
         editorModelChanges = { rowCount: editorModel.rowCount + numToAdd };
     }
 
-    const dataChanges = addRowsToGridData(dataKeys, data, numToAdd, rowData);
-    data = dataChanges.data;
-    dataKeys = dataChanges.dataKeys;
-
-    return { editorModel: editorModelChanges, data, dataKeys };
+    return editorModelChanges;
 }
 
 /**
@@ -445,208 +436,124 @@ export async function addRows(
  */
 export function addColumns(
     editorModel: EditorModel,
-    queryInfo: QueryInfo,
-    originalData: Map<any, Map<string, any>>,
     queryColumns: ExtendedMap<string, QueryColumn>,
     fieldKey?: string
-): EditorModelUpdates {
+): Partial<EditorModel> {
     if (queryColumns.size === 0) return {};
 
     // if fieldKey is provided, find that index and we will insert after it (or at the beginning if there is no such field)
     const leftColIndex = fieldKey
-        ? editorModel.columns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey))
+        ? editorModel.orderedColumns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey))
         : -1;
 
     const editorModelIndex = leftColIndex + 1;
-    const queryColIndex = queryInfo.getColumnIndex(fieldKey) + 1;
+    const queryColIndex = editorModel.queryInfo.getColumnIndex(fieldKey) + 1;
 
-    const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-        if (oldColIdx >= editorModelIndex) {
-            return cellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
-        } else if (oldColIdx < editorModelIndex) {
-            return cellMessages.set(cellKey, message);
-        }
-
-        return cellMessages;
-    }, Map<string, CellMessage>());
-
-    let newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-
-        if (oldColIdx >= editorModelIndex) {
-            return cellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
-        } else if (oldColIdx < editorModelIndex) {
-            return cellValues.set(cellKey, value);
-        }
-
-        return cellValues;
-    }, Map<string, List<ValueDescriptor>>());
+    let newCellValues = editorModel.cellValues;
 
     for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
-        for (let c = 0; c < queryColumns.size; c++) {
-            newCellValues = newCellValues.set(genCellKey(editorModelIndex + c, rowIdx), List<ValueDescriptor>());
-        }
+        // eslint-disable-next-line no-loop-func
+        queryColumns.forEach((value: QueryColumn) => {
+            newCellValues = newCellValues.set(genCellKey(value.fieldKey, rowIdx), List<ValueDescriptor>());
+        });
     }
 
-    const data = originalData
-        .map(rowData => {
-            queryColumns.forEach(column => {
-                rowData = rowData.set(column.fieldKey, undefined);
-            });
-            return rowData;
-        })
-        .toMap();
-
-    let { columns } = editorModel;
+    let { orderedColumns, columnMap } = editorModel;
     queryColumns.valueArray.forEach((col, i) => {
-        columns = columns.insert(i + editorModelIndex, col.fieldKey);
+        orderedColumns = orderedColumns.insert(i + editorModelIndex, col.fieldKey.toLowerCase());
+        columnMap = columnMap.set(col.fieldKey.toLowerCase(), col);
     });
-    columns = columns.toList();
+    const queryInfo = editorModel.queryInfo.mutate({
+        columns: editorModel.queryInfo.columns.mergeAt(queryColIndex, queryColumns),
+    });
 
     return {
-        editorModelChanges: {
-            columns,
-            focusColIdx: -1,
-            focusRowIdx: -1,
-            selectedColIdx: -1,
-            selectedRowIdx: -1,
-            selectionCells: [],
-            cellMessages: newCellMessages,
-            cellValues: newCellValues,
-        },
-        data,
-        queryInfo: queryInfo.mutate({ columns: queryInfo.columns.mergeAt(queryColIndex, queryColumns) }),
+        cellMessages: editorModel.cellMessages,
+        cellValues: newCellValues,
+        columnMap,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        orderedColumns,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: [],
+        queryInfo,
     };
 }
 
 export function changeColumn(
     editorModel: EditorModel,
-    queryInfo: QueryInfo,
-    originalData: Map<any, Map<string, any>>,
     existingFieldKey: string,
     newQueryColumn: QueryColumn
-): EditorModelUpdates {
-    const colIndex = editorModel.columns.findIndex(column => Utils.caseInsensitiveEquals(column, existingFieldKey));
+): Partial<EditorModel> {
+    const colIndex = editorModel.orderedColumns.findIndex(column =>
+        Utils.caseInsensitiveEquals(column, existingFieldKey)
+    );
     // nothing to do if there is no such column
     if (colIndex === -1) return {};
 
-    // get rid of existing messages and values at the designated index.
-    const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
-        const [oldColIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-        if (oldColIdx !== colIndex) {
-            return cellMessages.set(cellKey, message);
-        }
+    let { cellMessages, cellValues, columnMap } = editorModel;
 
-        return cellMessages;
-    }, Map<string, CellMessage>());
-
-    const newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
-        const [oldColIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-
-        if (oldColIdx !== colIndex) {
-            return cellValues.set(cellKey, value);
-        }
-
-        return cellValues;
-    }, Map<string, List<ValueDescriptor>>());
-
-    const currentCol = queryInfo.getColumn(existingFieldKey);
-
-    // remove existing column and set new column in data
-    const data = originalData
-        .map(rowData => {
-            rowData = rowData.remove(currentCol.fieldKey);
-            return rowData.set(newQueryColumn.fieldKey, undefined);
-        })
-        .toMap();
-
-    const columns = new ExtendedMap<string, QueryColumn>();
-    queryInfo.columns.forEach((column, key) => {
-        if (column.fieldKey === currentCol.fieldKey) {
-            columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
-        } else {
-            columns.set(key, column);
-        }
-    });
-
-    let editorModelColumns = editorModel.columns;
-    if (colIndex > -1) {
-        editorModelColumns = editorModelColumns.set(colIndex, newQueryColumn.fieldKey);
+    // Delete the existing data and initialize cells for the new column.
+    for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
+        const existingCellKey = genCellKey(existingFieldKey, rowIdx);
+        const updatedCellKey = genCellKey(newQueryColumn.fieldKey, rowIdx);
+        cellValues = cellValues.delete(existingCellKey);
+        cellValues = cellValues.set(updatedCellKey, List());
+        cellMessages = cellMessages.delete(existingCellKey);
     }
 
+    columnMap = columnMap.delete(existingFieldKey);
+    columnMap = columnMap.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
+    const columns = new ExtendedMap<string, QueryColumn>(editorModel.queryInfo.columns);
+    columns.delete(existingFieldKey.toLowerCase());
+    columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
+
     return {
-        editorModelChanges: {
-            columns: editorModelColumns,
-            focusColIdx: -1,
-            focusRowIdx: -1,
-            selectedColIdx: -1,
-            selectedRowIdx: -1,
-            selectionCells: [],
-            cellMessages: newCellMessages,
-            cellValues: newCellValues,
-        },
-        data,
-        queryInfo: queryInfo.mutate({ columns }),
+        cellMessages,
+        cellValues,
+        columnMap,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        orderedColumns: editorModel.orderedColumns.set(colIndex, newQueryColumn.fieldKey.toLowerCase()),
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: [],
+        queryInfo: editorModel.queryInfo.mutate({ columns }),
     };
 }
 
-export function removeColumn(
-    editorModel: EditorModel,
-    queryInfo: QueryInfo,
-    originalData: Map<any, Map<string, any>>,
-    fieldKey: string
-): EditorModelUpdates {
-    const deleteIndex = editorModel.columns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey));
+export function removeColumn(editorModel: EditorModel, fieldKey: string): Partial<EditorModel> {
+    const deleteIndex = editorModel.orderedColumns.findIndex(column => Utils.caseInsensitiveEquals(column, fieldKey));
     // nothing to do if there is no such column
     if (deleteIndex === -1) return {};
 
-    const newCellMessages = editorModel.cellMessages.reduce((cellMessages, message, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-        if (oldColIdx > deleteIndex) {
-            return cellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
-        } else if (oldColIdx < deleteIndex) {
-            return cellMessages.set(cellKey, message);
-        }
+    let { cellMessages, cellValues, columnMap } = editorModel;
 
-        return cellMessages;
-    }, Map<string, CellMessage>());
+    columnMap = columnMap.delete(fieldKey);
 
-    const newCellValues = editorModel.cellValues.reduce((cellValues, value, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
-
-        if (oldColIdx > deleteIndex) {
-            return cellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
-        } else if (oldColIdx < deleteIndex) {
-            return cellValues.set(cellKey, value);
-        }
-
-        return cellValues;
-    }, Map<string, List<ValueDescriptor>>());
-
-    // remove column from all rows in model data
-    const data = originalData.map(rowData => rowData.remove(fieldKey)).toMap();
-
-    let columns = editorModel.columns;
-    if (deleteIndex > -1) {
-        columns = columns.remove(deleteIndex);
+    // Delete the existing data and initialize cells for the new column.
+    for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
+        const cellkey = genCellKey(fieldKey, rowIdx);
+        cellValues = cellValues.delete(cellkey);
+        cellMessages = cellMessages.delete(cellkey);
     }
 
+    const columns = new ExtendedMap<string, QueryColumn>(editorModel.queryInfo.columns);
+    columns.delete(fieldKey.toLowerCase());
+    const queryInfo = editorModel.queryInfo.mutate({ columns });
+
     return {
-        editorModelChanges: {
-            columns,
-            focusColIdx: -1,
-            focusRowIdx: -1,
-            selectedColIdx: -1,
-            selectedRowIdx: -1,
-            selectionCells: [],
-            cellMessages: newCellMessages,
-            cellValues: newCellValues,
-        },
-        data,
-        queryInfo: queryInfo.mutate({
-            columns: queryInfo.columns.filter(col => col.fieldKey.toLowerCase() !== fieldKey.toLowerCase()),
-        }),
+        cellMessages,
+        cellValues,
+        columnMap,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        orderedColumns: editorModel.orderedColumns.remove(deleteIndex),
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: [],
+        queryInfo,
     };
 }
 
@@ -657,22 +564,19 @@ async function prepareUpdateRowDataFromBulkForm(
     isIncludedColumn?: (col: QueryColumn) => boolean,
     containerPath?: string,
     altColumns?: string[] // TODO: This should use the same metadata for columns as the rest of the editable grid
-): Promise<{ messages: OrderedMap<number, CellMessage>; values: OrderedMap<number, List<ValueDescriptor>> }> {
+): Promise<{ messages: OrderedMap<string, CellMessage>; values: OrderedMap<string, List<ValueDescriptor>> }> {
     const columns = queryInfo.getInsertColumns(isIncludedColumn);
-    let values = OrderedMap<number, List<ValueDescriptor>>();
-    let messages = OrderedMap<number, CellMessage>();
+    let values = OrderedMap<string, List<ValueDescriptor>>();
+    let messages = OrderedMap<string, CellMessage>();
 
     for (const colKey of rowData.keySeq().toArray()) {
         const data = rowData.get(colKey);
-        let colIdx: number;
         let col: QueryColumn;
 
         if (altColumns) {
-            colIdx = altColumns.findIndex(c => c === colKey);
             col = queryInfo.getColumn(colKey);
         } else {
-            colIdx = columns.findIndex(c => c.fieldKey === colKey);
-            col = columns[colIdx];
+            col = columns.find(c => c.fieldKey === colKey);
         }
         let cv: List<ValueDescriptor>;
 
@@ -689,14 +593,14 @@ async function prepareUpdateRowDataFromBulkForm(
                 );
                 cv = cv.push(valueDescriptor);
                 if (message) {
-                    messages = messages.set(colIdx, message);
+                    messages = messages.set(col.fieldKey, message);
                 }
             }
         } else {
             cv = List([{ display: data, raw: data }]);
         }
 
-        values = values.set(colIdx, cv);
+        values = values.set(col.fieldKey, cv);
     }
 
     return { values, messages };
@@ -704,7 +608,6 @@ async function prepareUpdateRowDataFromBulkForm(
 
 export async function updateGridFromBulkForm(
     editorModel: EditorModel,
-    queryInfo: QueryInfo,
     rowData: OrderedMap<string, any>,
     dataRowIndexes: List<number>,
     lockedOrReadonlyRows?: number[],
@@ -716,20 +619,20 @@ export async function updateGridFromBulkForm(
     let cellValues = editorModel.cellValues;
 
     const preparedData = await prepareUpdateRowDataFromBulkForm(
-        queryInfo,
+        editorModel.queryInfo,
         rowData,
         isIncludedColumn,
         containerPath,
-        useEditorModelCols && editorModel.columns.toJS()
+        useEditorModelCols && editorModel.orderedColumns.toJS()
     );
     const { values, messages } = preparedData; // {3: 'x', 4: 'z}
 
     dataRowIndexes.forEach(rowIdx => {
         if (lockedOrReadonlyRows && lockedOrReadonlyRows.indexOf(rowIdx) > -1) return;
 
-        values.forEach((value, colIdx) => {
-            const cellKey = genCellKey(colIdx, rowIdx);
-            cellMessages = cellMessages.set(cellKey, messages.get(colIdx));
+        values.forEach((value, fieldKey) => {
+            const cellKey = genCellKey(fieldKey, rowIdx);
+            cellMessages = cellMessages.set(cellKey, messages.get(fieldKey));
             cellValues = cellValues.set(cellKey, value);
         });
     });
@@ -739,40 +642,27 @@ export async function updateGridFromBulkForm(
 
 export async function addRowsPerPivotValue(
     editorModel: EditorModel,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
-    insertColumns: List<QueryColumn>,
     numPerParent: number,
     pivotKey: string,
     pivotValues: string[],
     rowData: Map<string, any>,
     containerPath: string
-): Promise<EditorModelAndGridData> {
-    let { cellMessages, cellValues, rowCount } = editorModel;
+): Promise<Partial<EditorModel>> {
+    let updatedModel = editorModel;
 
     if (numPerParent > 0) {
         for (const value of pivotValues) {
             rowData = rowData.set(pivotKey, value);
-            const changes = await addRowsToEditorModel(
-                rowCount,
-                cellMessages,
-                cellValues,
-                insertColumns,
-                rowData.toList(),
-                numPerParent,
-                dataKeys.size,
-                containerPath
-            );
-            cellMessages = changes.cellMessages;
-            cellValues = changes.cellValues;
-            rowCount = changes.rowCount;
-            const dataChanges = addRowsToGridData(dataKeys, data, numPerParent, rowData);
-            data = dataChanges.data;
-            dataKeys = dataChanges.dataKeys;
+            const changes = await addRowsToEditorModel(updatedModel, rowData.toList(), numPerParent, containerPath);
+            updatedModel = updatedModel.merge(changes) as EditorModel;
         }
     }
 
-    return { editorModel: { cellMessages, cellValues, rowCount }, data, dataKeys };
+    return {
+        cellMessages: updatedModel.cellMessages,
+        cellValues: updatedModel.cellValues,
+        rowCount: updatedModel.rowCount,
+    };
 }
 
 /**
@@ -791,8 +681,9 @@ type PrefixAndNumber = [string | undefined, string | undefined];
  * number the number suffix is undefined. If the entire string is a number the prefix will be undefined. This method
  * intentionally does not parse the numbers.
  */
-export function splitPrefixedNumber(text: string): PrefixAndNumber {
-    if (text === undefined || text === null || text === '') return [undefined, undefined];
+export function splitPrefixedNumber(value: string | number): PrefixAndNumber {
+    if (value === undefined || value === null || value === '') return [undefined, undefined];
+    const text = value.toString();
     const matches = text?.toString().match(POSTFIX_REGEX);
 
     if (matches === null) {
@@ -930,53 +821,22 @@ function getPkValue(row: any, queryInfo: QueryInfo): string {
     return key?.toString();
 }
 
-interface CellReadStatus {
-    isLockedRow: boolean;
-    isReadonlyCell: boolean;
-    isReadonlyRow: boolean;
-}
-
-export function checkCellReadStatus(
-    row: any,
-    queryInfo: QueryInfo,
-    columnMetadata: EditableColumnMetadata,
-    readonlyRows: string[],
-    lockedRows: string[]
-): CellReadStatus {
-    if (readonlyRows || columnMetadata?.isReadOnlyCell || lockedRows) {
-        const keyCols = queryInfo.getPkCols();
-        if (keyCols.length === 1) {
-            const key = getPkValue(row, queryInfo);
-            return {
-                isReadonlyRow: readonlyRows && key ? readonlyRows.includes(key) : false,
-                isReadonlyCell: columnMetadata?.isReadOnlyCell ? columnMetadata.isReadOnlyCell(key) : false,
-                isLockedRow: lockedRows && key ? lockedRows.includes(key) : false,
-            };
-        } else {
-            console.warn(
-                'Setting readonly rows or cells for models with ' + keyCols.length + ' keys is not currently supported.'
-            );
-        }
-    }
-
-    return {
-        isReadonlyRow: false,
-        isReadonlyCell: false,
-        isLockedRow: false,
-    };
-}
-
 /**
  * Returns only the newly selected area given an initial selection and a final selection. These are the keys that will
  * be filled with generated data based on the initially selected data.
+ * @param editorModel The EditorModel
  * @param initialSelection The area initially selected
  * @param finalSelection The final area selected, including the initially selected area
  */
-export function generateFillCellKeys(initialSelection: string[], finalSelection: string[]): string[][] {
+export function generateFillCellKeys(
+    editorModel: EditorModel,
+    initialSelection: string[],
+    finalSelection: string[]
+): string[][] {
     const firstInitial = parseCellKey(initialSelection[0]);
     const lastInitial = parseCellKey(initialSelection[initialSelection.length - 1]);
-    const minCol = firstInitial.colIdx;
-    const maxCol = lastInitial.colIdx;
+    const minCol = editorModel.orderedColumns.indexOf(firstInitial.fieldKey);
+    const maxCol = editorModel.orderedColumns.indexOf(lastInitial.fieldKey);
     const initialMinRow = firstInitial.rowIdx;
     const initialMaxRow = lastInitial.rowIdx;
     const finalMinRow = parseCellKey(finalSelection[0]).rowIdx;
@@ -1002,7 +862,7 @@ export function generateFillCellKeys(initialSelection: string[], finalSelection:
         const columnKeys = [];
 
         for (let rowIdx = start; rowIdx <= end; rowIdx++) {
-            columnKeys.push(genCellKey(colIdx, rowIdx));
+            columnKeys.push(genCellKey(editorModel.orderedColumns.get(colIdx), rowIdx));
         }
 
         fillCellKeys.push(columnKeys);
@@ -1082,10 +942,9 @@ async function getParsedLookup(
     cellKey: string,
     forUpdate: boolean,
     targetContainerPath: string,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>
+    editorModel: EditorModel
 ): Promise<ParseLookupPayload> {
-    const containerPath = forUpdate ? getFolderValueFromDataRow(cellKey, dataKeys, data) : targetContainerPath;
+    const containerPath = forUpdate ? editorModel.getFolderValueForCell(cellKey) : targetContainerPath;
     const cacheKey = `${column.fieldKey}||${containerPath}`;
     let descriptors = lookupColumnContainerCache[cacheKey];
     if (!descriptors) {
@@ -1117,8 +976,7 @@ async function getParsedLookup(
  * @param selectionToFill An array of sorted cell keys, all from the same column, to be filled with values based on the
  * content of initialSelection
  * @param forUpdate True if this is operating on update query filters.
- * @param dataKeys The orderedRows Object from a QueryModel
- * @param data The rows object from a QueryModel
+ * @param targetContainerPath
  */
 export async function fillColumnCells(
     editorModel: EditorModel,
@@ -1129,9 +987,7 @@ export async function fillColumnCells(
     initialSelection: string[],
     selectionToFill: string[],
     forUpdate: boolean,
-    targetContainerPath: string,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>
+    targetContainerPath: string
 ): Promise<CellMessagesAndValues> {
     const { direction, increment, incrementType, prefix, startingValue, initialSelectionValues } =
         inferSelectionIncrement(editorModel, initialSelection, selectionToFill);
@@ -1194,8 +1050,7 @@ export async function fillColumnCells(
                 cellKey,
                 forUpdate,
                 targetContainerPath,
-                dataKeys,
-                data
+                editorModel
             );
             cellValues = cellValues.set(cellKey, values);
             cellMessages = cellMessages.set(cellKey, message);
@@ -1208,58 +1063,34 @@ export async function fillColumnCells(
     return { cellValues, cellMessages };
 }
 
-export function getFolderValueFromDataRow(
-    cellKey: string,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>
-): string {
-    const { rowIdx } = parseCellKey(cellKey);
-    const dataRow = data.get(dataKeys.get(rowIdx))?.toJS();
-    const value = getValueFromRow(dataRow, 'Folder') ?? getValueFromRow(dataRow, 'Container');
-    return value?.toString();
-}
-
 type CellMessagesAndValues = Pick<EditorModel, 'cellMessages' | 'cellValues'>;
 
 /**
  * @param editorModel
  * @param initialSelection The initial selection before the selection was expanded
- * @param dataKeys The orderedRows Object from a QueryModel
- * @param data The rows object from a QueryModel
- * @param queryInfo A QueryInfo
- * @param columns
- * @param columnMetadata Array of column metadata, in the same order as the columns in the grid
  * @param readonlyRows A list of readonly rows
- * @param lockedRows A list of locked rows
  * @param forUpdate True if this is operating on update query filters.
  * @param targetContainerPath The container path to use when looking up lookup values in the forUpdate false case
  */
 export async function dragFillEvent(
     editorModel: EditorModel,
     initialSelection: string[],
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
-    queryInfo: QueryInfo,
-    columns: QueryColumn[],
-    columnMetadata: EditableColumnMetadata[],
     readonlyRows: string[],
-    lockedRows: string[],
     forUpdate: boolean,
     targetContainerPath: string
 ): Promise<CellMessagesAndValues> {
-    const finalSelection = editorModel.selectionCells;
-    let cellValues = editorModel.cellValues;
-    let cellMessages = editorModel.cellMessages;
+    const { columnMap, selectionCells } = editorModel;
+    let { cellMessages, cellValues } = editorModel;
 
     // If the selection size hasn't changed, then the selection hasn't changed, so return the existing cellValues
-    if (finalSelection.length === initialSelection.length) return { cellMessages, cellValues };
+    if (selectionCells.length === initialSelection.length) return { cellMessages, cellValues };
 
-    const selectionToFill = generateFillCellKeys(initialSelection, finalSelection);
+    const selectionToFill = generateFillCellKeys(editorModel, initialSelection, selectionCells);
     for (const columnCells of selectionToFill) {
-        const { colIdx } = parseCellKey(columnCells[0]);
-        const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).colIdx === colIdx);
-        const column = columns[colIdx];
-        const metadata = columnMetadata[colIdx];
+        const { fieldKey } = parseCellKey(columnCells[0]);
+        const initialSelectionByCol = initialSelection.filter(cellKey => parseCellKey(cellKey).fieldKey === fieldKey);
+        const column = columnMap.get(fieldKey);
+        const metadata = editorModel.getColumnMetadata(fieldKey);
 
         // Don't manipulate any values in read only columns
         if (column.readOnly) {
@@ -1267,16 +1098,9 @@ export async function dragFillEvent(
         }
 
         const selectionToFillByCol = columnCells.filter(cellKey => {
-            const { rowIdx } = parseCellKey(cellKey);
-            const row = data.get(dataKeys.get(rowIdx));
-            const { isReadonlyCell, isReadonlyRow, isLockedRow } = checkCellReadStatus(
-                row,
-                queryInfo,
-                metadata,
-                readonlyRows,
-                lockedRows
-            );
-            return !isReadonlyCell && !isReadonlyRow && !isLockedRow;
+            const { fieldKey, rowIdx } = parseCellKey(cellKey);
+            const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
+            return !isReadonlyCell && !isReadonlyRow;
         });
 
         // eslint-disable-next-line no-await-in-loop
@@ -1289,9 +1113,7 @@ export async function dragFillEvent(
             initialSelectionByCol,
             selectionToFillByCol,
             forUpdate,
-            targetContainerPath,
-            dataKeys,
-            data
+            targetContainerPath
         );
         cellValues = messagesAndValues.cellValues;
         cellMessages = messagesAndValues.cellMessages;
@@ -1309,10 +1131,11 @@ export async function dragFillEvent(
  * paste the contents twice across the selected columns.
  */
 function expandPaste(model: EditorModel, payload: ParsePastePayload): ParsePastePayload {
-    const selection = model.selectionCells;
-    const minSelection = parseCellKey(selection[0]);
-    const maxSelection = parseCellKey(selection[selection.length - 1]);
-    const selectionColCount = maxSelection.colIdx - minSelection.colIdx + 1;
+    const { orderedColumns, selectionCells } = model;
+    const minSelection = parseCellKey(selectionCells[0]);
+    const maxSelection = parseCellKey(selectionCells[selectionCells.length - 1]);
+    const selectionColCount =
+        orderedColumns.indexOf(maxSelection.fieldKey) - orderedColumns.indexOf(minSelection.fieldKey) + 1;
     const selectionRowCount = maxSelection.rowIdx - minSelection.rowIdx + 1;
     let { data, numCols, numRows } = payload;
 
@@ -1366,7 +1189,7 @@ function validatePaste(
 
     // If P = 1 then target can be 1 or M
     // If P = M(x,y) then target can be 1 or exact M(x,y)
-    if (coordinates.colMax >= model.columns.size) {
+    if (coordinates.colMax >= model.orderedColumns.size) {
         success = false;
         message = 'Unable to paste. Cannot paste columns beyond the columns found in the grid.';
     } else if (coordinates.rowMax - coordinates.rowMin > maxRowPaste) {
@@ -1450,68 +1273,37 @@ interface ParseLookupPayload {
     values: List<ValueDescriptor>;
 }
 
-function isReadonlyRow(row: Map<string, any>, pkCols: QueryColumn[], readonlyRows: string[]): boolean {
-    if (pkCols.length === 1 && row) {
-        // Coerce pkValue to string because it may actually be a number or other type, and readonlyRows is string[]
-        const pkValue = caseInsensitive(row.toJS(), pkCols[0].fieldKey)?.toString();
-        return readonlyRows.includes(pkValue);
-    }
-
-    return false;
-}
-
 async function insertPastedData(
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
-    queryInfo: QueryInfo,
-    columns: QueryColumn[],
     editorModel: EditorModel,
     paste: PasteModel,
-    columnMetadata: Map<string, EditableColumnMetadata>,
     readonlyRows: string[],
-    lockedRows: string[],
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string,
     selectCells: boolean
-): Promise<EditorModelAndGridData> {
+): Promise<Partial<EditorModel>> {
     const pastedData = paste.payload.data;
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
     const selectionCells: string[] = [];
     let rowCount = editorModel.rowCount;
-    let updatedDataKeys: List<any>;
-    let updatedData: Map<any, Map<string, any>>;
 
     if (paste.rowsToAdd > 0 && !lockRowCount) {
         rowCount += paste.rowsToAdd;
-        const dataChanges = addRowsToGridData(dataKeys, data, paste.rowsToAdd);
-        updatedData = dataChanges.data;
-        updatedDataKeys = dataChanges.dataKeys;
     }
 
     const byColumnValues = getPasteValuesByColumn(paste);
     const lookupColumnContainerCache = {};
     const { colMin, rowMin } = paste.coordinates;
-    const pkCols = queryInfo.getPkCols();
     let rowIdx = rowMin;
     let hasReachedRowLimit = false;
-    let allReadOnlyRows: string[];
-
-    if (readonlyRows && lockedRows) {
-        allReadOnlyRows = readonlyRows.concat(lockedRows);
-    } else if (readonlyRows) {
-        allReadOnlyRows = readonlyRows;
-    } else if (lockedRows) {
-        allReadOnlyRows = lockedRows;
-    }
 
     for (let r = 0; r < pastedData.size; r++) {
         const row = pastedData.get(r);
         if (hasReachedRowLimit && lockRowCount) return;
 
-        if (allReadOnlyRows) {
-            while (rowIdx < rowCount && isReadonlyRow(data.get(dataKeys.get(rowIdx)), pkCols, allReadOnlyRows)) {
+        if (readonlyRows) {
+            while (rowIdx < rowCount && editorModel.isReadOnlyRow(rowIdx, readonlyRows)) {
                 // Skip over readonly rows
                 rowIdx++;
             }
@@ -1522,17 +1314,17 @@ async function insertPastedData(
             }
         }
 
-        let pkValue = getPkValue(row, queryInfo);
-        if (!pkValue) pkValue = dataKeys.get(rowIdx);
+        let pkValue = getPkValue(row, editorModel.queryInfo);
+        if (!pkValue) pkValue = editorModel.getPkValue(rowIdx);
 
         for (let cn = 0; cn < row.size; cn++) {
             const val = row.get(cn);
             const colIdx = colMin + cn;
-            const cellKey = genCellKey(colIdx, rowIdx);
-            const col = columns[colIdx];
-            const metadata = columnMetadata?.get(col?.fieldKey.toLowerCase());
+            const col = editorModel.getColumnByIndex(colIdx);
+            const cellKey = genCellKey(col.fieldKey, rowIdx);
+            const metadata = editorModel.getColumnMetadata(col?.fieldKey);
             const readOnlyCol = col?.readOnly || metadata?.readOnly;
-            const readOnlyCell = metadata?.isReadOnlyCell(pkValue);
+            const readOnlyCell = metadata?.isReadOnlyCell?.(pkValue);
 
             if (!readOnlyCol && !readOnlyCell) {
                 let cv: List<ValueDescriptor>;
@@ -1550,11 +1342,9 @@ async function insertPastedData(
                         cellKey,
                         forUpdate,
                         targetContainerPath,
-                        dataKeys,
-                        data
+                        editorModel
                     );
                     cv = values;
-
                     msg = message;
                 } else {
                     const { message, value } = getValidatedEditableGridValue(val, col);
@@ -1574,32 +1364,25 @@ async function insertPastedData(
         rowIdx++;
     }
 
-    return {
-        editorModel: { cellMessages, cellValues, rowCount, selectionCells },
-        data: updatedData,
-        dataKeys: updatedDataKeys,
-    };
+    return { cellMessages, cellValues, rowCount, selectionCells };
 }
 
-function getReadonlyRowCount(
-    rowCount: number,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
-    queryInfo: QueryInfo,
-    startRowInd: number,
-    readonlyRows: string[]
-): number {
-    const pkCols = queryInfo.getPkCols();
+function getReadonlyRowCount(editorModel: EditorModel, startRowInd: number, readonlyRows: string[]): number {
+    const pkCols = editorModel.queryInfo.getPkCols();
 
     // Rows with multiple PKs are always read-only
     if (pkCols.length !== 1) {
-        return rowCount - startRowInd;
+        return editorModel.rowCount - startRowInd;
     }
 
-    return dataKeys.slice(startRowInd, rowCount).reduce((total, index) => {
-        if (isReadonlyRow(data.get(dataKeys.get(index)), pkCols, readonlyRows)) total++;
-        return total;
-    }, 0);
+    let total = 0;
+
+    for (let index = startRowInd; index < editorModel.rowCount; index++) {
+        const pkValue = editorModel.getPkValue(index);
+        if (readonlyRows.includes(pkValue.toString())) total++;
+    }
+
+    return total;
 }
 
 // Gets the non-blank values pasted for each column.  The values in the resulting lists may not align to the rows
@@ -1625,80 +1408,51 @@ function getPasteValuesByColumn(paste: PasteModel): List<List<string>> {
 
 export async function validateAndInsertPastedData(
     editorModel: EditorModel,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
-    queryInfo: QueryInfo,
-    columns: QueryColumn[],
     value: string,
-    columnMetadata: Map<string, EditableColumnMetadata>,
     readonlyRows: string[],
-    lockedRows: string[],
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string,
     selectCells: boolean
-): Promise<EditorModelAndGridData> {
+): Promise<Partial<EditorModel>> {
     const { selectedColIdx, selectedRowIdx } = editorModel;
     const readOnlyRowCount =
-        readonlyRows && !lockRowCount
-            ? getReadonlyRowCount(editorModel.rowCount, dataKeys, data, queryInfo, selectedRowIdx, readonlyRows)
-            : 0;
+        readonlyRows && !lockRowCount ? getReadonlyRowCount(editorModel, selectedRowIdx, readonlyRows) : 0;
     const paste = validatePaste(editorModel, selectedColIdx, selectedRowIdx, value, readOnlyRowCount);
 
     if (paste.success) {
         return insertPastedData(
-            dataKeys,
-            data,
-            queryInfo,
-            columns,
             editorModel,
             paste,
-            columnMetadata,
             readonlyRows,
-            lockedRows,
             lockRowCount,
             forUpdate,
             targetContainerPath,
             selectCells
         );
     } else {
-        const cellKey = genCellKey(selectedColIdx, selectedRowIdx);
-        return {
-            data: undefined,
-            dataKeys: undefined,
-            editorModel: { cellMessages: editorModel.cellMessages.set(cellKey, { message: paste.message }) },
-        };
+        const fieldKey = editorModel.getFieldKeyByIndex(selectedColIdx);
+        const cellKey = genCellKey(fieldKey, selectedRowIdx);
+        return { cellMessages: editorModel.cellMessages.set(cellKey, { message: paste.message }) };
     }
 }
 
 export async function pasteEvent(
     editorModel: EditorModel,
-    dataKeys: List<any>,
-    data: Map<any, Map<string, any>>,
-    queryInfo: QueryInfo,
-    columns: QueryColumn[],
     event: any,
-    columnMetadata: Map<string, EditableColumnMetadata>,
     readonlyRows: string[],
-    lockedRows: string[],
     lockRowCount: boolean,
     forUpdate: boolean,
     targetContainerPath: string
-): Promise<EditorModelAndGridData> {
+): Promise<Partial<EditorModel>> {
     // If a cell has focus do not accept incoming paste events -- allow for normal paste to input
     if (editorModel && editorModel.hasSelection && !editorModel.hasFocus) {
         cancelEvent(event);
         const value = getPasteValue(event);
         return await validateAndInsertPastedData(
             editorModel,
-            dataKeys,
-            data,
-            queryInfo,
-            columns,
             value,
-            columnMetadata,
             readonlyRows,
-            lockedRows,
             lockRowCount,
             forUpdate,
             targetContainerPath,
@@ -1706,7 +1460,7 @@ export async function pasteEvent(
         );
     }
 
-    return { data: undefined, dataKeys: undefined, editorModel: undefined };
+    return undefined;
 }
 
 function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
@@ -1724,18 +1478,19 @@ function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
     return value;
 }
 
-function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string {
+function getCopyValue(model: EditorModel): string {
     let copyValue = '';
     const EOL = '\n';
     const selectionCells = [...model.selectionCells];
-    selectionCells.push(genCellKey(model.selectedColIdx, model.selectedRowIdx));
+    const fieldKey = model.orderedColumns.get(model.selectedColIdx);
+    selectionCells.push(genCellKey(fieldKey, model.selectedRowIdx));
 
     for (let rn = 0; rn < model.rowCount; rn++) {
         let cellSep = '';
         let inSelection = false;
 
-        insertColumns.forEach((col, cn) => {
-            const cellKey = genCellKey(cn, rn);
+        model.orderedColumns.forEach(fieldKey => {
+            const cellKey = genCellKey(fieldKey, rn);
 
             if (selectionCells.find(key => key === cellKey)) {
                 inSelection = true;
@@ -1756,10 +1511,10 @@ function getCopyValue(model: EditorModel, insertColumns: QueryColumn[]): string 
     return copyValue;
 }
 
-export function copyEvent(editorModel: EditorModel, insertColumns: QueryColumn[], event: any): boolean {
+export function copyEvent(editorModel: EditorModel, event: any): boolean {
     if (editorModel && !editorModel.hasFocus && editorModel.hasSelection && !editorModel.isSparseSelection) {
         cancelEvent(event);
-        setCopyValue(event, getCopyValue(editorModel, insertColumns));
+        setCopyValue(event, getCopyValue(editorModel));
         return true;
     }
 

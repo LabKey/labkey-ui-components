@@ -263,7 +263,7 @@ export class QueryColumn implements IQueryColumn {
     declare sourceOntology: string;
     declare conceptSubtree: string;
 
-    constructor(rawColumn: Partial<QueryColumn>) {
+    constructor(rawColumn: Partial<QueryColumn | IQueryColumn>) {
         Object.assign(this, defaultQueryColumn, rawColumn);
 
         if (rawColumn && rawColumn.lookup !== undefined) {

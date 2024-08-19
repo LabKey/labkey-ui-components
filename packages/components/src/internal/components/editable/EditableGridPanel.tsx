@@ -1,19 +1,33 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
-import { fromJS } from 'immutable';
 import classNames from 'classnames';
-
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
-
-import { getUniqueIdColumnMetadata } from '../entities/utils';
 
 import { EditorModel } from './models';
 
 import { EditableGrid, EditableGridChange, SharedEditableGridPanelProps } from './EditableGrid';
 
+interface EditableGridTabProps {
+    activeTab: number;
+    getTabTitle: (index: number) => string;
+    index: number;
+    model: EditorModel;
+    setActiveTab: (index: number) => void;
+}
+
+export const EditableGridTab: FC<EditableGridTabProps> = memo(props => {
+    const { activeTab, getTabTitle, index, model, setActiveTab } = props;
+    const tabTitle = useMemo(() => (getTabTitle ? getTabTitle(index) : model.tabTitle), [getTabTitle, model.tabTitle]);
+    const className = classNames({ active: index === activeTab });
+    const onClick = useCallback(() => setActiveTab(index), [index, setActiveTab]);
+    return (
+        <li key={tabTitle} className={className}>
+            <a onClick={onClick}>{tabTitle}</a>
+        </li>
+    );
+});
+
 export interface EditableGridPanelProps extends SharedEditableGridPanelProps {
     editorModel: EditorModel | EditorModel[];
     getIsDirty?: () => boolean;
-    model: QueryModel | QueryModel[];
     onChange: EditableGridChange;
     setIsDirty?: (isDirty: boolean) => void;
 }
@@ -28,72 +42,34 @@ export interface EditableGridPanelProps extends SharedEditableGridPanelProps {
 export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
     const {
         editorModel,
-        model,
         onChange,
         title,
         bsStyle,
         className = '',
-        columnMetadata,
-        getColumnMetadata,
         readonlyRows,
         getReadOnlyRows,
-        updateColumns,
-        getUpdateColumns,
         getTabHeader,
         getTabTitle,
-        readOnlyColumns,
         forUpdate,
-        insertColumns,
         ...gridProps
     } = props;
-
     const [activeTab, setActiveTab] = useState<number>(props.activeTab ?? 0);
-    const models = Array.isArray(model) ? model : [model];
-    const activeModel = models[activeTab];
     const editorModels = Array.isArray(editorModel) ? editorModel : [editorModel];
     const activeEditorModel = editorModels[activeTab];
-    const hasTabs = models.length > 1;
-
+    const hasTabs = editorModels.length > 1;
     const _onChange = useCallback<EditableGridChange>(
-        (event, editorModelChanges, dataKeys, data) => onChange(event, editorModelChanges, dataKeys, data, activeTab),
+        (event, editorModelChanges) => onChange(event, editorModelChanges, activeTab),
         [activeTab, onChange]
     );
-
-    // TODO: When EditableGridPanelDeprecated is removed we should be able to just pass model.rows and model.orderedRows
-    //  to the EditableGrid.
-    const { orderedRows, queryInfo, rows } = activeModel;
-    const data = useMemo(() => fromJS(rows), [rows]);
-    const dataKeys = useMemo(() => fromJS(orderedRows), [orderedRows]);
-    const error = activeModel.hasLoadErrors
-        ? activeModel.loadErrors[0] ?? 'Something went wrong loading the data.'
-        : undefined;
-
-    let activeColumnMetadata = columnMetadata;
-    if (!activeColumnMetadata && getColumnMetadata) activeColumnMetadata = getColumnMetadata(activeTab);
-    if (!activeColumnMetadata) activeColumnMetadata = getUniqueIdColumnMetadata(queryInfo);
-
     let activeReadOnlyRows = readonlyRows;
     if (!activeReadOnlyRows && getReadOnlyRows) activeReadOnlyRows = getReadOnlyRows(activeTab);
-
-    let activeUpdateColumns = updateColumns;
-    if (!activeUpdateColumns && getUpdateColumns) activeUpdateColumns = getUpdateColumns(activeTab);
-
-    const onTabClick = useCallback(setActiveTab, []);
 
     const editableGrid = (
         <EditableGrid
             {...gridProps}
-            columnMetadata={activeColumnMetadata}
-            data={data}
-            dataKeys={dataKeys}
             editorModel={activeEditorModel}
-            error={error}
             onChange={_onChange}
-            queryInfo={queryInfo}
             readonlyRows={activeReadOnlyRows}
-            readOnlyColumns={readOnlyColumns}
-            updateColumns={activeUpdateColumns}
-            insertColumns={insertColumns}
             forUpdate={forUpdate}
         />
     );
@@ -108,23 +84,16 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
             <div className="panel-body">
                 {hasTabs && (
                     <ul className="nav nav-tabs">
-                        {models.map((tabModel, index) => {
-                            if (tabModel) {
-                                let tabTitle = tabModel.title ?? tabModel.queryName;
-                                if (getTabTitle) tabTitle = getTabTitle(index);
-
-                                const classes = classNames({
-                                    active: activeModel.id === tabModel.id,
-                                });
-
-                                return (
-                                    <li key={tabModel.id} className={classes}>
-                                        <a onClick={() => onTabClick(index)}>{tabTitle}</a>
-                                    </li>
-                                );
-                            }
-                            return null;
-                        })}
+                        {editorModels.map((tabModel, index) => (
+                            <EditableGridTab
+                                activeTab={activeTab}
+                                getTabTitle={getTabTitle}
+                                index={index}
+                                key={index} // eslint-disable-line react/no-array-index-key
+                                model={tabModel}
+                                setActiveTab={setActiveTab}
+                            />
+                        ))}
                     </ul>
                 )}
                 {getTabHeader?.(activeTab)}

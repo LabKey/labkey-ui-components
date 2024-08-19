@@ -1,3 +1,7 @@
+// Run all tests with timezone set to UTC
+// https://stackoverflow.com/a/56482581
+process.env.TZ = 'UTC';
+
 module.exports = {
     globals: {
         LABKEY: {
@@ -33,16 +37,13 @@ module.exports = {
     moduleFileExtensions: ['ts', 'tsx', 'js'],
     roots: ['<rootDir>'],
     setupFilesAfterEnv: [
-        './src/test/jest.setup.ts'
-    ],
-    snapshotSerializers: [
-        'enzyme-to-json/serializer'
+        './src/test/jest.setup.react.ts'
     ],
     testEnvironment: 'jsdom',
     testPathIgnorePatterns: [
         '/node_modules/'
     ],
-    testRegex: '(\\.(spec))\\.(ts|tsx)$',
+    testRegex: '(\\.(test))\\.(ts|tsx)$',
     testResultsProcessor: 'jest-teamcity-reporter',
     transform: {
         '^.+\\.tsx?$': [

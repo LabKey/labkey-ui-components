@@ -58,6 +58,7 @@ import { FolderMenu, FolderMenuItem } from './FolderMenu';
 import { ProductMenuSection } from './ProductMenuSection';
 import { MenuSectionConfig, MenuSectionModel, ProductMenuModel } from './model';
 import { HOME_PATH, HOME_TITLE } from './constants';
+import { cancelEvent } from '../../events';
 
 export interface ProductMenuButtonProps {
     appProperties?: AppProperties;
@@ -263,10 +264,13 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
         })();
     }, [api, container, moduleContext, appProperties?.controllerName]);
 
-    const toggleMenu = useCallback(() => {
-        setShow(!show);
+    const toggleMenu = useCallback((evt: MouseEvent<HTMLButtonElement>) => {
+        // Have to cancel here or the document click handler set by useNavMenuState will get triggered and immediately
+        // close the menu.
+        cancelEvent(evt);
         blurActiveElement();
-    }, [show, setShow]);
+        setShow(current => !current);
+    }, [setShow]);
 
     // Only toggle the menu closing if a menu section link has been clicked or a project icon (issue 48283).
     // Clicking anywhere else inside the menu will not toggle the menu, including side panel folder clicks.
@@ -279,7 +283,7 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
                 (nodeName.toLowerCase() === 'span' && className?.indexOf('product-menu-item') > -1) ||
                 (nodeName.toLowerCase() === 'i' && className?.toLowerCase().startsWith('fa'))
             ) {
-                toggleMenu();
+                setShow(current => !current);
             }
         },
         [toggleMenu]

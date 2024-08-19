@@ -49,7 +49,6 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
               />
             </span>
           </div>
-          
         </span>
       </div>
       <div
@@ -86,7 +85,6 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
                 />
               </span>
             </div>
-            
           </span>
         </div>
       </div>
@@ -154,7 +152,6 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
               />
             </span>
           </div>
-          
         </span>
       </div>
       <div
@@ -193,7 +190,6 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
                 />
               </span>
             </div>
-            
           </span>
         </div>
       </div>
@@ -261,7 +257,6 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
               />
             </span>
           </div>
-          
         </span>
       </div>
       <div
@@ -298,7 +293,6 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
                 />
               </span>
             </div>
-            
           </span>
         </div>
       </div>
@@ -367,7 +361,6 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
               />
             </span>
           </div>
-          
         </span>
       </div>
       <div
@@ -406,7 +399,6 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
                 />
               </span>
             </div>
-            
           </span>
         </div>
       </div>
@@ -474,7 +466,6 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
               />
             </span>
           </div>
-          
         </span>
       </div>
       <div
@@ -513,7 +504,6 @@ exports[`<EntityDetailsForm/> with previewName 1`] = `
                 />
               </span>
             </div>
-            
           </span>
         </div>
       </div>

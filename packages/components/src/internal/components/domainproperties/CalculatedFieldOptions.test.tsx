@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { act } from 'react-dom/test-utils';
-
 import { List } from 'immutable';
+
+import { act } from '@testing-library/react';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
@@ -26,6 +26,7 @@ describe('CalculatedFieldOptions', () => {
         expect(document.querySelector('.domain-field-section-heading').textContent).toBe('Expression');
         expect(document.querySelectorAll('.margin-bottom')).toHaveLength(0);
         expect(document.querySelectorAll('.form-control')).toHaveLength(1);
+        expect(document.querySelectorAll('.domain-field-calc-footer')).toHaveLength(1);
         expect(document.querySelector('textarea').textContent).toBe('');
         expect(document.querySelector('textarea').getAttribute('disabled')).toBe(null);
     });
@@ -45,6 +46,7 @@ describe('CalculatedFieldOptions', () => {
         expect(document.querySelector('.domain-field-section-heading').textContent).toBe('Expression');
         expect(document.querySelectorAll('.margin-bottom')).toHaveLength(1);
         expect(document.querySelectorAll('.form-control')).toHaveLength(1);
+        expect(document.querySelectorAll('.domain-field-calc-footer')).toHaveLength(1);
         expect(document.querySelector('textarea').textContent).toBe('1=0');
         expect(document.querySelector('textarea').getAttribute('disabled')).toBe(null);
     });

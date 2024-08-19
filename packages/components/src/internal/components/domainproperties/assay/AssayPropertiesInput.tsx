@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode } from 'react';
+import React, { FC, memo, PropsWithChildren, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import classNames from 'classnames';
@@ -38,9 +38,9 @@ import { AssayProtocolModel } from './models';
 import { FORM_IDS, SCRIPTS_DIR } from './constants';
 import { getScriptEngineForExtension, getValidPublishTargets } from './actions';
 
-interface AssayPropertiesInputProps extends DomainFieldLabelProps {
-    hideAdvancedProperties?: boolean;
+interface AssayPropertiesInputProps extends DomainFieldLabelProps, PropsWithChildren {
     colSize?: number;
+    hideAdvancedProperties?: boolean;
 }
 
 export const AssayPropertiesInput: FC<AssayPropertiesInputProps> = memo(props => {
@@ -76,10 +76,10 @@ AssayPropertiesInput.defaultProps = {
 };
 
 interface InputProps {
+    canRename?: boolean;
     hideAdvancedProperties?: boolean;
     model: AssayProtocolModel;
     onChange: (evt) => void;
-    canRename?: boolean;
 }
 
 export function NameInput(props: InputProps) {

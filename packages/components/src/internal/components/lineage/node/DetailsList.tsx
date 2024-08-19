@@ -1,4 +1,4 @@
-import React, { FC, Fragment, memo, ReactNode, useCallback, useMemo, useState } from 'react';
+import React, { FC, Fragment, memo, PropsWithChildren, ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { naturalSortByProperty } from '../../../../public/sort';
 import {
@@ -13,7 +13,7 @@ import { NodeInteractionConsumer } from '../actions';
 import { LineageDataLink } from '../LineageDataLink';
 import { SVGIcon } from '../../base/SVGIcon';
 
-export interface DetailsListProps {
+export interface DetailsListProps extends PropsWithChildren {
     collapsedCount?: number;
     headerLinks?: ReactNode[];
     open?: boolean;

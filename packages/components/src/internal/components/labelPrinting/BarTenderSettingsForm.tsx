@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
 import { Alert } from '../base/Alert';
 
@@ -37,7 +37,7 @@ const FAILED_NOTIFICATION_MESSAGE = 'Failed to connect to BarTender web service.
 const UNKNOWN_STATUS_MESSAGE = 'Unrecognized status code returned from BarTender service';
 const FAILED_TO_SAVE_MESSAGE = 'Failed to save connection configuration';
 
-interface SettingsInputProps {
+interface SettingsInputProps extends PropsWithChildren {
     description: string;
     label: string;
     name: string;

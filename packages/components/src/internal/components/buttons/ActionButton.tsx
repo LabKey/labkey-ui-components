@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
-export interface ActionButtonProps {
+export interface ActionButtonProps extends PropsWithChildren {
     buttonClass?: string;
     containerClass?: string;
     disabled?: boolean;
-    title?: string;
-    onClick: () => void;
-    helperTitle?: string;
     helperBody?: ReactNode;
+    helperTitle?: string;
+    onClick: () => void;
+    title?: string;
 }
 
 export class ActionButton extends React.PureComponent<ActionButtonProps> {

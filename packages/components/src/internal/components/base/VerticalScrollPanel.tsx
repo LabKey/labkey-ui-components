@@ -1,10 +1,10 @@
-import React, { FC, useState, useEffect, memo, useCallback } from 'react';
+import React, { FC, useState, useEffect, memo, useCallback, PropsWithChildren } from 'react';
 
 // We have padding at the bottom of our pages that we need to account for or we'll end up with double scrollbars on the
 // page which looks bad
 const PADDING = 45;
 
-interface Props {
+interface Props extends PropsWithChildren {
     cls?: string;
     offset?: number;
     ratio?: number;

@@ -1,11 +1,11 @@
-import React, { FC, memo, useMemo } from 'react';
+import React, { FC, memo, PropsWithChildren, useMemo } from 'react';
 
 import { generateId } from '../util/utils';
 import { Placement } from '../useOverlayPositioning';
 import { Popover } from '../Popover';
 import { OverlayTrigger } from '../OverlayTrigger';
 
-interface Props {
+interface Props extends PropsWithChildren {
     placement?: Placement;
 }
 

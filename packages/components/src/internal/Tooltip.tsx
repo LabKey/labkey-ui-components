@@ -1,9 +1,9 @@
-import React, { FC, MutableRefObject } from 'react';
+import React, { FC, MutableRefObject, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 
 import { Placement, useOverlayPositioning } from './useOverlayPositioning';
 
-export interface TooltipProps {
+export interface TooltipProps extends PropsWithChildren {
     id: string;
     // Sometimes Popovers/Tooltips use fixed positioning, which requires different considerations when positioning the
     // elements on the page

@@ -1,7 +1,7 @@
-import React, { ChangeEventHandler, FC, memo, MouseEventHandler } from 'react';
+import React, { ChangeEventHandler, FC, memo, MouseEventHandler, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 
-interface Props {
+interface Props extends PropsWithChildren {
     checked: boolean;
     className?: string;
     disabled?: boolean;

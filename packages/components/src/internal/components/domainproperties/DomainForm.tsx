@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, ReactNode } from 'react';
+import React, { FC, memo, PropsWithChildren, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
@@ -104,7 +104,7 @@ import { SystemFields } from './SystemFields';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
 import { Collapsible } from './Collapsible';
 
-export interface DomainFormProps {
+export interface DomainFormProps extends PropsWithChildren {
     api?: DomainPropertiesAPIWrapper;
     appDomainHeaderRenderer?: HeaderRenderer;
     appPropertiesOnly?: boolean; // Flag to indicate if LKS specific properties/features should be excluded, default to false

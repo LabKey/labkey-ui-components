@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, PropsWithChildren, useCallback, useState } from 'react';
 import { Utils } from '@labkey/api';
 
 import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
@@ -41,13 +41,13 @@ import {
 } from './AssayPropertiesInput';
 import { BOOLEAN_FIELDS, FORM_ID_PREFIX, PROPERTIES_HEADER_ID } from './constants';
 
-interface AssayPropertiesFormProps {
+interface AssayPropertiesFormProps extends PropsWithChildren {
     appPropertiesOnly?: boolean;
+    canRename?: boolean;
     hideAdvancedProperties?: boolean;
     hideStudyProperties?: boolean;
     model: AssayProtocolModel;
     onChange: (model: AssayProtocolModel) => void;
-    canRename?: boolean;
 }
 
 const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {

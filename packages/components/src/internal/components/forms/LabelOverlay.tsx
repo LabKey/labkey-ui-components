@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 import { generateId } from '../../util/utils';
@@ -26,7 +26,7 @@ import { HelpTipRenderer } from './HelpTipRenderer';
 import { INPUT_LABEL_CLASS_NAME } from './constants';
 import { DOMAIN_FIELD, DomainFieldHelpTipContents } from './DomainFieldHelpTipContents';
 
-export interface LabelOverlayProps {
+export interface LabelOverlayProps extends PropsWithChildren {
     addLabelAsterisk?: boolean;
     column?: QueryColumn;
     description?: string;

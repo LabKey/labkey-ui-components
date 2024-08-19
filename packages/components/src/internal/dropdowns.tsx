@@ -4,6 +4,7 @@ import React, {
     memo,
     MouseEvent,
     MutableRefObject,
+    PropsWithChildren,
     ReactElement,
     ReactNode,
     SyntheticEvent,
@@ -85,11 +86,11 @@ function useToggleState<T>(): ToggleState<T> {
     return { onClick, open, setOpen, toggleRef };
 }
 
-interface DropdownAnchorProps {
+interface DropdownAnchorProps extends PropsWithChildren {
     className?: string;
+    label?: string;
     pullRight?: boolean;
     title: ReactNode;
-    label?: string;
 }
 
 /**
@@ -127,9 +128,9 @@ DropdownAnchor.displayName = 'DropdownAnchor';
 
 interface DropdownButtonProps {
     bsStyle?: BSStyle;
+    buttonClassName?: string;
     children: ReactNode;
     className?: string;
-    buttonClassName?: string;
     disabled?: boolean;
     dropup?: boolean;
     noCaret?: boolean;
@@ -195,10 +196,11 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
 DropdownButton.displayName = 'DropdownButton';
 
 interface SplitButtonProps extends Omit<DropdownButtonProps, 'noCaret' | 'onMouseEnter' | 'onMouseLeave'> {
-    toggleClassName?: string;
-    buttonDisabled?: boolean; // Used to disable the main button
+    buttonDisabled?: boolean;
+    // Used to disable the main button
     href?: string;
-    menuDisabled?: boolean; // Used to disable the menu toggle button
+    menuDisabled?: boolean;
+    toggleClassName?: string; // Used to disable the menu toggle button
 }
 
 /**

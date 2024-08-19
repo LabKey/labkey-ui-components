@@ -8,6 +8,7 @@ import React, {
     FocusEventHandler,
     InputHTMLAttributes,
     memo,
+    PropsWithChildren,
     ReactNode,
     RefObject,
     SelectHTMLAttributes,
@@ -92,7 +93,7 @@ const ErrorMessages: FC<ErrorMessageProps> = memo(props => {
     );
 });
 
-const Help: FC = ({ children }) => {
+const Help: FC<PropsWithChildren> = ({ children }) => {
     if (!children) return null;
     return <small className="form-text text-muted">{children}</small>;
 };
@@ -107,7 +108,7 @@ const RequiredSymbol: FC<RequiredSymbolProps> = memo(({ required, symbol = ' *' 
     return <span className="required-symbol">{symbol}</span>;
 });
 
-interface LabelProps {
+interface LabelProps extends PropsWithChildren {
     fakeLabel?: boolean;
     htmlFor: string;
     labelClassName?: string;

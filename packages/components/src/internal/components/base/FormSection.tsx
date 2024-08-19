@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { Component, PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
-interface Props {
-    addContent?: React.ReactNode;
+interface Props extends PropsWithChildren {
+    addContent?: ReactNode;
     iconSpacer?: boolean;
-    label?: React.ReactNode;
+    label?: ReactNode;
     onAddClick?: () => any;
     showLabel?: boolean;
 }
 
-export class FormSection extends React.Component<Props, any> {
+export class FormSection extends Component<Props, any> {
     static defaultProps = {
         iconSpacer: true,
         showLabel: true,

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, HTMLProps, ReactNode } from 'react';
+import React, { FC, HTMLProps, PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 
-export interface AlertProps extends HTMLProps<HTMLDivElement> {
+export interface AlertProps extends HTMLProps<HTMLDivElement>, PropsWithChildren {
     bsStyle?: string;
     closeLabel?: ReactNode;
     onDismiss?: () => void;

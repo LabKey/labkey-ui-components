@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { PropsWithChildren, PureComponent, ReactNode } from 'react';
 
 import { SVGIcon } from '../base/SVGIcon';
 
-export interface PageDetailHeaderProps {
+export interface PageDetailHeaderProps extends PropsWithChildren {
     description?: ReactNode;
     iconAltText?: string;
     iconDir?: string;

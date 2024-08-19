@@ -15,7 +15,7 @@ import { useServerContext } from '../../internal/components/base/ServerContext';
 
 const MAX_VIEW_NAME_LENGTH = 200;
 export const SAMPLE_FINDER_VIEW_NAME = '~~samplefinder~~';
-export const IDENTIFYING_FIELDS_VIEW_NAME = 'identifyingfields'; // TODO add ~~ to name once initial testing is done
+export const IDENTIFYING_FIELDS_VIEW_NAME = '~~identifyingfields~~';
 
 const RESERVED_VIEW_NAMES = [
     'default',

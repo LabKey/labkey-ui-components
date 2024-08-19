@@ -15,8 +15,9 @@ import { isFieldFullyLocked, isFieldPartiallyLocked } from './propertiesUtil';
 import { CALCULATED_TYPE, PropDescType } from './PropDescType';
 import { parseCalculatedColumn } from './actions';
 
-const typeToDisplay = (type: string): string => {
-    if (type.toLowerCase() === 'other') {
+// export for jest testing
+export const typeToDisplay = (type: string): string => {
+    if (!type || type.toLowerCase() === 'other') {
         return 'Unknown';
     } else if (type.toLowerCase() === 'int' || type.toLowerCase() === 'integer') {
         return 'Integer';
@@ -30,7 +31,11 @@ const typeToDisplay = (type: string): string => {
     return type;
 };
 
-const getColumnTypeMap = (domainFields: List<DomainField>, systemFields: SystemField[]): Record<string, string> => {
+// export for jest testing
+export const getColumnTypeMap = (
+    domainFields: List<DomainField>,
+    systemFields: SystemField[]
+): Record<string, string> => {
     const colTypeMap = {};
     systemFields?.forEach(df => {
         colTypeMap[df.Name] = df.DataType.toUpperCase();

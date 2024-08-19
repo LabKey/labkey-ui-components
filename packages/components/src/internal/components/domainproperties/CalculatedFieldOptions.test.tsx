@@ -2,10 +2,12 @@ import React from 'react';
 
 import { act } from 'react-dom/test-utils';
 
+import { List } from 'immutable';
+
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
-import { CalculatedFieldOptions } from './CalculatedFieldOptions';
-import { DomainField } from './models';
+import { CalculatedFieldOptions, getColumnTypeMap, typeToDisplay } from './CalculatedFieldOptions';
+import { DomainField, SystemField } from './models';
 import { DOMAIN_FIELD_PARTIALLY_LOCKED, INT_RANGE_URI, STRING_RANGE_URI } from './constants';
 
 describe('CalculatedFieldOptions', () => {
@@ -63,5 +65,45 @@ describe('CalculatedFieldOptions', () => {
         expect(document.querySelectorAll('.form-control')).toHaveLength(1);
         expect(document.querySelector('textarea').textContent).toBe('1=0');
         expect(document.querySelector('textarea').getAttribute('disabled')).toBe('');
+    });
+
+    test('typeToDisplay', () => {
+        expect(typeToDisplay(undefined)).toBe('Unknown');
+        expect(typeToDisplay(null)).toBe('Unknown');
+        expect(typeToDisplay('')).toBe('Unknown');
+        expect(typeToDisplay('Other')).toBe('Unknown');
+        expect(typeToDisplay('int')).toBe('Integer');
+        expect(typeToDisplay('Integer')).toBe('Integer');
+        expect(typeToDisplay('double')).toBe('Decimal (floating point)');
+        expect(typeToDisplay('Decimal')).toBe('Decimal (floating point)');
+        expect(typeToDisplay('VARCHAR')).toBe('Text');
+        expect(typeToDisplay('varchar')).toBe('Text');
+        expect(typeToDisplay('Date')).toBe('Date Time');
+        expect(typeToDisplay('Bogus')).toBe('Bogus');
+    });
+
+    test('getColumnTypeMap', () => {
+        expect(getColumnTypeMap(undefined, undefined)).toEqual({});
+        expect(getColumnTypeMap(List.of(), [])).toEqual({});
+        expect(
+            getColumnTypeMap(List.of({ name: 'b', dataType: { name: 'text' } } as DomainField), [
+                { Name: 'a', DataType: 'integer' } as SystemField,
+            ])
+        ).toEqual({
+            a: 'INTEGER',
+            b: 'TEXT',
+        });
+        expect(
+            getColumnTypeMap(
+                List.of(
+                    { name: 'b', dataType: { name: 'text' } } as DomainField,
+                    { name: 'c', dataType: { name: 'calculation' } } as DomainField
+                ),
+                [{ Name: 'a', DataType: 'integer' } as SystemField]
+            )
+        ).toEqual({
+            a: 'INTEGER',
+            b: 'TEXT',
+        });
     });
 });

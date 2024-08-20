@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "4.16.0",
+  "version": "5.0.0-fb-react18.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -99,10 +99,5 @@
     "react-test-renderer": "16.14.0",
     "ts-jest": "29.2.3",
     "webpack-merge": "6.0.1"
-  },
-  "peerDependencies": {
-    "immutable": "^3.8.2",
-    "react": "^16.0",
-    "react-dom": "^16.0"
   }
 }

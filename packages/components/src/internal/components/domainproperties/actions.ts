@@ -41,6 +41,8 @@ import { getQueryDetails } from '../../query/api';
 
 import { selectRows } from '../../query/selectRows';
 
+import { resolveErrorMessage } from '../../util/messaging';
+
 import {
     DOMAIN_ERROR_ID,
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -362,6 +364,36 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
                 resolve(response.maxPhiLevel);
             }),
             failure: handleRequestFailure(reject),
+        });
+    });
+}
+
+export function parseCalculatedColumn(
+    expression: string,
+    columnMap: Record<string, string>,
+    containerPath?: string
+): Promise<{ error: string; type: string }> {
+    return new Promise((resolve, reject) => {
+        if (!expression || expression?.trim()?.length === 0) {
+            resolve({ error: 'Error: an expression value is required.', type: undefined });
+            return;
+        }
+
+        Ajax.request({
+            url: buildURL('query', 'parseCalculatedColumn.api', undefined, { container: containerPath }),
+            jsonData: {
+                expression,
+                columnMap,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                const type = response.jdbcType;
+                const error = response.errors?.[0].msg;
+                resolve({ error, type });
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(resolveErrorMessage(response));
+            }),
         });
     });
 }

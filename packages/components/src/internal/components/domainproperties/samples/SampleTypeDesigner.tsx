@@ -183,10 +183,10 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 'sampleset-parent-import-alias-',
                 this.formatLabel
             );
-            this.setState({
-                model: model.merge({ parentAliases }) as SampleTypeModel,
+            this.setState(state => ({
+                model: state.model.merge({ parentAliases }) as SampleTypeModel,
                 parentOptions,
-            });
+            }));
         } catch (error) {
             setSubmitting(false, () => {
                 this.setState({ error: resolveErrorMessage(error) });
@@ -302,7 +302,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
     };
 
     onUniqueIdConfirm = (): void => {
-        this.setState({ uniqueIdsConfirmed: true }, this.onFinish);
+        this.setState({ showUniqueIdConfirmation: false, uniqueIdsConfirmed: true }, this.onFinish);
     };
 
     onNameExpressionWarningCancel = (): void => {
@@ -766,10 +766,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                         }
                         onCancel={this.onUniqueIdCancel}
                         onConfirm={this.onUniqueIdConfirm}
-                        confirmText={
-                            submitting ? 'Finishing ...' : 'Finish Updating ' + SampleTypeDataType.typeNounSingular
-                        }
-                        isConfirming={submitting}
+                        confirmText="Continue"
                     >
                         {confirmModalMessage}
                     </Modal>

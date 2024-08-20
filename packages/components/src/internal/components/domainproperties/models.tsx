@@ -104,7 +104,12 @@ export interface IFieldChange {
     value: any;
 }
 
-export type DomainOnChange = (changes: List<IFieldChange>, index?: number, expand?: boolean) => void;
+export type DomainOnChange = (
+    changes: List<IFieldChange>,
+    index?: number,
+    expand?: boolean,
+    skipDirtyCheck?: boolean
+) => void;
 
 export interface IBannerMessage {
     message: string;
@@ -587,6 +592,7 @@ export class DomainIndex
 export enum FieldErrors {
     ALIQUOT_ONLY_REQUIRED = "Fields that are 'Editable for aliquots only' cannot be 'Required'.",
     INVALID_LOOKUP = 'Lookup target table does not exist.',
+    MISSING_CALCULATION_EXPRESSION = 'Please provide an expression value for each calculated field.',
     MISSING_DATA_TYPE = 'Please provide a data type for each field.',
     MISSING_FIELD_NAME = 'Please provide a name for each field.',
     MISSING_ONTOLOGY_PROPERTIES = 'Missing required ontology source or label field property.',
@@ -1211,6 +1217,10 @@ export class DomainField
             return FieldErrors.ALIQUOT_ONLY_REQUIRED;
         }
 
+        if (this.isCalculatedField() && (!this.valueExpression || this.valueExpression.trim().length === 0)) {
+            return FieldErrors.MISSING_CALCULATION_EXPRESSION;
+        }
+
         return FieldErrors.NONE;
     }
 
@@ -1470,7 +1480,9 @@ function isFieldNew(field: Partial<IDomainField>): boolean {
 }
 
 function isFieldSaved(field: Partial<IDomainField>): boolean {
-    return !isFieldNew(field) && field.propertyId !== 0;
+    // calculated fields that are saved will have a rangeURI
+    const isSavedCalcField = field.conceptURI === CALCULATED_CONCEPT_URI && field.rangeURI !== undefined;
+    return !isFieldNew(field) && (field.propertyId !== 0 || isSavedCalcField);
 }
 
 export function resolveAvailableTypes(

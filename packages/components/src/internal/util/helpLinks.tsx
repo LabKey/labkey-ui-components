@@ -12,6 +12,7 @@ export const PROPERTY_FIELDS_TOPIC = 'propertyFields';
 export const FIELD_EDITOR_TOPIC = 'fieldEditor';
 export const ADVANCED_FIELD_EDITOR_TOPIC = FIELD_EDITOR_TOPIC + '#advanced';
 export const FIELD_EDITOR_SAMPLE_TYPES_TOPIC = PROPERTY_FIELDS_TOPIC + '#samp';
+export const FIELD_EDITOR_CALC_COLS_TOPIC = PROPERTY_FIELDS_TOPIC + '#calc';
 export const DATE_FORMATS_TOPIC = 'dateFormats#date';
 export const NUMBER_FORMATS_TOPIC = 'dateFormats#number';
 export const ONTOLOGY_LOOKUP_TOPIC = 'ontologyLookup';

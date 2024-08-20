@@ -256,7 +256,8 @@ export function isSampleStatusEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isQueryMetadataEditor(): boolean {
-    return ActionURL.getAction()?.toLowerCase().startsWith('querymetadataeditor');
+    const action = ActionURL.getAction()?.toLowerCase() || '';
+    return action === 'metadataquery' || action.startsWith('querymetadataeditor');
 }
 
 export function getCurrentAppProperties(): AppProperties {

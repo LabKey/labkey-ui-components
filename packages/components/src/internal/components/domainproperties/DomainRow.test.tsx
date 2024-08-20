@@ -20,9 +20,11 @@ import { act } from 'react-dom/test-utils';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+
 import { DomainField, DomainFieldError } from './models';
 import {
-    ATTACHMENT_TYPE, CALCULATED_TYPE,
+    ATTACHMENT_TYPE,
+    CALCULATED_TYPE,
     DATETIME_TYPE,
     DOUBLE_TYPE,
     PARTICIPANT_TYPE,
@@ -45,7 +47,8 @@ import {
     DOMAIN_LAST_ENTERED_DEFAULT,
     DOMAIN_NON_EDITABLE_DEFAULT,
     FIELD_NAME_CHAR_WARNING_INFO,
-    FIELD_NAME_CHAR_WARNING_MSG, INT_RANGE_URI,
+    FIELD_NAME_CHAR_WARNING_MSG,
+    INT_RANGE_URI,
     PHILEVEL_RESTRICTED_PHI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
@@ -85,6 +88,9 @@ describe('DomainRow', () => {
             dragging: false,
             expanded: false,
             field: DomainField.create({}),
+            getDomainFields: () => {
+                return {};
+            },
             helpNoun: 'domain',
             index: 1,
             maxPhiLevel: PHILEVEL_RESTRICTED_PHI,
@@ -119,7 +125,9 @@ describe('DomainRow', () => {
         let container;
         await act(async () => {
             container = renderWithAppContext(
-                wrapDraggable(<DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />)
+                wrapDraggable(
+                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />
+                )
             ).container;
         });
 
@@ -153,7 +161,9 @@ describe('DomainRow', () => {
         let container;
         await act(async () => {
             container = renderWithAppContext(
-                wrapDraggable(<DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />)
+                wrapDraggable(
+                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />
+                )
             ).container;
         });
 
@@ -187,7 +197,9 @@ describe('DomainRow', () => {
         let container;
         await act(async () => {
             container = renderWithAppContext(
-                wrapDraggable(<DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />)
+                wrapDraggable(
+                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />
+                )
             ).container;
         });
 
@@ -221,7 +233,9 @@ describe('DomainRow', () => {
         let container;
         await act(async () => {
             container = renderWithAppContext(
-                wrapDraggable(<DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />)
+                wrapDraggable(
+                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />
+                )
             ).container;
         });
 
@@ -236,10 +250,14 @@ describe('DomainRow', () => {
         expect(req.length).toEqual(1);
 
         // Verify not expanded
-        const expandButton = document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_EXPAND, _domainIndex, _index));
+        const expandButton = document.querySelectorAll(
+            '#' + createFormInputId(DOMAIN_FIELD_EXPAND, _domainIndex, _index)
+        );
         expect(expandButton.length).toEqual(1);
 
-        const deleteButton = document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_DELETE, _domainIndex, _index));
+        const deleteButton = document.querySelectorAll(
+            '#' + createFormInputId(DOMAIN_FIELD_DELETE, _domainIndex, _index)
+        );
         expect(deleteButton.length).toEqual(1);
 
         const advButton = document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_ADV, _domainIndex, _index));
@@ -267,7 +285,13 @@ describe('DomainRow', () => {
         await act(async () => {
             renderWithAppContext(
                 wrapDraggable(
-                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} expanded />
+                    <DomainRow
+                        {...getDefaultProps()}
+                        index={_index}
+                        domainIndex={_domainIndex}
+                        field={field}
+                        expanded
+                    />
                 )
             );
         });
@@ -283,10 +307,14 @@ describe('DomainRow', () => {
         expect(req.length).toEqual(1);
 
         // Verify expanded
-        const expandButton = document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_EXPAND, _domainIndex, _index));
+        const expandButton = document.querySelectorAll(
+            '#' + createFormInputId(DOMAIN_FIELD_EXPAND, _domainIndex, _index)
+        );
         expect(expandButton.length).toEqual(1);
 
-        const deleteButton = document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_DELETE, _domainIndex, _index));
+        const deleteButton = document.querySelectorAll(
+            '#' + createFormInputId(DOMAIN_FIELD_DELETE, _domainIndex, _index)
+        );
         expect(deleteButton.length).toEqual(1);
 
         const advButton = document.querySelectorAll('#' + createFormInputId(DOMAIN_FIELD_ADV, _domainIndex, _index));
@@ -314,7 +342,9 @@ describe('DomainRow', () => {
         let container;
         await act(async () => {
             container = renderWithAppContext(
-                wrapDraggable(<DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />)
+                wrapDraggable(
+                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />
+                )
             ).container;
         });
 
@@ -348,7 +378,9 @@ describe('DomainRow', () => {
         let container;
         await act(async () => {
             container = renderWithAppContext(
-                wrapDraggable(<DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />)
+                wrapDraggable(
+                    <DomainRow {...getDefaultProps()} index={_index} domainIndex={_domainIndex} field={field} />
+                )
             ).container;
         });
 

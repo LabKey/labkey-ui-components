@@ -63,6 +63,7 @@ import {
     userCanEditStorageData,
     userCanReadGroupDetails,
     userCanReadUserDetails,
+    isQueryMetadataEditor,
 } from './utils';
 import {
     ASSAYS_KEY,
@@ -209,7 +210,12 @@ describe('getMenuSectionConfigs', () => {
                 productId: BIOLOGICS_APP_PROPERTIES.productId,
             },
             core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN, ProductFeature.BiologicsRegistry],
+                productFeatures: [
+                    ProductFeature.Workflow,
+                    ProductFeature.Assay,
+                    ProductFeature.ELN,
+                    ProductFeature.BiologicsRegistry,
+                ],
             },
         };
 
@@ -277,7 +283,12 @@ describe('getMenuSectionConfigs', () => {
                 [EXPERIMENTAL_REQUESTS_MENU]: true,
             },
             core: {
-                productFeatures: [ProductFeature.Workflow, ProductFeature.Assay, ProductFeature.ELN, ProductFeature.BiologicsRegistry],
+                productFeatures: [
+                    ProductFeature.Workflow,
+                    ProductFeature.Assay,
+                    ProductFeature.ELN,
+                    ProductFeature.BiologicsRegistry,
+                ],
             },
         };
 
@@ -673,13 +684,12 @@ describe('utils', () => {
                 core: { productFeatures: [ProductFeature.TransformScripts] },
             })
         ).toBe(true);
-
     });
 
     test('isLKSSupportEnabled', () => {
         expect(isLKSSupportEnabled({})).toBe(false);
         expect(isLKSSupportEnabled({ inventory: {} })).toBe(false);
-        expect(isLKSSupportEnabled({ api: { moduleNames: ['premium'] }, })).toBe(true);
+        expect(isLKSSupportEnabled({ api: { moduleNames: ['premium'] } })).toBe(true);
         expect(isLKSSupportEnabled({ samplemanagement: {} })).toBe(false);
         expect(
             isLKSSupportEnabled({
@@ -917,10 +927,8 @@ describe('utils', () => {
             BIOLOGICS_APP_PROPERTIES
         );
         LABKEY.container = { folderType: 'LIMS' };
-        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {} })).toStrictEqual(
-            LIMS_APP_PROPERTIES
-        );
-        LABKEY.container = { };
+        expect(getPrimaryAppProperties({ inventory: {}, samplemanagement: {} })).toStrictEqual(LIMS_APP_PROPERTIES);
+        LABKEY.container = {};
     });
 
     test('isCalculatedFieldsEnabled', () => {
@@ -947,6 +955,16 @@ describe('utils', () => {
                 core: { 'experimental-calculated-fields': true, productFeatures: [ProductFeature.CalculatedFields] },
             })
         ).toBeTruthy();
+    });
+
+    test('isQueryMetadataEditor', () => {
+        expect(isQueryMetadataEditor()).toBe(false);
+        window.history.pushState({}, 'Test Title', '/query-metadataQuery.view#');
+        expect(isQueryMetadataEditor()).toBe(true);
+        window.history.pushState({}, 'Test Title', '/samplemanager-app.view#');
+        expect(isQueryMetadataEditor()).toBe(false);
+        window.history.pushState({}, 'Test Title', '/core-queryMetadataEditorDev.view#');
+        expect(isQueryMetadataEditor()).toBe(true);
     });
 });
 

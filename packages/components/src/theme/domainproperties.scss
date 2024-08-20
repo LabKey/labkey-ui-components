@@ -900,3 +900,18 @@
     display: inline-block;
     padding-right: 10px;
 }
+
+.domain-field-fixed-tooltip {
+    width: 575px;
+}
+.lk-popover:has( .domain-field-fixed-tooltip) {
+    max-width: 600px;
+}
+
+.domain-field-calc-footer div,
+.domain-field-calc-footer span {
+    font-size: 12px;
+}
+.domain-field-calc-footer .error {
+    color: $brand-danger;
+}

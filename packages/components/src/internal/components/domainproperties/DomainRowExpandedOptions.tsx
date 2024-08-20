@@ -19,7 +19,7 @@ import { List } from 'immutable';
 
 import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
-import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
+import { DomainField, IDomainFormDisplayOptions, IFieldChange, SystemField } from './models';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { TextFieldOptions } from './TextFieldOptions';
 import { BooleanFieldOptions } from './BooleanFieldOptions';
@@ -33,6 +33,7 @@ import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptio
 import { TextChoiceOptions } from './TextChoiceOptions';
 import { FileAttachmentOptions } from './FileAttachmentOptions';
 import { CalculatedFieldOptions } from './CalculatedFieldOptions';
+import { CALCULATED_TYPE } from './PropDescType';
 
 interface Props {
     appPropertiesOnly?: boolean;
@@ -40,9 +41,9 @@ interface Props {
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainIndex: number;
     field: DomainField;
-    getDomainFields?: () => List<DomainField>;
+    getDomainFields?: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
     index: number;
-    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => void;
+    onChange: (fieldId: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean) => void;
     onMultiChange: (changes: List<IFieldChange>) => void;
     queryName?: string;
     schemaName?: string;
@@ -68,7 +69,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
         // In most cases we will use the selected data type to determine which field options to show,
         // however in the calculated field data type case, we need to use the rangeURI.
         let dataTypeName = field.dataType.name;
-        if (dataTypeName === 'calculation' && field?.rangeURI) {
+        if (dataTypeName === CALCULATED_TYPE.name && field?.rangeURI) {
             dataTypeName = field?.rangeURI.substring(field?.rangeURI.lastIndexOf('#') + 1);
         }
 
@@ -205,7 +206,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                     />
                 );
             case 'ontologyLookup':
-                const domainFields = getDomainFields ? getDomainFields() : List<DomainField>();
+                const domainFields = getDomainFields ? getDomainFields().domainFields : List<DomainField>();
 
                 return (
                     <OntologyLookupOptions
@@ -259,8 +260,16 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
     };
 
     render() {
-        const { field, index, onChange, showingModal, appPropertiesOnly, domainIndex, domainFormDisplayOptions } =
-            this.props;
+        const {
+            field,
+            index,
+            onChange,
+            showingModal,
+            appPropertiesOnly,
+            domainIndex,
+            domainFormDisplayOptions,
+            getDomainFields,
+        } = this.props;
 
         return (
             <div className="domain-row-container">
@@ -287,6 +296,7 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
                             <CalculatedFieldOptions
                                 domainIndex={domainIndex}
                                 field={field}
+                                getDomainFields={getDomainFields}
                                 index={index}
                                 onChange={onChange}
                             />

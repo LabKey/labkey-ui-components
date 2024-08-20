@@ -596,12 +596,13 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
         this.onDomainChange(handleSystemFieldUpdates(domain, field, enable));
     };
 
-    onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean): void => {
+    onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean, skipDirtyCheck = false): void => {
         const { domain } = this.props;
         const firstChange = changes.get(0);
         const rowSelectedChange = getNameFromId(firstChange?.id) === 'selected';
+        const dirty = skipDirtyCheck ? false : !rowSelectedChange;
 
-        this.onDomainChange(handleDomainUpdates(domain, changes), !rowSelectedChange);
+        this.onDomainChange(handleDomainUpdates(domain, changes), dirty);
 
         if (rowSelectedChange) {
             this.setState(
@@ -845,7 +846,10 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
                 confirmClass="btn-danger"
                 confirmText="Yes, Remove Field"
             >
-                <div>Are you sure you want to remove {fieldName}? All of its data will be deleted as well.</div>
+                <div>
+                    Are you sure you want to remove {fieldName}?{' '}
+                    {!field.isCalculatedField() && 'All of its data will be deleted as well.'}
+                </div>
             </Modal>
         );
     }
@@ -1050,8 +1054,11 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
         return !collapsed;
     };
 
-    getDomainFields = (): List<DomainField> => {
-        return this.props.domain.fields;
+    getDomainFields = (): { domainFields: List<DomainField>; systemFields: SystemField[] } => {
+        return {
+            domainFields: this.props.domain.fields,
+            systemFields: this.props.systemFields,
+        };
     };
 
     scrollFunction = (i: number): void => {
@@ -1128,7 +1135,7 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
                                 {domain.fields.map((field, i) => {
                                     // use the propertyId in the row key for saved fields (helps with issues 49481 and 50076)
                                     let key = 'domain-row-key-new' + i;
-                                    if (!field.isNew() && !field.isCalculatedField()) {
+                                    if (!field.isNew() && !field.isCalculatedField() && field.propertyId > 0) {
                                         key = 'domain-row-key-prop' + field.propertyId;
                                     }
 

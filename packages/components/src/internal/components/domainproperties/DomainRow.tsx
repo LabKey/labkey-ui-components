@@ -55,6 +55,7 @@ import {
     IDomainFormDisplayOptions,
     IFieldChange,
     resolveAvailableTypes,
+    SystemField,
 } from './models';
 import { PropDescType } from './PropDescType';
 import { getCheckedValue } from './actions';
@@ -87,7 +88,7 @@ export interface DomainRowProps {
     field: DomainField;
     fieldDetailsInfo?: Record<string, string>;
     fieldError?: DomainFieldError;
-    getDomainFields?: () => List<DomainField>;
+    getDomainFields?: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
     helpNoun: string;
     index: number;
     isDragDisabled?: boolean;
@@ -208,9 +209,15 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         this.onSingleFieldChange(evt.target.id, value, index, expand);
     };
 
-    onSingleFieldChange = (id: string, value: any, index?: number, expand?: boolean): void => {
+    onSingleFieldChange = (
+        id: string,
+        value: any,
+        index?: number,
+        expand?: boolean,
+        skipDirtyCheck?: boolean
+    ): void => {
         const changes = List([{ id, value } as IFieldChange]);
-        this.props.onChange(changes, index, expand === true);
+        this.props.onChange(changes, index, expand === true, skipDirtyCheck);
     };
 
     onMultiFieldChange = (changes: List<IFieldChange>): void => {
@@ -236,16 +243,13 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                 value: undefined,
             });
         } else {
-            const fieldName = value;
-            const severity = SEVERITY_LEVEL_WARN;
-            const indexes = List<number>([index]);
             const domainFieldError = new DomainFieldError({
                 message: FIELD_NAME_CHAR_WARNING_MSG,
                 extraInfo: FIELD_NAME_CHAR_WARNING_INFO,
-                fieldName,
+                fieldName: value,
                 propertyId: undefined,
-                severity,
-                rowIndexes: indexes,
+                severity: SEVERITY_LEVEL_WARN,
+                rowIndexes: List<number>([index]),
             });
 
             // set value for field error

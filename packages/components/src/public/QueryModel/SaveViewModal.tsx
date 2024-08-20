@@ -14,6 +14,9 @@ import { isAppHomeFolder, isProductProjectsEnabled, userCanEditSharedViews } fro
 import { useServerContext } from '../../internal/components/base/ServerContext';
 
 const MAX_VIEW_NAME_LENGTH = 200;
+export const SAMPLE_FINDER_VIEW_NAME = '~~samplefinder~~';
+export const IDENTIFYING_FIELDS_VIEW_NAME = '~~identifyingfields~~';
+
 const RESERVED_VIEW_NAMES = [
     'default',
     'my default',
@@ -21,7 +24,8 @@ const RESERVED_VIEW_NAMES = [
     '~~details~~',
     '~~insert~~',
     '~~update~~',
-    '~~samplefinder~~',
+    SAMPLE_FINDER_VIEW_NAME,
+    IDENTIFYING_FIELDS_VIEW_NAME,
 ];
 
 interface ViewNameInputProps {

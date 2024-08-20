@@ -9,11 +9,12 @@ import { Modal, ModalProps } from '../Modal';
 
 import { Popover } from '../Popover';
 
-import { OverlayTrigger } from '../OverlayTrigger';
+import { OverlayTrigger, useOverlayTriggerState } from '../OverlayTrigger';
 
 import { Alert } from './base/Alert';
 import { DragDropHandle } from './base/DragDropHandle';
 import { LoadingSpinner } from './base/LoadingSpinner';
+import { createPortal } from 'react-dom';
 
 type ExpandedColumnFilter = (column: QueryColumn, showAllColumns: boolean) => boolean;
 type QueryColumnHandler = (column: QueryColumn) => void;
@@ -82,6 +83,7 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
 
 export interface ColumnChoiceProps {
     column: QueryColumn;
+    disabledMsg?: ReactNode;
     isExpanded?: boolean;
     isInView?: boolean;
     onAddColumn: QueryColumnHandler;
@@ -91,9 +93,15 @@ export interface ColumnChoiceProps {
 
 // exported for jest tests
 export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
-    const { column, isExpanded, isInView, onAddColumn, onExpandColumn, onCollapseColumn } = props;
+    const { column, disabledMsg, isExpanded, isInView, onAddColumn, onExpandColumn, onCollapseColumn } = props;
+    const { onMouseEnter, onMouseLeave, portalEl, show, targetRef } = useOverlayTriggerState<HTMLDivElement>(
+        'disabled-button-overlay',
+        disabledMsg !== undefined,
+        false
+    );
     const supportsExpand = !!onExpandColumn;
     const colFieldKey = column.index;
+    const disabled = disabledMsg !== undefined;
 
     // 46256: use encoded fieldKeyPath
     const hasParentFieldKeys = column.fieldKeyPath.indexOf('/') > -1;
@@ -112,6 +120,15 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     const _onCollapseColumn = useCallback(() => {
         onCollapseColumn(column);
     }, [column, onCollapseColumn]);
+
+    const popover = useMemo(
+        () => (
+            <Popover id="disabled-button-popover" placement="right" targetRef={targetRef}>
+                {disabledMsg}
+            </Popover>
+        ),
+        [disabledMsg, targetRef]
+    );
 
     return (
         <div className="list-group-item flex" key={colFieldKey} data-fieldkey={colFieldKey}>
@@ -139,11 +156,15 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
             )}
             {!isInView && column.selectable && (
                 <div
-                    className="pull-right view-field__action"
-                    title="Add this field to the view."
-                    onClick={_onAddColumn}
+                    className={'pull-right view-field__action ' + (disabledMsg ? ' disabled ' : '')}
+                    title={disabled ? undefined : 'Add this field to the view.'}
+                    onClick={disabled ? undefined : _onAddColumn}
+                    onMouseEnter={onMouseEnter}
+                    onMouseLeave={onMouseLeave}
+                    ref={targetRef}
                 >
                     <i className="fa fa-plus" />
+                    {show && createPortal(popover, portalEl)}
                 </div>
             )}
         </div>
@@ -152,6 +173,7 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
 
 export interface ColumnChoiceGroupProps extends ColumnChoiceProps {
     columnsInView: QueryColumn[];
+    disabledMsg?: ReactNode;
     expandedColumnFilter?: ExpandedColumnFilter;
     expandedColumns?: Record<string, QueryInfo>;
     showAllColumns: boolean;
@@ -162,6 +184,7 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
         expandedColumnFilter,
         expandedColumns,
         column,
+        disabledMsg,
         onAddColumn,
         onExpandColumn,
         onCollapseColumn,
@@ -179,6 +202,7 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
         <>
             <ColumnChoice
                 column={column}
+                disabledMsg={disabledMsg}
                 isExpanded={isLookupExpanded}
                 isInView={isColumnInView(column)}
                 key={column.index}
@@ -192,6 +216,7 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
                     .map(fkCol => (
                         <ColumnChoiceGroup
                             column={fkCol}
+                            disabledMsg={disabledMsg}
                             key={fkCol.index}
                             isInView={isColumnInView(fkCol)}
                             onAddColumn={onAddColumn}
@@ -211,6 +236,7 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
 export interface ColumnInViewProps {
     allowEditLabel: boolean;
     column: QueryColumn;
+    disableDelete: boolean;
     index: number;
     isDragDisabled: boolean;
     onClick: (index: number) => void;
@@ -222,6 +248,7 @@ export interface ColumnInViewProps {
 
 export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
     const {
+        disableDelete,
         allowEditLabel,
         column,
         isDragDisabled,
@@ -287,13 +314,16 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
                                     <i id={'select-' + index} className="fa fa-pencil" />
                                 </span>
                             )}
-                            <span
-                                className="view-field__action clickable"
-                                title="Remove this field from the view."
-                                onClick={_onRemoveColumn}
-                            >
-                                <i className="fa fa-times" />
-                            </span>
+                            {!disableDelete && (
+                                <span
+                                    className="view-field__action clickable"
+                                    title="Remove this field from the view."
+                                    onClick={_onRemoveColumn}
+                                >
+                                    <i className="fa fa-times" />
+                                </span>
+                            )}
+                            {disableDelete && <span className="margin-left-more"></span>}
                         </span>
                     )}
                 </div>
@@ -308,10 +338,12 @@ export interface ColumnSelectionModalProps extends Omit<ModalProps, 'canConfirm'
     allowShowAll?: boolean;
     error?: ReactNode;
     expandedColumnFilter?: ExpandedColumnFilter;
+    fixedFieldKeys?: string[];
     initialSelectedColumn?: QueryColumn;
     initialSelectedColumns?: QueryColumn[];
     isLoaded?: boolean;
     leftColumnTitle?: ReactNode;
+    maxColumns?: number;
     onExpand?: (fk: QueryColumn) => Promise<QueryInfo>;
     onSubmit: (selectedColumns: QueryColumn[]) => Promise<void>;
     queryInfo: QueryInfo;
@@ -326,10 +358,12 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
         allowShowAll,
         error,
         expandedColumnFilter,
+        fixedFieldKeys,
         initialSelectedColumn,
         initialSelectedColumns,
         isLoaded,
         leftColumnTitle,
+        maxColumns,
         onExpand,
         onSubmit,
         queryInfo,
@@ -464,6 +498,10 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
             .filter(c => c.fieldKeyArray.length === 1); // at the top level don't include lookup fields
     }, [expandedColumnFilter, isLoaded, queryInfo, showAllColumns]);
 
+    const disabledMsg = useMemo<string>(() => {
+        return selectedColumns.length === maxColumns ? 'Maximum of ' + maxColumns + ' fields already selected.' : undefined;
+    }, [selectedColumns.length, maxColumns]);
+
     return (
         <Modal
             {...confirmModalProps}
@@ -492,6 +530,7 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
                                     expandedColumns={expandedColumns}
                                     columnsInView={selectedColumns}
                                     showAllColumns={showAllColumns}
+                                    disabledMsg={disabledMsg}
                                 />
                             ))}
                         </div>
@@ -523,6 +562,7 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
                                         {selectedColumns.map((column, index) => (
                                             <ColumnInView
                                                 allowEditLabel={allowEditLabel}
+                                                disableDelete={fixedFieldKeys?.indexOf(column.fieldKey) >= 0}
                                                 key={column.index}
                                                 column={column}
                                                 index={index}

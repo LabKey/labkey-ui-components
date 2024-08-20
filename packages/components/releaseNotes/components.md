@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD August 2024
+### version 4.10.0
+*Released*: 20 August 2024
 - Calculated fields validation of value expression
   - update tooltip text and examples for Expression textarea label
   - validate expression on component mount and on text area blur

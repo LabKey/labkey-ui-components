@@ -102,6 +102,17 @@ describe('ColumnSelectionModal', () => {
             expect(wrapper.find('.fa-chevron-down')).toHaveLength(1);
             wrapper.unmount();
         });
+
+        test('disabled', () => {
+            const wrapper = mount(
+                <ColumnChoice {...defaultProps()} disabledMsg="Disabled, please." isInView={false} />
+            );
+            const addIcon = wrapper.find('.fa-plus');
+            const addIconParent = addIcon.parent();
+            expect(addIconParent.prop('className')).toContain('disabled');
+            expect(addIconParent.prop('title')).toBeUndefined();
+            expect(addIconParent.prop('onClick')).toBeUndefined();
+        });
     });
 
     describe('ColumnInView', () => {
@@ -109,6 +120,7 @@ describe('ColumnSelectionModal', () => {
             return {
                 allowEditLabel: true,
                 column: QUERY_COL,
+                disableDelete: false,
                 index: 1,
                 isDragDisabled: false,
                 onEditTitle: jest.fn(),
@@ -119,14 +131,18 @@ describe('ColumnSelectionModal', () => {
             };
         }
 
-        function validate(wrapper: ReactWrapper, column: QueryColumn, dragDisabled: boolean): void {
+        function validate(wrapper: ReactWrapper, column: QueryColumn, dragDisabled: boolean, deleteDisabled: boolean): void {
             const fieldName = wrapper.find('.field-name span');
             expect(fieldName.text()).toBe(column.caption);
             const removeIcon = wrapper.find('.fa-times');
-            expect(removeIcon.exists()).toBeTruthy();
-            const iconParent = removeIcon.parent();
-            expect(iconParent.prop('className')).toContain('view-field__action clickable');
-            expect(iconParent.prop('onClick')).toBeDefined();
+            if (deleteDisabled) {
+                expect(removeIcon.exists()).toBe(false);
+            } else {
+                expect(removeIcon.exists()).toBeTruthy();
+                const iconParent = removeIcon.parent();
+                expect(iconParent.prop('className')).toContain('view-field__action clickable');
+                expect(iconParent.prop('onClick')).toBeDefined();
+            }
             if (dragDisabled) {
                 expect(wrapper.find(Draggable).prop('isDragDisabled')).toBe(true);
             }
@@ -134,7 +150,13 @@ describe('ColumnSelectionModal', () => {
 
         test('remove enabled', () => {
             const wrapper = mount(wrapDraggable(<ColumnInView {...defaultProps()} />));
-            validate(wrapper, QUERY_COL, false);
+            validate(wrapper, QUERY_COL, false, false);
+            wrapper.unmount();
+        });
+
+        test('delete disabled', () => {
+            const wrapper = mount(wrapDraggable(<ColumnInView {...defaultProps()} disableDelete={true} />));
+            validate(wrapper, QUERY_COL, false, true);
             wrapper.unmount();
         });
 
@@ -148,7 +170,7 @@ describe('ColumnSelectionModal', () => {
             });
 
             const wrapper = mount(wrapDraggable(<ColumnInView {...defaultProps()} column={column} />));
-            validate(wrapper, column, false);
+            validate(wrapper, column, false, false);
             wrapper.unmount();
         });
 
@@ -163,7 +185,7 @@ describe('ColumnSelectionModal', () => {
 
             const wrapper = mount(wrapDraggable(<ColumnInView {...defaultProps()} column={column} isDragDisabled />));
 
-            validate(wrapper, column, false);
+            validate(wrapper, column, false, false);
             wrapper.unmount();
         });
 

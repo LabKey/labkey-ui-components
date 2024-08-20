@@ -114,6 +114,7 @@ export const EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS = 'queryProductAllFolderLoo
 export const EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED = 'queryProductProjectDataListingScoped';
 export const EXPERIMENTAL_REQUESTS_MENU = 'experimental-biologics-requests-menu';
 export const EXPERIMENTAL_CHART_BUILDER = 'experimental-biologics-chart-builder';
+export const EXPERIMENTAL_IDENTIFYING_FIELDS = 'experimental-identifying-fields';
 export const EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR = 'experimental-sample-aliquot-selector';
 export const EXPERIMENTAL_CALCULATED_FIELDS = 'experimental-calculated-fields';
 

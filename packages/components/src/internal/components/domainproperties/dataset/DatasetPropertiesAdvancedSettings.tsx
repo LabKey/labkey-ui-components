@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
 
-import { getServerContext } from '@labkey/api';
-
 import { DomainDesignerCheckbox } from '../DomainDesignerCheckbox';
 
 import { Modal } from '../../../Modal';
@@ -19,7 +17,7 @@ import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { fetchCohorts, getHelpTip, getVisitDateColumns } from './actions';
-import { getStudySubjectProp } from './utils';
+import { StudyProperties } from './utils';
 import { SHOW_IN_OVERVIEW } from './constants';
 
 interface DatasetSettingsSelectProps {
@@ -122,6 +120,7 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
 interface AdvancedSettingsProps {
     applyAdvancedProperties: (datasetAdvancedSettingsForm: DatasetAdvancedSettingsForm) => void;
     model: DatasetModel;
+    studyProperties: StudyProperties;
     title: string;
     visitDatePropertyIndex?: number;
 }
@@ -205,7 +204,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     getHelpTipElement(field: string): JSX.Element {
-        return (<> {getHelpTip(field)} </>) as JSX.Element;
+        return (<> {getHelpTip(field, this.props.studyProperties)} </>) as JSX.Element;
     }
 
     applyChanges = (): void => {
@@ -228,8 +227,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
     render() {
         const { modalOpen, datasetId, cohortId, tag, showByDefault, dataSharing, availableCohorts } = this.state;
-
-        const { model, title } = this.props;
+        const { model, title, studyProperties } = this.props;
 
         const showDataspace = model.definitionIsShared && model.getDataRowSetting() === 0;
         const showDataspaceCls = showDataspace ? 'dataset_data_row_element_show' : 'dataset_data_row_element_hide';
@@ -300,7 +298,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             showInAdvancedSettings={true}
                             required={true}
                         />
-                        {getServerContext().moduleContext.study.timepointType === 'VISIT' && (
+                        {studyProperties.TimepointType === 'VISIT' && (
                             <DatasetSettingsSelect
                                 name="visitDatePropertyName"
                                 label="Visit Date Column"
@@ -344,7 +342,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                         helpTip={this.getHelpTipElement('dataspace')}
                                         selectOptions={[
                                             { label: 'No', value: 'NONE' },
-                                            { label: 'Share by ' + getStudySubjectProp('columnName'), value: 'PTID' },
+                                            { label: 'Share by ' + studyProperties.SubjectColumnName, value: 'PTID' },
                                         ]}
                                         selectedValue={dataSharing}
                                         onSelectChange={this.onSelectChange}

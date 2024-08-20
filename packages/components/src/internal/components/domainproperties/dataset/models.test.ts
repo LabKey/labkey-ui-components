@@ -194,7 +194,7 @@ describe('DatasetModel', () => {
 
     test('getDomainKind', () => {
         // this is based on the setting in the package.json jest "timepointType"
-        expect(DatasetModel.create({ name: 'test' }).getDomainKind()).toBe('StudyDatasetVisit');
+        expect(DatasetModel.create({ name: 'test' }).getDomainKind('VISIT')).toBe('StudyDatasetVisit');
     });
 
     test('isFromLinkedSource', () => {

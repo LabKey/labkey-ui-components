@@ -16,8 +16,6 @@
 
 import { Record } from 'immutable';
 
-import { getServerContext } from '@labkey/api';
-
 import { immerable, produce } from 'immer';
 
 import { DomainDesign, DomainField } from '../models';
@@ -171,10 +169,8 @@ export class DatasetModel implements IDatasetModel {
         }
     }
 
-    getDomainKind(): string {
-        return getServerContext().moduleContext.study.timepointType === 'VISIT'
-            ? 'StudyDatasetVisit'
-            : 'StudyDatasetDate';
+    getDomainKind(timepointType: string): string {
+        return timepointType === 'VISIT' ? 'StudyDatasetVisit' : 'StudyDatasetDate';
     }
 
     getOptions(): Record<string, any> {

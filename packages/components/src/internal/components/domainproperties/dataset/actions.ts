@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
 
 import { fromJS, List } from 'immutable';
 
@@ -34,7 +34,7 @@ import {
     VISIT_DATE_TIP,
 } from './constants';
 import { DatasetModel } from './models';
-import { getStudySubjectProp } from './utils';
+import {StudyProperties} from "./utils";
 
 export function fetchCategories(): Promise<List<SelectInputOption>> {
     return new Promise((resolve, reject) => {
@@ -78,12 +78,12 @@ export function getVisitDateColumns(domain: DomainDesign): List<SelectInputOptio
     return visitDateColumns;
 }
 
-export function getAdditionalKeyFields(domain: DomainDesign): List<SelectInputOption> {
+export function getAdditionalKeyFields(domain: DomainDesign, timepointType: string): List<SelectInputOption> {
     let additionalKeyFields = List<SelectInputOption>();
 
     // In a date-based or continuous study, an additional third key option is to use the Time (from Date/Time) portion of a datestamp field
     // where multiple measurements happen on a given day or visit (tracking primate weight for example), the time portion of the date field can be used as an additional key
-    if (getServerContext().moduleContext.study.timepointType !== 'VISIT') {
+    if (timepointType !== 'VISIT') {
         additionalKeyFields = additionalKeyFields.push({ value: TIME_KEY_FIELD_KEY, label: TIME_KEY_FIELD_DISPLAY });
     }
 
@@ -122,7 +122,7 @@ export function fetchCohorts(): Promise<List<SelectInputOption>> {
     });
 }
 
-export function getHelpTip(fieldName: string): string {
+export function getHelpTip(fieldName: string, studyProperties: StudyProperties): string {
     let helpTip = '';
 
     switch (fieldName) {
@@ -152,16 +152,16 @@ export function getHelpTip(fieldName: string): string {
                 'For demographics datasets, this setting is used to enable data sharing across studies. ' +
                 "When 'No' is selected (default), each study folder 'owns' its own data rows. If the study has shared " +
                 "visits/timepoints, then 'Share by " +
-                getStudySubjectProp('columnName') +
+                studyProperties.SubjectColumnName +
                 "' means that data rows are shared across the project and " +
                 'studies will only see data rows for ' +
-                getStudySubjectProp('nounPlural').toLowerCase() +
+                studyProperties.SubjectNounPlural.toLowerCase() +
                 ' that are part of that study.';
             break;
         case 'dataRowUniqueness':
             helpTip =
                 'Choose criteria for how ' +
-                getStudySubjectProp('nounPlural').toLowerCase() +
+                studyProperties.SubjectNounPlural.toLowerCase() +
                 ' and visits/timepoints are paired with, or without, an additional data column.';
             break;
     }

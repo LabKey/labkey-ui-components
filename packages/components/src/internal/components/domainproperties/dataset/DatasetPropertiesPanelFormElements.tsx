@@ -27,7 +27,7 @@ import { SectionHeading } from '../SectionHeading';
 
 import { DatasetModel } from './models';
 import { fetchCategories, getAdditionalKeyFields, getHelpTip } from './actions';
-import { getStudySubjectProp, getStudyTimepointLabel } from './utils';
+import { getStudyTimepointLabel, StudyProperties } from './utils';
 import { DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 
 import { TIME_KEY_FIELD_KEY } from './constants';
@@ -38,6 +38,7 @@ interface BasicPropertiesInputsProps {
     model: DatasetModel;
     onCategoryChange?: any;
     onInputChange: (any) => void;
+    studyProperties: StudyProperties;
 }
 
 interface BasicPropertiesInputsState {
@@ -85,11 +86,11 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
     }
 
     getHelpTipElement = (field: string): ReactNode => {
-        return <> {getHelpTip(field)} </>;
+        return <> {getHelpTip(field, this.props.studyProperties)} </>;
     };
 
     render() {
-        const { model, onInputChange, onCategoryChange } = this.props;
+        const { model, onInputChange, onCategoryChange, studyProperties } = this.props;
         const { availableCategories } = this.state;
 
         return (
@@ -119,7 +120,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     required={!model.isNew()}
                 />
 
-                <DescriptionInput model={model} onInputChange={onInputChange} />
+                <DescriptionInput model={model} onInputChange={onInputChange} studyProperties={studyProperties} />
 
                 <div className="row margin-top">
                     <div className="col-xs-4">
@@ -155,14 +156,15 @@ interface DataRowUniquenessElementsProps {
     dataRowSetting: number;
     isFromAssay: boolean;
     onRadioChange: (evt: any) => any;
+    studyProperties: StudyProperties;
 }
 
 class DataRowUniquenessElements extends React.PureComponent<DataRowUniquenessElementsProps> {
     render() {
-        const { onRadioChange, dataRowSetting, isFromAssay } = this.props;
+        const { onRadioChange, dataRowSetting, isFromAssay, studyProperties } = this.props;
         const radioName = 'dataRowSetting';
-        const participantIdTxt = getStudySubjectProp('nounPlural');
-        const timepointTxt = getStudyTimepointLabel();
+        const participantIdTxt = studyProperties.SubjectNounPlural;
+        const timepointTxt = getStudyTimepointLabel(studyProperties.TimepointType);
 
         return (
             <div className="dataset_data_row_uniqueness_container">
@@ -206,12 +208,14 @@ interface DataRowUniquenessContainerProps {
     onCheckBoxChange: (any) => void;
     onRadioChange: (e: any) => any;
     onSelectChange: (name, formValue, selected) => void;
+    studyProperties: StudyProperties;
 }
 
 export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniquenessContainerProps> {
     getHelpTipForAdditionalField(): JSX.Element {
-        const ptidSingularTxt = getStudySubjectProp('nounSingular');
-        const timepointTxt = getStudyTimepointLabel();
+        const { studyProperties } = this.props;
+        const ptidSingularTxt = studyProperties.SubjectNounPlural;
+        const timepointTxt = getStudyTimepointLabel(studyProperties.TimepointType);
 
         return (
             <>
@@ -237,13 +241,13 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
     }
 
     getHelpTipElement(field: string): JSX.Element {
-        return (<> {getHelpTip(field)} </>) as JSX.Element;
+        return (<> {getHelpTip(field, this.props.studyProperties)} </>) as JSX.Element;
     }
 
     render() {
-        const { model, onRadioChange, onCheckBoxChange, onSelectChange, keyPropertyIndex } = this.props;
+        const { model, onRadioChange, onCheckBoxChange, onSelectChange, keyPropertyIndex, studyProperties } = this.props;
         const domain = model.domain;
-        const additionalKeyFields = getAdditionalKeyFields(domain);
+        const additionalKeyFields = getAdditionalKeyFields(domain, studyProperties.TimepointType);
         const dataRowSetting = model.getDataRowSetting();
         const showAdditionalKeyField = dataRowSetting === 2 || model.isFromLinkedSource();
 
@@ -272,6 +276,7 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                     onRadioChange={onRadioChange}
                     dataRowSetting={dataRowSetting}
                     isFromAssay={model.isFromLinkedSource()}
+                    studyProperties={studyProperties}
                 />
 
                 <div className={showAdditionalKeyFieldCls}>

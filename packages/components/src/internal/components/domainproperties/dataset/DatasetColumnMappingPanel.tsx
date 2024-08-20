@@ -16,7 +16,6 @@
 
 import React from 'react';
 
-
 import { List } from 'immutable';
 
 import { SectionHeading } from '../SectionHeading';
@@ -28,13 +27,12 @@ import { DomainField } from '../models';
 import { SelectInput } from '../../forms/input/SelectInput';
 
 import { DatasetModel } from './models';
-import { getStudySubjectProp, getStudyTimepointLabel } from './utils';
+import { getStudyTimepointLabel, StudyProperties } from './utils';
 
 interface Props {
     model: DatasetModel;
     onColumnMappingChange: (participantIdField?: string, timePointField?: string) => void;
-    subjectColumnName: string;
-    timepointType: string;
+    studyProperties: StudyProperties;
 }
 
 interface State {
@@ -47,8 +45,8 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
         super(props);
 
         this.state = {
-            closestParticipantIdField: this.findClosestColumn(this.props.subjectColumnName),
-            closestTimepointField: this.findClosestColumn(this.props.timepointType),
+            closestParticipantIdField: this.findClosestColumn(this.props.studyProperties.SubjectColumnName),
+            closestTimepointField: this.findClosestColumn(this.props.studyProperties.TimepointType),
         };
 
         this.props.onColumnMappingChange(this.state.closestParticipantIdField, this.state.closestTimepointField);
@@ -59,21 +57,21 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
     }
 
     areColumnNamesAndTypesEquivalent(targetColumnName: string, inferredField: DomainField): boolean {
-        const { subjectColumnName, timepointType } = this.props;
+        const { SubjectColumnName, TimepointType } = this.props.studyProperties;
 
         const targetColumn = targetColumnName.toLowerCase().replace(' ', '');
         const inferredFieldName = inferredField.name.toLowerCase().replace(' ', '');
 
-        if (targetColumnName === subjectColumnName) {
+        if (targetColumnName === SubjectColumnName) {
             return this.compareNames(targetColumn, inferredFieldName);
-        } else if (targetColumnName === timepointType && timepointType === 'DATE') {
+        } else if (targetColumnName === TimepointType && TimepointType === 'DATE') {
             return (
                 this.compareNames('visitdate', inferredFieldName) &&
                 (inferredField.rangeURI === 'xsd:datetime' || inferredField.rangeURI === 'xsd:dateTime')
             );
-        } else if (targetColumnName === timepointType && timepointType === 'VISIT') {
+        } else if (targetColumnName === TimepointType && TimepointType === 'VISIT') {
             return this.compareNames('sequencenum', inferredFieldName) && inferredField.rangeURI === 'xsd:double';
-        } else if (targetColumnName === timepointType) {
+        } else if (targetColumnName === TimepointType) {
             return (
                 this.compareNames('date', inferredFieldName) &&
                 (inferredField.rangeURI === 'xsd:datetime' || inferredField.rangeURI === 'xsd:dateTime')
@@ -108,9 +106,9 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
     };
 
     getTimepointFields(): List<DomainField> {
-        const { model, timepointType } = this.props;
+        const { model, studyProperties } = this.props;
 
-        if (timepointType === 'VISIT') {
+        if (studyProperties.TimepointType === 'VISIT') {
             return model.domain.fields
                 .filter(field => field.dataType.isNumeric() || field.dataType.isString())
                 .toList();
@@ -125,10 +123,10 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
     }
 
     render() {
-        const { model } = this.props;
+        const { model, studyProperties } = this.props;
         const { closestParticipantIdField, closestTimepointField } = this.state;
-        const participantIdTxt = getStudySubjectProp('nounPlural');
-        const timepointTxt = getStudyTimepointLabel();
+        const participantIdTxt = studyProperties.SubjectNounPlural;
+        const timepointTxt = getStudyTimepointLabel(studyProperties.TimepointType);
         const domain = model.domain;
 
         return (

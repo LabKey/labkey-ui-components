@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 
 import { List } from 'immutable';
 
-import { Domain, getServerContext } from '@labkey/api';
+import { Domain } from '@labkey/api';
 
 import { produce } from 'immer';
 
@@ -43,11 +43,13 @@ import { resolveErrorMessage } from '../../../util/messaging';
 
 import { Progress } from '../../base/Progress';
 
+import { LoadingSpinner } from '../../base/LoadingSpinner';
+
 import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { DatasetModel } from './models';
-import { getStudySubjectProp, getStudyTimepointLabel } from './utils';
+import { getStudyTimepointLabel, StudyProperties, useStudyPropertiesContext } from './utils';
 
 const KEY_FIELD_MAPPING_ERROR = 'Your Additional Key Field must not be one of the Column Mapping fields.';
 const VISIT_DATE_MAPPING_ERROR = 'Your Visit Date Column must not be one of the Column Mapping fields.';
@@ -62,6 +64,10 @@ interface Props {
     saveBtnText?: string;
 }
 
+interface StudyPropertiesProp {
+    studyProperties: StudyProperties;
+}
+
 interface State {
     file: File;
     importError: any;
@@ -73,7 +79,10 @@ interface State {
 }
 
 // Exported for testing
-export class DatasetDesignerPanelImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+export class DatasetDesignerPanelImpl extends React.PureComponent<
+    Props & InjectedBaseDomainDesignerProps & StudyPropertiesProp,
+    State
+> {
     private _participantId: string;
     private _sequenceNum: string;
 
@@ -81,7 +90,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         api: getDefaultAPIWrapper().domain,
     };
 
-    constructor(props: Props & InjectedBaseDomainDesignerProps) {
+    constructor(props: Props & InjectedBaseDomainDesignerProps & StudyPropertiesProp) {
         super(props);
 
         this.state = {
@@ -184,7 +193,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     };
 
     onFinish = (): void => {
-        const { setSubmitting } = this.props;
+        const { setSubmitting, studyProperties } = this.props;
         const { model, shouldImportData } = this.state;
         const missingRequiredTimepointMapping = !model.demographicData && !this._sequenceNum;
 
@@ -193,8 +202,10 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 produce<State>(draft => {
                     draft.model.exception =
                         'You must select a column mapping field for ' +
-                        getStudySubjectProp('nounPlural') +
-                        (missingRequiredTimepointMapping ? ' and ' + getStudyTimepointLabel() : '') +
+                        studyProperties.SubjectNounPlural +
+                        (missingRequiredTimepointMapping
+                            ? ' and ' + getStudyTimepointLabel(studyProperties.TimepointType)
+                            : '') +
                         ' in the fields panel.';
                 }),
                 () => {
@@ -329,8 +340,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     <DatasetColumnMappingPanel
                         model={model}
                         onColumnMappingChange={this.onColumnMappingChange}
-                        subjectColumnName={getStudySubjectProp('columnName')}
-                        timepointType={getServerContext().moduleContext.study.timepointType}
+                        studyProperties={this.props.studyProperties}
                     />
                 )}
             </>
@@ -397,7 +407,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     }
 
     saveDomain = (): void => {
-        const { setSubmitting } = this.props;
+        const { setSubmitting, studyProperties } = this.props;
         const { model, shouldImportData } = this.state;
         const participantIdMapCol = this._participantId;
         const sequenceNumMapCol = this._sequenceNum;
@@ -424,7 +434,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
         saveDomain({
             domain: updatedDomain,
-            kind: model.getDomainKind(),
+            kind: model.getDomainKind(studyProperties.TimepointType),
             options: model.getOptions(),
             name: model.name,
             includeWarnings: false,
@@ -488,8 +498,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             firstState,
             validatePanel,
             saveBtnText,
+            studyProperties,
         } = this.props;
-
         const { model, file, keyPropertyIndex, visitDatePropertyIndex, importError } = this.state;
 
         return (
@@ -521,6 +531,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                         onTogglePanel(0, collapsed, callback);
                     }}
                     onChange={this.onPropertiesChange}
+                    studyProperties={studyProperties}
                 />
                 <DomainForm
                     api={api}
@@ -571,4 +582,10 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     }
 }
 
-export const DatasetDesignerPanels = withBaseDomainDesigner<Props>(DatasetDesignerPanelImpl);
+const DatasetDesignerPanelsTemp: FC<Props & InjectedBaseDomainDesignerProps> = props => {
+    const studyProperties = useStudyPropertiesContext();
+    if (!studyProperties) return <LoadingSpinner />;
+    return <DatasetDesignerPanelImpl {...props} studyProperties={studyProperties} />;
+};
+
+export const DatasetDesignerPanels = withBaseDomainDesigner<Props>(DatasetDesignerPanelsTemp);

@@ -27,6 +27,13 @@ import { DatasetModel } from './models';
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 
 describe('Dataset Properties Panel', () => {
+    const studyProperties = {
+        SubjectColumnName: 'subject',
+        SubjectNounSingular: 'Participant',
+        SubjectNounPlural: 'Participants',
+        TimepointType: 'VISIT',
+    };
+
     test('New dataset', async () => {
         let container;
         await act(async () => {
@@ -37,6 +44,7 @@ describe('Dataset Properties Panel', () => {
                     controlledCollapse={true}
                     panelStatus="COMPLETE"
                     validate={false}
+                    studyProperties={studyProperties}
                     onToggle={jest.fn()}
                     onChange={jest.fn()}
                 />
@@ -56,6 +64,7 @@ describe('Dataset Properties Panel', () => {
                     controlledCollapse={true}
                     panelStatus="COMPLETE"
                     validate={false}
+                    studyProperties={studyProperties}
                     onToggle={jest.fn()}
                     onChange={jest.fn()}
                 />

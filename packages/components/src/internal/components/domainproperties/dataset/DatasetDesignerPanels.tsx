@@ -582,10 +582,10 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<
     }
 }
 
-const DatasetDesignerPanelsTemp: FC<Props & InjectedBaseDomainDesignerProps> = props => {
+const DatasetDesignerPanelsWithProperties: FC<Props & InjectedBaseDomainDesignerProps> = props => {
     const studyProperties = useStudyPropertiesContext();
     if (!studyProperties) return <LoadingSpinner />;
     return <DatasetDesignerPanelImpl {...props} studyProperties={studyProperties} />;
 };
 
-export const DatasetDesignerPanels = withBaseDomainDesigner<Props>(DatasetDesignerPanelsTemp);
+export const DatasetDesignerPanels = withBaseDomainDesigner<Props>(DatasetDesignerPanelsWithProperties);

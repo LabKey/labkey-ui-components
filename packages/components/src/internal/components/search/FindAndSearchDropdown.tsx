@@ -24,7 +24,14 @@ interface Props {
 }
 
 export const FindAndSearchDropdown: FC<Props> = memo(props => {
-    const { title = '', findNounPlural = 'samples', onFindByIds, className, onSearch, api } = props;
+    const {
+        title = '',
+        findNounPlural = 'samples',
+        onFindByIds,
+        className,
+        onSearch,
+        api = getDefaultAPIWrapper(),
+    } = props;
 
     const [findField, setFindField] = useState<FindField>(undefined);
     const [showFindModal, setShowFindModal] = useState<boolean>(false);
@@ -100,7 +107,3 @@ export const FindAndSearchDropdown: FC<Props> = memo(props => {
         </>
     );
 });
-
-FindAndSearchDropdown.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};

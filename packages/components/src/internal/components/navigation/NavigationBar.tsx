@@ -51,9 +51,6 @@ interface NavigationBarProps {
     searchPlaceholder?: string;
     showFolderMenu?: boolean;
     showNavMenu?: boolean;
-    showNotifications?: boolean;
-    showProductNav?: boolean;
-    showSearchBox?: boolean;
     user?: User;
 }
 
@@ -71,11 +68,8 @@ export const NavigationBar: FC<Props> = memo(props => {
         onSignIn,
         onSignOut,
         searchPlaceholder,
-        showNavMenu,
-        showNotifications,
+        showNavMenu = true,
         showFolderMenu,
-        showProductNav,
-        showSearchBox,
         signOutUrl,
         user,
     } = props;
@@ -88,8 +82,8 @@ export const NavigationBar: FC<Props> = memo(props => {
     }, [onSearch]);
     const _searchPlaceholder =
         searchPlaceholder ?? getPrimaryAppProperties(moduleContext)?.searchPlaceholder ?? SEARCH_PLACEHOLDER;
-    const _showNotifications = showNotifications !== false && !!notificationsConfig && !!user && !user.isGuest;
-    const _showProductNav = showProductNav !== false && shouldShowProductNavigation(user, moduleContext);
+    const showNotifications = !!notificationsConfig && !!user && !user.isGuest;
+    const showProductNav = shouldShowProductNavigation(user, moduleContext);
     const { noun, tabs } = useSubNavTabsContext();
     const hasSubNav = noun !== undefined || tabs.length > 0;
 
@@ -127,9 +121,9 @@ export const NavigationBar: FC<Props> = memo(props => {
                                     user={user}
                                 />
                             )}
-                            {_showNotifications && !isAdminPage && <ServerNotifications {...notificationsConfig} />}
-                            {_showProductNav && <ProductNavigation />}
-                            {showSearchBox && !isAdminPage && (
+                            {showNotifications && !isAdminPage && <ServerNotifications {...notificationsConfig} />}
+                            {showProductNav && <ProductNavigation />}
+                            {!isAdminPage && (
                                 <div className="navbar-item pull-right">
                                     <div className="hidden-md hidden-sm hidden-xs">
                                         <SearchBox
@@ -168,15 +162,4 @@ export const NavigationBar: FC<Props> = memo(props => {
         </div>
     );
 });
-
-// FIXME: re-evaluate these defaults. Some are always passed, so no default is needed. Some are never passed, so no prop
-//  is needed.
-NavigationBar.defaultProps = {
-    showFolderMenu: false,
-    showNavMenu: true,
-    showNotifications: true,
-    showProductNav: true,
-    showSearchBox: false,
-};
-
 NavigationBar.displayName = 'NavigationBar';

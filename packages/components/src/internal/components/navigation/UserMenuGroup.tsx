@@ -33,7 +33,7 @@ import { RELEASE_NOTES_METRIC } from '../productnavigation/constants';
 
 import { DropdownAnchor, DropdownButton, MenuDivider, MenuHeader, MenuItem } from '../../dropdowns';
 
-import { signIn, signOut } from './actions';
+import { signIn as defaultSignIn, signOut as defaultSignOut } from './actions';
 import { MenuSectionModel } from './model';
 
 export interface UserMenuProps {
@@ -52,7 +52,15 @@ interface ImplProps {
 
 // exported for jest testing
 export const UserMenuGroupImpl: FC<UserMenuProps & ImplProps> = props => {
-    const { model, extraDevItems, extraUserItems, onSignIn, onSignOut, user, signOutUrl } = props;
+    const {
+        model,
+        extraDevItems,
+        extraUserItems,
+        onSignIn = defaultSignIn,
+        onSignOut = defaultSignOut,
+        user,
+        signOutUrl,
+    } = props;
     const { api } = useAppContext();
     const releaseNoteLink = getPrimaryAppProperties()?.releaseNoteLink;
     const releaseNoteHref = releaseNoteLink
@@ -202,9 +210,4 @@ export const UserMenuGroup: FC<UserMenuProps> = props => {
     }, [api.navigation, appProperties, container.path, moduleContext, productId]);
 
     return <UserMenuGroupImpl {...props} model={model} />;
-};
-
-UserMenuGroup.defaultProps = {
-    onSignIn: signIn,
-    onSignOut: signOut,
 };

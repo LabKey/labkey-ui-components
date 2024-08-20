@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 4.9.0
+*Released*: 20 August 2024
 - Add view customizer for identifying fields for samples and sources
   - Update `ColumnSelectionModal` with optional `disabledMsg` property to be shown in popover
   - Export `includedColumnsForCustomizationFilter` for use in ui-premium component

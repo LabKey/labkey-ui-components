@@ -17,6 +17,7 @@ import React, {
 import classNames from 'classnames';
 
 import { generateId } from './util/utils';
+import { cancelEvent } from './events';
 
 export type BSStyle = 'success' | 'danger' | 'default' | 'primary';
 
@@ -54,7 +55,7 @@ interface ToggleState<T> {
     toggleRef: MutableRefObject<T>;
 }
 
-function useToggleState<T>(): ToggleState<T> {
+function useToggleState<T extends HTMLElement>(): ToggleState<T> {
     const toggleRef = useRef<T>();
     const [open, setOpen] = useState<boolean>(false);
     const onClick = useCallback(event => {
@@ -68,7 +69,9 @@ function useToggleState<T>(): ToggleState<T> {
     const onDocumentClick = useCallback(event => {
         // Don't take action if we're clicking the toggle, as that handles open/close on its own, and we can't use
         // preventDocumentHandler in the toggle onClick, or we'll keep the menu open if the user clicks another menu.
-        if (event.target === toggleRef.current) return;
+        const isToggle = event.target === toggleRef.current;
+        const insideToggle = toggleRef.current.contains(event.target);
+        if (isToggle || insideToggle) return;
         setOpen(false);
     }, []);
 

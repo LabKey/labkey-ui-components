@@ -19,7 +19,7 @@ import { List } from 'immutable';
 
 import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
-import {DomainField, IDomainFormDisplayOptions, IFieldChange, SystemField} from './models';
+import { DomainField, IDomainFormDisplayOptions, IFieldChange, SystemField } from './models';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { TextFieldOptions } from './TextFieldOptions';
 import { BooleanFieldOptions } from './BooleanFieldOptions';
@@ -33,7 +33,7 @@ import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptio
 import { TextChoiceOptions } from './TextChoiceOptions';
 import { FileAttachmentOptions } from './FileAttachmentOptions';
 import { CalculatedFieldOptions } from './CalculatedFieldOptions';
-import {CALCULATED_TYPE} from "./PropDescType";
+import { CALCULATED_TYPE } from './PropDescType';
 
 interface Props {
     appPropertiesOnly?: boolean;
@@ -41,7 +41,7 @@ interface Props {
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     domainIndex: number;
     field: DomainField;
-    getDomainFields?: () => { domainFields: List<DomainField>, systemFields: SystemField[] };
+    getDomainFields?: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
     index: number;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean) => void;
     onMultiChange: (changes: List<IFieldChange>) => void;
@@ -260,8 +260,16 @@ export class DomainRowExpandedOptions extends React.Component<Props> {
     };
 
     render() {
-        const { field, index, onChange, showingModal, appPropertiesOnly, domainIndex, domainFormDisplayOptions, getDomainFields } =
-            this.props;
+        const {
+            field,
+            index,
+            onChange,
+            showingModal,
+            appPropertiesOnly,
+            domainIndex,
+            domainFormDisplayOptions,
+            getDomainFields,
+        } = this.props;
 
         return (
             <div className="domain-row-container">

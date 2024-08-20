@@ -104,7 +104,12 @@ export interface IFieldChange {
     value: any;
 }
 
-export type DomainOnChange = (changes: List<IFieldChange>, index?: number, expand?: boolean, skipDirtyCheck?: boolean) => void;
+export type DomainOnChange = (
+    changes: List<IFieldChange>,
+    index?: number,
+    expand?: boolean,
+    skipDirtyCheck?: boolean
+) => void;
 
 export interface IBannerMessage {
     message: string;

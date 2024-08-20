@@ -54,7 +54,8 @@ import {
     DomainOnChange,
     IDomainFormDisplayOptions,
     IFieldChange,
-    resolveAvailableTypes, SystemField,
+    resolveAvailableTypes,
+    SystemField,
 } from './models';
 import { PropDescType } from './PropDescType';
 import { getCheckedValue } from './actions';
@@ -87,7 +88,7 @@ export interface DomainRowProps {
     field: DomainField;
     fieldDetailsInfo?: Record<string, string>;
     fieldError?: DomainFieldError;
-    getDomainFields?: () => { domainFields: List<DomainField>, systemFields: SystemField[] };
+    getDomainFields?: () => { domainFields: List<DomainField>; systemFields: SystemField[] };
     helpNoun: string;
     index: number;
     isDragDisabled?: boolean;
@@ -208,7 +209,13 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         this.onSingleFieldChange(evt.target.id, value, index, expand);
     };
 
-    onSingleFieldChange = (id: string, value: any, index?: number, expand?: boolean, skipDirtyCheck?: boolean): void => {
+    onSingleFieldChange = (
+        id: string,
+        value: any,
+        index?: number,
+        expand?: boolean,
+        skipDirtyCheck?: boolean
+    ): void => {
         const changes = List([{ id, value } as IFieldChange]);
         this.props.onChange(changes, index, expand === true, skipDirtyCheck);
     };

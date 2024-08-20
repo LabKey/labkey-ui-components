@@ -41,6 +41,8 @@ import { getQueryDetails } from '../../query/api';
 
 import { selectRows } from '../../query/selectRows';
 
+import { resolveErrorMessage } from '../../util/messaging';
+
 import {
     DOMAIN_ERROR_ID,
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -97,7 +99,6 @@ import {
 } from './models';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
-import {resolveErrorMessage} from "../../util/messaging";
 
 let sharedCache = Map<string, Promise<any>>();
 

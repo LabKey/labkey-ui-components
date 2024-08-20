@@ -42,7 +42,7 @@ export const getColumnTypeMap = (
     });
     domainFields?.forEach(df => {
         if (df.dataType.name !== CALCULATED_TYPE.name) {
-            colTypeMap[df.name] = df.dataType.name === 'int' ? 'INTEGER' : df.dataType.name.toUpperCase();
+            colTypeMap[df.name] = df.dataType.name.toLowerCase() === 'int' ? 'INTEGER' : df.dataType.name.toUpperCase();
         }
     });
     return colTypeMap;

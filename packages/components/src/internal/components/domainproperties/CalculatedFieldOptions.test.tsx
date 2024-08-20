@@ -99,13 +99,15 @@ describe('CalculatedFieldOptions', () => {
             getColumnTypeMap(
                 List.of(
                     { name: 'b', dataType: { name: 'text' } } as DomainField,
-                    { name: 'c', dataType: { name: 'calculation' } } as DomainField
+                    { name: 'c', dataType: { name: 'calculation' } } as DomainField,
+                    { name: 'd', dataType: { name: 'INT' } } as DomainField
                 ),
                 [{ Name: 'a', DataType: 'integer' } as SystemField]
             )
         ).toEqual({
             a: 'INTEGER',
             b: 'TEXT',
+            d: 'INTEGER',
         });
     });
 });

@@ -264,10 +264,9 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
         })();
     }, [api, container, moduleContext, appProperties?.controllerName]);
 
-    const toggleMenu = useCallback((evt: MouseEvent<HTMLButtonElement>) => {
+    const toggleMenu = useCallback(() => {
         // Have to cancel here or the document click handler set by useNavMenuState will get triggered and immediately
         // close the menu.
-        cancelEvent(evt);
         blurActiveElement();
         setShow(current => !current);
     }, [setShow]);

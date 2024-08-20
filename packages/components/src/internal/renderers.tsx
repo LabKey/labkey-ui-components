@@ -16,10 +16,11 @@
 import classNames from 'classnames';
 import React, {
     ChangeEvent,
-    CSSProperties,
+    CSSProperties, Dispatch,
     FC,
     memo,
-    ReactNode,
+    MouseEvent,
+    ReactNode, SetStateAction,
     useCallback,
     useEffect,
     useMemo,
@@ -141,7 +142,7 @@ interface HeaderCellDropdownMenuProps extends SharedHeaderCellProps {
     onEditTitleClicked?: () => void;
     open: boolean;
     queryColumn: QueryColumn;
-    setOpen: (open: boolean) => void;
+    setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
@@ -230,15 +231,18 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     // close the menu when the user clicks on anything outside of the menu.
     const documentClickHandler = useCallback(
         event => {
-            if (open && !menuEl.current.contains(event.target)) {
-                setOpen(false);
-            }
+            setOpen((isOpen: boolean): boolean => {
+                if (isOpen && !menuEl.current?.contains(event.target)) return false;
+                return isOpen;
+            });
         },
-        [setOpen, open]
+        [setOpen]
     );
 
     useEffect(() => {
-        document.addEventListener('click', documentClickHandler);
+        // Note: the use of { capture: true } here is very important, without it the documentClickHandler isn't called
+        // in the appropriate order, and it negates calls to open the menu.
+        document.addEventListener('click', documentClickHandler, { capture: true });
         return () => {
             document.removeEventListener('click', documentClickHandler);
         };
@@ -414,7 +418,11 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
                 )}
                 {!editingTitle && column.helpTipRenderer && (
-                    <LabelHelpTip placement="bottom" title={column.title} popoverClassName={column.helpTipRenderer === DOMAIN_FIELD ? undefined : 'label-help-arrow-left'}>
+                    <LabelHelpTip
+                        placement="bottom"
+                        title={column.title}
+                        popoverClassName={column.helpTipRenderer === DOMAIN_FIELD ? undefined : 'label-help-arrow-left'}
+                    >
                         <HelpTipRenderer type={column.helpTipRenderer} column={queryColumn} />
                     </LabelHelpTip>
                 )}

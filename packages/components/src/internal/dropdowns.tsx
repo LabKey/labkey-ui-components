@@ -70,7 +70,7 @@ function useToggleState<T extends HTMLElement>(): ToggleState<T> {
         // Don't take action if we're clicking the toggle, as that handles open/close on its own, and we can't use
         // preventDocumentHandler in the toggle onClick, or we'll keep the menu open if the user clicks another menu.
         const isToggle = event.target === toggleRef.current;
-        const insideToggle = toggleRef.current.contains(event.target);
+        const insideToggle = toggleRef.current?.contains(event.target);
         if (isToggle || insideToggle) return;
         setOpen(false);
     }, []);
@@ -78,7 +78,8 @@ function useToggleState<T extends HTMLElement>(): ToggleState<T> {
     useEffect(() => {
         // We only want to listen for clicks on the document if the menu is open
         if (open) {
-            document.addEventListener('click', onDocumentClick);
+            // Note: capture: true is very important here. It's needed so that we always handle the event
+            document.addEventListener('click', onDocumentClick, { capture : true });
         }
 
         return () => {
@@ -342,7 +343,7 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
                 e.preventDefault();
             }
 
-            e.stopPropagation();
+            // e.stopPropagation();
 
             // We have to prevent the document handler from executing in the disabled case because by the time it
             // executes React will have already updated the DOM, so it cannot tell that you clicked on a disabled item

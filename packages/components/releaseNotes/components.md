@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- fix `QueryModel.selectedState` so it works on a partially filled last page
+
 ### version 4.10.0
 *Released*: 20 August 2024
 - Calculated fields validation of value expression

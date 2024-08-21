@@ -7,7 +7,6 @@ import React, {
     PropsWithChildren,
     ReactElement,
     ReactNode,
-    SyntheticEvent,
     useCallback,
     useEffect,
     useMemo,
@@ -20,32 +19,18 @@ import { generateId } from './util/utils';
 import { cancelEvent } from './events';
 
 export type BSStyle = 'success' | 'danger' | 'default' | 'primary';
+const DROPDOWN_MENU_CLASS = 'dropdown-menu';
 
 /**
- * Use this when you want to prevent the document click handler from handling a click event.
- *
- * This method exists because React 16 uses an event listener on the document for almost all events:
- *      https://github.com/facebook/react/issues/4335#issuecomment-120269153
- *
- * This gives us an advantage: if an element has an onClick handler, and it calls event.stopPropagation, it won't
- * actually stop our document click handler from firing, so we are essentially guaranteed to be able to close the menu
- * when the user clicks outside of it.
- *
- * This behavior also gives us a disadvantage: by the time our document click handler executes React has already fired
- * its own click handlers and updated the DOM. This means it's impossible for us to properly determine if the user
- * clicked on a disabled element because it may be disabled now, but was not when they clicked (this is an issue for our
- * PageMenu component).
- *
- * The solution is to use event.nativeEvent.stopImmediatePropagation which prevents the root handler from ever being
- * called.
- *
- * According to Dan Abromov this was "fixed" in React 17, but he didn't specify how they fixed the issue, or what the
- * new behavior is, so this may stop working when we upgrade react:
- *      https://github.com/facebook/react/issues/4335#issuecomment-671487964
+ * There are a few narrow cases where clicking on something in a dropdown menu will trigger a click event on the actual
+ * <ul> element. This handler cancels the event if the user triggers such an event.
  */
-export function preventDocumentHandler(event: SyntheticEvent): void {
-    // Note: nativeEvent is always available, except when running tests
-    event.nativeEvent?.stopImmediatePropagation?.();
+function handleMenuClick(event: MouseEvent<HTMLUListElement>) {
+    const target = event.target as HTMLElement;
+
+    if (target.classList.contains(DROPDOWN_MENU_CLASS)) {
+        cancelEvent(event);
+    }
 }
 
 interface ToggleState<T> {
@@ -79,7 +64,7 @@ function useToggleState<T extends HTMLElement>(): ToggleState<T> {
         // We only want to listen for clicks on the document if the menu is open
         if (open) {
             // Note: capture: true is very important here. It's needed so that we always handle the event
-            document.addEventListener('click', onDocumentClick, { capture : true });
+            document.addEventListener('click', onDocumentClick);
         }
 
         return () => {
@@ -105,7 +90,7 @@ export const DropdownAnchor: FC<DropdownAnchorProps> = props => {
     const id = useMemo(() => generateId('dropdown-anchor-'), []);
     const { onClick, open, toggleRef } = useToggleState<HTMLAnchorElement>();
     const className = classNames('lk-dropdown', 'dropdown', props.className, { open });
-    const menuClassName = classNames('dropdown-menu', { 'dropdown-menu-right': pullRight });
+    const menuClassName = classNames(DROPDOWN_MENU_CLASS, { 'dropdown-menu-right': pullRight });
 
     return (
         <div className={className}>
@@ -124,7 +109,9 @@ export const DropdownAnchor: FC<DropdownAnchorProps> = props => {
                 <span className="caret" />
             </a>
 
-            <ul className={menuClassName}>{children}</ul>
+            <ul className={menuClassName} onClick={handleMenuClick}>
+                {children}
+            </ul>
         </div>
     );
 };
@@ -165,7 +152,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
     const { onClick: onToggleClick, open, toggleRef } = useToggleState<HTMLButtonElement>();
     const className = classNames('lk-dropdown', 'btn-group', props.className, { open, dropdown: !dropup, dropup });
     const buttonClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.buttonClassName);
-    const menuClassName = classNames('dropdown-menu', { 'dropdown-menu-right': pullRight });
+    const menuClassName = classNames(DROPDOWN_MENU_CLASS, { 'dropdown-menu-right': pullRight });
     const caretClassName = classNames('caret', { 'no-margin': !title });
     const onClick_ = useCallback(
         event => {
@@ -191,7 +178,7 @@ export const DropdownButton = forwardRef<HTMLDivElement, DropdownButtonProps>((p
                 {title}
                 {!noCaret && <span className={caretClassName} />}
             </button>
-            <ul className={menuClassName} aria-labelledby={id} onClick={preventDocumentHandler} role="menu">
+            <ul className={menuClassName} aria-labelledby={id} onClick={handleMenuClick} role="menu">
                 {children}
             </ul>
         </div>
@@ -231,7 +218,7 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
     });
     const buttonClassName = classNames('split-button-dropdown__button', 'btn', 'btn-' + bsStyle, props.buttonClassName);
     const toggleClassName = classNames('btn', 'btn-' + bsStyle, 'dropdown-toggle', props.toggleClassName);
-    const menuClassName = classNames('dropdown-menu', { 'dropdown-menu-right': pullRight });
+    const menuClassName = classNames(DROPDOWN_MENU_CLASS, { 'dropdown-menu-right': pullRight });
     const id = useMemo(() => generateId('dropdown-button-'), []);
 
     if (!href && !onClick) {
@@ -270,7 +257,7 @@ export const SplitButton: FC<SplitButtonProps> = memo(props => {
             >
                 <span className="caret no-margin" />
             </button>
-            <ul className={menuClassName} aria-labelledby={id} onClick={preventDocumentHandler} role="menu">
+            <ul className={menuClassName} aria-labelledby={id} onClick={handleMenuClick} role="menu">
                 {children}
             </ul>
         </div>
@@ -287,11 +274,7 @@ interface MenuHeaderProps {
  * See docs in docs/dropdowns.md
  */
 export const MenuHeader: FC<MenuHeaderProps> = ({ className, text }) => (
-    <li
-        className={classNames('lk-dropdown-header', 'dropdown-header', className)}
-        role="heading"
-        onClick={preventDocumentHandler}
-    >
+    <li className={classNames('lk-dropdown-header', 'dropdown-header', className)} role="heading" onClick={cancelEvent}>
         {text}
     </li>
 );
@@ -300,9 +283,7 @@ MenuHeader.displayName = 'MenuHeader';
 /**
  * See docs in docs/dropdowns.md
  */
-export const MenuDivider = (): ReactElement => (
-    <li className="divider" role="separator" onClick={preventDocumentHandler} />
-);
+export const MenuDivider = (): ReactElement => <li className="divider" role="separator" onClick={cancelEvent} />;
 
 export interface MenuItemProps {
     active?: boolean;
@@ -343,11 +324,9 @@ export const MenuItem = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) =>
                 e.preventDefault();
             }
 
-            // e.stopPropagation();
-
             // We have to prevent the document handler from executing in the disabled case because by the time it
             // executes React will have already updated the DOM, so it cannot tell that you clicked on a disabled item
-            if (disabled) preventDocumentHandler(e);
+            if (disabled) cancelEvent(e);
 
             if (!disabled && onClick) onClick();
         },

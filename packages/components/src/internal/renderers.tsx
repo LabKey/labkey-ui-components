@@ -47,6 +47,7 @@ import { usePortalRef } from './hooks';
 import { MenuDivider, MenuItem } from './dropdowns';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { DOMAIN_FIELD } from './components/forms/DomainFieldHelpTipContents';
+import { cancelEvent } from './events';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
@@ -242,11 +243,13 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     useEffect(() => {
         // Note: the use of { capture: true } here is very important, without it the documentClickHandler isn't called
         // in the appropriate order, and it negates calls to open the menu.
-        document.addEventListener('click', documentClickHandler, { capture: true });
+        if (open) {
+            document.addEventListener('click', documentClickHandler, { capture: true });
+        }
         return () => {
             document.removeEventListener('click', documentClickHandler);
         };
-    }, [documentClickHandler]);
+    }, [documentClickHandler, open]);
 
     // TODO: investigate passing down a ref of the .table-responsive div so we can add a scroll handler to it here the
     //  same way we add one to the document, then we can update the menu positions when the table is also scrolled.

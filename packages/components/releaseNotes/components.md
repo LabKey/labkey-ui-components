@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Consolidate EditableGrid read-only cell methods
+  - remove EditorColumnMetadata.readOnly prop and replace with isReadOnlyCell prop
+  - remove unused readOnlyColumns prop from BulkUpdateForm
+  - update QueryInfo getInsertColumns() and getUpdateColumns() to rename param as requiredColumns
+
 ### version 4.10.1
 *Released*: 22 August 2024
 - Issue 50822: Query to get study properties instead of relying on study moduleContext

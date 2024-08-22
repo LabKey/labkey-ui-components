@@ -174,7 +174,6 @@ function inputCellFactory(
         const colIdx = cn - colOffset;
         const { orderedColumns } = editorModel;
         const fieldKey = editorModel.getFieldKeyByIndex(colIdx);
-        const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
         const { isReadonlyCell, isReadonlyRow } = editorModel.getCellReadStatus(fieldKey, rowIdx, readonlyRows);
         const rowContainer = editorModel.getFolderValueForRow(rowIdx);
         const focused = editorModel.isFocused(colIdx, rowIdx);
@@ -241,7 +240,7 @@ function inputCellFactory(
                     row={focused ? editorModel.getRowValue(rowIdx) : undefined}
                     containerFilter={containerFilter}
                     placeholder={columnMetadata?.placeholder}
-                    readOnly={isReadonlyCol || isReadonlyRow || isReadonlyCell}
+                    readOnly={isReadonlyRow || isReadonlyCell}
                     rowIdx={rowIdx}
                     focused={focused}
                     forUpdate={forUpdate}
@@ -701,16 +700,17 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     isReadOnly(cellKey: string): boolean {
         const { fieldKey, rowIdx } = parseCellKey(cellKey);
         const { editorModel, readonlyRows } = this.props;
-        const pkValue = editorModel.getPkValue(rowIdx);
 
+        const pkValue = editorModel.getPkValue(rowIdx);
         if (pkValue !== undefined && readonlyRows?.includes(pkValue.toString())) return true;
 
         const queryCol = editorModel.columnMap.get(fieldKey);
-
         if (queryCol.readOnly) return true;
 
         const metadata = editorModel.getColumnMetadata(queryCol.fieldKey);
-        return metadata && (metadata.readOnly || metadata.isReadOnlyCell?.(pkValue));
+        if (metadata) return metadata.isReadOnlyCell?.(pkValue);
+
+        return false;
     }
 
     // TODO: update modifyCell to take fieldKey instead of colIdx

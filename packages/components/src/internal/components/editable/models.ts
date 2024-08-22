@@ -45,7 +45,6 @@ export interface EditableColumnMetadata {
     minWidth?: number;
     placeholder?: string;
     popoverClassName?: string;
-    readOnly?: boolean;
     toolTip?: ReactNode;
     width?: number;
 }

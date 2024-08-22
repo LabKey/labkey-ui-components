@@ -1323,7 +1323,7 @@ async function insertPastedData(
             const col = editorModel.getColumnByIndex(colIdx);
             const cellKey = genCellKey(col.fieldKey, rowIdx);
             const metadata = editorModel.getColumnMetadata(col?.fieldKey);
-            const readOnlyCol = col?.readOnly || metadata?.readOnly;
+            const readOnlyCol = col?.readOnly;
             const readOnlyCell = metadata?.isReadOnlyCell?.(pkValue);
 
             if (!readOnlyCol && !readOnlyCell) {

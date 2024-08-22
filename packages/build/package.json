@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "7.5.1-fb-seize-the-moment.0",
+  "version": "7.5.1-fb-seize-the-moment.1",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

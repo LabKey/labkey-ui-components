@@ -16,15 +16,24 @@ export function useNavMenuState(): ProductMenuState {
     const toggleRef = useRef<HTMLButtonElement>();
     const menuRef = useRef<HTMLDivElement>();
     const onDocumentClick = useCallback(event => {
+        const target = event.target;
+        const menuEl = menuRef.current;
+        const toggleEl = toggleRef.current;
+
         // Don't take action if we're clicking the toggle, as that handles open/close on its own, and we can't use
         // preventDocumentHandler in the toggle onClick, or we'll keep the menu open if the user clicks another menu.
-        const isToggle = event.target === toggleRef.current;
+        const isToggle = target === toggleEl;
+        const insideToggle = toggleEl?.contains(target);
+
+        if (isToggle || insideToggle) return;
+
         // Don't take action if we've clicked anything inside the menu. We have to be defensive about the existence of
         // menuRef because of how React handles events, our onClick handler above will get called before this document
         // handler, so menuRef.current may be null.
-        const insideToggle = toggleRef.current.contains(event.target);
+        const isMenu = target === menuEl;
+        const insideMenu = menuEl?.contains(target);
 
-        if (isToggle || insideToggle) return;
+        if (isMenu || insideMenu) return;
 
         setShow(false);
     }, []);

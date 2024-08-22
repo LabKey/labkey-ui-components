@@ -51,7 +51,7 @@ const MenuSectionLink: FC<MenuSectionLinkProps> = ({ config, item }) => {
         // Hack: sometimes our server returns strings that are actually proper AppURLs (workflow, eln, and more). We can
         // detect this by checking if the URL is prefixed with "#".
         const url = item.url instanceof AppURL ? item.url.toString() : item.url.replace('#', '');
-        return <Link to={url}>{body}</Link>;
+        return <Link to={url} className="menu-section-link">{body}</Link>;
     }
 
     return <a href={item.url.toString()}>{body}</a>;

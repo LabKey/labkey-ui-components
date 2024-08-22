@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { format, formatDistance, isBefore, isValid, parse } from 'date-fns';
+import { addDays, format, formatDistance, isBefore, isValid, parse } from 'date-fns';
 import { format as formatTz, toZonedTime } from 'date-fns-tz';
 import numeral from 'numeral';
 import { Container, getServerContext } from '@labkey/api';
@@ -21,6 +21,12 @@ import { Container, getServerContext } from '@labkey/api';
 import { QueryColumn } from '../../public/QueryColumn';
 
 import { TIME_RANGE_URI } from '../components/domainproperties/constants';
+
+// These constants align with the formats declared in DateUtil.java
+const ISO_DATE_FORMAT_STRING = 'yyyy-MM-dd';
+const ISO_SHORT_TIME_FORMAT_STRING = 'HH:mm';
+const ISO_TIME_FORMAT_STRING = 'HH:mm:ss';
+const ISO_DATE_TIME_FORMAT_STRING = `${ISO_DATE_FORMAT_STRING} ${ISO_TIME_FORMAT_STRING}`;
 
 function datePlaceholder(col: QueryColumn): string {
     let placeholder: string;
@@ -76,10 +82,7 @@ export function getPickerDateAndTimeFormat(
           ? parseFNSTimeFormat(getColDateFormat(queryColumn, queryColumn?.format ?? 'Time'))
           : parseDateFNSTimeFormat(dateFormat);
 
-    return {
-        dateFormat,
-        timeFormat,
-    };
+    return { dateFormat, timeFormat };
 }
 
 export function getFormattedStringFromDate(date: Date, queryColumn: QueryColumn, hideTime?: boolean): string {
@@ -241,7 +244,6 @@ export function getTimeFormat(container?: Partial<Container>): string {
 }
 
 function toDateFNSFormatString(javaDateFormatString: string): string {
-    // TODO: Need to check if 'Z' is still a problem
     // Issue 48608: DateFNS throws errors when formatting 'Z'
     // date-fns (or react-datepicker's usage of date-fns) throws errors when 'Z' is part of the format.
     // Even though 'z' is declared part of the date-fns format it does not work either.
@@ -267,7 +269,7 @@ export function getDateFNSDateTimeFormat(container?: Partial<Container>): string
 
 // hard-coded value, see docs: https://www.labkey.org/Documentation/Archive/21.7/wiki-page.view?name=studyDateNumber#short
 export function getDateFNSTimeFormat(container?: Partial<Container>): string {
-    return toDateFNSFormatString(getTimeFormat(container)) ?? 'HH:mm:ss';
+    return toDateFNSFormatString(getTimeFormat(container)) ?? ISO_TIME_FORMAT_STRING;
 }
 
 export function fromDate(date: Date, baseDate: Date, addSuffix = true): string {
@@ -337,7 +339,7 @@ export function parseDate(
 }
 
 function parseTimeUsingDateFNS(value: string): Date {
-    let valueFormat = includesSeconds(value) ? 'HH:mm:ss' : 'HH:mm';
+    let valueFormat = includesSeconds(value) ? ISO_TIME_FORMAT_STRING : ISO_SHORT_TIME_FORMAT_STRING;
     if (includesAMPM(value)) {
         valueFormat = valueFormat.replace('HH', 'hh');
         valueFormat += ' a';
@@ -380,15 +382,15 @@ export function getUnFormattedNumber(n): number {
 // Issue 44398: see DateUtil.java getJsonDateTimeFormatString(), this function is to match the format, which is
 // provided by the LabKey server for the API response, from a JS Date object
 export function getJsonDateTimeFormatString(date: Date): string {
-    return _formatDate(date, 'YYYY-MM-dd HH:mm:ss');
+    return _formatDate(date, ISO_DATE_TIME_FORMAT_STRING);
 }
 
 export function getJsonTimeFormatString(date: Date): string {
-    return _formatDate(date, 'YYYY-MM-dd HH:mm:ss')?.split(' ')[1];
+    return _formatDate(date, ISO_TIME_FORMAT_STRING);
 }
 
 export function getJsonDateFormatString(date: Date): string {
-    return _formatDate(date, 'YYYY-MM-dd');
+    return _formatDate(date, ISO_DATE_FORMAT_STRING);
 }
 
 export function getJsonFormatString(date: Date, rawFormat: string): string {
@@ -406,90 +408,66 @@ export function generateNameWithTimestamp(name: string): string {
     return name + '_' + dateStr + '_' + timeStr;
 }
 
-function twoDigit(num: number): string {
-    if (num < 10) {
-        return '0' + num;
-    }
-    return '' + num;
-}
-
 // From a current date string, get the next N date string
 // example, from "2022-02-02", get next 1 day, return "2022-02-03"
 // example, from "2022-02-02", get next -1 day, return "2022-02-01"
-export function getNextDateStr(currentDateStr: string, ndays?: number): string {
-    const numberOfDays = ndays ?? 1;
-    const seedDate = new Date(currentDateStr);
-    let nextDate = new Date(seedDate.getTime() + 60 * 60 * 24 * 1000 * numberOfDays); // add N*24 hours
+export function getNextDateStr(date: Date | string | number, numberOfDays: number = 1): string {
+    const seedDate = parseDate(date);
+    if (!isValid(seedDate)) return undefined;
 
-    const userTimezoneOffset = nextDate.getTimezoneOffset() * 60 * 1000;
-    nextDate = new Date(nextDate.getTime() + userTimezoneOffset);
-
-    const year = nextDate.getFullYear();
-    const month = nextDate.getMonth() + 1;
-    const day = nextDate.getDate();
-
-    return '' + year + '-' + twoDigit(month) + '-' + twoDigit(day);
+    const nextDate = addDays(seedDate, numberOfDays);
+    return _formatDate(nextDate, ISO_DATE_FORMAT_STRING);
 }
 
-export function getNDaysStrFromToday(ndays?: number): string {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1;
-    const day = today.getDate();
-    const todayStr = '' + year + '-' + twoDigit(month) + '-' + twoDigit(day);
-    return getNextDateStr(todayStr, ndays);
+export function getNDaysStrFromToday(numberOfDays?: number): string {
+    return getNextDateStr(new Date(), numberOfDays);
 }
 
-// TODO add jest
-export function filterDate(date: Date, start: Date, end: Date): boolean {
-    const dateOnly = new Date(date.getTime());
-    dateOnly.setHours(0, 0, 0, 0);
+/**
+ * Determines if the date is within the start/end date interval. If only the start or only the end of the
+ * interval are given, then it returns a comparison against only the given part of the interval.
+ * @param date The date to check.
+ * @param start The start of the interval.
+ * @param end The end of the interval.
+ * @param dateOnlyComparison If true, then the date to check will be zeroed out to the beginning
+ * of the day (midnight) for comparison. Defaults to false.
+ */
+export function isDateBetween(date: Date, start: Date, end: Date, dateOnlyComparison = false): boolean {
+    if (!isValid(date)) return false;
 
-    if (start == null && end == null) return true;
+    const isEndValid = isValid(end);
+    const isStartValid = isValid(start);
+    if (!isStartValid && !isEndValid) return true;
 
-    if (start != null && end == null) return dateOnly >= start;
+    const date_ = new Date(date.getTime());
+    if (dateOnlyComparison) {
+        date_.setHours(0, 0, 0, 0);
+    }
+    const time = date_.getTime();
 
-    if (start == null && end != null) return dateOnly <= end;
+    if (isStartValid && !isEndValid) return time >= start.getTime();
+    if (!isStartValid && isEndValid) return time <= end.getTime();
 
-    return dateOnly >= start && dateOnly <= end;
+    return time >= start.getTime() && time <= end.getTime();
 }
 
 const RELATIVE_DAYS_REGEX = /^[+-]\d+d$/;
 export function isRelativeDateFilterValue(val: string): boolean {
-    if (!val == null) return false;
-
-    if (typeof val !== 'string') return false;
-
-    return RELATIVE_DAYS_REGEX.test(val);
+    return typeof val === 'string' && RELATIVE_DAYS_REGEX.test(val);
 }
 
 export function getParsedRelativeDateStr(dateVal: string): { days: number; positive: boolean } {
     if (!isRelativeDateFilterValue(dateVal)) return null;
 
-    let positive = true;
-    if (dateVal.indexOf('-') === 0) positive = false;
     const daysStr = dateVal.replace('-', '').replace('+', '').replace('d', '');
-    const days = parseInt(daysStr);
-    return {
-        positive,
-        days,
-    };
+    const days = parseInt(daysStr, 10);
+    const positive = dateVal.indexOf('-') !== 0;
+
+    return { days, positive };
 }
 
-// return true if the dateStr has a date that's before today
-export function isDateInPast(dateStr: string): boolean {
-    if (!dateStr) return false;
-
-    const currentDate = new Date();
-    const currentDateStart = currentDate.setUTCHours(0, 0, 0, 0);
-
-    const date = new Date(dateStr);
-    return date.getTime() < currentDateStart;
-}
-
-// return true if the dateTimeStr has a timestamp that's before now
-export function isDateTimeInPast(dateTimeStr: string): boolean {
-    if (!dateTimeStr) return false;
-
-    return new Date(dateTimeStr).getTime() <= new Date().getTime();
+/** Returns true if the date has a timestamp that is before now */
+export function isDateTimeInPast(date: Date | string | number): boolean {
+    const date_ = parseDate(date);
+    return isValid(date_) && date_.getTime() <= new Date().getTime();
 }

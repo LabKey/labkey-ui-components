@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { addDays, addHours, subDays, subHours } from 'date-fns';
+
 import { QueryColumn } from '../../public/QueryColumn';
 import { DATE_TYPE, DATETIME_TYPE, TIME_TYPE } from '../components/domainproperties/PropDescType';
 
@@ -25,11 +27,10 @@ import {
     getColFormattedTimeFilterValue,
     getJsonDateTimeFormatString,
     getJsonFormatString,
-    getNDaysStrFromToday,
     getNextDateStr,
     getParsedRelativeDateStr,
     getPickerDateAndTimeFormat,
-    isDateInPast,
+    isDateBetween,
     isDateTimeInPast,
     isRelativeDateFilterValue,
     parseDate,
@@ -44,6 +45,53 @@ describe('Date Utilities', () => {
             const name = generateNameWithTimestamp(prefix);
             expect(name.indexOf(prefix + '_') === 0).toBeTruthy();
             expect(name.length === prefix.length + 20).toBeTruthy(); // 2 underscores, 10 for date string, 8 for time string
+        });
+    });
+
+    describe('isDateBetween', () => {
+        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Vancouver
+        const date = new Date(datePOSIX);
+        const datePlusDay = addDays(date, 1);
+        const datePlusHours = addHours(date, 5);
+        const dateMinusDay = subDays(date, 1);
+        const dateMinusHours = subHours(date, 5);
+        const invalidDate = new Date(NaN);
+
+        test('invalid dates', () => {
+            expect(isDateBetween(undefined, undefined, undefined)).toBe(false);
+            expect(isDateBetween(null, undefined, undefined)).toBe(false);
+            expect(isDateBetween(date, undefined, undefined)).toBe(true);
+            expect(isDateBetween(date, null, undefined)).toBe(true);
+            expect(isDateBetween(date, undefined, null)).toBe(true);
+            expect(isDateBetween(date, invalidDate, undefined)).toBe(true);
+            expect(isDateBetween(date, undefined, invalidDate)).toBe(true);
+            expect(isDateBetween(date, invalidDate, invalidDate)).toBe(true);
+        });
+
+        test('only start date', () => {
+            expect(isDateBetween(date, date, undefined, false)).toBe(true);
+            expect(isDateBetween(date, date, undefined, true)).toBe(false);
+            expect(isDateBetween(date, datePlusDay, undefined)).toBe(false);
+            expect(isDateBetween(date, datePlusHours, undefined, true)).toBe(false);
+            expect(isDateBetween(date, datePlusHours, undefined, false)).toBe(false);
+            expect(isDateBetween(date, dateMinusDay, undefined)).toBe(true);
+            expect(isDateBetween(date, dateMinusHours, undefined, true)).toBe(false);
+            expect(isDateBetween(date, dateMinusHours, undefined, false)).toBe(true);
+        });
+
+        test('only end date', () => {
+            expect(isDateBetween(date, undefined, date)).toBe(true);
+            expect(isDateBetween(date, undefined, datePlusDay)).toBe(true);
+            expect(isDateBetween(date, undefined, dateMinusDay)).toBe(false);
+        });
+
+        test('between', () => {
+            expect(isDateBetween(date, date, date, true)).toBe(false);
+            expect(isDateBetween(date, date, date, false)).toBe(true);
+            expect(isDateBetween(date, datePlusHours, datePlusDay)).toBe(false);
+            expect(isDateBetween(date, dateMinusDay, dateMinusHours)).toBe(false);
+            expect(isDateBetween(date, dateMinusDay, datePlusDay)).toBe(true);
+            expect(isDateBetween(date, dateMinusHours, datePlusHours)).toBe(true);
         });
     });
 
@@ -455,34 +503,9 @@ describe('Date Utilities', () => {
         });
     });
 
-    describe('isDateInPast', () => {
-        test('empty', () => {
-            expect(isDateInPast(null)).toBeFalsy();
-            expect(isDateInPast('')).toBeFalsy();
-        });
-
-        test('past', () => {
-            expect(isDateInPast('2022-02-02')).toBeTruthy();
-            expect(isDateInPast('2022-02-02 01:02')).toBeTruthy();
-            expect(isDateInPast('2022-02-02 01:02:03.123')).toBeTruthy();
-        });
-
-        test('today', () => {
-            const today = getNDaysStrFromToday(0);
-            const todayWithTime = today + '  01:02';
-            expect(isDateInPast(today)).toBeFalsy();
-            expect(isDateInPast(todayWithTime)).toBeFalsy();
-        });
-
-        test('futurama', () => {
-            expect(isDateInPast('3000-01-01')).toBeFalsy();
-            expect(isDateInPast('3000-01-01 00:01')).toBeFalsy();
-            expect(isDateInPast('3000-01-01 00:00:00.001')).toBeFalsy();
-        });
-    });
-
     describe('isDateTimeInPast', () => {
         test('empty', () => {
+            expect(isDateTimeInPast(undefined)).toBeFalsy();
             expect(isDateTimeInPast(null)).toBeFalsy();
             expect(isDateTimeInPast('')).toBeFalsy();
         });
@@ -490,27 +513,30 @@ describe('Date Utilities', () => {
         test('past', () => {
             expect(isDateTimeInPast('2022-02-02')).toBeTruthy();
             expect(isDateTimeInPast('2022-02-02 01:02')).toBeTruthy();
-            expect(isDateInPast('2022-02-02 01:02:03.123')).toBeTruthy();
+            expect(isDateTimeInPast('2022-02-02 01:02:03.123')).toBeTruthy();
         });
 
         test('today midnight', () => {
-            const today = getNDaysStrFromToday(0);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
             expect(isDateTimeInPast(today)).toBeTruthy();
         });
 
         test('now', () => {
             const nowDate = new Date();
             const now = getJsonDateTimeFormatString(nowDate);
-            expect(isDateTimeInPast(now)).toBeTruthy();
-            const in10SecondsDate = new Date(nowDate.getTime() + 10 * 6000);
+            const in10SecondsDate = new Date(nowDate.getTime() + (10 * 6000));
             const in10Seconds = getJsonDateTimeFormatString(in10SecondsDate);
+
+            expect(isDateTimeInPast(now)).toBeTruthy();
             expect(isDateTimeInPast(in10Seconds)).toBeFalsy();
         });
 
         test('futurama', () => {
             expect(isDateTimeInPast('3000-01-01')).toBeFalsy();
             expect(isDateTimeInPast('3000-01-01 00:01')).toBeFalsy();
-            expect(isDateInPast('3000-01-01 00:00:00.001')).toBeFalsy();
+            expect(isDateTimeInPast('3000-01-01 00:00:00.001')).toBeFalsy();
         });
     });
 });

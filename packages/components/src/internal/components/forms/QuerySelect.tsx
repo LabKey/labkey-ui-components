@@ -88,7 +88,7 @@ const PreviewOption: FC<any> = props => {
                         return (
                             <div key={i}>
                                 {columns.length > 1 && (
-                                    <span className="identifying_field_label">{column.caption ?? column.name} </span>
+                                    <span className="identifying_field_label">{column.caption ?? column.name}: </span>
                                 )}
                                 <span>{text}</span>
                             </div>

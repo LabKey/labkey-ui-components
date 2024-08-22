@@ -46,15 +46,15 @@ export interface IDatasetModel {
     exception: string;
     keyPropertyManaged: boolean;
     keyPropertyName?: string;
-    tag?: string;
-    visitDatePropertyName?: string;
+    label?: string;
+    name: string;
     showByDefault: boolean;
     sourceName?: string;
     sourceType?: string;
-    name: string;
     sourceUrl?: string;
-    label?: string;
+    tag?: string;
     useTimeKeyField?: boolean;
+    visitDatePropertyName?: string;
 }
 
 export class DatasetModel implements IDatasetModel {

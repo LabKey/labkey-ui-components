@@ -34,7 +34,7 @@ import {
     VISIT_DATE_TIP,
 } from './constants';
 import { DatasetModel } from './models';
-import {StudyProperties} from "./utils";
+import { StudyProperties } from './utils';
 
 export function fetchCategories(): Promise<List<SelectInputOption>> {
     return new Promise((resolve, reject) => {

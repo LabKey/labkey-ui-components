@@ -245,7 +245,8 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
     }
 
     render() {
-        const { model, onRadioChange, onCheckBoxChange, onSelectChange, keyPropertyIndex, studyProperties } = this.props;
+        const { model, onRadioChange, onCheckBoxChange, onSelectChange, keyPropertyIndex, studyProperties } =
+            this.props;
         const domain = model.domain;
         const additionalKeyFields = getAdditionalKeyFields(domain, studyProperties.TimepointType);
         const dataRowSetting = model.getDataRowSetting();

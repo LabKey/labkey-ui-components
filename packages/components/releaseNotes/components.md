@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
   - remove EditorColumnMetadata.readOnly prop and replace with isReadOnlyCell prop
   - remove unused readOnlyColumns prop from BulkUpdateForm
   - update QueryInfo getInsertColumns() and getUpdateColumns() to rename param as requiredColumns
+- Remove unused useWindowFocusCheckExpiredSession
 
 ### version 4.10.1
 *Released*: 22 August 2024

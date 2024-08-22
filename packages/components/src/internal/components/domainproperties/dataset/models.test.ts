@@ -16,6 +16,7 @@
 import { BOOLEAN_TYPE, DATETIME_TYPE, DECIMAL_TYPE, FILE_TYPE, INTEGER_TYPE, TEXT_TYPE } from '../PropDescType';
 
 import { DatasetModel } from './models';
+import { VISIT_TIMEPOINT_TYPE } from './constants';
 
 describe('DatasetModel', () => {
     test('isNew', () => {
@@ -194,7 +195,7 @@ describe('DatasetModel', () => {
 
     test('getDomainKind', () => {
         // this is based on the setting in the package.json jest "timepointType"
-        expect(DatasetModel.create({ name: 'test' }).getDomainKind('VISIT')).toBe('StudyDatasetVisit');
+        expect(DatasetModel.create({ name: 'test' }).getDomainKind(VISIT_TIMEPOINT_TYPE)).toBe('StudyDatasetVisit');
     });
 
     test('isFromLinkedSource', () => {

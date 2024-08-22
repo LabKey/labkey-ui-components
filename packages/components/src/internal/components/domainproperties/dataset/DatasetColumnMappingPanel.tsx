@@ -28,6 +28,7 @@ import { SelectInput } from '../../forms/input/SelectInput';
 
 import { DatasetModel } from './models';
 import { getStudyTimepointLabel, StudyProperties } from './utils';
+import { VISIT_TIMEPOINT_TYPE } from './constants';
 
 interface Props {
     model: DatasetModel;
@@ -69,7 +70,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                 this.compareNames('visitdate', inferredFieldName) &&
                 (inferredField.rangeURI === 'xsd:datetime' || inferredField.rangeURI === 'xsd:dateTime')
             );
-        } else if (targetColumnName === TimepointType && TimepointType === 'VISIT') {
+        } else if (targetColumnName === TimepointType && TimepointType === VISIT_TIMEPOINT_TYPE) {
             return this.compareNames('sequencenum', inferredFieldName) && inferredField.rangeURI === 'xsd:double';
         } else if (targetColumnName === TimepointType) {
             return (
@@ -108,7 +109,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
     getTimepointFields(): List<DomainField> {
         const { model, studyProperties } = this.props;
 
-        if (studyProperties.TimepointType === 'VISIT') {
+        if (studyProperties.TimepointType === VISIT_TIMEPOINT_TYPE) {
             return model.domain.fields
                 .filter(field => field.dataType.isNumeric() || field.dataType.isString())
                 .toList();

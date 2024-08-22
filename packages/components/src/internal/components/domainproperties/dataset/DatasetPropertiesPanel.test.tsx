@@ -25,13 +25,14 @@ import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.jso
 import { DatasetModel } from './models';
 
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
+import { VISIT_TIMEPOINT_TYPE } from './constants';
 
 describe('Dataset Properties Panel', () => {
     const studyProperties = {
         SubjectColumnName: 'subject',
         SubjectNounSingular: 'Participant',
         SubjectNounPlural: 'Participants',
-        TimepointType: 'VISIT',
+        TimepointType: VISIT_TIMEPOINT_TYPE,
     };
 
     test('New dataset', async () => {

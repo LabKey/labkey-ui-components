@@ -18,7 +18,7 @@ import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { fetchCohorts, getHelpTip, getVisitDateColumns } from './actions';
 import { StudyProperties } from './utils';
-import { SHOW_IN_OVERVIEW } from './constants';
+import { SHOW_IN_OVERVIEW, VISIT_TIMEPOINT_TYPE } from './constants';
 
 interface DatasetSettingsSelectProps {
     clearable?: boolean;
@@ -298,7 +298,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             showInAdvancedSettings={true}
                             required={true}
                         />
-                        {studyProperties.TimepointType === 'VISIT' && (
+                        {studyProperties.TimepointType === VISIT_TIMEPOINT_TYPE && (
                             <DatasetSettingsSelect
                                 name="visitDatePropertyName"
                                 label="Visit Date Column"

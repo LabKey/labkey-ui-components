@@ -23,6 +23,7 @@ import { DomainDesign, DomainField } from '../models';
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../constants';
 
 import { allowAsManagedField } from './utils';
+import { VISIT_TIMEPOINT_TYPE } from './constants';
 
 export interface DatasetAdvancedSettingsForm {
     cohortId?: number;
@@ -170,7 +171,7 @@ export class DatasetModel implements IDatasetModel {
     }
 
     getDomainKind(timepointType: string): string {
-        return timepointType === 'VISIT' ? 'StudyDatasetVisit' : 'StudyDatasetDate';
+        return timepointType === VISIT_TIMEPOINT_TYPE ? 'StudyDatasetVisit' : 'StudyDatasetDate';
     }
 
     getOptions(): Record<string, any> {

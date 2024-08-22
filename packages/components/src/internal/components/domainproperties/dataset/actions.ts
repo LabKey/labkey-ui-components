@@ -32,6 +32,7 @@ import {
     TIME_KEY_FIELD_DISPLAY,
     TIME_KEY_FIELD_KEY,
     VISIT_DATE_TIP,
+    VISIT_TIMEPOINT_TYPE,
 } from './constants';
 import { DatasetModel } from './models';
 import { StudyProperties } from './utils';
@@ -83,7 +84,7 @@ export function getAdditionalKeyFields(domain: DomainDesign, timepointType: stri
 
     // In a date-based or continuous study, an additional third key option is to use the Time (from Date/Time) portion of a datestamp field
     // where multiple measurements happen on a given day or visit (tracking primate weight for example), the time portion of the date field can be used as an additional key
-    if (timepointType !== 'VISIT') {
+    if (timepointType !== VISIT_TIMEPOINT_TYPE) {
         additionalKeyFields = additionalKeyFields.push({ value: TIME_KEY_FIELD_KEY, label: TIME_KEY_FIELD_DISPLAY });
     }
 

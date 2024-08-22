@@ -5,6 +5,8 @@ import { selectRows } from '../../../query/selectRows';
 import { SchemaQuery } from '../../../../public/SchemaQuery';
 import { caseInsensitive } from '../../../util/utils';
 
+import { VISIT_TIMEPOINT_TYPE } from './constants';
+
 export function allowAsManagedField(field: DomainField): boolean {
     return (
         field &&
@@ -14,7 +16,7 @@ export function allowAsManagedField(field: DomainField): boolean {
 }
 
 export function getStudyTimepointLabel(timepointType: string): string {
-    return timepointType === 'VISIT' ? 'Visits' : 'Timepoints';
+    return timepointType === VISIT_TIMEPOINT_TYPE ? 'Visits' : 'Timepoints';
 }
 
 export type StudyProperties = {

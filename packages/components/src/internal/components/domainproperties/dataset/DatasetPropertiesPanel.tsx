@@ -33,13 +33,14 @@ import { DatasetAdvancedSettingsForm, DatasetModel } from './models';
 import { AdvancedSettings } from './DatasetPropertiesAdvancedSettings';
 import { BasicPropertiesFields, DataRowUniquenessContainer } from './DatasetPropertiesPanelFormElements';
 import { TIME_KEY_FIELD_KEY } from './constants';
-import { allowAsManagedField } from './utils';
+import { allowAsManagedField, StudyProperties } from './utils';
 
 interface OwnProps {
     keyPropertyIndex?: number;
     model: DatasetModel;
     onChange: (model: DatasetModel) => void;
     onIndexChange?: (keyPropertyIndex?: number, visitDatePropertyIndex?: number) => void;
+    studyProperties: StudyProperties;
     visitDatePropertyIndex?: number;
 }
 
@@ -192,7 +193,15 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     render() {
         // Extract OwnProps
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { keyPropertyIndex, model, onChange, onIndexChange, visitDatePropertyIndex, ...baseProps } = this.props;
+        const {
+            keyPropertyIndex,
+            model,
+            onChange,
+            onIndexChange,
+            visitDatePropertyIndex,
+            studyProperties,
+            ...baseProps
+        } = this.props;
 
         return (
             <BasePropertiesPanel
@@ -214,6 +223,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                             model={model}
                             onInputChange={this.onInputChange}
                             onCategoryChange={this.onCategoryChange}
+                            studyProperties={studyProperties}
                         />
                     </div>
 
@@ -224,6 +234,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                             onCheckBoxChange={this.onInputChange}
                             onSelectChange={this.onAdditionalKeyFieldChange}
                             keyPropertyIndex={keyPropertyIndex}
+                            studyProperties={studyProperties}
                         />
                     </div>
 
@@ -233,6 +244,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                             model={model}
                             applyAdvancedProperties={this.applyAdvancedProperties}
                             visitDatePropertyIndex={visitDatePropertyIndex}
+                            studyProperties={studyProperties}
                         />
                     </div>
                 </div>

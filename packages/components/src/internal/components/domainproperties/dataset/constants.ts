@@ -26,3 +26,5 @@ export const SHOW_IN_OVERVIEW =
 export const TIME_KEY_FIELD_KEY = '_Special$Time_';
 
 export const TIME_KEY_FIELD_DISPLAY = 'Time (from Date/Time)';
+
+export const VISIT_TIMEPOINT_TYPE = 'VISIT';

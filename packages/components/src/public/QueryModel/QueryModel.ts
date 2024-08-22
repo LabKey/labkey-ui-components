@@ -1003,7 +1003,7 @@ export class QueryModel {
         if (!isLoading && hasData && selections) {
             const selectedOnPage = orderedRows.filter(rowId => selections.has(rowId)).length;
 
-            if ((selectedOnPage === rowCount || selectedOnPage === maxRows) && rowCount > 0) {
+            if ((selectedOnPage === rowCount || selectedOnPage === orderedRows.length) && rowCount > 0) {
                 return GRID_CHECKBOX_OPTIONS.ALL;
             } else if (selectedOnPage > 0) {
                 // if model has any selected on the page show checkbox as indeterminate

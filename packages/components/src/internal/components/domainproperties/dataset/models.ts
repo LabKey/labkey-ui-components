@@ -16,8 +16,6 @@
 
 import { Record } from 'immutable';
 
-import { getServerContext } from '@labkey/api';
-
 import { immerable, produce } from 'immer';
 
 import { DomainDesign, DomainField } from '../models';
@@ -25,6 +23,7 @@ import { DomainDesign, DomainField } from '../models';
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../constants';
 
 import { allowAsManagedField } from './utils';
+import { VISIT_TIMEPOINT_TYPE } from './constants';
 
 export interface DatasetAdvancedSettingsForm {
     cohortId?: number;
@@ -48,15 +47,15 @@ export interface IDatasetModel {
     exception: string;
     keyPropertyManaged: boolean;
     keyPropertyName?: string;
-    tag?: string;
-    visitDatePropertyName?: string;
+    label?: string;
+    name: string;
     showByDefault: boolean;
     sourceName?: string;
     sourceType?: string;
-    name: string;
     sourceUrl?: string;
-    label?: string;
+    tag?: string;
     useTimeKeyField?: boolean;
+    visitDatePropertyName?: string;
 }
 
 export class DatasetModel implements IDatasetModel {
@@ -171,10 +170,8 @@ export class DatasetModel implements IDatasetModel {
         }
     }
 
-    getDomainKind(): string {
-        return getServerContext().moduleContext.study.timepointType === 'VISIT'
-            ? 'StudyDatasetVisit'
-            : 'StudyDatasetDate';
+    getDomainKind(timepointType: string): string {
+        return timepointType === VISIT_TIMEPOINT_TYPE ? 'StudyDatasetVisit' : 'StudyDatasetDate';
     }
 
     getOptions(): Record<string, any> {

@@ -22,6 +22,7 @@ import { ViewInfo } from '../internal/ViewInfo';
 import { ExtendedMap } from './ExtendedMap';
 
 import { QueryInfo } from './QueryInfo';
+import { IDENTIFYING_FIELDS_VIEW_NAME } from './QueryModel/SaveViewModal';
 
 describe('getColumnFieldKeys', () => {
     test('missing params', () => {
@@ -61,6 +62,134 @@ describe('QueryInfo', () => {
             expect(columns[0].fieldKey).toBe('Name');
             expect(columns[1].fieldKey).toBe('Description');
             expect(columns[2].fieldKey).toBe('New');
+        });
+    });
+
+    describe('getLookupViewColumns', () => {
+        test('no custom view, no individual fields set', () => {
+            const queryInfoForLookupView = QueryInfo.fromJsonForTests(
+                {
+                    columns: [{ fieldKey: 'test1' }, { fieldKey: 'test2' }],
+                },
+                false
+            );
+            expect(queryInfoForLookupView.getLookupViewColumns()).toHaveLength(0);
+            expect(queryInfoForLookupView.getLookupViewColumns('test1')).toHaveLength(1);
+        });
+
+        test('no custom view, with individual fields set', () => {
+            const queryInfoForLookupView = QueryInfo.fromJsonForTests(
+                {
+                    columns: [
+                        { fieldKey: 'test1' },
+                        { fieldKey: 'test2', shownInLookupView: true },
+                        { fieldKey: 'test3' },
+                    ],
+                },
+                false
+            );
+            let cols = queryInfoForLookupView.getLookupViewColumns();
+            expect(cols).toHaveLength(1);
+            expect(cols[0].fieldKey).toBe('test2');
+
+            cols = queryInfoForLookupView.getLookupViewColumns('test1');
+            expect(cols).toHaveLength(2);
+            expect(cols[0].fieldKey).toBe('test1');
+            expect(cols[1].fieldKey).toBe('test2');
+
+            cols = queryInfoForLookupView.getLookupViewColumns('test3');
+            expect(cols).toHaveLength(2);
+            expect(cols[0].fieldKey).toBe('test3');
+            expect(cols[1].fieldKey).toBe('test2');
+        });
+
+        test('with custom view, no custom labels', () => {
+            const queryInfoForLookupView = QueryInfo.fromJsonForTests(
+                {
+                    columns: [
+                        { fieldKey: 'test1', caption: 'Test1' },
+                        { fieldKey: 'test2', shownInLookupView: true, caption: 'Test 2' },
+                        { fieldKey: 'test3', name: 'test3', caption: 'Test 3' },
+                        { fieldKey: 'test4', name: 'test4' },
+                    ],
+                    views: [
+                        {
+                            name: IDENTIFYING_FIELDS_VIEW_NAME,
+                            default: false,
+                            saved: true,
+                            columns: [
+                                {
+                                    name: 'test1',
+                                    fieldKey: 'test1',
+                                },
+                                {
+                                    name: 'test4',
+                                    fieldKey: 'test4',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                true
+            );
+            let cols = queryInfoForLookupView.getLookupViewColumns();
+            expect(cols).toHaveLength(2);
+            expect(cols[0].fieldKey).toBe('test1');
+            expect(cols[0].caption).toBe('Test1');
+            expect(cols[1].fieldKey).toBe('test4');
+            expect(cols[1].caption).toBeUndefined();
+
+            cols = queryInfoForLookupView.getLookupViewColumns('test3');
+            expect(cols).toHaveLength(2);
+            expect(cols[0].fieldKey).toBe('test1');
+            expect(cols[0].caption).toBe('Test1');
+            expect(cols[1].fieldKey).toBe('test4');
+            expect(cols[1].caption).toBeUndefined();
+        });
+
+        test('with custom view, custom labels and ordering', () => {
+            const queryInfoForLookupView = QueryInfo.fromJsonForTests(
+                {
+                    columns: [
+                        { fieldKey: 'test1', caption: 'Test1' },
+                        { fieldKey: 'test2', shownInLookupView: true, caption: 'Test 2' },
+                        { fieldKey: 'test3', name: 'test3', caption: 'Test 3' },
+                        { fieldKey: 'test4', name: 'test4' },
+                    ],
+                    views: [
+                        {
+                            name: IDENTIFYING_FIELDS_VIEW_NAME,
+                            default: false,
+                            saved: true,
+                            columns: [
+                                {
+                                    name: 'test4',
+                                    fieldKey: 'test4',
+                                    title: 'Defined',
+                                },
+                                {
+                                    name: 'test1',
+                                    fieldKey: 'test1',
+                                    title: 'My Test',
+                                },
+                                {
+                                    name: 'test2',
+                                    fieldKey: 'test2',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                true
+            );
+            const cols = queryInfoForLookupView.getLookupViewColumns();
+            expect(cols).toHaveLength(3);
+            expect(cols[0].fieldKey).toBe('test4');
+            expect(cols[0].caption).toBe('Defined');
+            expect(cols[1].fieldKey).toBe('test1');
+            expect(cols[1].caption).toBe('My Test');
+            expect(cols[2].fieldKey).toBe('test2');
+            expect(cols[2].caption).toBe('Test 2');
         });
     });
 

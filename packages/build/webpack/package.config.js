@@ -94,6 +94,7 @@ module.exports = {
         'boostrap-sass',
         'classnames',
         'date-fns',
+        'date-fns-tz',
         'enzyme',
         'enzyme-adapter-react-16',
         'enzyme-to-json',

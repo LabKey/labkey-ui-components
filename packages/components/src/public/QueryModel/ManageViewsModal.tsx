@@ -190,10 +190,10 @@ export const ManageViewsModal: FC<Props> = memo(props => {
             {!views && !errorMessage && <LoadingSpinner />}
             {views &&
                 views.map((view, ind) => {
-                    const { isDefault, isSystemView, shared } = view;
+                    const { isDefault, isSystemView, shared, isVisible } = view;
 
                     // other than the default view, don't show system views
-                    if (!isDefault && isSystemView) {
+                    if (!isDefault && (isSystemView || !isVisible)) {
                         return null;
                     }
 

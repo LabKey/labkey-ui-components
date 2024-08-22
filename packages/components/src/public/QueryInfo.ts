@@ -10,6 +10,7 @@ import { insertColumnFilter, QueryColumn } from './QueryColumn';
 import { SchemaQuery } from './SchemaQuery';
 import { QuerySort } from './QuerySort';
 import { naturalSortByProperty } from './sort';
+import { IDENTIFYING_FIELDS_VIEW_NAME } from './QueryModel/SaveViewModal';
 
 export enum QueryInfoStatus {
     ok,
@@ -258,10 +259,31 @@ export class QueryInfo {
         return extraDisplayColumn;
     }
 
-    getLookupViewColumns(omittedColumns?: string[]): QueryColumn[] {
-        const lcCols = omittedColumns ? omittedColumns.map(c => c.toLowerCase()) : [];
-        return this.columns.filter(col => col.shownInLookupView && lcCols.indexOf(col.fieldKey.toLowerCase()) === -1)
-            .valueArray;
+    getLookupViewColumns(displayColumnFieldKey?: string): QueryColumn[] {
+        let cols: QueryColumn[] = [];
+        if (this.views.has(IDENTIFYING_FIELDS_VIEW_NAME)) {
+            this.views.get(IDENTIFYING_FIELDS_VIEW_NAME).columns.forEach(col => {
+                const qCol = this.columns.get(col.fieldKey.toLowerCase());
+                if (qCol) {
+                    if (col.title) {
+                        cols.push(new QueryColumn({ ...qCol, caption: col.title }));
+                    } else {
+                        cols.push(qCol);
+                    }
+                }
+            });
+        } else {
+            const lcDisplayColumnFieldKey = displayColumnFieldKey?.toLowerCase();
+            if (displayColumnFieldKey) {
+                cols.push(this.columns.get(lcDisplayColumnFieldKey));
+            }
+            cols = cols.concat(
+                this.columns.filter(
+                    col => col.shownInLookupView && col.fieldKey.toLowerCase() !== lcDisplayColumnFieldKey
+                ).valueArray
+            );
+        }
+        return cols;
     }
 
     getAllColumns(viewName?: string, omittedColumns?: string[]): QueryColumn[] {

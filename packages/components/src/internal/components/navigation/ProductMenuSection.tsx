@@ -51,7 +51,11 @@ const MenuSectionLink: FC<MenuSectionLinkProps> = ({ config, item }) => {
         // Hack: sometimes our server returns strings that are actually proper AppURLs (workflow, eln, and more). We can
         // detect this by checking if the URL is prefixed with "#".
         const url = item.url instanceof AppURL ? item.url.toString() : item.url.replace('#', '');
-        return <Link to={url} className="menu-section-link">{body}</Link>;
+        return (
+            <Link to={url} className="menu-section-link">
+                {body}
+            </Link>
+        );
     }
 
     return <a href={item.url.toString()}>{body}</a>;
@@ -106,7 +110,7 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
               );
 
         if (headerURL instanceof AppURL) {
-            headerEl = <Link to={headerURL.toString()}>{label}</Link>;
+            headerEl = <Link to={headerURL.toString()} className="menu-section-link">{label}</Link>;
         } else {
             headerEl = <a href={getHref(headerURL)}>{label}</a>;
         }
@@ -148,21 +152,23 @@ export const ProductMenuSection: FC<MenuSectionProps> = memo(props => {
                         </>
                     )}
                     {!isEmpty &&
-                        visibleItems.map(item => {
-                            if (item.url) {
+                        visibleItems
+                            .map(item => {
+                                if (item.url) {
+                                    return (
+                                        <li key={item.label} className="clickable-item">
+                                            <MenuSectionLink config={config} item={item} />
+                                        </li>
+                                    );
+                                }
+
                                 return (
-                                    <li key={item.label} className="clickable-item">
-                                        <MenuSectionLink config={config} item={item} />
+                                    <li key={item.label}>
+                                        <MenuSectionItemLabel config={config} item={item} />
                                     </li>
                                 );
-                            }
-
-                            return (
-                                <li key={item.label}>
-                                    <MenuSectionItemLabel config={config} item={item} />
-                                </li>
-                            );
-                        }).toArray()}
+                            })
+                            .toArray()}
                 </ul>
             </div>
         </>

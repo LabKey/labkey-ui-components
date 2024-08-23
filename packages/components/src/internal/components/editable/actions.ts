@@ -1103,6 +1103,11 @@ export async function dragFillEvent(
             return !isReadonlyCell && !isReadonlyRow;
         });
 
+        // if nothing to fill, i.e. read only cells, skip
+        if (selectionToFillByCol.length === 0) {
+            continue;
+        }
+
         // eslint-disable-next-line no-await-in-loop
         const messagesAndValues = await fillColumnCells(
             editorModel,

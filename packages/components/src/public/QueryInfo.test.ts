@@ -22,7 +22,6 @@ import { ViewInfo } from '../internal/ViewInfo';
 import { ExtendedMap } from './ExtendedMap';
 
 import { QueryInfo } from './QueryInfo';
-import { IDENTIFYING_FIELDS_VIEW_NAME } from './QueryModel/SaveViewModal';
 
 describe('getColumnFieldKeys', () => {
     test('missing params', () => {
@@ -114,7 +113,7 @@ describe('QueryInfo', () => {
                     ],
                     views: [
                         {
-                            name: IDENTIFYING_FIELDS_VIEW_NAME,
+                            name: ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME,
                             default: false,
                             saved: true,
                             columns: [
@@ -158,7 +157,7 @@ describe('QueryInfo', () => {
                     ],
                     views: [
                         {
-                            name: IDENTIFYING_FIELDS_VIEW_NAME,
+                            name: ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME,
                             default: false,
                             saved: true,
                             columns: [

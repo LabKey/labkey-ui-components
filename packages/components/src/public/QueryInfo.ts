@@ -10,7 +10,6 @@ import { insertColumnFilter, QueryColumn } from './QueryColumn';
 import { SchemaQuery } from './SchemaQuery';
 import { QuerySort } from './QuerySort';
 import { naturalSortByProperty } from './sort';
-import { IDENTIFYING_FIELDS_VIEW_NAME } from './QueryModel/SaveViewModal';
 
 export enum QueryInfoStatus {
     ok,
@@ -261,21 +260,23 @@ export class QueryInfo {
 
     getLookupViewColumns(displayColumnFieldKey?: string): QueryColumn[] {
         let cols: QueryColumn[] = [];
-        if (this.views.has(IDENTIFYING_FIELDS_VIEW_NAME)) {
-            this.views.get(IDENTIFYING_FIELDS_VIEW_NAME).columns.forEach(col => {
-                const qCol = this.columns.get(col.fieldKey.toLowerCase());
+        if (this.views.has(ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME)) {
+            this.views.get(ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME).columns.forEach(col => {
+                const qCol = this.getColumn(col.fieldKey);
                 if (qCol) {
                     if (col.title) {
-                        cols.push(new QueryColumn({ ...qCol, caption: col.title }));
+                        cols.push(qCol.mutate({ caption: col.title }));
                     } else {
                         cols.push(qCol);
                     }
                 }
             });
         } else {
-            const lcDisplayColumnFieldKey = displayColumnFieldKey?.toLowerCase();
-            if (displayColumnFieldKey) {
-                cols.push(this.columns.get(lcDisplayColumnFieldKey));
+            const displayColumn = this.getColumn(displayColumnFieldKey);
+            let lcDisplayColumnFieldKey: string;
+            if (displayColumn) {
+                lcDisplayColumnFieldKey = displayColumnFieldKey?.toLowerCase();
+                cols.push(displayColumn);
             }
             cols = cols.concat(
                 this.columns.filter(

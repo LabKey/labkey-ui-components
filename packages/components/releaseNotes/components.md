@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Calculated fields remove experimental feature flag
+  - DomainRow for calculated fields to set isDragDisabled true
+
 ### version 4.10.2
 *Released*: 22 August 2024
 - fix `QueryModel.selectedState` so it works on a partially filled last page

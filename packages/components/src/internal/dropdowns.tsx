@@ -48,12 +48,9 @@ function useToggleState<T extends HTMLElement>(): ToggleState<T> {
         setOpen(o => !o);
     }, []);
 
-    // onDocumentClick closes the menu if the user clicks on a MenuItem or outside the menu, we prevent closing the menu
-    // when the user clicks headers, dividers, or the <ul> element by using preventDocumentHandler. See note in
-    // preventDocumentHandler for more details on the nuances of our document click handler.
+    // onDocumentClick closes the menu if the user clicks on a MenuItem or outside the menu
     const onDocumentClick = useCallback(event => {
-        // Don't take action if we're clicking the toggle, as that handles open/close on its own, and we can't use
-        // preventDocumentHandler in the toggle onClick, or we'll keep the menu open if the user clicks another menu.
+        // Don't take action if we're clicking the toggle, as that handles open/close on its own
         const isToggle = event.target === toggleRef.current;
         const insideToggle = toggleRef.current?.contains(event.target);
         if (isToggle || insideToggle) return;

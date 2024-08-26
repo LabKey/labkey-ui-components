@@ -21,7 +21,6 @@ import {
     ASSAYS_KEY,
     BIOLOGICS_APP_PROPERTIES,
     EXPERIMENTAL_APP_PLATE_SUPPORT,
-    EXPERIMENTAL_CALCULATED_FIELDS,
     EXPERIMENTAL_CHART_BUILDER,
     EXPERIMENTAL_IDENTIFYING_FIELDS,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
@@ -458,10 +457,6 @@ export function isDataChangeCommentRequirementFeatureEnabled(moduleContext?: Mod
 }
 
 export function isCalculatedFieldsEnabled(moduleContext?: ModuleContext): boolean {
-    if (resolveModuleContext(moduleContext)?.core?.[EXPERIMENTAL_CALCULATED_FIELDS] !== true) {
-        return false;
-    }
-
     return isApp()
         ? isFeatureEnabled(ProductFeature.CalculatedFields, moduleContext)
         : !isCommunityDistribution(moduleContext);

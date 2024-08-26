@@ -263,7 +263,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         const preventCrossFolderEnable = containerPaths?.length > 1;
 
         const _onSubmitForEdit = onSubmitForEdit ? this.onSubmitForEdit : undefined;
-        const values = formData ?? fieldValues;
+        const values = formData ? { ...fieldValues, ...formData.toJS() } : fieldValues;
 
         return (
             <QueryInfoForm

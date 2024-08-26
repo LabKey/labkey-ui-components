@@ -565,7 +565,6 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                     containerFilter: userConfig.containerFilter ?? getContainerFilter(userConfig.containerPath),
                     includeMetadata: isSelectRowMetadataRequired(userConfig.includeMetadata, columns),
                     includeTotalCount: userConfig.includeTotalCount ?? false, // default to false to improve performance
-                    parameters: userConfig.parameters,
                     success: json => {
                         result = json;
                         hasResults = true;

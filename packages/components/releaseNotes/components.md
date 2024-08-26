@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Update `QuerySelect` to support parameterized queries
+
 ### version 4.10.1
 *Released*: 22 August 2024
 - Issue 50822: Query to get study properties instead of relying on study moduleContext

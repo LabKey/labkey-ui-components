@@ -152,6 +152,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     onQSChange?: QuerySelectChange;
     preLoad?: boolean;
     queryFilters?: List<Filter.IFilter>;
+    queryParams?: Record<string, any>;
     requiredColumns?: string[];
     schemaQuery: SchemaQuery;
     showLoading?: boolean;
@@ -186,6 +187,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         onQSChange,
         preLoad,
         queryFilters,
+        queryParams,
         requiredColumns,
         schemaQuery,
         showLoading,

@@ -192,8 +192,8 @@ export const ManageViewsModal: FC<Props> = memo(props => {
                 views.map((view, ind) => {
                     const { isDefault, isSystemView, shared, isVisible } = view;
 
-                    // other than the default view, don't show system views
-                    if (!isDefault && (isSystemView || !isVisible)) {
+                    // other than the default view, don't show system views or hidden views, but do show biologics details view
+                    if (!isDefault && (isSystemView || (!isVisible && view.name !== ViewInfo.BIO_DETAIL_NAME))) {
                         return null;
                     }
 

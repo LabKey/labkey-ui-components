@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 4.11.0
+*Released*: 27 August 2024
 - Use new `~~identifyingfield~~` view when available for `QuerySelect`'s `PreviewOption`
 
 ### version 4.10.3

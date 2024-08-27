@@ -48,6 +48,10 @@ import {
 describe('Date Utilities', () => {
     const SERVER_FORMATS = getServerContext().container.formats;
 
+    test('it should always be UTC', () => {
+        expect(new Date().getTimezoneOffset()).toBe(0);
+    });
+
     describe('generateNameWithTimestamp', () => {
         test('generated text', () => {
             const prefix = 'Test';
@@ -58,7 +62,7 @@ describe('Date Utilities', () => {
     });
 
     describe('isDateBetween', () => {
-        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Vancouver
+        const datePOSIX = 1596750283812; // Aug 6, 2020 21:44 UTC
         const date = new Date(datePOSIX);
         const datePlusDay = addDays(date, 1);
         const datePlusHours = addHours(date, 5);
@@ -105,7 +109,7 @@ describe('Date Utilities', () => {
     });
 
     describe('formatDate', () => {
-        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Vancouver
+        const datePOSIX = 1596750283812; // Aug 6, 2020 21:44 UTC
         const testDate = new Date(datePOSIX);
 
         test('invalid date', () => {
@@ -129,7 +133,7 @@ describe('Date Utilities', () => {
     });
 
     describe('formatDateTime', () => {
-        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Vancouver
+        const datePOSIX = 1596750283812; // Aug 6, 2020 21:44 UTC
         const testDate = new Date(datePOSIX);
 
         test('invalid date', () => {
@@ -173,7 +177,7 @@ describe('Date Utilities', () => {
     });
 
     describe('getFormattedStringFromDate', () => {
-        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Vancouver
+        const datePOSIX = 1596750283812; // Aug 6, 2020 21:44 UTC
         const testDate = new Date(datePOSIX);
         const invalidDate = new Date(NaN);
 
@@ -201,7 +205,7 @@ describe('Date Utilities', () => {
         });
 
         test('resolved format matches column configuration', () => {
-            expect(getFormattedStringFromDate(testDate, timeColumn)).toEqual('14:44');
+            expect(getFormattedStringFromDate(testDate, timeColumn)).toEqual('21:44');
             expect(getFormattedStringFromDate(testDate, dateOnlyColumn)).toEqual('2020-08-06');
         });
     });

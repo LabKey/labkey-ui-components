@@ -933,26 +933,22 @@ describe('utils', () => {
 
     test('isCalculatedFieldsEnabled', () => {
         expect(isCalculatedFieldsEnabled()).toBeFalsy();
-        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': false } })).toBeFalsy();
-        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true } })).toBeFalsy();
         expect(
-            isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true }, api: { moduleNames: [] } })
+            isCalculatedFieldsEnabled({ api: { moduleNames: [] } })
         ).toBeFalsy(); // community
         expect(
             isCalculatedFieldsEnabled({
-                core: { 'experimental-calculated-fields': true },
                 api: { moduleNames: ['premium'] },
             })
         ).toBeTruthy(); // LKS Prof
 
         window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
-        expect(isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true } })).toBeFalsy();
         expect(
-            isCalculatedFieldsEnabled({ core: { 'experimental-calculated-fields': true, productFeatures: [] } })
+            isCalculatedFieldsEnabled({ core: { productFeatures: [] } })
         ).toBeFalsy();
         expect(
             isCalculatedFieldsEnabled({
-                core: { 'experimental-calculated-fields': true, productFeatures: [ProductFeature.CalculatedFields] },
+                core: { productFeatures: [ProductFeature.CalculatedFields] },
             })
         ).toBeTruthy();
     });

@@ -5,17 +5,15 @@ import { PermissionTypes } from '@labkey/api';
 import classNames from 'classnames';
 
 import { Modal } from '../../internal/Modal';
-import { ViewInfo } from '../../internal/ViewInfo';
 import { Alert } from '../../internal/components/base/Alert';
 import { resolveErrorMessage } from '../../internal/util/messaging';
 import { CUSTOM_VIEW, HelpLink } from '../../internal/util/helpLinks';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
 import { isAppHomeFolder, isProductProjectsEnabled, userCanEditSharedViews } from '../../internal/app/utils';
 import { useServerContext } from '../../internal/components/base/ServerContext';
+import { ViewInfo } from '../../internal/ViewInfo';
 
 const MAX_VIEW_NAME_LENGTH = 200;
-export const SAMPLE_FINDER_VIEW_NAME = '~~samplefinder~~';
-export const IDENTIFYING_FIELDS_VIEW_NAME = '~~identifyingfields~~';
 
 const RESERVED_VIEW_NAMES = [
     'default',
@@ -24,8 +22,8 @@ const RESERVED_VIEW_NAMES = [
     '~~details~~',
     '~~insert~~',
     '~~update~~',
-    SAMPLE_FINDER_VIEW_NAME,
-    IDENTIFYING_FIELDS_VIEW_NAME,
+    ViewInfo.SAMPLE_FINDER_VIEW_NAME,
+    ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME,
 ];
 
 interface ViewNameInputProps {

@@ -258,10 +258,33 @@ export class QueryInfo {
         return extraDisplayColumn;
     }
 
-    getLookupViewColumns(omittedColumns?: string[]): QueryColumn[] {
-        const lcCols = omittedColumns ? omittedColumns.map(c => c.toLowerCase()) : [];
-        return this.columns.filter(col => col.shownInLookupView && lcCols.indexOf(col.fieldKey.toLowerCase()) === -1)
-            .valueArray;
+    getLookupViewColumns(displayColumnFieldKey?: string): QueryColumn[] {
+        let cols: QueryColumn[] = [];
+        if (this.views.has(ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME)) {
+            this.views.get(ViewInfo.IDENTIFYING_FIELDS_VIEW_NAME).columns.forEach(col => {
+                const qCol = this.getColumn(col.fieldKey);
+                if (qCol) {
+                    if (col.title) {
+                        cols.push(qCol.mutate({ caption: col.title }));
+                    } else {
+                        cols.push(qCol);
+                    }
+                }
+            });
+        } else {
+            const displayColumn = this.getColumn(displayColumnFieldKey);
+            let lcDisplayColumnFieldKey: string;
+            if (displayColumn) {
+                lcDisplayColumnFieldKey = displayColumnFieldKey?.toLowerCase();
+                cols.push(displayColumn);
+            }
+            cols = cols.concat(
+                this.columns.filter(
+                    col => col.shownInLookupView && col.fieldKey.toLowerCase() !== lcDisplayColumnFieldKey
+                ).valueArray
+            );
+        }
+        return cols;
     }
 
     getAllColumns(viewName?: string, omittedColumns?: string[]): QueryColumn[] {

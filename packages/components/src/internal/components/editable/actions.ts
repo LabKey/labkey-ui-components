@@ -15,6 +15,8 @@ import { selectRows } from '../../query/selectRows';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
+import { encodePart } from '../../../public/SchemaQuery';
+
 import {
     CellMessage,
     CellMessages,
@@ -29,7 +31,6 @@ import {
 } from './models';
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
-import { encodePart } from '../../../public/SchemaQuery';
 
 /**
  * Do not use this method directly, use initEditorModel instead

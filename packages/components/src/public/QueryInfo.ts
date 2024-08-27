@@ -301,13 +301,12 @@ export class QueryInfo {
             return result;
         }, new Set());
 
-        return this.columns.valueArray
-            .filter(column => {
-                return (
-                    column.isUpdateColumn ||
-                    (lowerRequiredColumnsSet && lowerRequiredColumnsSet.has(column.fieldKey.toLowerCase()))
-                );
-            });
+        return this.columns.valueArray.filter(column => {
+            return (
+                column.isUpdateColumn ||
+                (lowerRequiredColumnsSet && lowerRequiredColumnsSet.has(column.fieldKey.toLowerCase()))
+            );
+        });
     }
 
     getUpdateDisplayColumns(view?: string, omittedColumns?: string[]): QueryColumn[] {

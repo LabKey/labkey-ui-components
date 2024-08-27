@@ -857,15 +857,8 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     generateColumns = (): List<GridColumn> => {
-        const {
-            containerFilter,
-            editorModel,
-            forUpdate,
-            hideCountCol,
-            rowNumColumn,
-            readonlyRows,
-            containerPath,
-        } = this.props;
+        const { containerFilter, editorModel, forUpdate, hideCountCol, rowNumColumn, readonlyRows, containerPath } =
+            this.props;
 
         let gridColumns = List<GridColumn>();
         const showCheckboxes = this.showSelectionCheckboxes();

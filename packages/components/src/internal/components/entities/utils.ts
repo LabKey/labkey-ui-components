@@ -93,7 +93,7 @@ export function getUniqueIdColumnMetadata(queryInfo: QueryInfo): Map<string, Edi
         .filter(column => column.isUniqueIdColumn)
         .forEach(column => {
             columnMetadata = columnMetadata.set(column.fieldKey, {
-                isReadOnlyCell: (key: string) => true,
+                isReadOnlyCell: () => true,
                 placeholder: '[generated value]',
                 toolTip: `A unique value will be provided by ${getCurrentProductName()} for this field.`,
             });

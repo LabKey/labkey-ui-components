@@ -81,8 +81,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { onCancel, pluralNoun, queryInfo, selectedIds, sortString, viewName, requiredColumns } =
-            this.props;
+        const { onCancel, pluralNoun, queryInfo, selectedIds, sortString, viewName, requiredColumns } = this.props;
         const { schemaName, name } = queryInfo;
 
         const columns = queryInfo

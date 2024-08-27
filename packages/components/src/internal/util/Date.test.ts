@@ -375,9 +375,12 @@ describe('Date Utilities', () => {
                 format: 'dd/MM/yyyy HH:mm',
             });
 
-            expect(
-                getColFormattedDateFilterValue(col, ['', null, '2022-04-19 01:02', 'ABCDEFG'])
-            ).toStrictEqual(['', null, '19/04/2022 01:02', 'ABCDEFG']);
+            expect(getColFormattedDateFilterValue(col, ['', null, '2022-04-19 01:02', 'ABCDEFG'])).toStrictEqual([
+                '',
+                null,
+                '19/04/2022 01:02',
+                'ABCDEFG',
+            ]);
         });
 
         test('formatDateTime without QueryColumn format', () => {
@@ -496,7 +499,9 @@ describe('Date Utilities', () => {
 
         test('dateOnly', () => {
             expect(parseDate('01:02', undefined, undefined, undefined, true)).toBeNull();
-            expect(parseDate('1985-09-11', undefined, undefined, undefined, true).toString()).toContain('Sep 11 1985 00:00:00');
+            expect(parseDate('1985-09-11', undefined, undefined, undefined, true).toString()).toContain(
+                'Sep 11 1985 00:00:00'
+            );
         });
 
         test('timeOnly', () => {
@@ -504,7 +509,9 @@ describe('Date Utilities', () => {
             expect(parseDate('11:02:59', undefined, undefined, true)).toBeNull();
             // The following fails in parseTime() but succeeds in parseDate() since the
             // latter can successfully parse dates with a post-fixed time.
-            expect(parseDate('1985-09-11 12:50:22', undefined, undefined, true).toString()).toContain('Sep 11 1985 12:50:22');
+            expect(parseDate('1985-09-11 12:50:22', undefined, undefined, true).toString()).toContain(
+                'Sep 11 1985 12:50:22'
+            );
         });
     });
 
@@ -630,7 +637,7 @@ describe('Date Utilities', () => {
         test('now', () => {
             const nowDate = new Date();
             const now = getJsonDateTimeFormatString(nowDate);
-            const in10SecondsDate = new Date(nowDate.getTime() + (10 * 6000));
+            const in10SecondsDate = new Date(nowDate.getTime() + 10 * 6000);
             const in10Seconds = getJsonDateTimeFormatString(in10SecondsDate);
 
             expect(isDateTimeInPast(now)).toBeTruthy();

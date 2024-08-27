@@ -7,6 +7,7 @@ import { TooltipProps } from './Tooltip';
 interface PopoverProps extends TooltipProps {
     className?: string;
     title?: string;
+    isFlexPlacement?: boolean;
 }
 
 /**
@@ -17,8 +18,8 @@ interface PopoverProps extends TooltipProps {
  * See additional docs at components/docs/overlays.md
  */
 export const Popover: FC<PopoverProps> = props => {
-    const { children, className, targetRef, id, isFixedPosition, placement = 'right', title } = props;
-    const { overlayRef, style } = useOverlayPositioning(placement, targetRef, isFixedPosition);
+    const { children, className, targetRef, id, isFixedPosition, isFlexPlacement, title } = props;
+    const { overlayRef, style, placement } = useOverlayPositioning(props.placement ?? 'right', targetRef, isFixedPosition, isFlexPlacement);
     const className_ = classNames('lk-popover', 'popover', placement, className, {
         'lk-popover--is-fixed': isFixedPosition,
     });

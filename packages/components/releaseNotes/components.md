@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 4.10.3
+*Released*: 27 August 2024
 - Consolidate EditableGrid read-only cell methods
   - remove EditorColumnMetadata.readOnly prop and replace with isReadOnlyCell prop
   - remove unused readOnlyColumns prop from BulkUpdateForm

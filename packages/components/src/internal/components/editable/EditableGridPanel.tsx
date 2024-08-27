@@ -46,7 +46,6 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
         title,
         bsStyle,
         className = '',
-        readonlyRows,
         getReadOnlyRows,
         getTabHeader,
         getTabTitle,
@@ -61,8 +60,7 @@ export const EditableGridPanel: FC<EditableGridPanelProps> = memo(props => {
         (event, editorModelChanges) => onChange(event, editorModelChanges, activeTab),
         [activeTab, onChange]
     );
-    let activeReadOnlyRows = readonlyRows;
-    if (!activeReadOnlyRows && getReadOnlyRows) activeReadOnlyRows = getReadOnlyRows(activeTab);
+    const activeReadOnlyRows = getReadOnlyRows?.(activeTab);
 
     const editableGrid = (
         <EditableGrid

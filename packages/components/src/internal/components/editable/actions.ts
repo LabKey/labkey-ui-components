@@ -15,6 +15,8 @@ import { selectRows } from '../../query/selectRows';
 
 import { getContainerFilterForLookups } from '../../query/api';
 
+import { encodePart } from '../../../public/SchemaQuery';
+
 import {
     CellMessage,
     CellMessages,
@@ -29,7 +31,6 @@ import {
 } from './models';
 
 import { decimalDifference, genCellKey, getLookupFilters, getValidatedEditableGridValue, parseCellKey } from './utils';
-import { encodePart } from '../../../public/SchemaQuery';
 
 /**
  * Do not use this method directly, use initEditorModel instead
@@ -1103,6 +1104,11 @@ export async function dragFillEvent(
             return !isReadonlyCell && !isReadonlyRow;
         });
 
+        // if nothing to fill, i.e. read only cells, skip
+        if (selectionToFillByCol.length === 0) {
+            continue;
+        }
+
         // eslint-disable-next-line no-await-in-loop
         const messagesAndValues = await fillColumnCells(
             editorModel,
@@ -1323,7 +1329,7 @@ async function insertPastedData(
             const col = editorModel.getColumnByIndex(colIdx);
             const cellKey = genCellKey(col.fieldKey, rowIdx);
             const metadata = editorModel.getColumnMetadata(col?.fieldKey);
-            const readOnlyCol = col?.readOnly || metadata?.readOnly;
+            const readOnlyCol = col?.readOnly;
             const readOnlyCell = metadata?.isReadOnlyCell?.(pkValue);
 
             if (!readOnlyCol && !readOnlyCell) {

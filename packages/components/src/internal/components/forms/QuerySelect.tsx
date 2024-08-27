@@ -73,8 +73,7 @@ const PreviewOption: FC<any> = props => {
     const { allResults, queryInfo } = model;
 
     if (queryInfo && allResults.size) {
-        const displayColumn = queryInfo.getColumn(model.displayColumn);
-        const columns = [displayColumn].concat(queryInfo.getLookupViewColumns([model.displayColumn]));
+        const columns = queryInfo.getLookupViewColumns(model.displayColumn);
         const item = allResults.find(result => value === result.getIn([model.valueColumn, 'value']));
 
         return (
@@ -88,7 +87,9 @@ const PreviewOption: FC<any> = props => {
 
                         return (
                             <div key={i}>
-                                {columns.length > 1 && <strong>{column.caption}: </strong>}
+                                {columns.length > 1 && (
+                                    <span className="identifying_field_label">{column.caption ?? column.name}: </span>
+                                )}
                                 <span>{text}</span>
                             </div>
                         );

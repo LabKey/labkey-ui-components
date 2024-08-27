@@ -4,15 +4,15 @@ export type Placement = 'top' | 'right' | 'bottom' | 'left';
 
 export interface OverlayPositioning<O extends Element = HTMLDivElement> {
     overlayRef: MutableRefObject<O>;
-    style: CSSProperties;
     placement?: Placement;
+    style: CSSProperties;
 }
 
 export function useOverlayPositioning<T extends Element = HTMLDivElement, O extends Element = HTMLDivElement>(
     placement: Placement,
     targetRef: MutableRefObject<T>,
     isFixedPosition: boolean = false,
-    isFlexPlacement: boolean = false,
+    isFlexPlacement: boolean = false
 ): OverlayPositioning<O> {
     const overlayRef = useRef<O>(undefined);
     // Sometimes it takes a little extra time before the useEffect below can compute the style, so we default the
@@ -49,15 +49,11 @@ export function useOverlayPositioning<T extends Element = HTMLDivElement, O exte
             let updatedPlacement = placement;
             if (isFlexPlacement) {
                 if (placement === 'left' || placement === 'right') {
-                    if ((window.innerWidth - targetRect.right) > targetRect.left)
-                        updatedPlacement = 'right';
-                    else
-                        updatedPlacement = 'left';
+                    if (window.innerWidth - targetRect.right > targetRect.left) updatedPlacement = 'right';
+                    else updatedPlacement = 'left';
                 } else if (placement === 'top' || placement === 'bottom') {
-                    if ((window.innerHeight - targetRect.bottom) > targetRect.top)
-                        updatedPlacement = 'bottom';
-                    else
-                        updatedPlacement = 'top';
+                    if (window.innerHeight - targetRect.bottom > targetRect.top) updatedPlacement = 'bottom';
+                    else updatedPlacement = 'top';
                 }
             }
 
@@ -94,13 +90,13 @@ export function useOverlayPositioning<T extends Element = HTMLDivElement, O exte
             }
 
             setStyle(updatedStyle);
-            setUpdatedPlacement(updatedPlacement)
+            setUpdatedPlacement(updatedPlacement);
         }
     }, [targetRef, placement]);
 
     return {
         overlayRef,
         style,
-        placement: updatedPlacement
+        placement: updatedPlacement,
     };
 }

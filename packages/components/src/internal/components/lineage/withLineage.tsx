@@ -49,7 +49,7 @@ export function withLineage<Props>(
             }
 
             // Create the initial lineage model for this seed
-            await this.setLineage(
+            this.setLineage(
                 new Lineage({
                     seed: lsid,
                     resultLoadingState: LoadingState.LOADING,
@@ -69,14 +69,14 @@ export function withLineage<Props>(
                     sampleStats = await api.loadSampleStats(result);
                 }
 
-                await this.updateLineage({
+                this.updateLineage({
                     result,
                     resultLoadingState: LoadingState.LOADED,
                     sampleStats,
                 });
             } catch (e) {
                 console.error(e);
-                await this.updateLineage({
+                this.updateLineage({
                     error: e.message,
                     resultLoadingState: LoadingState.LOADED,
                 });
@@ -86,18 +86,18 @@ export function withLineage<Props>(
         loadSeed = async (): Promise<void> => {
             const { api, containerPath, lsid } = this.props;
 
-            await this.updateLineage({ seedResultLoadingState: LoadingState.LOADING });
+            this.updateLineage({ seedResultLoadingState: LoadingState.LOADING });
 
             try {
                 const seedResult = await api.loadSeedResult(lsid, containerPath, this.props);
 
-                await this.updateLineage({
+                this.updateLineage({
                     seedResult,
                     seedResultLoadingState: LoadingState.LOADED,
                 });
             } catch (e) {
                 console.error(e);
-                await this.updateLineage({
+                this.updateLineage({
                     seedResultError: 'Error while pre-fetching the lineage seed',
                     seedResultLoadingState: LoadingState.LOADED,
                 });
@@ -105,34 +105,31 @@ export function withLineage<Props>(
         };
 
         /**
-         * An asynchronous helper function to update properties of the state's lineage.
-         * Throws an error if called prior to the state's lineage having been initialized.
+         * Helper function to update properties of the state's lineage.
          * @param lineageProps The lineage properties to update. Properties not specified will be left unchanged.
          */
-        updateLineage = async (lineageProps: Partial<Lineage>): Promise<void> => {
-            if (!this.state.lineage) {
-                throw new Error('withLineage: Called "updateLineage" prior to setting lineage.');
+        updateLineage = (lineageProps: Partial<Lineage>): void => {
+            if (this._mounted) {
+                this.setState(
+                    produce<State>(draft => {
+                        draft.lineage = draft.lineage.mutate(lineageProps);
+                    })
+                )
             }
-            return await this.setLineage(this.state.lineage.mutate(lineageProps));
         };
 
         /**
-         * An asynchronous helper function that sets the lineage on state.
+         * Helper function that sets the lineage on state.
          * @param lineage The lineage object to set to
          */
-        setLineage = (lineage: Lineage): Promise<void> => {
-            return new Promise(resolve => {
-                if (this._mounted) {
-                    this.setState(
-                        produce<State>(draft => {
-                            draft.lineage = lineage;
-                        }),
-                        () => {
-                            resolve();
-                        }
-                    );
-                }
-            });
+        setLineage = (lineage: Lineage): void => {
+            if (this._mounted) {
+                this.setState(
+                    produce<State>(draft => {
+                        draft.lineage = lineage;
+                    })
+                )
+            }
         };
 
         componentDidMount(): void {

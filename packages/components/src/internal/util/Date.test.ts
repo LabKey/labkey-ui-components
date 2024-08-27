@@ -655,7 +655,8 @@ describe('Date Utilities', () => {
         const datePOSIX = 1724734973542; // Mon Aug 26 2024 22:02:53.542 GMT-0700 (Pacific Daylight Time)
         const testDate = new Date(datePOSIX);
 
-        function checkFormat(format: string, timezone?: string): string {
+        // Default to a timezone so the tests reproduce same result regardless of test running location
+        function checkFormat(format: string, timezone = 'PST'): string {
             return formatDate(testDate, timezone, format);
         }
 
@@ -708,14 +709,14 @@ describe('Date Utilities', () => {
         });
 
         test('Timezone checks', () => {
-            const tz = 'PST';
-            expect(checkFormat('z', tz)).toBe('-07:00');
-            expect(checkFormat('zzzz', tz)).toBe('-07:00');
-            expect(checkFormat('Z', tz)).toBe('-07:00');
-            expect(checkFormat('ZZZZ', tz)).toBe('-07:00');
-            expect(checkFormat('X', tz)).toBe('-07');
-            expect(checkFormat('XX', tz)).toBe('-0700');
-            expect(checkFormat('XXX', tz)).toBe('-07:00');
+            const tz = 'EST';
+            expect(checkFormat('z', tz)).toBe('-05:00');
+            expect(checkFormat('zzzz', tz)).toBe('-05:00');
+            expect(checkFormat('Z', tz)).toBe('-05:00');
+            expect(checkFormat('ZZZZ', tz)).toBe('-05:00');
+            expect(checkFormat('X', tz)).toBe('-05');
+            expect(checkFormat('XX', tz)).toBe('-0500');
+            expect(checkFormat('XXX', tz)).toBe('-05:00');
         });
     });
 });

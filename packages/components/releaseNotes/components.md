@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Calculated fields remove experimental feature flag
   - DomainRow for calculated fields to set isDragDisabled true
 
+### version 4.11.0
+*Released*: 27 August 2024
+- Use new `~~identifyingfield~~` view when available for `QuerySelect`'s `PreviewOption`
+
 ### version 4.10.3
 *Released*: 27 August 2024
 - Consolidate EditableGrid read-only cell methods

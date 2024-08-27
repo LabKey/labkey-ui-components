@@ -95,6 +95,8 @@ export class ViewInfo {
     static DEFAULT_NAME = '~~DEFAULT~~';
     static DETAIL_NAME = '~~DETAILS~~';
     static UPDATE_NAME = '~~UPDATE~~';
+    static SAMPLE_FINDER_VIEW_NAME = '~~samplefinder~~';
+    static IDENTIFYING_FIELDS_VIEW_NAME = '~~identifyingfields~~';
     // TODO seems like this should not be in the generic model, but we'll need a good way
     //  to define the override detail name.
     static BIO_DETAIL_NAME = 'BiologicsDetails';
@@ -213,3 +215,4 @@ export class ViewInfo {
         });
     }
 }
+

@@ -328,7 +328,7 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'ZZ YY-MM-dd ZZ')).toBe('xxx yy-MM-dd xxx');
             expect(getColDateFormat(col, 'xxx YY-MM-dd ZZ')).toBe('xxx yy-MM-dd xxx');
             expect(getColDateFormat(col, 'YY-MM-dd ZZZZ')).toBe('yy-MM-dd xxx');
-            expect(getColDateFormat(col, 'zzzz YY-MM-dd')).toBe('xxx yy-MM-dd');
+            expect(getColDateFormat(col, 'zzzz YY-MM-dd u')).toBe('xxx yy-MM-dd i');
         });
 
         test('shortcut formats', () => {
@@ -641,6 +641,74 @@ describe('Date Utilities', () => {
             expect(isDateTimeInPast('3000-01-01')).toBeFalsy();
             expect(isDateTimeInPast('3000-01-01 00:01')).toBeFalsy();
             expect(isDateTimeInPast('3000-01-01 00:00:00.001')).toBeFalsy();
+        });
+    });
+
+    describe('toDateFNSFormatString', () => {
+        const datePOSIX = 1724734973542; // Mon Aug 26 2024 22:02:53.542 GMT-0700 (Pacific Daylight Time)
+        const testDate = new Date(datePOSIX);
+
+        function checkFormat(format: string, timezone?: string): string {
+            return formatDate(testDate, timezone, format);
+        }
+
+        test('Date checks', () => {
+            expect(checkFormat('dd.')).toBe('26.');
+            expect(checkFormat('dd.MM.')).toBe('26.08.');
+            expect(checkFormat('dd.MM.yyyy')).toBe('26.08.2024');
+            expect(checkFormat('d.M.yyyy')).toBe('26.8.2024');
+            expect(checkFormat('YYYY')).toBe('2024');
+            expect(checkFormat('yyyy')).toBe('2024');
+            expect(checkFormat('YY')).toBe('24');
+            expect(checkFormat('yy')).toBe('24');
+            expect(checkFormat('M')).toBe('8');
+            expect(checkFormat('MM')).toBe('08');
+            expect(checkFormat('MMM')).toBe('Aug');
+            expect(checkFormat('MMMM')).toBe('August');
+        });
+
+        test('Hour and minute checks', () => {
+            expect(checkFormat('HH:mm')).toBe('22:02');
+            expect(checkFormat('hh:mm')).toBe('10:02');
+            expect(checkFormat('hh:mm A')).toBe('10:02 PM');
+            expect(checkFormat('hh:mm a')).toBe('10:02 PM');
+            expect(checkFormat('h:mm A')).toBe('10:02 PM');
+            expect(checkFormat('h:mm a')).toBe('10:02 PM');
+            expect(checkFormat('m')).toBe('2');
+            expect(checkFormat('h')).toBe('10');
+            expect(checkFormat('H')).toBe('22');
+        });
+
+        test('Seconds and milliseconds checks', () => {
+            expect(checkFormat('HH:mm:ss')).toBe('22:02:53');
+            expect(checkFormat('HH:mm:ss.SSS')).toBe('22:02:53.542');
+            expect(checkFormat('s')).toBe('53');
+            expect(checkFormat('ss')).toBe('53');
+            expect(checkFormat('S')).toBe('5');
+            expect(checkFormat('SS')).toBe('54');
+            expect(checkFormat('SSS')).toBe('542');
+        });
+
+        test('Weekday checks', () => {
+            expect(checkFormat('EEE')).toEqual('Mon');
+            expect(checkFormat('EEEE')).toEqual('Monday');
+            expect(checkFormat('u')).toEqual('1');
+            expect(checkFormat('uu')).toEqual('1');
+            expect(checkFormat('uuuu')).toEqual('1');
+            expect(checkFormat('w')).toEqual('35');
+            expect(checkFormat('ww')).toEqual('35');
+            expect(checkFormat('www')).toEqual('035');
+        });
+
+        test('Timezone checks', () => {
+            const tz = 'PST';
+            expect(checkFormat('z', tz)).toBe('-07:00');
+            expect(checkFormat('zzzz', tz)).toBe('-07:00');
+            expect(checkFormat('Z', tz)).toBe('-07:00');
+            expect(checkFormat('ZZZZ', tz)).toBe('-07:00');
+            expect(checkFormat('X', tz)).toBe('-07');
+            expect(checkFormat('XX', tz)).toBe('-0700');
+            expect(checkFormat('XXX', tz)).toBe('-07:00');
         });
     });
 });

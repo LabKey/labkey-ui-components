@@ -15,7 +15,6 @@
  */
 import { addDays, format, formatDistance, isBefore, isValid, parse } from 'date-fns';
 import { format as formatTz, toZonedTime } from 'date-fns-tz';
-import numeral from 'numeral';
 import { Container, getServerContext } from '@labkey/api';
 
 import { QueryColumn } from '../../public/QueryColumn';
@@ -253,6 +252,7 @@ export function getTimeFormat(container?: Partial<Container>): string {
     return getFormats(container).timeFormat;
 }
 
+// Tested via formatDate(). Search Date.test.ts for 'toDateFNSFormatString'.
 function toDateFNSFormatString(javaDateFormatString: string): string {
     // Issue 48608: DateFNS throws errors when formatting 'Z'
     // date-fns (or react-datepicker's usage of date-fns) throws errors when 'Z' is part of the format.
@@ -264,7 +264,8 @@ function toDateFNSFormatString(javaDateFormatString: string): string {
         ?.replace('YYYY', 'yyyy') // 0044, 0001, 1900, 2017
         .replace('YY', 'yy') // 44, 01, 00, 17
         .replace('DD', 'dd') // 01, 02, ..., 31
-        .replace('A', 'a')
+        .replace('A', 'a') // AM, PM (only 'a' is really supported in Java)
+        .replace(/u+/gi, 'i') // 1, 2, 3, ... 7 (ISO day of week)
         .replace(/Z+/gi, 'xxx'); // -08:00, +05:30, +00:00
 }
 
@@ -399,10 +400,6 @@ export function formatDate(date: Date | number, timezone?: string, dateFormat?: 
 
 export function formatDateTime(date: Date | number, timezone?: string, dateFormat?: string): string {
     return _formatDate(date, dateFormat ?? getDateFNSDateTimeFormat(), timezone);
-}
-
-export function getUnFormattedNumber(n): number {
-    return n ? numeral(n).value() : n;
 }
 
 // Issue 44398: see DateUtil.java getJsonDateTimeFormatString(), this function is to match the format, which is

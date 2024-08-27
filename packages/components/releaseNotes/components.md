@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Misc 24.9 issue fixes
+  - Issue 51123: Assay run import sample lookup fails when coming from a workflow job task
+
 ### version 4.10.3
 *Released*: 27 August 2024
 - Consolidate EditableGrid read-only cell methods

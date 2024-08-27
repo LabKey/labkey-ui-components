@@ -28,6 +28,12 @@ const ISO_SHORT_TIME_FORMAT_STRING = 'HH:mm';
 const ISO_TIME_FORMAT_STRING = 'HH:mm:ss';
 const ISO_DATE_TIME_FORMAT_STRING = `${ISO_DATE_FORMAT_STRING} ${ISO_TIME_FORMAT_STRING}`;
 
+export enum DateFormatType {
+    Date = 'Date',
+    DateTime = 'DateTime',
+    Time = 'Time',
+}
+
 function datePlaceholder(col: QueryColumn): string {
     let placeholder: string;
 
@@ -70,57 +76,66 @@ export function isDateTimeCol(col: QueryColumn): boolean {
 }
 
 export function getPickerDateAndTimeFormat(
-    queryColumn: QueryColumn,
+    column: QueryColumn,
     hideTime?: boolean
 ): { dateFormat: string; timeFormat: string } {
-    const dateFormat = getColDateFormat(queryColumn, hideTime ? 'Date' : undefined, queryColumn.isDateOnlyColumn);
+    const dateFormat = getColDateFormat(column, hideTime ? DateFormatType.Date : undefined, column.isDateOnlyColumn);
 
-    const isTimeOnly = queryColumn.isTimeColumn;
-    const timeFormat = hideTime
-        ? undefined
-        : isTimeOnly
-          ? parseFNSTimeFormat(getColDateFormat(queryColumn, queryColumn?.format ?? 'Time'))
-          : parseDateFNSTimeFormat(dateFormat);
+    let timeFormat: string;
+    if (!hideTime) {
+        if (column.isTimeColumn) {
+            timeFormat = parseFNSTimeFormat(getColDateFormat(column, column?.format ?? DateFormatType.Time));
+        } else {
+            timeFormat = parseDateFNSTimeFormat(dateFormat);
+        }
+    }
 
     return { dateFormat, timeFormat };
 }
 
-export function getFormattedStringFromDate(date: Date, queryColumn: QueryColumn, hideTime?: boolean): string {
-    if (!date) return undefined;
+export function getFormattedStringFromDate(date: Date, column: QueryColumn, hideTime?: boolean): string {
+    if (!isValid(date)) return undefined;
 
-    const isTimeOnly = queryColumn.isTimeColumn;
-    const isDateOnly = queryColumn.isDateOnlyColumn || hideTime;
+    let dateFormat = column.format;
+    if (!dateFormat) {
+        if (column.isTimeColumn) {
+            dateFormat = DateFormatType.Time;
+        } else if (column.isDateOnlyColumn || hideTime) {
+            dateFormat = DateFormatType.Date;
+        } else {
+            dateFormat = DateFormatType.DateTime;
+        }
+    }
 
-    const rawType = isTimeOnly ? 'Time' : isDateOnly ? 'Date' : 'DateTime';
-    const formatStr = getColDateFormat(queryColumn, queryColumn.format ?? rawType);
+    const formatStr = getColDateFormat(column, dateFormat);
     if (!formatStr) {
-        return getJsonFormatString(date, rawType);
+        return getJsonFormatString(date, dateFormat);
     }
 
     try {
         return format(date, toDateFNSFormatString(formatStr));
     } catch (e) {
-        return getJsonFormatString(date, rawType);
+        return getJsonFormatString(date, dateFormat);
     }
 }
 
-export function getColDateFormat(queryColumn: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {
-    let rawFormat = dateFormat || queryColumn?.format;
+export function getColDateFormat(column: QueryColumn, dateFormat?: string, dateOnly?: boolean): string {
+    let rawFormat = dateFormat || column?.format;
     if (!rawFormat) {
         if (dateOnly) rawFormat = getDateFNSDateFormat();
-        else rawFormat = datePlaceholder(queryColumn);
+        else rawFormat = datePlaceholder(column);
     }
 
     // Issue 44011: account for the shortcut values (i.e. "Date", "DateTime", and "Time")
-    if (rawFormat === 'Date') rawFormat = getDateFNSDateFormat();
-    if (rawFormat === 'DateTime') rawFormat = getDateFNSDateTimeFormat();
-    if (rawFormat === 'Time') rawFormat = getDateFNSTimeFormat();
+    if (rawFormat === DateFormatType.Date) rawFormat = getDateFNSDateFormat();
+    if (rawFormat === DateFormatType.DateTime) rawFormat = getDateFNSDateTimeFormat();
+    if (rawFormat === DateFormatType.Time) rawFormat = getDateFNSTimeFormat();
 
     return toDateFNSFormatString(rawFormat);
 }
 
 export function parseFNSTimeFormat(timePart: string): string {
-    if (!timePart || timePart.indexOf(':') == -1) return undefined;
+    if (!timePart || timePart.indexOf(':') === -1) return undefined;
 
     if (timePart.indexOf('H') > -1 || timePart.indexOf('k') > -1) {
         if (timePart.indexOf('s') > 0) return 'HH:mm:ss'; // 13:30:00
@@ -166,7 +181,7 @@ function _getColFormattedDateFilterValue(column: QueryColumn, value: string): st
     let valueFull = value;
     if (typeof value === 'string' && value.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
         // Issue 46460: Force local timezone. In ISO format, if you provide time and Z is not present
-        // in the end of string, the date will be local time zone instead of UTC time zone.
+        // in the end of string, then the date will be local time zone instead of UTC time zone.
         valueFull = value + 'T00:00:00';
     }
 
@@ -199,10 +214,10 @@ function includesSeconds(rawValue: string): boolean {
 function _getColFormattedTimeFilterValue(column: QueryColumn, value: string): string {
     if (!value) return value;
 
-    const timeFormat = getColDateFormat(column, column?.format ?? 'Time', false);
+    const timeFormat = getColDateFormat(column, column?.format ?? DateFormatType.Time, false);
     if (!timeFormat) return value;
 
-    const parsed = parseTimeUsingDateFNS(value);
+    const parsed = parseTime(value);
     if (!isValid(parsed)) return undefined;
 
     return format(parsed, timeFormat);
@@ -213,11 +228,6 @@ export function getColFormattedTimeFilterValue(column: QueryColumn, value: strin
         return value.map(v => _getColFormattedTimeFilterValue(column, v));
     }
     return _getColFormattedTimeFilterValue(column, value);
-}
-
-export function parseSimpleTime(rawValue: string): Date {
-    if (!rawValue) return null;
-    return parseTimeUsingDateFNS(rawValue.toString());
 }
 
 type ContainerFormats = {
@@ -269,7 +279,7 @@ export function getDateFNSDateTimeFormat(container?: Partial<Container>): string
 
 // hard-coded value, see docs: https://www.labkey.org/Documentation/Archive/21.7/wiki-page.view?name=studyDateNumber#short
 export function getDateFNSTimeFormat(container?: Partial<Container>): string {
-    return toDateFNSFormatString(getTimeFormat(container)) ?? ISO_TIME_FORMAT_STRING;
+    return toDateFNSFormatString(getTimeFormat(container) ?? ISO_TIME_FORMAT_STRING);
 }
 
 export function fromDate(date: Date, baseDate: Date, addSuffix = true): string {
@@ -280,6 +290,10 @@ export function fromNow(date: Date, addSuffix = true): string {
     return fromDate(date, new Date(), addSuffix);
 }
 
+/**
+ * Attempts to parse a date value (Date | string | number) into a valid Date.
+ * Will only return a valid date or null.
+ */
 export function parseDate(
     dateValue: Date | string | number,
     dateFormat?: string,
@@ -287,8 +301,13 @@ export function parseDate(
     timeOnly?: boolean,
     dateOnly?: boolean
 ): Date {
-    if (dateValue instanceof Date) return dateValue;
-    if (typeof dateValue === 'number') return new Date(dateValue);
+    if (dateValue instanceof Date) {
+        return isValid(dateValue) ? dateValue : null;
+    }
+    if (typeof dateValue === 'number') {
+        const date = new Date(dateValue);
+        return isValid(date) ? date : null;
+    }
     if (typeof dateValue !== 'string') return null;
 
     let validDate: Date;
@@ -338,15 +357,22 @@ export function parseDate(
     return validDate ? validDate : null;
 }
 
-function parseTimeUsingDateFNS(value: string): Date {
-    let valueFormat = includesSeconds(value) ? ISO_TIME_FORMAT_STRING : ISO_SHORT_TIME_FORMAT_STRING;
-    if (includesAMPM(value)) {
+/**
+ * Attempts to parse a time value from a string. Will only return a valid date or null.
+ * NOTE: This is only for time strings. This does not resolve time from date-like strings
+ * with a time pre- or post-fixed to a date. You're better off using parseDate() in that case.
+ */
+export function parseTime(time: string): Date {
+    if (!time) return null;
+    let valueFormat = includesSeconds(time) ? ISO_TIME_FORMAT_STRING : ISO_SHORT_TIME_FORMAT_STRING;
+    if (includesAMPM(time)) {
         valueFormat = valueFormat.replace('HH', 'hh');
         valueFormat += ' a';
     }
 
     // https://stackoverflow.com/a/68727535
-    return safeParse(value, valueFormat, new Date());
+    const date = safeParse(time, valueFormat, new Date());
+    return isValid(date) ? date : null;
 }
 
 function safeParse(dateStr: string, formatStr: string, referenceDate: number | Date, options?: any): Date {
@@ -359,7 +385,7 @@ function safeParse(dateStr: string, formatStr: string, referenceDate: number | D
 }
 
 function _formatDate(date: Date | number, dateFormat: string, timezone?: string): string {
-    if (!date) return undefined;
+    if (!isValid(date)) return undefined;
     const _dateFormat = toDateFNSFormatString(dateFormat);
     if (timezone) {
         return formatTz(toZonedTime(date, timezone), _dateFormat, { timeZone: timezone });
@@ -394,9 +420,9 @@ export function getJsonDateFormatString(date: Date): string {
 }
 
 export function getJsonFormatString(date: Date, rawFormat: string): string {
-    if (!date) return undefined;
-    if (rawFormat === 'DateTime') return getJsonDateTimeFormatString(date);
-    if (rawFormat === 'Time') return getJsonTimeFormatString(date);
+    if (!isValid(date)) return undefined;
+    if (rawFormat === DateFormatType.DateTime) return getJsonDateTimeFormatString(date);
+    if (rawFormat === DateFormatType.Time) return getJsonTimeFormatString(date);
     return getJsonDateFormatString(date);
 }
 

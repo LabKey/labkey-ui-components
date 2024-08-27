@@ -15,6 +15,8 @@
  */
 import { addDays, addHours, subDays, subHours } from 'date-fns';
 
+import { getServerContext } from '@labkey/api';
+
 import { QueryColumn } from '../../public/QueryColumn';
 import { DATE_TYPE, DATETIME_TYPE, TIME_TYPE } from '../components/domainproperties/PropDescType';
 
@@ -25,6 +27,10 @@ import {
     getColDateFormat,
     getColFormattedDateFilterValue,
     getColFormattedTimeFilterValue,
+    getDateFNSDateFormat,
+    getDateFNSDateTimeFormat,
+    getDateFNSTimeFormat,
+    getFormattedStringFromDate,
     getJsonDateTimeFormatString,
     getJsonFormatString,
     getNextDateStr,
@@ -36,9 +42,12 @@ import {
     parseDate,
     parseDateFNSTimeFormat,
     parseFNSTimeFormat,
+    parseTime,
 } from './Date';
 
 describe('Date Utilities', () => {
+    const SERVER_FORMATS = getServerContext().container.formats;
+
     describe('generateNameWithTimestamp', () => {
         test('generated text', () => {
             const prefix = 'Test';
@@ -100,13 +109,14 @@ describe('Date Utilities', () => {
         const testDate = new Date(datePOSIX);
 
         test('invalid date', () => {
-            expect(formatDate(undefined)).toBe(undefined);
+            expect(formatDate(undefined)).toBeUndefined();
+            expect(formatDate(undefined)).toBeUndefined();
         });
         test('default to context dateFormat', () => {
             const actualFormat = formatDate(testDate);
 
             expect(actualFormat).toBe('2020-08-06');
-            expect(actualFormat).toEqual(formatDate(testDate, undefined, LABKEY.container.formats.dateFormat));
+            expect(actualFormat).toEqual(formatDate(testDate, undefined, SERVER_FORMATS.dateFormat));
         });
         test('supports timezone', () => {
             expect(formatDate(datePOSIX, 'Europe/Athens')).toBe('2020-08-07');
@@ -123,12 +133,12 @@ describe('Date Utilities', () => {
         const testDate = new Date(datePOSIX);
 
         test('invalid date', () => {
-            expect(formatDateTime(undefined)).toBe(undefined);
+            expect(formatDateTime(undefined)).toBeUndefined();
         });
         test('default to context dateTimeFormat', () => {
             const actualFormat = formatDateTime(testDate);
 
-            expect(actualFormat).toEqual(formatDateTime(testDate, undefined, LABKEY.container.formats.dateTimeFormat));
+            expect(actualFormat).toEqual(formatDateTime(testDate, undefined, SERVER_FORMATS.dateTimeFormat));
         });
         test('supports timezone', () => {
             expect(formatDateTime(datePOSIX, 'Europe/Athens')).toBe('2020-08-07 00:44');
@@ -140,10 +150,66 @@ describe('Date Utilities', () => {
         });
     });
 
+    describe('get date-fns formats', () => {
+        const testFormats = {
+            dateFormat: 'BEEP-123',
+            dateTimeFormat: 'BEEP-456',
+            numberFormat: 'IMA-789',
+            timeFormat: 'JEEP-101112',
+        };
+
+        test('getDateFNSDateFormat', () => {
+            expect(getDateFNSDateFormat()).toBe(SERVER_FORMATS.dateFormat);
+            expect(getDateFNSDateFormat({ formats: testFormats })).toEqual(testFormats.dateFormat);
+        });
+        test('getDateFNSDateTimeFormat', () => {
+            expect(getDateFNSDateTimeFormat()).toBe(SERVER_FORMATS.dateTimeFormat);
+            expect(getDateFNSDateTimeFormat({ formats: testFormats })).toEqual(testFormats.dateTimeFormat);
+        });
+        test('getDateFNSTimeFormat', () => {
+            expect(getDateFNSTimeFormat()).toBe(SERVER_FORMATS.timeFormat);
+            expect(getDateFNSTimeFormat({ formats: testFormats })).toEqual(testFormats.timeFormat);
+        });
+    });
+
+    describe('getFormattedStringFromDate', () => {
+        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Vancouver
+        const testDate = new Date(datePOSIX);
+        const invalidDate = new Date(NaN);
+
+        const dateOnlyColumn = new QueryColumn({ rangeURI: DATE_TYPE.rangeURI });
+        const timeColumn = new QueryColumn({ rangeURI: TIME_TYPE.rangeURI });
+
+        test('preconditions', () => {
+            expect(dateOnlyColumn.isDateOnlyColumn).toBe(true);
+            expect(timeColumn.isTimeColumn).toBe(true);
+        });
+
+        test('invalid date', () => {
+            expect(getFormattedStringFromDate(undefined, timeColumn)).toBeUndefined();
+            expect(getFormattedStringFromDate(null, timeColumn)).toBeUndefined();
+            expect(getFormattedStringFromDate(invalidDate, timeColumn)).toBeUndefined();
+        });
+
+        test('uses column format', () => {
+            const columnFormat = 'yyyy-dd-MM-dd-yyyy';
+            const dateOnlyColumnWithFormat = dateOnlyColumn.mutate({ format: columnFormat });
+            const timeColumnWithFormat = timeColumn.mutate({ format: columnFormat });
+
+            expect(getFormattedStringFromDate(testDate, dateOnlyColumnWithFormat)).toEqual('2020-06-08-06-2020');
+            expect(getFormattedStringFromDate(testDate, timeColumnWithFormat)).toEqual('2020-06-08-06-2020');
+        });
+
+        test('resolved format matches column configuration', () => {
+            expect(getFormattedStringFromDate(testDate, timeColumn)).toEqual('14:44');
+            expect(getFormattedStringFromDate(testDate, dateOnlyColumn)).toEqual('2020-08-06');
+        });
+    });
+
     describe('getJsonDateTimeFormatString', () => {
         test('without date', () => {
-            expect(getJsonDateTimeFormatString(undefined)).toBe(undefined);
-            expect(getJsonDateTimeFormatString(null)).toBe(undefined);
+            expect(getJsonDateTimeFormatString(undefined)).toBeUndefined();
+            expect(getJsonDateTimeFormatString(null)).toBeUndefined();
         });
 
         test('with date', () => {
@@ -154,12 +220,13 @@ describe('Date Utilities', () => {
 
     describe('getJsonFormatString', () => {
         test('without date', () => {
-            expect(getJsonFormatString(undefined, 'Date')).toBe(undefined);
-            expect(getJsonFormatString(null, 'Date')).toBe(undefined);
-            expect(getJsonFormatString(undefined, 'DateTime')).toBe(undefined);
-            expect(getJsonFormatString(null, 'DateTime')).toBe(undefined);
-            expect(getJsonFormatString(undefined, 'Time')).toBe(undefined);
-            expect(getJsonFormatString(null, 'Time')).toBe(undefined);
+            expect(getJsonFormatString(undefined, 'Date')).toBeUndefined();
+            expect(getJsonFormatString(null, 'Date')).toBeUndefined();
+            expect(getJsonFormatString(undefined, 'DateTime')).toBeUndefined();
+            expect(getJsonFormatString(null, 'DateTime')).toBeUndefined();
+            expect(getJsonFormatString(undefined, 'Time')).toBeUndefined();
+            expect(getJsonFormatString(null, 'Time')).toBeUndefined();
+            expect(getJsonFormatString(new Date(NaN), 'Time')).toBeUndefined();
         });
 
         test('with date', () => {
@@ -386,15 +453,17 @@ describe('Date Utilities', () => {
 
     describe('parseDate', () => {
         test('no dateStr', () => {
-            expect(parseDate(undefined)).toBe(null);
-            expect(parseDate(null)).toBe(null);
-            expect(parseDate('')).toBe(null);
+            expect(parseDate(undefined)).toBeNull();
+            expect(parseDate(null)).toBeNull();
+            expect(parseDate('')).toBeNull();
         });
 
         test('invalid date', () => {
-            global.console.warn = jest.fn();
-            expect(parseDate('test')).toBe(null);
-            expect(parseDate('test', 'yyyy-MM-dd')).toBe(null);
+            expect(parseDate('test')).toBeNull();
+            expect(parseDate('test', 'yyyy-MM-dd')).toBeNull();
+            expect(parseDate(new Date(NaN))).toBeNull();
+            expect(parseDate(new Date(''))).toBeNull();
+            expect(parseDate({} as any)).toBeNull();
         });
 
         test('valid date without dateFormat', () => {
@@ -406,8 +475,7 @@ describe('Date Utilities', () => {
         test('valid date with dateFormat', () => {
             expect(parseDate('01:02 2022-04-19', 'HH:mm yyyy-MM-dd').toString()).toContain('Apr 19 2022');
             expect(parseDate('19/04/2022', 'dd/MM/yyyy').toString()).toContain('Apr 19 2022');
-            // TODO: The following seems incorrect. I would expect November 4th (4th day of the 11th month). So does date-fns.
-            // expect(parseDate('4/11/2022', 'dd/MM/yyyy').toString()).toContain('Apr 11 2022');
+            expect(parseDate('4/11/2022', 'dd/MM/yyyy').toString()).toContain('Nov 04 2022');
             expect(parseDate('04/11/2022', 'dd/MM/yyyy').toString()).toContain('Nov 04 2022');
             expect(parseDate('4/11/2022', 'yyyy-MM-dd').toString()).toContain('Apr 11 2022');
             expect(parseDate('04/11/2022', 'yyyy-MM-dd').toString()).toContain('Apr 11 2022');
@@ -421,9 +489,45 @@ describe('Date Utilities', () => {
 
         test('minDate', () => {
             expect(parseDate('0218-11-18', undefined).toString()).toContain('0218');
-            expect(parseDate('0218-11-18', undefined, new Date('1000-01-01'))).toBe(null);
+            expect(parseDate('0218-11-18', undefined, new Date('1000-01-01'))).toBeNull();
             expect(parseDate('0218-11-18 00:00', 'yyyy-MM-dd HH:ss').toString()).toContain('0218');
-            expect(parseDate('0218-11-18 00:00', 'yyyy-MM-dd HH:ss', new Date('1000-01-01'))).toBe(null);
+            expect(parseDate('0218-11-18 00:00', 'yyyy-MM-dd HH:ss', new Date('1000-01-01'))).toBeNull();
+        });
+
+        test('dateOnly', () => {
+            expect(parseDate('01:02', undefined, undefined, undefined, true)).toBeNull();
+            expect(parseDate('1985-09-11', undefined, undefined, undefined, true).toString()).toContain('Sep 11 1985 00:00:00');
+        });
+
+        test('timeOnly', () => {
+            expect(parseDate('01:02', undefined, undefined, true).toString()).toContain('01:02:00');
+            expect(parseDate('11:02:59', undefined, undefined, true)).toBeNull();
+            // The following fails in parseTime() but succeeds in parseDate() since the
+            // latter can successfully parse dates with a post-fixed time.
+            expect(parseDate('1985-09-11 12:50:22', undefined, undefined, true).toString()).toContain('Sep 11 1985 12:50:22');
+        });
+    });
+
+    describe('parseTime', () => {
+        test('invalid times', () => {
+            expect(parseTime(undefined)).toBeNull();
+            expect(parseTime(null)).toBeNull();
+            expect(parseTime('')).toBeNull();
+            expect(parseTime('13:02 AM')).toBeNull();
+            expect(parseTime('13:02 PM')).toBeNull();
+            expect(parseTime('09/11/1985')).toBeNull();
+            // The following fails in parseTime() but succeeds in parseDate() since the
+            // latter can successfully parse dates with a post-fixed time.
+            expect(parseTime('1985-09-11 12:50:22')).toBeNull();
+        });
+
+        test('valid times', () => {
+            expect(parseTime('01:02 AM').toString()).toContain('01:02');
+            expect(parseTime('01:02 PM').toString()).toContain('13:02');
+            expect(parseTime('11:02 AM').toString()).toContain('11:02');
+            expect(parseTime('13:02').toString()).toContain('13:02');
+            expect(parseTime('11:02:59 AM').toString()).toContain('11:02:59');
+            expect(parseTime('21:02:30').toString()).toContain('21:02:30');
         });
     });
 

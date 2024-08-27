@@ -712,8 +712,7 @@ describe('getValidatedEditableGridValue', () => {
             },
             value: true,
         });
-        // TODO: Why is this considered a valid date?
-        // expect(getValidatedEditableGridValue(13, dateCol).message).toBe(undefined);
+        expect(getValidatedEditableGridValue(13, dateCol).message).toBe(undefined);
         expect(getValidatedEditableGridValue('2020-12-INVALID 14:34', dateCol)).toStrictEqual({
             message: {
                 message: 'Invalid date',
@@ -726,11 +725,9 @@ describe('getValidatedEditableGridValue', () => {
             },
             value: '2020-13-23 14:34',
         });
-        // TODO: If it is a date should we consider it valid? This might revert to an expected failure
-        // with future updates to _formatDate()
-        // expect(getValidatedEditableGridValue(new Date('2020-13-23 14:34'), dateCol).message).toStrictEqual({
-        //     message: 'Invalid date',
-        // });
+        expect(getValidatedEditableGridValue(new Date('2020-13-23 14:34'), dateCol).message).toStrictEqual({
+            message: 'Invalid date',
+        });
     });
 
     test('valid dateTimeCol value', () => {
@@ -765,8 +762,7 @@ describe('getValidatedEditableGridValue', () => {
             },
             value: true,
         });
-        // TODO: Why is this considered a valid date?
-        // expect(getValidatedEditableGridValue(13, dateTimeCol).message).toBe(undefined);
+        expect(getValidatedEditableGridValue(13, dateTimeCol).message).toBe(undefined);
         expect(getValidatedEditableGridValue('2020-12-INVALID 14:34', dateTimeCol)).toStrictEqual({
             message: {
                 message: 'Invalid date time',
@@ -779,11 +775,9 @@ describe('getValidatedEditableGridValue', () => {
             },
             value: '2020-13-23 14:34',
         });
-        // TODO: If it is a date should we consider it valid? This might revert to an expected failure
-        // with future updates to _formatDate()
-        // expect(getValidatedEditableGridValue(new Date('2020-13-23 14:34'), dateTimeCol).message).toStrictEqual({
-        //     message: 'Invalid date time',
-        // });
+        expect(getValidatedEditableGridValue(new Date('2020-13-23 14:34'), dateTimeCol).message).toStrictEqual({
+            message: 'Invalid date time',
+        });
     });
 
     test('time column', () => {
@@ -798,9 +792,6 @@ describe('getValidatedEditableGridValue', () => {
             });
         });
 
-        // TODO: Why are we considering the numbers like 1.11 and 100 a valid time values?
-        // validValues = [1.11, '100', '1:00 AM', '1:00 PM', '13:24'];
-        // results = [' 01:11', ' 10:00', ' 01:00', ' 13:00', ' 13:24'];
         validValues = ['1:00 AM', '1:00 PM', '13:24'];
         results = [' 01:00', ' 13:00', ' 13:24'];
         validValues.forEach((value, ind) => {

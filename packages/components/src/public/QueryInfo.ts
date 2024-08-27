@@ -305,39 +305,31 @@ export class QueryInfo {
 
     // @param isIncludedColumn can be used to filter out columns that should not be designate as insertColumns
     // (e.g., if creating samples that are not aliquots, the aliquot-only fields should never be included)
-    getInsertColumns(isIncludedColumn?: (col: QueryColumn) => boolean, readOnlyColumns?: string[]): QueryColumn[] {
-        const lowerReadOnlyColumnsSet = readOnlyColumns?.reduce((result, value) => {
+    getInsertColumns(isIncludedColumn?: (col: QueryColumn) => boolean, requiredColumns?: string[]): QueryColumn[] {
+        const lowerRequiredColumnsSet = requiredColumns?.reduce((result, value) => {
             result.add(value.toLowerCase());
             return result;
         }, new Set());
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
         return this.columns.valueArray.filter(
             col =>
-                lowerReadOnlyColumnsSet?.has(col.fieldKey.toLowerCase()) ||
+                lowerRequiredColumnsSet?.has(col.fieldKey.toLowerCase()) ||
                 insertColumnFilter(col, false, isIncludedColumn)
         );
     }
 
-    getUpdateColumns(readOnlyColumns?: string[]): QueryColumn[] {
-        const lowerReadOnlyColumnsSet = readOnlyColumns?.reduce((result, value) => {
+    getUpdateColumns(requiredColumns?: string[]): QueryColumn[] {
+        const lowerRequiredColumnsSet = requiredColumns?.reduce((result, value) => {
             result.add(value.toLowerCase());
             return result;
         }, new Set());
-        const columns = this.columns.valueArray
-            .filter(column => {
-                return (
-                    column.isUpdateColumn ||
-                    (lowerReadOnlyColumnsSet && lowerReadOnlyColumnsSet.has(column.fieldKey.toLowerCase()))
-                );
-            })
-            .map(column => {
-                if (lowerReadOnlyColumnsSet && lowerReadOnlyColumnsSet.has(column.fieldKey.toLowerCase())) {
-                    return column.mutate({ readOnly: true });
-                } else {
-                    return column;
-                }
-            });
-        return columns;
+
+        return this.columns.valueArray.filter(column => {
+            return (
+                column.isUpdateColumn ||
+                (lowerRequiredColumnsSet && lowerRequiredColumnsSet.has(column.fieldKey.toLowerCase()))
+            );
+        });
     }
 
     getUpdateDisplayColumns(view?: string, omittedColumns?: string[]): QueryColumn[] {

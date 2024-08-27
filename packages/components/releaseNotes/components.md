@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Use new `~~identifyingfield~~` view when available for `QuerySelect`'s `PreviewOption`
 
+### version 4.10.3
+*Released*: 27 August 2024
+- Consolidate EditableGrid read-only cell methods
+  - remove EditorColumnMetadata.readOnly prop and replace with isReadOnlyCell prop
+  - remove unused readOnlyColumns prop from BulkUpdateForm
+  - update QueryInfo getInsertColumns() and getUpdateColumns() to rename param as requiredColumns
+- Remove unused useWindowFocusCheckExpiredSession
+
 ### version 4.10.2
 *Released*: 22 August 2024
 - fix `QueryModel.selectedState` so it works on a partially filled last page

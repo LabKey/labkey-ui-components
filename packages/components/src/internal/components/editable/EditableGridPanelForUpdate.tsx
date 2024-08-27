@@ -153,7 +153,7 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
             <Alert id={ERROR_ALERT_ID}>{error}</Alert>
             <WizardNavButtons
                 cancel={onCancel}
-                canFinish={getIsDirty?.() && (!requiresUserComment || hasValidUserComment)}
+                canFinish={getIsDirty?.() && !editorModel.hasErrors && (!requiresUserComment || hasValidUserComment)}
                 nextStep={onSubmit}
                 finish
                 isFinishing={isSubmitting}

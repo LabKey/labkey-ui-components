@@ -40,7 +40,6 @@ interface Props {
     pluralNoun?: string;
     queryFilters?: Record<string, List<Filter.IFilter>>;
     queryInfo: QueryInfo;
-    readOnlyColumns?: string[];
     requiredColumns?: string[]; // Columns we must retrieve data for
     selectedIds: string[];
     singularNoun?: string;
@@ -82,13 +81,12 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     }
 
     componentDidMount = async (): Promise<void> => {
-        const { onCancel, pluralNoun, queryInfo, readOnlyColumns, selectedIds, sortString, viewName, requiredColumns } =
-            this.props;
+        const { onCancel, pluralNoun, queryInfo, selectedIds, sortString, viewName, requiredColumns } = this.props;
         const { schemaName, name } = queryInfo;
 
         const columns = queryInfo
             .getPkCols()
-            .concat(queryInfo.getUpdateColumns(readOnlyColumns))
+            .concat(queryInfo.getUpdateColumns())
             .map(c => c.fieldKey)
             .concat(requiredColumns);
 

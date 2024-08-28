@@ -607,13 +607,43 @@ describe('utils', () => {
     });
 
     test('isMediaEnabled', () => {
-        expect(isMediaEnabled({ api: { moduleNames: [] } })).toBeFalsy();
-        expect(isMediaEnabled({ api: { moduleNames: ['recipe'] }, core: { productFeatures: [] } })).toBeFalsy();
+        expect(isMediaEnabled({
+            api: { moduleNames: [] } ,
+            biologics: {},
+        })).toBeFalsy();
+        expect(isMediaEnabled({
+            api: { moduleNames: ['recipe'] },
+            core: { productFeatures: [] },
+            biologics: {},
+        })).toBeFalsy();
         expect(
-            isMediaEnabled({ api: { moduleNames: [] }, core: { productFeatures: [ProductFeature.Media] } })
+            isMediaEnabled({
+                api: { moduleNames: [] },
+                core: { productFeatures: [ProductFeature.Media] },
+                samplemanagement: {},
+            })
+        ).toBeFalsy();
+        expect(
+            isMediaEnabled({
+                api: { moduleNames: [] },
+                core: { productFeatures: [ProductFeature.Media] },
+                biologics: {},
+            })
         ).toBeTruthy();
         expect(
-            isMediaEnabled({ api: { moduleNames: ['recipe'] }, core: { productFeatures: [ProductFeature.Media] } })
+            isMediaEnabled({
+                api: { moduleNames: [] },
+                core: { productFeatures: [ProductFeature.Media] },
+                samplemanagement: {},
+                biologics: {},
+            })
+        ).toBeTruthy();
+        expect(
+            isMediaEnabled({
+                api: { moduleNames: ['recipe'] },
+                core: { productFeatures: [ProductFeature.Media] },
+                biologics: {},
+            })
         ).toBeTruthy();
     });
 

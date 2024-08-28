@@ -114,7 +114,7 @@ export function withLineage<Props>(
                     produce<State>(draft => {
                         draft.lineage = draft.lineage.mutate(lineageProps);
                     })
-                )
+                );
             }
         };
 
@@ -128,7 +128,7 @@ export function withLineage<Props>(
                     produce<State>(draft => {
                         draft.lineage = lineage;
                     })
-                )
+                );
             }
         };
 

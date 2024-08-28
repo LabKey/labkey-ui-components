@@ -25,7 +25,7 @@ export interface SamplesTabbedGridPanelComponentProps {
     gridButtonProps?: any;
     gridButtons?: ComponentType<SampleGridButtonProps & RequiresModelAndActions>;
     initialTabId?: string; // use if you have multiple tabs but want to start on something other than the first one
-    isAllSamplesTab?: (QuerySchema) => boolean;
+    isAllSamplesTab?: (schemaQuery: SchemaQuery) => boolean;
     modelId?: string; // if a usage wants to just show a single GridPanel, they should provide a modelId prop
     onEditToggle?: (isEditing: boolean) => void;
     onSampleTabSelect?: (modelId: string) => void;

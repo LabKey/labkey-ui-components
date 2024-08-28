@@ -25,14 +25,18 @@ exports[`DomainRow Calculated Field 1`] = `
           tabindex="0"
         >
           <div
-            class="drag-drop-handle"
+            class="overlay-trigger"
           >
-            <span
-              class="fa fa-ellipsis-v"
-            />
-            <span
-              class="fa fa-ellipsis-v"
-            />
+            <div
+              class="drag-drop-handle"
+            >
+              <span
+                class="fa fa-ellipsis-v"
+              />
+              <span
+                class="fa fa-ellipsis-v"
+              />
+            </div>
           </div>
         </div>
         <div

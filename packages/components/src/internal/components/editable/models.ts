@@ -602,7 +602,7 @@ export class EditorModel
         return DATA_CHANGE_EVENTS.find(e => e === event) !== undefined;
     }
 
-    isSelectionEvent(event: EditableGridEvent): boolean {
+    static isSelectionEvent(event: EditableGridEvent): boolean {
         return SELECTION_EVENTS.find(e => e === event) !== undefined;
     }
 

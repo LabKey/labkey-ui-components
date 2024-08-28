@@ -101,10 +101,7 @@ const basicCellValues = fromJS({
     [genCellKey(colTwoFk, 1)]: List([{ display: 'BB', raw: 'bb' } as ValueDescriptor]),
 });
 const basicEditorModel = new EditorModel({
-    cellMessages: fromJS({
-        [genCellKey(colOneFk, 0)]: 'a',
-        [genCellKey(colTwoFk, 1)]: 'b',
-    }),
+    cellMessages: Map.of(genCellKey(colOneFk, 0), { message: 'a' }, genCellKey(colTwoFk, 1), { message: 'b' }),
     cellValues: basicCellValues,
     columnMap,
     orderedColumns,
@@ -464,10 +461,33 @@ describe('EditorModel', () => {
 
     describe('utils', () => {
         test('getMessage', () => {
-            expect(basicEditorModel.getMessage(colOneFk, 0)).toBe('a');
+            expect(basicEditorModel.getMessage(colOneFk, 0).message).toBe('a');
             expect(basicEditorModel.getMessage(colTwoFk, 0)).toBe(undefined);
             expect(basicEditorModel.getMessage(colOneFk, 1)).toBe(undefined);
-            expect(basicEditorModel.getMessage(colTwoFk, 1)).toBe('b');
+            expect(basicEditorModel.getMessage(colTwoFk, 1).message).toBe('b');
+        });
+
+        test('hasErrors', () => {
+            const em1 = new EditorModel({
+                cellMessages: Map.of(genCellKey(colOneFk, 0), { message: 'a' }, genCellKey(colTwoFk, 1), {
+                    message: 'b',
+                }),
+                cellValues: basicCellValues,
+                columnMap,
+                orderedColumns,
+                queryInfo: QUERY_INFO,
+                rowCount: 2,
+            });
+            expect(em1.hasErrors).toBeTruthy();
+            const em2 = new EditorModel({
+                cellMessages: fromJS({}),
+                cellValues: basicCellValues,
+                columnMap,
+                orderedColumns,
+                queryInfo: QUERY_INFO,
+                rowCount: 2,
+            });
+            expect(em2.hasErrors).toBeFalsy();
         });
 
         test('getValue', () => {

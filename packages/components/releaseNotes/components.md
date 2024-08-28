@@ -5,7 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Misc 24.9 issue fixes
   - Issue 51123: Assay run import sample lookup fails when coming from a workflow job task
-  - Issue 51025: Don't allow saving of data in editable grid if there are know errors
+  - Issue 51025: Don't allow saving of data in editable grid if there are known errors
 
 ### version 4.11.0
 *Released*: 27 August 2024

@@ -13,26 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { Component, ReactNode } from 'react';
+import React, { FC, memo, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { Query } from '@labkey/api';
 
 import { caseInsensitive } from '../../util/utils';
 
 import { fromDate, fromNow, parseDate } from '../../util/Date';
 
-import { LoadingSpinner } from './LoadingSpinner';
+import { useAppContext } from '../../AppContext';
 
-interface IRowConfig {
-    createdBy: string;
-    createdTS: any;
-    display: boolean;
-    hasCreated: boolean;
-    hasModified: boolean;
-    modifiedBy: string;
-    modifiedTS: any;
-    useCreated: boolean;
-}
+import { LoadingSpinner } from './LoadingSpinner';
 
 interface CreatedModifiedProps {
     className?: string;
@@ -40,118 +30,89 @@ interface CreatedModifiedProps {
     useServerDate?: boolean;
 }
 
-interface State {
-    loading: boolean;
-    serverDate: Date;
-}
+export const CreatedModified: FC<CreatedModifiedProps> = memo(props => {
+    const { className = 'cbmb-inline', row, useServerDate = true } = props;
+    const [loading, setLoading] = useState(useServerDate);
+    const [serverDate, setServerDate] = useState<Date>();
+    const { api } = useAppContext();
 
-export class CreatedModified extends Component<CreatedModifiedProps, State> {
-    static defaultProps = { className: 'cbmb-inline', useServerDate: true };
+    useEffect(() => {
+        if (!useServerDate) return;
 
-    constructor(props) {
-        super(props);
+        (async () => {
+            try {
+                const serverDate_ = await api.query.getServerDate();
+                setServerDate(serverDate_);
+            } catch (e) {
+                // Do nothing
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-        this.state = { loading: props.useServerDate, serverDate: undefined };
-    }
+    const config = useMemo(() => {
+        const createdTS = caseInsensitive(row, 'created')?.value;
+        const modifiedTS = caseInsensitive(row, 'modified')?.value;
+        const hasCreated = createdTS !== undefined;
+        const hasModified = modifiedTS !== undefined;
+        const useCreated = !hasModified || createdTS === modifiedTS;
 
-    componentDidMount(): void {
-        if (this.props.useServerDate) {
-            Query.getServerDate({
-                success: serverDate => this.setState({ serverDate, loading: false }),
-                failure: error => this.setState({ loading: false }),
-            });
+        let displayTxt: string;
+        const timestamp = useCreated ? createdTS : modifiedTS;
+        if (!loading && timestamp) {
+            const parsedDate = parseDate(timestamp);
+            if (parsedDate) {
+                displayTxt = serverDate ? fromDate(parsedDate, serverDate) : fromNow(parsedDate);
+            }
         }
-    }
 
-    formatTitle = (config: IRowConfig): string => {
-        const title = [];
+        return {
+            createdBy: caseInsensitive(row, 'createdBy')?.displayValue,
+            createdTS: hasCreated ? createdTS : undefined,
+            display: hasCreated || hasModified,
+            displayTxt,
+            hasCreated,
+            hasModified,
+            modifiedBy: caseInsensitive(row, 'modifiedBy')?.displayValue,
+            modifiedTS: hasModified ? modifiedTS : undefined,
+            useCreated,
+        };
+    }, [loading, row, serverDate]);
+
+    const title = useMemo(() => {
+        const title_: string[] = [];
 
         if (config.display) {
             if (config.hasCreated) {
-                title.push('Created: ' + config.createdTS);
+                title_.push('Created: ' + config.createdTS);
 
                 if (config.createdBy) {
-                    title.push('Created by: ' + config.createdBy);
+                    title_.push('Created by: ' + config.createdBy);
                 }
             }
 
             if (!config.useCreated && config.hasModified) {
-                title.push('Modified: ' + config.modifiedTS);
+                title_.push('Modified: ' + config.modifiedTS);
 
                 if (config.modifiedBy) {
-                    title.push('Modified by: ' + config.modifiedBy);
+                    title_.push('Modified by: ' + config.modifiedBy);
                 }
             }
         }
 
-        if (title.length > 0) {
-            return title.join('\n');
-        }
+        return title_.length > 0 ? title_.join('\n') : '';
+    }, [config]);
 
-        return '';
-    };
-
-    processRow = (): IRowConfig => {
-        const { row } = this.props;
-
-        if (row) {
-            const createdBy = caseInsensitive(row, 'createdBy')?.displayValue;
-            const createdTS = caseInsensitive(row, 'created')?.value;
-            const modifiedBy = caseInsensitive(row, 'modifiedBy')?.displayValue;
-            const modifiedTS = caseInsensitive(row, 'modified')?.value;
-
-            const hasCreated = createdTS !== undefined;
-            const hasModified = modifiedTS !== undefined;
-
-            return {
-                createdBy,
-                createdTS: hasCreated ? createdTS : undefined,
-                display: hasCreated || hasModified,
-                hasCreated,
-                hasModified,
-                modifiedBy,
-                modifiedTS: hasModified ? modifiedTS : undefined,
-                useCreated: !hasModified || createdTS === modifiedTS,
-            };
-        }
-
-        return {
-            createdBy: undefined,
-            createdTS: undefined,
-            display: false,
-            hasCreated: false,
-            hasModified: false,
-            modifiedBy: undefined,
-            modifiedTS: undefined,
-            useCreated: false,
-        };
-    };
-
-    render(): ReactNode {
-        const { className } = this.props;
-        const { serverDate, loading } = this.state;
-
-        if (loading) {
-            return <LoadingSpinner />;
-        }
-
-        const config = this.processRow();
-        if (config.display) {
-            // also supports '/'
-            const timestamp = config.useCreated ? config.createdTS : config.modifiedTS;
-            const parsedDate = parseDate(timestamp);
-            const displayTxt = serverDate ? fromDate(parsedDate, serverDate) : fromNow(parsedDate);
-
-            return (
-                <span
-                    title={this.formatTitle(config)}
-                    className={classNames('createdmodified', 'gray-text', className)}
-                >
-                    {config.useCreated ? 'Created' : 'Modified'} {displayTxt}
-                </span>
-            );
-        }
-
+    if (loading) {
+        return <LoadingSpinner />;
+    } else if (!config.display) {
         return null;
     }
-}
+
+    return (
+        <span className={classNames('createdmodified', 'gray-text', className)} title={title}>
+            {config.useCreated ? 'Created' : 'Modified'} {config.displayTxt}
+        </span>
+    );
+});

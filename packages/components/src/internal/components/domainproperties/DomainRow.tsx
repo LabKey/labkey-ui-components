@@ -520,6 +520,11 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                               ? false
                                               : undefined /* use undefined instead of false to allow for css to handle the highlight color for hover*/
                                     }
+                                    tooltip={
+                                        field.isCalculatedField()
+                                            ? 'Field reordering is disabled for calculated fields.'
+                                            : undefined
+                                    }
                                 />
                             </div>
                             <div className="domain-row-action-section">

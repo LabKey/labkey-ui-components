@@ -15,6 +15,14 @@ import { SampleGridButtonProps } from './components/samples/models';
 import { ALIQUOT_FILTER_MODE } from './components/samples/constants';
 
 export interface SamplesTabbedGridPanelComponentProps {
+    // TODO: We seem to be very confused about requiresModelReload. Every time SamplesTabbedGrid passes it as true it is
+    //  also calling loadModel on the underlying QueryModel. Consumers of SamplesTabbedGridPanel vary in how they treat
+    //  the flag, to the point that we seem to have a misunderstanding of what it is for:
+    //  1. Some components check the flag and reload their underlying QueryModel if it is true, which is redundant
+    //  2. Some components never check the flag, and always reload their underlying QueryModel, which defeats the
+    //  purpose of the flag
+    //  3. Some components check the flag, and then reload some other data/model. This seems like the one valid use case
+    //  (see PickListOverview, WorkflowSamplesPage)
     afterSampleActionComplete?: (requiresModelReload?: boolean) => void;
     asPanel?: boolean;
     autoLoad?: boolean;

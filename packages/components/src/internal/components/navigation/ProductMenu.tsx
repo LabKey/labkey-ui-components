@@ -286,7 +286,7 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
                 setShow(current => !current);
             }
         },
-        [toggleMenu]
+        [setShow]
     );
 
     if (!isLoaded && !hasError) return null;

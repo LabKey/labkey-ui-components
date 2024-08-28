@@ -427,7 +427,7 @@ export function isNamingPrefixEnabled(moduleContext?: ModuleContext): boolean {
 }
 
 export function isMediaEnabled(moduleContext?: ModuleContext): boolean {
-    return isFeatureEnabled(ProductFeature.Media, moduleContext);
+    return isBiologicsEnabled(moduleContext) && isFeatureEnabled(ProductFeature.Media, moduleContext);
 }
 
 export function isRegistryEnabled(moduleContext?: ModuleContext): boolean {

@@ -16,7 +16,7 @@
 import React, { FC, memo, MouseEvent, ReactNode, RefObject, useCallback } from 'react';
 import classNames from 'classnames';
 import { List } from 'immutable';
-import { Filter, Query } from '@labkey/api';
+import { Query } from '@labkey/api';
 
 import { createPortal } from 'react-dom';
 

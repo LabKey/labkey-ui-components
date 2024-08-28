@@ -141,7 +141,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
             let url = getAppURL(row, evt);
 
             if (chart.filter !== undefined) {
-                const dt = formatDate(addDays(new Date(), 1), getDateFNSDateFormat());
+                const dt = formatDate(addDays(new Date(), chart.filter), getDateFNSDateFormat());
                 url = url.addParam(filterDataRegionName + '.Created~dategte', dt);
             }
 

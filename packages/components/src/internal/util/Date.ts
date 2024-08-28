@@ -263,7 +263,9 @@ function toDateFNSFormatString(javaDateFormatString: string): string {
     return javaDateFormatString
         ?.replace('YYYY', 'yyyy') // 0044, 0001, 1900, 2017
         .replace('YY', 'yy') // 44, 01, 00, 17
+        .replace('Y', 'y')
         .replace('DD', 'dd') // 01, 02, ..., 31
+        .replace('D', 'd')
         .replace('A', 'a') // AM, PM (only 'a' is really supported in Java)
         .replace(/u+/gi, 'i') // 1, 2, 3, ... 7 (ISO day of week)
         .replace(/Z+/gi, 'xxx'); // -08:00, +05:30, +00:00
@@ -385,38 +387,40 @@ function safeParse(dateStr: string, formatStr: string, referenceDate: number | D
     }
 }
 
-function _formatDate(date: Date | number, dateFormat: string, timezone?: string): string {
-    if (!isValid(date)) return undefined;
+function _formatDate(date: Date | string | number, dateFormat: string, timezone?: string): string {
+    const date_ = parseDate(date);
+    if (!date_) return undefined;
+
     const _dateFormat = toDateFNSFormatString(dateFormat);
     if (timezone) {
         return formatTz(toZonedTime(date, timezone), _dateFormat, { timeZone: timezone });
     }
-    return format(date, _dateFormat);
+    return format(date_, _dateFormat);
 }
 
-export function formatDate(date: Date | number, timezone?: string, dateFormat?: string): string {
+export function formatDate(date: Date | string | number, timezone?: string, dateFormat?: string): string {
     return _formatDate(date, dateFormat ?? getDateFNSDateFormat(), timezone);
 }
 
-export function formatDateTime(date: Date | number, timezone?: string, dateFormat?: string): string {
+export function formatDateTime(date: Date | string | number, timezone?: string, dateFormat?: string): string {
     return _formatDate(date, dateFormat ?? getDateFNSDateTimeFormat(), timezone);
 }
 
 // Issue 44398: see DateUtil.java getJsonDateTimeFormatString(), this function is to match the format, which is
 // provided by the LabKey server for the API response, from a JS Date object
-export function getJsonDateTimeFormatString(date: Date): string {
+export function getJsonDateTimeFormatString(date: Date | string | number): string {
     return _formatDate(date, ISO_DATE_TIME_FORMAT_STRING);
 }
 
-export function getJsonTimeFormatString(date: Date): string {
+export function getJsonTimeFormatString(date: Date | string | number): string {
     return _formatDate(date, ISO_TIME_FORMAT_STRING);
 }
 
-export function getJsonDateFormatString(date: Date): string {
+export function getJsonDateFormatString(date: Date | string | number): string {
     return _formatDate(date, ISO_DATE_FORMAT_STRING);
 }
 
-export function getJsonFormatString(date: Date, rawFormat: string): string {
+export function getJsonFormatString(date: Date | string | number, rawFormat: string): string {
     if (!isValid(date)) return undefined;
     if (rawFormat === DateFormatType.DateTime) return getJsonDateTimeFormatString(date);
     if (rawFormat === DateFormatType.Time) return getJsonTimeFormatString(date);

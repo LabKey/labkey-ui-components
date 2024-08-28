@@ -668,7 +668,9 @@ describe('Date Utilities', () => {
             expect(checkFormat('dd.')).toBe('26.');
             expect(checkFormat('dd.MM.')).toBe('26.08.');
             expect(checkFormat('dd.MM.yyyy')).toBe('26.08.2024');
+            expect(checkFormat('DD.MM.yyyy')).toBe('26.08.2024');
             expect(checkFormat('d.M.yyyy')).toBe('26.8.2024');
+            expect(checkFormat('D.M.yyyy')).toBe('26.8.2024');
             expect(checkFormat('YYYY')).toBe('2024');
             expect(checkFormat('yyyy')).toBe('2024');
             expect(checkFormat('YY')).toBe('24');

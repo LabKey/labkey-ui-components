@@ -24,9 +24,9 @@ interface Props {
     col?: QueryColumn;
     columnIndex?: number;
     data: any;
+    noLink?: boolean;
     row?: any;
     rowIndex?: number;
-    noLink?: boolean;
 }
 
 const TARGET_BLANK = '_blank';

@@ -607,15 +607,19 @@ describe('utils', () => {
     });
 
     test('isMediaEnabled', () => {
-        expect(isMediaEnabled({
-            api: { moduleNames: [] } ,
-            biologics: {},
-        })).toBeFalsy();
-        expect(isMediaEnabled({
-            api: { moduleNames: ['recipe'] },
-            core: { productFeatures: [] },
-            biologics: {},
-        })).toBeFalsy();
+        expect(
+            isMediaEnabled({
+                api: { moduleNames: [] },
+                biologics: {},
+            })
+        ).toBeFalsy();
+        expect(
+            isMediaEnabled({
+                api: { moduleNames: ['recipe'] },
+                core: { productFeatures: [] },
+                biologics: {},
+            })
+        ).toBeFalsy();
         expect(
             isMediaEnabled({
                 api: { moduleNames: [] },

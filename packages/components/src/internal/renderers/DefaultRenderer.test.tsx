@@ -56,7 +56,9 @@ describe('DefaultRenderer', () => {
     });
 
     test('url, but noLink', () => {
-        const component = <DefaultRenderer noLink data={fromJS({ value: 1, displayValue: 'Value 1', url: 'labkey.com' })} />;
+        const component = (
+            <DefaultRenderer noLink data={fromJS({ value: 1, displayValue: 'Value 1', url: 'labkey.com' })} />
+        );
         const { container } = render(component);
         expect(container).toMatchSnapshot();
     });

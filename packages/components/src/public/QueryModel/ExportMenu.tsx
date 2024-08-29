@@ -101,7 +101,7 @@ export interface ExportMenuImplProps extends Omit<ExportMenuProps, 'model'> {
 }
 
 const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
-    const { id, hasData, supportedTypes, hasSelections, exportHandler, onExport, actions } = props;
+    const { id, hasData, supportedTypes, hasSelections, exportHandler, onExport } = props;
 
     const exportCallback = useCallback(
         (option: ExportOption) => {
@@ -111,9 +111,8 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
             } else {
                 exportHandler(option);
             }
-            actions.addMessage(id, { type: 'success', content: option.label + ' export started.' }, 5000);
         },
-        [actions, exportHandler, id, onExport]
+        [exportHandler, id, onExport]
     );
 
     const exportHeader = 'Export' + (hasSelections ? ' Selected' : '') + ' Data';
@@ -143,13 +142,14 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
 
 export class ExportMenu extends PureComponent<ExportMenuProps> {
     export = (option: ExportOption): void => {
-        const { model, advancedOptions, onExport } = this.props;
+        const { model, advancedOptions, onExport, actions } = this.props;
         const { type } = option;
 
         if (onExport?.[type]) {
             onExport[type](model.id);
         } else {
             exportRows(type, getQueryModelExportParams(model, type, advancedOptions), model.containerPath);
+            actions.addMessage(model.id, { type: 'success', content: option.label + ' export started.' }, 5000);
         }
     };
 

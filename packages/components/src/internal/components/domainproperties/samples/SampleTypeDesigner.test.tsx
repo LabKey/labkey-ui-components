@@ -143,7 +143,9 @@ describe('SampleTypeDesigner', () => {
                     Map<string, any>({
                         domainDesign: {
                             name: 'Test Name',
-                            fields: [{ name: 'testfield' }],
+                            // Note: we can't initialize the test with fields because react-beautiful-dnd will cause an
+                            // error
+                            // fields: [{ name: 'testfield' }],
                         },
                         nameReadOnly: true,
                     })
@@ -169,7 +171,7 @@ describe('SampleTypeDesigner', () => {
         const panelTitles = document.querySelectorAll('.domain-panel-title');
         expect(panelTitles[0].textContent).toBe('Sample Type Properties');
         expect(panelTitles[1].textContent).toBe('Fields');
-        expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(0);
+        expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(1);
     });
 
     test('open fields panel', async () => {

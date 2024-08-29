@@ -1,9 +1,9 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 
-import { act } from 'react-dom/test-utils';
+import { act } from '@testing-library/react';
 
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { getDomainPropertiesTestAPIWrapper } from '../APIWrapper';
 

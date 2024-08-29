@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { Tab, Tabs } from './Tabs';
 

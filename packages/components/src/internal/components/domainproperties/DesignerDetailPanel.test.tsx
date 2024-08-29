@@ -1,6 +1,6 @@
 import React, { act } from 'react';
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';

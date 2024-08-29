@@ -1,6 +1,6 @@
 import React from 'react';
 
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { TEST_LIMS_STARTER_MODULE_CONTEXT, TEST_LKSM_PROFESSIONAL_MODULE_CONTEXT } from '../../productFixtures';
 import { FREEZER_MANAGER_APP_PROPERTIES } from '../../app/constants';

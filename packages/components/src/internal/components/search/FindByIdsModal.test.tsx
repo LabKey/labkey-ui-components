@@ -1,10 +1,10 @@
 import React from 'react';
+import { render } from '@testing-library/react';
 
 import { FindField } from '../samples/models';
 import { UNIQUE_ID_FIND_FIELD } from '../samples/constants';
 
 import { FindByIdsModal, FindFieldOption } from './FindByIdsModal';
-import { render } from '@testing-library/react';
 
 const TEST_FIELD: FindField = {
     nounSingular: 'Test',

@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { act, render } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 
 import {
     AssayPropertiesInput,
@@ -54,12 +54,7 @@ describe('AssayPropertiesInput', () => {
 
     test('with custom props', () => {
         render(
-            <AssayPropertiesInput
-                label="TestProperty"
-                required={true}
-                colSize={5}
-                helpTipBody={() => <div>testing</div>}
-            >
+            <AssayPropertiesInput colSize={5} helpTipBody={<div>testing</div>} label="TestProperty" required>
                 <input type="checkbox" id="checkbox-test-id" />
             </AssayPropertiesInput>
         );
@@ -164,10 +159,12 @@ describe('AssayPropertiesInput', () => {
         expect(document.querySelector('input').getAttribute('checked')).toBe('');
     });
 
-    test('AutoLinkDataInput', () => {
-        render(<AutoLinkDataInput model={AssayProtocolModel.create({})} onChange={jest.fn} />);
+    test('AutoLinkDataInput', async () => {
+        await act(async () => {
+            render(<AutoLinkDataInput model={AssayProtocolModel.create({})} onChange={jest.fn} />);
+        });
         validate('Study', false, true, 0);
-        expect(document.querySelectorAll('select').length).toBe(0); // loading
+        expect(document.querySelector('select')).toBeInTheDocument();
     });
 
     test('AutoLinkCategoryInput', () => {

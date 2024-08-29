@@ -1,6 +1,6 @@
 import React, { act } from 'react';
 
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { TEST_USER_EDITOR } from '../../userFixtures';

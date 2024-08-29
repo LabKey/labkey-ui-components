@@ -3,7 +3,7 @@
 // Repository: https://github.com/formsy/formsy-react/tree/0226fab133a25
 import React, { FC, PropsWithChildren, memo, useCallback, useRef, useState } from 'react';
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { FormsyInjectedProps, ValidationError } from './types';
 import { Formsy } from './Formsy';

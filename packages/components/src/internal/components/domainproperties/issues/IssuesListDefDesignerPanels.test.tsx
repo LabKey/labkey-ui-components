@@ -1,10 +1,10 @@
 import React from 'react';
 
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { List } from 'immutable';
 
-import { act } from 'react-dom/test-utils';
+import { act } from '@testing-library/react';
 
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
@@ -65,7 +65,7 @@ describe('IssuesListDefDesignerPanel', () => {
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
 
-        await act(() => userEvent.click(document.querySelector('.domain-panel-header')));
+        await userEvent.click(document.querySelector('.domain-panel-header'));
 
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(0);
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(2);

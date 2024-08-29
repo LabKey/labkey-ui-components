@@ -1,6 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
+
+import { cancelEvent } from '../../events';
 
 import { DisableableAnchor } from './DisableableAnchor';
 
@@ -8,7 +10,10 @@ describe('DisableableAnchor', () => {
     test('renders enabled without styling', async () => {
         const expectedHref = 'http://test.url.com';
         const expectedText = 'Enabled Anchor';
-        const onClickHandler = jest.fn();
+        const onClickHandler = jest.fn().mockImplementation(evt => {
+            // Cancel the event as js-dom does not implement navigation
+            cancelEvent(evt);
+        });
         render(
             <DisableableAnchor href={expectedHref} onClick={onClickHandler}>
                 {expectedText}
@@ -22,7 +27,7 @@ describe('DisableableAnchor', () => {
         await userEvent.click(anchor);
         expect(onClickHandler).toHaveBeenCalled();
     });
-    test('applies disabled', async () => {
+    test('applies disabled', () => {
         const expectedClassName = 'CS101';
         const expectedHref = 'http://test.url.com';
         const expectedText = 'Disabled Anchor';

@@ -1,6 +1,6 @@
 import React, { act } from 'react';
 
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { List } from 'immutable';
 

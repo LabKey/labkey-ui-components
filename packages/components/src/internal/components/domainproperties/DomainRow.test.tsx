@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import React from 'react';
 import { List } from 'immutable';
-import { act } from 'react-dom/test-utils';
+import { act } from '@testing-library/react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
@@ -88,9 +87,7 @@ describe('DomainRow', () => {
             dragging: false,
             expanded: false,
             field: DomainField.create({}),
-            getDomainFields: () => {
-                return {};
-            },
+            getDomainFields: jest.fn().mockReturnValue({}),
             helpNoun: 'domain',
             index: 1,
             maxPhiLevel: PHILEVEL_RESTRICTED_PHI,

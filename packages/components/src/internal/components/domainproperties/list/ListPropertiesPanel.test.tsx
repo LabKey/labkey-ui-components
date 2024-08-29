@@ -1,5 +1,5 @@
 import React, { act } from 'react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { DEFAULT_LIST_SETTINGS } from '../../../../test/data/constants';
 

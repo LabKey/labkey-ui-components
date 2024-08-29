@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import React from 'react';
-import { act, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 
 import { UserResetPasswordConfirmModal, UserResetPasswordConfirmModalProps } from './UserResetPasswordConfirmModal';
 
@@ -57,9 +57,9 @@ describe('UserResetPasswordConfirmModal', () => {
             <UserResetPasswordConfirmModal {...DEFAULT_PROPS} hasLogin={false} resetPasswordApi={resetPasswordApi} />
         );
 
-        await act(() => userEvent.click(document.querySelector('.btn-success')));
+        await userEvent.click(document.querySelector('.btn-success'));
 
-        expect(resetPasswordApi).toHaveBeenCalled();
-        expect(document.querySelector('.alert-danger').innerHTML).toEqual(errorMsg);
+        expect(resetPasswordApi).toHaveBeenCalledWith(DEFAULT_PROPS.email);
+        expect(screen.getByText(errorMsg)).toBeInTheDocument();
     });
 });

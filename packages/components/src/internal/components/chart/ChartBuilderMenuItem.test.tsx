@@ -1,5 +1,5 @@
 import React from 'react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';

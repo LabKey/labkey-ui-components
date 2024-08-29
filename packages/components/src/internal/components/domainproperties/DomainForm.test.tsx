@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { act, FC, memo, useCallback, useState } from 'react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 

@@ -3,7 +3,7 @@ import { List, Map } from 'immutable';
 
 import { act } from '@testing-library/react';
 
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 

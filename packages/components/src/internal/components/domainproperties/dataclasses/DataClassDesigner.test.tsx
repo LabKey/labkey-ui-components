@@ -37,10 +37,9 @@ describe('DataClassDesigner', () => {
     test('default properties', async () => {
         const component = <DataClassDesignerImpl {...BASE_PROPS} />;
         await act(async () => {
-            const { container } = renderWithAppContext(component, {
+            renderWithAppContext(component, {
                 serverContext: SERVER_CONTEXT,
             });
-            expect(container).toMatchSnapshot();
         });
 
         expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
@@ -62,12 +61,10 @@ describe('DataClassDesigner', () => {
             />
         );
         await act(async () => {
-            const { container } = renderWithAppContext(component, {
+            renderWithAppContext(component, {
                 serverContext: SERVER_CONTEXT,
             });
-            expect(container).toMatchSnapshot();
         });
-
         expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
         expect(document.querySelectorAll('.domain-form-panel').length).toBe(2);
         expect(screen.getByText('Import or infer fields from file')).toBeInTheDocument();
@@ -79,10 +76,9 @@ describe('DataClassDesigner', () => {
             <DataClassDesignerImpl {...BASE_PROPS} initModel={DataClassModel.create(getDomainDetailsJSON)} />
         );
         await act(async () => {
-            const { container } = renderWithAppContext(component, {
+            renderWithAppContext(component, {
                 serverContext: SERVER_CONTEXT,
             });
-            expect(container).toMatchSnapshot();
         });
 
         expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);

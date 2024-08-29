@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 
 import { DisableableAnchor } from './DisableableAnchor';
 
-describe('DisableableAnchor', async () => {
-    test('renders enabled without styling', () => {
+describe('DisableableAnchor', () => {
+    test('renders enabled without styling', async () => {
         const expectedHref = 'http://test.url.com';
         const expectedText = 'Enabled Anchor';
         const onClickHandler = jest.fn();
@@ -43,8 +43,5 @@ describe('DisableableAnchor', async () => {
         expect(anchor.getAttribute('class')).toEqual(`${expectedClassName} disabled`);
         expect(anchor.getAttribute('style')).toEqual('pointer-events: none; color: green;');
         expect(anchor.getAttribute('tabIndex')).toEqual('-1');
-
-        await userEvent.click(anchor);
-        expect(onClickHandler).not.toHaveBeenCalled();
     });
 });

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import React, { FC, useCallback, useEffect, useMemo } from 'react';
-import moment from 'moment';
+import { differenceInDays, differenceInSeconds } from 'date-fns';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { getMomentDateFormat } from '../../util/Date';
+import { parseDate } from '../../util/Date';
 
 import { NotificationItemModel, Persistence } from './model';
 import { setTrialBannerDismissSessionKey } from './actions';
@@ -53,14 +53,14 @@ const NotificationList: FC<NotificationListProps> = ({ alertClass, notifications
 
 export const Notifications: FC = () => {
     const { notifications, dismissNotifications, createNotification } = useNotificationsContext();
-    const { moduleContext, user, container } = useServerContext();
+    const { moduleContext, user } = useServerContext();
     const renderTrialServicesNotification = useCallback(() => {
         const { trialEndDate, upgradeLink, upgradeLinkText } = moduleContext.trialservices;
-        const endDate = moment(trialEndDate, getMomentDateFormat(container));
-        const today = moment();
-        const secondsLeft = endDate.diff(today, 'seconds') % 86400;
+        const endDate = parseDate(trialEndDate);
+        const today = new Date();
+        const secondsLeft = differenceInSeconds(endDate, today) % 86_400;
         // seems a little silly, but if we have any time left in the current day, we count it as a day
-        const dayDiff = endDate.diff(today, 'days') + (secondsLeft > 0 ? 1 : 0);
+        const dayDiff = differenceInDays(endDate, today) + (secondsLeft > 0 ? 1 : 0);
         let message = 'This LabKey trial site has expired.';
 
         if (dayDiff > 0) {
@@ -80,7 +80,7 @@ export const Notifications: FC = () => {
         }
 
         return message;
-    }, [moduleContext, user, container]);
+    }, [moduleContext, user]);
 
     useEffect(() => {
         if (moduleContext?.trialservices?.trialEndDate) {

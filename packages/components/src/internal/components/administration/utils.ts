@@ -1,6 +1,5 @@
 import { ActionURL } from '@labkey/api';
-
-import moment from 'moment';
+import { formatDistance } from 'date-fns';
 
 import { hasPremiumModule } from '../../app/utils';
 import { ModuleContext } from '../base/ServerContext';
@@ -22,7 +21,9 @@ export function getApiExpirationMessage(moduleContext: ModuleContext): string {
     if (!expSeconds || expSeconds === -1) {
         return 'never expire';
     }
-    return 'expire after ' + moment.duration(expSeconds, 'seconds').humanize();
+
+    // https://stackoverflow.com/a/52768660
+    return 'expire after ' + formatDistance(0, expSeconds * 1000, { includeSeconds: true });
 }
 
 export function showPremiumFeatures(moduleContext?: ModuleContext): boolean {

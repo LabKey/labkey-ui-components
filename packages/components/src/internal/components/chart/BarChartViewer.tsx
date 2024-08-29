@@ -1,9 +1,9 @@
 import React, { FC, memo, PureComponent, useCallback } from 'react';
 import classNames from 'classnames';
-import moment from 'moment';
+import { addDays } from 'date-fns';
 import { Filter, PermissionTypes, Query } from '@labkey/api';
 
-import { getDateFormat } from '../../util/Date';
+import { formatDate, getDateFNSDateFormat } from '../../util/Date';
 
 import {
     ASSAYS_KEY,
@@ -31,10 +31,11 @@ import { RequiresPermission } from '../base/Permissions';
 
 import { useServerContext } from '../base/ServerContext';
 
+import { DropdownButton, MenuItem } from '../../dropdowns';
+
 import { BarChartConfig, BarChartData, BarChartSelector } from './models';
 import { BaseBarChart } from './BaseBarChart';
 import { processChartData } from './utils';
-import { DropdownButton, MenuItem } from '../../dropdowns';
 
 async function fetchItemCount(schemaQuery: SchemaQuery, filterArray: Filter.IFilter[] = []): Promise<number> {
     try {
@@ -140,7 +141,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
             let url = getAppURL(row, evt);
 
             if (chart.filter !== undefined) {
-                const dt = moment().add(chart.filter, 'days').format(getDateFormat().toUpperCase());
+                const dt = formatDate(addDays(new Date(), chart.filter), getDateFNSDateFormat());
                 url = url.addParam(filterDataRegionName + '.Created~dategte', dt);
             }
 

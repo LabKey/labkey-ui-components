@@ -1,6 +1,6 @@
 import { Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
-import moment from 'moment';
+import { addDays, subDays } from 'date-fns';
 
 import { ExtendedMap } from '../../../public/ExtendedMap';
 import { QueryColumn } from '../../../public/QueryColumn';
@@ -1014,18 +1014,15 @@ export async function fillColumnCells(
             const display = raw.toString();
             fillValue = List([{ raw, display }]);
         } else if (incrementType === IncrementType.DATE || incrementType === IncrementType.DATETIME) {
-            const dateValue = moment(parseDate(startingValue as string));
+            let date = parseDate(startingValue);
 
             if (direction === IncrementDirection.FORWARD) {
-                dateValue.add(i + 1, 'days');
+                date = addDays(date, i + 1);
             } else {
-                dateValue.subtract(i + 1, 'days');
+                date = subDays(date, i + 1);
             }
 
-            const raw =
-                incrementType === IncrementType.DATE
-                    ? formatDate(dateValue.toDate())
-                    : formatDateTime(dateValue.toDate());
+            const raw = incrementType === IncrementType.DATE ? formatDate(date) : formatDateTime(date);
             fillValue = List([{ raw, display: raw }]);
         }
 

@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo, useState } from 'react';
-import moment from 'moment';
+import { differenceInSeconds } from 'date-fns';
 import { User, UserWithPermissions } from '@labkey/api';
 
 import { resolveErrorMessage } from '../util/messaging';
@@ -11,6 +11,8 @@ import { UserLink } from '../components/user/UserLink';
 import { DropdownAnchor, MenuItem } from '../dropdowns';
 
 import { Modal } from '../Modal';
+
+import { fromNow, parseDate } from '../util/Date';
 
 import { AnnouncementModel } from './model';
 import { ThreadEditor, ThreadEditorProps } from './ThreadEditor';
@@ -58,10 +60,14 @@ interface ThreadBlockHeaderProps {
 const ThreadBlockHeader: FC<ThreadBlockHeaderProps> = props => {
     const { created, modified, onDelete, onEdit, author, isThread } = props;
     const [showDeleteBSModal, setShowDeleteBSModal] = useState(false);
+    const { formattedCreate, isEdited } = useMemo(() => {
+        const createdDate = parseDate(created);
+        const modifiedDate = parseDate(modified);
 
-    const formattedCreate = useMemo(() => moment(created).fromNow(), [created]);
-    const isEdited = useMemo(() => {
-        return moment(modified).diff(moment(created), 'seconds') > 1;
+        return {
+            formattedCreate: fromNow(createdDate),
+            isEdited: differenceInSeconds(modifiedDate, createdDate) > 1,
+        };
     }, [created, modified]);
 
     const onCancelDelete = useCallback(() => {

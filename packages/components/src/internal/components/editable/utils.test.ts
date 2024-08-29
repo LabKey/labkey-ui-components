@@ -792,8 +792,8 @@ describe('getValidatedEditableGridValue', () => {
             });
         });
 
-        validValues = [1.11, '100', '1:00 AM', '1:00 PM', '13:24'];
-        results = [' 01:11', ' 10:00', ' 01:00', ' 13:00', ' 13:24'];
+        validValues = ['1:00 AM', '1:00 PM', '13:24'];
+        results = [' 01:00', ' 13:00', ' 13:24'];
         validValues.forEach((value, ind) => {
             const result = getValidatedEditableGridValue(value, timeCol);
             expect(result.message).toBeUndefined();

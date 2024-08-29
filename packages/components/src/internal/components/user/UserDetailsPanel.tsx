@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React, { FC } from 'react';
-import moment from 'moment';
 import { Map } from 'immutable';
 import { getServerContext, Utils } from '@labkey/api';
 
@@ -12,7 +11,7 @@ import classNames from 'classnames';
 import { Modal } from '../../Modal';
 import { caseInsensitive } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { getMomentDateTimeFormat } from '../../util/Date';
+import { formatDate, getDateFNSDateTimeFormat, parseDate } from '../../util/Date';
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 
@@ -158,10 +157,13 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
         this.props.onUsersStateChangeComplete?.(response, isDelete);
     };
 
-    renderUserProp(label: string, prop: string, formatDate = false) {
+    renderUserProp(label: string, prop: string, formatDate_ = false) {
         let value = caseInsensitive(this.state.userProperties, prop);
-        if (formatDate && value) {
-            value = moment(value).format(getMomentDateTimeFormat());
+        if (formatDate_ && value) {
+            const date = parseDate(value);
+            if (date) {
+                value = formatDate(date, undefined, getDateFNSDateTimeFormat());
+            }
         } else if (value === undefined) {
             value = 'unknown';
         }

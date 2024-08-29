@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { addDays, addHours, subDays, subHours } from 'date-fns';
+
+import { getServerContext } from '@labkey/api';
+
 import { QueryColumn } from '../../public/QueryColumn';
 import { DATE_TYPE, DATETIME_TYPE, TIME_TYPE } from '../components/domainproperties/PropDescType';
 
@@ -23,21 +27,31 @@ import {
     getColDateFormat,
     getColFormattedDateFilterValue,
     getColFormattedTimeFilterValue,
+    getDateFNSDateFormat,
+    getDateFNSDateTimeFormat,
+    getDateFNSTimeFormat,
+    getFormattedStringFromDate,
     getJsonDateTimeFormatString,
     getJsonFormatString,
-    getNDaysStrFromToday,
     getNextDateStr,
     getParsedRelativeDateStr,
     getPickerDateAndTimeFormat,
-    isDateInPast,
+    isDateBetween,
     isDateTimeInPast,
     isRelativeDateFilterValue,
     parseDate,
     parseDateFNSTimeFormat,
     parseFNSTimeFormat,
+    parseTime,
 } from './Date';
 
 describe('Date Utilities', () => {
+    const SERVER_FORMATS = getServerContext().container.formats;
+
+    test('it should always be UTC', () => {
+        expect(new Date().getTimezoneOffset()).toBe(0);
+    });
+
     describe('generateNameWithTimestamp', () => {
         test('generated text', () => {
             const prefix = 'Test';
@@ -47,18 +61,66 @@ describe('Date Utilities', () => {
         });
     });
 
+    describe('isDateBetween', () => {
+        const datePOSIX = 1596750283812; // Aug 6, 2020 21:44 UTC
+        const date = new Date(datePOSIX);
+        const datePlusDay = addDays(date, 1);
+        const datePlusHours = addHours(date, 5);
+        const dateMinusDay = subDays(date, 1);
+        const dateMinusHours = subHours(date, 5);
+        const invalidDate = new Date(NaN);
+
+        test('invalid dates', () => {
+            expect(isDateBetween(undefined, undefined, undefined)).toBe(false);
+            expect(isDateBetween(null, undefined, undefined)).toBe(false);
+            expect(isDateBetween(date, undefined, undefined)).toBe(true);
+            expect(isDateBetween(date, null, undefined)).toBe(true);
+            expect(isDateBetween(date, undefined, null)).toBe(true);
+            expect(isDateBetween(date, invalidDate, undefined)).toBe(true);
+            expect(isDateBetween(date, undefined, invalidDate)).toBe(true);
+            expect(isDateBetween(date, invalidDate, invalidDate)).toBe(true);
+        });
+
+        test('only start date', () => {
+            expect(isDateBetween(date, date, undefined, false)).toBe(true);
+            expect(isDateBetween(date, date, undefined, true)).toBe(false);
+            expect(isDateBetween(date, datePlusDay, undefined)).toBe(false);
+            expect(isDateBetween(date, datePlusHours, undefined, true)).toBe(false);
+            expect(isDateBetween(date, datePlusHours, undefined, false)).toBe(false);
+            expect(isDateBetween(date, dateMinusDay, undefined)).toBe(true);
+            expect(isDateBetween(date, dateMinusHours, undefined, true)).toBe(false);
+            expect(isDateBetween(date, dateMinusHours, undefined, false)).toBe(true);
+        });
+
+        test('only end date', () => {
+            expect(isDateBetween(date, undefined, date)).toBe(true);
+            expect(isDateBetween(date, undefined, datePlusDay)).toBe(true);
+            expect(isDateBetween(date, undefined, dateMinusDay)).toBe(false);
+        });
+
+        test('between', () => {
+            expect(isDateBetween(date, date, date, true)).toBe(false);
+            expect(isDateBetween(date, date, date, false)).toBe(true);
+            expect(isDateBetween(date, datePlusHours, datePlusDay)).toBe(false);
+            expect(isDateBetween(date, dateMinusDay, dateMinusHours)).toBe(false);
+            expect(isDateBetween(date, dateMinusDay, datePlusDay)).toBe(true);
+            expect(isDateBetween(date, dateMinusHours, datePlusHours)).toBe(true);
+        });
+    });
+
     describe('formatDate', () => {
-        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Vancouver
+        const datePOSIX = 1596750283812; // Aug 6, 2020 21:44 UTC
         const testDate = new Date(datePOSIX);
 
         test('invalid date', () => {
-            expect(formatDate(undefined)).toBe(undefined);
+            expect(formatDate(undefined)).toBeUndefined();
+            expect(formatDate(undefined)).toBeUndefined();
         });
         test('default to context dateFormat', () => {
             const actualFormat = formatDate(testDate);
 
             expect(actualFormat).toBe('2020-08-06');
-            expect(actualFormat).toEqual(formatDate(testDate, undefined, LABKEY.container.formats.dateFormat));
+            expect(actualFormat).toEqual(formatDate(testDate, undefined, SERVER_FORMATS.dateFormat));
         });
         test('supports timezone', () => {
             expect(formatDate(datePOSIX, 'Europe/Athens')).toBe('2020-08-07');
@@ -71,16 +133,16 @@ describe('Date Utilities', () => {
     });
 
     describe('formatDateTime', () => {
-        const datePOSIX = 1596750283812; // Aug 6, 2020 14:44 America/Vancouver
+        const datePOSIX = 1596750283812; // Aug 6, 2020 21:44 UTC
         const testDate = new Date(datePOSIX);
 
         test('invalid date', () => {
-            expect(formatDateTime(undefined)).toBe(undefined);
+            expect(formatDateTime(undefined)).toBeUndefined();
         });
         test('default to context dateTimeFormat', () => {
             const actualFormat = formatDateTime(testDate);
 
-            expect(actualFormat).toEqual(formatDateTime(testDate, undefined, LABKEY.container.formats.dateTimeFormat));
+            expect(actualFormat).toEqual(formatDateTime(testDate, undefined, SERVER_FORMATS.dateTimeFormat));
         });
         test('supports timezone', () => {
             expect(formatDateTime(datePOSIX, 'Europe/Athens')).toBe('2020-08-07 00:44');
@@ -92,10 +154,66 @@ describe('Date Utilities', () => {
         });
     });
 
+    describe('get date-fns formats', () => {
+        const testFormats = {
+            dateFormat: 'BEEP-123',
+            dateTimeFormat: 'BEEP-456',
+            numberFormat: 'IMA-789',
+            timeFormat: 'JEEP-101112',
+        };
+
+        test('getDateFNSDateFormat', () => {
+            expect(getDateFNSDateFormat()).toBe(SERVER_FORMATS.dateFormat);
+            expect(getDateFNSDateFormat({ formats: testFormats })).toEqual(testFormats.dateFormat);
+        });
+        test('getDateFNSDateTimeFormat', () => {
+            expect(getDateFNSDateTimeFormat()).toBe(SERVER_FORMATS.dateTimeFormat);
+            expect(getDateFNSDateTimeFormat({ formats: testFormats })).toEqual(testFormats.dateTimeFormat);
+        });
+        test('getDateFNSTimeFormat', () => {
+            expect(getDateFNSTimeFormat()).toBe(SERVER_FORMATS.timeFormat);
+            expect(getDateFNSTimeFormat({ formats: testFormats })).toEqual(testFormats.timeFormat);
+        });
+    });
+
+    describe('getFormattedStringFromDate', () => {
+        const datePOSIX = 1596750283812; // Aug 6, 2020 21:44 UTC
+        const testDate = new Date(datePOSIX);
+        const invalidDate = new Date(NaN);
+
+        const dateOnlyColumn = new QueryColumn({ rangeURI: DATE_TYPE.rangeURI });
+        const timeColumn = new QueryColumn({ rangeURI: TIME_TYPE.rangeURI });
+
+        test('preconditions', () => {
+            expect(dateOnlyColumn.isDateOnlyColumn).toBe(true);
+            expect(timeColumn.isTimeColumn).toBe(true);
+        });
+
+        test('invalid date', () => {
+            expect(getFormattedStringFromDate(undefined, timeColumn)).toBeUndefined();
+            expect(getFormattedStringFromDate(null, timeColumn)).toBeUndefined();
+            expect(getFormattedStringFromDate(invalidDate, timeColumn)).toBeUndefined();
+        });
+
+        test('uses column format', () => {
+            const columnFormat = 'yyyy-dd-MM-dd-yyyy';
+            const dateOnlyColumnWithFormat = dateOnlyColumn.mutate({ format: columnFormat });
+            const timeColumnWithFormat = timeColumn.mutate({ format: columnFormat });
+
+            expect(getFormattedStringFromDate(testDate, dateOnlyColumnWithFormat)).toEqual('2020-06-08-06-2020');
+            expect(getFormattedStringFromDate(testDate, timeColumnWithFormat)).toEqual('2020-06-08-06-2020');
+        });
+
+        test('resolved format matches column configuration', () => {
+            expect(getFormattedStringFromDate(testDate, timeColumn)).toEqual('21:44');
+            expect(getFormattedStringFromDate(testDate, dateOnlyColumn)).toEqual('2020-08-06');
+        });
+    });
+
     describe('getJsonDateTimeFormatString', () => {
         test('without date', () => {
-            expect(getJsonDateTimeFormatString(undefined)).toBe(undefined);
-            expect(getJsonDateTimeFormatString(null)).toBe(undefined);
+            expect(getJsonDateTimeFormatString(undefined)).toBeUndefined();
+            expect(getJsonDateTimeFormatString(null)).toBeUndefined();
         });
 
         test('with date', () => {
@@ -106,12 +224,13 @@ describe('Date Utilities', () => {
 
     describe('getJsonFormatString', () => {
         test('without date', () => {
-            expect(getJsonFormatString(undefined, 'Date')).toBe(undefined);
-            expect(getJsonFormatString(null, 'Date')).toBe(undefined);
-            expect(getJsonFormatString(undefined, 'DateTime')).toBe(undefined);
-            expect(getJsonFormatString(null, 'DateTime')).toBe(undefined);
-            expect(getJsonFormatString(undefined, 'Time')).toBe(undefined);
-            expect(getJsonFormatString(null, 'Time')).toBe(undefined);
+            expect(getJsonFormatString(undefined, 'Date')).toBeUndefined();
+            expect(getJsonFormatString(null, 'Date')).toBeUndefined();
+            expect(getJsonFormatString(undefined, 'DateTime')).toBeUndefined();
+            expect(getJsonFormatString(null, 'DateTime')).toBeUndefined();
+            expect(getJsonFormatString(undefined, 'Time')).toBeUndefined();
+            expect(getJsonFormatString(null, 'Time')).toBeUndefined();
+            expect(getJsonFormatString(new Date(NaN), 'Time')).toBeUndefined();
         });
 
         test('with date', () => {
@@ -203,7 +322,7 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'yyyy-MM HH HH:mm', true)).toBe('yyyy-MM HH HH:mm');
         });
 
-        test('moment.js replacement', () => {
+        test('date-fns replacement', () => {
             const col = new QueryColumn({ shortCaption: 'DateCol', rangeURI: DATETIME_TYPE.rangeURI });
             expect(getColDateFormat(col, 'YYYY-MM-DD')).toBe('yyyy-MM-dd');
             expect(getColDateFormat(col, 'YY-MM-dd')).toBe('yy-MM-dd');
@@ -213,7 +332,7 @@ describe('Date Utilities', () => {
             expect(getColDateFormat(col, 'ZZ YY-MM-dd ZZ')).toBe('xxx yy-MM-dd xxx');
             expect(getColDateFormat(col, 'xxx YY-MM-dd ZZ')).toBe('xxx yy-MM-dd xxx');
             expect(getColDateFormat(col, 'YY-MM-dd ZZZZ')).toBe('yy-MM-dd xxx');
-            expect(getColDateFormat(col, 'zzzz YY-MM-dd')).toBe('xxx yy-MM-dd');
+            expect(getColDateFormat(col, 'zzzz YY-MM-dd u')).toBe('xxx yy-MM-dd i');
         });
 
         test('shortcut formats', () => {
@@ -259,7 +378,13 @@ describe('Date Utilities', () => {
                 rangeURI: DATETIME_TYPE.rangeURI,
                 format: 'dd/MM/yyyy HH:mm',
             });
-            expect(getColFormattedDateFilterValue(col, '2022-04-19 01:02')).toBe('19/04/2022 01:02');
+
+            expect(getColFormattedDateFilterValue(col, ['', null, '2022-04-19 01:02', 'ABCDEFG'])).toStrictEqual([
+                '',
+                null,
+                '19/04/2022 01:02',
+                'ABCDEFG',
+            ]);
         });
 
         test('formatDateTime without QueryColumn format', () => {
@@ -335,15 +460,17 @@ describe('Date Utilities', () => {
 
     describe('parseDate', () => {
         test('no dateStr', () => {
-            expect(parseDate(undefined)).toBe(null);
-            expect(parseDate(null)).toBe(null);
-            expect(parseDate('')).toBe(null);
+            expect(parseDate(undefined)).toBeNull();
+            expect(parseDate(null)).toBeNull();
+            expect(parseDate('')).toBeNull();
         });
 
         test('invalid date', () => {
-            global.console.warn = jest.fn();
-            expect(parseDate('test')).toBe(null);
-            expect(parseDate('test', 'yyyy-MM-dd')).toBe(null);
+            expect(parseDate('test')).toBeNull();
+            expect(parseDate('test', 'yyyy-MM-dd')).toBeNull();
+            expect(parseDate(new Date(NaN))).toBeNull();
+            expect(parseDate(new Date(''))).toBeNull();
+            expect(parseDate({} as any)).toBeNull();
         });
 
         test('valid date without dateFormat', () => {
@@ -355,7 +482,7 @@ describe('Date Utilities', () => {
         test('valid date with dateFormat', () => {
             expect(parseDate('01:02 2022-04-19', 'HH:mm yyyy-MM-dd').toString()).toContain('Apr 19 2022');
             expect(parseDate('19/04/2022', 'dd/MM/yyyy').toString()).toContain('Apr 19 2022');
-            expect(parseDate('4/11/2022', 'dd/MM/yyyy').toString()).toContain('Apr 11 2022');
+            expect(parseDate('4/11/2022', 'dd/MM/yyyy').toString()).toContain('Nov 04 2022');
             expect(parseDate('04/11/2022', 'dd/MM/yyyy').toString()).toContain('Nov 04 2022');
             expect(parseDate('4/11/2022', 'yyyy-MM-dd').toString()).toContain('Apr 11 2022');
             expect(parseDate('04/11/2022', 'yyyy-MM-dd').toString()).toContain('Apr 11 2022');
@@ -369,9 +496,49 @@ describe('Date Utilities', () => {
 
         test('minDate', () => {
             expect(parseDate('0218-11-18', undefined).toString()).toContain('0218');
-            expect(parseDate('0218-11-18', undefined, new Date('1000-01-01'))).toBe(null);
+            expect(parseDate('0218-11-18', undefined, new Date('1000-01-01'))).toBeNull();
             expect(parseDate('0218-11-18 00:00', 'yyyy-MM-dd HH:ss').toString()).toContain('0218');
-            expect(parseDate('0218-11-18 00:00', 'yyyy-MM-dd HH:ss', new Date('1000-01-01'))).toBe(null);
+            expect(parseDate('0218-11-18 00:00', 'yyyy-MM-dd HH:ss', new Date('1000-01-01'))).toBeNull();
+        });
+
+        test('dateOnly', () => {
+            expect(parseDate('01:02', undefined, undefined, undefined, true)).toBeNull();
+            expect(parseDate('1985-09-11', undefined, undefined, undefined, true).toString()).toContain(
+                'Sep 11 1985 00:00:00'
+            );
+        });
+
+        test('timeOnly', () => {
+            expect(parseDate('01:02', undefined, undefined, true).toString()).toContain('01:02:00');
+            expect(parseDate('11:02:59', undefined, undefined, true)).toBeNull();
+            // The following fails in parseTime() but succeeds in parseDate() since the
+            // latter can successfully parse dates with a post-fixed time.
+            expect(parseDate('1985-09-11 12:50:22', undefined, undefined, true).toString()).toContain(
+                'Sep 11 1985 12:50:22'
+            );
+        });
+    });
+
+    describe('parseTime', () => {
+        test('invalid times', () => {
+            expect(parseTime(undefined)).toBeNull();
+            expect(parseTime(null)).toBeNull();
+            expect(parseTime('')).toBeNull();
+            expect(parseTime('13:02 AM')).toBeNull();
+            expect(parseTime('13:02 PM')).toBeNull();
+            expect(parseTime('09/11/1985')).toBeNull();
+            // The following fails in parseTime() but succeeds in parseDate() since the
+            // latter can successfully parse dates with a post-fixed time.
+            expect(parseTime('1985-09-11 12:50:22')).toBeNull();
+        });
+
+        test('valid times', () => {
+            expect(parseTime('01:02 AM').toString()).toContain('01:02');
+            expect(parseTime('01:02 PM').toString()).toContain('13:02');
+            expect(parseTime('11:02 AM').toString()).toContain('11:02');
+            expect(parseTime('13:02').toString()).toContain('13:02');
+            expect(parseTime('11:02:59 AM').toString()).toContain('11:02:59');
+            expect(parseTime('21:02:30').toString()).toContain('21:02:30');
         });
     });
 
@@ -451,34 +618,9 @@ describe('Date Utilities', () => {
         });
     });
 
-    describe('isDateInPast', () => {
-        test('empty', () => {
-            expect(isDateInPast(null)).toBeFalsy();
-            expect(isDateInPast('')).toBeFalsy();
-        });
-
-        test('past', () => {
-            expect(isDateInPast('2022-02-02')).toBeTruthy();
-            expect(isDateInPast('2022-02-02 01:02')).toBeTruthy();
-            expect(isDateInPast('2022-02-02 01:02:03.123')).toBeTruthy();
-        });
-
-        test('today', () => {
-            const today = getNDaysStrFromToday(0);
-            const todayWithTime = today + '  01:02';
-            expect(isDateInPast(today)).toBeFalsy();
-            expect(isDateInPast(todayWithTime)).toBeFalsy();
-        });
-
-        test('futurama', () => {
-            expect(isDateInPast('3000-01-01')).toBeFalsy();
-            expect(isDateInPast('3000-01-01 00:01')).toBeFalsy();
-            expect(isDateInPast('3000-01-01 00:00:00.001')).toBeFalsy();
-        });
-    });
-
     describe('isDateTimeInPast', () => {
         test('empty', () => {
+            expect(isDateTimeInPast(undefined)).toBeFalsy();
             expect(isDateTimeInPast(null)).toBeFalsy();
             expect(isDateTimeInPast('')).toBeFalsy();
         });
@@ -486,27 +628,101 @@ describe('Date Utilities', () => {
         test('past', () => {
             expect(isDateTimeInPast('2022-02-02')).toBeTruthy();
             expect(isDateTimeInPast('2022-02-02 01:02')).toBeTruthy();
-            expect(isDateInPast('2022-02-02 01:02:03.123')).toBeTruthy();
+            expect(isDateTimeInPast('2022-02-02 01:02:03.123')).toBeTruthy();
         });
 
         test('today midnight', () => {
-            const today = getNDaysStrFromToday(0);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
             expect(isDateTimeInPast(today)).toBeTruthy();
         });
 
         test('now', () => {
             const nowDate = new Date();
             const now = getJsonDateTimeFormatString(nowDate);
-            expect(isDateTimeInPast(now)).toBeTruthy();
             const in10SecondsDate = new Date(nowDate.getTime() + 10 * 6000);
             const in10Seconds = getJsonDateTimeFormatString(in10SecondsDate);
+
+            expect(isDateTimeInPast(now)).toBeTruthy();
             expect(isDateTimeInPast(in10Seconds)).toBeFalsy();
         });
 
         test('futurama', () => {
             expect(isDateTimeInPast('3000-01-01')).toBeFalsy();
             expect(isDateTimeInPast('3000-01-01 00:01')).toBeFalsy();
-            expect(isDateInPast('3000-01-01 00:00:00.001')).toBeFalsy();
+            expect(isDateTimeInPast('3000-01-01 00:00:00.001')).toBeFalsy();
+        });
+    });
+
+    describe('toDateFNSFormatString', () => {
+        const datePOSIX = 1724734973542; // Mon Aug 26 2024 22:02:53.542 GMT-0700 (Pacific Daylight Time)
+        const testDate = new Date(datePOSIX);
+
+        // Default to a timezone so the tests reproduce same result regardless of test running location
+        function checkFormat(format: string, timezone = 'PST'): string {
+            return formatDate(testDate, timezone, format);
+        }
+
+        test('Date checks', () => {
+            expect(checkFormat('dd.')).toBe('26.');
+            expect(checkFormat('dd.MM.')).toBe('26.08.');
+            expect(checkFormat('dd.MM.yyyy')).toBe('26.08.2024');
+            expect(checkFormat('DD.MM.yyyy')).toBe('26.08.2024');
+            expect(checkFormat('d.M.yyyy')).toBe('26.8.2024');
+            expect(checkFormat('D.M.yyyy')).toBe('26.8.2024');
+            expect(checkFormat('YYYY')).toBe('2024');
+            expect(checkFormat('yyyy')).toBe('2024');
+            expect(checkFormat('YY')).toBe('24');
+            expect(checkFormat('yy')).toBe('24');
+            expect(checkFormat('M')).toBe('8');
+            expect(checkFormat('MM')).toBe('08');
+            expect(checkFormat('MMM')).toBe('Aug');
+            expect(checkFormat('MMMM')).toBe('August');
+        });
+
+        test('Hour and minute checks', () => {
+            expect(checkFormat('HH:mm')).toBe('22:02');
+            expect(checkFormat('hh:mm')).toBe('10:02');
+            expect(checkFormat('hh:mm A')).toBe('10:02 PM');
+            expect(checkFormat('hh:mm a')).toBe('10:02 PM');
+            expect(checkFormat('h:mm A')).toBe('10:02 PM');
+            expect(checkFormat('h:mm a')).toBe('10:02 PM');
+            expect(checkFormat('m')).toBe('2');
+            expect(checkFormat('h')).toBe('10');
+            expect(checkFormat('H')).toBe('22');
+        });
+
+        test('Seconds and milliseconds checks', () => {
+            expect(checkFormat('HH:mm:ss')).toBe('22:02:53');
+            expect(checkFormat('HH:mm:ss.SSS')).toBe('22:02:53.542');
+            expect(checkFormat('s')).toBe('53');
+            expect(checkFormat('ss')).toBe('53');
+            expect(checkFormat('S')).toBe('5');
+            expect(checkFormat('SS')).toBe('54');
+            expect(checkFormat('SSS')).toBe('542');
+        });
+
+        test('Weekday checks', () => {
+            expect(checkFormat('EEE')).toEqual('Mon');
+            expect(checkFormat('EEEE')).toEqual('Monday');
+            expect(checkFormat('u')).toEqual('1');
+            expect(checkFormat('uu')).toEqual('1');
+            expect(checkFormat('uuuu')).toEqual('1');
+            expect(checkFormat('w')).toEqual('35');
+            expect(checkFormat('ww')).toEqual('35');
+            expect(checkFormat('www')).toEqual('035');
+        });
+
+        test('Timezone checks', () => {
+            const tz = 'EST';
+            expect(checkFormat('z', tz)).toBe('-05:00');
+            expect(checkFormat('zzzz', tz)).toBe('-05:00');
+            expect(checkFormat('Z', tz)).toBe('-05:00');
+            expect(checkFormat('ZZZZ', tz)).toBe('-05:00');
+            expect(checkFormat('X', tz)).toBe('-05');
+            expect(checkFormat('XX', tz)).toBe('-0500');
+            expect(checkFormat('XXX', tz)).toBe('-05:00');
         });
     });
 });

@@ -10,8 +10,10 @@ import { EXPORT_TYPES } from '../../internal/constants';
 
 import { QueryModel } from './QueryModel';
 import { ExportMenu } from './ExportMenu';
+import { makeTestActions } from './testUtils';
 
 describe('ExportMenu', () => {
+    const ACTIONS = makeTestActions();
     const MODEL = new QueryModel({ schemaQuery: new SchemaQuery('Schema', 'Query') }).mutate({
         orderedRows: ['0', '1'],
         rows: {
@@ -30,7 +32,7 @@ describe('ExportMenu', () => {
         const exportFn = jest.fn();
         const onExport = { [EXPORT_TYPES.CSV]: exportFn };
 
-        render(<ExportMenu model={MODEL} onExport={onExport} />);
+        render(<ExportMenu actions={ACTIONS} model={MODEL} onExport={onExport} />);
 
         expect(document.querySelector('[role="heading"]').innerHTML).toBe('Export Data');
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(3);
@@ -45,7 +47,7 @@ describe('ExportMenu', () => {
         const exportFn = jest.fn();
         const onExport = { [EXPORT_TYPES.CSV]: exportFn };
 
-        render(<ExportMenu model={model} onExport={onExport} />);
+        render(<ExportMenu actions={ACTIONS} model={model} onExport={onExport} />);
 
         expect(document.querySelector('[role="heading"]').innerHTML).toBe('Export Selected Data');
     });
@@ -55,7 +57,7 @@ describe('ExportMenu', () => {
         const onExport = { [EXPORT_TYPES.STORAGE_MAP]: exportFn };
         const supportedTypes = ImmutableSet.of(EXPORT_TYPES.STORAGE_MAP);
 
-        render(<ExportMenu model={MODEL} onExport={onExport} supportedTypes={supportedTypes} />);
+        render(<ExportMenu actions={ACTIONS} model={MODEL} onExport={onExport} supportedTypes={supportedTypes} />);
 
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(4);
         userEvent.click(document.querySelectorAll('[role="menuitem"]')[3]);
@@ -65,7 +67,7 @@ describe('ExportMenu', () => {
     test('supported types, can print template, but not label', () => {
         const supportedTypes = ImmutableSet.of(EXPORT_TYPES.LABEL_TEMPLATE);
 
-        render(<ExportMenu model={MODEL} supportedTypes={supportedTypes} />);
+        render(<ExportMenu actions={ACTIONS} model={MODEL} supportedTypes={supportedTypes} />);
 
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(4);
         expect(document.querySelectorAll('.divider').length).toBe(1);
@@ -74,7 +76,7 @@ describe('ExportMenu', () => {
     test('supported types, can print label, but not template', () => {
         const supportedTypes = ImmutableSet.of(EXPORT_TYPES.LABEL);
 
-        render(<ExportMenu model={MODEL} supportedTypes={supportedTypes} />);
+        render(<ExportMenu actions={ACTIONS} model={MODEL} supportedTypes={supportedTypes} />);
 
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(4);
         expect(document.querySelectorAll('.divider').length).toBe(1);
@@ -83,7 +85,7 @@ describe('ExportMenu', () => {
     test('supported types, can print label and template', () => {
         const supportedTypes = ImmutableSet.of(EXPORT_TYPES.LABEL, EXPORT_TYPES.LABEL_TEMPLATE);
 
-        render(<ExportMenu model={MODEL} supportedTypes={supportedTypes} />);
+        render(<ExportMenu actions={ACTIONS} model={MODEL} supportedTypes={supportedTypes} />);
 
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(5);
         expect(document.querySelectorAll('.divider').length).toBe(1);
@@ -96,7 +98,7 @@ describe('ExportMenu', () => {
             EXPORT_TYPES.STORAGE_MAP
         );
 
-        render(<ExportMenu model={MODEL} supportedTypes={supportedTypes} />);
+        render(<ExportMenu actions={ACTIONS} model={MODEL} supportedTypes={supportedTypes} />);
 
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(6);
         expect(document.querySelectorAll('.divider').length).toBe(2);

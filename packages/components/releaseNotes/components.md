@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 - ELN and storage view tooltip update
   - Support isFlexPlacement Popover placement based on available screen space
   - check isBiologicsEnabled for isMediaEnabled
+  - support noLink prop for DefaultRenderer
 
 ### version 4.12.0
 *Released*: 29 August 2024

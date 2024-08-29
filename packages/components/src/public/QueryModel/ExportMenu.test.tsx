@@ -8,15 +8,17 @@ import { SchemaQuery } from '../SchemaQuery';
 
 import { EXPORT_TYPES } from '../../internal/constants';
 
-import { QueryModel } from './QueryModel';
+import { QueryInfo } from '../QueryInfo';
+
 import { ExportMenu } from './ExportMenu';
-import { makeTestActions } from './testUtils';
+import { makeTestActions, makeTestQueryModel } from './testUtils';
 
 describe('ExportMenu', () => {
     const ACTIONS = makeTestActions(jest.fn);
-    const MODEL = new QueryModel({ schemaQuery: new SchemaQuery('Schema', 'Query') }).mutate({
-        orderedRows: ['0', '1'],
-        rows: {
+    const MODEL = makeTestQueryModel(
+        new SchemaQuery('Schema', 'Query'),
+        new QueryInfo({}),
+        {
             '0': {
                 RowId: { value: 0 },
                 Data: { value: 100 },
@@ -26,7 +28,9 @@ describe('ExportMenu', () => {
                 Data: { values: 200 },
             },
         },
-    });
+        ['0', '1'],
+        2
+    );
 
     test('default', () => {
         const exportFn = jest.fn();
@@ -38,8 +42,17 @@ describe('ExportMenu', () => {
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(3);
         userEvent.click(document.querySelector('[role="menuitem"]'));
         expect(exportFn).toHaveBeenCalledTimes(1);
+        expect(ACTIONS.addMessage).toHaveBeenCalledTimes(0); // not called directly for onExport override
+    });
+
+    test('addMessage on export', () => {
+        render(<ExportMenu actions={ACTIONS} model={MODEL} />);
+        expect(document.querySelector('[role="heading"]').innerHTML).toBe('Export Data');
+        expect(document.querySelectorAll('.export-menu-icon').length).toBe(3);
+        userEvent.click(document.querySelector('[role="menuitem"]'));
+        expect(ACTIONS.addMessage).toHaveBeenCalledTimes(1);
         expect(ACTIONS.addMessage).toHaveBeenCalledWith(
-            'Schema.Query',
+            'model',
             { content: 'CSV export started.', type: 'success' },
             5000
         );

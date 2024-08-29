@@ -40,16 +40,14 @@ describe('Progress', () => {
         // Should not be displaying anything until time has passed
         expect(container.firstChild).toBeNull();
         act(() => {
-            jest.advanceTimersByTime(4000);
+            jest.advanceTimersByTime(350);
         });
-
-        rerender(<Progress toggle />);
 
         //  should be displaying progress bar now
         expect(container.firstChild).not.toBeNull();
 
         // verify the progress bar is at 80%
-        expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '80');
+        expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '70');
 
         // verify modal is not displayed
         expect(screen.queryByRole('dialog')).toBeNull();

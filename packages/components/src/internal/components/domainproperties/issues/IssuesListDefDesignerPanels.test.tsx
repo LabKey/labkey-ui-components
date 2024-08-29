@@ -65,9 +65,7 @@ describe('IssuesListDefDesignerPanel', () => {
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
 
-        await act(async () => {
-            userEvent.click(document.querySelector('.domain-panel-header'));
-        });
+        await act(() => userEvent.click(document.querySelector('.domain-panel-header')));
 
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(0);
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(2);

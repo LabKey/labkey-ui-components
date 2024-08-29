@@ -181,7 +181,7 @@ describe('SampleTypeDesigner', () => {
 
         const panelHeader = document.querySelector('div#domain-header');
         expect(panelHeader.getAttribute('class')).toContain('domain-panel-header-collapsed');
-        userEvent.click(panelHeader);
+        await userEvent.click(panelHeader);
         expect(document.querySelector('#domain-header').getAttribute('class')).toContain(
             'domain-panel-header-expanded'
         );
@@ -206,7 +206,7 @@ describe('SampleTypeDesigner', () => {
         });
 
         const panelHeader = document.querySelector('div#domain-header');
-        userEvent.click(panelHeader);
+        await userEvent.click(panelHeader);
         const alerts = document.getElementsByClassName('alert');
         // still expect to have only two alerts.  We don't show the Barcode header in the file import panel.
         // Jest doesn't want to switch to that panel.

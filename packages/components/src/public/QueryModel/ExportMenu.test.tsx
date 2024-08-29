@@ -32,7 +32,7 @@ describe('ExportMenu', () => {
         2
     );
 
-    test('default', () => {
+    test('default', async () => {
         const exportFn = jest.fn();
         const onExport = { [EXPORT_TYPES.CSV]: exportFn };
 
@@ -40,7 +40,7 @@ describe('ExportMenu', () => {
 
         expect(document.querySelector('[role="heading"]').innerHTML).toBe('Export Data');
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(3);
-        userEvent.click(document.querySelector('[role="menuitem"]'));
+        await userEvent.click(document.querySelector('[role="menuitem"]'));
         expect(exportFn).toHaveBeenCalledTimes(1);
         expect(ACTIONS.addMessage).toHaveBeenCalledTimes(0); // not called directly for onExport override
     });
@@ -70,7 +70,7 @@ describe('ExportMenu', () => {
         expect(document.querySelector('[role="heading"]').innerHTML).toBe('Export Selected Data');
     });
 
-    test('supported types', () => {
+    test('supported types', async () => {
         const exportFn = jest.fn();
         const onExport = { [EXPORT_TYPES.STORAGE_MAP]: exportFn };
         const supportedTypes = ImmutableSet.of(EXPORT_TYPES.STORAGE_MAP);
@@ -78,7 +78,7 @@ describe('ExportMenu', () => {
         render(<ExportMenu actions={ACTIONS} model={MODEL} onExport={onExport} supportedTypes={supportedTypes} />);
 
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(4);
-        userEvent.click(document.querySelectorAll('[role="menuitem"]')[3]);
+        await userEvent.click(document.querySelectorAll('[role="menuitem"]')[3]);
         expect(exportFn).toHaveBeenCalledTimes(1);
     });
 

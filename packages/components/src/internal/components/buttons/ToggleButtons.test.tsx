@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { ToggleButtons, ToggleIcon } from './ToggleButtons';
 
 describe('ToggleButtons', () => {
-    test('default props', () => {
+    test('default props', async () => {
         const onClickFn = jest.fn();
         render(<ToggleButtons active="Enabled" onClick={onClickFn} />);
 
@@ -21,9 +21,9 @@ describe('ToggleButtons', () => {
         expect(document.getElementsByTagName('button')[1].className).toBe('btn btn-default');
         expect(document.getElementsByTagName('button')[1].disabled).toBe(false);
 
-        userEvent.click(document.getElementsByTagName('button')[0]); // click already active button
+        await userEvent.click(document.getElementsByTagName('button')[0]); // click already active button
         expect(onClickFn).toHaveBeenCalledTimes(0);
-        userEvent.click(document.getElementsByTagName('button')[1]); // click inactive button
+        await userEvent.click(document.getElementsByTagName('button')[1]); // click inactive button
         expect(onClickFn).toHaveBeenCalledTimes(1);
     });
 
@@ -92,7 +92,7 @@ describe('ToggleButtons', () => {
 });
 
 describe('ToggleIcon', () => {
-    test('default props', () => {
+    test('default props', async () => {
         const onClickFn = jest.fn();
         render(<ToggleIcon active="off" onClick={onClickFn} />);
 
@@ -103,7 +103,7 @@ describe('ToggleIcon', () => {
         expect(document.getElementsByClassName('toggle-off').length).toBe(1);
         expect(document.getElementsByClassName('fa-toggle-off').length).toBe(1);
 
-        userEvent.click(document.getElementsByTagName('i')[0]);
+        await userEvent.click(document.getElementsByTagName('i')[0]);
         expect(onClickFn).toHaveBeenCalledTimes(1);
         expect(onClickFn).toHaveBeenCalledWith('on');
     });
@@ -127,21 +127,21 @@ describe('ToggleIcon', () => {
         expect(document.getElementsByClassName('test-class').length).toBe(1);
     });
 
-    test('disabled', () => {
+    test('disabled', async () => {
         const onClickFn = jest.fn();
         render(<ToggleIcon active="off" disabled onClick={onClickFn} />);
 
-        userEvent.click(document.getElementsByTagName('i')[0]);
+        await userEvent.click(document.getElementsByTagName('i')[0]);
         expect(onClickFn).toHaveBeenCalledTimes(0);
     });
 
-    test('tooltip', () => {
+    test('tooltip', async () => {
         const onClickFn = jest.fn();
         render(<ToggleIcon active="off" toolTip="test tooltip" onClick={onClickFn} />);
 
         expect(document.getElementsByClassName('overlay-trigger').length).toBe(1);
 
-        userEvent.click(document.getElementsByTagName('i')[0]);
+        await userEvent.click(document.getElementsByTagName('i')[0]);
         expect(onClickFn).toHaveBeenCalledTimes(1);
         expect(onClickFn).toHaveBeenCalledWith('on');
     });

@@ -157,7 +157,7 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelectorAll('input')).toHaveLength(5);
     });
 
-    test('field inputs displayed for selected chart type', () => {
+    test('field inputs displayed for selected chart type', async () => {
         renderWithAppContext(
             <ChartBuilderModal actions={actions} model={model} onHide={jest.fn()} savedChartModel={undefined} />,
             {
@@ -174,7 +174,7 @@ describe('ChartBuilderModal', () => {
         });
 
         // click on another chart type and verify field inputs change
-        userEvent.click(document.querySelector('.selectable'));
+        await userEvent.click(document.querySelector('.selectable'));
         expect(document.querySelector('.selected').textContent).toBe('Scatter');
         expect(document.querySelector('.selectable').textContent).toBe('Bar');
         expect(document.querySelectorAll('input')).toHaveLength(8);
@@ -183,7 +183,7 @@ describe('ChartBuilderModal', () => {
         });
     });
 
-    test('init from savedChartModel', () => {
+    test('init from savedChartModel', async () => {
         const savedChartModel = {
             canShare: true,
             canDelete: true,
@@ -220,7 +220,7 @@ describe('ChartBuilderModal', () => {
         expect(document.querySelector('.selected').querySelector('img').getAttribute('alt')).toBe('xy_scatter-icon');
 
         // click delete button and verify confirm text / buttons
-        userEvent.click(document.querySelector('.btn-danger'));
+        await userEvent.click(document.querySelector('.btn-danger'));
         const btnItems = document.querySelectorAll('.btn');
         expect(btnItems).toHaveLength(2);
         expect(btnItems[0].textContent).toBe('Cancel');
@@ -230,7 +230,7 @@ describe('ChartBuilderModal', () => {
         );
 
         // cancel delete and verify footer returns to normal
-        userEvent.click(btnItems[0]);
+        await userEvent.click(btnItems[0]);
         validate(false, true, true);
     });
 

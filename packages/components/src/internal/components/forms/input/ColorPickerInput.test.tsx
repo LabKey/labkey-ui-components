@@ -23,10 +23,10 @@ describe('ColorPickerInput', () => {
         expect(container).toMatchSnapshot();
     });
 
-    test('showPicker', () => {
+    test('showPicker', async () => {
         const component = <ColorPickerInput value="#000000" onChange={jest.fn} />;
         const { container } = render(component);
-        userEvent.click(document.querySelector('.color-picker__button'));
+        await userEvent.click(document.querySelector('.color-picker__button'));
         expect(container).toMatchSnapshot();
     });
 

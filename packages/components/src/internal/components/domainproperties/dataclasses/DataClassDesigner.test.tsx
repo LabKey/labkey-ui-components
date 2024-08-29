@@ -127,7 +127,7 @@ describe('DataClassDesigner', () => {
         let panelHeader = document.querySelector('div#domain-header');
         expect(panelHeader?.classList.contains('domain-panel-header-collapsed')).toBeTruthy();
         expect(panelHeader?.classList.contains('domain-panel-header-expanded')).toBeFalsy();
-        userEvent.click(panelHeader);
+        await userEvent.click(panelHeader);
 
         panelHeader = document.querySelector('div#domain-header');
         expect(panelHeader?.classList.contains('domain-panel-header-collapsed')).toBeFalsy();

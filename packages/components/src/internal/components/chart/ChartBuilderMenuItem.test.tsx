@@ -55,7 +55,7 @@ describe('ChartBuilderMenuItem', () => {
         expect(document.querySelector('.chart-menu-label').textContent).toBe('Create Chart');
         expect(document.querySelectorAll('.chart-builder-modal')).toHaveLength(0);
 
-        userEvent.click(menuItems[0]);
+        await userEvent.click(menuItems[0]);
         expect(document.querySelectorAll('.chart-builder-modal')).toHaveLength(1);
     });
 });

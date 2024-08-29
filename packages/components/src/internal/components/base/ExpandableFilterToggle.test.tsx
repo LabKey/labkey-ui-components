@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { ExpandableFilterToggle } from './ExpandableFilterToggle';
 
 describe('ExpandableFilterToggle', () => {
-    test('default properties without filters', () => {
+    test('default properties without filters', async () => {
         const toggleFilterPanel = jest.fn();
         const resetFilter = jest.fn();
         render(
@@ -24,12 +24,12 @@ describe('ExpandableFilterToggle', () => {
 
         expect(toggleFilterPanel).toHaveBeenCalledTimes(0);
         expect(resetFilter).toHaveBeenCalledTimes(0);
-        userEvent.click(screen.getByText('Show filters'));
+        await userEvent.click(screen.getByText('Show filters'));
         expect(toggleFilterPanel).toHaveBeenCalledTimes(1);
         expect(resetFilter).toHaveBeenCalledTimes(0);
     });
 
-    test('custom properties without filters', () => {
+    test('custom properties without filters', async () => {
         const toggleFilterPanel = jest.fn();
         const resetFilter = jest.fn();
         render(
@@ -50,10 +50,10 @@ describe('ExpandableFilterToggle', () => {
 
         expect(toggleFilterPanel).toHaveBeenCalledTimes(0);
         expect(resetFilter).toHaveBeenCalledTimes(0);
-        userEvent.click(screen.getByText('Clear All'));
+        await userEvent.click(screen.getByText('Clear All'));
         expect(toggleFilterPanel).toHaveBeenCalledTimes(0);
         expect(resetFilter).toHaveBeenCalledTimes(1);
-        userEvent.click(screen.getByText('Hide filters'));
+        await userEvent.click(screen.getByText('Hide filters'));
         expect(toggleFilterPanel).toHaveBeenCalledTimes(1);
         expect(resetFilter).toHaveBeenCalledTimes(1);
     });

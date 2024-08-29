@@ -1192,7 +1192,7 @@ describe('Formsy', () => {
             expect(isValid).toBe(true);
 
             jest.useFakeTimers();
-            userEvent.click(plusButton);
+            await userEvent.click(plusButton);
             jest.runAllTimers();
 
             expect(isValid).toBe(false);

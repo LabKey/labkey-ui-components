@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { act, FC, memo, useCallback, useState } from 'react';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
@@ -446,7 +445,7 @@ describe('DomainForm', () => {
         expect(document.getElementsByClassName('domain-form-manual-btn')).toHaveLength(1);
         expect(document.getElementsByClassName('domain-field-row')).toHaveLength(0);
         await act(async () => {
-            userEvent.click(document.querySelector('.domain-form-manual-btn>span'));
+            await userEvent.click(document.querySelector('.domain-form-manual-btn>span'));
         });
         expect(document.getElementsByClassName('translator--toggle__wizard')).toHaveLength(0);
         expect(document.getElementsByClassName('domain-form-manual-btn')).toHaveLength(0);
@@ -479,7 +478,7 @@ describe('DomainForm', () => {
 
         // first click will collapse the panel, but header text shouldn't change
         await act(async () => {
-            userEvent.click(document.querySelector('.domain-panel-header'));
+            await userEvent.click(document.querySelector('.domain-panel-header'));
         });
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(0);
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
@@ -487,7 +486,7 @@ describe('DomainForm', () => {
 
         // second click will re-expand the panel, but header text shouldn't change
         await act(async () => {
-            userEvent.click(document.querySelector('.domain-panel-header'));
+            await userEvent.click(document.querySelector('.domain-panel-header'));
         });
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(0);
@@ -692,7 +691,7 @@ describe('DomainForm', () => {
 
         await act(async () => {
             const toggles = document.getElementsByClassName('toggle')[0].getElementsByClassName('btn');
-            userEvent.click(toggles[0]);
+            await userEvent.click(toggles[0]);
         });
 
         expect(document.getElementsByClassName('domain-field-row').length).toEqual(0);
@@ -715,7 +714,7 @@ describe('DomainForm', () => {
 
         await act(async () => {
             const toggles = document.getElementsByClassName('toggle')[0].getElementsByClassName('btn');
-            userEvent.click(toggles[0]);
+            await userEvent.click(toggles[0]);
         });
 
         expect(document.querySelector('.table-responsive').textContent).toContain('Is Primary Key');
@@ -734,7 +733,7 @@ describe('DomainForm', () => {
 
         await act(async () => {
             const toggles = document.getElementsByClassName('toggle')[0].getElementsByClassName('btn');
-            userEvent.click(toggles[0]);
+            await userEvent.click(toggles[0]);
         });
 
         expect(document.querySelector('.table-responsive').textContent).toContain('Is Primary Key');

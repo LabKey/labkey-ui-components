@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import { DisableableAnchor } from './DisableableAnchor';
 
-describe('DisableableAnchor', () => {
+describe('DisableableAnchor', async () => {
     test('renders enabled without styling', () => {
         const expectedHref = 'http://test.url.com';
         const expectedText = 'Enabled Anchor';
@@ -19,10 +19,10 @@ describe('DisableableAnchor', () => {
         expect(anchor.innerHTML).toEqual(expectedText);
         expect(anchor.getAttribute('href')).toEqual(expectedHref);
 
-        userEvent.click(anchor);
+        await userEvent.click(anchor);
         expect(onClickHandler).toHaveBeenCalled();
     });
-    test('applies disabled', () => {
+    test('applies disabled', async () => {
         const expectedClassName = 'CS101';
         const expectedHref = 'http://test.url.com';
         const expectedText = 'Disabled Anchor';
@@ -44,7 +44,7 @@ describe('DisableableAnchor', () => {
         expect(anchor.getAttribute('style')).toEqual('pointer-events: none; color: green;');
         expect(anchor.getAttribute('tabIndex')).toEqual('-1');
 
-        userEvent.click(anchor);
+        await userEvent.click(anchor);
         expect(onClickHandler).not.toHaveBeenCalled();
     });
 });

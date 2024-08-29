@@ -57,9 +57,7 @@ describe('UserResetPasswordConfirmModal', () => {
             <UserResetPasswordConfirmModal {...DEFAULT_PROPS} hasLogin={false} resetPasswordApi={resetPasswordApi} />
         );
 
-        await act(async () => {
-            userEvent.click(document.querySelector('.btn-success'));
-        });
+        await act(() => userEvent.click(document.querySelector('.btn-success')));
 
         expect(resetPasswordApi).toHaveBeenCalled();
         expect(document.querySelector('.alert-danger').innerHTML).toEqual(errorMsg);

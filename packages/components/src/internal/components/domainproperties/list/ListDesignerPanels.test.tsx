@@ -1,5 +1,4 @@
-import React from 'react';
-import { act } from 'react-dom/test-utils';
+import React, { act } from 'react';
 
 import userEvent from '@testing-library/user-event';
 
@@ -50,7 +49,7 @@ describe('ListDesignerPanel', () => {
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
 
         await act(async () => {
-            userEvent.click(panelHeaders[0]);
+            await userEvent.click(panelHeaders[0]);
         });
 
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(2);

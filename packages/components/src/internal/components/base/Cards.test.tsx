@@ -10,7 +10,7 @@ describe('Cards', () => {
         expect(screen.queryAllByRole('button')).toHaveLength(0);
     });
 
-    test('with cards', () => {
+    test('with cards', async () => {
         const cards = [
             { title: 'card1', onClick: jest.fn() },
             { title: 'card2', onClick: jest.fn() },
@@ -19,9 +19,9 @@ describe('Cards', () => {
         expect(document.querySelectorAll('.cards__card')).toHaveLength(2);
         expect(cards[0].onClick).toHaveBeenCalledTimes(0);
         expect(cards[1].onClick).toHaveBeenCalledTimes(0);
-        userEvent.click(screen.getByText('card1'));
-        userEvent.click(screen.getByText('card2'));
-        userEvent.click(screen.getByText('card2'));
+        await userEvent.click(screen.getByText('card1'));
+        await userEvent.click(screen.getByText('card2'));
+        await userEvent.click(screen.getByText('card2'));
         expect(cards[0].onClick).toHaveBeenCalledTimes(1);
         expect(cards[1].onClick).toHaveBeenCalledTimes(2);
     });

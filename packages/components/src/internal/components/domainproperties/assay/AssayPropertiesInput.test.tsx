@@ -240,7 +240,7 @@ describe('AssayPropertiesInput', () => {
         expect(document.querySelectorAll('.transform-script-add--radio').length).toBe(0);
         expect(document.querySelectorAll('.container--removal-icon').length).toBe(0);
         await act(async () => {
-            userEvent.click(addButton.querySelector('.container--action-button'));
+            await userEvent.click(addButton.querySelector('.container--action-button'));
         });
         expect(document.querySelectorAll('.container--removal-icon').length).toBe(1);
         const radios = document.querySelectorAll('.transform-script-add--radio');
@@ -249,7 +249,7 @@ describe('AssayPropertiesInput', () => {
         expect(radios[1].getAttribute('checked')).toBe(null); // path radio
         expect(document.querySelectorAll('.transform-script-add--path').length).toBe(0);
         await act(async () => {
-            userEvent.click(radios[1]); // select the path radio
+            await userEvent.click(radios[1]); // select the path radio
         });
         expect(document.querySelectorAll('.transform-script-add--path').length).toBe(1);
     });

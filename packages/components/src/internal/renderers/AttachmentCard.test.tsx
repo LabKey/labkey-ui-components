@@ -64,25 +64,25 @@ describe('AttachmentCard', () => {
         expect(document.querySelector('.attachment-card__name').innerHTML).toBe(DEFAULT_PROPS.attachment.name);
     });
 
-    test('onDownload with allowDownload true', () => {
+    test('onDownload with allowDownload true', async () => {
         const onDownload = jest.fn();
         render(<AttachmentCard {...DEFAULT_PROPS} onDownload={onDownload} allowDownload />);
-        userEvent.click(document.querySelector('.attachment-card__body'));
+        await userEvent.click(document.querySelector('.attachment-card__body'));
         expect(onDownload).toHaveBeenCalledTimes(1);
     });
 
-    test('onDownload with allowDownload true, but attachment unavailable', () => {
+    test('onDownload with allowDownload true, but attachment unavailable', async () => {
         const onDownload = jest.fn();
         render(<AttachmentCard {...UNAVAILABLE_ATTACHMENT} onDownload={onDownload} allowDownload />);
         validate(true, 'fa-test', 0, 0, false, false);
-        userEvent.click(document.querySelector('.attachment-card__body'));
+        await userEvent.click(document.querySelector('.attachment-card__body'));
         expect(onDownload).toHaveBeenCalledTimes(0);
     });
 
-    test('onDownload with allowDownload false', () => {
+    test('onDownload with allowDownload false', async () => {
         const onDownload = jest.fn();
         render(<AttachmentCard {...DEFAULT_PROPS} onDownload={onDownload} allowDownload={false} />);
-        userEvent.click(document.querySelector('.attachment-card__body'));
+        await userEvent.click(document.querySelector('.attachment-card__body'));
         expect(onDownload).toHaveBeenCalledTimes(0);
     });
 

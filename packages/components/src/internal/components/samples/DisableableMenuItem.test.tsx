@@ -24,7 +24,7 @@ describe('DisableableMenuItem', () => {
         validate(false, content);
     });
 
-    test('operation permitted, menu props', (): void => {
+    test('operation permitted, menu props', async () => {
         const onClick = jest.fn();
         render(
             <DisableableMenuItem disabled={false} onClick={onClick}>
@@ -32,7 +32,7 @@ describe('DisableableMenuItem', () => {
             </DisableableMenuItem>
         );
         validate(false, 'Test Operation');
-        userEvent.click(document.querySelector('.lk-menu-item a'));
+        await userEvent.click(document.querySelector('.lk-menu-item a'));
         expect(onClick).toHaveBeenCalled();
     });
 
@@ -45,7 +45,7 @@ describe('DisableableMenuItem', () => {
         validate(true, 'Other test');
     });
 
-    test('disabled, alternate overlay placement', (): void => {
+    test('disabled, alternate overlay placement', async () => {
         const content = 'Other test';
         const onClick = jest.fn();
         render(
@@ -54,7 +54,7 @@ describe('DisableableMenuItem', () => {
             </DisableableMenuItem>
         );
         validate(true, content);
-        userEvent.click(document.querySelector('.lk-menu-item a'));
+        await userEvent.click(document.querySelector('.lk-menu-item a'));
         expect(onClick).not.toHaveBeenCalled();
     });
 });

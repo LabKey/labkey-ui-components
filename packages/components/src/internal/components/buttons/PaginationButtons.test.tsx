@@ -26,7 +26,7 @@ const prevSelector = '.pagination-buttons__prev';
 const nextSelector = '.pagination-buttons__next';
 
 describe('PaginationButtons', () => {
-    test('Render first page', () => {
+    test('Render first page', async () => {
         const prev = jest.fn();
         const next = jest.fn();
         render(<PaginationButtons total={60} currentPage={0} perPage={20} previousPage={prev} nextPage={next} />);
@@ -42,16 +42,16 @@ describe('PaginationButtons', () => {
         // click next button, enabled
         expect(prev).toHaveBeenCalledTimes(0);
         expect(next).toHaveBeenCalledTimes(0);
-        userEvent.click(document.querySelector(nextSelector));
+        await userEvent.click(document.querySelector(nextSelector));
         expect(prev).toHaveBeenCalledTimes(0);
         expect(next).toHaveBeenCalledTimes(1);
         // click prev button, disabled
-        userEvent.click(document.querySelector(prevSelector));
+        await userEvent.click(document.querySelector(prevSelector));
         expect(prev).toHaveBeenCalledTimes(0);
         expect(next).toHaveBeenCalledTimes(1);
     });
 
-    test('Render last page', () => {
+    test('Render last page', async () => {
         const prev = jest.fn();
         const next = jest.fn();
         render(<PaginationButtons total={60} currentPage={2} perPage={20} previousPage={prev} nextPage={next} />);
@@ -67,16 +67,16 @@ describe('PaginationButtons', () => {
         // click prev button, enabled
         expect(prev).toHaveBeenCalledTimes(0);
         expect(next).toHaveBeenCalledTimes(0);
-        userEvent.click(document.querySelector(prevSelector));
+        await userEvent.click(document.querySelector(prevSelector));
         expect(prev).toHaveBeenCalledTimes(1);
         expect(next).toHaveBeenCalledTimes(0);
         // click next button, disabled
-        userEvent.click(document.querySelector(nextSelector));
+        await userEvent.click(document.querySelector(nextSelector));
         expect(prev).toHaveBeenCalledTimes(1);
         expect(next).toHaveBeenCalledTimes(0);
     });
 
-    test('Render only page', () => {
+    test('Render only page', async () => {
         const prev = jest.fn();
         const next = jest.fn();
         render(<PaginationButtons total={10} currentPage={0} perPage={20} previousPage={prev} nextPage={next} />);
@@ -92,16 +92,16 @@ describe('PaginationButtons', () => {
         // click next button
         expect(prev).toHaveBeenCalledTimes(0);
         expect(next).toHaveBeenCalledTimes(0);
-        userEvent.click(document.querySelector(nextSelector));
+        await userEvent.click(document.querySelector(nextSelector));
         expect(prev).toHaveBeenCalledTimes(0);
         expect(next).toHaveBeenCalledTimes(0);
         // click prev button, disabled
-        userEvent.click(document.querySelector(prevSelector));
+        await userEvent.click(document.querySelector(prevSelector));
         expect(prev).toHaveBeenCalledTimes(0);
         expect(next).toHaveBeenCalledTimes(0);
     });
 
-    test('Render last page with less items than perPage', () => {
+    test('Render last page with less items than perPage', async () => {
         const prev = jest.fn();
         const next = jest.fn();
         render(<PaginationButtons total={63} currentPage={3} perPage={20} previousPage={prev} nextPage={next} />);
@@ -117,11 +117,11 @@ describe('PaginationButtons', () => {
         // click prev button, enabled
         expect(prev).toHaveBeenCalledTimes(0);
         expect(next).toHaveBeenCalledTimes(0);
-        userEvent.click(document.querySelector(prevSelector));
+        await userEvent.click(document.querySelector(prevSelector));
         expect(prev).toHaveBeenCalledTimes(1);
         expect(next).toHaveBeenCalledTimes(0);
         // click next button, disabled
-        userEvent.click(document.querySelector(nextSelector));
+        await userEvent.click(document.querySelector(nextSelector));
         expect(prev).toHaveBeenCalledTimes(1);
         expect(next).toHaveBeenCalledTimes(0);
     });

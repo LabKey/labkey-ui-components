@@ -204,7 +204,7 @@ describe('SampleAmountEditModal', () => {
 
         const unitInput = document.querySelector('input.checkin-unit-input');
         const newUnits = 'newUnits';
-        userEvent.paste(unitInput, newUnits);
+        await userEvent.paste(unitInput, newUnits);
         validate(row.StoredAmount.value, newUnits, false, undefined, defaultNoun, true, false, false);
     });
 });

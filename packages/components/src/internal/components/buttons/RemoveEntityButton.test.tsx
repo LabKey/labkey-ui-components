@@ -20,14 +20,14 @@ import userEvent from '@testing-library/user-event';
 import { RemoveEntityButton } from './RemoveEntityButton';
 
 describe('RemoveEntityButton', () => {
-    test('Default properties', () => {
+    test('Default properties', async () => {
         const onClick = jest.fn();
         render(<RemoveEntityButton onClick={onClick} />);
 
         expect(document.querySelectorAll('.container--removal-icon')).toHaveLength(1);
 
         expect(onClick).toHaveBeenCalledTimes(0);
-        userEvent.click(document.querySelector('.container--removal-icon'));
+        await userEvent.click(document.querySelector('.container--removal-icon'));
         expect(onClick).toHaveBeenCalledTimes(1);
     });
 

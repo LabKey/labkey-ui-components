@@ -4,6 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 - Issue 39332: Provide status when exporting data from a grid in the app
+  - QueryModel action for addMessage with optional duration (for removing message after N ms)
+  - Add message to grid after clicking export menu option
 
 ### version 4.11.0
 *Released*: 27 August 2024

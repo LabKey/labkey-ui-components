@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { OrderedMap } from 'immutable';
 import { Ajax, PermissionRoles, PermissionTypes, Utils } from '@labkey/api';
 
@@ -7,6 +6,8 @@ import { hasAllPermissions, hasAnyPermissions, User } from '../base/models/User'
 import { caseInsensitive } from '../../util/utils';
 
 import { APPLICATION_SECURITY_ROLES, SITE_SECURITY_ROLES } from '../administration/constants';
+
+import { formatDate, parseDate } from '../../util/Date';
 
 import { ChangePasswordModel } from './models';
 
@@ -91,7 +92,10 @@ export function getUserRoleDisplay(user: User): string {
 
 export function getUserLastLogin(userProperties: Record<string, any>, dateFormat?: string): string {
     const lastLogin = caseInsensitive(userProperties, 'lastlogin');
-    return lastLogin ? moment(lastLogin).format(dateFormat) : undefined;
+    if (!lastLogin) return undefined;
+
+    const parsedDate = parseDate(lastLogin);
+    return parsedDate ? formatDate(parsedDate, undefined, dateFormat) : undefined;
 }
 
 export function getUserDetailsRowData(user: User, data: OrderedMap<string, any>, avatar: File): FormData {

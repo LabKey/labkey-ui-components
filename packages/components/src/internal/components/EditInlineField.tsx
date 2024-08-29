@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import {
     formatDate,
     getColDateFormat,
-    getMomentDateFormat,
+    getDateFNSDateFormat,
     getJsonDateTimeFormatString,
     parseDateFNSTimeFormat,
     getJsonDateFormatString,
@@ -56,7 +56,7 @@ export const EditInlineField: FC<Props> = memo(props => {
         tooltip,
     } = props;
     const { container } = useServerContext();
-    const dateFormat = column?.format ?? getMomentDateFormat(container);
+    const dateFormat = column?.format ?? getDateFNSDateFormat(container);
     const isDate = type === 'date' || column?.jsonType === 'date';
     const isDateOnly = column?.isDateOnlyColumn;
     const isTime = type === 'time' || column?.jsonType === 'time';
@@ -191,7 +191,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     }, []);
 
     const dateInputDateFormat = useMemo<string>(
-        () => (isDate ? getColDateFormat(column, column ? undefined : getMomentDateFormat()) : undefined),
+        () => (isDate ? getColDateFormat(column, column ? undefined : getDateFNSDateFormat()) : undefined),
         [column, isDate]
     );
 

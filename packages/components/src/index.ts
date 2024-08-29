@@ -138,13 +138,15 @@ import {
 } from './internal/components/notifications/NotificationsContext';
 import { DisableableAnchor } from './internal/components/base/DisableableAnchor';
 import {
-    filterDate,
     formatDate,
     formatDateTime,
+    fromDate,
+    fromNow,
     getDateFormat,
     getDateTimeFormat,
     getParsedRelativeDateStr,
     getTimeFormat,
+    isDateBetween,
     isDateTimeInPast,
     isRelativeDateFilterValue,
     parseDate,
@@ -1600,9 +1602,11 @@ export {
     deleteWebDavResource,
     // util functions
     getDisambiguatedSelectInputOptions,
-    filterDate,
+    isDateBetween,
     formatDate,
     formatDateTime,
+    fromDate,
+    fromNow,
     parseDate,
     isRelativeDateFilterValue,
     getParsedRelativeDateStr,

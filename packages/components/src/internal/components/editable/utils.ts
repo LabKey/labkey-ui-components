@@ -9,7 +9,7 @@ import {
     getJsonDateFormatString,
     getJsonDateTimeFormatString,
     parseDate,
-    parseSimpleTime,
+    parseTime,
 } from '../../util/Date';
 
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -69,8 +69,8 @@ export const getValidatedEditableGridValue = (
         if (col?.validValues) {
             if (col.validValues.indexOf(origValue.toString().trim()) === -1) message = 'Invalid text choice';
         } else if (col?.jsonType === 'time') {
-            const time = parseSimpleTime(value);
-            if (time instanceof Date && !isNaN(time.getTime())) {
+            const time = parseTime(value);
+            if (time) {
                 value = getFormattedStringFromDate(time, col, false);
             } else message = 'Invalid time';
         } else if (col?.jsonType === 'boolean' && !isBoolean(value)) {

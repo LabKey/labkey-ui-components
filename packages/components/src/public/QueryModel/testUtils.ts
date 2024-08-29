@@ -60,6 +60,7 @@ export const makeTestQueryModel = (
 export const makeTestActions = (mockFn = (): any => () => {}, overrides: Partial<Actions> = {}): Actions => {
     const defaultActions: Actions = {
         addModel: mockFn(),
+        addMessage: mockFn(),
         clearSelections: mockFn(),
         loadModel: mockFn(),
         loadAllModels: mockFn(),

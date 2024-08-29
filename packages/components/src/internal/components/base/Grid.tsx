@@ -21,8 +21,6 @@ import React, {
     PureComponent,
     ReactNode,
     RefObject,
-    useEffect,
-    useRef,
 } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
@@ -239,7 +237,7 @@ const GridMessages: FC<GridMessagesProps> = memo(({ messages }) => (
         {messages.map((message: Map<string, string>, i) => {
             return (
                 // eslint-disable-next-line react/no-array-index-key
-                <div className="grid-message" key={i}>
+                <div className={classNames('grid-message', message.get('type'))} key={i}>
                     {message.get('content')}
                 </div>
             );

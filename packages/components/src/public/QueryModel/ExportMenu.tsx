@@ -10,8 +10,10 @@ import { DropdownButton, MenuDivider, MenuHeader, MenuItem } from '../../interna
 
 import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
+import { Actions } from './withQueryModels';
 
 interface ExportMenuProps {
+    actions: Actions;
     advancedOptions?: Record<string, any>;
     model: QueryModel;
     onExport?: Record<string, (modelId?: string) => void>;
@@ -99,7 +101,7 @@ export interface ExportMenuImplProps extends Omit<ExportMenuProps, 'model'> {
 }
 
 const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
-    const { id, hasData, supportedTypes, hasSelections, exportHandler, onExport } = props;
+    const { id, hasData, supportedTypes, hasSelections, exportHandler, onExport, actions } = props;
 
     const exportCallback = useCallback(
         (option: ExportOption) => {
@@ -109,8 +111,9 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
             } else {
                 exportHandler(option);
             }
+            actions.addMessage(id, { type: 'success', content: option.label + ' export started.' }, 5000);
         },
-        [exportHandler, id, onExport]
+        [actions, exportHandler, id, onExport]
     );
 
     const exportHeader = 'Export' + (hasSelections ? ' Selected' : '') + ' Data';

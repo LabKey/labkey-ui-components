@@ -19,6 +19,7 @@ import { filterArraysEqual, getSelectRowCountColumnsStr, sortArraysEqual } from 
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
 import {
     getSettingsFromLocalStorage,
+    GridMessage,
     locationHasQueryParamSettings,
     QueryConfig,
     QueryModel,
@@ -54,6 +55,7 @@ export function withSearchParams<T>(Component: WithSearchParamsComponent<T>): Co
 }
 
 export interface Actions {
+    addMessage: (id: string, message: GridMessage, duration?: number) => void;
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
     clearSelections: (id: string) => void;
     loadAllModels: (loadSelections?: boolean, reloadTotalCount?: boolean) => void;
@@ -229,6 +231,7 @@ export function withQueryModels<Props>(
 
             this.actions = {
                 addModel: this.addModel,
+                addMessage: this.addMessage,
                 clearSelections: this.clearSelections,
                 loadModel: this.loadModel,
                 loadAllModels: this.loadAllModels,
@@ -1085,6 +1088,35 @@ export function withQueryModels<Props>(
                     this.maybeLoad(id, false, shouldLoad);
                     saveSettingsToLocalStorage(this.state.queryModels[id]);
                 }
+            );
+        };
+
+        addMessage = (id: string, message: GridMessage, duration?: number): void => {
+            this.setState(
+                produce<State>(draft => {
+                    const model = draft.queryModels[id];
+                    if (model.messages === undefined) {
+                        model.messages = [];
+                    }
+                    model.messages.push(message);
+
+                    if (duration) {
+                        setTimeout(() => {
+                            this.removeMessage(id, message);
+                        }, duration);
+                    }
+                })
+            );
+        };
+
+        removeMessage = (id: string, message: GridMessage): void => {
+            this.setState(
+                produce<State>(draft => {
+                    const model = draft.queryModels[id];
+                    if (model.messages !== undefined) {
+                        model.messages = model.messages.filter(m => m.content !== message.content);
+                    }
+                })
             );
         };
 

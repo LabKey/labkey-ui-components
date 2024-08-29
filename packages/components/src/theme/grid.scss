@@ -73,6 +73,16 @@
 
 .grid-message {
   margin: 0.5em 0;
+
+  &.error {
+    color: $brand-danger;
+  }
+  &.success {
+    color: $brand-success;
+  }
+  &.warning {
+    color: $brand-warning;
+  }
 }
 
 .grid-header-cell {

@@ -24,6 +24,7 @@ interface Props {
     col?: QueryColumn;
     columnIndex?: number;
     data: any;
+    noLink?: boolean;
     row?: any;
     rowIndex?: number;
 }
@@ -33,7 +34,7 @@ const URL_REL = 'noopener noreferrer';
 /**
  * This is the default cell renderer for Details/Grids using a QueryGridModel.
  */
-export const DefaultRenderer: FC<Props> = memo(({ col, data }) => {
+export const DefaultRenderer: FC<Props> = memo(({ col, data, noLink }) => {
     let display = null;
     // Issue 43474: Prevent text wrapping for date columns
     const noWrap = col?.jsonType === 'date' || col?.jsonType === 'time';
@@ -56,7 +57,7 @@ export const DefaultRenderer: FC<Props> = memo(({ col, data }) => {
                 display = o !== null && o !== undefined ? o.toString() : null;
             }
 
-            if (data.get('url')) {
+            if (data.get('url') && !noLink) {
                 const targetBlank = data.get('urlTarget') === TARGET_BLANK;
                 return (
                     <a

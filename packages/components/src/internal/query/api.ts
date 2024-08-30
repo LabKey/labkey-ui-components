@@ -1398,3 +1398,17 @@ export async function loadQueriesFromTable(
 
     return [];
 }
+
+export function getServerDate(): Promise<Date> {
+    return new Promise((resolve, reject) => {
+        Query.getServerDate({
+            success: serverDate => {
+                resolve(serverDate);
+            },
+            failure: error => {
+                console.error('Failed to fetch server date.', error);
+                reject(error);
+            },
+        });
+    });
+}

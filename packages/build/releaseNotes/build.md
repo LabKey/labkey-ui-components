@@ -1,5 +1,10 @@
 # @labkey/build
 
+### version 7.6.0
+*Released*: 29 August 2024
+- Remove moment-specific processing in package bundling.
+- Update external dependencies for these date packages.
+
 ### version 7.5.0
 *Released*: 27 July 2024
 - Add option to add requiresLogin and requiresNoPermission to entry points

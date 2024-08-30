@@ -1,3 +1,7 @@
+// Run all tests with timezone set to UTC
+// https://stackoverflow.com/a/56482581
+process.env.TZ = 'UTC';
+
 module.exports = {
     globals: {
         LABKEY: {

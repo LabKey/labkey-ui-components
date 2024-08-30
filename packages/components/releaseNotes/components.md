@@ -7,6 +7,14 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Issue 51123: Assay run import sample lookup fails when coming from a workflow job task
   - Issue 51025: Don't allow saving of data in editable grid if there are known errors
 
+### version 4.12.0
+*Released*: 29 August 2024
+- Add `date-fns` and `date-fns-tz` dependencies
+- Remove `moment` and `moment-timezone` dependencies
+- Refactor usages of time differences and time math to use date-fns
+- Export new `fromDate` and `fromNow` date utility methods
+- Remove internal implementation of `jDateFormatParser`
+
 ### version 4.11.0
 *Released*: 27 August 2024
 - Use new `~~identifyingfield~~` view when available for `QuerySelect`'s `PreviewOption`

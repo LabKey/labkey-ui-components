@@ -5,6 +5,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Update `QuerySelect` to support parameterized queries
 
+### version 4.13.1
+*Released*: 30 August 2024
+- ELN and storage view tooltip update
+  - Support isFlexPlacement Popover placement based on available screen space
+  - check isBiologicsEnabled for isMediaEnabled
+  - support noLink prop for DefaultRenderer
+
 ### version 4.13.0
 *Released*: 30 August 2024
 - Misc 24.9 issue fixes

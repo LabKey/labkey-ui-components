@@ -319,7 +319,11 @@ import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailPanelHeader } from './internal/components/forms/detail/DetailPanelHeader';
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailDisplay';
 import { useDataChangeCommentsRequired } from './internal/components/forms/input/useDataChangeCommentsRequired';
-import { registerInputRenderer, registerInputRenderers } from './internal/components/forms/input/InputRenderFactory';
+import {
+    registerInputRenderer,
+    registerInputRenderers,
+    InputRenderContext,
+} from './internal/components/forms/input/InputRenderFactory';
 
 import {
     getUsersWithPermissions,
@@ -1225,6 +1229,7 @@ export {
     UserDetailsRenderer,
     resolveDetailRenderer,
     registerInputRenderer,
+    InputRenderContext,
     // Formsy
     addFormsyRule,
     Formsy,
@@ -1980,5 +1985,5 @@ export type { QueryLookupFilterGroup, QueryLookupFilterGroupFilter } from './pub
 export type { ClearSelectedOptions, ReplaceSelectedOptions } from './internal/actions';
 export type { LabelsAPIWrapper } from './internal/components/labels/APIWrapper';
 export type { InputRendererProps } from './internal/components/forms/input/types';
-export type { InputRenderContext, InputRendererComponent } from './internal/components/forms/input/InputRenderFactory';
+export type { InputRendererComponent } from './internal/components/forms/input/InputRenderFactory';
 export type { AppContextTestProviderProps } from './internal/test/testHelpers';

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.14.0
+*Released*: 30 August 2024
+- Update `QuerySelect` to support parameterized queries
+
 ### version 4.13.1
 *Released*: 30 August 2024
 - ELN and storage view tooltip update

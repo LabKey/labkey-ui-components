@@ -249,6 +249,10 @@ export class EditorModel
         return undefined;
     }
 
+    get hasErrors(): boolean {
+        return this.cellMessages?.some(cm => cm?.message !== undefined);
+    }
+
     getMessage(fieldKey: string, rowIdx: number): CellMessage {
         return this.cellMessages.get(genCellKey(fieldKey, rowIdx));
     }

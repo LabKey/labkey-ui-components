@@ -161,7 +161,7 @@ export async function loadSelectedSamples(
             sampleColumn,
             [Filter.create('ApplicationType', 'ExperimentRun'), Filter.create('ApplicationRun', workflowJobId)],
             'Name',
-            'SampleId'
+            'RowId' // Issue 51123
         );
     }
 

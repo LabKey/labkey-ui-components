@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.13.0
+*Released*: 30 August 2024
+- Misc 24.9 issue fixes
+  - Issue 51123: Assay run import sample lookup fails when coming from a workflow job task
+  - Issue 51025: Don't allow saving of data in editable grid if there are known errors
+
 ### version 4.12.0
 *Released*: 29 August 2024
 - Add `date-fns` and `date-fns-tz` dependencies

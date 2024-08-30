@@ -27,6 +27,9 @@ const ISO_SHORT_TIME_FORMAT_STRING = 'HH:mm';
 const ISO_TIME_FORMAT_STRING = 'HH:mm:ss';
 const ISO_DATE_TIME_FORMAT_STRING = `${ISO_DATE_FORMAT_STRING} ${ISO_TIME_FORMAT_STRING}`;
 
+// Intended to match against ISO_DATE_FORMAT_STRING
+const ISO_DATE_FORMAT_REGEX = /^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/;
+
 export enum DateFormatType {
     Date = 'Date',
     DateTime = 'DateTime',
@@ -177,14 +180,7 @@ export function parseDateFNSTimeFormat(dateFormat: string): string {
 function _getColFormattedDateFilterValue(column: QueryColumn, value: string): string {
     if (!value) return value;
 
-    let valueFull = value;
-    if (typeof value === 'string' && value.match(/^\s*(\d\d\d\d)-(\d\d)-(\d\d)\s*$/)) {
-        // Issue 46460: Force local timezone. In ISO format, if you provide time and Z is not present
-        // in the end of string, then the date will be local time zone instead of UTC time zone.
-        valueFull = value + 'T00:00:00';
-    }
-
-    const date = parseDate(valueFull);
+    const date = parseDate(value);
     if (!isValid(date)) return value;
 
     // date or datetime fields always filter by 'date' portion only
@@ -341,11 +337,16 @@ export function parseDate(
         if (isValid(date)) {
             validDate = date;
         } else {
+            // Issue 46460: Force local timezone. In ISO format, if you provide time and Z is not present
+            // in the end of string, then the date will be local time zone instead of UTC time zone.
+            if (dateValue.match(ISO_DATE_FORMAT_REGEX)) {
+                dateValue = dateValue + 'T00:00:00';
+            }
+
             // date-fns does not provide a format-speculative parse() function.
             // Recommendation is to fall back to new Date() / Date.parse().
             // See https://github.com/orgs/date-fns/discussions/2231
             date = new Date(dateValue);
-
             if (isValid(date)) {
                 validDate = date;
             }

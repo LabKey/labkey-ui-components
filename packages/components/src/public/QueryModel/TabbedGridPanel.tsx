@@ -207,6 +207,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 const filename = exportFilename ?? 'Data';
                 await exportTabsXlsx(filename, models);
                 onExport?.[EXPORT_TYPES.EXCEL]?.();
+                // Issue 39332: add message about export start
                 actions.addMessage(activeModel.id, { type: 'success', content: 'Excel export started.' }, 5000);
             } catch (e) {
                 console.error(e);

@@ -149,6 +149,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
             onExport[type](model.id);
         } else {
             exportRows(type, getQueryModelExportParams(model, type, advancedOptions), model.containerPath);
+            // Issue 39332: add message about export start
             actions.addMessage(model.id, { type: 'success', content: option.label + ' export started.' }, 5000);
         }
     };

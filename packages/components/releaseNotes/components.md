@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 4.15.0
+*Released*: 2 September 2024
+- Issue 39332: Provide status when exporting data from a grid in the app
+  - QueryModel action for addMessage with optional duration (for removing message after N ms)
+  - Add message to grid after clicking export menu option
+
 ### version 4.14.1
 *Released*: 30 August 2024
 - Consolidate handling of date/time changes in `DatePickerInput`.

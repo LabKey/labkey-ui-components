@@ -98,9 +98,9 @@ export function createQueryModelId(schemaQuery: SchemaQuery): string {
 const sortStringMapper = (s: QuerySort): string => s.toRequestString();
 
 export interface GridMessage {
-    area: string;
+    area?: string;
     content: string;
-    type: string;
+    type?: string;
 }
 
 export interface QueryConfig {

@@ -180,6 +180,14 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         // this is expected for LKS usages, so don't throw or console.error
     }
 
+    // If the component is passed onTabSelect we will only honor the activeModelId passed to this component.
+    let activeId = onTabSelect === undefined ? internalActiveId : activeModelId;
+
+    // Default activeId if current activeId not in tabOrder
+    activeId = tabOrder.indexOf(activeId) === -1 ? tabOrder[0] : activeId;
+
+    const activeModel = queryModels[activeId];
+
     const exportTabs = useCallback(
         async (selectedTabs: string[] | Set<string>) => {
             try {
@@ -199,6 +207,8 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 const filename = exportFilename ?? 'Data';
                 await exportTabsXlsx(filename, models);
                 onExport?.[EXPORT_TYPES.EXCEL]?.();
+                // Issue 39332: add message about export start
+                actions.addMessage(activeModel.id, { type: 'success', content: 'Excel export started.' }, 5000);
             } catch (e) {
                 console.error(e);
                 // Set export error
@@ -209,7 +219,16 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
                 setShowExportModal(false);
             }
         },
-        [exportFilename, canExport, _createNotification, queryModels, advancedExportOptions, getAdvancedExportOptions]
+        [
+            actions,
+            activeModel,
+            exportFilename,
+            canExport,
+            _createNotification,
+            queryModels,
+            advancedExportOptions,
+            getAdvancedExportOptions,
+        ]
     );
 
     const excelExportHandler = useCallback(async () => {
@@ -231,13 +250,6 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         setShowExportModal(false);
     }, []);
 
-    // If the component is passed onTabSelect we will only honor the activeModelId passed to this component.
-    let activeId = onTabSelect === undefined ? internalActiveId : activeModelId;
-
-    // Default activeId if current activeId not in tabOrder
-    activeId = tabOrder.indexOf(activeId) === -1 ? tabOrder[0] : activeId;
-
-    const activeModel = queryModels[activeId];
     const hasTabs = tabOrder.length > 1 || alwaysShowTabs;
 
     const showViewConfig = {}; // showViewMenu default to true in GridPanel

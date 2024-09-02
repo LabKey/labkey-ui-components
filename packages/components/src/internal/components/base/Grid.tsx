@@ -13,17 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {
-    CSSProperties,
-    FC,
-    Fragment,
-    memo,
-    PureComponent,
-    ReactNode,
-    RefObject,
-    useEffect,
-    useRef,
-} from 'react';
+import React, { CSSProperties, FC, Fragment, memo, PureComponent, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 
@@ -239,7 +229,7 @@ const GridMessages: FC<GridMessagesProps> = memo(({ messages }) => (
         {messages.map((message: Map<string, string>, i) => {
             return (
                 // eslint-disable-next-line react/no-array-index-key
-                <div className="grid-message" key={i}>
+                <div className={classNames('grid-message', message.get('type'))} key={i}>
                     {message.get('content')}
                 </div>
             );

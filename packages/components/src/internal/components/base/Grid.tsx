@@ -13,15 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, {
-    CSSProperties,
-    FC,
-    Fragment,
-    memo,
-    PureComponent,
-    ReactNode,
-    RefObject,
-} from 'react';
+import React, { CSSProperties, FC, Fragment, memo, PureComponent, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 

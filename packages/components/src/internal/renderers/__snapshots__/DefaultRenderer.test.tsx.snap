@@ -85,6 +85,16 @@ exports[`DefaultRenderer url 1`] = `
 </div>
 `;
 
+exports[`DefaultRenderer url, but noLink 1`] = `
+<div>
+  <span
+    class="ws-pre-wrap"
+  >
+    Value 1
+  </span>
+</div>
+`;
+
 exports[`DefaultRenderer value 1`] = `
 <div>
   <span

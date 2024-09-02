@@ -10,8 +10,10 @@ import { DropdownButton, MenuDivider, MenuHeader, MenuItem } from '../../interna
 
 import { QueryModel } from './QueryModel';
 import { getQueryModelExportParams } from './utils';
+import { Actions } from './withQueryModels';
 
 interface ExportMenuProps {
+    actions: Actions;
     advancedOptions?: Record<string, any>;
     model: QueryModel;
     onExport?: Record<string, (modelId?: string) => void>;
@@ -140,13 +142,15 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
 
 export class ExportMenu extends PureComponent<ExportMenuProps> {
     export = (option: ExportOption): void => {
-        const { model, advancedOptions, onExport } = this.props;
+        const { model, advancedOptions, onExport, actions } = this.props;
         const { type } = option;
 
         if (onExport?.[type]) {
             onExport[type](model.id);
         } else {
             exportRows(type, getQueryModelExportParams(model, type, advancedOptions), model.containerPath);
+            // Issue 39332: add message about export start
+            actions.addMessage(model.id, { type: 'success', content: option.label + ' export started.' }, 5000);
         }
     };
 

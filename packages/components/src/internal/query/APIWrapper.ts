@@ -42,6 +42,7 @@ import {
     getDefaultVisibleColumns,
     getQueryDetails,
     GetQueryDetailsOptions,
+    getServerDate,
     insertRows,
     InsertRowsOptions,
     QueryCommandResponse,
@@ -89,6 +90,7 @@ export interface QueryAPIWrapper {
         isNewFolder?: boolean
     ) => Promise<Record<string, number>>;
     getQueryDetails: (options: GetQueryDetailsOptions) => Promise<QueryInfo>;
+    getServerDate: () => Promise<Date>;
     getSnapshotSelections: (key: string, containerPath?: string) => Promise<GetSelectedResponse>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
     insertRows: (options: InsertRowsOptions) => Promise<QueryCommandResponse>;
@@ -154,6 +156,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     getProjectDataTypeDataCount = getProjectDataTypeDataCount;
     getQueryDetails = getQueryDetails;
     getSnapshotSelections = getSnapshotSelections;
+    getServerDate = getServerDate;
     incrementClientSideMetricCount = incrementClientSideMetricCount;
     insertRows = insertRows;
     renameGridView = renameGridView;
@@ -189,6 +192,7 @@ export function getQueryTestAPIWrapper(
         getProjectDataTypeDataCount: mockFn(),
         getQueryDetails: mockFn(),
         getSnapshotSelections: mockFn(),
+        getServerDate: () => Promise.resolve(new Date()),
         incrementClientSideMetricCount: mockFn(),
         insertRows: mockFn(),
         renameGridView: mockFn(),

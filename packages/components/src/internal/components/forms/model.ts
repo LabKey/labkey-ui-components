@@ -206,6 +206,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
             sort: displayColumn,
             maxRows,
             includeTotalCount: 'f',
+            parameters: model.queryParams,
         },
         filterVal,
         model.valueColumn,
@@ -333,6 +334,7 @@ export async function initSelect(props: QuerySelectOwnProps): Promise<QuerySelec
             containerFilter,
             containerPath,
             filterArray: filters,
+            parameters: model.queryParams,
             queryName,
             schemaName,
             viewName,
@@ -384,6 +386,7 @@ export interface QuerySelectModelProps {
     multiple: boolean;
     queryFilters: List<Filter.IFilter>;
     queryInfo: QueryInfo;
+    queryParams: Record<string, any>;
     rawSelectedValue: any;
     requiredColumns: string[];
     schemaQuery: SchemaQuery;
@@ -407,6 +410,7 @@ export class QuerySelectModel
         multiple: false,
         queryFilters: undefined,
         queryInfo: undefined,
+        queryParams: undefined,
         rawSelectedValue: undefined,
         requiredColumns: [],
         schemaQuery: undefined,
@@ -429,6 +433,7 @@ export class QuerySelectModel
     declare multiple: boolean;
     declare queryFilters: List<Filter.IFilter>;
     declare queryInfo: QueryInfo;
+    declare queryParams: Record<string, any>;
     declare rawSelectedValue: any;
     declare requiredColumns: string[];
     declare schemaQuery: SchemaQuery;

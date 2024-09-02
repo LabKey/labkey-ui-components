@@ -27,7 +27,7 @@ import {
     isDateTimeCol,
     isRelativeDateFilterValue,
     parseDate,
-    parseSimpleTime,
+    parseTime,
 } from '../../../util/Date';
 
 import { QueryColumn } from '../../../../public/QueryColumn';
@@ -100,8 +100,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         // We instead need to make sure that the unformatted Date value is passed to setValue if there is an init value.
         const initDate = this.getInitDate(props);
         if (props.formsy && !props.queryColumn.isTimeColumn) {
-            // @ts-expect-error -- FIXME: Here we setValue(Date), everywhere else setValue(string)
-            props.setValue?.(initDate);
+            props.setValue?.(initDate ? this.getFormsyValue(initDate) : undefined);
         }
 
         let invalidStart = false;
@@ -109,7 +108,7 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         if (props.value && !isRelativeDateFilterValue(props.value)) {
             // Issue 46767: DatePicker valid dates start at year 1000 (i.e. new Date('1000-01-01'))
             invalidStart = this.getInitDate(props, new Date('1000-01-01')) === null;
-            invalid = this.getInitDate(props) === null;
+            invalid = initDate === null;
         }
 
         this.input = React.createRef();
@@ -135,23 +134,39 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         );
     };
 
+    getFormsyValue = (date: Date): string => {
+        const { queryColumn } = this.props;
+        let value: string;
+
+        // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
+        if (queryColumn.isTimeColumn) {
+            value = getJsonTimeFormatString(date);
+        } else if (queryColumn.isDateOnlyColumn) {
+            value = getJsonDateFormatString(date);
+        } else {
+            value = getJsonDateTimeFormatString(date);
+        }
+
+        return value;
+    };
+
     getInitDate(props: DatePickerInputProps, minDate?: Date): Date {
-        const { queryColumn } = props;
-        const isTimeOnly = queryColumn.isTimeColumn;
-        const isDateOnly = queryColumn.isDateOnlyColumn;
+        const { allowRelativeInput, initValueFormatted, queryColumn, value } = props;
+
+        if (!value || (allowRelativeInput && isRelativeDateFilterValue(value))) return undefined;
+
+        if (queryColumn.isTimeColumn) {
+            return parseTime(value);
+        }
+
         // Issue 45140: props.value is the original formatted date, so pass the date format
         // to parseDate when getting the initial value.
-        const dateFormat = props.initValueFormatted ? this.getDateFormat() : undefined;
-
-        if (props.allowRelativeInput && isRelativeDateFilterValue(props.value)) return undefined;
-
-        return props.value ? parseDate(props.value, dateFormat, minDate, isTimeOnly, isDateOnly) : undefined;
+        const dateFormat = initValueFormatted ? this.getDateFormat() : undefined;
+        return parseDate(value, dateFormat, minDate, false, queryColumn.isDateOnlyColumn);
     }
 
     onChange = (date: Date, event?: any): void => {
-        const { hideTime, queryColumn } = this.props;
-        const isTimeOnly = queryColumn.isTimeColumn;
-        const isDateOnly = queryColumn.isDateOnlyColumn;
+        const { formsy, hideTime, inlineEdit, queryColumn } = this.props;
         this.setState({ selectedDate: date, invalid: false, invalidStart: false });
 
         if (this.state.relativeInputValue) {
@@ -159,53 +174,24 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
         } else {
             const formatted = getFormattedStringFromDate(date, queryColumn, hideTime);
 
-            if (isTimeOnly) {
-                this.props.onChange?.(formatted, formatted);
+            this.props.onChange?.(queryColumn.isTimeColumn ? formatted : date, formatted);
 
-                // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-                if (this.props.formsy) {
-                    this.props.setValue?.(getJsonTimeFormatString(date));
-                }
-            } else {
-                this.props.onChange?.(date, formatted);
-
-                // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-                if (this.props.formsy) {
-                    this.props.setValue?.(
-                        isDateOnly ? getJsonDateFormatString(date) : getJsonDateTimeFormatString(date)
-                    );
-                }
+            if (formsy) {
+                this.props.setValue?.(this.getFormsyValue(date));
             }
         }
 
         // event is null when selecting time picker
-        if (!event && this.props.inlineEdit) this.input.current.setFocus();
+        if (!event && inlineEdit) this.input.current.setFocus();
     };
 
     onChangeRaw = (event?: any): void => {
         const { queryColumn } = this.props;
-        const isTime = queryColumn.isTimeColumn;
         const value = event?.target?.value;
 
-        if (isTime) {
-            if (!value) {
-                this.onChange(null);
-            } else {
-                // Issue 50010: Time picker enters the wrong time if a time field has a format set
-                const time = parseSimpleTime(value);
-                if (time instanceof Date && !isNaN(time.getTime())) {
-                    // Issue 50102: LKSM: When bulk updating a time-only field and entering a value with PM results in the AM time being selected
-                    this.setState({ selectedDate: time, invalid: false, invalidStart: false });
-
-                    const formatted = getFormattedStringFromDate(time, queryColumn, false);
-                    this.props.onChange?.(formatted, formatted);
-
-                    // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
-                    if (this.props.formsy) {
-                        this.props.setValue?.(getJsonTimeFormatString(time));
-                    }
-                }
-            }
+        if (queryColumn.isTimeColumn) {
+            // Issue 50010: Time picker enters the wrong time if a time field has a format set
+            this.onChange(parseTime(value));
         } else if (isRelativeDateFilterValue(value)) {
             this.setState({ relativeInputValue: value });
             this.props.onChange?.(value);

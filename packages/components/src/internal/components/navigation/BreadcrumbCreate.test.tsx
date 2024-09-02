@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import React from 'react';
-import { mount } from 'enzyme';
+
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { AppURL } from '../../url/AppURL';
 
@@ -49,16 +50,19 @@ describe('BreadcrumbCreate', () => {
             </BreadcrumbCreate>
         );
 
-        const wrapper = mount(component);
-        expect(wrapper.find('li')).toHaveLength(1);
-        expect(wrapper.find('span').text()).toContain('Modified ');
-        const titleAttr = wrapper.find('span').getDOMNode().getAttribute('title');
-        expect(titleAttr).toContain('Created by: username');
-        expect(titleAttr).toContain('Modified by: username2');
+        renderWithAppContext(component);
+        expect(document.querySelectorAll('li')).toHaveLength(1);
+
+        const cbmbElement = document.querySelector('span');
+        expect(cbmbElement.textContent).toContain('Modified ');
+
+        const title = cbmbElement.getAttribute('title');
+        expect(title).toContain('Created by: username');
+        expect(title).toContain('Modified by: username2');
     });
 
     test('with multiple links, no created row', () => {
-        const wrapper = mount(
+        renderWithAppContext(
             <BreadcrumbCreate useServerDate={false}>
                 <a href={AppURL.create('q').toString()}>First</a>
                 <a href={AppURL.create('q', 'two').toString()}>Second</a>
@@ -66,6 +70,6 @@ describe('BreadcrumbCreate', () => {
             </BreadcrumbCreate>
         );
 
-        expect(wrapper.find('a')).toHaveLength(3);
+        expect(document.querySelectorAll('a')).toHaveLength(3);
     });
 });

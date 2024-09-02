@@ -220,6 +220,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                             <span className={hiddenWithLeftButtonsCls}>{paginate && paginationComp}</span>
                             {canExport && (
                                 <ExportMenu
+                                    actions={actions}
                                     model={model}
                                     advancedOptions={advancedExportOptions}
                                     supportedTypes={supportedExportTypes?.toJS()}

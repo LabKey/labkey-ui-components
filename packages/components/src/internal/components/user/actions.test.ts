@@ -60,10 +60,10 @@ describe('User actions', () => {
 
     test('getUserLastLogin', () => {
         const lastLogin = '2019-11-15 13:50:17.987';
-        expect(getUserLastLogin({ lastlogin: lastLogin }).indexOf('2019-11-15T')).toBe(0);
+        expect(getUserLastLogin({ lastlogin: lastLogin })).toBe('2019-11-15');
         expect(getUserLastLogin({ lastlogin: lastLogin }, 'YYYY-MM-DD')).toBe('2019-11-15');
         expect(getUserLastLogin({ lastLogin }, 'YYYY-MM-DD')).toBe('2019-11-15');
-        expect(getUserLastLogin({ LastLogin: lastLogin }, 'YYYY-MM-DD')).toBe('2019-11-15');
+        expect(getUserLastLogin({ LastLogin: lastLogin }, 'DD-MM-YYYY')).toBe('15-11-2019');
     });
 
     test('getUserRoleDisplay', () => {

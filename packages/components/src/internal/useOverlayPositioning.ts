@@ -4,18 +4,21 @@ export type Placement = 'top' | 'right' | 'bottom' | 'left';
 
 export interface OverlayPositioning<O extends Element = HTMLDivElement> {
     overlayRef: MutableRefObject<O>;
+    placement?: Placement;
     style: CSSProperties;
 }
 
 export function useOverlayPositioning<T extends Element = HTMLDivElement, O extends Element = HTMLDivElement>(
     placement: Placement,
     targetRef: MutableRefObject<T>,
-    isFixedPosition: boolean = false
+    isFixedPosition: boolean = false,
+    isFlexPlacement: boolean = false
 ): OverlayPositioning<O> {
     const overlayRef = useRef<O>(undefined);
     // Sometimes it takes a little extra time before the useEffect below can compute the style, so we default the
     // position to be (hopefully) very far off-screen, otherwise you see the overlay flash from one spot to another.
     const [style, setStyle] = useState<CSSProperties>({ top: -10000, left: -10000 });
+    const [updatedPlacement, setUpdatedPlacement] = useState<Placement>(placement);
 
     if (targetRef === undefined) {
         console.warn(
@@ -43,8 +46,19 @@ export function useOverlayPositioning<T extends Element = HTMLDivElement, O exte
                 top: targetRect.top + window.scrollY,
             };
 
+            let updatedPlacement = placement;
+            if (isFlexPlacement) {
+                if (placement === 'left' || placement === 'right') {
+                    if (window.innerWidth - targetRect.right > targetRect.left) updatedPlacement = 'right';
+                    else updatedPlacement = 'left';
+                } else if (placement === 'top' || placement === 'bottom') {
+                    if (window.innerHeight - targetRect.bottom > targetRect.top) updatedPlacement = 'bottom';
+                    else updatedPlacement = 'top';
+                }
+            }
+
             // X positioning
-            if (placement === 'top' || placement === 'bottom') {
+            if (updatedPlacement === 'top' || updatedPlacement === 'bottom') {
                 let left = targetRect.left + targetRect.width / 2 - overlayRect.width / 2;
                 if (!isFixedPosition) left = left + window.scrollX;
                 updatedStyle.left = left;
@@ -61,23 +75,28 @@ export function useOverlayPositioning<T extends Element = HTMLDivElement, O exte
             }
 
             // Y positioning
-            if (placement === 'left' || placement === 'right') {
+            if (updatedPlacement === 'left' || updatedPlacement === 'right') {
                 let top = targetRect.top + targetRect.height / 2 - overlayRect.height / 2;
                 if (!isFixedPosition) top = top + window.scrollY;
                 updatedStyle.top = top;
-            } else if (placement === 'top') {
+            } else if (updatedPlacement === 'top') {
                 let top = targetRect.top - overlayRect.height;
                 if (!isFixedPosition) top = top + window.scrollY;
                 updatedStyle.top = top;
-            } else if (placement === 'bottom') {
+            } else if (updatedPlacement === 'bottom') {
                 let top = targetRect.top + targetRect.height;
                 if (!isFixedPosition) top = top + window.scrollY;
                 updatedStyle.top = top;
             }
 
             setStyle(updatedStyle);
+            setUpdatedPlacement(updatedPlacement);
         }
     }, [targetRef, placement]);
 
-    return { overlayRef, style };
+    return {
+        overlayRef,
+        style,
+        placement: updatedPlacement,
+    };
 }

@@ -146,6 +146,7 @@ export const AUDIT_TABLES = {
 
 const PLATE_SCHEMA = 'plate';
 const PLATE_TABLES = {
+    CONTROL_SAMPLES: new SchemaQuery(PLATE_SCHEMA, 'ControlSamples'),
     HIT_SELECTION_SUMMARY: new SchemaQuery(PLATE_SCHEMA, 'HitSelectionSummary'),
     PLATE: new SchemaQuery(PLATE_SCHEMA, 'Plate'),
     PLATE_SET: new SchemaQuery(PLATE_SCHEMA, 'PlateSet'),

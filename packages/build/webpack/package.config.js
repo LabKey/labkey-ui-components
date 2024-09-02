@@ -7,7 +7,6 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const constants = require('./constants');
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const IgnorePlugin = require('webpack').IgnorePlugin;
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -35,10 +34,6 @@ const plugins = [
                 to: 'assets/scss/theme'
             }
         ]
-    }),
-    new IgnorePlugin({
-        resourceRegExp: /^\.\/locale$/,
-        contextRegExp: /moment$/,
     }),
     new CircularDependencyPlugin({
         exclude: /node_modules/,
@@ -114,8 +109,6 @@ module.exports = {
         'jest-environment-jsdom',
         'jquery',
         'lodash',
-        'moment',
-        'moment-timezone',
         'normalizr',
         'numeral',
         'prosemirror',

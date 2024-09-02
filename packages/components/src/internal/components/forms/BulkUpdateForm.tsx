@@ -56,6 +56,7 @@ interface State {
     dataForSelection: Map<string, any>;
     dataIdsForSelection: List<any>;
     displayFieldUpdates: any;
+    formData: Map<string, any>;
     isLoadingDataForSelection: boolean;
     originalDataForSelection: Map<string, any>;
 }
@@ -75,6 +76,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
             dataForSelection: undefined,
             dataIdsForSelection: undefined,
             displayFieldUpdates: {},
+            formData: undefined,
             isLoadingDataForSelection: true,
             originalDataForSelection: undefined,
         };
@@ -187,6 +189,10 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         return col.isUpdateColumn && (!lcUniqueFieldKey || col.name.toLowerCase() !== lcUniqueFieldKey);
     };
 
+    onFormChangeWithData = (formData: Map<string, any>): void => {
+        this.setState({ formData });
+    };
+
     onSubmit = (data: any, comment?: string): Promise<any> => {
         const { queryInfo, updateRows } = this.props;
         const { displayFieldUpdates } = this.state;
@@ -233,7 +239,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
     }
 
     render() {
-        const { isLoadingDataForSelection, dataForSelection, containerPaths } = this.state;
+        const { formData, isLoadingDataForSelection, dataForSelection, containerPaths } = this.state;
         const {
             containerFilter,
             onCancel,
@@ -255,6 +261,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
         const preventCrossFolderEnable = containerPaths?.length > 1;
 
         const _onSubmitForEdit = onSubmitForEdit ? this.onSubmitForEdit : undefined;
+        const values = formData ? { ...fieldValues, ...formData.toJS() } : fieldValues;
 
         return (
             <QueryInfoForm
@@ -266,7 +273,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 containerPath={containerPath}
                 disabled={disabled}
                 preventCrossFolderEnable={preventCrossFolderEnable}
-                fieldValues={fieldValues}
+                fieldValues={values}
                 header={this.renderBulkUpdateHeader()}
                 includeCommentField={includeCommentField}
                 includeCountField={false}
@@ -274,6 +281,7 @@ export class BulkUpdateForm extends PureComponent<Props, State> {
                 isLoading={isLoadingDataForSelection}
                 onHide={onCancel}
                 operation={Operation.update}
+                onFormChangeWithData={this.onFormChangeWithData}
                 onSubmitForEdit={_onSubmitForEdit}
                 onSubmit={this.onSubmit}
                 onSuccess={onComplete}

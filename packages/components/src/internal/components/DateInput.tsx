@@ -7,11 +7,7 @@ export class DateInput extends PureComponent<ReactDatePickerProps> {
     static defaultProps = {
         autoComplete: 'off',
         className: 'form-control',
-        // TODO: Support server-specified date formats.
-        // DatePicker utilizes `date-fns` (https://date-fns.org/) for handling date formatting. Currently, LabKey
-        // utilizes `moment` for handling date formats on the client and Java date formatting on the server. This
-        // mix of different formats is problematic for providing consistent date formatting to users in all cases.
-        dateFormat: 'MM/dd/yyyy', // different format than Moment.
+        dateFormat: 'MM/dd/yyyy',
         wrapperClassName: 'form-control',
         showTimeSelect: false,
     };

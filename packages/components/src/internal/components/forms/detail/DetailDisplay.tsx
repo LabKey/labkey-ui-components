@@ -1,5 +1,6 @@
 import React, { FC, memo, ReactNode, useMemo } from 'react';
 import { List, OrderedMap } from 'immutable';
+import numeral from 'numeral';
 import { Query } from '@labkey/api';
 
 import classNames from 'classnames';
@@ -19,8 +20,6 @@ import { resolveInputRenderer } from '../input/InputRenderFactory';
 import { resolveDetailFieldValue } from '../utils';
 
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
-
-import { getUnFormattedNumber } from '../../../util/Date';
 
 import { SampleStatusRenderer } from '../../../renderers/SampleStatusRenderer';
 import { TextChoiceInput } from '../input/TextChoiceInput';
@@ -410,7 +409,7 @@ export function resolveDetailEditRenderer(
                 let validationError;
 
                 if (col.jsonType === 'int' || col.jsonType === 'float') {
-                    const unformat = getUnFormattedNumber(value);
+                    const unformat = value ? numeral(value).value() : value;
                     if (unformat !== undefined && unformat !== null) {
                         value = unformat.toString();
                     }

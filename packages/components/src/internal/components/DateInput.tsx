@@ -1,7 +1,7 @@
 import React, { PureComponent, ReactNode, RefObject } from 'react';
-import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
+import DatePicker, { DatePickerProps } from 'react-datepicker';
 
-export class DateInput extends PureComponent<ReactDatePickerProps> {
+export class DateInput extends PureComponent<DatePickerProps> {
     // DatePicker is not a react-bootstrap component, form-control class is needed on className and wrapperClassName,
     // we also need to re-apply border radius via date-input class in fields.scss.
     static defaultProps = {
@@ -23,7 +23,10 @@ export class DateInput extends PureComponent<ReactDatePickerProps> {
         this.input.current?.setFocus();
     };
 
-    onSelect = (date: Date, event: React.SyntheticEvent<any> | undefined): void => {
+    onSelect = (
+        date: Date,
+        event: React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLElement>
+    ): void => {
         // focus the input so an onBlur action gets triggered after selection has been made
         this.input.current?.setFocus();
         this.props.onSelect?.(date, event);

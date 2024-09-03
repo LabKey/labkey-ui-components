@@ -3,7 +3,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "moduleResolution": "node",
+    "moduleResolution": "Node16",
     "noEmit": true,
     "resolveJsonModule": true,
     // sourceMap needs to be true in order for our tests have accurate stack traces, it does not noticeably impact

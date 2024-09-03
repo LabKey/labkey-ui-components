@@ -85,13 +85,20 @@ describe('CalculatedFieldOptions', () => {
     });
 
     test('getColumnTypeMap', () => {
-        expect(getColumnTypeMap(undefined, undefined)).toEqual({});
-        expect(getColumnTypeMap(List.of(), [])).toEqual({});
+        const defaultTypeMap = {
+            Created: 'DATETIME',
+            CreatedBy: 'INTEGER',
+            Modified: 'DATETIME',
+            ModifiedBy: 'INTEGER',
+        };
+        expect(getColumnTypeMap(undefined, undefined)).toEqual({...defaultTypeMap});
+        expect(getColumnTypeMap(List.of(), [])).toEqual({...defaultTypeMap});
         expect(
             getColumnTypeMap(List.of({ name: 'b', dataType: { name: 'text' } } as DomainField), [
                 { Name: 'a', DataType: 'integer' } as SystemField,
             ])
         ).toEqual({
+            ...defaultTypeMap,
             a: 'INTEGER',
             b: 'TEXT',
         });
@@ -105,6 +112,7 @@ describe('CalculatedFieldOptions', () => {
                 [{ Name: 'a', DataType: 'integer' } as SystemField]
             )
         ).toEqual({
+            ...defaultTypeMap,
             a: 'INTEGER',
             b: 'TEXT',
             d: 'INTEGER',

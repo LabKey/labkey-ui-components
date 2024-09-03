@@ -15,6 +15,8 @@ import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
 import { getTestAPIWrapper } from '../../../APIWrapper';
 
+import { MockLookupProvider } from '../../../../test/components/Lookup';
+
 import { ListModel } from './models';
 import { ListDesignerPanels, ListDesignerPanelsProps, ListDesignerPanelsImpl } from './ListDesignerPanels';
 
@@ -30,7 +32,11 @@ describe('ListDesignerPanel', () => {
     }
 
     test('visible properties', async () => {
-        renderWithAppContext(<ListDesignerPanels {...getDefaultProps()} />);
+        renderWithAppContext(
+            <MockLookupProvider>
+                <ListDesignerPanels {...getDefaultProps()} />
+            </MockLookupProvider>
+        );
         await waitFor(() => {
             const panelHeaders = document.getElementsByClassName('domain-panel-header');
             expect(panelHeaders).toHaveLength(2);
@@ -40,7 +46,11 @@ describe('ListDesignerPanel', () => {
     });
 
     test('open fields panel', async () => {
-        renderWithAppContext(<ListDesignerPanels {...getDefaultProps()} />);
+        renderWithAppContext(
+            <MockLookupProvider>
+                <ListDesignerPanels {...getDefaultProps()} />
+            </MockLookupProvider>
+        );
 
         await waitFor(() => {
             expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
@@ -58,42 +68,45 @@ describe('ListDesignerPanel', () => {
     });
 
     test('new list', () => {
-        <ListDesignerPanelsImpl
-            {...getDefaultProps()}
-            currentPanelIndex={0}
-            firstState
-            onFinish={jest.fn()}
-            onTogglePanel={jest.fn()}
-            setSubmitting={jest.fn()}
-            submitting={false}
-            validatePanel={0}
-            visitedPanels={List()}
-        />;
+        renderWithAppContext(
+            <MockLookupProvider>
+                <ListDesignerPanelsImpl
+                    {...getDefaultProps()}
+                    currentPanelIndex={0}
+                    firstState
+                    onFinish={jest.fn()}
+                    onTogglePanel={jest.fn()}
+                    setSubmitting={jest.fn()}
+                    submitting={false}
+                    validatePanel={0}
+                    visitedPanels={List()}
+                />
+            </MockLookupProvider>
+        );
 
         expect(document.querySelectorAll('.domain-field-row').length).toEqual(0);
     });
 
     test('existing list', async () => {
-        // FIXME: This test has to be comment out, because LookupContextProvider is calling fetchContainers, which is
-        //  throwing an error because it has no network connection. What we need is a way for our tests to pass a mocked
-        //  version of fetchContainers in LookupProvider. Until then we will have to keep this test commented out.
-        // renderWithAppContext(
-        //     <ListDesignerPanelsImpl
-        //         {...getDefaultProps()}
-        //         initModel={ListModel.create(getDomainDetailsJSON)}
-        //         currentPanelIndex={0}
-        //         firstState
-        //         onFinish={jest.fn()}
-        //         onTogglePanel={jest.fn()}
-        //         setSubmitting={jest.fn()}
-        //         submitting={false}
-        //         validatePanel={0}
-        //         visitedPanels={List()}
-        //     />
-        // );
-        //
-        // await waitFor(() => {
-        //     expect(document.querySelectorAll('.domain-field-row').length).toEqual(14);
-        // });
+        renderWithAppContext(
+            <MockLookupProvider>
+                <ListDesignerPanelsImpl
+                    {...getDefaultProps()}
+                    initModel={ListModel.create(getDomainDetailsJSON)}
+                    currentPanelIndex={0}
+                    firstState
+                    onFinish={jest.fn()}
+                    onTogglePanel={jest.fn()}
+                    setSubmitting={jest.fn()}
+                    submitting={false}
+                    validatePanel={0}
+                    visitedPanels={List()}
+                />
+            </MockLookupProvider>
+        );
+
+        await waitFor(() => {
+            expect(document.querySelectorAll('.domain-field-row').length).toEqual(14);
+        });
     });
 });

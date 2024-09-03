@@ -2,15 +2,13 @@ import React from 'react';
 
 import { userEvent } from '@testing-library/user-event';
 
-import { List } from 'immutable';
-
-import { act } from '@testing-library/react';
-
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { IssuesDesignerPanelsImpl, IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
+import { MockLookupProvider } from '../../../../test/components/Lookup';
+
+import { IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from './models';
 import { getIssuesTestAPIWrapper } from './actions';
 
@@ -23,8 +21,12 @@ describe('IssuesListDefDesignerPanel', () => {
         onCancel: jest.fn(),
     };
 
-    test('visible properties', async () => {
-        renderWithAppContext(<IssuesListDefDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />);
+    test('visible properties', () => {
+        renderWithAppContext(
+            <MockLookupProvider>
+                <IssuesListDefDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />
+            </MockLookupProvider>
+        );
         const panels = document.getElementsByClassName('domain-form-panel');
         expect(panels).toHaveLength(2);
         expect(panels[0].querySelector('.domain-panel-title').textContent).toBe(
@@ -34,7 +36,11 @@ describe('IssuesListDefDesignerPanel', () => {
     });
 
     test('open fields panel', async () => {
-        renderWithAppContext(<IssuesListDefDesignerPanels {...BASE_PROPS} />);
+        renderWithAppContext(
+            <MockLookupProvider>
+                <IssuesListDefDesignerPanels {...BASE_PROPS} />
+            </MockLookupProvider>
+        );
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
 

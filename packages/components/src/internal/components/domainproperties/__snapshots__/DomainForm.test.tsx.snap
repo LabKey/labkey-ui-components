@@ -750,27 +750,27 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
       </div>
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip139"
+      id="overlay-trigger-portal-label-help-tip171"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip140"
+      id="overlay-trigger-portal-label-help-tip172"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip141"
+      id="overlay-trigger-portal-label-help-tip173"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip142"
+      id="overlay-trigger-portal-label-help-tip174"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip143"
+      id="overlay-trigger-portal-label-help-tip175"
     >
       <div />
     </div>
@@ -6766,66 +6766,6 @@ exports[`DomainForm domain form with all field types 1`] = `
       </div>
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip50"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip51"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip52"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip53"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip54"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip55"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip56"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip57"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip58"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip59"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip60"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip61"
-    >
-      <div />
-    </div>
-    <div
       id="overlay-trigger-portal-label-help-tip62"
     >
       <div />
@@ -6847,11 +6787,6 @@ exports[`DomainForm domain form with all field types 1`] = `
     </div>
     <div
       id="overlay-trigger-portal-label-help-tip66"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip67"
     >
       <div />
     </div>
@@ -6881,11 +6816,6 @@ exports[`DomainForm domain form with all field types 1`] = `
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip73"
-    >
-      <div />
-    </div>
-    <div
       id="overlay-trigger-portal-label-help-tip74"
     >
       <div />
@@ -6911,11 +6841,6 @@ exports[`DomainForm domain form with all field types 1`] = `
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip79"
-    >
-      <div />
-    </div>
-    <div
       id="overlay-trigger-portal-label-help-tip80"
     >
       <div />
@@ -6932,11 +6857,6 @@ exports[`DomainForm domain form with all field types 1`] = `
     </div>
     <div
       id="overlay-trigger-portal-label-help-tip83"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip84"
     >
       <div />
     </div>
@@ -6966,11 +6886,6 @@ exports[`DomainForm domain form with all field types 1`] = `
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip90"
-    >
-      <div />
-    </div>
-    <div
       id="overlay-trigger-portal-label-help-tip91"
     >
       <div />
@@ -6996,11 +6911,6 @@ exports[`DomainForm domain form with all field types 1`] = `
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip96"
-    >
-      <div />
-    </div>
-    <div
       id="overlay-trigger-portal-label-help-tip97"
     >
       <div />
@@ -7012,6 +6922,96 @@ exports[`DomainForm domain form with all field types 1`] = `
     </div>
     <div
       id="overlay-trigger-portal-label-help-tip99"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip100"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip101"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip103"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip104"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip105"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip106"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip108"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip109"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip110"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip111"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip113"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip114"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip115"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip116"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip118"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip119"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip120"
+    >
+      <div />
+    </div>
+    <div
+      id="overlay-trigger-portal-label-help-tip121"
     >
       <div />
     </div>
@@ -14605,87 +14605,87 @@ exports[`DomainForm domain form with updated fields 1`] = `
       </div>
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip117"
+      id="overlay-trigger-portal-label-help-tip144"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip118"
+      id="overlay-trigger-portal-label-help-tip145"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip119"
+      id="overlay-trigger-portal-label-help-tip146"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip120"
+      id="overlay-trigger-portal-label-help-tip147"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip121"
+      id="overlay-trigger-portal-label-help-tip148"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip122"
+      id="overlay-trigger-portal-label-help-tip150"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip123"
+      id="overlay-trigger-portal-label-help-tip151"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip124"
+      id="overlay-trigger-portal-label-help-tip152"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip125"
+      id="overlay-trigger-portal-label-help-tip153"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip126"
+      id="overlay-trigger-portal-label-help-tip155"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip127"
+      id="overlay-trigger-portal-label-help-tip156"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip128"
+      id="overlay-trigger-portal-label-help-tip157"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip129"
+      id="overlay-trigger-portal-label-help-tip158"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip130"
+      id="overlay-trigger-portal-label-help-tip160"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip131"
+      id="overlay-trigger-portal-label-help-tip161"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip132"
+      id="overlay-trigger-portal-label-help-tip162"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip133"
+      id="overlay-trigger-portal-label-help-tip163"
     >
       <div />
     </div>

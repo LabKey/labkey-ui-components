@@ -1169,7 +1169,9 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
                                             defaultValueOptions={domain.defaultValueOptions}
                                             appPropertiesOnly={appPropertiesOnly}
                                             isDragDisabled={
-                                                !valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
+                                                !valueIsEmpty(search) ||
+                                                domainFormDisplayOptions.isDragDisabled ||
+                                                field.isCalculatedField()
                                             }
                                             domainFormDisplayOptions={domainFormDisplayOptions}
                                             domainContainerPath={domain.container}

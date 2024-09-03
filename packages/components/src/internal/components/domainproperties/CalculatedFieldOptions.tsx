@@ -37,6 +37,12 @@ export const getColumnTypeMap = (
     systemFields: SystemField[]
 ): Record<string, string> => {
     const colTypeMap = {};
+    // Issue 51169: add some default system fields
+    colTypeMap['Created'] = 'DATETIME';
+    colTypeMap['CreatedBy'] = 'INTEGER';
+    colTypeMap['Modified'] = 'DATETIME';
+    colTypeMap['ModifiedBy'] = 'INTEGER';
+
     systemFields?.forEach(df => {
         colTypeMap[df.Name] = df.DataType.toUpperCase();
     });

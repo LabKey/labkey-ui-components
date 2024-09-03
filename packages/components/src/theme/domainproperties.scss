@@ -493,7 +493,7 @@
   vertical-align: top;
   color: $gray-no-highlight;
 
-  &:hover {
+  &:not(.disabled):hover {
       color: $blue-highlight;
   }
 

@@ -45,11 +45,11 @@ describe('ExportMenu', () => {
         expect(ACTIONS.addMessage).toHaveBeenCalledTimes(0); // not called directly for onExport override
     });
 
-    test('addMessage on export', () => {
+    test('addMessage on export', async () => {
         render(<ExportMenu actions={ACTIONS} model={MODEL} />);
         expect(document.querySelector('[role="heading"]').innerHTML).toBe('Export Data');
         expect(document.querySelectorAll('.export-menu-icon').length).toBe(3);
-        userEvent.click(document.querySelector('[role="menuitem"]'));
+        await userEvent.click(document.querySelector('[role="menuitem"]'));
         expect(ACTIONS.addMessage).toHaveBeenCalledTimes(1);
         expect(ACTIONS.addMessage).toHaveBeenCalledWith(
             'model',

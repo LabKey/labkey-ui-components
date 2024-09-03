@@ -1,44 +1,16 @@
-import React, { ReactElement, ReactNode } from 'react';
+// TODO: technically speaking we can delete this file because the exports are only used by .spec.tsx files, which are
+//  no longer run as part of our Jest tests.
+import { ReactElement } from 'react';
 import { act } from 'react-dom/test-utils';
-import { mount, MountRendererProps, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
+import { MountRendererProps, ReactWrapper, ShallowWrapper } from 'enzyme';
 
 import { AppContext } from '../AppContext';
 
 import { NotificationsContextState } from '../components/notifications/NotificationsContext';
-import { ServerContext, ServerContextProvider } from '../components/base/ServerContext';
+import { ServerContext } from '../components/base/ServerContext';
 import { LabelPrintingContext } from '../components/labelPrinting/LabelPrintingContextProvider';
 
-import { AppContextTestProvider, sleep } from './testHelpers';
-
-/**
- * Use this if you're testing a component that requires a wrapping <AppContextProvider/> to provide context.
- * This utility method provides the `MountRenderProps` that can be supplied to enzyme's mount() method. The specified
- * `appContext` will be provided to the wrapped component under test. Additionally, with these options supplied
- * the returned mounted component will still be the component under test (as opposed to <AppContextProvider/>).
- * @param appContext The app context to be provided by the wrapping <AppContextProvider/>.
- * @param serverContext The server context to be provided by the wrapping <ServerContextProvider/>.
- * @param notificationContext The notification context to be provided by the wrapping <NotificationProvider/>.
- * @param options Pass through for mount's rendering options.
- * @param printLabelsContext The server context to be provided by the wrapping <PrintLabelsContext/>.
- */
-export const mountWithAppServerContextOptions = (
-    appContext?: Partial<AppContext>,
-    serverContext?: Partial<ServerContext>,
-    notificationContext?: Partial<NotificationsContextState>,
-    options?: MountRendererProps,
-    printLabelsContext?: Partial<LabelPrintingContext>
-): MountRendererProps => {
-    return {
-        // wrappingComponent: AppContextTestProvider,
-        wrappingComponentProps: {
-            appContext,
-            serverContext,
-            notificationContext,
-            printLabelsContext,
-        },
-        ...options,
-    };
-};
+import { sleep } from './testHelpers';
 
 /**
  * Use this if you're testing a component that requires a wrapping <AppContextProvider/> to provide context.
@@ -65,41 +37,6 @@ export const mountWithAppServerContext = (
 
 /**
  * Use this if you're testing a component that requires a wrapping <ServerContextProvider/> to provide context.
- * This utility method provides the `MountRenderProps` that can be supplied to enzyme's mount() method. The specified
- * `initialContext` will be provided to the wrapped component under test. Additionally, with these options supplied
- * the returned mounted component will still be the component under test (as opposed to <ServerContextProvider />).
- * Example:
- * ```ts
- * import { mount } from 'enzyme';
- * import { mountWithServerContextOptions } from '@labkey/components';
- *
- * describe('a test suite', () => {
- *     test('test with default context', () => {
- *         const wrapper = mount(<MyReactComponent />, mountWithServerContextOptions());
- *     });
- *     test('test with specified context, () => {
- *         const wrapper = mount(<MyReactComponent />, mountWithServerContextOptions({
- *             user: MY_TEST_USER,
- *         }));
- *     });
- * });
- * ```
- * @param initialContext The server context to be provided by the wrapping <ServerContextProvider/>
- * @param options Pass through for mount's rendering options
- */
-export const mountWithServerContextOptions = (
-    initialContext: any = {},
-    options?: MountRendererProps
-): MountRendererProps => {
-    return {
-        // wrappingComponent: ServerContextProvider,
-        wrappingComponentProps: { initialContext },
-        ...options,
-    };
-};
-
-/**
- * Use this if you're testing a component that requires a wrapping <ServerContextProvider/> to provide context.
  * This test method wraps enzyme's mount() method and provides the wrapping component with "initialContext".
  * With this the returned mounted component will still be the component under test
  * (as opposed to <ServerContextProvider />).
@@ -108,17 +45,6 @@ export const mountWithServerContextOptions = (
  * @param options Pass through for mount's rendering options
  */
 export const mountWithServerContext = (
-    node: ReactElement,
-    initialContext?: any,
-    options?: MountRendererProps
-): ReactElement => {
-    return node;
-};
-
-/**
- * Shallow version of mountWithServerContext.
- */
-export const shallowWithServerContext = (
     node: ReactElement,
     initialContext?: any,
     options?: MountRendererProps

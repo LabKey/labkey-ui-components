@@ -37,7 +37,7 @@ module.exports = {
     moduleFileExtensions: ['ts', 'tsx', 'js'],
     roots: ['<rootDir>'],
     setupFilesAfterEnv: [
-        './src/test/jest.setup.react.ts'
+        './src/test/jest.setup.ts'
     ],
     testEnvironment: 'jsdom',
     testPathIgnorePatterns: [

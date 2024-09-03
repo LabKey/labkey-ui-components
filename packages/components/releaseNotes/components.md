@@ -1,10 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 4.16.0
+*Released*: 3 September 2024
 - Calculated fields remove experimental feature flag
   - DomainRow for calculated fields to set isDragDisabled true
+  - Add tooltip for DragDropHandle for calculated fields
 
 ### version 4.15.0
 *Released*: 2 September 2024

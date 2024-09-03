@@ -91,8 +91,8 @@ describe('CalculatedFieldOptions', () => {
             Modified: 'DATETIME',
             ModifiedBy: 'INTEGER',
         };
-        expect(getColumnTypeMap(undefined, undefined)).toEqual({...defaultTypeMap});
-        expect(getColumnTypeMap(List.of(), [])).toEqual({...defaultTypeMap});
+        expect(getColumnTypeMap(undefined, undefined)).toEqual({ ...defaultTypeMap });
+        expect(getColumnTypeMap(List.of(), [])).toEqual({ ...defaultTypeMap });
         expect(
             getColumnTypeMap(List.of({ name: 'b', dataType: { name: 'text' } } as DomainField), [
                 { Name: 'a', DataType: 'integer' } as SystemField,

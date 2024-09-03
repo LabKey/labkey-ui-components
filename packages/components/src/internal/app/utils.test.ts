@@ -967,9 +967,7 @@ describe('utils', () => {
 
     test('isCalculatedFieldsEnabled', () => {
         expect(isCalculatedFieldsEnabled()).toBeFalsy();
-        expect(
-            isCalculatedFieldsEnabled({ api: { moduleNames: [] } })
-        ).toBeFalsy(); // community
+        expect(isCalculatedFieldsEnabled({ api: { moduleNames: [] } })).toBeFalsy(); // community
         expect(
             isCalculatedFieldsEnabled({
                 api: { moduleNames: ['premium'] },
@@ -977,9 +975,7 @@ describe('utils', () => {
         ).toBeTruthy(); // LKS Prof
 
         window.history.pushState({}, 'Test Title', '/samplemanager-app.view#'); // isApp()
-        expect(
-            isCalculatedFieldsEnabled({ core: { productFeatures: [] } })
-        ).toBeFalsy();
+        expect(isCalculatedFieldsEnabled({ core: { productFeatures: [] } })).toBeFalsy();
         expect(
             isCalculatedFieldsEnabled({
                 core: { productFeatures: [ProductFeature.CalculatedFields] },

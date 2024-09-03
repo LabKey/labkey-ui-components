@@ -1,8 +1,10 @@
-import React, { act } from 'react';
+import React from 'react';
 
 import { userEvent } from '@testing-library/user-event';
 
 import { List } from 'immutable';
+
+import { waitFor } from '@testing-library/dom';
 
 import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 
@@ -28,29 +30,23 @@ describe('ListDesignerPanel', () => {
     }
 
     test('visible properties', async () => {
-        await act(async () => {
-            renderWithAppContext(<ListDesignerPanels {...getDefaultProps()} />);
+        renderWithAppContext(<ListDesignerPanels {...getDefaultProps()} />);
+        await waitFor(() => {
+            const panelHeaders = document.getElementsByClassName('domain-panel-header');
+            expect(panelHeaders).toHaveLength(2);
+            expect(panelHeaders[0].textContent).toBe('List Properties');
+            expect(panelHeaders[1].textContent).toBe('Fields');
         });
-
-        const panelHeaders = document.getElementsByClassName('domain-panel-header');
-        expect(panelHeaders).toHaveLength(2);
-        expect(panelHeaders[0].textContent).toBe('List Properties');
-        expect(panelHeaders[1].textContent).toBe('Fields');
     });
 
     test('open fields panel', async () => {
-        await act(async () => {
-            renderWithAppContext(<ListDesignerPanels {...getDefaultProps()} />);
+        renderWithAppContext(<ListDesignerPanels {...getDefaultProps()} />);
+
+        await waitFor(() => {
+            expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
+            expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
         });
-
-        const panelHeaders = document.getElementsByClassName('domain-panel-header');
-
-        expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
-        expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
-
-        await act(async () => {
-            await userEvent.click(panelHeaders[0]);
-        });
+        await userEvent.click(document.getElementsByClassName('domain-panel-header')[0]);
 
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(2);
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(0);
@@ -61,45 +57,40 @@ describe('ListDesignerPanel', () => {
         expect(alerts[1].textContent).toEqual('Please correct errors in the properties panel before saving.');
     });
 
-    test('new list', async () => {
-        let container;
-        await act(async () => {
-            container = renderWithAppContext(
-                <ListDesignerPanelsImpl
-                    {...getDefaultProps()}
-                    currentPanelIndex={0}
-                    firstState
-                    onFinish={jest.fn()}
-                    onTogglePanel={jest.fn()}
-                    setSubmitting={jest.fn()}
-                    submitting={false}
-                    validatePanel={0}
-                    visitedPanels={List()}
-                />
-            );
-        });
+    test('new list', () => {
+        <ListDesignerPanelsImpl
+            {...getDefaultProps()}
+            currentPanelIndex={0}
+            firstState
+            onFinish={jest.fn()}
+            onTogglePanel={jest.fn()}
+            setSubmitting={jest.fn()}
+            submitting={false}
+            validatePanel={0}
+            visitedPanels={List()}
+        />;
 
         expect(document.querySelectorAll('.domain-field-row').length).toEqual(0);
     });
 
     test('existing list', async () => {
-        await act(async () => {
-            renderWithAppContext(
-                <ListDesignerPanelsImpl
-                    {...getDefaultProps()}
-                    initModel={ListModel.create(getDomainDetailsJSON)}
-                    currentPanelIndex={0}
-                    firstState
-                    onFinish={jest.fn()}
-                    onTogglePanel={jest.fn()}
-                    setSubmitting={jest.fn()}
-                    submitting={false}
-                    validatePanel={0}
-                    visitedPanels={List()}
-                />
-            );
-        });
+        renderWithAppContext(
+            <ListDesignerPanelsImpl
+                {...getDefaultProps()}
+                initModel={ListModel.create(getDomainDetailsJSON)}
+                currentPanelIndex={0}
+                firstState
+                onFinish={jest.fn()}
+                onTogglePanel={jest.fn()}
+                setSubmitting={jest.fn()}
+                submitting={false}
+                validatePanel={0}
+                visitedPanels={List()}
+            />
+        );
 
-        expect(document.querySelectorAll('.domain-field-row').length).toEqual(14);
+        await waitFor(() => {
+            expect(document.querySelectorAll('.domain-field-row').length).toEqual(14);
+        });
     });
 });

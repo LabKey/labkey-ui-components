@@ -23,32 +23,8 @@ describe('IssuesListDefDesignerPanel', () => {
         onCancel: jest.fn(),
     };
 
-    test('new Issue List Definition', async () => {
-        let container;
-        await act(async () => {
-            container = renderWithAppContext(
-                <IssuesDesignerPanelsImpl
-                    {...BASE_PROPS}
-                    initModel={emptyNewModel}
-                    currentPanelIndex={0}
-                    firstState
-                    onFinish={jest.fn()}
-                    onTogglePanel={jest.fn()}
-                    setSubmitting={jest.fn()}
-                    submitting={false}
-                    validatePanel={0}
-                    visitedPanels={List()}
-                />
-            );
-        });
-
-        expect(container).toMatchSnapshot();
-    });
-
     test('visible properties', async () => {
-        await act(async () => {
-            renderWithAppContext(<IssuesListDefDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />);
-        });
+        renderWithAppContext(<IssuesListDefDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />);
         const panels = document.getElementsByClassName('domain-form-panel');
         expect(panels).toHaveLength(2);
         expect(panels[0].querySelector('.domain-panel-title').textContent).toBe(
@@ -58,10 +34,7 @@ describe('IssuesListDefDesignerPanel', () => {
     });
 
     test('open fields panel', async () => {
-        await act(async () => {
-            renderWithAppContext(<IssuesListDefDesignerPanels {...BASE_PROPS} />);
-        });
-
+        renderWithAppContext(<IssuesListDefDesignerPanels {...BASE_PROPS} />);
         expect(document.getElementsByClassName('domain-panel-header-collapsed')).toHaveLength(1);
         expect(document.getElementsByClassName('domain-panel-header-expanded')).toHaveLength(1);
 

@@ -151,7 +151,7 @@ export class TimelineEventModel extends Record({
         else if (this.eventType === 'inventory') {
             const summary = this.summary.toLowerCase();
             if (summary.indexOf('added to') > -1 || summary.indexOf('added location') > -1) icon = 'storage_insert';
-            else if (summary.indexOf('discarded') > -1 || summary.indexOf('location deleted') > -1)
+            else if (summary.indexOf('removed') > -1 || summary.indexOf('location deleted') > -1)
                 icon = 'storage_remove';
             else if (summary.indexOf('checked in') > -1) icon = 'storage_checkin';
             else if (summary.indexOf('checked out') > -1) icon = 'storage_checkout';

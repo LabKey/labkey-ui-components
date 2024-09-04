@@ -47,7 +47,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 setConsumedStatuses(consumedStatusIds);
             } catch (e) {
                 setError(
-                    'Error loading sample statuses. If you want to discard ' +
+                    'Error loading sample statuses. If you want to remove ' +
                         (allowDisable /* bulk update */ ? 'any samples' : 'the sample') +
                         ' being updated to a Consumed status, you will have to do that separately.'
                 );
@@ -83,7 +83,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
             <DiscardConsumedSamplesPanel
                 shouldDiscard={shouldDiscard}
                 toggleShouldDiscard={toggleShouldDiscard}
-                discardTitle={`Discard sample${isBulkForm ? '(s)' : ''} from storage?`}
+                discardTitle={`Remove sample${isBulkForm ? '(s)' : ''} from storage?`}
             />
         );
 

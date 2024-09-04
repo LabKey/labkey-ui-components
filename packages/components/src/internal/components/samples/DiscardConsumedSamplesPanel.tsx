@@ -35,7 +35,7 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
                 <CommentTextArea
                     onChange={onCommentChange}
                     disabled={!shouldDiscard}
-                    actionName="Discarding"
+                    actionName="Removing"
                     containerClassName="top-spacing bottom-spacing"
                     requiresUserComment={requiresUserComment}
                     value={comment}
@@ -46,5 +46,5 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
 });
 
 DiscardConsumedSamplesPanel.defaultProps = {
-    discardTitle: 'Discard Sample(s) from Storage?',
+    discardTitle: 'Remove Sample(s) from Storage?',
 };

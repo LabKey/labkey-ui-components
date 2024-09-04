@@ -1,7 +1,7 @@
 import React, { FC, memo, PureComponent, ReactNode, useCallback } from 'react';
 import { Set } from 'immutable';
 
-import { exportRows } from '../../internal/actions';
+import { exportRows as exportRows_ } from '../../internal/actions';
 
 import { EXPORT_TYPES } from '../../internal/constants';
 import { Tip } from '../../internal/components/base/Tip';
@@ -15,6 +15,8 @@ import { Actions } from './withQueryModels';
 interface ExportMenuProps {
     actions: Actions;
     advancedOptions?: Record<string, any>;
+    // exportRows needed for tests, defaults to exportRows imported from internal/actions
+    exportRows?: (type: EXPORT_TYPES, exportParams: Record<string, any>, containerPath?: string) => void;
     model: QueryModel;
     onExport?: Record<string, (modelId?: string) => void>;
     supportedTypes?: Set<EXPORT_TYPES>;
@@ -142,7 +144,7 @@ const ExportMenuImpl: FC<ExportMenuImplProps> = memo(props => {
 
 export class ExportMenu extends PureComponent<ExportMenuProps> {
     export = (option: ExportOption): void => {
-        const { model, advancedOptions, onExport, actions } = this.props;
+        const { actions, advancedOptions, exportRows = exportRows_, model, onExport } = this.props;
         const { type } = option;
 
         if (onExport?.[type]) {

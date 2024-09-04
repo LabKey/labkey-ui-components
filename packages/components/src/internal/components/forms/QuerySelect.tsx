@@ -176,22 +176,25 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     const querySelectTimer = useRef(undefined);
 
     const {
-        autoInit,
+        // Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
+        autoInit = process.env.NODE_ENV !== 'test',
         containerFilter,
         containerPath,
+        delimiter = DELIMITER, // Need to declare default value here as this is utilized by initSelect()
         displayColumn,
-        fireQSChangeOnInit,
+        filterOption = noopFilterOptions,
+        fireQSChangeOnInit = false,
         groupByColumn,
-        loadOnFocus,
+        loadOnFocus = false,
         maxRows,
         onInitValue,
         onQSChange,
-        preLoad,
+        preLoad = true,
         queryFilters,
         queryParams,
         requiredColumns,
         schemaQuery,
-        showLoading,
+        showLoading = true,
         valueColumn,
         ...selectInputProps
     } = props;
@@ -358,6 +361,8 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
                 autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
                 cacheOptions
                 defaultOptions={defaultOptions}
+                delimiter={delimiter}
+                filterOption={filterOption}
                 isLoading={isLoading}
                 loadOptions={loadOptions}
                 onChange={onChange}
@@ -397,16 +402,5 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
     return null;
 });
-
-QuerySelect.defaultProps = {
-    // Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
-    autoInit: process.env.NODE_ENV !== 'test',
-    delimiter: DELIMITER,
-    filterOption: noopFilterOptions,
-    fireQSChangeOnInit: false,
-    loadOnFocus: false,
-    preLoad: true,
-    showLoading: true,
-};
 
 QuerySelect.displayName = 'QuerySelect';

@@ -216,13 +216,13 @@ type Props = OwnProps & BasePropertiesPanelProps;
 
 const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapseProps> = memo(props => {
     const {
-        appPropertiesOnly,
-        hideAdvancedProperties,
+        appPropertiesOnly = false,
+        hideAdvancedProperties = false,
         canRename,
-        asPanel,
+        asPanel = true,
         children,
-        helpTopic,
-        hideStudyProperties,
+        helpTopic = DEFINE_ASSAY_SCHEMA_TOPIC,
+        hideStudyProperties = false,
         model,
         onChange,
     } = props;
@@ -271,14 +271,6 @@ const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapse
 
     return form;
 });
-
-AssayPropertiesPanelImpl.defaultProps = {
-    appPropertiesOnly: false,
-    hideAdvancedProperties: false,
-    hideStudyProperties: false,
-    asPanel: true,
-    helpTopic: DEFINE_ASSAY_SCHEMA_TOPIC,
-};
 
 AssayPropertiesPanelImpl.displayName = 'AssayPropertiesPanelImpl';
 

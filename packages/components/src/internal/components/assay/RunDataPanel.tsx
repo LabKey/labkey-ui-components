@@ -16,20 +16,17 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Map } from 'immutable';
 
-import { Filter } from '@labkey/api';
-
 import { Operation } from '../../../public/QueryColumn';
 
 import { AssayUploadTabs } from '../../constants';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
-import { EditableColumnMetadata, EditorModel } from '../editable/models';
+import { EditorModel } from '../editable/models';
 
 import { DATA_IMPORT_TOPIC, HelpLink } from '../../util/helpLinks';
 import { EditableGridChange } from '../editable/EditableGrid';
 import { EditableGridPanel } from '../editable/EditableGridPanel';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
-import { QueryModel } from '../../../public/QueryModel/QueryModel';
 import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { FormStep, FormTabs } from '../forms/FormStep';

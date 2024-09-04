@@ -51,7 +51,7 @@ interface WorkflowTaskInputProps
 // Note: this component is specific to Workflow, and ideally would live in the Workflow package, however we do not
 // currently have a way for our Apps to override the InputRenderers (see InputRenderer.tsx).
 export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
-    const { assayId,  ...selectInputProps } = props;
+    const { assayId, ...selectInputProps } = props;
     const [loading, setLoading] = useState<boolean>(true);
     const [taskOptions, setTaskOptions] = useState<SelectInputOption[]>();
     const [error, setError] = useState<string>();
@@ -80,6 +80,9 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
 
     return (
         <SelectInput
+            clearable
+            description="The workflow task associated with this Run"
+            label="Workflow Task"
             {...selectInputProps}
             disabled={error ? true : props.disabled}
             isLoading={loading}
@@ -89,12 +92,6 @@ export const AssayTaskInput: FC<WorkflowTaskInputProps> = memo(props => {
         />
     );
 });
-
-AssayTaskInput.defaultProps = {
-    clearable: true,
-    description: 'The workflow task associated with this Run',
-    label: 'Workflow Task',
-};
 
 AssayTaskInput.displayName = 'AssayTaskInput';
 

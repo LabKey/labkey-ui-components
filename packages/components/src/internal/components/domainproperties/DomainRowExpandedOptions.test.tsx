@@ -261,7 +261,7 @@ describe('DomainRowExpandedOptions', () => {
 
         const displayOption = { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS };
         displayOption['derivationDataScopeConfig'] = { show: true };
-        const props = { ...DEFAULT_PROPS, ...{ domainFormDisplayOptions: displayOption } };
+        const props = { ...DEFAULT_PROPS, domainFormDisplayOptions: displayOption };
         render(<DomainRowExpandedOptions {...props} field={field} />);
 
         const headers = document.querySelectorAll('.domain-field-section-heading');

@@ -42,42 +42,36 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
         );
     }
 
-    onPropertiesChange = (model: IssuesListDefModel) => {
-        const { onChange } = this.props;
-
+    onPropertiesChange = (model: IssuesListDefModel): void => {
         this.setState(
             produce<State>(draft => {
                 draft.model = model;
             }),
             () => {
-                if (onChange) {
-                    onChange(model);
-                }
+                this.props.onChange?.(this.state.model);
             }
         );
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean) => {
-        const { onChange } = this.props;
-
+    onDomainChange = (domain: DomainDesign, dirty: boolean): void => {
         this.setState(
             produce<State>(draft => {
                 draft.model.domain = domain;
             }),
             () => {
-                if (onChange && dirty) {
-                    onChange(this.state.model);
+                if (dirty) {
+                    this.props.onChange?.(this.state.model);
                 }
             }
         );
     };
 
-    onFinish = () => {
+    onFinish = (): void => {
         const { model } = this.state;
         this.props.onFinish(model.isValid(), model.domain.isSharedDomain() ? this.saveOptions : this.saveDomain);
     };
 
-    saveOptions = () => {
+    saveOptions = (): void => {
         const { api, setSubmitting } = this.props;
         const { model } = this.state;
 
@@ -94,7 +88,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
             });
     };
 
-    saveDomain = () => {
+    saveDomain = (): void => {
         const { setSubmitting } = this.props;
         const { model } = this.state;
 
@@ -123,7 +117,7 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
             });
     };
 
-    onSaveComplete = (response?: any) => {
+    onSaveComplete = (response?: any): void => {
         const { setSubmitting } = this.props;
 
         this.setState(

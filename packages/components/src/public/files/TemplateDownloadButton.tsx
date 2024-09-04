@@ -6,15 +6,15 @@ import { User } from '../../internal/components/base/models/User';
 import { RequiresPermission } from '../../internal/components/base/Permissions';
 
 interface Props {
-    templateUrl?: string;
     className?: string;
-    text?: string;
     onClick?: () => void;
+    templateUrl?: string;
+    text?: string;
     user?: User;
 }
 
 export const TemplateDownloadButton: FC<Props> = memo(props => {
-    const { className, onClick, templateUrl, text, user } = props;
+    const { className, onClick, templateUrl, text = 'Template', user } = props;
 
     if (!onClick && !templateUrl?.length) return null;
 
@@ -34,6 +34,4 @@ export const TemplateDownloadButton: FC<Props> = memo(props => {
     );
 });
 
-TemplateDownloadButton.defaultProps = {
-    text: 'Template',
-};
+TemplateDownloadButton.displayName = 'TemplateDownloadButton';

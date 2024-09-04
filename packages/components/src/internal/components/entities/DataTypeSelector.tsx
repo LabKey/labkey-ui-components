@@ -66,8 +66,8 @@ export const getUncheckedEntityWarning = (
 
 export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
     const {
-        api,
-        toggleSelectAll,
+        api = getDefaultAPIWrapper(),
+        toggleSelectAll = true,
         disabled,
         entityDataType,
         allDataTypes,
@@ -288,7 +288,4 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
     );
 });
 
-DataTypeSelector.defaultProps = {
-    toggleSelectAll: true,
-    api: getDefaultAPIWrapper(),
-};
+DataTypeSelector.displayName = 'DataTypeSelector';

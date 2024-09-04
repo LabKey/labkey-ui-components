@@ -44,7 +44,7 @@ interface AssayPropertiesInputProps extends DomainFieldLabelProps, PropsWithChil
 }
 
 export const AssayPropertiesInput: FC<AssayPropertiesInputProps> = memo(props => {
-    const { hideAdvancedProperties, children, colSize, ...domainFieldProps } = props;
+    const { hideAdvancedProperties, children, colSize = 9, ...domainFieldProps } = props;
     const colXs = colSize ? 'col-xs-' + colSize : undefined;
 
     return (
@@ -70,10 +70,6 @@ export const AssayPropertiesInput: FC<AssayPropertiesInputProps> = memo(props =>
 });
 
 AssayPropertiesInput.displayName = 'AssayPropertiesInput';
-
-AssayPropertiesInput.defaultProps = {
-    colSize: 9,
-};
 
 interface InputProps {
     canRename?: boolean;

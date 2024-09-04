@@ -326,14 +326,11 @@ export class DatePickerInputImpl extends DisableableInput<DatePickerInputImplPro
 const DatePickerInputFormsy = withFormsy<DatePickerInputProps, string>(DatePickerInputImpl);
 
 export const DatePickerInput: FC<DatePickerInputProps> = props => {
-    if (props.formsy) {
-        return <DatePickerInputFormsy name={props.name ?? props.queryColumn.name} {...props} />;
+    const { formsy = true } = props;
+    if (formsy) {
+        return <DatePickerInputFormsy name={props.name ?? props.queryColumn.name} {...props} formsy />;
     }
-    return <DatePickerInputImpl {...(props as DatePickerInputImplProps)} />;
-};
-
-DatePickerInput.defaultProps = {
-    formsy: true,
+    return <DatePickerInputImpl {...(props as DatePickerInputImplProps)} formsy={false} />;
 };
 
 DatePickerInput.displayName = 'DatePickerInput';

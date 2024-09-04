@@ -14,7 +14,7 @@ export interface ExpirationDateColumnRendererProps {
 }
 
 export const ExpirationDateColumnRenderer: FC<ExpirationDateColumnRendererProps> = memo(
-    ({ data, columnIndex, col, tableCell }) => {
+    ({ data, columnIndex, col, tableCell = true }) => {
         let expired = false;
         let displayValue = null;
         let value = null;
@@ -64,6 +64,4 @@ export const ExpirationDateColumnRenderer: FC<ExpirationDateColumnRendererProps>
     }
 );
 
-ExpirationDateColumnRenderer.defaultProps = {
-    tableCell: true,
-};
+ExpirationDateColumnRenderer.displayName = 'ExpirationDateColumnRenderer';

@@ -8,11 +8,10 @@ interface Props extends PropsWithChildren {
     cls?: string;
     offset?: number;
     ratio?: number;
-    scroll?: boolean;
 }
 
 export const VerticalScrollPanel: FC<Props> = memo(props => {
-    const { ratio, offset, children, cls } = props;
+    const { ratio = 0.9, offset = 0, children, cls } = props;
     const [height, setHeight] = useState<number>(0);
     const resize = useCallback(() => {
         if (offset) setHeight(window.innerHeight - offset - PADDING);
@@ -32,8 +31,5 @@ export const VerticalScrollPanel: FC<Props> = memo(props => {
     );
 });
 
-VerticalScrollPanel.defaultProps = {
-    ratio: 0.9,
-    offset: 0,
-    scroll: true,
-};
+VerticalScrollPanel.displayName = 'VerticalScrollPanel';
+

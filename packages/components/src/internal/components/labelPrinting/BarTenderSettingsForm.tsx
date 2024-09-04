@@ -91,7 +91,7 @@ const btTestConnectionTemplate = (): string => {
 
 // exported for jest testing
 export const BarTenderSettingsForm: FC<Props> = memo(props => {
-    const { api, container, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
+    const { api = getDefaultAPIWrapper(), container, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
     const [btServiceURL, setBtServiceURL] = useState<string>();
     const [error, setError] = useState<string>();
     const [defaultLabel, setDefaultLabel] = useState<number>();
@@ -239,9 +239,5 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
         </div>
     );
 });
-
-BarTenderSettingsForm.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
 
 BarTenderSettingsForm.displayName = 'BarTenderSettingsForm';

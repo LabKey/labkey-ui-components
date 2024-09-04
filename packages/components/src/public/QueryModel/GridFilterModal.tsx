@@ -26,7 +26,16 @@ interface Props {
 }
 
 export const GridFilterModal: FC<Props> = memo(props => {
-    const { api, onCancel, initFilters, model, onApply, fieldKey, selectDistinctOptions, skipDefaultViewCheck } = props;
+    const {
+        api = getDefaultAPIWrapper(),
+        onCancel,
+        initFilters,
+        model,
+        onApply,
+        fieldKey,
+        selectDistinctOptions,
+        skipDefaultViewCheck,
+    } = props;
     const { queryInfo } = model;
     const [filterError, setFilterError] = useState<string>(undefined);
     const [filters, setFilters] = useState<FieldFilter[]>(
@@ -112,6 +121,4 @@ export const GridFilterModal: FC<Props> = memo(props => {
     );
 });
 
-GridFilterModal.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
+GridFilterModal.displayName = 'GridFilterModal';

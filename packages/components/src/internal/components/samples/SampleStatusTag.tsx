@@ -55,7 +55,7 @@ export function getStatusTagStyle(status: SampleStatus): CSSProperties {
 export const SampleStatusTag: FC<Props> = memo(props => {
     const { api } = useAppContext();
     const { moduleContext } = useServerContext();
-    const { placement, status, iconOnly, className, hideDescription } = props;
+    const { placement = 'bottom', status, iconOnly, className, hideDescription } = props;
     const { label, statusType, description } = status;
     const [queryStatusType, setQueryStatusType] = useState<SampleStateType>();
     const statusType_ = useMemo(() => statusType || queryStatusType, [statusType, queryStatusType]);
@@ -118,6 +118,4 @@ export const SampleStatusTag: FC<Props> = memo(props => {
     );
 });
 
-SampleStatusTag.defaultProps = {
-    placement: 'bottom',
-};
+SampleStatusTag.displayName = 'SampleStatusTag';

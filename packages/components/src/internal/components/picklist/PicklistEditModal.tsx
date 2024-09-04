@@ -33,7 +33,7 @@ export interface PicklistEditModalProps {
 }
 
 export const PicklistEditModal: FC<PicklistEditModalProps> = memo(props => {
-    const { api, queryModel, sampleFieldKey, sampleIds } = props;
+    const { api = getDefaultAPIWrapper(), queryModel, sampleFieldKey, sampleIds } = props;
     const [ids, setIds] = useState<string[]>(sampleIds);
 
     useEffect(() => {
@@ -256,6 +256,4 @@ const PicklistEditModalDisplay: FC<PicklistEditModalProps> = memo(props => {
     );
 });
 
-PicklistEditModal.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
+PicklistEditModal.displayName = 'PicklistEditModal';

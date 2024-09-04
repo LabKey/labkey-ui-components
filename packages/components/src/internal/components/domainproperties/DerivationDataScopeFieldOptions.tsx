@@ -11,6 +11,14 @@ import { IDerivationDataScope, ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
 import { PropDescType } from './PropDescType';
 
+const DEFAULT_DERIVATION_DATA_SCOPE: IDerivationDataScope = {
+    labelAll: 'Editable for parent and child data independently',
+    labelChild: 'Editable for child data only',
+    labelParent: 'Editable for parent data only (default)',
+    sectionTitle: 'Derivation Data Scope',
+    show: true,
+};
+
 interface Props extends ITypeDependentProps {
     config?: IDerivationDataScope;
     fieldDataType?: PropDescType;
@@ -24,7 +32,7 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
         domainIndex,
         index,
         onChange,
-        config,
+        config = DEFAULT_DERIVATION_DATA_SCOPE,
         lockType,
         value,
         label,
@@ -125,12 +133,4 @@ export const DerivationDataScopeFieldOptions: FC<Props> = memo(props => {
     );
 });
 
-DerivationDataScopeFieldOptions.defaultProps = {
-    config: {
-        show: true,
-        sectionTitle: 'Derivation Data Scope',
-        labelAll: 'Editable for parent and child data independently',
-        labelChild: 'Editable for child data only',
-        labelParent: 'Editable for parent data only (default)',
-    },
-};
+DerivationDataScopeFieldOptions.displayName = 'DerivationDataScopeFieldOptions';

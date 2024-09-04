@@ -17,6 +17,8 @@ export const AliasSelectInput: FC<Props> = memo(props => {
     const { col, data, ...selectProps } = props;
     const generatedId = useMemo(() => generateId(), []);
 
+    const formatCreateLabel = useCallback(inputValue => `Create alias "${inputValue}"`, []);
+
     const isValidNewOption = useCallback((inputValue: string) => {
         const isEmpty = inputValue?.trim().length === 0;
         // Empty string is considered invalid. This matches default react-select behavior.
@@ -42,30 +44,27 @@ export const AliasSelectInput: FC<Props> = memo(props => {
 
     return (
         <SelectInput
+            allowCreate
             description={col.description}
+            formatCreateLabel={formatCreateLabel}
+            formsy
             id={generatedId}
             isValidNewOption={isValidNewOption}
+            joinValues
             label={col.caption}
+            multiple
             name={col.fieldKey}
             noResultsText="Enter alias name(s)"
+            placeholder="Enter alias name(s)"
             required={col.required}
+            saveOnBlur
+            showLabel
             {...selectProps}
             resolveFormValue={resolveFormValue}
             value={value}
         />
     );
 });
-
-AliasSelectInput.defaultProps = {
-    allowCreate: true,
-    formatCreateLabel: inputValue => `Create alias "${inputValue}"`,
-    formsy: true,
-    joinValues: true,
-    multiple: true,
-    placeholder: 'Enter alias name(s)',
-    saveOnBlur: true,
-    showLabel: true,
-};
 
 AliasSelectInput.displayName = 'AliasSelectInput';
 

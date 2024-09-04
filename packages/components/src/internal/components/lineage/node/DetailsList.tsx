@@ -22,7 +22,7 @@ export interface DetailsListProps extends PropsWithChildren {
 }
 
 export const DetailsList: FC<DetailsListProps> = memo(props => {
-    const { children, collapsedCount, headerLinks, open, showCount, title } = props;
+    const { children, collapsedCount = 4, headerLinks, open = true, showCount = true, title } = props;
     const [expanded, setExpanded] = useState<boolean>(false);
 
     const onToggle = useCallback(() => {
@@ -71,12 +71,6 @@ export const DetailsList: FC<DetailsListProps> = memo(props => {
         </details>
     );
 });
-
-DetailsList.defaultProps = {
-    collapsedCount: 4,
-    open: true,
-    showCount: true,
-};
 
 DetailsList.displayName = 'DetailsList';
 

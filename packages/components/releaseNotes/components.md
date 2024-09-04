@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Issue 51158: Update text for discarding samples from storage to use "removed" instead
+
 ### version 4.16.0
 *Released*: 3 September 2024
 - Calculated fields remove experimental feature flag

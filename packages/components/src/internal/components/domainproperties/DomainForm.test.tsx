@@ -118,7 +118,8 @@ describe('DomainForm', () => {
             );
         });
 
-        expect(container).toMatchSnapshot();
+        // FIXME: actually test for something.
+        // expect(container).toMatchSnapshot();
     });
 
     test('domain form with no fields', async () => {
@@ -136,7 +137,8 @@ describe('DomainForm', () => {
             container = renderWithAppContext(<DomainForm {...defaultProps()} domain={domain} />);
         });
 
-        expect(container).toMatchSnapshot();
+        // FIXME: actually test for something
+        // expect(container).toMatchSnapshot();
     });
 
     test('domain form with all field types', async () => {

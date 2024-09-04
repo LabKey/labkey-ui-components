@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD September 2024
+- Issue 51085: Grid button spacing issue for hover border
+
 ### version 4.16.0
 *Released*: 3 September 2024
 - Calculated fields remove experimental feature flag

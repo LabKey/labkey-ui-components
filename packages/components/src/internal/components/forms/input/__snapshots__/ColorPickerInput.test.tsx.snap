@@ -26,7 +26,6 @@ exports[`ColorPickerInput allowRemove 1`] = `
         <i
           class="fa fa-times container--removal-icon"
         />
-        
       </span>
     </div>
     <div

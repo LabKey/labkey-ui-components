@@ -1,9 +1,9 @@
 import React from 'react';
+import { act } from '@testing-library/react';
 
 import { DiscardConsumedSamplesPanel } from './DiscardConsumedSamplesPanel';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { getTestAPIWrapper } from '../../APIWrapper';
-import { act } from 'react-dom/test-utils';
 import { COMMENT_FIELD_ID } from '../forms/input/CommentTextArea';
 import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 

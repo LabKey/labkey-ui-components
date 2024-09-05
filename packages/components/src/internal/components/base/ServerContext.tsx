@@ -36,7 +36,7 @@ const serverContextReducer = (state, payload): ServerContext => {
     return Object.assign({}, state, payload);
 };
 
-export interface ServerContextProviderProps {
+export interface ServerContextProviderProps extends PropsWithChildren {
     initialContext?: ServerContext;
 }
 

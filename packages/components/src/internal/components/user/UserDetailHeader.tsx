@@ -18,7 +18,16 @@ interface Props {
 }
 
 export const UserDetailHeader: FC<Props> = props => {
-    const { container, dateFormat, description, renderButtons, showFolderTitle, title, user, userProperties } = props;
+    const {
+        container,
+        dateFormat,
+        description,
+        renderButtons,
+        showFolderTitle = true,
+        title,
+        user,
+        userProperties,
+    } = props;
     const lastLogin = useMemo(() => getUserLastLogin(userProperties, dateFormat), [dateFormat, userProperties]);
     const userDescription = useMemo(() => {
         return description || getUserPermissionsDisplay(user).join(', ');
@@ -39,7 +48,3 @@ export const UserDetailHeader: FC<Props> = props => {
 };
 
 UserDetailHeader.displayName = 'UserDetailHeader';
-
-UserDetailHeader.defaultProps = {
-    showFolderTitle: true,
-};

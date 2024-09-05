@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode } from 'react';
+import React, { FC, memo, PropsWithChildren, ReactNode } from 'react';
 
 import { createPortal } from 'react-dom';
 
@@ -7,7 +7,7 @@ import { MenuItem } from '../../dropdowns';
 import { Popover } from '../../Popover';
 import { Placement } from '../../useOverlayPositioning';
 
-export interface DisableableMenuItemProps {
+export interface DisableableMenuItemProps extends PropsWithChildren {
     className?: string;
     disabled?: boolean;
     disabledMessage?: ReactNode;

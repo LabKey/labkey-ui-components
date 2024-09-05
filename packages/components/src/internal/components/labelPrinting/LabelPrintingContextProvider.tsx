@@ -1,4 +1,4 @@
-import React, { FC, memo, useContext, useEffect, useState } from 'react';
+import React, { FC, memo, PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { useAppContext } from '../../AppContext';
 
@@ -19,7 +19,7 @@ export interface LabelPrintingContext {
 
 export type LabelPrintingContextProps = Omit<LabelPrintingContext, 'canPrintLabels' | 'error'>;
 
-interface LabelPrintingContextProviderProps {
+interface LabelPrintingContextProviderProps extends PropsWithChildren {
     initialContext?: LabelPrintingContextProps;
 }
 

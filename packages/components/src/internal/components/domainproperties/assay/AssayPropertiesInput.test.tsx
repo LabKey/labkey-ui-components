@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { act, render } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 
 import {
     AssayPropertiesInput,
@@ -54,12 +54,7 @@ describe('AssayPropertiesInput', () => {
 
     test('with custom props', () => {
         render(
-            <AssayPropertiesInput
-                label="TestProperty"
-                required={true}
-                colSize={5}
-                helpTipBody={() => <div>testing</div>}
-            >
+            <AssayPropertiesInput colSize={5} helpTipBody={<div>testing</div>} label="TestProperty" required>
                 <input type="checkbox" id="checkbox-test-id" />
             </AssayPropertiesInput>
         );
@@ -164,10 +159,12 @@ describe('AssayPropertiesInput', () => {
         expect(document.querySelector('input').getAttribute('checked')).toBe('');
     });
 
-    test('AutoLinkDataInput', () => {
-        render(<AutoLinkDataInput model={AssayProtocolModel.create({})} onChange={jest.fn} />);
+    test('AutoLinkDataInput', async () => {
+        await act(async () => {
+            render(<AutoLinkDataInput model={AssayProtocolModel.create({})} onChange={jest.fn} />);
+        });
         validate('Study', false, true, 0);
-        expect(document.querySelectorAll('select').length).toBe(0); // loading
+        expect(document.querySelector('select')).toBeInTheDocument();
     });
 
     test('AutoLinkCategoryInput', () => {
@@ -240,7 +237,7 @@ describe('AssayPropertiesInput', () => {
         expect(document.querySelectorAll('.transform-script-add--radio').length).toBe(0);
         expect(document.querySelectorAll('.container--removal-icon').length).toBe(0);
         await act(async () => {
-            userEvent.click(addButton.querySelector('.container--action-button'));
+            await userEvent.click(addButton.querySelector('.container--action-button'));
         });
         expect(document.querySelectorAll('.container--removal-icon').length).toBe(1);
         const radios = document.querySelectorAll('.transform-script-add--radio');
@@ -249,7 +246,7 @@ describe('AssayPropertiesInput', () => {
         expect(radios[1].getAttribute('checked')).toBe(null); // path radio
         expect(document.querySelectorAll('.transform-script-add--path').length).toBe(0);
         await act(async () => {
-            userEvent.click(radios[1]); // select the path radio
+            await userEvent.click(radios[1]); // select the path radio
         });
         expect(document.querySelectorAll('.transform-script-add--path').length).toBe(1);
     });

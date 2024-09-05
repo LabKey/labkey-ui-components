@@ -17,9 +17,11 @@ import classNames from 'classnames';
 import React, {
     ChangeEvent,
     CSSProperties,
+    Dispatch,
     FC,
     memo,
     ReactNode,
+    SetStateAction,
     useCallback,
     useEffect,
     useMemo,
@@ -46,6 +48,7 @@ import { usePortalRef } from './hooks';
 import { MenuDivider, MenuItem } from './dropdowns';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { DOMAIN_FIELD } from './components/forms/DomainFieldHelpTipContents';
+import { cancelEvent } from './events';
 
 export function isFilterColumnNameMatch(filter: Filter.IFilter, col: QueryColumn): boolean {
     return filter.getColumnName() === col.name || filter.getColumnName() === col.resolveFieldKey();
@@ -141,7 +144,7 @@ interface HeaderCellDropdownMenuProps extends SharedHeaderCellProps {
     onEditTitleClicked?: () => void;
     open: boolean;
     queryColumn: QueryColumn;
-    setOpen: (open: boolean) => void;
+    setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
@@ -168,20 +171,17 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     // Note: We need to make sure we cancel all events in our menu handlers or we also trigger the click handler in
     // HeaderCellDropdown, which will reset the open value to true, which will keep the menu open.
     const openFilterPanel = useCallback(() => {
-        setOpen(false);
         handleFilter(queryColumn, false);
-    }, [setOpen, handleFilter, queryColumn]);
+    }, [handleFilter, queryColumn]);
     const removeFilter = useCallback(() => {
-        setOpen(false);
         handleFilter(queryColumn, true);
-    }, [queryColumn, handleFilter, setOpen]);
+    }, [queryColumn, handleFilter]);
 
     const sort = useCallback(
         (dir?: string) => {
-            setOpen(false);
             handleSort(queryColumn, dir);
         },
-        [queryColumn, handleSort, setOpen]
+        [queryColumn, handleSort]
     );
     // There is something wrong with the React Bootstrap types, the only way to get these callbacks properly typed is to
     // use "as SelectCallback", even though their type signature matches perfectly.
@@ -189,13 +189,11 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     const sortDesc = useCallback((): void => sort('-'), [sort]);
     const clearSort = useCallback((): void => sort(), [sort]);
     const hideColumn = useCallback((): void => {
-        setOpen(false);
         handleHideColumn(queryColumn);
-    }, [queryColumn, handleHideColumn, setOpen]);
+    }, [queryColumn, handleHideColumn]);
     const addColumn = useCallback((): void => {
-        setOpen(false);
         handleAddColumn(queryColumn);
-    }, [queryColumn, handleAddColumn, setOpen]);
+    }, [queryColumn, handleAddColumn]);
     const editColumnTitle = useCallback((): void => {
         onEditTitleClicked();
     }, [onEditTitleClicked]);
@@ -227,22 +225,35 @@ const HeaderCellDropdownMenu: FC<HeaderCellDropdownMenuProps> = memo(props => {
     }, [open]);
 
     // In order to close the menu when the user clicks outside of it we have to add a click handler to the document and
-    // close the menu when the user clicks on anything outside of the menu.
+    // close the menu when the user clicks on anything outside the menu.
     const documentClickHandler = useCallback(
         event => {
-            if (open && !menuEl.current.contains(event.target)) {
-                setOpen(false);
-            }
+            // Don't handle the event if the target is the toggle element or the grandparent (GRID_HEADER_CELL_BODY),
+            // because we call setOpen in those handlers, and we don't want to negate what they set the  value to.
+            const isToggle = event.target === toggleEl.current;
+            const insideToggle = toggleEl.current?.contains(event.target);
+
+            if (isToggle || insideToggle) return;
+
+            const grandParent = toggleEl.current?.parentElement?.parentElement;
+            const isGrandParent = event.target === grandParent;
+            const insideGrandParent = grandParent?.contains(event.target);
+
+            if (isGrandParent || insideGrandParent) return;
+
+            setOpen(false);
         },
-        [setOpen, open]
+        [setOpen]
     );
 
     useEffect(() => {
-        document.addEventListener('click', documentClickHandler);
+        if (open) {
+            document.addEventListener('click', documentClickHandler);
+        }
         return () => {
             document.removeEventListener('click', documentClickHandler);
         };
-    }, [documentClickHandler]);
+    }, [documentClickHandler, open]);
 
     // TODO: investigate passing down a ref of the .table-responsive div so we can add a scroll handler to it here the
     //  same way we add one to the document, then we can update the menu positions when the table is also scrolled.
@@ -351,9 +362,7 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
     const queryColumn: QueryColumn = column.raw;
     const [editingTitle, setEditingTitle] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
-    const click = useCallback(() => {
-        setOpen(true);
-    }, []);
+    const click = useCallback(() => setOpen(isOpen => !isOpen), []);
     const allowColSort = handleSort && queryColumn?.sortable;
     const allowColFilter = handleFilter && queryColumn?.filterable;
     const allowColumnViewChange = (handleHideColumn || handleAddColumn) && !!model;
@@ -414,7 +423,11 @@ export const HeaderCellDropdown: FC<HeaderCellDropdownProps> = memo(props => {
                     <span className="fa fa-sort-amount-desc grid-panel__col-header-icon" title="Sorted descending" />
                 )}
                 {!editingTitle && column.helpTipRenderer && (
-                    <LabelHelpTip placement="bottom" title={column.title} popoverClassName={column.helpTipRenderer === DOMAIN_FIELD ? undefined : 'label-help-arrow-left'}>
+                    <LabelHelpTip
+                        placement="bottom"
+                        title={column.title}
+                        popoverClassName={column.helpTipRenderer === DOMAIN_FIELD ? undefined : 'label-help-arrow-left'}
+                    >
                         <HelpTipRenderer type={column.helpTipRenderer} column={queryColumn} />
                     </LabelHelpTip>
                 )}

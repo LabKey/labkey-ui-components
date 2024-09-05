@@ -406,7 +406,7 @@ interface ManageSampleStatusesPanelProps extends InjectedRouteLeaveProps {
 }
 
 export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = memo(props => {
-    const { api, setIsDirty, container } = props;
+    const { api = getDefaultAPIWrapper(), setIsDirty, container } = props;
     const [states, setStates] = useState<Record<string, SampleState[]>>();
     const [error, setError] = useState<string>();
     const [selected, setSelected] = useState<number>();
@@ -504,9 +504,5 @@ export const ManageSampleStatusesPanel: FC<ManageSampleStatusesPanelProps> = mem
         </div>
     );
 });
-
-ManageSampleStatusesPanel.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
 
 ManageSampleStatusesPanel.displayName = 'ManageSampleStatusesPanel';

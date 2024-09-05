@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 
 import { isApp } from '../../app/utils';
 
@@ -17,7 +17,7 @@ export interface BasePropertiesPanelProps {
     warning?: string;
 }
 
-interface OwnProps {
+interface OwnProps extends PropsWithChildren {
     headerId: string;
     isValid: boolean;
     title: string;

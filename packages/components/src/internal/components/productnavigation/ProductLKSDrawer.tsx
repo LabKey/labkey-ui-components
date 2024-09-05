@@ -24,7 +24,7 @@ interface ProductLKSDrawerProps {
 }
 
 export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
-    const { tabs, disableLKSContainerLink, showHome, api } = props;
+    const { tabs, disableLKSContainerLink, showHome, api = getDefaultAPIWrapper() } = props;
     const { container, homeContainer, user } = getServerContext();
     const isHomeContainer = useMemo(() => container.path === '/home', [container]);
     const [transition, setTransition] = useState<boolean>(true);
@@ -98,10 +98,7 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
         </div>
     );
 });
-
-ProductLKSDrawer.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
+ProductLKSDrawer.displayName = 'ProductLKSDrawer';
 
 // exported for jest testing
 export function getProjectBeginUrl(container: string): string {

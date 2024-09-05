@@ -1,5 +1,5 @@
 import React from 'react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { TEST_USER_EDITOR } from '../../userFixtures';
@@ -55,7 +55,7 @@ describe('ChartBuilderMenuItem', () => {
         expect(document.querySelector('.chart-menu-label').textContent).toBe('Create Chart');
         expect(document.querySelectorAll('.chart-builder-modal')).toHaveLength(0);
 
-        userEvent.click(menuItems[0]);
+        await userEvent.click(menuItems[0]);
         expect(document.querySelectorAll('.chart-builder-modal')).toHaveLength(1);
     });
 });

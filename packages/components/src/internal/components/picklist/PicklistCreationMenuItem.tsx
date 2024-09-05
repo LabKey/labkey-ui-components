@@ -6,9 +6,10 @@ import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 
 import { User } from '../base/models/User';
 
+import { DisableableMenuItem } from '../samples/DisableableMenuItem';
+
 import { PicklistEditModal, PicklistEditModalProps } from './PicklistEditModal';
 import { MAX_SELECTIONS_MESSAGE, MAX_SELECTIONS_PER_ADD } from './constants';
-import { DisableableMenuItem } from '../samples/DisableableMenuItem';
 
 interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | 'showNotification'> {
     asMenuItem?: boolean;
@@ -18,7 +19,15 @@ interface Props extends Omit<PicklistEditModalProps, 'onCancel' | 'onFinish' | '
 }
 
 export const PicklistCreationMenuItem: FC<Props> = props => {
-    const { asMenuItem, itemText, user, onCreatePicklist, queryModel, sampleIds, ...editModalProps } = props;
+    const {
+        asMenuItem,
+        itemText = 'Create a New Picklist',
+        user,
+        onCreatePicklist,
+        queryModel,
+        sampleIds,
+        ...editModalProps
+    } = props;
     const [showModal, setShowModal] = useState<boolean>(false);
 
     const onFinish = useCallback(() => {
@@ -84,10 +93,6 @@ export const PicklistCreationMenuItem: FC<Props> = props => {
             )}
         </>
     );
-};
-
-PicklistCreationMenuItem.defaultProps = {
-    itemText: 'Create a New Picklist',
 };
 
 PicklistCreationMenuItem.displayName = 'PicklistCreationMenuItem';

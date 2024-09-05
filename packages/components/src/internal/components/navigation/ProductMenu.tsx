@@ -173,27 +173,32 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
                         </div>
                     )}
                     {menuModel.isLoaded &&
-                        sectionConfigs.map((sectionConfig, i) => {
-                            // this can happen if a user has different perm in different project folders
-                            if (sectionConfigKeysWithInfo[i].length === 0) return null;
+                        sectionConfigs
+                            .map((sectionConfig, i) => {
+                                // this can happen if a user has different perm in different project folders
+                                if (sectionConfigKeysWithInfo[i].length === 0) return null;
 
-                            return (
-                                // eslint-disable-next-line react/no-array-index-key
-                                <div key={i} className="menu-section col-product-section">
-                                    {sectionConfig.entrySeq().map(([key, menuConfig]) => {
-                                        return (
-                                            <ProductMenuSection
-                                                key={key}
-                                                config={menuConfig}
-                                                containerPath={menuModel.containerPath}
-                                                currentProductId={menuModel.currentProductId}
-                                                section={getSectionModel(key)}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            );
-                        })}
+                                return (
+                                    // eslint-disable-next-line react/no-array-index-key
+                                    <div key={i} className="menu-section col-product-section">
+                                        {sectionConfig
+                                            .entrySeq()
+                                            .map(([key, menuConfig]) => {
+                                                return (
+                                                    <ProductMenuSection
+                                                        key={key}
+                                                        config={menuConfig}
+                                                        containerPath={menuModel.containerPath}
+                                                        currentProductId={menuModel.currentProductId}
+                                                        section={getSectionModel(key)}
+                                                    />
+                                                );
+                                            })
+                                            .toArray()}
+                                    </div>
+                                );
+                            })
+                            .toArray()}
                 </div>
             </div>
         </div>
@@ -264,25 +269,24 @@ export const ProductMenuButton: FC<ProductMenuButtonProps> = memo(props => {
     }, [api, container, moduleContext, appProperties?.controllerName]);
 
     const toggleMenu = useCallback(() => {
-        setShow(!show);
         blurActiveElement();
-    }, [show, setShow]);
+        setShow(current => !current);
+    }, [setShow]);
 
     // Only toggle the menu closing if a menu section link has been clicked or a project icon (issue 48283).
     // Clicking anywhere else inside the menu will not toggle the menu, including side panel folder clicks.
     const onClick = useCallback(
         (evt: MouseEvent<HTMLDivElement>) => {
-            const { nodeName, className } = evt.target as any;
-            if (
-                !nodeName ||
-                (nodeName.toLowerCase() === 'a' && className !== 'menu-folder-item') ||
-                (nodeName.toLowerCase() === 'span' && className?.indexOf('product-menu-item') > -1) ||
-                (nodeName.toLowerCase() === 'i' && className?.toLowerCase().startsWith('fa'))
-            ) {
-                toggleMenu();
+            const classList = (evt.target as HTMLElement).classList;
+            const isPageLink = classList.contains('menu-section-link');
+            const isSectionIcon = classList.contains('menu-section-image');
+            const isDashboardLink = classList.contains('dashboard-link') || classList.contains('dashboard-icon');
+
+            if (isPageLink || isSectionIcon || isDashboardLink) {
+                setShow(current => !current);
             }
         },
-        [toggleMenu]
+        [setShow]
     );
 
     if (!isLoaded && !hasError) return null;

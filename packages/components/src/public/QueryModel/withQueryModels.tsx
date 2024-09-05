@@ -75,7 +75,7 @@ export interface Actions {
     selectRow: (id: string, checked: boolean, row: { [key: string]: any }, useSelectionPivot?: boolean) => void;
     setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
     setMaxRows: (id: string, maxRows: number) => void;
-    setOffset: (id: string, offset: number) => void;
+    setOffset: (id: string, offset: number, reloadModel?: boolean) => void;
     setSchemaQuery: (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean) => void;
     setSelections: (id: string, checked: boolean, selections: string[]) => void;
     setSorts: (id: string, sorts: QuerySort[]) => void;
@@ -956,7 +956,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        setOffset = (id: string, offset: number): void => {
+        setOffset = (id: string, offset: number, reloadModel = true): void => {
             let shouldLoad = false;
             this.setState(
                 produce<State>(draft => {
@@ -967,7 +967,7 @@ export function withQueryModels<Props>(
                         model.offset = offset;
                     }
                 }),
-                () => this.maybeLoad(id, false, shouldLoad)
+                () => this.maybeLoad(id, false, reloadModel && shouldLoad)
             );
         };
 

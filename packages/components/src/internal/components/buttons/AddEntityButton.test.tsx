@@ -15,12 +15,12 @@
  */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { AddEntityButton } from './AddEntityButton';
 
 describe('AddEntityButton', () => {
-    test('Minimal props', () => {
+    test('Minimal props', async () => {
         const onClick = jest.fn();
         render(<AddEntityButton entity="EntityName" onClick={onClick} />);
 
@@ -33,11 +33,11 @@ describe('AddEntityButton', () => {
 
         // verify button click
         expect(onClick).toHaveBeenCalledTimes(0);
-        userEvent.click(screen.getByText('Add EntityName'));
+        await userEvent.click(screen.getByText('Add EntityName'));
         expect(onClick).toHaveBeenCalledTimes(1);
     });
 
-    test('Fully populated props', () => {
+    test('Fully populated props', async () => {
         const onClick = jest.fn();
         render(
             <AddEntityButton
@@ -65,7 +65,7 @@ describe('AddEntityButton', () => {
         // verify button disabled
         expect(document.querySelectorAll('.disabled')).toHaveLength(1);
         expect(onClick).toHaveBeenCalledTimes(0);
-        userEvent.click(screen.getByText('Add Something'));
+        await userEvent.click(screen.getByText('Add Something'));
         expect(onClick).toHaveBeenCalledTimes(0);
     });
 });

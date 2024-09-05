@@ -33,6 +33,9 @@ import {
 } from './model';
 import { DELIMITER } from './constants';
 
+// Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
+const DEFAULT_AUTO_LOAD = process.env.NODE_ENV !== 'test';
+
 function getValue(model: QuerySelectModel, multiple: boolean): any {
     const { rawSelectedValue } = model;
 
@@ -163,35 +166,24 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
 type DefaultOptions = boolean | SelectInputOption[];
 
 export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
-    const [defaultOptions, setDefaultOptions] = useState<DefaultOptions>(() =>
-        // See note in onFocus() regarding support for "loadOnFocus"
-        props.preLoad !== false ? true : props.loadOnFocus ? [] : true
-    );
-    const [error, setError] = useState<string>();
-    const [loadOnFocusLock, setLoadOnFocusLock] = useState<boolean>(false);
-    const [initialLoad, setInitialLoad] = useState<boolean>(true);
-    const [isLoading, setIsLoading] = useState<boolean>(undefined);
-    const [model, setModel] = useState<QuerySelectModel>();
-    const lastRequest = useRef<Record<string, string>>(undefined);
-    const querySelectTimer = useRef(undefined);
-
     const {
-        autoInit,
+        autoInit = DEFAULT_AUTO_LOAD,
         containerFilter,
         containerPath,
+        delimiter = DELIMITER,
         displayColumn,
-        fireQSChangeOnInit,
+        fireQSChangeOnInit = false,
         groupByColumn,
-        loadOnFocus,
+        loadOnFocus = false,
         maxRows,
         onInitValue,
         onQSChange,
-        preLoad,
+        preLoad = true,
         queryFilters,
         queryParams,
         requiredColumns,
         schemaQuery,
-        showLoading,
+        showLoading = true,
         valueColumn,
         ...selectInputProps
     } = props;
@@ -215,6 +207,17 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
         openMenuOnFocus,
         required,
     } = selectInputProps;
+    const [defaultOptions, setDefaultOptions] = useState<DefaultOptions>(() =>
+        // See note in onFocus() regarding support for "loadOnFocus"
+        preLoad !== false ? true : loadOnFocus ? [] : true
+    );
+    const [error, setError] = useState<string>();
+    const [loadOnFocusLock, setLoadOnFocusLock] = useState<boolean>(false);
+    const [initialLoad, setInitialLoad] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(undefined);
+    const [model, setModel] = useState<QuerySelectModel>();
+    const lastRequest = useRef<Record<string, string>>(undefined);
+    const querySelectTimer = useRef(undefined);
     const shouldLoadOnFocus = loadOnFocus && !loadOnFocusLock;
 
     const clear = useCallback(() => {
@@ -227,7 +230,14 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
         (async () => {
             try {
-                const model_ = await initSelect(props);
+                const model_ = await initSelect({
+                    ...props,
+                    delimiter,
+                    fireQSChangeOnInit,
+                    loadOnFocus,
+                    preLoad,
+                    showLoading,
+                });
                 setModel(model_);
             } catch (e) {
                 setError(resolveErrorMessage(e) ?? 'Failed to initialize.');
@@ -351,6 +361,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
     if (model?.isInit) {
         return (
             <SelectInput
+                filterOption={noopFilterOptions}
                 label={label !== undefined ? label : model.queryInfo.title}
                 optionRenderer={optionRenderer}
                 {...selectInputProps}
@@ -358,6 +369,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
                 autoValue={false} // QuerySelect directly controls value of SelectInput via "selectedOptions"
                 cacheOptions
                 defaultOptions={defaultOptions}
+                delimiter={delimiter}
                 isLoading={isLoading}
                 loadOptions={loadOptions}
                 onChange={onChange}
@@ -397,16 +409,5 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
     return null;
 });
-
-QuerySelect.defaultProps = {
-    // Prevent initialization in test environments in lieu of mocking APIWrapper in all test locations
-    autoInit: process.env.NODE_ENV !== 'test',
-    delimiter: DELIMITER,
-    filterOption: noopFilterOptions,
-    fireQSChangeOnInit: false,
-    loadOnFocus: false,
-    preLoad: true,
-    showLoading: true,
-};
 
 QuerySelect.displayName = 'QuerySelect';

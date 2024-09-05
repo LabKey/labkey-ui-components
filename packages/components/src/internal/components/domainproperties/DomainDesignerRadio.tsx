@@ -1,6 +1,6 @@
-import React, { ChangeEvent, FC, memo } from 'react';
+import React, { ChangeEvent, FC, memo, PropsWithChildren } from 'react';
 
-interface Props {
+interface Props extends PropsWithChildren {
     checked: boolean;
     disabled?: boolean;
     name: string;

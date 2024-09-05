@@ -3,14 +3,14 @@ import classNames from 'classnames';
 
 export interface Props {
     actionName: string;
+    containerClassName?: string;
     disabled?: boolean;
     inline?: boolean;
-    onChange: (comment: string) => void;
-    rows?: number;
-    resizable?: boolean;
-    containerClassName?: string;
-    requiresUserComment?: boolean;
     maxLength?: number;
+    onChange: (comment: string) => void;
+    requiresUserComment?: boolean;
+    resizable?: boolean;
+    rows?: number;
     value?: string;
 }
 
@@ -19,7 +19,7 @@ export const COMMENT_FIELD_ID = 'actionComments';
 export const CommentTextArea: FC<Props> = props => {
     const {
         actionName,
-        containerClassName,
+        containerClassName = 'top-spacing',
         disabled,
         inline,
         onChange,
@@ -95,6 +95,4 @@ export const CommentTextArea: FC<Props> = props => {
     );
 };
 
-CommentTextArea.defaultProps = {
-    containerClassName: 'top-spacing',
-};
+CommentTextArea.displayName = 'CommentTextArea';

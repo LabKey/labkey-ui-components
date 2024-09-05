@@ -1,10 +1,10 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, PropsWithChildren } from 'react';
 
 import { SampleStatusLegend, SAMPLE_STATUS_LEGEND } from '../samples/SampleStatusLegend';
 import { QueryColumn } from '../../../public/QueryColumn';
 import { DOMAIN_FIELD, DomainFieldHelpTipContents } from './DomainFieldHelpTipContents';
 
-interface Props {
+interface Props extends PropsWithChildren {
     column?: QueryColumn;
     type: string;
 }

@@ -1,7 +1,7 @@
-import React, { AnchorHTMLAttributes, FC, MouseEventHandler, useCallback } from 'react';
+import React, { AnchorHTMLAttributes, FC, MouseEventHandler, PropsWithChildren, useCallback } from 'react';
 import classNames from 'classnames';
 
-export interface DisableableAnchorProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface DisableableAnchorProps extends AnchorHTMLAttributes<HTMLAnchorElement>, PropsWithChildren {
     disabled?: boolean;
 }
 

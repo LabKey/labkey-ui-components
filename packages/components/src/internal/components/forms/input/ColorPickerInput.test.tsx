@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { ColorPickerInput } from './ColorPickerInput';
 
@@ -23,10 +23,10 @@ describe('ColorPickerInput', () => {
         expect(container).toMatchSnapshot();
     });
 
-    test('showPicker', () => {
+    test('showPicker', async () => {
         const component = <ColorPickerInput value="#000000" onChange={jest.fn} />;
         const { container } = render(component);
-        userEvent.click(document.querySelector('.color-picker__button'));
+        await userEvent.click(document.querySelector('.color-picker__button'));
         expect(container).toMatchSnapshot();
     });
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, PropsWithChildren } from 'react';
 import { List } from 'immutable';
 
 import { ILookupContext, LookupContextProvider } from '../../internal/components/domainproperties/Lookup/Context';
@@ -11,7 +11,7 @@ import schemaData from '../data/query-getSchemas.json';
 import { Container } from '../../internal/components/base/models/Container';
 import { SchemaDetails } from '../../internal/SchemaDetails';
 
-export class MockLookupProvider extends React.Component<any, ILookupContext> {
+export class MockLookupProvider extends Component<PropsWithChildren, ILookupContext> {
     constructor(props) {
         super(props);
 

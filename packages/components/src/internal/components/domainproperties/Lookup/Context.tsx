@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, createContext, PropsWithChildren } from 'react';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
@@ -15,12 +15,12 @@ export interface ILookupContext {
     getExcludedSchemaQueryNames: (schemaName, queryContainerPath?: string) => Promise<string[]>;
 }
 
-const LookupContext = React.createContext<ILookupContext>(undefined);
+const LookupContext = createContext<ILookupContext>(undefined);
 export const LookupContextProvider = LookupContext.Provider;
 export const LookupContextConsumer = LookupContext.Consumer;
 
 // default provider
-export class LookupProvider extends React.Component<any, ILookupContext> {
+export class LookupProvider extends Component<PropsWithChildren, ILookupContext> {
     constructor(props) {
         super(props);
 

@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 
 import { QueryColumn } from '../../../public/QueryColumn';
 
-export interface Props {
+export interface Props extends PropsWithChildren {
     column?: QueryColumn;
     description?: string;
     required?: boolean;

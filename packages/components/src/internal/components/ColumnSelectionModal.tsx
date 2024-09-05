@@ -353,21 +353,21 @@ export interface ColumnSelectionModalProps extends Omit<ModalProps, 'canConfirm'
 
 export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props => {
     const {
-        allowEditLabel,
-        allowEmptySelection,
-        allowShowAll,
+        allowEditLabel = false,
+        allowEmptySelection = false,
+        allowShowAll = false,
         error,
         expandedColumnFilter,
         fixedFieldKeys,
         initialSelectedColumn,
         initialSelectedColumns,
-        isLoaded,
-        leftColumnTitle,
+        isLoaded = true,
+        leftColumnTitle = 'Available Fields',
         maxColumns,
         onExpand,
         onSubmit,
         queryInfo,
-        rightColumnTitle,
+        rightColumnTitle = 'Selected Fields',
         ...confirmModalProps
     } = props;
     const [editingColumnTitle, setEditingColumnTitle] = useState<boolean>(false);
@@ -585,14 +585,5 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
         </Modal>
     );
 });
-
-ColumnSelectionModal.defaultProps = {
-    allowEditLabel: false,
-    allowEmptySelection: false,
-    allowShowAll: false,
-    isLoaded: true,
-    leftColumnTitle: 'Available Fields',
-    rightColumnTitle: 'Selected Fields',
-};
 
 ColumnSelectionModal.displayName = 'ColumnSelectionModal';

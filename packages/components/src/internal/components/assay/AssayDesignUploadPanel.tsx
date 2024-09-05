@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, PropsWithChildren } from 'react';
 
 import { ActionURL } from '@labkey/api';
 import { Map } from 'immutable';
@@ -7,7 +7,7 @@ import { getHelpLink } from '../../util/helpLinks';
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 import { isPremiumProductEnabled } from '../../app/utils';
 
-interface AssayDesignUploadPanelProps {
+interface AssayDesignUploadPanelProps extends PropsWithChildren {
     onFileChange: (files: Map<string, File>) => void;
     onFileRemove: (name: string) => void;
 }

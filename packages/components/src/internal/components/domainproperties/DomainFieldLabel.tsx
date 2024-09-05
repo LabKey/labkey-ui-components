@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, memo, ReactNode } from 'react';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
@@ -10,19 +10,19 @@ export interface DomainFieldLabelProps {
     required?: boolean;
 }
 
-export const DomainFieldLabel: FC<DomainFieldLabelProps> = props => {
-    return (
-        <>
-            {getSplitSentence(props.label, false)}
-            <span className="domain-no-wrap">
-                {getSplitSentence(props.label, true)}
-                {props.helpTipBody && (
-                    <LabelHelpTip title={props.label} required={props.required}>
-                        {props.helpTipBody}
-                    </LabelHelpTip>
-                )}
-                {props.required ? ' *' : ''}
-            </span>
-        </>
-    );
-};
+export const DomainFieldLabel: FC<DomainFieldLabelProps> = memo(props => (
+    <>
+        {getSplitSentence(props.label, false)}
+        <span className="domain-no-wrap">
+            {getSplitSentence(props.label, true)}
+            {props.helpTipBody && (
+                <LabelHelpTip title={props.label} required={props.required}>
+                    {props.helpTipBody}
+                </LabelHelpTip>
+            )}
+            {props.required ? ' *' : ''}
+        </span>
+    </>
+));
+
+DomainFieldLabel.displayName = 'DomainFieldLabel';

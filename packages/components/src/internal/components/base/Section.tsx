@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, ReactNode } from 'react';
+import React, { FC, PropsWithChildren, ReactNode } from 'react';
 
-interface SectionProps {
+interface SectionProps extends PropsWithChildren {
     caption?: ReactNode;
     context?: ReactNode;
     panelClassName?: string;

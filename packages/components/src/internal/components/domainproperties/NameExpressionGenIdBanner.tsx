@@ -19,7 +19,7 @@ export interface NameExpressionGenIdProps {
 export const GENID_SYNTAX_STRING = '${genId'; // skip closing tag to allow existence of formatter
 
 export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => {
-    const { api, containerPath, rowId, kindName, dataTypeName, dataTypeLSID } = props;
+    const { api = getDefaultAPIWrapper(), containerPath, rowId, kindName, dataTypeName, dataTypeLSID } = props;
     const [currentGenId, setCurrentGenId] = useState<number>(undefined);
     const [newGenId, setNewGenId] = useState<number>(undefined);
     const [minNewGenId, setMinNewGenId] = useState<number>(undefined);
@@ -192,6 +192,4 @@ export const NameExpressionGenIdBanner: FC<NameExpressionGenIdProps> = props => 
     );
 };
 
-NameExpressionGenIdBanner.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
+NameExpressionGenIdBanner.displayName = 'NameExpressionGenIdBanner';

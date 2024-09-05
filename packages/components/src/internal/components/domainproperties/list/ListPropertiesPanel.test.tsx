@@ -1,7 +1,5 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
-
-import { act } from 'react-dom/test-utils';
+import React, { act } from 'react';
+import { userEvent } from '@testing-library/user-event';
 
 import { DEFAULT_LIST_SETTINGS } from '../../../../test/data/constants';
 
@@ -125,9 +123,7 @@ describe('ListPropertiesPanel', () => {
         const advancedSettingsButton = document.querySelector('button.domain-field-float-right');
         expect(document.getElementsByClassName('modal-title')).toHaveLength(0);
 
-        await act(async () => {
-            userEvent.click(advancedSettingsButton);
-        });
+        await act(() => userEvent.click(advancedSettingsButton));
 
         expect(document.getElementsByClassName('modal-title')).toHaveLength(1);
         expect(document.querySelector('.modal-title').textContent).toEqual('Advanced List Settings');

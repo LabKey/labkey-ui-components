@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { LabelHelpTip } from './LabelHelpTip';
 
 describe('LabelHelpTip', () => {
     const wrapperSelector = '.label-help-target';
 
-    test('displays content on mouse over', () => {
+    test('displays content on mouse over', async () => {
         render(
             <LabelHelpTip>
                 <div className="test-content" />
@@ -22,7 +22,7 @@ describe('LabelHelpTip', () => {
         expect(document.querySelector('.test-content')).toBeNull();
 
         const wrapper = document.querySelector(wrapperSelector);
-        userEvent.hover(wrapper);
+        await userEvent.hover(wrapper);
 
         const contentElement = document.querySelector('.test-content');
         expect(contentElement).toBeVisible();
@@ -38,7 +38,7 @@ describe('LabelHelpTip', () => {
         expect(result).toBeNull();
 
         const wrapper = document.querySelector(wrapperSelector);
-        userEvent.hover(wrapper);
+        await userEvent.hover(wrapper);
 
         const contentElement = screen.getByText('Ken Griffey Jr');
         expect(contentElement).toBeInTheDocument();

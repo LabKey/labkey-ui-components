@@ -15,7 +15,7 @@ export interface UserResetPasswordConfirmModalProps {
 }
 
 export const UserResetPasswordConfirmModal: FC<UserResetPasswordConfirmModalProps> = memo(props => {
-    const { email, hasLogin, onCancel, onComplete, resetPasswordApi } = props;
+    const { email, hasLogin, onCancel, onComplete, resetPasswordApi = resetPassword } = props;
     const [error, setError] = useState<string>();
     const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -56,9 +56,5 @@ export const UserResetPasswordConfirmModal: FC<UserResetPasswordConfirmModalProp
         </Modal>
     );
 });
-
-UserResetPasswordConfirmModal.defaultProps = {
-    resetPasswordApi: resetPassword,
-};
 
 UserResetPasswordConfirmModal.displayName = 'UserResetPasswordConfirmModal';

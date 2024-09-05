@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import { DataViewInfo } from '../../internal/DataViewInfo';
 
@@ -73,20 +73,22 @@ describe('ChartMenu', () => {
         expect(document.querySelectorAll('.chart-menu')).toHaveLength(0);
     });
 
-    test('noCharts showCreateChart', () => {
-        renderWithAppContext(<ChartMenu actions={actions} model={NO_CHART_MODEL} />, {
-            serverContext: {
-                user: TEST_USER_READER,
-                moduleContext: {
-                    biologics: {
-                        productId: BIOLOGICS_APP_PROPERTIES.productId,
+    test('noCharts showCreateChart', async () => {
+        await act(() => {
+            renderWithAppContext(<ChartMenu actions={actions} model={NO_CHART_MODEL} />, {
+                serverContext: {
+                    user: TEST_USER_READER,
+                    moduleContext: {
+                        biologics: {
+                            productId: BIOLOGICS_APP_PROPERTIES.productId,
+                        },
+                        samplemanagement: {
+                            [EXPERIMENTAL_CHART_BUILDER]: true,
+                        },
+                        core: { productFeatures: [ProductFeature.ChartBuilding] },
                     },
-                    samplemanagement: {
-                        [EXPERIMENTAL_CHART_BUILDER]: true,
-                    },
-                    core: { productFeatures: [ProductFeature.ChartBuilding] },
                 },
-            },
+            });
         });
 
         expect(document.querySelectorAll('.chart-menu')).toHaveLength(1);
@@ -96,20 +98,22 @@ describe('ChartMenu', () => {
         expect(document.querySelectorAll('.divider')).toHaveLength(0);
     });
 
-    test('guest user cannot create chart', () => {
-        renderWithAppContext(<ChartMenu actions={actions} model={NO_CHART_MODEL} />, {
-            serverContext: {
-                user: TEST_USER_GUEST,
-                moduleContext: {
-                    biologics: {
-                        productId: BIOLOGICS_APP_PROPERTIES.productId,
+    test('guest user cannot create chart', async () => {
+        await act(() => {
+            renderWithAppContext(<ChartMenu actions={actions} model={NO_CHART_MODEL} />, {
+                serverContext: {
+                    user: TEST_USER_GUEST,
+                    moduleContext: {
+                        biologics: {
+                            productId: BIOLOGICS_APP_PROPERTIES.productId,
+                        },
+                        samplemanagement: {
+                            [EXPERIMENTAL_CHART_BUILDER]: true,
+                        },
+                        core: { productFeatures: [ProductFeature.ChartBuilding] },
                     },
-                    samplemanagement: {
-                        [EXPERIMENTAL_CHART_BUILDER]: true,
-                    },
-                    core: { productFeatures: [ProductFeature.ChartBuilding] },
                 },
-            },
+            });
         });
 
         expect(document.querySelectorAll('.chart-menu')).toHaveLength(0);

@@ -1,11 +1,11 @@
-import React, { memo, FC, useMemo } from 'react';
+import React, { memo, FC, useMemo, PropsWithChildren } from 'react';
 
 import { createPortal } from 'react-dom';
 
 import { Popover } from '../../Popover';
 import { useOverlayTriggerState } from '../../OverlayTrigger';
 
-interface Props {
+interface Props extends PropsWithChildren {
     bsStyle?: string;
     className?: string;
     disabledMsg?: string;

@@ -58,7 +58,7 @@ export const MultiValueRenderer: FC<MultiValueRendererProps> = memo(({ data }) =
                         {url ? <a href={url}>{text}</a> : text}
                     </span>
                 );
-            })}
+            }).toArray()}
         </div>
     );
 });

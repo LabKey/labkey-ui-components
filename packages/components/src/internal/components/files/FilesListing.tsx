@@ -129,7 +129,7 @@ export class FilesListing extends PureComponent<FilesListingProps, State> {
                             </div>
                         </div>
                     );
-                })}
+                }).toArray()}
             </div>
         );
     }

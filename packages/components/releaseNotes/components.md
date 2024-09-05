@@ -2,11 +2,12 @@
 Components, models, actions, and utility functions for LabKey applications and pages
 
 ### version 5.0.0
-*Released*: ?? August 2024
+*Released*: 5 September 2024
 - withQueryModels: Add reloadModel flag to setOffset
 - ***BREAKING CHANGE***: React dependency upgraded to React 18
 - Use PropsWithChildren for all components using children
 - Fix issues with document click handlers for menus
+- Don't use defaultProps with function components
 
 ### version 4.16.0
 *Released*: 3 September 2024

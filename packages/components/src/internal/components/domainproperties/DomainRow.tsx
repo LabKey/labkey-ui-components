@@ -145,6 +145,8 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
     getDetails = (): ReactNode => {
         const { field, fieldDetailsInfo, fieldError, index, expanded, domainIndex } = this.props;
+        // eslint-disable-next-line no-warning-comments
+        // FIXME: Pushing these ReactNodes (of which many are strings) into an array requires that each be marked with a "key" prop.
         const details = field.getDetailsArray(fieldDetailsInfo);
 
         if (fieldError) {
@@ -382,6 +384,8 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         } = this.props;
         const { selected } = field;
         const draggableId = createFormInputId('domaindrag', domainIndex, index);
+        // Use undefined instead of false to allow for css to handle the highlight color for hover
+        const highlighted = dragging ? true : isDragDisabled ? false : undefined;
 
         return (
             <Draggable
@@ -424,13 +428,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                 {...provided.dragHandleProps}
                             >
                                 <DragDropHandle
-                                    highlighted={
-                                        dragging
-                                            ? true
-                                            : isDragDisabled
-                                              ? false
-                                              : undefined /* use undefined instead of false to allow for css to handle the highlight color for hover*/
-                                    }
+                                    highlighted={highlighted}
                                     tooltip={
                                         field.isCalculatedField()
                                             ? 'Field reordering is disabled for calculated fields.'
@@ -480,8 +478,9 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                                 value={field.dataType.name}
                                             >
                                                 {isPrimaryKeyFieldLocked(field.lockType) ? (
-                                                    <option
-                                                        value={field.dataType.name}>{field.dataType.display}</option>
+                                                    <option value={field.dataType.name}>
+                                                        {field.dataType.display}
+                                                    </option>
                                                 ) : (
                                                     resolveAvailableTypes(
                                                         field,
@@ -495,22 +494,31 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                                             <option key={type.name} value={type.name}>
                                                                 {type.display}
                                                             </option>
-                                                        )).toArray()
+                                                        ))
+                                                        .toArray()
                                                 )}
                                             </select>
                                         </div>
                                         <div className="col-xs-2">
                                             <div className="domain-field-checkbox-container">
-                                                {!domainFormDisplayOptions.hideRequired && !field.isCalculatedField() && (
-                                                    <DomainDesignerCheckbox
-                                                        className="domain-field-checkbox"
-                                                        name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
-                                                        id={createFormInputId(DOMAIN_FIELD_REQUIRED, domainIndex, index)}
-                                                        checked={field.required}
-                                                        onChange={this.onFieldChange}
-                                                        disabled={isFieldFullyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)}
-                                                    />
-                                                )}
+                                                {!domainFormDisplayOptions.hideRequired &&
+                                                    !field.isCalculatedField() && (
+                                                        <DomainDesignerCheckbox
+                                                            className="domain-field-checkbox"
+                                                            name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
+                                                            id={createFormInputId(
+                                                                DOMAIN_FIELD_REQUIRED,
+                                                                domainIndex,
+                                                                index
+                                                            )}
+                                                            checked={field.required}
+                                                            onChange={this.onFieldChange}
+                                                            disabled={
+                                                                isFieldFullyLocked(field.lockType) ||
+                                                                isPrimaryKeyFieldLocked(field.lockType)
+                                                            }
+                                                        />
+                                                    )}
                                             </div>
                                         </div>
                                     </div>
@@ -518,7 +526,8 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                                 <div className="col-xs-6 domain-row-details-container">
                                     {this.getDetails()}
                                     <div
-                                        className={expanded ? 'domain-field-buttons-expanded' : 'domain-field-buttons'}>
+                                        className={expanded ? 'domain-field-buttons-expanded' : 'domain-field-buttons'}
+                                    >
                                         {expanded && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && (
                                             <button
                                                 className="domain-row-button btn btn-default"

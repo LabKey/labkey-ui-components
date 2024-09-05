@@ -60,7 +60,7 @@ describe('EditInlineField', () => {
         validate();
         expect(document.querySelector('.edit-inline-field__placeholder').innerHTML).toBe('');
         expect(document.querySelectorAll('.fa-pencil')).toHaveLength(1);
-        await await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+        await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { text: 1 });
     });
 

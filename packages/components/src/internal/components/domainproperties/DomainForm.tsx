@@ -15,7 +15,7 @@
  */
 import React, { FC, memo, PropsWithChildren, ReactNode } from 'react';
 import { List, Map } from 'immutable';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import classNames from 'classnames';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';

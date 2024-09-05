@@ -15,7 +15,7 @@
  */
 import React, { ReactNode, RefObject } from 'react';
 import { List } from 'immutable';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable } from '@hello-pangea/dnd';
 import classNames from 'classnames';
 
 import { naturalSortByProperty } from '../../../public/sort';
@@ -145,7 +145,7 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
     getDetails = (): ReactNode => {
         const { field, fieldDetailsInfo, fieldError, index, expanded, domainIndex } = this.props;
-        const details = field.getDetailsArray(index, fieldDetailsInfo);
+        const details = field.getDetailsArray(fieldDetailsInfo);
 
         if (fieldError) {
             details.push(details.length > 0 ? '. ' : '');
@@ -356,100 +356,10 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
         );
     };
 
-    renderBaseFields = (): ReactNode => {
-        const { index, field, availableTypes, appPropertiesOnly, domainIndex, domainFormDisplayOptions } = this.props;
-
-        return (
-            <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this.ref}>
-                <div className="col-xs-6">
-                    <input
-                        className="form-control"
-                        type="text"
-                        value={field.name || ''}
-                        name={createFormInputName(DOMAIN_FIELD_NAME)}
-                        id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
-                        onChange={this.onNameChange}
-                        disabled={this.disableNameInput(field)}
-                    />
-                </div>
-                <div className="col-xs-4">
-                    <select
-                        className="form-control"
-                        name={createFormInputName(DOMAIN_FIELD_TYPE)}
-                        disabled={this.disableTypeInput(field)}
-                        id={createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index)}
-                        onChange={this.onDataTypeChange}
-                        value={field.dataType.name}
-                    >
-                        {isPrimaryKeyFieldLocked(field.lockType) ? (
-                            <option value={field.dataType.name}>{field.dataType.display}</option>
-                        ) : (
-                            resolveAvailableTypes(
-                                field,
-                                availableTypes,
-                                appPropertiesOnly,
-                                !domainFormDisplayOptions.hideStudyPropertyTypes,
-                                !domainFormDisplayOptions.hideFilePropertyType
-                            )
-                                .sort(naturalSortByProperty('display'))
-                                .map(type => (
-                                    <option key={type.name} value={type.name}>
-                                        {type.display}
-                                    </option>
-                                )).toArray()
-                        )}
-                    </select>
-                </div>
-                <div className="col-xs-2">
-                    <div className="domain-field-checkbox-container">
-                        {!domainFormDisplayOptions.hideRequired && !field.isCalculatedField() && (
-                            <DomainDesignerCheckbox
-                                className="domain-field-checkbox"
-                                name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
-                                id={createFormInputId(DOMAIN_FIELD_REQUIRED, domainIndex, index)}
-                                checked={field.required}
-                                onChange={this.onFieldChange}
-                                disabled={isFieldFullyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)}
-                            />
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
-    };
-
-    renderButtons = (): ReactNode => {
-        const { expanded, index, field, appPropertiesOnly, domainIndex } = this.props;
-
-        return (
-            <div className={expanded ? 'domain-field-buttons-expanded' : 'domain-field-buttons'}>
-                {expanded && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && (
-                    <button
-                        className="domain-row-button btn btn-default"
-                        disabled={isFieldFullyLocked(field.lockType)}
-                        id={createFormInputId(DOMAIN_FIELD_ADV, domainIndex, index)}
-                        name={createFormInputName(DOMAIN_FIELD_ADV)}
-                        onClick={this.onShowAdvanced}
-                        type="button"
-                    >
-                        Advanced Settings
-                    </button>
-                )}
-                {isFieldDeletable(field) && (
-                    <DeleteIcon
-                        id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
-                        title="Remove field"
-                        iconCls="domain-field-delete-icon"
-                        onDelete={this.onDelete}
-                    />
-                )}
-            </div>
-        );
-    };
-
     render() {
         const { isDragDisabled, showAdv, showingModal, dataTypeChangeToConfirm } = this.state;
         const {
+            availableTypes,
             index,
             field,
             expanded,
@@ -470,14 +380,15 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
             schemaName,
             queryName,
         } = this.props;
-        const selected = field.selected;
+        const { selected } = field;
+        const draggableId = createFormInputId('domaindrag', domainIndex, index);
 
         return (
             <Draggable
-                draggableId={createFormInputId('domaindrag', domainIndex, index)}
+                draggableId={draggableId}
                 index={index}
                 isDragDisabled={showingModal || isDragDisabled}
-                key={index}
+                key={draggableId}
             >
                 {provided => (
                     <div
@@ -547,11 +458,88 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
                             </div>
                             <div className="domain-row-main">
                                 <div className="col-xs-6 domain-row-base-fields domain-row-base-fields-position">
-                                    {this.renderBaseFields()}
+                                    <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this.ref}>
+                                        <div className="col-xs-6">
+                                            <input
+                                                className="form-control"
+                                                type="text"
+                                                value={field.name || ''}
+                                                name={createFormInputName(DOMAIN_FIELD_NAME)}
+                                                id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
+                                                onChange={this.onNameChange}
+                                                disabled={this.disableNameInput(field)}
+                                            />
+                                        </div>
+                                        <div className="col-xs-4">
+                                            <select
+                                                className="form-control"
+                                                name={createFormInputName(DOMAIN_FIELD_TYPE)}
+                                                disabled={this.disableTypeInput(field)}
+                                                id={createFormInputId(DOMAIN_FIELD_TYPE, domainIndex, index)}
+                                                onChange={this.onDataTypeChange}
+                                                value={field.dataType.name}
+                                            >
+                                                {isPrimaryKeyFieldLocked(field.lockType) ? (
+                                                    <option
+                                                        value={field.dataType.name}>{field.dataType.display}</option>
+                                                ) : (
+                                                    resolveAvailableTypes(
+                                                        field,
+                                                        availableTypes,
+                                                        appPropertiesOnly,
+                                                        !domainFormDisplayOptions.hideStudyPropertyTypes,
+                                                        !domainFormDisplayOptions.hideFilePropertyType
+                                                    )
+                                                        .sort(naturalSortByProperty('display'))
+                                                        .map(type => (
+                                                            <option key={type.name} value={type.name}>
+                                                                {type.display}
+                                                            </option>
+                                                        )).toArray()
+                                                )}
+                                            </select>
+                                        </div>
+                                        <div className="col-xs-2">
+                                            <div className="domain-field-checkbox-container">
+                                                {!domainFormDisplayOptions.hideRequired && !field.isCalculatedField() && (
+                                                    <DomainDesignerCheckbox
+                                                        className="domain-field-checkbox"
+                                                        name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
+                                                        id={createFormInputId(DOMAIN_FIELD_REQUIRED, domainIndex, index)}
+                                                        checked={field.required}
+                                                        onChange={this.onFieldChange}
+                                                        disabled={isFieldFullyLocked(field.lockType) || isPrimaryKeyFieldLocked(field.lockType)}
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="col-xs-6 domain-row-details-container">
                                     {this.getDetails()}
-                                    {this.renderButtons()}
+                                    <div
+                                        className={expanded ? 'domain-field-buttons-expanded' : 'domain-field-buttons'}>
+                                        {expanded && !isFieldFullyLocked(field.lockType) && !appPropertiesOnly && (
+                                            <button
+                                                className="domain-row-button btn btn-default"
+                                                disabled={isFieldFullyLocked(field.lockType)}
+                                                id={createFormInputId(DOMAIN_FIELD_ADV, domainIndex, index)}
+                                                name={createFormInputName(DOMAIN_FIELD_ADV)}
+                                                onClick={this.onShowAdvanced}
+                                                type="button"
+                                            >
+                                                Advanced Settings
+                                            </button>
+                                        )}
+                                        {isFieldDeletable(field) && (
+                                            <DeleteIcon
+                                                id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
+                                                title="Remove field"
+                                                iconCls="domain-field-delete-icon"
+                                                onDelete={this.onDelete}
+                                            />
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>

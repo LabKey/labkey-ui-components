@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
+import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 
 import { QueryColumn } from '../../public/QueryColumn';
@@ -14,7 +15,6 @@ import { OverlayTrigger, useOverlayTriggerState } from '../OverlayTrigger';
 import { Alert } from './base/Alert';
 import { DragDropHandle } from './base/DragDropHandle';
 import { LoadingSpinner } from './base/LoadingSpinner';
-import { createPortal } from 'react-dom';
 
 type ExpandedColumnFilter = (column: QueryColumn, showAllColumns: boolean) => boolean;
 type QueryColumnHandler = (column: QueryColumn) => void;

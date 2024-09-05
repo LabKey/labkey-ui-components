@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren, useMemo } from 'react';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { Query } from '@labkey/api';
 
 import { AppContext, AppContextProvider } from '../AppContext';

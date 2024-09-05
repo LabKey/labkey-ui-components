@@ -1,29 +1,25 @@
 import React from 'react';
-import { mount } from 'enzyme';
-
-import { LabelHelpTip } from '../base/LabelHelpTip';
+import {render} from "@testing-library/react";
 
 import { DomainRowWarning } from './DomainRowWarning';
 import { DomainFieldError } from './models';
 
 describe('DomainRowWarning', () => {
     test('without extra info', () => {
-        const wrapper = mount(
+        render(
             <DomainRowWarning fieldError={new DomainFieldError({ message: 'Test Warning', severity: 'Warning' })} />
         );
-        expect(wrapper.text()).toBe('Warning: Test Warning');
-        wrapper.unmount();
+        expect(document.querySelector('.domain-row-warning').textContent).toBe('Warning: Test Warning');
     });
 
     test('with extra info', () => {
-        const wrapper = mount(
+        render(
             <DomainRowWarning
                 fieldError={
                     new DomainFieldError({ message: 'Test Warning', severity: 'Warning', extraInfo: 'Test Extra' })
                 }
             />
         );
-        expect(wrapper.find(LabelHelpTip)).toHaveLength(1);
-        wrapper.unmount();
+        expect(document.querySelectorAll('.label-help-target')).toHaveLength(1);
     });
 });

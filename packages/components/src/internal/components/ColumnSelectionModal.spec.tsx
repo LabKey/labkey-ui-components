@@ -2,7 +2,7 @@ import React from 'react';
 
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable } from '@hello-pangea/dnd';
 
 import { ExtendedMap } from '../../public/ExtendedMap';
 

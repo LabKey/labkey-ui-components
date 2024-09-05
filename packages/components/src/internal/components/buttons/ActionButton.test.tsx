@@ -15,19 +15,19 @@
  */
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { ActionButton } from './ActionButton';
 
 describe('<ActionButton />', () => {
-    test('Default properties', () => {
+    test('Default properties', async () => {
         const onClick = jest.fn();
         render(<ActionButton onClick={onClick} />);
-        userEvent.click(document.querySelector('span'));
+        await userEvent.click(document.querySelector('span'));
         expect(onClick).toHaveBeenCalledTimes(1);
     });
 
-    test('With custom props', () => {
+    test('With custom props', async () => {
         const onClick = jest.fn();
 
         render(
@@ -41,14 +41,14 @@ describe('<ActionButton />', () => {
         );
 
         // Customized attributes should all be valid click targets
-        userEvent.click(document.querySelector('span'));
-        userEvent.click(document.querySelector('.test-button-class span'));
-        userEvent.click(document.querySelector('.test-container-class span'));
-        userEvent.click(document.querySelector('[title="test-title"] span'));
+        await userEvent.click(document.querySelector('span'));
+        await userEvent.click(document.querySelector('.test-button-class span'));
+        await userEvent.click(document.querySelector('.test-container-class span'));
+        await userEvent.click(document.querySelector('[title="test-title"] span'));
         expect(onClick).toHaveBeenCalledTimes(4);
     });
 
-    test('With label helper', () => {
+    test('With label helper', async () => {
         const onClick = jest.fn();
 
         render(
@@ -60,7 +60,7 @@ describe('<ActionButton />', () => {
         expect(result).toBeNull();
 
         const helpTarget = document.querySelector('.label-help-target');
-        userEvent.hover(helpTarget);
+        await userEvent.hover(helpTarget);
 
         const requiredElement = screen.getByText('Test Body Contents');
         expect(requiredElement).toBeInTheDocument();
@@ -68,10 +68,10 @@ describe('<ActionButton />', () => {
         expect(onClick).toHaveBeenCalledTimes(0); // No clicks
     });
 
-    test('Disabled', () => {
+    test('Disabled', async () => {
         const onClick = jest.fn();
         render(<ActionButton disabled={true} onClick={onClick} />);
-        userEvent.click(document.querySelector('span'));
+        await userEvent.click(document.querySelector('span'));
         expect(onClick).toHaveBeenCalledTimes(0);
     });
 });

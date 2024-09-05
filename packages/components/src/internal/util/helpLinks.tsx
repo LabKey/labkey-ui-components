@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, memo } from 'react';
+import React, { FC, ReactNode, memo, PropsWithChildren } from 'react';
 import { getServerContext } from '@labkey/api';
 
 import { getPrimaryAppProperties } from '../app/utils';
@@ -82,7 +82,7 @@ export function getHelpLink(
     return undefined;
 }
 
-interface HelpLinkProps {
+interface HelpLinkProps extends PropsWithChildren {
     className?: string;
     referrer?: HELP_LINK_REFERRER;
     topic: string;
@@ -122,7 +122,7 @@ export function helpLinkNode(topic: string, text: ReactNode, className?: string)
     );
 }
 
-interface JavaDocsLinkProps {
+interface JavaDocsLinkProps extends PropsWithChildren {
     urlSuffix: string;
 }
 

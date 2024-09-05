@@ -126,7 +126,7 @@ export interface ThreadBlockProps extends ThreadEditorProps {
 export const ThreadBlock: FC<ThreadBlockProps> = props => {
     const {
         api,
-        canReply,
+        canReply = true,
         containerPath,
         onCreate,
         onDelete,
@@ -250,6 +250,4 @@ export const ThreadBlock: FC<ThreadBlockProps> = props => {
     );
 };
 
-ThreadBlock.defaultProps = {
-    canReply: true,
-};
+ThreadBlock.displayName = 'ThreadBlock';

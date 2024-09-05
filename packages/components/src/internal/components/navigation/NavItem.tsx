@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, useEffect, useRef, useState } from 'react';
+import React, { FC, memo, PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { AppURL } from '../../url/AppURL';
 
-interface NavItemProps {
+interface NavItemProps extends PropsWithChildren {
     onActive?: (activeEl: HTMLElement) => void;
     to?: string | AppURL;
 }

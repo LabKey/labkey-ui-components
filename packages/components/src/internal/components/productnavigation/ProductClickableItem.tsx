@@ -1,6 +1,6 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, PropsWithChildren, useCallback, useState } from 'react';
 
-interface ProductClickableItemProps {
+interface ProductClickableItemProps extends PropsWithChildren {
     id: string;
     href: string;
     onClick: () => void;

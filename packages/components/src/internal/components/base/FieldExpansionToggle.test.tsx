@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { FieldExpansionToggle } from './FieldExpansionToggle';
 
 describe('FieldExpansionToggle', () => {
-    test('not expanded and highlighted', () => {
+    test('not expanded and highlighted', async () => {
         const onClick = jest.fn();
         render(
             <FieldExpansionToggle
@@ -22,11 +22,11 @@ describe('FieldExpansionToggle', () => {
         expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(0);
         expect(document.querySelectorAll('.field-highlighted')).toHaveLength(1);
         expect(onClick).toHaveBeenCalledTimes(0);
-        userEvent.click(screen.getByTitle('Click to expand'));
+        await userEvent.click(screen.getByTitle('Click to expand'));
         expect(onClick).toHaveBeenCalledTimes(1);
     });
 
-    test('expanded and highlighted', () => {
+    test('expanded and highlighted', async () => {
         const onClick = jest.fn();
         render(
             <FieldExpansionToggle
@@ -43,11 +43,11 @@ describe('FieldExpansionToggle', () => {
         expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(1);
         expect(document.querySelectorAll('.field-highlighted')).toHaveLength(0); // only highlighted when not expanded
         expect(onClick).toHaveBeenCalledTimes(0);
-        userEvent.click(screen.getByTitle('Click to collapse'));
+        await userEvent.click(screen.getByTitle('Click to collapse'));
         expect(onClick).toHaveBeenCalledTimes(1);
     });
 
-    test('custom properties', () => {
+    test('custom properties', async () => {
         const onClick = jest.fn();
         render(
             <FieldExpansionToggle
@@ -65,7 +65,7 @@ describe('FieldExpansionToggle', () => {
         expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(0);
         expect(document.querySelectorAll('.field-highlighted')).toHaveLength(0);
         expect(onClick).toHaveBeenCalledTimes(0);
-        userEvent.click(screen.getByTitle('Custom click to expand'));
+        await userEvent.click(screen.getByTitle('Custom click to expand'));
         expect(onClick).toHaveBeenCalledTimes(1);
     });
 });

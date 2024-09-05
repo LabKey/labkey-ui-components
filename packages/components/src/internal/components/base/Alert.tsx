@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, HTMLProps, ReactNode } from 'react';
+import React, { FC, HTMLProps, PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 
-export interface AlertProps extends HTMLProps<HTMLDivElement> {
+export interface AlertProps extends HTMLProps<HTMLDivElement>, PropsWithChildren {
     bsStyle?: string;
     closeLabel?: ReactNode;
     onDismiss?: () => void;
@@ -26,7 +26,7 @@ export interface AlertProps extends HTMLProps<HTMLDivElement> {
  * An Alert that will only display if children are available. Defaults to bsStyle "danger".
  */
 export const Alert: FC<AlertProps> = props => {
-    const { bsStyle, children, className, closeLabel, onDismiss, ...divProps } = props;
+    const { bsStyle = 'danger', children, className, closeLabel, onDismiss, ...divProps } = props;
     if (!children) return null;
 
     const dismissible = !!onDismiss;
@@ -45,10 +45,6 @@ export const Alert: FC<AlertProps> = props => {
             {children}
         </div>
     );
-};
-
-Alert.defaultProps = {
-    bsStyle: 'danger',
 };
 
 Alert.displayName = 'Alert';

@@ -1,4 +1,4 @@
-import React, { PureComponent, ComponentType, FC, memo } from 'react';
+import React, { PureComponent, ComponentType, FC, memo, PropsWithChildren } from 'react';
 import { List } from 'immutable';
 
 import { getSubmitButtonClass, isApp } from '../../app/utils';
@@ -113,7 +113,7 @@ export function withBaseDomainDesigner<Props>(
     return ComponentWithBaseDomainDesigner;
 }
 
-interface BaseDomainDesignerProps {
+interface BaseDomainDesignerProps extends PropsWithChildren {
     domains: List<DomainDesign>;
     exception: string;
     hasValidProperties: boolean;

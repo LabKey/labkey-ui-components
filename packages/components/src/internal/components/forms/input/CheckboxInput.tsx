@@ -157,14 +157,11 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputImplProps, Checkbo
 const CheckboxInputFormsy = withFormsy<CheckboxInputProps, boolean>(CheckboxInputImpl);
 
 export const CheckboxInput: FC<CheckboxInputProps> = props => {
-    if (props.formsy) {
-        return <CheckboxInputFormsy name={props.name ?? props.queryColumn.name} {...props} />;
+    const { formsy = true } = props;
+    if (formsy) {
+        return <CheckboxInputFormsy name={props.name ?? props.queryColumn.name} {...props} formsy />;
     }
-    return <CheckboxInputImpl {...(props as CheckboxInputImplProps)} />;
-};
-
-CheckboxInput.defaultProps = {
-    formsy: true,
+    return <CheckboxInputImpl {...(props as CheckboxInputImplProps)} formsy={false} />;
 };
 
 CheckboxInput.displayName = 'CheckboxInput';

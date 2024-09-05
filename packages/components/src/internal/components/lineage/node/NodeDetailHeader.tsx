@@ -1,10 +1,10 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { PropsWithChildren, PureComponent, ReactNode } from 'react';
 
 import { LineageNode } from '../models';
 import { LineageDataLink } from '../LineageDataLink';
 import { SVGIcon, Theme } from '../../base/SVGIcon';
 
-export interface DetailHeaderProps {
+export interface DetailHeaderProps extends PropsWithChildren {
     header: ReactNode;
     iconSrc: string;
 }

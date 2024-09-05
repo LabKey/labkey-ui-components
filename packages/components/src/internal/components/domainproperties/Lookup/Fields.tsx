@@ -416,7 +416,6 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
                 id={id}
                 name={name}
                 onChange={onChange}
-                placeholder="Select Schema"
             >
                 {disabled && value && (
                     <option key="_disabled" value={value}>

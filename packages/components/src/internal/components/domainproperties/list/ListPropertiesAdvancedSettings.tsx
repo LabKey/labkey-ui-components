@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useState } from 'react';
+import React, { ChangeEvent, FC, memo, PropsWithChildren, ReactNode, useCallback, useState } from 'react';
 import classNames from 'classnames';
 
 import { Modal } from '../../../Modal';
@@ -259,7 +259,7 @@ export const SeparateDocumentIndexFields: FC<SeparateDocumentIndexFieldsProps> =
     );
 });
 
-interface CollapsibleFieldsProps {
+interface CollapsibleFieldsProps extends PropsWithChildren {
     checked: boolean;
     collapseFields: () => void;
     expandFields: (expandedSection: string) => void;
@@ -382,7 +382,7 @@ export const SearchIndexing: FC<SearchIndexingProps> = memo(props => {
     );
 });
 
-interface SettingsContainerProps {
+interface SettingsContainerProps extends PropsWithChildren {
     tipBody: string | JSX.Element;
     tipTitle?: string;
     title: string;

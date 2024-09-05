@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, ReactNode, useMemo } from 'react';
+import React, { FC, PropsWithChildren, ReactNode, useMemo } from 'react';
 
 import { DropdownButton } from '../../dropdowns';
 
-export const ManageDropdownButton: FC<{
-    children: React.ReactNode;
+interface Props extends PropsWithChildren {
+    children: ReactNode;
     disabled?: boolean;
     showIcon?: boolean;
-}> = props => {
-    const { children, disabled, showIcon = true } = props;
+}
+
+export const ManageDropdownButton: FC<Props> = ({ children, disabled, showIcon = true }) => {
     const buttonLabel: ReactNode = useMemo(
         () => (
             <span>

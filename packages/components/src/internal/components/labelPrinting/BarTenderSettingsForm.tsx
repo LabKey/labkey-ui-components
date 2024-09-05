@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
 import { Alert } from '../base/Alert';
 
@@ -37,7 +37,7 @@ const FAILED_NOTIFICATION_MESSAGE = 'Failed to connect to BarTender web service.
 const UNKNOWN_STATUS_MESSAGE = 'Unrecognized status code returned from BarTender service';
 const FAILED_TO_SAVE_MESSAGE = 'Failed to save connection configuration';
 
-interface SettingsInputProps {
+interface SettingsInputProps extends PropsWithChildren {
     description: string;
     label: string;
     name: string;
@@ -91,7 +91,7 @@ const btTestConnectionTemplate = (): string => {
 
 // exported for jest testing
 export const BarTenderSettingsForm: FC<Props> = memo(props => {
-    const { api, container, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
+    const { api = getDefaultAPIWrapper(), container, title = BARTENDER_CONFIGURATION_TITLE, onChange, onSuccess } = props;
     const [btServiceURL, setBtServiceURL] = useState<string>();
     const [error, setError] = useState<string>();
     const [defaultLabel, setDefaultLabel] = useState<number>();
@@ -239,9 +239,5 @@ export const BarTenderSettingsForm: FC<Props> = memo(props => {
         </div>
     );
 });
-
-BarTenderSettingsForm.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
 
 BarTenderSettingsForm.displayName = 'BarTenderSettingsForm';

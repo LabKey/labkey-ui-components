@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { act } from 'react';
 
-import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
+import { userEvent } from '@testing-library/user-event';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 import { TEST_USER_EDITOR } from '../../userFixtures';
@@ -204,7 +203,9 @@ describe('SampleAmountEditModal', () => {
 
         const unitInput = document.querySelector('input.checkin-unit-input');
         const newUnits = 'newUnits';
-        userEvent.paste(unitInput, newUnits);
+        // Focus the input, then paste
+        await userEvent.click(unitInput);
+        await userEvent.paste(newUnits);
         validate(row.StoredAmount.value, newUnits, false, undefined, defaultNoun, true, false, false);
     });
 });

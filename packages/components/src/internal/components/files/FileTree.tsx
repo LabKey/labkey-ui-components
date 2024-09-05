@@ -103,22 +103,22 @@ const nodeIsEmpty = (id: string): boolean => {
 };
 
 interface FileTreeProps {
-    loadData: (directory?: string) => Promise<any>;
-    onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => boolean;
     allowMultiSelect?: boolean;
-    useFileIconCls?: boolean;
+    defaultRootName?: string;
     emptyDirectoryText?: string;
     getRootPermissions?: (directory?: string) => Promise<any>;
-    defaultRootName?: string;
-    showNodeIcon?: boolean;
-    showLoading?: boolean;
-    showAnimations?: boolean;
     headerDecorator?: (any) => React.ReactElement<unknown>;
+    loadData: (directory?: string) => Promise<any>;
+    onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => boolean;
+    showAnimations?: boolean;
+    showLoading?: boolean;
+    showNodeIcon?: boolean;
+    useFileIconCls?: boolean;
 }
 
 interface FileTreeState {
-    cursor: any;
     checked: List<string>;
+    cursor: any;
     data: any;
     error?: string;
     loading: boolean; // Only used for testing

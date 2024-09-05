@@ -3,6 +3,7 @@ import React, {
     createContext,
     FC,
     MouseEvent,
+    PropsWithChildren,
     ReactElement,
     ReactNode,
     useCallback,
@@ -25,13 +26,13 @@ function paneId(id: string, eventKey: string): string {
 }
 
 interface TabContext {
-    id: string;
     activeKey: string;
+    id: string;
 }
 
 const Context = createContext<TabContext>(undefined);
 
-interface TabProps {
+interface TabProps extends PropsWithChildren {
     children?: ReactNode;
     className?: string;
     disabled?: boolean;

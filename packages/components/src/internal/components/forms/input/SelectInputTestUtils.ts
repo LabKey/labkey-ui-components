@@ -1,50 +1,8 @@
-import { waitForLifecycle } from '../../../test/enzymeTestHelpers';
-
 export const SELECT_INPUT_CSS_PREFIX = 'select-input';
 export const SELECT_INPUT_CONTROL_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__control`;
-export const SELECT_INPUT_DROPDOWN_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__dropdown-indicator`;
 export const SELECT_INPUT_DISABLED_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}--is-disabled`;
-export const SELECT_INPUT_OPTION_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__option`;
 export const SELECT_INPUT_PLACEHOLDER_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__placeholder`;
 export const SELECT_INPUT_SINGLE_VALUE_SELECTOR = `div.${SELECT_INPUT_CSS_PREFIX}__single-value`;
-
-export async function selectOptionByIndex(component: any, index: number): Promise<void> {
-    toggleSelectInputMenu(component);
-    const options = component.find(SELECT_INPUT_OPTION_SELECTOR);
-    if (options.length <= index) {
-        throw new Error(
-            `selectOptionByIndex: Invalid index (${index}) supplied. Only ${options.length} options available.`
-        );
-    }
-    options.at(index).simulate('click');
-    await waitForLifecycle(component);
-}
-
-export async function selectOptionByText(component: any, text: string): Promise<void> {
-    toggleSelectInputMenu(component);
-    const options = component.find(SELECT_INPUT_OPTION_SELECTOR);
-
-    let idx = -1;
-
-    for (let i = 0; i < options.length; i++) {
-        if (options.at(i).text().indexOf(text) > -1) {
-            if (idx === -1) {
-                idx = i;
-            } else {
-                throw new Error(
-                    `selectOptionByText: Invalid text "${text}" supplied. Multiple options contain this text.`
-                );
-            }
-        }
-    }
-
-    if (idx === -1) {
-        throw new Error(`selectOptionByText: Unable to find option containing text "${text}".`);
-    }
-
-    options.at(idx).simulate('click');
-    await waitForLifecycle(component);
-}
 
 export function blurSelectInputInput(component: any): void {
     component.find('input').simulate('blur');
@@ -57,8 +15,4 @@ export function setSelectInputText(component: any, value: string, blur = false):
     if (blur) {
         blurSelectInputInput(component);
     }
-}
-
-export function toggleSelectInputMenu(component: any): void {
-    component.find(SELECT_INPUT_DROPDOWN_SELECTOR).simulate('mousedown', { button: 0 });
 }

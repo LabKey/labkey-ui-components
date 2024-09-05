@@ -700,14 +700,11 @@ export class SelectInputImpl extends Component<SelectInputImplProps, State> {
 const SelectInputFormsy = withFormsy<SelectInputProps, any>(SelectInputImpl);
 
 export const SelectInput: FC<SelectInputProps> = props => {
-    if (props.formsy) {
-        return <SelectInputFormsy name={undefined} {...props} />;
+    const { formsy = false } = props;
+    if (formsy) {
+        return <SelectInputFormsy name={undefined} {...props} formsy />;
     }
-    return <SelectInputImpl {...(props as SelectInputImplProps)} />;
-};
-
-SelectInput.defaultProps = {
-    formsy: false,
+    return <SelectInputImpl {...(props as SelectInputImplProps)} formsy={false} />;
 };
 
 SelectInput.displayName = 'SelectInput';

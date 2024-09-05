@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { Component, ReactNode } from 'react';
+import React, { Component, PropsWithChildren, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import { User } from '../base/models/User';
@@ -15,7 +15,7 @@ import { UserLink } from '../user/UserLink';
 import { getEventDataValueDisplay } from './utils';
 import { AuditDetailsModel } from './models';
 
-interface Props {
+interface Props extends PropsWithChildren {
     changeDetails?: AuditDetailsModel;
     emptyMsg?: string;
     fieldValueRenderer?: (label, value, displayValue) => any;

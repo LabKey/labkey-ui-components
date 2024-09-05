@@ -16,7 +16,7 @@ interface Props {
     maxRows: number;
     noActivityMsg: string;
     onRead: (id: number) => void;
-    onViewAll: () => any;
+    onViewAll: () => void;
     onViewClick: () => void;
     serverActivity: ServerActivity;
     viewAllText: string;

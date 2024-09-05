@@ -13,7 +13,7 @@ import { ServerActivityList } from './ServerActivityList';
 export const ServerNotifications: FC<ServerNotificationsConfig> = props => {
     const { markAllNotificationsRead, maxRows, onRead, serverActivity } = props;
     const { show, setShow, menuRef, toggleRef } = useNavMenuState();
-    const toggleMenu = useCallback(() => setShow(s => !s), []);
+    const toggleMenu = useCallback(() => setShow(s => !s), [setShow]);
 
     const onRead_ = useCallback(
         async (id: number) => {

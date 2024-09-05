@@ -1,4 +1,4 @@
-import React, { FC, memo, useMemo, useCallback } from 'react';
+import React, { FC, memo, useMemo, useCallback, PropsWithChildren } from 'react';
 
 import { Alert } from '../base/Alert';
 
@@ -7,7 +7,7 @@ import { getHelpLink } from '../../util/helpLinks';
 import { AssayProvider } from './AssayPicker';
 import { GENERAL_ASSAY_PROVIDER_NAME } from './constants';
 
-interface SpecialtyAssayPanelProps {
+interface SpecialtyAssayPanelProps extends PropsWithChildren {
     hasPremium: boolean;
     onChange: (value: string) => void;
     selected: AssayProvider;

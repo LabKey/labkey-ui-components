@@ -50,11 +50,9 @@ export const AssayContextConsumer = AssayContext.Consumer;
  * and "assayDefinition".
  * @param ComponentToWrap The component definition (e.g. class, function) to wrap.
  * This will have [[InjectedAssayModel]] props injected into it when instantiated.
- * @param defaultProps Provide alternative "defaultProps" for this wrapped component.
  */
 export function withAssayModels<Props>(
-    ComponentToWrap: ComponentType<Props & InjectedAssayModel>,
-    defaultProps?: WithAssayModelProps
+    ComponentToWrap: ComponentType<Props & InjectedAssayModel>
 ): ComponentType<Props & WithAssayModelProps> {
     type WrappedProps = Props & WithAssayModelProps;
 
@@ -67,6 +65,10 @@ export function withAssayModels<Props>(
         }));
 
         private _mounted = false;
+
+        get api() {
+            return this.props.api ?? getDefaultAPIWrapper();
+        }
 
         componentDidMount = (): void => {
             this._mounted = true;
@@ -86,7 +88,7 @@ export function withAssayModels<Props>(
 
         load = async (): Promise<void> => {
             if (!isAssayEnabled(this.props.moduleContext)) {
-                this.updateModel({
+                await this.updateModel({
                     definitions: [],
                     definitionsLoadingState: LoadingState.LOADED,
                 });
@@ -97,33 +99,33 @@ export function withAssayModels<Props>(
         };
 
         loadDefinitions = async (): Promise<void> => {
-            const { api, assayContainerPath, excludedAssayDesigns } = this.props;
+            const { assayContainerPath, excludedAssayDesigns } = this.props;
             const { model } = this.state;
 
             if (model.definitionsLoadingState === LoadingState.LOADED) {
                 return;
             }
 
-            this.updateModel({ definitionsError: undefined, definitionsLoadingState: LoadingState.LOADING });
+            await this.updateModel({ definitionsError: undefined, definitionsLoadingState: LoadingState.LOADING });
 
             try {
-                let definitions = await api.assay.getAssayDefinitions({ containerPath: assayContainerPath });
+                let definitions = await this.api.assay.getAssayDefinitions({ containerPath: assayContainerPath });
 
                 if (excludedAssayDesigns?.length > 0) {
                     definitions = definitions.filter(def => excludedAssayDesigns.indexOf(def.id) === -1);
                 }
 
-                this.updateModel({
+                await this.updateModel({
                     definitions,
                     definitionsLoadingState: LoadingState.LOADED,
                 });
             } catch (definitionsError) {
-                this.updateModel({ definitions: [], definitionsError, definitionsLoadingState: LoadingState.LOADED });
+                await this.updateModel({ definitions: [], definitionsError, definitionsLoadingState: LoadingState.LOADED });
             }
         };
 
         loadProtocol = async (): Promise<void> => {
-            const { api, assayContainerPath, assayName } = this.props;
+            const { assayContainerPath, assayName } = this.props;
             const { model } = this.state;
 
             // If an "assayName" is not provided and one has not ever been loaded by this instance,
@@ -144,7 +146,7 @@ export function withAssayModels<Props>(
                 };
             }
 
-            this.update({
+            await this.update({
                 context: { assayDefinition, assayProtocol: undefined },
                 model: model.mutate(modelProps),
             });
@@ -154,22 +156,22 @@ export function withAssayModels<Props>(
             }
 
             try {
-                const assayProtocol = await api.assay.getProtocol({
+                const assayProtocol = await this.api.assay.getProtocol({
                     containerPath: assayContainerPath,
                     protocolId: assayDefinition.id,
                 });
 
-                this.update({
+                await this.update({
                     context: { assayDefinition, assayProtocol },
                     model: model.mutate({ protocolLoadingState: LoadingState.LOADED }),
                 });
             } catch (protocolError) {
-                this.updateModel({ protocolError, protocolLoadingState: LoadingState.LOADED });
+                await this.updateModel({ protocolError, protocolLoadingState: LoadingState.LOADED });
             }
         };
 
         reload = async (): Promise<void> => {
-            this.props.api.assay.clearAssayDefinitionCache();
+            this.api.assay.clearAssayDefinitionCache();
 
             await this.update({
                 context: { assayDefinition: undefined, assayProtocol: undefined },
@@ -222,10 +224,6 @@ export function withAssayModels<Props>(
         };
     }
 
-    ComponentWithAssays.defaultProps = {
-        api: defaultProps?.api ?? getDefaultAPIWrapper(),
-    };
-
     return ComponentWithAssays;
 }
 
@@ -240,10 +238,9 @@ export function withAssayModels<Props>(
 // TODO: this component seems kind of unnecessary, it seems like every consumer should be able to just use the RR6
 //  useParams hook directly, it's not particularly complicated.
 export function withAssayModelsFromLocation<Props>(
-    ComponentToWrap: ComponentType<Props & InjectedAssayModel>,
-    defaultProps?: WithAssayModelProps
+    ComponentToWrap: ComponentType<Props & InjectedAssayModel>
 ): ComponentType<Props & WithAssayModelProps> {
-    const WrappedComponent = withAssayModels<Props>(ComponentToWrap, defaultProps);
+    const WrappedComponent = withAssayModels<Props>(ComponentToWrap);
 
     const AssayFromLocation: FC<Props> = props => {
         const protocol = useParams().protocol;

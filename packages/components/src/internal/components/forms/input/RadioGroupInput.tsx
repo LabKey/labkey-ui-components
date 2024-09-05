@@ -105,15 +105,11 @@ class RadioGroupInputImpl extends PureComponent<RadioGroupInputProps, State> {
 const RadioGroupInputFormsy = withFormsy<OwnProps, any>(RadioGroupInputImpl);
 
 export const RadioGroupInput: FC<OwnProps> = props => {
-    if (props.formsy) {
-        return <RadioGroupInputFormsy {...props} />;
+    const { formsy = true } = props;
+    if (formsy) {
+        return <RadioGroupInputFormsy {...props} formsy />;
     }
-
-    return <RadioGroupInputImpl {...(props as any)} />;
-};
-
-RadioGroupInput.defaultProps = {
-    formsy: true,
+    return <RadioGroupInputImpl {...(props as any)} formsy={false} />;
 };
 
 RadioGroupInput.displayName = 'RadioGroupInput';

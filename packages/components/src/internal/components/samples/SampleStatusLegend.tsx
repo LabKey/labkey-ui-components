@@ -14,10 +14,8 @@ import { getSampleStatus, getSampleStatusContainerFilter } from './utils';
 
 export const SAMPLE_STATUS_LEGEND = 'SampleStatusLegend';
 
-interface OwnProps {}
-
 // export for jest testing
-export const SampleStatusLegendImpl: FC<OwnProps & InjectedQueryModels> = memo(props => {
+export const SampleStatusLegendImpl: FC<InjectedQueryModels> = memo(props => {
     const { model } = props.queryModels;
 
     if (isLoading(model.rowsLoadingState)) {
@@ -44,7 +42,7 @@ export const SampleStatusLegendImpl: FC<OwnProps & InjectedQueryModels> = memo(p
                     return (
                         <tr key={status.label}>
                             <td>
-                                <SampleStatusTag status={status} hideDescription={true} />
+                                <SampleStatusTag status={status} hideDescription />
                             </td>
                             <td className="sample-status-legend--description">
                                 {caseInsensitive(row, 'Description')?.value}
@@ -57,9 +55,9 @@ export const SampleStatusLegendImpl: FC<OwnProps & InjectedQueryModels> = memo(p
     );
 });
 
-const SampleStatusLegendWithQueryModels = withQueryModels<OwnProps>(SampleStatusLegendImpl);
+const SampleStatusLegendWithQueryModels = withQueryModels(SampleStatusLegendImpl);
 
-export const SampleStatusLegend: FC<OwnProps> = () => {
+export const SampleStatusLegend: FC = () => {
     const queryConfigs = {
         model: {
             id: 'sample-statuses-model',

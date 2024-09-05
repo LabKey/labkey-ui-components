@@ -9,6 +9,7 @@ import React, {
     MutableRefObject,
     CSSProperties,
     useMemo,
+    PropsWithChildren,
 } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -88,7 +89,7 @@ export interface OverlayComponent<O extends Element = HTMLDivElement> {
 
 export type TriggerType = 'click' | 'hover';
 
-interface Props {
+interface Props extends PropsWithChildren {
     className?: string;
     delay?: number;
     id?: string;

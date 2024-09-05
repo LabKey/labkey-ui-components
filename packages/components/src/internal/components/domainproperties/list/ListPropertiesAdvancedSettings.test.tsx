@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 import { List } from 'immutable';
 
 import {
@@ -11,14 +11,10 @@ import {
 import { DEFAULT_LIST_SETTINGS } from '../../../../test/data/constants';
 import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.json';
 
-import {
-    AdvancedSettings,
-    DisplayTitle,
-    SearchIndexing,
-    IndexField,
-} from './ListPropertiesAdvancedSettings';
+import { DomainField } from '../models';
+
+import { AdvancedSettings, DisplayTitle, SearchIndexing, IndexField } from './ListPropertiesAdvancedSettings';
 import { ListModel } from './models';
-import {DomainField} from "../models";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
@@ -34,38 +30,34 @@ describe('AdvancedSettings', () => {
     });
 
     test('display title select dropdown with existing list', () => {
-        render(
-            <DisplayTitle model={populatedExistingModel} onSelectChange={jest.fn()} titleColumn="Name" />
-        );
+        render(<DisplayTitle model={populatedExistingModel} onSelectChange={jest.fn()} titleColumn="Name" />);
 
         expect(document.querySelector(SELECT_INPUT_SINGLE_VALUE_SELECTOR).textContent).toEqual('Name');
         expect(document.querySelectorAll(SELECT_INPUT_DISABLED_SELECTOR)).toHaveLength(0);
-
     });
 
     test('display title select dropdown with new list and no fields present', () => {
-        render(
-            <DisplayTitle model={emptyNewModel} onSelectChange={jest.fn()} titleColumn={null} />
+        render(<DisplayTitle model={emptyNewModel} onSelectChange={jest.fn()} titleColumn={null} />);
+
+        expect(document.querySelector(SELECT_INPUT_PLACEHOLDER_SELECTOR).textContent).toEqual(
+            'No fields have been defined yet'
         );
-
-        expect(document.querySelector(SELECT_INPUT_PLACEHOLDER_SELECTOR).textContent).toEqual('No fields have been defined yet');
         expect(document.querySelectorAll(SELECT_INPUT_DISABLED_SELECTOR)).toHaveLength(1);
-
     });
 
     test('display title select dropdown with new list and some fields present', () => {
-        const newModelWithOneField = emptyNewModel.setIn(['domain', 'fields'], List.of(DomainField.create({name: 'dummyField'}))) as ListModel;
+        const newModelWithOneField = emptyNewModel.setIn(
+            ['domain', 'fields'],
+            List.of(DomainField.create({ name: 'dummyField' }))
+        ) as ListModel;
 
-        render(
-            <DisplayTitle model={newModelWithOneField} onSelectChange={jest.fn()} titleColumn={null} />
-        );
+        render(<DisplayTitle model={newModelWithOneField} onSelectChange={jest.fn()} titleColumn={null} />);
 
         expect(document.querySelector(SELECT_INPUT_PLACEHOLDER_SELECTOR).textContent).toEqual('Auto');
         expect(document.querySelectorAll(SELECT_INPUT_DISABLED_SELECTOR)).toHaveLength(0);
-
     });
 
-    test("either search indexing options 'index entire list' or 'index each item' may be open, but not both", () => {
+    test("either search indexing options 'index entire list' or 'index each item' may be open, but not both", async () => {
         render(
             <SearchIndexing
                 onRadioChange={jest.fn()}
@@ -88,14 +80,13 @@ describe('AdvancedSettings', () => {
             />
         );
 
-        userEvent.click(document.querySelector('.fa-angle-right'));
+        await userEvent.click(document.querySelector('.fa-angle-right'));
         expect(document.querySelectorAll('input[id="entireListTitleTemplate"]')).toHaveLength(1);
         expect(document.querySelectorAll('input[id="eachItemTitleTemplate"]')).toHaveLength(0);
 
-        userEvent.click(document.querySelector('.fa-angle-right'));
+        await userEvent.click(document.querySelector('.fa-angle-right'));
         expect(document.querySelectorAll('input[id="entireListTitleTemplate"]')).toHaveLength(0);
         expect(document.querySelectorAll('input[id="eachItemTitleTemplate"]')).toHaveLength(1);
-
     });
 
     test("setting 'index using custom template' generates a text input field", () => {
@@ -109,7 +100,8 @@ describe('AdvancedSettings', () => {
             />
         );
 
-        expect(document.querySelectorAll('input.list__advanced-settings-modal__custom-template-text-field')).toHaveLength(1);
-
+        expect(
+            document.querySelectorAll('input.list__advanced-settings-modal__custom-template-text-field')
+        ).toHaveLength(1);
     });
 });

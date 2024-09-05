@@ -1,7 +1,7 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 
-interface ContentGroupLabelProps {
+interface ContentGroupLabelProps extends PropsWithChildren {
     withoutBottomMargin?: boolean;
 }
 
@@ -11,7 +11,7 @@ export const ContentGroupLabel: FC<ContentGroupLabelProps> = ({ withoutBottomMar
     );
 };
 
-interface ContentGroupProps {
+interface ContentGroupProps extends PropsWithChildren {
     label?: ReactNode;
 }
 

@@ -1,8 +1,8 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, PropsWithChildren } from 'react';
 
 import { AssayProvider } from './AssayPicker';
 
-interface StandardAssayPanelProps {
+interface StandardAssayPanelProps extends PropsWithChildren {
     provider?: AssayProvider;
 }
 

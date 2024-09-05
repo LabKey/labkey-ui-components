@@ -74,9 +74,9 @@ export const FolderMenu: FC<FolderMenuProps> = memo(props => {
                                             'col-xs-2': !user.isAdmin,
                                         })}
                                     >
-                                        <a href={getHref(dashboardURL)}>
+                                        <a href={getHref(dashboardURL)} className="dashboard-link">
                                             <Tip caption="Dashboard">
-                                                <i className="fa fa-home" />
+                                                <i className="fa fa-home dashboard-icon" />
                                             </Tip>
                                         </a>
                                         {user.isAdmin && (

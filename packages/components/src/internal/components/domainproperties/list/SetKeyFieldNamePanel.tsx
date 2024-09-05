@@ -129,8 +129,8 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                                 </option>
                             )}
 
-                            {domain &&
-                                domain.fields.map((field, index) => {
+                            {domain?.fields
+                                .map((field, index) => {
                                     const display =
                                         isAutoIncPk && index === pkRowIndex ? AUTO_INC_KEY_OPTION_TEXT : field.name;
                                     return this.isValidKeyField(field) ? (
@@ -138,7 +138,8 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                                             {display}
                                         </option>
                                     ) : undefined;
-                                })}
+                                })
+                                .toArray()}
                         </select>
                     </div>
                 </div>

@@ -28,7 +28,13 @@ interface SampleStatusInputProps extends Omit<QuerySelectOwnProps, 'containerFil
 }
 
 export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
-    const { api, col, onAdditionalFormDataChange, renderLabelField, ...querySelectProps } = props;
+    const {
+        api = getDefaultAPIWrapper(),
+        col,
+        onAdditionalFormDataChange,
+        renderLabelField,
+        ...querySelectProps
+    } = props;
     const { allowDisable, onQSChange, value } = querySelectProps;
     const { user } = useServerContext();
     const [consumedStatuses, setConsumedStatuses] = useState<number[]>();
@@ -107,6 +113,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
                 containerPath={col.lookup.containerPath}
                 description={col.description}
                 displayColumn={col.lookup.displayColumn}
+                formsy
                 helpTipRenderer={col.helpTipRenderer}
                 joinValues={col.isJunctionLookup()}
                 label={col.caption}
@@ -128,10 +135,7 @@ export const SampleStatusInput: FC<SampleStatusInputProps> = memo(props => {
     );
 });
 
-SampleStatusInput.defaultProps = {
-    api: getDefaultAPIWrapper(),
-    formsy: true,
-};
+SampleStatusInput.displayName = 'SampleStatusInput';
 
 export const SampleStatusInputRenderer: FC<InputRendererProps> = memo(props => {
     const {

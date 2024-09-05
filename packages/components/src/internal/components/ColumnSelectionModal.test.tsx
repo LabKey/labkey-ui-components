@@ -1,4 +1,4 @@
-import React, { act } from 'react';
+import React from 'react';
 import { render } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 
@@ -81,9 +81,7 @@ describe('ColumnSelectionModal', () => {
         });
 
         test('lookup, expanded', () => {
-            render(
-                <ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} isExpanded isInView={false} />
-            );
+            render(<ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} isExpanded isInView={false} />);
             expect(document.querySelector('.field-name').textContent).toBe('Test Column');
             expect(document.querySelectorAll('.fa-check')).toHaveLength(0);
             expect(document.querySelectorAll('.fa-plus')).toHaveLength(1);
@@ -93,9 +91,7 @@ describe('ColumnSelectionModal', () => {
         });
 
         test('disabled', () => {
-            render(
-                <ColumnChoice {...defaultProps()} disabledMsg="Disabled, please." isInView={false} />
-            );
+            render(<ColumnChoice {...defaultProps()} disabledMsg="Disabled, please." isInView={false} />);
             const addIcon = document.querySelector('.fa-plus');
             const addIconParent = addIcon.parentElement;
             expect(addIconParent.className).toContain('disabled');
@@ -177,9 +173,7 @@ describe('ColumnSelectionModal', () => {
                 caption: 'Test Column',
             });
 
-            render(
-                wrapDraggable(<ColumnInView {...defaultProps()} allowEditLabel column={column} isDragDisabled />)
-            );
+            render(wrapDraggable(<ColumnInView {...defaultProps()} allowEditLabel column={column} isDragDisabled />));
 
             await userEvent.click(document.querySelector('.fa-pencil'));
             expect(document.querySelector('.fa-pencil')).toBeFalsy();

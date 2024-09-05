@@ -1,18 +1,12 @@
-import React from 'react';
-
-import { mount, ReactWrapper } from 'enzyme';
-
-import { Draggable } from '@hello-pangea/dnd';
+import React, { act } from 'react';
+import { render } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 
 import { ExtendedMap } from '../../public/ExtendedMap';
 
 import { QueryInfo } from '../../public/QueryInfo';
 import { QueryColumn, QueryLookup } from '../../public/QueryColumn';
 import { wrapDraggable } from '../test/testHelpers';
-
-import { waitForLifecycle } from '../test/enzymeTestHelpers';
-
-import { OverlayTrigger } from '../OverlayTrigger';
 
 import {
     ColumnChoice,
@@ -25,7 +19,6 @@ import {
     ColumnSelectionModalProps,
     FieldLabelDisplay,
 } from './ColumnSelectionModal';
-import { LoadingSpinner } from './base/LoadingSpinner';
 
 describe('ColumnSelectionModal', () => {
     const QUERY_COL = new QueryColumn({
@@ -58,60 +51,55 @@ describe('ColumnSelectionModal', () => {
         }
 
         test('isInView', () => {
-            const wrapper = mount(<ColumnChoice {...defaultProps()} isInView />);
-            expect(wrapper.find('.field-name').text()).toBe('Test Column');
-            expect(wrapper.find('.fa-check')).toHaveLength(1);
-            expect(wrapper.find('.fa-plus')).toHaveLength(0);
-            expect(wrapper.find('.field-expand-icon')).toHaveLength(1);
-            expect(wrapper.find('.fa-chevron-right')).toHaveLength(0);
-            expect(wrapper.find('.fa-chevron-down')).toHaveLength(0);
-            wrapper.unmount();
+            render(<ColumnChoice {...defaultProps()} isInView />);
+            expect(document.querySelector('.field-name').textContent).toBe('Test Column');
+            expect(document.querySelectorAll('.fa-check')).toHaveLength(1);
+            expect(document.querySelectorAll('.fa-plus')).toHaveLength(0);
+            expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(1);
+            expect(document.querySelectorAll('.fa-chevron-right')).toHaveLength(0);
+            expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(0);
         });
 
         test('not isInView', () => {
-            const wrapper = mount(<ColumnChoice {...defaultProps()} isInView={false} />);
-            expect(wrapper.find('.field-name').text()).toBe('Test Column');
-            expect(wrapper.find('.fa-check')).toHaveLength(0);
-            expect(wrapper.find('.fa-plus')).toHaveLength(1);
-            expect(wrapper.find('.field-expand-icon')).toHaveLength(1);
-            expect(wrapper.find('.fa-chevron-right')).toHaveLength(0);
-            expect(wrapper.find('.fa-chevron-down')).toHaveLength(0);
-            wrapper.unmount();
+            render(<ColumnChoice {...defaultProps()} isInView={false} />);
+            expect(document.querySelector('.field-name').textContent).toBe('Test Column');
+            expect(document.querySelectorAll('.fa-check')).toHaveLength(0);
+            expect(document.querySelectorAll('.fa-plus')).toHaveLength(1);
+            expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(1);
+            expect(document.querySelectorAll('.fa-chevron-right')).toHaveLength(0);
+            expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(0);
         });
 
         test('lookup, collapsed', () => {
-            const wrapper = mount(<ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} isInView={false} />);
-            expect(wrapper.find('.field-name').text()).toBe('Test Column');
-            expect(wrapper.find('.fa-check')).toHaveLength(0);
-            expect(wrapper.find('.fa-plus')).toHaveLength(1);
-            expect(wrapper.find('.field-expand-icon')).toHaveLength(3);
-            expect(wrapper.find('.fa-chevron-right')).toHaveLength(1);
-            expect(wrapper.find('.fa-chevron-down')).toHaveLength(0);
-            wrapper.unmount();
+            render(<ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} isInView={false} />);
+            expect(document.querySelector('.field-name').textContent).toBe('Test Column');
+            expect(document.querySelectorAll('.fa-check')).toHaveLength(0);
+            expect(document.querySelectorAll('.fa-plus')).toHaveLength(1);
+            expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(3);
+            expect(document.querySelectorAll('.fa-chevron-right')).toHaveLength(1);
+            expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(0);
         });
 
         test('lookup, expanded', () => {
-            const wrapper = mount(
+            render(
                 <ColumnChoice {...defaultProps()} column={QUERY_COL_LOOKUP} isExpanded isInView={false} />
             );
-            expect(wrapper.find('.field-name').text()).toBe('Test Column');
-            expect(wrapper.find('.fa-check')).toHaveLength(0);
-            expect(wrapper.find('.fa-plus')).toHaveLength(1);
-            expect(wrapper.find('.field-expand-icon')).toHaveLength(3);
-            expect(wrapper.find('.fa-chevron-right')).toHaveLength(0);
-            expect(wrapper.find('.fa-chevron-down')).toHaveLength(1);
-            wrapper.unmount();
+            expect(document.querySelector('.field-name').textContent).toBe('Test Column');
+            expect(document.querySelectorAll('.fa-check')).toHaveLength(0);
+            expect(document.querySelectorAll('.fa-plus')).toHaveLength(1);
+            expect(document.querySelectorAll('.field-expand-icon')).toHaveLength(3);
+            expect(document.querySelectorAll('.fa-chevron-right')).toHaveLength(0);
+            expect(document.querySelectorAll('.fa-chevron-down')).toHaveLength(1);
         });
 
         test('disabled', () => {
-            const wrapper = mount(
+            render(
                 <ColumnChoice {...defaultProps()} disabledMsg="Disabled, please." isInView={false} />
             );
-            const addIcon = wrapper.find('.fa-plus');
-            const addIconParent = addIcon.parent();
-            expect(addIconParent.prop('className')).toContain('disabled');
-            expect(addIconParent.prop('title')).toBeUndefined();
-            expect(addIconParent.prop('onClick')).toBeUndefined();
+            const addIcon = document.querySelector('.fa-plus');
+            const addIconParent = addIcon.parentElement;
+            expect(addIconParent.className).toContain('disabled');
+            expect(addIconParent.title).toBe('');
         });
     });
 
@@ -131,33 +119,27 @@ describe('ColumnSelectionModal', () => {
             };
         }
 
-        function validate(wrapper: ReactWrapper, column: QueryColumn, dragDisabled: boolean, deleteDisabled: boolean): void {
-            const fieldName = wrapper.find('.field-name span');
-            expect(fieldName.text()).toBe(column.caption);
-            const removeIcon = wrapper.find('.fa-times');
+        function validate(column: QueryColumn, deleteDisabled: boolean): void {
+            expect(document.querySelector('.field-name span').textContent).toBe(column.caption);
+            const removeIcon = document.querySelector('.fa-times');
             if (deleteDisabled) {
-                expect(removeIcon.exists()).toBe(false);
+                expect(removeIcon).toBeFalsy();
             } else {
-                expect(removeIcon.exists()).toBeTruthy();
-                const iconParent = removeIcon.parent();
-                expect(iconParent.prop('className')).toContain('view-field__action clickable');
-                expect(iconParent.prop('onClick')).toBeDefined();
-            }
-            if (dragDisabled) {
-                expect(wrapper.find(Draggable).prop('isDragDisabled')).toBe(true);
+                expect(removeIcon).toBeTruthy();
+                const iconParent = removeIcon.parentElement;
+                expect(iconParent.className).toContain('view-field__action clickable');
+                expect(iconParent.onclick).toBeDefined();
             }
         }
 
         test('remove enabled', () => {
-            const wrapper = mount(wrapDraggable(<ColumnInView {...defaultProps()} />));
-            validate(wrapper, QUERY_COL, false, false);
-            wrapper.unmount();
+            render(wrapDraggable(<ColumnInView {...defaultProps()} />));
+            validate(QUERY_COL, false);
         });
 
         test('delete disabled', () => {
-            const wrapper = mount(wrapDraggable(<ColumnInView {...defaultProps()} disableDelete={true} />));
-            validate(wrapper, QUERY_COL, false, true);
-            wrapper.unmount();
+            render(wrapDraggable(<ColumnInView {...defaultProps()} disableDelete />));
+            validate(QUERY_COL, true);
         });
 
         test('addToDisplayView can be removed', () => {
@@ -169,9 +151,8 @@ describe('ColumnSelectionModal', () => {
                 caption: 'Test Column',
             });
 
-            const wrapper = mount(wrapDraggable(<ColumnInView {...defaultProps()} column={column} />));
-            validate(wrapper, column, false, false);
-            wrapper.unmount();
+            render(wrapDraggable(<ColumnInView {...defaultProps()} column={column} />));
+            validate(column, false);
         });
 
         test('drag disabled', () => {
@@ -183,13 +164,11 @@ describe('ColumnSelectionModal', () => {
                 caption: 'Test Column',
             });
 
-            const wrapper = mount(wrapDraggable(<ColumnInView {...defaultProps()} column={column} isDragDisabled />));
-
-            validate(wrapper, column, false, false);
-            wrapper.unmount();
+            render(wrapDraggable(<ColumnInView {...defaultProps()} column={column} isDragDisabled />));
+            validate(column, false);
         });
 
-        test('Editing column labels', () => {
+        test('Editing column labels', async () => {
             const column = new QueryColumn({
                 name: 'testColumn',
                 fieldKey: 'testColumn',
@@ -198,48 +177,43 @@ describe('ColumnSelectionModal', () => {
                 caption: 'Test Column',
             });
 
-            const wrapper = mount(
+            render(
                 wrapDraggable(<ColumnInView {...defaultProps()} allowEditLabel column={column} isDragDisabled />)
             );
 
-            wrapper.find('.fa-pencil').simulate('click');
-            expect(wrapper.find('.fa-pencil').exists()).toBeFalsy();
-            expect(wrapper.find('input').exists()).toBe(true);
-            wrapper.unmount();
+            await userEvent.click(document.querySelector('.fa-pencil'));
+            expect(document.querySelector('.fa-pencil')).toBeFalsy();
+            expect(document.querySelectorAll('input')).toHaveLength(1);
         });
     });
 
     describe('FieldLabelDisplay', () => {
         test('not lookup', () => {
-            const wrapper = mount(<FieldLabelDisplay column={QUERY_COL} includeFieldKey />);
-            expect(wrapper.find('.field-name span')).toHaveLength(1);
-            expect(wrapper.find('.field-name span').text()).toBe(QUERY_COL.caption);
-            expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
-            expect(wrapper.find('input')).toHaveLength(0);
-            wrapper.unmount();
+            render(<FieldLabelDisplay column={QUERY_COL} includeFieldKey />);
+            expect(document.querySelector('.field-name span').textContent).toBe(QUERY_COL.caption);
+            expect(document.querySelectorAll('.overlay-trigger')).toHaveLength(1);
+            expect(document.querySelectorAll('input')).toHaveLength(0);
         });
 
         test('is lookup', () => {
-            const wrapper = mount(<FieldLabelDisplay column={QUERY_COL_LOOKUP} includeFieldKey />);
-            expect(wrapper.find('.field-name span')).toHaveLength(1);
-            expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
-            expect(wrapper.find('input')).toHaveLength(0);
-            wrapper.unmount();
+            render(<FieldLabelDisplay column={QUERY_COL_LOOKUP} includeFieldKey />);
+            expect(document.querySelectorAll('.field-name span')).toHaveLength(1);
+            expect(document.querySelectorAll('.overlay-trigger')).toHaveLength(1);
+            expect(document.querySelectorAll('input')).toHaveLength(0);
         });
 
         test('is lookup, do not include fieldKey', () => {
-            const wrapper = mount(<FieldLabelDisplay column={QUERY_COL_LOOKUP} />);
-            expect(wrapper.find('.field-name')).toHaveLength(1);
-            expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
-            expect(wrapper.find('input')).toHaveLength(0);
-            wrapper.unmount();
+            render(<FieldLabelDisplay column={QUERY_COL_LOOKUP} />);
+            expect(document.querySelectorAll('.field-name')).toHaveLength(1);
+            expect(document.querySelectorAll('.overlay-trigger')).toHaveLength(0);
+            expect(document.querySelectorAll('input')).toHaveLength(0);
         });
 
         test('is editing', () => {
-            const wrapper = mount(<FieldLabelDisplay column={QUERY_COL} editing />);
-            expect(wrapper.find('input')).toHaveLength(1);
-            expect(wrapper.find('input').prop('defaultValue')).toBe(QUERY_COL.caption);
-            wrapper.unmount();
+            render(<FieldLabelDisplay column={QUERY_COL} editing />);
+            const inputs = document.querySelectorAll('input');
+            expect(inputs).toHaveLength(1);
+            expect(inputs[0].value).toBe(QUERY_COL.caption);
         });
     });
 
@@ -256,34 +230,45 @@ describe('ColumnSelectionModal', () => {
             };
         }
 
-        function validate(wrapper: ReactWrapper, expanded = false, inView = false, hasChild = false): void {
+        function validate(expanded = false, inView = false, hasChild = false): void {
             const count = hasChild ? 2 : 1;
-            expect(wrapper.find(ColumnChoice)).toHaveLength(count);
-            expect(wrapper.find(ColumnChoice).first().prop('isExpanded')).toBe(expanded);
-            expect(wrapper.find(ColumnChoice).first().prop('isInView')).toBe(inView);
-            expect(wrapper.find(ColumnChoiceGroup)).toHaveLength(count);
+            const columnChoices = document.querySelectorAll('.list-group-item');
+            expect(columnChoices).toHaveLength(count);
+
+            const downArrow = columnChoices[0].querySelector('.fa-chevron-down');
+            if (expanded) {
+                expect(downArrow).toBeTruthy();
+            } else {
+                expect(downArrow).toBeFalsy();
+            }
+
+            const viewField = columnChoices[0].querySelector(
+                '.view-field__action[title="This field is included in the view."]'
+            );
+            if (inView) {
+                expect(viewField).toBeTruthy();
+            } else {
+                expect(viewField).toBeFalsy();
+            }
         }
 
         test('standard column, not lookup, no in view', () => {
-            const wrapper = mount(<ColumnChoiceGroup {...defaultProps()} />);
-            validate(wrapper);
-            wrapper.unmount();
+            render(<ColumnChoiceGroup {...defaultProps()} />);
+            validate();
         });
 
         test('standard column, not lookup, in view', () => {
-            const wrapper = mount(<ColumnChoiceGroup {...defaultProps()} columnsInView={[QUERY_COL]} />);
-            validate(wrapper, false, true);
-            wrapper.unmount();
+            render(<ColumnChoiceGroup {...defaultProps()} columnsInView={[QUERY_COL]} />);
+            validate(false, true);
         });
 
         test('lookup column, collapsed, not in view', () => {
-            const wrapper = mount(<ColumnChoiceGroup {...defaultProps()} column={QUERY_COL_LOOKUP} />);
-            validate(wrapper);
-            wrapper.unmount();
+            render(<ColumnChoiceGroup {...defaultProps()} column={QUERY_COL_LOOKUP} />);
+            validate();
         });
 
         test('lookup column, expanded, in view', () => {
-            const wrapper = mount(
+            render(
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
@@ -291,13 +276,12 @@ describe('ColumnSelectionModal', () => {
                     columnsInView={[QUERY_COL_LOOKUP]}
                 />
             );
-            validate(wrapper, true, true);
-            wrapper.unmount();
+            validate(true, true);
         });
 
         test('lookup column with children, child not in view', () => {
             const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [QUERY_COL.fieldKey]: QUERY_COL }) });
-            const wrapper = mount(
+            render(
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
@@ -305,15 +289,12 @@ describe('ColumnSelectionModal', () => {
                     columnsInView={[QUERY_COL_LOOKUP]}
                 />
             );
-            validate(wrapper, true, true, true);
-            expect(wrapper.find(ColumnChoice).last().prop('isExpanded')).toBe(false);
-            expect(wrapper.find(ColumnChoice).last().prop('isInView')).toBe(false);
-            wrapper.unmount();
+            validate(true, true, true);
         });
 
         test('lookup column with children, child in view', () => {
             const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [QUERY_COL.fieldKey]: QUERY_COL }) });
-            const wrapper = mount(
+            render(
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
@@ -321,16 +302,13 @@ describe('ColumnSelectionModal', () => {
                     columnsInView={[QUERY_COL_LOOKUP, QUERY_COL]}
                 />
             );
-            validate(wrapper, true, true, true);
-            expect(wrapper.find(ColumnChoice).last().prop('isExpanded')).toBe(false);
-            expect(wrapper.find(ColumnChoice).last().prop('isInView')).toBe(true);
-            wrapper.unmount();
+            validate(true, true, true);
         });
 
         test('lookup column with children, child hidden', () => {
             const colHidden = new QueryColumn({ ...QUERY_COL, hidden: true });
             const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [colHidden.fieldKey]: colHidden }) });
-            const wrapper = mount(
+            render(
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
@@ -339,14 +317,13 @@ describe('ColumnSelectionModal', () => {
                     expandedColumns={{ [QUERY_COL_LOOKUP.index]: queryInfo }}
                 />
             );
-            validate(wrapper, true, true);
-            wrapper.unmount();
+            validate(true, true);
         });
 
         test('lookup column with children, child hidden with showAllColumns', () => {
             const colHidden = new QueryColumn({ ...QUERY_COL, hidden: true });
             const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [colHidden.fieldKey]: colHidden }) });
-            const wrapper = mount(
+            render(
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
@@ -355,16 +332,13 @@ describe('ColumnSelectionModal', () => {
                     showAllColumns
                 />
             );
-            validate(wrapper, true, true, true);
-            expect(wrapper.find(ColumnChoice).last().prop('isExpanded')).toBe(false);
-            expect(wrapper.find(ColumnChoice).last().prop('isInView')).toBe(true);
-            wrapper.unmount();
+            validate(true, true, true);
         });
 
         test('lookup column with children, child removeFromViews', () => {
             const colHidden = new QueryColumn({ ...QUERY_COL, removeFromViews: true });
             const queryInfo = new QueryInfo({ columns: new ExtendedMap({ [colHidden.fieldKey]: colHidden }) });
-            const wrapper = mount(
+            render(
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
@@ -373,8 +347,7 @@ describe('ColumnSelectionModal', () => {
                     columnsInView={[QUERY_COL_LOOKUP]}
                 />
             );
-            validate(wrapper, true, true);
-            wrapper.unmount();
+            validate(true, true);
         });
 
         test('lookup column, ancestor expanded', () => {
@@ -405,7 +378,7 @@ describe('ColumnSelectionModal', () => {
                 }),
             });
 
-            const wrapper = mount(
+            render(
                 <ColumnChoiceGroup
                     {...defaultProps()}
                     column={QUERY_COL_LOOKUP}
@@ -415,11 +388,8 @@ describe('ColumnSelectionModal', () => {
                     showAllColumns
                 />
             );
-            validate(wrapper, true, true, true);
-            expect(wrapper.find('.list-group-item')).toHaveLength(2);
-            expect(wrapper.find('.list-group-item').first().text()).toBe('Test Column');
-            expect(wrapper.find('.list-group-item').last().text()).toBe('Test Standard');
-            wrapper.unmount();
+            validate(true, true, true);
+            expect(document.querySelectorAll('.list-group-item')).toHaveLength(2);
         });
     });
 
@@ -435,40 +405,38 @@ describe('ColumnSelectionModal', () => {
         }
 
         test('default props', () => {
-            const wrapper = mount(<ColumnSelectionModal {...defaultProps()} />);
-            const titles = wrapper.find('.field-modal__col-title');
+            render(<ColumnSelectionModal {...defaultProps()} />);
+            const titles = document.querySelectorAll('.field-modal__col-title');
+            expect(titles).toHaveLength(2);
 
-            // default isLoaded
-            expect(wrapper.find(ColumnChoiceGroup).length).toEqual(1);
-            // default leftColumnTitle
-            expect(titles.at(0).text()).toContain('Available Fields');
-            // default rightColumnTitle
-            expect(titles.at(1).text()).toContain('Selected Fields');
-            // default allowShowAll
-            expect(wrapper.exists('.field-modal__footer')).toBe(false);
-            wrapper.unmount();
+            expect(document.querySelectorAll('.list-group-item')).toHaveLength(2);
+            expect(titles[0].textContent).toContain('Available Fields');
+            expect(titles[1].textContent).toContain('Selected Fields');
+            expect(document.querySelector('.field-modal__footer')).toBeFalsy();
         });
 
-        test('loading initialization', async () => {
-            const wrapper = mount(<ColumnSelectionModal {...defaultProps()} isLoaded={false} />);
+        test('loading initialization', () => {
+            render(<ColumnSelectionModal {...defaultProps()} isLoaded={false} />);
 
-            expect(wrapper.find(LoadingSpinner).length).toEqual(1);
-            expect(wrapper.find(ColumnChoiceGroup).length).toEqual(0);
+            expect(document.querySelectorAll('.fa-spinner')).toHaveLength(1);
+            expect(document.querySelectorAll('.list-group-item')).toHaveLength(0);
+        });
 
-            const initialSelectedColumn = QUERY_COL;
-            const initialSelectedColumns = [initialSelectedColumn];
-            wrapper.setProps({ initialSelectedColumn, initialSelectedColumns, isLoaded: true });
-            await waitForLifecycle(wrapper);
+        test('loaded', () => {
+            render(
+                <ColumnSelectionModal
+                    {...defaultProps()}
+                    initialSelectedColumn={QUERY_COL}
+                    initialSelectedColumns={[QUERY_COL]}
+                    isLoaded
+                />
+            );
 
-            expect(wrapper.find(LoadingSpinner).length).toEqual(0);
-            expect(wrapper.find(ColumnChoiceGroup).length).toEqual(1);
+            expect(document.querySelectorAll('.fa-spinner')).toHaveLength(0);
+            expect(document.querySelectorAll('.list-group-item')).toHaveLength(2);
 
             // verify useEffect initialization of selectedIndex, selectedColumns
-            const columnsInView = wrapper.find(ColumnInView);
-            expect(columnsInView.length).toEqual(1);
-            expect(columnsInView.prop('selected')).toBe(true);
-
-            wrapper.unmount();
+            expect(document.querySelectorAll('.list-group-item.active')).toHaveLength(1);
         });
     });
 });

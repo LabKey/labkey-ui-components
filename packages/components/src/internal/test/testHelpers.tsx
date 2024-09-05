@@ -50,7 +50,7 @@ export const AppContextTestProvider: FC<AppContextTestProviderProps> = props => 
 /**
  * Instantiates a QueryInfo from a captured query details response payload. Cannot be used until you've called
  * initQueryGridState or initUnitTestMocks.
- * @param getQueryDetailsResponse: getQueryDetails response object (e.g. imported from
+ * @param getQueryDetailsResponse getQueryDetails response object (e.g. imported from
  * test/data/mixtures-getQueryDetails.json)
  */
 export const makeQueryInfo = (getQueryDetailsResponse): QueryInfo => {
@@ -79,7 +79,7 @@ export const makeTestISelectRowsResult = (getQueryResponse, getQueryDetailsRespo
 /**
  * Creates rows and orderedRows objects needed by the QueryModel. Returns a Promise that resolves to an object that
  * looks like: { messages: any, rows: any, orderedRows: string[], rowCount: number }
- * @param getQueryResponse: getQuery Response object (e.g. imported from test/data/mixtures-getQuery.json)
+ * @param getQueryResponse getQuery Response object (e.g. imported from test/data/mixtures-getQuery.json)
  */
 export const makeTestData = (getQueryResponse): RowsResponse => {
     const { key, messages, models, orderedModels, rowCount } = parseQueryResponse(getQueryResponse);
@@ -106,7 +106,7 @@ export function registerDefaultURLMappers(): void {
 /**
  * Use this to sleep in the tests. If you make your test methods async you can use "await sleep();" to put your thread
  * to sleep temporarily which will allow async actions in your component to continue.
- * @param ms: the amount of time (in ms) to sleep
+ * @param ms the amount of time (in ms) to sleep
  */
 export const sleep = (ms = 0): Promise<void> => {
     return new Promise(resolve => {

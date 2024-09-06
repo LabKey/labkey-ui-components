@@ -318,11 +318,10 @@ const RESOLVE_LSID_MAPPERS = [
             if (params.type) {
                 const type = params.type;
                 const lsid = params.lsid;
-                if ('data' === type?.toLowerCase()) {
+                if (type?.toLowerCase() === 'data') {
                     const url = ['rd', 'expdata', lsid];
                     return AppURL.create(...url);
-                }
-                else if ('material' === type?.toLowerCase()) {
+                } else if (type?.toLowerCase() === 'material') {
                     const url = ['rd', 'samples', lsid];
                     return AppURL.create(...url);
                 }

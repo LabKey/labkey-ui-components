@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 5.1.0
+*Released*: 6 September 2024
 - Issue 51158: Update text for discarding samples from storage to use "removed" instead
 
 ### version 5.0.0

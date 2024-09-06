@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.X
+*Released*: X September 2024
+- Issue 50818: add RESOLVE_LSID_MAPPERS to resolve data/material by lsid
+
 ### version 5.0.0
 *Released*: 5 September 2024
 - withQueryModels: Add reloadModel flag to setOffset

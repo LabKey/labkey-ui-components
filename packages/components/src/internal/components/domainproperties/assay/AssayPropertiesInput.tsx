@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode } from 'react';
+import React, { FC, memo, PropsWithChildren, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
 import classNames from 'classnames';
@@ -38,13 +38,13 @@ import { AssayProtocolModel } from './models';
 import { FORM_IDS, SCRIPTS_DIR } from './constants';
 import { getScriptEngineForExtension, getValidPublishTargets } from './actions';
 
-interface AssayPropertiesInputProps extends DomainFieldLabelProps {
-    hideAdvancedProperties?: boolean;
+interface AssayPropertiesInputProps extends DomainFieldLabelProps, PropsWithChildren {
     colSize?: number;
+    hideAdvancedProperties?: boolean;
 }
 
 export const AssayPropertiesInput: FC<AssayPropertiesInputProps> = memo(props => {
-    const { hideAdvancedProperties, children, colSize, ...domainFieldProps } = props;
+    const { hideAdvancedProperties, children, colSize = 9, ...domainFieldProps } = props;
     const colXs = colSize ? 'col-xs-' + colSize : undefined;
 
     return (
@@ -71,15 +71,11 @@ export const AssayPropertiesInput: FC<AssayPropertiesInputProps> = memo(props =>
 
 AssayPropertiesInput.displayName = 'AssayPropertiesInput';
 
-AssayPropertiesInput.defaultProps = {
-    colSize: 9,
-};
-
 interface InputProps {
+    canRename?: boolean;
     hideAdvancedProperties?: boolean;
     model: AssayProtocolModel;
     onChange: (evt) => void;
-    canRename?: boolean;
 }
 
 export function NameInput(props: InputProps) {
@@ -310,7 +306,7 @@ export function BackgroundUploadInput(props: InputProps) {
 }
 
 interface AutoLinkDataInputState {
-    containers: List<Container>;
+    containers: Container[];
 }
 
 export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkDataInputState> {
@@ -325,10 +321,10 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
     componentDidMount(): void {
         getValidPublishTargets(this.props.model.container)
             .then(containers => {
-                this.setState({ containers: List(containers) });
+                this.setState({ containers });
             })
             .catch(response => {
-                this.setState({ containers: List<Container>() });
+                this.setState({ containers: [] });
             });
     }
 
@@ -417,13 +413,13 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
                 </>
             }
         >
-            {props.model.moduleTransformScripts.map((script, i) => {
-                return (
+            {props.model.moduleTransformScripts
+                .map((script, i) => (
                     <div key={i} className="module-transform-script" style={{ overflowWrap: 'break-word' }}>
                         {script}
                     </div>
-                );
-            })}
+                ))
+                .toArray()}
         </AssayPropertiesInput>
     );
 }

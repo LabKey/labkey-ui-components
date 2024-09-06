@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
-import { List } from 'immutable';
 
 import { Container } from '../base/models/Container';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface Props {
     autoLinkTarget: string;
-    containers: List<Container>;
+    containers: Container[];
     onChange: (evt: any) => void;
     value: string;
 }

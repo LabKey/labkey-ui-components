@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 
-interface Props {
+interface Props extends PropsWithChildren {
     beforeunload: (event: any) => void;
 }
 

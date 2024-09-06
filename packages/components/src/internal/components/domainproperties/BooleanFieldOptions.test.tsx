@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED } from './constants';
 import { createFormInputId } from './utils';
@@ -39,7 +39,7 @@ describe('BooleanFieldOptions', () => {
         expect((formatField as HTMLInputElement).value).toEqual(newFormat);
     });
 
-    test('onChange', () => {
+    test('onChange', async () => {
         const domainIndex = 1;
         const format = 'format';
         const index = 1;
@@ -59,7 +59,7 @@ describe('BooleanFieldOptions', () => {
 
         const elementId = createFormInputId(DOMAIN_FIELD_FORMAT, domainIndex, index);
         const formatField = document.getElementById(elementId);
-        userEvent.type(formatField, expectedValue);
+        await userEvent.type(formatField, expectedValue);
         expect(onChange).toHaveBeenCalledWith(elementId, format + expectedValue);
     });
 });

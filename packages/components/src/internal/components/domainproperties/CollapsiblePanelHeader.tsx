@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { isApp } from '../../app/utils';
@@ -7,7 +7,7 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { DomainPanelStatus } from './models';
 
-interface Props {
+interface Props extends PropsWithChildren {
     collapsed: boolean;
     collapsible: boolean;
     controlledCollapse: boolean;

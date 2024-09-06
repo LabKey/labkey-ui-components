@@ -62,7 +62,7 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
         canUpdate,
         editColumns,
         queryColumns,
-        submitText,
+        submitText = 'Save',
         title,
         onAdditionalFormDataChange,
     } = props;
@@ -247,6 +247,4 @@ export const EditableDetailPanel: FC<EditableDetailPanelProps> = props => {
     return panel;
 };
 
-EditableDetailPanel.defaultProps = {
-    submitText: 'Save',
-};
+EditableDetailPanel.displayName = 'EditableDetailPanel';

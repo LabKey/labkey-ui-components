@@ -16,12 +16,9 @@ export const FindFieldOption: FC<{
     field: FindField;
     onFieldChange: (field: FindField) => void;
 }> = memo(({ field, checked, onFieldChange }) => {
-    const onChange = useCallback(
-        (event: any) => {
-            onFieldChange(field);
-        },
-        [onFieldChange]
-    );
+    const onChange = useCallback(() => {
+        onFieldChange(field);
+    }, [field, onFieldChange]);
 
     return (
         <label key={field.name} className="find-by-ids-field-label">
@@ -48,7 +45,7 @@ interface Props {
 const MAX_IDS = 1000;
 
 export const FindByIdsModal: FC<Props> = memo(props => {
-    const { onCancel, onFind, nounPlural, sessionKey, initialField, api } = props;
+    const { api = getDefaultAPIWrapper(), onCancel, onFind, nounPlural, sessionKey, initialField } = props;
     const [fieldType, setFieldType] = useState<FindField>(initialField || UNIQUE_ID_FIND_FIELD);
     const [idString, setIdString] = useState<string>(undefined);
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -139,6 +136,4 @@ export const FindByIdsModal: FC<Props> = memo(props => {
     );
 });
 
-FindByIdsModal.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
+FindByIdsModal.displayName = 'FindByIdsModal';

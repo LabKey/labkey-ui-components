@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo } from 'react';
+import React, { FC, memo, PropsWithChildren } from 'react';
 
 import { CreatedModified } from '../base/CreatedModified';
 
 import { Breadcrumb } from './Breadcrumb';
 
-interface Props {
+interface Props extends PropsWithChildren {
     row?: Record<string, any>;
     useServerDate?: boolean;
 }

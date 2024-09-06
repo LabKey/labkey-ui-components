@@ -144,7 +144,7 @@ interface EntityProps {
 }
 
 interface State {
-    containers: List<Container>;
+    containers: Container[];
     isValid: boolean;
     loadingError: string;
     prefix: string;
@@ -201,9 +201,9 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
 
         try {
             const containers = await api.domain.getValidPublishTargets(model.containerPath);
-            this.setState({ containers: List(containers) });
+            this.setState({ containers });
         } catch (e) {
-            this.setState({ containers: List() });
+            this.setState({ containers: [] });
         }
 
         if (isSampleManagerEnabled()) {

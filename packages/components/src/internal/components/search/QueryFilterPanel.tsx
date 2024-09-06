@@ -60,7 +60,7 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
         allowRelativeDateFilter,
         hasNotInQueryFilter,
         asRow,
-        api,
+        api = getDefaultAPIWrapper(),
         queryInfo,
         emptyMsg,
         skipDefaultViewCheck,
@@ -343,6 +343,4 @@ export const QueryFilterPanel: FC<Props> = memo(props => {
     }
 });
 
-QueryFilterPanel.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
+QueryFilterPanel.displayName = 'QueryFilterPanel';

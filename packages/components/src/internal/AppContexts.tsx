@@ -1,5 +1,5 @@
 import { getServerContext } from '@labkey/api';
-import React, { FC, useMemo } from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 
 import { AppContextProvider, ExtendableAppContext } from './AppContext';
 import { GlobalStateContextProvider } from './GlobalStateContext';
@@ -9,6 +9,7 @@ import { LabelPrintingContextProvider } from './components/labelPrinting/LabelPr
 
 interface Props<T = {}> {
     initialAppContext?: ExtendableAppContext<T>;
+    children?: ReactNode | undefined
 }
 
 /**

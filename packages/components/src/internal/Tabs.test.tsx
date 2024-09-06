@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { Tab, Tabs } from './Tabs';
 
 describe('Tabs', () => {
-    test('Uncontrolled', () => {
+    test('Uncontrolled', async () => {
         render(
             <Tabs>
                 <Tab eventKey="one" title="Tab One">
@@ -27,7 +27,7 @@ describe('Tabs', () => {
         expect(tabs[1].textContent).toEqual('Tab Two');
         expect(tabContents[1].textContent).toEqual('Two');
 
-        userEvent.click(document.querySelectorAll('li a')[1]);
+        await userEvent.click(document.querySelectorAll('li a')[1]);
         tabs = document.querySelectorAll('li');
         expect(tabs[0].classList).toHaveLength(0);
         expect(tabs[1].classList[0]).toEqual('active');
@@ -54,13 +54,13 @@ describe('Tabs', () => {
         );
     };
 
-    test('Controlled', () => {
+    test('Controlled', async () => {
         const onSelect = jest.fn();
         render(<ControlledTabs onSelect={onSelect} />);
         let tabs = document.querySelectorAll('li');
         expect(tabs[0].classList).toHaveLength(0);
         expect(tabs[1].classList[0]).toEqual('active');
-        userEvent.click(document.querySelectorAll('li a')[0]);
+        await userEvent.click(document.querySelectorAll('li a')[0]);
         expect(onSelect).toHaveBeenCalledWith('one');
         tabs = document.querySelectorAll('li');
         expect(tabs[0].classList[0]).toEqual('active');
@@ -90,11 +90,11 @@ describe('Tabs', () => {
         );
     };
 
-    test('Children that are not rendered', () => {
+    test('Children that are not rendered', async () => {
         render(<SometimesRenderChildren />);
         let tabs = document.querySelectorAll('li');
         expect(tabs).toHaveLength(2);
-        userEvent.click(document.querySelectorAll('li a')[1]);
+        await userEvent.click(document.querySelectorAll('li a')[1]);
         tabs = document.querySelectorAll('li');
         expect(tabs).toHaveLength(3);
         expect(tabs[2].textContent).toEqual('Secret Third Tab');

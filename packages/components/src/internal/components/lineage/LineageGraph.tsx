@@ -184,14 +184,22 @@ export const LineageGraph = withLineage<LineageGraphOwnProps>((props: Props) => 
     );
 });
 
+LineageGraph.displayName = 'LineageGraph';
+
 interface LineageDepthLimitProps {
     className?: string;
     isRoot?: boolean;
     maxDistance?: number;
     nodeName?: string;
 }
+
 export const LineageDepthLimitMessage: FC<LineageDepthLimitProps> = memo(props => {
-    const { className, maxDistance, isRoot, nodeName } = props;
+    const {
+        className = 'lineage-graph-generation-limit-msg',
+        maxDistance = DEFAULT_LINEAGE_DISTANCE,
+        isRoot,
+        nodeName = 'the seed node',
+    } = props;
 
     return (
         <div className={className}>
@@ -200,8 +208,4 @@ export const LineageDepthLimitMessage: FC<LineageDepthLimitProps> = memo(props =
     );
 });
 
-LineageDepthLimitMessage.defaultProps = {
-    className: 'lineage-graph-generation-limit-msg',
-    maxDistance: DEFAULT_LINEAGE_DISTANCE,
-    nodeName: 'the seed node',
-};
+LineageDepthLimitMessage.displayName = 'LineageDepthLimitMessage';

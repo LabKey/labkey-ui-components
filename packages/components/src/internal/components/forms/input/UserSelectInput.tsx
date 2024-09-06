@@ -37,7 +37,15 @@ interface UserSelectInputProps extends Omit<SelectInputProps, 'delimiter' | 'loa
 }
 
 export const UserSelectInput: FC<UserSelectInputProps> = memo(props => {
-    const { containerPath, includeInactive, notifyList, permissions, useEmail, ...selectInputProps } = props;
+    const {
+        clearCacheOnChange = false,
+        containerPath,
+        includeInactive,
+        notifyList = false,
+        permissions,
+        useEmail = false,
+        ...selectInputProps
+    } = props;
     const key = useMemo(() => generateKey(permissions, containerPath), [containerPath, permissions]);
     const [error, setError] = useState<string>();
     const { api } = useAppContext();
@@ -73,6 +81,7 @@ export const UserSelectInput: FC<UserSelectInputProps> = memo(props => {
     return (
         <SelectInput
             {...selectInputProps}
+            clearCacheOnChange={clearCacheOnChange}
             disabled={error ? true : selectInputProps.disabled}
             delimiter={notifyList ? ';' : ','}
             key={key}
@@ -81,11 +90,5 @@ export const UserSelectInput: FC<UserSelectInputProps> = memo(props => {
         />
     );
 });
-
-UserSelectInput.defaultProps = {
-    clearCacheOnChange: false,
-    notifyList: false,
-    useEmail: false,
-};
 
 UserSelectInput.displayName = 'UserSelectInput';

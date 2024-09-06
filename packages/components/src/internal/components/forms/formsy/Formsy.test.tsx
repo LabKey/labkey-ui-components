@@ -1,9 +1,9 @@
 // This file was originally derived from the "formsy-react" package, specifically, v2.3.2.
 // Credit: Christian Alfoni and the Formsy Authors
 // Repository: https://github.com/formsy/formsy-react/tree/0226fab133a25
-import React, { FC, useCallback, useRef, useState } from 'react';
-import { createEvent, fireEvent, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import React, { FC, PropsWithChildren, memo, useCallback, useRef, useState } from 'react';
+import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 
 import { FormsyInjectedProps, ValidationError } from './types';
 import { Formsy } from './Formsy';
@@ -39,7 +39,7 @@ const TestInput = withFormsy<FormsyInputProps, any>(props => {
     );
 });
 
-interface DynamicInputFormProps {
+interface DynamicInputFormProps extends PropsWithChildren {
     inputName?: string;
     onSubmit: (model: any) => void;
 }
@@ -1157,45 +1157,66 @@ describe('Formsy', () => {
             expect(isValid).toEqual(true);
         });
 
-        it('should revalidate form when input added dynamically', async () => {
-            let isValid = false;
-            const Inputs = () => {
-                const [counter, setCounter] = useState(1);
+        describe('revalidation', () => {
+            beforeEach(() => {
+                jest.useFakeTimers({ advanceTimers: true });
+            });
 
-                return (
-                    <>
-                        <button type="button" onClick={() => setCounter(counter + 1)} data-testid="add-btn">
-                            +
-                        </button>
-                        {Array.from(Array(counter)).map((_, index) => (
-                            <TestInput
-                                key={index}
-                                name={`foo-${index}`}
-                                required
-                                value={index === 0 ? 'bla' : undefined}
-                            />
-                        ))}
-                    </>
-                );
-            };
+            afterEach(() => {
+                jest.useRealTimers();
+            });
 
-            const TestForm = () => {
-                return (
-                    <Formsy onInvalid={() => (isValid = false)} onValid={() => (isValid = true)}>
-                        <Inputs />
-                    </Formsy>
-                );
-            };
-            const screen = render(<TestForm />);
-            const plusButton = screen.getByTestId('add-btn');
+            it('should revalidate form when input added dynamically', async () => {
+                const onValidSpy = jest.fn();
+                const onInvalidSpy = jest.fn();
 
-            expect(isValid).toBe(true);
+                const Inputs = memo(() => {
+                    const [counter, setCounter] = useState(1);
 
-            jest.useFakeTimers();
-            userEvent.click(plusButton);
-            jest.runAllTimers();
+                    const onClick = useCallback(() => {
+                        setCounter(c => c + 1);
+                    }, []);
 
-            expect(isValid).toBe(false);
+                    return (
+                        <>
+                            <button type="button" onClick={onClick} data-testid="add-btn">
+                                +
+                            </button>
+                            {Array.from(Array(counter)).map((_, index) => (
+                                <TestInput
+                                    key={index}
+                                    name={`foo-${index}`}
+                                    required
+                                    value={index === 0 ? 'bla' : undefined}
+                                />
+                            ))}
+                        </>
+                    );
+                });
+
+                const TestForm = memo(() => {
+                    return (
+                        <Formsy onInvalid={onInvalidSpy} onValid={onValidSpy}>
+                            <Inputs />
+                        </Formsy>
+                    );
+                });
+
+                const screen = render(<TestForm />);
+                const plusButton = screen.getByTestId('add-btn');
+
+                expect(onValidSpy).toHaveBeenCalledTimes(1);
+                onValidSpy.mockReset();
+                expect(onInvalidSpy).not.toHaveBeenCalled();
+
+                await act(async () => {
+                    await userEvent.click(plusButton);
+                    jest.runAllTimers();
+                });
+
+                expect(onValidSpy).not.toHaveBeenCalled();
+                expect(onInvalidSpy).toHaveBeenCalledTimes(2);
+            });
         });
 
         it('should revalidate form once when mounting multiple inputs', () => {

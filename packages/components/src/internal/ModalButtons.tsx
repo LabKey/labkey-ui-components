@@ -1,11 +1,11 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, PropsWithChildren } from 'react';
 
 import classNames from 'classnames';
 
 import { FormButtons } from './FormButtons';
 import { CommentTextArea } from './components/forms/input/CommentTextArea';
 
-export interface ModalButtonsProps {
+export interface ModalButtonsProps extends PropsWithChildren {
     actionName?: string;
     canConfirm?: boolean;
     cancelText?: string;

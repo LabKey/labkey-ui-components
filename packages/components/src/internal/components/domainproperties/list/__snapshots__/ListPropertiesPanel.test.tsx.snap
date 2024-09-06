@@ -107,7 +107,6 @@ exports[`ListPropertiesPanel existing list 1`] = `
                     class="domain-no-wrap"
                   >
                     Description
-                    
                   </span>
                 </div>
                 <div
@@ -297,7 +296,6 @@ exports[`ListPropertiesPanel existing list 1`] = `
                   class="domain-no-wrap"
                 >
                   Description
-                  
                 </span>
               </div>
               <div
@@ -547,7 +545,6 @@ exports[`ListPropertiesPanel list with error 1`] = `
                     class="domain-no-wrap"
                   >
                     Description
-                    
                   </span>
                 </div>
                 <div
@@ -750,7 +747,6 @@ exports[`ListPropertiesPanel list with error 1`] = `
                   class="domain-no-wrap"
                 >
                   Description
-                  
                 </span>
               </div>
               <div
@@ -985,7 +981,6 @@ exports[`ListPropertiesPanel new list 1`] = `
                     class="domain-no-wrap"
                   >
                     Description
-                    
                   </span>
                 </div>
                 <div
@@ -1168,7 +1163,6 @@ exports[`ListPropertiesPanel new list 1`] = `
                   class="domain-no-wrap"
                 >
                   Description
-                  
                 </span>
               </div>
               <div

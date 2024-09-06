@@ -171,12 +171,12 @@ export const PHILEVEL_RESTRICTED_PHI = 'Restricted';
 
 export const ALL_SAMPLES_DISPLAY_TEXT = 'All Samples';
 
-export const DOMAIN_PHI_LEVELS = List([
+export const DOMAIN_PHI_LEVELS = [
     { label: 'Not PHI', value: PHILEVEL_NOT_PHI },
     { label: 'Limited PHI', value: PHILEVEL_LIMITED_PHI },
     { label: 'Full PHI', value: PHILEVEL_FULL_PHI },
     { label: 'Restricted PHI', value: PHILEVEL_RESTRICTED_PHI },
-]);
+];
 
 export const DOMAIN_EDITABLE_DEFAULT = 'FIXED_EDITABLE';
 export const DOMAIN_NON_EDITABLE_DEFAULT = 'FIXED_NON_EDITABLE';

@@ -58,7 +58,6 @@ exports[`<AssayReimportHeader/> no batch properties 1`] = `
       </p>
       <p>
         Edit the 
-        
          run properties below or provide updated data for this assay run. Changes will be reflected in the audit history for this run.
       </p>
     </div>

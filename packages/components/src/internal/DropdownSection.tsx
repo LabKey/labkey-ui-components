@@ -4,8 +4,9 @@ import classNames from 'classnames';
 
 import { Utils } from '@labkey/api';
 
-import { MenuDivider, MenuItem, preventDocumentHandler } from './dropdowns';
+import { MenuDivider, MenuItem } from './dropdowns';
 import { DisableableMenuItem, DisableableMenuItemProps } from './components/samples/DisableableMenuItem';
+import { cancelEvent } from './events';
 
 const SHOW_FILTER_CUTOFF = 10;
 
@@ -31,14 +32,13 @@ export const DropdownSection: FC<MenuSectionProps> = ({ items, showDivider = fal
     // rendering a DropdownButton that gets condensed into a "More" menu on smaller screens.
     const [expanded, setExpanded] = useState<boolean>(!toggleText);
     const onHeaderClick = useCallback(event => {
-        preventDocumentHandler(event);
-        event.preventDefault();
+        cancelEvent(event);
         setExpanded(e => !e);
     }, []);
     const [filterValue, setFilterValue] = useState<string>('');
     const onFilterChange = useCallback(event => setFilterValue(event.target.value), []);
     const onFilterClick = useCallback(event => {
-        preventDocumentHandler(event);
+        cancelEvent(event);
     }, []);
     const menuItems = useMemo(() => {
         if (filterValue.trim()) {

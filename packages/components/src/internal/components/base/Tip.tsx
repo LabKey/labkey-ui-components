@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, useMemo } from 'react';
+import React, { FC, PropsWithChildren, useMemo } from 'react';
 
 import { OverlayTrigger, TriggerType } from '../../OverlayTrigger';
 import { Tooltip } from '../../Tooltip';
 import { generateId } from '../../util/utils';
 
-interface Props {
+interface Props extends PropsWithChildren {
     caption: React.ReactNode;
     triggerType?: TriggerType;
 }

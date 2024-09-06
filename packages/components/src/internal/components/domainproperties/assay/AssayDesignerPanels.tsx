@@ -316,7 +316,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                             <div>{domain.description}</div>
                         </DomainForm>
                     );
-                })}
+                }).toArray()}
                 {appPropertiesOnly && allowProjectExclusion && (
                     <DataTypeProjectsPanel
                         controlledCollapse

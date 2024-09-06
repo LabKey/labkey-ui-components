@@ -171,7 +171,7 @@ export function ValidatorModal(WrappedComponent: any) {
                                     onDelete={this.onDelete}
                                 />
                             </div>
-                        ))}
+                        )).toArray()}
                     </div>
                 </Modal>
             );

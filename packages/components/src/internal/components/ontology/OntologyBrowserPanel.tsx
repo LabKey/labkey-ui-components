@@ -1,6 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
-
 import classNames from 'classnames';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -69,7 +68,7 @@ export const OntologyBrowserPage: FC<OntologyBrowserProps> = memo(props => {
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     const {
-        asPanel,
+        asPanel = true,
         initOntologyId,
         initConcept,
         initPath,
@@ -161,9 +160,7 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     );
 });
 
-OntologyBrowserPanel.defaultProps = {
-    asPanel: true,
-};
+OntologyBrowserPanel.displayName = 'OntologyBrowserPanel';
 
 interface OntologyBrowserPanelImplProps {
     alternatePath?: PathModel;
@@ -250,3 +247,5 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
         </div>
     );
 });
+
+OntologyBrowserPanelImpl.displayName = 'OntologyBrowserPanelImpl';

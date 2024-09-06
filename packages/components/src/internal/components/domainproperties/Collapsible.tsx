@@ -1,7 +1,7 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 
-interface Props {
+interface Props extends PropsWithChildren {
     className?: string;
     expanded: boolean;
 }

@@ -18,11 +18,11 @@ import { fromJS, Map } from 'immutable';
 
 import entitiesJSON from '../../../test/data/searchResults.json';
 
+import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
+
 import { SearchResultsPanel } from './SearchResultsPanel';
 import { SearchResultsModel } from './models';
 import { getProcessedSearchHits } from './actions';
-import { act } from '@testing-library/react';
-import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 describe('<SearchResultsPanel/>', () => {
     function verifyPanel(loadingCount: number, alertCount: number, cardCount: number) {
@@ -32,33 +32,23 @@ describe('<SearchResultsPanel/>', () => {
     }
 
     test('loading', async () => {
-
         const model = SearchResultsModel.create({ isLoading: true });
         const component = <SearchResultsPanel model={model} />;
-        await act(async () => {
-            renderWithAppContext(component);
-        });
-
+        renderWithAppContext(component);
         verifyPanel(1, 0, 0);
     });
 
     test('with error', async () => {
         const model = SearchResultsModel.create({ error: 'Test error message' });
         const component = <SearchResultsPanel model={model} />;
-        await act(async () => {
-            renderWithAppContext(component);
-        });
-
+        renderWithAppContext(component);
         verifyPanel(0, 1, 0);
     });
 
     test('with no search hits', async () => {
         const model = SearchResultsModel.create({ entities: fromJS({ hits: [] }) });
         const component = <SearchResultsPanel model={model} />;
-        await act(async () => {
-            renderWithAppContext(component);
-        });
-
+        renderWithAppContext(component);
         verifyPanel(0, 0, 0);
     });
 
@@ -69,10 +59,7 @@ describe('<SearchResultsPanel/>', () => {
         });
 
         const component = <SearchResultsPanel model={model} />;
-        await act(async () => {
-            renderWithAppContext(component);
-        });
-
+        renderWithAppContext(component);
         verifyPanel(0, 0, 49);
     });
 });

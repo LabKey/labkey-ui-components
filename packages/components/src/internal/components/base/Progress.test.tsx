@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { render, act, screen } from '@testing-library/react';
+import React, { act } from 'react';
+import { render, screen } from '@testing-library/react';
 
 import { Progress } from './Progress';
 
@@ -40,14 +40,14 @@ describe('Progress', () => {
         // Should not be displaying anything until time has passed
         expect(container.firstChild).toBeNull();
         act(() => {
-            jest.advanceTimersByTime(400);
+            jest.advanceTimersByTime(350);
         });
 
         //  should be displaying progress bar now
         expect(container.firstChild).not.toBeNull();
 
         // verify the progress bar is at 80%
-        expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '80');
+        expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '70');
 
         // verify modal is not displayed
         expect(screen.queryByRole('dialog')).toBeNull();

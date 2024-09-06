@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { PropsWithChildren, PureComponent } from 'react';
 
 import { convertRowDataIntoPreviewData } from '../files/actions';
 import { FilePreviewGrid } from '../files/FilePreviewGrid';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 
-interface Props {
+interface Props extends PropsWithChildren {
     file: File;
     filePreviewData: InferDomainResponse;
     noun: string;
@@ -15,7 +15,7 @@ interface State {
     shouldImportData: boolean;
 }
 
-export class ImportDataFilePreview extends React.PureComponent<Props, State> {
+export class ImportDataFilePreview extends PureComponent<Props, State> {
     constructor(props) {
         super(props);
 

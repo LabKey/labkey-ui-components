@@ -12,7 +12,6 @@ import { QueryModel } from '../../../public/QueryModel/QueryModel';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 import { capitalizeFirstChar } from '../../util/utils';
-import { setSnapshotSelections } from '../../actions';
 import { HelpLink, MOVE_SAMPLES_TOPIC } from '../../util/helpLinks';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
@@ -82,7 +81,9 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
 
                 try {
                     const useSnapshotSelection = queryModel?.filterArray.length > 0;
-                    if (useSnapshotSelection) await setSnapshotSelections(selectionKey, [...queryModel.selections]);
+                    if (useSnapshotSelection) {
+                        await api.query.setSnapshotSelections(selectionKey, [...queryModel.selections]);
+                    }
                     const confirmationData_ = await api.entity.getMoveConfirmationData(
                         entityDataType,
                         rowIds,

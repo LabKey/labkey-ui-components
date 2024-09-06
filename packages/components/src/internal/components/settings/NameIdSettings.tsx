@@ -87,7 +87,14 @@ const initialState: State = {
 };
 
 export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
-    const { api, loadNameExpressionOptions, saveNameExpressionOptions, setIsDirty, isAppHome, container } = props;
+    const {
+        api = getDefaultAPIWrapper(),
+        loadNameExpressionOptions,
+        saveNameExpressionOptions,
+        setIsDirty,
+        isAppHome,
+        container,
+    } = props;
     const [state, setState] = useReducer(
         (currentState: State, newState: Partial<State>): State => ({ ...currentState, ...newState }),
         initialState
@@ -378,9 +385,9 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                             <p>
                                                 This action will change the Naming Pattern for all new and existing
                                                 Sample Types and{' '}
-                                                {isRegistryEnabled(moduleContext) ? 'Data Classes' : 'Source Types'}.
-                                                No existing IDs/Names will be affected but any new IDs/Names will have
-                                                the prefix applied. Are you sure you want to apply the prefix?
+                                                {isRegistryEnabled(moduleContext) ? 'Data Classes' : 'Source Types'}. No
+                                                existing IDs/Names will be affected but any new IDs/Names will have the
+                                                prefix applied. Are you sure you want to apply the prefix?
                                             </p>
                                         </div>
                                     </Modal>
@@ -517,6 +524,8 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
     );
 };
 
+NameIdSettingsForm.displayName = 'NameIdSettingsForm';
+
 export const NameIdSettings: FC<NameIdSettingsProps> = memo(props => {
     return (
         <RequiresPermission perms={PermissionTypes.Admin}>
@@ -529,6 +538,4 @@ export const NameIdSettings: FC<NameIdSettingsProps> = memo(props => {
     );
 });
 
-NameIdSettings.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
+NameIdSettings.displayName = 'NameIdSettings';

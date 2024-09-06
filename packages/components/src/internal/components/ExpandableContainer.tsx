@@ -2,20 +2,20 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import classNames from 'classnames';
 
 import { SVGIcon } from './base/SVGIcon';
 
-interface Props {
+interface Props extends PropsWithChildren {
     clause: React.ReactNode;
-    links: React.ReactNode;
-    iconSrc?: string;
-    iconFaCls?: string;
-    isExpandable: boolean;
-    initExpanded?: boolean;
-    onClick?: (show: boolean) => void;
     containerCls?: string;
+    iconFaCls?: string;
+    iconSrc?: string;
+    initExpanded?: boolean;
+    isExpandable: boolean;
+    links: React.ReactNode;
+    onClick?: (show: boolean) => void;
     useGreyTheme?: boolean;
 }
 
@@ -67,7 +67,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
         return (
             <div className={classNames('row', 'container-expandable', { disabled: !isExpandable })}>
                 <div
-                    onClick={(hasOnClick || isExpandable) ? this.handleClick : undefined}
+                    onClick={hasOnClick || isExpandable ? this.handleClick : undefined}
                     onMouseEnter={isExpandable ? this.handleMouseEnter : undefined}
                     onMouseLeave={isExpandable ? this.handleMouseLeave : undefined}
                     className={classNames(
@@ -86,13 +86,13 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
                         )}
                     </i>
                     <div
-                        onClick={(hasOnClick || isExpandable) ? this.handleClick : undefined}
+                        onClick={hasOnClick || isExpandable ? this.handleClick : undefined}
                         className={classNames('pull-right', 'container-expandable-child__chevron', {
                             'text-muted': !isExpandable,
                         })}
                     >
                         <i
-                            onClick={(hasOnClick || isExpandable) ? this.handleClick : undefined}
+                            onClick={hasOnClick || isExpandable ? this.handleClick : undefined}
                             className={classNames('fa', {
                                 'fa-chevron-down': visible,
                                 'fa-chevron-right': !visible,

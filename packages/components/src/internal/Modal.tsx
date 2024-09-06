@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode, useEffect } from 'react';
+import React, { FC, memo, PropsWithChildren, ReactNode, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import classNames from 'classnames';
@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { usePortalRef } from './hooks';
 import { ModalButtons, ModalButtonsProps } from './ModalButtons';
 
-interface BaseModalProps {
+interface BaseModalProps extends PropsWithChildren {
     bsSize?: 'lg' | 'sm';
     className?: string;
 }

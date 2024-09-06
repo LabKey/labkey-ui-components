@@ -154,12 +154,12 @@ interface DetailDisplayProps extends DetailDisplaySharedProps {
 
 export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
     const {
-        asPanel,
+        asPanel = false,
         containerFilter,
         containerPath,
         data,
         displayColumns,
-        editingMode,
+        editingMode = false,
         fileInputRenderer,
         fieldHelpTexts,
         onAdditionalFormDataChange,
@@ -255,11 +255,6 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
 
     return body;
 });
-
-DetailDisplay.defaultProps = {
-    asPanel: false,
-    editingMode: false,
-};
 
 DetailDisplay.displayName = 'DetailDisplay';
 

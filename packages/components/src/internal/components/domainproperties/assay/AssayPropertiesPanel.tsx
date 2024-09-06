@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useState } from 'react';
+import React, { FC, memo, PropsWithChildren, useCallback, useState } from 'react';
 import { Utils } from '@labkey/api';
 
 import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
@@ -41,13 +41,13 @@ import {
 } from './AssayPropertiesInput';
 import { BOOLEAN_FIELDS, FORM_ID_PREFIX, PROPERTIES_HEADER_ID } from './constants';
 
-interface AssayPropertiesFormProps {
+interface AssayPropertiesFormProps extends PropsWithChildren {
     appPropertiesOnly?: boolean;
+    canRename?: boolean;
     hideAdvancedProperties?: boolean;
     hideStudyProperties?: boolean;
     model: AssayProtocolModel;
     onChange: (model: AssayProtocolModel) => void;
-    canRename?: boolean;
 }
 
 const AssayPropertiesForm: FC<AssayPropertiesFormProps> = memo(props => {
@@ -216,13 +216,13 @@ type Props = OwnProps & BasePropertiesPanelProps;
 
 const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapseProps> = memo(props => {
     const {
-        appPropertiesOnly,
-        hideAdvancedProperties,
+        appPropertiesOnly = false,
+        hideAdvancedProperties = false,
         canRename,
-        asPanel,
+        asPanel = true,
         children,
-        helpTopic,
-        hideStudyProperties,
+        helpTopic = DEFINE_ASSAY_SCHEMA_TOPIC,
+        hideStudyProperties = false,
         model,
         onChange,
     } = props;
@@ -271,14 +271,6 @@ const AssayPropertiesPanelImpl: FC<Props & InjectedDomainPropertiesPanelCollapse
 
     return form;
 });
-
-AssayPropertiesPanelImpl.defaultProps = {
-    appPropertiesOnly: false,
-    hideAdvancedProperties: false,
-    hideStudyProperties: false,
-    asPanel: true,
-    helpTopic: DEFINE_ASSAY_SCHEMA_TOPIC,
-};
 
 AssayPropertiesPanelImpl.displayName = 'AssayPropertiesPanelImpl';
 

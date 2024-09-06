@@ -8,6 +8,7 @@ import React, {
     FocusEventHandler,
     InputHTMLAttributes,
     memo,
+    PropsWithChildren,
     ReactNode,
     RefObject,
     SelectHTMLAttributes,
@@ -43,13 +44,6 @@ interface BaseComponentProps extends SharedFormsyProps {
     validatePristine?: boolean;
     value?: any;
 }
-
-const componentDefaultProps: Partial<BaseComponentProps> = {
-    layout: 'horizontal',
-    validateBeforeSubmit: true,
-    validateOnSubmit: false,
-    validatePristine: false,
-};
 
 /** Determine whether to show errors, or not. */
 const shouldShowErrors = (
@@ -92,7 +86,7 @@ const ErrorMessages: FC<ErrorMessageProps> = memo(props => {
     );
 });
 
-const Help: FC = ({ children }) => {
+const Help: FC<PropsWithChildren> = ({ children }) => {
     if (!children) return null;
     return <small className="form-text text-muted">{children}</small>;
 };
@@ -107,7 +101,7 @@ const RequiredSymbol: FC<RequiredSymbolProps> = memo(({ required, symbol = ' *' 
     return <span className="required-symbol">{symbol}</span>;
 });
 
-interface LabelProps {
+interface LabelProps extends PropsWithChildren {
     fakeLabel?: boolean;
     htmlFor: string;
     labelClassName?: string;
@@ -116,7 +110,7 @@ interface LabelProps {
 }
 
 const Label: FC<LabelProps> = memo(props => {
-    const { children, fakeLabel, htmlFor, labelClassName, layout, required } = props;
+    const { children, fakeLabel = false, htmlFor, labelClassName, layout, required = false } = props;
 
     if (layout === 'elementOnly') return null;
 
@@ -139,23 +133,20 @@ const Label: FC<LabelProps> = memo(props => {
     );
 });
 
-Label.defaultProps = {
-    fakeLabel: false,
-    required: false,
-};
+Label.displayName = 'Label';
 
 const Control: FC<BaseControlProps & LabelProps> = memo(props => {
     const {
         children,
-        elementWrapperClassName,
+        elementWrapperClassName = INPUT_WRAPPER_CLASS_NAME,
         help,
-        label,
+        label = null,
         labelClassName,
-        layout,
+        layout = 'horizontal',
         messages,
         required,
         rowClassName,
-        showErrors,
+        showErrors = true,
     } = props;
 
     const control = (
@@ -201,15 +192,9 @@ const Control: FC<BaseControlProps & LabelProps> = memo(props => {
     );
 });
 
-Control.defaultProps = {
-    elementWrapperClassName: INPUT_WRAPPER_CLASS_NAME,
-    label: null,
-    showErrors: true,
-};
-
 Control.displayName = 'Row';
 
-interface InputGroupProps {
+interface InputGroupProps extends PropsWithChildren {
     addonAfter?: ReactNode;
     addonBefore?: ReactNode;
     buttonAfter?: ReactNode;
@@ -252,9 +237,9 @@ function useControlProps<H, V>(props: any): ControlProps<H, V> {
         layout,
         onChange,
         rowClassName,
-        validateBeforeSubmit,
-        validateOnSubmit,
-        validatePristine,
+        validateBeforeSubmit = true,
+        validateOnSubmit = false,
+        validatePristine = false,
         ...formsyAndHTMLProps
     } = props;
     const {
@@ -337,10 +322,10 @@ interface CheckboxBaseProps extends BaseComponentProps {
 export type FormsyCheckboxProps = CheckboxBaseProps & InputHTMLProps;
 
 const CheckboxImpl: FC<FormsyCheckboxProps & FormsyInjectedProps<boolean>> = props => {
-    const { valueLabel, ...rest } = props;
+    const { valueLabel = '', ...rest } = props;
     const { baseProps, formsyProps, htmlProps } = useControlProps<InputHTMLProps, boolean>(rest);
     const { componentRef, onChange } = baseProps;
-    const { isFormDisabled, setValue, value } = formsyProps;
+    const { isFormDisabled, setValue, value = false } = formsyProps;
     const { disabled, id, required } = htmlProps;
 
     const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -372,12 +357,6 @@ const CheckboxImpl: FC<FormsyCheckboxProps & FormsyInjectedProps<boolean>> = pro
     );
 };
 
-CheckboxImpl.defaultProps = {
-    ...componentDefaultProps,
-    value: false,
-    valueLabel: '',
-};
-
 export const FormsyCheckbox = withFormsy<FormsyCheckboxProps, boolean>(CheckboxImpl);
 
 FormsyCheckbox.displayName = 'FormsyCheckbox';
@@ -390,7 +369,7 @@ const InputImpl: FC<FormsyInputProps & FormsyInjectedProps<string>> = props => {
     const { baseProps, formsyProps, htmlProps } = useControlProps<InputHTMLProps, string>(rest);
     const { componentRef, markAsInvalid, onChange } = baseProps;
     const { isFormDisabled, setValue, value } = formsyProps;
-    const { className, disabled, id, required, type } = htmlProps;
+    const { className, disabled, id, required, type = 'text' } = htmlProps;
 
     const className_ = useMemo<string>(
         () =>
@@ -428,6 +407,7 @@ const InputImpl: FC<FormsyInputProps & FormsyInjectedProps<string>> = props => {
             onBlur={handleBlur}
             onChange={handleChange}
             ref={componentRef}
+            type={type}
             value={value ?? ''}
         />
     );
@@ -459,11 +439,6 @@ const InputImpl: FC<FormsyInputProps & FormsyInjectedProps<string>> = props => {
     );
 };
 
-InputImpl.defaultProps = {
-    ...componentDefaultProps,
-    type: 'text',
-};
-
 export const FormsyInput = withFormsy<FormsyInputProps, string>(InputImpl);
 
 FormsyInput.displayName = 'FormsyInput';
@@ -485,7 +460,7 @@ type SelectHTMLProps = Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onBlur' | 
 export type FormsySelectProps = SelectBaseProps & SelectHTMLProps;
 
 const SelectImpl: FC<FormsySelectProps & FormsyInjectedProps<any>> = props => {
-    const { multiple, options, ...rest } = props;
+    const { multiple = false, options, ...rest } = props;
     const { baseProps, formsyProps, htmlProps } = useControlProps<SelectHTMLProps, any>(rest);
     const { componentRef, markAsInvalid, onChange } = baseProps;
     const { isFormDisabled, setValue } = formsyProps;
@@ -527,11 +502,6 @@ const SelectImpl: FC<FormsySelectProps & FormsyInjectedProps<any>> = props => {
     );
 };
 
-SelectImpl.defaultProps = {
-    ...componentDefaultProps,
-    multiple: false,
-};
-
 export const FormsySelect = withFormsy<FormsySelectProps, any>(SelectImpl);
 
 FormsySelect.displayName = 'FormsySelect';
@@ -543,7 +513,7 @@ export type FormsyTextAreaProps = BaseComponentProps & TextAreaHTMLProps;
 const TextAreaImpl: FC<FormsyTextAreaProps & FormsyInjectedProps<string>> = props => {
     const { baseProps, formsyProps, htmlProps } = useControlProps<TextAreaHTMLProps, string>(props);
     const { componentRef, markAsInvalid, onChange } = baseProps;
-    const { isFormDisabled, setValue, value } = formsyProps;
+    const { isFormDisabled, setValue, value = '' } = formsyProps;
     const { className, disabled, id, required } = htmlProps;
 
     const handleBlur = useCallback<FocusEventHandler<HTMLTextAreaElement>>(
@@ -564,6 +534,8 @@ const TextAreaImpl: FC<FormsyTextAreaProps & FormsyInjectedProps<string>> = prop
     return (
         <Control {...baseProps} htmlFor={id} required={required}>
             <textarea
+                cols={0}
+                rows={3}
                 {...htmlProps}
                 className={classNames('form-control', { 'is-invalid': markAsInvalid }, className)}
                 disabled={isFormDisabled || disabled || false}
@@ -576,13 +548,6 @@ const TextAreaImpl: FC<FormsyTextAreaProps & FormsyInjectedProps<string>> = prop
             />
         </Control>
     );
-};
-
-TextAreaImpl.defaultProps = {
-    ...componentDefaultProps,
-    cols: 0,
-    rows: 3,
-    value: '',
 };
 
 export const FormsyTextArea = withFormsy<FormsyTextAreaProps, string>(TextAreaImpl);

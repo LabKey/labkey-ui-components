@@ -17,6 +17,7 @@ import { AppURL, createProductUrl } from '../../url/AppURL';
 import { ProductModel, ProductSectionModel } from './models';
 import { APPLICATION_NAVIGATION_METRIC, SECTION_KEYS_TO_SKIP } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
+import { ProductLKSDrawer } from './ProductLKSDrawer';
 
 interface ProductAppsDrawerProps {
     api?: ComponentsAPIWrapper;
@@ -25,7 +26,7 @@ interface ProductAppsDrawerProps {
 }
 
 export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
-    const { product } = props;
+    const { api = getDefaultAPIWrapper(), product } = props;
     const currentContainer = getServerContext().container;
     const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
@@ -50,12 +51,9 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
             });
     }, [product]);
 
-    return <ProductSectionsDrawerImpl {...props} error={error} sections={sections} />;
+    return <ProductSectionsDrawerImpl {...props} api={api} error={error} sections={sections} />;
 });
-
-ProductSectionsDrawer.defaultProps = {
-    api: getDefaultAPIWrapper(),
-};
+ProductSectionsDrawer.displayName = 'ProductSectionsDrawer';
 
 interface ProductSectionsDrawerImplProps extends ProductAppsDrawerProps {
     error: string;

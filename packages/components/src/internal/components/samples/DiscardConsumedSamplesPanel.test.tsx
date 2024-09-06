@@ -1,9 +1,9 @@
 import React from 'react';
+import { act } from '@testing-library/react';
 
 import { DiscardConsumedSamplesPanel } from './DiscardConsumedSamplesPanel';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 import { getTestAPIWrapper } from '../../APIWrapper';
-import { act } from 'react-dom/test-utils';
 import { COMMENT_FIELD_ID } from '../forms/input/CommentTextArea';
 import { TEST_PROJECT_CONTAINER } from '../../containerFixtures';
 
@@ -19,7 +19,7 @@ describe('DiscardConsumedSamplesPanel', () => {
     test('discard enabled', () => {
         renderWithAppContext(
             <DiscardConsumedSamplesPanel
-                discardTitle="Discard All?"
+                discardTitle="Remove All?"
                 onCommentChange={jest.fn()}
                 shouldDiscard
                 toggleShouldDiscard={jest.fn()}
@@ -32,10 +32,10 @@ describe('DiscardConsumedSamplesPanel', () => {
         );
 
         expect(getCommentField().disabled).toBe(false);
-        expect(getTitle()).toEqual('Discard All?');
+        expect(getTitle()).toEqual('Remove All?');
     });
 
-    test('discard disabled', () => {
+    test('remove disabled', () => {
         renderWithAppContext(
             <DiscardConsumedSamplesPanel
                 onCommentChange={jest.fn()}
@@ -50,7 +50,7 @@ describe('DiscardConsumedSamplesPanel', () => {
         );
 
         expect(getCommentField().disabled).toBe(true);
-        expect(getTitle()).toEqual('Discard Sample(s) from Storage?');
+        expect(getTitle()).toEqual('Remove Sample(s) from Storage?');
     });
 
     const apiRequireComments = getTestAPIWrapper(jest.fn, {

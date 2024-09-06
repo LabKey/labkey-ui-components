@@ -22,3 +22,5 @@ export const NameExpressionPreview: FC<NameExpressionPreviewProps> = props => {
         </p>
     );
 };
+
+NameExpressionPreview.displayName = 'NameExpressionPreview';

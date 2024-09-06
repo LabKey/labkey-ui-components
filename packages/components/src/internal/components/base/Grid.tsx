@@ -213,7 +213,7 @@ export class GridHeader extends PureComponent<GridHeaderProps, State> {
                             );
                         }
                         return <th key={index} style={{ minWidth: style?.minWidth }} />;
-                    }, this)}
+                    }, this).toArray()}
                 </tr>
             </thead>
         );
@@ -233,7 +233,7 @@ const GridMessages: FC<GridMessagesProps> = memo(({ messages }) => (
                     {message.get('content')}
                 </div>
             );
-        })}
+        }).toArray()}
     </div>
 ));
 
@@ -263,7 +263,7 @@ const GridRow: FC<GridRowProps> = memo(({ columns, highlight, row, rowIdx }) => 
                         {column.cell(row.get(column.index), row, column, rowIdx, c)}
                     </td>
                 )
-            )}
+            ).toArray()}
         </tr>
     );
 });
@@ -302,7 +302,7 @@ const GridBody: FC<GridBodyProps> = memo(props => {
                 const highlight = highlightRowIndexes && highlightRowIndexes.contains(ind);
                 const key = rowKey ? row.get(rowKey) : ind;
                 return <GridRow columns={columns} highlight={highlight} key={key} row={row} rowIdx={ind} />;
-            })}
+            }).toArray()}
 
             {data.isEmpty() && (
                 <EmptyGridRow

@@ -183,3 +183,5 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
         </div>
     );
 });
+
+CalculatedFieldOptions.displayName = 'CalculatedFieldOptions';

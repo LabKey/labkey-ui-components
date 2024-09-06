@@ -18,7 +18,6 @@ exports[`<DomainFieldLabel/> label and helpTip 1`] = `
         />
       </span>
     </div>
-    
   </span>
 </div>
 `;
@@ -42,7 +41,6 @@ exports[`<DomainFieldLabel/> label only 1`] = `
     class="domain-no-wrap"
   >
     Label
-    
   </span>
 </div>
 `;

@@ -180,4 +180,9 @@ export class ServerAnnouncementsAPIWrapper implements AnnouncementsAPIWrapper {
     };
 }
 
-export const getDefaultAnnouncementsAPIWrapper = (): AnnouncementsAPIWrapper => new ServerAnnouncementsAPIWrapper();
+let DEFAULT_WRAPPER: AnnouncementsAPIWrapper;
+
+export const getDefaultAnnouncementsAPIWrapper = (): AnnouncementsAPIWrapper => {
+    if (!DEFAULT_WRAPPER) DEFAULT_WRAPPER = new ServerAnnouncementsAPIWrapper();
+    return DEFAULT_WRAPPER;
+};

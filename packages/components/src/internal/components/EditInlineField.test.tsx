@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@testing-library/user-event';
 
 import { renderWithAppContext } from '../test/reactTestLibraryHelpers';
 
@@ -52,7 +52,7 @@ describe('EditInlineField', () => {
         expect(document.querySelectorAll('.user-link')).toHaveLength(type?.user ?? 0);
     }
 
-    test('default props', () => {
+    test('default props', async () => {
         renderWithAppContext(<EditInlineField {...DEFAULT_PROPS} />, {
             serverContext: SERVER_CONTEXT,
             appContext: APP_CONTEXT,
@@ -60,7 +60,7 @@ describe('EditInlineField', () => {
         validate();
         expect(document.querySelector('.edit-inline-field__placeholder').innerHTML).toBe('');
         expect(document.querySelectorAll('.fa-pencil')).toHaveLength(1);
-        userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+        await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { text: 1 });
     });
 
@@ -128,41 +128,41 @@ describe('EditInlineField', () => {
         expect(screen.getByText('Test1').closest('a')).toHaveAttribute('href', 'https://www.labkey.org');
     });
 
-    test('isTextArea', () => {
+    test('isTextArea', async () => {
         renderWithAppContext(<EditInlineField {...DEFAULT_PROPS} type="textarea" />, {
             serverContext: SERVER_CONTEXT,
             appContext: APP_CONTEXT,
         });
         validate();
-        userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+        await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { textarea: 1 });
     });
 
-    test('isDate, no initial value', () => {
+    test('isDate, no initial value', async () => {
         renderWithAppContext(<EditInlineField {...DEFAULT_PROPS} type="date" />, {
             serverContext: SERVER_CONTEXT,
             appContext: APP_CONTEXT,
         });
         validate();
-        userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+        await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { date: 1 });
         expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
         expect(document.querySelector('.react-datepicker__input-container input').value).toBe('');
     });
 
-    test('isDate, with initial value', () => {
+    test('isDate, with initial value', async () => {
         renderWithAppContext(<EditInlineField {...DEFAULT_PROPS} type="date" value="2022-08-11 18:00:00" />, {
             serverContext: SERVER_CONTEXT,
             appContext: APP_CONTEXT,
         });
         validate();
-        userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+        await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { date: 1 });
         expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
         expect(document.querySelector('.react-datepicker__input-container input').value).toBe('2022-08-11');
     });
 
-    test('isDate, with initial value and QueryColumn format', () => {
+    test('isDate, with initial value and QueryColumn format', async () => {
         renderWithAppContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
@@ -173,13 +173,13 @@ describe('EditInlineField', () => {
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );
         validate();
-        userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+        await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { date: 1 });
         expect(document.querySelectorAll('.react-datepicker')).toHaveLength(1);
         expect(document.querySelector('.react-datepicker__input-container input').value).toBe('08/11/2022 18:00:00');
     });
 
-    test('resolveDetailEditRenderer', () => {
+    test('resolveDetailEditRenderer', async () => {
         renderWithAppContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
@@ -196,12 +196,12 @@ describe('EditInlineField', () => {
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );
         validate();
-        userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+        await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { text: 2, select: 11 });
         expect(document.querySelectorAll('.select-input-container')).toHaveLength(1);
     });
 
-    test('isUser', () => {
+    test('isUser', async () => {
         renderWithAppContext(
             <EditInlineField
                 {...DEFAULT_PROPS}
@@ -223,7 +223,7 @@ describe('EditInlineField', () => {
             { serverContext: SERVER_CONTEXT, appContext: APP_CONTEXT }
         );
         validate(false, true, { user: 1 });
-        userEvent.click(document.querySelector('.edit-inline-field__toggle'));
+        await userEvent.click(document.querySelector('.edit-inline-field__toggle'));
         validate(true, true, { text: 1 });
     });
 });

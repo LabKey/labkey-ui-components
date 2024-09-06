@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 
 import { useOverlayPositioning } from './useOverlayPositioning';
 import { TooltipProps } from './Tooltip';
 
-interface PopoverProps extends TooltipProps {
+interface PopoverProps extends TooltipProps, PropsWithChildren {
     className?: string;
     isFlexPlacement?: boolean;
     title?: string;

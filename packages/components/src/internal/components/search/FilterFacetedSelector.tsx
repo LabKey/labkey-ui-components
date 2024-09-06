@@ -29,14 +29,14 @@ interface Props {
 
 export const FilterFacetedSelector: FC<Props> = memo(props => {
     const {
-        api,
+        api = getDefaultAPIWrapper(),
         canBeBlank,
         disabled,
         selectDistinctOptions,
         fieldKey,
         fieldFilters,
         onFieldFilterUpdate,
-        showSearchLength,
+        showSearchLength = 20,
     } = props;
 
     const timerRef = useRef(undefined);
@@ -284,7 +284,4 @@ export const FilterFacetedSelector: FC<Props> = memo(props => {
     );
 });
 
-FilterFacetedSelector.defaultProps = {
-    showSearchLength: 20,
-    api: getDefaultAPIWrapper(),
-};
+FilterFacetedSelector.displayName = 'FilterFacetedSelector';

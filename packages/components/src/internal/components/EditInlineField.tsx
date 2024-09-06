@@ -42,7 +42,7 @@ export const EditInlineField: FC<Props> = memo(props => {
     const {
         allowBlank,
         allowEdit,
-        className,
+        className = 'edit-inline-field',
         emptyText,
         label,
         name,
@@ -296,6 +296,4 @@ export const EditInlineField: FC<Props> = memo(props => {
     );
 });
 
-EditInlineField.defaultProps = {
-    className: 'edit-inline-field',
-};
+EditInlineField.displayName = 'EditInlineField';

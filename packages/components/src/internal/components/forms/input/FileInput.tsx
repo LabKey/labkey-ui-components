@@ -265,14 +265,11 @@ class FileInputImpl extends DisableableInput<FileInputImplProps, State> {
 const FileInputFormsy = withFormsy<FileInputProps, any>(FileInputImpl);
 
 export const FileInput: FC<FileInputProps> = props => {
-    if (props.formsy) {
-        return <FileInputFormsy name={undefined} {...props} />;
+    const { formsy = false } = props;
+    if (formsy) {
+        return <FileInputFormsy name={undefined} {...props} formsy />;
     }
-    return <FileInputImpl {...(props as FileInputImplProps)} />;
-};
-
-FileInput.defaultProps = {
-    formsy: false,
+    return <FileInputImpl {...(props as FileInputImplProps)} formsy={false} />;
 };
 
 FileInput.displayName = 'FileInput';

@@ -1,10 +1,10 @@
-import React, { FC, memo, ReactNode, useMemo } from 'react';
+import React, { FC, memo, PropsWithChildren, ReactNode, useMemo } from 'react';
 
 import { OverlayTrigger } from '../../OverlayTrigger';
 import { Popover } from '../../Popover';
 import { generateId } from '../../util/utils';
 
-interface Props {
+interface Props extends PropsWithChildren {
     iconComponent?: ReactNode; // use a different icon than the question mark circle
     placement?: 'top' | 'right' | 'bottom' | 'left';
     popoverClassName?: string; // is placed on the popover container

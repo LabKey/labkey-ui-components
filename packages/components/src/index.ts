@@ -306,7 +306,6 @@ import {
 import { QueryFormInputs } from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput, SelectInputImpl } from './internal/components/forms/input/SelectInput';
-import { selectOptionByText } from './internal/components/forms/input/SelectInputTestUtils';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
 import { FileInput } from './internal/components/forms/input/FileInput';
 import { TextInput } from './internal/components/forms/input/TextInput';
@@ -630,13 +629,6 @@ import {
     sleep,
     wrapDraggable,
 } from './internal/test/testHelpers';
-import {
-    mountWithAppServerContext,
-    mountWithAppServerContextOptions,
-    mountWithServerContext,
-    mountWithServerContextOptions,
-    waitForLifecycle,
-} from './internal/test/enzymeTestHelpers';
 import { renderWithAppContext } from './internal/test/reactTestLibraryHelpers';
 import { flattenValuesFromRow, QueryModel } from './public/QueryModel/QueryModel';
 import { includedColumnsForCustomizationFilter, getExpandQueryInfo } from './public/QueryModel/CustomizeGridViewModal';
@@ -1776,14 +1768,8 @@ export {
     sleep,
     createMockWithRouteLeave,
     makeQueryInfo,
-    mountWithAppServerContextOptions,
-    mountWithServerContextOptions,
-    mountWithAppServerContext,
-    mountWithServerContext,
     renderWithAppContext,
-    waitForLifecycle,
     wrapDraggable,
-    selectOptionByText,
     getTestAPIWrapper,
     makeTestISelectRowsResult,
     registerDefaultURLMappers,

@@ -1,4 +1,5 @@
 import React, { FC, memo } from 'react';
+
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
@@ -13,7 +14,13 @@ interface Props {
 export const DISCARD_CONSUMED_CHECKBOX_FIELD = 'discardcheckbox';
 
 export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
-    const { discardTitle, shouldDiscard, toggleShouldDiscard, onCommentChange, comment } = props;
+    const {
+        discardTitle = 'Remove Sample(s) from Storage?',
+        shouldDiscard,
+        toggleShouldDiscard,
+        onCommentChange,
+        comment,
+    } = props;
     const { requiresUserComment } = useDataChangeCommentsRequired();
 
     return (
@@ -35,7 +42,7 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
                 <CommentTextArea
                     onChange={onCommentChange}
                     disabled={!shouldDiscard}
-                    actionName="Discarding"
+                    actionName="Removing"
                     containerClassName="top-spacing bottom-spacing"
                     requiresUserComment={requiresUserComment}
                     value={comment}
@@ -45,6 +52,4 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
     );
 });
 
-DiscardConsumedSamplesPanel.defaultProps = {
-    discardTitle: 'Discard Sample(s) from Storage?',
-};
+DiscardConsumedSamplesPanel.displayName = 'DiscardConsumedSamplesPanel';

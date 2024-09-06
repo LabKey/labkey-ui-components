@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, PropsWithChildren, useMemo } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Query } from '@labkey/api';
 
@@ -21,7 +21,7 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { applyQueryMetadata, handleSelectRowsResponse, ISelectRowsResult } from '../query/api';
 import { bindColumnRenderers, RowsResponse } from '../../public/QueryModel/QueryModelLoader';
 
-export interface AppContextTestProviderProps {
+export interface AppContextTestProviderProps extends PropsWithChildren {
     appContext?: Partial<AppContext>;
     notificationContext?: Partial<NotificationsContextState>;
     printLabelsContext?: Partial<LabelPrintingContextProps>;

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 
 import { Notifications } from '../notifications/Notifications';
 
-export interface PageHeaderProps {
+export interface PageHeaderProps extends PropsWithChildren {
     iconCls?: string;
     showNotifications?: boolean;
     title?: string;

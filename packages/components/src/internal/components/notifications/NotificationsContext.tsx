@@ -1,4 +1,14 @@
-import React, { ComponentType, createContext, FC, memo, useCallback, useContext, useMemo, useState } from 'react';
+import React, {
+    ComponentType,
+    createContext,
+    FC,
+    memo,
+    PropsWithChildren,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from 'react';
 import { Map } from 'immutable';
 import { Utils } from '@labkey/api';
 
@@ -25,7 +35,7 @@ export const useNotificationsContext = (): NotificationsContextState => {
     return context;
 };
 
-export interface NotificationsContextProviderProps {
+export interface NotificationsContextProviderProps extends PropsWithChildren {
     initialContext?: NotificationsContextState;
 }
 

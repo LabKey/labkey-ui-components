@@ -2,7 +2,7 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 import classNames from 'classnames';
 
 interface IFormStepContext {
@@ -16,7 +16,7 @@ const FormStepContext = React.createContext<IFormStepContext>(undefined);
 const FormStepContextProvider = FormStepContext.Provider;
 const FormStepContextConsumer = FormStepContext.Consumer;
 
-interface ActiveStepProps {
+interface ActiveStepProps extends PropsWithChildren {
     active?: boolean;
 }
 
@@ -34,7 +34,7 @@ class ActiveStep extends React.Component<ActiveStepProps, any> {
     }
 }
 
-interface FormStepProps {
+interface FormStepProps extends PropsWithChildren {
     stepIndex: number;
     trackActive?: boolean;
 }

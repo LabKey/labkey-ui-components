@@ -20,8 +20,6 @@ import { useAppContext } from '../../AppContext';
 
 import { useNotificationsContext } from '../notifications/NotificationsContext';
 
-import { setSnapshotSelections } from '../../actions';
-
 import { Picklist } from './models';
 import { addSamplesToPicklist, getPicklistsForInsert, getPicklistUrl, SampleTypeCount } from './actions';
 
@@ -456,7 +454,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
             if (useSnapshotSelection) {
                 if (!queryModel?.isLoadingSelections) {
                     try {
-                        await setSnapshotSelections(queryModel.selectionKey, [...selections]);
+                        await api.query.setSnapshotSelections(queryModel.selectionKey, [...selections]);
                     } catch (reason) {
                         console.error(
                             'There was a problem loading the filtered selection data. Your actions will not obey these filters.',
@@ -470,6 +468,7 @@ export const ChoosePicklistModal: FC<ChoosePicklistModalProps> = memo(props => {
             }
         })();
     }, [
+        api.query,
         selectionsLoading,
         queryModel?.selectionKey,
         selections,

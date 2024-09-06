@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC } from 'react';
+import React, { ChangeEvent, FC, PropsWithChildren } from 'react';
 
 import classNames from 'classnames';
 
@@ -32,23 +32,21 @@ export const FileNodeIcon: FC<FileNodeIconProps> = props => {
     );
 };
 
-export interface TreeNodeProps {
-    node: any; // Data Object model for this node
-    style: any; // Base Style object describing the base css styling
-    onSelect?: () => void; // Callback for selection
-    customStyles?: any; // Custom styling object that is applied in addition to the base
-    checked?: boolean; // Is check box checked
-    handleCheckbox?: (event: ChangeEvent<HTMLInputElement>) => void; // Callback for checkbox changes
-    checkboxId?: string; // Id to apply to the checkbox
-    emptyDirectoryText?: string; // Text to show if node is a container, but has no contents
-
+export interface TreeNodeProps extends PropsWithChildren {
+    NodeIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
     allowMultiSelect?: boolean; // Flag to enable multi-selection of nodes
+    checkboxId?: string; // Id to apply to the checkbox
+    checked?: boolean; // Is check box checked
+    customStyles?: any; // Custom styling object that is applied in addition to the base
+    emptyDirectoryText?: string; // Text to show if node is a container, but has no contents
+    handleCheckbox?: (event: ChangeEvent<HTMLInputElement>) => void; // Callback for checkbox changes
     isEmpty: boolean; // Flag indicating if flag is an empty container
     isLoading: boolean; // Flag indicating child data is being loaded for node
-
+    node: any; // Data Object model for this node
+    onSelect?: () => void; // Callback for selection
     showNodeIcon: boolean; // Flag to indicate whether an Icon should be shown for the node
+    style: any; // Base Style object describing the base css styling
     useFileIconCls?: boolean; // Class to apply to the Icon
-    NodeIcon?: (props: unknown) => React.ReactElement; // Function Component method to render icon element
 }
 
 // Note not using Pure/memo as the node property is mutable

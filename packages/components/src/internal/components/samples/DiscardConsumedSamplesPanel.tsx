@@ -15,7 +15,7 @@ export const DISCARD_CONSUMED_CHECKBOX_FIELD = 'discardcheckbox';
 
 export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
     const {
-        discardTitle = 'Discard Sample(s) from Storage?',
+        discardTitle = 'Remove Sample(s) from Storage?',
         shouldDiscard,
         toggleShouldDiscard,
         onCommentChange,
@@ -42,7 +42,7 @@ export const DiscardConsumedSamplesPanel: FC<Props> = memo(props => {
                 <CommentTextArea
                     onChange={onCommentChange}
                     disabled={!shouldDiscard}
-                    actionName="Discarding"
+                    actionName="Removing"
                     containerClassName="top-spacing bottom-spacing"
                     requiresUserComment={requiresUserComment}
                     value={comment}

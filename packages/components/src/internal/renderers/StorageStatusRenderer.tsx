@@ -5,7 +5,7 @@ interface StorageStatusProps {
     data: Map<any, any>;
 }
 
-export class StorageStatusRenderer extends React.PureComponent<StorageStatusProps, any> {
+export class StorageStatusRenderer extends React.PureComponent<StorageStatusProps> {
     render() {
         const { data } = this.props;
 
@@ -13,7 +13,7 @@ export class StorageStatusRenderer extends React.PureComponent<StorageStatusProp
 
         const value = data.get('value');
 
-        if (value?.toLowerCase() === 'not in storage' || value?.toLowerCase() === 'discarded') {
+        if (value?.toLowerCase() === 'not in storage' || value?.toLowerCase() === 'removed') {
             return <span>{value}</span>;
         } else {
             return <a href={data.get('url')}>{value}</a>;

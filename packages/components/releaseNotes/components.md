@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X September 2024
 - Issue 50818: add RESOLVE_LSID_MAPPERS to resolve data/material by lsid
 
+### version 5.1.0
+*Released*: 6 September 2024
+- Issue 51158: Update the text for discarding samples from storage to use "removed" instead
+
 ### version 5.0.0
 *Released*: 5 September 2024
 - withQueryModels: Add reloadModel flag to setOffset

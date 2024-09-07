@@ -21,8 +21,8 @@ import { QueryInfo } from '../../public/QueryInfo';
 import { applyQueryMetadata, handleSelectRowsResponse, ISelectRowsResult } from '../query/api';
 import { bindColumnRenderers, RowsResponse } from '../../public/QueryModel/QueryModelLoader';
 
-export interface AppContextTestProviderProps extends PropsWithChildren {
-    appContext?: Partial<AppContext>;
+export interface AppContextTestProviderProps<A = AppContext> extends PropsWithChildren {
+    appContext?: Partial<A>;
     notificationContext?: Partial<NotificationsContextState>;
     printLabelsContext?: Partial<LabelPrintingContextProps>;
     serverContext?: Partial<ServerContext>;

@@ -58,6 +58,7 @@ export const DisabledSelectionMenuItem: FC<DisabledSelectionMenuItemProps> = ({ 
         </MenuItem>
     );
 };
+DisabledSelectionMenuItem.displayName = 'DisabledSelectionMenuItem';
 
 export const SelectionMenuItem: FC<Props> = props => {
     const { href, maxSelection, maxSelectionDisabledMsg, nounPlural, onClick, queryModel, text } = props;
@@ -67,7 +68,7 @@ export const SelectionMenuItem: FC<Props> = props => {
             tooFewSelected: selectionSize !== undefined && selectionSize === 0,
             tooManySelected: selectionSize !== undefined && selectionSize > maxSelection,
         }),
-        [selectionSize]
+        [maxSelection, selectionSize]
     );
     const disabled = tooFewSelected || tooManySelected;
 

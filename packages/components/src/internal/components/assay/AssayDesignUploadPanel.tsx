@@ -6,6 +6,7 @@ import { Map } from 'immutable';
 import { getHelpLink } from '../../util/helpLinks';
 import { FileAttachmentForm } from '../../../public/files/FileAttachmentForm';
 import { isPremiumProductEnabled } from '../../app/utils';
+import { useServerContext } from '../base/ServerContext';
 
 interface AssayDesignUploadPanelProps extends PropsWithChildren {
     onFileChange: (files: Map<string, File>) => void;
@@ -14,8 +15,8 @@ interface AssayDesignUploadPanelProps extends PropsWithChildren {
 
 export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(props => {
     const { onFileChange, onFileRemove, children } = props;
-
-    const folderNoun = isPremiumProductEnabled() ? 'project' : 'folder';
+    const { moduleContext } = useServerContext();
+    const folderNoun = isPremiumProductEnabled(moduleContext) ? 'project' : 'folder';
 
     return (
         <div>
@@ -68,3 +69,5 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
         </div>
     );
 });
+
+AssayDesignUploadPanel.displayName = 'AssayDesignUploadPanel';

@@ -81,6 +81,8 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
     );
 });
 
+FieldLabelDisplay.displayName = 'FieldLabelDisplay';
+
 export interface ColumnChoiceProps {
     column: QueryColumn;
     disabledMsg?: ReactNode;
@@ -171,6 +173,8 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     );
 });
 
+ColumnChoice.displayName = 'ColumnChoice';
+
 export interface ColumnChoiceGroupProps extends ColumnChoiceProps {
     columnsInView: QueryColumn[];
     disabledMsg?: ReactNode;
@@ -232,6 +236,8 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
         </>
     );
 });
+
+ColumnChoiceGroup.displayName = 'ColumnChoiceGroup';
 
 export interface ColumnInViewProps {
     allowEditLabel: boolean;
@@ -331,6 +337,8 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
         </Draggable>
     );
 });
+
+ColumnInView.displayName = 'ColumnInView';
 
 export interface ColumnSelectionModalProps extends Omit<ModalProps, 'canConfirm' | 'onConfirm' | 'cancelText'> {
     allowEditLabel?: boolean;

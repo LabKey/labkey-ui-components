@@ -2,7 +2,6 @@
 //  no longer run as part of our Jest tests.
 import { ReactElement } from 'react';
 import { act } from 'react-dom/test-utils';
-import { MountRendererProps, ReactWrapper, ShallowWrapper } from 'enzyme';
 
 import { AppContext } from '../AppContext';
 
@@ -29,7 +28,7 @@ export const mountWithAppServerContext = (
     appContext?: Partial<AppContext>,
     serverContext?: Partial<ServerContext>,
     notificationContext?: Partial<NotificationsContextState>,
-    options?: MountRendererProps,
+    options?: any,
     printLabelsContext?: Partial<LabelPrintingContext>
 ): ReactElement => {
     return node;
@@ -47,7 +46,7 @@ export const mountWithAppServerContext = (
 export const mountWithServerContext = (
     node: ReactElement,
     initialContext?: any,
-    options?: MountRendererProps
+    options?: any
 ): ReactElement => {
     return node;
 };
@@ -64,7 +63,7 @@ export const mountWithServerContext = (
  * @param wrapper: enzyme ReactWrapper or ShallowWrapper
  * @param ms: the amount of time (in ms) to sleep
  */
-export const waitForLifecycle = (wrapper: ReactWrapper | ShallowWrapper, ms?: number): Promise<void> => {
+export const waitForLifecycle = (wrapper: any, ms?: number): Promise<void> => {
     // Wrap in react-dom/utils act so we don't get errors in our test logs
     return act(async () => {
         await sleep(ms);

@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 7.7.0
+*Released*: 9 September 2024
+- Update external dependencies for drag-n-drop packages.
+
 ### version 7.6.0
 *Released*: 29 August 2024
 - Remove moment-specific processing in package bundling.

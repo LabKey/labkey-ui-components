@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, Droppable, DropResult } from '@hello-pangea/dnd';
+import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 
 import { QueryColumn } from '../../public/QueryColumn';
@@ -14,7 +15,6 @@ import { OverlayTrigger, useOverlayTriggerState } from '../OverlayTrigger';
 import { Alert } from './base/Alert';
 import { DragDropHandle } from './base/DragDropHandle';
 import { LoadingSpinner } from './base/LoadingSpinner';
-import { createPortal } from 'react-dom';
 
 type ExpandedColumnFilter = (column: QueryColumn, showAllColumns: boolean) => boolean;
 type QueryColumnHandler = (column: QueryColumn) => void;
@@ -80,6 +80,8 @@ export const FieldLabelDisplay: FC<FieldLabelDisplayProps> = memo(props => {
         </OverlayTrigger>
     );
 });
+
+FieldLabelDisplay.displayName = 'FieldLabelDisplay';
 
 export interface ColumnChoiceProps {
     column: QueryColumn;
@@ -171,6 +173,8 @@ export const ColumnChoice: FC<ColumnChoiceProps> = memo(props => {
     );
 });
 
+ColumnChoice.displayName = 'ColumnChoice';
+
 export interface ColumnChoiceGroupProps extends ColumnChoiceProps {
     columnsInView: QueryColumn[];
     disabledMsg?: ReactNode;
@@ -232,6 +236,8 @@ export const ColumnChoiceGroup: FC<ColumnChoiceGroupProps> = memo(props => {
         </>
     );
 });
+
+ColumnChoiceGroup.displayName = 'ColumnChoiceGroup';
 
 export interface ColumnInViewProps {
     allowEditLabel: boolean;
@@ -331,6 +337,8 @@ export const ColumnInView: FC<ColumnInViewProps> = memo(props => {
         </Draggable>
     );
 });
+
+ColumnInView.displayName = 'ColumnInView';
 
 export interface ColumnSelectionModalProps extends Omit<ModalProps, 'canConfirm' | 'onConfirm' | 'cancelText'> {
     allowEditLabel?: boolean;
@@ -499,7 +507,9 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
     }, [expandedColumnFilter, isLoaded, queryInfo, showAllColumns]);
 
     const disabledMsg = useMemo<string>(() => {
-        return selectedColumns.length === maxColumns ? 'Maximum of ' + maxColumns + ' fields already selected.' : undefined;
+        return selectedColumns.length === maxColumns
+            ? 'Maximum of ' + maxColumns + ' fields already selected.'
+            : undefined;
     }, [selectedColumns.length, maxColumns]);
 
     return (

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, Record } from 'immutable';
+import { fromJS, List, Map, Record as ImmutableRecord } from 'immutable';
 import { ActionURL, Domain, getServerContext, Utils } from '@labkey/api';
 import React, { ReactNode } from 'react';
 
@@ -168,7 +168,7 @@ interface IDomainDesign {
 }
 
 export class DomainDesign
-    extends Record({
+    extends ImmutableRecord({
         name: undefined,
         container: undefined,
         description: undefined,
@@ -545,7 +545,7 @@ export interface IDomainIndex {
 }
 
 export class DomainIndex
-    extends Record({
+    extends ImmutableRecord({
         columns: List<string>(),
         type: undefined,
     })
@@ -610,7 +610,7 @@ export interface IConditionalFormat {
 }
 
 export class ConditionalFormat
-    extends Record({
+    extends ImmutableRecord({
         formatFilter: undefined,
         bold: false,
         italic: false,
@@ -666,7 +666,7 @@ export interface IPropertyValidatorProperties {
 }
 
 export class PropertyValidatorProperties
-    extends Record({
+    extends ImmutableRecord({
         failOnMatch: false,
         validValues: undefined,
         valueUpdates: undefined,
@@ -705,7 +705,7 @@ export interface IPropertyValidator {
 }
 
 export class PropertyValidator
-    extends Record({
+    extends ImmutableRecord({
         type: undefined,
         name: undefined,
         properties: new PropertyValidatorProperties(),
@@ -865,7 +865,7 @@ export interface IDomainField {
 }
 
 export class DomainField
-    extends Record({
+    extends ImmutableRecord({
         conceptURI: undefined,
         conditionalFormats: List<ConditionalFormat>(),
         defaultScale: undefined,
@@ -1309,7 +1309,7 @@ export class DomainField
         return concept?.getDisplayLabel() ?? this.principalConceptCode;
     }
 
-    getDetailsArray(index: number, fieldDetailsInfo?: { [key: string]: string }): ReactNode[] {
+    getDetailsArray(fieldDetailsInfo?: Record<string, string>): ReactNode[] {
         const details = [];
         let period = '';
 
@@ -1663,7 +1663,7 @@ export interface LookupInfo {
 }
 
 export class ColumnInfoLite
-    extends Record({
+    extends ImmutableRecord({
         friendlyType: undefined,
         isKeyField: false,
         jsonType: undefined,
@@ -1700,7 +1700,7 @@ interface IQueryInfoLite {
 }
 
 export class QueryInfoLite
-    extends Record({
+    extends ImmutableRecord({
         canEdit: false,
         canEditSharedViews: false,
         columns: List(),
@@ -1800,7 +1800,7 @@ interface IDomainException {
 // For server side, DomainException object is constructed in actions.ts (see saveDomain()) on failure while saving or creating a domain.
 // For client side, DomainException object is constructed in actions.ts (see handleDomainUpdates()) while updating the domain.
 export class DomainException
-    extends Record({
+    extends ImmutableRecord({
         exception: undefined,
         success: undefined,
         severity: undefined,
@@ -1957,7 +1957,7 @@ interface IDomainFieldError {
 }
 
 export class DomainFieldError
-    extends Record({
+    extends ImmutableRecord({
         message: undefined,
         fieldName: undefined,
         propertyId: undefined,
@@ -2063,7 +2063,7 @@ export interface IDerivationDataScope {
  * @property options The fields and properties shared by this type (e.g., one copy) ('options' used to match existing LKS api)
  * @property domainKindName The name of the domainkind type this represents, currently supported can be found in Domain.KINDS
  */
-export class DomainDetails extends Record({
+export class DomainDetails extends ImmutableRecord({
     domainDesign: undefined,
     options: undefined,
     domainKindName: undefined,

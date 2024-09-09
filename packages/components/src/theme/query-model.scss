@@ -177,6 +177,10 @@
             background-color: transparent;
         }
     }
+
+    button {
+        margin-right: 4px; // Issue 51085
+    }
 }
 
 .grid-panel__checkbox {

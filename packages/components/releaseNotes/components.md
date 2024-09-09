@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.1.1
+*Released*: 9 September 2024
+- Issue 51085: Grid button spacing issue for hover border
+
 ### version 5.1.0
 *Released*: 6 September 2024
 - Issue 51158: Update the text for discarding samples from storage to use "removed" instead

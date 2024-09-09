@@ -73,7 +73,7 @@
     "vis-network": "~6.5.2"
   },
   "devDependencies": {
-    "@labkey/build": "7.7.0",
+    "@labkey/build": "7.7.1-fb-build-tz.0",
     "@labkey/eslint-config-react": "0.0.15",
     "@types/history": "4.7.11",
     "@types/jest": "29.5.12",

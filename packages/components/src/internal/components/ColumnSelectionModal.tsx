@@ -507,7 +507,9 @@ export const ColumnSelectionModal: FC<ColumnSelectionModalProps> = memo(props =>
     }, [expandedColumnFilter, isLoaded, queryInfo, showAllColumns]);
 
     const disabledMsg = useMemo<string>(() => {
-        return selectedColumns.length === maxColumns ? 'Maximum of ' + maxColumns + ' fields already selected.' : undefined;
+        return selectedColumns.length === maxColumns
+            ? 'Maximum of ' + maxColumns + ' fields already selected.'
+            : undefined;
     }, [selectedColumns.length, maxColumns]);
 
     return (

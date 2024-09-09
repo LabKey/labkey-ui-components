@@ -225,7 +225,9 @@ export class EditorModel
         startCol: number,
         startRow: number,
         predicate: (value: List<ValueDescriptor>, colIdx: number, rowIdx: number) => boolean,
-        advance: (colIdx: number, rowIdx: number) => CellCoordinates // TODO: make advance take fieldKey
+        advance: (colIdx: number, rowIdx: number) => CellCoordinates, // TODO: make advance take fieldKey
+        hideReadonlyRows: boolean,
+        readonlyRows: string[]
     ): { colIdx: number; rowIdx: number; value: List<ValueDescriptor> } {
         let colIdx = startCol,
             rowIdx = startRow;
@@ -233,6 +235,8 @@ export class EditorModel
         while (true) {
             ({ colIdx, rowIdx } = advance(colIdx, rowIdx));
             if (!this.isInBounds(colIdx, rowIdx)) break;
+
+            if (hideReadonlyRows && readonlyRows && this.isReadOnlyRow(rowIdx, readonlyRows)) continue;
 
             const fieldKey = this.getFieldKeyByIndex(colIdx);
             const value = this.getValue(fieldKey, rowIdx);

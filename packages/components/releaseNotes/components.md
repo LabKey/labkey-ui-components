@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.2.0
+*Released*: 9 September 2024
+- Add `@hello-pangea/dnd` as a dependency
+- Remove `react-beautiful-dnd` as a dependency
+
 ### version 5.1.1
 *Released*: 9 September 2024
 - Issue 51085: Grid button spacing issue for hover border

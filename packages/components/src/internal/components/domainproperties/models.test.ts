@@ -978,53 +978,53 @@ describe('DomainField', () => {
 
     test('getDetailsArray', () => {
         let field = DomainField.create({ propertyId: undefined, name: 'test' });
-        expect(field.getDetailsArray(0).join('')).toBe('New Field');
+        expect(field.getDetailsArray().join('')).toBe('New Field');
 
         field = field.merge({ propertyId: 0, updatedField: true }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe('Updated');
+        expect(field.getDetailsArray().join('')).toBe('Updated');
 
         field = field.merge({ dataType: SAMPLE_TYPE, lookupSchema: 'exp', lookupQuery: 'SampleType1' }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe('Updated. SampleType1');
+        expect(field.getDetailsArray().join('')).toBe('Updated. SampleType1');
 
         field = field.merge({ dataType: LOOKUP_TYPE }) as DomainField;
-        expect(field.getDetailsArray(0).slice(0, 2).join('')).toBe('Updated. Current Folder > exp');
-        expect((field.getDetailsArray(0)[3] as any).props.href).toBe(
+        expect(field.getDetailsArray().slice(0, 2).join('')).toBe('Updated. Current Folder > exp');
+        expect((field.getDetailsArray()[3] as any).props.href).toBe(
             '/labkey/query/testContainer/executeQuery.view?schemaName=exp&query.queryName=SampleType1'
         );
 
         field = field.merge({ lookupContainer: 'Test Folder' }) as DomainField;
-        expect(field.getDetailsArray(0).slice(0, 2).join('')).toBe('Updated. Test Folder > exp');
-        expect((field.getDetailsArray(0)[3] as any).props.href).toBe(
+        expect(field.getDetailsArray().slice(0, 2).join('')).toBe('Updated. Test Folder > exp');
+        expect((field.getDetailsArray()[3] as any).props.href).toBe(
             '/labkey/query/Test%20Folder/executeQuery.view?schemaName=exp&query.queryName=SampleType1'
         );
 
         field = field.merge({ dataType: ONTOLOGY_LOOKUP_TYPE, sourceOntology: 'SRC' }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe('Updated. SRC');
+        expect(field.getDetailsArray().join('')).toBe('Updated. SRC');
 
         field = field.merge({ wrappedColumnName: 'Wrapped' }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe('Updated. SRC. Wrapped column - Wrapped');
+        expect(field.getDetailsArray().join('')).toBe('Updated. SRC. Wrapped column - Wrapped');
 
         field = field.merge({ wrappedColumnName: undefined, isPrimaryKey: true }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe('Updated. SRC. Primary Key');
+        expect(field.getDetailsArray().join('')).toBe('Updated. SRC. Primary Key');
 
         field = field.merge({ lockType: DOMAIN_FIELD_FULLY_LOCKED }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe('Updated. SRC. Primary Key. Locked');
+        expect(field.getDetailsArray().join('')).toBe('Updated. SRC. Primary Key. Locked');
 
         field = field.merge({ principalConceptCode: 'abc:123' }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe(
+        expect(field.getDetailsArray().join('')).toBe(
             'Updated. SRC. Ontology Concept: ABC 123 (abc:123). Primary Key. Locked'
         );
 
-        expect(field.getDetailsArray(0, { test: 'Additional Info' }).join('')).toBe(
+        expect(field.getDetailsArray({ test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: ABC 123 (abc:123). Primary Key. Locked. Additional Info'
         );
         field = field.merge({ name: '' }) as DomainField;
-        expect(field.getDetailsArray(0, { test: 'Additional Info' }).join('')).toBe(
+        expect(field.getDetailsArray({ test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Ontology Concept: ABC 123 (abc:123). Primary Key. Locked'
         );
 
         CONCEPT_CACHE.set('abc:123', new ConceptModel({ code: 'abc:123', label: 'Concept display text' }));
-        expect(field.getDetailsArray(0).join('')).toBe(
+        expect(field.getDetailsArray().join('')).toBe(
             'Updated. SRC. Ontology Concept: Concept display text (abc:123). Primary Key. Locked'
         );
     });
@@ -1035,7 +1035,7 @@ describe('DomainField', () => {
             dataType: TEXT_CHOICE_TYPE,
             textChoiceValidator: DEFAULT_TEXT_CHOICE_VALIDATOR,
         }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe('New Field. ');
+        expect(field.getDetailsArray().join('')).toBe('New Field. ');
 
         field = field.merge({
             textChoiceValidator: new PropertyValidator({
@@ -1045,7 +1045,7 @@ describe('DomainField', () => {
                 shouldShowWarning: true,
             }),
         }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe('New Field. a, b');
+        expect(field.getDetailsArray().join('')).toBe('New Field. a, b');
 
         field = field.merge({
             textChoiceValidator: new PropertyValidator({
@@ -1055,7 +1055,7 @@ describe('DomainField', () => {
                 shouldShowWarning: true,
             }),
         }) as DomainField;
-        expect(field.getDetailsArray(0).join('')).toBe('New Field. a, b, c, d (and 2 more)');
+        expect(field.getDetailsArray().join('')).toBe('New Field. a, b, c, d (and 2 more)');
 
         // Saved fields with no choice values should warn
         let fieldSaved = DomainField.create({ propertyId: 1, name: 'testSaved', rangeURI: TEXT_CHOICE_TYPE.rangeURI });
@@ -1069,8 +1069,8 @@ describe('DomainField', () => {
             }),
         }) as DomainField;
 
-        expect(fieldSaved.getDetailsArray(0)[0]).toBe('');
-        expect((fieldSaved.getDetailsArray(0)[1] as any).props.fieldError.message).toBe(
+        expect(fieldSaved.getDetailsArray()[0]).toBe('');
+        expect((fieldSaved.getDetailsArray()[1] as any).props.fieldError.message).toBe(
             'No text choice values defined.'
         );
 
@@ -1079,8 +1079,8 @@ describe('DomainField', () => {
             PHI: PHILEVEL_LIMITED_PHI,
         }) as DomainField;
 
-        expect(fieldSaved.getDetailsArray(0)[0]).toBe('');
-        expect((fieldSaved.getDetailsArray(0)[1] as any).props.fieldError.message).toBe(
+        expect(fieldSaved.getDetailsArray()[0]).toBe('');
+        expect((fieldSaved.getDetailsArray()[1] as any).props.fieldError.message).toBe(
             'No text choice values defined.'
         );
 
@@ -1094,7 +1094,7 @@ describe('DomainField', () => {
             }),
         }) as DomainField;
 
-        expect(fieldSaved.getDetailsArray(0).join('')).toBe(
+        expect(fieldSaved.getDetailsArray().join('')).toBe(
             'Note: These text choice options are visible to all administrators, including those not granted any PHI reader role.'
         );
     });

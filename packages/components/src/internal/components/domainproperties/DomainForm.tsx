@@ -15,7 +15,7 @@
  */
 import React, { FC, memo, PropsWithChildren, ReactNode } from 'react';
 import { List, Map } from 'immutable';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import classNames from 'classnames';
 
 import { FIELD_EDITOR_TOPIC, HelpLink } from '../../util/helpLinks';
@@ -1132,54 +1132,56 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
                     {provided => (
                         <div ref={provided.innerRef} {...provided.droppableProps}>
                             <form className="domain-form">
-                                {domain.fields.map((field, i) => {
-                                    // use the propertyId in the row key for saved fields (helps with issues 49481 and 50076)
-                                    let key = 'domain-row-key-new' + i;
-                                    if (!field.isNew() && !field.isCalculatedField() && field.propertyId > 0) {
-                                        key = 'domain-row-key-prop' + field.propertyId;
-                                    }
+                                {domain.fields
+                                    .map((field, i) => {
+                                        // use the propertyId in the row key for saved fields (helps with issues 49481 and 50076)
+                                        let key = 'domain-row-key-new' + i;
+                                        if (!field.isNew() && !field.isCalculatedField() && field.propertyId > 0) {
+                                            key = 'domain-row-key-prop' + field.propertyId;
+                                        }
 
-                                    // Need to preserve index so don't filter, instead just use empty div
-                                    if (!field.visible) return <div key={key} />;
+                                        // Need to preserve index so don't filter, instead just use empty div
+                                        if (!field.visible) return <div key={key} />;
 
-                                    return (
-                                        <DomainRow
-                                            ref={ref => {
-                                                this.refsArray[i] = ref;
-                                            }}
-                                            domainId={domain.domainId}
-                                            helpNoun={helpNoun}
-                                            key={key}
-                                            field={field}
-                                            fieldError={this.getFieldError(domain, i)}
-                                            getDomainFields={this.getDomainFields}
-                                            fieldDetailsInfo={fieldDetails.detailsInfo}
-                                            domainIndex={domainIndex}
-                                            index={i}
-                                            expanded={expandedRowIndex === i}
-                                            onChange={this.onFieldsChange}
-                                            onExpand={this.onFieldExpandToggle}
-                                            onDelete={this.onDeleteField}
-                                            maxPhiLevel={maxPhiLevel}
-                                            dragging={dragId === i}
-                                            availableTypes={availableTypes}
-                                            allowUniqueConstraintProperties={domain.allowUniqueConstraintProperties}
-                                            showDefaultValueSettings={domain.showDefaultValueSettings}
-                                            defaultDefaultValueType={domain.defaultDefaultValueType}
-                                            defaultValueOptions={domain.defaultValueOptions}
-                                            appPropertiesOnly={appPropertiesOnly}
-                                            isDragDisabled={
-                                                !valueIsEmpty(search) ||
-                                                domainFormDisplayOptions.isDragDisabled ||
-                                                field.isCalculatedField()
-                                            }
-                                            domainFormDisplayOptions={domainFormDisplayOptions}
-                                            domainContainerPath={domain.container}
-                                            schemaName={schemaName ?? domain.schemaName}
-                                            queryName={queryName ?? domain.queryName}
-                                        />
-                                    );
-                                }).toArray()}
+                                        return (
+                                            <DomainRow
+                                                ref={ref => {
+                                                    this.refsArray[i] = ref;
+                                                }}
+                                                domainId={domain.domainId}
+                                                helpNoun={helpNoun}
+                                                key={key}
+                                                field={field}
+                                                fieldError={this.getFieldError(domain, i)}
+                                                getDomainFields={this.getDomainFields}
+                                                fieldDetailsInfo={fieldDetails.detailsInfo}
+                                                domainIndex={domainIndex}
+                                                index={i}
+                                                expanded={expandedRowIndex === i}
+                                                onChange={this.onFieldsChange}
+                                                onExpand={this.onFieldExpandToggle}
+                                                onDelete={this.onDeleteField}
+                                                maxPhiLevel={maxPhiLevel}
+                                                dragging={dragId === i}
+                                                availableTypes={availableTypes}
+                                                allowUniqueConstraintProperties={domain.allowUniqueConstraintProperties}
+                                                showDefaultValueSettings={domain.showDefaultValueSettings}
+                                                defaultDefaultValueType={domain.defaultDefaultValueType}
+                                                defaultValueOptions={domain.defaultValueOptions}
+                                                appPropertiesOnly={appPropertiesOnly}
+                                                isDragDisabled={
+                                                    !valueIsEmpty(search) ||
+                                                    domainFormDisplayOptions.isDragDisabled ||
+                                                    field.isCalculatedField()
+                                                }
+                                                domainFormDisplayOptions={domainFormDisplayOptions}
+                                                domainContainerPath={domain.container}
+                                                schemaName={schemaName ?? domain.schemaName}
+                                                queryName={queryName ?? domain.queryName}
+                                            />
+                                        );
+                                    })
+                                    .toArray()}
                                 {provided.placeholder}
                             </form>
                         </div>

@@ -187,11 +187,24 @@
   margin-right: 10px;
 }
 
-div.react-datepicker-time__header,
 div.react-datepicker,
-div.react-datepicker__current-month {
+div.react-datepicker-time__header,
+h2.react-datepicker__current-month {
+    // The default font-size is .944rem, however, this relative unit ends up leaving the font size too large
+    // and the header text (e.g. "September 2024") ends up overflowing the allotted space.
     font-size: 14px;
 }
+
+.react-datepicker__navigation--previous {
+    // This is adjusted for the sizing of ".react-datepicker__current-month" to ensure the arrow is spaced to the left
+    left: -6px;
+}
+
+.react-datepicker__navigation-icon--next {
+    // This is adjusted for the sizing of ".react-datepicker__current-month" to ensure the arrow is spaced to the right
+    left: 4px;
+}
+
 .react-datepicker-popper {
     // The default z-index is 1, but bootstrap sets the z-index for form inputs to 2, which means all form inputs render
     // on top of the date-picker by default, which makes it hard to use in some situations.
@@ -199,11 +212,6 @@ div.react-datepicker__current-month {
     z-index: 11;
 }
 
-.form-group {
-    .react-datepicker__triangle {
-        left: -10px !important;
-    }
-}
 .add-control--error-message {
     padding-top: 5px;
 }

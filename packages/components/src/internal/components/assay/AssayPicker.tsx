@@ -214,3 +214,5 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
         </Tabs>
     );
 });
+
+AssayPicker.displayName = 'AssayPicker';

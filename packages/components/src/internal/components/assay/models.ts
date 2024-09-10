@@ -25,10 +25,11 @@ import { SelectInputChange } from '../forms/input/SelectInput';
 import { AssayWizardModel } from './AssayWizardModel';
 
 export interface AssayPropertiesPanelProps {
-    operation: Operation;
+    containerPath?: string;
     model: AssayWizardModel;
     onChange: (fieldValues: any, isChanged?: boolean) => void;
     onWorkflowTaskChange?: SelectInputChange;
+    operation: Operation;
 }
 
 export class AssayUploadResultModel {

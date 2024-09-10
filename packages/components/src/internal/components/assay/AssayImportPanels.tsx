@@ -67,6 +67,8 @@ import { CommentTextArea } from '../forms/input/CommentTextArea';
 
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
+import { useContainerUser } from '../container/actions';
+
 import {
     allowReimportAssayRun,
     checkForDuplicateAssayFiles,
@@ -130,9 +132,9 @@ interface State {
     error: ReactNode;
     importAgain?: boolean;
     model: AssayWizardModel;
-    sampleStatusWarning: string;
     schemaQuery: SchemaQuery;
     showRenameModal: boolean;
+    warning: string;
 }
 
 class AssayImportPanelsBody extends Component<Props, State> {
@@ -156,7 +158,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             model: new AssayWizardModel({ isInit: false, runId: props.runId }),
             schemaQuery,
             showRenameModal: false,
-            sampleStatusWarning: undefined,
+            warning: undefined,
         };
     }
 
@@ -336,10 +338,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     onGetQueryDetailsComplete = async (): Promise<void> => {
-        const { assayDefinition, searchParams } = this.props;
+        const { assayDefinition, searchParams, container } = this.props;
         const sampleColumnData = assayDefinition.getSampleColumn();
 
-        let sampleStatusWarning: string;
+        let warning: string;
         const modelUpdates: Partial<AssayWizardModel> = {
             batchProperties: this.getBatchPropertiesMap(),
             isInit: this.runAndBatchPropsLoaded(),
@@ -384,10 +386,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
                 hasValidSamples = validSamples.size > 0;
                 if (samples.size > 0) {
-                    sampleStatusWarning = getOperationNotAllowedMessage(
-                        SampleOperation.AddAssayData,
-                        statusConfirmationData
-                    );
+                    warning = getOperationNotAllowedMessage(SampleOperation.AddAssayData, statusConfirmationData);
                 }
             } catch (e) {
                 this.setState({ error: STATUS_DATA_RETRIEVAL_ERROR });
@@ -395,10 +394,16 @@ class AssayImportPanelsBody extends Component<Props, State> {
             }
         }
 
+        const destinationContainerId = searchParams.get('destinationContainerId');
+        if (destinationContainerId) {
+            const destinationContainerWarning = ` The assay data will be imported in the ${container.path} folder.`;
+            warning = (warning || '') + destinationContainerWarning;
+        }
+
         this.setState(
             state => ({
                 model: state.model.merge(modelUpdates) as AssayWizardModel,
-                sampleStatusWarning,
+                warning,
             }),
             () => this.onInitModelComplete(hasValidSamples)
         );
@@ -573,8 +578,15 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     onFinish = async (importAgain: boolean): Promise<void> => {
-        const { currentStep, onSave, jobNotificationProvider, assayProtocol, searchParams, dismissNotifications } =
-            this.props;
+        const {
+            container,
+            currentStep,
+            onSave,
+            jobNotificationProvider,
+            assayProtocol,
+            searchParams,
+            dismissNotifications,
+        } = this.props;
         const { model, comment } = this.state;
         const data = model.prepareFormData(currentStep, this.state.editorModel);
         this.setModelState(true, undefined);
@@ -603,6 +615,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 jobDescription: this.getBackgroundJobDescription(data),
                 jobNotificationProvider,
                 auditUserComment: comment,
+                containerPath: container.path,
             });
 
             this.props.setIsDirty?.(false);
@@ -728,7 +741,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             getIsDirty,
             setIsDirty,
         } = this.props;
-        const { comment, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } = this.state;
+        const { comment, duplicateFileResponse, editorModel, model, showRenameModal, warning } = this.state;
         const runPropsModel = this.getRunPropsQueryModel();
         const resultsFilesCount = model.getResultsFiles().length;
 
@@ -780,7 +793,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                         hasBatchProperties={model.batchColumns.size > 0}
                     />
                 )}
-                <Alert bsStyle="warning">{sampleStatusWarning}</Alert>
+                <Alert bsStyle="warning">{warning}</Alert>
                 <BatchPropertiesPanel model={model} operation={operation} onChange={this.handleBatchChange} />
                 <RunPropertiesPanel
                     model={model}
@@ -789,13 +802,19 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     onWorkflowTaskChange={this.handleWorkflowTaskChange}
                 />
                 {plateSupportEnabled && (
-                    <PlatePropertiesPanel model={model} operation={operation} onChange={this.handleRunChange} />
+                    <PlatePropertiesPanel
+                        model={model}
+                        operation={operation}
+                        onChange={this.handleRunChange}
+                        containerPath={container.path}
+                    />
                 )}
                 <RunDataPanel
                     acceptedPreviewFileFormats={acceptedPreviewFileFormats}
                     allowBulkRemove={allowBulkRemove}
                     allowBulkInsert={allowBulkInsert}
                     allowBulkUpdate={allowBulkUpdate}
+                    containerPath={container.path}
                     currentStep={currentStep}
                     editorModel={editorModel}
                     fileSizeLimits={fileSizeLimits}
@@ -879,6 +898,8 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
     const { createNotification, dismissNotifications } = useNotificationsContext();
     const { container, user } = useServerContext();
     const { requiresUserComment } = useDataChangeCommentsRequired();
+    const containerUser = useContainerUser(searchParams.get('destinationContainerId'));
+
     const key = [runId, assayDefinition.protocolSchemaName].join('|');
     const schemaQuery = useMemo(
         () => new SchemaQuery(assayDefinition.protocolSchemaName, 'Runs'),
@@ -900,11 +921,15 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
         [runId, schemaQuery]
     );
 
+    const destinationContainer = useMemo(() => {
+        return container.isFolder ? container : (containerUser.container ?? container);
+    }, [container, containerUser]);
+
     return (
         <AssayImportPanelWithQueryModels
             {...props}
             autoLoad
-            container={container}
+            container={destinationContainer}
             createNotification={createNotification}
             dismissNotifications={dismissNotifications}
             key={key}

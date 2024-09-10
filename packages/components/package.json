@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [
@@ -65,7 +65,7 @@
     "numeral": "~2.0.6",
     "react": "~18.3.1",
     "react-color": "~2.19.3",
-    "react-datepicker": "~4.17.0",
+    "react-datepicker": "~7.3.0",
     "react-dom": "~18.3.1",
     "react-router-dom": "~6.24.1",
     "react-select": "~5.8.0",
@@ -73,14 +73,13 @@
     "vis-network": "~6.5.2"
   },
   "devDependencies": {
-    "@labkey/build": "7.7.0",
+    "@labkey/build": "7.7.1",
     "@labkey/eslint-config-react": "0.0.15",
     "@types/history": "4.7.11",
     "@types/jest": "29.5.12",
     "@types/node": "20.14.11",
     "@types/numeral": "2.0.5",
     "@types/react": "18.3.3",
-    "@types/react-datepicker": "4.15.0",
     "@types/react-dom": "18.3.0",
     "@types/react-test-renderer": "16.9.12",
     "blob-polyfill": "9.0.20240710",

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.3.0
+*Released*: 10 September 2024
+- Update `react-datepicker` dependency to align with our `date-fns@3.x` dependency.
+- Remove `@types/react-datepicker` dependency as `react-datepicker` now supplies its own typings.
+
 ### version 5.2.0
 *Released*: 9 September 2024
 - Add `@hello-pangea/dnd` as a dependency

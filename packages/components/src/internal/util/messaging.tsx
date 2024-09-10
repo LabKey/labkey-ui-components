@@ -104,10 +104,10 @@ export function resolveErrorMessage(
         ) {
             return `There was a problem ${verb || 'creating'} your ${noun || 'data'}. Check the data fields to make
             sure they contain or reference valid values.`;
-        } else if (lcMessage.indexOf('bad sql grammar') >= 0 || lcMessage.indexOf(ClassCastMessage) >= 0) {
-            return `There was a problem ${verb || 'creating'} your ${
-                noun || 'data'
-            }.  Check that the format of the data matches the expected type for each field.`;
+        } else if (lcMessage.indexOf(ClassCastMessage) >= 0) {
+            return `There was a problem ${verb || 'creating'} your ${noun || 'data'}.  Check that the format of the data matches the expected type for each field.`;
+        } else if (lcMessage.indexOf('bad sql grammar') >= 0) {
+            return `There was a problem ${verb || 'creating'} your ${noun || 'data'}.  Check that the format of the data matches the expected type for each field. If you are using calculated fields, you might need to add explicit type casts.`;
         } else if (lcMessage.indexOf('existing row was not found') >= 0) {
             return `We could not find the ${noun || 'data'} ${
                 verb ? 'to ' + verb : ''

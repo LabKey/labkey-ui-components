@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD September 2024
+- Calculated fields issue fixes for 24.10
+  - DomainForm to handle batching updates for state related to calculated field validation
+
 ### version 5.2.0
 *Released*: 9 September 2024
 - Add `@hello-pangea/dnd` as a dependency

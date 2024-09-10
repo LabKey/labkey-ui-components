@@ -129,7 +129,12 @@ export interface DomainFormProps extends PropsWithChildren {
     modelDomains?: List<DomainDesign>;
     // used to initialize newly added fields
     newFieldConfig?: Partial<IDomainField>;
-    onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange[]) => void;
+    onChange: (
+        newDomain: DomainDesign,
+        dirty: boolean,
+        rowIndexChange?: DomainFieldIndexChange[],
+        changes?: List<IFieldChange> // use this instead of newDomain for changes that should be applied to the domain but not trigger a dirty change
+    ) => void;
     onToggle?: (collapsed: boolean, callback?: () => any) => void;
     panelStatus?: DomainPanelStatus;
     // the queryName to use for text choice distinct value query, overrides schema/query on domain prop
@@ -597,12 +602,16 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
     };
 
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean, skipDirtyCheck = false): void => {
-        const { domain } = this.props;
+        const { domain, onChange } = this.props;
         const firstChange = changes.get(0);
         const rowSelectedChange = getNameFromId(firstChange?.id) === 'selected';
-        const dirty = skipDirtyCheck ? false : !rowSelectedChange;
 
-        this.onDomainChange(handleDomainUpdates(domain, changes), dirty);
+        if (skipDirtyCheck) {
+            onChange?.(undefined, false, undefined, changes);
+        } else {
+            const dirty = !rowSelectedChange;
+            this.onDomainChange(handleDomainUpdates(domain, changes), dirty);
+        }
 
         if (rowSelectedChange) {
             this.setState(

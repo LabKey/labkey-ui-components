@@ -1,12 +1,18 @@
 import React from 'react';
-import { Map } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { getDefaultAPIWrapper } from '../../../APIWrapper';
 import { DomainPropertiesAPIWrapper } from '../APIWrapper';
 
-import { DomainDesign, HeaderRenderer, IDomainFormDisplayOptions } from '../models';
+import {
+    DomainDesign,
+    DomainFieldIndexChange,
+    HeaderRenderer,
+    IDomainFormDisplayOptions,
+    IFieldChange,
+} from '../models';
 
-import { getDomainPanelStatus, scrollDomainErrorIntoView } from '../actions';
+import { getDomainPanelStatus, handleDomainUpdates, scrollDomainErrorIntoView } from '../actions';
 
 import DomainForm from '../DomainForm';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
@@ -71,13 +77,22 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
         };
     }
 
-    onDomainChange = (index: number, updatedDomain: DomainDesign, dirty: boolean): void => {
+    onDomainChange = (
+        index: number,
+        updatedDomain: DomainDesign,
+        dirty: boolean,
+        rowIndexChange?: DomainFieldIndexChange[],
+        changes?: List<IFieldChange>
+    ): void => {
         const { onChange } = this.props;
 
         this.setState(
             state => {
                 const domains = state.protocolModel.domains.map((domain, i) => {
-                    return i === index ? updatedDomain : domain;
+                    if (i === index) {
+                        return updatedDomain ?? handleDomainUpdates(domain, changes);
+                    }
+                    return domain;
                 });
                 const updatedModel = state.protocolModel.merge({ domains }) as AssayProtocolModel;
 
@@ -254,69 +269,71 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     }}
                     canRename={isGpat}
                 />
-                {protocolModel.domains.map((domain, i) => {
-                    // optionally hide the Batch Fields domain from the UI
-                    if (this.shouldSkipBatchDomain(domain)) {
-                        return;
-                    }
+                {protocolModel.domains
+                    .map((domain, i) => {
+                        // optionally hide the Batch Fields domain from the UI
+                        if (this.shouldSkipBatchDomain(domain)) {
+                            return;
+                        }
 
-                    // allow empty domain to be inferred from a file for Data Fields in General assay
-                    const hideInferFromFile = !isGpat || !domain.isNameSuffixMatch('Data');
-                    // The File property type should be hidden for Data domains if the display options indicate this.
-                    // We will always allow file property types for the Batch and Run domains.
-                    const hideFilePropertyType =
-                        domainFormDisplayOptions.hideFilePropertyType &&
-                        !domain.isNameSuffixMatch('Batch') &&
-                        !domain.isNameSuffixMatch('Run');
-                    const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
-                    const textChoiceLockedForDomain = !(
-                        (domain.isNameSuffixMatch('Run') && protocolModel.editableRuns) ||
-                        (domain.isNameSuffixMatch('Data') && protocolModel.editableResults)
-                    );
+                        // allow empty domain to be inferred from a file for Data Fields in General assay
+                        const hideInferFromFile = !isGpat || !domain.isNameSuffixMatch('Data');
+                        // The File property type should be hidden for Data domains if the display options indicate this.
+                        // We will always allow file property types for the Batch and Run domains.
+                        const hideFilePropertyType =
+                            domainFormDisplayOptions.hideFilePropertyType &&
+                            !domain.isNameSuffixMatch('Batch') &&
+                            !domain.isNameSuffixMatch('Run');
+                        const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
+                        const textChoiceLockedForDomain = !(
+                            (domain.isNameSuffixMatch('Run') && protocolModel.editableRuns) ||
+                            (domain.isNameSuffixMatch('Data') && protocolModel.editableResults)
+                        );
 
-                    return (
-                        <DomainForm
-                            key={domain.domainId || i}
-                            api={api}
-                            index={domain.domainId || i}
-                            domainIndex={i}
-                            domain={domain}
-                            headerPrefix={initModel?.name}
-                            controlledCollapse
-                            initCollapsed={currentPanelIndex !== i + DOMAIN_PANEL_INDEX}
-                            validate={validatePanel === i + DOMAIN_PANEL_INDEX}
-                            panelStatus={
-                                protocolModel.isNew()
-                                    ? getDomainPanelStatus(
-                                          i + DOMAIN_PANEL_INDEX,
-                                          currentPanelIndex,
-                                          visitedPanels,
-                                          firstState
-                                      )
-                                    : 'COMPLETE'
-                            }
-                            helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains
-                            onChange={(updatedDomain, dirty) => {
-                                this.onDomainChange(i, updatedDomain, dirty);
-                            }}
-                            onToggle={(collapsed, callback) => {
-                                onTogglePanel(i + DOMAIN_PANEL_INDEX, collapsed, callback);
-                            }}
-                            appDomainHeaderRenderer={appDomainHeaderRenderer}
-                            modelDomains={protocolModel.domains}
-                            appPropertiesOnly={hideAdvancedProperties}
-                            domainFormDisplayOptions={{
-                                ...domainFormDisplayOptions,
-                                domainKindDisplayName: 'assay design',
-                                hideFilePropertyType,
-                                hideInferFromFile,
-                                textChoiceLockedForDomain,
-                            }}
-                        >
-                            <div>{domain.description}</div>
-                        </DomainForm>
-                    );
-                }).toArray()}
+                        return (
+                            <DomainForm
+                                key={domain.domainId || i}
+                                api={api}
+                                index={domain.domainId || i}
+                                domainIndex={i}
+                                domain={domain}
+                                headerPrefix={initModel?.name}
+                                controlledCollapse
+                                initCollapsed={currentPanelIndex !== i + DOMAIN_PANEL_INDEX}
+                                validate={validatePanel === i + DOMAIN_PANEL_INDEX}
+                                panelStatus={
+                                    protocolModel.isNew()
+                                        ? getDomainPanelStatus(
+                                              i + DOMAIN_PANEL_INDEX,
+                                              currentPanelIndex,
+                                              visitedPanels,
+                                              firstState
+                                          )
+                                        : 'COMPLETE'
+                                }
+                                helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains
+                                onChange={(updatedDomain, dirty, rowIndexChange, changes) => {
+                                    this.onDomainChange(i, updatedDomain, dirty, rowIndexChange, changes);
+                                }}
+                                onToggle={(collapsed, callback) => {
+                                    onTogglePanel(i + DOMAIN_PANEL_INDEX, collapsed, callback);
+                                }}
+                                appDomainHeaderRenderer={appDomainHeaderRenderer}
+                                modelDomains={protocolModel.domains}
+                                appPropertiesOnly={hideAdvancedProperties}
+                                domainFormDisplayOptions={{
+                                    ...domainFormDisplayOptions,
+                                    domainKindDisplayName: 'assay design',
+                                    hideFilePropertyType,
+                                    hideInferFromFile,
+                                    textChoiceLockedForDomain,
+                                }}
+                            >
+                                <div>{domain.description}</div>
+                            </DomainForm>
+                        );
+                    })
+                    .toArray()}
                 {appPropertiesOnly && allowProjectExclusion && (
                     <DataTypeProjectsPanel
                         controlledCollapse

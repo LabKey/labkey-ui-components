@@ -26,9 +26,9 @@ import { DomainPropertiesAPIWrapper } from '../APIWrapper';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { DomainDesign, DomainField, DomainFieldIndexChange } from '../models';
+import { DomainDesign, DomainField, DomainFieldIndexChange, IFieldChange } from '../models';
 
-import { getDomainPanelStatus, saveDomain } from '../actions';
+import { getDomainPanelStatus, handleDomainUpdates, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_NOT_LOCKED } from '../constants';
@@ -222,9 +222,23 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<
         this.props.onFinish(model.isValid(), this.saveDomain);
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges: DomainFieldIndexChange[]): void => {
+    onDomainChange = (
+        domain: DomainDesign,
+        dirty: boolean,
+        rowIndexChanges: DomainFieldIndexChange[],
+        changes?: List<IFieldChange>
+    ): void => {
         const { onChange } = this.props;
         const { keyPropertyIndex, visitDatePropertyIndex } = this.state;
+
+        if (changes) {
+            this.setState(
+                produce<State>(draft => {
+                    Object.assign(draft.model.domain, handleDomainUpdates(draft.model.domain, changes));
+                })
+            );
+            return;
+        }
 
         this.setState(
             produce<State>(draft => {

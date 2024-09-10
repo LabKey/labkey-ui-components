@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 7.7.1
+*Released*: 10 September 2024
+- Add `date-fns/format` and `date-fns-tz` to list of external packages.
+
 ### version 7.7.0
 *Released*: 9 September 2024
 - Update external dependencies for drag-n-drop packages.

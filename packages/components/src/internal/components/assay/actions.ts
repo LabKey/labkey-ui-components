@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from 'immutable';
-import { ActionURL, Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
+import { List, Map, OrderedMap } from 'immutable';
+import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
 
 import { User } from '../base/models/User';
 import { AssayDefinitionModel } from '../../AssayDefinitionModel';
@@ -23,8 +23,15 @@ import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 
 import { AssayProtocolModel } from '../domainproperties/assay/models';
 
+import { QueryColumn } from '../../../public/QueryColumn';
+
+import { SCHEMAS } from '../../schemas';
+import { getSelection } from '../../actions';
+import { fetchSamples } from '../samples/actions';
+import { getSelectedPicklistSamples } from '../picklist/actions';
+
+import { AssayUploadURLSearchParam, AssayUploadResultModel } from './models';
 import { AssayUploadOptions } from './AssayWizardModel';
-import { AssayUploadResultModel } from './models';
 
 /**
  * Only support option to re-import run if user has insert permissions in current container
@@ -125,6 +132,58 @@ export function importAssayRun(config: ImportAssayRunOptions): Promise<AssayUplo
     });
 }
 
+/**
+ * Loads a collection of RowIds from a selectionKey found on "location". Uses [[fetchSamples]] to query and filter
+ * the Sample Set data.
+ * @param searchParams The URLSearchParams to search for the selectionKey on
+ * @param sampleColumn A QueryColumn used to map data in [[fetchSamples]]
+ * @param containerPath Container path where requests are made
+ */
+export async function loadSelectedSamples(
+    searchParams: URLSearchParams,
+    sampleColumn: QueryColumn,
+    containerPath?: string
+): Promise<OrderedMap<any, any>> {
+    const workflowJobId = searchParams.get(AssayUploadURLSearchParam.workflowJobId);
+    // If the "workflowJobId" URL parameter is specified, then fetch the samples associated with the workflow job.
+    if (workflowJobId) {
+        return fetchSamples(
+            SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ,
+            sampleColumn,
+            [Filter.create('ApplicationType', 'ExperimentRun'), Filter.create('ApplicationRun', workflowJobId)],
+            'Name',
+            'RowId', // Issue 51123
+            containerPath
+        );
+    }
+
+    // Otherwise, load the samples from the selection.
+    const selection = await getSelection(searchParams);
+
+    if (selection.resolved && selection.schemaQuery && selection.selected.length) {
+        const isPicklist = searchParams.get(AssayUploadURLSearchParam.isPicklist) === 'true';
+        let sampleIdNums = selection.selected;
+        if (isPicklist) {
+            sampleIdNums = await getSelectedPicklistSamples(selection.schemaQuery.queryName, selection.selected, false);
+        }
+
+        const sampleSchemaQuery =
+            isPicklist || selection.schemaQuery.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ)
+                ? SCHEMAS.EXP_TABLES.MATERIALS
+                : selection.schemaQuery;
+        return fetchSamples(
+            sampleSchemaQuery,
+            sampleColumn,
+            [Filter.create('RowId', sampleIdNums, Filter.Types.IN)],
+            sampleColumn.lookup.displayColumn,
+            sampleColumn.lookup.keyColumn,
+            containerPath
+        );
+    }
+
+    return OrderedMap();
+}
+
 export function uploadAssayRunFiles(data: AssayUploadOptions): Promise<AssayUploadOptions> {
     return new Promise((resolve, reject) => {
         const batchFiles = collectFiles(data.batchProperties);
@@ -179,7 +238,7 @@ export function uploadAssayRunFiles(data: AssayUploadOptions): Promise<AssayUplo
 
         // N.B. assayFileUpload's success response is not handled well by Utils.getCallbackWrapper.
         Ajax.request({
-            url: buildURL('assay', 'assayFileUpload.view'),
+            url: buildURL('assay', 'assayFileUpload.view', data.containerPath),
             method: 'POST',
             form: formData,
             success: result => {
@@ -253,10 +312,13 @@ export interface DuplicateFilesResponse {
     runNamesPerFile: List<string>;
 }
 
-export function checkForDuplicateAssayFiles(fileNames: string[]): Promise<DuplicateFilesResponse> {
+export function checkForDuplicateAssayFiles(
+    fileNames: string[],
+    containerPath?: string
+): Promise<DuplicateFilesResponse> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('assay', 'assayFileDuplicateCheck.api'),
+            url: ActionURL.buildURL('assay', 'assayFileDuplicateCheck.api', containerPath),
             method: 'POST',
             jsonData: {
                 fileNames,

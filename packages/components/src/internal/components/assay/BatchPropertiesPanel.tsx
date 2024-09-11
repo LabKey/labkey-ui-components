@@ -25,7 +25,8 @@ import { getContainerFilterForLookups } from '../../query/api';
 
 import { AssayPropertiesPanelProps } from './models';
 
-export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model, onChange, operation }) => {
+export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
+    const { containerPath, model, onChange, operation } = props;
     if (model.batchColumns.size === 0) {
         return null;
     }
@@ -45,6 +46,7 @@ export const BatchPropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model
             <div className="panel-body">
                 <Formsy className="form-horizontal" onChange={onChange} disabled={disabled}>
                     <QueryFormInputs
+                        containerPath={containerPath}
                         containerFilter={getContainerFilterForLookups()}
                         fieldValues={model.batchProperties.toObject()}
                         operation={operation}

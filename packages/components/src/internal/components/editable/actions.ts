@@ -1481,7 +1481,7 @@ function getCellCopyValue(valueDescriptors: List<ValueDescriptor>): string {
     return value;
 }
 
-function getCopyValue(model: EditorModel): string {
+function getCopyValue(model: EditorModel, hideReadOnlyRows: boolean, readonlyRows: string[]): string {
     let copyValue = '';
     const EOL = '\n';
     const selectionCells = [...model.selectionCells];
@@ -1491,6 +1491,11 @@ function getCopyValue(model: EditorModel): string {
     for (let rn = 0; rn < model.rowCount; rn++) {
         let cellSep = '';
         let inSelection = false;
+
+        // Do not include hidden rows in copy values
+        if (hideReadOnlyRows && readonlyRows) {
+            if (model.isReadOnlyRow(rn, readonlyRows)) continue;
+        }
 
         model.orderedColumns.forEach(fieldKey => {
             const cellKey = genCellKey(fieldKey, rn);
@@ -1514,10 +1519,10 @@ function getCopyValue(model: EditorModel): string {
     return copyValue;
 }
 
-export function copyEvent(editorModel: EditorModel, event: any): boolean {
+export function copyEvent(editorModel: EditorModel, event: any, hideReadOnlyRows: boolean, readonlyRows: string[]): boolean {
     if (editorModel && !editorModel.hasFocus && editorModel.hasSelection && !editorModel.isSparseSelection) {
         cancelEvent(event);
-        setCopyValue(event, getCopyValue(editorModel));
+        setCopyValue(event, getCopyValue(editorModel, hideReadOnlyRows, readonlyRows));
         return true;
     }
 

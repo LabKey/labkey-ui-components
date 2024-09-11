@@ -38,6 +38,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - DomainRow for calculated fields to set isDragDisabled true
   - Add tooltip for DragDropHandle for calculated fields
 
+### version 4.15.1
+*Released*: 9 September 2024
+- Issue 50700: EditableGrid to account for hidden/readonly rows during cell actions
+
 ### version 4.15.0
 *Released*: 2 September 2024
 - Issue 39332: Provide status when exporting data from a grid in the app

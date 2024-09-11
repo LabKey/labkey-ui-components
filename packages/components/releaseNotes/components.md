@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.3.1
+*Released*: 11 September 2024
+- Merge from release24.9-SNAPSHOT to develop
+    - includes changes from 4.15.1 #1571
+
 ### version 5.3.0
 *Released*: 10 September 2024
 - Update `react-datepicker` dependency to align with our `date-fns@3.x` dependency.

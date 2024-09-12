@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD
+### version 5.4.0
+*Released*: 12 September 2024
 - Issue 50331: Cross-folder import of assay data from subfolder plate set should import data into subfolder
 
 ### version 5.3.1

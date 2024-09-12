@@ -71,6 +71,10 @@ import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { CellMessage, EditableColumnMetadata, EditorModel, EditorModelProps, ValueDescriptor } from './models';
 import { computeRangeChange, genCellKey, getValidatedEditableGridValue, parseCellKey } from './utils';
 
+function anyCell(values: List<ValueDescriptor>): boolean {
+    return true;
+}
+
 function isCellEmpty(values: List<ValueDescriptor>): boolean {
     return !values || values.isEmpty() || values.some(v => v.raw === undefined || v.raw === null || v.raw === '');
 }
@@ -1027,16 +1031,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     onCopy = (event: ClipboardEvent): void => {
-        const { disabled, editorModel } = this.props;
+        const { disabled, editorModel, hideReadonlyRows, readonlyRows } = this.props;
         if (!disabled) {
-            copyEvent(editorModel, event);
+            copyEvent(editorModel, event, hideReadonlyRows, readonlyRows);
         }
     };
 
     onCut = (event: ClipboardEvent): void => {
-        const { disabled, editorModel } = this.props;
+        const { disabled, editorModel, hideReadonlyRows, readonlyRows } = this.props;
 
-        if (!disabled && copyEvent(editorModel, event)) {
+        if (!disabled && copyEvent(editorModel, event, hideReadonlyRows, readonlyRows)) {
             this.modifyCell(
                 editorModel.selectedColIdx,
                 editorModel.selectedRowIdx,
@@ -1047,7 +1051,7 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
     };
 
     onKeyDown = (event: React.KeyboardEvent<HTMLElement>): void => {
-        const { disabled, editorModel } = this.props;
+        const { disabled, editorModel, hideReadonlyRows, readonlyRows } = this.props;
 
         if (disabled || editorModel.hasFocus) {
             return;
@@ -1061,9 +1065,16 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
         let nextRow: number;
 
         switch (event.key) {
-            case Key.ARROW_LEFT:
+            case Key.ARROW_LEFT: {
                 if (isMeta) {
-                    const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveLeft);
+                    const found = editorModel.findNextCell(
+                        colIdx,
+                        rowIdx,
+                        not(isCellEmpty),
+                        moveLeft,
+                        hideReadonlyRows,
+                        readonlyRows
+                    );
                     if (found) {
                         nextCol = found.colIdx;
                         nextRow = found.rowIdx;
@@ -1076,26 +1087,33 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     nextRow = rowIdx;
                 }
                 break;
-
-            case Key.ARROW_UP:
-                if (isMeta) {
-                    const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveUp);
-                    if (found) {
-                        nextCol = found.colIdx;
-                        nextRow = found.rowIdx;
-                    } else {
-                        nextCol = colIdx;
-                        nextRow = 0;
-                    }
-                } else {
-                    nextCol = colIdx;
-                    nextRow = rowIdx - 1;
+            }
+            case Key.ARROW_UP: {
+                const predicate = isMeta ? not(isCellEmpty) : anyCell;
+                const found = editorModel.findNextCell(
+                    colIdx,
+                    rowIdx,
+                    predicate,
+                    moveUp,
+                    hideReadonlyRows,
+                    readonlyRows
+                );
+                if (found) {
+                    nextCol = found.colIdx;
+                    nextRow = found.rowIdx;
                 }
                 break;
-
-            case Key.ARROW_RIGHT:
+            }
+            case Key.ARROW_RIGHT: {
                 if (isMeta) {
-                    const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveRight);
+                    const found = editorModel.findNextCell(
+                        colIdx,
+                        rowIdx,
+                        not(isCellEmpty),
+                        moveRight,
+                        hideReadonlyRows,
+                        readonlyRows
+                    );
                     if (found) {
                         nextCol = found.colIdx;
                         nextRow = found.rowIdx;
@@ -1108,33 +1126,33 @@ export class EditableGrid extends PureComponent<EditableGridProps, EditableGridS
                     nextRow = rowIdx;
                 }
                 break;
-
-            case Key.ARROW_DOWN:
-                if (isMeta) {
-                    const found = editorModel.findNextCell(colIdx, rowIdx, not(isCellEmpty), moveDown);
-                    if (found) {
-                        nextCol = found.colIdx;
-                        nextRow = found.rowIdx;
-                    } else {
-                        nextCol = colIdx;
-                        nextRow = editorModel.rowCount - 1;
-                    }
-                } else {
-                    nextCol = colIdx;
-                    nextRow = rowIdx + 1;
+            }
+            case Key.ARROW_DOWN: {
+                const predicate = isMeta ? not(isCellEmpty) : anyCell;
+                const found = editorModel.findNextCell(
+                    colIdx,
+                    rowIdx,
+                    predicate,
+                    moveDown,
+                    hideReadonlyRows,
+                    readonlyRows
+                );
+                if (found) {
+                    nextCol = found.colIdx;
+                    nextRow = found.rowIdx;
                 }
                 break;
-
-            case Key.HOME:
+            }
+            case Key.HOME: {
                 nextCol = 0;
                 nextRow = rowIdx;
                 break;
-
-            case Key.END:
+            }
+            case Key.END: {
                 nextCol = editorModel.orderedColumns.size - 1;
                 nextRow = rowIdx;
                 break;
-
+            }
             default:
                 // Ignore all other keys
                 break;

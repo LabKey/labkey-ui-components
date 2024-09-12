@@ -69,6 +69,7 @@ interface Props {
     allowBulkInsert?: boolean;
     allowBulkRemove?: boolean;
     allowBulkUpdate?: boolean;
+    containerPath?: string;
     currentStep: number;
     editorModel: EditorModel;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
@@ -223,6 +224,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
             allowBulkInsert,
             allowBulkRemove,
             allowBulkUpdate,
+            containerPath,
             currentStep,
             editorModel,
             maxEditableGridRowMsg,
@@ -281,6 +283,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                                 title: 'Bulk Insert Assay Rows',
                                                 header: 'Add a batch of assay data rows that will share the properties set below.',
                                             }}
+                                            containerPath={containerPath}
                                             containerFilter={getContainerFilterForLookups()}
                                             disabled={currentStep !== AssayUploadTabs.Grid}
                                             editorModel={editorModel}

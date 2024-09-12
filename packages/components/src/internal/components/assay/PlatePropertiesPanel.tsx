@@ -14,7 +14,8 @@ import { getContainerFilterForLookups } from '../../query/api';
 import { PLATE_SET_COLUMN } from './constants';
 import { AssayPropertiesPanelProps } from './models';
 
-export const PlatePropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model, onChange, operation }) => {
+export const PlatePropertiesPanel: FC<AssayPropertiesPanelProps> = memo(props => {
+    const { containerPath, model, onChange, operation } = props;
     // FIXME: Update the AssayWizardModel to use ExtendedMap for plateColumns so we don't need to do this conversion.
     const queryColumns = useMemo(
         () => new ExtendedMap<string, QueryColumn>(model.plateColumns.toJS()),
@@ -38,6 +39,7 @@ export const PlatePropertiesPanel: FC<AssayPropertiesPanelProps> = memo(({ model
             <div className="panel-body">
                 <Formsy className="form-horizontal" onChange={onChange}>
                     <QueryFormInputs
+                        containerPath={containerPath}
                         containerFilter={getContainerFilterForLookups()}
                         fieldValues={model.plateProperties.toObject()}
                         operation={operation}

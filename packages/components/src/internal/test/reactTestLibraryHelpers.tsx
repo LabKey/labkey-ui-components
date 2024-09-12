@@ -11,14 +11,14 @@ import { AppContextTestProvider, AppContextTestProviderProps } from './testHelpe
  * @param contexts The contexts to be provided to the underlying React Context providers.
  * @param options Additional `RenderOptions` to supply to the `render()` method.
  */
-export const renderWithAppContext = (
+export function renderWithAppContext<A>(
     node: ReactElement,
-    contexts?: AppContextTestProviderProps,
+    contexts?: AppContextTestProviderProps<A>,
     options?: Omit<RenderOptions, 'wrapper'>
-): RenderResult => {
+): RenderResult {
     // https://github.com/testing-library/react-testing-library/issues/780
     return render(node, {
         wrapper: _props => <AppContextTestProvider {..._props} {...(contexts as AppContextTestProviderProps)} />,
         ...options,
     });
-};
+}

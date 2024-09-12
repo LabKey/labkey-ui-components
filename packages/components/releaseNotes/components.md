@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   - If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
   - Study dataset designer to include systemFields based on timepoint type (Issue 51249)
 
+### version 5.4.0
+*Released*: 12 September 2024
+- Issue 50331: Cross-folder import of assay data from subfolder plate set should import data into subfolder
+
 ### version 5.3.1
 *Released*: 11 September 2024
 - Merge from release24.9-SNAPSHOT to develop

@@ -15,7 +15,7 @@
  */
 import { AssayDOM, Filter, Utils } from '@labkey/api';
 import { Map, OrderedMap } from 'immutable';
-import React, { Component, FC, ReactNode, useMemo } from 'react';
+import React, { Component, FC, memo, ReactNode, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { FileSizeLimitProps } from '../../../public/files/models';
@@ -41,7 +41,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Container } from '../base/models/Container';
 import { User } from '../base/models/User';
 import { Progress } from '../base/Progress';
-import { useServerContext } from '../base/ServerContext';
+import { ModuleContext, useServerContext } from '../base/ServerContext';
 import { AssayProtocolModel } from '../domainproperties/assay/models';
 import { EditorModel } from '../editable/models';
 import { getSampleOperationConfirmationData } from '../entities/actions';
@@ -54,8 +54,6 @@ import {
     DATA_IMPORT_FILE_SIZE_LIMITS,
 } from '../pipeline/constants';
 
-import { loadSelectedSamples } from '../samples/actions';
-
 import { SampleOperation, STATUS_DATA_RETRIEVAL_ERROR } from '../samples/constants';
 import { getOperationNotAllowedMessage } from '../samples/utils';
 
@@ -67,6 +65,10 @@ import { CommentTextArea } from '../forms/input/CommentTextArea';
 
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 
+import { useContainerUser } from '../container/actions';
+
+import { InsufficientPermissionsAlert } from '../permissions/InsufficientPermissionsAlert';
+
 import {
     allowReimportAssayRun,
     checkForDuplicateAssayFiles,
@@ -74,6 +76,7 @@ import {
     flattenQueryModelRow,
     getRunPropertiesFileName,
     importAssayRun,
+    loadSelectedSamples,
     uploadAssayRunFiles,
 } from './actions';
 import { AssayReimportHeader } from './AssayReimportHeader';
@@ -82,7 +85,7 @@ import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { PLATE_SET_COLUMN, PLATE_TEMPLATE_COLUMN, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 
-import { AssayUploadResultModel } from './models';
+import { AssayUploadURLSearchParam, AssayUploadResultModel } from './models';
 import { PlatePropertiesPanel } from './PlatePropertiesPanel';
 import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
@@ -103,7 +106,11 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getIsDirty?: () => boolean;
     jobNotificationProvider?: string;
-    loadSelectedSamples?: (searchParams: URLSearchParams, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
+    loadSelectedSamples?: (
+        searchParams: URLSearchParams,
+        sampleColumn: QueryColumn,
+        containerPath?: string
+    ) => Promise<OrderedMap<any, any>>;
     // Not currently used, but related logic retained in component
     maxRows?: number;
     onCancel: () => void;
@@ -117,11 +124,14 @@ interface OwnProps {
 
 interface AssayImportPanelsBodyProps extends NotificationsContextProps {
     container: Partial<Container>;
+    currentPathIsDestinationPath: boolean;
+    moduleContext: ModuleContext;
     searchParams: URLSearchParams;
     user: User;
 }
 
-type Props = AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps & InjectedQueryModels;
+type Props = AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps;
+type BodyProps = Props & InjectedQueryModels;
 
 interface State {
     comment: string;
@@ -130,12 +140,12 @@ interface State {
     error: ReactNode;
     importAgain?: boolean;
     model: AssayWizardModel;
-    sampleStatusWarning: string;
     schemaQuery: SchemaQuery;
     showRenameModal: boolean;
+    warning: string;
 }
 
-class AssayImportPanelsBody extends Component<Props, State> {
+class AssayImportPanelsBody extends Component<BodyProps, State> {
     static defaultProps = {
         acceptedPreviewFileFormats: BASE_FILE_TYPES.join(', '),
         fileSizeLimits: DATA_IMPORT_FILE_SIZE_LIMITS,
@@ -146,7 +156,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
     assayUploadTimer: number;
 
-    constructor(props: Props) {
+    constructor(props: BodyProps) {
         super(props);
         const schemaQuery = new SchemaQuery(props.assayDefinition.protocolSchemaName, 'Data');
         this.state = {
@@ -156,21 +166,22 @@ class AssayImportPanelsBody extends Component<Props, State> {
             model: new AssayWizardModel({ isInit: false, runId: props.runId }),
             schemaQuery,
             showRenameModal: false,
-            sampleStatusWarning: undefined,
+            warning: undefined,
         };
     }
 
     componentDidMount(): void {
         const { searchParams, selectStep } = this.props;
 
-        if (searchParams.get('dataTab')) {
-            selectStep(parseInt(searchParams.get('dataTab'), 10));
+        if (searchParams.get(AssayUploadURLSearchParam.dataTab)) {
+            const dataTab = parseInt(searchParams.get(AssayUploadURLSearchParam.dataTab), 10);
+            if (!isNaN(dataTab)) selectStep(dataTab);
         }
 
         this.initModel();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(): void {
         const { queryModels, actions, assayDefinition } = this.props;
         const batchId = this.getBatchId();
 
@@ -202,12 +213,12 @@ class AssayImportPanelsBody extends Component<Props, State> {
         let runProperties = flattenQueryModelRow(this.getRunPropsQueryModel().getRow());
 
         // Issue 38711: Need to pre-populate the run properties form with assayRequest if it is present on the URL
-        if (searchParams.get('assayRequest')) {
-            runProperties = runProperties.set('assayRequest', searchParams.get('assayRequest'));
+        if (searchParams.get(AssayUploadURLSearchParam.assayRequest)) {
+            runProperties = runProperties.set('assayRequest', searchParams.get(AssayUploadURLSearchParam.assayRequest));
         }
 
-        if (searchParams.get('plateSet')) {
-            runProperties = runProperties.set(PLATE_SET_COLUMN, searchParams.get('plateSet'));
+        if (searchParams.get(AssayUploadURLSearchParam.plateSet)) {
+            runProperties = runProperties.set(PLATE_SET_COLUMN, searchParams.get(AssayUploadURLSearchParam.plateSet));
         }
 
         return runProperties;
@@ -237,7 +248,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     get plateSupportEnabled(): boolean {
-        return isPlatesEnabled() && this.props.assayProtocol.plateMetadata === true;
+        const { assayProtocol, moduleContext } = this.props;
+        return isPlatesEnabled(moduleContext) && assayProtocol.plateMetadata === true;
     }
 
     initModel = async (): Promise<void> => {
@@ -246,8 +258,8 @@ class AssayImportPanelsBody extends Component<Props, State> {
         let plateProperties = Map<string, any>();
         let workflowTask: number;
 
-        if (searchParams.get('workflowTaskId')) {
-            const _workflowTask = parseInt(searchParams.get('workflowTaskId'), 10);
+        if (searchParams.get(AssayUploadURLSearchParam.workflowTaskId)) {
+            const _workflowTask = parseInt(searchParams.get(AssayUploadURLSearchParam.workflowTaskId), 10);
             workflowTask = isNaN(_workflowTask) ? undefined : _workflowTask;
         }
 
@@ -336,10 +348,10 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     onGetQueryDetailsComplete = async (): Promise<void> => {
-        const { assayDefinition, searchParams } = this.props;
+        const { assayDefinition, container, currentPathIsDestinationPath, searchParams } = this.props;
         const sampleColumnData = assayDefinition.getSampleColumn();
 
-        let sampleStatusWarning: string;
+        let warning: string;
         const modelUpdates: Partial<AssayWizardModel> = {
             batchProperties: this.getBatchPropertiesMap(),
             isInit: this.runAndBatchPropsLoaded(),
@@ -384,10 +396,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
 
                 hasValidSamples = validSamples.size > 0;
                 if (samples.size > 0) {
-                    sampleStatusWarning = getOperationNotAllowedMessage(
-                        SampleOperation.AddAssayData,
-                        statusConfirmationData
-                    );
+                    warning = getOperationNotAllowedMessage(SampleOperation.AddAssayData, statusConfirmationData);
                 }
             } catch (e) {
                 this.setState({ error: STATUS_DATA_RETRIEVAL_ERROR });
@@ -395,10 +404,15 @@ class AssayImportPanelsBody extends Component<Props, State> {
             }
         }
 
+        if (!currentPathIsDestinationPath) {
+            const destinationContainerWarning = ` The assay data will be imported in the ${container.path} folder.`;
+            warning = (warning || '') + destinationContainerWarning;
+        }
+
         this.setState(
             state => ({
                 model: state.model.merge(modelUpdates) as AssayWizardModel,
-                sampleStatusWarning,
+                warning,
             }),
             () => this.onInitModelComplete(hasValidSamples)
         );
@@ -535,24 +549,25 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }, 250);
     };
 
-    checkForDuplicateFiles = (importAgain: boolean): void => {
-        checkForDuplicateAssayFiles(this.state.model.attachedFiles.keySeq().toArray())
-            .then(response => {
-                if (response.duplicate) {
-                    this.setState({
-                        duplicateFileResponse: response,
-                        importAgain,
-                        showRenameModal: true,
-                    });
-                } else {
-                    this.onFinish(importAgain);
-                }
-            })
-            .catch(() => {
-                this.setState({
-                    error: getActionErrorMessage('There was a problem checking for duplicate file names.', 'assay run'),
-                });
+    checkForDuplicateFiles = async (importAgain: boolean): Promise<void> => {
+        const { container } = this.props;
+
+        try {
+            const duplicateFileResponse = await checkForDuplicateAssayFiles(
+                this.state.model.attachedFiles.keySeq().toArray(),
+                container.path
+            );
+
+            if (duplicateFileResponse.duplicate) {
+                this.setState({ duplicateFileResponse, importAgain, showRenameModal: true });
+            } else {
+                this.onFinish(importAgain);
+            }
+        } catch (e) {
+            this.setState({
+                error: getActionErrorMessage('There was a problem checking for duplicate file names.', 'assay run'),
             });
+        }
     };
 
     save = (importAgain: boolean): void => {
@@ -563,9 +578,9 @@ class AssayImportPanelsBody extends Component<Props, State> {
         }
     };
 
-    onImport = () => this.save(false);
+    onImport = (): void => this.save(false);
 
-    onSaveAndImportAgain = () => this.save(true);
+    onSaveAndImportAgain = (): void => this.save(true);
 
     getBackgroundJobDescription = (options: AssayDOM.ImportRunOptions): string => {
         const { assayDefinition } = this.props;
@@ -573,10 +588,17 @@ class AssayImportPanelsBody extends Component<Props, State> {
     };
 
     onFinish = async (importAgain: boolean): Promise<void> => {
-        const { currentStep, onSave, jobNotificationProvider, assayProtocol, searchParams, dismissNotifications } =
-            this.props;
+        const {
+            container,
+            currentStep,
+            onSave,
+            jobNotificationProvider,
+            assayProtocol,
+            searchParams,
+            dismissNotifications,
+        } = this.props;
         const { model, comment } = this.state;
-        const data = model.prepareFormData(currentStep, this.state.editorModel);
+        const data = model.prepareFormData(currentStep, this.state.editorModel, container.path);
         this.setModelState(true, undefined);
         dismissNotifications();
 
@@ -586,7 +608,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             const backgroundUpload = assayProtocol?.backgroundUpload;
             let forceAsync = false;
             if (!backgroundUpload && assayProtocol?.allowBackgroundUpload) {
-                const useAsync = searchParams.get('useAsync') === 'true';
+                const useAsync = searchParams.get(AssayUploadURLSearchParam.useAsync) === 'true';
                 const asyncFileSize = useAsync ? 1 : BACKGROUND_IMPORT_MIN_FILE_SIZE;
                 const asyncRowSize = useAsync ? 1 : BACKGROUND_IMPORT_MIN_ROW_SIZE;
                 if (
@@ -603,6 +625,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
                 jobDescription: this.getBackgroundJobDescription(data),
                 jobNotificationProvider,
                 auditUserComment: comment,
+                containerPath: container.path,
             });
 
             this.props.setIsDirty?.(false);
@@ -721,6 +744,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             allowBulkInsert,
             allowBulkUpdate,
             maxRows,
+            moduleContext,
             onSave,
             showUploadTabs,
             fileSizeLimits,
@@ -728,7 +752,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
             getIsDirty,
             setIsDirty,
         } = this.props;
-        const { comment, duplicateFileResponse, editorModel, model, showRenameModal, sampleStatusWarning } = this.state;
+        const { comment, duplicateFileResponse, editorModel, model, showRenameModal, warning } = this.state;
         const runPropsModel = this.getRunPropsQueryModel();
         const resultsFilesCount = model.getResultsFiles().length;
 
@@ -749,7 +773,7 @@ class AssayImportPanelsBody extends Component<Props, State> {
         const isReimport = this.isReimport();
         const operation = isReimport ? Operation.update : Operation.insert;
         const runContainerId = runPropsModel.getRowValue('Folder');
-        const folderNoun = isPremiumProductEnabled() ? 'project' : 'folder';
+        const folderNoun = isPremiumProductEnabled(moduleContext) ? 'project' : 'folder';
         const plateSupportEnabled = this.plateSupportEnabled;
 
         if (isReimport && !allowReimportAssayRun(user, runContainerId, container.id)) {
@@ -780,8 +804,13 @@ class AssayImportPanelsBody extends Component<Props, State> {
                         hasBatchProperties={model.batchColumns.size > 0}
                     />
                 )}
-                <Alert bsStyle="warning">{sampleStatusWarning}</Alert>
-                <BatchPropertiesPanel model={model} operation={operation} onChange={this.handleBatchChange} />
+                <Alert bsStyle="warning">{warning}</Alert>
+                <BatchPropertiesPanel
+                    containerPath={container.path}
+                    model={model}
+                    operation={operation}
+                    onChange={this.handleBatchChange}
+                />
                 <RunPropertiesPanel
                     model={model}
                     operation={operation}
@@ -789,13 +818,19 @@ class AssayImportPanelsBody extends Component<Props, State> {
                     onWorkflowTaskChange={this.handleWorkflowTaskChange}
                 />
                 {plateSupportEnabled && (
-                    <PlatePropertiesPanel model={model} operation={operation} onChange={this.handleRunChange} />
+                    <PlatePropertiesPanel
+                        model={model}
+                        operation={operation}
+                        onChange={this.handleRunChange}
+                        containerPath={container.path}
+                    />
                 )}
                 <RunDataPanel
                     acceptedPreviewFileFormats={acceptedPreviewFileFormats}
                     allowBulkRemove={allowBulkRemove}
                     allowBulkInsert={allowBulkInsert}
                     allowBulkUpdate={allowBulkUpdate}
+                    containerPath={container.path}
                     currentStep={currentStep}
                     editorModel={editorModel}
                     fileSizeLimits={fileSizeLimits}
@@ -869,16 +904,13 @@ class AssayImportPanelsBody extends Component<Props, State> {
     }
 }
 
-const AssayImportPanelWithQueryModels = withQueryModels<AssayImportPanelsBodyProps & OwnProps & WithFormStepsProps>(
-    AssayImportPanelsBody
-);
+const AssayImportPanelWithQueryModels = withQueryModels<Props>(AssayImportPanelsBody);
 
-const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
-    const { assayDefinition, runId } = props;
-    const [searchParams] = useSearchParams();
+const AssayImportPanelsBodyImpl: FC<Props> = memo(props => {
+    const { assayDefinition, container, runId } = props;
     const { createNotification, dismissNotifications } = useNotificationsContext();
-    const { container, user } = useServerContext();
     const { requiresUserComment } = useDataChangeCommentsRequired();
+
     const key = [runId, assayDefinition.protocolSchemaName].join('|');
     const schemaQuery = useMemo(
         () => new SchemaQuery(assayDefinition.protocolSchemaName, 'Runs'),
@@ -887,6 +919,7 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
     const queryConfigs: QueryConfigMap = useMemo(
         () => ({
             model: {
+                containerPath: container.path,
                 keyValue: runId,
                 schemaQuery,
                 requiredColumns: RUN_PROPERTIES_REQUIRED_COLUMNS.toArray(),
@@ -897,26 +930,69 @@ const AssayImportPanelsBodyImpl: FC<OwnProps & WithFormStepsProps> = props => {
                 ],
             },
         }),
-        [runId, schemaQuery]
+        [container.path, runId, schemaQuery]
     );
 
     return (
         <AssayImportPanelWithQueryModels
             {...props}
             autoLoad
-            container={container}
             createNotification={createNotification}
             dismissNotifications={dismissNotifications}
             key={key}
             queryConfigs={queryConfigs}
             requiresUserComment={requiresUserComment}
+        />
+    );
+});
+
+AssayImportPanelsBodyImpl.displayName = 'AssayImportPanelsBodyImpl';
+
+// This initializes the context (container, user) for this panel. If a URL parameter "destinationContainerId" is
+// present, then the panel will load out with that container/user context. Defaults to the server context container/user.
+const AssayImportPanelContextLoader: FC<Props> = memo(props => {
+    const [searchParams] = useSearchParams();
+    const serverContext = useServerContext();
+
+    const destinationContainerId = searchParams.get(AssayUploadURLSearchParam.destinationContainerId);
+    const destinationContainerUser = useContainerUser(destinationContainerId);
+
+    if (destinationContainerId) {
+        if (!destinationContainerUser.isLoaded) {
+            return <LoadingSpinner />;
+        } else if (destinationContainerUser.error) {
+            return <Alert>{destinationContainerUser.error}</Alert>;
+        }
+    }
+
+    const container = destinationContainerUser?.container ?? serverContext.container;
+    const user = destinationContainerUser?.user ?? serverContext.user;
+    const currentPathIsDestinationPath = !destinationContainerUser || serverContext.container.id === container.id;
+
+    if (!user.hasInsertPermission()) {
+        return (
+            <InsufficientPermissionsAlert
+                message={`You do not have permissions to import assay data into ${container.path}.`}
+            />
+        );
+    }
+
+    return (
+        <AssayImportPanelsBodyImpl
+            {...props}
+            container={container}
+            currentPathIsDestinationPath={currentPathIsDestinationPath}
+            moduleContext={serverContext.moduleContext}
             searchParams={searchParams}
             user={user}
         />
     );
-};
+});
 
-export const AssayImportPanels = withFormSteps(AssayImportPanelsBodyImpl, {
+AssayImportPanelContextLoader.displayName = 'AssayImportPanelContainerLoader';
+
+// TODO: This should be migrated to @labkey/premium and consolidated with AssayUploadPage.
+export const AssayImportPanels = withFormSteps(AssayImportPanelContextLoader, {
     currentStep: AssayUploadTabs.Files,
     furthestStep: AssayUploadTabs.Files,
     hasDependentSteps: false,

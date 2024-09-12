@@ -163,7 +163,7 @@ export class AssayWizardModel
         return false;
     }
 
-    prepareFormData(currentStep: number, editorModel: EditorModel): AssayUploadOptions {
+    prepareFormData(currentStep: number, editorModel: EditorModel, containerPath?: string): AssayUploadOptions {
         const {
             batchId,
             batchProperties,
@@ -183,6 +183,7 @@ export class AssayWizardModel
             batchId,
             batchProperties: batchProperties.toObject(),
             comment,
+            containerPath,
             name: this.getRunName(currentStep),
             properties: runProperties.toObject(),
             reRunId: runId,

@@ -30,7 +30,7 @@ import { DERIVATION_DATA_SCOPES, STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domain
 import { isProductProjectsEnabled, isProjectContainer, isSampleStatusEnabled } from '../../app/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
-import { EXP_TABLES, SCHEMAS } from '../../schemas';
+import { SCHEMAS } from '../../schemas';
 
 import {
     getContainerFilter,
@@ -108,13 +108,15 @@ export function deleteSampleSet(rowId: number, containerPath?: string, auditUser
  * @param filterArray A collection of filters used when requesting rows
  * @param displayValueKey Column name containing grid display value of Sample Type
  * @param valueKey Column name containing grid value of Sample Type
+ * @param containerPath The container path where the query will be made.
  */
 export async function fetchSamples(
     schemaQuery: SchemaQuery,
     sampleColumn: QueryColumn,
     filterArray: Filter.IFilter[],
     displayValueKey: string,
-    valueKey: string
+    valueKey: string,
+    containerPath?: string
 ): Promise<OrderedMap<any, any>> {
     const response = await selectRowsDeprecated({
         schemaName: schemaQuery.schemaName,
@@ -122,6 +124,7 @@ export async function fetchSamples(
         viewName: schemaQuery.viewName,
         columns: ['RowId', displayValueKey, valueKey],
         filterArray,
+        containerPath,
     });
 
     const { key, models, orderedModels } = response;
@@ -141,54 +144,6 @@ export async function fetchSamples(
     });
 
     return data.asImmutable();
-}
-
-/**
- * Loads a collection of RowIds from a selectionKey found on "location". Uses [[fetchSamples]] to query and filter
- * the Sample Set data.
- * @param searchParams The URLSearchParams to search for the selectionKey on
- * @param sampleColumn A QueryColumn used to map data in [[fetchSamples]]
- */
-export async function loadSelectedSamples(
-    searchParams: URLSearchParams,
-    sampleColumn: QueryColumn
-): Promise<OrderedMap<any, any>> {
-    const workflowJobId = searchParams.get('workflowJobId');
-    // If the "workflowJobId" URL parameter is specified, then fetch the samples associated with the workflow job.
-    if (workflowJobId) {
-        return fetchSamples(
-            new SchemaQuery('sampleManagement', 'inputSamples'),
-            sampleColumn,
-            [Filter.create('ApplicationType', 'ExperimentRun'), Filter.create('ApplicationRun', workflowJobId)],
-            'Name',
-            'RowId' // Issue 51123
-        );
-    }
-
-    // Otherwise, load the samples from the selection.
-    const selection = await getSelection(searchParams);
-
-    if (selection.resolved && selection.schemaQuery && selection.selected.length) {
-        const isPicklist = searchParams.get('isPicklist') === 'true';
-        let sampleIdNums = selection.selected;
-        if (isPicklist) {
-            sampleIdNums = await getSelectedPicklistSamples(selection.schemaQuery.queryName, selection.selected, false);
-        }
-
-        const sampleSchemaQuery =
-            isPicklist || selection.schemaQuery.isEqual(SCHEMAS.SAMPLE_MANAGEMENT.INPUT_SAMPLES_SQ)
-                ? EXP_TABLES.MATERIALS
-                : selection.schemaQuery;
-        return fetchSamples(
-            sampleSchemaQuery,
-            sampleColumn,
-            [Filter.create('RowId', sampleIdNums, Filter.Types.IN)],
-            sampleColumn.lookup.displayColumn,
-            sampleColumn.lookup.keyColumn
-        );
-    }
-
-    return OrderedMap();
 }
 
 /**

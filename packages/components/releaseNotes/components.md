@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: X September 2024
 - Issue 50818: add RESOLVE_LSID_MAPPERS to resolve data/material by lsid
 
+### version 5.5.1
+*Released*: 12 September 2024
+- Issue 50628: Bump @labkey/api. See https://github.com/LabKey/labkey-api-js/pull/182
+
+### version 5.5.0
+*Released*: 12 September 2024
+- Follow-up release fix for v5.4.0.
+
 ### version 5.4.0
 *Released*: 12 September 2024
 - Issue 50331: Cross-folder import of assay data from subfolder plate set should import data into subfolder

@@ -25,7 +25,7 @@ export const sleep = (ms = 0): Promise<void> => {
     });
 };
 
-export function shuffleArray(original: any[]) : any[] {
+export function shuffleArray<T>(original: T[]) : T[] {
     const array = [...original];
     for (let i = array.length - 1; i >= 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -34,7 +34,7 @@ export function shuffleArray(original: any[]) : any[] {
     return array;
 }
 
-export function selectRandomN(choices: any[], selectCount = 1) : any[] {
+export function selectRandomN<T>(choices: T[], selectCount = 1) : T[] {
     if (!choices || selectCount < 0 || selectCount > choices.length)
         return [];
     const shuffled = shuffleArray(choices)

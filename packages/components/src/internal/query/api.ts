@@ -571,14 +571,6 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                         doResolve();
                     },
                     failure: (data, request) => {
-                        // If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
-                        if (
-                            data.exception?.toLowerCase().indexOf('communication failure') === 0 &&
-                            processRequest(undefined, request, reject)
-                        ) {
-                            return;
-                        }
-
                         console.error('There was a problem retrieving the data', data);
                         reject({
                             exceptionClass: data.exceptionClass,
@@ -1226,10 +1218,7 @@ export function importData(config: IImportData): Promise<any> {
 
 export function processRequest(response: any, request: any, reject: (reason?: any) => void): boolean {
     if (!response && request?.responseText) {
-        let responseText = request.responseText;
-        if (!responseText.endsWith('}')) responseText += '}';
-
-        const resp = JSON.parse(responseText);
+        const resp = JSON.parse(request.responseText);
         if (!resp?.success) {
             console.error(resp);
             reject(resp);

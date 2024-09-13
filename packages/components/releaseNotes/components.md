@@ -5,7 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD September 2024
 - Calculated fields issue fixes for 24.10
   - DomainForm to handle batching updates for state related to calculated field validation
-  - If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
+  - Update error messaging for bad SQL related exceptions (Issues 51232 and 51204)
   - Study dataset designer to include systemFields based on timepoint type (Issue 51249)
 
 ### version 5.5.1

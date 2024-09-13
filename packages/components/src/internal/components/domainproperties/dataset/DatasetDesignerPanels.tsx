@@ -49,8 +49,7 @@ import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { DatasetModel } from './models';
-import { getStudyTimepointLabel, StudyProperties, useStudyPropertiesContext } from './utils';
-import { VISIT_TIMEPOINT_TYPE } from './constants';
+import { getDatasetSystemFields, getStudyTimepointLabel, StudyProperties, useStudyPropertiesContext } from './utils';
 
 const KEY_FIELD_MAPPING_ERROR = 'Your Additional Key Field must not be one of the Column Mapping fields.';
 const VISIT_DATE_MAPPING_ERROR = 'Your Visit Date Column must not be one of the Column Mapping fields.';
@@ -502,60 +501,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<
             });
     };
 
-    getSystemFields = (): SystemField[] => {
-        const { studyProperties } = this.props;
-        const isVisitBased = studyProperties.TimepointType === VISIT_TIMEPOINT_TYPE;
-
-        const systemFields = [
-            {
-                Name: studyProperties.SubjectColumnName,
-                Label: studyProperties.SubjectColumnName,
-                DataType: 'Text',
-                Required: true,
-                Description: 'Subject identifier',
-                Disableble: false,
-            },
-            {
-                Name: 'SequenceNum',
-                Label: 'Sequence Num',
-                DataType: 'Decimal (floating point)',
-                Required: isVisitBased,
-                Description: '',
-                Disableble: false,
-            },
-        ];
-
-        if (!isVisitBased) {
-            systemFields.push({
-                Name: 'date',
-                Label: 'Date',
-                DataType: 'DateTime',
-                Required: true,
-                Description: 'The day of the visit. Primarily used in date-based studies.',
-                Disableble: false,
-            });
-            systemFields.push({
-                Name: 'Day',
-                Label: 'Day',
-                DataType: 'Integer',
-                Required: false,
-                Description: 'The day of the visit. Primarily used in date-based studies.',
-                Disableble: false,
-            });
-        }
-
-        systemFields.push({
-            Name: 'DatasetId',
-            Label: 'Dataset Id',
-            DataType: 'Integer',
-            Required: true,
-            Description: '',
-            Disableble: false,
-        });
-
-        return systemFields;
-    };
-
     render(): ReactNode {
         const {
             api,
@@ -630,7 +575,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<
                         hideImportData: model.definitionIsShared, // Shared (Dataspace) study does not have permission to import data. See study-importAction.validatePermission
                         retainReservedFields: true, // reserved fields are used for mapping the participant and visit columns.
                     }}
-                    systemFields={this.getSystemFields()}
+                    systemFields={getDatasetSystemFields(studyProperties)}
                 />
                 <Progress
                     modal

@@ -1878,6 +1878,7 @@ export type {
     IDerivePayload,
     IEntityTypeOption,
     IParentOption,
+    IImportAlias,
     EntityChoice,
     DataTypeEntity,
     DisplayObject,

@@ -53,6 +53,7 @@ import {
     EntityParentType,
     EntityTypeOption,
     IEntityTypeOption,
+    IImportAlias,
     IParentAlias,
     IParentOption,
     OperationConfirmationData,
@@ -967,7 +968,7 @@ export const initParentOptionsSelects = (
     containerPath: string,
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean,
     newTypeOption?: any,
-    importAliases?: Map<string, string>,
+    importAliases?: Record<string, IImportAlias>,
     idPrefix?: string,
     formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string
 ): Promise<{
@@ -1045,10 +1046,11 @@ export const initParentOptionsSelects = (
                 let parentAliases = Map<string, IParentAlias>();
 
                 if (importAliases) {
-                    const initialAlias = Map<string, string>(importAliases);
-                    initialAlias.forEach((val, key) => {
+                    const initialAlias = importAliases;
+                    Object.keys(importAliases).forEach( key => {
+                        const val = importAliases[key];
                         const newId = generateId(idPrefix);
-                        const parentValue = parentOptions.find(opt => opt.value === val);
+                        const parentValue = parentOptions.find(opt => opt.value === val.inputType);
                         if (!parentValue)
                             // parent option might have been filtered out by isValidParentOptionFn
                             return;
@@ -1056,7 +1058,8 @@ export const initParentOptionsSelects = (
                         parentAliases = parentAliases.set(newId, {
                             id: newId,
                             alias: key,
-                            parentValue,
+                            parentValue: parentValue,
+                            required: val.required,
                             ignoreAliasError: false,
                             ignoreSelectError: false,
                         } as IParentAlias);

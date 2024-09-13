@@ -34,6 +34,7 @@ import {
     EntityDataType,
     EntityIdCreationModel,
     IEntityTypeOption,
+    IImportAlias,
     IParentAlias,
     IParentOption,
     OperationConfirmationData,
@@ -110,7 +111,7 @@ export interface EntityAPIWrapper {
         containerPath: string,
         isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean,
         newTypeOption?: any,
-        importAliases?: Map<string, string>,
+        importAliases?: Record<string, IImportAlias>,
         idPrefix?: string,
         formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string
     ) => Promise<{

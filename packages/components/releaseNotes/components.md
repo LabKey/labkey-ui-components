@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.X
+*Released*: X September 2024
+- Lineage Relationships: Optionally Require during Sample Registration
+  - TODO
+
 ### version 5.5.1
 *Released*: 12 September 2024
 - Issue 50628: Bump @labkey/api. See https://github.com/LabKey/labkey-api-js/pull/182

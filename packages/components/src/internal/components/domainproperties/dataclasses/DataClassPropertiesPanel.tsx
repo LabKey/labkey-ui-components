@@ -83,7 +83,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
         nameExpressionInfoUrl: getHelpLink(DATA_CLASS_NAME_EXPRESSION_TOPIC),
         nameExpressionPlaceholder: 'Enter a naming pattern (e.g., DC-${now:date}-${genId})',
         appPropertiesOnly: false,
-        dataClassAliasCaption: 'Parent Alias',
+        dataClassAliasCaption: 'Parent',
         parentAliasHelpText: "Column headings used during import to set a data's parentage.",
     };
 

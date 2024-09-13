@@ -21,7 +21,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
-import { IParentAlias, IParentOption, ProjectConfigurableDataType } from '../../entities/models';
+import { IImportAlias, IParentAlias, IParentOption, ProjectConfigurableDataType } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 import {
     getHelpLink,
@@ -204,22 +204,25 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             : name;
     };
 
-    getImportAliasesAsMap(model: SampleTypeModel): Map<string, string> {
+    getImportAliasesAsMap(model: SampleTypeModel): Record<string, IImportAlias> {
         const { name, parentAliases } = model;
         const aliases = {};
 
         parentAliases?.forEach((alias: IParentAlias) => {
-            const { parentValue } = alias;
+            const { parentValue, required } = alias;
 
-            let value = parentValue && parentValue.value ? (parentValue.value as string) : '';
+            let inputType = parentValue && parentValue.value ? (parentValue.value as string) : '';
             if (parentValue === NEW_SAMPLE_SET_OPTION) {
-                value = SAMPLE_SET_IMPORT_PREFIX + name;
+                inputType = SAMPLE_SET_IMPORT_PREFIX + name;
             }
 
-            aliases[alias.alias] = value;
+            aliases[alias.alias] = {
+                inputType,
+                required,
+            };
         });
 
-        return Map<string, string>(aliases);
+        return aliases;
     }
 
     onFieldChange = (model: SampleTypeModel): void => {
@@ -527,7 +530,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
             metricUnit,
             autoLinkTargetContainerId,
             autoLinkCategory,
-            importAliases: this.getImportAliasesAsMap(model).toJS(),
+            importAliases: this.getImportAliasesAsMap(model),
             excludedContainerIds,
             excludedDashboardContainerIds,
         };

@@ -1,7 +1,7 @@
 import { fromJS, Map, OrderedMap, Record } from 'immutable';
 
 import { DomainDesign, DomainDetails, IDomainField } from '../models';
-import { IParentAlias } from '../../entities/models';
+import { IImportAlias, IParentAlias } from '../../entities/models';
 import { getDuplicateAlias, parentAliasInvalid } from '../utils';
 
 // eslint-disable-next-line no-template-curly-in-string
@@ -35,7 +35,7 @@ export class SampleTypeModel extends Record({
     declare labelColor: string;
     declare metricUnit: string;
     declare parentAliases?: OrderedMap<string, IParentAlias>;
-    declare importAliases?: Map<string, string>;
+    declare importAliases?: Record<string, IImportAlias>;
     declare domainId?: number;
     declare domain?: DomainDesign;
     declare autoLinkTargetContainerId: string;
@@ -46,10 +46,10 @@ export class SampleTypeModel extends Record({
 
     static create(raw?: DomainDetails, name?: string): SampleTypeModel {
         const options = raw?.options;
-        let importAliases = Map<string, string>();
+        let importAliases = {};
         if (options) {
             const aliases = options.get('importAliases') || {};
-            importAliases = Map<string, string>(fromJS(aliases));
+            importAliases = {...aliases};
         }
 
         return new SampleTypeModel({

@@ -7,9 +7,7 @@ import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
 
 import { IParentAlias, IParentOption } from '../entities/models';
 import { SelectInput } from '../forms/input/SelectInput';
-import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
-
-import { DomainFieldLabel } from './DomainFieldLabel';
+import { DeleteIcon } from '../base/DeleteIcon';
 
 interface IParentAliasRow {
     aliasCaption: string;
@@ -54,6 +52,11 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
         this.props.onAliasChange(this.props.id, name, value);
     };
 
+    onToggleRequired = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const { name, checked } = e.target;
+        this.props.onAliasChange(this.props.id, name, checked);
+    };
+
     onSelectChange = (name: string, selectedValue: string, selectedOption: IParentOption): void => {
         // Issue 40149: on clear, need to retain the IParentOption with schema
         const { parentAlias } = this.props;
@@ -88,42 +91,62 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
         const { id, parentAlias, parentOptions, aliasCaption, parentTypeCaption, helpMsg } = this.props;
         if (!parentOptions) return null;
 
-        const { alias, parentValue, ignoreAliasError, ignoreSelectError, isDupe } = parentAlias;
+        const { alias, parentValue, ignoreAliasError, ignoreSelectError, isDupe, required } = parentAlias;
         const aliasBlank = !alias || alias.trim().length === 0;
         const parentValueBlank = !parentValue || !parentValue.value;
-
         return (
             <div className="row" key={id}>
                 <div className="col-xs-2">
-                    <DomainFieldLabel label={aliasCaption} required={true} helpTipBody={helpMsg} />
                 </div>
-                <div className={classNames('col-xs-3', { 'has-error': !ignoreAliasError && (aliasBlank || isDupe) })}>
-                    <input
-                        className="form-control"
-                        ref={this.nameInput}
-                        name="alias"
-                        type="text"
-                        placeholder={`Enter a ${aliasCaption.toLowerCase()} for import`}
-                        defaultValue={alias} // Issue 50140: use defaultValue instead of value
-                        onChange={this.onChange}
-                        onBlur={this.onAliasBlur}
-                    />
+                <div className="col-xs-10">
+                    <div className="domain-field-alias--row domain-field-row domain-row-border-default">
+                        <div
+                            className={classNames('col-xs-4 domain-field-alias--input', {'has-error': !ignoreSelectError && parentValueBlank})}>
+                            <SelectInput
+                                containerClass=""
+                                inputClass="import-alias--parent-select form-group"
+                                name="parentValue"
+                                onChange={this.onSelectChange}
+                                options={parentOptions}
+                                placeholder={`Select a ${parentTypeCaption.toLowerCase()}...`}
+                                value={parentValue?.value}
+                                onFocus={this.onParentValueFocus}
+                                onBlur={this.onParentValueBlur}
+                            />
+                        </div>
+                        <div
+                            className={classNames('col-xs-4 domain-field-alias--input', {'has-error': !ignoreAliasError && (aliasBlank || isDupe)})}>
+                            <input
+                                className="form-control"
+                                ref={this.nameInput}
+                                name="alias"
+                                type="text"
+                                placeholder={`Enter a ${aliasCaption.toLowerCase()} for import`}
+                                defaultValue={alias} // Issue 50140: use defaultValue instead of value
+                                onChange={this.onChange}
+                                onBlur={this.onAliasBlur}
+                            />
+                        </div>
+                        <div className="col-xs-4 domain-field-alias--input">
+                            <input
+                                checked={required}
+                                disabled={false}
+                                name="required"
+                                onChange={this.onToggleRequired}
+                                type="checkbox"
+                            />
+                            <div className="pull-right">
+                                <DeleteIcon
+                                    id={id + '-delete'}
+                                    title={'Remove ' + aliasCaption}
+                                    iconCls="domain-field-delete-icon"
+                                    onDelete={this.removeParentAlias}
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className={classNames('col-xs-5', { 'has-error': !ignoreSelectError && parentValueBlank })}>
-                    <SelectInput
-                        inputClass="import-alias--parent-select"
-                        name="parentValue"
-                        onChange={this.onSelectChange}
-                        options={parentOptions}
-                        placeholder={`Select a ${parentTypeCaption.toLowerCase()}...`}
-                        value={parentValue?.value}
-                        onFocus={this.onParentValueFocus}
-                        onBlur={this.onParentValueBlur}
-                    />
-                </div>
-                <div>
-                    <RemoveEntityButton labelClass="entity-insert--remove-parent" onClick={this.removeParentAlias} />
-                </div>
+
             </div>
         );
     }

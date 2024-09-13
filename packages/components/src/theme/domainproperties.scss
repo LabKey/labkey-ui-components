@@ -915,3 +915,17 @@
 .domain-field-calc-footer .error {
     color: $brand-danger;
 }
+
+.domain-field-alias--row {
+    float: left;
+    width: 100%;
+    position: relative;
+    min-height: 1px;
+}
+
+.domain-field-alias--input {
+    top: 8px;
+    input[type=checkbox] {
+        top: 5px;
+    }
+}

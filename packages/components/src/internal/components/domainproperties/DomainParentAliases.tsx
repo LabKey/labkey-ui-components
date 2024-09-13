@@ -9,6 +9,9 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { generateId } from '../../util/utils';
 
 import { ParentAliasRow } from './ParentAliasRow';
+import { DomainFieldLabel } from './DomainFieldLabel';
+import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface Props {
     addEntityHelp: ReactNode;
@@ -106,7 +109,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
             );
         }
         if (includeSampleSet && !(includeDataClass && useSeparateDataClassesAliasMenu)) {
-            aliasCaption = 'Parent Alias';
+            aliasCaption = 'Parent';
         }
 
         setAliasCaption(aliasCaption);
@@ -134,29 +137,51 @@ export const DomainParentAliases: FC<Props> = memo(props => {
 
     return (
         <>
-            {filteredParentAliases?.map(alias => (
-                <ParentAliasRow
-                    key={alias.id}
-                    id={alias.id}
-                    parentAlias={alias}
-                    parentOptions={filteredParentOptions}
-                    onAliasChange={onParentAliasChange}
-                    onRemove={onRemoveParentAlias}
-                    updateDupeParentAliases={updateDupeParentAliases}
-                    aliasCaption={aliasCaption}
-                    parentTypeCaption={parentTypeCaption}
-                    helpMsg={helpMsg}
-                />
-            ))}
+            {(filteredParentAliases?.length > 0) && (
+                <div className="bottom-spacing">
+                    <div className="row domain-floating-hdr">
+                        <div className="col-xs-2">
+                            <DomainFieldLabel label={aliasCaption + 's'}/>
+                        </div>
+                        <div className="col-xs-10">
+                            <div className="col-xs-4 bold-text">
+                                {aliasCaption} Type *
+                            </div>
+                            <div className="col-xs-4 bold-text">
+                                File Import Column Name *
+                                <LabelHelpTip title={aliasCaption + ' alias'} required={true}>
+                                    {helpMsg ?? PARENT_ALIAS_HELPER_TEXT}
+                                </LabelHelpTip>
+                            </div>
+                            <div className="col-xs-2 bold-text">
+                                Required
+                            </div>
+                        </div>
+                    </div>
+                    {filteredParentAliases?.map(alias => (
+                        <ParentAliasRow
+                            key={alias.id}
+                            id={alias.id}
+                            parentAlias={alias}
+                            parentOptions={filteredParentOptions}
+                            onAliasChange={onParentAliasChange}
+                            onRemove={onRemoveParentAlias}
+                            updateDupeParentAliases={updateDupeParentAliases}
+                            aliasCaption={aliasCaption + ' alias'}
+                            parentTypeCaption={parentTypeCaption}
+                            helpMsg={helpMsg}
+                        />
+                    ))}
+                </div>
+            )}
             {showAddBtn && (
                 <div className="row">
-                    <div className="col-xs-2" />
+                    <div className="col-xs-2"/>
                     <div className="col-xs-10">
                         <span>
                             <AddEntityButton
-                                entity={aliasCaption}
+                                entity={'a ' + aliasCaption}
                                 onClick={addParentAlias}
-                                helperBody={addEntityHelp}
                             />
                         </span>
                     </div>

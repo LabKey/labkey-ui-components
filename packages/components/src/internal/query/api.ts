@@ -544,6 +544,14 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                         }
                     },
                     failure: (data, request) => {
+                        // If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
+                        if (
+                            data.exception?.toLowerCase().indexOf('communication failure') === 0 &&
+                            processRequest(undefined, request, reject)
+                        ) {
+                            return;
+                        }
+
                         console.error('There was a problem retrieving the data', data);
                         reject({
                             exceptionClass: data.exceptionClass,
@@ -571,6 +579,14 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                         doResolve();
                     },
                     failure: (data, request) => {
+                        // If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
+                        if (
+                            data.exception?.toLowerCase().indexOf('communication failure') === 0 &&
+                            processRequest(undefined, request, reject)
+                        ) {
+                            return;
+                        }
+
                         console.error('There was a problem retrieving the data', data);
                         reject({
                             exceptionClass: data.exceptionClass,

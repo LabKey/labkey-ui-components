@@ -1,29 +1,9 @@
-/*
- * Copyright (c) 2020 LabKey Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import React from 'react';
-import renderer from 'react-test-renderer';
-
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 
 import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.json';
 import getDatasetDesignSharedStudy from '../../../../test/data/dataset-getDatasetDesignSharedStudy.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
-
-import { SelectInput } from '../../forms/input/SelectInput';
 
 import { AdvancedSettings, DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 import { DatasetModel } from './models';
@@ -34,34 +14,34 @@ const sharedDatasetModel = DatasetModel.create(null, getDatasetDesignSharedStudy
 
 describe('Dataset Advanced Settings', () => {
     test('New Dataset, without dataspace options', () => {
-        const datasetAdvancedSetting = (
+        const component = (
             <AdvancedSettings title="Advanced Settings" model={newDatasetModel} applyAdvancedProperties={jest.fn()} />
         );
 
-        const dom = renderer.create(datasetAdvancedSetting).toJSON();
-        expect(dom).toMatchSnapshot();
+        const { container } = render(component);
+        expect(container).toMatchSnapshot();
     });
 
     test('New Dataset, with dataspace options', () => {
-        const datasetAdvancedSetting = (
+        const component = (
             <AdvancedSettings title="Advanced Settings" model={newDatasetModel} applyAdvancedProperties={jest.fn()} />
         );
 
-        const dom = renderer.create(datasetAdvancedSetting).toJSON();
-        expect(dom).toMatchSnapshot();
+        const { container } = render(component);
+        expect(container).toMatchSnapshot();
     });
 
     test('Edit Dataset, without dataspace options', () => {
-        const datasetAdvancedSetting = (
+        const component = (
             <AdvancedSettings title="Advanced Settings" model={datasetModel} applyAdvancedProperties={jest.fn()} />
         );
 
-        const dom = renderer.create(datasetAdvancedSetting).toJSON();
-        expect(dom).toMatchSnapshot();
+        const { container } = render(component);
+        expect(container).toMatchSnapshot();
     });
 
     test('Edit Dataset, with dataspace options', () => {
-        const datasetAdvancedSetting = (
+        const component = (
             <AdvancedSettings
                 title="Advanced Settings"
                 model={sharedDatasetModel}
@@ -69,12 +49,12 @@ describe('Dataset Advanced Settings', () => {
             />
         );
 
-        const dom = renderer.create(datasetAdvancedSetting).toJSON();
-        expect(dom).toMatchSnapshot();
+        const { container } = render(component);
+        expect(container).toMatchSnapshot();
     });
 
     test('DatasetSettingsInput', () => {
-        const datasetSettingsInput = mount(
+        render(
             <DatasetSettingsInput
                 required={true}
                 name="name"
@@ -88,13 +68,12 @@ describe('Dataset Advanced Settings', () => {
             />
         );
 
-        expect(datasetSettingsInput.props().label).toEqual('Name');
-        expect(datasetSettingsInput.props().placeholder).toEqual('Enter a name for this dataset');
-        datasetSettingsInput.unmount();
+        expect(document.querySelector('.domain-no-wrap').textContent).toEqual('Name *');
+        expect(document.querySelector('input').getAttribute('placeholder')).toEqual('Enter a name for this dataset');
     });
 
     test('DatasetSettingsSelect', () => {
-        const datasetSettingsSelect = mount(
+        render(
             <DatasetSettingsSelect
                 name="visitDateColumn"
                 label="Visit Date Column"
@@ -105,7 +84,7 @@ describe('Dataset Advanced Settings', () => {
             />
         );
 
-        expect(datasetSettingsSelect.find(SelectInput)).toHaveProperty('name');
-        datasetSettingsSelect.unmount();
+        expect(document.querySelectorAll('input')).toHaveLength(2);
+        expect(document.querySelectorAll('input')[1].getAttribute('name')).toEqual('visitDateColumn');
     });
 });

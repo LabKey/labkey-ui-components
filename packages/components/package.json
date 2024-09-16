@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "5.5.2",
+  "version": "5.5.2-fb-calcFields2410ExpFlag.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

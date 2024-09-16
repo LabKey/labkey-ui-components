@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version TBD
-*Released*: TBD September 2024
+### version 5.5.2
+*Released*: 16 September 2024
 - Calculated fields issue fixes for 24.10
   - DomainForm to handle batching updates for state related to calculated field validation
   - Update error messaging for bad SQL related exceptions (Issues 51232 and 51204)

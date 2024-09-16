@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
 
-import { capitalizeFirstChar } from './utils';
 import { Utils } from '@labkey/api';
+
+import { capitalizeFirstChar } from './utils';
 
 // TODO rename as actionErrorMessage
 export function getActionErrorMessage(problemStatement: string, noun: string, showRefresh = true): React.ReactNode {

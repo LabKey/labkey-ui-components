@@ -276,8 +276,8 @@ describe('resolveErrorMessage', () => {
 
     test('bad sql grammar', () => {
         const error = {
-            msg: "bad sql grammar []",
-            message: "bad sql grammar []",
+            msg: 'bad sql grammar []',
+            message: 'bad sql grammar []',
         };
         expect(resolveErrorMessage(error)).toBe(
             'There was a problem creating your data.  Check that the format of the data matches the expected type for each field. If you are using calculated fields, you might need to add explicit type casts.'
@@ -331,18 +331,18 @@ describe('getPermissionRestrictionMessage', () => {
     });
     test('some without permission, no verb suffix', () => {
         expect(getPermissionRestrictionMessage(10, 4, 'dog', 'dogs', 'walk')).toBe(
-            "Selection includes 4 dogs that you do not have permission to walk. Only the dogs that you have permission for will be updated."
+            'Selection includes 4 dogs that you do not have permission to walk. Only the dogs that you have permission for will be updated.'
         );
         expect(getPermissionRestrictionMessage(2, 1, 'dog', 'dogs', 'walk')).toBe(
-            "Selection includes 1 dog that you do not have permission to walk. Only the dogs that you have permission for will be updated."
+            'Selection includes 1 dog that you do not have permission to walk. Only the dogs that you have permission for will be updated.'
         );
     });
     test('some without permission, with verb suffix', () => {
         expect(getPermissionRestrictionMessage(10, 4, 'dog', 'dogs', 'walk', ' around the block')).toBe(
-            "Selection includes 4 dogs that you do not have permission to walk around the block. Only the dogs that you have permission for will be updated."
+            'Selection includes 4 dogs that you do not have permission to walk around the block. Only the dogs that you have permission for will be updated.'
         );
         expect(getPermissionRestrictionMessage(2, 1, 'dog', 'dogs', 'walk', ' around the block')).toBe(
-            "Selection includes 1 dog that you do not have permission to walk around the block. Only the dogs that you have permission for will be updated."
+            'Selection includes 1 dog that you do not have permission to walk around the block. Only the dogs that you have permission for will be updated.'
         );
     });
 });

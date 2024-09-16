@@ -1335,12 +1335,12 @@ export function getContainerFilterForLookups(moduleContext?: ModuleContext): Que
     return Query.ContainerFilter.currentPlusProjectAndShared;
 }
 
-export interface SelectDistinctOptions extends Omit<Query.SelectDistinctOptions, 'success'|'failure'> {
+export interface SelectDistinctOptions extends Omit<Query.SelectDistinctOptions, 'success' | 'failure'> {
     requestHandler?: (request: XMLHttpRequest) => void;
 }
 
 export function selectDistinctRows(options: SelectDistinctOptions): Promise<Query.SelectDistinctResponse> {
-    const {requestHandler, ...queryOptions} = options;
+    const { requestHandler, ...queryOptions } = options;
     return new Promise((resolve, reject) => {
         const request_ = Query.selectDistinctRows({
             method: 'POST',
@@ -1350,9 +1350,8 @@ export function selectDistinctRows(options: SelectDistinctOptions): Promise<Quer
                 resolve(response);
             },
             failure: (error, request) => {
-                if (request.status !== 0)
-                    console.error(error);
-                reject({...error, status: request.status});
+                if (request.status !== 0) console.error(error);
+                reject({ ...error, status: request.status });
             },
         });
         requestHandler?.(request_);

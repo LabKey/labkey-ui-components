@@ -121,7 +121,9 @@ describe('DomainForm', () => {
         expect(document.querySelectorAll('.domain-panel-header-collapsed')).toHaveLength(1);
         expect(document.querySelector('.domain-panel-title').textContent).toBe('Fields');
         expect(document.querySelector('a').textContent).toBe('Learn more about this tool');
-        expect(document.querySelector('a').getAttribute('href')).toBe('https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=assays');
+        expect(document.querySelector('a').getAttribute('href')).toBe(
+            'https://www.labkey.org/Documentation/wiki-page.view?referrer=inPage&name=assays'
+        );
     });
 
     test('domain form with no fields', async () => {
@@ -333,9 +335,7 @@ describe('DomainForm', () => {
         domain = clearFieldDetails(domain);
 
         await act(async () => {
-            renderWithAppContext(
-                <DomainForm api={API} domain={domain} key="domainForm" onChange={jest.fn()} />
-            );
+            renderWithAppContext(<DomainForm api={API} domain={domain} key="domainForm" onChange={jest.fn()} />);
         });
 
         expect(document.querySelectorAll('.domain-field-row')).toHaveLength(2);

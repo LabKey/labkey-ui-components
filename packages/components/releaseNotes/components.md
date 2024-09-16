@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD September 2024
+- Add back calculated fields experimental feature flag
+
 ### version 5.5.2
 *Released*: 16 September 2024
 - Calculated fields issue fixes for 24.10

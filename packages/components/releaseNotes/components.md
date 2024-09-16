@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.5.2
+*Released*: 16 September 2024
+- Calculated fields issue fixes for 24.10
+  - DomainForm to handle batching updates for state related to calculated field validation
+  - Update error messaging for bad SQL related exceptions (Issues 51232 and 51204)
+  - Study dataset designer to include systemFields based on timepoint type (Issue 51249)
+
 ### version 5.5.1
 *Released*: 12 September 2024
 - Issue 50628: Bump @labkey/api. See https://github.com/LabKey/labkey-api-js/pull/182

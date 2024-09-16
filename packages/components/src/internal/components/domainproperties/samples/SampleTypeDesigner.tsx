@@ -2,11 +2,19 @@ import React, { FC, memo, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
 
-import { DomainDesign, DomainDetails, IAppDomainHeader, IDomainField, IDomainFormDisplayOptions } from '../models';
+import {
+    DomainDesign,
+    DomainDetails,
+    DomainFieldIndexChange,
+    IAppDomainHeader,
+    IDomainField,
+    IDomainFormDisplayOptions,
+    IFieldChange,
+} from '../models';
 import DomainForm from '../DomainForm';
 
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DERIVATION_DATA_SCOPES } from '../constants';
-import { addDomainField, getDomainPanelStatus, scrollDomainErrorIntoView } from '../actions';
+import { addDomainField, getDomainPanelStatus, handleDomainUpdates, scrollDomainErrorIntoView } from '../actions';
 import { DEFAULT_SAMPLE_FIELD_CONFIG, SAMPLE_TYPE_NAME_EXPRESSION_TOPIC } from '../../samples/constants';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
@@ -283,10 +291,17 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         }
     };
 
-    domainChangeHandler = (domain: DomainDesign, dirty: boolean): void => {
+    domainChangeHandler = (
+        domain: DomainDesign,
+        dirty: boolean,
+        rowIndexChange?: DomainFieldIndexChange[],
+        changes?: List<IFieldChange>
+    ): void => {
         this.setState(
             state => ({
-                model: state.model.merge({ domain }) as SampleTypeModel,
+                model: state.model.merge({
+                    domain: domain ?? handleDomainUpdates(state.model.domain, changes),
+                }) as SampleTypeModel,
             }),
             () => {
                 // Issue 39918: use the dirty property that DomainForm onChange passes

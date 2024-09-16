@@ -94,7 +94,7 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
     );
 
     const validateExpression = useCallback(
-        async (value: string): Promise<void> => {
+        async (value: string, isExpressionChange = true): Promise<void> => {
             setLoading(true);
             setError(undefined);
             setParsedType(undefined);
@@ -115,7 +115,7 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
                         rowIndexes: List<number>([index]),
                     });
                     onChange(warningId, domainFieldWarning, index, false, true);
-                } else {
+                } else if (isExpressionChange) {
                     onChange(warningId, undefined, index, false, true);
                 }
             } catch (e) {
@@ -130,7 +130,7 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
     const handleBlur = useCallback(
         (evt: any): void => {
             const value = evt.target.value;
-            validateExpression(value);
+            validateExpression(value, true);
         },
         [validateExpression]
     );
@@ -138,7 +138,7 @@ export const CalculatedFieldOptions: FC<Props> = memo(props => {
     useEffect(
         () => {
             if (!isNew) {
-                validateExpression(field.valueExpression);
+                validateExpression(field.valueExpression, false);
             }
         },
         [

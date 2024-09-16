@@ -2,9 +2,9 @@ import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 import { Domain } from '@labkey/api';
 
-import { DomainDesign, DomainFieldIndexChange, IAppDomainHeader } from '../models';
+import { DomainDesign, DomainFieldIndexChange, IAppDomainHeader, IFieldChange } from '../models';
 import DomainForm from '../DomainForm';
-import { getDomainPanelStatus, saveDomain } from '../actions';
+import { getDomainPanelStatus, handleDomainUpdates, saveDomain } from '../actions';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
@@ -68,7 +68,12 @@ export class ListDesignerPanelsImpl extends React.PureComponent<
         );
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges?: DomainFieldIndexChange[]): void => {
+    onDomainChange = (
+        domain: DomainDesign,
+        dirty: boolean,
+        rowIndexChanges?: DomainFieldIndexChange[],
+        changes?: List<IFieldChange>
+    ): void => {
         const { model } = this.state;
 
         // Issue 40262: If we have a titleColumn selected and the name changes (not the row index), update the titleColumn
@@ -80,7 +85,10 @@ export class ListDesignerPanelsImpl extends React.PureComponent<
 
         this.setState(
             state => ({
-                model: state.model.merge({ domain, titleColumn }) as ListModel,
+                model: state.model.merge({
+                    domain: domain ?? handleDomainUpdates(state.model.domain, changes),
+                    titleColumn,
+                }) as ListModel,
             }),
             () => {
                 // Issue 39918: use the dirty property that DomainForm onChange passes

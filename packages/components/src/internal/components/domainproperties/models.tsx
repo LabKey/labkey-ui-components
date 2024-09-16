@@ -1363,7 +1363,7 @@ export class DomainField
                         message: FIELD_EMPTY_TEXT_CHOICE_WARNING_MSG,
                         severity: SEVERITY_LEVEL_WARN,
                     });
-                    details.push(<DomainRowWarning fieldError={fieldError} />);
+                    details.push(<DomainRowWarning key="domain-row-text-choice-error" fieldError={fieldError} />);
                 }
             }
             period = '. ';

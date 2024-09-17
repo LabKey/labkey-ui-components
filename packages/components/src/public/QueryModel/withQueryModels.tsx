@@ -136,6 +136,7 @@ const resetRowsState = (model: Draft<QueryModel>): void => {
     model.messages = undefined;
     model.offset = 0;
     model.orderedRows = undefined;
+    model.viewError = undefined;
     model.rowsError = undefined;
     model.rows = undefined;
     model.rowCount = undefined;
@@ -646,6 +647,7 @@ export function withQueryModels<Props>(
                 this.setState(
                     produce<State>(draft => {
                         const model = draft.queryModels[id];
+                        const calcFieldNames = model.queryInfo.getAllColumns().filter(c => c.isCalculatedField).map(c => c.name);
                         let rowsError = resolveErrorMessage(error, 'data', undefined, 'loading');
 
                         if (rowsError === undefined) {
@@ -662,6 +664,15 @@ export function withQueryModels<Props>(
                             resetRowsState(model);
                             resetTotalCountState(model);
                             resetSelectionState(model);
+                            model.viewError = rowsError;
+                        } else if (!model.viewError && calcFieldNames.length > 0) {
+                            // Issue 51204: if we have a calculated field, they are likely causing the problem so retry without them
+                            viewDoesNotExist = true;
+                            model.omittedColumns = model.omittedColumns.concat(calcFieldNames);
+                            resetRowsState(model);
+                            resetTotalCountState(model);
+                            resetSelectionState(model);
+                            model.viewError = rowsError + (rowsError.endsWith('.') ? '' : '.') + ' All calculated fields have been omitted from the view.';
                         } else {
                             model.rowsLoadingState = LoadingState.LOADED;
                             model.rowsError = rowsError;
@@ -773,6 +784,7 @@ export function withQueryModels<Props>(
                         model.queryInfo = queryInfo;
                         model.queryInfoLoadingState = LoadingState.LOADED;
                         model.queryInfoError = undefined;
+                        model.viewError = undefined;
                     }),
                     () => this.maybeLoad(id, false, loadRows, loadSelections, reloadTotalCount)
                 );

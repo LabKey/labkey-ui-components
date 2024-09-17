@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 - Calculated fields error handling
   - parseCalculatedColumn to first try making an executeSQL call with fake data to catch SQL errors
+  - withQueryModel to retry failed query without calculated fields, set viewError on QueryModel for grid display
 
 ### version 5.5.3
 *Released*: 17 September 2024

@@ -438,6 +438,10 @@ export class QueryModel {
      * [[LoadingState]] for the API call to load the chart definitions.
      */
     readonly chartsLoadingState: LoadingState;
+    /**
+     * Error message from initial API call to be retained for retry (i.e. for a requested view that does not exist or calculated field expressions causing errors).
+     */
+    readonly viewError: string;
 
     /**
      * Constructor which takes a [[QueryConfig]] definition and creates a new QueryModel, applying default values
@@ -505,6 +509,7 @@ export class QueryModel {
         this.charts = undefined;
         this.chartsError = undefined;
         this.chartsLoadingState = LoadingState.INITIALIZED;
+        this.viewError = undefined;
     }
 
     get schemaName(): string {

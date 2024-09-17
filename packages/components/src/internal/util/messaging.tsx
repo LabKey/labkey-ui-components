@@ -75,7 +75,8 @@ export function resolveErrorMessage(
     noun = 'data',
     nounPlural?: string,
     verb?: string,
-    duplicatesMessageResolver?: (errorMsg: string, noun: string, nounPlural?: string, verb?: string) => string
+    duplicatesMessageResolver?: (errorMsg: string, noun: string, nounPlural?: string, verb?: string) => string,
+    returnInitialMsg = false
 ): string {
     let errorMsg;
     if (!error) {
@@ -90,7 +91,9 @@ export function resolveErrorMessage(
     } else if (error.exception) {
         errorMsg = error.exception;
     }
-    if (errorMsg) {
+    if (returnInitialMsg) {
+        return errorMsg;
+    } else if (errorMsg) {
         const lcMessage = errorMsg.toLowerCase();
         const duplicatesResolver = duplicatesMessageResolver ?? resolveDuplicatesAsName;
         if (

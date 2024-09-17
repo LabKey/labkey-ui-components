@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Calculated fields error handling
+  - parseCalculatedColumn to first try making an executeSQL call with fake data to catch SQL errors
+
 ### version 5.5.3
 *Released*: 17 September 2024
 - Add back calculated fields experimental feature flag

@@ -134,6 +134,7 @@ export interface DomainFormProps extends PropsWithChildren {
         dirty: boolean,
         rowIndexChange?: DomainFieldIndexChange[],
         changes?: List<IFieldChange> // use this instead of newDomain for changes that should be applied to the domain but not trigger a dirty change
+        // TODO migrate more calls to onChange to pass through the changes instead of the newDomain
     ) => void;
     onToggle?: (collapsed: boolean, callback?: () => any) => void;
     panelStatus?: DomainPanelStatus;

@@ -37,7 +37,7 @@ import { caseInsensitive, handleRequestFailure } from '../../util/utils';
 
 import { getExcludedDataTypeNames } from '../entities/actions';
 
-import { getQueryDetails } from '../../query/api';
+import { getQueryDetails, selectRowsDeprecated } from '../../query/api';
 
 import { selectRows } from '../../query/selectRows';
 
@@ -368,17 +368,83 @@ export function getMaxPhiLevel(containerPath?: string): Promise<string> {
     });
 }
 
-export function parseCalculatedColumn(
+function getCastStatement(key: string, type: string): string {
+    switch (type) {
+        case 'INTEGER':
+        case 'SAMPLE':
+        case 'USERS':
+            return `CAST(1 AS INTEGER) AS "${key}"`;
+        case 'DOUBLE':
+        case 'DECIMAL (FLOATING POINT)':
+        case 'VISITID':
+            return `CAST(1.1 AS DOUBLE) AS "${key}"`;
+        case 'BOOLEAN':
+            return `CAST(TRUE AS BOOLEAN) AS "${key}"`;
+        case 'DATETIME':
+        case 'VISITDATE':
+            return `CAST(CURDATE() AS TIMESTAMP) AS "${key}"`;
+        case 'DATE':
+            return `CAST(CURDATE() AS DATE) AS "${key}"`;
+        case 'TIME':
+            return `CAST(CURDATE() AS TIME) AS "${key}"`;
+        case 'TEXT':
+        case 'STRING':
+        case 'TEXTCHOICE':
+        case 'UNIQUEID':
+        case 'MULTILINE':
+        case 'FILELINK':
+        case 'ATTACHMENT':
+        case 'FLAG':
+        case 'ONTOLOGYLOOKUP':
+        case 'PARTICIPANTID':
+        case 'VISITLABEL':
+            return `CAST('Testing' AS VARCHAR) AS "${key}"`;
+        default:
+            // console.log(key, type);
+            return `CAST('Testing' AS VARCHAR) AS "${key}"`;
+    }
+}
+
+export async function parseCalculatedColumn(
+    expression: string,
+    columnMap: Record<string, string>,
+    containerPath?: string
+): Promise<{ error: string; type: string }> {
+    if (!expression || expression?.trim()?.length === 0) {
+        return { error: 'Error: an expression value is required.', type: undefined };
+    }
+
+    try {
+        const sql =
+            'SELECT\n' +
+            expression +
+            '\nFROM (SELECT ' +
+            Object.keys(columnMap)
+                .map(key => {
+                    return getCastStatement(key, columnMap[key]);
+                })
+                .join(',\n') +
+            ') AS x' +
+            ' WHERE 1=0';
+
+        await selectRowsDeprecated({
+            schemaName: 'core',
+            sql,
+            includeTotalCount: false,
+        });
+    } catch (e) {
+        return { error: resolveErrorMessage(e, 'data', undefined, undefined, undefined, true), type: undefined };
+    }
+
+    return _parseCalculatedColumn(expression, columnMap, containerPath);
+}
+
+export function _parseCalculatedColumn(
     expression: string,
     columnMap: Record<string, string>,
     containerPath?: string
 ): Promise<{ error: string; type: string }> {
     return new Promise((resolve, reject) => {
-        if (!expression || expression?.trim()?.length === 0) {
-            resolve({ error: 'Error: an expression value is required.', type: undefined });
-            return;
-        }
-
         Ajax.request({
             url: buildURL('query', 'parseCalculatedColumn.api', undefined, { container: containerPath }),
             jsonData: {
@@ -391,7 +457,6 @@ export function parseCalculatedColumn(
                 resolve({ error, type });
             }),
             failure: Utils.getCallbackWrapper(response => {
-                console.error(response);
                 reject(resolveErrorMessage(response));
             }),
         });

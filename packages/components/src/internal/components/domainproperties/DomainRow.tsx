@@ -145,13 +145,11 @@ export class DomainRow extends React.PureComponent<DomainRowProps, DomainRowStat
 
     getDetails = (): ReactNode => {
         const { field, fieldDetailsInfo, fieldError, index, expanded, domainIndex } = this.props;
-        // eslint-disable-next-line no-warning-comments
-        // FIXME: Pushing these ReactNodes (of which many are strings) into an array requires that each be marked with a "key" prop.
         const details = field.getDetailsArray(fieldDetailsInfo);
 
         if (fieldError) {
             details.push(details.length > 0 ? '. ' : '');
-            details.push(<DomainRowWarning fieldError={fieldError} />);
+            details.push(<DomainRowWarning key="domain-row-field-error" fieldError={fieldError} />);
         }
 
         return (

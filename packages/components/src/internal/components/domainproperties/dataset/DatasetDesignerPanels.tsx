@@ -26,9 +26,9 @@ import { DomainPropertiesAPIWrapper } from '../APIWrapper';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { DomainDesign, DomainField, DomainFieldIndexChange } from '../models';
+import { DomainDesign, DomainField, DomainFieldIndexChange, IFieldChange, SystemField } from '../models';
 
-import { getDomainPanelStatus, saveDomain } from '../actions';
+import { getDomainPanelStatus, handleDomainUpdates, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_NOT_LOCKED } from '../constants';
@@ -49,7 +49,7 @@ import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { DatasetModel } from './models';
-import { getStudyTimepointLabel, StudyProperties, useStudyPropertiesContext } from './utils';
+import { getDatasetSystemFields, getStudyTimepointLabel, StudyProperties, useStudyPropertiesContext } from './utils';
 
 const KEY_FIELD_MAPPING_ERROR = 'Your Additional Key Field must not be one of the Column Mapping fields.';
 const VISIT_DATE_MAPPING_ERROR = 'Your Visit Date Column must not be one of the Column Mapping fields.';
@@ -222,9 +222,23 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<
         this.props.onFinish(model.isValid(), this.saveDomain);
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges: DomainFieldIndexChange[]): void => {
+    onDomainChange = (
+        domain: DomainDesign,
+        dirty: boolean,
+        rowIndexChanges: DomainFieldIndexChange[],
+        changes?: List<IFieldChange>
+    ): void => {
         const { onChange } = this.props;
         const { keyPropertyIndex, visitDatePropertyIndex } = this.state;
+
+        if (changes) {
+            this.setState(
+                produce<State>(draft => {
+                    Object.assign(draft.model.domain, handleDomainUpdates(draft.model.domain, changes));
+                })
+            );
+            return;
+        }
 
         this.setState(
             produce<State>(draft => {
@@ -561,6 +575,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<
                         hideImportData: model.definitionIsShared, // Shared (Dataspace) study does not have permission to import data. See study-importAction.validatePermission
                         retainReservedFields: true, // reserved fields are used for mapping the participant and visit columns.
                     }}
+                    systemFields={getDatasetSystemFields(studyProperties)}
                 />
                 <Progress
                     modal

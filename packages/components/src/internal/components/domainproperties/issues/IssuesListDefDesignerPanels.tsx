@@ -3,9 +3,9 @@ import { List } from 'immutable';
 import { produce } from 'immer';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
-import { getDomainPanelStatus, saveDomain } from '../actions';
+import { getDomainPanelStatus, handleDomainUpdates, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
-import { DomainDesign } from '../models';
+import { DomainDesign, DomainFieldIndexChange, IFieldChange } from '../models';
 
 import { resolveErrorMessage } from '../../../util/messaging';
 
@@ -53,7 +53,21 @@ export class IssuesDesignerPanelsImpl extends React.PureComponent<Props & Inject
         );
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean): void => {
+    onDomainChange = (
+        domain: DomainDesign,
+        dirty: boolean,
+        rowIndexChange?: DomainFieldIndexChange[],
+        changes?: List<IFieldChange>
+    ): void => {
+        if (changes) {
+            this.setState(
+                produce<State>(draft => {
+                    Object.assign(draft.model.domain, handleDomainUpdates(draft.model.domain, changes));
+                })
+            );
+            return;
+        }
+
         this.setState(
             produce<State>(draft => {
                 draft.model.domain = domain;

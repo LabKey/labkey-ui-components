@@ -544,6 +544,14 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                         }
                     },
                     failure: (data, request) => {
+                        // If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
+                        if (
+                            data.exception?.toLowerCase().indexOf('communication failure') === 0 &&
+                            processRequest(undefined, request, reject)
+                        ) {
+                            return;
+                        }
+
                         console.error('There was a problem retrieving the data', data);
                         reject({
                             exceptionClass: data.exceptionClass,
@@ -571,6 +579,14 @@ export function selectRowsDeprecated(userConfig, caller?): Promise<ISelectRowsRe
                         doResolve();
                     },
                     failure: (data, request) => {
+                        // If we hit a communication failure, try to get better error messaging from the request.responseText (Issues 51232 and 51204)
+                        if (
+                            data.exception?.toLowerCase().indexOf('communication failure') === 0 &&
+                            processRequest(undefined, request, reject)
+                        ) {
+                            return;
+                        }
+
                         console.error('There was a problem retrieving the data', data);
                         reject({
                             exceptionClass: data.exceptionClass,
@@ -1319,12 +1335,12 @@ export function getContainerFilterForLookups(moduleContext?: ModuleContext): Que
     return Query.ContainerFilter.currentPlusProjectAndShared;
 }
 
-export interface SelectDistinctOptions extends Omit<Query.SelectDistinctOptions, 'success'|'failure'> {
+export interface SelectDistinctOptions extends Omit<Query.SelectDistinctOptions, 'success' | 'failure'> {
     requestHandler?: (request: XMLHttpRequest) => void;
 }
 
 export function selectDistinctRows(options: SelectDistinctOptions): Promise<Query.SelectDistinctResponse> {
-    const {requestHandler, ...queryOptions} = options;
+    const { requestHandler, ...queryOptions } = options;
     return new Promise((resolve, reject) => {
         const request_ = Query.selectDistinctRows({
             method: 'POST',
@@ -1334,9 +1350,8 @@ export function selectDistinctRows(options: SelectDistinctOptions): Promise<Quer
                 resolve(response);
             },
             failure: (error, request) => {
-                if (request.status !== 0)
-                    console.error(error);
-                reject({...error, status: request.status});
+                if (request.status !== 0) console.error(error);
+                reject({ ...error, status: request.status });
             },
         });
         requestHandler?.(request_);

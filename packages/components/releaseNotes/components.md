@@ -1,9 +1,24 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 5.X
-*Released*: X September 2024
+### version 5.5.5
+*Released*: 17 September 2024
 - Issue 50818: add RESOLVE_LSID_MAPPERS to resolve data/material by lsid
+
+### version 5.5.4
+*Released*: 17 September 2024
+- Add `SchemaQuery` constant for `plate.ReformatTargetPlateSets` query.
+
+### version 5.5.3
+*Released*: 17 September 2024
+- Add back calculated fields experimental feature flag
+
+### version 5.5.2
+*Released*: 16 September 2024
+- Calculated fields issue fixes for 24.10
+  - DomainForm to handle batching updates for state related to calculated field validation
+  - Update error messaging for bad SQL related exceptions (Issues 51232 and 51204)
+  - Study dataset designer to include systemFields based on timepoint type (Issue 51249)
 
 ### version 5.5.1
 *Released*: 12 September 2024

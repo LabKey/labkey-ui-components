@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.5.4
+*Released*: 17 September 2024
+- Add `SchemaQuery` constant for `plate.ReformatTargetPlateSets` query.
+
 ### version 5.5.3
 *Released*: 17 September 2024
 - Add back calculated fields experimental feature flag

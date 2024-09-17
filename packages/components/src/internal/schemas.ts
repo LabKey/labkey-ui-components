@@ -153,6 +153,7 @@ const PLATE_TABLES = {
     PLATE_SOURCE: new SchemaQuery(PLATE_SCHEMA, 'PlateSource'),
     PLATE_TYPE: new SchemaQuery(PLATE_SCHEMA, 'PlateType'),
     PRIMARY_HIT_SELECTION_SUMMARY: new SchemaQuery(PLATE_SCHEMA, 'PrimaryHitSelectionSummary'),
+    REFORMAT_TARGET_PLATE_SETS: new SchemaQuery(PLATE_SCHEMA, 'ReformatTargetPlateSets'),
     SAMPLES_IN_PLATE_SETS: new SchemaQuery(PLATE_SCHEMA, 'SamplesInPlateSets'),
     SCHEMA: PLATE_SCHEMA,
     WELL: new SchemaQuery(PLATE_SCHEMA, 'Well'),

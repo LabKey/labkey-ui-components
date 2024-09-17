@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.5.5
+*Released*: 17 September 2024
+- Issue 50818: add RESOLVE_LSID_MAPPERS to resolve data/material by lsid
+
 ### version 5.5.4
 *Released*: 17 September 2024
 - Add `SchemaQuery` constant for `plate.ReformatTargetPlateSets` query.

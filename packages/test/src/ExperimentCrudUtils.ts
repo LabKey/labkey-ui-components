@@ -102,14 +102,14 @@ export async function createSource(server: IntegrationTestServer, sourceName: st
     return await insertRows(server, [{ name: sourceName }], 'exp.data', sourceType, folderOptions, userOptions, auditBehavior, debug);
 }
 
-// import, update from file, merge
-export async function importSample(server: IntegrationTestServer, importText: string, queryName: string, insertOption = "IMPORT", folderOptions: RequestOptions , userOptions: RequestOptions, useAsync = false, debug?: boolean) : Promise<any> {
-    const response = await server.request('experiment', 'importSamples', (agent, url) => {
+
+export async function importData(server, importText: string, queryName: string, insertOption = "IMPORT", folderOptions: RequestOptions , userOptions: RequestOptions, useAsync = false, debug?: boolean, isSamples?: boolean) : Promise<any> {
+    const response = await server.request('experiment', isSamples ? 'importSamples' : 'importData', (agent, url) => {
             return agent
                 .post(url + '?auditBehavior=DETAILED&crossFolderImport=true')
                 .type('form')
                 .send({
-                    schemaName: 'samples',
+                    schemaName: isSamples ? 'samples' : 'exp.data',
                     queryName,
                     useAsync,
                     insertOption,
@@ -126,6 +126,11 @@ export async function importSample(server: IntegrationTestServer, importText: st
         console.log(response);
 
     return response;
+}
+
+// import, update from file, merge
+export async function importSample(server: IntegrationTestServer, importText: string, queryName: string, insertOption = "IMPORT", folderOptions: RequestOptions , userOptions: RequestOptions, useAsync = false, debug?: boolean) : Promise<any> {
+    return await importData(server, importText, queryName, insertOption, folderOptions, userOptions, useAsync, debug, true);
 }
 
 // update using api, rowIds will call _update, lsids will call data iterator
@@ -181,3 +186,5 @@ export async function getAliquotsByRootId(server: IntegrationTestServer, rootId:
     }, { ...folderOptions, ...userOptions }).expect(successfulResponse);
     return response.body.rows;
 }
+
+

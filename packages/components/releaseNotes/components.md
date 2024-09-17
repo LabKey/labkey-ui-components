@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.?.?
+*Released*: 18 September 2024
+- Fix Issue 51265
+    - We now more consistently trim values and use getValidatedEditableGridValue
+
 ### version 5.5.7
 *Released*: 20 September 2024
 - Issue 50389: Casing of aliased (parent) sample or source type name can be changed in the editable grid

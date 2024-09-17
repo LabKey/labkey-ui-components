@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { userEvent } from '@testing-library/user-event';
-
 import { List } from 'immutable';
 
 import { waitFor } from '@testing-library/dom';
@@ -11,14 +9,12 @@ import { renderWithAppContext } from '../../../test/reactTestLibraryHelpers';
 import { DEFAULT_LIST_SETTINGS } from '../../../../test/data/constants';
 import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.json';
 
-import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
-
 import { getTestAPIWrapper } from '../../../APIWrapper';
 
 import { MockLookupProvider } from '../../../../test/components/Lookup';
 
 import { ListModel } from './models';
-import { ListDesignerPanels, ListDesignerPanelsProps, ListDesignerPanelsImpl } from './ListDesignerPanels';
+import { ListDesignerPanelsProps, ListDesignerPanelsImpl } from './ListDesignerPanels';
 
 describe('ListDesignerPanels', () => {
     function getDefaultProps(): ListDesignerPanelsProps {

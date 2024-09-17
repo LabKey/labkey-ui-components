@@ -4,9 +4,9 @@ import { List, Map } from 'immutable';
 
 import { Domain, getServerContext } from '@labkey/api';
 
-import { DomainDesign, IDomainField, IDomainFormDisplayOptions } from '../models';
+import { DomainDesign, DomainFieldIndexChange, IDomainField, IDomainFormDisplayOptions, IFieldChange } from '../models';
 import DomainForm from '../DomainForm';
-import { getDomainPanelStatus, saveDomain, scrollDomainErrorIntoView } from '../actions';
+import { getDomainPanelStatus, handleDomainUpdates, saveDomain, scrollDomainErrorIntoView } from '../actions';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
 import { getAppHomeFolderPath, isSampleManagerEnabled } from '../../../app/utils';
@@ -300,8 +300,22 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         );
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean): void => {
+    onDomainChange = (
+        domain: DomainDesign,
+        dirty: boolean,
+        rowIndexChange?: DomainFieldIndexChange[],
+        changes?: List<IFieldChange>
+    ): void => {
         const { onChange } = this.props;
+
+        if (changes) {
+            this.setState(
+                produce<State>(draft => {
+                    Object.assign(draft.model.domain, handleDomainUpdates(draft.model.domain, changes));
+                })
+            );
+            return;
+        }
 
         this.saveModel({ domain }, () => {
             // Issue 39918: use the dirty property that DomainForm onChange passes

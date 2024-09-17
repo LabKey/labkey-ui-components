@@ -332,16 +332,12 @@ export class EditorModel
                     );
                 } else {
                     let val;
-                    if (values.size === 1) val = values.first()?.raw;
+                    if (values.size === 1) val = values.first()?.raw?.toString().trim();
                     row = row.set(col.name, val);
                 }
-            } else if (col.jsonType === 'time') {
-                row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
-            } else if (col.jsonType !== 'date' || !displayValues) {
-                const val = values.size === 1 ? values.first().raw : undefined;
+            }  else {
+                const val = values.size === 1 ? values.first().raw?.toString().trim() : undefined;
                 row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
-            } else {
-                row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
             }
         });
 

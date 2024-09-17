@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Change "Project" to "Folder" throughout the application
+- Remove warning banner about shared domains except for domains coming from /Shared
+
 ### version 5.5.5
 *Released*: 17 September 2024
 - Issue 50818: add RESOLVE_LSID_MAPPERS to resolve data/material by lsid

@@ -38,7 +38,7 @@ export const GROUP_AUDIT_QUERY: AuditQuery = {
 };
 export const PROJECT_AUDIT_QUERY: AuditQuery = {
     containerFilter: Query.ContainerFilter.allFolders,
-    label: 'Project Events',
+    label: 'Folder Events',
     value: 'containerauditevent',
 };
 export const SAMPLE_TYPE_AUDIT_QUERY: AuditQuery = { label: 'Sample Type Events', value: 'samplesetauditevent' };

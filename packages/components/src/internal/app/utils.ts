@@ -51,6 +51,7 @@ import {
     USER_KEY,
     WORKFLOW_KEY,
 } from './constants';
+import { SHARED_CONTAINER_PATH } from '../constants';
 
 declare var LABKEY: LabKey;
 
@@ -213,26 +214,10 @@ export function getAppHomeFolderId(container?: Container, moduleContext?: Module
     return isAppHomeFolder(currentContainer, moduleContext) ? currentContainer.id : currentContainer.parentId;
 }
 
-// either defined in a different container or it's defined in the home container and product projects are available.
-export function isSharedDefinition(
-    currentContainer: Container,
-    moduleContext: ModuleContext,
-    domainContainerPathOrId: string,
-    isId?: boolean
+export function isSharedContainer(
+    containerPath: string,
 ): boolean {
-    if (
-        (isId && domainContainerPathOrId !== currentContainer.id) ||
-        (!isId && domainContainerPathOrId !== currentContainer.path)
-    ) {
-        return true;
-    }
-    if (!hasProductProjects(moduleContext)) {
-        return false;
-    }
-    if (isId && getAppHomeFolderId(currentContainer, moduleContext) === domainContainerPathOrId) {
-        return true;
-    }
-    return !isId && getAppHomeFolderPath(currentContainer, moduleContext) === domainContainerPathOrId;
+    return containerPath === SHARED_CONTAINER_PATH;
 }
 
 export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolean {

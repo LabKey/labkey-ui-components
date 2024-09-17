@@ -134,26 +134,26 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
     return (
         <BasePropertiesPanel
             headerId="domain-projects-hdr"
-            title="Projects"
+            title="Folders"
             collapsed={collapsed}
             controlledCollapse={controlledCollapse}
             isValid
             panelStatus={collapsed && isValid ? 'COMPLETE' : isValid ? 'INPROGRESS' : 'TODO'}
             updateValidStatus={updateValidStatus}
             todoIconHelpMsg={
-                'This section defines which projects use this ' +
+                'This section defines which folders use this ' +
                 entityDataType.typeNounSingular.toLowerCase() +
                 '. You may want to review.'
             }
             togglePanel={togglePanel}
         >
             <div className="bottom-spacing">
-                Select which projects will use this {entityDataType.typeNounSingular.toLowerCase()}.
+                Select which folders can use this {entityDataType.typeNounSingular.toLowerCase()}.
             </div>
             {!!allProjects && allProjects?.length === excludedProjectIds?.length && (
                 <Alert bsStyle="warning">
-                    Note that this {entityDataType.typeNounSingular.toLowerCase()} can be re-enabled in the Project
-                    Settings page for individual projects.
+                    Note that this {entityDataType.typeNounSingular.toLowerCase()} can be re-enabled in the Folder
+                    Settings page for individual folders.
                 </Alert>
             )}
             {error && <Alert>{error}</Alert>}
@@ -170,7 +170,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                                 allDataTypes={childProjects}
                                 updateUncheckedTypes={updateExcludedProjects}
                                 uncheckedEntitiesDB={excludedProjectIdsDB}
-                                dataTypeLabel="projects"
+                                dataTypeLabel="folders"
                                 noHeader
                                 columns={2}
                             />
@@ -186,7 +186,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                                     allDataTypes={childProjects}
                                     updateUncheckedTypes={updateExcludedProjects}
                                     uncheckedEntitiesDB={excludedProjectIdsDB}
-                                    dataTypeLabel="Include in Projects"
+                                    dataTypeLabel="Include in Folders"
                                 />
                             </div>
                             <div className="col-xs-6 bottom-spacing">

@@ -52,7 +52,7 @@ import {
     isProtectedDataEnabled,
     isSampleManagerEnabled,
     isSampleStatusEnabled,
-    isSharedDefinition,
+    isSharedContainer,
     isTransformScriptsEnabled,
     isWorkflowEnabled,
     limsIsPrimaryApp,
@@ -1254,7 +1254,7 @@ describe('addAssaySectionConfig', () => {
     });
 });
 
-describe('isSharedDefinition', () => {
+describe('isSharedContainer', () => {
     const currentContainerHome = new Container({
         path: '/home',
         parentPath: '/',
@@ -1283,28 +1283,28 @@ describe('isSharedDefinition', () => {
     };
 
     test('different container', () => {
-        expect(isSharedDefinition(currentContainerHome, moduleContextWithProjects, '/home/other')).toBe(true);
-        expect(isSharedDefinition(currentContainerHome, moduleContextWithoutProjects, '/home/other')).toBe(true);
-        expect(isSharedDefinition(currentContainerHome, moduleContextWithProjects, 'otherId', true)).toBe(true);
-        expect(isSharedDefinition(currentContainerHome, moduleContextWithoutProjects, 'otherId', true)).toBe(true);
+        expect(isSharedContainer('/home/other')).toBe(true);
+        expect(isSharedContainer('/home/other')).toBe(true);
+        expect(isSharedContainer('otherId')).toBe(true);
+        expect(isSharedContainer('otherId')).toBe(true);
     });
 
     test('same container, no product projects', () => {
-        expect(isSharedDefinition(currentContainerHome, moduleContextWithoutProjects, '/home')).toBe(false);
-        expect(isSharedDefinition(currentContainerHome, moduleContextWithoutProjects, 'homeId', true)).toBe(false);
-        expect(isSharedDefinition(currentContainerFolder, moduleContextWithoutProjects, '/home/folder')).toBe(false);
-        expect(isSharedDefinition(currentContainerFolder, moduleContextWithoutProjects, 'folderId', true)).toBe(false);
+        expect(isSharedContainer('/home')).toBe(false);
+        expect(isSharedContainer('homeId')).toBe(false);
+        expect(isSharedContainer('/home/folder')).toBe(false);
+        expect(isSharedContainer('folderId')).toBe(false);
     });
 
     test('same container, with product projects, defined in home', () => {
-        expect(isSharedDefinition(currentContainerHome, moduleContextWithProjects, '/home')).toBe(true);
-        expect(isSharedDefinition(currentContainerHome, moduleContextWithProjects, 'homeId', true)).toBe(true);
-        expect(isSharedDefinition(currentContainerFolder, moduleContextWithProjects, '/home')).toBe(true);
-        expect(isSharedDefinition(currentContainerFolder, moduleContextWithProjects, 'homeId', true)).toBe(true);
+        expect(isSharedContainer('/home')).toBe(true);
+        expect(isSharedContainer('homeId')).toBe(true);
+        expect(isSharedContainer('/home')).toBe(true);
+        expect(isSharedContainer('homeId')).toBe(true);
     });
 
     test('same container, with product projects, defined in folder', () => {
-        expect(isSharedDefinition(currentContainerFolder, moduleContextWithProjects, '/home/folder')).toBe(false);
-        expect(isSharedDefinition(currentContainerFolder, moduleContextWithProjects, 'folderId', true)).toBe(false);
+        expect(isSharedContainer('/home/folder')).toBe(false);
+        expect(isSharedContainer('folderId')).toBe(false);
     });
 });

@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Change "Project" to "Folder" throughout the application
 - Remove warning banner about shared domains except for domains coming from /Shared
 
+### version 5.5.6
+*Released*: 18 September 2024
+- Issue 50998: Add container filter when getting samples from a particular transaction id
+
 ### version 5.5.5
 *Released*: 17 September 2024
 - Issue 50818: add RESOLVE_LSID_MAPPERS to resolve data/material by lsid

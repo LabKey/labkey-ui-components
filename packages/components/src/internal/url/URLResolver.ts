@@ -310,6 +310,29 @@ const SAMPLE_TYPE_MAPPERS = [
     }),
 ];
 
+const RESOLVE_LSID_MAPPERS = [
+    new ActionMapper('experiment', 'resolveLsid', (row, column) => {
+        const targetURL = row.get('url');
+        if (targetURL) {
+            const params = ActionURL.getParameters(targetURL);
+            if (params.type) {
+                const type = params.type;
+                const lsid = params.lsid;
+                if (!!lsid) {
+                    if (type?.toLowerCase() === 'data') {
+                        const url = ['rd', 'expdata', lsid];
+                        return AppURL.create(...url);
+                    } else if (type?.toLowerCase() === 'material') {
+                        const url = ['rd', 'samples', lsid];
+                        return AppURL.create(...url);
+                    }
+                }
+                return null; // return null for 'run' so LKS url will be used, don't return undefined
+            }
+        }
+    }),
+];
+
 const LIST_MAPPERS = [
     new ActionMapper('list', 'details', (row, column) => {
         if (!column?.isLookup()) {
@@ -520,6 +543,7 @@ export const URL_MAPPERS = {
     ASSAY_MAPPERS,
     DATA_CLASS_MAPPERS,
     SAMPLE_TYPE_MAPPERS,
+    RESOLVE_LSID_MAPPERS,
     LIST_MAPPERS,
     PICKLIST_MAPPER,
     DETAILS_QUERY_ROW_MAPPER,
@@ -587,7 +611,7 @@ export class URLResolver {
             overview: item.url,
         };
 
-        if (item.type && acceptedTypes.indexOf(item.type) >= 0 && (item.queryName || item.cpasType)) {
+        if (item.type && acceptedTypes.indexOf(item.type) >= 0 && (item.queryName || item.cpasType || item.lsid)) {
             // Issue 48836: Resolve lineage item URL from queryName if available
             let name = item.queryName;
 

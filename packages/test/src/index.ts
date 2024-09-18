@@ -20,7 +20,11 @@ import {
     successfulResponse,
     TestUser,
 } from './integrationUtils';
-import { sleep } from './utils';
+import {
+    sleep,
+    shuffleArray,
+    selectRandomN,
+} from './utils';
 import {
     insertRows,
     insertSamples,
@@ -40,7 +44,8 @@ import {
     sourceExists,
     createSample,
     getAliquotsByRootId,
-    getAllRows
+    getAllRows,
+    importData
 } from './ExperimentCrudUtils';
 
 const ExperimentCRUDUtils = {
@@ -63,6 +68,7 @@ const ExperimentCRUDUtils = {
     createSample,
     getAliquotsByRootId,
     getAllRows,
+    importData,
 }
 
 export {
@@ -72,5 +78,7 @@ export {
     sleep,
     successfulResponse,
     TestUser,
-    ExperimentCRUDUtils
+    ExperimentCRUDUtils,
+    shuffleArray,
+    selectRandomN,
 };

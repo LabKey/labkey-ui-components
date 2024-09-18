@@ -24,3 +24,19 @@ export const sleep = (ms = 0): Promise<void> => {
         }, ms);
     });
 };
+
+export function shuffleArray<T>(original: T[]) : T[] {
+    const array = [...original];
+    for (let i = array.length - 1; i >= 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+export function selectRandomN<T>(choices: T[], selectCount = 1) : T[] {
+    if (!choices || selectCount < 0 || selectCount > choices.length)
+        return [];
+    const shuffled = shuffleArray(choices)
+    return shuffled.slice(0, selectCount);
+}

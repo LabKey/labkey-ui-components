@@ -7,6 +7,18 @@ Components, models, actions, and utility functions for LabKey applications and p
   - parseCalculatedColumn to first try making an executeSQL call with fake data to catch SQL errors
   - withQueryModel to retry failed query without calculated fields, set viewError on QueryModel for grid display
 
+### version 5.5.6
+*Released*: 18 September 2024
+- Issue 50998: Add container filter when getting samples from a particular transaction id
+
+### version 5.5.5
+*Released*: 17 September 2024
+- Issue 50818: add RESOLVE_LSID_MAPPERS to resolve data/material by lsid
+
+### version 5.5.4
+*Released*: 17 September 2024
+- Add `SchemaQuery` constant for `plate.ReformatTargetPlateSets` query.
+
 ### version 5.5.3
 *Released*: 17 September 2024
 - Add back calculated fields experimental feature flag

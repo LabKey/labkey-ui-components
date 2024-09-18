@@ -1,5 +1,5 @@
 import { User } from '../base/models/User';
-import { hasPremiumModule, isBiologicsEnabled, isLKSSupportEnabled, resolveModuleContext } from '../../app/utils';
+import { isLKSSupportEnabled, resolveModuleContext } from '../../app/utils';
 import { ModuleContext } from '../base/ServerContext';
 
 /**

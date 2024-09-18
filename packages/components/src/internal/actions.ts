@@ -22,7 +22,13 @@ import { Actions } from '../public/QueryModel/withQueryModels';
 
 import { GridResponse } from './components/editable/models';
 
-import { getContainerFilter, invalidateQueryDetailsCache, selectDistinctRows, selectRowsDeprecated } from './query/api';
+import {
+    getContainerFilter,
+    getContainerFilterForFolder,
+    invalidateQueryDetailsCache,
+    selectDistinctRows,
+    selectRowsDeprecated
+} from './query/api';
 import {
     BARTENDER_EXPORT_CONTROLLER,
     EXPORT_TYPES,
@@ -68,16 +74,19 @@ export function selectAll(
     });
 }
 
-export function getGridIdsFromTransactionId(transactionAuditId: number | string, dataType: string): Promise<string[]> {
+export function getGridIdsFromTransactionId(
+    transactionAuditId: number | string,
+    dataType: string,
+    containerPath?: string,
+): Promise<string[]> {
     if (!transactionAuditId) {
         return;
     }
     const failureMsg = 'There was a problem retrieving the ' + dataType + ' from the last action.';
-
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('audit', 'getTransactionRowIds.api'),
-            params: { transactionAuditId, dataType },
+            params: { transactionAuditId, dataType, containerFilter: getContainerFilterForFolder(containerPath) },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     resolve(response.rowIds);

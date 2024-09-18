@@ -43,6 +43,10 @@ import { selectRows } from '../../query/selectRows';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
+import { IImportAlias } from '../entities/models';
+
+import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../entities/constants';
+
 import {
     DOMAIN_ERROR_ID,
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -99,8 +103,6 @@ import {
 } from './models';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './utils';
 import { DomainPropertiesAPIWrapper } from './APIWrapper';
-import { IImportAlias } from '../entities/models';
-import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../entities/constants';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -226,40 +228,42 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
     );
 }
 
-export function getRequiredParentTypes(query: SchemaQuery, containerPath?: string): Promise<{sampleTypes: string[], dataClasses: string[] }> {
+export function getRequiredParentTypes(
+    query: SchemaQuery,
+    containerPath?: string
+): Promise<{ dataClasses: string[]; sampleTypes: string[] }> {
     return new Promise((resolve, reject) => {
-        const { schemaName, queryName} = query;
+        const { schemaName, queryName } = query;
         if (schemaName !== SCHEMAS.SAMPLE_SETS.SCHEMA && schemaName !== SCHEMAS.DATA_CLASSES.SCHEMA)
             resolve({
                 sampleTypes: [],
-                dataClasses: []
+                dataClasses: [],
             });
 
         Domain.getDomainDetails({
             containerPath,
-            queryName: queryName,
-            schemaName: schemaName,
+            queryName,
+            schemaName,
             success: response => {
-                const domainDetails : DomainDetails = DomainDetails.create(Map(response));
-                const importAliases : Record<string, IImportAlias> = domainDetails.options?.get('importAliases');
-                const sampleTypes = [], dataClasses = [];
+                const domainDetails: DomainDetails = DomainDetails.create(Map(response));
+                const importAliases: Record<string, IImportAlias> = domainDetails.options?.get('importAliases');
+                const sampleTypes = [],
+                    dataClasses = [];
                 if (importAliases && Object.keys(importAliases).length > 0) {
                     Object.values(importAliases).forEach(alias => {
                         if (alias.required) {
                             const parentType = alias.inputType;
                             if (parentType.startsWith(DATA_CLASS_IMPORT_PREFIX)) {
                                 dataClasses.push(parentType.replace(DATA_CLASS_IMPORT_PREFIX, ''));
-
-                            }
-                            else if (parentType.startsWith(SAMPLE_SET_IMPORT_PREFIX)) {
+                            } else if (parentType.startsWith(SAMPLE_SET_IMPORT_PREFIX)) {
                                 sampleTypes.push(parentType.replace(SAMPLE_SET_IMPORT_PREFIX, ''));
                             }
                         }
-                    })
+                    });
                 }
                 resolve({
                     sampleTypes,
-                    dataClasses
+                    dataClasses,
                 });
             },
             failure: response => {

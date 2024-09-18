@@ -434,16 +434,13 @@ const TRUE_STRINGS = ['true', 't', 'yes', 'y', 'on', '1'];
 const FALSE_STRINGS = ['false', 'f', 'no', 'n', 'off', '0'];
 
 export function isBoolean(value: any, allowNull: boolean = true): boolean {
-    if (typeof value === "boolean")
-        return true;
+    if (typeof value === 'boolean') return true;
 
     if (!value) return allowNull;
 
     if (TRUE_STRINGS.indexOf(value.toString().toLowerCase()) > -1) return true;
 
     return FALSE_STRINGS.indexOf(value.toString().toLowerCase()) > -1;
-
-
 }
 
 export function isFloat(value: number | string): boolean {
@@ -683,8 +680,7 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
             while (true) {
                 // find the end of the quoted value
                 end = value.indexOf('"', end + 1);
-                if (end === -1)
-                    break;
+                if (end === -1) break;
                 if (end === value.length - 1 || value[end + 1] !== '"') {
                     // end quote at end of string or without double quote
                     break;
@@ -692,7 +688,7 @@ export function parseCsvString(value: string, delimiter: string, removeQuotes?: 
                 end++; // skip double ""
             }
             // if no ending quote, don't remove quotes;
-            if (end === -1){
+            if (end === -1) {
                 end = value.indexOf(delimiter, start);
                 if (end === -1) end = value.length;
                 parsedValues.push(value.substring(start, end));
@@ -753,7 +749,7 @@ export function getValueFromRow(row: Record<string, any>, col: string): string |
     return val;
 }
 
-export function makeCommaSeparatedString<T>(values: T[]) : string {
+export function makeCommaSeparatedString<T>(values: T[]): string {
     if (!values || values.length === 0) return '';
     if (values.length === 1) return values[0] + '';
 
@@ -768,7 +764,7 @@ export function makeCommaSeparatedString<T>(values: T[]) : string {
  * @param nounSingluar
  * @param nounPlural
  */
-export function getValuesSummary<T>(values: T[], nounSingluar: string, nounPlural?: string) : string {
+export function getValuesSummary<T>(values: T[], nounSingluar: string, nounPlural?: string): string {
     if (!values || values.length === 0) return '';
     if (values.length === 1) return `1 ${nounSingluar} (${values[0]})`;
 

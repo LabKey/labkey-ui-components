@@ -399,7 +399,7 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                         </div>
                     </div>
                 )}
-                <SectionHeading title="Lineage Settings" cls='top-spacing bottom-spacing' />
+                <SectionHeading title="Lineage Settings" cls="top-spacing bottom-spacing" />
                 <DomainParentAliases
                     {...this.props}
                     parentAliases={model.parentAliases}

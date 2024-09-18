@@ -96,12 +96,14 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
         const parentValueBlank = !parentValue || !parentValue.value;
         return (
             <div className="row" key={id}>
-                <div className="col-xs-2">
-                </div>
+                <div className="col-xs-2"></div>
                 <div className="col-xs-10">
                     <div className="domain-field-alias--row domain-field-row domain-row-border-default">
                         <div
-                            className={classNames('col-xs-4 domain-field-alias--input', {'has-error': !ignoreSelectError && parentValueBlank})}>
+                            className={classNames('col-xs-4 domain-field-alias--input', {
+                                'has-error': !ignoreSelectError && parentValueBlank,
+                            })}
+                        >
                             <SelectInput
                                 containerClass=""
                                 inputClass="import-alias--parent-select form-group"
@@ -115,7 +117,10 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                             />
                         </div>
                         <div
-                            className={classNames('col-xs-4 domain-field-alias--input', {'has-error': !ignoreAliasError && (aliasBlank || isDupe)})}>
+                            className={classNames('col-xs-4 domain-field-alias--input', {
+                                'has-error': !ignoreAliasError && (aliasBlank || isDupe),
+                            })}
+                        >
                             <input
                                 className="form-control"
                                 ref={this.nameInput}
@@ -146,7 +151,6 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                         </div>
                     </div>
                 </div>
-
             </div>
         );
     }

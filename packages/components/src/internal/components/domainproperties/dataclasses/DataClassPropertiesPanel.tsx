@@ -1,6 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react';
 
-
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 import {
     DATA_CLASS_NAME_EXPRESSION_TOPIC,

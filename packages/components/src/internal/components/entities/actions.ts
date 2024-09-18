@@ -428,7 +428,7 @@ export function extractEntityTypeOptionFromRow(
         query: name,
         entityDataType,
         isFromSharedContainer: caseInsensitive(row, 'Folder/Path')?.value === SHARED_CONTAINER_PATH,
-        required: requiredParentTypes?.indexOf(name) > -1
+        required: requiredParentTypes?.indexOf(name) > -1,
     };
 }
 
@@ -815,7 +815,7 @@ export type GetParentTypeDataForLineage = (
     containerPath?: string,
     containerFilter?: Query.ContainerFilter,
     skipProjectDataExclusion?: boolean,
-    requiredParentTypes?: string[],
+    requiredParentTypes?: string[]
 ) => Promise<{
     parentIdData: Record<string, ParentIdData>;
     parentTypeOptions: List<IEntityTypeOption>;
@@ -891,7 +891,7 @@ export const getOriginalParentsFromLineage = async (
             if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
 
             originalParents[sampleId] = originalParents[sampleId].concat(
-                getInitialParentChoices(dataTypeOptions, dataType, lineage[sampleId], parentIdData, false/*TODO*/)
+                getInitialParentChoices(dataTypeOptions, dataType, lineage[sampleId], parentIdData, false /* TODO*/)
             );
         });
 
@@ -1054,7 +1054,7 @@ export const initParentOptionsSelects = (
 
                 if (importAliases) {
                     const initialAlias = importAliases;
-                    Object.keys(importAliases).forEach( key => {
+                    Object.keys(importAliases).forEach(key => {
                         const val = importAliases[key];
                         const newId = generateId(idPrefix);
                         const parentValue = parentOptions.find(opt => opt.value === val.inputType);
@@ -1065,7 +1065,7 @@ export const initParentOptionsSelects = (
                         parentAliases = parentAliases.set(newId, {
                             id: newId,
                             alias: key,
-                            parentValue: parentValue,
+                            parentValue,
                             required: val.required,
                             ignoreAliasError: false,
                             ignoreSelectError: false,
@@ -1325,15 +1325,13 @@ export function getDataTypesWithRequiredLineage(
     parentDataTypeRowId: number,
     sampleParent?: boolean,
     containerPath?: string
-): Promise<{sampleTypes: string[], dataClasses: string[]}> {
+): Promise<{ dataClasses: string[]; sampleTypes: string[] }> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('experiment', 'getDataTypesWithRequiredLineage.api', containerPath),
             params: { parentDataTypeRowId, sampleParent },
             scope: this,
             success: Utils.getCallbackWrapper(data => {
-
-
                 console.log(data);
                 resolve(data);
             }),

@@ -55,7 +55,7 @@ export class DataClassModel implements DataClassModelConfig {
     readonly sampleSet: number;
     readonly systemFields: SystemField[];
     readonly parentAliases?: OrderedMap<string, IParentAlias>;
-    readonly importAliases?: Record<string, IImportAlias>
+    readonly importAliases?: Record<string, IImportAlias>;
     readonly excludedContainerIds?: string[];
     readonly isBuiltIn?: boolean;
 
@@ -80,7 +80,7 @@ export class DataClassModel implements DataClassModelConfig {
             }
 
             const aliases = raw.options?.importAliases || {};
-            draft.importAliases = {...aliases};
+            draft.importAliases = { ...aliases };
 
             draft.systemFields =
                 model.category === 'sources' ? SOURCE_DOMAIN_SYSTEM_FIELDS : DATACLASS_DOMAIN_SYSTEM_FIELDS;

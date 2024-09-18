@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "5.5.6",
+  "version": "5.6.0-fb-requireLineage.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "sideEffects": false,
   "files": [

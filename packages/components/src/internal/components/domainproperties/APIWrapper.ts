@@ -27,9 +27,12 @@ export interface DomainPropertiesAPIWrapper {
     fetchOntologies: (containerPath?: string) => Promise<OntologyModel[]>;
     getDataClassDetails: (query?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<DomainDetails>;
     getDomainNamePreviews: (schemaQuery?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<string[]>;
-    getRequiredParentTypes: (query: SchemaQuery, containerPath?: string) => Promise<{sampleTypes: string[], dataClasses: string[] }>;
     getGenId: (rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string) => Promise<number>;
     getMaxPhiLevel: (containerPath?: string) => Promise<string>;
+    getRequiredParentTypes: (
+        query: SchemaQuery,
+        containerPath?: string
+    ) => Promise<{ dataClasses: string[]; sampleTypes: string[] }>;
     getValidPublishTargets: (containerPath?: string) => Promise<Container[]>;
     saveDomain: (options: SaveDomainOptions) => Promise<DomainDesign>;
     setGenId: (

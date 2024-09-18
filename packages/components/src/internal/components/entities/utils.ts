@@ -1,11 +1,6 @@
 import { List, Map } from 'immutable';
 
-import {
-    getCurrentProductName,
-    isAssayEnabled,
-    isELNEnabled,
-    isWorkflowEnabled
-} from '../../app/utils';
+import { getCurrentProductName, isAssayEnabled, isELNEnabled, isWorkflowEnabled } from '../../app/utils';
 
 import { naturalSort } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -49,7 +44,7 @@ export function getInitialParentChoices(
     parentDataType: EntityDataType,
     childData: Record<string, any>,
     parentIdData: Record<string, ParentIdData>,
-    addRequiredParents: boolean,
+    addRequiredParents: boolean
 ): List<EntityChoice> {
     let parentValuesByType = Map<string, EntityChoice>();
 
@@ -100,7 +95,7 @@ export function getInitialParentChoices(
                     gridValues: [],
                 });
             }
-        })
+        });
     }
 
     // having collected the values by type, create a list, sorted by the type label and return that.

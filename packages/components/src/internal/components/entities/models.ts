@@ -172,9 +172,9 @@ export class EntityParentType extends Record({
 export interface IEntityTypeOption extends SelectInputOption {
     entityDataType: EntityDataType;
     lsid: string;
-    rowId: number;
     query: string;
     required?: boolean;
+    rowId: number;
 }
 
 export class EntityTypeOption implements IEntityTypeOption {
@@ -279,7 +279,9 @@ export class EntityIdCreationModel extends Record({
         this.entityParents.forEach(parentList => {
             parentList.forEach(parent => {
                 if (parent.schema && parent.query) {
-                    const column = parent.generateColumn(uniqueFieldKey, targetSchema).mutate({required: parent.required});
+                    const column = parent
+                        .generateColumn(uniqueFieldKey, targetSchema)
+                        .mutate({ required: parent.required });
                     // Issue 33653: query name is case-sensitive for some data inputs (parents)
                     columns = columns.set(column.name.toLowerCase(), column);
                 }

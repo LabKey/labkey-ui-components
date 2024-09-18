@@ -2,16 +2,17 @@ import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 're
 
 import { OrderedMap } from 'immutable';
 
-
 import { IParentAlias, IParentOption } from '../entities/models';
 import { SCHEMAS } from '../../schemas';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { generateId } from '../../util/utils';
 
+import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
+
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
 import { ParentAliasRow } from './ParentAliasRow';
 import { DomainFieldLabel } from './DomainFieldLabel';
-import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface Props {
     addEntityHelp: ReactNode;
@@ -137,25 +138,21 @@ export const DomainParentAliases: FC<Props> = memo(props => {
 
     return (
         <>
-            {(filteredParentAliases?.length > 0) && (
+            {filteredParentAliases?.length > 0 && (
                 <div className="bottom-spacing">
                     <div className="row domain-floating-hdr">
                         <div className="col-xs-2">
-                            <DomainFieldLabel label={aliasCaption + 's'}/>
+                            <DomainFieldLabel label={aliasCaption + 's'} />
                         </div>
                         <div className="col-xs-10">
-                            <div className="col-xs-4 bold-text">
-                                {aliasCaption} Type *
-                            </div>
+                            <div className="col-xs-4 bold-text">{aliasCaption} Type *</div>
                             <div className="col-xs-4 bold-text">
                                 File Import Column Name *
                                 <LabelHelpTip title={aliasCaption + ' alias'} required={true}>
                                     {helpMsg ?? PARENT_ALIAS_HELPER_TEXT}
                                 </LabelHelpTip>
                             </div>
-                            <div className="col-xs-2 bold-text">
-                                Required
-                            </div>
+                            <div className="col-xs-2 bold-text">Required</div>
                         </div>
                     </div>
                     {filteredParentAliases?.map(alias => (
@@ -176,13 +173,10 @@ export const DomainParentAliases: FC<Props> = memo(props => {
             )}
             {showAddBtn && (
                 <div className="row">
-                    <div className="col-xs-2"/>
+                    <div className="col-xs-2" />
                     <div className="col-xs-10">
                         <span>
-                            <AddEntityButton
-                                entity={'a ' + aliasCaption}
-                                onClick={addParentAlias}
-                            />
+                            <AddEntityButton entity={'a ' + aliasCaption} onClick={addParentAlias} />
                         </span>
                     </div>
                 </div>

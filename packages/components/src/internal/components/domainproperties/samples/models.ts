@@ -49,7 +49,7 @@ export class SampleTypeModel extends Record({
         let importAliases = {};
         if (options) {
             const aliases = options.get('importAliases') || {};
-            importAliases = {...aliases};
+            importAliases = { ...aliases };
         }
 
         return new SampleTypeModel({

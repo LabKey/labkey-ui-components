@@ -56,6 +56,11 @@ export interface EntityAPIWrapper {
         selectionKey?: string,
         useSnapshotSelection?: boolean
     ) => Promise<OperationConfirmationData>;
+    getDataTypesWithRequiredLineage: (
+        parentDataTypeRowId: number,
+        isSampleParent?: boolean,
+        containerPath?: string
+    ) => Promise<{ dataClasses: string[]; sampleTypes: string[] }>;
     getDeleteConfirmationData: (options: GetDeleteConfirmationDataOptions) => Promise<OperationConfirmationData>;
     getEntityTypeData: (
         model: EntityIdCreationModel,
@@ -119,19 +124,14 @@ export interface EntityAPIWrapper {
         parentAliases: Map<string, IParentAlias>;
         parentOptions: IParentOption[];
     }>;
+    loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
+    moveEntities: (options: MoveEntitiesOptions) => Promise<Query.MoveRowsResponse>;
     isDataTypeEmpty: (
         dataType: ProjectConfigurableDataType,
         lsid?: string,
         rowId?: number,
         containerPath?: string
     ) => Promise<boolean>;
-    loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
-    moveEntities: (options: MoveEntitiesOptions) => Promise<Query.MoveRowsResponse>;
-    getDataTypesWithRequiredLineage: (
-        parentDataTypeRowId: number,
-        isSampleParent?: boolean,
-        containerPath?: string
-    ) => Promise<{sampleTypes: string[], dataClasses: string[]}>;
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {

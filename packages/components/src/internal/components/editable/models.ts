@@ -332,10 +332,10 @@ export class EditorModel
                     );
                 } else {
                     let val;
-                    if (values.size === 1) val = values.first()?.raw?.toString().trim();
+                    if (values.size === 1) val = values.first()?.raw;
                     row = row.set(col.name, val);
                 }
-            }  else {
+            } else {
                 const val = values.size === 1 ? values.first().raw?.toString().trim() : undefined;
                 row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
             }

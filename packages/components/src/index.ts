@@ -1927,7 +1927,7 @@ export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';
 export type {
     FolderAPIWrapper,
-    ProjectSettingsOptions,
+    FolderSettingsOptions,
     UpdateProjectSettingsOptions,
 } from './internal/components/container/FolderAPIWrapper';
 export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';

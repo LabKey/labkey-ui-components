@@ -11,7 +11,7 @@ import { ModuleContext } from '../base/ServerContext';
 import { naturalSortByProperty } from '../../../public/sort';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 
-export interface ProjectSettingsOptions {
+export interface FolderSettingsOptions {
     allowUserSpecifiedNames?: boolean;
     disabledAssayDesigns?: number[];
     disabledDashboardSampleTypes?: number[];
@@ -35,7 +35,7 @@ export interface AuditSettingsResponse {
 }
 
 export interface FolderAPIWrapper {
-    createProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
+    createProject: (options: FolderSettingsOptions, containerPath?: string) => Promise<Container>;
     getAuditSettings: (containerPath?: string) => Promise<AuditSettingsResponse>;
     getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
     getFolderDataTypeExclusions: (excludedContainer?: string) => Promise<{ [key: string]: number[] }>;
@@ -46,19 +46,19 @@ export interface FolderAPIWrapper {
         includeEffectivePermissions?: boolean,
         includeTopFolder?: boolean
     ) => Promise<Container[]>;
-    renameProject: (options: ProjectSettingsOptions, containerPath?: string) => Promise<Container>;
+    renameProject: (options: FolderSettingsOptions, containerPath?: string) => Promise<Container>;
     setAuditCommentsRequired: (isRequired: boolean, containerPath?: string) => Promise<void>;
     updateProjectCustomLabels: (
         labelProvider: string,
         labels: Record<string, string>,
         containerPath?: string
     ) => Promise<void>;
-    updateProjectDataExclusions: (options: ProjectSettingsOptions, containerPath?: string) => Promise<void>;
+    updateProjectDataExclusions: (options: FolderSettingsOptions, containerPath?: string) => Promise<void>;
     updateProjectLookAndFeelSettings: (options: UpdateProjectSettingsOptions, containerPath?: string) => Promise<void>;
 }
 
 export class ServerFolderAPIWrapper implements FolderAPIWrapper {
-    createProject = (options: ProjectSettingsOptions, containerPath?: string): Promise<Container> => {
+    createProject = (options: FolderSettingsOptions, containerPath?: string): Promise<Container> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL(
@@ -76,7 +76,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
-    renameProject = (options: ProjectSettingsOptions, containerPath?: string): Promise<Container> => {
+    renameProject = (options: FolderSettingsOptions, containerPath?: string): Promise<Container> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL(
@@ -121,7 +121,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
-    updateProjectDataExclusions = (options: ProjectSettingsOptions, containerPath?: string): Promise<void> => {
+    updateProjectDataExclusions = (options: FolderSettingsOptions, containerPath?: string): Promise<void> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL(

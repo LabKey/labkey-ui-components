@@ -79,6 +79,7 @@ export class EntityParentType extends Record({
     value: undefined,
     isParentTypeOnly: false,
     isAliquotParent: false,
+    required: false,
 }) {
     declare index: number;
     declare key: string;
@@ -87,6 +88,7 @@ export class EntityParentType extends Record({
     declare value: List<DisplayObject>;
     declare isParentTypeOnly: boolean;
     declare isAliquotParent: boolean;
+    declare required?: boolean;
 
     static create(values: any): EntityParentType {
         if (!values.key) values.key = generateId('parent-type-');
@@ -157,7 +159,7 @@ export class EntityParentType extends Record({
                 viewName: ViewInfo.DETAIL_NAME, // use the details view to assure we see values even if default view is filtered
             }),
             name: parentColName,
-            required: this.isAliquotParent,
+            required: this.isAliquotParent || this.required,
             shownInInsertView: true,
             shownInUpdateView: true,
             type: 'Text (String)',
@@ -171,15 +173,19 @@ export interface IEntityTypeOption extends SelectInputOption {
     entityDataType: EntityDataType;
     lsid: string;
     rowId: number;
+    query: string;
+    required?: boolean;
 }
 
 export class EntityTypeOption implements IEntityTypeOption {
     label: string;
+    query: string;
     lsid: string;
     rowId: number;
     value: any;
     entityDataType: EntityDataType;
     isFromSharedContainer?: boolean;
+    required?: boolean;
 
     constructor(props?: Partial<EntityTypeOption>) {
         if (props) {
@@ -273,7 +279,7 @@ export class EntityIdCreationModel extends Record({
         this.entityParents.forEach(parentList => {
             parentList.forEach(parent => {
                 if (parent.schema && parent.query) {
-                    const column = parent.generateColumn(uniqueFieldKey, targetSchema);
+                    const column = parent.generateColumn(uniqueFieldKey, targetSchema).mutate({required: parent.required});
                     // Issue 33653: query name is case-sensitive for some data inputs (parents)
                     columns = columns.set(column.name.toLowerCase(), column);
                 }
@@ -625,7 +631,7 @@ export interface CrossFolderSelectionResult {
 }
 
 export interface IImportAlias {
-    alias: string;
+    alias?: string; // TODO, fix alias is the key
     inputType: string;
     required?: boolean;
 }

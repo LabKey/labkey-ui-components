@@ -1,6 +1,11 @@
 import { List, Map } from 'immutable';
 
-import { getCurrentProductName, isAssayEnabled, isELNEnabled, isWorkflowEnabled } from '../../app/utils';
+import {
+    getCurrentProductName,
+    isAssayEnabled,
+    isELNEnabled,
+    isWorkflowEnabled
+} from '../../app/utils';
 
 import { naturalSort } from '../../../public/sort';
 import { QueryInfo } from '../../../public/QueryInfo';
@@ -43,7 +48,8 @@ export function getInitialParentChoices(
     parentTypeOptions: List<IEntityTypeOption>,
     parentDataType: EntityDataType,
     childData: Record<string, any>,
-    parentIdData: Record<string, ParentIdData>
+    parentIdData: Record<string, ParentIdData>,
+    addRequiredParents: boolean,
 ): List<EntityChoice> {
     let parentValuesByType = Map<string, EntityChoice>();
 
@@ -83,6 +89,20 @@ export function getInitialParentChoices(
             });
         }
     }
+
+    if (addRequiredParents) {
+        parentTypeOptions.forEach(parentTypeOption => {
+            if (parentTypeOption.required && !parentValuesByType.has(parentTypeOption.query)) {
+                parentValuesByType = parentValuesByType.set(parentTypeOption.query, {
+                    type: parentTypeOption,
+                    ids: [],
+                    value: undefined,
+                    gridValues: [],
+                });
+            }
+        })
+    }
+
     // having collected the values by type, create a list, sorted by the type label and return that.
     return parentValuesByType.sortBy(choice => choice.type.label, naturalSort).toList();
 }

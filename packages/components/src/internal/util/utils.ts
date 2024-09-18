@@ -752,3 +752,26 @@ export function getValueFromRow(row: Record<string, any>, col: string): string |
     }
     return val;
 }
+
+export function makeCommaSeparatedString<T>(values: T[]) : string {
+    if (!values || values.length === 0) return '';
+    if (values.length === 1) return values[0] + '';
+
+    const firsts = values.slice(0, values.length - 1);
+    const last = values[values.length - 1];
+    return firsts.join(', ') + ' and ' + last;
+}
+
+/**
+ * Convert [SampleType1, SampleType2, SampleType3], 'sample type' => '3 sample types (SampleType1, SampleType2 and SampleType3)'
+ * @param values
+ * @param nounSingluar
+ * @param nounPlural
+ */
+export function getValuesSummary<T>(values: T[], nounSingluar: string, nounPlural?: string) : string {
+    if (!values || values.length === 0) return '';
+    if (values.length === 1) return `1 ${nounSingluar} (${values[0]})`;
+
+    const plural = nounPlural ?? nounSingluar + 's';
+    return `${values.length} ${plural} (${makeCommaSeparatedString(values)})`;
+}

@@ -15,6 +15,7 @@ import {
     fetchOntologies,
     saveDomain,
     SaveDomainOptions,
+    getRequiredParentTypes,
 } from './actions';
 import { getValidPublishTargets } from './assay/actions';
 import { PHILEVEL_FULL_PHI } from './constants';
@@ -26,6 +27,7 @@ export interface DomainPropertiesAPIWrapper {
     fetchOntologies: (containerPath?: string) => Promise<OntologyModel[]>;
     getDataClassDetails: (query?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<DomainDetails>;
     getDomainNamePreviews: (schemaQuery?: SchemaQuery, domainId?: number, containerPath?: string) => Promise<string[]>;
+    getRequiredParentTypes: (query: SchemaQuery, containerPath?: string) => Promise<{sampleTypes: string[], dataClasses: string[] }>;
     getGenId: (rowId: number, kindName: 'SampleSet' | 'DataClass', containerPath?: string) => Promise<number>;
     getMaxPhiLevel: (containerPath?: string) => Promise<string>;
     getValidPublishTargets: (containerPath?: string) => Promise<Container[]>;
@@ -51,6 +53,7 @@ export class DomainPropertiesAPIWrapper implements DomainPropertiesAPIWrapper {
     getDomainNamePreviews = getDomainNamePreviews;
     getGenId = getGenId;
     getMaxPhiLevel = getMaxPhiLevel;
+    getRequiredParentTypes = getRequiredParentTypes;
     getValidPublishTargets = getValidPublishTargets;
     saveDomain = saveDomain;
     setGenId = setGenId;
@@ -74,6 +77,7 @@ export function getDomainPropertiesTestAPIWrapper(
         // like we should be able to, because the default implementation for our mockFn cannot be Jest. We should
         // probably make Jest an explicit dependency since we are actually exporting test utilities.
         getMaxPhiLevel: () => Promise.resolve(PHILEVEL_FULL_PHI),
+        getRequiredParentTypes: mockFn(),
         getValidPublishTargets: mockFn(),
         saveDomain: mockFn(),
         setGenId: mockFn(),

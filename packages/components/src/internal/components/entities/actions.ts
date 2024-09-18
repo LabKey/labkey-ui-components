@@ -412,10 +412,12 @@ function resolveEntityParentTypeFromIds(
     ]);
 }
 
+// export for jest
 export function extractEntityTypeOptionFromRow(
     row: Row,
     lowerCaseValue = true,
-    entityDataType?: EntityDataType
+    entityDataType?: EntityDataType,
+    requiredParentTypes?: string[]
 ): IEntityTypeOption {
     const name = caseInsensitive(row, 'Name').value;
     return {
@@ -426,6 +428,7 @@ export function extractEntityTypeOptionFromRow(
         query: name,
         entityDataType,
         isFromSharedContainer: caseInsensitive(row, 'Folder/Path')?.value === SHARED_CONTAINER_PATH,
+        required: requiredParentTypes?.indexOf(name) > -1
     };
 }
 
@@ -506,7 +509,8 @@ export async function getEntityTypeOptions(
     entityDataType: EntityDataType,
     containerPath?: string,
     containerFilter?: Query.ContainerFilter,
-    skipProjectDataExclusion?: boolean
+    skipProjectDataExclusion?: boolean,
+    requiredParentTypes?: string[]
 ): Promise<Map<string, List<IEntityTypeOption>>> {
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
@@ -531,7 +535,7 @@ export async function getEntityTypeOptions(
 
     const options: IEntityTypeOption[] = result.rows
         .map(row => ({
-            ...extractEntityTypeOptionFromRow(row, true, entityDataType),
+            ...extractEntityTypeOptionFromRow(row, true, entityDataType, requiredParentTypes),
             schema: instanceSchemaName, // e.g. "samples" or "dataclasses"
         }))
         .sort(naturalSortByProperty('label'));
@@ -810,7 +814,8 @@ export type GetParentTypeDataForLineage = (
     data: any[],
     containerPath?: string,
     containerFilter?: Query.ContainerFilter,
-    skipProjectDataExclusion?: boolean
+    skipProjectDataExclusion?: boolean,
+    requiredParentTypes?: string[],
 ) => Promise<{
     parentIdData: Record<string, ParentIdData>;
     parentTypeOptions: List<IEntityTypeOption>;
@@ -821,7 +826,8 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
     data,
     containerPath,
     containerFilter,
-    skipProjectDataExclusion
+    skipProjectDataExclusion,
+    requiredParentTypes
 ) => {
     let parentTypeOptions = List<IEntityTypeOption>();
     let parentIdData: Record<string, ParentIdData>;
@@ -830,7 +836,8 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
             parentDataType,
             containerPath,
             containerFilter,
-            skipProjectDataExclusion
+            skipProjectDataExclusion,
+            requiredParentTypes
         );
         parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
 
@@ -884,7 +891,7 @@ export const getOriginalParentsFromLineage = async (
             if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
 
             originalParents[sampleId] = originalParents[sampleId].concat(
-                getInitialParentChoices(dataTypeOptions, dataType, lineage[sampleId], parentIdData)
+                getInitialParentChoices(dataTypeOptions, dataType, lineage[sampleId], parentIdData, false/*TODO*/)
             );
         });
 
@@ -1310,6 +1317,27 @@ export function isDataTypeEmpty(
                 console.error(error);
                 reject(error);
             },
+        });
+    });
+}
+
+export function getDataTypesWithRequiredLineage(
+    parentDataTypeRowId: number,
+    sampleParent?: boolean,
+    containerPath?: string
+): Promise<{sampleTypes: string[], dataClasses: string[]}> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('experiment', 'getDataTypesWithRequiredLineage.api', containerPath),
+            params: { parentDataTypeRowId, sampleParent },
+            scope: this,
+            success: Utils.getCallbackWrapper(data => {
+
+
+                console.log(data);
+                resolve(data);
+            }),
+            failure: handleRequestFailure(reject, 'Failed to get data types with required lineage.'),
         });
     });
 }

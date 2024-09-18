@@ -160,7 +160,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                             message: (
                                 <>
                                     All {(entityDataType.nounPlural ?? 'data').toLowerCase()} are already in the target
-                                    project.
+                                    folder.
                                 </>
                             ),
                             alertClass: 'warning',

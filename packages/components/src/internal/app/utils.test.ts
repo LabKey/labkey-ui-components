@@ -1255,56 +1255,14 @@ describe('addAssaySectionConfig', () => {
 });
 
 describe('isSharedContainer', () => {
-    const currentContainerHome = new Container({
-        path: '/home',
-        parentPath: '/',
-        parentId: 'root',
-        type: 'project',
-        id: 'homeId',
-    });
-    const currentContainerFolder = new Container({
-        path: '/home/folder',
-        parentPath: '/home',
-        parentId: 'homeId',
-        type: 'folder',
-        id: 'folderId',
-    });
-    const moduleContextWithProjects = {
-        query: {
-            isProductProjectsEnabled: true,
-            hasProductProjects: true,
-        },
-    };
-    const moduleContextWithoutProjects = {
-        query: {
-            isProductProjectsEnabled: false,
-            hasProductProjects: false,
-        },
-    };
 
-    test('different container', () => {
-        expect(isSharedContainer('/home/other')).toBe(true);
-        expect(isSharedContainer('/home/other')).toBe(true);
-        expect(isSharedContainer('otherId')).toBe(true);
-        expect(isSharedContainer('otherId')).toBe(true);
-    });
-
-    test('same container, no product projects', () => {
+    test('not shared', () => {
+        expect(isSharedContainer('/home/other')).toBe(false);
         expect(isSharedContainer('/home')).toBe(false);
-        expect(isSharedContainer('homeId')).toBe(false);
-        expect(isSharedContainer('/home/folder')).toBe(false);
-        expect(isSharedContainer('folderId')).toBe(false);
+        expect(isSharedContainer('/shared')).toBe(false);
     });
 
-    test('same container, with product projects, defined in home', () => {
-        expect(isSharedContainer('/home')).toBe(true);
-        expect(isSharedContainer('homeId')).toBe(true);
-        expect(isSharedContainer('/home')).toBe(true);
-        expect(isSharedContainer('homeId')).toBe(true);
-    });
-
-    test('same container, with product projects, defined in folder', () => {
-        expect(isSharedContainer('/home/folder')).toBe(false);
-        expect(isSharedContainer('folderId')).toBe(false);
+    test('Shared', () => {
+        expect(isSharedContainer('/Shared')).toBe(true);
     });
 });

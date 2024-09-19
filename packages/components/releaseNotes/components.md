@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD September 2024
+- Issue 50389: Casing of aliased (parent) sample or source type name can be changed in the editable grid
+
 ### version 5.5.6
 *Released*: 18 September 2024
 - Issue 50998: Add container filter when getting samples from a particular transaction id

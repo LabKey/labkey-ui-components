@@ -373,7 +373,7 @@ export class EntityIdCreationModel extends Record({
         api: ComponentsAPIWrapper,
         editorModel: EditorModel,
         containerPath?: string,
-        extraColumnsToInclude?: QueryColumn[],
+        extraColumnsToInclude?: string[],
         auditUserComment?: string
     ): Promise<QueryCommandResponse> {
         const rows = editorModel
@@ -382,7 +382,7 @@ export class EntityIdCreationModel extends Record({
             .reduce((rows_, row) => {
                 let map = row.toMap();
                 extraColumnsToInclude?.forEach(col => {
-                    map = map.set(col.name, undefined);
+                    map = map.set(col, undefined);
                 });
                 rows_ = rows_.push(map);
                 return rows_;

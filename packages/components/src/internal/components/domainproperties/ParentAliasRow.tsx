@@ -19,6 +19,7 @@ interface IParentAliasRow {
     parentOptions?: IParentOption[];
     parentTypeCaption: string;
     updateDupeParentAliases?: (id: string) => void;
+    hideRequiredCheck?: boolean;
 }
 
 export class ParentAliasRow extends React.Component<IParentAliasRow> {
@@ -88,7 +89,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
     };
 
     render() {
-        const { id, parentAlias, parentOptions, aliasCaption, parentTypeCaption, helpMsg } = this.props;
+        const { id, parentAlias, parentOptions, aliasCaption, parentTypeCaption, hideRequiredCheck } = this.props;
         if (!parentOptions) return null;
 
         const { alias, parentValue, ignoreAliasError, ignoreSelectError, isDupe, required } = parentAlias;
@@ -133,13 +134,15 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                             />
                         </div>
                         <div className="col-xs-4 domain-field-alias--input">
-                            <input
-                                checked={required}
-                                disabled={false}
-                                name="required"
-                                onChange={this.onToggleRequired}
-                                type="checkbox"
-                            />
+                            {!hideRequiredCheck &&
+                                <input
+                                    checked={required}
+                                    disabled={false}
+                                    name="required"
+                                    onChange={this.onToggleRequired}
+                                    type="checkbox"
+                                />
+                            }
                             <div className="pull-right">
                                 <DeleteIcon
                                     id={id + '-delete'}

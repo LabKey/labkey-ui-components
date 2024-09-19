@@ -34,6 +34,7 @@ import { DomainParentAliases } from '../DomainParentAliases';
 import { IParentAlias, IParentOption } from '../../entities/models';
 
 import { DataClassModel } from './models';
+import { SectionHeading } from '../SectionHeading';
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {
@@ -200,16 +201,19 @@ export class DataClassPropertiesPanelImpl extends PureComponent<Props, State> {
                     nameReadOnly={model.isBuiltIn}
                 />
                 {allowParentAlias && (
-                    <DomainParentAliases
-                        {...this.props}
-                        parentAliases={model.parentAliases}
-                        idPrefix="dataclass-parent-import-alias-"
-                        schema={SCHEMAS.DATA_CLASSES.SCHEMA}
-                        addEntityHelp={this.renderAddEntityHelper(nounSingular)}
-                        includeSampleSet={false}
-                        includeDataClass={true}
-                        showAddBtn={true}
-                    />
+                    <>
+                        <SectionHeading title="Lineage Settings" cls="top-spacing bottom-spacing" />
+                        <DomainParentAliases
+                            {...this.props}
+                            parentAliases={model.parentAliases}
+                            idPrefix="dataclass-parent-import-alias-"
+                            schema={SCHEMAS.DATA_CLASSES.SCHEMA}
+                            addEntityHelp={this.renderAddEntityHelper(nounSingular)}
+                            includeSampleSet={false}
+                            includeDataClass={true}
+                            showAddBtn={true}
+                        />
+                    </>
                 )}
                 {!appPropertiesOnly && (
                     <div className="row">

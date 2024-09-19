@@ -34,6 +34,7 @@ interface Props {
     showAddBtn?: boolean;
     updateDupeParentAliases?: (id: string) => void;
     useSeparateDataClassesAliasMenu?: boolean;
+    hideRequiredCheck?: boolean;
 }
 
 const sampleSetAliasFilterFn = (alias: IParentAlias): boolean => {
@@ -73,6 +74,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         addEntityHelp,
         parentAliasHelpText,
         useSeparateDataClassesAliasMenu,
+        hideRequiredCheck,
     } = props;
 
     const [aliasCaption, setAliasCaption] = useState<string>();
@@ -152,7 +154,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
                                     {helpMsg ?? PARENT_ALIAS_HELPER_TEXT}
                                 </LabelHelpTip>
                             </div>
-                            <div className="col-xs-2 bold-text">Required</div>
+                            {!hideRequiredCheck && <div className="col-xs-2 bold-text">Required</div>}
                         </div>
                     </div>
                     {filteredParentAliases?.map(alias => (
@@ -167,6 +169,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
                             aliasCaption={aliasCaption + ' alias'}
                             parentTypeCaption={parentTypeCaption}
                             helpMsg={helpMsg}
+                            hideRequiredCheck={hideRequiredCheck}
                         />
                     ))}
                 </div>

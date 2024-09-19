@@ -399,17 +399,22 @@ class SampleTypePropertiesPanelImpl extends PureComponent<Props & InjectedDomain
                         </div>
                     </div>
                 )}
-                <SectionHeading title="Lineage Settings" cls="top-spacing bottom-spacing" />
-                <DomainParentAliases
-                    {...this.props}
-                    parentAliases={model.parentAliases}
-                    idPrefix="sampletype-parent-import-alias-"
-                    schema={SCHEMAS.SAMPLE_SETS.SCHEMA}
-                    addEntityHelp={<AddEntityHelpTip />}
-                    includeSampleSet
-                    includeDataClass={includeDataClasses && !useSeparateDataClassesAliasMenu}
-                    showAddBtn={showAddParentAlias}
-                />
+                {showAddParentAlias && (
+                    <>
+                        <SectionHeading title="Lineage Settings" cls="top-spacing bottom-spacing" />
+                        <DomainParentAliases
+                            {...this.props}
+                            parentAliases={model.parentAliases}
+                            idPrefix="sampletype-parent-import-alias-"
+                            schema={SCHEMAS.SAMPLE_SETS.SCHEMA}
+                            addEntityHelp={<AddEntityHelpTip />}
+                            includeSampleSet
+                            includeDataClass={includeDataClasses && !useSeparateDataClassesAliasMenu}
+                            showAddBtn={showAddParentAlias}
+                            hideRequiredCheck={!appPropertiesOnly}
+                        />
+                    </>
+                )}
                 {showDataClass && (
                     <DomainParentAliases
                         {...this.props}

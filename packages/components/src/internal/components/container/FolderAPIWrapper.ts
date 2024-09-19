@@ -3,7 +3,7 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 import { Container } from '../base/models/Container';
 import { handleRequestFailure } from '../../util/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
-import { ProjectConfigurableDataType } from '../entities/models';
+import { FolderConfigurableDataType } from '../entities/models';
 import { getFolderDataTypeExclusions } from '../entities/actions';
 import { isAppHomeFolder } from '../../app/utils';
 import { fetchContainers } from '../permissions/actions';
@@ -37,7 +37,7 @@ export interface AuditSettingsResponse {
 export interface FolderAPIWrapper {
     createProject: (options: FolderSettingsOptions, containerPath?: string) => Promise<Container>;
     getAuditSettings: (containerPath?: string) => Promise<AuditSettingsResponse>;
-    getDataTypeExcludedProjects: (dataType: ProjectConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
+    getDataTypeExcludedProjects: (dataType: FolderConfigurableDataType, dataTypeRowId: number) => Promise<string[]>;
     getFolderDataTypeExclusions: (excludedContainer?: string) => Promise<{ [key: string]: number[] }>;
     getProjects: (
         container?: Container,
@@ -156,7 +156,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
         });
     };
 
-    getDataTypeExcludedProjects = (dataType: ProjectConfigurableDataType, dataTypeRowId: number): Promise<string[]> => {
+    getDataTypeExcludedProjects = (dataType: FolderConfigurableDataType, dataTypeRowId: number): Promise<string[]> => {
         if (!dataType || !dataTypeRowId) {
             return Promise.resolve(undefined);
         }

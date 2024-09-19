@@ -6,10 +6,10 @@ import {
     DataTypeEntity,
     EntityDataType,
     IEntityTypeOption,
-    ProjectConfigurableDataType,
+    FolderConfigurableDataType,
 } from '../components/entities/models';
 import { getEntityTypeOptions, getProjectConfigurableEntityTypeOptions } from '../components/entities/actions';
-import { getDataTypeProjectDataCount, getProjectDataTypeDataCount } from '../components/project/actions';
+import { getDataTypeFolderDataCount, getProjectDataTypeDataCount } from '../components/project/actions';
 
 import {
     clearSelected,
@@ -84,7 +84,7 @@ export interface QueryAPIWrapper {
         containerFilter?: Query.ContainerFilter
     ) => Promise<DataTypeEntity[]>;
     getProjectDataTypeDataCount: (
-        dataType: ProjectConfigurableDataType,
+        dataType: FolderConfigurableDataType,
         containerPath?: string,
         allDataTypes?: DataTypeEntity[],
         isNewFolder?: boolean
@@ -149,7 +149,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     deleteRows = deleteRows;
     deleteRowsByContainer = deleteRowsByContainer;
     deleteView = deleteView;
-    getDataTypeProjectDataCount = getDataTypeProjectDataCount;
+    getDataTypeProjectDataCount = getDataTypeFolderDataCount;
     getEntityTypeOptions = getEntityTypeOptions;
     getGridViews = getGridViews;
     getProjectConfigurableEntityTypeOptions = getProjectConfigurableEntityTypeOptions;

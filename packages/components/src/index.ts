@@ -1884,7 +1884,7 @@ export type {
     DataTypeEntity,
     DisplayObject,
     FilterProps,
-    ProjectConfigurableDataType,
+    FolderConfigurableDataType,
 } from './internal/components/entities/models';
 export type {
     SelectInputChange,

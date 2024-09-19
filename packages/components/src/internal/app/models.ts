@@ -62,7 +62,7 @@ interface ReferencingNotebooksComponentProps {
 
 export type ReferencingNotebooks = ComponentType<ReferencingNotebooksComponentProps>;
 
-interface NotebookProjectSettingsProp {
+interface NotebookContainerSettingsProps {
     containerPath?: string;
     labelsAPI: LabelsAPIWrapper;
     onChange?: () => void;
@@ -70,14 +70,14 @@ interface NotebookProjectSettingsProp {
 }
 
 export type NotebookNotificationSettings = ComponentType;
-export type NotebookProjectSettings = ComponentType<NotebookProjectSettingsProp>;
+export type NotebookContainerSettings = ComponentType<NotebookContainerSettingsProps>;
 export type WorkflowNotificationSettings = ComponentType;
 
-interface ProjectFreezerSelectionProps extends InjectedRouteLeaveProps {
+interface FolderStorageSelectionProps extends InjectedRouteLeaveProps {
     disabledTypesMap?: { [key: string]: number[] };
     onSuccess?: () => void;
     project?: Container;
     updateDataTypeExclusions?: (dataType: any, exclusions: number[]) => void;
 }
 
-export type ProjectFreezerSelection = ComponentType<ProjectFreezerSelectionProps>;
+export type FolderStorageSelection = ComponentType<FolderStorageSelectionProps>;

@@ -2,7 +2,7 @@ import { AssayRunDataType, DataClassDataType, SampleTypeDataType } from '../enti
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { getDataTypeProjectDataCountSql, getProjectDataTypeDataCountSql } from './actions';
+import { getDataTypeFolderDataCountSql, getProjectDataTypeDataCountSql } from './actions';
 
 describe('getProjectDataTypeDataCountSql', () => {
     test('null', () => {
@@ -30,35 +30,35 @@ describe('getProjectDataTypeDataCountSql', () => {
 
 describe('getDataTypeProjectDataCountSql', () => {
     test('create case, no queryName', () => {
-        expect(getDataTypeProjectDataCountSql(SampleTypeDataType, undefined, undefined)).toBeNull();
+        expect(getDataTypeFolderDataCountSql(SampleTypeDataType, undefined, undefined)).toBeNull();
     });
 
     test('SampleType', () => {
-        expect(getDataTypeProjectDataCountSql(SampleTypeDataType, 1, 'blood')).toBe(
-            'SELECT Folder AS Project, COUNT(*) as DataCount FROM "blood"  GROUP BY Folder'
+        expect(getDataTypeFolderDataCountSql(SampleTypeDataType, 1, 'blood')).toBe(
+            'SELECT Folder, COUNT(*) as DataCount FROM "blood"  GROUP BY Folder'
         );
     });
 
     test('DataClass', () => {
-        expect(getDataTypeProjectDataCountSql(DataClassDataType, 1, 'lab')).toBe(
-            'SELECT Folder AS Project, COUNT(*) as DataCount FROM "lab"  GROUP BY Folder'
+        expect(getDataTypeFolderDataCountSql(DataClassDataType, 1, 'lab')).toBe(
+            'SELECT Folder, COUNT(*) as DataCount FROM "lab"  GROUP BY Folder'
         );
     });
 
     test('AssayDesign', () => {
-        expect(getDataTypeProjectDataCountSql(AssayRunDataType, 1, 'GPAT')).toBe(
-            'SELECT Folder AS Project, COUNT(*) as DataCount FROM "AssayRuns" WHERE Protocol.RowId = 1 GROUP BY Folder'
+        expect(getDataTypeFolderDataCountSql(AssayRunDataType, 1, 'GPAT')).toBe(
+            'SELECT Folder, COUNT(*) as DataCount FROM "AssayRuns" WHERE Protocol.RowId = 1 GROUP BY Folder'
         );
     });
 
     test('StorageLocation', () => {
         const FakeStorageDataType = {
             ...AssayRunDataType,
-            projectConfigurableDataType: 'StorageLocation',
+            folderConfigurableDataType: 'StorageLocation',
             listingSchemaQuery: new SchemaQuery('inventory', 'testQuery'),
         };
-        expect(getDataTypeProjectDataCountSql(FakeStorageDataType, 'Freezer', 1)).toBe(
-            'SELECT Folder AS Project, COUNT(*) as DataCount FROM "testQuery"  GROUP BY Folder'
+        expect(getDataTypeFolderDataCountSql(FakeStorageDataType, 'Freezer', 1)).toBe(
+            'SELECT Folder, COUNT(*) as DataCount FROM "testQuery"  GROUP BY Folder'
         );
     });
 });

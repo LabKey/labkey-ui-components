@@ -21,7 +21,7 @@ import { loadNameExpressionOptions } from '../../settings/actions';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 import { resolveErrorMessage } from '../../../util/messaging';
 
-import { IParentAlias, IParentOption, ProjectConfigurableDataType } from '../../entities/models';
+import { IParentAlias, IParentOption, FolderConfigurableDataType } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 
 import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupesResults } from '../utils';
@@ -417,7 +417,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         this.saveModel(newModel);
     };
 
-    onUpdateExcludedProjects = (_: ProjectConfigurableDataType, excludedContainerIds: string[]): void => {
+    onUpdateExcludedProjects = (_: FolderConfigurableDataType, excludedContainerIds: string[]): void => {
         const { model } = this.state;
         const newModel = {
             ...model,

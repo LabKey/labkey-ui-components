@@ -29,7 +29,7 @@ import { ComponentsAPIWrapper, getDefaultAPIWrapper } from '../../../APIWrapper'
 
 import { GENID_SYNTAX_STRING } from '../NameExpressionGenIdBanner';
 
-import { IParentAlias, IParentOption, ProjectConfigurableDataType } from '../../entities/models';
+import { IParentAlias, IParentOption, FolderConfigurableDataType } from '../../entities/models';
 import { SCHEMAS } from '../../../schemas';
 import {
     getHelpLink,
@@ -280,7 +280,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         this.onFieldChange(newModel);
     };
 
-    onUpdateExcludedProjects = (dataType: ProjectConfigurableDataType, excludedContainerIds: string[]): void => {
+    onUpdateExcludedProjects = (dataType: FolderConfigurableDataType, excludedContainerIds: string[]): void => {
         const { model } = this.state;
         if (dataType === 'SampleType') {
             const newModel = model.set('excludedContainerIds', excludedContainerIds) as SampleTypeModel;

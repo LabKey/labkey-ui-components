@@ -6,7 +6,7 @@ import { useServerContext } from '../base/ServerContext';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { AppContext, useAppContext } from '../../AppContext';
-import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from '../entities/models';
+import { DataTypeEntity, EntityDataType, FolderConfigurableDataType } from '../entities/models';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
@@ -24,9 +24,9 @@ interface OwnProps {
     dataTypeName?: string;
     dataTypeRowId?: number;
     entityDataType: EntityDataType;
-    onUpdateExcludedProjects: (dataType: ProjectConfigurableDataType, excludedProjects: string[]) => void;
+    onUpdateExcludedProjects: (dataType: FolderConfigurableDataType, excludedProjects: string[]) => void;
     relatedDataTypeLabel?: string;
-    relatedProjectConfigurableDataType?: ProjectConfigurableDataType;
+    relatedProjectConfigurableDataType?: FolderConfigurableDataType;
 }
 
 // export for jest testing
@@ -64,14 +64,14 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                     const containers = await api.folder.getProjects(container, moduleContext, true, true, true);
 
                     const allProjects_ = containers.map(project => {
-                        return { label: project.title, lsid: project.id, type: 'Project' } as DataTypeEntity;
+                        return { label: project.title, lsid: project.id, type: 'Folder' } as DataTypeEntity;
                     });
 
                     setChildProjects(allProjects_.slice(1));
                     setAllProjects(allProjects_);
 
                     const excludedProjectIds_ = await api.folder.getDataTypeExcludedProjects(
-                        entityDataType.projectConfigurableDataType,
+                        entityDataType.folderConfigurableDataType,
                         dataTypeRowId
                     );
                     setExcludedProjectIdsDB(excludedProjectIds_);
@@ -113,7 +113,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
     }, []);
 
     const updateExcludedProjects = useCallback(
-        (dataType: ProjectConfigurableDataType, exclusions: string[]) => {
+        (dataType: FolderConfigurableDataType, exclusions: string[]) => {
             onUpdateExcludedProjects(dataType, exclusions);
             setExcludedProjectIds(exclusions);
         },
@@ -121,7 +121,7 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
     );
 
     const updateRelatedExcludedProjects = useCallback(
-        (dataType: ProjectConfigurableDataType, exclusions: string[]) => {
+        (dataType: FolderConfigurableDataType, exclusions: string[]) => {
             onUpdateExcludedProjects(dataType, exclusions);
         },
         [onUpdateExcludedProjects]

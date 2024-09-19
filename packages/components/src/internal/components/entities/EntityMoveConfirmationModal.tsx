@@ -13,7 +13,7 @@ import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 import { Container } from '../base/models/Container';
 
-import { ProjectConfigurableDataType } from './models';
+import { FolderConfigurableDataType } from './models';
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 import { ComponentsAPIWrapper } from '../../APIWrapper';
@@ -21,7 +21,7 @@ import { ComponentsAPIWrapper } from '../../APIWrapper';
 export interface EntityMoveConfirmationModalProps extends Omit<ModalProps, 'onConfirm'> {
     currentContainer?: Container;
     excludeCurrentAsTarget?: boolean;
-    dataType?: ProjectConfigurableDataType;
+    dataType?: FolderConfigurableDataType;
     dataTypeRowId?: number;
     nounPlural: string;
     onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
@@ -33,7 +33,7 @@ export async function getContainerOptions(
     container: Container,
     moduleContext: ModuleContext,
     excludeCurrentAsTarget: boolean,
-    dataType: ProjectConfigurableDataType,
+    dataType: FolderConfigurableDataType,
     dataTypeRowId: number
 ): Promise<SelectInputOption[]> {
     let folders = await api.folder.getProjects(container, moduleContext, true, true, true);

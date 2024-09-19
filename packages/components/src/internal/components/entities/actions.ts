@@ -56,7 +56,7 @@ import {
     IParentAlias,
     IParentOption,
     OperationConfirmationData,
-    ProjectConfigurableDataType,
+    FolderConfigurableDataType,
     RemappedKeyValues,
 } from './models';
 
@@ -513,7 +513,7 @@ export async function getEntityTypeOptions(
 
     if (!skipProjectDataExclusion) {
         const dataTypeExclusions = getProjectDataExclusion();
-        const exclusions = dataTypeExclusions?.[entityDataType.projectConfigurableDataType];
+        const exclusions = dataTypeExclusions?.[entityDataType.folderConfigurableDataType];
         if (exclusions) filters.push(Filter.create('RowId', exclusions, Filter.Types.NOT_IN));
     }
 
@@ -565,7 +565,7 @@ export async function getProjectConfigurableEntityTypeOptions(
                         : undefined,
                     rowId: caseInsensitive(row, 'RowId').value,
                     description: caseInsensitive(row, 'Description').value,
-                    type: entityDataType.projectConfigurableDataType as ProjectConfigurableDataType,
+                    type: entityDataType.folderConfigurableDataType as FolderConfigurableDataType,
                     lsid: caseInsensitive(row, 'LSID').value,
                 }) as DataTypeEntity
         )
@@ -1270,7 +1270,7 @@ export function getOrderedSelectedMappedKeysFromQueryModel(
     );
 }
 
-function getDataTypeDataExistSql(dataType: ProjectConfigurableDataType, lsid?: string, rowId?: number): string {
+function getDataTypeDataExistSql(dataType: FolderConfigurableDataType, lsid?: string, rowId?: number): string {
     if (!dataType) return null;
 
     let from = 'exp.materials ';
@@ -1289,7 +1289,7 @@ function getDataTypeDataExistSql(dataType: ProjectConfigurableDataType, lsid?: s
 }
 
 export function isDataTypeEmpty(
-    dataType: ProjectConfigurableDataType,
+    dataType: FolderConfigurableDataType,
     lsid?: string,
     rowId?: number,
     containerPath?: string

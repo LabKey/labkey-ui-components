@@ -23,8 +23,8 @@ import { SchemaQuery } from '../public/SchemaQuery';
 import { ComponentsAPIWrapper, getDefaultAPIWrapper } from './APIWrapper';
 import {
     NotebookNotificationSettings,
-    NotebookProjectSettings,
-    ProjectFreezerSelection,
+    NotebookContainerSettings,
+    FolderStorageSelection,
     WorkflowNotificationSettings,
     ReferencingNotebooks,
 } from './app/models';
@@ -50,8 +50,8 @@ import {
 
 export interface AdminAppContext {
     NotebookNotificationSettingsComponent: NotebookNotificationSettings;
-    NotebookProjectSettingsComponent: NotebookProjectSettings;
-    ProjectFreezerSelectionComponent?: ProjectFreezerSelection;
+    NotebookContainerSettingsComponent: NotebookContainerSettings;
+    FolderStorageSelectionComponent?: FolderStorageSelection;
     WorkflowNotificationSettingsComponent: WorkflowNotificationSettings;
     extraPermissionRoles: string[][];
     projectDataTypes?: EntityDataType[];

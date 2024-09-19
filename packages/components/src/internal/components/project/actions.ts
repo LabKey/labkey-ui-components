@@ -1,12 +1,12 @@
 import { Query } from '@labkey/api';
 
 import { caseInsensitive } from '../../util/utils';
-import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from '../entities/models';
+import { DataTypeEntity, EntityDataType, FolderConfigurableDataType } from '../entities/models';
 import { getContainerFilterForFolder } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
 import { isAllProductFoldersFilteringEnabled, isProductProjectsDataListingScopedToProject } from '../../app/utils';
 
-export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableDataType): string {
+export function getProjectDataTypeDataCountSql(dataType: FolderConfigurableDataType): string {
     if (!dataType) return null;
 
     let typeField = 'SampleSet';
@@ -30,7 +30,7 @@ export function getProjectDataTypeDataCountSql(dataType: ProjectConfigurableData
 }
 
 export function getProjectDataTypeDataCount(
-    dataType: ProjectConfigurableDataType,
+    dataType: FolderConfigurableDataType,
     containerPath?: string,
     allDataTypes?: DataTypeEntity[],
     isNewFolder?: boolean
@@ -80,35 +80,35 @@ export function getProjectDataTypeDataCount(
 }
 
 // exported for jest testing
-export function getDataTypeProjectDataCountSql(
+export function getDataTypeFolderDataCountSql(
     entityDataType: EntityDataType,
     dataTypeRowId: number,
     dataTypeName: string
 ): string {
-    const isAssay = entityDataType.projectConfigurableDataType === 'AssayDesign';
-    const isStorage = entityDataType.projectConfigurableDataType === 'StorageLocation';
+    const isAssay = entityDataType.folderConfigurableDataType === 'AssayDesign';
+    const isStorage = entityDataType.folderConfigurableDataType === 'StorageLocation';
     const queryName = isAssay || isStorage ? entityDataType.listingSchemaQuery.queryName : dataTypeName;
     const whereClause = isAssay ? 'WHERE Protocol.RowId = ' + dataTypeRowId : '';
     if (!queryName) return null;
 
     return (
-        'SELECT Folder AS Project, COUNT(*) as DataCount FROM "' + queryName + '" ' + whereClause + ' GROUP BY Folder'
+        'SELECT Folder, COUNT(*) as DataCount FROM "' + queryName + '" ' + whereClause + ' GROUP BY Folder'
     );
 }
 
-export function getDataTypeProjectDataCount(
+export function getDataTypeFolderDataCount(
     entityDataType: EntityDataType,
     dataTypeRowId: number,
     dataTypeName: string
 ): Promise<Record<string, number>> {
     return new Promise((resolve, reject) => {
-        const isAssay = entityDataType.projectConfigurableDataType === 'AssayDesign';
-        const isStorage = entityDataType.projectConfigurableDataType === 'StorageLocation';
+        const isAssay = entityDataType.folderConfigurableDataType === 'AssayDesign';
+        const isStorage = entityDataType.folderConfigurableDataType === 'StorageLocation';
         const schemaName =
             isAssay || isStorage ? entityDataType.listingSchemaQuery.schemaName : entityDataType.instanceSchemaName;
         const parameters = isStorage ? { ParentId: dataTypeRowId } : undefined;
 
-        const sql = getDataTypeProjectDataCountSql(entityDataType, dataTypeRowId, dataTypeName);
+        const sql = getDataTypeFolderDataCountSql(entityDataType, dataTypeRowId, dataTypeName);
         if (!sql) {
             resolve({});
             return;

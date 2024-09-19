@@ -245,7 +245,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     onConfirm={onConfirm}
                     currentContainer={currentContainer}
                     title={title}
-                    dataType={entityDataType.projectConfigurableDataType}
+                    dataType={entityDataType.folderConfigurableDataType}
                     dataTypeRowId={dataTypeRowId}
                     excludeCurrentAsTarget={maxSelected === 1}
                 >

@@ -39,7 +39,7 @@ export const useAdministrationSubNav = (): void => {
                 tabs.push({ text: 'Application Settings', url: AppURL.create(ADMIN_KEY, 'settings') });
             }
 
-            if (projectsEnabled) tabs.push({ text: 'Folders', url: AppURL.create(ADMIN_KEY, 'projects') });
+            if (projectsEnabled) tabs.push({ text: 'Folders', url: AppURL.create(ADMIN_KEY, 'folders') });
 
             tabs.push({ text: 'Audit Logs', url: AppURL.create(AUDIT_KEY) });
 

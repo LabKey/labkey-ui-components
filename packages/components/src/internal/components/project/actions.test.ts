@@ -3,6 +3,7 @@ import { AssayRunDataType, DataClassDataType, SampleTypeDataType } from '../enti
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { getDataTypeFolderDataCountSql, getProjectDataTypeDataCountSql } from './actions';
+import { FolderConfigurableDataType } from '../entities/models';
 
 describe('getProjectDataTypeDataCountSql', () => {
     test('null', () => {
@@ -54,10 +55,10 @@ describe('getDataTypeProjectDataCountSql', () => {
     test('StorageLocation', () => {
         const FakeStorageDataType = {
             ...AssayRunDataType,
-            folderConfigurableDataType: 'StorageLocation',
+            folderConfigurableDataType: 'StorageLocation' as FolderConfigurableDataType,
             listingSchemaQuery: new SchemaQuery('inventory', 'testQuery'),
         };
-        expect(getDataTypeFolderDataCountSql(FakeStorageDataType, 'Freezer', 1)).toBe(
+        expect(getDataTypeFolderDataCountSql(FakeStorageDataType, undefined, undefined)).toBe(
             'SELECT Folder, COUNT(*) as DataCount FROM "testQuery"  GROUP BY Folder'
         );
     });

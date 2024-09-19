@@ -59,27 +59,27 @@ describe('getUncheckedEntityWarning', () => {
     test('dataCounts not empty', () => {
         let warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, SampleTypeDataType, 2);
         expect(JSON.stringify(warning)).toContain(
-            '2," ","samples"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+            '2," ","samples"," will no longer be visible in this folder. They won\'t be deleted and lineage relationships won\'t change.'
         );
 
         warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, SampleTypeDataType, 1);
         expect(JSON.stringify(warning)).toContain(
-            '1," ","sample"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+            '1," ","sample"," will no longer be visible in this folder. They won\'t be deleted and lineage relationships won\'t change.'
         );
 
         warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, AssayRunDataType, 2);
         expect(JSON.stringify(warning)).toContain(
-            '2," ","runs"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+            '2," ","runs"," will no longer be visible in this folder. They won\'t be deleted and lineage relationships won\'t change.'
         );
 
         warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, DataClassDataType, 2);
         expect(JSON.stringify(warning)).toContain(
-            '2," ","sources"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+            '2," ","sources"," will no longer be visible in this folder. They won\'t be deleted and lineage relationships won\'t change.'
         );
 
         warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, null, 2);
         expect(JSON.stringify(warning)).toContain(
-            '2," ","samples"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+            '2," ","samples"," will no longer be visible in this folder. They won\'t be deleted and lineage relationships won\'t change.'
         );
     });
 });

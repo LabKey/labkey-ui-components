@@ -55,7 +55,7 @@ export const getUncheckedEntityWarning = (
         const nounSingular = entityDataType?.nounSingular?.toLowerCase() ?? 'sample';
         return (
             <Alert bsStyle="warning" className="margin-left-more">
-                {dataCount} {dataCount > 1 ? nounPlural : nounSingular} will no longer be visible in this project. They
+                {dataCount} {dataCount > 1 ? nounPlural : nounSingular} will no longer be visible in this folder. They
                 won't be deleted and lineage relationships won't change.{' '}
             </Alert>
         );

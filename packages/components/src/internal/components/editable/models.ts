@@ -335,6 +335,8 @@ export class EditorModel
                     if (values.size === 1) val = values.first()?.raw;
                     row = row.set(col.name, val);
                 }
+            } else if (col.jsonType === 'time' || col.jsonType === 'date') {
+                row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
             } else {
                 const val = values.size === 1 ? values.first().raw?.toString().trim() : undefined;
                 row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
@@ -345,7 +347,7 @@ export class EditorModel
     }
 
     /**
-     * This method formats the EditorModel data so we can upload the data to LKS via insert/updateRows
+     * This method formats the EditorModel data, so we can upload the data to LKS via insert/updateRows
      * @param displayValues
      */
     getDataForServerUpload(displayValues = true): List<Map<string, any>> {

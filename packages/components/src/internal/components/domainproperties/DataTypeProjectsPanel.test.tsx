@@ -34,8 +34,8 @@ describe('DataTypeProjectsPanel', () => {
     const DEFAULT_PROPS = {
         collapsed: false,
         controlledCollapse: true,
-        togglePanel: jest.fn()
-    }
+        togglePanel: jest.fn(),
+    };
 
     test('with a project', async () => {
         renderWithAppContext(
@@ -53,7 +53,7 @@ describe('DataTypeProjectsPanel', () => {
             expect(document.querySelector(".row")).toBeInTheDocument();
         });
 
-        const folderOptions = document.querySelectorAll('.project-datatype-faceted__value');
+        const folderOptions = document.querySelectorAll('.folder-datatype-faceted__value');
         expect(folderOptions).toHaveLength(1);
 
         expect(folderOptions.item(0).textContent).toBe(TEST_FOLDER_CONTAINER.title);
@@ -79,7 +79,7 @@ describe('DataTypeProjectsPanel', () => {
     //         expect(document.querySelector(".rowX").textContent).toBe("X");//.toBeInTheDocument();
     //     });
     //
-    //     const folderOptions = document.querySelectorAll('.project-datatype-faceted__value');
+    //     const folderOptions = document.querySelectorAll('.folder-datatype-faceted__value');
     //     expect(folderOptions).toHaveLength(0);
     //
     //     expect(wrapper.find(DataTypeSelector)).toHaveLength(1);

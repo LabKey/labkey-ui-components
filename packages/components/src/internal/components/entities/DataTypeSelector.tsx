@@ -203,7 +203,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
                         const entityId = type.rowId ?? type.lsid;
                         // FIXME: This should be a component so we can use useCallback for the onChange/onClick below
                         return (
-                            <li key={entityId} className="project-faceted-data-type">
+                            <li key={entityId} className="folder-faceted-data-type">
                                 <div className="form-check">
                                     <input
                                         className="form-check-input filter-faceted__checkbox"
@@ -214,7 +214,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
                                         disabled={disabled}
                                     />
                                     <div
-                                        className="margin-left-more project-datatype-faceted__value"
+                                        className="margin-left-more folder-datatype-faceted__value"
                                         onClick={() => onChange(entityId, true)}
                                     >
                                         {type.labelColor && (

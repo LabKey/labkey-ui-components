@@ -289,6 +289,7 @@ function resolveSampleParentTypes(
                 index,
                 schema: 'samples',
                 query: sampleType?.toLowerCase(),
+                label: sampleType,
                 value: List<DisplayObject>(data.sort(_getEntitySort(orderedRowIds))),
                 isAliquotParent,
             })

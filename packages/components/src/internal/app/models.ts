@@ -74,9 +74,9 @@ export type NotebookContainerSettings = ComponentType<NotebookContainerSettingsP
 export type WorkflowNotificationSettings = ComponentType;
 
 interface FolderStorageSelectionProps extends InjectedRouteLeaveProps {
+    container?: Container;
     disabledTypesMap?: { [key: string]: number[] };
     onSuccess?: () => void;
-    project?: Container;
     updateDataTypeExclusions?: (dataType: any, exclusions: number[]) => void;
 }
 

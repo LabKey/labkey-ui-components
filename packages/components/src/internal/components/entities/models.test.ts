@@ -41,11 +41,12 @@ describe('EntityParentType', () => {
         );
         expect(col.caption).toBe('Sampletype Parents');
 
-        col = EntityParentType.create({ schema: SCHEMAS.SAMPLE_SETS.SCHEMA, query: 'sampletype' }).generateColumn(
-            'Display Column',
-            SCHEMAS.SAMPLE_SETS.SCHEMA
-        );
-        expect(col.caption).toBe('Sampletype Parents');
+        col = EntityParentType.create({
+            schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            query: 'sampletype',
+            label: 'Sample Type Label',
+        }).generateColumn('Display Column', SCHEMAS.SAMPLE_SETS.SCHEMA);
+        expect(col.caption).toBe('Sample Type Label Parents');
     });
 
     test('generateColumn isAliquotParent', () => {

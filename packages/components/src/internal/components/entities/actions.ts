@@ -244,6 +244,8 @@ async function getSelectedParents(
     const columns = ['LSID', 'Name', 'RowId'];
     if (isSampleParent) {
         columns.push('SampleSet');
+    } else {
+        columns.push('DataClass');
     }
 
     const response = await selectRows({ columns, filterArray, schemaQuery });
@@ -289,6 +291,7 @@ function resolveSampleParentTypes(
                 index,
                 schema: 'samples',
                 query: sampleType?.toLowerCase(),
+                label: sampleType,
                 value: List<DisplayObject>(data.sort(_getEntitySort(orderedRowIds))),
                 isAliquotParent,
             })
@@ -400,11 +403,16 @@ function resolveEntityParentTypeFromIds(
         .map(({ label, rowId }) => ({ displayValue: label, value: rowId }));
     if (orderedRowIds?.length > 1) data = data.sort(_getEntitySort(orderedRowIds));
 
+    // Issue 50389: use the data class display name if available
+    const dataClass =
+        response.rows.length > 0 ? caseInsensitive(response.rows[0], 'DataClass')?.displayValue : undefined;
+
     return List<EntityParentType>([
         EntityParentType.create({
             index: 1,
             schema: schemaQuery.schemaName,
             query: schemaQuery.queryName,
+            label: dataClass,
             value: List(data),
             isAliquotParent,
         }),

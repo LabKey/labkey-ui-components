@@ -74,6 +74,7 @@ export interface DisplayObject {
 export class EntityParentType extends Record({
     index: undefined,
     key: undefined,
+    label: undefined,
     query: undefined,
     schema: undefined,
     value: undefined,
@@ -82,6 +83,7 @@ export class EntityParentType extends Record({
 }) {
     declare index: number;
     declare key: string;
+    declare label: string;
     declare query: string;
     declare schema: string;
     declare value: List<DisplayObject>;
@@ -121,8 +123,7 @@ export class EntityParentType extends Record({
 
     // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
     generateColumn(displayColumn: string, targetSchema: string): QueryColumn {
-        const parentInputType = this.getInputType();
-        const formattedQueryName = capitalizeFirstChar(this.query);
+        const formattedQueryName = this.label ?? capitalizeFirstChar(this.query);
         const parentColName = this.generateFieldKey();
 
         // Issue 40233: SM app allows for two types of parents, sources and samples, and its confusing if both use

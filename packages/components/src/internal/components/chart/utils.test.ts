@@ -89,7 +89,7 @@ describe('getBarChartPlotConfig', () => {
         expect(JSON.stringify(Object.keys(config.scales))).toBe('["y"]');
         expect(config.height).toBe(undefined);
         expect(config.width).toBe(100);
-        expect(config.margins.top).toBe(50);
+        expect(config.margins.top).toBe(25);
         expect(config.margins.right).toBe(undefined);
         expect(config.options.clickFn).toBe(undefined);
         expect(config.options.color).toBe(undefined);
@@ -117,7 +117,7 @@ describe('getBarChartPlotConfig', () => {
         expect(JSON.stringify(Object.keys(config.scales))).toBe('["y","color","x","xSub"]');
         expect(config.height).toBe(100);
         expect(config.width).toBe(100);
-        expect(config.margins.top).toBe(50);
+        expect(config.margins.top).toBe(25);
         expect(config.margins.right).toBe(125);
         expect(config.options.clickFn).toBe(jest.fn);
         expect(config.options.color).toBe('blue');

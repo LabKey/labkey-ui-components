@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Chart builder in app (part 3)
+  - updates to chart margins and sizes for chart builder and dashboard
+  - only show 'x' grid lines for bar and box plots
+
 ### version 5.5.7
 *Released*: 20 September 2024
 - Issue 50389: Casing of aliased (parent) sample or source type name can be changed in the editable grid

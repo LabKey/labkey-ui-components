@@ -38,6 +38,7 @@ export interface BarChartConfig {
 
 export interface ChartConfig {
     geomOptions: any;
+    gridLinesVisible: string;
     height: number;
     labels: any;
     measures: any;

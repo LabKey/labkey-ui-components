@@ -160,6 +160,7 @@ export const getChartBuilderChartConfig = (
             ...savedConfig?.labels,
         },
         pointType: savedConfig?.pointType ?? 'all',
+        gridLinesVisible: chartType.name === 'bar_chart' || chartType.name === 'box_plot' ? 'x' : 'both',
         geomOptions: {
             binShape: 'hex',
             binSingleColor: '000000',
@@ -482,7 +483,7 @@ const ChartPreview: FC<ChartPreviewProps> = memo(props => {
                 width,
             };
             if (!savedChartModel || savedChartModel.visualizationConfig.chartConfig.geomOptions.marginTop === 20) {
-                chartConfig_.geomOptions.marginTop = 10;
+                chartConfig_.geomOptions.marginTop = 15;
             }
 
             if (ref?.current) ref.current.innerHTML = ''; // clear again, right before render

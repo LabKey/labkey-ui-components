@@ -57,7 +57,7 @@ import {
     isWorkflowEnabled,
     limsIsPrimaryApp,
     sampleManagerIsPrimaryApp,
-    setProductProjects,
+    setProductFolders,
     userCanDesignLocations,
     userCanDesignSourceTypes,
     userCanEditStorageData,
@@ -805,14 +805,14 @@ describe('utils', () => {
         ).toBeTruthy();
     });
 
-    test('setProductProjects', () => {
-        expect(setProductProjects({}, true)).toEqual({ query: { hasProductProjects: true } });
-        expect(setProductProjects({ query: { hasProductProjects: false } }, true)).toEqual({
-            query: { hasProductProjects: true },
+    test('setProductFolders', () => {
+        expect(setProductFolders({}, true)).toEqual({ query: { hasProductFolders: true } });
+        expect(setProductFolders({ query: { hasProductFolders: false } }, true)).toEqual({
+            query: { hasProductFolders: true },
         });
         LABKEY.moduleContext = { query: { ken: 'griffey' } };
-        setProductProjects({ query: { hasProductProjects: true } }, false);
-        expect(LABKEY.moduleContext.query).toEqual({ hasProductProjects: false, ken: 'griffey' });
+        setProductFolders({ query: { hasProductFolders: true } }, false);
+        expect(LABKEY.moduleContext.query).toEqual({ hasProductFolders: false, ken: 'griffey' });
     });
 
     test('hasPremiumModule', () => {
@@ -889,12 +889,12 @@ describe('utils', () => {
         expect(isAppHomeFolder()).toBeTruthy();
         LABKEY.container = { type: 'folder', path: 'project/a', folderType: 'Collaboration' };
         expect(isAppHomeFolder()).toBeTruthy();
-        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: false } })).toBeTruthy();
-        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: true } })).toBeFalsy();
+        expect(isAppHomeFolder(null, { query: { isProductFoldersEnabled: false } })).toBeTruthy();
+        expect(isAppHomeFolder(null, { query: { isProductFoldersEnabled: true } })).toBeFalsy();
         LABKEY.container = { type: 'folder', path: 'project/a', folderType: 'Biologics' };
         expect(isAppHomeFolder()).toBeTruthy();
-        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: false } })).toBeTruthy();
-        expect(isAppHomeFolder(null, { query: { isProductProjectsEnabled: true } })).toBeFalsy();
+        expect(isAppHomeFolder(null, { query: { isProductFoldersEnabled: false } })).toBeTruthy();
+        expect(isAppHomeFolder(null, { query: { isProductFoldersEnabled: true } })).toBeFalsy();
 
         expect(isAppHomeFolder(new Container({ type: 'project', path: 'project' }))).toBeTruthy();
         expect(
@@ -902,12 +902,12 @@ describe('utils', () => {
         ).toBeTruthy();
         expect(
             isAppHomeFolder(new Container({ type: 'project', path: 'project', folderType: 'Collaboration' }), {
-                query: { isProductProjectsEnabled: false },
+                query: { isProductFoldersEnabled: false },
             })
         ).toBeTruthy();
         expect(
             isAppHomeFolder(new Container({ type: 'project', path: 'project', folderType: 'Sample Manager' }), {
-                query: { isProductProjectsEnabled: false },
+                query: { isProductFoldersEnabled: false },
             })
         ).toBeTruthy();
         expect(
@@ -915,12 +915,12 @@ describe('utils', () => {
         ).toBeTruthy();
         expect(
             isAppHomeFolder(new Container({ type: 'folder', path: 'project/a' }), {
-                query: { isProductProjectsEnabled: false },
+                query: { isProductFoldersEnabled: false },
             })
         ).toBeTruthy();
         expect(
             isAppHomeFolder(new Container({ type: 'folder', path: 'project/a' }), {
-                query: { isProductProjectsEnabled: true },
+                query: { isProductFoldersEnabled: true },
             })
         ).toBeFalsy();
     });

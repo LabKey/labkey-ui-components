@@ -87,7 +87,7 @@ describe('useAdministrationSubNav', () => {
         const wrapper = mountWithAppServerContext(<TestComponent />, getAppContextWithProjectAdmin(), {
             user: TEST_USER_APP_ADMIN,
             container: TEST_FOLDER_CONTAINER,
-            moduleContext: { query: { isProductProjectsEnabled: true } },
+            moduleContext: { query: { isProductFoldersEnabled: true } },
         });
         await waitForLifecycle(wrapper);
         expect(tabsContext.noun).toEqual({ text: 'Dashboard', url: AppURL.create('home') });
@@ -104,7 +104,7 @@ describe('useAdministrationSubNav', () => {
         const wrapper = mountWithAppServerContext(<TestComponent />, getAppContextWithProjectAdmin(), {
             user: TEST_USER_APP_ADMIN,
             container: TEST_PROJECT_CONTAINER_ADMIN,
-            moduleContext: { query: { isProductProjectsEnabled: true } },
+            moduleContext: { query: { isProductFoldersEnabled: true } },
         });
         await waitForLifecycle(wrapper);
         expect(tabsContext.noun).toEqual({ text: 'Dashboard', url: AppURL.create('home') });

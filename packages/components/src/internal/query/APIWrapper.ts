@@ -8,8 +8,8 @@ import {
     IEntityTypeOption,
     FolderConfigurableDataType,
 } from '../components/entities/models';
-import { getEntityTypeOptions, getProjectConfigurableEntityTypeOptions } from '../components/entities/actions';
-import { getDataTypeFolderDataCount, getProjectDataTypeDataCount } from '../components/project/actions';
+import { getEntityTypeOptions, getFolderConfigurableEntityTypeOptions } from '../components/entities/actions';
+import { getDataTypeFolderDataCount, getFolderDataTypeDataCount } from '../components/folder/actions';
 
 import {
     clearSelected,
@@ -61,7 +61,7 @@ export interface QueryAPIWrapper {
     deleteRows: (options: DeleteRowsOptions) => Promise<QueryCommandResponse>;
     deleteRowsByContainer: (options: DeleteRowsOptions, containerField: string) => Promise<QueryCommandResponse>;
     deleteView: (schemaQuery: SchemaQuery, containerPath: string, viewName?: string, revert?: boolean) => Promise<void>;
-    getDataTypeProjectDataCount: (
+    getDataTypeFolderDataCount: (
         entityDataType: EntityDataType,
         dataTypeRowId: number,
         dataTypeName: string
@@ -78,12 +78,12 @@ export interface QueryAPIWrapper {
         excludeSessionView?: boolean,
         includeHidden?: boolean
     ) => Promise<ViewInfo[]>;
-    getProjectConfigurableEntityTypeOptions: (
+    getFolderConfigurableEntityTypeOptions: (
         entityDataType: EntityDataType,
         containerPath?: string,
         containerFilter?: Query.ContainerFilter
     ) => Promise<DataTypeEntity[]>;
-    getProjectDataTypeDataCount: (
+    getFolderDataTypeDataCount: (
         dataType: FolderConfigurableDataType,
         containerPath?: string,
         allDataTypes?: DataTypeEntity[],
@@ -149,11 +149,11 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     deleteRows = deleteRows;
     deleteRowsByContainer = deleteRowsByContainer;
     deleteView = deleteView;
-    getDataTypeProjectDataCount = getDataTypeFolderDataCount;
+    getDataTypeFolderDataCount = getDataTypeFolderDataCount;
     getEntityTypeOptions = getEntityTypeOptions;
     getGridViews = getGridViews;
-    getProjectConfigurableEntityTypeOptions = getProjectConfigurableEntityTypeOptions;
-    getProjectDataTypeDataCount = getProjectDataTypeDataCount;
+    getFolderConfigurableEntityTypeOptions = getFolderConfigurableEntityTypeOptions;
+    getFolderDataTypeDataCount = getFolderDataTypeDataCount;
     getQueryDetails = getQueryDetails;
     getSnapshotSelections = getSnapshotSelections;
     getServerDate = getServerDate;
@@ -185,11 +185,11 @@ export function getQueryTestAPIWrapper(
         deleteRows: mockFn(),
         deleteRowsByContainer: mockFn(),
         deleteView: mockFn(),
-        getDataTypeProjectDataCount: mockFn(),
+        getDataTypeFolderDataCount: mockFn(),
         getEntityTypeOptions: mockFn(),
         getGridViews: mockFn(),
-        getProjectConfigurableEntityTypeOptions: mockFn(),
-        getProjectDataTypeDataCount: mockFn(),
+        getFolderConfigurableEntityTypeOptions: mockFn(),
+        getFolderDataTypeDataCount: mockFn(),
         getQueryDetails: mockFn(),
         getSnapshotSelections: mockFn(),
         getServerDate: () => Promise.resolve(new Date()),

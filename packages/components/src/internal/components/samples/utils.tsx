@@ -4,7 +4,7 @@ import { User } from '../base/models/User';
 
 import {
     isFreezerManagementEnabled,
-    isProductProjectsEnabled,
+    isProductFoldersEnabled,
     isProjectContainer,
     isSampleStatusEnabled,
 } from '../../app/utils';
@@ -240,7 +240,7 @@ export enum SamplesEditButtonSections {
     FIND_DERIVATIVES = 'findderivatives',
     IMPORT = 'import',
     LINK_TO_STUDY = 'linktostudy',
-    MOVE_TO_PROJECT = 'movetoproject',
+    MOVE_TO_FOLDER = 'movetofolder',
 }
 
 export function isSamplesSchema(schemaQuery: SchemaQuery): boolean {
@@ -331,7 +331,7 @@ export function getSampleStatusLockedMessage(state: SampleState, saving: boolean
     const msgs = [];
     if (state?.inUse || saving) msgs.push('cannot change status type or be deleted because it is in use');
     if (state && !state.isLocal)
-        msgs.push('can be changed only in the ' + state.containerPath.substring(1) + ' project');
+        msgs.push('can be changed only in the ' + state.containerPath.substring(1) + ' folder');
     if (msgs.length > 0) return 'This sample status ' + msgs.join(' and ') + '.';
     return undefined;
 }
@@ -341,8 +341,8 @@ export function getSampleStatusContainerFilter(
     containerPath?: string,
     moduleContext?: ModuleContext
 ): Query.ContainerFilter {
-    // Check to see if product projects support is enabled.
-    if (!isProductProjectsEnabled(moduleContext)) {
+    // Check to see if product folders support is enabled.
+    if (!isProductFoldersEnabled(moduleContext)) {
         return undefined;
     }
 

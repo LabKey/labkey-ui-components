@@ -30,7 +30,7 @@ describe('DataClassDesigner', () => {
 
     const SERVER_CONTEXT = {
         moduleContext: {
-            query: { hasProductProjects: true },
+            query: { hasProductFolders: true },
         },
     };
 

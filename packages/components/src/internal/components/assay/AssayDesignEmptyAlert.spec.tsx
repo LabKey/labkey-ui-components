@@ -16,22 +16,22 @@ const EMPTY_ALERT = '.empty-alert';
 
 const topFolderContext = {
     container: TEST_PROJECT_CONTAINER,
-    moduleContext: { query: { isProductProjectsEnabled: false } },
+    moduleContext: { query: { isProductFoldersEnabled: false } },
 };
 
 const homeProjectContext = {
     container: TEST_PROJECT_CONTAINER,
-    moduleContext: { query: { isProductProjectsEnabled: true } },
+    moduleContext: { query: { isProductFoldersEnabled: true } },
 };
 
-const childProjectContext = {
+const childFolderContext = {
     container: TEST_FOLDER_CONTAINER,
-    moduleContext: { query: { isProductProjectsEnabled: true } },
+    moduleContext: { query: { isProductFoldersEnabled: true } },
 };
 
-const childFolderNonProjectContext = {
+const childFolderNonFolderContext = {
     container: TEST_FOLDER_CONTAINER,
-    moduleContext: { query: { isProductProjectsEnabled: false } },
+    moduleContext: { query: { isProductFoldersEnabled: false } },
 };
 
 describe('AssayDesignEmptyAlert', () => {
@@ -73,11 +73,11 @@ describe('AssayDesignEmptyAlert', () => {
         // Expect link to design
         expect(wrapper.find(`${EMPTY_ALERT} a`).prop('href')).toEqual(NEW_ASSAY_DESIGN_HREF.toHref());
     });
-    test('child project folder context', async () => {
+    test('child folder folder context', async () => {
         const wrapper = mountWithAppServerContext(
             <AssayDesignEmptyAlert user={TEST_USER_ASSAY_DESIGNER} />,
             TEST_PROJECT_APP_CONTEXT_ADMIN,
-            childProjectContext
+            childFolderContext
         );
         await waitForLifecycle(wrapper);
 
@@ -85,11 +85,11 @@ describe('AssayDesignEmptyAlert', () => {
         // Expect link to design
         expect(wrapper.find(`${EMPTY_ALERT} a`).prop('href')).toEqual(NEW_ASSAY_DESIGN_HREF.toHref());
     });
-    test('child folder but Projects feature not enabled for folder', async () => {
+    test('child folder but Folders feature not enabled for folder', async () => {
         const wrapper = mountWithAppServerContext(
             <AssayDesignEmptyAlert user={TEST_USER_ASSAY_DESIGNER} />,
             TEST_PROJECT_APP_CONTEXT_ADMIN,
-            childFolderNonProjectContext
+            childFolderNonFolderContext
         );
         await waitForLifecycle(wrapper);
 

@@ -20,7 +20,7 @@ import { Row, selectRows, SelectRowsResponse } from '../../query/selectRows';
 
 import { ViewInfo } from '../../ViewInfo';
 
-import { getAppHomeFolderPath, getProjectDataExclusion, hasModule } from '../../app/utils';
+import { getAppHomeFolderPath, getFolderDataExclusion, hasModule } from '../../app/utils';
 
 import { resolveErrorMessage } from '../../util/messaging';
 
@@ -505,14 +505,14 @@ export async function getEntityTypeOptions(
     entityDataType: EntityDataType,
     containerPath?: string,
     containerFilter?: Query.ContainerFilter,
-    skipProjectDataExclusion?: boolean
+    skipFolderDataExclusion?: boolean
 ): Promise<Map<string, List<IEntityTypeOption>>> {
     const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
 
     const filters = [];
 
-    if (!skipProjectDataExclusion) {
-        const dataTypeExclusions = getProjectDataExclusion();
+    if (!skipFolderDataExclusion) {
+        const dataTypeExclusions = getFolderDataExclusion();
         const exclusions = dataTypeExclusions?.[entityDataType.folderConfigurableDataType];
         if (exclusions) filters.push(Filter.create('RowId', exclusions, Filter.Types.NOT_IN));
     }
@@ -538,7 +538,7 @@ export async function getEntityTypeOptions(
     return Map({ [typeListingSchemaQuery.queryName]: List(options) });
 }
 
-export async function getProjectConfigurableEntityTypeOptions(
+export async function getFolderConfigurableEntityTypeOptions(
     entityDataType: EntityDataType,
     containerPath?: string,
     containerFilter?: Query.ContainerFilter
@@ -762,13 +762,13 @@ export function getCrossFolderSelectionResult(
                         crossFolderSelectionCount: response.data.crossFolderSelectionCount,
                     });
                 } else {
-                    console.error('Error getting cross-project data selection result', response.exception);
+                    console.error('Error getting cross-container data selection result', response.exception);
                     reject(response.exception);
                 }
             }),
             failure: Utils.getCallbackWrapper(response => {
                 console.error(response);
-                reject(response ? response.exception : 'Unknown error getting cross-project data selection result.');
+                reject(response ? response.exception : 'Unknown error getting cross-container data selection result.');
             }),
         });
     });
@@ -809,7 +809,7 @@ export type GetParentTypeDataForLineage = (
     data: any[],
     containerPath?: string,
     containerFilter?: Query.ContainerFilter,
-    skipProjectDataExclusion?: boolean
+    skipFolderDataExclusion?: boolean
 ) => Promise<{
     parentIdData: Record<string, ParentIdData>;
     parentTypeOptions: List<IEntityTypeOption>;
@@ -820,7 +820,7 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
     data,
     containerPath,
     containerFilter,
-    skipProjectDataExclusion
+    skipFolderDataExclusion
 ) => {
     let parentTypeOptions = List<IEntityTypeOption>();
     let parentIdData: Record<string, ParentIdData>;
@@ -829,7 +829,7 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
             parentDataType,
             containerPath,
             containerFilter,
-            skipProjectDataExclusion
+            skipFolderDataExclusion
         );
         parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
 
@@ -976,7 +976,7 @@ export const initParentOptionsSelects = (
 }> => {
     const promises: Array<Promise<SelectRowsResponse>> = [];
 
-    const dataTypeExclusions = getProjectDataExclusion();
+    const dataTypeExclusions = getFolderDataExclusion();
 
     // Get Sample Types
     if (includeSampleTypes) {
@@ -1086,7 +1086,7 @@ export const getFolderDataTypeExclusions = (excludedContainer?: string): Promise
     }
 
     if (isCurrentContainer) {
-        return new Promise(resolve => resolve(getProjectDataExclusion()));
+        return new Promise(resolve => resolve(getFolderDataExclusion()));
     }
 
     return new Promise((resolve, reject) => {

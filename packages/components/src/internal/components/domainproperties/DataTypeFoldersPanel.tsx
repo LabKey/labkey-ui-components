@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
-import { hasProductProjects } from '../../app/utils';
+import { hasProductFolders } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
 
@@ -77,7 +77,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                     setExcludedContainerIdsDB(excludedContainerIds_);
                     setExcludedContainerIds(excludedContainerIds_);
 
-                    const allDataCounts_ = await api.query.getDataTypeProjectDataCount(
+                    const allDataCounts_ = await api.query.getDataTypeFolderDataCount(
                         entityDataType,
                         dataTypeRowId,
                         dataTypeName
@@ -127,7 +127,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
         [onUpdateExcludedFolders]
     );
 
-    if (!hasProductProjects(moduleContext)) {
+    if (!hasProductFolders(moduleContext)) {
         return null;
     }
 

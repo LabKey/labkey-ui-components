@@ -81,7 +81,7 @@ export const TEST_LIMS_STARTER_MODULE_CONTEXT = {
             ProductFeature.Assay,
             ProductFeature.ELN,
             ProductFeature.FreezerManagement,
-            ProductFeature.Projects,
+            ProductFeature.Folders,
             ProductFeature.SampleManagement,
             ProductFeature.Workflow,
             ProductFeature.ApiKeys,

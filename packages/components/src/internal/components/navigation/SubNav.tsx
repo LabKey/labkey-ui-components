@@ -20,7 +20,7 @@ import { useLocation } from 'react-router-dom';
 
 import { useServerContext } from '../base/ServerContext';
 
-import { hasPremiumModule, hasProductProjects } from '../../app/utils';
+import { hasPremiumModule, hasProductFolders } from '../../app/utils';
 
 import { NavItem, ParentNavItem } from './NavItem';
 import { isAdminRoute } from './ProductMenu';
@@ -38,7 +38,7 @@ const SubNavImpl: FC<Props> = ({ noun, tabs }) => {
     const scrollable = useRef<HTMLDivElement>();
     const { container, moduleContext } = useServerContext();
     const { versionString } = getServerContext();
-    const showCurrentContainer = hasPremiumModule(moduleContext) && !hasProductProjects(moduleContext);
+    const showCurrentContainer = hasPremiumModule(moduleContext) && !hasProductFolders(moduleContext);
     const [isScrollable, setIsScrollable] = useState<boolean>(false);
     const scroll = useCallback(offset => {
         scrollable.current.scrollLeft = scrollable.current.scrollLeft + offset;

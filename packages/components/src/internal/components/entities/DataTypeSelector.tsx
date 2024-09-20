@@ -96,7 +96,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
             setLoading(true);
             setError(undefined);
 
-            const results = await api.query.getProjectConfigurableEntityTypeOptions(entityDataType, container?.path);
+            const results = await api.query.getFolderConfigurableEntityTypeOptions(entityDataType, container?.path);
 
             // the Dashboard related data type exclusions should hide entities from the parent/related exclusion
             const results_ = results?.filter(type => filterDataTypeHiddenEntity(type, hiddenEntities));
@@ -136,7 +136,7 @@ export const DataTypeSelector: FC<DataTypeSelectorProps> = memo(props => {
     const ensureCount = useCallback(async () => {
         if (dataCounts) return;
 
-        const results = await api.query.getProjectDataTypeDataCount(dataType, container?.path, dataTypes, isNewFolder);
+        const results = await api.query.getFolderDataTypeDataCount(dataType, container?.path, dataTypes, isNewFolder);
         setDataCounts(results);
     }, [api.query, dataCounts, dataType, dataTypes, isNewFolder, container?.path]);
 

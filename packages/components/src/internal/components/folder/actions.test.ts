@@ -2,34 +2,34 @@ import { AssayRunDataType, DataClassDataType, SampleTypeDataType } from '../enti
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
-import { getDataTypeFolderDataCountSql, getProjectDataTypeDataCountSql } from './actions';
+import { getDataTypeFolderDataCountSql, getFolderDataTypeDataCountSql } from './actions';
 import { FolderConfigurableDataType } from '../entities/models';
 
-describe('getProjectDataTypeDataCountSql', () => {
+describe('getFolderDataTypeDataCountSql', () => {
     test('null', () => {
-        expect(getProjectDataTypeDataCountSql(null)).toBeNull();
+        expect(getFolderDataTypeDataCountSql(null)).toBeNull();
     });
 
     test('SampleType', () => {
-        expect(getProjectDataTypeDataCountSql('SampleType')).toBe(
+        expect(getFolderDataTypeDataCountSql('SampleType')).toBe(
             'SELECT SampleSet as Type, COUNT(*) as DataCount FROM exp.materials GROUP BY SampleSet'
         );
     });
 
     test('DataClass', () => {
-        expect(getProjectDataTypeDataCountSql('DataClass')).toBe(
+        expect(getFolderDataTypeDataCountSql('DataClass')).toBe(
             'SELECT dataclass as Type, COUNT(*) as DataCount FROM exp.data WHERE DataClass IS NOT NULL GROUP BY dataclass'
         );
     });
 
     test('AssayDesign', () => {
-        expect(getProjectDataTypeDataCountSql('AssayDesign')).toBe(
+        expect(getFolderDataTypeDataCountSql('AssayDesign')).toBe(
             'SELECT protocol as Type, COUNT(*) as DataCount FROM exp.AssayRuns GROUP BY protocol'
         );
     });
 });
 
-describe('getDataTypeProjectDataCountSql', () => {
+describe('getDataTypeFolderDataCountSql', () => {
     test('create case, no queryName', () => {
         expect(getDataTypeFolderDataCountSql(SampleTypeDataType, undefined, undefined)).toBeNull();
     });

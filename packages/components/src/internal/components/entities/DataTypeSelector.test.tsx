@@ -127,12 +127,12 @@ describe('DataTypeSelector', () => {
     ];
     const apiWithResults = getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
-            getProjectConfigurableEntityTypeOptions: jest.fn().mockResolvedValue(sampleTypes),
+            getFolderConfigurableEntityTypeOptions: jest.fn().mockResolvedValue(sampleTypes),
         }),
     });
     const apiWithNoResults = getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
-            getProjectConfigurableEntityTypeOptions: jest.fn().mockResolvedValue([]),
+            getFolderConfigurableEntityTypeOptions: jest.fn().mockResolvedValue([]),
         }),
     });
 

@@ -4,9 +4,9 @@ import { caseInsensitive } from '../../util/utils';
 import { DataTypeEntity, EntityDataType, FolderConfigurableDataType } from '../entities/models';
 import { getContainerFilterForFolder } from '../../query/api';
 import { SCHEMAS } from '../../schemas';
-import { isAllProductFoldersFilteringEnabled, isProductProjectsDataListingScopedToProject } from '../../app/utils';
+import { isAllProductFoldersFilteringEnabled, isProductFoldersDataListingScopedToFolder } from '../../app/utils';
 
-export function getProjectDataTypeDataCountSql(dataType: FolderConfigurableDataType): string {
+export function getFolderDataTypeDataCountSql(dataType: FolderConfigurableDataType): string {
     if (!dataType) return null;
 
     let typeField = 'SampleSet';
@@ -29,14 +29,14 @@ export function getProjectDataTypeDataCountSql(dataType: FolderConfigurableDataT
     return select + 'FROM ' + from + where + groupBy;
 }
 
-export function getProjectDataTypeDataCount(
+export function getFolderDataTypeDataCount(
     dataType: FolderConfigurableDataType,
     containerPath?: string,
     allDataTypes?: DataTypeEntity[],
     isNewFolder?: boolean
 ): Promise<Record<string, number>> {
     return new Promise((resolve, reject) => {
-        if (isProductProjectsDataListingScopedToProject() && isNewFolder) {
+        if (isProductFoldersDataListingScopedToFolder() && isNewFolder) {
             resolve({});
             return;
         }
@@ -60,7 +60,7 @@ export function getProjectDataTypeDataCount(
             containerPath,
             containerFilter: cf,
             schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
-            sql: getProjectDataTypeDataCountSql(dataType),
+            sql: getFolderDataTypeDataCountSql(dataType),
             success: result => {
                 const typeCounts = {};
                 result.rows?.forEach(row => {

@@ -24,8 +24,8 @@ import { getQueryMetadata } from '../global';
 import { resolveKeyFromJson, SchemaQuery } from '../../public/SchemaQuery';
 import {
     isAllProductFoldersFilteringEnabled,
-    isProductProjectsDataListingScopedToProject,
-    isProductProjectsEnabled,
+    isProductFoldersDataListingScopedToFolder,
+    isProductFoldersEnabled,
     isProjectContainer,
 } from '../app/utils';
 
@@ -1252,8 +1252,8 @@ export function processRequest(response: any, request: any, reject: (reason?: an
  * @private
  */
 export function getContainerFilter(containerPath?: string, moduleContext?: ModuleContext): Query.ContainerFilter {
-    // Check to see if product projects support is enabled.
-    if (!isProductProjectsEnabled(moduleContext)) {
+    // Check to see if product folders support is enabled.
+    if (!isProductFoldersEnabled(moduleContext)) {
         return undefined;
     }
 
@@ -1282,12 +1282,12 @@ export function getContainerFilterForFolder(
     containerPath?: string,
     moduleContext?: ModuleContext
 ): Query.ContainerFilter {
-    // Check to see if product projects support is enabled.
-    if (!isProductProjectsEnabled(moduleContext)) {
+    // Check to see if product folders support is enabled.
+    if (!isProductFoldersEnabled(moduleContext)) {
         return undefined;
     }
 
-    if (isProductProjectsDataListingScopedToProject(moduleContext)) {
+    if (isProductFoldersDataListingScopedToFolder(moduleContext)) {
         // When requesting data from a top-level folder context the ContainerFilter filters
         // "down" the folder hierarchy for data.
         if (isProjectContainer(containerPath)) {
@@ -1319,8 +1319,8 @@ export function getContainerFilterForFolder(
  * @private
  */
 export function getContainerFilterForLookups(moduleContext?: ModuleContext): Query.ContainerFilter {
-    // Check to see if product projects support is enabled.
-    if (!isProductProjectsEnabled(moduleContext)) {
+    // Check to see if product folderss support is enabled.
+    if (!isProductFoldersEnabled(moduleContext)) {
         return undefined;
     }
 

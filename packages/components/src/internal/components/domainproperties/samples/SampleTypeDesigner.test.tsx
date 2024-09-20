@@ -21,7 +21,7 @@ import { SampleTypeDesigner, SampleTypeDesignerImpl } from './SampleTypeDesigner
 
 const SERVER_CONTEXT = {
     moduleContext: {
-        query: { hasProductProjects: true },
+        query: { hasProductFolders: true },
     },
 };
 
@@ -186,7 +186,7 @@ describe('SampleTypeDesigner', () => {
     //             serverContext: {
     //                 moduleContext: {
     //                     ...TEST_LKS_STARTER_MODULE_CONTEXT,
-    //                     query: { hasProductProjects: true },
+    //                     query: { hasProductFolders: true },
     //                 },
     //             },
     //         });

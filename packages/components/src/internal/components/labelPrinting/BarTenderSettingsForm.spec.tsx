@@ -52,7 +52,7 @@ describe('BarTenderSettingsForm', () => {
         wrapper.unmount();
     });
 
-    test('default props, product project', async () => {
+    test('default props, product folder', async () => {
         const wrapper = mountWithAppServerContext(
             <BarTenderSettingsForm
                 {...DEFAULT_PROPS}
@@ -60,7 +60,7 @@ describe('BarTenderSettingsForm', () => {
             />,
             undefined,
             {
-                moduleContext: { query: { isProductProjectsEnabled: true } },
+                moduleContext: { query: { isProductFoldersEnabled: true } },
             }
         );
 
@@ -72,7 +72,7 @@ describe('BarTenderSettingsForm', () => {
         wrapper.unmount();
     });
 
-    test('default props, subfolder without projects', async () => {
+    test('default props, subfolder without folders', async () => {
         const wrapper = mountWithAppServerContext(
             <BarTenderSettingsForm
                 {...DEFAULT_PROPS}
@@ -80,7 +80,7 @@ describe('BarTenderSettingsForm', () => {
             />,
             undefined,
             {
-                moduleContext: { query: { isProductProjectsEnabled: false } },
+                moduleContext: { query: { isProductFoldersEnabled: false } },
             }
         );
 

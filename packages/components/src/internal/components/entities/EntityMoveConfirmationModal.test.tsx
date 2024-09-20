@@ -134,7 +134,7 @@ describe('getContainerOptions', () => {
         const options = await getContainerOptions(api_, TEST_PROJECT_CONTAINER, undefined, false, undefined, undefined);
         expect(options).toStrictEqual([
             {
-                label: 'Home Project',
+                label: 'Home Folder',
                 value: '/home',
                 data: homeContainer,
             },
@@ -159,7 +159,7 @@ describe('getContainerOptions', () => {
         const options = await getContainerOptions(api_, TEST_PROJECT_CONTAINER, undefined, false, undefined, undefined);
         expect(options).toStrictEqual([
             {
-                label: 'Home Project',
+                label: 'Home Folder',
                 value: '/home',
                 data: homeContainer,
             },
@@ -203,7 +203,7 @@ describe('getContainerOptions', () => {
 
         expect(options).toStrictEqual([
             {
-                label: 'Home Project',
+                label: 'Home Folder',
                 value: '/home',
                 data: homeContainer,
             },

@@ -480,7 +480,7 @@ describe('getSampleStatusLockedMessage', () => {
                 false
             )
         ).toBe(
-            'This sample status cannot change status type or be deleted because it is in use and can be changed only in the Test Project project.'
+            'This sample status cannot change status type or be deleted because it is in use and can be changed only in the Test Project folder.'
         );
     });
 
@@ -498,7 +498,7 @@ describe('getSampleStatusLockedMessage', () => {
                 true
             )
         ).toBe(
-            'This sample status cannot change status type or be deleted because it is in use and can be changed only in the Test Project project.'
+            'This sample status cannot change status type or be deleted because it is in use and can be changed only in the Test Project folder.'
         );
     });
 });

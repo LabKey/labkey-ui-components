@@ -36,7 +36,7 @@ export const GROUP_AUDIT_QUERY: AuditQuery = {
     label: 'Roles and Assignment Events',
     value: 'groupauditevent',
 };
-export const PROJECT_AUDIT_QUERY: AuditQuery = {
+export const CONTAINER_AUDIT_QUERY: AuditQuery = {
     containerFilter: Query.ContainerFilter.allFolders,
     label: 'Folder Events',
     value: 'containerauditevent',

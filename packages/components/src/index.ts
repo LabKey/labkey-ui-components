@@ -567,7 +567,7 @@ import {
     EXPERIMENT_AUDIT_EVENT,
     GROUP_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
-    PROJECT_AUDIT_QUERY,
+    CONTAINER_AUDIT_QUERY,
     QUERY_UPDATE_AUDIT_QUERY,
     SAMPLE_TIMELINE_AUDIT_QUERY,
     SAMPLE_TYPE_AUDIT_QUERY,
@@ -618,7 +618,7 @@ import { deleteDataClass, fetchDataClass } from './internal/components/domainpro
 import { DesignerDetailTooltip } from './internal/components/domainproperties/DesignerDetailPanel';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { RangeValidationOptionsModal } from './internal/components/domainproperties/validation/RangeValidationOptions';
-import { DataTypeProjectsPanel } from './internal/components/domainproperties/DataTypeProjectsPanel';
+import { DataTypeFoldersPanel } from './internal/components/domainproperties/DataTypeFoldersPanel';
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
@@ -1578,7 +1578,7 @@ export {
     IssuesListDefModel,
     IssuesListDefDesignerPanels,
     fetchIssuesListDefDesign,
-    DataTypeProjectsPanel,
+    DataTypeFoldersPanel,
     // file / webdav related items
     DEFAULT_FILE,
     FilesListing,
@@ -1753,7 +1753,7 @@ export {
     INVENTORY_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
     EXPERIMENT_AUDIT_EVENT,
-    PROJECT_AUDIT_QUERY,
+    CONTAINER_AUDIT_QUERY,
     AuditDetailsModel,
     AuditDetails,
     getAuditQueries,

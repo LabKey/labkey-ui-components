@@ -456,7 +456,7 @@ export type FolderConfigurableDataType =
     | 'DataClass'
     | 'AssayDesign'
     | 'StorageLocation'
-    | 'Folder';
+    | 'Container';
 
 /**
  *  Avoid inline comment or above line comments for properties due to es-lint's limitation on moving comments:

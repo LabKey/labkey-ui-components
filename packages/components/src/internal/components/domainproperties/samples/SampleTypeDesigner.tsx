@@ -45,7 +45,7 @@ import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupe
 
 import { SAMPLE_SET_IMPORT_PREFIX, SampleTypeDataType } from '../../entities/constants';
 
-import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
+import { DataTypeFoldersPanel } from '../DataTypeFoldersPanel';
 
 import { Container } from '../../base/models/Container';
 
@@ -758,16 +758,16 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                 />
                 {appPropertiesOnly && allowProjectExclusion && (
                     // appPropertiesOnly check will prevent this panel from showing in LKS and in LKB media types
-                    <DataTypeProjectsPanel
+                    <DataTypeFoldersPanel
                         controlledCollapse
                         dataTypeRowId={model?.rowId}
                         dataTypeName={model?.name}
                         entityDataType={SampleTypeDataType}
-                        relatedProjectConfigurableDataType="DashboardSampleType"
+                        relatedFolderConfigurableDataType="DashboardSampleType"
                         relatedDataTypeLabel="Include in Dashboard Insights graphs"
                         initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
                         onToggle={this.projectsToggle}
-                        onUpdateExcludedProjects={this.onUpdateExcludedProjects}
+                        onUpdateExcludedFolders={this.onUpdateExcludedProjects}
                     />
                 )}
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}

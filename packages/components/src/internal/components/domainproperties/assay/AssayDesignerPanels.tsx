@@ -21,7 +21,7 @@ import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../../assay/constants';
 
-import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
+import { DataTypeFoldersPanel } from '../DataTypeFoldersPanel';
 
 import { AssayRunDataType } from '../../entities/constants';
 
@@ -335,7 +335,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                     })
                     .toArray()}
                 {appPropertiesOnly && allowProjectExclusion && (
-                    <DataTypeProjectsPanel
+                    <DataTypeFoldersPanel
                         controlledCollapse
                         dataTypeRowId={protocolModel?.protocolId}
                         dataTypeName={protocolModel?.name}
@@ -344,7 +344,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                         onToggle={(collapsed, callback) => {
                             onTogglePanel(protocolModel.domains.size + 1, collapsed, callback);
                         }}
-                        onUpdateExcludedProjects={this.onUpdateExcludedProjects}
+                        onUpdateExcludedFolders={this.onUpdateExcludedProjects}
                     />
                 )}
             </BaseDomainDesigner>

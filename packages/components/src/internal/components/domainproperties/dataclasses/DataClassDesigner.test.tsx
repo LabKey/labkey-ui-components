@@ -74,7 +74,7 @@ describe('DataClassDesigner', () => {
     //     expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
     //     expect(document.querySelectorAll('.domain-form-panel').length).toBe(2);
     //     expect(screen.getByText('Import or infer fields from file')).toBeInTheDocument();
-    //     expect(document.querySelectorAll('#domain-projects-hdr').length).toBe(0);
+    //     expect(document.querySelectorAll('#domain-folders-hdr').length).toBe(0);
     // });
     //
     // test('initModel', async () => {
@@ -108,6 +108,6 @@ describe('DataClassDesigner', () => {
     //     expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
     //     expect(document.querySelectorAll('.domain-form-panel').length).toBe(3);
     //     expect(screen.queryByText('Import or infer fields from file')).not.toBeInTheDocument();
-    //     expect(document.querySelectorAll('#domain-projects-hdr').length).toBe(1);
+    //     expect(document.querySelectorAll('#domain-folders-hdr').length).toBe(1);
     // });
 });

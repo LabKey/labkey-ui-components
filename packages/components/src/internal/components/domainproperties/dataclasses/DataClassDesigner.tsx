@@ -28,7 +28,7 @@ import { getDuplicateAlias, getParentAliasChangeResult, getParentAliasUpdateDupe
 
 import { DATA_CLASS_IMPORT_PREFIX, DataClassDataType } from '../../entities/constants';
 import { initParentOptionsSelects } from '../../entities/actions';
-import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
+import { DataTypeFoldersPanel } from '../DataTypeFoldersPanel';
 
 import { Container } from '../../base/models/Container';
 
@@ -540,14 +540,14 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
                     systemFields={model.options.systemFields}
                 />
                 {appPropertiesOnly && !model.isBuiltIn && allowProjectExclusion && (
-                    <DataTypeProjectsPanel
+                    <DataTypeFoldersPanel
                         controlledCollapse
                         dataTypeRowId={model?.rowId}
                         dataTypeName={model?.name}
                         entityDataType={DataClassDataType}
                         initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
                         onToggle={this.projectsToggle}
-                        onUpdateExcludedProjects={this.onUpdateExcludedProjects}
+                        onUpdateExcludedFolders={this.onUpdateExcludedProjects}
                     />
                 )}
                 <NameExpressionValidationModal

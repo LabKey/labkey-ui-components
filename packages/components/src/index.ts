@@ -1928,7 +1928,7 @@ export type { ContainerUser, UseContainerUser } from './internal/components/cont
 export type {
     FolderAPIWrapper,
     FolderSettingsOptions,
-    UpdateProjectSettingsOptions,
+    UpdateContainerSettingsOptions,
 } from './internal/components/container/FolderAPIWrapper';
 export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';

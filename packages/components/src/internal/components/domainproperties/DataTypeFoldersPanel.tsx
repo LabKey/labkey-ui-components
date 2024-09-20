@@ -61,7 +61,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                 setError(undefined);
 
                 try {
-                    const containers = await api.folder.getProjects(container, moduleContext, true, true, true);
+                    const containers = await api.folder.getContainers(container, moduleContext, true, true, true);
 
                     const allContainers_ = containers.map(container_ => {
                         return { label: container_.title, lsid: container_.id, type: 'Container' } as DataTypeEntity;
@@ -70,7 +70,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                     setChildFolders(allContainers_.slice(1));
                     setAllContainers(allContainers_);
 
-                    const excludedContainerIds_ = await api.folder.getDataTypeExcludedProjects(
+                    const excludedContainerIds_ = await api.folder.getDataTypeExcludedContainers(
                         entityDataType.folderConfigurableDataType,
                         dataTypeRowId
                     );
@@ -85,7 +85,7 @@ export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPan
                     setAllDataCounts(allDataCounts_);
 
                     if (relatedFolderConfigurableDataType) {
-                        const relatedExcludedContainerIds_ = await api.folder.getDataTypeExcludedProjects(
+                        const relatedExcludedContainerIds_ = await api.folder.getDataTypeExcludedContainers(
                             relatedFolderConfigurableDataType,
                             dataTypeRowId
                         );

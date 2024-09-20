@@ -36,9 +36,9 @@ export async function getContainerOptions(
     dataType: FolderConfigurableDataType,
     dataTypeRowId: number
 ): Promise<SelectInputOption[]> {
-    let folders = await api.folder.getProjects(container, moduleContext, true, true, true);
+    let folders = await api.folder.getContainers(container, moduleContext, true, true, true);
 
-    const excludedFolders = await api.folder.getDataTypeExcludedProjects(dataType, dataTypeRowId);
+    const excludedFolders = await api.folder.getDataTypeExcludedContainers(dataType, dataTypeRowId);
 
     // filter to folders that the user has InsertPermissions
     folders = folders?.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Insert) > -1);

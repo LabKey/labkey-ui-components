@@ -25,11 +25,11 @@ describe('CHART_GROUPS', () => {
             SampleType: [3, 4],
         };
 
-        expect(CHART_GROUPS.Assays.getProjectExclusionFilter(projectExclusions).getValue()).toStrictEqual([5, 6]);
-        expect(CHART_GROUPS.Samples.getProjectExclusionFilter(projectExclusions).getValue()).toStrictEqual([
+        expect(CHART_GROUPS.Assays.getContainerExclusionFilter(projectExclusions).getValue()).toStrictEqual([5, 6]);
+        expect(CHART_GROUPS.Samples.getContainerExclusionFilter(projectExclusions).getValue()).toStrictEqual([
             3, 4, 1, 2,
         ]);
-        expect(CHART_GROUPS.SampleStatuses.getProjectExclusionFilter(projectExclusions).getValue()).toStrictEqual([
+        expect(CHART_GROUPS.SampleStatuses.getContainerExclusionFilter(projectExclusions).getValue()).toStrictEqual([
             3, 4, 1, 2,
         ]);
     });

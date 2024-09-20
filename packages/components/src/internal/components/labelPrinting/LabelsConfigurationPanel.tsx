@@ -103,7 +103,7 @@ const canBeDefault = (template: LabelTemplate): boolean => {
     return (
         !template || // New template
         currentContainer.parentId === template.container || // Template is from the project level
-        currentContainer.id === template.container // Template is from this project
+        currentContainer.id === template.container // Template is from this container
     );
 };
 

@@ -463,7 +463,7 @@ describe('getSampleStatusLockedMessage', () => {
                 }),
                 false
             )
-        ).toBe('This sample status can be changed only in the Test Project project.');
+        ).toBe('This sample status can be changed only in the Test Project folder.');
     });
 
     test('in use and not local', () => {

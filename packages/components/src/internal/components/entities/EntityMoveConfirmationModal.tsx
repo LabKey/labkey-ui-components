@@ -134,7 +134,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                 title={confirmModalProps.title}
                 onCancel={confirmModalProps.onCancel}
             >
-                <LoadingSpinner msg="Loading target projects..." />
+                <LoadingSpinner msg="Loading target folders..." />
             </Modal>
         );
     }
@@ -158,7 +158,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                 onCancel={confirmModalProps.onCancel}
                 cancelText="Dismiss"
             >
-                You do not have permission to move {nounPlural} to any of the available projects.
+                You do not have permission to move {nounPlural} to any of the available folders.
             </Modal>
         );
     }

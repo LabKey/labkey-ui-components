@@ -214,9 +214,7 @@ export function getAppHomeFolderId(container?: Container, moduleContext?: Module
     return isAppHomeFolder(currentContainer, moduleContext) ? currentContainer.id : currentContainer.parentId;
 }
 
-export function isSharedContainer(
-    containerPath: string,
-): boolean {
+export function isSharedContainer(containerPath: string): boolean {
     return containerPath === SHARED_CONTAINER_PATH;
 }
 

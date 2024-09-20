@@ -18,18 +18,18 @@ describe('CHART_GROUPS', () => {
         );
     });
 
-    test('getProjectExclusionFilter', () => {
-        const projectExclusions = {
+    test('getContainerExclusionFilter', () => {
+        const containerExclusions = {
             AssayDesign: [5, 6],
             DashboardSampleType: [1, 2],
             SampleType: [3, 4],
         };
 
-        expect(CHART_GROUPS.Assays.getContainerExclusionFilter(projectExclusions).getValue()).toStrictEqual([5, 6]);
-        expect(CHART_GROUPS.Samples.getContainerExclusionFilter(projectExclusions).getValue()).toStrictEqual([
+        expect(CHART_GROUPS.Assays.getContainerExclusionFilter(containerExclusions).getValue()).toStrictEqual([5, 6]);
+        expect(CHART_GROUPS.Samples.getContainerExclusionFilter(containerExclusions).getValue()).toStrictEqual([
             3, 4, 1, 2,
         ]);
-        expect(CHART_GROUPS.SampleStatuses.getContainerExclusionFilter(projectExclusions).getValue()).toStrictEqual([
+        expect(CHART_GROUPS.SampleStatuses.getContainerExclusionFilter(containerExclusions).getValue()).toStrictEqual([
             3, 4, 1, 2,
         ]);
     });

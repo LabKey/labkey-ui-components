@@ -45,7 +45,7 @@ describe('EntityMoveConfirmationModal', () => {
         expect(document.body.textContent).toContain('This is an error message.');
     });
 
-    test('no insert perm to any projects', async () => {
+    test('no insert perm to any conatiners', async () => {
         await act(async () => {
             renderWithAppContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
                 serverContext: DEFAULT_SERVER_CONTEXT,
@@ -69,11 +69,11 @@ describe('EntityMoveConfirmationModal', () => {
             });
         });
         expect(document.body.textContent).toContain(
-            'You do not have permission to move samples to any of the available projects.'
+            'You do not have permission to move samples to any of the available folders.'
         );
     });
 
-    test('has perm to move to another project', async () => {
+    test('has perm to move to another folder', async () => {
         await act(async () => {
             renderWithAppContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
                 serverContext: DEFAULT_SERVER_CONTEXT,

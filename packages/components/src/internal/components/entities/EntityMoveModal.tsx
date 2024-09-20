@@ -128,14 +128,14 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                     auditUserComment,
                 });
 
-                let projectUrl = buildURL(
+                let containerUrl = buildURL(
                     getPrimaryAppProperties()?.productId,
                     `${ActionURL.getAction() || 'app'}.view`,
                     undefined,
                     { container: targetContainerPath, returnUrl: false }
                 );
                 if (targetAppURL) {
-                    projectUrl = projectUrl + targetAppURL.toHref();
+                    containerUrl = containerUrl + targetAppURL.toHref();
                 }
 
                 const movedCount =
@@ -146,7 +146,7 @@ export const EntityMoveModal: FC<EntityMoveModalProps> = memo(props => {
                         {
                             message: (
                                 <>
-                                    Successfully moved {movedCount} {movedNoun} to <a href={projectUrl}>{targetName}</a>
+                                    Successfully moved {movedCount} {movedNoun} to <a href={containerUrl}>{targetName}</a>
                                     .
                                 </>
                             ),

@@ -135,7 +135,7 @@ describe('SampleTypeDesigner', () => {
     //     const panelTitles = document.querySelectorAll('.domain-panel-title');
     //     expect(panelTitles[0].textContent).toBe('Sample Type Properties');
     //     expect(panelTitles[1].textContent).toBe('Fields');
-    //     expect(panelTitles[2].textContent).toBe('Projects');
+    //     expect(panelTitles[2].textContent).toBe('Folders');
     // });
     //
     // test('initModel with name URL props', async () => {

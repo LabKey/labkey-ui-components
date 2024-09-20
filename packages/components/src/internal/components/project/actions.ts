@@ -122,8 +122,8 @@ export function getDataTypeFolderDataCount(
             success: result => {
                 const counts = {};
                 result.rows?.forEach(row => {
-                    const project = caseInsensitive(row, 'Project');
-                    counts[project] = caseInsensitive(row, 'DataCount');
+                    const container = caseInsensitive(row, 'Folder');
+                    counts[container] = caseInsensitive(row, 'DataCount');
                 });
                 resolve(counts);
             },

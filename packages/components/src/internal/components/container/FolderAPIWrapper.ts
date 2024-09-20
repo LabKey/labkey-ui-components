@@ -89,7 +89,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 success: Utils.getCallbackWrapper(({ data }) => {
                     resolve(new Container(data.project));
                 }),
-                failure: handleRequestFailure(reject, 'Failed to rename project'),
+                failure: handleRequestFailure(reject, 'Failed to rename folder.'),
             });
         });
     };

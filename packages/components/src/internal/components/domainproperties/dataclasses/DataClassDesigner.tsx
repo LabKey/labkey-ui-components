@@ -37,7 +37,7 @@ import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 
 interface Props {
     allowParentAlias?: boolean;
-    allowProjectExclusion?: boolean;
+    allowFolderExclusion?: boolean;
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: DataClassModel) => void;
@@ -80,7 +80,7 @@ const NEW_DATA_CLASS_OPTION: IParentOption = {
 
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
-const PROJECTS_PANEL_INDEX = 2;
+const FOLDERS_PANEL_INDEX = 2;
 
 export type DataClassDesignerProps = Props & InjectedBaseDomainDesignerProps;
 
@@ -417,7 +417,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         this.saveModel(newModel);
     };
 
-    onUpdateExcludedProjects = (_: FolderConfigurableDataType, excludedContainerIds: string[]): void => {
+    onUpdateExcludedFolders = (_: FolderConfigurableDataType, excludedContainerIds: string[]): void => {
         const { model } = this.state;
         const newModel = {
             ...model,
@@ -434,8 +434,8 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
         this.props.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback);
     };
 
-    projectsToggle = (collapsed: boolean, callback: () => void): void => {
-        this.props.onTogglePanel(PROJECTS_PANEL_INDEX, collapsed, callback);
+    foldersToggle = (collapsed: boolean, callback: () => void): void => {
+        this.props.onTogglePanel(FOLDERS_PANEL_INDEX, collapsed, callback);
     };
 
     render(): ReactNode {
@@ -459,7 +459,7 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
             domainFormDisplayOptions,
             showGenIdBanner,
             allowParentAlias,
-            allowProjectExclusion,
+            allowFolderExclusion,
         } = this.props;
         const { model, nameExpressionWarnings, namePreviews, namePreviewsLoading, parentOptions } = this.state;
 
@@ -539,15 +539,15 @@ export class DataClassDesignerImpl extends PureComponent<DataClassDesignerProps,
                     domainFormDisplayOptions={domainFormDisplayOptions}
                     systemFields={model.options.systemFields}
                 />
-                {appPropertiesOnly && !model.isBuiltIn && allowProjectExclusion && (
+                {appPropertiesOnly && !model.isBuiltIn && allowFolderExclusion && (
                     <DataTypeFoldersPanel
                         controlledCollapse
                         dataTypeRowId={model?.rowId}
                         dataTypeName={model?.name}
                         entityDataType={DataClassDataType}
-                        initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
-                        onToggle={this.projectsToggle}
-                        onUpdateExcludedFolders={this.onUpdateExcludedProjects}
+                        initCollapsed={currentPanelIndex !== FOLDERS_PANEL_INDEX}
+                        onToggle={this.foldersToggle}
+                        onUpdateExcludedFolders={this.onUpdateExcludedFolders}
                     />
                 )}
                 <NameExpressionValidationModal

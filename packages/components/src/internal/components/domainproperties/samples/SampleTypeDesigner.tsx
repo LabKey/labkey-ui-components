@@ -61,7 +61,7 @@ const NEW_SAMPLE_SET_OPTION: IParentOption = {
 
 const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
-const PROJECTS_PANEL_INDEX = 2;
+const FOLDERS_PANEL_INDEX = 2;
 
 const SAMPLE_TYPE_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
 const SAMPLE_TYPE_HELP_TOPIC = 'createSampleType';
@@ -90,7 +90,7 @@ const AliquotOptionsHelp: FC<{ helpTopic: string }> = memo(({ helpTopic }) => {
 
 interface Props {
     aliquotNamePatternProps?: AliquotNamePatternProps;
-    allowProjectExclusion?: boolean;
+    allowFolderExclusion?: boolean;
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: SampleTypeModel) => void;
@@ -244,8 +244,8 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         this.props.onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback);
     };
 
-    projectsToggle = (collapsed: boolean, callback: () => void): void => {
-        this.props.onTogglePanel(PROJECTS_PANEL_INDEX, collapsed, callback);
+    foldersToggle = (collapsed: boolean, callback: () => void): void => {
+        this.props.onTogglePanel(FOLDERS_PANEL_INDEX, collapsed, callback);
     };
 
     parentAliasChange = (id: string, field: string, newValue: any): void => {
@@ -280,7 +280,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
         this.onFieldChange(newModel);
     };
 
-    onUpdateExcludedProjects = (dataType: FolderConfigurableDataType, excludedContainerIds: string[]): void => {
+    onUpdateExcludedFolders = (dataType: FolderConfigurableDataType, excludedContainerIds: string[]): void => {
         const { model } = this.state;
         if (dataType === 'SampleType') {
             const newModel = model.set('excludedContainerIds', excludedContainerIds) as SampleTypeModel;
@@ -578,7 +578,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
 
     render() {
         const {
-            allowProjectExclusion,
+            allowFolderExclusion,
             api,
             appPropertiesOnly,
             currentPanelIndex,
@@ -756,7 +756,7 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                     }}
                     systemFields={options?.get('systemFields')}
                 />
-                {appPropertiesOnly && allowProjectExclusion && (
+                {appPropertiesOnly && allowFolderExclusion && (
                     // appPropertiesOnly check will prevent this panel from showing in LKS and in LKB media types
                     <DataTypeFoldersPanel
                         controlledCollapse
@@ -765,9 +765,9 @@ export class SampleTypeDesignerImpl extends React.PureComponent<Props & Injected
                         entityDataType={SampleTypeDataType}
                         relatedFolderConfigurableDataType="DashboardSampleType"
                         relatedDataTypeLabel="Include in Dashboard Insights graphs"
-                        initCollapsed={currentPanelIndex !== PROJECTS_PANEL_INDEX}
-                        onToggle={this.projectsToggle}
-                        onUpdateExcludedFolders={this.onUpdateExcludedProjects}
+                        initCollapsed={currentPanelIndex !== FOLDERS_PANEL_INDEX}
+                        onToggle={this.foldersToggle}
+                        onUpdateExcludedFolders={this.onUpdateExcludedFolders}
                     />
                 )}
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}

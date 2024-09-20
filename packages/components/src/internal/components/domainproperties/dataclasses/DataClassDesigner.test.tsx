@@ -92,11 +92,11 @@ describe('DataClassDesigner', () => {
     //     expect(screen.queryByText('Import or infer fields from file')).not.toBeInTheDocument();
     // });
     //
-    // test('appPropertiesOnly and allowProjectExclusion', async () => {
+    // test('appPropertiesOnly and allowFolderExclusion', async () => {
     //     const component = (
     //         <DataClassDesignerImpl
     //             {...BASE_PROPS}
-    //             allowProjectExclusion
+    //             allowFolderExclusion
     //             appPropertiesOnly
     //             initModel={DataClassModel.create(getDomainDetailsJSON)}
     //         />

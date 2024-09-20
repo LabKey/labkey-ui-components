@@ -54,7 +54,7 @@ export interface AdminAppContext {
     FolderStorageSelectionComponent?: FolderStorageSelection;
     WorkflowNotificationSettingsComponent: WorkflowNotificationSettings;
     extraPermissionRoles: string[][];
-    projectDataTypes?: EntityDataType[];
+    folderDataTypes?: EntityDataType[];
     sampleTypeDataType?: EntityDataType;
 }
 

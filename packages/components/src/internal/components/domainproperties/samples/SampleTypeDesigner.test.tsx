@@ -109,7 +109,7 @@ describe('SampleTypeDesigner', () => {
     //     expect(panelTitles[1].textContent).toBe('Fields');
     // });
     //
-    // test('allowProjectExclusion', async () => {
+    // test('allowFolderExclusion', async () => {
     //     const form = (
     //         <SampleTypeDesignerImpl
     //             {...BASE_PROPS}
@@ -121,7 +121,7 @@ describe('SampleTypeDesigner', () => {
     //             submitting={false}
     //             validatePanel={0}
     //             visitedPanels={List()}
-    //             allowProjectExclusion
+    //             allowFolderExclusion
     //         />
     //     );
     //

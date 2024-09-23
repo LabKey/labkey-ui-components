@@ -124,14 +124,14 @@ export interface EntityAPIWrapper {
         parentAliases: Map<string, IParentAlias>;
         parentOptions: IParentOption[];
     }>;
-    loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
-    moveEntities: (options: MoveEntitiesOptions) => Promise<Query.MoveRowsResponse>;
     isDataTypeEmpty: (
         dataType: ProjectConfigurableDataType,
         lsid?: string,
         rowId?: number,
         containerPath?: string
     ) => Promise<boolean>;
+    loadNameExpressionOptions: (containerPath?: string) => Promise<GetNameExpressionOptionsResponse>;
+    moveEntities: (options: MoveEntitiesOptions) => Promise<Query.MoveRowsResponse>;
 }
 
 export class EntityServerAPIWrapper implements EntityAPIWrapper {

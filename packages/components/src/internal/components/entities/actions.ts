@@ -852,10 +852,10 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
         const excludedTypeIds = getProjectDataExclusion()?.[parentDataType.projectConfigurableDataType];
         if (excludedTypeIds?.length > 0) {
             parentTypeOptions.forEach(option => {
-                if (excludedTypeIds.indexOf(option.rowId) === -1) validParentTypeOptions = validParentTypeOptions.concat(option) as List<IEntityTypeOption>;
+                if (excludedTypeIds.indexOf(option.rowId) === -1)
+                    validParentTypeOptions = validParentTypeOptions.concat(option) as List<IEntityTypeOption>;
             });
-        }
-        else {
+        } else {
             validParentTypeOptions = parentTypeOptions;
         }
 
@@ -900,9 +900,10 @@ export const getOriginalParentsFromLineage = async (
             dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
                 ? dataClassTypeData.parentTypeOptions
                 : sampleTypeData.parentTypeOptions;
-        const validParentTypeOptions = dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
-            ? dataClassTypeData.validParentTypeOptions
-            : sampleTypeData.validParentTypeOptions;
+        const validParentTypeOptions =
+            dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
+                ? dataClassTypeData.validParentTypeOptions
+                : sampleTypeData.validParentTypeOptions;
 
         const parentIdData =
             dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
@@ -1038,7 +1039,7 @@ export const initParentOptionsSelects = (
         Promise.all(promises)
             .then(responses => {
                 const allOptions: IParentOption[] = [];
-                const excludedOptions : string[] = [];
+                const excludedOptions: string[] = [];
                 responses.forEach(result => {
                     const rows = result.rows;
                     const isDataClass = result.schemaQuery?.queryName?.toLowerCase() === 'dataclasses';
@@ -1052,9 +1053,9 @@ export const initParentOptionsSelects = (
                         const rowId = caseInsensitive(row, 'RowId')?.value;
                         const name = caseInsensitive(row, 'Name')?.value;
                         const containerPath = caseInsensitive(row, 'Folder').displayValue;
-                        const isExcluded = (isDataClass ? dataClassExclusions : sampleTypeExclusions)?.indexOf(rowId) > -1;
-                        if (isExcluded)
-                            excludedOptions.push(prefix + name);
+                        const isExcluded =
+                            (isDataClass ? dataClassExclusions : sampleTypeExclusions)?.indexOf(rowId) > -1;
+                        if (isExcluded) excludedOptions.push(prefix + name);
                         const label = formatLabel ? formatLabel(name, labelPrefix, isDataClass, containerPath) : name;
                         allOptions.push({
                             value: prefix + name,
@@ -1074,7 +1075,7 @@ export const initParentOptionsSelects = (
                 });
 
                 const parentOptions = allOptions
-                    .filter((option => excludedOptions.indexOf(option.value) === -1))
+                    .filter(option => excludedOptions.indexOf(option.value) === -1)
                     .sort(naturalSortByProperty('label'));
 
                 let parentAliases = Map<string, IParentAlias>();

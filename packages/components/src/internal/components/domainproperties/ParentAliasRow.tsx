@@ -12,6 +12,7 @@ import { DeleteIcon } from '../base/DeleteIcon';
 interface IParentAliasRow {
     aliasCaption: string;
     helpMsg: string;
+    hideRequiredCheck?: boolean;
     id: string;
     onAliasChange: (id: string, alias: string, newValue: any) => void;
     onRemove: (index: string) => void;
@@ -19,7 +20,6 @@ interface IParentAliasRow {
     parentOptions?: IParentOption[];
     parentTypeCaption: string;
     updateDupeParentAliases?: (id: string) => void;
-    hideRequiredCheck?: boolean;
 }
 
 export class ParentAliasRow extends React.Component<IParentAliasRow> {
@@ -134,7 +134,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                             />
                         </div>
                         <div className="col-xs-4 domain-field-alias--input">
-                            {!hideRequiredCheck &&
+                            {!hideRequiredCheck && (
                                 <input
                                     checked={required}
                                     disabled={false}
@@ -142,7 +142,7 @@ export class ParentAliasRow extends React.Component<IParentAliasRow> {
                                     onChange={this.onToggleRequired}
                                     type="checkbox"
                                 />
-                            }
+                            )}
                             <div className="pull-right">
                                 <DeleteIcon
                                     id={id + '-delete'}

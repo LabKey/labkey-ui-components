@@ -33,8 +33,9 @@ import { SCHEMAS } from '../../../schemas';
 import { DomainParentAliases } from '../DomainParentAliases';
 import { IParentAlias, IParentOption } from '../../entities/models';
 
-import { DataClassModel } from './models';
 import { SectionHeading } from '../SectionHeading';
+
+import { DataClassModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'dataclass-properties-hdr';
 const FORM_IDS = {

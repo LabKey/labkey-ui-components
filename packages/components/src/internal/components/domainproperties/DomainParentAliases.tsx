@@ -19,6 +19,7 @@ interface Props {
     dataClassAliasCaption?: string;
     dataClassParentageLabel?: string;
     dataClassTypeCaption?: string;
+    hideRequiredCheck?: boolean;
     idPrefix: string;
     includeDataClass?: boolean;
     includeSampleSet?: boolean;
@@ -28,13 +29,12 @@ interface Props {
     parentAliasHelpText?: string;
     parentAliases?: OrderedMap<string, IParentAlias>;
     parentOptions: IParentOption[];
-    sampleAliasCaption?: string;
     sampleTypeCaption?: string;
     schema: string;
     showAddBtn?: boolean;
     updateDupeParentAliases?: (id: string) => void;
     useSeparateDataClassesAliasMenu?: boolean;
-    hideRequiredCheck?: boolean;
+    sampleAliasCaption?: string;
 }
 
 const sampleSetAliasFilterFn = (alias: IParentAlias): boolean => {

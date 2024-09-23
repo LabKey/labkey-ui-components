@@ -335,12 +335,14 @@ export class EditorModel
                     if (values.size === 1) val = values.first()?.raw;
                     row = row.set(col.name, val);
                 }
-            } else if (col.jsonType === 'time' || col.jsonType === 'date') {
+            } else if (col.jsonType === 'time') {
                 row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
+            } else if (col.jsonType === 'date') {
+                row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
             } else {
-                let val = values.size === 1 ? values.first().raw?.toString().trim() : undefined;
-                if (displayValues) val = getValidatedEditableGridValue(val, col).value;
-                row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
+                let val = values.size === 1 ? values.first().raw : undefined;
+                if (!displayValues) val = getValidatedEditableGridValue(val?.toString().trim(), col).value;
+                row = row.set(col.name, val);
             }
         });
 

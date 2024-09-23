@@ -71,7 +71,6 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         idPrefix,
         onAddParentAlias,
         schema,
-        addEntityHelp,
         parentAliasHelpText,
         useSeparateDataClassesAliasMenu,
         hideRequiredCheck,

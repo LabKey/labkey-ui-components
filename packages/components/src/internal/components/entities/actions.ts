@@ -814,11 +814,11 @@ export type GetParentTypeDataForLineage = (
     data: any[],
     containerPath?: string,
     containerFilter?: Query.ContainerFilter,
-    skipProjectDataExclusion?: boolean,
     requiredParentTypes?: string[]
 ) => Promise<{
     parentIdData: Record<string, ParentIdData>;
     parentTypeOptions: List<IEntityTypeOption>;
+    validParentTypeOptions: List<IEntityTypeOption>; // excluding folder-level excluded types
 }>;
 
 export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
@@ -826,20 +826,30 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
     data,
     containerPath,
     containerFilter,
-    skipProjectDataExclusion,
     requiredParentTypes
 ) => {
     let parentTypeOptions = List<IEntityTypeOption>();
+    let validParentTypeOptions = List<IEntityTypeOption>();
     let parentIdData: Record<string, ParentIdData>;
     if (parentDataType) {
         const options = await getEntityTypeOptions(
             parentDataType,
             containerPath,
             containerFilter,
-            skipProjectDataExclusion,
+            true /* include all types so current parents won't be filtered out*/,
             requiredParentTypes
         );
         parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
+
+        const excludedTypeIds = getProjectDataExclusion()?.[parentDataType.projectConfigurableDataType];
+        if (excludedTypeIds?.length > 0) {
+            parentTypeOptions.forEach(option => {
+                if (excludedTypeIds.indexOf(option.rowId) === -1) validParentTypeOptions = validParentTypeOptions.concat(option) as List<IEntityTypeOption>;
+            });
+        }
+        else {
+            validParentTypeOptions = parentTypeOptions;
+        }
 
         // get the set of parent row LSIDs so that we can query for the RowId and SampleSet/DataClass for that row
         const parentIDs = [];
@@ -848,7 +858,7 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
         });
         parentIdData = await getParentRowIdAndDataType(parentDataType, parentIDs, containerPath);
     }
-    return { parentTypeOptions, parentIdData };
+    return { parentTypeOptions, parentIdData, validParentTypeOptions };
 };
 
 export const getOriginalParentsFromLineage = async (
@@ -878,10 +888,13 @@ export const getOriginalParentsFromLineage = async (
 
     // iterate through both Data Classes and Sample Types for finding sample parents
     parentDataTypes.forEach(dataType => {
-        const dataTypeOptions =
+        const allDataTypeOptions =
             dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
                 ? dataClassTypeData.parentTypeOptions
                 : sampleTypeData.parentTypeOptions;
+        const validParentTypeOptions = dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
+            ? dataClassTypeData.validParentTypeOptions
+            : sampleTypeData.validParentTypeOptions;
 
         const parentIdData =
             dataType.typeListingSchemaQuery.queryName === SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName
@@ -891,7 +904,7 @@ export const getOriginalParentsFromLineage = async (
             if (!originalParents[sampleId]) originalParents[sampleId] = List<EntityChoice>();
 
             originalParents[sampleId] = originalParents[sampleId].concat(
-                getInitialParentChoices(dataTypeOptions, dataType, lineage[sampleId], parentIdData, false /* TODO*/)
+                getInitialParentChoices(allDataTypeOptions, dataType, lineage[sampleId], parentIdData, false)
             );
         });
 
@@ -902,7 +915,7 @@ export const getOriginalParentsFromLineage = async (
         });
         parentTypeOptions = parentTypeOptions.set(
             dataType.typeListingSchemaQuery.queryName,
-            dataTypeOptions.filter(option => originalParentTypeLsids.indexOf(option.lsid) === -1).toList()
+            validParentTypeOptions.filter(option => originalParentTypeLsids.indexOf(option.lsid) === -1).toList()
         );
     });
 
@@ -988,36 +1001,36 @@ export const initParentOptionsSelects = (
 
     // Get Sample Types
     if (includeSampleTypes) {
-        const exclusions = dataTypeExclusions?.['SampleType'];
         promises.push(
             selectRows({
                 containerPath,
                 schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
                 columns: 'LSID, Name, RowId, Folder',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-                filterArray: exclusions?.length > 0 ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)] : null,
             })
         );
     }
 
     // Get Data Classes
     if (includeDataClasses) {
-        const exclusions = dataTypeExclusions?.['DataClass'];
         promises.push(
             selectRows({
                 containerPath,
                 schemaQuery: SCHEMAS.EXP_TABLES.DATA_CLASSES,
                 columns: 'LSID, Name, RowId, Folder, Category',
                 containerFilter: Query.containerFilter.currentPlusProjectAndShared,
-                filterArray: exclusions?.length > 0 ? [Filter.create('RowId', exclusions, Filter.Types.NOT_IN)] : null,
             })
         );
     }
 
+    const sampleTypeExclusions = dataTypeExclusions?.['SampleType'];
+    const dataClassExclusions = dataTypeExclusions?.['DataClass'];
+
     return new Promise((resolve, reject) => {
         Promise.all(promises)
             .then(responses => {
-                const sets: IParentOption[] = [];
+                const allOptions: IParentOption[] = [];
+                const excludedOptions : string[] = [];
                 responses.forEach(result => {
                     const rows = result.rows;
                     const isDataClass = result.schemaQuery?.queryName?.toLowerCase() === 'dataclasses';
@@ -1028,10 +1041,14 @@ export const initParentOptionsSelects = (
                         if (isValidParentOptionFn) {
                             if (!isValidParentOptionFn(row, isDataClass)) return;
                         }
+                        const rowId = caseInsensitive(row, 'RowId')?.value;
                         const name = caseInsensitive(row, 'Name')?.value;
                         const containerPath = caseInsensitive(row, 'Folder').displayValue;
+                        const isExcluded = (isDataClass ? dataClassExclusions : sampleTypeExclusions)?.indexOf(rowId) > -1;
+                        if (isExcluded)
+                            excludedOptions.push(prefix + name);
                         const label = formatLabel ? formatLabel(name, labelPrefix, isDataClass, containerPath) : name;
-                        sets.push({
+                        allOptions.push({
                             value: prefix + name,
                             label,
                             schema: isDataClass ? SCHEMAS.DATA_CLASSES.SCHEMA : SCHEMAS.SAMPLE_SETS.SCHEMA,
@@ -1044,11 +1061,13 @@ export const initParentOptionsSelects = (
                             (!isDataClass && newTypeOption.schema === SCHEMAS.SAMPLE_SETS.SCHEMA) ||
                             (isDataClass && newTypeOption.schema !== SCHEMAS.SAMPLE_SETS.SCHEMA)
                         )
-                            sets.push(newTypeOption);
+                            allOptions.push(newTypeOption);
                     }
                 });
 
-                const parentOptions = sets.sort(naturalSortByProperty('label'));
+                const parentOptions = allOptions
+                    .filter((option => excludedOptions.indexOf(option.value) === -1))
+                    .sort(naturalSortByProperty('label'));
 
                 let parentAliases = Map<string, IParentAlias>();
 
@@ -1057,10 +1076,15 @@ export const initParentOptionsSelects = (
                     Object.keys(importAliases).forEach(key => {
                         const val = importAliases[key];
                         const newId = generateId(idPrefix);
-                        const parentValue = parentOptions.find(opt => opt.value === val.inputType);
-                        if (!parentValue)
+                        const parentValue = allOptions.find(opt => opt.value === val.inputType);
+                        if (!parentValue) {
                             // parent option might have been filtered out by isValidParentOptionFn
                             return;
+                        }
+
+                        if (excludedOptions.indexOf(val.inputType) > -1) {
+                            parentOptions.push(parentValue);
+                        }
 
                         parentAliases = parentAliases.set(newId, {
                             id: newId,
@@ -1332,7 +1356,6 @@ export function getDataTypesWithRequiredLineage(
             params: { parentDataTypeRowId, sampleParent },
             scope: this,
             success: Utils.getCallbackWrapper(data => {
-                console.log(data);
                 resolve(data);
             }),
             failure: handleRequestFailure(reject, 'Failed to get data types with required lineage.'),

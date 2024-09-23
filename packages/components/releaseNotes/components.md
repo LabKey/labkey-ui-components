@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Lineage Relationships: Optionally Require during Sample Registration
   - TODO
 
+### version 5.5.7
+*Released*: 20 September 2024
+- Issue 50389: Casing of aliased (parent) sample or source type name can be changed in the editable grid
+
 ### version 5.5.6
 *Released*: 18 September 2024
 - Issue 50998: Add container filter when getting samples from a particular transaction id

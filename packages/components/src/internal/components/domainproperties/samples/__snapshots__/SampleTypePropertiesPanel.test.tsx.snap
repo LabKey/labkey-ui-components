@@ -150,6 +150,11 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
             </div>
           </form>
           <div
+            class="domain-field-section-heading top-spacing bottom-spacing"
+          >
+            Lineage Settings
+          </div>
+          <div
             class="row"
           >
             <div
@@ -170,18 +175,8 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
                         class="fa fa-plus-circle container--addition-icon"
                       />
                        Add 
+                      a undefined
                     </span>
-                    <div
-                      class="overlay-trigger"
-                    >
-                      <span
-                        class="label-help-target"
-                      >
-                        <span
-                          class="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
                   </div>
                 </div>
               </span>
@@ -251,22 +246,17 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
       </div>
     </div>
     <div
+      id="overlay-trigger-portal-label-help-tip2"
+    >
+      <div />
+    </div>
+    <div
       id="overlay-trigger-portal-label-help-tip3"
     >
       <div />
     </div>
     <div
       id="overlay-trigger-portal-label-help-tip4"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip5"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip6"
     >
       <div />
     </div>
@@ -417,6 +407,11 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
           </div>
         </form>
         <div
+          class="domain-field-section-heading top-spacing bottom-spacing"
+        >
+          Lineage Settings
+        </div>
+        <div
           class="row"
         >
           <div
@@ -437,18 +432,8 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
                       class="fa fa-plus-circle container--addition-icon"
                     />
                      Add 
+                    a undefined
                   </span>
-                  <div
-                    class="overlay-trigger"
-                  >
-                    <span
-                      class="label-help-target"
-                    >
-                      <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
                 </div>
               </div>
             </span>
@@ -716,6 +701,11 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
             </div>
           </form>
           <div
+            class="domain-field-section-heading top-spacing bottom-spacing"
+          >
+            Lineage Settings
+          </div>
+          <div
             class="row"
           >
             <div
@@ -736,18 +726,8 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
                         class="fa fa-plus-circle container--addition-icon"
                       />
                        Add 
+                      a undefined
                     </span>
-                    <div
-                      class="overlay-trigger"
-                    >
-                      <span
-                        class="label-help-target"
-                      >
-                        <span
-                          class="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
                   </div>
                 </div>
               </span>
@@ -773,11 +753,6 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
     </div>
     <div
       id="overlay-trigger-portal-label-help-tip1"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip2"
     >
       <div />
     </div>
@@ -923,6 +898,11 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
           </div>
         </form>
         <div
+          class="domain-field-section-heading top-spacing bottom-spacing"
+        >
+          Lineage Settings
+        </div>
+        <div
           class="row"
         >
           <div
@@ -943,18 +923,8 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
                       class="fa fa-plus-circle container--addition-icon"
                     />
                      Add 
+                    a undefined
                   </span>
-                  <div
-                    class="overlay-trigger"
-                  >
-                    <span
-                      class="label-help-target"
-                    >
-                      <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
                 </div>
               </div>
             </span>
@@ -1172,6 +1142,11 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
             </div>
           </form>
           <div
+            class="domain-field-section-heading top-spacing bottom-spacing"
+          >
+            Lineage Settings
+          </div>
+          <div
             class="row"
           >
             <div
@@ -1192,18 +1167,8 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                         class="fa fa-plus-circle container--addition-icon"
                       />
                        Add 
+                      a undefined
                     </span>
-                    <div
-                      class="overlay-trigger"
-                    >
-                      <span
-                        class="label-help-target"
-                      >
-                        <span
-                          class="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
                   </div>
                 </div>
               </span>
@@ -1230,18 +1195,8 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                         class="fa fa-plus-circle container--addition-icon"
                       />
                        Add 
+                      a undefined
                     </span>
-                    <div
-                      class="overlay-trigger"
-                    >
-                      <span
-                        class="label-help-target"
-                      >
-                        <span
-                          class="label-help-icon fa fa-question-circle"
-                        />
-                      </span>
-                    </div>
                   </div>
                 </div>
               </span>
@@ -1261,22 +1216,12 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
       </div>
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip13"
+      id="overlay-trigger-portal-label-help-tip9"
     >
       <div />
     </div>
     <div
-      id="overlay-trigger-portal-label-help-tip14"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip15"
-    >
-      <div />
-    </div>
-    <div
-      id="overlay-trigger-portal-label-help-tip16"
+      id="overlay-trigger-portal-label-help-tip10"
     >
       <div />
     </div>
@@ -1422,6 +1367,11 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
           </div>
         </form>
         <div
+          class="domain-field-section-heading top-spacing bottom-spacing"
+        >
+          Lineage Settings
+        </div>
+        <div
           class="row"
         >
           <div
@@ -1442,18 +1392,8 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                       class="fa fa-plus-circle container--addition-icon"
                     />
                      Add 
+                    a undefined
                   </span>
-                  <div
-                    class="overlay-trigger"
-                  >
-                    <span
-                      class="label-help-target"
-                    >
-                      <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
                 </div>
               </div>
             </span>
@@ -1480,18 +1420,8 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                       class="fa fa-plus-circle container--addition-icon"
                     />
                      Add 
+                    a undefined
                   </span>
-                  <div
-                    class="overlay-trigger"
-                  >
-                    <span
-                      class="label-help-target"
-                    >
-                      <span
-                        class="label-help-icon fa fa-question-circle"
-                      />
-                    </span>
-                  </div>
                 </div>
               </div>
             </span>

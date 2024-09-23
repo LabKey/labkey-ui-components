@@ -82,7 +82,7 @@ export class ServerFolderAPIWrapper implements FolderAPIWrapper {
                 method: 'POST',
                 jsonData: options,
                 success: Utils.getCallbackWrapper(({ data }) => {
-                    resolve(new Container(data.container));
+                    resolve(new Container(data.folder));
                 }),
                 failure: handleRequestFailure(reject, 'Failed to rename folder.'),
             });

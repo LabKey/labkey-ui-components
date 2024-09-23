@@ -49,17 +49,16 @@ describe('getInitialParentChoices', () => {
             value: 'vendor 3',
             query: 'Vendor 3',
             schema: 'exp.data',
+            required: true
         },
     ]);
 
     test('empty child data', () => {
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {}, {});
+        let parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {}, {});
         expect(parentChoices.size).toBe(0);
-    });
 
-    test('no data', () => {
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {}, {});
-        expect(parentChoices.size).toBe(0);
+        parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {}, {}, true);
+        expect(parentChoices.size).toBe(1);
     });
 
     test('missing parent type', () => {
@@ -69,8 +68,11 @@ describe('getInitialParentChoices', () => {
                 parentId: 321,
             },
         };
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {}, parentIdData);
+        let parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {}, parentIdData);
         expect(parentChoices.size).toBe(0);
+
+        parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, {}, parentIdData, true);
+        expect(parentChoices.size).toBe(1);
     });
 
     test('multiple inputs and types', () => {
@@ -165,20 +167,36 @@ describe('getInitialParentChoices', () => {
                 parentId: 322,
             },
         };
-        const parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, data, parentIdData);
+        let parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, data, parentIdData);
         expect(parentChoices.size).toBe(2);
-        const firstChoice = parentChoices.get(0);
+        let firstChoice = parentChoices.get(0);
         expect(firstChoice.type.label).toBe('Second Source');
         expect(firstChoice.ids).toStrictEqual([
             'urn:lsid:labkey.com:Data.Folder-252:604347b2-3103-1038-91ee-da4874ca890e',
         ]);
-        const secondChoice = parentChoices.get(1);
+        let secondChoice = parentChoices.get(1);
         expect(secondChoice.type.label).toBe('Source 1');
         expect(secondChoice.ids).toStrictEqual([
             'urn:lsid:labkey.com:Data.Folder-252:a49f277e-301e-1038-a031-328bafaf2618',
             'urn:lsid:labkey.com:Data.Folder-252:a49f277f-301e-1038-a031-328bafaf2618',
             'urn:lsid:labkey.com:Data.Folder-252:a49f2780-301e-1038-a031-328bafaf2618',
         ]);
+
+        parentChoices = getInitialParentChoices(parentTypeOptions, DataClassDataType, data, parentIdData, true);
+        expect(parentChoices.size).toBe(3);
+        firstChoice = parentChoices.get(0);
+        expect(firstChoice.type.label).toBe('Second Source');
+        secondChoice = parentChoices.get(1);
+        expect(secondChoice.type.label).toBe('Source 1');
+
+        const thirdChoice = parentChoices.get(2);
+        expect(thirdChoice).toEqual({
+            gridValues: [],
+            ids: [],
+            type: parentTypeOptions.get(2),
+            value: undefined
+        });
+
     });
 });
 

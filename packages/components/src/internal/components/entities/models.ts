@@ -634,7 +634,7 @@ export interface CrossFolderSelectionResult {
 }
 
 export interface IImportAlias {
-    alias?: string; // TODO, fix alias is the key
+    alias?: string;
     inputType: string;
     required?: boolean;
 }

@@ -190,6 +190,10 @@ export function getUpdatedDataFromGrid(
                     // erase an existing value we set the value to null in our update data
                     value = value === undefined ? null : value;
 
+                    // TODO: Verify that it is ok for us to not use getValidatedEditableGridValue here like we were.
+                    //  It should be fine, because editorRows comes from  getDataForServerUpload which uses
+                    //  EditorModel.getRowValue, which uses getValidatedEditableGridValue for most, but not all column
+                    //  types. This comment will be removed when tests pass.
                     row[key] = value;
                 }
                 return row;

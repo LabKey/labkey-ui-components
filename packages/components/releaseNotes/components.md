@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.X
+*Released*: X September 2024
+- Issue 51337: LKSM: Can't edit samples where source ID has a comma
+  - Check quoted parent value with comma before calling JSON.parse, which would remove the quotes
+
 ### version 5.5.9
 *Released*: 24 September 2024
 - EditableGrid: Fix issue with pasteEvent not working if user pasted more rows than the grid has

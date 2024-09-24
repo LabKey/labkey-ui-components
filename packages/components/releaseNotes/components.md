@@ -1,8 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.5.9
+*Released*: 24 September 2024
+- EditableGrid: Fix issue with pasteEvent not working if user pasted more rows than the grid has
+  - Fixes issue 51327
+
 ### version 5.5.8
-*Released*: 18 September 2024
+*Released*: 24 September 2024
 - Fix Issue 51265
     - We now more consistently trim values and use getValidatedEditableGridValue
 - Stop using overflow: scroll

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import classNames from 'classnames';
 
@@ -28,7 +28,6 @@ import { FilePreviewGrid } from '../../internal/components/files/FilePreviewGrid
 import { SimpleResponse } from '../../internal/components/files/models';
 
 import { LoadingSpinner } from '../../internal/components/base/LoadingSpinner';
-import { InferDomainResponse } from '../InferDomainResponse';
 import { inferDomainFromFile } from '../../internal/components/assay/utils';
 import { FormSection } from '../../internal/components/base/FormSection';
 import { Progress } from '../../internal/components/base/Progress';
@@ -78,7 +77,7 @@ interface State {
     previewStatus?: string;
 }
 
-export class FileAttachmentForm extends React.Component<FileAttachmentFormProps, State> {
+export class FileAttachmentForm extends PureComponent<FileAttachmentFormProps, State> {
     static defaultProps = {
         acceptedFormats: '',
         showAcceptedFormats: true,
@@ -139,28 +138,22 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         }
     }
 
-    determineFileSize(): number {
-        const { attachedFiles } = this.state;
+    determineFileSize = (): number => {
+        return this.state.attachedFiles.reduce((total, file) => (total += file.size), 0);
+    };
 
-        return attachedFiles.reduce((total, file) => (total += file.size), 0);
-    }
-
-    reportFileOversized = (attachedFiles: Map<string, File>, sizeStr: string): void => {
-        this.setState(() => ({
-            errorMessage:
-                'This file is too large to be previewed. The maximum size allowed for previewing files of this type is ' +
-                sizeStr +
-                '.',
-        }));
+    reportFileOversized = (sizeStr: string): void => {
+        const errorMessage = `This file is too large to be previewed. The maximum size allowed for previewing files of this type is ${sizeStr}.`;
+        this.setState({ errorMessage });
     };
 
     handleFileChange = (fileList: Record<string, File>): void => {
-        const { onFileChange, sizeLimits, fileSpecificCallback, allowMultiple } = this.props;
-        const attachedFiles = this.state.attachedFiles.merge(fileList);
-
         this.setState(
-            () => ({ attachedFiles }),
+            state => ({ attachedFiles: state.attachedFiles.merge(fileList) }),
             () => {
+                const { onFileChange, sizeLimits, fileSpecificCallback, allowMultiple } = this.props;
+                const { attachedFiles } = this.state;
+
                 if (!allowMultiple) {
                     // currently only supporting 1 file for processing contents
                     const firstFile = attachedFiles.valueSeq().first();
@@ -177,13 +170,13 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                                     this.updateErrors(res.msg);
                                 });
                         } else {
-                            this.reportFileOversized(attachedFiles, sizeCheck.limits.maxSize.displayValue);
+                            this.reportFileOversized(sizeCheck.limits.maxSize.displayValue);
                         }
                     } else if (this.isShowPreviewGrid()) {
                         if (!sizeCheck.isOversizedForPreview) {
                             this.uploadDataFileForPreview();
                         } else {
-                            this.reportFileOversized(attachedFiles, sizeCheck.limits.maxPreviewSize.displayValue);
+                            this.reportFileOversized(sizeCheck.limits.maxPreviewSize.displayValue);
                         }
                     }
                 }
@@ -194,23 +187,17 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     };
 
     handleFileRemoval = (attachmentName: string): void => {
-        const { onFileRemoval } = this.props;
-
         this.setState(
             state => ({
                 attachedFiles: state.attachedFiles.remove(attachmentName),
+                errorMessage: undefined,
                 previewData: undefined,
                 previewStatus: undefined,
-                errorMessage: undefined,
             }),
             () => {
-                onFileRemoval?.(attachmentName, this.state.attachedFiles);
+                this.props.onFileRemoval?.(attachmentName, this.state.attachedFiles);
             }
         );
-    };
-
-    manuallyClearFiles = (attachmentName: string): void => {
-        this.fileAttachmentContainerRef.current.handleRemove(attachmentName);
     };
 
     handleSubmit = (): void => {
@@ -255,43 +242,43 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         );
     }
 
-    isShowPreviewGrid() {
-        return !this.props.allowMultiple && this.props.previewGridProps;
-    }
+    isShowPreviewGrid = (): boolean => {
+        return !this.props.allowMultiple && !!this.props.previewGridProps;
+    };
 
-    shouldShowPreviewGrid() {
+    shouldShowPreviewGrid = (): boolean => {
         const { errorMessage, previewData, previewStatus } = this.state;
-        return errorMessage || previewStatus || previewData;
-    }
+        return !!(errorMessage || previewStatus || previewData);
+    };
 
     renderPreviewGrid(): ReactNode {
         const { previewGridProps } = this.props;
         const { errorMessage, previewData, previewStatus } = this.state;
 
-        if (!this.shouldShowPreviewGrid()) {
-            return;
+        if (this.shouldShowPreviewGrid()) {
+            if (previewData || errorMessage) {
+                return <FilePreviewGrid {...previewGridProps} data={previewData} errorMsg={errorMessage} />;
+            } else if (previewStatus) {
+                return (
+                    <div className="margin-top">
+                        <LoadingSpinner msg={previewStatus} />
+                    </div>
+                );
+            }
         }
 
-        if (previewData || errorMessage) {
-            return <FilePreviewGrid {...previewGridProps} data={previewData} errorMsg={errorMessage} />;
-        } else if (previewStatus) {
-            return (
-                <div className="margin-top">
-                    <LoadingSpinner msg={previewStatus} />
-                </div>
-            );
-        }
+        return null;
     }
 
     updatePreviewStatus(previewStatus: string): void {
-        this.setState(() => ({ previewStatus }));
+        this.setState({ previewStatus });
     }
 
     updateErrors(errorMessage: string): void {
         if (errorMessage) {
             this.props.onError?.(errorMessage);
         }
-        this.setState(() => ({ errorMessage }));
+        this.setState({ errorMessage });
     }
 
     uploadDataFileForPreview(): void {
@@ -305,7 +292,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         if (previewGridProps.acceptedFormats) {
             const fileCheck = fileMatchesAcceptedFormat(file.name, previewGridProps.acceptedFormats);
             // if the file extension doesn't match the accepted preview formats, return without trying to get preview data
-            if (!fileCheck.get('isMatch')) {
+            if (!fileCheck.isMatch) {
                 return;
             }
         }
@@ -313,7 +300,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         this.updatePreviewStatus('Uploading file...');
 
         inferDomainFromFile(file, previewGridProps.previewCount, previewGridProps.domainKindName)
-            .then((response: InferDomainResponse) => {
+            .then(response => {
                 this.updatePreviewStatus(null);
 
                 if (!previewGridProps.skipPreviewGrid) {
@@ -330,9 +317,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                     }
                 }
 
-                if (previewGridProps.onPreviewLoad) {
-                    previewGridProps.onPreviewLoad(response, file);
-                }
+                previewGridProps.onPreviewLoad?.(response, file);
             })
             .catch(reason => {
                 this.updateErrors(
@@ -344,50 +329,21 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     }
 
     shouldRenderAcceptedFormats(): boolean {
-        const { acceptedFormats, showAcceptedFormats } = this.props;
-        return acceptedFormats && showAcceptedFormats && !this.shouldShowPreviewGrid();
+        return !!(this.props.acceptedFormats && this.props.showAcceptedFormats && !this.shouldShowPreviewGrid());
     }
 
-    renderAcceptedFormats(): ReactNode {
-        return (
-            <div className="file-form-formats">
-                <strong>Supported formats include: </strong>
-                {this.props.acceptedFormats}
-            </div>
-        );
-    }
+    shouldRenderTemplateButton = (): boolean => {
+        return this.props.templateUrl?.length > 0 && !this.shouldShowPreviewGrid();
+    };
 
-    shouldRenderTemplateButton(): boolean {
-        const { templateUrl } = this.props;
-        return templateUrl?.length > 0 && !this.shouldShowPreviewGrid();
-    }
-
-    renderFooter(): ReactNode {
-        if (!this.shouldRenderAcceptedFormats() && !this.shouldRenderTemplateButton()) {
-            return;
-        }
-
-        return (
-            <div className="row">
-                <div className="col-md-9">{this.shouldRenderAcceptedFormats() && this.renderAcceptedFormats()}</div>
-                <div className="col-md-3">
-                    <div className="pull-right">
-                        {this.shouldRenderTemplateButton() && (
-                            <TemplateDownloadButton templateUrl={this.props.templateUrl} />
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    render() {
+    render(): React.ReactNode {
         const {
             acceptedFormats,
             allowDirectories,
             includeDirectoryFiles,
             fileCountSuffix,
             allowMultiple,
+            index,
             initialFileNames,
             initialFiles,
             label,
@@ -400,6 +356,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             isSubmitting,
             compact,
         } = this.props;
+        const renderAcceptFormats = this.shouldRenderAcceptedFormats();
+        const renderTemplateButton = this.shouldRenderTemplateButton();
 
         return (
             <>
@@ -408,7 +366,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                         <div className={classNames({ 'file-upload--one-row': compact })}>
                             <FileAttachmentContainer
                                 ref={this.fileAttachmentContainerRef}
-                                index={this.props.index}
+                                index={index}
                                 acceptedFormats={acceptedFormats}
                                 allowDirectories={allowDirectories}
                                 includeDirectoryFiles={includeDirectoryFiles}
@@ -429,14 +387,27 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                 </span>
                 {this.renderPreviewGrid()}
                 {showProgressBar && (
-                    <Progress
-                        estimate={this.determineFileSize() * 0.1}
-                        modal={true}
-                        title="Uploading"
-                        toggle={isSubmitting}
-                    />
+                    <Progress estimate={this.determineFileSize() * 0.1} modal title="Uploading" toggle={isSubmitting} />
                 )}
-                {this.renderFooter()}
+                {(renderAcceptFormats || renderTemplateButton) && (
+                    <div className="row">
+                        <div className="col-md-9">
+                            {renderAcceptFormats && (
+                                <div className="file-form-formats">
+                                    <strong>Supported formats include: </strong>
+                                    {acceptedFormats}
+                                </div>
+                            )}
+                        </div>
+                        <div className="col-md-3">
+                            <div className="pull-right">
+                                {renderTemplateButton && (
+                                    <TemplateDownloadButton templateUrl={this.props.templateUrl} />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
                 {!compact && showButtons && this.renderButtons()}
             </>
         );

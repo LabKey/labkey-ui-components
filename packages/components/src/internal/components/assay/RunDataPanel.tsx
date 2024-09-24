@@ -303,6 +303,7 @@ export class RunDataPanel extends PureComponent<Props, State> {
                                         ) : (
                                             <FileAttachmentForm
                                                 key={wizardModel.lastRunId + '-dataFile'} // required for rerender in the "save and import another" case
+                                                acceptedFormats=".xlsx"
                                                 allowDirectories={false}
                                                 allowMultiple={false}
                                                 showLabel={fileColumnNames?.length > 0}

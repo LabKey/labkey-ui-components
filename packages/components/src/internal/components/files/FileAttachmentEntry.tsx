@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 interface Props {
     allowDelete?: boolean;
-    onDelete?: (name: string) => any;
+    onDelete?: (name: string) => void;
     name: string;
     downloadUrl?: string;
     deleteTitleText?: string;

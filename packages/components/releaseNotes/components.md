@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 18 September 2024
 - Fix Issue 51265
     - We now more consistently trim values and use getValidatedEditableGridValue
+- Stop using overflow: scroll
 
 ### version 5.5.7
 *Released*: 20 September 2024

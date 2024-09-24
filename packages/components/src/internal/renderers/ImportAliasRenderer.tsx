@@ -49,7 +49,7 @@ export const ImportAliasRenderer: FC<RendererProps> = memo(props => {
                     const value = inputType.substring(splitIndex + 1);
 
                     return (
-                        <div key={key}>
+                        <div key={key} className="alias-renderer--details">
                             {key}, alias for:&nbsp;
                             <a key={key} href={AppURL.create(route, value).toHref()}>
                                 {value}

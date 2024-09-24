@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 5.?.?
 *Released*: ? September 2024
+- Wire up onBlur for LookupCell
 - Export Help component
+- Export CellMessages type
 
 ### version 5.5.11
 *Released*: 25 September 2024

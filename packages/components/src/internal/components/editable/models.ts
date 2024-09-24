@@ -337,11 +337,12 @@ export class EditorModel
                 }
             } else if (col.jsonType === 'time') {
                 row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
-            } else if (col.jsonType !== 'date' || !displayValues) {
-                const val = values.size === 1 ? values.first().raw : undefined;
-                row = row.set(col.name, getValidatedEditableGridValue(val, col).value);
-            } else {
+            } else if (col.jsonType === 'date') {
                 row = row.set(col.name, values.size === 1 ? values.first().raw?.toString().trim() : undefined);
+            } else {
+                let val = values.size === 1 ? values.first().raw : undefined;
+                if (!displayValues) val = getValidatedEditableGridValue(val?.toString().trim(), col).value;
+                row = row.set(col.name, val);
             }
         });
 
@@ -349,7 +350,7 @@ export class EditorModel
     }
 
     /**
-     * This method formats the EditorModel data so we can upload the data to LKS via insert/updateRows
+     * This method formats the EditorModel data, so we can upload the data to LKS via insert/updateRows
      * @param displayValues
      */
     getDataForServerUpload(displayValues = true): List<Map<string, any>> {

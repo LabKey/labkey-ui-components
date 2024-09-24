@@ -212,7 +212,7 @@ export class EditorModel
     getFolderValueForRow(rowIdx: number): string {
         const containerCol = this.columnMap.get('folder') ?? this.columnMap.get('container');
         if (!containerCol) return undefined;
-        return this.cellValues.get(genCellKey(containerCol.fieldKey, rowIdx)).get(0).raw;
+        return this.cellValues.get(genCellKey(containerCol.fieldKey, rowIdx))?.get(0)?.raw;
     }
 
     getFolderValueForCell(cellKey: string): string {

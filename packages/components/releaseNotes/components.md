@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 5.?.?
+### version 5.5.8
 *Released*: 18 September 2024
 - Fix Issue 51265
     - We now more consistently trim values and use getValidatedEditableGridValue

@@ -255,7 +255,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
             if (initialLoad) {
                 // If a "defaultInputValue" is supplied and the initial load is an empty search,
                 // then search with the "defaultInputValue"
-                input_ = input ? input : defaultInputValue ?? '';
+                input_ = input ? input : (defaultInputValue ?? '');
                 setInitialLoad(false);
             } else {
                 input_ = input;

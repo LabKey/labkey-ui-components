@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 
 interface Props {
     allowDelete?: boolean;
-    onDelete?: (name: string) => void;
-    name: string;
-    downloadUrl?: string;
     deleteTitleText?: string;
+    downloadUrl?: string;
+    name: string;
+    onDelete?: (name: string) => void;
 }
 
 export class FileAttachmentEntry extends PureComponent<Props, any> {

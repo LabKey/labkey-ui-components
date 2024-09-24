@@ -296,15 +296,11 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
     const onChange = useCallback<SelectInputChange>(
         (name_, value_, options_, props_) => {
-            let selectedItems: Map<string, any>;
-            setModel(model_ => {
-                const updatedModel = setSelection(model_, value_);
-                selectedItems = updatedModel.selectedItems;
-                return updatedModel;
-            });
-            onQSChange?.(name_, value_, options_, props_, selectedItems);
+            const model_ = setSelection(model, value_);
+            setModel(model_);
+            onQSChange?.(name_, value_, options_, props_, model_.selectedItems);
         },
-        [onQSChange]
+        [model, onQSChange]
     );
 
     const onFocus = useCallback(async () => {

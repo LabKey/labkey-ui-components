@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version 5.?.?
+*Released*: ? September 2024
+- Export Help component
+
 ### version 5.5.11
 *Released*: 25 September 2024
 - Issue 51337: LKSM: Can't edit samples where source ID has a comma

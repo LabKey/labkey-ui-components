@@ -323,6 +323,7 @@ import {
     registerInputRenderers,
     InputRenderContext,
 } from './internal/components/forms/input/InputRenderFactory';
+import { Help } from './internal/components/forms/input/Help';
 
 import {
     getUsersWithPermissions,
@@ -1222,6 +1223,7 @@ export {
     resolveDetailRenderer,
     registerInputRenderer,
     InputRenderContext,
+    Help,
     // Formsy
     addFormsyRule,
     Formsy,

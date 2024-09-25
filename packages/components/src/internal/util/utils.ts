@@ -729,6 +729,20 @@ export function quoteValueWithDelimiters(value: any, delimiter: string) {
     return '"' + value + '"';
 }
 
+export function isQuotedWithDelimiters(value: any, delimiter: string) : boolean {
+    if (!value || !Utils.isString(value)) {
+        return false;
+    }
+    if (!delimiter) {
+        throw 'Delimiter is required.';
+    }
+
+    const strVal = value + '';
+    if (strVal.indexOf(delimiter) === -1) return false;
+
+    return strVal.startsWith('"') && strVal.endsWith('"');
+}
+
 export function arrayEquals(a: string[], b: string[], ignoreOrder = true, caseInsensitive?: boolean): boolean {
     if (a === b) return true;
     if (a == null && b == null) return true;

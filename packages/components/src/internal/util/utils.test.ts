@@ -42,6 +42,7 @@ import {
     withTransformedKeys,
     getValueFromRow,
     isBoolean,
+    isQuotedWithDelimiters,
 } from './utils';
 
 const emptyList = List<string>();
@@ -1290,6 +1291,10 @@ describe('quoteValueWithDelimiters', () => {
         expect(quoteValueWithDelimiters(undefined, ',')).toBeUndefined();
         expect(quoteValueWithDelimiters(null, ';')).toBeNull();
         expect(quoteValueWithDelimiters('', ' ')).toBe('');
+
+        expect(isQuotedWithDelimiters(undefined, ',')).toBeFalsy();
+        expect(isQuotedWithDelimiters(null, ';')).toBeFalsy();
+        expect(isQuotedWithDelimiters('', ' ')).toBeFalsy();
     });
 
     test('non-string value', () => {
@@ -1297,28 +1302,47 @@ describe('quoteValueWithDelimiters', () => {
         expect(quoteValueWithDelimiters(4, undefined)).toBe(4);
         expect(quoteValueWithDelimiters({ value: '4,5' }, undefined)).toStrictEqual({ value: '4,5' });
         expect(quoteValueWithDelimiters([4, 5, 6], ',')).toStrictEqual([4, 5, 6]);
+
+        expect(isQuotedWithDelimiters(4, ',')).toBeFalsy();
+        expect(isQuotedWithDelimiters(4, undefined)).toBeFalsy();
+        expect(isQuotedWithDelimiters({ value: '4,5' }, undefined)).toBeFalsy();
+        expect(isQuotedWithDelimiters([4, 5, 6], ',')).toBeFalsy();
     });
 
     test('invalid delimiter', () => {
         expect(() => quoteValueWithDelimiters('value', undefined)).toThrow('Delimiter is required.');
         expect(() => quoteValueWithDelimiters('value', null)).toThrow('Delimiter is required.');
         expect(() => quoteValueWithDelimiters('value', '')).toThrow('Delimiter is required.');
+
+        expect(() => isQuotedWithDelimiters('value', undefined)).toThrow('Delimiter is required.');
+        expect(() => isQuotedWithDelimiters('value', null)).toThrow('Delimiter is required.');
+        expect(() => isQuotedWithDelimiters('value', '')).toThrow('Delimiter is required.');
     });
 
     test('without delimiter in value', () => {
         expect(quoteValueWithDelimiters('abc d', ',')).toBe('abc d');
         expect(quoteValueWithDelimiters('a', ';')).toBe('a');
+
+        expect(isQuotedWithDelimiters('abc d', ',')).toBeFalsy();
+        expect(isQuotedWithDelimiters('a', ';')).toBeFalsy();
     });
 
     test('with delimiter', () => {
         expect(quoteValueWithDelimiters('abc,d', ',')).toBe('"abc,d"');
         expect(quoteValueWithDelimiters('ab "cd,e"', ',')).toBe('"ab ""cd,e"""');
         expect(quoteValueWithDelimiters('ab, "cd,e"', ',')).toBe('"ab, ""cd,e"""');
+
+        expect(isQuotedWithDelimiters('"abc,d"', ',')).toBeTruthy();
+        expect(isQuotedWithDelimiters('"ab ""cd,e"""', ',')).toBeTruthy();
+        expect(isQuotedWithDelimiters('"ab, ""cd,e"""', ',')).toBeTruthy();
     });
 
     test('round trip', () => {
         const initialString = 'ab "cd,e"';
         expect(parseCsvString(quoteValueWithDelimiters(initialString, ','), ',', true)).toStrictEqual([initialString]);
+
+        expect(isQuotedWithDelimiters(quoteValueWithDelimiters(initialString, ','), ',')).toBeTruthy();
+
     });
 });
 

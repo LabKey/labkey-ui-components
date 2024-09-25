@@ -20,7 +20,7 @@ import { getQueryColumnRenderers } from '../../global';
 
 import { QuerySelectOwnProps } from '../forms/QuerySelect';
 
-import { isBoolean, isFloat, isInteger } from '../../util/utils';
+import { isBoolean, isFloat, isInteger, isQuotedWithDelimiters } from '../../util/utils';
 
 import { SchemaQuery } from '../../../public/SchemaQuery';
 
@@ -153,7 +153,8 @@ export function getUpdatedDataFromGrid(
                 // updated values. This is not the final type check.
                 if (typeof originalValue === 'number' || typeof originalValue === 'boolean') {
                     try {
-                        value = JSON.parse(value);
+                        if (!isQuotedWithDelimiters(value, ','))
+                            value = JSON.parse(value);
                     } catch (e) {
                         // Incorrect types are handled by API and user feedback created from that response. Don't need
                         // to handle that here.

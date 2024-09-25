@@ -1,10 +1,16 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
-### version 5.X
-*Released*: X September 2024
+### version 5.5.11
+*Released*: 25 September 2024
 - Issue 51337: LKSM: Can't edit samples where source ID has a comma
   - Check quoted parent value with comma before calling JSON.parse, which would remove the quotes
+
+### version 5.5.10
+*Released*: 24 September 2024
+- Update `fileMatchesAcceptedFormat` utility to check file extension casing in a case-insensitive manner. Refactor away from using `Immutable`.
+  - Fixes Issue 51331
+- Update `FileAttachmentContainer` to use native `Set` rather than `Immutable.Set`.
 
 ### version 5.5.9
 *Released*: 24 September 2024

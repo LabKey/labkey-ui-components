@@ -1299,22 +1299,20 @@ async function insertPastedData(
     const lookupColumnContainerCache = {};
     const { colMin, rowMin } = paste.coordinates;
     let rowIdx = rowMin;
-    let hasReachedRowLimit = false;
 
     for (let r = 0; r < pastedData.size; r++) {
         const row = pastedData.get(r);
-        if (hasReachedRowLimit && lockRowCount) return;
 
         if (readonlyRows) {
             while (rowIdx < rowCount && editorModel.isReadOnlyRow(rowIdx, readonlyRows)) {
                 // Skip over readonly rows
                 rowIdx++;
             }
+        }
 
-            if (rowIdx >= rowCount) {
-                hasReachedRowLimit = true;
-                return;
-            }
+        if (rowIdx >= rowCount && lockRowCount) {
+            // If we've reached the row limit we can short-circuit allowing at least a partial paste.
+            break;
         }
 
         let pkValue = getPkValue(row, editorModel.queryInfo);

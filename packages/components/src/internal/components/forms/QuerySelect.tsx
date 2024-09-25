@@ -255,7 +255,7 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
             if (initialLoad) {
                 // If a "defaultInputValue" is supplied and the initial load is an empty search,
                 // then search with the "defaultInputValue"
-                input_ = input ? input : defaultInputValue ?? '';
+                input_ = input ? input : (defaultInputValue ?? '');
                 setInitialLoad(false);
             } else {
                 input_ = input;
@@ -296,15 +296,11 @@ export const QuerySelect: FC<QuerySelectOwnProps> = memo(props => {
 
     const onChange = useCallback<SelectInputChange>(
         (name_, value_, options_, props_) => {
-            let selectedItems: Map<string, any>;
-            setModel(model_ => {
-                const updatedModel = setSelection(model_, value_);
-                selectedItems = updatedModel.selectedItems;
-                return updatedModel;
-            });
-            onQSChange?.(name_, value_, options_, props_, selectedItems);
+            const model_ = setSelection(model, value_);
+            setModel(model_);
+            onQSChange?.(name_, value_, options_, props_, model_.selectedItems);
         },
-        [onQSChange]
+        [model, onQSChange]
     );
 
     const onFocus = useCallback(async () => {

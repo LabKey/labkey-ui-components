@@ -54,7 +54,7 @@ describe('FileAttachmentContainer', () => {
     test('with multiple files', () => {
         render(
             <FileAttachmentContainer
-                allowMultiple={true}
+                allowMultiple
                 allowDirectories={false}
                 initialFiles={{
                     'file1.txt': new File([], 'file1.txt'),
@@ -75,7 +75,7 @@ describe('FileAttachmentContainer', () => {
     test('with initial file names', () => {
         render(
             <FileAttachmentContainer
-                allowMultiple={true}
+                allowMultiple
                 allowDirectories={false}
                 initialFileNames={['initial1.txt', 'initial2.csv']}
             />
@@ -97,7 +97,7 @@ describe('FileAttachmentContainer', () => {
     test('fileCountSuffix with multiple', () => {
         render(
             <FileAttachmentContainer
-                allowMultiple={true}
+                allowMultiple
                 allowDirectories={false}
                 fileCountSuffix="will be uploaded"
                 initialFiles={{
@@ -116,7 +116,7 @@ describe('FileAttachmentContainer', () => {
     test('fileCountSuffix with single', () => {
         render(
             <FileAttachmentContainer
-                allowMultiple={true}
+                allowMultiple
                 allowDirectories={false}
                 fileCountSuffix="will be uploaded"
                 initialFiles={{

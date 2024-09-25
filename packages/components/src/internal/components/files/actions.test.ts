@@ -99,7 +99,7 @@ const FIELDS = fromJS([
     },
 ]);
 
-describe('convertRowDataIntoPreviewData ', () => {
+describe('convertRowDataIntoPreviewData', () => {
     test('empty data object', () => {
         const rows = convertRowDataIntoPreviewData(fromJS([]), 1);
         expect(rows.size).toBe(0);
@@ -157,43 +157,53 @@ describe('getFileExtension', () => {
 
 describe('fileMatchesAcceptedFormat', () => {
     test('not a match', () => {
-        const response = fileMatchesAcceptedFormat('testing.txt', '.csv, .tsv, .xlsx');
-        expect(response.get('extension')).toBe('.txt');
-        expect(response.get('isMatch')).toBeFalsy();
+        let response = fileMatchesAcceptedFormat('testing.txt', '.csv, .tsv, .xlsx');
+        expect(response.extension).toBe('.txt');
+        expect(response.isMatch).toBeFalsy();
+
+        response = fileMatchesAcceptedFormat('testing.xls', '.csv, .tsv, .xlsx');
+        expect(response.extension).toBe('.xls');
+        expect(response.isMatch).toBeFalsy();
     });
 
     test('matches first', () => {
         const response = fileMatchesAcceptedFormat('testing.csv', '.csv, .tsv, .xlsx');
-        expect(response.get('extension')).toBe('.csv');
-        expect(response.get('isMatch')).toBeTruthy();
+        expect(response.extension).toBe('.csv');
+        expect(response.isMatch).toBeTruthy();
     });
 
     test('matches middle', () => {
         const response = fileMatchesAcceptedFormat('testing.tsv', '.csv, .tsv, .xlsx');
-        expect(response.get('extension')).toBe('.tsv');
-        expect(response.get('isMatch')).toBeTruthy();
+        expect(response.extension).toBe('.tsv');
+        expect(response.isMatch).toBeTruthy();
     });
 
     test('matches last', () => {
         const response = fileMatchesAcceptedFormat('testing.xlsx', '.csv, .tsv, .xlsx');
-        expect(response.get('extension')).toBe('.xlsx');
-        expect(response.get('isMatch')).toBeTruthy();
+        expect(response.extension).toBe('.xlsx');
+        expect(response.isMatch).toBeTruthy();
     });
 
     test('no file extension', () => {
         const response = fileMatchesAcceptedFormat('testing', '.csv, .tsv, .xlsx');
-        expect(response.get('extension')).toBe('');
-        expect(response.get('isMatch')).toBeFalsy();
+        expect(response.extension).toBe('');
+        expect(response.isMatch).toBeFalsy();
+    });
+
+    test('case sensitivity', () => {
+        const response = fileMatchesAcceptedFormat('testing.XLSX', '.csv, .tsv, .xlsx');
+        expect(response.extension).toBe('.XLSX');
+        expect(response.isMatch).toBeTruthy();
     });
 
     test('multiple file extension', () => {
         let response = fileMatchesAcceptedFormat('testing.xar.xml', '.xar.xml');
-        expect(response.get('extension')).toBe('.xar.xml');
-        expect(response.get('isMatch')).toBeTruthy();
+        expect(response.extension).toBe('.xar.xml');
+        expect(response.isMatch).toBeTruthy();
 
         response = fileMatchesAcceptedFormat('testing.xar.xml', '.xml');
-        expect(response.get('extension')).toBe('.xml');
-        expect(response.get('isMatch')).toBeTruthy();
+        expect(response.extension).toBe('.xml');
+        expect(response.isMatch).toBeTruthy();
     });
 });
 
@@ -203,9 +213,7 @@ describe('fileSizeLimitCompare', () => {
         type: 'test',
         lastModified: 1,
         name: 'test.text',
-        slice: (start, end, compareType): Blob => {
-            return undefined;
-        },
+        slice: jest.fn(),
         arrayBuffer: undefined,
         stream: undefined,
         text: undefined,

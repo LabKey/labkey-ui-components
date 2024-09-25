@@ -963,7 +963,7 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
         const shouldShowImportExport = this.shouldShowImportExport();
 
         if (shouldShowInferFromFile || shouldShowImportExport) {
-            let acceptedFormats = [];
+            let acceptedFormats: string[] = [];
             if (shouldShowInferFromFile) {
                 acceptedFormats = acceptedFormats.concat(['.csv', '.tsv', '.txt', '.xls', '.xlsx']);
             }
@@ -971,7 +971,7 @@ export class DomainFormImpl extends React.PureComponent<DomainFormProps, State> 
                 acceptedFormats = acceptedFormats.concat(['.json']);
             }
 
-            let label;
+            let label: ReactNode;
             if (shouldShowImportExport && shouldShowInferFromFile) {
                 label = 'Import or infer fields from file';
             } else if (shouldShowImportExport) {

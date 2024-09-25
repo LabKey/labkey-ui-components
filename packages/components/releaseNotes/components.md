@@ -7,6 +7,23 @@ Components, models, actions, and utility functions for LabKey applications and p
   - updates to chart margins and sizes for chart builder and dashboard
   - only show 'x' grid lines for bar and box plots
 
+### version 5.5.10
+*Released*: 24 September 2024
+- Update `fileMatchesAcceptedFormat` utility to check file extension casing in a case-insensitive manner. Refactor away from using `Immutable`.
+  - Fixes Issue 51331
+- Update `FileAttachmentContainer` to use native `Set` rather than `Immutable.Set`.
+
+### version 5.5.9
+*Released*: 24 September 2024
+- EditableGrid: Fix issue with pasteEvent not working if user pasted more rows than the grid has
+  - Fixes issue 51327
+
+### version 5.5.8
+*Released*: 24 September 2024
+- Fix Issue 51265
+    - We now more consistently trim values and use getValidatedEditableGridValue
+- Stop using overflow: scroll
+
 ### version 5.5.7
 *Released*: 20 September 2024
 - Issue 50389: Casing of aliased (parent) sample or source type name can be changed in the editable grid

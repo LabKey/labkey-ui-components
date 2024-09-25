@@ -128,7 +128,7 @@ export function getUpdatedDataFromGrid(
                 // We can skip the idField for the diff check, that will be added to the updated rows later
                 if (key === idField) return row;
 
-                let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
+                let originalValue = originalRow.get(key, undefined);
                 const col = queryInfo.getColumn(key);
 
                 // Convert empty cell to null
@@ -188,9 +188,7 @@ export function getUpdatedDataFromGrid(
 
                     // if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value we set the value to null in our update data
-                    value = value === undefined ? null : value;
-
-                    row[key] = getValidatedEditableGridValue(value, col).value;
+                    row[key] = value === undefined ? null : value;
                 }
                 return row;
             }, {});

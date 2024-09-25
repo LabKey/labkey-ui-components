@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, List, Map, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 
 import { parseScientificInt } from '../../util/utils';
 
@@ -25,7 +25,7 @@ export function convertRowDataIntoPreviewData(
     }
 
     // numeric data is imported as Doubles for excel (see org.labkey.api.exp.PropertyType#getFromExcelCell)
-    const integerFieldInds = [];
+    const integerFieldInds: number[] = [];
     if (fields && fields.size > 0) {
         fields.forEach((field, ind) => {
             const rangeURI = field.rangeURI;
@@ -76,21 +76,24 @@ export function getFileExtension(fileName: string, lastIndex = true): string {
     return undefined;
 }
 
-export function fileMatchesAcceptedFormat(fileName: string, formatExtensionStr: string): Map<string, any> {
-    const acceptedFormatArray: string[] = formatExtensionStr.replace(/\s/g, '').split(',');
+export type FileExtensionMatch = {
+    extension: string;
+    isMatch: boolean;
+};
+
+export function fileMatchesAcceptedFormat(fileName: string, formatExtensionStr: string): FileExtensionMatch {
+    // Issue 51331: Support case-insensitive matching on file extensions
+    const acceptedFormatArray = formatExtensionStr.toLowerCase().replace(/\s/g, '').split(',');
     let extension = getFileExtension(fileName);
-    let isMatch = extension?.length > 0 && acceptedFormatArray.indexOf(extension) >= 0;
+    let isMatch = extension?.length > 0 && acceptedFormatArray.indexOf(extension.toLowerCase()) >= 0;
 
     // Issue 42637: some file name extensions may not be based off of the last index of '.' in the file name
     if (!isMatch) {
         extension = getFileExtension(fileName, false);
-        isMatch = extension?.length > 0 && acceptedFormatArray.indexOf(extension) >= 0;
+        isMatch = extension?.length > 0 && acceptedFormatArray.indexOf(extension.toLowerCase()) >= 0;
     }
 
-    return fromJS({
-        extension,
-        isMatch,
-    });
+    return { extension, isMatch };
 }
 
 export interface SizeLimitCheckResult {

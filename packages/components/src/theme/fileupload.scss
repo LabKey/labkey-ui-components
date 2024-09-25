@@ -220,7 +220,7 @@
 
 .file-upload--file-entry-listing {
     max-height: 160px;
-    overflow-y: scroll;
+    overflow-y: auto;
     margin-bottom: 0;
 }
 .file-upload--file-entry-listing.well {

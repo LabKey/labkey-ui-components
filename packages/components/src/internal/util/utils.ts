@@ -775,13 +775,13 @@ export function makeCommaSeparatedString<T>(values: T[]): string {
 /**
  * Convert [SampleType1, SampleType2, SampleType3], 'sample type' => '3 sample types (SampleType1, SampleType2 and SampleType3)'
  * @param values
- * @param nounSingluar
+ * @param nounSingular
  * @param nounPlural
  */
-export function getValuesSummary<T>(values: T[], nounSingluar: string, nounPlural?: string): string {
+export function getValuesSummary<T>(values: T[], nounSingular: string, nounPlural?: string): string {
     if (!values || values.length === 0) return '';
-    if (values.length === 1) return `1 ${nounSingluar} (${values[0]})`;
+    if (values.length === 1) return `1 ${nounSingular} (${values[0]})`;
 
-    const plural = nounPlural ?? nounSingluar + 's';
+    const plural = nounPlural ?? nounSingular + 's';
     return `${values.length} ${plural} (${makeCommaSeparatedString(values)})`;
 }

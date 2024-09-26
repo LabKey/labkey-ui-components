@@ -26,6 +26,7 @@ import { SchemaQuery } from '../../../public/SchemaQuery';
 
 import { EditorModel, CellMessage } from './models';
 import { CellActions, MODIFICATION_TYPES } from './constants';
+import { incrementClientSideMetricCount } from '../../actions';
 
 export function applyEditorModelChanges(
     models: EditorModel[],
@@ -470,4 +471,17 @@ export function computeRangeChange(selectedIdx: number, min: number, max: number
     }
 
     return [Math.max(0, min), max];
+}
+
+export function incrementRowCountMetric(dataType: string, rowCount: number, isUpdate: boolean): void {
+    const metricFeatureArea = isUpdate ? 'gridUpdateCounts' : 'gridInsertCounts';
+    if (rowCount > 0 && rowCount <= 50) {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + '1To50');
+    } else if (rowCount <= 100) {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + '51To100');
+    } else if (rowCount <= 250) {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + '101To250');
+    } else {
+        incrementClientSideMetricCount(metricFeatureArea, dataType + 'GT250');
+    }
 }

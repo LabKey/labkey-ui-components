@@ -25,7 +25,7 @@ import { EditorModel, EditableGridLoader, EditableColumnMetadata } from './model
 
 import { EditableGridPanel, EditableGridPanelProps } from './EditableGridPanel';
 import { initEditorModel } from './actions';
-import { applyEditorModelChanges, getUpdatedDataFromEditableGrid } from './utils';
+import { applyEditorModelChanges, getUpdatedDataFromEditableGrid, incrementRowCountMetric } from './utils';
 import { EditableGridChange } from './EditableGrid';
 
 const ERROR_ALERT_ID = 'editable-grid-error';
@@ -39,6 +39,7 @@ interface EditableGridPanelForUpdateProps extends InheritedEditableGridPanelProp
     columnMetadata?: Map<string, EditableColumnMetadata>;
     editStatusData?: OperationConfirmationData;
     loader: EditableGridLoader;
+    metricFeatureArea?: string;
     onCancel: () => void;
     onComplete: () => void;
     pluralNoun: string;
@@ -60,6 +61,7 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
         columnMetadata,
         editStatusData,
         loader,
+        metricFeatureArea,
         onCancel,
         onComplete,
         pluralNoun,
@@ -121,6 +123,7 @@ export const EditableGridPanelForUpdate: FC<EditableGridPanelForUpdateProps> = p
         try {
             // TODO: I suspect we can skip passing originalRows since getDataForServerUpload appends folder/container
             await updateRows(gridData.schemaQuery, gridData.updatedRows, comment, gridData.originalRows);
+            incrementRowCountMetric(metricFeatureArea, editorModel.rowCount, true);
             setIsSubmitting(false);
             onComplete();
         } catch (e) {

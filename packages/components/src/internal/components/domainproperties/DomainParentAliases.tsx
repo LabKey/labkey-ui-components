@@ -137,6 +137,17 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         onAddParentAlias(newId, newParentAlias);
     }, [idPrefix, onAddParentAlias, schema]);
 
+    const getFilteredParentOptions = useCallback((currentAlias: IParentAlias) : IParentOption[] => {
+        const exclude = [];
+        const current = currentAlias?.parentValue?.value;
+        filteredParentAliases?.forEach(usedAlias => {
+            const used = usedAlias.parentValue.value;
+            if (used && current !== used)
+                exclude.push(used);
+        })
+        return filteredParentOptions?.filter(option => exclude.indexOf(option.value) === -1);
+    }, [filteredParentOptions, filteredParentAliases]);
+
     return (
         <>
             {filteredParentAliases?.length > 0 && (
@@ -161,7 +172,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
                             key={alias.id}
                             id={alias.id}
                             parentAlias={alias}
-                            parentOptions={filteredParentOptions}
+                            parentOptions={getFilteredParentOptions(alias)}
                             onAliasChange={onParentAliasChange}
                             onRemove={onRemoveParentAlias}
                             updateDupeParentAliases={updateDupeParentAliases}

@@ -920,12 +920,15 @@
     float: left;
     width: 100%;
     position: relative;
-    min-height: 50px;
+    min-height: 53px;
 }
 
 .domain-field-alias--input {
     top: 8px;
     input[type=checkbox] {
         top: 5px;
+    }
+    .form-control {
+        height: 34px;
     }
 }

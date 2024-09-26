@@ -702,31 +702,31 @@ describe('getValidatedEditableGridValue', () => {
     test('invalid date value', () => {
         expect(getValidatedEditableGridValue('BOGUS', dateCol)).toStrictEqual({
             message: {
-                message: 'Invalid date',
+                message: 'Invalid date, use format yyyy-MM-dd',
             },
             value: 'BOGUS',
         });
         expect(getValidatedEditableGridValue(true, dateCol)).toStrictEqual({
             message: {
-                message: 'Invalid date',
+                message: 'Invalid date, use format yyyy-MM-dd',
             },
             value: true,
         });
         expect(getValidatedEditableGridValue(13, dateCol).message).toBe(undefined);
         expect(getValidatedEditableGridValue('2020-12-INVALID 14:34', dateCol)).toStrictEqual({
             message: {
-                message: 'Invalid date',
+                message: 'Invalid date, use format yyyy-MM-dd',
             },
             value: '2020-12-INVALID 14:34',
         });
         expect(getValidatedEditableGridValue('2020-13-23 14:34', dateCol)).toStrictEqual({
             message: {
-                message: 'Invalid date',
+                message: 'Invalid date, use format yyyy-MM-dd',
             },
             value: '2020-13-23 14:34',
         });
         expect(getValidatedEditableGridValue(new Date('2020-13-23 14:34'), dateCol).message).toStrictEqual({
-            message: 'Invalid date',
+            message: 'Invalid date, use format yyyy-MM-dd',
         });
     });
 
@@ -752,31 +752,31 @@ describe('getValidatedEditableGridValue', () => {
     test('invalid dateTimeCol value', () => {
         expect(getValidatedEditableGridValue('BOGUS', dateTimeCol)).toStrictEqual({
             message: {
-                message: 'Invalid date time',
+                message: 'Invalid date time, use format yyyy-MM-dd HH:mm',
             },
             value: 'BOGUS',
         });
         expect(getValidatedEditableGridValue(true, dateTimeCol)).toStrictEqual({
             message: {
-                message: 'Invalid date time',
+                message: 'Invalid date time, use format yyyy-MM-dd HH:mm',
             },
             value: true,
         });
         expect(getValidatedEditableGridValue(13, dateTimeCol).message).toBe(undefined);
         expect(getValidatedEditableGridValue('2020-12-INVALID 14:34', dateTimeCol)).toStrictEqual({
             message: {
-                message: 'Invalid date time',
+                message: 'Invalid date time, use format yyyy-MM-dd HH:mm',
             },
             value: '2020-12-INVALID 14:34',
         });
         expect(getValidatedEditableGridValue('2020-13-23 14:34', dateTimeCol)).toStrictEqual({
             message: {
-                message: 'Invalid date time',
+                message: 'Invalid date time, use format yyyy-MM-dd HH:mm',
             },
             value: '2020-13-23 14:34',
         });
         expect(getValidatedEditableGridValue(new Date('2020-13-23 14:34'), dateTimeCol).message).toStrictEqual({
-            message: 'Invalid date time',
+            message: 'Invalid date time, use format yyyy-MM-dd HH:mm',
         });
     });
 
@@ -907,11 +907,11 @@ describe('getValidatedEditableGridValue', () => {
             expect(getValidatedEditableGridValue(value, textChoiceCol)).toStrictEqual({ message: undefined, value });
         });
 
-        const invalidValues = [' ', 'A', 'b', 'aB', 'ab'];
+        const invalidValues = [' ', 'A', 'b', 'aB', 'ab', ' ab  '];
         invalidValues.forEach(value => {
             expect(getValidatedEditableGridValue(value, textChoiceCol)).toStrictEqual({
                 message: {
-                    message: 'Invalid text choice',
+                    message: `'${value.trim()}' is not a valid choice`,
                 },
                 value,
             });

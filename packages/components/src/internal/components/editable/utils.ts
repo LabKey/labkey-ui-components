@@ -75,7 +75,7 @@ export const getValidatedEditableGridValue = (
         value = dateStrVal ?? origValue;
     } else if (value != null && value !== '' && !col?.isPublicLookup()) {
         if (validValues) {
-            if (validValues.indexOf(trimmed) === -1) message = `"${trimmed}" is not a valid choice`;
+            if (validValues.indexOf(trimmed) === -1) message = `'${trimmed}' is not a valid choice`;
         } else if (jsonType === 'time') {
             const time = parseTime(value);
             if (time) value = getFormattedStringFromDate(time, col, false);

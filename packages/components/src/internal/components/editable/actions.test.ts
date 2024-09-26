@@ -750,11 +750,11 @@ describe('parsePastedLookup', () => {
         });
 
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'abc')).toStrictEqual({
-            message: { message: 'Could not find data for "abc"' },
+            message: { message: 'Could not find "abc"' },
             values: List([{ display: 'abc', raw: 'abc' }]),
         });
         expect(parsePastedLookup(stringLookupCol, stringLookupValues, 'abc, valueD')).toStrictEqual({
-            message: { message: 'Could not find data for "abc", "valueD"' },
+            message: { message: 'Could not find "abc", "valueD"' },
             values: List([
                 { display: 'abc', raw: 'abc' },
                 { display: 'valueD', raw: 'valueD' },
@@ -781,11 +781,11 @@ describe('parsePastedLookup', () => {
         });
 
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'abc')).toStrictEqual({
-            message: { message: 'Could not find data for "abc"' },
+            message: { message: 'Could not find "abc"' },
             values: List([{ display: 'abc', raw: 'abc' }]),
         });
         expect(parsePastedLookup(intLookupCol, intLookupValues, 'abc, valueD')).toStrictEqual({
-            message: { message: 'Could not find data for "abc", "valueD"' },
+            message: { message: 'Could not find "abc", "valueD"' },
             values: List([
                 { display: 'abc', raw: 'abc' },
                 { display: 'valueD', raw: 'valueD' },

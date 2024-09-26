@@ -19,7 +19,7 @@
 .panel.fixed-panel {
   min-height: 45em;
   max-height: 45em;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .bottom-spacing {
@@ -186,7 +186,7 @@
 // try to make the height here so it is obvious when there are rows below the fold.
 .modal-body .editable-grid__container {
   max-height: 540px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .editable-grid__container {

@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Lineage Relationships: Optionally Require during Sample Registration
   - TODO
 
+### version 5.6.0
+*Released*: 25 September 2024
+- Wire up onBlur for LookupCell
+- Export Help component
+- Export CellMessages type
+
 ### version 5.5.11
 *Released*: 25 September 2024
 - Issue 51337: LKSM: Can't edit samples where source ID has a comma

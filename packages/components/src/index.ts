@@ -324,6 +324,7 @@ import {
     registerInputRenderers,
     InputRenderContext,
 } from './internal/components/forms/input/InputRenderFactory';
+import { Help } from './internal/components/forms/input/Help';
 
 import {
     getUsersWithPermissions,
@@ -1223,6 +1224,7 @@ export {
     resolveDetailRenderer,
     registerInputRenderer,
     InputRenderContext,
+    Help,
     // Formsy
     addFormsyRule,
     Formsy,
@@ -1862,6 +1864,7 @@ export type { NotificationsContextProps } from './internal/components/notificati
 export type { VisGraphNode } from './internal/components/lineage/models';
 export type { ITab } from './internal/components/navigation/types';
 export type {
+    CellMessages,
     EditableColumnMetadata,
     EditableGridLoader,
     EditorModelProps,

@@ -54,44 +54,50 @@ export const getValidatedEditableGridValue = (
     origValue: any,
     col: QueryColumn
 ): { message: CellMessage; value: any } => {
-    const isDateTimeType = col?.jsonType === 'date';
-    const isDateType = isDateTimeType && col?.isDateOnlyColumn;
+    // col ?? {} so it's safe to destructure
+    const { caption, isDateOnlyColumn, jsonType, required, scale, validValues } = col ?? {};
+    const isDateTimeType = jsonType === 'date';
+    const isDateType = isDateTimeType && isDateOnlyColumn;
     let message;
     let value = origValue;
+    const trimmed = origValue?.toString().trim();
 
     // Issue 44398: match JSON dateTime format provided by LK server when submitting date values back for insert/update
     // Issue 45140: use QueryColumn date format for parseDate()
     if (isDateType || isDateTimeType) {
-        const dateVal = parseDate(origValue, getColDateFormat(col));
+        const dateFormat = getColDateFormat(col);
+        const dateVal = parseDate(origValue, dateFormat);
         const dateStrVal = isDateType ? getJsonDateFormatString(dateVal) : getJsonDateTimeFormatString(dateVal);
-        if (origValue && !dateStrVal) message = isDateType ? 'Invalid date' : 'Invalid date time';
+        if (origValue && !dateStrVal) {
+            const noun = isDateType ? 'date' : 'date time';
+            message = `Invalid ${noun}, use format ${dateFormat}`;
+        }
         value = dateStrVal ?? origValue;
     } else if (value != null && value !== '' && !col?.isPublicLookup()) {
-        if (col?.validValues) {
-            if (col.validValues.indexOf(origValue.toString().trim()) === -1) message = 'Invalid text choice';
-        } else if (col?.jsonType === 'time') {
+        if (validValues) {
+            if (validValues.indexOf(trimmed) === -1) message = `"${trimmed}" is not a valid choice`;
+        } else if (jsonType === 'time') {
             const time = parseTime(value);
-            if (time) {
-                value = getFormattedStringFromDate(time, col, false);
-            } else message = 'Invalid time';
-        } else if (col?.jsonType === 'boolean' && !isBoolean(value)) {
+            if (time) value = getFormattedStringFromDate(time, col, false);
+            else message = 'Invalid time';
+        } else if (jsonType === 'boolean' && !isBoolean(value)) {
             message = 'Invalid boolean';
-        } else if (col?.jsonType === 'int' && !isInteger(value)) {
+        } else if (jsonType === 'int' && !isInteger(value)) {
             message = 'Invalid integer';
-        } else if (col?.jsonType === 'float' && !isFloat(value)) {
+        } else if (jsonType === 'float' && !isFloat(value)) {
             message = 'Invalid decimal';
-        } else if (col?.jsonType === 'string' && col?.scale) {
-            if (value.toString().trim().length > col.scale)
-                message = value.toString().trim().length + '/' + col.scale + ' characters';
+        } else if (jsonType === 'string' && scale) {
+            if (value.toString().trim().length > scale)
+                message = value.toString().trim().length + '/' + scale + ' characters';
         }
     }
 
     if (
-        col?.required &&
+        required &&
         (value == null || value === '' || value.toString().trim() === '') &&
-        col?.jsonType !== 'boolean'
+        jsonType !== 'boolean'
     ) {
-        message = (message ? message + '. ' : '') + col.caption + ' is required.';
+        message = (message ? message + '. ' : '') + caption + ' is required.';
     }
 
     return {
@@ -154,8 +160,7 @@ export function getUpdatedDataFromGrid(
                 // updated values. This is not the final type check.
                 if (typeof originalValue === 'number' || typeof originalValue === 'boolean') {
                     try {
-                        if (!isQuotedWithDelimiters(value, ','))
-                            value = JSON.parse(value);
+                        if (!isQuotedWithDelimiters(value, ',')) value = JSON.parse(value);
                     } catch (e) {
                         // Incorrect types are handled by API and user feedback created from that response. Don't need
                         // to handle that here.

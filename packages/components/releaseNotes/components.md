@@ -4,7 +4,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 5.X
 *Released*: X September 2024
 - Lineage Relationships: Optionally Require during Sample Registration
-  - TODO
+  - add 'required' prop to various alias and parent input related models
+  - add api.domain.getRequiredParentTypes and api.entity.getDataTypesWithRequiredLineage
+  - updated DomainParentAliases and ParentAliasRow to use new UI and allow setting required parent
+  - updated ImportAliasRenderer to incorporate required info
+  - updated SampleTypeDesigner and DataClassDesigner to show new Lineage section for alias
+  - remove folder level data exclusion for alias data type selection since designers are edited at Home folder
 
 ### version 5.6.0
 *Released*: 25 September 2024

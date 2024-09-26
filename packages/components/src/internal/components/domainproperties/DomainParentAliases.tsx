@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { OrderedMap } from 'immutable';
 
@@ -150,6 +150,15 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         [filteredParentOptions, filteredParentAliases]
     );
 
+    const hasMoreToAdd = useMemo(() => {
+        const added = [];
+        filteredParentAliases?.forEach(usedAlias => {
+            added.push(usedAlias.parentValue.value);
+        });
+
+        return filteredParentOptions?.find(option => added.indexOf(option.value) === -1);
+    }, [filteredParentOptions, filteredParentAliases]);
+
     return (
         <>
             {filteredParentAliases?.length > 0 && (
@@ -186,7 +195,7 @@ export const DomainParentAliases: FC<Props> = memo(props => {
                     ))}
                 </div>
             )}
-            {showAddBtn && (
+            {showAddBtn && hasMoreToAdd && (
                 <div className="row">
                     <div className="col-xs-2" />
                     <div className="col-xs-10">

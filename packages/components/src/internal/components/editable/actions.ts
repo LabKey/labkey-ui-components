@@ -335,6 +335,36 @@ async function getLookupDisplayValue(column: QueryColumn, value: any, containerP
     };
 }
 
+interface CellData {
+    message?: CellMessage;
+    valueDescriptors: List<ValueDescriptor>;
+}
+
+async function convertRowToEditorModelData(
+    data: Map<string, string | number | boolean>,
+    col: QueryColumn,
+    containerPath: string
+): Promise<CellData> {
+    let message: CellMessage;
+    let valueDescriptors = List<ValueDescriptor>();
+
+    if (data && col && col.isPublicLookup()) {
+        // value had better be the rowId here, but it may be several in a comma-separated list.
+        // If it's the display value, which happens to be a number, much confusion will arise.
+        const values = data.toString().split(',');
+
+        for (const val of values) {
+            const messageAndValue = await getLookupDisplayValue(col, parseIntIfNumber(val), containerPath);
+            valueDescriptors = valueDescriptors.push(messageAndValue.valueDescriptor);
+            message = messageAndValue.message;
+        }
+    } else {
+        valueDescriptors = valueDescriptors.push({ display: data, raw: data });
+    }
+
+    return { message, valueDescriptors };
+}
+
 async function prepareInsertRowDataFromBulkForm(
     insertColumns: QueryColumn[],
     rowData: List<any>,
@@ -348,29 +378,10 @@ async function prepareInsertRowDataFromBulkForm(
         const data = rowData.get(cn);
         const colIdx = colMin + cn;
         const col = insertColumns[colIdx];
-        let cv: List<ValueDescriptor>;
+        const { message, valueDescriptors } = await convertRowToEditorModelData(data, col, containerPath);
+        values = values.push(valueDescriptors);
 
-        if (data && col && col.isPublicLookup()) {
-            cv = List<ValueDescriptor>();
-            // value had better be the rowId here, but it may be several in a comma-separated list.
-            // If it's the display value, which happens to be a number, much confusion will arise.
-            const values_ = data.toString().split(',');
-            for (const val of values_) {
-                const { message, valueDescriptor } = await getLookupDisplayValue(
-                    col,
-                    parseIntIfNumber(val),
-                    containerPath
-                );
-                cv = cv.push(valueDescriptor);
-                if (message) {
-                    messages = messages.push(message);
-                }
-            }
-        } else {
-            cv = List([{ display: data, raw: data }]);
-        }
-
-        values = values.push(cv);
+        if (message) messages = messages.push(message);
     }
 
     return {
@@ -574,36 +585,10 @@ async function prepareUpdateRowDataFromBulkForm(
 
     for (const colKey of rowData.keySeq().toArray()) {
         const data = rowData.get(colKey);
-        let col: QueryColumn;
-
-        if (altColumns) {
-            col = queryInfo.getColumn(colKey);
-        } else {
-            col = columns.find(c => c.fieldKey === colKey);
-        }
-        let cv: List<ValueDescriptor>;
-
-        if (data && col && col.isPublicLookup()) {
-            cv = List<ValueDescriptor>();
-            // value had better be the rowId here, but it may be several in a comma-separated list.
-            // If it's the display value, which happens to be a number, much confusion will arise.
-            const rawValues = data.toString().split(',');
-            for (const val of rawValues) {
-                const { message, valueDescriptor } = await getLookupDisplayValue(
-                    col,
-                    parseIntIfNumber(val),
-                    containerPath
-                );
-                cv = cv.push(valueDescriptor);
-                if (message) {
-                    messages = messages.set(col.fieldKey, message);
-                }
-            }
-        } else {
-            cv = List([{ display: data, raw: data }]);
-        }
-
-        values = values.set(col.fieldKey, cv);
+        const col = altColumns ? queryInfo.getColumn(colKey) : columns.find(c => c.fieldKey === colKey);
+        const { message, valueDescriptors } = await convertRowToEditorModelData(data, col, containerPath);
+        values = values.set(col.fieldKey, valueDescriptors);
+        if (message) messages = messages.set(col.fieldKey, message);
     }
 
     return { values, messages };
@@ -1516,7 +1501,12 @@ function getCopyValue(model: EditorModel, hideReadOnlyRows: boolean, readonlyRow
     return copyValue;
 }
 
-export function copyEvent(editorModel: EditorModel, event: any, hideReadOnlyRows: boolean, readonlyRows: string[]): boolean {
+export function copyEvent(
+    editorModel: EditorModel,
+    event: any,
+    hideReadOnlyRows: boolean,
+    readonlyRows: string[]
+): boolean {
     if (editorModel && !editorModel.hasFocus && editorModel.hasSelection && !editorModel.isSparseSelection) {
         cancelEvent(event);
         setCopyValue(event, getCopyValue(editorModel, hideReadOnlyRows, readonlyRows));

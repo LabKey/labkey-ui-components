@@ -49,7 +49,7 @@ describe('getInitialParentChoices', () => {
             value: 'vendor 3',
             query: 'Vendor 3',
             schema: 'exp.data',
-            required: true
+            required: true,
         },
     ]);
 
@@ -194,9 +194,8 @@ describe('getInitialParentChoices', () => {
             gridValues: [],
             ids: [],
             type: parentTypeOptions.get(2),
-            value: undefined
+            value: undefined,
         });
-
     });
 });
 

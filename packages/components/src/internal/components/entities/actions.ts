@@ -1064,8 +1064,7 @@ export const initParentOptionsSelects = (
                     }
                 });
 
-                const parentOptions = allOptions
-                    .sort(naturalSortByProperty('label'));
+                const parentOptions = allOptions.sort(naturalSortByProperty('label'));
 
                 let parentAliases = Map<string, IParentAlias>();
 

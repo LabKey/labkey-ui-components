@@ -1,13 +1,15 @@
 import React from 'react';
 import { act } from '@testing-library/react';
 
+import { userEvent } from '@testing-library/user-event';
+
 import { SELECT_INPUT_CONTROL_SELECTOR } from '../forms/input/SelectInputTestUtils';
 
 import { IParentAlias, IParentOption } from '../entities/models';
 
-import { ParentAliasRow } from './ParentAliasRow';
 import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
-import { userEvent } from '@testing-library/user-event';
+
+import { ParentAliasRow } from './ParentAliasRow';
 
 describe('<ParentAliasRow/>', () => {
     test('Ignore empty values', async () => {
@@ -32,9 +34,9 @@ describe('<ParentAliasRow/>', () => {
             );
         });
 
-        expect(document.getElementsByName('alias')[0].getAttribute("value")).toBe('');
-        expect(document.querySelectorAll(".has-error")).toHaveLength(0);
-        expect(document.getElementsByName('required')[0].getAttribute("checked")).toBeNull();
+        expect(document.getElementsByName('alias')[0].getAttribute('value')).toBe('');
+        expect(document.querySelectorAll('.has-error')).toHaveLength(0);
+        expect(document.getElementsByName('required')[0].getAttribute('checked')).toBeNull();
     });
 
     test('Blank values, Error CSS applied', async () => {
@@ -60,10 +62,10 @@ describe('<ParentAliasRow/>', () => {
         });
 
         const aliasInput = document.getElementsByName('alias')[0];
-        expect(aliasInput.getAttribute("value")).toBe(parentAlias.alias);
+        expect(aliasInput.getAttribute('value')).toBe(parentAlias.alias);
         expect(document.querySelectorAll('.has-error input[name="alias"]')).toHaveLength(1);
         expect(document.querySelectorAll(`.has-error ${SELECT_INPUT_CONTROL_SELECTOR}`)).toHaveLength(1);
-        expect(document.getElementsByName('required')[0].getAttribute("checked")).toBeNull();
+        expect(document.getElementsByName('required')[0].getAttribute('checked')).toBeNull();
     });
 
     test('With values', async () => {
@@ -96,9 +98,9 @@ describe('<ParentAliasRow/>', () => {
 
         expect(container).toMatchSnapshot();
 
-        expect(document.getElementsByName('alias')[0].getAttribute("value")).toBe(parentAlias.alias);
-        expect(document.getElementsByName('parentValue')[0].getAttribute("value")).toBe(parentAlias.parentValue.value);
-        expect(document.getElementsByName('required')[0].getAttribute("checked")).toBeNull();
+        expect(document.getElementsByName('alias')[0].getAttribute('value')).toBe(parentAlias.alias);
+        expect(document.getElementsByName('parentValue')[0].getAttribute('value')).toBe(parentAlias.parentValue.value);
+        expect(document.getElementsByName('required')[0].getAttribute('checked')).toBeNull();
     });
 
     test('With values - required', async () => {
@@ -130,9 +132,9 @@ describe('<ParentAliasRow/>', () => {
             );
         });
 
-        expect(document.getElementsByName('alias')[0].getAttribute("value")).toBe(parentAlias.alias);
-        expect(document.getElementsByName('parentValue')[0].getAttribute("value")).toBe(parentAlias.parentValue.value);
-        expect(document.getElementsByName('required')[0].getAttribute("checked")).toBe('');
+        expect(document.getElementsByName('alias')[0].getAttribute('value')).toBe(parentAlias.alias);
+        expect(document.getElementsByName('parentValue')[0].getAttribute('value')).toBe(parentAlias.parentValue.value);
+        expect(document.getElementsByName('required')[0].getAttribute('checked')).toBe('');
     });
 
     test('With parent value not an option in select', async () => {
@@ -165,9 +167,9 @@ describe('<ParentAliasRow/>', () => {
 
         expect(container).toMatchSnapshot();
 
-        expect(document.getElementsByName('alias')[0].getAttribute("value")).toBe(parentAlias.alias);
-        expect(document.getElementsByName('parentValue')[0].getAttribute("value")).toBe(parentAlias.parentValue.value);
-        expect(document.getElementsByName('required')[0].getAttribute("checked")).toBeNull();
+        expect(document.getElementsByName('alias')[0].getAttribute('value')).toBe(parentAlias.alias);
+        expect(document.getElementsByName('parentValue')[0].getAttribute('value')).toBe(parentAlias.parentValue.value);
+        expect(document.getElementsByName('required')[0].getAttribute('checked')).toBeNull();
     });
 
     // await userEvent.click(screen.getByText('card1'));
@@ -256,18 +258,18 @@ describe('<ParentAliasRow/>', () => {
         const aliasInput = document.getElementsByName('alias')[0];
         const requiredInput = document.getElementsByName('required')[0];
 
-        expect(aliasInput.getAttribute("value")).toBe(parentAlias.alias);
-        expect(requiredInput.getAttribute("checked")).toBeNull();
+        expect(aliasInput.getAttribute('value')).toBe(parentAlias.alias);
+        expect(requiredInput.getAttribute('checked')).toBeNull();
         expect(mockChange).toHaveBeenCalledTimes(0);
 
         await userEvent.type(aliasInput, 'c');
         expect(mockChange).toHaveBeenCalledTimes(1);
-        expect(mockChange).toBeCalledWith('testId', 'alias', parentAlias.alias + 'c');
+        expect(mockChange).toHaveBeenCalledWith('testId', 'alias', parentAlias.alias + 'c');
         mockChange.mockClear();
 
         await userEvent.click(requiredInput);
         expect(mockChange).toHaveBeenCalledTimes(1);
-        expect(mockChange).toBeCalledWith('testId', 'required', true);
+        expect(mockChange).toHaveBeenCalledWith('testId', 'required', true);
         mockChange.mockClear();
     });
 });

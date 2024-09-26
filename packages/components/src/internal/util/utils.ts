@@ -725,7 +725,7 @@ export function quoteValueWithDelimiters(value: any, delimiter: string) {
     return '"' + value + '"';
 }
 
-export function isQuotedWithDelimiters(value: any, delimiter: string) : boolean {
+export function isQuotedWithDelimiters(value: any, delimiter: string): boolean {
     if (!value || !Utils.isString(value)) {
         return false;
     }

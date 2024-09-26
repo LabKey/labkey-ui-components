@@ -1,9 +1,11 @@
 import React from 'react';
 import { fromJS } from 'immutable';
 
-import { ImportAliasRenderer } from './ImportAliasRenderer';
 import { act } from '@testing-library/react';
+
 import { renderWithAppContext } from '../test/reactTestLibraryHelpers';
+
+import { ImportAliasRenderer } from './ImportAliasRenderer';
 
 const DEFAULT_PROPS = {
     appRouteMap: { 'materialInputs/': 'samples' },
@@ -18,11 +20,7 @@ describe('ImportAliasRenderer', () => {
 
     test('without data', async () => {
         await act(async () => {
-            renderWithAppContext(
-                <ImportAliasRenderer
-                    {...DEFAULT_PROPS}
-                />
-            );
+            renderWithAppContext(<ImportAliasRenderer {...DEFAULT_PROPS} />);
         });
         validate();
     });
@@ -37,7 +35,7 @@ describe('ImportAliasRenderer', () => {
                         displayValue: {
                             key1: {
                                 inputType: 'materialInputs/value1',
-                                required: false
+                                required: false,
                             },
                         },
                     })}
@@ -59,11 +57,11 @@ describe('ImportAliasRenderer', () => {
                     data={fromJS({
                         displayValue: {
                             key1: {
-                                inputType: 'materialInputs/value1'
+                                inputType: 'materialInputs/value1',
                             },
                             key2: {
                                 inputType: 'materialInputs/value2',
-                                required: true
+                                required: true,
                             },
                         },
                     })}
@@ -74,7 +72,9 @@ describe('ImportAliasRenderer', () => {
         expect(document.querySelectorAll('div.alias-renderer--details')[0].textContent).toBe('key1, alias for: value1');
         expect(document.querySelectorAll('a')[0].getAttribute('href')).toBe('#/samples/value1');
         expect(document.querySelectorAll('a')[0].textContent).toBe('value1');
-        expect(document.querySelectorAll('div.alias-renderer--details')[1].textContent).toBe('key2, alias for: value2, required');
+        expect(document.querySelectorAll('div.alias-renderer--details')[1].textContent).toBe(
+            'key2, alias for: value2, required'
+        );
         expect(document.querySelectorAll('a')[1].getAttribute('href')).toBe('#/samples/value2');
         expect(document.querySelectorAll('a')[1].textContent).toBe('value2');
     });
@@ -92,10 +92,10 @@ describe('ImportAliasRenderer', () => {
                                 required: false,
                             },
                             key2: {
-                                inputType: 'materialInputs/value2'
+                                inputType: 'materialInputs/value2',
                             },
                             key3: {
-                                inputType: 'dataInputs/value3'
+                                inputType: 'dataInputs/value3',
                             },
                         },
                     })}

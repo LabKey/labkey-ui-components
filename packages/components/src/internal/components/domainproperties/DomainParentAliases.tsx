@@ -29,12 +29,12 @@ interface Props {
     parentAliasHelpText?: string;
     parentAliases?: OrderedMap<string, IParentAlias>;
     parentOptions: IParentOption[];
+    sampleAliasCaption?: string;
     sampleTypeCaption?: string;
     schema: string;
     showAddBtn?: boolean;
     updateDupeParentAliases?: (id: string) => void;
     useSeparateDataClassesAliasMenu?: boolean;
-    sampleAliasCaption?: string;
 }
 
 const sampleSetAliasFilterFn = (alias: IParentAlias): boolean => {
@@ -137,16 +137,18 @@ export const DomainParentAliases: FC<Props> = memo(props => {
         onAddParentAlias(newId, newParentAlias);
     }, [idPrefix, onAddParentAlias, schema]);
 
-    const getFilteredParentOptions = useCallback((currentAlias: IParentAlias) : IParentOption[] => {
-        const exclude = [];
-        const current = currentAlias?.parentValue?.value;
-        filteredParentAliases?.forEach(usedAlias => {
-            const used = usedAlias.parentValue.value;
-            if (used && current !== used)
-                exclude.push(used);
-        })
-        return filteredParentOptions?.filter(option => exclude.indexOf(option.value) === -1);
-    }, [filteredParentOptions, filteredParentAliases]);
+    const getFilteredParentOptions = useCallback(
+        (currentAlias: IParentAlias): IParentOption[] => {
+            const exclude = [];
+            const current = currentAlias?.parentValue?.value;
+            filteredParentAliases?.forEach(usedAlias => {
+                const used = usedAlias.parentValue.value;
+                if (used && current !== used) exclude.push(used);
+            });
+            return filteredParentOptions?.filter(option => exclude.indexOf(option.value) === -1);
+        },
+        [filteredParentOptions, filteredParentAliases]
+    );
 
     return (
         <>

@@ -308,6 +308,10 @@ async function getLookupValueDescriptors(
     return descriptorMap;
 }
 
+function lookupValidationError(value: string | number | boolean): CellMessage {
+    return { message: `Could not find ${value}` };
+}
+
 async function getLookupDisplayValue(column: QueryColumn, value: any, containerPath: string): Promise<MessageAndValue> {
     if (value === undefined || value === null) {
         return {
@@ -322,9 +326,7 @@ async function getLookupDisplayValue(column: QueryColumn, value: any, containerP
 
     const { descriptors } = await findLookupValues(column, [value], undefined, undefined, false, containerPath);
     if (!descriptors.length) {
-        message = {
-            message: 'Could not find data for ' + value,
-        };
+        message = lookupValidationError(value);
     }
 
     return {
@@ -919,14 +921,11 @@ export function parsePastedLookup(
         .filter(v => v !== undefined);
 
     if (unmatched.length) {
-        message = {
-            message:
-                'Could not find data for ' +
-                unmatched
-                    .slice(0, 4)
-                    .map(u => '"' + u + '"')
-                    .join(', '),
-        };
+        const valueStr = unmatched
+            .slice(0, 4)
+            .map(u => '"' + u + '"')
+            .join(', ');
+        message = lookupValidationError(valueStr);
     }
 
     return {

@@ -25,7 +25,7 @@ import {
     EXPERIMENTAL_CHART_BUILDER,
     EXPERIMENTAL_IDENTIFYING_FIELDS,
     EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS,
-    EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED,
+    EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED,
     EXPERIMENTAL_REQUESTS_MENU,
     EXPERIMENTAL_SAMPLE_ALIQUOT_SELECTOR,
     FREEZER_MANAGER_APP_PROPERTIES,
@@ -42,7 +42,7 @@ import {
     PICKLIST_KEY,
     PLATES_KEY,
     ProductFeature,
-    PROJECT_DATA_TYPE_EXCLUSIONS,
+    FOLDER_DATA_TYPE_EXCLUSIONS,
     REGISTRY_KEY,
     REQUESTS_KEY,
     SAMPLE_MANAGER_APP_PROPERTIES,
@@ -51,6 +51,7 @@ import {
     USER_KEY,
     WORKFLOW_KEY,
 } from './constants';
+import { SHARED_CONTAINER_PATH } from '../constants';
 
 declare var LABKEY: LabKey;
 
@@ -164,22 +165,22 @@ export function isProductNavigationEnabled(productId: string, moduleContext?: Mo
 export function isExperimentAliasEnabled(moduleContext?: ModuleContext): boolean {
     return biologicsIsPrimaryApp(moduleContext);
 }
-export function isProductProjectsEnabled(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.query?.isProductProjectsEnabled === true;
+export function isProductFoldersEnabled(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.query?.isProductFoldersEnabled === true;
 }
 
-export function hasProductProjects(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.query?.hasProductProjects === true;
+export function hasProductFolders(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.query?.hasProductFolders === true;
 }
 
-export function setProductProjects(moduleContext: ModuleContext, hasProductProjects: boolean): ModuleContext {
+export function setProductFolders(moduleContext: ModuleContext, hasProductFolders: boolean): ModuleContext {
     // side-effect set global moduleContext
     if (LABKEY?.moduleContext?.query) {
-        LABKEY.moduleContext.query.hasProductProjects = hasProductProjects;
+        LABKEY.moduleContext.query.hasProductFolders = hasProductFolders;
     }
 
     return Object.assign(moduleContext ?? {}, {
-        query: Object.assign(moduleContext?.query ?? {}, { hasProductProjects }),
+        query: Object.assign(moduleContext?.query ?? {}, { hasProductFolders: hasProductFolders }),
     });
 }
 
@@ -200,7 +201,7 @@ export function isAppHomeFolder(container?: Partial<Container>, moduleContext?: 
     const currentContainer: Partial<Container> = container ?? getServerContext().container;
     const isTopFolder = currentContainer.isProject || isProjectContainer(currentContainer.path);
     const isSubFolder = currentContainer.isFolder || isSubFolderContainer(currentContainer.path);
-    return isTopFolder || (isSubFolder && !isProductProjectsEnabled(moduleContext));
+    return isTopFolder || (isSubFolder && !isProductFoldersEnabled(moduleContext));
 }
 
 export function getAppHomeFolderPath(container?: Partial<Container>, moduleContext?: ModuleContext): string {
@@ -213,26 +214,8 @@ export function getAppHomeFolderId(container?: Container, moduleContext?: Module
     return isAppHomeFolder(currentContainer, moduleContext) ? currentContainer.id : currentContainer.parentId;
 }
 
-// either defined in a different container or it's defined in the home container and product projects are available.
-export function isSharedDefinition(
-    currentContainer: Container,
-    moduleContext: ModuleContext,
-    domainContainerPathOrId: string,
-    isId?: boolean
-): boolean {
-    if (
-        (isId && domainContainerPathOrId !== currentContainer.id) ||
-        (!isId && domainContainerPathOrId !== currentContainer.path)
-    ) {
-        return true;
-    }
-    if (!hasProductProjects(moduleContext)) {
-        return false;
-    }
-    if (isId && getAppHomeFolderId(currentContainer, moduleContext) === domainContainerPathOrId) {
-        return true;
-    }
-    return !isId && getAppHomeFolderPath(currentContainer, moduleContext) === domainContainerPathOrId;
+export function isSharedContainer(containerPath: string): boolean {
+    return containerPath === SHARED_CONTAINER_PATH;
 }
 
 export function sampleManagerIsPrimaryApp(moduleContext?: ModuleContext): boolean {
@@ -316,28 +299,28 @@ export function isAllProductFoldersFilteringEnabled(moduleContext?: ModuleContex
     return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_PRODUCT_ALL_FOLDER_LOOKUPS] === true;
 }
 
-export function isProductProjectsDataListingScopedToProject(moduleContext?: ModuleContext): boolean {
-    return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_PRODUCT_PROJECT_DATA_LISTING_SCOPED] === true;
+export function isProductFoldersDataListingScopedToFolder(moduleContext?: ModuleContext): boolean {
+    return resolveModuleContext(moduleContext)?.query?.[EXPERIMENTAL_PRODUCT_FOLDER_DATA_LISTING_SCOPED] === true;
 }
 
-export function getProjectDataExclusion(moduleContext?: ModuleContext): { [key: string]: number[] } {
-    return resolveModuleContext(moduleContext)?.samplemanagement?.[PROJECT_DATA_TYPE_EXCLUSIONS];
+export function getFolderDataExclusion(moduleContext?: ModuleContext): { [key: string]: number[] } {
+    return resolveModuleContext(moduleContext)?.samplemanagement?.[FOLDER_DATA_TYPE_EXCLUSIONS];
 }
 
-export function getProjectDashboardSampleTypeExclusion(moduleContext?: ModuleContext): number[] {
-    return getProjectDataExclusion(moduleContext)?.['DashboardSampleType'];
+export function getFolderDashboardSampleTypeExclusion(moduleContext?: ModuleContext): number[] {
+    return getFolderDataExclusion(moduleContext)?.['DashboardSampleType'];
 }
 
-export function getProjectSampleTypeExclusion(moduleContext?: ModuleContext): number[] {
-    return getProjectDataExclusion(moduleContext)?.['SampleType'];
+export function getFolderSampleTypeExclusion(moduleContext?: ModuleContext): number[] {
+    return getFolderDataExclusion(moduleContext)?.['SampleType'];
 }
 
-export function getProjectDataClassExclusion(moduleContext?: ModuleContext): number[] {
-    return getProjectDataExclusion(moduleContext)?.['DataClass'];
+export function getFolderDataClassExclusion(moduleContext?: ModuleContext): number[] {
+    return getFolderDataExclusion(moduleContext)?.['DataClass'];
 }
 
-export function getProjectAssayDesignExclusion(moduleContext?: ModuleContext): number[] {
-    return getProjectDataExclusion(moduleContext)?.['AssayDesign'];
+export function getFolderAssayDesignExclusion(moduleContext?: ModuleContext): number[] {
+    return getFolderDataExclusion(moduleContext)?.['AssayDesign'];
 }
 
 export function isAssayEnabled(moduleContext?: ModuleContext): boolean {

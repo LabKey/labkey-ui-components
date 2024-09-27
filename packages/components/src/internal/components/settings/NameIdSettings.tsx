@@ -322,8 +322,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                     <p>
                                         When users are not permitted to create their own IDs/Names, the ID/Name field
                                         will be hidden during creation and update of rows, and when accessing the design
-                                        of a new or existing Sample Type or{' '}
-                                        {isRegistryEnabled(moduleContext) ? 'Data Class' : 'Source Type'}.
+                                        of a new or existing Sample Type or Source Type.
                                     </p>
                                     <p>
                                         Additionally, attempting to import data and update existing rows during file
@@ -340,7 +339,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         <div className="list__bold-text margin-bottom margin-top">ID/Name Prefix</div>
                         <div>
                             Enter a prefix to use with every Naming Pattern when new IDs/Names are created in this
-                            project. No existing IDs/Names will be changed.
+                            folder. No existing IDs/Names will be changed.
                         </div>
 
                         {loadingNamingOptions && <LoadingSpinner />}
@@ -384,8 +383,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                         <div>
                                             <p>
                                                 This action will change the Naming Pattern for all new and existing
-                                                Sample Types and{' '}
-                                                {isRegistryEnabled(moduleContext) ? 'Data Classes' : 'Source Types'}. No
+                                                Sample Types and Source Types. No
                                                 existing IDs/Names will be affected but any new IDs/Names will have the
                                                 prefix applied. Are you sure you want to apply the prefix?
                                             </p>
@@ -402,7 +400,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                         <div className="list__bold-text margin-bottom">Naming Pattern Elements/Tokens</div>
                         <div>
                             The following tokens/counters are utilized in naming patterns for the application and all
-                            projects. To modify a counter, simply enter a number greater than the current value and
+                            folders. To modify a counter, simply enter a number greater than the current value and
                             click “Apply”. Please be aware that once a counter is changed, the action cannot be
                             reversed. For additional information regarding these tokens, you can refer to this{' '}
                             <HelpLink topic={SAMPLE_TYPE_NAME_EXPRESSION_TOPIC}>link</HelpLink>.
@@ -509,7 +507,7 @@ export const NameIdSettingsForm: FC<NameIdSettingsFormProps> = props => {
                                                 This action will change the {isRoot ? 'rootSampleCount' : 'sampleCount'}{' '}
                                                 from {isRoot ? rootSampleCount : sampleCount} to{' '}
                                                 {isReset ? 0 : isRoot ? newRootSampleCount : newSampleCount} for the
-                                                application and all projects. Are you sure you want to proceed? This
+                                                application and all folders. Are you sure you want to proceed? This
                                                 action cannot be undone.
                                             </p>
                                         </div>

@@ -40,7 +40,7 @@ describe('SaveViewModal', () => {
 
     const moduleContext = {
         query: {
-            isProductProjectsEnabled: true,
+            isProductFoldersEnabled: true,
         },
     };
 

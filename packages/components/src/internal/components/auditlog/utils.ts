@@ -8,7 +8,7 @@ import { Map } from 'immutable';
 import {
     isAssayEnabled,
     isELNEnabled,
-    isProductProjectsEnabled,
+    isProductFoldersEnabled,
     isRegistryEnabled,
     isSampleManagerEnabled,
     isWorkflowEnabled,
@@ -26,7 +26,7 @@ import {
     DATACLASS_DATA_UPDATE_AUDIT_QUERY,
     NOTEBOOK_AUDIT_QUERY,
     NOTEBOOK_REVIEW_AUDIT_QUERY,
-    PROJECT_AUDIT_QUERY,
+    CONTAINER_AUDIT_QUERY,
     REGISTRY_AUDIT_QUERY,
     SOURCE_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
@@ -34,7 +34,7 @@ import {
 
 export function getAuditQueries(ctx: ModuleContext): AuditQuery[] {
     const queries = [...COMMON_AUDIT_QUERIES];
-    if (isProductProjectsEnabled(ctx)) queries.push(PROJECT_AUDIT_QUERY);
+    if (isProductFoldersEnabled(ctx)) queries.push(CONTAINER_AUDIT_QUERY);
     if (isWorkflowEnabled(ctx)) queries.push(WORKFLOW_AUDIT_QUERY);
     if (isAssayEnabled(ctx)) queries.push(ASSAY_AUDIT_QUERY);
     if (isSampleManagerEnabled(ctx) && !isRegistryEnabled(ctx)) queries.push(SOURCE_AUDIT_QUERY);

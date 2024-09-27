@@ -36,7 +36,7 @@ describe('EntityMoveConfirmationModal', () => {
                 appContext: {
                     api: getTestAPIWrapper(jest.fn, {
                         folder: getFolderTestAPIWrapper(jest.fn, {
-                            getProjects: () => Promise.reject('This is an error message.'),
+                            getContainers: () => Promise.reject('This is an error message.'),
                         }),
                     }),
                 },
@@ -45,14 +45,14 @@ describe('EntityMoveConfirmationModal', () => {
         expect(document.body.textContent).toContain('This is an error message.');
     });
 
-    test('no insert perm to any projects', async () => {
+    test('no insert perm to any conatiners', async () => {
         await act(async () => {
             renderWithAppContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
                 serverContext: DEFAULT_SERVER_CONTEXT,
                 appContext: {
                     api: getTestAPIWrapper(jest.fn, {
                         folder: getFolderTestAPIWrapper(jest.fn, {
-                            getProjects: () =>
+                            getContainers: () =>
                                 Promise.resolve([
                                     {
                                         ...TEST_PROJECT_CONTAINER,
@@ -69,18 +69,18 @@ describe('EntityMoveConfirmationModal', () => {
             });
         });
         expect(document.body.textContent).toContain(
-            'You do not have permission to move samples to any of the available projects.'
+            'You do not have permission to move samples to any of the available folders.'
         );
     });
 
-    test('has perm to move to another project', async () => {
+    test('has perm to move to another folder', async () => {
         await act(async () => {
             renderWithAppContext(<EntityMoveConfirmationModal {...getDefaultProps()} />, {
                 serverContext: DEFAULT_SERVER_CONTEXT,
                 appContext: {
                     api: getTestAPIWrapper(jest.fn, {
                         folder: getFolderTestAPIWrapper(jest.fn, {
-                            getProjects: () =>
+                            getContainers: () =>
                                 Promise.resolve([
                                     {
                                         ...TEST_PROJECT_CONTAINER,
@@ -119,22 +119,22 @@ describe('getContainerOptions', () => {
 
     const api = getTestAPIWrapper(jest.fn, {
         folder: getFolderTestAPIWrapper(jest.fn, {
-            getProjects: () => Promise.resolve([homeContainer, subfolder1Container]),
-            getDataTypeExcludedProjects: jest.fn().mockResolvedValue([]),
+            getContainers: () => Promise.resolve([homeContainer, subfolder1Container]),
+            getDataTypeExcludedContainers: jest.fn().mockResolvedValue([]),
         }),
     });
 
     test('with containers excluded', async () => {
         const api_ = getTestAPIWrapper(jest.fn, {
             folder: getFolderTestAPIWrapper(jest.fn, {
-                getProjects: () => Promise.resolve([homeContainer, subfolder1Container, subfolder2Container]),
-                getDataTypeExcludedProjects: jest.fn().mockResolvedValue([TEST_FOLDER_OTHER_CONTAINER.id]),
+                getContainers: () => Promise.resolve([homeContainer, subfolder1Container, subfolder2Container]),
+                getDataTypeExcludedContainers: jest.fn().mockResolvedValue([TEST_FOLDER_OTHER_CONTAINER.id]),
             }),
         });
         const options = await getContainerOptions(api_, TEST_PROJECT_CONTAINER, undefined, false, undefined, undefined);
         expect(options).toStrictEqual([
             {
-                label: 'Home Project',
+                label: 'Home Folder',
                 value: '/home',
                 data: homeContainer,
             },
@@ -153,13 +153,13 @@ describe('getContainerOptions', () => {
         } as Container;
         const api_ = getTestAPIWrapper(jest.fn, {
             folder: getFolderTestAPIWrapper(jest.fn, {
-                getProjects: () => Promise.resolve([homeContainer, subfolder1Container, subfolder2Container_]),
+                getContainers: () => Promise.resolve([homeContainer, subfolder1Container, subfolder2Container_]),
             }),
         });
         const options = await getContainerOptions(api_, TEST_PROJECT_CONTAINER, undefined, false, undefined, undefined);
         expect(options).toStrictEqual([
             {
-                label: 'Home Project',
+                label: 'Home Folder',
                 value: '/home',
                 data: homeContainer,
             },
@@ -178,8 +178,8 @@ describe('getContainerOptions', () => {
         } as Container;
         const api_ = getTestAPIWrapper(jest.fn, {
             folder: getFolderTestAPIWrapper(jest.fn, {
-                getProjects: () => Promise.resolve([homeContainer, subfolder1Container, subfolder2Container_]),
-                getDataTypeExcludedProjects: jest.fn().mockResolvedValue([TEST_FOLDER_CONTAINER.id]),
+                getContainers: () => Promise.resolve([homeContainer, subfolder1Container, subfolder2Container_]),
+                getDataTypeExcludedContainers: jest.fn().mockResolvedValue([TEST_FOLDER_CONTAINER.id]),
             }),
         });
         const options = await getContainerOptions(api_, TEST_PROJECT_CONTAINER, undefined, true, undefined, undefined);
@@ -203,7 +203,7 @@ describe('getContainerOptions', () => {
 
         expect(options).toStrictEqual([
             {
-                label: 'Home Project',
+                label: 'Home Folder',
                 value: '/home',
                 data: homeContainer,
             },

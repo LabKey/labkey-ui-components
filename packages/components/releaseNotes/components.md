@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages
 
+### version TBD
+*Released*: TBD
+- Change "Project" to "Folder" throughout the application
+- Remove warning banner about shared domains except for domains coming from /Shared
+
 ### version 5.6.1
 *Released*: 27 September 2024
 - Issue 51227: Add metric for number of rows used in editable grid

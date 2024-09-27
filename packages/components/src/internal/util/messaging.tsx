@@ -146,7 +146,7 @@ export function resolveErrorMessage(
         } else if (lcMessage.indexOf("cannot update data that don't belong to the current container.") >= 0) {
             return `There was a problem ${verb || 'importing'} your ${noun.toLowerCase() || 'data'}. One or more ${
                 noun.toLowerCase() || 'data'
-            } already exist in a different project.`;
+            } already exist in a different folder.`;
         } else if (lcMessage.indexOf('inventory:item: row: ') >= 0) {
             return trimExceptionPrefix('inventory:item: row: ', errorMsg);
         } else if (lcMessage.indexOf('could not create unique index') >= 0) {

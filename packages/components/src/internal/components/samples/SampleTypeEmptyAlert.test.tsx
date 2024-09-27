@@ -22,17 +22,17 @@ describe('SampleTypeEmptyAlert', () => {
 
     const topFolderContext = {
         container: TEST_PROJECT_CONTAINER,
-        moduleContext: { query: { isProductProjectsEnabled: false } },
+        moduleContext: { query: { isProductFoldersEnabled: false } },
     };
 
     const homeProjectContext = {
         container: TEST_PROJECT_CONTAINER,
-        moduleContext: { query: { isProductProjectsEnabled: true } },
+        moduleContext: { query: { isProductFoldersEnabled: true } },
     };
 
-    const childProjectContext = {
+    const childFolderContext = {
         container: TEST_FOLDER_CONTAINER,
-        moduleContext: { query: { isProductProjectsEnabled: true } },
+        moduleContext: { query: { isProductFoldersEnabled: true } },
     };
 
     test('with permissions', async () => {
@@ -79,11 +79,11 @@ describe('SampleTypeEmptyAlert', () => {
         expect(document.querySelector(`${EMPTY_ALERT} a`).getAttribute('href')).toEqual(NEW_SAMPLE_TYPE_HREF.toHref());
     });
 
-    test('child project folder context', async () => {
+    test('child folder context', async () => {
         await act(async () => {
             renderWithAppContext(<SampleTypeEmptyAlert user={TEST_USER_APP_ADMIN} />, {
                 appContext: TEST_PROJECT_APP_CONTEXT_ADMIN,
-                serverContext: childProjectContext,
+                serverContext: childFolderContext,
             });
         });
         // Expect default message

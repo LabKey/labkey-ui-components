@@ -215,6 +215,7 @@ export const SAMPLE_DATA_EXPORT_CONFIG = {
     'exportAlias.aliquotedFromLSID/name': ALIQUOTED_FROM_COL,
     'exportAlias.sampleState': STATUS_COL,
     'exportAlias.storedAmount': 'Amount',
+    'exportAlias.folder': 'Folder',
 };
 
 // Issue 46037: Some plate-based assays (e.g., NAB) create samples with a bogus 'Material' sample type, which should get excluded everywhere in the application

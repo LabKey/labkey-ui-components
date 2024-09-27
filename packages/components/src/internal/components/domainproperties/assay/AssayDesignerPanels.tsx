@@ -21,11 +21,11 @@ import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 
 import { GENERAL_ASSAY_PROVIDER_NAME } from '../../assay/constants';
 
-import { DataTypeProjectsPanel } from '../DataTypeProjectsPanel';
+import { DataTypeFoldersPanel } from '../DataTypeFoldersPanel';
 
 import { AssayRunDataType } from '../../entities/constants';
 
-import { ProjectConfigurableDataType } from '../../entities/models';
+import { FolderConfigurableDataType } from '../../entities/models';
 
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
@@ -35,7 +35,7 @@ const PROPERTIES_PANEL_INDEX = 0;
 const DOMAIN_PANEL_INDEX = 1;
 
 export interface AssayDesignerPanelsProps {
-    allowProjectExclusion?: boolean;
+    allowFolderExclusion?: boolean;
     api?: DomainPropertiesAPIWrapper;
     appDomainHeaders?: Map<string, HeaderRenderer>;
     appIsValidMsg?: (model: AssayProtocolModel) => string;
@@ -212,7 +212,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
         return appDomainHeaders.filter((v, k) => domain.isNameSuffixMatch(k)).first();
     };
 
-    onUpdateExcludedProjects = (_: ProjectConfigurableDataType, excludedContainerIds: string[]): void => {
+    onUpdateExcludedFolders = (_: FolderConfigurableDataType, excludedContainerIds: string[]): void => {
         const { protocolModel } = this.state;
         const newModel = protocolModel.merge({ excludedContainerIds }) as AssayProtocolModel;
         this.onAssayPropertiesChange(newModel);
@@ -220,7 +220,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 
     render() {
         const {
-            allowProjectExclusion,
+            allowFolderExclusion,
             initModel,
             api,
             appPropertiesOnly,
@@ -334,8 +334,8 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                         );
                     })
                     .toArray()}
-                {appPropertiesOnly && allowProjectExclusion && (
-                    <DataTypeProjectsPanel
+                {appPropertiesOnly && allowFolderExclusion && (
+                    <DataTypeFoldersPanel
                         controlledCollapse
                         dataTypeRowId={protocolModel?.protocolId}
                         dataTypeName={protocolModel?.name}
@@ -344,7 +344,7 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
                         onToggle={(collapsed, callback) => {
                             onTogglePanel(protocolModel.domains.size + 1, collapsed, callback);
                         }}
-                        onUpdateExcludedProjects={this.onUpdateExcludedProjects}
+                        onUpdateExcludedFolders={this.onUpdateExcludedFolders}
                     />
                 )}
             </BaseDomainDesigner>
@@ -353,3 +353,4 @@ export class AssayDesignerPanelsImpl extends React.PureComponent<Props, State> {
 }
 
 export const AssayDesignerPanels = withBaseDomainDesigner<AssayDesignerPanelsProps>(AssayDesignerPanelsImpl);
+AssayDesignerPanels.displayName = 'AssayDesignerPanels'

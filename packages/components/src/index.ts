@@ -568,7 +568,7 @@ import {
     EXPERIMENT_AUDIT_EVENT,
     GROUP_AUDIT_QUERY,
     INVENTORY_AUDIT_QUERY,
-    PROJECT_AUDIT_QUERY,
+    CONTAINER_AUDIT_QUERY,
     QUERY_UPDATE_AUDIT_QUERY,
     SAMPLE_TIMELINE_AUDIT_QUERY,
     SAMPLE_TYPE_AUDIT_QUERY,
@@ -619,7 +619,7 @@ import { deleteDataClass, fetchDataClass } from './internal/components/domainpro
 import { DesignerDetailTooltip } from './internal/components/domainproperties/DesignerDetailPanel';
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { RangeValidationOptionsModal } from './internal/components/domainproperties/validation/RangeValidationOptions';
-import { DataTypeProjectsPanel } from './internal/components/domainproperties/DataTypeProjectsPanel';
+import { DataTypeFoldersPanel } from './internal/components/domainproperties/DataTypeFoldersPanel';
 
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
@@ -709,14 +709,14 @@ import {
     getCurrentAppProperties,
     getCurrentProductName,
     getPrimaryAppProperties,
-    getProjectAssayDesignExclusion,
-    getProjectDataClassExclusion,
-    getProjectDataExclusion,
+    getFolderAssayDesignExclusion,
+    getFolderDataClassExclusion,
+    getFolderDataExclusion,
     getProjectPath,
-    getProjectSampleTypeExclusion,
+    getFolderSampleTypeExclusion,
     hasModule,
     hasPremiumModule,
-    hasProductProjects,
+    hasProductFolders,
     isAdvancedDomainPropertiesEnabled,
     isAllProductFoldersFilteringEnabled,
     isApp,
@@ -736,18 +736,18 @@ import {
     isNotebookTagsEnabled,
     isPlatesEnabled,
     isPremiumProductEnabled,
-    isProductProjectsEnabled,
+    isProductFoldersEnabled,
     isProjectContainer,
     isProtectedDataEnabled,
     isRegistryEnabled,
     isSampleAliquotSelectorEnabled,
     isSampleManagerEnabled,
     isSampleStatusEnabled,
-    isSharedDefinition,
+    isSharedContainer,
     isSourceTypeEnabled,
     isWorkflowEnabled,
     isDataChangeCommentRequirementFeatureEnabled,
-    setProductProjects,
+    setProductFolders,
     useMenuSectionConfigs,
     userCanDeletePublicPicklists,
     userCanDesignLocations,
@@ -762,7 +762,7 @@ import {
     userCanReadMedia,
     userCanReadNotebooks,
     userCanReadRegistry,
-    userCanReadSources,
+    userCanReadSources
 } from './internal/app/utils';
 import {
     menuInit,
@@ -953,24 +953,24 @@ const App = {
     isProjectContainer,
     isProtectedDataEnabled,
     isDataChangeCommentRequirementFeatureEnabled,
-    isSharedDefinition,
+    isSharedContainer,
     freezerManagerIsCurrentApp,
     isSampleStatusEnabled,
-    isProductProjectsEnabled,
+    isProductFoldersEnabled,
     isAllProductFoldersFilteringEnabled,
     isSampleEntity,
     isDataClassEntity,
     getPrimaryAppProperties,
-    getProjectDataExclusion,
-    getProjectAssayDesignExclusion,
-    getProjectDataClassExclusion,
-    getProjectSampleTypeExclusion,
+    getFolderDataExclusion,
+    getFolderAssayDesignExclusion,
+    getFolderDataClassExclusion,
+    getFolderSampleTypeExclusion,
     getProjectPath,
     getFolderTestAPIWrapper,
     getLabelsTestAPIWrapper,
     getSecurityTestAPIWrapper,
     hasPremiumModule,
-    hasProductProjects,
+    hasProductFolders,
     hasModule,
     getDateFormat,
     getDateTimeFormat,
@@ -1000,7 +1000,7 @@ const App = {
     userCanEditSharedViews,
     userCanDeletePublicPicklists,
     getCurrentProductName,
-    setProductProjects,
+    setProductFolders,
     UPDATE_USER,
     UPDATE_USER_DISPLAY_NAME,
     BIOLOGICS: BIOLOGICS_APP_PROPERTIES,
@@ -1579,7 +1579,7 @@ export {
     IssuesListDefModel,
     IssuesListDefDesignerPanels,
     fetchIssuesListDefDesign,
-    DataTypeProjectsPanel,
+    DataTypeFoldersPanel,
     // file / webdav related items
     DEFAULT_FILE,
     FilesListing,
@@ -1755,7 +1755,7 @@ export {
     INVENTORY_AUDIT_QUERY,
     WORKFLOW_AUDIT_QUERY,
     EXPERIMENT_AUDIT_EVENT,
-    PROJECT_AUDIT_QUERY,
+    CONTAINER_AUDIT_QUERY,
     AuditDetailsModel,
     AuditDetails,
     getAuditQueries,
@@ -1887,7 +1887,7 @@ export type {
     DataTypeEntity,
     DisplayObject,
     FilterProps,
-    ProjectConfigurableDataType,
+    FolderConfigurableDataType,
 } from './internal/components/entities/models';
 export type {
     SelectInputChange,
@@ -1930,8 +1930,8 @@ export type { ThreadEditorProps } from './internal/announcements/ThreadEditor';
 export type { ContainerUser, UseContainerUser } from './internal/components/container/actions';
 export type {
     FolderAPIWrapper,
-    ProjectSettingsOptions,
-    UpdateProjectSettingsOptions,
+    FolderSettingsOptions,
+    UpdateContainerSettingsOptions,
 } from './internal/components/container/FolderAPIWrapper';
 export type { PageDetailHeaderProps } from './internal/components/forms/PageDetailHeader';
 export type { HorizontalBarData } from './internal/components/chart/HorizontalBarSection';

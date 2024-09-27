@@ -19,7 +19,7 @@ describe('FolderMenu', () => {
         };
     }
 
-    it('no projects', () => {
+    it('no folders', () => {
         const wrapper = mountWithServerContext(<FolderMenu {...getDefaultProps()} />, {
             user: TEST_USER_APP_ADMIN,
             moduleContext: TEST_LIMS_STARTER_MODULE_CONTEXT,
@@ -40,7 +40,7 @@ describe('FolderMenu', () => {
         wrapper.unmount();
     });
 
-    it('with projects, with top level', () => {
+    it('with folders, with top level', () => {
         const wrapper = mountWithServerContext(
             <FolderMenu
                 {...getDefaultProps()}
@@ -81,7 +81,7 @@ describe('FolderMenu', () => {
         wrapper.unmount();
     });
 
-    it('with projects, without top level', () => {
+    it('with folders, without top level', () => {
         const wrapper = mountWithServerContext(
             <FolderMenu
                 {...getDefaultProps()}
@@ -114,7 +114,7 @@ describe('FolderMenu', () => {
         wrapper.unmount();
     });
 
-    it('with projects, activeContainerId', () => {
+    it('with folders, activeContainerId', () => {
         const wrapper = mountWithServerContext(
             <FolderMenu
                 {...getDefaultProps()}
@@ -156,7 +156,7 @@ describe('FolderMenu', () => {
         wrapper.unmount();
     });
 
-    it('with projects, non admin', () => {
+    it('with folders, non admin', () => {
         const wrapper = mountWithServerContext(
             <FolderMenu
                 {...getDefaultProps()}

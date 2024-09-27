@@ -9,7 +9,7 @@ import { useSubNavTabsContext } from '../navigation/hooks';
 import { AppURL } from '../../url/AppURL';
 import { useServerContext } from '../base/ServerContext';
 import { AUDIT_KEY } from '../../app/constants';
-import { isProjectContainer, isProductProjectsEnabled, isAppHomeFolder } from '../../app/utils';
+import { isProjectContainer, isProductFoldersEnabled, isAppHomeFolder } from '../../app/utils';
 import { useContainerUser } from '../container/actions';
 import { ITab } from '../navigation/types';
 
@@ -31,7 +31,7 @@ export const useAdministrationSubNav = (): void => {
         setNoun(PARENT_TAB);
 
         if (homeProjectContainer.isLoaded && user.isAdmin) {
-            const projectsEnabled = isProductProjectsEnabled(moduleContext);
+            const foldersEnabled = isProductFoldersEnabled(moduleContext);
             const inProjectContainer = isProjectContainer(container.path);
             const tabs = [];
 
@@ -39,11 +39,11 @@ export const useAdministrationSubNav = (): void => {
                 tabs.push({ text: 'Application Settings', url: AppURL.create(ADMIN_KEY, 'settings') });
             }
 
-            if (projectsEnabled) tabs.push({ text: 'Projects', url: AppURL.create(ADMIN_KEY, 'projects') });
+            if (foldersEnabled) tabs.push({ text: 'Folders', url: AppURL.create(ADMIN_KEY, 'folders') });
 
             tabs.push({ text: 'Audit Logs', url: AppURL.create(AUDIT_KEY) });
 
-            if (!projectsEnabled || inProjectContainer) {
+            if (!foldersEnabled || inProjectContainer) {
                 tabs.push({ text: 'Users', url: AppURL.create(ADMIN_KEY, 'users') });
                 tabs.push({ text: 'Groups', url: AppURL.create(ADMIN_KEY, 'groups') });
             }

@@ -21,7 +21,7 @@ import { SampleTypeDesigner, SampleTypeDesignerImpl } from './SampleTypeDesigner
 
 const SERVER_CONTEXT = {
     moduleContext: {
-        query: { hasProductProjects: true },
+        query: { hasProductFolders: true },
     },
 };
 
@@ -109,7 +109,7 @@ describe('SampleTypeDesigner', () => {
     //     expect(panelTitles[1].textContent).toBe('Fields');
     // });
     //
-    // test('allowProjectExclusion', async () => {
+    // test('allowFolderExclusion', async () => {
     //     const form = (
     //         <SampleTypeDesignerImpl
     //             {...BASE_PROPS}
@@ -121,7 +121,7 @@ describe('SampleTypeDesigner', () => {
     //             submitting={false}
     //             validatePanel={0}
     //             visitedPanels={List()}
-    //             allowProjectExclusion
+    //             allowFolderExclusion
     //         />
     //     );
     //
@@ -135,7 +135,7 @@ describe('SampleTypeDesigner', () => {
     //     const panelTitles = document.querySelectorAll('.domain-panel-title');
     //     expect(panelTitles[0].textContent).toBe('Sample Type Properties');
     //     expect(panelTitles[1].textContent).toBe('Fields');
-    //     expect(panelTitles[2].textContent).toBe('Projects');
+    //     expect(panelTitles[2].textContent).toBe('Folders');
     // });
     //
     // test('initModel with name URL props', async () => {
@@ -186,7 +186,7 @@ describe('SampleTypeDesigner', () => {
     //             serverContext: {
     //                 moduleContext: {
     //                     ...TEST_LKS_STARTER_MODULE_CONTEXT,
-    //                     query: { hasProductProjects: true },
+    //                     query: { hasProductFolders: true },
     //                 },
     //             },
     //         });

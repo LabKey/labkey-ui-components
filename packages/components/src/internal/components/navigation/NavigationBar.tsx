@@ -102,7 +102,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                             {showNavMenu && !isAdminPage && (
                                 <span className="navbar-item navbar-left-menu">
                                     <ProductMenuButton
-                                        key={folderMenuContext.key} // re-render and reload folderItems when project added
+                                        key={folderMenuContext.key} // re-render and reload folderItems when folder added
                                         sectionConfigs={menuSectionConfigs}
                                         showFolderMenu={showFolderMenu}
                                     />

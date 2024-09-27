@@ -427,6 +427,11 @@ export function extractEntityTypeOptionFromRow(
     entityDataType?: EntityDataType,
     requiredParentTypes?: string[]
 ): IEntityTypeOption {
+    const requiredParentTypesLc = [];
+    requiredParentTypes?.forEach(required => {
+        if (required)
+            requiredParentTypesLc.push(required.toLowerCase());
+    })
     const name = caseInsensitive(row, 'Name').value;
     return {
         label: name,
@@ -436,7 +441,7 @@ export function extractEntityTypeOptionFromRow(
         query: name,
         entityDataType,
         isFromSharedContainer: caseInsensitive(row, 'Folder/Path')?.value === SHARED_CONTAINER_PATH,
-        required: requiredParentTypes?.indexOf(name) > -1,
+        required: requiredParentTypesLc.indexOf(name.toLowerCase()) > -1,
     };
 }
 

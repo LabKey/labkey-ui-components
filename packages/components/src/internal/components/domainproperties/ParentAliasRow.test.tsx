@@ -11,7 +11,7 @@ import { renderWithAppContext } from '../../test/reactTestLibraryHelpers';
 
 import { ParentAliasRow } from './ParentAliasRow';
 
-describe('<ParentAliasRow/>', () => {
+describe('ParentAliasRow', () => {
     test('Ignore empty values', async () => {
         const parentAlias: IParentAlias = {
             alias: '',

@@ -75,7 +75,7 @@ export class SecurityRole extends Record({
     sourceModule: undefined,
     uniqueName: undefined,
 }) {
-    declare description: React.ReactNode;
+    declare description: string;
     declare displayName: string;
     declare excludedPrincipals: List<number>;
     declare name: string;

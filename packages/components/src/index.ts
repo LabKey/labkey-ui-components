@@ -259,7 +259,6 @@ import {
     HelpLink,
     JavaDocsLink,
     SAMPLE_IMPORT_TOPIC,
-    ADMIN_ROLES_TOPIC,
 } from './internal/util/helpLinks';
 import { ExperimentRunResolver, ListResolver } from './internal/url/AppURLResolver';
 import { NOT_ANY_FILTER_TYPE } from './internal/url/NotAnyFilterType';
@@ -1084,7 +1083,6 @@ const App = {
     PUBLIC_PICKLIST_CATEGORY,
     DATA_IMPORT_TOPIC,
     SAMPLE_IMPORT_TOPIC,
-    ADMIN_ROLES_TOPIC,
     PLATES_KEY,
     COMMENT_FIELD_ID,
 };

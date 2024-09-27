@@ -169,7 +169,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
                 >
                   <div>
                     <span
-                      class="container--action-button btn btn-default"
+                      class="container--action-button btn btn-default disabled"
                     >
                       <i
                         class="fa fa-plus-circle container--addition-icon"
@@ -426,7 +426,7 @@ exports[`SampleTypePropertiesPanel appPropertiesOnly 1`] = `
               >
                 <div>
                   <span
-                    class="container--action-button btn btn-default"
+                    class="container--action-button btn btn-default disabled"
                   >
                     <i
                       class="fa fa-plus-circle container--addition-icon"
@@ -720,7 +720,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
                 >
                   <div>
                     <span
-                      class="container--action-button btn btn-default"
+                      class="container--action-button btn btn-default disabled"
                     >
                       <i
                         class="fa fa-plus-circle container--addition-icon"
@@ -917,7 +917,7 @@ exports[`SampleTypePropertiesPanel default props 1`] = `
               >
                 <div>
                   <span
-                    class="container--action-button btn btn-default"
+                    class="container--action-button btn btn-default disabled"
                   >
                     <i
                       class="fa fa-plus-circle container--addition-icon"
@@ -1161,7 +1161,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                 >
                   <div>
                     <span
-                      class="container--action-button btn btn-default"
+                      class="container--action-button btn btn-default disabled"
                     >
                       <i
                         class="fa fa-plus-circle container--addition-icon"
@@ -1189,7 +1189,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
                 >
                   <div>
                     <span
-                      class="container--action-button btn btn-default"
+                      class="container--action-button btn btn-default disabled"
                     >
                       <i
                         class="fa fa-plus-circle container--addition-icon"
@@ -1386,7 +1386,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
               >
                 <div>
                   <span
-                    class="container--action-button btn btn-default"
+                    class="container--action-button btn btn-default disabled"
                   >
                     <i
                       class="fa fa-plus-circle container--addition-icon"
@@ -1414,7 +1414,7 @@ exports[`SampleTypePropertiesPanel include dataclass and use custom labels 1`] =
               >
                 <div>
                   <span
-                    class="container--action-button btn btn-default"
+                    class="container--action-button btn btn-default disabled"
                   >
                     <i
                       class="fa fa-plus-circle container--addition-icon"

@@ -195,12 +195,12 @@ export const DomainParentAliases: FC<Props> = memo(props => {
                     ))}
                 </div>
             )}
-            {showAddBtn && hasMoreToAdd && (
+            {showAddBtn && (
                 <div className="row">
                     <div className="col-xs-2" />
                     <div className="col-xs-10">
                         <span>
-                            <AddEntityButton entity={'a ' + aliasCaption} onClick={addParentAlias} />
+                            <AddEntityButton entity={'a ' + aliasCaption} onClick={addParentAlias} disabled={!hasMoreToAdd}/>
                         </span>
                     </div>
                 </div>

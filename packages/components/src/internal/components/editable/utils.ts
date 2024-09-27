@@ -474,8 +474,10 @@ export function computeRangeChange(selectedIdx: number, min: number, max: number
 }
 
 export function incrementRowCountMetric(dataType: string, rowCount: number, isUpdate: boolean): void {
+    if (!rowCount) return;
+
     const metricFeatureArea = isUpdate ? 'gridUpdateCounts' : 'gridInsertCounts';
-    if (rowCount > 0 && rowCount <= 50) {
+    if (rowCount <= 50) {
         incrementClientSideMetricCount(metricFeatureArea, dataType + '1To50');
     } else if (rowCount <= 100) {
         incrementClientSideMetricCount(metricFeatureArea, dataType + '51To100');

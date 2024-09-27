@@ -1319,7 +1319,7 @@ export function getContainerFilterForFolder(
  * @private
  */
 export function getContainerFilterForLookups(moduleContext?: ModuleContext): Query.ContainerFilter {
-    // Check to see if product folderss support is enabled.
+    // Check to see if product folders support is enabled.
     if (!isProductFoldersEnabled(moduleContext)) {
         return undefined;
     }

@@ -267,6 +267,7 @@ import {
     genCellKey,
     getUpdatedDataFromEditableGrid,
     parseCellKey,
+    incrementRowCountMetric,
 } from './internal/components/editable/utils';
 import { EditableGridTabs } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
@@ -1637,6 +1638,7 @@ export {
     HELP_LINK_REFERRER,
     HelpIcon,
     incrementClientSideMetricCount,
+    incrementRowCountMetric,
     Key,
     useEnterEscape,
     encodePart,

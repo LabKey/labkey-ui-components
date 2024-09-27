@@ -55,6 +55,7 @@ import {
     UpdateRowsOptions,
 } from './api';
 import { selectRows, SelectRowsOptions, SelectRowsResponse } from './selectRows';
+import { incrementRowCountMetric } from '../components/editable/utils';
 
 export interface QueryAPIWrapper {
     clearSelected: (options: ClearSelectedOptions) => Promise<SelectResponse>;
@@ -93,6 +94,7 @@ export interface QueryAPIWrapper {
     getServerDate: () => Promise<Date>;
     getSnapshotSelections: (key: string, containerPath?: string) => Promise<GetSelectedResponse>;
     incrementClientSideMetricCount: (featureArea: string, metricName: string) => void;
+    incrementRowCountMetric: (featureArea: string, rowCount: number, isUpdate: boolean) => void;
     insertRows: (options: InsertRowsOptions) => Promise<QueryCommandResponse>;
     renameGridView: (
         schemaQuery: SchemaQuery,
@@ -158,6 +160,7 @@ export class QueryServerAPIWrapper implements QueryAPIWrapper {
     getSnapshotSelections = getSnapshotSelections;
     getServerDate = getServerDate;
     incrementClientSideMetricCount = incrementClientSideMetricCount;
+    incrementRowCountMetric = incrementRowCountMetric;
     insertRows = insertRows;
     renameGridView = renameGridView;
     replaceSelected = replaceSelected;
@@ -194,6 +197,7 @@ export function getQueryTestAPIWrapper(
         getSnapshotSelections: mockFn(),
         getServerDate: () => Promise.resolve(new Date()),
         incrementClientSideMetricCount: mockFn(),
+        incrementRowCountMetric: mockFn(),
         insertRows: mockFn(),
         renameGridView: mockFn(),
         replaceSelected: mockFn(),

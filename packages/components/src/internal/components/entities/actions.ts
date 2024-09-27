@@ -295,6 +295,7 @@ function resolveSampleParentTypes(
                 label: sampleType,
                 value: List<DisplayObject>(data.sort(_getEntitySort(orderedRowIds))),
                 isAliquotParent,
+                required: isAliquotParent,
             })
         );
         index++;
@@ -359,6 +360,7 @@ async function initParents(
                     value: List<DisplayObject>(),
                     isParentTypeOnly: true, // tell the UI to keep the parent type but not add any default rows to the editable grid
                     isAliquotParent,
+                    required: isAliquotParent,
                 }),
             ]);
         }
@@ -379,6 +381,7 @@ async function initParents(
                 value: List<DisplayObject>(),
                 isParentTypeOnly: true, // tell the UI to keep the parent type but not add any default rows to the editable grid
                 isAliquotParent,
+                required: isAliquotParent,
             }),
         ]);
     }
@@ -416,6 +419,7 @@ function resolveEntityParentTypeFromIds(
             label: dataClass,
             value: List(data),
             isAliquotParent,
+            required: isAliquotParent,
         }),
     ]);
 }

@@ -59,7 +59,7 @@ import { getOperationNotAllowedMessage } from '../samples/utils';
 
 import { EditableGridChange } from '../editable/EditableGrid';
 
-import { applyEditorModelChanges } from '../editable/utils';
+import { applyEditorModelChanges, incrementRowCountMetric } from '../editable/utils';
 
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 
@@ -627,6 +627,9 @@ class AssayImportPanelsBody extends Component<BodyProps, State> {
                 auditUserComment: comment,
                 containerPath: container.path,
             });
+            if (data.dataRows?.length) {
+                incrementRowCountMetric('assayData', data.dataRows?.length, false);
+            }
 
             this.props.setIsDirty?.(false);
             if (importAgain && onSave) {

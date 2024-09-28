@@ -763,7 +763,7 @@ import {
     userCanReadMedia,
     userCanReadNotebooks,
     userCanReadRegistry,
-    userCanReadSources
+    userCanReadSources,
 } from './internal/app/utils';
 import {
     menuInit,

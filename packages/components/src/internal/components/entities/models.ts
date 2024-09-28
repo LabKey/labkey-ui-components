@@ -509,6 +509,7 @@ export interface EntityDataType {
     exprColumnsWithSubSelect?: string[];
     filterArray?: Filter.IFilter[];
     filterCardHeaderClass?: string;
+    folderConfigurableDataType?: FolderConfigurableDataType;
     getInstanceDataType?: (schemaQuery: SchemaQuery, altQueryName?: string) => string;
     getInstanceSchemaQuery?: (datatype?: string) => SchemaQuery;
     importFileAction?: string;
@@ -518,7 +519,6 @@ export interface EntityDataType {
     insertColumnNamePrefix?: string;
     instanceKey?: string;
     instanceSchemaName: string;
-    isFromSharedContainer?: boolean;
     labelColorCol?: string;
     listingSchemaQuery: SchemaQuery;
     moveNoun?: string;
@@ -528,7 +528,7 @@ export interface EntityDataType {
     nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
-    folderConfigurableDataType?: FolderConfigurableDataType;
+    isFromSharedContainer?: boolean;
     sampleFinderCardType?: SampleFinderCardType;
     supportHasNoValueInQuery?: boolean;
     supportsCrossTypeImport?: boolean;

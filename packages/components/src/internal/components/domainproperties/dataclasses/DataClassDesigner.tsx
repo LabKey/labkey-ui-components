@@ -36,8 +36,8 @@ import { DataClassModel, DataClassModelConfig } from './models';
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 
 interface Props {
-    allowParentAlias?: boolean;
     allowFolderExclusion?: boolean;
+    allowParentAlias?: boolean;
     api?: ComponentsAPIWrapper;
     appPropertiesOnly?: boolean;
     beforeFinish?: (model: DataClassModel) => void;

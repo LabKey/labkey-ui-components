@@ -42,7 +42,9 @@ import {
     withTransformedKeys,
     getValueFromRow,
     isBoolean,
-    isQuotedWithDelimiters, getValuesSummary, makeCommaSeparatedString,
+    isQuotedWithDelimiters,
+    getValuesSummary,
+    makeCommaSeparatedString,
 } from './utils';
 
 const emptyList = List<string>();
@@ -1342,7 +1344,6 @@ describe('quoteValueWithDelimiters', () => {
         expect(parseCsvString(quoteValueWithDelimiters(initialString, ','), ',', true)).toStrictEqual([initialString]);
 
         expect(isQuotedWithDelimiters(quoteValueWithDelimiters(initialString, ','), ',')).toBeTruthy();
-
     });
 });
 
@@ -1455,7 +1456,9 @@ describe('getValuesSummary', () => {
 
     test('values > 1', () => {
         expect(getValuesSummary(['blood', 'dna'], 'sample')).toBe('2 samples (blood and dna)');
-        expect(getValuesSummary(['blood', 'dna', 'plasma'], 'sample', 'samplePlural')).toBe('3 samplePlural (blood, dna and plasma)');
+        expect(getValuesSummary(['blood', 'dna', 'plasma'], 'sample', 'samplePlural')).toBe(
+            '3 samplePlural (blood, dna and plasma)'
+        );
         expect(getValuesSummary([123, 456], 'sample')).toBe('2 samples (123 and 456)');
         expect(getValuesSummary([123, 'blood', true], 'sample')).toBe('3 samples (123, blood and true)');
     });

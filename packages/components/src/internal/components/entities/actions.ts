@@ -433,9 +433,8 @@ export function extractEntityTypeOptionFromRow(
 ): IEntityTypeOption {
     const requiredParentTypesLc = [];
     requiredParentTypes?.forEach(required => {
-        if (required)
-            requiredParentTypesLc.push(required.toLowerCase());
-    })
+        if (required) requiredParentTypesLc.push(required.toLowerCase());
+    });
     const name = caseInsensitive(row, 'Name').value;
     return {
         label: name,

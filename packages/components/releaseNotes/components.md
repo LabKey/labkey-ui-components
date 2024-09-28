@@ -3,6 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
+- Issue 51253: Require saving before testing of BarTender connection
+
+### version 5.7.0
+*Released*: 27 September 2024
 - Change "Project" to "Folder" throughout the application
 - Remove warning banner about shared domains except for domains coming from /Shared
 

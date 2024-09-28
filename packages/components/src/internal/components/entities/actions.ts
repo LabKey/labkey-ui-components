@@ -857,7 +857,7 @@ export const getParentTypeDataForLineage: GetParentTypeDataForLineage = async (
         );
         parentTypeOptions = List<IEntityTypeOption>(options.get(parentDataType.typeListingSchemaQuery.queryName));
 
-        const excludedTypeIds = getProjectDataExclusion()?.[parentDataType.projectConfigurableDataType];
+        const excludedTypeIds = getFolderDataExclusion()?.[parentDataType.folderConfigurableDataType];
         if (excludedTypeIds?.length > 0) {
             parentTypeOptions.forEach(option => {
                 if (excludedTypeIds.indexOf(option.rowId) === -1)

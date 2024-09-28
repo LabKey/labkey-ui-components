@@ -14,7 +14,7 @@ import { fetchListDesign, getListIdFromDomainId } from '../domainproperties/list
 
 import { PICKLIST_KEY } from '../../app/constants';
 
-import { isProductProjectsEnabled } from '../../app/utils';
+import { isProductFoldersEnabled } from '../../app/utils';
 
 import { SCHEMAS } from '../../schemas';
 import { caseInsensitive } from '../../util/utils';
@@ -28,7 +28,7 @@ export function getPicklistsForInsert(): Promise<Picklist[]> {
     return new Promise((resolve, reject) => {
         const { queryName, schemaName } = SCHEMAS.LIST_METADATA_TABLES.PICKLISTS;
         selectRowsDeprecated({
-            containerFilter: isProductProjectsEnabled() ? Query.ContainerFilter.current : undefined,
+            containerFilter: isProductFoldersEnabled() ? Query.ContainerFilter.current : undefined,
             schemaName,
             queryName,
             sort: 'Name',
@@ -435,5 +435,5 @@ export const getPicklistFromId = async (listId: number, loadSampleTypes = true):
 };
 
 export function getPicklistListingContainerFilter(): Query.ContainerFilter {
-    return isProductProjectsEnabled() ? Query.ContainerFilter.current : undefined;
+    return isProductFoldersEnabled() ? Query.ContainerFilter.current : undefined;
 }

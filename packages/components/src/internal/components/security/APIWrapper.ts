@@ -69,7 +69,7 @@ export interface SecurityAPIWrapper {
     getAuditLogDate: (filterCol: string, filterVal: string | number) => Promise<string>;
     getDeletionSummaries: () => Promise<Summary[]>;
     getGroupMemberships: () => Promise<GroupMembership[]>;
-    getInheritedProjects: (container: Container) => Promise<string[]>;
+    getInheritedContainers: (container: Container) => Promise<string[]>;
     getUserLimitSettings: (containerPath?: string) => Promise<UserLimitSettings>;
     getUserPermissions: (options: GetUserPermissionsOptions) => Promise<string[]>;
     getUserProperties: (userId: number) => Promise<any>;
@@ -160,7 +160,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
                     resolve(data);
                 },
                 failure: error => {
-                    console.error('Failed to delete project', error);
+                    console.error('Failed to delete folder', error);
                     reject(error);
                 },
             });
@@ -351,7 +351,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
         });
     };
 
-    getInheritedProjects = (container: Container): Promise<string[]> => {
+    getInheritedContainers = (container: Container): Promise<string[]> => {
         return new Promise((resolve, reject) => {
             Ajax.request({
                 url: ActionURL.buildURL('core', 'getExtSecurityContainerTree.api', container.path),
@@ -359,9 +359,9 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
                     requiredPermission: Security.PermissionTypes.Admin,
                     nodeId: container.id,
                 },
-                success: Utils.getCallbackWrapper(projects => {
+                success: Utils.getCallbackWrapper(containers => {
                     const inherited = [];
-                    projects.forEach(proj => {
+                    containers.forEach(proj => {
                         if (proj.inherit) {
                             const name = proj.text.substring(0, proj.text.length - 1); // remove trailing *
                             inherited.push(name);
@@ -370,7 +370,7 @@ export class ServerSecurityAPIWrapper implements SecurityAPIWrapper {
 
                     resolve(inherited);
                 }),
-                failure: handleRequestFailure(reject, 'Failed to get projects'),
+                failure: handleRequestFailure(reject, 'Failed to get folders'),
             });
         });
     };
@@ -438,7 +438,7 @@ export function getSecurityTestAPIWrapper(
         updateUserDetails: mockFn(),
         savePolicy: mockFn(),
         deletePolicy: mockFn(),
-        getInheritedProjects: mockFn(),
+        getInheritedContainers: mockFn(),
         ...overrides,
     };
 }

@@ -30,7 +30,7 @@ describe('DataClassDesigner', () => {
 
     const SERVER_CONTEXT = {
         moduleContext: {
-            query: { hasProductProjects: true },
+            query: { hasProductFolders: true },
         },
     };
 
@@ -74,7 +74,7 @@ describe('DataClassDesigner', () => {
     //     expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
     //     expect(document.querySelectorAll('.domain-form-panel').length).toBe(2);
     //     expect(screen.getByText('Import or infer fields from file')).toBeInTheDocument();
-    //     expect(document.querySelectorAll('#domain-projects-hdr').length).toBe(0);
+    //     expect(document.querySelectorAll('#domain-folders-hdr').length).toBe(0);
     // });
     //
     // test('initModel', async () => {
@@ -92,11 +92,11 @@ describe('DataClassDesigner', () => {
     //     expect(screen.queryByText('Import or infer fields from file')).not.toBeInTheDocument();
     // });
     //
-    // test('appPropertiesOnly and allowProjectExclusion', async () => {
+    // test('appPropertiesOnly and allowFolderExclusion', async () => {
     //     const component = (
     //         <DataClassDesignerImpl
     //             {...BASE_PROPS}
-    //             allowProjectExclusion
+    //             allowFolderExclusion
     //             appPropertiesOnly
     //             initModel={DataClassModel.create(getDomainDetailsJSON)}
     //         />
@@ -108,6 +108,6 @@ describe('DataClassDesigner', () => {
     //     expect(document.querySelectorAll('#dataclass-properties-hdr').length).toBe(1);
     //     expect(document.querySelectorAll('.domain-form-panel').length).toBe(3);
     //     expect(screen.queryByText('Import or infer fields from file')).not.toBeInTheDocument();
-    //     expect(document.querySelectorAll('#domain-projects-hdr').length).toBe(1);
+    //     expect(document.querySelectorAll('#domain-folders-hdr').length).toBe(1);
     // });
 });

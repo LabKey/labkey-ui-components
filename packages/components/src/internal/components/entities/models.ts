@@ -459,13 +459,13 @@ export interface IEntityTypeDetails extends IEntityDetails {
 }
 
 export type SampleFinderCardType = 'sampleproperty' | 'sampleparent' | 'dataclassparent' | 'assaydata';
-export type ProjectConfigurableDataType =
+export type FolderConfigurableDataType =
     | 'SampleType'
     | 'DashboardSampleType'
     | 'DataClass'
     | 'AssayDesign'
     | 'StorageLocation'
-    | 'Project';
+    | 'Container';
 
 /**
  *  Avoid inline comment or above line comments for properties due to es-lint's limitation on moving comments:
@@ -493,7 +493,7 @@ export type ProjectConfigurableDataType =
  *     listingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data instances (e.g., all the data class rows) available
  *     operationConfirmationActionName: string; // action in operationConfirmationControllerName used to get the confirmation data for performing operations on entities
  *     typeListingSchemaQuery: SchemaQuery; // The schema query used to get the listing of all of the data type instances (e.g., all the data classes) available
- *     projectConfigurableDataType?: string; // the DataTypeExclusion type
+ *     folderConfigurableDataType?: string; // the DataTypeExclusion type
  */
 export interface EntityDataType {
     allowRelativeDateFilter?: boolean;
@@ -528,7 +528,7 @@ export interface EntityDataType {
     nounSingular: string;
     operationConfirmationActionName: string;
     operationConfirmationControllerName: string;
-    projectConfigurableDataType?: ProjectConfigurableDataType;
+    folderConfigurableDataType?: FolderConfigurableDataType;
     sampleFinderCardType?: SampleFinderCardType;
     supportHasNoValueInQuery?: boolean;
     supportsCrossTypeImport?: boolean;
@@ -657,7 +657,7 @@ export interface DataTypeEntity {
     lsid?: string;
     rowId?: number;
     sublabel?: string;
-    type: ProjectConfigurableDataType;
+    type: FolderConfigurableDataType;
 }
 
 export interface FilterProps {

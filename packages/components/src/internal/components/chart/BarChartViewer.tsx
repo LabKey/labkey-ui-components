@@ -93,12 +93,12 @@ export class BarChartViewer extends PureComponent<Props, State> {
         if (!resultRows.hasOwnProperty(currentGroup)) {
             try {
                 const currentConfig = this.getSelectedChartGroup();
-                const { itemCountFilters, itemCountSQ, getProjectExclusionFilter } = currentConfig;
-                const projectExclusionFilter = getProjectExclusionFilter(dataTypeExclusions);
+                const { itemCountFilters, itemCountSQ, getContainerExclusionFilter } = currentConfig;
+                const containerExclusionFilter = getContainerExclusionFilter(dataTypeExclusions);
 
                 const filters: Filter.IFilter[] = [];
                 if (itemCountFilters) filters.push(...itemCountFilters);
-                if (projectExclusionFilter) filters.push(projectExclusionFilter);
+                if (containerExclusionFilter) filters.push(containerExclusionFilter);
 
                 const itemCount = await fetchItemCount(itemCountSQ, filters);
 

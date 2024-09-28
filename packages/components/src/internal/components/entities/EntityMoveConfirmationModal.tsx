@@ -13,7 +13,7 @@ import { SelectInput, SelectInputOption } from '../forms/input/SelectInput';
 import { HOME_PATH, HOME_TITLE } from '../navigation/constants';
 import { Container } from '../base/models/Container';
 
-import { ProjectConfigurableDataType } from './models';
+import { FolderConfigurableDataType } from './models';
 import { CommentTextArea } from '../forms/input/CommentTextArea';
 import { useDataChangeCommentsRequired } from '../forms/input/useDataChangeCommentsRequired';
 import { ComponentsAPIWrapper } from '../../APIWrapper';
@@ -21,7 +21,7 @@ import { ComponentsAPIWrapper } from '../../APIWrapper';
 export interface EntityMoveConfirmationModalProps extends Omit<ModalProps, 'onConfirm'> {
     currentContainer?: Container;
     excludeCurrentAsTarget?: boolean;
-    dataType?: ProjectConfigurableDataType;
+    dataType?: FolderConfigurableDataType;
     dataTypeRowId?: number;
     nounPlural: string;
     onConfirm: (targetContainer: string, targetName: string, userComment: string) => void;
@@ -33,12 +33,12 @@ export async function getContainerOptions(
     container: Container,
     moduleContext: ModuleContext,
     excludeCurrentAsTarget: boolean,
-    dataType: ProjectConfigurableDataType,
+    dataType: FolderConfigurableDataType,
     dataTypeRowId: number
 ): Promise<SelectInputOption[]> {
-    let folders = await api.folder.getProjects(container, moduleContext, true, true, true);
+    let folders = await api.folder.getContainers(container, moduleContext, true, true, true);
 
-    const excludedFolders = await api.folder.getDataTypeExcludedProjects(dataType, dataTypeRowId);
+    const excludedFolders = await api.folder.getDataTypeExcludedContainers(dataType, dataTypeRowId);
 
     // filter to folders that the user has InsertPermissions
     folders = folders?.filter(c => c.effectivePermissions.indexOf(Security.PermissionTypes.Insert) > -1);
@@ -134,7 +134,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                 title={confirmModalProps.title}
                 onCancel={confirmModalProps.onCancel}
             >
-                <LoadingSpinner msg="Loading target projects..." />
+                <LoadingSpinner msg="Loading target folders..." />
             </Modal>
         );
     }
@@ -158,7 +158,7 @@ export const EntityMoveConfirmationModal: FC<EntityMoveConfirmationModalProps> =
                 onCancel={confirmModalProps.onCancel}
                 cancelText="Dismiss"
             >
-                You do not have permission to move {nounPlural} to any of the available projects.
+                You do not have permission to move {nounPlural} to any of the available folders.
             </Modal>
         );
     }

@@ -11,6 +11,15 @@ Components, models, actions, and utility functions for LabKey applications and p
   - updated SampleTypeDesigner and DataClassDesigner to show new Lineage section for alias
   - remove folder level data exclusion for alias data type selection since designers are edited at Home folder
 
+### version 5.7.0
+*Released*: 27 September 2024
+- Change "Project" to "Folder" throughout the application
+- Remove warning banner about shared domains except for domains coming from /Shared
+
+### version 5.6.1
+*Released*: 27 September 2024
+- Issue 51227: Add metric for number of rows used in editable grid
+
 ### version 5.6.0
 *Released*: 25 September 2024
 - Wire up onBlur for LookupCell

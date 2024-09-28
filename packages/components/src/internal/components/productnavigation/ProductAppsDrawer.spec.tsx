@@ -10,7 +10,6 @@ import { BIOLOGICS_ALT_PRODUCT_ICON, BIOLOGICS_PRODUCT_ICON, SAMPLE_MANAGER_PROD
 
 const DEFAULT_PROPS = {
     products: [],
-    productProjectMap: {},
     onClick: jest.fn,
 };
 

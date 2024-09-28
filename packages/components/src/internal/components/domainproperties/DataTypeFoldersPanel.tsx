@@ -1,12 +1,12 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 
-import { hasProductProjects } from '../../app/utils';
+import { hasProductFolders } from '../../app/utils';
 
 import { useServerContext } from '../base/ServerContext';
 
 import { isLoading, LoadingState } from '../../../public/LoadingState';
 import { AppContext, useAppContext } from '../../AppContext';
-import { DataTypeEntity, EntityDataType, ProjectConfigurableDataType } from '../entities/models';
+import { DataTypeEntity, EntityDataType, FolderConfigurableDataType } from '../entities/models';
 
 import { resolveErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
@@ -24,23 +24,23 @@ interface OwnProps {
     dataTypeName?: string;
     dataTypeRowId?: number;
     entityDataType: EntityDataType;
-    onUpdateExcludedProjects: (dataType: ProjectConfigurableDataType, excludedProjects: string[]) => void;
+    onUpdateExcludedFolders: (dataType: FolderConfigurableDataType, excludedFolders: string[]) => void;
     relatedDataTypeLabel?: string;
-    relatedProjectConfigurableDataType?: ProjectConfigurableDataType;
+    relatedFolderConfigurableDataType?: FolderConfigurableDataType;
 }
 
 // export for jest testing
-export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelCollapseProps> = memo(props => {
+export const DataTypeFoldersPanelImpl: FC<OwnProps & InjectedDomainPropertiesPanelCollapseProps> = memo(props => {
     const {
         collapsed,
         togglePanel,
         controlledCollapse,
         dataTypeRowId,
         dataTypeName,
-        onUpdateExcludedProjects,
+        onUpdateExcludedFolders,
         entityDataType,
         relatedDataTypeLabel,
-        relatedProjectConfigurableDataType,
+        relatedFolderConfigurableDataType,
     } = props;
     const { moduleContext, container } = useServerContext();
     const { api } = useAppContext<AppContext>();
@@ -48,11 +48,11 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
     const [error, setError] = useState<string>();
     const [loading, setLoading] = useState<LoadingState>(LoadingState.INITIALIZED);
     const [allDataCounts, setAllDataCounts] = useState<Record<string, number>>({});
-    const [childProjects, setChildProjects] = useState<DataTypeEntity[]>();
-    const [allProjects, setAllProjects] = useState<DataTypeEntity[]>();
-    const [excludedProjectIdsDB, setExcludedProjectIdsDB] = useState<string[]>();
-    const [excludedProjectIds, setExcludedProjectIds] = useState<string[]>();
-    const [relatedExcludedProjectIdsDB, setRelatedExcludedProjectIdsDB] = useState<string[]>();
+    const [childFolders, setChildFolders] = useState<DataTypeEntity[]>();
+    const [allContainers, setAllContainers] = useState<DataTypeEntity[]>();
+    const [excludedContainerIdsDB, setExcludedContainerIdsDB] = useState<string[]>();
+    const [excludedContainerIds, setExcludedContainerIds] = useState<string[]>();
+    const [relatedExcludedContainerIdsDB, setRelatedExcludedContainerIdsDB] = useState<string[]>();
 
     useEffect(
         () => {
@@ -61,35 +61,35 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                 setError(undefined);
 
                 try {
-                    const containers = await api.folder.getProjects(container, moduleContext, true, true, true);
+                    const containers = await api.folder.getContainers(container, moduleContext, true, true, true);
 
-                    const allProjects_ = containers.map(project => {
-                        return { label: project.title, lsid: project.id, type: 'Project' } as DataTypeEntity;
+                    const allContainers_ = containers.map(container_ => {
+                        return { label: container_.title, lsid: container_.id, type: 'Container' } as DataTypeEntity;
                     });
 
-                    setChildProjects(allProjects_.slice(1));
-                    setAllProjects(allProjects_);
+                    setChildFolders(allContainers_.slice(1));
+                    setAllContainers(allContainers_);
 
-                    const excludedProjectIds_ = await api.folder.getDataTypeExcludedProjects(
-                        entityDataType.projectConfigurableDataType,
+                    const excludedContainerIds_ = await api.folder.getDataTypeExcludedContainers(
+                        entityDataType.folderConfigurableDataType,
                         dataTypeRowId
                     );
-                    setExcludedProjectIdsDB(excludedProjectIds_);
-                    setExcludedProjectIds(excludedProjectIds_);
+                    setExcludedContainerIdsDB(excludedContainerIds_);
+                    setExcludedContainerIds(excludedContainerIds_);
 
-                    const allDataCounts_ = await api.query.getDataTypeProjectDataCount(
+                    const allDataCounts_ = await api.query.getDataTypeFolderDataCount(
                         entityDataType,
                         dataTypeRowId,
                         dataTypeName
                     );
                     setAllDataCounts(allDataCounts_);
 
-                    if (relatedProjectConfigurableDataType) {
-                        const relatedExcludedProjectIds_ = await api.folder.getDataTypeExcludedProjects(
-                            relatedProjectConfigurableDataType,
+                    if (relatedFolderConfigurableDataType) {
+                        const relatedExcludedContainerIds_ = await api.folder.getDataTypeExcludedContainers(
+                            relatedFolderConfigurableDataType,
                             dataTypeRowId
                         );
-                        setRelatedExcludedProjectIdsDB(relatedExcludedProjectIds_);
+                        setRelatedExcludedContainerIdsDB(relatedExcludedContainerIds_);
                     }
                 } catch (e) {
                     setError(`Error: ${resolveErrorMessage(e)}`);
@@ -112,48 +112,48 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
         /* no-op */
     }, []);
 
-    const updateExcludedProjects = useCallback(
-        (dataType: ProjectConfigurableDataType, exclusions: string[]) => {
-            onUpdateExcludedProjects(dataType, exclusions);
-            setExcludedProjectIds(exclusions);
+    const updateExcludedFolders = useCallback(
+        (dataType: FolderConfigurableDataType, exclusions: string[]) => {
+            onUpdateExcludedFolders(dataType, exclusions);
+            setExcludedContainerIds(exclusions);
         },
-        [onUpdateExcludedProjects]
+        [onUpdateExcludedFolders]
     );
 
-    const updateRelatedExcludedProjects = useCallback(
-        (dataType: ProjectConfigurableDataType, exclusions: string[]) => {
-            onUpdateExcludedProjects(dataType, exclusions);
+    const updateRelatedExcludedFolders = useCallback(
+        (dataType: FolderConfigurableDataType, exclusions: string[]) => {
+            onUpdateExcludedFolders(dataType, exclusions);
         },
-        [onUpdateExcludedProjects]
+        [onUpdateExcludedFolders]
     );
 
-    if (!hasProductProjects(moduleContext)) {
+    if (!hasProductFolders(moduleContext)) {
         return null;
     }
 
     return (
         <BasePropertiesPanel
-            headerId="domain-projects-hdr"
-            title="Projects"
+            headerId="domain-folders-hdr"
+            title="Folders"
             collapsed={collapsed}
             controlledCollapse={controlledCollapse}
             isValid
             panelStatus={collapsed && isValid ? 'COMPLETE' : isValid ? 'INPROGRESS' : 'TODO'}
             updateValidStatus={updateValidStatus}
             todoIconHelpMsg={
-                'This section defines which projects use this ' +
+                'This section defines which folders use this ' +
                 entityDataType.typeNounSingular.toLowerCase() +
                 '. You may want to review.'
             }
             togglePanel={togglePanel}
         >
             <div className="bottom-spacing">
-                Select which projects will use this {entityDataType.typeNounSingular.toLowerCase()}.
+                Select which folders can use this {entityDataType.typeNounSingular.toLowerCase()}.
             </div>
-            {!!allProjects && allProjects?.length === excludedProjectIds?.length && (
+            {!!allContainers && allContainers?.length === excludedContainerIds?.length && (
                 <Alert bsStyle="warning">
-                    Note that this {entityDataType.typeNounSingular.toLowerCase()} can be re-enabled in the Project
-                    Settings page for individual projects.
+                    Note that this {entityDataType.typeNounSingular.toLowerCase()} can be re-enabled in the Folder
+                    Settings page for individual folders.
                 </Alert>
             )}
             {error && <Alert>{error}</Alert>}
@@ -161,32 +161,32 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                 <LoadingSpinner />
             ) : (
                 <div className="row">
-                    {!relatedProjectConfigurableDataType && (
+                    {!relatedFolderConfigurableDataType && (
                         <div className="col-xs-12 bottom-spacing">
                             <DataTypeSelector
                                 api={api}
                                 entityDataType={entityDataType}
                                 allDataCounts={allDataCounts}
-                                allDataTypes={childProjects}
-                                updateUncheckedTypes={updateExcludedProjects}
-                                uncheckedEntitiesDB={excludedProjectIdsDB}
-                                dataTypeLabel="projects"
+                                allDataTypes={childFolders}
+                                updateUncheckedTypes={updateExcludedFolders}
+                                uncheckedEntitiesDB={excludedContainerIdsDB}
+                                dataTypeLabel="folders"
                                 noHeader
                                 columns={2}
                             />
                         </div>
                     )}
-                    {!!relatedProjectConfigurableDataType && (
+                    {!!relatedFolderConfigurableDataType && (
                         <>
                             <div className="col-xs-6 bottom-spacing">
                                 <DataTypeSelector
                                     api={api}
                                     entityDataType={entityDataType}
                                     allDataCounts={allDataCounts}
-                                    allDataTypes={childProjects}
-                                    updateUncheckedTypes={updateExcludedProjects}
-                                    uncheckedEntitiesDB={excludedProjectIdsDB}
-                                    dataTypeLabel="Include in Projects"
+                                    allDataTypes={childFolders}
+                                    updateUncheckedTypes={updateExcludedFolders}
+                                    uncheckedEntitiesDB={excludedContainerIdsDB}
+                                    dataTypeLabel="Include in Folders"
                                 />
                             </div>
                             <div className="col-xs-6 bottom-spacing">
@@ -194,10 +194,10 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
                                     api={api}
                                     dataTypePrefix="Dashboard"
                                     entityDataType={entityDataType}
-                                    allDataTypes={allProjects}
-                                    updateUncheckedTypes={updateRelatedExcludedProjects}
-                                    uncheckedEntitiesDB={relatedExcludedProjectIdsDB}
-                                    hiddenEntities={excludedProjectIds}
+                                    allDataTypes={allContainers}
+                                    updateUncheckedTypes={updateRelatedExcludedFolders}
+                                    uncheckedEntitiesDB={relatedExcludedContainerIdsDB}
+                                    hiddenEntities={excludedContainerIds}
                                     dataTypeLabel={relatedDataTypeLabel}
                                 />
                             </div>
@@ -209,4 +209,6 @@ export const DataTypeProjectsPanelImpl: FC<OwnProps & InjectedDomainPropertiesPa
     );
 });
 
-export const DataTypeProjectsPanel = withDomainPropertiesPanelCollapse<OwnProps>(DataTypeProjectsPanelImpl);
+export const DataTypeFoldersPanel = withDomainPropertiesPanelCollapse<OwnProps>(DataTypeFoldersPanelImpl);
+
+DataTypeFoldersPanel.displayName = 'DataTypeFoldersPanel';

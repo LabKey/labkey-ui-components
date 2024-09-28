@@ -27,7 +27,7 @@ import { ParentEntityLineageColumns } from '../entities/constants';
 
 import { DERIVATION_DATA_SCOPES, STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
-import { isProductProjectsEnabled, isProjectContainer, isSampleStatusEnabled } from '../../app/utils';
+import { isProductFoldersEnabled, isProjectContainer, isSampleStatusEnabled } from '../../app/utils';
 import { SAMPLE_MANAGER_APP_PROPERTIES } from '../../app/constants';
 
 import { SCHEMAS } from '../../schemas';
@@ -423,8 +423,8 @@ export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Pr
     invalidateFullQueryDetailsCache();
 
     let assayRunsQuery = 'AssayRunsPerSample';
-    if (isProductProjectsEnabled() && !isProjectContainer()) {
-        assayRunsQuery = 'AssayRunsPerSampleChildProject';
+    if (isProductFoldersEnabled() && !isProjectContainer()) {
+        assayRunsQuery = 'AssayRunsPerSampleChildFolder';
     }
 
     return await selectRowsDeprecated({
@@ -446,8 +446,8 @@ export async function createSessionAssayRunSummaryQuery(sampleIds: number[]): Pr
 
 export async function getDistinctAssaysPerSample(sampleIds: number[]): Promise<string[]> {
     let assayRunsQuery = 'AssayRunsPerSample';
-    if (isProductProjectsEnabled() && !isProjectContainer()) {
-        assayRunsQuery = 'AssayRunsPerSampleChildProject';
+    if (isProductFoldersEnabled() && !isProjectContainer()) {
+        assayRunsQuery = 'AssayRunsPerSampleChildFolder';
     }
 
     try {

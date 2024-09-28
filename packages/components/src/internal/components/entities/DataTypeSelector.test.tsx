@@ -59,27 +59,27 @@ describe('getUncheckedEntityWarning', () => {
     test('dataCounts not empty', () => {
         let warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, SampleTypeDataType, 2);
         expect(JSON.stringify(warning)).toContain(
-            '2," ","samples"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+            '2," ","samples"," will no longer be visible in this folder. They won\'t be deleted and lineage relationships won\'t change.'
         );
 
         warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, SampleTypeDataType, 1);
         expect(JSON.stringify(warning)).toContain(
-            '1," ","sample"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+            '1," ","sample"," will no longer be visible in this folder. They won\'t be deleted and lineage relationships won\'t change.'
         );
 
         warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, AssayRunDataType, 2);
         expect(JSON.stringify(warning)).toContain(
-            '2," ","runs"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+            '2," ","runs"," will no longer be visible in this folder. They won\'t be deleted and lineage relationships won\'t change.'
         );
 
         warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, DataClassDataType, 2);
         expect(JSON.stringify(warning)).toContain(
-            '2," ","sources"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+            '2," ","sources"," will no longer be visible in this folder. They won\'t be deleted and lineage relationships won\'t change.'
         );
 
         warning = getUncheckedEntityWarning([1, 2], [], { '1': 1, '2': 2 }, null, 2);
         expect(JSON.stringify(warning)).toContain(
-            '2," ","samples"," will no longer be visible in this project. They won\'t be deleted and lineage relationships won\'t change.'
+            '2," ","samples"," will no longer be visible in this folder. They won\'t be deleted and lineage relationships won\'t change.'
         );
     });
 });
@@ -127,12 +127,12 @@ describe('DataTypeSelector', () => {
     ];
     const apiWithResults = getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
-            getProjectConfigurableEntityTypeOptions: jest.fn().mockResolvedValue(sampleTypes),
+            getFolderConfigurableEntityTypeOptions: jest.fn().mockResolvedValue(sampleTypes),
         }),
     });
     const apiWithNoResults = getTestAPIWrapper(jest.fn, {
         query: getQueryTestAPIWrapper(jest.fn, {
-            getProjectConfigurableEntityTypeOptions: jest.fn().mockResolvedValue([]),
+            getFolderConfigurableEntityTypeOptions: jest.fn().mockResolvedValue([]),
         }),
     });
 
@@ -152,17 +152,17 @@ describe('DataTypeSelector', () => {
         expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
         expect(document.querySelector('.content-group-label').textContent).toBe('Sample Types');
         expect(document.querySelector('.help-block').textContent).toBe('No sample types');
-        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(0);
+        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(0);
     });
 
     test('with data types', async () => {
         await act(async () => {
             renderWithAppContext(<DataTypeSelector {...defaultProps()} api={apiWithResults} />);
         });
-        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
-        expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('Blood');
+        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        expect(document.querySelectorAll('.folder-faceted-data-type')[0].textContent).toBe('Blood');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[0].getAttribute('checked')).toBe('');
-        expect(document.querySelectorAll('.project-faceted-data-type')[1].textContent).toBe('DNA');
+        expect(document.querySelectorAll('.folder-faceted-data-type')[1].textContent).toBe('DNA');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[1].getAttribute('checked')).toBe('');
         expect(document.querySelectorAll('.col-xs-12')).toHaveLength(2); // outer col + 1 inner col
         expect(document.querySelectorAll('.col-md-6')).toHaveLength(0);
@@ -172,10 +172,10 @@ describe('DataTypeSelector', () => {
         await act(async () => {
             renderWithAppContext(<DataTypeSelector {...defaultProps()} api={apiWithResults} columns={2} />);
         });
-        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
-        expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('Blood');
+        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        expect(document.querySelectorAll('.folder-faceted-data-type')[0].textContent).toBe('Blood');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[0].getAttribute('checked')).toBe('');
-        expect(document.querySelectorAll('.project-faceted-data-type')[1].textContent).toBe('DNA');
+        expect(document.querySelectorAll('.folder-faceted-data-type')[1].textContent).toBe('DNA');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[1].getAttribute('checked')).toBe('');
         expect(document.querySelectorAll('.col-xs-12')).toHaveLength(3); // outer col + 2 inner col
         expect(document.querySelectorAll('.col-md-6')).toHaveLength(2);
@@ -185,10 +185,10 @@ describe('DataTypeSelector', () => {
         await act(async () => {
             renderWithAppContext(<DataTypeSelector {...defaultProps()} api={apiWithResults} toggleSelectAll={false} />);
         });
-        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
-        expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('Blood');
+        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        expect(document.querySelectorAll('.folder-faceted-data-type')[0].textContent).toBe('Blood');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[0].getAttribute('checked')).toBe('');
-        expect(document.querySelectorAll('.project-faceted-data-type')[1].textContent).toBe('DNA');
+        expect(document.querySelectorAll('.folder-faceted-data-type')[1].textContent).toBe('DNA');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[1].getAttribute('checked')).toBe('');
         expect(document.querySelectorAll('.col-xs-12')).toHaveLength(1);
         expect(document.querySelectorAll('.col-md-6')).toHaveLength(0);
@@ -200,10 +200,10 @@ describe('DataTypeSelector', () => {
                 <DataTypeSelector {...defaultProps()} api={apiWithResults} uncheckedEntitiesDB={[56]} />
             );
         });
-        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
-        expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('Blood');
+        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        expect(document.querySelectorAll('.folder-faceted-data-type')[0].textContent).toBe('Blood');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[0].getAttribute('checked')).toBe(null);
-        expect(document.querySelectorAll('.project-faceted-data-type')[1].textContent).toBe('DNA');
+        expect(document.querySelectorAll('.folder-faceted-data-type')[1].textContent).toBe('DNA');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[1].getAttribute('checked')).toBe('');
         expect(document.querySelectorAll('.col-xs-12')).toHaveLength(2);
         expect(document.querySelectorAll('.col-md-6')).toHaveLength(0);
@@ -241,10 +241,10 @@ describe('DataTypeSelector', () => {
                 />
             );
         });
-        expect(document.querySelectorAll('.project-faceted-data-type')).toHaveLength(2);
-        expect(document.querySelectorAll('.project-faceted-data-type')[0].textContent).toBe('freezer1Floor1/Room2');
+        expect(document.querySelectorAll('.folder-faceted-data-type')).toHaveLength(2);
+        expect(document.querySelectorAll('.folder-faceted-data-type')[0].textContent).toBe('freezer1Floor1/Room2');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[0].getAttribute('checked')).toBe('');
-        expect(document.querySelectorAll('.project-faceted-data-type')[1].textContent).toBe('freezer2');
+        expect(document.querySelectorAll('.folder-faceted-data-type')[1].textContent).toBe('freezer2');
         expect(document.querySelectorAll('.filter-faceted__checkbox')[1].getAttribute('checked')).toBe('');
         expect(document.querySelectorAll('.col-xs-12')).toHaveLength(2);
         expect(document.querySelectorAll('.col-md-6')).toHaveLength(0);

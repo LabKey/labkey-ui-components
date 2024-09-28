@@ -31,20 +31,20 @@
     margin-top: 20px;
 }
 
-.delete-project-button {
+.delete-folder-button {
     margin-right: 14px;
 }
 
-.delete-project-modal__text {
+.deleting-folder-modal__text {
     margin-bottom: 20px;
 }
 
-.delete-project-modal__spinner {
+.delete-folder-modal__spinner {
     display: block;
     margin-top: 5px;
 }
 
-.delete-project-modal__table {
+.delete-folder-modal__table {
     margin-top: 5px;
     table-layout: fixed;
     margin-bottom: 12px;
@@ -62,11 +62,11 @@
     }
 }
 
-.delete-project-modal__comment {
+.delete-folder-modal__comment {
     margin-top: 12px;
 }
 
-.deleting-project-modal-text {
+.deleting-folder-modal-text {
     margin-bottom: 10px;
 }
 
@@ -74,14 +74,14 @@
     margin-bottom: 10px;
 }
 
-.project-faceted-data-type {
+.folder-faceted-data-type {
     margin-bottom: 5px;
 
     .help-block {
         margin-top: 0;
         margin-bottom: 0;
     }
-    .project-datatype-faceted__value {
+    .folder-datatype-faceted__value {
         display: inline-block;
         padding-right: 5px;
         word-break: break-all;

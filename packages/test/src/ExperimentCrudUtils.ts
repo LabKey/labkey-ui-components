@@ -103,7 +103,8 @@ export async function createSource(server: IntegrationTestServer, sourceName: st
 }
 
 
-export async function importData(server, importText: string, queryName: string, insertOption = "IMPORT", folderOptions: RequestOptions , userOptions: RequestOptions, useAsync = false, debug?: boolean, isSamples?: boolean) : Promise<any> {
+export async function importData(server, importText: string, queryName: string, insertOption = "IMPORT", folderOptions: RequestOptions , userOptions: RequestOptions, useAsync = false, debug?: boolean, isSamples?: boolean, isFailure?: boolean) : Promise<any> {
+    let errorResp = null;
     const response = await server.request('experiment', isSamples ? 'importSamples' : 'importData', (agent, url) => {
             return agent
                 .post(url + '?auditBehavior=DETAILED&crossFolderImport=true')
@@ -117,7 +118,12 @@ export async function importData(server, importText: string, queryName: string, 
                     importLookupByAlternateKey: true
                 });
         },
-        { ...folderOptions, ...userOptions }).expect(successfulResponse);
+        { ...folderOptions, ...userOptions }).expect(isFailure ? (error) => {
+        errorResp = error;
+    }  : successfulResponse);
+
+    if (isFailure)
+        return errorResp;
 
     if (useAsync)
         await sleep(100);

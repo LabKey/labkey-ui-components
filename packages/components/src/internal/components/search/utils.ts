@@ -91,7 +91,7 @@ export function isFilterUrlSuffixMatch(suffix: string, filterType: Filter.IFilte
     return suffix === filterType.getURLSuffix();
 }
 
-const MAX_MULTI_VALUE_FILTER_VALUES = 2;
+const MAX_MULTI_VALUE_FILTER_VALUES = 200;
 
 export function getFilterTypePlaceHolder(suffix: string): string {
     if (suffix === 'in' || suffix === 'notin' || suffix === 'containsoneof' || suffix === 'containsnoneof') {
@@ -134,7 +134,8 @@ export function getFilterValuesAsArray(filter: Filter.IFilter, blankValue?: stri
 
 export function getFieldFiltersValidationResult(
     dataTypeFilters: { [key: string]: FieldFilter[] },
-    queryLabels?: { [key: string]: string }
+    queryLabels?: { [key: string]: string },
+    maxMultiValuedValues: number = MAX_MULTI_VALUE_FILTER_VALUES
 ): string {
     const missingValueFields = {};
     let hasMissingError = false;
@@ -171,9 +172,9 @@ export function getFieldFiltersValidationResult(
                         maxMatchAllErrorField = fieldFilter.fieldCaption;
                     }
                 } else if (filter.getFilterType().isMultiValued()) {
-                    if (Array.isArray(value) && value.length > MAX_MULTI_VALUE_FILTER_VALUES) {
-                        multiValueErrorFields.add(fieldFilter.fieldCaption);
-                        multiValueErrorFieldTypes.add(filter.getFilterType().getDisplayText());
+                    if (Array.isArray(value) && value.length > maxMultiValuedValues) {
+                        multiValueErrorFields.add("'" + fieldFilter.fieldCaption + "'");
+                        multiValueErrorFieldTypes.add("'" + filter.getFilterType().getDisplayText() + "'");
                     }
                 }
 
@@ -198,17 +199,16 @@ export function getFieldFiltersValidationResult(
         return 'Missing filter values for: ' + parentMsgs.join('; ') + '.';
     }
 
-    let msg = "";
+    let msg = '';
     if (maxMatchAllErrorField)
-        msg +=
-            "At most 10 values can be selected for 'Equals All Of' filter type for '" + maxMatchAllErrorField + "'.";
+        msg += "At most 10 values can be selected for 'Equals All Of' filter type for '" + maxMatchAllErrorField + "'. ";
 
     if (multiValueErrorFields.size > 0) {
         msg +=
             'Too many values provided for filters on ' +
             makeCommaSeparatedString(Array.from(multiValueErrorFields).sort()) +
             '. At most ' +
-            MAX_MULTI_VALUE_FILTER_VALUES +
+            maxMultiValuedValues +
             ' values may be provided for filters of type ' +
             makeCommaSeparatedString(Array.from(multiValueErrorFieldTypes).sort()) +
             '.';

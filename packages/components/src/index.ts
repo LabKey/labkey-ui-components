@@ -58,6 +58,7 @@ import {
     blurActiveElement,
     capitalizeFirstChar,
     caseInsensitive,
+    getValuesSummary,
     debounce,
     devToolsActive,
     downloadAttachment,
@@ -762,7 +763,7 @@ import {
     userCanReadMedia,
     userCanReadNotebooks,
     userCanReadRegistry,
-    userCanReadSources
+    userCanReadSources,
 } from './internal/app/utils';
 import {
     menuInit,
@@ -1608,6 +1609,7 @@ export {
     isDateTimeInPast,
     blurActiveElement,
     caseInsensitive,
+    getValuesSummary,
     capitalizeFirstChar,
     uncapitalizeFirstChar,
     withTransformedKeys,
@@ -1883,6 +1885,7 @@ export type {
     IDerivePayload,
     IEntityTypeOption,
     IParentOption,
+    IImportAlias,
     EntityChoice,
     DataTypeEntity,
     DisplayObject,

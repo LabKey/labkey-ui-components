@@ -25,6 +25,7 @@ import {
     MoveEntitiesOptions,
     getCrossFolderSelectionResult,
     GetParentTypeDataForLineage,
+    getDataTypesWithRequiredLineage,
     isDataTypeEmpty,
 } from './actions';
 import { DataOperation } from './constants';
@@ -34,6 +35,7 @@ import {
     EntityDataType,
     EntityIdCreationModel,
     IEntityTypeOption,
+    IImportAlias,
     IParentAlias,
     IParentOption,
     OperationConfirmationData,
@@ -54,6 +56,11 @@ export interface EntityAPIWrapper {
         selectionKey?: string,
         useSnapshotSelection?: boolean
     ) => Promise<OperationConfirmationData>;
+    getDataTypesWithRequiredLineage: (
+        parentDataTypeRowId: number,
+        isSampleParent?: boolean,
+        containerPath?: string
+    ) => Promise<{ dataClasses: string[]; sampleTypes: string[] }>;
     getDeleteConfirmationData: (options: GetDeleteConfirmationDataOptions) => Promise<OperationConfirmationData>;
     getEntityTypeData: (
         model: EntityIdCreationModel,
@@ -110,7 +117,7 @@ export interface EntityAPIWrapper {
         containerPath: string,
         isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean,
         newTypeOption?: any,
-        importAliases?: Map<string, string>,
+        importAliases?: Record<string, IImportAlias>,
         idPrefix?: string,
         formatLabel?: (name: string, prefix: string, isDataClass?: boolean, containerPath?: string) => string
     ) => Promise<{
@@ -142,6 +149,7 @@ export class EntityServerAPIWrapper implements EntityAPIWrapper {
     moveEntities = moveEntities;
     initParentOptionsSelects = initParentOptionsSelects;
     isDataTypeEmpty = isDataTypeEmpty;
+    getDataTypesWithRequiredLineage = getDataTypesWithRequiredLineage;
 }
 
 /**
@@ -166,6 +174,7 @@ export function getEntityTestAPIWrapper(
         moveEntities: mockFn(),
         initParentOptionsSelects: mockFn(),
         isDataTypeEmpty: mockFn(),
+        getDataTypesWithRequiredLineage: mockFn(),
         ...overrides,
     };
 }

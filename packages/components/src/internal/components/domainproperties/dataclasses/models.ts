@@ -18,7 +18,7 @@ import { Map, fromJS, OrderedMap } from 'immutable';
 
 import { DomainDesign, IDomainField, SystemField } from '../models';
 
-import { IParentAlias } from '../../entities/models';
+import { IImportAlias, IParentAlias } from '../../entities/models';
 
 import { getDuplicateAlias, parentAliasInvalid } from '../utils';
 
@@ -28,7 +28,7 @@ interface DataClassOptionsConfig {
     category: string;
     description: string;
     excludedContainerIds?: string[];
-    importAliases?: Map<string, string>;
+    importAliases?: Record<string, IImportAlias>;
     name: string;
     nameExpression: string;
     parentAliases?: OrderedMap<string, IParentAlias>;
@@ -55,7 +55,7 @@ export class DataClassModel implements DataClassModelConfig {
     readonly sampleSet: number;
     readonly systemFields: SystemField[];
     readonly parentAliases?: OrderedMap<string, IParentAlias>;
-    readonly importAliases?: Map<string, string>;
+    readonly importAliases?: Record<string, IImportAlias>;
     readonly excludedContainerIds?: string[];
     readonly isBuiltIn?: boolean;
 
@@ -80,7 +80,7 @@ export class DataClassModel implements DataClassModelConfig {
             }
 
             const aliases = raw.options?.importAliases || {};
-            draft.importAliases = Map<string, string>(fromJS(aliases));
+            draft.importAliases = { ...aliases };
 
             draft.systemFields =
                 model.category === 'sources' ? SOURCE_DOMAIN_SYSTEM_FIELDS : DATACLASS_DOMAIN_SYSTEM_FIELDS;
